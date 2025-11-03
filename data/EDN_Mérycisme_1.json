@@ -1,0 +1,88 @@
+{
+  "id": "EDN_Mérycisme_1",
+  "patient": {
+    "nom": "MARTIN",
+    "prenom": "Clara",
+    "age": 19,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "55 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Régurgitations fréquentes après les repas",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Marche quotidienne" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Régurgite et remastique volontairement" },
+      "emploi": { "profession": "Étudiante", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Un an",
+      "evolution": "Stable",
+      "facteursDeclenchants": "Après les repas",
+      "symptomesAssocies": ["Sensation de plaisir lors des régurgitations"],
+      "remarques": "Cache ce comportement à son entourage."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Aspect normal, discrète pâleur",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Normale" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Endoscopie digestive",
+    "Évaluation psychologique",
+    "pH-métrie œsophagienne",
+    "Scanner abdominal",
+    "Dosage des D-dimères",
+    "Échographie rénale",
+    "Test respiratoire à l’urée",
+    "Bilan lipidique",
+    "Électromyographie",
+    "IRM pelvienne",
+    "Sérologie VIH"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Normal",
+    "Endoscopie digestive": "Absence de reflux ou sténose",
+    "Évaluation psychologique": "Comportement volontaire, plaisir associé",
+    "pH-métrie œsophagienne": "Normal",
+    "Scanner abdominal": "Normale",
+    "Dosage des D-dimères": "Normal",
+    "Échographie rénale": "Normale",
+    "Test respiratoire à l’urée": "Négatif (pas d’H. pylori)",
+    "Bilan lipidique": "Normal",
+    "Électromyographie": "Normale",
+    "IRM pelvienne": "Normale",
+    "Sérologie VIH": "Négative",
+    "Glycémie (contrôle)": "0.95 g/L"
+  },
+  "possibleDiagnostics": ["ARFID", "Mérycisme", "Reflux gastro-œsophagien", "Trouble anxieux", "Sténose pylorique"],
+  "correctDiagnostic": "Mérycisme",
+  "feedback": {
+    "Mérycisme": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Thérapie comportementale", "Gestion du stress", "Antiacides", "Suivi psychologique"],
+  "correctTreatments": ["Thérapie comportementale", "Suivi psychologique"]
+}

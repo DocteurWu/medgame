@@ -1,0 +1,191 @@
+{
+  "id": "EDN_diabetetype2_1",
+  "patient": {
+    "nom": "DUPONT",
+    "prenom": "Marie",
+    "age": 52,
+    "sexe": "F",
+    "taille": "162 cm",
+    "poids": "95 kg",
+    "groupeSanguin": "O+",
+    "imc": "36.2 kg/m²",
+    "poidsNaissance": "4.1 kg"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Bilan de santé suite à fatigue persistante et suspicion de diabète de type 2",
+    "modeDeVie": {
+      "activitePhysique": { 
+        "description": "Sédentaire, marche occasionnelle (10-15 min par semaine)", 
+        "frequence": "Rare" 
+      },
+      "tabac": { 
+        "quantite": "0 paquet-année", 
+        "duree": "0 ans", 
+        "statut": "Non-fumeuse" 
+      },
+      "alcool": { 
+        "quantite": "Modéré", 
+        "details": "1-2 verres de vin par semaine" 
+      },
+      "alimentation": { 
+        "regime": "Déséquilibré", 
+        "particularites": "Consommation excessive de produits sucrés (pâtisseries, sodas) et gras (fritures, charcuterie)", 
+        "frequenceRepas": "3 repas + grignotages fréquents" 
+      },
+      "emploi": { 
+        "profession": "Employée de bureau", 
+        "stress": "Modéré", 
+        "details": "Travail assis 8h/jour, pression liée aux délais" 
+      },
+      "sommeil": { 
+        "duree": "6-7h/nuit", 
+        "qualite": "Moyenne, réveils fréquents" 
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Hypertension artérielle (HTA)", "debut": "2015", "traitement": "Captopril 25 mg 2x/jour" },
+        { "type": "Dyslipidémie", "debut": "2018", "traitement": "Atorvastatine 20 mg le soir" }
+      ],
+      "chirurgicaux": [
+        { "intervention": "Césarienne", "date": "2003", "indication": "Dystocie" }
+      ],
+      "familiaux": [
+        { "lien": "Mère", "pathologie": "Diabète de type 2", "ageDiagnostic": "50", "ageActuel": "65" },
+        { "lien": "Père", "pathologie": "Infarctus du myocarde", "ageDiagnostic": "60", "ageDeces": "68" },
+        { "lien": "Tante maternelle", "pathologie": "Diabète type 2", "ageDiagnostic": "55", "ageActuel": "72" }
+      ],
+      "gyneco-obstetricaux": [
+        { "grossesses": 2, "accouchements": 2, "notes": "Diabète gestationnel suspecté lors de la 2e grossesse" }
+      ]
+    },
+    "traitements": [
+      { "nom": "Captopril", "dose": "25 mg", "frequence": "2 fois par jour", "indication": "HTA" },
+      { "nom": "Atorvastatine", "dose": "20 mg", "frequence": "1 fois le soir", "indication": "Dyslipidémie" }
+    ],
+    "allergies": { 
+      "presence": false, 
+      "liste": [], 
+      "notes": "Aucune allergie connue" 
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois (estimé 8-12 mois)",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Aucun identifié, possible lien avec prise de poids",
+      "symptomesAssocies": [
+        "Fatigue chronique", 
+        "Polyurie (réveils nocturnes fréquents pour uriner)", 
+        "Polydipsie (soif accrue)", 
+        "Vision floue intermittente",
+        "Paresthésies légères aux pieds"
+      ],
+      "remarques": "Prise de poids progressive ces dernières années (10 kg sur 5 ans), symptômes ignorés initialement"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "150/95 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37.0°C",
+      "saturationO2": "96%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Surpoids marqué, obésité abdominale, IMC 36.2 kg/m² (obèse)",
+    "examenCardiovasculaire": { 
+      "auscultation": "Normal, pas de souffle", 
+      "poulsPeripheriques": "Présents et symétriques" 
+    },
+    "examenPulmonaire": { 
+      "auscultation": "Normal, murmure vésiculaire présent bilatéral" 
+    },
+    "examenAbdominal": { 
+      "palpation": "Tour de taille 98 cm, adiposité viscérale marquée, pas de douleur", 
+      "foie": "Bord inférieur palpable sous le rebord costal" 
+    },
+    "examenNeurologique": { 
+      "conscience": "Normale", 
+      "reflexes": "Normaux", 
+      "sensibilite": "Légère diminution tactile distale aux pieds" 
+    },
+    "examenDermatologique": { 
+      "observation": "Peau sèche, pas de lésions infectieuses" 
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Glycémie à jeun",
+    "Hémoglobine glyquée (HbA1c)",
+    "Bilan lipidique",
+    "Mesure du tour de taille",
+    "Test de tolérance au glucose",
+    "ECG",
+    "Échographie hépatique",
+    "Fond d’œil",
+    "Dosage des anticorps anti-GAD",
+    "Corps cétoniques urinaires",
+    "Protéine C-réactive (CRP)",
+    "IRM cérébrale",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Glycémie 1.8 g/L, créatinine 0.9 mg/dL (normale), transaminases légèrement élevées (ALT 45 U/L, AST 38 U/L)",
+    "Glycémie à jeun": "1.8 g/L (180 mg/dL, hyperglycémie modérée)",
+    "Hémoglobine glyquée (HbA1c)": "8.2% (contrôle glycémique altéré)",
+    "Bilan lipidique": "Cholestérol total 2.5 g/L (250 mg/dL), Triglycérides 2.8 g/L (280 mg/dL), HDL 0.4 g/L (40 mg/dL), LDL 1.5 g/L (150 mg/dL)",
+    "Mesure du tour de taille": "98 cm (> 80 cm, syndrome métabolique)",
+    "Test de tolérance au glucose": "Glycémie à 2h : 2.2 g/L (220 mg/dL, intolérance au glucose)",
+    "ECG": "Rythme sinusal, pas d’anomalie ischémique",
+    "Échographie hépatique": "Stéatose hépatique modérée, pas de lésion focale",
+    "Fond d’œil": "Pas de rétinopathie diabétique détectée",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "Corps cétoniques urinaires": "Négatif",
+    "Protéine C-réactive (CRP)": "8 mg/L (légère inflammation chronique)",
+    "IRM cérébrale": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Coloscopie": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Diabète de type 2",
+    "Diabète de type 1",
+    "Diabète monogénique (MODY)",
+    "Pré-diabète",
+    "Syndrome métabolique isolé",
+    "Hyperthyroïdie"
+  ],
+  "correctDiagnostic": "Diabète de type 2",
+  "feedback": {
+    "Diabète de type 2": "Diagnostic correct ! Patient > 45 ans, obésité abdominale (tour de taille > 80 cm), syndrome métabolique, antécédents familiaux, hyperglycémie modérée.",
+    "Diabète de type 1": "Incorrect. Pas d’anticorps ni de cétose, âge et surpoids incompatibles.",
+    "Diabète monogénique (MODY)": "Incorrect. Présence de surpoids et syndrome métabolique, pas de début précoce.",
+    "Pré-diabète": "Incorrect. Glycémie et HbA1c dépassent les seuils du pré-diabète.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { 
+    "baseScore": 100, 
+    "attemptPenalty": 10, 
+    "timeBonus": "5 points par minute restante si < 10 min" 
+  },
+  "possibleTreatments": [
+    "Metformine",
+    "Régime alimentaire équilibré",
+    "Activité physique régulière",
+    "Insulinothérapie",
+    "Sulfonylurées",
+    "Statines (dose augmentée)",
+    "Antihypertenseurs supplémentaires",
+    "Antithyroïdiens"
+  ],
+  "correctTreatments": [
+    "Metformine",
+    "Régime alimentaire équilibré",
+    "Activité physique régulière",
+    "Statines (dose augmentée)"
+  ]
+}

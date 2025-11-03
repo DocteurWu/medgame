@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Jeu Médical</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="main-menu-container">
+        <h1> &#127973; Medgame &#127973; </h1>
+
+        <p>Prêt à relever le défi ?</p><p class="disclaimer">Ce jeu est purement fictionnel et tente de se rapprocher au maximum des réfs</p>
+        <div class="button-container">
+            <button class="main-menu-button" id="play-button" onclick="location.href='themes.html'">Jouer &nbsp;&nbsp;&nbsp;<i class="fas fa-play"></i></button>
+            <button class="main-menu-button" id="tutorial-button" onclick="location.href='tutorial.html'"></i> Tutoriel</button>
+            <button class="main-menu-button" id="settings-button"></i> Paramètres</button>
+        </div>
+    </div>
+    <script>
+        // Forcer le rechargement de themes.html
+        if (window.location.href.endsWith('themes.html')) {
+            window.location.reload(true);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+{
+  "id": "EDN_diabetetype2_2",
+  "patient": {
+    "nom": "MOREAU",
+    "prenom": "Philippe",
+    "age": 52,
+    "sexe": "M",
+    "taille": "170 cm",
+    "poids": "95 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fatigue et vision floue occasionnelle",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire, peu d’exercice" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Modéré" },
+      "alimentation": { "regime": "Riche en sucres et graisses", "particularites": "Préférence pour plats préparés" },
+      "emploi": { "profession": "Employé de bureau", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": ["Hypertension artérielle"],
+      "chirurgicaux": [],
+      "familiaux": [
+        { "lien": "Mère", "pathologie": "Diabète type 2", "age": "78" },
+        { "lien": "Grand-père paternel", "pathologie": "Diabète", "age": "décédé" }
+      ]
+    },
+    "traitements": ["Lisinopril 10 mg/jour (hypertension)"],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "1 an",
+      "evolution": "Lente",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": ["Fatigue", "Soif modérée", "Vision floue par moments"],
+      "remarques": "Poids de naissance : 4,2 kg, mère avait un diabète gestationnel."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/90 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Surpoids marqué, obésité abdominale",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Tour de taille 108 cm, adiposité viscérale" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "Glycémie à jeun",
+    "Hémoglobine glyquée (HbA1c)",
+    "Bilan lipidique",
+    "Mesure du tour de taille",
+    "Bilan sanguin complet",
+    "Test de tolérance au glucose",
+    "Dosage des anticorps anti-GAD",
+    "Échographie hépatique",
+    "IRM cérébrale",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Protéine C-réactive (CRP)",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Coloscopie",
+    "Dosage des hormones thyroïdiennes",
+    "Corps cétoniques urinaires"
+  ],
+  "examResults": {
+    "Glycémie à jeun": "145 mg/dL et 136mg/L (3h après)",
+    "Hémoglobine glyquée (HbA1c)": "7.2% (contrôle glycémique altéré)",
+    "Bilan lipidique": "Hypertriglycéridémie (200 mg/dL), HDL bas (35 mg/dL)",
+    "Mesure du tour de taille": "108 cm (syndrome métabolique)",
+    "Bilan sanguin complet": "Normale sauf légère élévation des transaminases",
+    "Test de tolérance au glucose": "Anormal (intolérance au glucose)",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "Échographie hépatique": "Stéatose hépatique modérée",
+    "IRM cérébrale": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Protéine C-réactive (CRP)": "Légèrement élevée (inflammation chronique)",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Coloscopie": "Normale",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Corps cétoniques urinaires": "Négatif"
+  },
+  "possibleDiagnostics": [
+    "Diabète de type 2",
+    "Diabète de type 1",
+    "Diabète monogénique (MODY)",
+    "Syndrome métabolique isolé",
+    "Hyperthyroïdie"
+  ],
+  "correctDiagnostic": "Diabète de type 2",
+  "feedback": {
+    "Diabète de type 2": "Diagnostic correct ! Patient > 45 ans, surpoids abdominal, syndrome métabolique, antécédents familiaux.",
+    "Diabète de type 1": "Incorrect. Pas d’anticorps ni de cétose, âge trop élevé.",
+    "Diabète monogénique (MODY)": "Incorrect. Présence de surpoids et syndrome métabolique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Activité physique régulière",
+    "Régime alimentaire équilibré",
+    "Metformine",
+    "Insulinothérapie",
+    "Sulfonylurées",
+    "Antithyroïdiens",
+    "Statines"
+  ],
+  "correctTreatments": [
+    "Activité physique régulière",
+    "Régime alimentaire équilibré",
+    "Metformine",
+    "Statines"
+  ]
+}

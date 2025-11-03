@@ -1,0 +1,116 @@
+{
+  "id": "EDN_dénutrition-hyper_1",
+  "patient": {
+    "nom": "TOGO",
+    "prenom": "Kwame",
+    "age": 6,
+    "sexe": "M",
+    "taille": "110 cm",
+    "poids": "14 kg",
+    "groupeSanguin": "O-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fatigue extrême et perte de poids rapide",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Faible, léthargie marquée" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "0" },
+      "alimentation": { "regime": "Insuffisant", "particularites": "Apports très limités, fièvre récente" },
+      "emploi": { "profession": "Aucun (enfant)", "stress": "Inconnu" }
+    },
+    "antecedents": {
+      "medicaux": ["Infection respiratoire récente"],
+      "chirurgicaux": [],
+      "familiaux": [{ "lien": "Grand-mère", "pathologie": "Malnutrition", "age": "60" }]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Quelques semaines",
+      "evolution": "Rapide",
+      "facteursDeclenchants": "Épisode fébrile prolongé",
+      "symptomesAssocies": ["Fièvre", "Diarrhée", "Perte musculaire marquée"],
+      "remarques": "Enfant vivant dans un contexte de ressources limitées."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/60 mmHg",
+      "pouls": "110 bpm",
+      "temperature": "38.2°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "24/min"
+    },
+    "aspectGeneral": "Cachectique, hypotrophie musculaire, faible graisse sous-cutanée",
+    "examenCardiovasculaire": { "auscultation": "Tachycardie légère" },
+    "examenPulmonaire": { "auscultation": "Râles fins à droite" },
+    "examenAbdominal": { "palpation": "Périmètre brachial 12 cm, abdomen souple" },
+    "examenNeurologique": { "conscience": "Léthargique mais orienté" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan nutritionnel",
+    "Périmètre brachial",
+    "Protéine C-réactive (CRP)",
+    "Hémoculture",
+    "Radiographie pulmonaire",
+    "Test de dépistage du paludisme",
+    "Coproculture",
+    "IRM cérébrale",
+    "Échographie cardiaque",
+    "Dosage des hormones thyroïdiennes",
+    "Scanner abdominal",
+    "Sérologie VIH",
+    "Analyse des gaz du sang",
+    "Électroencéphalogramme",
+    "Test de sudation",
+    "Bilan lipidique"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Anémie sévère, hypoalbuminémie, leucocytose",
+    "Bilan nutritionnel": "Déficit calorique et protéique sévère",
+    "Périmètre brachial": "12 cm (sous le seuil de malnutrition aiguë)",
+    "Protéine C-réactive (CRP)": "Élevée (inflammation aiguë)",
+    "Hémoculture": "Positive à Streptococcus pneumoniae",
+    "Radiographie pulmonaire": "Foyer infectieux lobe inférieur droit",
+    "Test de dépistage du paludisme": "Négatif",
+    "Coproculture": "Présence de germes entéropathogènes",
+    "IRM cérébrale": "Normale",
+    "Échographie cardiaque": "Normale",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Scanner abdominal": "Normale",
+    "Sérologie VIH": "Négative",
+    "Analyse des gaz du sang": "Légère acidose métabolique",
+    "Électroencéphalogramme": "Normale",
+    "Test de sudation": "Normal (pas de mucoviscidose)",
+    "Bilan lipidique": "Normale",
+    "Glycémie (contrôle)": "0.6 g/L"
+  },
+  "possibleDiagnostics": [
+    "Dénutrition hypercatabolique",
+    "Dénutrition marasmique",
+    "Tuberculose",
+    "Septicémie",
+    "Maladie cœliaque"
+  ],
+  "correctDiagnostic": "Dénutrition hypercatabolique",
+  "feedback": {
+    "Dénutrition hypercatabolique": "Diagnostic correct ! Perte de poids rapide liée à une infection et un état hypercatabolique.",
+    "Dénutrition marasmique": "Incorrect. La dénutrition marasmique est chronique, sans facteur aigu comme ici.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Renutrition progressive",
+    "Antibiothérapie",
+    "Supplémentation vitaminique",
+    "Chirurgie abdominale",
+    "Antituberculeux",
+    "Régime sans gluten"
+  ],
+  "correctTreatments": [
+    "Renutrition progressive",
+    "Antibiothérapie",
+    "Supplémentation vitaminique"
+  ]
+}

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Cas Clinique</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
+    <!-- Ajout de Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/fireworks.js"></script>
+</head>
+<body>
+    
+      <audio src="assets/sounds/urgency.mp3" autoplay loop hidden>
+        Votre navigateur ne prend pas en charge la music
+      </audio>
+
+    <div class="container">
+        <h1 class="h1"> Cas Clinique</h1>                 
+        
+        <!-- Première grille pour les informations du patient -->
+        <div class="medical-dashboard">
+            <div class="medical-card" id="patient-info">
+                <h2 class="section-title"><i class="fas fa-user"></i> Informations Patient</h2>
+                <div class="patient-profile">
+                    <img src="assets/images/default-patient.jpg" alt="Photo du patient" class="patient-image">
+                    <div>
+                    <p><span class="label">Nom:</span> <span id="patient-nom"></span></p>
+                    <p><span class="label">Prénom:</span> <span id="patient-prenom"></span></p>
+                    
+                    <p><span class="label">Age:</span> <span id="patient-age"></span> ans</p>
+                    <p><span class="label">Sexe:</span> <span id="patient-sexe"></span></p>
+                    <p><span class="label">Taille:</span> <span id="patient-taille"></span></p>
+                    <p><span class="label">Poids:</span> <span id="patient-poids"></span></p>
+                    <p><span class="label">Groupe Sanguin:</span> <span id="patient-groupeSanguin"></span></p>
+                    <p><span class="label">Motif d'hospitalisation:</span> <span id="motif-hospitalisation"></span></p>
+                    <p><span class="label">Aspect Général:</span> <span id="aspectGeneral"></span></p>
+                </div>
+                </div>
+            </div>
+
+            <div class="medical-card" id="mode-de-vie">
+                <h2 class="section-title"><i class="fas fa-running"></i> Mode de Vie</h2>
+                <p><span class="label">Activité Physique:</span> <span id="activite-physique"></span></p>
+                <p><span class="label">Tabac:</span> <span id="tabac"></span></p>
+                <p><span class="label">Alcool:</span> <span id="alcool"></span></p>
+                <p><span class="label">Alimentation:</span> <span id="alimentation"></span></p>
+                <p><span class="label">Emploi:</span> <span id="emploi"></span></p>
+            </div>
+
+            <div class="medical-card" id="antecedents">
+                <h2 class="section-title"><i class="fas fa-history"></i> Antécédents</h2>
+                <details>
+                    <summary>Médicaux</summary>
+                    <p><span id="antecedents-medicaux"></span></p>
+                </details>
+                <details>
+                    <summary>Chirurgicaux</summary>
+                    <p><span id="antecedents-chirurgicaux"></span></p>
+                </details>
+                <details>
+                    <summary>Familiaux</summary>
+                    <p><span id="antecedents-familiaux"></span></p>
+                </details>
+                <h2 class="section-title"><i class="fas fa-pills"></i> Traitements et Allergies</h2>
+                <p><span class="label">Traitements:</span> <span id="traitements-liste"></span></p>
+                <p><span class="label">Allergies:</span> <span id="allergies-liste"></span></p>
+            </div>
+
+            <div class="medical-card" id="histoire-maladie">
+                <h2 class="section-title"><i class="fas fa-book-medical"></i> Histoire de la Maladie</h2>
+                <p><span class="label">Début des Symptômes:</span> <span id="debut-symptomes"></span></p>
+                <p><span class="label">Évolution:</span> <span id="evolution"></span></p>
+                <p><span class="label">Facteurs Déclenchants:</span> <span id="facteurs-declenchants"></span></p>
+                <p><span class="label">Symptômes Associés:</span> <span id="symptomes-associes"></span></p>
+                <p><span class="label">Remarques:</span> <span id=" remarques"></span></p>
+            </div>
+
+            <div class="medical-card" id="examen-clinique">
+                <h2 class="section-title"><i class="fas fa-heartbeat"></i> Examen Clinique</h2>
+             
+                    <div>
+                        <p><span class="label">Tension:</span> <span id="tension"></span></p>
+                        <p><span class="label">Pouls:</span> <span id="pouls"></span></p>
+                        <p><span class="label">Saturation O2:</span> <span id="saturationO2"></span></p>
+                        <p><span class="label">Température:</span> <span id="temperature"></span></p>
+                        <p><span class="label">Fréquence Respiratoire:</span> <span id="frequenceRespiratoire"></span></p>
+
+                        <details>
+                            <summary>Examen Cardiovasculaire</summary>
+                            <p><span id="examenCardiovasculaire"></span></p>
+                        </details>
+
+                        <details>
+                            <summary>Examen Pulmonaire</summary>
+                            <p><span id="examenPulmonaire"></span></p>
+                        </details>
+
+                         <details>
+                            <summary>Examen Abdominal</summary>
+                            <span id="examenAbdominal"></span></p>
+                        </details>
+
+                        <details>
+                            <summary>Examen Neurologique</summary>
+                             <span id="examenNeurologique"></span></p>
+                        </details>
+
+                    </div>
+            
+            </div>
+            <div class="medical-card2" id="examens">
+                <h2 class="section-title"><i class="fas fa-stethoscope"></i> Examens Complémentaires</h2>
+                <div class="exam-categories">
+                    <div class="exam-category">
+                        <h3>Examens sanguins</h3>
+                        <div class="exam-buttons">
+                            <button class="exam-btn" data-exam="NFS">NFS</button>
+                            <button class="exam-btn" data-exam="Ionogramme">Ionogramme</button>
+                            <button class="exam-btn" data-exam="Bilan hépatique">Bilan hépatique</button>
+                            <button class="exam-btn" data-exam="Bilan rénal">Bilan rénal</button>
+                            <button class="exam-btn" data-exam="CRP">CRP</button>
+                            <button class="exam-btn" data-exam="Procalcitonine">Procalcitonine</button>
+                        </div>
+                    </div>
+                    <div class="exam-category">
+                        <h3>Imagerie</h3>
+                        <div class="exam-buttons">
+                            <button class="exam-btn" data-exam="Radiographie pulmonaire">Radio pulmonaire</button>
+                            <button class="exam-btn" data-exam="Echographie abdominale">Écho abdominale</button>
+                            <button class="exam-btn" data-exam="Scanner cérébral">Scanner cérébral</button>
+                            <button class="exam-btn" data-exam="IRM médullaire">IRM médullaire</button>
+                            <button class="exam-btn" data-exam="Radiographie thoracique">Radio thoracique</button>
+                        </div>
+                    </div>
+                    <div class="exam-category">
+                        <h3>Tests fonctionnels</h3>
+                        <div class="exam-buttons">
+                            <button class="exam-btn" data-exam="ECG">ECG</button>
+                            <button class="exam-btn" data-exam="EFR">EFR</button>
+                            <button class="exam-btn" data-exam="Test d'effort">Test d'effort</button>
+                        </div>
+                    </div>
+                    <div class="exam-category">
+                        <h3>Examens microbiologiques</h3>
+                        <div class="exam-buttons">
+                            <button class="exam-btn" data-exam="Hémocultures">Hémocultures</button>
+                            <button class="exam-btn" data-exam="ECBU">ECBU</button>
+                            <button class="exam-btn" data-exam="Coproculture">Coproculture</button>
+                            <button class="exam-btn" data-exam="Antibiogramme">Antibiogramme</button>
+                        </div>
+                    </div>
+                </div>
+                <button id="validate-exams" class="validate-btn">Demander les examens sélectionnés</button>
+                <div id="examens-results" class="exam-results"></div>
+            </div>
+
+            <div class="medical-card" id="diagnostic">
+                <h2 class="section-title"><i class="fas fa-diagnoses"></i> Diagnostic</h2>
+                <select id="diagnostic-select">
+                    <option value="">Sélectionnez un diagnostic</option>
+                </select>
+                <button id="validate-diagnostic" style="color: red;">Valider ?</button>
+                <p id="score"></p>
+                <p id="feedback"></p>
+                <p id="correctDiagnostic"></p>
+
+                <h2 class="section-title"><i class="fas fa-prescription"></i>Prescription</h2>
+                <div id="availableTreatments"></div>
+                <button id="validate-traitement" style="color: red;">Valider ?</button>
+                <p id="treatment-feedback"></p>
+            </div>
+
+        </div>
+        <div id="timer" style="text-align: center; font-size: 2em; margin-bottom: 10px;"></div>
+        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+            <a href="index.html" class="back-link-bottom">Retour</a>
+            <button id="next-case">Cas Suivant</button>
+        </div>
+    </div>
+    
+    <div id="fireworks-container"></div>
+
+    <script>
+        // Récupérer le thème depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const theme = urlParams.get('theme');
+
+        // Charger les cas en fonction du thème
+        async function initializeGame() {
+            try {
+                const cases = await loadCases(theme);
+                // Assurez-vous que cases est un tableau et prend le premier élément
+                if (Array.isArray(cases.themes) && cases.themes.length > 0) {
+                    const caseData = cases.themes[0].cases[0];
+                    // Initialiser le jeu avec les données du cas
+                    initialize(caseData);
+                } else {
+                    throw new Error("Les données des cas sont mal formatées.");
+                }
+            } catch (error) {
+                console.error("Erreur lors du chargement des cas:", error);
+                // Gérer l'erreur (afficher un message à l'utilisateur, etc.)
+            }
+        }
+
+        // Appeler la fonction d'initialisation
+        initializeGame();
+    </script>
+    <script src="js/game.js?t=1741288320000"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</body>

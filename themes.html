@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Sélectionnez les thèmes</title>
+    <link rel="stylesheet" href="css/style.css">
+     <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+    <audio src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
+        Votre navigateur ne prend pas en charge la music
+      </audio>
+
+
+    <h1 class="h1">Sélectionnez les thèmes</h1>
+    <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
+    <div class="container">
+        <div class="themes-container">
+            <div id="themes-grid">
+                <div class="theme-card" data-theme="Cardiologie">
+                    <span class="emoji">❤️</span>
+                    <h2>Cardiologie</h2>
+                    <p class="theme-subtitle">Cas cliniques de cardiologie</p>
+                </div>
+                <div class="theme-card" data-theme="Gynécologie">
+                    <span class="emoji">👶</span>
+                    <h2>Gynécologie</h2>
+                    <p class="theme-subtitle">Cas cliniques de gynécologie</p>
+                </div>
+                <div class="theme-card" data-theme="Endocrinologie">
+                    <span class="emoji">🧠</span>
+                    <h2>Endocrinologie - Diabétologie - Nutrition</h2>
+                    <p class="theme-subtitle">Pathologies métaboliques et hormonales</p>
+                </div>
+                <div class="theme-card" data-theme="Hématologie">
+                    <span class="emoji">🩸</span>
+                    <h2>Hématologie</h2>
+                    <p class="theme-subtitle">Maladies du sang</p>
+                </div>
+                <div class="theme-card" data-theme="Gastro-entérologie">
+                    <span class="emoji">💩</span>
+                    <h2>Gastro-entérologie</h2>
+                    <p class="theme-subtitle">Pathologies digestives</p>
+                </div>
+                <div class="theme-card" data-theme="Immunologie">
+                    <span class="emoji">🦠</span>
+                    <h2>Immunologie</h2>
+                    <p class="theme-subtitle">Maladies auto-immunes et immunodéficiences</p>
+                </div>
+                
+            </div>
+            <p class="theme-info">Thèmes sélectionnés: <span id="selected-count">0</span> Cas disponibles: <span id="available-cases">X</span></p>
+            <button id="reset-button" class="reset-button">Réinitialiser</button>
+            <button id="start-button" disabled>Commencer</button>
+        </div>
+    </div>
+
+    <script src="js/themes.js"></script>
+    <script>
+        // Forcer le rechargement de game.html
+        if (window.location.href.endsWith('game.html')) {
+            window.location.reload(true);
+        }
+    </script>
+</body>
+</html>

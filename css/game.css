@@ -1,0 +1,412 @@
+/* Allow scrolling globally */
+html, body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Conteneur principal global */
+.container {
+    display: block;
+    padding: 5px;
+    min-height: calc(100vh - 10px);
+}
+
+/* Titre principal plus compact */
+.h1 {
+    margin: 5px 0;
+    font-size: 1.5rem;
+}
+
+/* Grille pour les dashboards médicaux */
+.medical-dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+/* Style de base pour les cartes médicales */
+.medical-card, .medical-card2 {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    font-size: 0.9rem;
+}
+
+/* Pour la carte double largeur */
+.medical-card2 {
+    grid-column: span 2;
+}
+
+/* Styles pour les titres de section */
+.section-title {
+    color: #333;
+    font-size: 1rem;
+    margin: 0 0 5px 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 5px;
+}
+
+/* Styles pour les informations du patient */
+.patient-profile img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    float: right;
+    margin: 0 0 5px 5px;
+}
+
+.patient-profile p {
+    margin: 2px 0;
+}
+
+.label {
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+/* Styles compacts pour les détails */
+details {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+details > summary {
+    padding: 3px;
+    background-color: #e9e9e9;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+/* Styles plus compacts pour les boutons */
+button, input[type="text"] {
+    padding: 4px 8px;
+    font-size: 0.9rem;
+}
+
+/* Style pour le bouton Cas Suivant et le lien de retour */
+#next-case, .back-link-bottom {
+    margin: 5px 0;
+}
+
+/* Style moderne et beau pour les liens de retour */
+.back-link-bottom {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1rem;
+    padding: 12px 24px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.back-link-bottom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.back-link-bottom:hover::before {
+    left: 100%;
+}
+
+.back-link-bottom:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(135deg, #2980b9, #3498db);
+}
+
+.back-link-bottom i {
+    margin-right: 8px;
+}
+
+/* Style pour la grille interne dans examen-clinique */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.grid-container p {
+    margin: 3px 0;
+}
+
+#fireworks-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Permet de cliquer à travers le conteneur */
+}
+
+.selected {
+    background-color: lightgray;
+    color: black;
+}
+
+#availableTreatments button.correct-treatment {
+    background-color: green;
+    color: white;
+}
+
+#availableTreatments button.incorrect-treatment {
+    background-color: red;
+    color: white;
+}
+
+#validate-diagnostic {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#validate-traitement {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Styles pour la nouvelle interface d'examens */
+.exam-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.exam-category {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.exam-category h3 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 1rem;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+}
+
+.exam-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.exam-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+    color: #495057;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.exam-btn:hover {
+    background-color: #e3f2fd;
+    border-color: #007bff;
+    color: #007bff;
+}
+
+.exam-btn.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.validate-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.validate-btn:hover {
+    background-color: #218838;
+}
+
+.validate-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.exam-results {
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+.exam-results h4 {
+    margin: 0 0 10px 0;
+    color: #495057;
+}
+
+.exam-result-item {
+    background-color: white;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border-left: 4px solid #007bff;
+    font-size: 0.9rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+}
+
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Design responsive */
+/* Desktop large screens: optimize space usage */
+@media (min-width: 1440px) {
+    .medical-dashboard {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+
+    .medical-card, .medical-card2 {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        margin: 8px 0 8px 0;
+    }
+}
+
+/* Ultra-wide screens: increase to 5 columns for better space utilization */
+@media (min-width: 1800px) {
+    .medical-dashboard {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .exam-categories {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
+}
+
+/* Laptop to desktop transition */
+@media (max-width: 1200px) {
+    .medical-dashboard {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .exam-categories {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .medical-dashboard {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .medical-card2 {
+        grid-column: span 1;
+    }
+
+    .exam-categories {
+        grid-template-columns: 1fr;
+    }
+
+    .exam-buttons {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    .exam-btn {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+
+    .h1 {
+        font-size: 1.3rem;
+    }
+
+    #timer {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .patient-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .patient-image {
+        float: none;
+        margin: 0 auto 10px auto !important;
+    }
+
+    .exam-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .section-title {
+        font-size: 0.9rem;
+    }
+
+    .label {
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,102 @@
+{
+  "id": "pneumo_1",
+  "patient": {
+    "nom": "Gérard",
+    "prenom": "Dupont",
+    "age": 65,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée et œdèmes",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire" },
+      "tabac": { "quantite": "20 P/J", "duree": "30 ans" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Retraité", "stress": "Faible" }
+    },
+    "antecedents": {
+      "medicaux": [{ "type": "HTA", "traitement": "IEC" }],
+      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2000" }],
+      "familiaux": [{ "lien": "Père", "pathologie": "Infarctus", "age": "70" }]
+    },
+    "traitements": [{ "nom": "Amlodipine", "dose": "5 mg", "frequence": "1/j" }],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "2 semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "symptomesAssocies": ["Fatigue"],
+      "remarques": "Aucun"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "140/90 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "20/min"
+    },
+    "aspectGeneral": "Pâleur",
+    "examenCardiovasculaire": { "auscultation": "Souffle systolique" },
+    "examenPulmonaire": { "auscultation": "Râles crépitants" },
+    "examenAbdominal": { "palpation": "Normal" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radiographie thoracique",
+    "Gaz du sang artériel",
+    "Bilan sanguin complet",
+    "Bilan rénal",
+    "Bilan hépatique",
+    "Dosage des D-dimères",
+    "Dosage des BNP",
+    "Scanner thoracique",
+    "Dosage des IgE",
+    "Sérologie VIH",
+    "Test de Guthrie",
+    "Coproculture",
+    "Dosage des hormones sexuelles",
+    "IRM cérébrale",
+    "Test de Mantoux",
+    "Analyse du liquide synovial",
+    "Dosage des anticorps anti-nucléaires"
+  ],
+  "examResults": {
+    "ECG": "Tachycardie sinusale, présence d'ondes Q en territoire antérieur",
+    "Echographie": "Fraction d’éjection réduite à 40%, hypokinésie globale",
+    "Radiographie thoracique": "Cardiomégalie, signes de congestion pulmonaire",
+    "Gaz du sang artériel": "pH 7.35, pCO2 45 mmHg, pO2 60 mmHg, HCO3- 24 mmol/L",
+    "Bilan sanguin complet": "Hémoglobine 13 g/dL, hématocrite 40%, leucocytes 6,6G/L, plaquettes 250 G/L",
+    "Bilan rénal": "Créatinine 1.2 mg/dL, urée 40 mg/dL",
+    "Bilan hépatique": "ASAT 30 U/L, ALAT 25 U/L, bilirubine totale 1.0 mg/dL",
+    "Dosage des D-dimères": "1500 ng/mL (valeur normale < 500 ng/mL)",
+    "Dosage des BNP": "800 pg/mL (valeur normale < 100 pg/mL)",
+    "Scanner thoracique": "Absence de thrombus pulmonaire, présence de foyers de condensation alvéolaire",
+    "Dosage des IgE": "Normaux",
+    "Sérologie VIH": "Négatif",
+    "Test de Guthrie": "Non applicable",
+    "Coproculture": "Absence de germes pathogènes",
+    "Dosage des hormones sexuelles": "Testostérone : 4 ng/mL (valeur normale)",
+    "IRM cérébrale": "Aucune anomalie détectée",
+    "Test de Mantoux": "Négatif",
+    "Analyse du liquide synovial": "Non contributif",
+    "Dosage des anticorps anti-nucléaires": "Négatif",
+    "glycemie": "1.1 g/L"
+  },
+  "possibleDiagnostics": ["Insuffisance cardiaque", "Pneumonie", "Embolie pulmonaire", "Asthme"],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "feedback": {
+    "Insuffisance cardiaque": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Oxygénothérapie", "Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Bêta-bloquants"],
+  "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"]
+}

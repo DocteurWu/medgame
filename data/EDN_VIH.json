@@ -1,0 +1,115 @@
+{
+  "id": "EDN_VIH",
+  "patient": {
+    "nom": "DUBOIS",
+    "prenom": "Julien",
+    "age": 32,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "68 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fatigue persistante et perte de poids inexpliquée",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Modérée, randonnées occasionnelles" },
+      "tabac": { "quantite": "5 cigarettes/jour", "duree": "10 ans" },
+      "alcool": { "quantite": "Social" },
+      "alimentation": { "regime": "Normal", "particularites": "Perte d’appétit récente" },
+      "emploi": { "profession": "Serveur", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": ["Épisode de fièvre prolongée il y a 3 mois"],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "2 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": ["Fatigue", "Perte de poids (6 kg)", "Fièvre intermittente", "Sueurs nocturnes", "Ganglions palpables"],
+      "remarques": "Patient rapporte une grippe mal soignée récemment."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "115/75 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37.8°C",
+      "saturationO2": "96%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Amaigri, pâleur, fatigue visible",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Normale, pas de masse" },
+    "examenNeurologique": { "conscience": "Normale" },
+    "examenGanglionnaire": { "observation": "Adénopathies cervicales et axillaires" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Sérologie VIH",
+    "Protéine C-réactive (CRP)",
+    "Hémoculture",
+    "Radiographie pulmonaire",
+    "Test de dépistage du paludisme",
+    "Bilan nutritionnel",
+    "Dosage des anticorps anti-GAD",
+    "IRM cérébrale",
+    "Échographie abdominale",
+    "Scanner thoracique",
+    "Bilan lipidique",
+    "Gaz du sang artériel",
+    "Électroencéphalogramme",
+    "Test de tolérance au glucose",
+    "Coloscopie",
+    "Dosage des hormones thyroïdiennes"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Lymphopénie, anémie légère",
+    "Sérologie VIH": "Positive (infection confirmée)",
+    "Protéine C-réactive (CRP)": "Élevée (inflammation chronique)",
+    "Hémoculture": "Négative",
+    "Radiographie pulmonaire": "Normale",
+    "Test de dépistage du paludisme": "Négatif",
+    "Bilan nutritionnel": "Déficit calorique modéré",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "IRM cérébrale": "Normale",
+    "Échographie abdominale": "Normale",
+    "Scanner thoracique": "Normale",
+    "Bilan lipidique": "Normale",
+    "Gaz du sang artériel": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Test de tolérance au glucose": "Normale",
+    "Coloscopie": "Normale",
+    "Dosage des hormones thyroïdiennes": "Normal"
+  },
+  "possibleDiagnostics": [
+    "Infection par le VIH",
+    "Tuberculose",
+    "Lymphome",
+    "Hyperthyroïdie",
+    "Infection bactérienne chronique"
+  ],
+  "correctDiagnostic": "Infection par le VIH",
+  "feedback": {
+    "Infection par le VIH": "Diagnostic correct ! Fatigue, perte de poids et adénopathies liés à une infection VIH non traitée.",
+    "Tuberculose": "Incorrect. Pas de signes pulmonaires à la radiographie.",
+    "Lymphome": "Incorrect. Pas de masse ou anomalie au scanner.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Traitement antirétroviral (TARV)",
+    "Antituberculeux",
+    "Chimiothérapie",
+    "Antibiotiques",
+    "Supplémentation vitaminique",
+    "Antithyroïdiens"
+  ],
+  "correctTreatments": [
+    "Traitement antirétroviral (TARV)"
+  ]
+}

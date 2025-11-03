@@ -1,0 +1,119 @@
+{
+  "id": "EDN_Anorexie_2",
+  "patient": {
+  "nom": "Hanouna",
+  "prenom": "Alice",
+  "age": 14,
+  "sexe": "F",
+  "taille": "165 cm",
+  "poids": "45 kg",
+  "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+  "motifHospitalisation": " Perte de poids importante et inquiétude concernant l'image corporelle ",
+  "modeDeVie": {
+  "activitePhysique": {
+  "description": "Activité physique modérée (marche occasionnelle)"
+  },
+  "tabac": {
+  "quantite": "0",
+  "duree": "0"
+  },
+  "alcool": {
+  "quantite": "Négligeable"
+  },
+  "alimentation": {
+  "regime": " Très restrictif, évite les graisses et les sucres ",
+  "particularites": " Obsédée par le comptage des calories "
+  },
+  "reseauxSociaux": {
+  "utilisation": " Utilisation excessive de réseaux sociaux axés sur l'image corporelle ",
+  "influence": " Se compare constamment aux influenceurs et modèles "
+  },
+  "emploi": {
+  "profession": "Collégienne",
+  "stress": "Scolaire modéré"
+  }
+  },
+  "antecedents": {
+  "medicaux": [],
+  "chirurgicaux": [],
+  "familiaux": [{
+  "lien": "Mère",
+  "pathologie": " Antécédents de troubles anxieux ",
+  "age": "45"
+  }]
+  },
+  "traitements": [],
+  "allergies": {
+  "presence": false,
+  "liste": []
+  },
+  "histoireMaladie": {
+  "debutSymptomes": " Environ 6 mois ",
+  "evolution": "Progressive",
+  "facteursDeclenchants": " Pression sociale et exposition à des images corporelles idéalisées sur les réseaux sociaux ",
+  "symptomesAssocies": [" Fatigue, aménorrhée, tristesse "],
+  "remarques": " Très préoccupée par son apparence, se sent mal à l'aise en public "
+  }
+  },
+  "examenClinique": {
+  "constantes": {
+  "tension": "90/60 mmHg",
+  "pouls": "50 bpm",
+  "temperature": "36.2°C",
+  "saturationO2": "98%",
+  "frequenceRespiratoire": "14/min"
+  },
+  "aspectGeneral": " Apparence maigre, peau pâle ",
+  "examenCardiovasculaire": {
+  "auscultation": " Bradycardie "
+  },
+  "examenPulmonaire": {
+  "auscultation": "Normal"
+  },
+  "examenAbdominal": {
+  "palpation": "Non contributif"
+  },
+  "examenNeurologique": {
+  "conscience": "Normale"
+  }
+  },
+  "availableExams": [
+  "Bilan sanguin complet",
+  "Bilan thyroïdien",
+  "Examen psychologique approfondi",
+  "Dosage des D-dimères",
+  "Sérologie VIH",
+  "Bilan hépatique",
+  "ECG",
+  "Mesure de l'impédancemétrie bioélectrique",
+  "Ostéodensitométrie",
+  "Évaluation de la composition corporelle par DEXA"
+  ],
+  "examResults": {
+  "Bilan sanguin complet": " Anémie légère, hypokaliémie ",
+  "Bilan thyroïdien": "Normal",
+  "Examen psychologique approfondi": " Anxiété, troubles de l'image corporelle, préoccupations alimentaires ",
+  "Dosage des D-dimères": "Normal",
+  "Sérologie VIH": "Négatif",
+  "Bilan hépatique": "Normal",
+  "ECG": " Bradycardie sinusale ",
+  "Glycémie (contrôle)": "0.7 g/L",
+  "Mesure de l'impédancemétrie bioélectrique": "Masse grasse diminuée",
+  "Ostéodensitométrie": "Densité osseuse normale",
+  "Évaluation de la composition corporelle par DEXA": "Masse maigre diminuée"
+  },
+  "possibleDiagnostics": ["Anorexie mentale", "Troubles anxieux", "Dépression"],
+  "correctDiagnostic": "Anorexie mentale",
+  "feedback": {
+  "Anorexie mentale": "Diagnostic correct !",
+  "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+  "baseScore": 100,
+  "attemptPenalty": 10
+  },
+  "possibleTreatments": ["Soutien nutritionnel", "Thérapie familiale", "Thérapie cognitivo-comportementale", "Antidépresseurs", "Canabis"],
+  "correctTreatments": ["Soutien nutritionnel", "Thérapie familiale", "Thérapie cognitivo-comportementale"]
+ }

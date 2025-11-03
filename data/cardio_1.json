@@ -1,0 +1,73 @@
+{
+  "id": "cardio_1",
+  "patient": {
+    "nom": "Dupont",
+    "prenom": "Jean",
+    "age": 65,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée et œdèmes",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire" },
+      "tabac": { "quantite": "20 PA", "duree": "30 ans" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Retraité", "stress": "Faible" }
+    },
+    "antecedents": {
+      "medicaux": [{ "type": "HTA", "traitement": "IEC" }],
+      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2000" }],
+      "familiaux": [{ "lien": "Père", "pathologie": "Infarctus", "age": "70" }]
+    },
+    "traitements": [{ "nom": "Amlodipine", "dose": "5 mg", "frequence": "1/j" }],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "2 semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "symptomesAssocies": ["Fatigue"],
+      "remarques": "Aucun"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "140/90 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "20/min"
+    },
+    "aspectGeneral": "Pâleur",
+    "examenCardiovasculaire": { "auscultation": "Souffle systolique" },
+    "examenPulmonaire": { "auscultation": "Râles crépitants" },
+    "examenAbdominal": { "palpation": "Normal" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": ["ECG", "Echographie", "Radio thorax", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner"],
+  "examResults": {
+    "ECG": "Tachycardie sinusale",
+    "Echographie": "Fraction d’éjection réduite",
+    "glycemie": "1.0 g/L",
+    "Radio thorax": "RAS",
+    "Bilan sanguin": "RAS",
+    "Test d'effort": "Positif",
+    "Holter ECG": "RAS",
+    "Coronarographie": "Sténose",
+    "IRM cardiaque": "RAS",
+    "Scanner cardiaque": "RAS",
+    "Angioscanner": "RAS"
+  },
+    "possibleDiagnostics": ["Insuffisance cardiaque", "Valvulopathie", "Trouble du rythme", "Angor stable"],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "feedback": {
+    "Insuffisance cardiaque": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Bêta-bloquants", "Digitaliques"],
+  "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"]
+}

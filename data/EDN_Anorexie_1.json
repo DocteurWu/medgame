@@ -1,0 +1,84 @@
+{
+  "id": "EDN_Anorexie_1",
+  "patient": {
+  "nom": "LEGRAND",
+  "prenom": "Théo",
+  "age": 26,
+  "sexe": "M",
+  "taille": "180 cm",
+  "poids": "65 kg",
+  "groupeSanguin": "A-"
+  },
+  "interrogatoire": {
+  "motifHospitalisation": "Baisse d'énergie et troubles digestifs",
+  "modeDeVie": {
+  "activitePhysique": { "description": "Pratique régulière de fitness" },
+  "tabac": { "quantite": "0", "duree": "0" },
+  "alcool": { "quantite": "Social" },
+  "alimentation": { "regime": "Contrôlé", "particularites": "Évite les matières grasses et certains glucides" },
+  "emploi": { "profession": "Comptable", "stress": "Modéré" }
+  },
+  "antecedents": {
+  "medicaux": [],
+  "chirurgicaux": [],
+  "familiaux": [{ "lien": "Père", "pathologie": "Surpoids", "age": "60" }]
+  },
+  "traitements": [],
+  "allergies": { "presence": false, "liste": [] },
+  "histoireMaladie": {
+  "debutSymptomes": "Quelques mois",
+  "evolution": "Progressive",
+  "facteursDeclenchants": "Volonté d'améliorer sa condition physique",
+  "symptomesAssocies": ["Fatigue", "Constipation", "Sensation de froid"],
+  "remarques": "Se sent mal à l'aise en public, surtout lors des repas. Devient anxieux s'il ne peut pas contrôler son alimentation."
+  }
+  },
+  "examenClinique": {
+  "constantes": {
+  "tension": "100/70 mmHg",
+  "pouls": "55 bpm",
+  "temperature": "36.4°C",
+  "saturationO2": "97%",
+  "frequenceRespiratoire": "15/min"
+  },
+  "aspectGeneral": "Apparence soignée, mince mais pas excessivement maigre",
+  "examenCardiovasculaire": { "auscultation": "Normal, léger ralentissement" },
+  "examenPulmonaire": { "auscultation": "Normal" },
+  "examenAbdominal": { "palpation": "Sensibilité abdominale" },
+  "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+  "Bilan sanguin complet",
+  "Bilan thyroïdien",
+  "Examen psychologique",
+  "Dosage des D-dimères",
+  "Sérologie VIH",
+  "Test de Guthrie",
+  "Coproculture",
+  "Analyse du liquide synovial",
+  "Dosage des anticorps anti-nucléaires",
+  "Electrophorèse des protéines"
+  ],
+  "examResults": {
+  "Bilan sanguin complet": "Légère anémie, faible taux de potassium",
+  "Bilan thyroïdien": "Normal",
+  "Examen psychologique": "Signes d'anxiété et de préoccupations concernant le poids et l'alimentation",
+  "Dosage des D-dimères": "Normal",
+  "Sérologie VIH": "Négatif",
+  "Test de Guthrie": "Non applicable",
+  "Coproculture": "Absence de germes pathogènes",
+  "Analyse du liquide synovial": "Non contributif",
+  "Dosage des anticorps anti-nucléaires": "Négatif",
+  "Glycémie (contrôle)": "0.8 g/L",
+  "Electrophorèse des protéines": "RAS"
+  },
+  "possibleDiagnostics": ["Troubles anxieux", "Hypothyroïdie", "Troubles du comportement alimentaire", "Anorexie mentale"],
+  "correctDiagnostic": "Anorexie mentale",
+  "feedback": {
+  "Anorexie mentale": "Diagnostic correct !",
+  "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Soutien nutritionnel", "Thérapie comportementale", "Gestion du stress", "Antidépresseurs", "Compléments alimentaires hyperprotéinés" ],
+  "correctTreatments": ["Soutien nutritionnel", "Thérapie comportementale", "Gestion du stress"]
+  }

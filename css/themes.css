@@ -1,0 +1,341 @@
+/* Styles modernes pour themes.html */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.h1 {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    font-weight: 300;
+}
+
+.back-link-bottom {
+    color: #fff;
+    text-decoration: none;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.back-link-bottom:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    min-height: auto;
+}
+
+/* Desktop screens: use more space */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1200px;
+        padding: 35px;
+    }
+
+    .h1 {
+        font-size: 3rem;
+    }
+}
+
+#themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    justify-items: center;
+}
+
+.theme-card {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    min-width: 200px;
+}
+
+.theme-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.theme-card:hover::before {
+    opacity: 1;
+}
+
+.theme-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.theme-card.selected {
+    border-color: #007bff;
+    background: linear-gradient(145deg, #e3f2fd, #f8f9fa);
+}
+
+.theme-card .emoji {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.theme-card h2 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+    color: #2c3e50;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.theme-subtitle {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.3;
+    padding: 0 5px;
+}
+
+/* Couleurs modernes pour chaque thème */
+.theme-card[data-theme="Cardiologie"] {
+    background: linear-gradient(145deg, #ffebee, #ffcdd2);
+}
+
+.theme-card[data-theme="Cardiologie"]:hover {
+    background: linear-gradient(145deg, #ffcdd2, #ef9a9a);
+}
+
+.theme-card[data-theme="Gynécologie"] {
+    background: linear-gradient(145deg, #e8f5e8, #c8e6c9);
+}
+
+.theme-card[data-theme="Gynécologie"]:hover {
+    background: linear-gradient(145deg, #c8e6c9, #a5d6a7);
+}
+
+.theme-card[data-theme="Endocrinologie"] {
+    background: linear-gradient(145deg, #f3e5f5, #e1bee7);
+}
+
+.theme-card[data-theme="Endocrinologie"]:hover {
+    background: linear-gradient(145deg, #e1bee7, #ce93d8);
+}
+
+.theme-card[data-theme="Hématologie"] {
+    background: linear-gradient(145deg, #fce4ec, #f8bbd9);
+}
+
+.theme-card[data-theme="Hématologie"]:hover {
+    background: linear-gradient(145deg, #f8bbd9, #f48fb1);
+}
+
+.theme-card[data-theme="Gastro-entérologie"] {
+    background: linear-gradient(145deg, #e0f2f1, #b2dfdb);
+}
+
+.theme-card[data-theme="Gastro-entérologie"]:hover {
+    background: linear-gradient(145deg, #b2dfdb, #80cbc4);
+}
+
+.theme-card[data-theme="Immunologie"] {
+    background: linear-gradient(145deg, #fff8e1, #ffecb3);
+}
+
+.theme-card[data-theme="Immunologie"]:hover {
+    background: linear-gradient(145deg, #ffecb3, #ffd54f);
+}
+
+.theme-info {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1rem;
+    color: #495057;
+    backdrop-filter: blur(10px);
+}
+
+.reset-button {
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    margin: 10px;
+}
+
+.reset-button:hover {
+    background: linear-gradient(145deg, #e9ecef, #dee2e6);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles modernes pour le bouton "Commencer" */
+#start-button {
+    background: linear-gradient(145deg, #007bff, #0056b3);
+    color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin: 15px 0;
+    box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#start-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+#start-button:hover::before {
+    left: 100%;
+}
+
+#start-button:hover {
+    background: linear-gradient(145deg, #0056b3, #004085);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
+}
+
+#start-button:disabled {
+    background: linear-gradient(145deg, #6c757d, #5a6268);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Design responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+    /* Écrans moyens : 2 colonnes pour éviter l'étirement */
+    #themes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        padding: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .h1 {
+        font-size: 2rem;
+    }
+
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    #themes-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .theme-card {
+        height: 160px;
+        padding: 20px;
+    }
+
+    .theme-card .emoji {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .h1 {
+        font-size: 1.8rem;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .theme-card {
+        height: 140px;
+        padding: 15px;
+    }
+
+    .theme-card h2 {
+        font-size: 1rem;
+    }
+
+    .theme-subtitle {
+        font-size: 0.8rem;
+    }
+}
+
+.section-title {
+    color: #333;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.2em;
+}
+.label {
+    font-weight: bold;
+}

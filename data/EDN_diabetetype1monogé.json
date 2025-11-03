@@ -1,0 +1,118 @@
+{
+  "id": "EDN_diabetetype1monogé",
+  "patient": {
+    "nom": "LACROIX",
+    "prenom": "Emma",
+    "age": 24,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "58 kg",
+    "groupeSanguin": "B-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Soif persistante et fatigue légère",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Régulière, yoga et marche" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Équilibré", "particularites": "Pas de restriction" },
+      "emploi": { "profession": "Graphiste", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        { "lien": "Mère", "pathologie": "Diabète diagnostiqué à 30 ans", "age": "50" },
+        { "lien": "Grand-père maternel", "pathologie": "Diabète diagnostiqué à 35 ans", "age": "75" },
+        { "lien": "Arrière-grand-mère maternelle", "pathologie": "Diabète diagnostiqué à 40 ans", "age": "décédée" }
+      ]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": ["Polydipsie", "Polyurie", "Fatigue modérée"],
+      "remarques": "Pas de perte de poids significative ni de symptômes cétoniques."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Poids normal, pas de signe de dénutrition ou d’obésité",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Normale" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "Glycémie à jeun",
+    "Hémoglobine glyquée (HbA1c)",
+    "Dosage des anticorps anti-GAD",
+    "Dosage des anticorps anti-IA2",
+    "Bilan sanguin complet",
+    "Test de tolérance au glucose",
+    "Corps cétoniques urinaires",
+    "Séquence génétique (MODY)",
+    "Bilan lipidique",
+    "IRM cérébrale",
+    "Échographie pancréatique",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Protéine C-réactive (CRP)",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Glycémie à jeun": "140 mg/dL (hyperglycémie modérée)",
+    "Hémoglobine glyquée (HbA1c)": "7.5% (contrôle glycémique altéré)",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "Dosage des anticorps anti-IA2": "Négatif",
+    "Bilan sanguin complet": "Normal",
+    "Test de tolérance au glucose": "Anormal (intolérance au glucose)",
+    "Corps cétoniques urinaires": "Négatif (pas de cétose)",
+    "Séquence génétique (MODY)": "Mutation HNF1A détectée (MODY 3)",
+    "Bilan lipidique": "Normale",
+    "IRM cérébrale": "Normale",
+    "Échographie pancréatique": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Protéine C-réactive (CRP)": "Normale",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Coloscopie": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Diabète monogénique (MODY)",
+    "Diabète de type 1",
+    "Diabète de type 2",
+    "Hyperthyroïdie",
+    "Stress chronique"
+  ],
+  "correctDiagnostic": "Diabète monogénique (MODY)",
+  "feedback": {
+    "Diabète monogénique (MODY)": "Diagnostic correct ! Jeune sans surpoids, antécédents familiaux sur 3 générations, absence d’anticorps et de cétose.",
+    "Diabète de type 1": "Incorrect. Pas d’anticorps ni de cétose.",
+    "Diabète de type 2": "Incorrect. Pas de surpoids ni de résistance insulinique marquée.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Sulfonylurées",
+    "Insulinothérapie",
+    "Metformine",
+    "Antithyroïdiens",
+    "Gestion du stress",
+    "Régime hypocalorique"
+  ],
+  "correctTreatments": [
+    "Sulfonylurées"
+  ]
+}

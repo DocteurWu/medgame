@@ -1,0 +1,402 @@
+/* Transitions CSS */
+button {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+    transition: color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Interface moderne pour le menu principal */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.02)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.01)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.01)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.01)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.container {
+    max-width: 500px;
+    margin: auto;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(20px);
+    position: relative;
+    z-index: 1;
+}
+
+/* Desktop screens: use more space */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 900px;
+        padding: 60px;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    .main-menu-button {
+        padding: 25px 40px;
+        font-size: 1.3rem;
+        max-width: 350px;
+    }
+}
+
+.main-menu-button {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    margin: 12px 0;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-menu-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.main-menu-button:hover::before {
+    left: 100%;
+}
+
+.main-menu-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+    }
+}
+
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 2.8rem;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+#play-button {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    font-size: 1.3rem;
+    padding: 20px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+#play-button:hover {
+    background: linear-gradient(135deg, #218838, #1dd1a1);
+    animation: pulse 2s infinite;
+    box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
+}
+
+#tutorial-button {
+    background: linear-gradient(135deg, #17a2b8, #17c0eb);
+    color: white;
+    position: relative;
+}
+
+#tutorial-button::before {
+    content: "\f02d";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+#tutorial-button:hover {
+    background: linear-gradient(135deg, #138496, #15b3d1);
+}
+
+#settings-button {
+    background: linear-gradient(135deg, #6f42c1, #9c7ce7);
+    color: white;
+    position: relative;
+}
+
+#settings-button::before {
+    content: "\f013";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-right: 8px;
+}
+
+#settings-button:hover {
+    background: linear-gradient(135deg, #5a359a, #8b69c4);
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.emoji {
+    font-size: 4rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.disclaimer {
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    margin-top: 20px;
+    line-height: 1.4;
+}
+
+/* Animations pour les lettres colorées */
+@keyframes color-change-m {
+    0% { color: #e74c3c; }
+    100% { color: #c0392b; }
+}
+.letter-m {
+    animation: color-change-m 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes color-change-e {
+    0% { color: #f39c12; }
+    100% { color: #d68910; }
+}
+.letter-e {
+    animation: color-change-e 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes color-change-d {
+    0% { color: #2ecc71; }
+    100% { color: #27ae60; }
+}
+.letter-d {
+    animation: color-change-d 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes color-change-g {
+    0% { color: #3498db; }
+    100% { color: #2980b9; }
+}
+.letter-g {
+    animation: color-change-g 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes color-change-a {
+    0% { color: #9b59b6; }
+    100% { color: #8e44ad; }
+}
+.letter-a {
+    animation: color-change-a 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes color-change-m2 {
+    0% { color: #e67e22; }
+    100% { color: #d35400; }
+}
+.letter-m2 {
+    animation: color-change-m2 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes color-change-e2 {
+    0% { color: #1abc9c; }
+    100% { color: #16a085; }
+}
+.letter-e2 {
+    animation: color-change-e2 2s infinite alternate;
+    display: inline-block;
+}
+
+/* Design responsive */
+@media (max-width: 768px) {
+    .container {
+        margin: 15px;
+        padding: 30px 25px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .main-menu-button {
+        font-size: 1rem;
+        padding: 15px 25px;
+    }
+
+    #play-button {
+        font-size: 1.1rem;
+        padding: 18px 35px;
+    }
+
+    .emoji {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 25px 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .main-menu-button {
+        font-size: 0.9rem;
+        padding: 12px 20px;
+    }
+
+    .disclaimer {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+}
+
+@keyframes color-change-m {
+  0% { color: red; }
+  100% { color: orange; }
+}
+.letter-m {
+  animation: color-change-m 2s infinite alternate;
+    color: red !important;
+}
+
+@keyframes color-change-e {
+  0% { color: orange; }
+  100% { color: yellow; }
+}
+.letter-e {
+  animation: color-change-e 2s infinite alternate;
+    color: orange !important;
+}
+
+@keyframes color-change-d {
+  0% { color: yellow; }
+  100% { color: green; }
+}
+.letter-d {
+  animation: color-change-d 2s infinite alternate;
+    color: yellow !important;
+}
+
+@keyframes color-change-g {
+  0% { color: green; }
+  100% { color: blue; }
+}
+.letter-g {
+  animation: color-change-g 2s infinite alternate;
+    color: green !important;
+}
+
+@keyframes color-change-a {
+  0% { color: blue; }
+  100% { color: indigo; }
+}
+.letter-a {
+  animation: color-change-a 2s infinite alternate;
+  color: blue !important;
+}
+
+@keyframes color-change-m2 {
+  0% { color: indigo; }
+  100% { color: violet; }
+}
+.letter-m2 {
+  animation: color-change-m2 2s infinite alternate;
+    color: indigo !important;
+}
+.letter-m2 {
+  animation: color-change-m2 2s infinite alternate;
+    color: indigo !important;
+}
+
+@keyframes color-change-e2 {
+  0% { color: violet; }
+  100% { color: red; }
+}
+.letter-e2 {
+  animation: color-change-e2 2s infinite alternate;
+    color: violet !important;
+}

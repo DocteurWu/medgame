@@ -1,0 +1,88 @@
+{
+  "id": "EDN_ARFID_1",
+  "patient": {
+    "nom": "LEROY",
+    "prenom": "Emma",
+    "age": 14,
+    "sexe": "F",
+    "taille": "155 cm",
+    "poids": "40 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Perte de poids et restriction alimentaire",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Faible, fatigue rapide" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "0" },
+      "alimentation": { "regime": "Très restrictif", "particularites": "Refus de nombreux aliments par texture ou goût" },
+      "emploi": { "profession": "Collégienne", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": ["Hypersensibilité sensorielle"],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Enfance",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Sensibilité aux textures alimentaires",
+      "symptomesAssocies": ["Fatigue", "Retard de croissance"],
+      "remarques": "Pas de désir de maigrir ni de dysmorphophobie."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/60 mmHg",
+      "pouls": "60 bpm",
+      "temperature": "36.5°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Mince, faible masse musculaire",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Normale" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan nutritionnel",
+    "Évaluation psychologique",
+    "Test de tolérance alimentaire",
+    "Coloscopie",
+    "Dosage des anticorps anti-transglutaminase",
+    "Échographie thyroïdienne",
+    "Scanner crânien",
+    "Test de sudation",
+    "Analyse des gaz du sang",
+    "Bilan hormonal complet",
+    "Radiographie pulmonaire"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Carences vitaminiques",
+    "Bilan nutritionnel": "Déficit calorique important",
+    "Évaluation psychologique": "Évitement alimentaire sans dysmorphophobie",
+    "Test de tolérance alimentaire": "Rejet de textures spécifiques",
+    "Coloscopie": "Normale",
+    "Dosage des anticorps anti-transglutaminase": "Négatif (pas de maladie cœliaque)",
+    "Échographie thyroïdienne": "Normale",
+    "Scanner crânien": "Normale",
+    "Test de sudation": "Normal (pas de mucoviscidose)",
+    "Analyse des gaz du sang": "Normale",
+    "Bilan hormonal complet": "Normal",
+    "Radiographie pulmonaire": "Normale",
+    "Glycémie (contrôle)": "0.85 g/L"
+  },
+  "possibleDiagnostics": ["ARFID", "Anorexie mentale", "Trouble anxieux", "Maladie cœliaque"],
+  "correctDiagnostic": "ARFID",
+  "feedback": {
+    "ARFID": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Soutien nutritionnel", "Thérapie d’exposition sensorielle", "Antidépresseurs", "Compléments alimentaires"],
+  "correctTreatments": ["Soutien nutritionnel", "Thérapie d’exposition sensorielle"]
+}

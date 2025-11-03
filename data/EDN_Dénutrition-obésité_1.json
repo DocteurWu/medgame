@@ -1,0 +1,116 @@
+{
+  "id": "EDN_Dénutrition-obésité_1",
+  "patient": {
+    "nom": "BERNARD",
+    "prenom": "Luc",
+    "age": 45,
+    "sexe": "M",
+    "taille": "170 cm",
+    "poids": "90 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fatigue intense et perte de poids récente",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire, employé de bureau" },
+      "tabac": { "quantite": "10 cigarettes/jour", "duree": "20 ans" },
+      "alcool": { "quantite": "Modéré" },
+      "alimentation": { "regime": "Réduction drastique récente", "particularites": "Prise alimentaire < 50% des besoins depuis 3 semaines" },
+      "emploi": { "profession": "Comptable", "stress": "Élevé" }
+    },
+    "antecedents": {
+      "medicaux": ["Obésité (poids initial 100 kg il y a 6 mois)", "Hypertension artérielle"],
+      "chirurgicaux": [],
+      "familiaux": [{ "lien": "Père", "pathologie": "Cancer colorectal", "age": "70" }]
+    },
+    "traitements": ["Amlodipine 5 mg/jour (hypertension)"],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Perte de 10 kg (10% du poids) en 6 mois",
+      "facteursDeclenchants": "Stress intense et perte d’appétit",
+      "symptomesAssocies": ["Fatigue", "Faiblesse musculaire", "Nausées occasionnelles"],
+      "remarques": "Réduction alimentaire > 50% depuis plus de 2 semaines, antécédent d’obésité."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/85 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Obèse mais amaigri récemment, pâleur légère",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Tour de taille 102 cm, adiposité encore présente" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan nutritionnel",
+    "Mesure du tour de taille",
+    "Protéine C-réactive (CRP)",
+    "Dosage de l’albumine",
+    "Endoscopie digestive haute",
+    "Scanner abdominal",
+    "Bilan lipidique",
+    "Test de dépistage du diabète",
+    "IRM cérébrale",
+    "Échographie cardiaque",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Dosage des hormones thyroïdiennes",
+    "Électroencéphalogramme",
+    "Test de tolérance au glucose",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Anémie légère, hypokaliémie",
+    "Bilan nutritionnel": "Apport calorique < 50% des besoins depuis 3 semaines, déficit protéique",
+    "Mesure du tour de taille": "102 cm (obésité abdominale persistante malgré amaigrissement)",
+    "Protéine C-réactive (CRP)": "Légèrement élevée (inflammation modérée)",
+    "Dosage de l’albumine": "Basse (32 g/L, signe de dénutrition)",
+    "Endoscopie digestive haute": "Gastrite légère, pas de lésion maligne",
+    "Scanner abdominal": "Normale, graisse viscérale encore présente",
+    "Bilan lipidique": "Cholestérol LDL modérément élevé",
+    "Test de dépistage du diabète": "Négatif",
+    "IRM cérébrale": "Normale",
+    "Échographie cardiaque": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Électroencéphalogramme": "Normale",
+    "Test de tolérance au glucose": "Normale",
+    "Coloscopie": "Normale",
+    "Glycémie (contrôle)": "0.9 g/L"
+  },
+  "possibleDiagnostics": [
+    "Dénutrition",
+    "Cancer digestif",
+    "Syndrome métabolique",
+    "Hyperthyroïdie",
+    "Dépression sévère"
+  ],
+  "correctDiagnostic": "Dénutrition",
+  "feedback": {
+    "Dénutrition": "Diagnostic correct ! Perte de 10% du poids en 6 mois et réduction alimentaire > 50% pendant plus de 2 semaines, malgré obésité résiduelle.",
+    "Cancer digestif": "Incorrect. Pas de signe malin à l’endoscopie ou au scanner.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Renutrition progressive",
+    "Thérapie cognitivo-comportementale",
+    "Antidépresseurs",
+    "Chimiothérapie",
+    "Supplémentation vitaminique",
+    "Régime hypercalorique",
+    "Antibiotiques"
+  ],
+  "correctTreatments": [
+    "Renutrition progressive",
+    "Supplémentation vitaminique"
+  ]
+}

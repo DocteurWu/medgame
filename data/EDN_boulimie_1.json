@@ -1,0 +1,116 @@
+{
+  "id": "EDN_boulimie_1",
+  "patient": {
+  "nom": "MARTIN",
+  "prenom": "Chloé",
+  "age": 19,
+  "sexe": "F",
+  "taille": "170 cm",
+  "poids": "68 kg",
+  "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+  "motifHospitalisation": " Préoccupations concernant des crises de boulimie ",
+  "modeDeVie": {
+  "activitePhysique": {
+  "description": "Marche occasionnelle"
+  },
+  "tabac": {
+  "quantite": "0",
+  "duree": "0"
+  },
+  "alcool": {
+  "quantite": "Social"
+  },
+  "alimentation": {
+  "regime": " Varie, parfois restrictif, parfois périodes de consommation excessive ",
+  "particularites": " Se sent coupable après avoir trop mangé "
+  },
+  "emploi": {
+  "profession": "Étudiante",
+  "stress": "Modéré (examens)"
+  }
+  },
+  "antecedents": {
+  "medicaux": [],
+  "chirurgicaux": [],
+  "familiaux": [{
+  "lien": "Mère",
+  "pathologie": " Surpoids ",
+  "age": "50"
+  }]
+  },
+  "traitements": [],
+  "allergies": {
+  "presence": false,
+  "liste": []
+  },
+  "histoireMaladie": {
+  "debutSymptomes": " Quelques mois ",
+  "evolution": "Fluctuante",
+  "facteursDeclenchants": " Stress, émotions négatives ",
+  "symptomesAssocies": [" Culpabilité, tristesse "],
+  "remarques": " Craint de prendre du poids, se compare aux autres "
+  }
+  },
+  "examenClinique": {
+  "constantes": {
+  "tension": "110/70 mmHg",
+  "pouls": "70 bpm",
+  "temperature": "36.5°C",
+  "saturationO2": "98%",
+  "frequenceRespiratoire": "16/min"
+  },
+  "aspectGeneral": "Apparence normale",
+  "examenCardiovasculaire": {
+  "auscultation": "Normal"
+  },
+  "examenPulmonaire": {
+  "auscultation": "Normal"
+  },
+  "examenAbdominal": {
+  "palpation": "Non contributif"
+  },
+  "examenNeurologique": {
+  "conscience": "Normale"
+  }
+  },
+  "availableExams": [
+  "Bilan sanguin complet",
+  "Bilan thyroïdien",
+  "Examen psychologique",
+  "Dosage des D-dimères",
+  "Électrocardiogramme (ECG)",
+  "Mesure de la kaliémie",
+  "Bilan lipidique",
+  "Dosage de l'amylase",
+  "Dosage de la lipase",
+  "Fibroscopie oeso-gastrique"
+  ],
+  "examResults": {
+  "Bilan sanguin complet": "Normal",
+  "Bilan thyroïdien": "Normal",
+  "Examen psychologique": " Préoccupations concernant l'alimentation, estime de soi influencée par le poids ",
+  "Dosage des D-dimères": "Normal",
+  "Glycémie (contrôle)": "0.9 g/L",
+  "Électrocardiogramme (ECG)": "Normal",
+  "Mesure de la kaliémie": "Normal",
+  "Bilan lipidique": "Normal",
+  "Dosage de l'amylase": "Normal",
+  "Dosage de la lipase": "Normal",
+  "Fibroscopie oeso-gastrique": "Normal"
+  },
+  "possibleDiagnostics": ["boulimie","Troubles du comportement alimentaire non spécifiés (TCANS)", "Troubles anxieux", "Dépression légère", "Anorexie mentale"],
+  "correctDiagnostic": "Troubles du comportement alimentaire non spécifiés (TCANS)",
+  "feedback": {
+  "Troubles du comportement alimentaire non spécifiés (TCANS)": "Diagnostic correct!",
+  "default": "Diagnostic incorrect.",
+  "boulimie": "Non car il faut que ca survienne au moins 1 fois par semaine pendant 3 mois"
+  },
+  "scoringRules": {
+  "baseScore": 100,
+  "attemptPenalty": 10
+  },
+  "possibleTreatments": ["Thérapie comportementale", "Gestion du stress", "Soutien psychologique"],
+  "correctTreatments": ["Thérapie comportementale", "Gestion du stress", "Soutien psychologique"]
+ }

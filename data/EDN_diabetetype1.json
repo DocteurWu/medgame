@@ -1,0 +1,112 @@
+{
+  "id": "EDN_diabetetype1",
+  "patient": {
+    "nom": "PETIT",
+    "prenom": "Adrien",
+    "age": 18,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fatigue extrême, soif intense et perte de poids rapide",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Modérée, étudiant actif" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal avant symptômes", "particularites": "Perte d’appétit récente" },
+      "emploi": { "profession": "Étudiant", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "3 semaines",
+      "evolution": "Explosive",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": ["Polyurie", "Polydipsie", "Amaigrissement (5 kg)", "Asthénie", "Nausées", "Douleurs abdominales"],
+      "remarques": "Symptômes rapidement aggravés, haleine fruitée rapportée."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "100 bpm",
+      "temperature": "37.1°C",
+      "saturationO2": "95%",
+      "frequenceRespiratoire": "22/min (dyspnée de Cheyne-Stokes)"
+    },
+    "aspectGeneral": "Amaigri, déshydraté, pâleur",
+    "examenCardiovasculaire": { "auscultation": "Tachycardie" },
+    "examenPulmonaire": { "auscultation": "Normal, respiration rapide" },
+    "examenAbdominal": { "palpation": "Douleurs diffuses" },
+    "examenNeurologique": { "conscience": "Léthargique mais orienté" }
+  },
+  "availableExams": [
+    "Glycémie capillaire",
+    "Dosage des anticorps anti-GAD",
+    "Bilan sanguin complet",
+    "Corps cétoniques urinaires",
+    "Gaz du sang artériel",
+    "Protéine C-réactive (CRP)",
+    "Hémoglobine glyquée (HbA1c)",
+    "Bilan lipidique",
+    "IRM cérébrale",
+    "Échographie abdominale",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Dosage des hormones thyroïdiennes",
+    "Électroencéphalogramme",
+    "Test de dépistage des allergènes",
+    "Scanner thoracique",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Glycémie capillaire": "350 mg/dL (hyperglycémie sévère)",
+    "Dosage des anticorps anti-GAD": "Positif (confirme auto-immunité)",
+    "Bilan sanguin complet": "Hyperglycémie, légère anémie",
+    "Corps cétoniques urinaires": "Positif (cétonurie marquée)",
+    "Gaz du sang artériel": "pH 7.25, acidose métabolique",
+    "Protéine C-réactive (CRP)": "Normale",
+    "Hémoglobine glyquée (HbA1c)": "9% (début récent)",
+    "Bilan lipidique": "Normale",
+    "IRM cérébrale": "Normale",
+    "Échographie abdominale": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Électroencéphalogramme": "Normale",
+    "Test de dépistage des allergènes": "Négatif",
+    "Scanner thoracique": "Normale",
+    "Coloscopie": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Diabète de type 1",
+    "Diabète de type 2",
+    "Hyperthyroïdie",
+    "Infection systémique",
+    "Cancer pancréatique"
+  ],
+  "correctDiagnostic": "Diabète de type 1",
+  "feedback": {
+    "Diabète de type 1": "Diagnostic correct ! Jeune sans surpoids, symptômes explosifs, insulinopénie auto-immune confirmée.",
+    "Diabète de type 2": "Incorrect. Pas de surpoids ni facteurs de risque métabolique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Insulinothérapie",
+    "Antibiotiques",
+    "Antithyroïdiens",
+    "Chimiothérapie",
+    "Supplémentation vitaminique"
+  ],
+  "correctTreatments": [
+    "Insulinothérapie"
+  ]
+}

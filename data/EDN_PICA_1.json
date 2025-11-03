@@ -1,0 +1,88 @@
+{
+  "id": "EDN_PICA_1",
+  "patient": {
+    "nom": "Lemarchand",
+    "prenom": "Lucas",
+    "age": 8,
+    "sexe": "M",
+    "taille": "130 cm",
+    "poids": "25 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Ingestion répétée de substances non comestibles",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Activité limitée, jeux calmes" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "0" },
+      "alimentation": { "regime": "Normal", "particularites": "Consomme terre et papier" },
+      "emploi": { "profession": "Écolier", "stress": "Faible" }
+    },
+    "antecedents": {
+      "medicaux": ["Trouble du spectre autistique"],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois",
+      "evolution": "Stable",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": ["Douleurs abdominales occasionnelles"],
+      "remarques": "Comportement observé surtout en période de stress ou d'ennui."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "80 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Enfant mince, comportement agité",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Légère douleur diffuse" },
+    "examenNeurologique": { "conscience": "Normale, léger retard de développement" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Radiographie abdominale",
+    "Évaluation psychologique",
+    "Bilan nutritionnel",
+    "IRM cérébrale",
+    "Échographie cardiaque",
+    "Test de dépistage des allergènes",
+    "Dosage des hormones thyroïdiennes",
+    "Analyse urinaire",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Sérologie hépatite"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Anémie ferriprive",
+    "Radiographie abdominale": "Présence de corps étrangers non digestibles",
+    "Évaluation psychologique": "Confirme trouble neurodéveloppemental",
+    "Bilan nutritionnel": "Carence en fer",
+    "IRM cérébrale": "Normale",
+    "Échographie cardiaque": "Normale",
+    "Test de dépistage des allergènes": "Négatif",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Analyse urinaire": "Normale",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Sérologie hépatite": "Négative",
+    "Glycémie (contrôle)": "0.9 g/L"
+  },
+  "possibleDiagnostics": ["PICA", "Carence en fer", "Trouble obsessionnel compulsif", "Intoxication"],
+  "correctDiagnostic": "PICA",
+  "feedback": {
+    "PICA": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Thérapie comportementale", "Supplémentation en fer", "Surveillance parentale", "Antidépresseurs"],
+  "correctTreatments": ["Thérapie comportementale", "Supplémentation en fer", "Surveillance parentale"]
+}

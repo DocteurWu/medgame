@@ -1,0 +1,117 @@
+{
+  "id": "EDN_Obésité_1",
+  "patient": {
+    "nom": "Wong",
+    "prenom": "Maxime",
+    "age": 28,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "120 kg",
+    "groupeSanguin": "AB+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fatigue chronique et douleurs articulaires",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire, joueur professionnel de League of Legends" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Hypercalorique", "particularites": "Préférence pour snacks et boissons énergétiques" },
+      "emploi": { "profession": "Joueur pro e-sport (LoL)", "stress": "Élevé en compétition" }
+    },
+    "antecedents": {
+      "medicaux": ["Arthrose genou droit", "Obésité depuis l’adolescence"],
+      "chirurgicaux": [],
+      "familiaux": [{ "lien": "Mère", "pathologie": "Diabète type 2", "age": "55" }]
+    },
+    "traitements": ["Paracétamol occasionnel pour arthrose"],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs années",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Mode de vie sédentaire et alimentation riche",
+      "symptomesAssocies": ["Fatigue", "Douleurs articulaires", "Essoufflement léger"],
+      "remarques": "Peu motivé pour changer son alimentation ou augmenter son activité physique."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "140/90 mmHg",
+      "pouls": "85 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "96%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Obèse, démarche lente due à l’arthrose",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Tour de taille 110 cm, adiposité marquée" },
+    "examenNeurologique": { "conscience": "Normale" },
+    "examenOsteoarticulaire": { "genouDroit": "Signes d’arthrose, douleur à la mobilisation" }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan lipidique",
+    "Mesure du tour de taille",
+    "Radiographie du genou",
+    "Dosage de la glycémie à jeun",
+    "Échographie hépatique",
+    "Test d’effort cardiaque",
+    "Bilan nutritionnel",
+    "IRM cérébrale",
+    "Coloscopie",
+    "Scanner thoracique",
+    "Analyse des gaz du sang",
+    "Sérologie VIH",
+    "Dosage des hormones thyroïdiennes",
+    "Électroencéphalogramme",
+    "Test de dépistage des allergènes",
+    "Échographie rénale"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Hyperglycémie légère, carence en vitamine D",
+    "Bilan lipidique": "Cholestérol LDL élevé, triglycérides élevés",
+    "Mesure du tour de taille": "110 cm, obésité abdominale confirmée",
+    "Radiographie du genou": "Arthrose modérée du genou droit",
+    "Dosage de la glycémie à jeun": "110 mg/dL (pré-diabète)",
+    "Échographie hépatique": "Stéatose hépatique légère",
+    "Test d’effort cardiaque": "Normale",
+    "Bilan nutritionnel": "Apport calorique excessif, déficit en fibres",
+    "IRM cérébrale": "Normale",
+    "Coloscopie": "Normale",
+    "Scanner thoracique": "Normale",
+    "Analyse des gaz du sang": "Normale",
+    "Sérologie VIH": "Négative",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Électroencéphalogramme": "Normale",
+    "Test de dépistage des allergènes": "Négatif",
+    "Échographie rénale": "Normale",
+    "Glycémie (contrôle)": "1.15 g/L"
+  },
+  "possibleDiagnostics": [
+    "Obésité",
+    "Diabète type 2",
+    "Syndrome métabolique",
+    "Hypothyroïdie",
+    "Dépression"
+  ],
+  "correctDiagnostic": "Obésité",
+  "feedback": {
+    "Obésité": "Diagnostic correct ! Liée à un mode de vie sédentaire et une alimentation hypercalorique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Régime hypocalorique",
+    "Activité physique adaptée",
+    "Antalgiques pour arthrose",
+    "Statines",
+    "Antidépresseurs",
+    "Rééducation fonctionnelle",
+    "Metformine"
+  ],
+  "correctTreatments": [
+    "Régime hypocalorique",
+    "Activité physique adaptée",
+    "Antalgiques pour arthrose"
+  ]
+}
