@@ -47,16 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const theme = card.dataset.theme;
             if (selectedThemes.includes(theme)) {
                 selectedThemes = selectedThemes.filter(t => t !== theme);
-                card.style.backgroundColor = ''; // Réinitialise la couleur
+                card.classList.remove('selected');
+                card.setAttribute('aria-selected', 'false');
             } else {
                 selectedThemes.push(theme);
-                // Applique une couleur selon le thème
-                if (theme === "Cardiologie") card.style.backgroundColor = "#ffcccc";
-                if (theme === "Pneumologie") card.style.backgroundColor = "#ccddff";
-                if (theme === "Endocrinologie") card.style.backgroundColor = "#e0ccff";
-                if (theme === "Hématologie") card.style.backgroundColor = "#d9d9ff";
-                if (theme === "Gastro-entérologie") card.style.backgroundColor = "#ccffcc";
-                if (theme === "Immunologie") card.style.backgroundColor = "#ffffe0";
+                card.classList.add('selected');
+                card.setAttribute('aria-selected', 'true');
             }
             startButton.disabled = selectedThemes.length === 0;
             updateThemeInfo();

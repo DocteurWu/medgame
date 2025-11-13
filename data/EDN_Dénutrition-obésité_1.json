@@ -112,5 +112,6 @@
   "correctTreatments": [
     "Renutrition progressive",
     "Supplémentation vitaminique"
-  ]
+  ],
+  "correction": "<h3>Dénutrition chez patient obèse</h3>\n<p>Perte de poids significative et réduction des apports > 50% malgré obésité persistante.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Renutrition progressive avec objectifs réalistes</li><li>Supplémentation si carences (albumine basse, vitamines)</li><li>Suivi pluridisciplinaire et réévaluation des comorbidités</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec simple régime ou cancer sans preuves</li><li>Renutrition trop rapide sans surveillance</li></ul>"
 }

@@ -116,4 +116,6 @@
   },
   "possibleTreatments": ["Soutien nutritionnel", "Thérapie familiale", "Thérapie cognitivo-comportementale", "Antidépresseurs", "Canabis"],
   "correctTreatments": ["Soutien nutritionnel", "Thérapie familiale", "Thérapie cognitivo-comportementale"]
+ ,
+  "correction": "<h3>Anorexie mentale (adolescent)</h3>\n<p>Perte de poids, aménorrhée, préoccupations corporelles, bradycardie.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Prise en charge multidisciplinaire incluant thérapie familiale</li><li>Renutrition progressive et surveillance cardiaque/biologique</li><li>Limiter l’exposition nocive aux réseaux sociaux</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Objectifs de poids non sécurisés</li><li>Renutrition trop rapide ou non accompagnée</li></ul>"
  }

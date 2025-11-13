@@ -4,6 +4,23 @@ html, body {
     overflow-x: hidden;
 }
 
+/* Surcharges spécifiques à la page jeu pour neutraliser le layout du menu */
+body {
+    display: block;
+    align-items: normal;
+    justify-content: normal;
+    background: none;
+}
+
+.container {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
 /* Conteneur principal global */
 .container {
     display: block;
@@ -20,7 +37,7 @@ html, body {
 /* Grille pour les dashboards médicaux */
 .medical-dashboard {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 8px;
     padding: 0;
     margin-bottom: 8px;
@@ -58,12 +75,18 @@ html, body {
 }
 
 /* Styles pour les informations du patient */
+.patient-profile {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
 .patient-profile img {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    float: right;
-    margin: 0 0 5px 5px;
+    float: none;
+    margin: 0 8px 0 0;
 }
 
 .patient-profile p {
@@ -163,6 +186,93 @@ button, input[type="text"] {
     width: 100%;
     height: 100%;
     pointer-events: none; /* Permet de cliquer à travers le conteneur */
+}
+
+.correction-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.correction-modal {
+    background: #ffffff;
+    width: 90%;
+    max-width: 900px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    padding: 16px;
+}
+
+.correction-title {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 6px;
+    color: #333;
+}
+
+#correction-content h3,
+#correction-content h4 {
+    margin: 12px 0 6px 0;
+    color: #495057;
+}
+
+#correction-content ul {
+    margin: 6px 0 12px 20px;
+}
+
+.correction-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+#toggle-case-review {
+    background-color: #e3f2fd;
+    border: 1px solid #007bff;
+    color: #007bff;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 6px;
+}
+
+.case-review {
+    display: none;
+    margin-top: 10px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+}
+
+#correction-back,
+#correction-next {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+}
+
+#correction-back {
+    background-color: #6c757d;
+}
+
+@media (max-width: 480px) {
+    .correction-modal {
+        width: 96%;
+        padding: 12px;
+    }
 }
 
 .selected {

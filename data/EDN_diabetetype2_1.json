@@ -187,5 +187,6 @@
     "Régime alimentaire équilibré",
     "Activité physique régulière",
     "Statines (dose augmentée)"
-  ]
+  ],
+  "correction": "<h3>Diabète de type 2</h3>\n<p>Portrait typique: âge > 45 ans, obésité abdominale, syndrome métabolique, anticorps négatifs.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Modifier le mode de vie (alimentation + activité physique)</li><li>Initier metformine en première intention</li><li>Traiter comorbidités (statines si dyslipidémie, contrôle HTA)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec DT1 sans cétose ni anticorps</li><li>Oublier le suivi HbA1c et la prévention cardiovasculaire</li></ul>"
 }

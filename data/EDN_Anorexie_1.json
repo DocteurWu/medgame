@@ -81,4 +81,6 @@
   "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
   "possibleTreatments": ["Soutien nutritionnel", "Thérapie comportementale", "Gestion du stress", "Antidépresseurs", "Compléments alimentaires hyperprotéinés" ],
   "correctTreatments": ["Soutien nutritionnel", "Thérapie comportementale", "Gestion du stress"]
-  }
+,
+  "correction": "<h3>Anorexie mentale</h3>\n<p>Restriction, préoccupations corporelles, signes somatiques (bradycardie possible, anémie).</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Approche multidisciplinaire: nutrition, psychothérapie, suivi médical</li><li>Plan de renutrition prudent et monitoré</li><li>Prise en charge des comorbidités anxieuses/dépressives</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Stigmatisation ou pression non thérapeutique</li><li>Renutrition trop rapide sans surveillance</li></ul>"
+}
