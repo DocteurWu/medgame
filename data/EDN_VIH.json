@@ -111,5 +111,6 @@
   ],
   "correctTreatments": [
     "Traitement antirétroviral (TARV)"
-  ]
+  ],
+  "correction": "<h3>Infection par le VIH</h3>\n<p>Symptômes généraux, perte de poids, adénopathies, sérologie positive.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer par tests de confirmation, bilan initial (CD4, charge virale)</li><li>Initier un TARV adapté et accompagner l’adhérence</li><li>Vaccinations et dépistage des co‑infections</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Retarder la mise sous TARV sans raison valable</li><li>Oublier le suivi régulier et l’éducation thérapeutique</li></ul>"
 }

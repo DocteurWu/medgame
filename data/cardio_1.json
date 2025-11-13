@@ -69,5 +69,6 @@
   },
   "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
   "possibleTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Bêta-bloquants", "Digitaliques"],
-  "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"]
+  "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"],
+  "correction": "<h3>Insuffisance cardiaque</h3>\n<p>Dyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Évaluer la fraction d’éjection à l’échographie</li><li>Initier diurétiques et IEC en première intention</li><li>Surveiller le poids, la diurèse et l’ionogramme</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Oublier l’adaptation des doses selon la fonction rénale</li><li>Négliger la recherche d’une cause ischémique en cas de suspicion</li></ul>"
 }

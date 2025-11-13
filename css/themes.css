@@ -123,6 +123,25 @@ body {
 .theme-card.selected {
     border-color: #007bff;
     background: linear-gradient(145deg, #e3f2fd, #f8f9fa);
+    box-shadow: 0 12px 28px rgba(0, 123, 255, 0.25);
+    transform: translateY(-6px);
+}
+
+.theme-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: #007bff;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .theme-card .emoji {
@@ -155,13 +174,21 @@ body {
 .theme-card[data-theme="Cardiologie"]:hover {
     background: linear-gradient(145deg, #ffcdd2, #ef9a9a);
 }
+/* Variante sélectionnée */
+.theme-card.selected[data-theme="Cardiologie"] {
+    background: linear-gradient(145deg, #ffcdd2, #e3f2fd);
+}
 
 .theme-card[data-theme="Gynécologie"] {
-    background: linear-gradient(145deg, #e8f5e8, #c8e6c9);
+    background: linear-gradient(145deg, #fff0f6, #ffd6e7);
 }
 
 .theme-card[data-theme="Gynécologie"]:hover {
-    background: linear-gradient(145deg, #c8e6c9, #a5d6a7);
+    background: linear-gradient(145deg, #ffd6e7, #ffb3d1);
+}
+/* Variante sélectionnée */
+.theme-card.selected[data-theme="Gynécologie"] {
+    background: linear-gradient(145deg, #ffd6e7, #e3f2fd);
 }
 
 .theme-card[data-theme="Endocrinologie"] {
@@ -171,6 +198,10 @@ body {
 .theme-card[data-theme="Endocrinologie"]:hover {
     background: linear-gradient(145deg, #e1bee7, #ce93d8);
 }
+/* Variante sélectionnée */
+.theme-card.selected[data-theme="Endocrinologie"] {
+    background: linear-gradient(145deg, #e1bee7, #e3f2fd);
+}
 
 .theme-card[data-theme="Hématologie"] {
     background: linear-gradient(145deg, #fce4ec, #f8bbd9);
@@ -178,6 +209,10 @@ body {
 
 .theme-card[data-theme="Hématologie"]:hover {
     background: linear-gradient(145deg, #f8bbd9, #f48fb1);
+}
+/* Variante sélectionnée */
+.theme-card.selected[data-theme="Hématologie"] {
+    background: linear-gradient(145deg, #f8bbd9, #e3f2fd);
 }
 
 .theme-card[data-theme="Gastro-entérologie"] {
@@ -187,6 +222,10 @@ body {
 .theme-card[data-theme="Gastro-entérologie"]:hover {
     background: linear-gradient(145deg, #b2dfdb, #80cbc4);
 }
+/* Variante sélectionnée */
+.theme-card.selected[data-theme="Gastro-entérologie"] {
+    background: linear-gradient(145deg, #b2dfdb, #e3f2fd);
+}
 
 .theme-card[data-theme="Immunologie"] {
     background: linear-gradient(145deg, #fff8e1, #ffecb3);
@@ -194,6 +233,10 @@ body {
 
 .theme-card[data-theme="Immunologie"]:hover {
     background: linear-gradient(145deg, #ffecb3, #ffd54f);
+}
+/* Variante sélectionnée */
+.theme-card.selected[data-theme="Immunologie"] {
+    background: linear-gradient(145deg, #ffecb3, #e3f2fd);
 }
 
 .theme-info {

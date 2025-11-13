@@ -85,4 +85,6 @@
   "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
   "possibleTreatments": ["Thérapie comportementale", "Supplémentation en fer", "Surveillance parentale", "Antidépresseurs"],
   "correctTreatments": ["Thérapie comportementale", "Supplémentation en fer", "Surveillance parentale"]
+,
+  "correction": "<h3>PICA</h3>\n<p>Ingestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapies comportementales et aménagements environnementaux</li><li>Corriger les carences (fer)</li><li>Surveillance parentale et prévention des complications</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Minimiser les risques digestifs/toxiques</li><li>Ignorer le dépistage et la correction des carences</li></ul>"
 }

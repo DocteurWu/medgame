@@ -99,4 +99,6 @@
   "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
   "possibleTreatments": ["Oxygénothérapie", "Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Bêta-bloquants"],
   "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"]
+,
+  "correction": "<h3>Insuffisance cardiaque</h3>\n<p>Dyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Diurétiques pour décongestion, IEC pour le remodelage</li><li>Évaluer la FE et rechercher cause ischémique si indiqué</li><li>Éducation, suivi du poids, adaptation thérapeutique</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec pneumonie sans arguments infectieux</li><li>Ignorer l’optimisation du traitement de fond</li></ul>"
 }

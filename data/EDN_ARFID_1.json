@@ -85,4 +85,6 @@
   "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
   "possibleTreatments": ["Soutien nutritionnel", "Thérapie d’exposition sensorielle", "Antidépresseurs", "Compléments alimentaires"],
   "correctTreatments": ["Soutien nutritionnel", "Thérapie d’exposition sensorielle"]
+,
+  "correction": "<h3>ARFID</h3>\n<p>Restriction liée aux caractéristiques sensorielles sans dysmorphophobie.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Soutien nutritionnel et correction des carences</li><li>Thérapie d’exposition graduée aux textures/aliments</li><li>Coordination avec famille/école</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec anorexie mentale (absence de désir de maigrir)</li><li>Stigmatiser les préférences sensorielles</li></ul>"
 }

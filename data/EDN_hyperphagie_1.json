@@ -112,4 +112,6 @@
   },
   "possibleTreatments": ["Thérapie cognitivo-comportementale", "Soutien nutritionnel", "CBD", "Activité physique adaptée"],
   "correctTreatments": ["Thérapie cognitivo-comportementale", "Soutien nutritionnel", "Activité physique adaptée"]
+ ,
+  "correction": "<h3>Hyperphagie boulimique</h3>\n<p>Crises récurrentes avec perte de contrôle, culpabilité et prise de poids.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapie cognitivo‑comportementale</li><li>Soutien nutritionnel et structure des repas</li><li>Prise en charge des comorbidités anxiodépressives</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Stigmatisation et injonctions non thérapeutiques</li><li>Ignorer la comorbidité somatique (métabolique)</li></ul>"
  }

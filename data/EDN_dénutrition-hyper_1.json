@@ -112,5 +112,6 @@
     "Renutrition progressive",
     "Antibiothérapie",
     "Supplémentation vitaminique"
-  ]
+  ],
+  "correction": "<h3>Dénutrition hypercatabolique</h3>\n<p>Perte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Renutrition prudente et progressive</li><li>Traitement de la cause (antibiothérapie)</li><li>Supplémentation micro‑nutritionnelle, surveillance clinique et biologique</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Renutrition trop rapide (risque de syndrome de renutrition inappropriée)</li><li>Oublier de traiter l’infection et de surveiller électrolytes</li></ul>"
 }

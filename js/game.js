@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const evolution = document.getElementById('evolution');
     const facteursDeclenchants = document.getElementById('facteurs-declenchants');
     const symptomesAssocies = document.getElementById('symptomes-associes');
-    const  remarques = document.getElementById(' remarques');
+    const remarques = document.getElementById('remarques');
     const tension = document.getElementById('tension');
     const pouls = document.getElementById('pouls');
     const temperature = document.getElementById('temperature');
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const examensResults = document.getElementById('examens-results');
     console.log('examensResults défini au début :', examensResults);
     const validateExamsButton = document.getElementById('validate-exams');
-    const diagnosticInput = document.getElementById('diagnostic-input');
     const validateDiagnosticButton = document.getElementById('validate-diagnostic');
     const scoreDisplay = document.getElementById('score');
     const feedbackDisplay = document.getElementById('feedback');
@@ -44,6 +43,91 @@ document.addEventListener('DOMContentLoaded', async () => {
     let attempts = 0;
     let timeLeft = 180; // 3 minutes
     let timerInterval;
+    let fireworksInstance = null;
+    let backgroundMusicEl = null;
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function renderCorrectionContent(text) {
+        const contentEl = document.getElementById('correction-content');
+        if (!text) {
+            contentEl.innerHTML = '';
+            return;
+        }
+        if (/<[a-z][\s\S]*>/i.test(text)) {
+            contentEl.innerHTML = text;
+            return;
+        }
+        const lines = text.split('\n');
+        let html = '';
+        let inList = false;
+        for (let line of lines) {
+            const t = line.trim();
+            if (t.startsWith('- ')) {
+                if (!inList) {
+                    html += '<ul>';
+                    inList = true;
+                }
+                html += '<li>' + escapeHtml(t.slice(2)) + '</li>';
+            } else {
+                if (inList) {
+                    html += '</ul>';
+                    inList = false;
+                }
+                if (t === '') {
+                    html += '<br>';
+                } else {
+                    html += '<p>' + escapeHtml(t) + '</p>';
+                }
+            }
+        }
+        if (inList) html += '</ul>';
+        contentEl.innerHTML = html;
+    }
+
+    function renderCaseSummary(c) {
+        if (!c) return '';
+        const patient = `<h4>Patient</h4><p>${escapeHtml(c.patient.nom)} ${escapeHtml(c.patient.prenom)} · ${escapeHtml(String(c.patient.age))} ans · ${escapeHtml(c.patient.sexe)}</p>`;
+        const motif = `<p><strong>Motif:</strong> ${escapeHtml(c.interrogatoire.motifHospitalisation || '')}</p>`;
+        const constantes = `<h4>Constantes</h4><p>Tension: ${escapeHtml(c.examenClinique.constantes.tension || '')} · Pouls: ${escapeHtml(c.examenClinique.constantes.pouls || '')} · Température: ${escapeHtml(c.examenClinique.constantes.temperature || '')} · SpO2: ${escapeHtml(c.examenClinique.constantes.saturationO2 || '')} · FR: ${escapeHtml(c.examenClinique.constantes.frequenceRespiratoire || '')}</p>`;
+        const exams = c.examResults ? Object.keys(c.examResults).map(k => `<div><strong>${escapeHtml(k)}:</strong> ${escapeHtml(typeof c.examResults[k] === 'string' ? c.examResults[k] : JSON.stringify(c.examResults[k]))}</div>`).join('') : '';
+        const examsBlock = exams ? `<h4>Résultats d'examens</h4>${exams}` : '';
+        return patient + motif + constantes + examsBlock;
+    }
+
+    function showCorrectionModal(text) {
+        renderCorrectionContent(text || '');
+        const overlay = document.getElementById('correction-overlay');
+        overlay.style.display = 'flex';
+    }
+
+    function hideCorrectionModal() {
+        const overlay = document.getElementById('correction-overlay');
+        overlay.style.display = 'none';
+    }
+
+    document.getElementById('correction-back').addEventListener('click', () => {
+        hideCorrectionModal();
+    });
+
+    document.getElementById('toggle-case-review').addEventListener('click', () => {
+        const panel = document.getElementById('case-review');
+        if (panel.style.display === 'none' || panel.style.display === '') {
+            panel.style.display = 'block';
+            panel.innerHTML = renderCaseSummary(currentCase);
+        } else {
+            panel.style.display = 'none';
+        }
+    });
+
+    document.getElementById('correction-next').addEventListener('click', () => {
+        if (fireworksInstance) fireworksInstance.stop();
+        if (backgroundMusicEl) backgroundMusicEl.play();
+        hideCorrectionModal();
+        loadCase();
+    });
 
     function displayTime(seconds) {
         const minutes = Math.floor(seconds / 60);
@@ -58,7 +142,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             clearInterval(timerInterval);
             alert('Temps écoulé !');
-            // Ici, vous pouvez ajouter une logique pour empêcher le joueur de continuer
+            const playedCases = getCookie('playedCases');
+            let arr = playedCases ? playedCases.split(',') : [];
+            if (!arr.includes(currentCase.id)) {
+                arr.push(currentCase.id);
+                setCookie('playedCases', arr.join(','), 365);
+            }
+            const defaultText = currentCase && currentCase.correctDiagnostic ? `Diagnostic optimal: ${currentCase.correctDiagnostic}\nTraitements optimaux: ${(currentCase.correctTreatments || []).join(', ')}` : '';
+            showCorrectionModal(currentCase && currentCase.correction ? currentCase.correction : defaultText);
         }
     }
 
@@ -139,8 +230,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function displayValue(element, value) {
-        console.log("Checking element availability:", element);
-        element.textContent = value;
+        if (!element) return;
+        element.textContent = value ?? '';
     }
 
    function loadCase() {
@@ -190,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution);
         displayValue(facteursDeclenchants, currentCase.interrogatoire.histoireMaladie.facteursDeclenchants);
         displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '));
-        displayValue( remarques, currentCase.interrogatoire.histoireMaladie. remarques);
+        displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques);
         displayValue(tension, currentCase.examenClinique.constantes.tension);
         displayValue(pouls, currentCase.examenClinique.constantes.pouls);
         displayValue(temperature, currentCase.examenClinique.constantes.temperature);
@@ -298,11 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return Math.max(0, baseScore - (attempts * attemptPenalty)); // Le score ne peut pas être négatif
     }
 
-    function handleExamenClick(event) {
-        const examen = event.target.dataset.examen;
-        const result = currentCase.examResults[examen] || "Résultat non disponible";
-        alert(`${examen}: ${typeof result === 'object' ? JSON.stringify(result) : result}`);
-    }
+    
 
 function handleTraitementClick(event) {
         const traitement = event.target.dataset.traitement;
@@ -315,11 +402,11 @@ function handleTraitementClick(event) {
         }
     }
 
-document.getElementById('validate-traitement').addEventListener('click', () => {
-    attempts++;
-    const correctTreatments = currentCase.correctTreatments;
-    const selectedDiagnostic = document.getElementById('diagnostic-select').value;
-    const correctDiagnostic = currentCase.correctDiagnostic;
+    document.getElementById('validate-traitement').addEventListener('click', () => {
+        attempts++;
+        const correctTreatments = currentCase.correctTreatments;
+        const selectedDiagnostic = document.getElementById('diagnostic-select').value;
+        const correctDiagnostic = currentCase.correctDiagnostic;
 
     const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
 
@@ -341,16 +428,10 @@ document.getElementById('validate-traitement').addEventListener('click', () => {
         const successSound = new Audio('assets/sounds/feux_artifice.mp3');
         successSound.play();
 
+        fireworksInstance = fireworks;
+        backgroundMusicEl = backgroundMusic;
         fireworks.start();
-        // Fin de l'ajout des feux d'artifice
-
-        // Arrêt des feux d'artifice et chargement d'un nouveau cas après 3 secondes
-        setTimeout(() => {
-            fireworks.stop();
-            loadCase();
-            // Reprise de la musique de fond après le chargement du nouveau cas
-            backgroundMusic.play();
-        }, 3000);
+        showCorrectionModal(currentCase.correction || `Diagnostic optimal: ${correctDiagnostic}\nTraitements optimaux: ${(correctTreatments || []).join(', ')}`);
 
         scoreDisplay.textContent = `Score final: ${score}`;
         document.getElementById('treatment-feedback').textContent = '';

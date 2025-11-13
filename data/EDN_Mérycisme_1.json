@@ -85,4 +85,6 @@
   "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
   "possibleTreatments": ["Thérapie comportementale", "Gestion du stress", "Antiacides", "Suivi psychologique"],
   "correctTreatments": ["Thérapie comportementale", "Suivi psychologique"]
+,
+  "correction": "<h3>Mérycisme</h3>\n<p>Régurgitations volontaires post‑prandiales avec remastication, sans lésion organique.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapies comportementales ciblées</li><li>Évaluation et suivi psychologique</li><li>Éducation nutritionnelle</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec reflux/obstacle digestif sans preuve</li><li>Ignorer la composante comportementale</li></ul>"
 }

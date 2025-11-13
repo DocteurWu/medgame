@@ -113,4 +113,6 @@
   },
   "possibleTreatments": ["Thérapie comportementale", "Gestion du stress", "Soutien psychologique"],
   "correctTreatments": ["Thérapie comportementale", "Gestion du stress", "Soutien psychologique"]
+ ,
+  "correction": "<h3>Troubles du comportement alimentaire non spécifiés (TCANS)</h3>\n<p>Crises, culpabilité, fluctuations du comportement sans critères complets de boulimie.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapies psycho‑comportementales</li><li>Gestion du stress et soutien psychosocial</li><li>Surveillance somatique (électrolytes, comorbidités)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Étiqueter boulimie stricte sans fréquence minimale</li><li>Minimiser les risques psychiques et somatiques</li></ul>"
  }
