@@ -41,10 +41,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     let score = 0;
     let selectedTreatments = [];
     let attempts = 0;
-    let timeLeft = 180; // 3 minutes
+    let timeLeft = getTimeLimit();
     let timerInterval;
     let fireworksInstance = null;
     let backgroundMusicEl = null;
+
+    function getTimeLimit() {
+        const v = sessionStorage.getItem('timeLimitSeconds');
+        const n = v ? parseInt(v, 10) : 240;
+        return isNaN(n) ? 240 : n;
+    }
 
     function escapeHtml(str) {
         return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
@@ -235,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
    function loadCase() {
-        timeLeft = 150; // Réinitialiser le temps à 2 minutes 30
+        timeLeft = getTimeLimit();
         displayTime(timeLeft);
         clearInterval(timerInterval); // Effacer l'ancien intervalle
         timerInterval = setInterval(updateTimer, 1000); // Démarrer le minuteur
@@ -357,6 +363,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const button = document.createElement('button');
                 button.textContent = traitement;
                 button.dataset.traitement = traitement;
+                button.setAttribute('aria-selected', 'false');
+                button.setAttribute('role', 'button');
                 button.addEventListener('click', handleTraitementClick);
                 availableTreatments.appendChild(button);
             });
@@ -396,9 +404,11 @@ function handleTraitementClick(event) {
         if (selectedTreatments.includes(traitement)) {
             selectedTreatments = selectedTreatments.filter(t => t !== traitement);
             event.target.classList.remove('selected');
+            event.target.setAttribute('aria-selected', 'false');
         } else {
             selectedTreatments.push(traitement);
             event.target.classList.add('selected');
+            event.target.setAttribute('aria-selected', 'true');
         }
     }
 
@@ -548,8 +558,6 @@ function handleTraitementClick(event) {
             loadCase();
         }
         displayTime(timeLeft);
-        clearInterval(timerInterval); // Effacer l'ancien intervalle
-        timerInterval = setInterval(updateTimer, 1000); // Démarrer le minuteur
     }
     
     examensResults.innerHTML = '';

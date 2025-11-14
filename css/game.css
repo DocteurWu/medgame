@@ -9,7 +9,22 @@ body {
     display: block;
     align-items: normal;
     justify-content: normal;
-    background: none;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('assets/images/fond_game.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(5px);
+    z-index: -1;
 }
 
 .container {
@@ -281,13 +296,17 @@ button, input[type="text"] {
 }
 
 #availableTreatments button.correct-treatment {
-    background-color: green;
-    color: white;
+    background-color: #28a745 !important;
+    color: #fff !important;
+    border-color: #28a745 !important;
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.25);
 }
 
 #availableTreatments button.incorrect-treatment {
-    background-color: red;
-    color: white;
+    background-color: #dc3545 !important;
+    color: #fff !important;
+    border-color: #dc3545 !important;
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.25);
 }
 
 #validate-diagnostic {
@@ -298,6 +317,57 @@ button, input[type="text"] {
 #validate-traitement {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+#availableTreatments {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+    gap: 7px;
+    align-items: stretch;
+}
+
+#availableTreatments button {
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid transparent;
+    padding: 8px 10px;
+    font-size: 0.6rem;
+    color: #2c3e50;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+#availableTreatments button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+#availableTreatments button.selected {
+    border-color: #007bff;
+    background: linear-gradient(145deg, #e3f2fd, #f8f9fa);
+    box-shadow: 0 12px 28px rgba(0, 123, 255, 0.25);
+    transform: translateY(-2px);
+    color: #0d3b66;
+    position: relative;
+}
+
+#availableTreatments button.selected::after {
+    content: '\2713';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: #007bff;
+    color: #fff;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Styles pour la nouvelle interface d'examens */

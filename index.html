@@ -9,6 +9,16 @@
     <title>Jeu Médical</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000 }
+        .modal.open { display: flex }
+        .modal-content { background: #fff; border-radius: 8px; padding: 20px; width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2) }
+        .modal-content h2 { margin: 0 0 12px 0; font-size: 1.4rem; text-align: center }
+        .radio-group { display: grid; gap: 10px; margin: 10px 0 18px }
+        .radio-group label { display: flex; align-items: center; gap: 8px; font-size: 1rem }
+        .modal-actions { display: flex; gap: 12px; justify-content: center }
+        .modal-actions .main-menu-button { min-width: 140px }
+    </style>
 </head>
 <body>
     <div class="main-menu-container">
@@ -20,12 +30,55 @@
             <button class="main-menu-button" id="tutorial-button" onclick="location.href='tutorial.html'">Tutoriel</button>
             <button class="main-menu-button" id="settings-button">Paramètres</button>
         </div>
+        <div id="settings-modal" class="modal" aria-hidden="true">
+            <div class="modal-content">
+                <h2>Paramètres</h2>
+                <div class="radio-group">
+                    <label><input type="radio" name="timeMode" value="dur"> Dur (2 min 30)</label>
+                    <label><input type="radio" name="timeMode" value="normal"> Normal (4 min)</label>
+                    <label><input type="radio" name="timeMode" value="facile"> Facile (8 min)</label>
+                </div>
+                <div class="modal-actions">
+                    <button id="settings-save" class="main-menu-button">Enregistrer</button>
+                    <button id="settings-close" class="main-menu-button">Fermer</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
-        // Forcer le rechargement de themes.html
-        if (window.location.href.endsWith('themes.html')) {
-            window.location.reload(true);
+        if (!sessionStorage.getItem('timeLimitSeconds')) {
+            const mm = sessionStorage.getItem('timeMode') || 'normal';
+            const ms = mm === 'dur' ? 150 : (mm === 'facile' ? 480 : 240);
+            sessionStorage.setItem('timeMode', mm);
+            sessionStorage.setItem('timeLimitSeconds', String(ms));
         }
+        const settingsButton = document.getElementById('settings-button');
+        const modal = document.getElementById('settings-modal');
+        const saveBtn = document.getElementById('settings-save');
+        const closeBtn = document.getElementById('settings-close');
+        function openModal() { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+        function closeModal() { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+        function setDefaultMode() {
+            const m = sessionStorage.getItem('timeMode') || 'normal';
+            const el = document.querySelector('input[name="timeMode"][value="' + m + '"]');
+            if (el) el.checked = true;
+        }
+        function modeToSeconds(m) { return m === 'dur' ? 150 : (m === 'facile' ? 480 : 240); }
+        function applyMode() {
+            const checked = document.querySelector('input[name="timeMode"]:checked');
+            if (!checked) return;
+            const m = checked.value;
+            const s = modeToSeconds(m);
+            sessionStorage.setItem('timeMode', m);
+            sessionStorage.setItem('timeLimitSeconds', String(s));
+            closeModal();
+        }
+        settingsButton.addEventListener('click', function() { setDefaultMode(); openModal(); });
+        saveBtn.addEventListener('click', applyMode);
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+        if (window.location.href.endsWith('themes.html')) { window.location.reload(true); }
     </script>
 </body>
 </html>
