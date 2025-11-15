@@ -115,6 +115,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         overlay.style.display = 'none';
     }
 
+    function showImageModal(src, caption) {
+        const overlay = document.getElementById('image-overlay');
+        const img = document.getElementById('image-modal-img');
+        const cap = document.getElementById('image-modal-caption');
+        if (img) img.src = src || '';
+        if (img) img.alt = caption || '';
+        if (cap) cap.textContent = caption || '';
+        if (overlay) overlay.style.display = 'flex';
+    }
+
+    function hideImageModal() {
+        const overlay = document.getElementById('image-overlay');
+        const img = document.getElementById('image-modal-img');
+        if (img) img.src = '';
+        if (overlay) overlay.style.display = 'none';
+    }
+
     document.getElementById('correction-back').addEventListener('click', () => {
         hideCorrectionModal();
     });
@@ -135,6 +152,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         hideCorrectionModal();
         loadCase();
     });
+
+    const imageCloseBtn = document.getElementById('image-modal-close');
+    if (imageCloseBtn) imageCloseBtn.addEventListener('click', hideImageModal);
+    const imageOverlay = document.getElementById('image-overlay');
+    if (imageOverlay) imageOverlay.addEventListener('click', (e) => { if (e.target && e.target.id === 'image-overlay') hideImageModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideImageModal(); });
 
     function displayTime(seconds) {
         const minutes = Math.floor(seconds / 60);
@@ -252,8 +275,80 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     class VitalSignsMonitor {
-        constructor(props, layout) { this.props = props; this.layout = layout || { ecgH: 96, spo2H: 48 }; }
-        mount(root) { this.root = root; this.root.innerHTML = this.template(); this.initAnimatedWaves(); this.updateDisplay(); this.startAnimations(); }
+        constructor(props, layout) {
+            this.props = props;
+            this.layout = layout || { ecgH: 96, spo2H: 48 };
+            // Stocker les valeurs de base pour les calculs de variation
+            this.baseValues = { ...props };
+            // Calculer les intervalles de variation (±2.5%)
+            this.calculateVariationRanges();
+            this.updateInterval = null;
+        }
+        calculateVariationRanges() {
+            // Créer des intervalles de variation de ±2.5% autour des valeurs de base
+            const variationPercent = 0.025; // 2.5%
+            this.variationRanges = {
+                systolic: {
+                    min: Math.round(this.baseValues.systolic * (1 - variationPercent)),
+                    max: Math.round(this.baseValues.systolic * (1 + variationPercent))
+                },
+                diastolic: {
+                    min: Math.round(this.baseValues.diastolic * (1 - variationPercent)),
+                    max: Math.round(this.baseValues.diastolic * (1 + variationPercent))
+                },
+                heartRate: {
+                    min: Math.round(this.baseValues.heartRate * (1 - variationPercent)),
+                    max: Math.round(this.baseValues.heartRate * (1 + variationPercent))
+                },
+                temperature: {
+                    // Pour la température, garder 1 décimale mais faire varier autour de ±2.5%
+                    min: Math.round((this.baseValues.temperature * (1 - variationPercent)) * 10) / 10,
+                    max: Math.round((this.baseValues.temperature * (1 + variationPercent)) * 10) / 10
+                },
+                spo2: {
+                    min: Math.round(this.baseValues.spo2 * (1 - variationPercent)),
+                    max: Math.round(this.baseValues.spo2 * (1 + variationPercent))
+                },
+                respiratoryRate: {
+                    min: Math.round(this.baseValues.respiratoryRate * (1 - variationPercent)),
+                    max: Math.round(this.baseValues.respiratoryRate * (1 + variationPercent))
+                }
+            };
+        }
+        generateRandomValue(range) {
+            return Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+        }
+        updateVitalsValues() {
+            // Mettre à jour les valeurs avec variation aléatoire dans les intervalles
+            this.props.systolic = this.generateRandomValue(this.variationRanges.systolic);
+            this.props.diastolic = this.generateRandomValue(this.variationRanges.diastolic);
+            this.props.heartRate = this.generateRandomValue(this.variationRanges.heartRate);
+
+            // Température spéciale (avec 1 décimale)
+            const tempVariation = (Math.random() * (this.variationRanges.temperature.max - this.variationRanges.temperature.min)) + this.variationRanges.temperature.min;
+            this.props.temperature = Math.round(tempVariation * 10) / 10;
+
+            this.props.spo2 = this.generateRandomValue(this.variationRanges.spo2);
+            this.props.respiratoryRate = this.generateRandomValue(this.variationRanges.respiratoryRate);
+
+            // Mettre à jour l'affichage et les animations
+            this.updateDisplay();
+            this.startAnimations();
+        }
+        startVitalUpdates() {
+            // Démarrer les mises à jour périodiques (toutes les 3-5 secondes)
+            const updateInterval = 3000 + Math.random() * 2000; // 3-5 secondes aléatoirement
+            this.updateInterval = setInterval(() => {
+                this.updateVitalsValues();
+            }, updateInterval);
+        }
+        stopVitalUpdates() {
+            if (this.updateInterval) {
+                clearInterval(this.updateInterval);
+                this.updateInterval = null;
+            }
+        }
+        mount(root) { this.root = root; this.root.innerHTML = this.template(); this.initAnimatedWaves(); this.updateDisplay(); this.startAnimations(); this.startVitalUpdates(); }
         template() {
             return (
                 '<div class="vm">'
@@ -372,7 +467,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             respiratoryRate: parseNum(text.resp) || 16
         };
         if (existing && vitalMonitorInstance) {
+            // Arrêter les mises à jour précédentes avant de mettre à jour les propriétés
+            vitalMonitorInstance.stopVitalUpdates();
             vitalMonitorInstance.updateProps(monitorProps);
+            // Redémarrer les mises à jour avec les nouvelles valeurs de base
+            vitalMonitorInstance.baseValues = { ...monitorProps };
+            vitalMonitorInstance.calculateVariationRanges();
+            vitalMonitorInstance.startVitalUpdates();
             return;
         }
         ps.forEach(p => p.remove());
@@ -656,7 +757,18 @@ function handleTraitementClick(event) {
                 const result = currentCase.examResults[exam] || "Résultat non disponible";
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'exam-result-item';
-                resultDiv.innerHTML = `<strong>${exam}:</strong> ${typeof result === 'object' ? JSON.stringify(result) : result}`;
+                const isObj = typeof result === 'object' && result !== null;
+                const text = isObj ? (result.text ?? JSON.stringify(result)) : result;
+                resultDiv.innerHTML = `<strong>${exam}:</strong> ${text}`;
+                if (isObj && result.image) {
+                    const btn = document.createElement('button');
+                    btn.textContent = 'Voir l’image';
+                    btn.style.marginLeft = '8px';
+                    btn.addEventListener('click', () => {
+                        showImageModal(result.image, 'Résultat: ' + exam);
+                    });
+                    resultDiv.appendChild(btn);
+                }
                 examensResults.appendChild(resultDiv);
             });
 
