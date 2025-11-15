@@ -52,7 +52,7 @@
     "ECG": "Tachycardie sinusale",
     "Echographie": "Fraction d’éjection réduite",
     "glycemie": "1.0 g/L",
-    "Radio thorax": "RAS",
+    "Radio thorax": { "text": "Infiltrat basal droit", "image": "assets/images/default-patient.jpg" },
     "Bilan sanguin": "RAS",
     "Test d'effort": "Positif",
     "Holter ECG": "RAS",
