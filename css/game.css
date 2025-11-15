@@ -590,3 +590,18 @@ button, input[type="text"] {
         font-size: 0.8rem;
     }
 }
+
+#vital-monitor { overflow: hidden; }
+.vm { background: transparent; border-radius: 8px; padding: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; position: relative }
+.vm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px }
+.vm-text-green { color: #28a745 }
+.vm-text-cyan { color: #17a2b8 }
+.vm-text-white { color: #333 }
+.vm-text-red { color: #dc3545 }
+.vm-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px }
+@media (min-width: 768px) { .vm-grid { grid-template-columns: repeat(3, 1fr) } }
+.vm-card { background: rgba(0,0,0,0.03); border-radius: 8px; padding: 6px; text-align: center }
+@keyframes ecg-scroll { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
+@keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.3 } }
+@keyframes spo2-wave { 0% { transform: translateX(0) } 100% { transform: translateX(-150px) } }
+@keyframes spo2-scroll { 0% { transform: translateX(0) } 100% { transform: translateX(-200px) } }

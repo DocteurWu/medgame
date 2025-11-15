@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let timerInterval;
     let fireworksInstance = null;
     let backgroundMusicEl = null;
+    let vitalMonitorInstance = null;
 
     function getTimeLimit() {
         const v = sessionStorage.getItem('timeLimitSeconds');
@@ -240,6 +241,151 @@ document.addEventListener('DOMContentLoaded', async () => {
         element.textContent = value ?? '';
     }
 
+    function parseBP(text) {
+        const m = (text || '').match(/(\d{2,3})\/(\d{2,3})/);
+        return m ? { systolic: +m[1], diastolic: +m[2] } : { systolic: 120, diastolic: 80 };
+    }
+
+    function parseNum(text) {
+        const m = (text || '').match(/[\d]+(?:[\.,][\d]+)?/);
+        return m ? parseFloat(m[0].replace(',', '.')) : NaN;
+    }
+
+    class VitalSignsMonitor {
+        constructor(props, layout) { this.props = props; this.layout = layout || { ecgH: 96, spo2H: 48 }; }
+        mount(root) { this.root = root; this.root.innerHTML = this.template(); this.initAnimatedWaves(); this.updateDisplay(); this.startAnimations(); }
+        template() {
+            return (
+                '<div class="vm">'
+                + '<div class="vm-header"><div style="color:#007bff;font-weight:700">ECG</div><div style="color:#333">HR: <span id="hr-value">' + this.props.heartRate + '</span> BPM</div></div>'
+                + '<div style="position:relative;height:' + this.layout.ecgH + 'px;background:rgba(0,0,0,0.03);border-radius:8px;overflow:hidden">'
+                +   '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2">'
+                +     '<defs><pattern id="vm-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 L0 0 0 20" fill="none" stroke="#007bff" stroke-width="0.5"/></pattern></defs>'
+                +     '<rect width="100%" height="100%" fill="url(#vm-grid)"/>'
+                +   '</svg>'
+                +   '<svg viewBox="0 0 400 128" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
+                +     '<defs><linearGradient id="vm-heartGradient" x1="0%" y1="0%" x2="100%" y2="0%">'
+                +       '<stop offset="0%" stop-color="#007bff" stop-opacity="0"/><stop offset="50%" stop-color="#007bff"/><stop offset="100%" stop-color="#007bff" stop-opacity="0"/>'
+                +     '</linearGradient></defs>'
+                +     '<g id="heart-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
+                +       '<path id="heart-line-1" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
+                +       '<path id="heart-line-2" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
+                +     '</g>'
+                +   '</svg>'
+                +   '<div id="pulse-indicator" style="position:absolute;top:8px;right:8px;width:8px;height:8px;background:#dc3545;border-radius:50%;animation:pulse calc(60s / var(--heart-rate,72)) infinite"></div>'
+                + '</div>'
+                + '<div style="margin-top:8px">'
+                +   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+                +     '<div id="spo2-label" style="color:#17a2b8;font-weight:700">SpO₂</div>'
+                +     '<div id="spo2-value" style="color:#333">' + this.props.spo2 + '%</div>'
+                +   '</div>'
+                +   '<div style="position:relative;height:' + this.layout.spo2H + 'px;background:rgba(0,0,0,0.03);border-radius:8px;overflow:hidden">'
+                +     '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2">'
+                +       '<defs><pattern id="vm-spo2-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0 L0 0 0 15" fill="none" stroke="#17a2b8" stroke-width="0.3"/></pattern></defs>'
+                +       '<rect width="100%" height="100%" fill="url(#vm-spo2-grid)"/>'
+                +     '</svg>'
+                +     '<svg class="spo2-wave" style="position:absolute;inset:0;width:100%;height:100%">'
+                +       '<defs><linearGradient id="vm-spo2Gradient" x1="0%" y1="0%" x2="100%" y2="0%">'
+                +         '<stop offset="0%" stop-color="#17a2b8" stop-opacity="0"/><stop offset="50%" stop-color="#17a2b8"/><stop offset="100%" stop-color="#17a2b8" stop-opacity="0"/>'
+                +       '</linearGradient></defs>'
+                +       '<path id="spo2-path-1" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
+                +       '<path id="spo2-path-2" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
+                +     '</svg>'
+                +   '</div>'
+                + '</div>'
+                + '<div class="vm-grid" style="margin-top:8px; display:flex; flex-direction:column; width:100%;">'
+                +   '<div style="display: flex; gap: 12px; width:100%; margin-bottom: 6px;">'
+                +     '<div class="vm-card" style="flex:1 1 0; min-width:0;">'
+                +       '<div style="color:#6c757d;font-size:12px;margin-bottom:2px"></div>'
+                +       '<div id="bp-value" style="color:#333;font-weight:700;font-size:16px;width:100%">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
+                +       '<div style="color:#007bff;font-size:11px">mmHg</div>'
+                +     '</div>'
+                +     '<div class="vm-card" style="flex:1 1 0; min-width:0;">'
+                +       '<div style="color:#6c757d;font-size:12px;margin-bottom:2px"></div>'
+                +       '<div id="temp-value" style="color:#333;font-weight:700;font-size:16px;width:100%">' + this.props.temperature.toFixed(1) + '°C</div>'
+                +       '<div style="color:#007bff;font-size:11px"></div>'
+                +     '</div>'
+                +   '</div>'
+                + '</div>'
+                + '</div>'
+            );
+        }
+        initAnimatedWaves() {
+            const spo2Path1 = document.getElementById('spo2-path-1');
+            const spo2Path2 = document.getElementById('spo2-path-2');
+            const width = 200, baseY = 32, amp = 8; let p = 'M0,' + baseY;
+            for (let x = 0; x <= width; x += 5) { const y = baseY + Math.sin((x / width) * Math.PI * 4) * amp; p += ' L' + x + ',' + y; }
+            if (spo2Path1) spo2Path1.setAttribute('d', p);
+            if (spo2Path2) { spo2Path2.setAttribute('d', p); spo2Path2.setAttribute('transform', 'translate(200 0)'); }
+
+            // Ajouter une animation similaire à l'ECG
+            const spo2Wave = document.querySelector('.spo2-wave');
+            if (spo2Wave) {
+                spo2Wave.style.animation = 'spo2-scroll 6s linear infinite';
+            }
+        }
+        updateDisplay() {
+            const hrEl = document.getElementById('hr-value'); if (hrEl) hrEl.textContent = this.props.heartRate;
+            const bpEl = document.getElementById('bp-value'); if (bpEl) bpEl.textContent = this.props.systolic + '/' + this.props.diastolic;
+            const spo2El = document.getElementById('spo2-value'); if (spo2El) spo2El.textContent = this.props.spo2 + '%';
+            const tempEl = document.getElementById('temp-value'); if (tempEl) tempEl.textContent = this.props.temperature.toFixed(1) + '°C';
+            document.documentElement.style.setProperty('--heart-rate', this.props.heartRate);
+            const spo2Label = document.getElementById('spo2-label'); const spo2Value = document.getElementById('spo2-value'); const low = this.props.spo2 <= 92;
+            if (spo2Label) { spo2Label.style.color = low ? '#dc3545' : '#17a2b8'; }
+            if (spo2Value) { spo2Value.style.color = low ? '#dc3545' : '#333'; }
+        }
+        startAnimations() {
+            const pulse = document.getElementById('pulse-indicator'); const hr = this.props.heartRate; const bpm = 60 / hr; if (pulse) pulse.style.animationDuration = bpm + 's';
+            const l1 = document.getElementById('heart-line-1'); const l2 = document.getElementById('heart-line-2'); const amp = Math.min(25 + (hr - 60) * 0.3, 40); const path = this.generateECGPath(amp);
+            if (l1) l1.setAttribute('d', path); if (l2) { l2.setAttribute('d', path); l2.setAttribute('transform', 'translate(400 0)'); }
+            const grp = document.getElementById('heart-group'); const speed = 6 - ((hr - 60) * 0.04); const dur = Math.max(2.5, Math.min(7, speed));
+            document.documentElement.style.setProperty('--ecg-speed', dur + 's'); if (grp) grp.style.animationDuration = dur + 's';
+        }
+        generateECGPath(amp) {
+            const baseY = 64, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
+            for (let i = 0; i < beats; i++) { const x = i * beatWidth; p += ' L' + (x + 5) + ',' + baseY; p += ' Q' + (x + 10) + ',' + (baseY - amp * 0.25) + ' ' + (x + 15) + ',' + baseY; p += ' L' + (x + 22) + ',' + (baseY + amp * 0.25); p += ' L' + (x + 30) + ',' + (baseY - amp); p += ' L' + (x + 38) + ',' + (baseY + amp * 0.5); p += ' L' + (x + 48) + ',' + baseY; p += ' Q' + (x + 55) + ',' + (baseY - amp * 0.35) + ' ' + (x + 62) + ',' + baseY; p += ' L' + (x + beatWidth) + ',' + baseY; }
+            return p;
+        }
+        updateProps(np) { this.props = { ...this.props, ...np }; this.updateDisplay(); this.startAnimations(); }
+    }
+
+    function mountVitalMonitorAtConstants() {
+        const container = document.querySelector('#examen-clinique > div');
+        if (!container) return;
+        const existing = container.querySelector('#vital-monitor');
+        const ps = Array.from(container.querySelectorAll('p')).slice(0, 5);
+        const h = ps.reduce((sum, p) => sum + p.offsetHeight, 0) || container.offsetHeight;
+        const text = {
+            bp: tension ? tension.textContent : '',
+            hr: pouls ? pouls.textContent : '',
+            spo2: saturationO2 ? saturationO2.textContent : '',
+            temp: temperature ? temperature.textContent : '',
+            resp: frequenceRespiratoire ? frequenceRespiratoire.textContent : ''
+        };
+        const bp = parseBP(text.bp);
+        const monitorProps = {
+            systolic: bp.systolic,
+            diastolic: bp.diastolic,
+            heartRate: parseNum(text.hr) || 72,
+            spo2: parseNum(text.spo2) || 98,
+            temperature: parseNum(text.temp) || 36.6,
+            respiratoryRate: parseNum(text.resp) || 16
+        };
+        if (existing && vitalMonitorInstance) {
+            vitalMonitorInstance.updateProps(monitorProps);
+            return;
+        }
+        ps.forEach(p => p.remove());
+        const mount = document.createElement('div');
+        mount.id = 'vital-monitor';
+        mount.style.minHeight = h + 'px';
+        container.prepend(mount);
+        const ecgH = Math.max(56, Math.round(h * 0.45));
+        const spo2H = Math.max(40, Math.round(h * 0.25));
+        vitalMonitorInstance = new VitalSignsMonitor(monitorProps, { ecgH, spo2H });
+        vitalMonitorInstance.mount(mount);
+    }
+
    function loadCase() {
         timeLeft = getTimeLimit();
         displayTime(timeLeft);
@@ -293,6 +439,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayValue(temperature, currentCase.examenClinique.constantes.temperature);
         displayValue(saturationO2, currentCase.examenClinique.constantes.saturationO2);
         displayValue(frequenceRespiratoire, currentCase.examenClinique.constantes.frequenceRespiratoire);
+        mountVitalMonitorAtConstants();
         displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral);
         displayValue(examenCardiovasculaire, currentCase.examenClinique.examenCardiovasculaire.auscultation);
         displayValue(examenPulmonaire, currentCase.examenClinique.examenPulmonaire.auscultation);
