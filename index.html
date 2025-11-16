@@ -92,6 +92,13 @@
                 return; // Music was explicitly stopped
             }
 
+            // If there's no saved time, start from a random position
+            if (!musicState || !musicState.time) {
+                audio.addEventListener('loadedmetadata', () => {
+                    audio.currentTime = Math.random() * audio.duration;
+                }, { once: true });
+            }
+
             const promise = audio.play();
             if (promise !== undefined) {
                 promise.then(_ => {

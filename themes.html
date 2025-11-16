@@ -81,6 +81,11 @@
             if (musicState && musicState.isPlaying) {
                 audio.currentTime = musicState.time || 0;
                 audio.play().catch(e => console.log("Autoplay was prevented"));
+            } else if (!musicState) {
+                audio.addEventListener('loadedmetadata', () => {
+                    audio.currentTime = Math.random() * audio.duration;
+                    audio.play().catch(e => console.log("Autoplay was prevented"));
+                }, { once: true });
             }
         });
     </script>
