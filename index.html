@@ -21,6 +21,7 @@
     </style>
 </head>
 <body>
+    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
     <div class="main-menu-container">
         <h1> &#127973; <span class="medgame-title">Medgame</span> &#127973; </h1>
 
@@ -79,6 +80,47 @@
         modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
         document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
         if (window.location.href.endsWith('themes.html')) { window.location.reload(true); }
+    </script>
+    <script>
+        const audio = document.getElementById('background-music');
+        const playButton = document.getElementById('play-button');
+
+        // Function to be called when the user interacts with the page
+        function playMusic() {
+            const musicState = JSON.parse(sessionStorage.getItem('musicState'));
+            if (musicState && !musicState.isPlaying) {
+                return; // Music was explicitly stopped
+            }
+
+            const promise = audio.play();
+            if (promise !== undefined) {
+                promise.then(_ => {
+                    // Autoplay started!
+                    sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: true, time: audio.currentTime }));
+                }).catch(error => {
+                    // Autoplay was prevented.
+                    // Show a "Play" button to start the music manually.
+                });
+            }
+        }
+
+        // Play music on first user interaction
+        document.body.addEventListener('click', playMusic, { once: true });
+        document.body.addEventListener('keydown', playMusic, { once: true });
+
+
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: !audio.paused, time: audio.currentTime }));
+        });
+
+        // When the page loads, check if music should be playing
+        window.addEventListener('load', () => {
+            const musicState = JSON.parse(sessionStorage.getItem('musicState'));
+            if (musicState && musicState.isPlaying) {
+                audio.currentTime = musicState.time || 0;
+                audio.play().catch(e => console.log("Autoplay was prevented"));
+            }
+        });
     </script>
 </body>
 </html>

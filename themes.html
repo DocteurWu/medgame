@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
+    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
     <audio src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
         Votre navigateur ne prend pas en charge la music
       </audio>
@@ -67,6 +67,22 @@
         if (window.location.href.endsWith('game.html')) {
             window.location.reload(true);
         }
+    </script>
+    <script>
+        const audio = document.getElementById('background-music');
+
+        window.addEventListener('beforeunload', () => {
+            sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: !audio.paused, time: audio.currentTime }));
+        });
+
+        // When the page loads, check if music should be playing
+        window.addEventListener('load', () => {
+            const musicState = JSON.parse(sessionStorage.getItem('musicState'));
+            if (musicState && musicState.isPlaying) {
+                audio.currentTime = musicState.time || 0;
+                audio.play().catch(e => console.log("Autoplay was prevented"));
+            }
+        });
     </script>
 </body>
 </html>
