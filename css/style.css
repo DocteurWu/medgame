@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Tektur&display=swap');
+
 /* Transitions CSS */
 button {
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -20,7 +22,10 @@ a:hover {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image: url('../assets/images/FondAccueil.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     margin: 0;
     padding: 0;
     display: flex;
@@ -219,6 +224,15 @@ h1 {
     backdrop-filter: blur(10px);
     margin-top: 20px;
     line-height: 1.4;
+}
+
+.medgame-title {
+  font-family: "Tektur", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700; /* Using 700 as a common bold weight */
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
 
 /* Animations pour les lettres colorées */

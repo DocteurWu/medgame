@@ -4,12 +4,15 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image: url('../assets/images/Fondtheme.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     overflow-y: auto;
 }
 
@@ -25,7 +28,7 @@ body {
 .back-link-bottom {
     color: #fff;
     text-decoration: none;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     display: inline-flex;
     align-items: center;
     font-size: 1rem;
@@ -42,14 +45,14 @@ body {
 }
 
 .container {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.95);
+    width: 80%;
+    max-width: 80vw;
+    margin: 25px auto;
+    background-color: rgba(230, 240, 255, 0.85);
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: 25px;
+    box-shadow: 0 0 20px rgba(60, 180, 255, 0.3);
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -90,7 +93,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 200px;
+    height: 150px;
     cursor: pointer;
     border: 2px solid transparent;
     position: relative;
