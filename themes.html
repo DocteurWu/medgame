@@ -7,15 +7,33 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Sélectionnez les UEs</title>
-    <link rel="stylesheet" href="css/style.css">
-     <link rel="stylesheet" href="css/themes.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Fonts Modernes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/themes.css">
+
+    <!-- Three.js pour la 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+
+    <!-- Canvas pour l'arrière-plan 3D (ADN) -->
+    <div id="canvas-container"></div>
+
     <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
     <audio src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
         Votre navigateur ne prend pas en charge la music
       </audio>
+
+    <!-- Scene overlay -->
+    <div class="scene-overlay">
 
 
     <h1 class="h1">Sélectionnez les UEs</h1>
@@ -60,6 +78,111 @@
             <button id="start-button" disabled>Commencer</button>
         </div>
     </div>
+
+    </div>
+
+    <!-- Script 3D Background (ADN) -->
+    <script>
+        /* --- LOGIQUE 3D BACKGROUND (ADN) --- */
+        const init3D = () => {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            // Ajout d'un brouillard pour la profondeur
+            scene.fog = new THREE.FogExp2(0x000510, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Création des particules ADN
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 700;
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount; i++) {
+                // Double helice logic
+                const i3 = i * 3;
+                const angle = i * 0.1;
+                const radius = 3;
+                const rise = i * 0.05 - 15; // Hauteur
+
+                // Strand 1
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+
+                // Strand 2 (offset by PI)
+                const x2 = Math.cos(angle + Math.PI) * radius;
+                const z2 = Math.sin(angle + Math.PI) * radius;
+
+                // On alterne entre les deux brins pour remplir le tableau
+                if (i % 2 === 0) {
+                    posArray[i3] = x + (Math.random() - 0.5) * 0.5;
+                    posArray[i3 + 1] = rise;
+                    posArray[i3 + 2] = z + (Math.random() - 0.5) * 0.5;
+                    // Couleur Cyan/Bleu
+                    colorArray[i3] = 0.1;
+                    colorArray[i3 + 1] = 0.8;
+                    colorArray[i3 + 2] = 1.0;
+                } else {
+                    posArray[i3] = x2 + (Math.random() - 0.5) * 0.5;
+                    posArray[i3 + 1] = rise;
+                    posArray[i3 + 2] = z2 + (Math.random() - 0.5) * 0.5;
+                    // Couleur Violet/Rose
+                    colorArray[i3] = 1.0;
+                    colorArray[i3 + 1] = 0.2;
+                    colorArray[i3 + 2] = 0.6;
+                }
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+            // Texture de particule (cercle soft)
+            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+
+            const material = new THREE.PointsMaterial({
+                size: 0.15,
+                map: sprite,
+                transparent: true,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, material);
+            scene.add(particlesMesh);
+
+            camera.position.z = 8;
+            camera.position.y = -5;
+
+            // Animation Loop
+            const animate = () => {
+                requestAnimationFrame(animate);
+                particlesMesh.rotation.y += 0.003;
+                particlesMesh.rotation.z += 0.001;
+
+                // Effet de flottement caméra
+                const time = Date.now() * 0.0005;
+                camera.position.y += Math.sin(time) * 0.01;
+
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            // Resize handler
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        init3D();
+    </script>
 
     <script src="js/themes.js"></script>
     <script>

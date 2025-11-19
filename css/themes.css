@@ -1,19 +1,62 @@
-/* Styles modernes pour themes.html */
+/* --- VARIABLES & RESET --- */
+:root {
+    --primary: #00f2fe;
+    --secondary: #4facfe;
+    --accent: #ff0055;
+    --dark-bg: #000510;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --font-main: 'Rajdhani', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
+}
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-image: url('../assets/images/Fondtheme.png');
+}
+
+body {
+    font-family: var(--font-main);
+    background-image: url('../assets/images/FondAccueil.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 100vh;
+    background-color: var(--dark-bg);
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- BACKGROUND 3D --- */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --- MAIN UI CARD --- */
+.scene-overlay {
+    perspective: 1000px;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    justify-content: center;
+    padding: 20px;
     overflow-y: auto;
+    position: relative;
 }
 
 .h1 {

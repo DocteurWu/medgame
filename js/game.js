@@ -1,4 +1,31 @@
 // Y'a qql qui va lire le code ?? si oui veuillez me contacter sur discord : docteur_wu
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.remove();
+    }, 3000); // Remove after 3 seconds
+}
+const NOTIFICATION_DURATION = 3000;
+const DEFAULT_TIME_LIMIT = 240;
+const DEFAULT_ECG_HEIGHT = 96;
+const DEFAULT_SPO2_HEIGHT = 48;
+const VITAL_SIGN_VARIATION = 0.025;
+const DEFAULT_HEART_RATE = 72;
+const DEFAULT_SPO2 = 98;
+const DEFAULT_TEMPERATURE = 36.6;
+const DEFAULT_RESPIRATORY_RATE = 16;
+const GSAP_DURATION = 1;
+const GSAP_Y = 50;
+const GSAP_STAGGER = 0.2;
+const FIREWORKS_DURATION = 3;
+const COOKIE_EXPIRY_DAYS = 365;
+const EXAM_ANALYSIS_DELAY = 1.5;
+const SHOW_RESULT_DELAY = 1;
+const BASE_SCORE = 100;
+const ATTEMPT_PENALTY = 10;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const motifHospitalisation = document.getElementById('motif-hospitalisation');
@@ -171,7 +198,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             displayTime(timeLeft);
         } else {
             clearInterval(timerInterval);
-            alert('Temps écoulé !');
+            showNotification('Temps écoulé !');
             const playedCases = getCookie('playedCases');
             let arr = playedCases ? playedCases.split(',') : [];
             if (!arr.includes(currentCase.id)) {
@@ -254,7 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return cases;
         } catch (error) {
             console.error('Erreur lors du chargement des cas :', error);
-            alert('Erreur lors du chargement des cas cliniques : ' + error.message);
+            showNotification('Erreur lors du chargement des cas cliniques : ' + error.message);
             return [];
         }
     }
@@ -494,7 +521,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         timerInterval = setInterval(updateTimer, 1000); // Démarrer le minuteur
 
         if (cases.length === 0) {
-            alert('Aucun cas clinique trouvé.');
+            showNotification('Aucun cas clinique trouvé.');
             return;
         }
 
@@ -505,7 +532,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let availableCases = cases.filter(caseItem => !playedCases.includes(caseItem.id));
 
         if (availableCases.length === 0) {
-            alert('Tous les cas ont été joués !');
+            showNotification('Tous les cas ont été joués !');
             return;
         }
 
@@ -743,7 +770,7 @@ function handleTraitementClick(event) {
         const selectedExams = Array.from(selectedExamButtons).map(btn => btn.dataset.exam);
 
         if (selectedExams.length === 0) {
-            alert('Veuillez sélectionner au moins un examen.');
+            showNotification('Veuillez sélectionner au moins un examen.');
             return;
         }
 

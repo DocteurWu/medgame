@@ -1,39 +1,365 @@
-/* Styles spécifiques pour index.html */
-
-/* Styles pour le menu principal */
-.main-menu-container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
+/* --- VARIABLES & RESET --- */
+:root {
+    --primary: #00f2fe;
+    --secondary: #4facfe;
+    --accent: #ff0055;
+    --dark-bg: #000510;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --font-main: 'Rajdhani', sans-serif;
+    --font-title: 'Orbitron', sans-serif;
 }
 
-.main-menu-container h1 {
-    font-size: 3em;
-    margin-bottom: 0.5em;
-    color: #333;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    background-image: url('../assets/images/FondAccueil.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: var(--dark-bg);
+    /* Fallback color */
+    color: var(--text-main);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+/* --- BACKGROUND 3D --- */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* --- MAIN UI CARD --- */
+.scene-overlay {
+    perspective: 1000px;
+    z-index: 10;
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 3rem 4rem;
+    width: 100%;
+    max-width: 500px;
     text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease;
 }
 
-.main-menu-button {
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    background-color: #0080ff;
+/* --- TYPOGRAPHY & HEADER --- */
+.icon-pulse {
+    font-size: 3rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    animation: heartbeat 1.5s infinite;
+    text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+
+    15% {
+        transform: scale(1.3);
+    }
+
+    30% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.15);
+    }
+
+    60% {
+        transform: scale(1);
+    }
+}
+
+.glitch-title {
+    font-family: var(--font-title);
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 0.2rem;
+    background: linear-gradient(to right, #fff, var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+}
+
+.subtitle {
+    color: var(--secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 2.5rem;
+    text-transform: uppercase;
+}
+
+/* --- 3D BUTTONS --- */
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.btn-3d {
+    position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
-    border: none;
-    border-radius: 30px;
-    transition: background-color 0.3s ease;
-    font-size: 1em;
-    display: inline-block;
-    width: auto;
-    min-width: 120px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    font-family: var(--font-title);
+    font-size: 1rem;
+    padding: 1.2rem 2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.main-menu-button:hover {
-    background-color: #0066cc;
+.btn-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    z-index: 1;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-3d:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 242, 254, 0.2);
+}
+
+.btn-3d:hover .btn-layer {
+    transform: translateX(0);
+}
+
+/* Specific button styles */
+.btn-3d.primary:hover {
+    box-shadow: 0 0 30px rgba(79, 172, 254, 0.4);
+}
+
+.btn-3d.secondary .btn-layer {
+    background: linear-gradient(90deg, #43e97b, #38f9d7);
+}
+
+.btn-3d.tertiary .btn-layer {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+}
+
+.disclaimer {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+/* --- MODAL --- */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-glass {
+    background: #1a1f2e;
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-backdrop.active .modal-glass {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+}
+
+.modal-header h2 {
+    font-family: var(--font-title);
+    color: var(--primary);
+}
+
+.close-icon {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-icon:hover {
+    color: var(--accent);
+}
+
+/* Difficulty Selector */
+.difficulty-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.diff-option input {
+    display: none;
+}
+
+.diff-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.diff-card i {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.diff-card span {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.diff-card small {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.diff-option input:checked+.diff-card.green {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+}
+
+.diff-option input:checked+.diff-card.blue {
+    border-color: #3498db;
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.diff-option input:checked+.diff-card.red {
+    border-color: #e74c3c;
+    background: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+}
+
+.btn-flat {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--font-title);
+}
+
+.btn-flat.save {
+    background: var(--primary);
+    color: #000;
+}
+
+.btn-flat.save:hover {
+    background: #fff;
+    box-shadow: 0 0 15px var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .glitch-title {
+        font-size: 2.5rem;
+    }
+
+    .glass-card {
+        padding: 2rem;
+        width: 95%;
+    }
+
+    .difficulty-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .diff-card {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px 25px;
+    }
+
+    .diff-card i {
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
 }

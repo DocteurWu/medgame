@@ -1,133 +1,293 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Jeu Médical</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000 }
-        .modal.open { display: flex }
-        .modal-content { background: #fff; border-radius: 8px; padding: 20px; width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2) }
-        .modal-content h2 { margin: 0 0 12px 0; font-size: 1.4rem; text-align: center }
-        .radio-group { display: grid; gap: 10px; margin: 10px 0 18px }
-        .radio-group label { display: flex; align-items: center; gap: 8px; font-size: 1rem }
-        .modal-actions { display: flex; gap: 12px; justify-content: center }
-        .modal-actions .main-menu-button { min-width: 140px }
-    </style>
-</head>
-<body>
-    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
-    <div class="main-menu-container">
-        <h1> &#127973; <span class="medgame-title">Medgame</span> &#127973; </h1>
+    <title>MedGame - Simulation Médicale</title>
 
-        <p>Prêt à relever le défi ?</p><p class="disclaimer">Ce jeu est purement fictionnel et tente de se rapprocher au maximum des réfs</p>
-        <div class="button-container">
-            <button class="main-menu-button" id="play-button" onclick="location.href='themes.html'">Jouer &nbsp;&nbsp;&nbsp;<i class="fas fa-play"></i></button>
-            <button class="main-menu-button" id="tutorial-button" onclick="location.href='tutorial.html'">Tutoriel</button>
-            <button class="main-menu-button" id="settings-button">Paramètres</button>
+    <!-- Fonts Modernes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- Three.js pour la 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body>
+
+    <!-- Canvas pour l'arrière-plan 3D (ADN) -->
+    <div id="canvas-container"></div>
+
+    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
+
+    <div class="scene-overlay">
+        <div class="glass-card" id="main-card">
+            <div class="header-content">
+                <div class="icon-pulse">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1 class="glitch-title" data-text="MEDGAME">MEDGAME</h1>
+                <p class="subtitle">Simulation Clinique à Bichat
+            </div>
+
+            <div class="button-container">
+                <button class="btn-3d primary" id="play-button" onclick="transitionTo('themes.html')">
+                    <span class="btn-content"><i class="fas fa-play"></i> Lancer la garde</span>
+                    <div class="btn-layer"></div>
+                </button>
+
+                <button class="btn-3d secondary" id="tutorial-button" onclick="transitionTo('tutorial.html')">
+                    <span class="btn-content"><i class="fas fa-book-medical"></i> Tutoriel</span>
+                    <div class="btn-layer"></div>
+                </button>
+
+                <button class="btn-3d tertiary" id="settings-button">
+                    <span class="btn-content"><i class="fas fa-sliders-h"></i> Paramètres</span>
+                    <div class="btn-layer"></div>
+                </button>
+            </div>
+
+            <p class="disclaimer">Version 3.0• Simulation à but éducatif uniquement</p>
         </div>
-        <div id="settings-modal" class="modal" aria-hidden="true">
-            <div class="modal-content">
-                <h2>Paramètres</h2>
-                <div class="radio-group">
-                    <label><input type="radio" name="timeMode" value="dur"> Dur (2 min 30)</label>
-                    <label><input type="radio" name="timeMode" value="normal"> Normal (4 min)</label>
-                    <label><input type="radio" name="timeMode" value="facile"> Facile (8 min)</label>
+    </div>
+
+    <!-- Modale Paramètres Refaite -->
+    <div id="settings-modal" class="modal-backdrop">
+        <div class="modal-glass">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Configuration</h2>
+                <button class="close-icon" id="settings-close-icon"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="setting-label">Difficulté (Temps imparti)</p>
+                <div class="difficulty-selector">
+                    <label class="diff-option">
+                        <input type="radio" name="timeMode" value="facile">
+                        <span class="diff-card green">
+                            <i class="fas fa-user-md"></i>
+                            <span>Interne</span>
+                            <small>8 min</small>
+                        </span>
+                    </label>
+                    <label class="diff-option">
+                        <input type="radio" name="timeMode" value="normal">
+                        <span class="diff-card blue">
+                            <i class="fas fa-user-nurse"></i>
+                            <span>Senior</span>
+                            <small>4 min</small>
+                        </span>
+                    </label>
+                    <label class="diff-option">
+                        <input type="radio" name="timeMode" value="dur">
+                        <span class="diff-card red">
+                            <i class="fas fa-hospital-user"></i>
+                            <span>Urgence</span>
+                            <small>2m 30s</small>
+                        </span>
+                    </label>
                 </div>
-                <div class="modal-actions">
-                    <button id="settings-save" class="main-menu-button">Enregistrer</button>
-                    <button id="settings-close" class="main-menu-button">Fermer</button>
-                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="settings-save" class="btn-flat save">Sauvegarder</button>
             </div>
         </div>
     </div>
+
+    <!-- Script Logiciel & Animation -->
     <script>
+        /* --- LOGIQUE 3D BACKGROUND (ADN) --- */
+        const init3D = () => {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            // Ajout d'un brouillard pour la profondeur
+            scene.fog = new THREE.FogExp2(0x000510, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Création des particules ADN
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 700;
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount; i++) {
+                // Double helice logic
+                const i3 = i * 3;
+                const angle = i * 0.1;
+                const radius = 3;
+                const rise = i * 0.05 - 15; // Hauteur
+
+                // Strand 1
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+
+                // Strand 2 (offset by PI)
+                const x2 = Math.cos(angle + Math.PI) * radius;
+                const z2 = Math.sin(angle + Math.PI) * radius;
+
+                // On alterne entre les deux brins pour remplir le tableau
+                if (i % 2 === 0) {
+                    posArray[i3] = x + (Math.random() - 0.5) * 0.5;
+                    posArray[i3 + 1] = rise;
+                    posArray[i3 + 2] = z + (Math.random() - 0.5) * 0.5;
+                    // Couleur Cyan/Bleu
+                    colorArray[i3] = 0.1;
+                    colorArray[i3 + 1] = 0.8;
+                    colorArray[i3 + 2] = 1.0;
+                } else {
+                    posArray[i3] = x2 + (Math.random() - 0.5) * 0.5;
+                    posArray[i3 + 1] = rise;
+                    posArray[i3 + 2] = z2 + (Math.random() - 0.5) * 0.5;
+                    // Couleur Violet/Rose
+                    colorArray[i3] = 1.0;
+                    colorArray[i3 + 1] = 0.2;
+                    colorArray[i3 + 2] = 0.6;
+                }
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+            // Texture de particule (cercle soft)
+            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+
+            const material = new THREE.PointsMaterial({
+                size: 0.15,
+                map: sprite,
+                transparent: true,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, material);
+            scene.add(particlesMesh);
+
+            camera.position.z = 8;
+            camera.position.y = -5;
+
+            // Animation Loop
+            const animate = () => {
+                requestAnimationFrame(animate);
+                particlesMesh.rotation.y += 0.003;
+                particlesMesh.rotation.z += 0.001;
+
+                // Effet de flottement caméra
+                const time = Date.now() * 0.0005;
+                camera.position.y += Math.sin(time) * 0.01;
+
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            // Resize handler
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        init3D();
+
+        /* --- LOGIQUE JEU & UI --- */
+
+        // Gestion Paramètres
         if (!sessionStorage.getItem('timeLimitSeconds')) {
-            const mm = sessionStorage.getItem('timeMode') || 'normal';
-            const ms = mm === 'dur' ? 150 : (mm === 'facile' ? 480 : 240);
-            sessionStorage.setItem('timeMode', mm);
-            sessionStorage.setItem('timeLimitSeconds', String(ms));
+            sessionStorage.setItem('timeMode', 'normal');
+            sessionStorage.setItem('timeLimitSeconds', '240');
         }
-        const settingsButton = document.getElementById('settings-button');
+
+        const settingsBtn = document.getElementById('settings-button');
         const modal = document.getElementById('settings-modal');
+        const closeBtn = document.getElementById('settings-close-icon');
         const saveBtn = document.getElementById('settings-save');
-        const closeBtn = document.getElementById('settings-close');
-        function openModal() { modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
-        function closeModal() { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
-        function setDefaultMode() {
-            const m = sessionStorage.getItem('timeMode') || 'normal';
-            const el = document.querySelector('input[name="timeMode"][value="' + m + '"]');
-            if (el) el.checked = true;
-        }
-        function modeToSeconds(m) { return m === 'dur' ? 150 : (m === 'facile' ? 480 : 240); }
-        function applyMode() {
+
+        const openModal = () => {
+            modal.classList.add('active');
+            const currentMode = sessionStorage.getItem('timeMode') || 'normal';
+            const radio = document.querySelector(`input[name="timeMode"][value="${currentMode}"]`);
+            if (radio) radio.checked = true;
+        };
+
+        const closeModal = () => modal.classList.remove('active');
+
+        const saveSettings = () => {
             const checked = document.querySelector('input[name="timeMode"]:checked');
-            if (!checked) return;
-            const m = checked.value;
-            const s = modeToSeconds(m);
-            sessionStorage.setItem('timeMode', m);
-            sessionStorage.setItem('timeLimitSeconds', String(s));
-            closeModal();
-        }
-        settingsButton.addEventListener('click', function() { setDefaultMode(); openModal(); });
-        saveBtn.addEventListener('click', applyMode);
+            if (checked) {
+                const mode = checked.value;
+                let sec = 240;
+                if (mode === 'dur') sec = 150;
+                if (mode === 'facile') sec = 480;
+
+                sessionStorage.setItem('timeMode', mode);
+                sessionStorage.setItem('timeLimitSeconds', String(sec));
+                closeModal();
+            }
+        };
+
+        settingsBtn.addEventListener('click', openModal);
         closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
-        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
-        if (window.location.href.endsWith('themes.html')) { window.location.reload(true); }
-    </script>
-    <script>
+        saveBtn.addEventListener('click', saveSettings);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // Gestion Musique (Améliorée)
         const audio = document.getElementById('background-music');
-        const playButton = document.getElementById('play-button');
+        audio.volume = 0.4; // Volume doux par défaut
 
-        // Function to be called when the user interacts with the page
-        function playMusic() {
-            const musicState = JSON.parse(sessionStorage.getItem('musicState'));
-            if (musicState && !musicState.isPlaying) {
-                return; // Music was explicitly stopped
-            }
+        const startAudio = () => {
+            const state = JSON.parse(sessionStorage.getItem('musicState'));
+            if (state && state.isPlaying === false) return;
 
-            // If there's no saved time, start from a random position
-            if (!musicState || !musicState.time) {
-                audio.addEventListener('loadedmetadata', () => {
-                    audio.currentTime = Math.random() * audio.duration;
-                }, { once: true });
-            }
+            if (!state || !state.time) audio.currentTime = 0;
+            else audio.currentTime = state.time;
 
-            const promise = audio.play();
-            if (promise !== undefined) {
-                promise.then(_ => {
-                    // Autoplay started!
-                    sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: true, time: audio.currentTime }));
-                }).catch(error => {
-                    // Autoplay was prevented.
-                    // Show a "Play" button to start the music manually.
-                });
-            }
-        }
+            audio.play().then(() => {
+                sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: true, time: audio.currentTime }));
+            }).catch(() => console.log("Autoplay prevented"));
+        };
 
-        // Play music on first user interaction
-        document.body.addEventListener('click', playMusic, { once: true });
-        document.body.addEventListener('keydown', playMusic, { once: true });
-
+        // Lance la musique au premier clic n'importe où
+        document.body.addEventListener('click', startAudio, { once: true });
 
         window.addEventListener('beforeunload', () => {
             sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: !audio.paused, time: audio.currentTime }));
         });
 
-        // When the page loads, check if music should be playing
         window.addEventListener('load', () => {
-            const musicState = JSON.parse(sessionStorage.getItem('musicState'));
-            if (musicState && musicState.isPlaying) {
-                audio.currentTime = musicState.time || 0;
-                audio.play().catch(e => console.log("Autoplay was prevented"));
-            }
+            const state = JSON.parse(sessionStorage.getItem('musicState'));
+            if (state && state.isPlaying) startAudio();
+        });
+
+        // Fonction transition douce
+        function transitionTo(url) {
+            document.body.style.opacity = 0;
+            setTimeout(() => window.location.href = url, 500);
+        }
+
+        // Effet 3D Tilt sur la carte principale
+        const card = document.getElementById('main-card');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
     </script>
 </body>
+
 </html>
