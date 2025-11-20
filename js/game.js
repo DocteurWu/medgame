@@ -725,8 +725,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const correctDiagnostic = currentCase.correctDiagnostic;
 
         const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
+        const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
 
-        if (selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length) {
+        if (isCorrect) {
             score = calculateScore();
             feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
 
@@ -738,7 +739,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Sauvegarde de l'élément audio pour le réutiliser plus tard
             const backgroundMusic = document.querySelector('audio');
-            backgroundMusic.pause();
+            if (backgroundMusic) backgroundMusic.pause();
 
             // Lecture du son de succès
             const successSound = new Audio('assets/sounds/feux_artifice.mp3');
@@ -747,17 +748,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             fireworksInstance = fireworks;
             backgroundMusicEl = backgroundMusic;
             fireworks.start();
-            showCorrectionModal(currentCase.correction || `Diagnostic optimal: ${correctDiagnostic}\nTraitements optimaux: ${(correctTreatments || []).join(', ')}`);
 
             scoreDisplay.textContent = `Score final: ${score}`;
             document.getElementById('treatment-feedback').textContent = '';
-
-            // Mise à jour du cookie
-            let playedCases = getCookie('playedCases');
-            playedCases = playedCases ? playedCases.split(',') : [];
-            playedCases.push(currentCase.id);
-            setCookie('playedCases', playedCases.join(','), 365);
-
         } else {
             let feedback = '';
             if (selectedDiagnostic !== correctDiagnostic) {
@@ -770,10 +763,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!allTreatmentsCorrect || selectedTreatments.length !== correctTreatments.length) {
                 feedback += "Traitement incorrect ou incomplet.";
                 document.getElementById('treatment-feedback').textContent = feedback;
-
-                const incorrectSound = new Audio('assets/sounds/wrong buzzer.mp3');
-                incorrectSound.play();
+                // REMOVED: Failure sound
             }
+
+            // Score remains 0 if incorrect
+            scoreDisplay.textContent = `Score final: ${score}`;
         }
 
         // Gestion des classes CSS pour les boutons de traitement
@@ -792,6 +786,98 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         });
+
+        // Calculate percentage score
+        let percentageScore = 0;
+        const diagnosticWeight = 50; // 50% for diagnostic
+        const treatmentWeight = 50; // 50% for treatments
+
+        // Diagnostic score
+        if (selectedDiagnostic === correctDiagnostic) {
+            percentageScore += diagnosticWeight;
+        }
+
+        // Treatment score
+        if (correctTreatments.length > 0) {
+            const correctSelectedCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
+            const incorrectSelectedCount = selectedTreatments.filter(t => !correctTreatments.includes(t)).length;
+
+            // Award points for correct treatments, penalize for incorrect ones
+            const treatmentPointsPerCorrect = treatmentWeight / correctTreatments.length;
+            percentageScore += correctSelectedCount * treatmentPointsPerCorrect;
+
+            // Optionally penalize for wrong treatments (commented out for now)
+            // percentageScore -= incorrectSelectedCount * (treatmentPointsPerCorrect / 2);
+        }
+
+        percentageScore = Math.max(0, Math.min(100, Math.round(percentageScore)));
+
+        // Build color-coded comparison HTML
+        const diagnosticCorrect = selectedDiagnostic === correctDiagnostic;
+        const diagnosticUserStyle = diagnosticCorrect
+            ? 'background: rgba(46, 204, 113, 0.3); padding: 5px; border-radius: 4px;'
+            : 'background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;';
+
+        // Build treatments list with color coding
+        let userTreatmentsHtml = '';
+        if (selectedTreatments.length === 0) {
+            userTreatmentsHtml = '<span style="background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;">Aucun</span>';
+        } else {
+            userTreatmentsHtml = selectedTreatments.map(t => {
+                const isCorrect = correctTreatments.includes(t);
+                const style = isCorrect
+                    ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
+                    : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
+                return `<span style="${style}">${t}</span>`;
+            }).join(' ');
+        }
+
+        // Build expected treatments with highlighting for what was selected
+        let expectedTreatmentsHtml = correctTreatments.map(t => {
+            const wasSelected = selectedTreatments.includes(t);
+            const style = wasSelected
+                ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
+                : 'background: rgba(255, 193, 7, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
+            return `<span style="${style}">${t}</span>`;
+        }).join(' ');
+
+        const comparisonHtml = `
+            <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h3 style="color: ${percentageScore >= 50 ? '#2ecc71' : '#e74c3c'}; font-size: 2em; margin: 0;">
+                        Score: ${percentageScore}%
+                    </h3>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
+                    <p><strong>Diagnostic:</strong> <span style="${diagnosticUserStyle}">${selectedDiagnostic || 'Aucun'}</span></p>
+                    <p><strong>Traitements:</strong> ${userTreatmentsHtml}</p>
+                </div>
+                <div>
+                    <h4 style="color: #2ecc71; margin-bottom: 5px;">Réponse Attendue</h4>
+                    <p><strong>Diagnostic:</strong> ${correctDiagnostic}</p>
+                    <p><strong>Traitements:</strong> ${expectedTreatmentsHtml}</p>
+                    <p style="font-size: 0.9em; color: #aaa; margin-top: 5px;">
+                        <span style="background: rgba(46, 204, 113, 0.3); padding: 2px 6px; border-radius: 3px;">Vert</span> = Correct | 
+                        <span style="background: rgba(255, 193, 7, 0.3); padding: 2px 6px; border-radius: 3px;">Jaune</span> = Manquant | 
+                        <span style="background: rgba(231, 76, 60, 0.3); padding: 2px 6px; border-radius: 3px;">Rouge</span> = Incorrect
+                    </p>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+        `;
+
+        // ALWAYS show correction and update cookie
+        const correctionText = currentCase.correction || `Diagnostic optimal: ${correctDiagnostic}\nTraitements optimaux: ${(correctTreatments || []).join(', ')}`;
+        showCorrectionModal(comparisonHtml + correctionText);
+
+        // Mise à jour du cookie
+        let playedCases = getCookie('playedCases');
+        playedCases = playedCases ? playedCases.split(',') : [];
+        if (!playedCases.includes(currentCase.id)) {
+            playedCases.push(currentCase.id);
+            setCookie('playedCases', playedCases.join(','), 365);
+        }
     });
 
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
