@@ -131,7 +131,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         return patient + motif + constantes + examsBlock;
     }
 
-    function showCorrectionModal(text) {
+function showCorrectionModal(text) {
+        if (currentCase && currentCase.redacteur) {
+            text += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
+        }
         renderCorrectionContent(text || '');
         const overlay = document.getElementById('correction-overlay');
         overlay.style.display = 'flex';
