@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const examensResults = document.getElementById('examens-results');
     console.log('examensResults défini au début :', examensResults);
     const validateExamsButton = document.getElementById('validate-exams');
-    const validateDiagnosticButton = document.getElementById('validate-diagnostic');
+    // const validateDiagnosticButton = document.getElementById('validate-diagnostic'); // REMOVED
     const scoreDisplay = document.getElementById('score');
     const feedbackDisplay = document.getElementById('feedback');
     const nextCaseButton = document.getElementById('next-case');
@@ -245,14 +245,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (selectedThemes.length === 0) {
                 throw new Error('Aucun thème sélectionné');
             }
-    
+
             // Charger l’index des cas
             const response = await fetch('data/case-index.json');
             if (!response.ok) {
                 throw new Error(`Erreur HTTP: ${response.status}`);
             }
             const caseIndex = await response.json();
-    
+
             // Filtrer les fichiers pour les thèmes sélectionnés (insensible à la casse)
             let caseFiles = [];
             console.log('Selected themes:', selectedThemes);
@@ -263,11 +263,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
             console.log('Case files found:', caseFiles);
-    
+
             if (caseFiles.length === 0) {
                 throw new Error('Aucun cas disponible pour les thèmes sélectionnés');
             }
-    
+
             // Charger les données de chaque fichier
             const casesPromises = caseFiles.map(file =>
                 fetch(`data/${file}`)
@@ -378,56 +378,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         mount(root) { this.root = root; this.root.innerHTML = this.template(); this.initAnimatedWaves(); this.updateDisplay(); this.startAnimations(); this.startVitalUpdates(); }
         template() {
             return (
-                '<div class="vm">'
-                + '<div class="vm-header"><div style="color:#007bff;font-weight:700">ECG</div><div style="color:#333">HR: <span id="hr-value">' + this.props.heartRate + '</span> BPM</div></div>'
-                + '<div style="position:relative;height:' + this.layout.ecgH + 'px;background:rgba(0,0,0,0.03);border-radius:8px;overflow:hidden">'
-                +   '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2">'
-                +     '<defs><pattern id="vm-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 L0 0 0 20" fill="none" stroke="#007bff" stroke-width="0.5"/></pattern></defs>'
-                +     '<rect width="100%" height="100%" fill="url(#vm-grid)"/>'
-                +   '</svg>'
-                +   '<svg viewBox="0 0 400 128" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
-                +     '<defs><linearGradient id="vm-heartGradient" x1="0%" y1="0%" x2="100%" y2="0%">'
-                +       '<stop offset="0%" stop-color="#007bff" stop-opacity="0"/><stop offset="50%" stop-color="#007bff"/><stop offset="100%" stop-color="#007bff" stop-opacity="0"/>'
-                +     '</linearGradient></defs>'
-                +     '<g id="heart-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
-                +       '<path id="heart-line-1" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
-                +       '<path id="heart-line-2" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
-                +     '</g>'
-                +   '</svg>'
-                +   '<div id="pulse-indicator" style="position:absolute;top:8px;right:8px;width:8px;height:8px;background:#dc3545;border-radius:50%;animation:pulse calc(60s / var(--heart-rate,72)) infinite"></div>'
+                '<div class="vm" style="position:relative; overflow:hidden;">'
+                + '<div class="vm-crt-overlay"></div>' // CRT Overlay
+                + '<div class="vm-header"><div style="color:#007bff;font-weight:700;text-shadow:0 0 5px rgba(0,123,255,0.5)">ECG</div><div style="color:#e0e0e0">HR: <span id="hr-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.heartRate + '</span> BPM</div></div>'
+                + '<div style="position:relative;height:' + this.layout.ecgH + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(0,123,255,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
+                + '<div class="vm-scanline"></div>' // Scanline
+                + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
+                + '<defs><pattern id="vm-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 L0 0 0 20" fill="none" stroke="#007bff" stroke-width="0.5"/></pattern></defs>'
+                + '<rect width="100%" height="100%" fill="url(#vm-grid)"/>'
+                + '</svg>'
+                + '<svg viewBox="0 0 400 128" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
+                + '<defs><linearGradient id="vm-heartGradient" x1="0%" y1="0%" x2="100%" y2="0%">'
+                + '<stop offset="0%" stop-color="#007bff" stop-opacity="0"/><stop offset="10%" stop-color="#007bff" stop-opacity="0.8"/><stop offset="50%" stop-color="#007bff"/><stop offset="90%" stop-color="#007bff" stop-opacity="0.8"/><stop offset="100%" stop-color="#007bff" stop-opacity="0"/>'
+                + '</linearGradient></defs>'
+                + '<g id="heart-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
+                + '<path id="heart-line-1" class="vm-line-glow" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
+                + '<path id="heart-line-2" class="vm-line-glow" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
+                + '</g>'
+                + '</svg>'
+                + '<div id="pulse-indicator" style="position:absolute;top:8px;right:8px;width:10px;height:10px;background:#dc3545;border-radius:50%;box-shadow:0 0 10px #dc3545;animation:pulse-dot calc(60s / var(--heart-rate,72)) infinite"></div>'
                 + '</div>'
                 + '<div style="margin-top:8px">'
-                +   '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
-                +     '<div id="spo2-label" style="color:#17a2b8;font-weight:700">SpO₂</div>'
-                +     '<div id="spo2-value" style="color:#333">' + this.props.spo2 + '%</div>'
-                +   '</div>'
-                +   '<div style="position:relative;height:' + this.layout.spo2H + 'px;background:rgba(0,0,0,0.03);border-radius:8px;overflow:hidden">'
-                +     '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.2">'
-                +       '<defs><pattern id="vm-spo2-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0 L0 0 0 15" fill="none" stroke="#17a2b8" stroke-width="0.3"/></pattern></defs>'
-                +       '<rect width="100%" height="100%" fill="url(#vm-spo2-grid)"/>'
-                +     '</svg>'
-                +     '<svg class="spo2-wave" style="position:absolute;inset:0;width:100%;height:100%">'
-                +       '<defs><linearGradient id="vm-spo2Gradient" x1="0%" y1="0%" x2="100%" y2="0%">'
-                +         '<stop offset="0%" stop-color="#17a2b8" stop-opacity="0"/><stop offset="50%" stop-color="#17a2b8"/><stop offset="100%" stop-color="#17a2b8" stop-opacity="0"/>'
-                +       '</linearGradient></defs>'
-                +       '<path id="spo2-path-1" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
-                +       '<path id="spo2-path-2" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
-                +     '</svg>'
-                +   '</div>'
+                + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+                + '<div id="spo2-label" style="color:#17a2b8;font-weight:700;text-shadow:0 0 5px rgba(23,162,184,0.5)">SpO₂</div>'
+                + '<div id="spo2-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.spo2 + '%</div>'
+                + '</div>'
+                + '<div style="position:relative;height:' + this.layout.spo2H + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(23,162,184,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
+                + '<div class="vm-scanline" style="animation-delay: 1s;"></div>' // Scanline delayed
+                + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
+                + '<defs><pattern id="vm-spo2-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0 L0 0 0 15" fill="none" stroke="#17a2b8" stroke-width="0.3"/></pattern></defs>'
+                + '<rect width="100%" height="100%" fill="url(#vm-spo2-grid)"/>'
+                + '</svg>'
+                + '<svg class="spo2-wave" style="position:absolute;inset:0;width:100%;height:100%">'
+                + '<defs><linearGradient id="vm-spo2Gradient" x1="0%" y1="0%" x2="100%" y2="0%">'
+                + '<stop offset="0%" stop-color="#17a2b8" stop-opacity="0"/><stop offset="10%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="50%" stop-color="#17a2b8"/><stop offset="90%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="100%" stop-color="#17a2b8" stop-opacity="0"/>'
+                + '</linearGradient></defs>'
+                + '<path id="spo2-path-1" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
+                + '<path id="spo2-path-2" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
+                + '</svg>'
+                + '</div>'
                 + '</div>'
                 + '<div class="vm-grid" style="margin-top:8px; display:flex; flex-direction:column; width:100%;">'
-                +   '<div style="display: flex; gap: 12px; width:100%; margin-bottom: 6px;">'
-                +     '<div class="vm-card" style="flex:1 1 0; min-width:0;">'
-                +       '<div style="color:#6c757d;font-size:12px;margin-bottom:2px"></div>'
-                +       '<div id="bp-value" style="color:#333;font-weight:700;font-size:16px;width:100%">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
-                +       '<div style="color:#007bff;font-size:11px">mmHg</div>'
-                +     '</div>'
-                +     '<div class="vm-card" style="flex:1 1 0; min-width:0;">'
-                +       '<div style="color:#6c757d;font-size:12px;margin-bottom:2px"></div>'
-                +       '<div id="temp-value" style="color:#333;font-weight:700;font-size:16px;width:100%">' + this.props.temperature.toFixed(1) + '°C</div>'
-                +       '<div style="color:#007bff;font-size:11px"></div>'
-                +     '</div>'
-                +   '</div>'
+                + '<div style="display: flex; gap: 12px; width:100%; margin-bottom: 6px;">'
+                + '<div class="vm-card" style="flex:1 1 0; min-width:0; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2)">'
+                + '<div style="color:#6c757d;font-size:12px;margin-bottom:2px">TENSION</div>'
+                + '<div id="bp-value" style="color:#fff;font-weight:700;font-size:16px;width:100%;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
+                + '<div style="color:#007bff;font-size:11px">mmHg</div>'
+                + '</div>'
+                + '<div class="vm-card" style="flex:1 1 0; min-width:0; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2)">'
+                + '<div style="color:#6c757d;font-size:12px;margin-bottom:2px">TEMP</div>'
+                + '<div id="temp-value" style="color:#fff;font-weight:700;font-size:16px;width:100%;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.temperature.toFixed(1) + '°C</div>'
+                + '<div style="color:#007bff;font-size:11px"></div>'
+                + '</div>'
+                + '</div>'
                 + '</div>'
                 + '</div>'
             );
@@ -472,11 +475,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function mountVitalMonitorAtConstants() {
-        const container = document.querySelector('#examen-clinique > div');
-        if (!container) return;
-        const existing = container.querySelector('#vital-monitor');
-        const ps = Array.from(container.querySelectorAll('p')).slice(0, 5);
-        const h = ps.reduce((sum, p) => sum + p.offsetHeight, 0) || container.offsetHeight;
+        const sidebarScope = document.getElementById('sidebar-scope');
+        if (!sidebarScope) return;
+
+        // Create or get the specific mount point for the monitor
+        let mountPoint = document.getElementById('vital-monitor-mount');
+        if (!mountPoint) {
+            mountPoint = document.createElement('div');
+            mountPoint.id = 'vital-monitor-mount';
+            mountPoint.style.width = '100%';
+            mountPoint.style.height = '100%';
+            sidebarScope.appendChild(mountPoint);
+        }
+
+        // Get values from the hidden spans
+        const tension = document.getElementById('tension');
+        const pouls = document.getElementById('pouls');
+        const saturationO2 = document.getElementById('saturationO2');
+        const temperature = document.getElementById('temperature');
+        const frequenceRespiratoire = document.getElementById('frequenceRespiratoire');
+
         const text = {
             bp: tension ? tension.textContent : '',
             hr: pouls ? pouls.textContent : '',
@@ -484,6 +502,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             temp: temperature ? temperature.textContent : '',
             resp: frequenceRespiratoire ? frequenceRespiratoire.textContent : ''
         };
+
         const bp = parseBP(text.bp);
         const monitorProps = {
             systolic: bp.systolic,
@@ -493,28 +512,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             temperature: parseNum(text.temp) || 36.6,
             respiratoryRate: parseNum(text.resp) || 16
         };
-        if (existing && vitalMonitorInstance) {
-            // Arrêter les mises à jour précédentes avant de mettre à jour les propriétés
+
+        if (vitalMonitorInstance) {
             vitalMonitorInstance.stopVitalUpdates();
-            vitalMonitorInstance.updateProps(monitorProps);
-            // Redémarrer les mises à jour avec les nouvelles valeurs de base
-            vitalMonitorInstance.baseValues = { ...monitorProps };
-            vitalMonitorInstance.calculateVariationRanges();
-            vitalMonitorInstance.startVitalUpdates();
-            return;
+            mountPoint.innerHTML = '';
         }
-        ps.forEach(p => p.remove());
-        const mount = document.createElement('div');
-        mount.id = 'vital-monitor';
-        mount.style.minHeight = h + 'px';
-        container.prepend(mount);
-        const ecgH = Math.max(56, Math.round(h * 0.45));
-        const spo2H = Math.max(40, Math.round(h * 0.25));
+
+        const ecgH = 96;
+        const spo2H = 48;
+
         vitalMonitorInstance = new VitalSignsMonitor(monitorProps, { ecgH, spo2H });
-        vitalMonitorInstance.mount(mount);
+        vitalMonitorInstance.mount(mountPoint);
     }
 
-   function loadCase() {
+    function loadCase() {
         timeLeft = getTimeLimit();
         displayTime(timeLeft);
         clearInterval(timerInterval); // Effacer l'ancien intervalle
@@ -546,6 +557,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayValue(document.getElementById('patient-taille'), currentCase.patient.taille);
         displayValue(document.getElementById('patient-poids'), currentCase.patient.poids);
         displayValue(document.getElementById('patient-groupeSanguin'), currentCase.patient.groupeSanguin);
+
+        // Update sidebar patient mini-card
+        const patientNomSidebar = document.getElementById('patient-nom-sidebar');
+        const patientAgeSidebar = document.getElementById('patient-age-sidebar');
+        const patientSexeSidebar = document.getElementById('patient-sexe-sidebar');
+        const patientInitials = document.getElementById('patient-initials');
+
+        if (patientNomSidebar) patientNomSidebar.textContent = `${currentCase.patient.prenom} ${currentCase.patient.nom}`;
+        if (patientAgeSidebar) patientAgeSidebar.textContent = currentCase.patient.age;
+        if (patientSexeSidebar) patientSexeSidebar.textContent = currentCase.patient.sexe;
+        if (patientInitials) {
+            const initials = (currentCase.patient.prenom.charAt(0) + currentCase.patient.nom.charAt(0)).toUpperCase();
+            patientInitials.textContent = initials;
+        }
+
         displayValue(motifHospitalisation, currentCase.interrogatoire.motifHospitalisation);
         displayValue(activitePhysique, currentCase.interrogatoire.modeDeVie.activitePhysique.description);
         displayValue(tabac, `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}`);
@@ -613,7 +639,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 button.className = 'exam-btn';
                 button.dataset.exam = exam;
                 button.textContent = exam;
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     this.classList.toggle('selected');
                 });
                 examButtonsDiv.appendChild(button);
@@ -666,15 +692,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         attempts = 0; // Réinitialiser le nombre d'essais
     }
 
-     function calculateScore() {
+    function calculateScore() {
         let baseScore = currentCase.scoringRules.baseScore || 100;
         let attemptPenalty = currentCase.scoringRules.attemptPenalty || 10;
         return Math.max(0, baseScore - (attempts * attemptPenalty)); // Le score ne peut pas être négatif
     }
 
-    
 
-function handleTraitementClick(event) {
+
+    function handleTraitementClick(event) {
         const traitement = event.target.dataset.traitement;
         if (selectedTreatments.includes(traitement)) {
             selectedTreatments = selectedTreatments.filter(t => t !== traitement);
@@ -693,75 +719,75 @@ function handleTraitementClick(event) {
         const selectedDiagnostic = document.getElementById('diagnostic-select').value;
         const correctDiagnostic = currentCase.correctDiagnostic;
 
-    const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
+        const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
 
-    if (selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length) {
-        score = calculateScore();
-        feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
+        if (selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length) {
+            score = calculateScore();
+            feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
 
-        // Ajout des feux d'artifice
-        const container = document.querySelector('#fireworks-container');
-        const fireworks = new Fireworks(container, {
-            duration: 3, // Durée de l'animation en secondes
-        });
+            // Ajout des feux d'artifice
+            const container = document.querySelector('#fireworks-container');
+            const fireworks = new Fireworks(container, {
+                duration: 3, // Durée de l'animation en secondes
+            });
 
-        // Sauvegarde de l'élément audio pour le réutiliser plus tard
-        const backgroundMusic = document.querySelector('audio');
-        backgroundMusic.pause();
+            // Sauvegarde de l'élément audio pour le réutiliser plus tard
+            const backgroundMusic = document.querySelector('audio');
+            backgroundMusic.pause();
 
-        // Lecture du son de succès
-        const successSound = new Audio('assets/sounds/feux_artifice.mp3');
-        successSound.play();
+            // Lecture du son de succès
+            const successSound = new Audio('assets/sounds/feux_artifice.mp3');
+            successSound.play();
 
-        fireworksInstance = fireworks;
-        backgroundMusicEl = backgroundMusic;
-        fireworks.start();
-        showCorrectionModal(currentCase.correction || `Diagnostic optimal: ${correctDiagnostic}\nTraitements optimaux: ${(correctTreatments || []).join(', ')}`);
+            fireworksInstance = fireworks;
+            backgroundMusicEl = backgroundMusic;
+            fireworks.start();
+            showCorrectionModal(currentCase.correction || `Diagnostic optimal: ${correctDiagnostic}\nTraitements optimaux: ${(correctTreatments || []).join(', ')}`);
 
-        scoreDisplay.textContent = `Score final: ${score}`;
-        document.getElementById('treatment-feedback').textContent = '';
+            scoreDisplay.textContent = `Score final: ${score}`;
+            document.getElementById('treatment-feedback').textContent = '';
 
-        // Mise à jour du cookie
-        let playedCases = getCookie('playedCases');
-        playedCases = playedCases ? playedCases.split(',') : [];
-        playedCases.push(currentCase.id);
-        setCookie('playedCases', playedCases.join(','), 365);
+            // Mise à jour du cookie
+            let playedCases = getCookie('playedCases');
+            playedCases = playedCases ? playedCases.split(',') : [];
+            playedCases.push(currentCase.id);
+            setCookie('playedCases', playedCases.join(','), 365);
 
-    } else {
-        let feedback = '';
-        if (selectedDiagnostic !== correctDiagnostic) {
-            feedback += 'Diagnostic incorrect. ';
-            feedbackDisplay.textContent = feedback;
-        }
-
-        const allTreatmentsCorrect = correctTreatments.every(t => selectedTreatments.includes(t));
-
-        if (!allTreatmentsCorrect || selectedTreatments.length !== correctTreatments.length) {
-            feedback += "Traitement incorrect ou incomplet.";
-            document.getElementById('treatment-feedback').textContent = feedback;
-
-            const incorrectSound = new Audio('assets/sounds/wrong buzzer.mp3');
-            incorrectSound.play();
-        }
-    }
-
-    // Gestion des classes CSS pour les boutons de traitement
-    const treatmentButtons = document.querySelectorAll('#availableTreatments button');
-    treatmentButtons.forEach(button => {
-        const traitement = button.dataset.traitement;
-        button.classList.remove('correct-treatment', 'incorrect-treatment'); // Retirer les classes précédentes
-
-        if (correctTreatments.includes(traitement)) {
-            if (selectedTreatments.includes(traitement)) {
-                button.classList.add('correct-treatment'); // Vert si correct et sélectionné
-            }
         } else {
-            if (selectedTreatments.includes(traitement)) {
-                button.classList.add('incorrect-treatment'); // Rouge si incorrect et sélectionné
+            let feedback = '';
+            if (selectedDiagnostic !== correctDiagnostic) {
+                feedback += 'Diagnostic incorrect. ';
+                feedbackDisplay.textContent = feedback;
+            }
+
+            const allTreatmentsCorrect = correctTreatments.every(t => selectedTreatments.includes(t));
+
+            if (!allTreatmentsCorrect || selectedTreatments.length !== correctTreatments.length) {
+                feedback += "Traitement incorrect ou incomplet.";
+                document.getElementById('treatment-feedback').textContent = feedback;
+
+                const incorrectSound = new Audio('assets/sounds/wrong buzzer.mp3');
+                incorrectSound.play();
             }
         }
+
+        // Gestion des classes CSS pour les boutons de traitement
+        const treatmentButtons = document.querySelectorAll('#availableTreatments button');
+        treatmentButtons.forEach(button => {
+            const traitement = button.dataset.traitement;
+            button.classList.remove('correct-treatment', 'incorrect-treatment'); // Retirer les classes précédentes
+
+            if (correctTreatments.includes(traitement)) {
+                if (selectedTreatments.includes(traitement)) {
+                    button.classList.add('correct-treatment'); // Vert si correct et sélectionné
+                }
+            } else {
+                if (selectedTreatments.includes(traitement)) {
+                    button.classList.add('incorrect-treatment'); // Rouge si incorrect et sélectionné
+                }
+            }
+        });
     });
-});
 
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
 
@@ -807,7 +833,7 @@ function handleTraitementClick(event) {
     });
 
     function handleShowResultClick(event) {
-       const examen = event.target.dataset.examen;
+        const examen = event.target.dataset.examen;
         // Simuler un délai avant d'afficher le résultat
         const examSound = new Audio('assets/sounds/bip.m4a');
         examSound.play();
@@ -820,18 +846,30 @@ function handleTraitementClick(event) {
         }, 1000); // Délai de 1 seconde
     }
 
-     validateDiagnosticButton.addEventListener('click', () => {
-        attempts++;
-        const selectedDiagnostic = document.getElementById('diagnostic-select').value;
-        const correctDiagnostic = currentCase.correctDiagnostic;
+    // Sidebar Navigation Logic
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.game-section');
 
-        if (selectedDiagnostic !== correctDiagnostic) {
-            feedbackDisplay.textContent = 'Diagnostic incorrect. Essayez encore.';
-        }
-         else {
-            feedbackDisplay.textContent = 'Diagnostic correct !';
-         }
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Remove active class from all items
+            navItems.forEach(nav => nav.classList.remove('active'));
+            // Add active class to clicked item
+            item.classList.add('active');
+
+            // Hide all sections
+            sections.forEach(section => section.classList.remove('active'));
+            // Show target section
+            const targetId = item.dataset.target;
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        });
     });
+
+    // validateDiagnosticButton listener REMOVED as it is no longer used.
+    // Validation is now handled solely by validate-traitement.
 
     nextCaseButton.addEventListener('click', () => {
         currentCaseIndex = (currentCaseIndex + 1) % cases.length;
@@ -845,7 +883,7 @@ function handleTraitementClick(event) {
         }
         displayTime(timeLeft);
     }
-    
+
     examensResults.innerHTML = '';
     initializeGame();
 });

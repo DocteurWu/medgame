@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Cas Clinique</title>
+    <title>Cas Clinique - MedGame</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/game.css">
     <!-- Ajout de Font Awesome pour les icônes -->
@@ -21,195 +21,250 @@
         Votre navigateur ne prend pas en charge la music
     </audio>
 
-    <div class="container">
-        <h1 class="h1"> Cas Clinique</h1>
-
-        <!-- Première grille pour les informations du patient -->
-        <div class="medical-dashboard">
-            <div class="medical-card" id="patient-info">
-                <h2 class="section-title"><i class="fas fa-user"></i> Informations Patient</h2>
-                <div class="patient-profile">
-                    <img src="assets/images/default-patient.jpg" alt="Photo du patient" class="patient-image">
-                    <div>
-                        <p><span class="label">Nom:</span> <span id="patient-nom"></span></p>
-                        <p><span class="label">Prénom:</span> <span id="patient-prenom"></span></p>
-
-                        <p><span class="label">Age:</span> <span id="patient-age"></span> ans</p>
-                        <p><span class="label">Sexe:</span> <span id="patient-sexe"></span></p>
-                        <p><span class="label">Taille:</span> <span id="patient-taille"></span></p>
-                        <p><span class="label">Poids:</span> <span id="patient-poids"></span></p>
-                        <p><span class="label">Groupe Sanguin:</span> <span id="patient-groupeSanguin"></span></p>
-                        <p><span class="label">Motif d'hospitalisation:</span> <span id="motif-hospitalisation"></span>
-                        </p>
-                        <p><span class="label">Aspect Général:</span> <span id="aspectGeneral"></span></p>
-                    </div>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-user-md"></i> MEDGAME
                 </div>
             </div>
 
-            <div class="medical-card" id="mode-de-vie">
-                <h2 class="section-title"><i class="fas fa-running"></i> Mode de Vie</h2>
-                <p><span class="label">Activité Physique:</span> <span id="activite-physique"></span></p>
-                <p><span class="label">Tabac:</span> <span id="tabac"></span></p>
-                <p><span class="label">Alcool:</span> <span id="alcool"></span></p>
-                <p><span class="label">Alimentation:</span> <span id="alimentation"></span></p>
-                <p><span class="label">Emploi:</span> <span id="emploi"></span></p>
-            </div>
-
-            <div class="medical-card" id="antecedents">
-                <h2 class="section-title"><i class="fas fa-history"></i> Antécédents</h2>
-                <details>
-                    <summary>Médicaux</summary>
-                    <p><span id="antecedents-medicaux"></span></p>
-                </details>
-                <details>
-                    <summary>Chirurgicaux</summary>
-                    <p><span id="antecedents-chirurgicaux"></span></p>
-                </details>
-                <details>
-                    <summary>Familiaux</summary>
-                    <p><span id="antecedents-familiaux"></span></p>
-                </details>
-                <h2 class="section-title"><i class="fas fa-pills"></i> Traitements et Allergies</h2>
-                <p><span class="label">Traitements:</span> <span id="traitements-liste"></span></p>
-                <p><span class="label">Allergies:</span> <span id="allergies-liste"></span></p>
-            </div>
-
-            <div class="medical-card" id="histoire-maladie">
-                <h2 class="section-title"><i class="fas fa-book-medical"></i> Histoire de la Maladie</h2>
-                <p><span class="label">Début des Symptômes:</span> <span id="debut-symptomes"></span></p>
-                <p><span class="label">Évolution:</span> <span id="evolution"></span></p>
-                <p><span class="label">Facteurs Déclenchants:</span> <span id="facteurs-declenchants"></span></p>
-                <p><span class="label">Symptômes Associés:</span> <span id="symptomes-associes"></span></p>
-                <p><span class="label">Remarques:</span> <span id="remarques"></span></p>
-            </div>
-
-            <div class="medical-card" id="examen-clinique">
-                <h2 class="section-title"><i class="fas fa-heartbeat"></i> Examen Clinique</h2>
-
-                <div>
-                    <p><span class="label">Tension:</span> <span id="tension"></span></p>
-                    <p><span class="label">Pouls:</span> <span id="pouls"></span></p>
-                    <p><span class="label">Saturation O2:</span> <span id="saturationO2"></span></p>
-                    <p><span class="label">Température:</span> <span id="temperature"></span></p>
-                    <p><span class="label">Fréquence Respiratoire:</span> <span id="frequenceRespiratoire"></span></p>
-
-                    <details>
-                        <summary>Examen Cardiovasculaire</summary>
-                        <p><span id="examenCardiovasculaire"></span></p>
-                    </details>
-
-                    <details>
-                        <summary>Examen Pulmonaire</summary>
-                        <p><span id="examenPulmonaire"></span></p>
-                    </details>
-
-                    <details>
-                        <summary>Examen Abdominal</summary>
-                        <p><span id="examenAbdominal"></span></p>
-                    </details>
-
-                    <details>
-                        <summary>Examen Neurologique</summary>
-                        <p><span id="examenNeurologique"></span></p>
-                    </details>
-
+            <!-- PATIENT MINI PROFILE (Optional, kept for quick ref) -->
+            <div class="patient-mini-card">
+                <div class="patient-avatar">
+                    <span id="patient-initials">P</span>
                 </div>
-
-            </div>
-            <div class="medical-card2" id="examens">
-                <h2 class="section-title"><i class="fas fa-stethoscope"></i> Examens Complémentaires</h2>
-                <div class="exam-categories">
-                    <div class="exam-category">
-                        <h3>Examens sanguins</h3>
-                        <div class="exam-buttons">
-                            <button class="exam-btn" data-exam="NFS">NFS</button>
-                            <button class="exam-btn" data-exam="Ionogramme">Ionogramme</button>
-                            <button class="exam-btn" data-exam="Bilan hépatique">Bilan hépatique</button>
-                            <button class="exam-btn" data-exam="Bilan rénal">Bilan rénal</button>
-                            <button class="exam-btn" data-exam="CRP">CRP</button>
-                            <button class="exam-btn" data-exam="Procalcitonine">Procalcitonine</button>
-                        </div>
-                    </div>
-                    <div class="exam-category">
-                        <h3>Imagerie</h3>
-                        <div class="exam-buttons">
-                            <button class="exam-btn" data-exam="Radiographie pulmonaire">Radio pulmonaire</button>
-                            <button class="exam-btn" data-exam="Echographie abdominale">Écho abdominale</button>
-                            <button class="exam-btn" data-exam="Scanner cérébral">Scanner cérébral</button>
-                            <button class="exam-btn" data-exam="IRM médullaire">IRM médullaire</button>
-                            <button class="exam-btn" data-exam="Radiographie thoracique">Radio thoracique</button>
-                        </div>
-                    </div>
-                    <div class="exam-category">
-                        <h3>Tests fonctionnels</h3>
-                        <div class="exam-buttons">
-                            <button class="exam-btn" data-exam="ECG">ECG</button>
-                            <button class="exam-btn" data-exam="EFR">EFR</button>
-                            <button class="exam-btn" data-exam="Test d'effort">Test d'effort</button>
-                        </div>
-                    </div>
-                    <div class="exam-category">
-                        <h3>Examens microbiologiques</h3>
-                        <div class="exam-buttons">
-                            <button class="exam-btn" data-exam="Hémocultures">Hémocultures</button>
-                            <button class="exam-btn" data-exam="ECBU">ECBU</button>
-                            <button class="exam-btn" data-exam="Coproculture">Coproculture</button>
-                            <button class="exam-btn" data-exam="Antibiogramme">Antibiogramme</button>
-                        </div>
-                    </div>
+                <div class="patient-details">
+                    <h3 id="patient-nom-sidebar">Patient</h3>
+                    <p><span id="patient-age-sidebar">--</span> ans | <span id="patient-sexe-sidebar">--</span></p>
                 </div>
-                <button id="validate-exams" class="validate-btn">Demander les examens sélectionnés</button>
-                <div id="examens-results" class="exam-results"></div>
             </div>
 
-            <div class="medical-card" id="diagnostic">
-                <h2 class="section-title"><i class="fas fa-diagnoses"></i> Diagnostic</h2>
-                <select id="diagnostic-select">
-                    <option value="">Sélectionnez un diagnostic</option>
-                </select>
-                <button id="validate-diagnostic" style="color: red;">Valider ?</button>
-                <p id="score"></p>
-                <p id="feedback"></p>
-                <p id="correctDiagnostic"></p>
+            <!-- NAVIGATION -->
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="section-anamnese">
+                    <i class="fas fa-comments"></i> Anamnèse
+                </button>
+                <button class="nav-item" data-target="section-examen-clinique">
+                    <i class="fas fa-stethoscope"></i> Examen Clinique
+                </button>
+                <button class="nav-item" data-target="section-examens">
+                    <i class="fas fa-flask"></i> Examens Compl.
+                </button>
+                <button class="nav-item" data-target="section-synthese">
+                    <i class="fas fa-check-circle"></i> Synthèse & Décision
+                </button>
+            </nav>
 
-                <h2 class="section-title"><i class="fas fa-prescription"></i>Prescription</h2>
-                <div id="availableTreatments"></div>
-                <button id="validate-traitement" style="color: red;">Valider ?</button>
-                <p id="treatment-feedback"></p>
+            <!-- SCOPE / VITAL MONITOR (Persistent) -->
+            <div class="sidebar-scope" id="sidebar-scope">
+                <!-- The JS will mount the VitalSignsMonitor here -->
+                <!-- Hidden elements for JS to populate, used by the monitor -->
+                <div id="vitals-data" style="display: none;">
+                    <span id="tension"></span>
+                    <span id="pouls"></span>
+                    <span id="saturationO2"></span>
+                    <span id="temperature"></span>
+                    <span id="frequenceRespiratoire"></span>
+                </div>
             </div>
 
-        </div>
-        <div id="timer" style="text-align: center; font-size: 2em; margin-bottom: 10px;"></div>
-        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
-            <a href="index.html" class="back-link-bottom">Retour</a>
-            <button id="next-case">Cas Suivant</button>
-        </div>
+            <div class="sidebar-footer">
+                <div id="timer" class="timer-display">00:00</div>
+                <a href="index.html" class="quit-btn">QUITTER</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT Area -->
+        <main class="main-content">
+
+            <header class="top-bar">
+                <div class="case-info">
+                    <span class="label">MOTIF D'ADMISSION</span>
+                    <h2 id="motif-hospitalisation">Chargement...</h2>
+                </div>
+            </header>
+
+            <div class="content-scroll-area">
+
+                <!-- SECTION: ANAMNÈSE -->
+                <section id="section-anamnese" class="game-section active">
+                    <h2 class="section-header">1. INTERROGATOIRE</h2>
+
+                    <div class="grid-layout">
+                        <!-- Histoire de la Maladie -->
+                        <div class="medical-card" id="histoire-maladie">
+                            <h3 class="card-title">Histoire de la Maladie</h3>
+                            <div class="card-content">
+                                <!-- Mode de vie moved here -->
+                                <div class="sub-section" id="mode-de-vie">
+                                    <h4>Mode de vie</h4>
+                                    <ul>
+                                        <li>Tabac: <span id="tabac"></span></li>
+                                        <li>Alcool: <span id="alcool"></span></li>
+                                        <li>Métier: <span id="emploi"></span></li>
+                                        <li>Activité: <span id="activite-physique"></span></li>
+                                        <li>Alimentation: <span id="alimentation"></span></li>
+                                    </ul>
+                                </div>
+
+                                <p><span class="label">Début :</span> <span id="debut-symptomes"></span></p>
+                                <p><span class="label">Contexte :</span> <span id="facteurs-declenchants"></span></p>
+                                <p><span class="label">Évolution :</span> <span id="evolution"></span></p>
+                                <p><span class="label">Signes associés :</span> <span id="symptomes-associes"></span>
+                                </p>
+                                <div class="remarques-box">
+                                    <i class="fas fa-pen"></i> <span id="remarques"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terrain & Antécédents -->
+                        <div class="medical-card" id="antecedents">
+                            <h3 class="card-title">Terrain & Antécédents</h3>
+                            <div class="card-content">
+                                <div class="sub-section">
+                                    <h4>Antécédents</h4>
+                                    <div id="antecedents-medicaux"></div>
+                                    <div id="antecedents-chirurgicaux"></div>
+                                    <div id="antecedents-familiaux"></div>
+                                </div>
+
+                                <div class="sub-section">
+                                    <h4>Allergies / Traitements</h4>
+                                    <p><span class="label">Allergies:</span> <span id="allergies-liste"></span></p>
+                                    <p><span class="label">Tt habituel:</span> <span id="traitements-liste"></span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Patient Info Fields required by JS -->
+                        <div id="patient-info" style="display:none;">
+                            <span id="patient-nom"></span>
+                            <span id="patient-prenom"></span>
+                            <span id="patient-age"></span>
+                            <span id="patient-sexe"></span>
+                            <span id="patient-taille"></span>
+                            <span id="patient-poids"></span>
+                            <span id="patient-groupeSanguin"></span>
+                            <span id="aspectGeneral"></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: EXAMEN PHYSIQUE -->
+                <section id="section-examen-clinique" class="game-section">
+                    <h2 class="section-header">2. EXAMEN PHYSIQUE</h2>
+
+                    <div class="grid-layout">
+                        <div class="medical-card full-width" id="examen-clinique">
+                            <!-- Note: Vitals are in sidebar. This contains only body exams. -->
+                            <h3 class="card-title">Examen par appareil</h3>
+
+                            <div class="exam-details-grid">
+                                <div class="exam-item">
+                                    <h4><i class="fas fa-heartbeat"></i> Cardiovasculaire</h4>
+                                    <p id="examenCardiovasculaire"></p>
+                                </div>
+                                <div class="exam-item">
+                                    <h4><i class="fas fa-lungs"></i> Pulmonaire</h4>
+                                    <p id="examenPulmonaire"></p>
+                                </div>
+                                <div class="exam-item">
+                                    <h4><i class="fas fa-procedures"></i> Abdominal</h4>
+                                    <p id="examenAbdominal"></p>
+                                </div>
+                                <div class="exam-item">
+                                    <h4><i class="fas fa-brain"></i> Neurologique</h4>
+                                    <p id="examenNeurologique"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: EXAMENS COMPLÉMENTAIRES -->
+                <section id="section-examens" class="game-section">
+                    <h2 class="section-header">3. EXAMENS COMPLÉMENTAIRES</h2>
+                    <div class="medical-card full-width" id="examens">
+                        <div class="exam-categories">
+                            <!-- Populated by JS -->
+                        </div>
+                        <button id="validate-exams" class="action-btn">Demander les examens sélectionnés</button>
+                        <div id="examens-results" class="exam-results-container"></div>
+                    </div>
+                </section>
+
+                <!-- SECTION: SYNTHÈSE & DÉCISION -->
+                <section id="section-synthese" class="game-section">
+                    <h2 class="section-header">4. SYNTHÈSE & DÉCISION</h2>
+
+                    <div class="grid-layout">
+                        <div class="medical-card" id="diagnostic">
+                            <h3 class="card-title">Diagnostic</h3>
+                            <div class="form-group">
+                                <label>Quelle est votre hypothèse principale ?</label>
+                                <select id="diagnostic-select" class="modern-select">
+                                    <option value="">Sélectionnez un diagnostic</option>
+                                </select>
+                            </div>
+                            <!-- REMOVED validate-diagnostic button as requested -->
+                            <p id="score" class="score-display"></p>
+                            <p id="feedback" class="feedback-display"></p>
+                            <p id="correctDiagnostic" class="hidden"></p>
+                        </div>
+
+                        <div class="medical-card">
+                            <h3 class="card-title">Prescription & Prise en charge</h3>
+                            <div id="availableTreatments" class="treatments-grid">
+                                <!-- Populated by JS -->
+                            </div>
+
+                            <div class="action-area">
+                                <button id="validate-traitement" class="validate-final-btn">
+                                    <i class="fas fa-check-double"></i> VALIDER LE CAS
+                                </button>
+                            </div>
+                            <p id="treatment-feedback" class="feedback-display"></p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
 
     <div id="fireworks-container"></div>
 
+    <!-- Correction Overlay -->
     <div id="correction-overlay" class="correction-overlay">
         <div id="correction-modal" class="correction-modal">
             <h2 class="correction-title">Correction du cas</h2>
             <div id="correction-content"></div>
-            <button id="toggle-case-review">Revoir le cas</button>
+            <button id="toggle-case-review" class="secondary-btn">Revoir le cas</button>
             <div id="case-review" class="case-review"></div>
             <div class="correction-actions">
-                <button id="correction-back">Retour</button>
-                <button id="correction-next">Suivant</button>
+                <button id="correction-back" class="secondary-btn">Retour</button>
+                <button id="correction-next" class="primary-btn">Cas Suivant</button>
             </div>
         </div>
     </div>
 
+    <!-- Image Overlay -->
     <div id="image-overlay" class="image-overlay" aria-hidden="true">
         <div id="image-modal" class="image-modal" role="dialog" aria-modal="true" aria-labelledby="image-modal-caption">
-            <button id="image-modal-close" class="image-close" aria-label="Fermer l’image">&times;</button>
+            <button id="image-modal-close" class="image-close" aria-label="Fermer l'image">&times;</button>
             <img id="image-modal-img" src="" alt="">
             <div id="image-modal-caption" class="image-caption"></div>
         </div>
     </div>
 
+    <!-- Hidden Next Case Button for JS compatibility if needed, though we have one in correction modal -->
+    <button id="next-case" style="display:none;">Cas Suivant</button>
 
-    <script src="js/game.js?t=1741288320000"></script>
+    <script src="js/game.js?t=1741288320001"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
 </body>
+
+</html>
