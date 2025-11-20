@@ -1,0 +1,105 @@
+{
+  "id": "nephro_pyélonéphrite_obstructive",
+  "patient": {
+    "nom": "Ribaucourt",
+    "prenom": "Lucas",
+    "age": 32,
+    "sexe": "M",
+    "taille": "176 cm",
+    "poids": "88 kg",
+    "groupeSanguin": "AB+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fièvre et douleur lombaire droite intense",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire" },
+      "tabac": { "quantite": "10 cigarettes/j" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Employé de bureau", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Calculs rénaux récidivants", "traitement": "Antalgiques lors des crises" }
+      ],
+      "chirurgicaux": [{ "intervention": "Aucune", "date": "Jamais" }],
+      "familiaux": [{ "lien": "Mère", "pathologie": "Lithiase rénale", "age": "57" }]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures",
+      "evolution": "Douleur lombaire droite fébrile, aggravation progressive",
+      "facteursDeclenchants": "Antécédents de lithiase — suspicion de nouveau calcul",
+      "symptomesAssocies": ["Frissons", "Nausées", "Mictions douloureuses"],
+      "remarques": "Température élevée non soulagée par paracétamol"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "104/62 mmHg",
+      "pouls": "112 bpm",
+      "temperature": "39.4°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "22/min"
+    },
+    "aspectGeneral": "Patient fébrile, pâle, algique",
+    "examenCardiovasculaire": { "auscultation": "Tachycardie régulière" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Douleur FID et angle costo-vertébral droit très sensible" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": [
+    "NFS",
+    "CRP",
+    "Ionogramme sanguin",
+    "Urée",
+    "Créatininémie",
+    "Bandelette urinaire",
+    "ECBU",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Echographie appareil urinaire"
+  ],
+  "examResults": {
+    "Créatininémie": "165 µmol/L (modérément élevée)",
+    "Urée": "11 mmol/L (élevée)",
+    "Ionogramme sanguin": "Na+ 137 mmol/L, K+ 4.8 mmol/L",
+    "CRP": "Très élevée (185 mg/L)",
+    "Bandelette urinaire": "Nitrites +++, Leucocytes +++",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Dilatation pyélocalicielle droite + suspicion d'obstacle urétéral",
+    "Scanner abdomino-pelvien": "Calcul obstructif de l’uretère lombaire droit (6 mm) avec pyélonéphrite aiguë obstructive",
+    "Echographie appareil urinaire": "Confirme dilatation rénale droite",
+    "ECBU": "Non réalisé",
+    "NFS": "Non réalisé"
+  },
+  "possibleDiagnostics": [
+    "Pyélonéphrite aiguë simple",
+    "Pyélonéphrite obstructive",
+    "Colique néphrétique non compliquée",
+    "Infection urinaire basse"
+  ],
+  "correctDiagnostic": "Pyélonéphrite obstructive",
+  "feedback": {
+    "Pyélonéphrite obstructive": "Diagnostic correct ! Urgence urologique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Antibiothérapie IV",
+    "Drainage par sonde JJ",
+    "Néphrostomie",
+    "Hydratation IV",
+    "Antipyrétiques"
+  ],
+  "correctTreatments": [
+    "Antibiothérapie IV",
+    "Drainage par sonde JJ",
+    "Néphrostomie"
+  ],
+  "correction": "<h3>Pyélonéphrite obstructive</h3>\n<p>Le patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile</li><li>Réaliser un scanner injecté en urgence</li><li>Initier une antibiothérapie IV à large spectre dès l'admission</li><li>Lever l'obstacle rapidement : sonde JJ ou néphrostomie</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Traiter comme une pyélonéphrite simple sans imagerie</li><li>Retarder le drainage en présence de sepsis</li><li>Oublier de surveiller la fonction rénale</li></ul>"
+}

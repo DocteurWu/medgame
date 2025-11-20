@@ -1,79 +1,404 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutoriel - Medgame</title>
+    <title>Tutoriel - MedGame</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
+        /* Premium Static Design Overrides */
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            overflow: hidden;
+            /* Ensure no scrollbars */
         }
 
-        h1 {
-            color: #0056b3;
+        .scene-overlay {
+            perspective: none;
+            /* Remove 3D perspective */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .glass-card {
+            /* Static positioning, no transform */
+            transform: none !important;
+            width: 95%;
+            max-width: 1200px;
+            /* Wider for better horizontal layout */
+            background: rgba(10, 15, 30, 0.65);
+            /* Darker, more premium glass */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 0 40px rgba(0, 242, 254, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Header Styling */
+        .tutorial-header {
             text-align: center;
-            margin-bottom: 30px;
+            position: relative;
         }
 
-        p {
-            margin-bottom: 15px;
+        .tutorial-header::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 1rem auto 0;
+            opacity: 0.7;
         }
 
-        ul {
-            margin-bottom: 15px;
-            padding-left: 20px;
+        .tutorial-title {
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            text-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
         }
 
-        li {
-            margin-bottom: 5px;
+        .tutorial-subtitle {
+            font-family: var(--font-main);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
         }
 
-        a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
+        /* Steps Grid */
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 242, 254, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(79, 172, 254, 0.4));
+        }
+
+        .step-title {
+            font-family: var(--font-title);
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .step-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Conseils Section */
+        .conseils-bar {
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.05) 0%, rgba(255, 0, 85, 0.05) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .conseils-title {
+            font-family: var(--font-title);
+            font-size: 1.1rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 150px;
+        }
+
+        .conseils-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            flex-grow: 1;
+            margin-left: 2rem;
+        }
+
+        .conseil-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        .conseil-item i {
+            color: #43e97b;
+            font-size: 0.9rem;
+        }
+
+        /* Footer & Button */
+        .footer-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-premium {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-family: var(--font-title);
+            font-size: 0.9rem;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
         }
 
-        a:hover {
-            background-color: #0056b3;
+        .btn-premium:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+        }
+
+        .version-text {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
         }
     </style>
 </head>
+
 <body>
-    <h1>Tutoriel - Medgame</h1>
+    <div id="canvas-container"></div>
+    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
 
+    <div class="scene-overlay">
+        <div class="glass-card" id="tutorial-card">
 
-         <strong>Déroulement du jeu :</strong>
-        <ul>
-            <li><strong>Présentation du patient :</strong> Le jeu commence par la présentation d'un patient virtuel, avec ses informations personnelles (âge, sexe, antécédents médicaux, etc.) et la raison de sa consultation.</li>
+            <div class="tutorial-header">
+                <h1 class="tutorial-title">TUTORIEL</h1>
+                <p class="tutorial-subtitle">Guide du MedGame - Simulation de Bichat</p>
+            </div>
 
-            <li><strong>Examens complémentaires :</strong> Demandez des examens complémentaires (analyses sanguines, radiographies, ECG, etc.) si nécessaire. Les résultats de ces examens vous aideront à affiner votre diagnostic.</li>
-            <li><strong>Diagnostic :</strong> Une fois que vous avez recueilli suffisamment d'informations, proposez un diagnostic.</li>
-            <li><strong>Traitement :</strong> Proposez un traitement adapté au diagnostic.</li>
-          
-        </ul>
-    </p>
+            <div class="steps-container">
+                <div class="step-card">
+                    <i class="fas fa-user-md step-icon"></i>
+                    <h3 class="step-title">1. Présentation</h3>
+                    <p class="step-desc">Patient virtuel avec informations complètes : âge, sexe, antécédents et motif
+                        de consultation.</p>
+                </div>
+                <div class="step-card">
+                    <i class="fas fa-flask step-icon"></i>
+                    <h3 class="step-title">2. Examens</h3>
+                    <p class="step-desc">Commandez analyses, imagerie et ECG. Chaque résultat affinera votre hypothèse
+                        diagnostique.</p>
+                </div>
+                <div class="step-card">
+                    <i class="fas fa-diagnoses step-icon"></i>
+                    <h3 class="step-title">3. Diagnostic</h3>
+                    <p class="step-desc">Analysez les données recueillies pour formuler un diagnostic précis et
+                        justifié.</p>
+                </div>
+                <div class="step-card">
+                    <i class="fas fa-pills step-icon"></i>
+                    <h3 class="step-title">4. Traitement</h3>
+                    <p class="step-desc">Proposez la stratégie thérapeutique la plus adaptée pour soigner votre patient.
+                    </p>
+                </div>
+            </div>
 
-    <p>
-        <strong>Conseils :</strong>
-        <ul>
-            <li>Prenez le temps de bien lire toutes les informations fournies.</li>
-            <li>N'hésitez pas à consulter les ressources disponibles (les réfs).</li>
-            <li>Réfléchissez bien avant de prendre chaque décision.</li>
-            <li>Apprenez de vos erreurs !</li>
-        </ul>
-    </p>
+            <div class="conseils-bar">
+                <div class="conseils-title">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>CONSEILS</span>
+                </div>
+                <div class="conseils-grid">
+                    <div class="conseil-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Lisez tout attentivement</span>
+                    </div>
+                    <div class="conseil-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Consultez les réf</span>
+                    </div>
+                    <div class="conseil-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Réfléchissez bien</span>
+                    </div>
+                    <div class="conseil-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Apprenez de vos erreurs</span>
+                    </div>
+                </div>
+            </div>
 
-    <p>Ce tutoriel vous donne un aperçu général du déroulement du jeu. Chaque cas médical est unique et vous demandera d'adapter votre approche. Bon courage !</p>
+            <div class="footer-actions">
+                <a href="index.html" class="btn-premium" onclick="transitionTo('index.html'); return false;">
+                    <i class="fas fa-home"></i> Retour à l'accueil
+                </a>
+                <span class="version-text">VERSION 3.0 • SIMULATION ÉDUCATIVE</span>
+            </div>
 
-    <a href="index.html">Retour à l'accueil</a>
+        </div>
+    </div>
+
+    <script>
+        // 3D Background
+        const init3D = () => {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x000510, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            const particlesCount = 700;
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount; i++) {
+                const i3 = i * 3;
+                const angle = i * 0.1;
+                const radius = 3;
+                const rise = i * 0.05 - 15;
+
+                const x = Math.cos(angle) * radius;
+                const z = Math.sin(angle) * radius;
+                const x2 = Math.cos(angle + Math.PI) * radius;
+                const z2 = Math.sin(angle + Math.PI) * radius;
+
+                if (i % 2 === 0) {
+                    posArray[i3] = x + (Math.random() - 0.5) * 0.5;
+                    posArray[i3 + 1] = rise;
+                    posArray[i3 + 2] = z + (Math.random() - 0.5) * 0.5;
+                    colorArray[i3] = 0.1; colorArray[i3 + 1] = 0.8; colorArray[i3 + 2] = 1.0;
+                } else {
+                    posArray[i3] = x2 + (Math.random() - 0.5) * 0.5;
+                    posArray[i3 + 1] = rise;
+                    posArray[i3 + 2] = z2 + (Math.random() - 0.5) * 0.5;
+                    colorArray[i3] = 1.0; colorArray[i3 + 1] = 0.2; colorArray[i3 + 2] = 0.6;
+                }
+            }
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+
+            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
+            const material = new THREE.PointsMaterial({
+                size: 0.15,
+                map: sprite,
+                transparent: true,
+                vertexColors: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, material);
+            scene.add(particlesMesh);
+
+            camera.position.z = 8;
+            camera.position.y = -5;
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                particlesMesh.rotation.y += 0.003;
+                particlesMesh.rotation.z += 0.001;
+                const time = Date.now() * 0.0005;
+                camera.position.y += Math.sin(time) * 0.01;
+                renderer.render(scene, camera);
+            };
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+        init3D();
+
+        // Audio
+        const audio = document.getElementById('background-music');
+        audio.volume = 0.3;
+        document.body.addEventListener('click', () => audio.play().catch(() => { }), { once: true });
+
+        // Transition
+        function transitionTo(url) {
+            document.body.style.opacity = 0;
+            setTimeout(() => window.location.href = url, 500);
+        }
+    </script>
 </body>
+
 </html>

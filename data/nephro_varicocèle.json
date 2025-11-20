@@ -1,0 +1,91 @@
+{
+  "id": "nephro_varicocèle",
+  "patient": {
+    "nom": "Delcourt",
+    "prenom": "Maxime",
+    "age": 27,
+    "sexe": "M",
+    "taille": "181 cm",
+    "poids": "79 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur scrotale gauche chronique",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Course à pied et musculation" },
+      "tabac": { "quantite": "0" },
+      "alcool": { "quantite": "Occasionnel (1-2 verres/semaine)" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Technicien en logistique", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Aucun", "traitement": "Aucun" }
+      ],
+      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2016" }],
+      "familiaux": [{ "lien": "Frère", "pathologie": "Varicocèle opérée", "age": "29" }]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois",
+      "evolution": "Pesanteur scrotale majorée en fin de journée",
+      "facteursDeclenchants": "Station debout prolongée, efforts physiques",
+      "symptomesAssocies": ["Gêne à la marche", "Disconfort à l’effort"],
+      "remarques": "Amélioration en position allongée"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "124/76 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Patient non fébrile, en bon état général",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Sans anomalies" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": ["Créatininémie", "Urée", "Ionogramme sanguin", "CRP", "Bandelette urinaire", "Protéinurie des 24h", "Albuminurie", "Échographie rénale et vésicale", "Scanner abdomino-pelvien", "Echographie appareil urinaire", "Spermogramme"],
+  "examResults": {
+    "Créatininémie": "Normale",
+    "Urée": "Normale",
+    "Ionogramme sanguin": "Normal",
+    "CRP": "Normale",
+    "Bandelette urinaire": "RAS",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Non réalisée",
+    "Scanner abdomino-pelvien": "Non indiqué",
+    "Echographie appareil urinaire": "Dilata­tion des veines du plexus pampiniforme gauche (>3 mm), reflux augmenté en Valsalva",
+    "Spermogramme": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Varicocèle",
+    "Hydrocèle",
+    "Orchi-épididymite",
+    "Hernie inguinale"
+  ],
+  "correctDiagnostic": "Varicocèle",
+  "feedback": {
+    "Varicocèle": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Contention scrotale",
+    "Antalgiques",
+    "Embolisation veineuse",
+    "Chirurgie type ligature veineuse",
+    "Repos et limitation des efforts"
+  ],
+  "correctTreatments": [
+    "Contention scrotale",
+    "Antalgiques",
+    "Embolisation veineuse"
+  ],
+  "correction": "<h3>Varicocèle</h3>\n<p>Le patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Évaluer l’impact sur la douleur, la fertilité et la qualité de vie</li><li>Proposer Doppler systématique pour la classification</li><li>Embolisation ou ligature veineuse si douleur persistante ou infertilité</li><li>Conseiller port de suspensoir, éviter efforts prolongés</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec une hydrocèle ou hernie inguinale</li><li>Sous-estimer les symptômes gênants</li><li>Négliger un spermogramme si désir de fertilité</li></ul>"
+}

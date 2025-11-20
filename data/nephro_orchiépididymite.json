@@ -1,0 +1,92 @@
+{
+  "id": "nephro_orchiépididymite",
+  "patient": {
+    "nom": "Bruneval",
+    "prenom": "Adrien",
+    "age": 24,
+    "sexe": "M",
+    "taille": "183 cm",
+    "poids": "76 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur scrotale progressive",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Pratique du football en club" },
+      "tabac": { "quantite": "5 cigarettes/j" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Équilibré", "particularites": "Aucune" },
+      "emploi": { "profession": "Agent de sécurité", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Infections urinaires ponctuelles", "traitement": "Antibiotiques selon épisodes" }
+      ],
+      "chirurgicaux": [{ "intervention": "Aucune", "date": "Jamais" }],
+      "familiaux": [{ "lien": "Père", "pathologie": "Hypertension", "age": "52" }]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "48 heures",
+      "evolution": "Douleur progressive et croissante",
+      "facteursDeclenchants": "Rapport sexuel récent non protégé",
+      "symptomesAssocies": ["Fièvre modérée", "Brûlures mictionnelles"],
+      "remarques": "Gêne à la marche"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "118/72 mmHg",
+      "pouls": "92 bpm",
+      "temperature": "38.2°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient algique mais non agité",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Sensible en fosse iliaque droite" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": ["Créatininémie", "Urée", "Ionogramme sanguin", "CRP", "Bandelette urinaire", "Protéinurie des 24h", "Albuminurie", "Échographie rénale et vésicale", "Scanner abdomino-pelvien", "Echographie appareil urinaire", "Échographie scrotale Doppler", "Recherche Chlamydia/Gonocoque"],
+  "examResults": {
+    "Créatininémie": "RAS",
+    "Urée": "RAS",
+    "Ionogramme sanguin": "Normal",
+    "CRP": "Élevée (45 mg/L)",
+    "Bandelette urinaire": "Leucocytes +++, nitrites +",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Non réalisée",
+    "Scanner abdomino-pelvien": "Non indiqué",
+    "Echographie appareil urinaire": "Épididyme droit augmenté de volume, hypervascularisé, réaction hydrocèle modérée",
+    "Échographie scrotale Doppler": "Non réalisé",
+    "Recherche Chlamydia/Gonocoque": "Positif"
+  },
+  "possibleDiagnostics": [
+    "Orchi-épididymite",
+    "Torsion du cordon spermatique",
+    "Colique néphrétique",
+    "Hernie inguinale étranglée"
+  ],
+  "correctDiagnostic": "Orchi-épididymite",
+  "feedback": {
+    "Orchi-épididymite": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Antibiothérapie",
+    "Antalgiques",
+    "Glace locale",
+    "Repos et port de suspensoir",
+    "Anti-inflammatoires"
+  ],
+  "correctTreatments": [
+    "Antibiothérapie",
+    "Antalgiques",
+    "Repos et port de suspensoir"
+  ],
+  "correction": "<h3>Orchi-épididymite</h3>\n<p>Le patient présente une douleur scrotale d'installation progressive, avec fièvre, brûlures urinaires et signes biologiques d'infection. L'échographie scrotale retrouve un épididyme hypervascularisé, typique d'une épididymite.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Faire un Doppler en cas de doute pour éliminer une torsion</li><li>Rechercher systématiquement une IST chez un homme jeune</li><li>Mettre en place une antibiothérapie adaptée (C3G + doxycycline si IST suspectée)</li><li>Repos, glaçage et suspensoir</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec une torsion (douleur plus brutale)</li><li>Arrêter l'antibiothérapie trop tôt</li><li>Négliger l'orientation vers un dépistage IST</li></ul>"
+}

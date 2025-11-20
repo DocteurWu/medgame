@@ -1,0 +1,90 @@
+{
+  "id": "nephro_torsion_du_cordon_spermatique",
+  "patient": {
+    "nom": "Létoiledemer",
+    "prenom": "Patrick",
+    "age": 21,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "82 kg",
+    "groupeSanguin": "0+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur testiculaire aiguë unilatérale",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sportif (course à pied)" },
+      "tabac": { "quantite": "0" },
+      "alcool": { "quantite": "Ne boit pas" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Militaire", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Aucun", "traitement": "Aucun" }
+      ],
+      "chirurgicaux": [{ "intervention": "Aucune", "date": "Jamais" }],
+      "familiaux": [{ "lien": "Père", "pathologie": "RAS", "age": "45" }]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "3 heures",
+      "evolution": "Installation brutale au repos",
+      "facteursDeclenchants": "Aucun",
+      "symptomesAssocies": ["Nausées", "Vomissements"],
+      "remarques": "Douleur testiculaire droite intense, irradiant à l’aine"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "122/74 mmHg",
+      "pouls": "98 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Visage crispé par la douleur, agitation",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Souple, sans défense" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": ["Créatininémie", "Urée", "Ionogramme sanguin", "CRP", "Bandelette urinaire", "Protéinurie des 24h", "Albuminurie", "Échographie rénale et vésicale", "Scanner abdomino-pelvien", "Echographie appareil urinaire","Échographie scrotale Doppler"],
+  "examResults": {
+    "Créatininémie": "RAS",
+    "Urée": "RAS",
+    "Ionogramme sanguin": "Normal",
+    "CRP": "Normale",
+    "Bandelette urinaire": "RAS",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Non réalisée",
+    "Scanner abdomino-pelvien": "Non indiqué",
+    "Echographie appareil urinaire": "Non réalisé",
+    "Échographie scrotale Doppler": "absence de flux artériel au testicule droit, augmentation de volume du testicule"
+  },
+  "possibleDiagnostics": [
+    "Torsion du cordon spermatique",
+    "Orchi-épididymite",
+    "Traumatisme testiculaire",
+    "Colique néphrétique"
+  ],
+  "correctDiagnostic": "Torsion du cordon spermatique",
+  "feedback": {
+    "Torsion du cordon spermatique": "Diagnostic correct ! Urgence absolue.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Détorsion chirurgicale en urgence",
+    "Orchidopéxie bilatérale",
+    "Antalgiques IV",
+    "Antibiotiques"
+  ],
+  "correctTreatments": [
+    "Détorsion chirurgicale en urgence",
+    "Orchidopéxie bilatérale",
+    "Antalgiques IV"
+  ],
+  "correction": "<h3>Torsion du cordon spermatique</h3>\n<p>Le patient présente une douleur testiculaire brutale, intense, avec nausées et vomissements. L'échographie Doppler montre une absence de flux artériel dans le testicule droit, ce qui confirme la torsion.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Toute douleur testiculaire aiguë est une torsion jusqu'à preuve du contraire</li><li>Faire un Doppler testiculaire en urgence si doute diagnostique</li><li>Intervention rapide : détorsion et orchidopéxie bilatérale</li><li>Informer sur la perte potentielle de fertilité si retard diagnostique</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Retarder la prise en charge pour des examens inutiles</li><li>Confondre avec une orchi-épididymite (douleur plus progressive)</li><li>Ne pas fixer le testicule controlatéral</li></ul>"
+}
