@@ -381,6 +381,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 '<div class="vm" style="position:relative; overflow:hidden;">'
                 + '<div class="vm-crt-overlay"></div>' // CRT Overlay
                 + '<div class="vm-header"><div style="color:#007bff;font-weight:700;text-shadow:0 0 5px rgba(0,123,255,0.5)">ECG</div><div style="color:#e0e0e0">HR: <span id="hr-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.heartRate + '</span> BPM</div></div>'
+                // Main flex container for scope and vitals cards
+                + '<div style="display:flex; gap:8px; align-items:stretch;">'
+                // Left side: ECG and SpO2 scopes
+                + '<div style="flex:1; min-width:0;">'
                 + '<div style="position:relative;height:' + this.layout.ecgH + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(0,123,255,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
                 + '<div class="vm-scanline"></div>' // Scanline
                 + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
@@ -418,20 +422,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 + '</svg>'
                 + '</div>'
                 + '</div>'
-                + '<div class="vm-grid" style="margin-top:8px; display:flex; flex-direction:column; width:100%;">'
-                + '<div style="display: flex; gap: 12px; width:100%; margin-bottom: 6px;">'
-                + '<div class="vm-card" style="flex:1 1 0; min-width:0; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2)">'
-                + '<div style="color:#6c757d;font-size:12px;margin-bottom:2px">TENSION</div>'
-                + '<div id="bp-value" style="color:#fff;font-weight:700;font-size:16px;width:100%;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
-                + '<div style="color:#007bff;font-size:11px">mmHg</div>'
+                + '</div>' // End left side
+                // Right side: Tension and Temperature cards
+                + '<div style="display:flex; flex-direction:column; gap:8px; width:80px; flex-shrink:0;">'
+                + '<div class="vm-card" style="flex:1; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2); display:flex; flex-direction:column; justify-content:center; padding:6px;">'
+                + '<div style="color:#6c757d;font-size:10px;margin-bottom:2px;text-align:center;">TENSION</div>'
+                + '<div id="bp-value" style="color:#fff;font-weight:700;font-size:13px;text-align:center;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
+                + '<div style="color:#007bff;font-size:9px;text-align:center;">mmHg</div>'
                 + '</div>'
-                + '<div class="vm-card" style="flex:1 1 0; min-width:0; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2)">'
-                + '<div style="color:#6c757d;font-size:12px;margin-bottom:2px">TEMP</div>'
-                + '<div id="temp-value" style="color:#fff;font-weight:700;font-size:16px;width:100%;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.temperature.toFixed(1) + '°C</div>'
-                + '<div style="color:#007bff;font-size:11px"></div>'
+                + '<div class="vm-card" style="flex:1; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2); display:flex; flex-direction:column; justify-content:center; padding:6px;">'
+                + '<div style="color:#6c757d;font-size:10px;margin-bottom:2px;text-align:center;">TEMP</div>'
+                + '<div id="temp-value" style="color:#fff;font-weight:700;font-size:13px;text-align:center;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.temperature.toFixed(1) + '°C</div>'
+                + '<div style="color:#007bff;font-size:9px;text-align:center;"></div>'
                 + '</div>'
-                + '</div>'
-                + '</div>'
+                + '</div>' // End right side
+                + '</div>' // End main flex container
                 + '</div>'
             );
         }
@@ -518,8 +523,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             mountPoint.innerHTML = '';
         }
 
-        const ecgH = 96;
-        const spo2H = 48;
+        const ecgH = 70;
+        const spo2H = 35;
 
         vitalMonitorInstance = new VitalSignsMonitor(monitorProps, { ecgH, spo2H });
         vitalMonitorInstance.mount(mountPoint);
