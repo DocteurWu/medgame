@@ -5,6 +5,6 @@
   "hématologie": [],
   "gastro-entérologie": [],
   "immunologie": [],
-  "uronephro":["cardio_1.json"],
+  "uronephro":["nephro_pyélonéphrite_obstructive.json","nephro_varicocèle.json","nephro_IRA_obstructive.json","nephro_torsion_du_cordon_spermatique.json","nephro_orchiépididymite.json"],
   "neurosensorielle": []
 }
