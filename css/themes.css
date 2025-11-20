@@ -197,92 +197,117 @@ body {
 }
 
 .theme-card h2 {
-    font-size: 1rem;
-    margin-bottom: 6px;
-    color: #2c3e50;
-    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #1a1a1a;
+    font-weight: 700;
     line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .theme-subtitle {
-    font-size: 0.85rem;
-    color: #6c757d;
+    font-size: 0.9rem;
+    color: #333333;
     margin: 0;
     line-height: 1.3;
     padding: 0 5px;
+    font-weight: 500;
 }
 
-/* Couleurs modernes pour chaque thème */
+/* Cardiologie - Tons Rouges/Roses plus vifs */
 .theme-card[data-theme="Cardiologie"] {
-    background: linear-gradient(145deg, #ffebee, #ffcdd2);
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    border: 1px solid rgba(255, 154, 158, 0.3);
 }
 
 .theme-card[data-theme="Cardiologie"]:hover {
-    background: linear-gradient(145deg, #ffcdd2, #ef9a9a);
+    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(255, 117, 140, 0.3);
 }
-/* Variante sélectionnée */
+
 .theme-card.selected[data-theme="Cardiologie"] {
-    background: linear-gradient(145deg, #ffcdd2, #e3f2fd);
+    background: linear-gradient(135deg, #ff9a9e 0%, #fff 100%);
+    border-color: #ff758c;
+    box-shadow: 0 0 0 2px #ff758c, 0 10px 20px rgba(255, 117, 140, 0.2);
 }
 
-.theme-card[data-theme="Gynécologie"] {
-    background: linear-gradient(145deg, #fff0f6, #ffd6e7);
+/* Uro-néphrologie - Tons Bleus/Cyans (Eau/Rein) */
+.theme-card[data-theme="Uronephro"] {
+    background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+    border: 1px solid rgba(102, 166, 255, 0.3);
 }
 
-.theme-card[data-theme="Gynécologie"]:hover {
-    background: linear-gradient(145deg, #ffd6e7, #ffb3d1);
-}
-/* Variante sélectionnée */
-.theme-card.selected[data-theme="Gynécologie"] {
-    background: linear-gradient(145deg, #ffd6e7, #e3f2fd);
+.theme-card[data-theme="Uronephro"]:hover {
+    background: linear-gradient(120deg, #66a6ff 0%, #89f7fe 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(102, 166, 255, 0.3);
 }
 
+.theme-card.selected[data-theme="Uronephro"] {
+    background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px #007bff, 0 10px 20px rgba(0, 123, 255, 0.2);
+}
+
+/* Endocrinologie - Tons Violets/Mauves */
 .theme-card[data-theme="Endocrinologie"] {
-    background: linear-gradient(145deg, #f3e5f5, #e1bee7);
+    background: linear-gradient(to top, #c471f5 0%, #fa71cd 100%);
+    border: 1px solid rgba(196, 113, 245, 0.3);
 }
 
 .theme-card[data-theme="Endocrinologie"]:hover {
-    background: linear-gradient(145deg, #e1bee7, #ce93d8);
+    background: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(196, 113, 245, 0.3);
 }
-/* Variante sélectionnée */
+
 .theme-card.selected[data-theme="Endocrinologie"] {
-    background: linear-gradient(145deg, #e1bee7, #e3f2fd);
+    background: linear-gradient(to top, #e6dee9 0%, #f3e7e9 99%, #e3eeff 100%);
+    border-color: #c471f5;
+    box-shadow: 0 0 0 2px #c471f5, 0 10px 20px rgba(196, 113, 245, 0.2);
 }
 
-.theme-card[data-theme="Hématologie"] {
-    background: linear-gradient(145deg, #fce4ec, #f8bbd9);
+/* Neurosensorielle - Tons Oranges/Jaunes (Lumière/Sens) */
+.theme-card[data-theme="Neurosensorielle"] {
+    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    border: 1px solid rgba(253, 160, 133, 0.3);
 }
 
-.theme-card[data-theme="Hématologie"]:hover {
-    background: linear-gradient(145deg, #f8bbd9, #f48fb1);
-}
-/* Variante sélectionnée */
-.theme-card.selected[data-theme="Hématologie"] {
-    background: linear-gradient(145deg, #f8bbd9, #e3f2fd);
+.theme-card[data-theme="Neurosensorielle"]:hover {
+    background: linear-gradient(120deg, #fda085 0%, #f6d365 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(253, 160, 133, 0.3);
 }
 
-.theme-card[data-theme="Gastro-entérologie"] {
-    background: linear-gradient(145deg, #e0f2f1, #b2dfdb);
+.theme-card.selected[data-theme="Neurosensorielle"] {
+    background: linear-gradient(120deg, #f6d365 0%, #fff 100%);
+    border-color: #fda085;
+    box-shadow: 0 0 0 2px #fda085, 0 10px 20px rgba(253, 160, 133, 0.2);
 }
 
-.theme-card[data-theme="Gastro-entérologie"]:hover {
-    background: linear-gradient(145deg, #b2dfdb, #80cbc4);
-}
-/* Variante sélectionnée */
-.theme-card.selected[data-theme="Gastro-entérologie"] {
-    background: linear-gradient(145deg, #b2dfdb, #e3f2fd);
+/* A venir - Tons Gris/Neutres */
+.theme-card[data-theme="A_venir"] {
+    background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+    border: 1px solid rgba(200, 200, 200, 0.3);
+    opacity: 0.8;
 }
 
+.theme-card[data-theme="A_venir"]:hover {
+    background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
+    opacity: 1;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.theme-card.selected[data-theme="A_venir"] {
+    background: #e2ebf0;
+    border-color: #6c757d;
+}
+
+/* Immunologie (si ajouté plus tard) */
 .theme-card[data-theme="Immunologie"] {
-    background: linear-gradient(145deg, #fff8e1, #ffecb3);
-}
-
-.theme-card[data-theme="Immunologie"]:hover {
-    background: linear-gradient(145deg, #ffecb3, #ffd54f);
-}
-/* Variante sélectionnée */
-.theme-card.selected[data-theme="Immunologie"] {
-    background: linear-gradient(145deg, #ffecb3, #e3f2fd);
+    background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
 }
 
 .theme-info {
@@ -361,6 +386,7 @@ body {
 
 /* Design responsive */
 @media (max-width: 1024px) and (min-width: 769px) {
+
     /* Écrans moyens : 2 colonnes pour éviter l'étirement */
     #themes-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -423,8 +449,9 @@ body {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
-    padding-bottom: 0.2em;
+    padding-bottom: 1.5em;
 }
+
 .label {
     font-weight: bold;
 }

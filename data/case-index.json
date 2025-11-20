@@ -1,8 +1,10 @@
 {
   "cardiologie": ["cardio_1.json"],
   "gynécologie": [],
-"endocrinologie": ["EDN_diabetetype2_1.json", "EDN_Anorexie_1.json", "EDN_Anorexie_2.json", "EDN_Boulimie_1.json", "EDN_boulimie_1.json", "EDN_ARFID_1.json", "EDN_hyperphagie_1.json", "EDN_Mérycisme_1.json", "EDN_PICA_1.json", "EDN_diabetetype2_2.json", "EDN_dénutrition-hyper_1.json", "EDN_Dénutrition-obésité_1.json", "EDN_diabetetype1.json", "EDN_Obésité_1.json", "EDN_VIH.json", "EDN_diabetetype1monogé.json"],
+  "endocrinologie": ["EDN_diabetetype2_1.json", "EDN_Anorexie_1.json", "EDN_Anorexie_2.json", "EDN_Boulimie_1.json", "EDN_boulimie_1.json", "EDN_ARFID_1.json", "EDN_hyperphagie_1.json", "EDN_Mérycisme_1.json", "EDN_PICA_1.json", "EDN_diabetetype2_2.json", "EDN_dénutrition-hyper_1.json", "EDN_Dénutrition-obésité_1.json", "EDN_diabetetype1.json", "EDN_Obésité_1.json", "EDN_VIH.json", "EDN_diabetetype1monogé.json"],
   "hématologie": [],
   "gastro-entérologie": [],
-  "immunologie": []
+  "immunologie": [],
+  "uronephro":["cardio_1.json"],
+  "neurosensorielle": []
 }
