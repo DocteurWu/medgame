@@ -1,0 +1,81 @@
+{
+  "id": "cardio_AOMI",
+  "patient": {
+    "nom": "Lambert",
+    "prenom": "Martin",
+    "age": 72,
+    "sexe": "M",
+    "taille": "172 cm",
+    "poids": "86 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur au mollet",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire" },
+      "tabac": { "quantite": "40 PA", "duree": "40 ans" },
+      "alcool": { "quantite": "Hebdomadaire" },
+      "alimentation": { "regime": "Riche en graisse saturée et viande rouge", "particularites": "Aucune" },
+      "emploi": { "profession": "Retraité", "stress": "Faible" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "HTA", "traitement": "IEC" },
+        { "type": "Dyslipidémie", "traitement": "Statine" }
+      ],
+      "chirurgicaux": [{ "intervention": "Cholécystectomie", "date": "2015" }],
+      "familiaux": [{ "lien": "Père", "pathologie": "AVC", "age": "78" }]
+    },
+    "traitements": [
+      { "nom": "Ramipril", "dose": "5 mg", "frequence": "1/j" },
+      { "nom": "Atorvastatine", "dose": "20 mg", "frequence": "1/j" },
+      { "nom": "Aspirine", "dose": "75 mg", "frequence": "1/j" }
+    ],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "depuis 3 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Après avoir marché environ 200m. Disparition de la douleur au repos.",
+      "descriptionDouleur": "Douleur à type de crampe, localisée au mollet droit, sans irradiation",
+      "symptomesAssocies": ["Fatigue générale"],
+      "remarques": "Réduction du périmètre de marche depuis quelques semaines"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/85 mmHg",
+      "pouls": "86 bpm",
+      "temperature": "37.2°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "25/min"
+    },
+    "aspectGeneral": "Patient en surpoids",
+    "examenCardiovasculaire": { "auscultation": "Bruits du coeur réguliers, sans souffles", "inspection": "Pieds et mollets légèrement pâles et froids", "palpation": "pas d'oedème, temps de recoloration de 5 sec. À droite : pouls fémoral présent, poplité diminué, pédieux absent"  },
+    "examenPulmonaire": { "auscultation": "Murmures vésiculaires bilatéraux et symétriques, sans bruits surajoutés" },
+    "examenAbdominal": { "palpation": "Abdomen souple, dépressible et indolore. Pas de masse." },
+    "examenNeurologique": { "conscience": "Normale, pas de déficit moteur, pas de déficit sensitif" }
+  },
+  "availableExams": ["ECG", "Echographie cardiaque", "Echographie doppler des membres inférieurs", "Radio thorax", "Bilan sanguin", "Test de marche", "IRM cardiaque", "Scanner cardiaque", "Angioscanner", "IPS"],
+  "examResults": {
+    "ECG": "Rythme sinusal normal",
+    "Echographie cardiaque": "Fraction d'éjection conservée",
+    "Radio thorax": "Non indiquée : RAS",
+    "Bilan sanguin": "Hypercholestérolémie : cholestérol total à 2,9 g/L, LDL à 1,9 g/L",
+    "Test de marche": "Le patient s'arrête après 4 minutes de marche en ayant parcouru 231 m.",
+    "Echographie doppler des membres inférieurs": "Sténose modérée de l'artère fémorale droite, sténose significative de l'artère poplitée droite, flux absent dans les artères tibiales et pédieuse droites, côté gauche normal.",
+    "IRM cardiaque": "Non indiqué",
+    "Scanner cardiaque": "Non indiqué",
+    "Angioscanner": "À réaliser en deuxième intention après l'échographie doppler, si indication à une revascularisation.",
+    "IPS": "IPS 0,6 à droite, 1,0 à gauche"
+  },
+    "possibleDiagnostics": ["Insuffisance cardiaque droite", "Artériopathie oblitérante des membres inférieurs (AOMI)", "Insuffisance veineuse", "Angor stable"],
+  "correctDiagnostic": "Artériopathie oblitérante des membres inférieurs (AOMI)",
+  "feedback": {
+    "Artériopathie oblitérante des membres inférieurs (AOMI)": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Aspirine", "Statine", "Amiodarone (anti-arythmique)", "Reconditionnement à la marche"],
+  "correctTreatments": ["Aspirine", "Inhibiteurs de l'enzyme de conversion (IEC)", "Statine", "Reconditionnement à la marche"],
+  "correction": "<h3>AOMI</h3>\n<p>Chez un patient qui présente des facteurs de risque cardiovasculaire, une douleur au mollet qui survient à la marche et disparaît au repos, on doit évoquer en priorité une AOMI. </p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Il convient d'évaluer en priorité la sévérité de l'atteinte, en précisant le périmètre de marche et en réalisant les examens complémentaires appropriés : échographie doppler et IPS en première intention. </li><li>Eliminer les diagnostics différentiels : atteinte neurologique, une réduction du périmètre de marche pour des douleurs rhumatologiques comme de l'arthrose…</li><li>Prendre en charge les facteurs de risque cardio-vasculaire, notamment arrêt du tabac, et rechercher un diabète associé. </li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Négliger l'interrogatoire, en ne précisant pas l'historique de la douleur, le périmètre de marche, les facteurs de risque cardiovasculaire et les antécédents médicaux pertinents. </li><li>Une atteinte sévère peut rester asymptomatique pendant longtemps. De même, le tableau peut se présenter comme une douleur persistante dans les formes avancées.</li></ul>"
+}

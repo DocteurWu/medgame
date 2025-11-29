@@ -1,0 +1,70 @@
+{
+  "id": "cardio_thrombose_veineuse_profonde_droite",
+  "patient": {
+    "nom": "Ternes",
+    "prenom": "Alex",
+    "age": 22,
+    "sexe": "M",
+    "taille": "182 cm",
+    "poids": "81 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur soudaine au mollet droit",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Marche 10 minutes /j pour aller à la BU" },
+      "tabac": { "quantite": "2 PA", "duree": "3 ans" },
+      "alcool": { "quantite": "1 verre post-partiel" },
+      "alimentation": { "regime": "Plats préparés Picard", "particularites": "Aucune" },
+      "emploi": { "profession": "Externe", "stress": "Très très élevé" }
+    },
+    "antecedents": {
+      "medicaux": [{ "type": "Acné sévère", "traitement": "Antibiotique et crème locale" }],
+      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2018" }],
+      "familiaux": [{ "lien": "Grand-père", "pathologie": "AVC", "age": "78" }]
+    },
+    "traitements": [{ "nom": "Doxycycline", "dose": "100 mg", "frequence": "1/j" }],
+    "allergies": { "presence": false, "liste": []},
+    "histoireMaladie": {
+      "debutSymptomes": "2 jours",
+      "evolution": "Brutale",
+      "facteursDeclenchants": "Il y a 4 jours après avoir défait sa valise de retour d'un voyage en Asie",
+      "symptomesAssocies": ["Jambe gonflée. Douleur à la marche"],
+      "remarques": "Pas de traumatisme récent à la jambe"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "124/72 mmHg",
+      "pouls": "86 bpm",
+      "temperature": "37.5°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "RAS",
+    "examenCardiovasculaire": { "auscultation": "Bruits du coeur réguliers, sans souffles", "inspection": "Mollet droit augmenté de volume, légère rougeur. Pas de plaie", "palpation": "Douleur à la palpation profonde et chaleur locale. Pouls périphériques conservés"  },
+    "examenPulmonaire": { "auscultation": "Murmures vésiculaires bilatéraux et symétriques, sans bruits surajoutés" },
+    "examenAbdominal": { "palpation": "Abdomen souple, dépressible et indolore. Pas de masse" },
+    "examenNeurologique": { "conscience": "Normale" }
+  },
+  "availableExams": ["ECG", "Echographie doppler des membres inférieurs", "Radio thorax", "Bilan sanguin", "Radiographie de la jambe droite", "Scanner TAP", "Angioscanner thoracique"],
+  "examResults": {
+    "ECG": "Non indiqué car pas de suspicion d'embolie pulmonaire, pas de malaise.",
+    "Echographie doppler des membres inférieurs": "Thrombose occlusive de la veine poplitée droite avec perte de compressibilité et absence de flux, sans extension ilio-fémorale. Normal à gauche",
+    "Radio thorax": "Non indiqué car pas de suspicion d'embolie pulmonaire",
+    "Bilan sanguin": "D-Dimères légèrement élevés. NFS-Plaquettes : normal. CRP : 15 mg/L. Fonction rénale normale. Iono normal. Bilan hépatique normal.",
+    "Radiographie de la jambe droite": "Nope. On ne pense pas du tout à une fracture ici.",
+    "Scanner TAP": "Non indiqué. Aurait pu l'être chez une personne âgée avec suspicion de cancer par exemple.",
+    "Angioscanner thoracique": "Non indiqué car pas de suspicion d'embolie pulmonaire. Un angioscanner des membres inférieurs pourrait être réalisé en seconde intention si l'échographie Doppler ne permettait pas de trancher. "
+  },
+    "possibleDiagnostics": ["Insuffisance veineuse chronique", "Thrombose veineuse profonde droite", "Phlébite droite", "Crampe"],
+  "correctDiagnostic": "Thrombose veineuse profonde droite",
+  "feedback": {
+    "Thrombose veineuse profonde droite": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Anticoagulants à vie", "Anticoagulants pendant 3 mois", "Repos au lit", "Bas de contention", "Chirurgie"],
+  "correctTreatments": ["Anticoagulants pendant 3 mois", "Bas de contention"],
+  "correction": "<h3>TVP chez un sujet jeune après un long voyage</h3>\n<p>Douleur unilatérale, spontanée, brutale au mollet avec oedème et signes inflammatoires. L'examen de référence est l'échographie doppler des membres inférieurs, et dosage des D-dimères.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>La première chose est d'éliminer l'embolie pulmonaire par la clinique dans un premier temps : dyspnée, douleur thoracique, syncope, désaturation, FR, auscultation… Au moindre doute, on réalise des examens complémentaires : angioscanner, radiographie thoracique, ECG… Attention, l'EP peut être asymptomatique.</li><li>Il faut identifier si la TVP est provoquée (immobilisation, plâtre, traitement…) ou non. Dans ce cas, il faudra pousser les explorations pour rechercher une étiologie. </li><li>Il faut encourager la mobilisation précoce et éviter le repos strict au lit pour réduire le risque de complications. </li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Ne pas adapter l'anticoagulation (posologie et durée de traitement) au risque de récidive. </li><li>Attendre le résultat des examens avant d'anticoaguler un patient à forte probabilité clinique.</li></ul>"
+}

@@ -1,0 +1,167 @@
+{
+  "id": "urologie_polyurie_diurese_osmotique_diabete",
+  "patient": {
+    "nom": "Weber",
+    "prenom": "Richard",
+    "age": 58,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "94 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Polyurie et nycturie importantes depuis plusieurs semaines",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Faible, marche occasionnelle"
+      },
+      "tabac": {
+        "quantite": "Arrêt depuis 10 ans (20 PA)"
+      },
+      "alcool": {
+        "quantite": "1 verre de vin/j"
+      },
+      "alimentation": {
+        "regime": "Non contrôlé",
+        "particularites": "Apports sucrés élevés"
+      },
+      "emploi": {
+        "profession": "Chef de service hospitalier",
+        "stress": "Très élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Diabète de type 2",
+          "traitement": "Metformine + insuline",
+          "controle": "Mauvais"
+        },
+        {
+          "type": "Neuropathie diabétique périphérique",
+          "traitement": "Prégabaline"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "Il y a 20 ans"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2",
+          "age": "80"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Metformine",
+        "dose": "1000 mg",
+        "fréquence": "x2/j"
+      },
+      {
+        "nom": "Insuline basale",
+        "dose": "26 UI",
+        "fréquence": "le soir"
+      },
+      {
+        "nom": "Prégabaline",
+        "dose": "75 mg",
+        "fréquence": "x2/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 mois",
+      "evolution": "Polyurie aggravée",
+      "facteursDeclenchants": "Déséquilibre glycémique persistant",
+      "symptomesAssocies": [
+        "Polydipsie",
+        "Fatigue",
+        "Bouche sèche"
+      ],
+      "remarques": "Glycémies capillaires > 3 g/L fréquentes"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "132/78 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Fatigue marquée, traits tirés",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, RAS"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "sensibilite": "Hypoesthésie pieds G> D"
+    },
+    "examenUrologique": {
+      "testToux": "Négatif",
+      "tonusPelvien": "Normal",
+      "prolapsus": "Non concerné"
+    }
+  },
+  "availableExams": [
+    "ECBU",
+    "Bandelette urinaire",
+    "Glycémie veineuse",
+    "HbA1c",
+    "Ionogramme sanguin",
+    "Pad-test (optionnel)",
+    "Calendrier mictionnel avec volumes"
+  ],
+  "examResults": {
+    "ECBU": "Normal",
+    "Bandelette urinaire": "Glycosurie +++, Cétonurie négative",
+    "Glycémie": "3.15 g/L",
+    "HbA1c": "10.4%",
+    "Ionogramme sanguin": "Na+ 138 mmol/L, K+ 4.6 mmol/L",
+    "PadTest24h": "5 g (absence de fuites urinaires)",
+    "CalendrierMictionnel": "Calendrier sur 3 jours : Jour 1 (14 mictions, 4200 mL, vol. moyen 300 mL, nycturie x3), Jour 2 (13 mictions, 3950 mL, vol. moyen 305 mL, nycturie x2), Jour 3 (15 mictions, 4500 mL, vol. moyen 300 mL, nycturie x3). Polyurie confirmée (>3L/j)"
+  },
+  "possibleDiagnostics": [
+    "Polyurie psychogène",
+    "Diabète insipide",
+    "Infection urinaire",
+    "Polyurie par diurèse osmotique due à hyperglycémie",
+    "Hyperplasie bénigne de la prostate"
+  ],
+  "correctDiagnostic": "Polyurie par diurèse osmotique due à hyperglycémie",
+  "feedback": {
+    "Polyurie par diurèse osmotique due à hyperglycémie": "Correct ! Glycosurie massive + polyurie + HbA1c élevée = diurèse osmotique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééquilibrage insulinique",
+    "Hydratation orale contrôlée",
+    "Éducation thérapeutique",
+    "Adaptation du traitement antidiabétique",
+    "Prise en charge neuropathie diabétique"
+  ],
+  "correctTreatments": [
+    "Rééquilibrage insulinique",
+    "Hydratation orale contrôlée",
+    "Adaptation du traitement antidiabétique"
+  ],
+  "correction": "<h3>Polyurie par diurèse osmotique chez diabétique déséquilibré</h3>\n<p>La polyurie est ici liée à la glycosurie massive provoquée par l’hyperglycémie. L’eau suit le glucose dans les urines, entraînant une diurèse osmotique. L'HbA1c très élevée, la glycosurie +++ et les volumes urinaires journaliers > 4 L sont typiques.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Toujours vérifier la glycémie et la glycosurie face à une polyurie</li><li>Réaliser un calendrier mictionnel pour mesurer les volumes</li><li>Rééquilibrer le diabète en urgence relative</li><li>Vérifier l'absence de cétonurie (risque d'acidocétose)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec un diabète insipide (osmolarité urinaire ici élevée)</li><li>Prescrire des diurétiques</li><li>Négliger la neuropathie diabétique associée</li></ul>"
+}

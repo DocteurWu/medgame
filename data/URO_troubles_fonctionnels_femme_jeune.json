@@ -1,0 +1,100 @@
+{
+  "id": "urologie_troubles_fonctionnels_femme_jeune",
+  "patient": {
+    "nom": "Yang",
+    "prenom": "Cristina",
+    "age": 29,
+    "sexe": "F",
+    "taille": "168 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fuites urinaires à l'effort et envies fréquentes d'uriner",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Course et cardio-training 3 fois/semaine" },
+      "tabac": { "quantite": "Non fumeuse" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Équilibré", "particularites": "Café 3/j" },
+      "emploi": { "profession": "Interne en chirurgie", "stress": "Élevé" }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [
+        { "intervention": "Salpingectomie droite par coelioscopie pour grossesse extra-utérine", "date": "Il y a 3 mois" }
+      ],
+      "familiaux": [
+        { "lien": "Mère", "pathologie": "Incontinence urinaire d'effort après grossesses", "age": "62" }
+      ]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "2 mois",
+      "evolution": "Fuites urinaires à l'effort et pollakiurie croissantes",
+      "facteursDeclenchants": "Reprise du sport et du travail en chirurgie après GEU",
+      "symptomesAssocies": ["Urgenturie modérée", "Gêne lors des gardes prolongées"],
+      "remarques": "Pas de brûlures mictionnelles ni fièvre"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "118/72 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Patiente en bon état général",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Souple et indolore" },
+    "examenNeurologique": { "conscience": "Normale" },
+    "examenUrologique": {
+      "testToux": "Fuite urinaire modérée observée",
+      "tonusPelvien": "Diminution du tonus du plancher pelvien",
+      "prolapsus": "Aucun"
+    }
+  },
+  "availableExams": [
+    "ECBU",
+    "Bandelette urinaire",
+    "Échographie abdomino-pelvienne",
+    "Bilan urodynamique",
+    "Pad-test 1h",
+    "Calendrier mictionnel (avec volumes)"
+  ],
+  "examResults": {
+    "ECBU": "Normal",
+    "Bandelette urinaire": "Négative",
+    "Échographie abdomino-pelvienne": "Appareil urinaire normal",
+    "Bilan urodynamique": "Pression urétrale diminuée + hyperactivité détrusorienne légère",
+    "Pad-test 1h": "Perte de 12 g (IUE légère à modérée)",
+    "Calendrier mictionnel (avec volumes)": "11 mictions/j dont 2 impérieuses ; volumes 120-190 mL ; diurèse totale 1.6 L/24h"
+  },
+  "possibleDiagnostics": [
+    "Infection urinaire",
+    "Incontinence urinaire d'effort (IUE)",
+    "Hyperactivité vésicale (HAV)",
+    "Trouble anxieux avec pollakiurie fonctionnelle"
+  ],
+  "correctDiagnostic": ["Incontinence urinaire d'effort (IUE)", "Hyperactivité vésicale (HAV)"],
+  "feedback": {
+    "Incontinence urinaire d'effort (IUE) + Hyperactivité vésicale (HAV)": "Correct ! Les fuites à l'effort associées à la pollakiurie orientent vers IUE + HAV.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Rééducation périnéale",
+    "Mesures comportementales",
+    "Traitement anticholinergique",
+    "Bêta-3 agoniste",
+    "Bandelette sous-urétrale"
+  ],
+  "correctTreatments": [
+    "Rééducation périnéale",
+    "Mesures comportementales",
+    "Traitement anticholinergique"
+  ],
+  "correction": "<h3>Troubles urinaires fonctionnels : IUE + HAV</h3>\n<p>La patiente présente des fuites urinaires typiquement déclenchées par l'effort (rire, sport, port de charges) associées à une pollakiurie avec urgenturie modérée, sans infection. Le bilan urodynamique confirme une diminution de la pression urétrale et une hyperactivité détrusorienne légère. Le pad-test montre une perte faible à modérée et le calendrier mictionnel confirme une pollakiurie diurne sans polyurie.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Dépister une IUE chez toute femme jeune sportive avec fuites à l'effort</li><li>Rechercher un HAV associé en cas de pollakiurie</li><li>Réaliser un calendrier mictionnel et un pad-test pour quantifier l'IUE</li><li>Proposer en première intention une rééducation périnéale</li><li>Limiter caféine et organiser un calendrier mictionnel</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Traiter à tort comme une infection (ECBU normal)</li><li>Proposer trop tôt une chirurgie chez une femme jeune nullipare</li><li>Négliger l'évaluation du tonus périnéal</li></ul>"
+}

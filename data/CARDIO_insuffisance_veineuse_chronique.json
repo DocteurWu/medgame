@@ -1,0 +1,68 @@
+{
+  "id": "cardio_Insuffisance_veineuse_chronique",
+  "patient": {
+    "nom": "Dubois",
+    "prenom": "Monique",
+    "age": 55,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "73 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Jambes lourdes",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Sédentaire" },
+      "tabac": { "quantite": "Jamais" },
+      "alcool": { "quantite": "Jamais" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Pharmacienne", "stress": "Moyen" }
+    },
+    "antecedents": {
+      "medicaux": [{ "type": "varices connues depuis 10 ans" }],
+      "chirurgicaux": [{ "intervention": "Césarienne", "date": "2005" }],
+      "familiaux": [{ "lien": "Mère", "pathologie": "Diabète type 2" }]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "jambes lourdes et douloureuses en fin de journée depuis plusieurs années, aggravées ces dernières semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Après une journée de travail debout",
+      "symptomesAssocies": ["Apparition de taches brunes autour des chevilles, parfois des démangeaisons"],
+      "remarques": "Aucun"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/72 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "25/min"
+    },
+    "aspectGeneral": "RAS",
+    "examenCardiovasculaire": { "auscultation": "Bruits du coeur réguliers, sans souffles" },
+    "examenPulmonaire": { "auscultation": "Murmures vésiculaires bilatéraux et symétriques, sans bruits surajoutés" },
+    "examenAbdominal": { "palpation": "Abdomen souple, dépressible et indolore. Pas de masse." },
+    "examenDermatologique": { "inspection": "varices visibles aux genoux, dermite ocre autour des chevilles, prédominant à gauche. Peau sèche, démangeaisons", "palpation": "Pas de douleurs associées. Oedèmes légers bilatéraux ne prenant pas le godet. Pouls pédieux perçus." }
+  },
+  "availableExams": ["ECG", "Échographie doppler des membres inférieurs", "Radio thorax", "Bilan sanguin", "Angioscanner des membres inférieurs"],
+  "examResults": {
+    "ECG": "Non indiqué : RAS",
+    "Radio thorax": "Non indiqué : RAS",
+    "Bilan sanguin": "Non indiqué : RAS",
+    "Angioscanner des membres inférieurs": "Non indiqué",
+    "Échographie doppler des membres inférieurs": "Reflux prolongé dans la veine saphène interne et ses collatérales, confirmant une insuffisance veineuse superficielle, sans signe de thrombose profonde."
+  },
+    "possibleDiagnostics": ["Insuffisance veineuse chronique", "Thrombose veineuse profonde", "AOMI", "Infection cutanée"],
+  "correctDiagnostic": "Insuffisance veineuse chronique",
+  "feedback": {
+    "Insuffisance veineuse chronique": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Anti-agrégant", "Bas de contention", "Diurétiques", "Vasodilatateurs"],
+  "correctTreatments": ["Bas de contention"],
+  "correction": "<h3>Insuffisance veineuse chronique</h3>\n<p>Le diagnostic d'une insuffisance veineuse chronique est surtout clinique : sensation de jambes lourdes, varices, ± dermite ocre, ulcère veineux… Il faut compléter le bilan par la réalisation d'une échographie doppler pour éliminer une thrombose veineuse profonde. L'échographie permet également de diriger la prise en charge en fonction de la sévérité. Chez cette patiente, on proposera des bas de contentions adaptés, marcher quotidiennement et une réévaluation des symptômes ultérieurement. Pas de prise en charge médicamenteuse. </p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Rechercher des facteurs de risque à l'interrogatoire : sexe féminin, station debout ou assise prolongée, sédentarité, antécédents familiaux et personnels… </li><li>Le traitement repose sur le port d'une compression adaptée et sur des mesures hygiéno-diététiques. </li><li>Toute dermite ocre doit alerter sur le risque d'ulcère veineux à moyen terme. Il convient de surveiller attentivement les jambes des patients et de retirer les bas de contention à chaque consultation. </li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Le port de bas de contention est contre-indiqué chez les patients présentant une artériopathie oblitérante sévère. Ainsi, chez un patient ayant des facteurs de risques cardio-vasculaires, il faut éliminer le risque d'AOMI.</li><li>Initier des diurétiques face aux oedèmes.</li><li>Négliger la recherche d'une cause ischémique en cas de suspicion.</li></ul>"
+}

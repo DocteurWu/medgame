@@ -1,0 +1,115 @@
+{
+  "id": "andrologie_dysfonction_erectile_militaire",
+  "patient": {
+    "nom": "Hunt",
+    "prenom": "Owen",
+    "age": 42,
+    "sexe": "M",
+    "taille": "183 cm",
+    "poids": "86 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Baisse de la qualité des érections depuis plusieurs mois",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Entraînement militaire régulier" },
+      "tabac": { "quantite": "0", "duree": "toujours" },
+      "alcool": { "quantite": "2-3 verres/semaine" },
+      "alimentation": { "regime": "Proteinée", "particularites": "Repas irréguliers lors des missions" },
+      "emploi": { "profession": "Officier militaire – opérations extérieures", "stress": "Très élevé" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Hypertension artérielle débutante", "traitement": "Amlodipine 5 mg/j" },
+        { "type": "Stress post-traumatique", "traitement": "Suivi psychologique" }
+      ],
+      "chirurgicaux": [
+        { "intervention": "Laparotomie pour plaie abdominale en mission", "date": "Il y a 5 ans" }
+      ],
+      "familiaux": [
+        { "lien": "Père", "pathologie": "Hypertension et cardiopathie ischémique", "age": "72" }
+      ]
+    },
+    "traitements": [
+      { "nom": "Amlodipine", "dose": "5 mg", "fréquence": "1/j" }
+    ],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Retour de mission, fatigue chronique",
+      "symptomesAssocies": [
+        "Baisse de libido",
+        "Sommeil perturbé",
+        "Misfires lors des rapports",
+        "Érections matinales moins fréquentes"
+      ],
+      "remarques": "Pas de douleurs, pas d'écoulement urétral"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "138/84 mmHg",
+      "pouls": "74 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Fatigue accumulée, hypervigilance",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Souple, RAS" },
+    "examenNeurologique": { "conscience": "Normale" },
+    "examenUrologique": {
+      "testSensibilite": "Sensibilité périnéale normale",
+      "examenPenien": "Normal",
+      "testTrophicite": "Bonne trophicité"
+    }
+  },
+  "availableExams": [
+    "Bilan hormonal",
+    "Testostérone totale",
+    "Glycémie à jeun",
+    "HbA1c",
+    "Profil lipidique",
+    "Doppler pénien",
+    "Questionnaire IIEF-5"
+  ],
+  "examResults": {
+    "Bilan hormonal": "FSH/LH normaux",
+    "Testostérone totale": "3.4 ng/mL (bas-normale)",
+    "Glycémie à jeun": "1.12 g/L",
+    "HbA1c": "5.7%",
+    "Profil lipidique": "LDL légèrement élevé",
+    "Doppler pénien": "Flux cavernaux diminués (origine mixte vasculaire + psychogène)",
+    "Questionnaire IIEF-5": "Score 15/25 (dysfonction érectile modérée)"
+  },
+  "possibleDiagnostics": [
+    "Dysfonction érectile psychogène",
+    "Dysfonction érectile d’origine vasculaire",
+    "Hypogonadisme",
+    "Effet indésirable médicamenteux",
+    "Dysfonction érectile mixte (psychogène + vasculaire)"
+  ],
+  "correctDiagnostic": "Dysfonction érectile mixte (psychogène + vasculaire)",
+  "feedback": {
+    "Dysfonction érectile mixte (psychogène + vasculaire)": "Correct ! Facteurs vasculaires légers + stress post-traumatique + fatigue = DE mixte.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "IPPDE5 (ex : sildenafil)",
+    "Thérapie psychologique",
+    "Optimisation du traitement antihypertenseur",
+    "Hygiène de vie : sommeil, activité physique, réduction stress",
+    "Substitution en testostérone",
+    "Consultation andrologique spécialisée"
+  ],
+  "correctTreatments": [
+    "IPPDE5 (ex : sildenafil)",
+    "Thérapie psychologique",
+    "Optimisation du traitement antihypertenseur",
+    "Hygiène de vie : sommeil, activité physique, réduction stress"
+  ],
+  "correction": "<h3>Dysfonction érectile mixte</h3>\n<p>Le patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Rechercher systématiquement des facteurs cardiovasculaires</li><li>Évaluer la part psychogène via questionnaires et interrogatoire</li><li>IPPDE5 en 1re intention en cas d’absence de contre-indication</li><li>Prise en charge du stress et du sommeil</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Mettre d’emblée un traitement hormonal sans hypogonadisme avéré</li><li>Oublier la dimension psychogène dans les DE post-traumatiques</li><li>Ignorer les facteurs cardio-vasculaires débutants</li></ul>"
+}

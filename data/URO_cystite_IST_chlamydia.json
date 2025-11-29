@@ -1,0 +1,112 @@
+{
+  "id": "urologie_cystite_IST_chlamydia",
+  "patient": {
+    "nom": "Karev",
+    "prenom": "Alex",
+    "age": 34,
+    "sexe": "M",
+    "taille": "182 cm",
+    "poids": "84 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Pollakiurie et brûlures mictionnelles depuis 4 jours",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Course et musculation 3 fois/semaine" },
+      "tabac": { "quantite": "Non fumeur" },
+      "alcool": { "quantite": "Consommation occasionnelle" },
+      "alimentation": { "regime": "Équilibré", "particularites": "Repas souvent pris à l’hôpital" },
+      "emploi": { "profession": "Interne en chirurgie", "stress": "Élevé" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Rien de particulier", "traitement": "Aucun" }
+      ],
+      "chirurgicaux": [
+        { "intervention": "Appendicectomie", "date": "à 17 ans" }
+      ],
+      "familiaux": [
+        { "lien": "Mère", "pathologie": "Hypertension", "age": "61" }
+      ]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "4 jours",
+      "evolution": "Aggravation progressive",
+      "facteursDeclenchants": "Nouveaux rapports non protégés il y a 2 semaines",
+      "symptomesAssocies": [
+        "Brûlures mictionnelles",
+        "Écoulement urétral clair le matin",
+        "Sensation de vidange incomplète",
+        "Gêne périnéale"
+      ],
+      "remarques": "Pas de fièvre, pas de douleurs lombaires"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "124/78 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "37.2°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Bon état général, légèrement gêné",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { 
+      "palpation": "Souple",
+      "sensibilite": "Légère sensibilité sus-pubienne"
+    },
+    "examenNeurologique": { "conscience": "Normale" },
+    "examenUrologique": {
+      "examenExterne": "Méat urétral légèrement inflammatoire",
+      "ecoulement": "Écoulement clair le matin",
+      "prostate": "Non douloureuse au TR, volume normal"
+    }
+  },
+  "availableExams": [
+    "Bandelette urinaire",
+    "ECBU",
+    "PCR urinaire IST (Chlamydia, Gonocoque, Mycoplasma)",
+    "CRP",
+    "NFS",
+    "Échographie vésicale"
+  ],
+  "examResults": {
+    "BU": "Leucocytes +++, nitrites négatifs",
+    "ECBU": "Leucocyturie importante, pas de germe bactérien identifié",
+    "PCR_IST": "Positive pour Chlamydia trachomatis",
+    "CRP": "8 mg/L (faiblement élevée)",
+    "NFS": "Leucocytes normaux",
+    "EchoVessie": "Paroi légèrement épaissie, pas de résidu"
+  },
+  "possibleDiagnostics": [
+    "Cystite bactérienne classique",
+    "Urétrite à Chlamydia",
+    "Cystite interstitielle",
+    "Prostatite aiguë",
+    "Gonococcie"
+  ],
+  "correctDiagnostic": "Urétrite à Chlamydia",
+  "feedback": {
+    "Urétrite à Chlamydia (IST) responsable de pollakiurie et dysurie": "Correct ! BU inflammatoire + ECBU stérile + rapports non protégés + PCR Chlamydia positive = tableau typique d'urétrite à Chlamydia.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Doxycycline 100 mg x 2/j pendant 7 jours",
+    "Azithromycine dose unique",
+    "Traitement du/ de la partenaire",
+    "Arrêt des rapports pendant le traitement",
+    "Antalgiques",
+    "Hydratation"
+  ],
+  "correctTreatments": [
+    "Doxycycline 100 mg x 2/j pendant 7 jours",
+    "Traitement du/ de la partenaire",
+    "Arrêt des rapports pendant le traitement"
+  ],
+  "correction": "<h3>Urétrite à Chlamydia</h3>\n<p>Tableau d’infection sexuellement transmissible à Chlamydia trachomatis : pollakiurie, brûlures, BU inflammatoire, ECBU stérile et PCR positive.</p>\n<h4>Points clés</h4>\n<ul><li>Le couple « BU inflammatoire + ECBU stérile » évoque une IST</li><li>Chlamydia donne des symptômes mictionnels souvent trompeurs</li><li>Toujours traiter le partenaire et recommander l’abstinence temporaire</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Donner un antibiotique de cystite classique (ex : fosfomycine) — inefficace</li><li>Oublier le dépistage du partenaire</li><li>Ne pas rechercher d'autres IST en parallèle</li></ul>"
+}

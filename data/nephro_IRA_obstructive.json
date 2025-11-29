@@ -13,30 +13,74 @@
   "interrogatoire": {
     "motifHospitalisation": "Douleurs lombaires et baisse du volume urinaire",
     "modeDeVie": {
-      "activitePhysique": { "description": "Marche quotidienne" },
-      "tabac": { "quantite": "10 PA", "duree": "20 ans (arrêt il y a 10 ans)" },
-      "alcool": { "quantite": "1 verre de vin/jour" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Retraité", "stress": "Faible" }
+      "activitePhysique": {
+        "description": "Marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "10 PA",
+        "duree": "20 ans (arrêt il y a 10 ans)"
+      },
+      "alcool": {
+        "quantite": "1 verre de vin/jour"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "HTA", "traitement": "ARA2" },
-        { "type": "Lithiase urinaire", "traitement": "Hydratation" }
+        {
+          "type": "HTA",
+          "traitement": "ARA2"
+        },
+        {
+          "type": "Lithiase urinaire",
+          "traitement": "Hydratation"
+        }
       ],
-      "chirurgicaux": [{ "intervention": "Hernie inguinale", "date": "2010" }],
-      "familiaux": [{ "lien": "Mère", "pathologie": "IRC", "age": "78" }]
+      "chirurgicaux": [
+        {
+          "intervention": "Hernie inguinale",
+          "date": "2010"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "IRC",
+          "age": "78"
+        }
+      ]
     },
     "traitements": [
-      { "nom": "Candesartan", "dose": "8 mg", "frequence": "1/j" },
-      { "nom": "Ibuprofène (automédication)", "dose": "400 mg", "frequence": "1-2/j depuis 5 jours" }
+      {
+        "nom": "Candesartan",
+        "dose": "8 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Ibuprofène (automédication)",
+        "dose": "400 mg",
+        "frequence": "1-2/j depuis 5 jours"
+      }
     ],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "5 jours",
       "evolution": "Aggravation progressive",
       "facteursDeclenchants": "Aucun",
-      "symptomesAssocies": ["Nausées", "Asthénie"],
+      "symptomesAssocies": [
+        "Nausées",
+        "Asthénie"
+      ],
       "remarques": "Notion de coliques néphrétiques anciennes"
     }
   },
@@ -49,12 +93,31 @@
       "frequenceRespiratoire": "18/min"
     },
     "aspectGeneral": "Fatigué",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Sensibilité lombaire droite" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sensibilité lombaire droite"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
-  "availableExams": ["Créatininémie", "Urée", "Ionogramme sanguin", "CRP", "Bandelette urinaire", "Protéinurie des 24h", "Albuminurie", "Échographie rénale et vésicale", "Scanner abdomino-pelvien", "Echographie appareil urinaire"],
+  "availableExams": [
+    "Créatininémie",
+    "Urée",
+    "Ionogramme sanguin",
+    "CRP",
+    "Bandelette urinaire",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Echographie appareil urinaire"
+  ],
   "examResults": {
     "Créatininémie": "320 µmol/L (N<100)",
     "Urée": "15 mmol/L (élevée)",
@@ -63,18 +126,36 @@
     "Bandelette urinaire": "Hématurie ++",
     "Protéinurie des 24h": "Faible (0.3 g/j)",
     "Albuminurie": "RAS",
-    "Echographie rénale et vésicale": "Dilatation pyélocalicielle droite + globe vésical",
+    "Échographie rénale et vésicale": "Dilatation pyélocalicielle droite + globe vésical",
     "Scanner abdomino-pelvien": "Calcul obstructif de l’uretère distal droit (8 mm)",
     "Echographie appareil urinaire": "Confirme la dilatation droite"
   },
-  "possibleDiagnostics": ["Insuffisance rénale aiguë fonctionnelle", "Insuffisance rénale aiguë obstructive", "Glomérulonéphrite aiguë", "Néphropathie interstitielle aiguë"],
+  "possibleDiagnostics": [
+    "Insuffisance rénale aiguë fonctionnelle",
+    "Insuffisance rénale aiguë obstructive",
+    "Glomérulonéphrite aiguë",
+    "Néphropathie interstitielle aiguë"
+  ],
   "correctDiagnostic": "Insuffisance rénale aiguë obstructive",
   "feedback": {
     "Insuffisance rénale aiguë obstructive": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Sonde vésicale", "Drainage par sonde JJ", "Hydratation IV", "Arrêt des AINS", "Corticothérapie"],
-  "correctTreatments": ["Sonde vésicale", "Drainage par sonde JJ", "Arrêt des AINS"],
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Sonde vésicale",
+    "Drainage par sonde JJ",
+    "Hydratation IV",
+    "Arrêt des AINS",
+    "Corticothérapie"
+  ],
+  "correctTreatments": [
+    "Sonde vésicale",
+    "Drainage par sonde JJ",
+    "Arrêt des AINS"
+  ],
   "correction": "<h3>Insuffisance rénale aiguë obstructive</h3>\n<p>Le patient présente une oligurie, des douleurs lombaires, une hématurie, une créatinine élevée et une dilatation pyélocalicielle en imagerie. Le scanner met en évidence un calcul obstructif de l’uretère.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Rechercher une cause obstructive devant toute IRA avec douleurs lombaires</li><li>Faire une échographie rénale en première intention</li><li>Lever l'obstacle rapidement : sonde vésicale si globe, drainage JJ ou néphrostomie</li><li>Arrêter les médicaments néphrotoxiques (AINS !)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Hydrater excessivement un patient avec globe vésical</li><li>Confondre IRA obstructive avec IRA fonctionnelle</li><li>Tarder la dérivation des urines</li></ul>"
 }
