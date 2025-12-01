@@ -1,5 +1,5 @@
 {
-  "cardiologie": ["cardio_1.json","CARDIO_thrombose_veineuse_profonde_droite.json","CARDIO_insuffisance_veineuse_chronique.json", "CARDIO_AOMI.json"],
+  "cardiologie": ["cardio_1.json","CARDIO_thrombose_veineuse_profonde_droite.json","CARDIO_insuffisance_veineuse_chronique.json", "CARDIO_AOMI.json","CARDIO_syncope_vaso_vagale.json","CARDIO_syncope_cardiaque.json","CARDIO_retrecissement_aortique.json","CARDIO_hta_secondaire_hyperaldosteronisme.json","CARDIO_angor_stable.json"],
   "gynécologie": [],
   "endocrinologie": ["EDN_diabetetype2_1.json", "EDN_Anorexie_1.json", "EDN_Anorexie_2.json", "EDN_Boulimie_1.json", "EDN_boulimie_1.json", "EDN_ARFID_1.json", "EDN_hyperphagie_1.json", "EDN_Mérycisme_1.json", "EDN_PICA_1.json", "EDN_diabetetype2_2.json", "EDN_dénutrition-hyper_1.json", "EDN_Dénutrition-obésité_1.json", "EDN_diabetetype1.json", "EDN_Obésité_1.json", "EDN_VIH.json", "EDN_diabetetype1monogé.json"],
   "hématologie": [],

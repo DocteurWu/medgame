@@ -1,0 +1,74 @@
+{
+  "id": "cardio_retrecissement_aortique",
+  "patient": {
+    "nom": "Bingley",
+    "prenom": "Charles",
+    "age": 72,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée d'effort et malaise à l'effort",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Marche quotidienne" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Retraité", "stress": "Faible" }
+    },
+    "antecedents": {
+      "medicaux": [{ "type": "HTA", "traitement": "IEC" }],
+      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2000" }],
+      "familiaux": [{ "lien": "Père", "pathologie": "Mort subite", "age": "75" }]
+    },
+    "traitements": [{ "nom": "Enalapril (IEC)", "dose": "10 mg", "frequence": "1/j" }],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "symptomesAssocies": ["Angor à l'effort", "Malaise"],
+      "remarques": "Episodes de chute de tension à l'effort"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/65 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Normal",
+    "examenCardiovasculaire": { "auscultation": "Souffle systolique râpeux, max au foyer aortique, irradiation caotides",  "inspection": "Normal"},
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Normal" },
+    "examenNeurologique": { "conscience": "Normal" }
+  },
+  "availableExams": ["ECG", "Echographie", "Radio thorax", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner"],
+  "examResults": {
+    "ECG": "Hypertrophie ventriculaire gauche, Sokolow-Lyon à 45mm",
+    "Echographie": "Valve aortique calcifiée",
+    "glycemie": "1.0 g/L",
+    "Radio thorax": { "text": "Coeur légèrement élargi", "image": "assets/images/MODIF_LE_NOM_ICI.jpg" },
+    "Bilan sanguin": "RAS",
+    "Test d'effort": "Limité par malaise",
+    "Holter ECG": "RAS",
+    "Coronarographie": "Sténose modérée non significative",
+    "IRM cardiaque": "RAS",
+    "Scanner cardiaque": "RAS",
+    "Angioscanner": "RAS"
+  },
+    "possibleDiagnostics": ["Rétrécissement aortique", "Insuffisance cardiaque", "Arythmie", "Angor stable"],
+  "correctDiagnostic": "Rétrécissement aortique",
+  "feedback": {
+    "Rétrécissement aortique": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["IEC", "Diurétiques", "Remplacement valvulaire aortique", "Bêta-bloquants"],
+  "correctTreatments": ["Remplacement valvulaire aortique"],
+  "correction": "<h3>Rétrécissement aortique serré</h3>\n<p>Dyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer par échocardiographie-Doppler (gradient, surface, HVG)</li><li>Surveiller la fonction ventriculaire gauche</li><li>Planifier remplacement valvulaire (chirurgie ou TAVI)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Omettre l'évaluation du gradient et de la surface valvulaire</li><li>Ne pas corriger les facteurs de risque cardiovasculaires associés</li></ul>"
+}
