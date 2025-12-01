@@ -1,0 +1,72 @@
+{
+  "id": "cardio_angor_stable",
+  "patient": {
+    "nom": "Bennet",
+    "prenom": "Kitty",
+    "age": 58,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur thoracique à l'effort",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Marche régulière 30 min/jour" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Méditerranéen", "particularites": "Aucune" },
+      "emploi": { "profession": "Secrétaire", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [{ "type": "Diabète de type 2", "traitement": "Diabète de type 2" }],
+      "chirurgicaux": [],
+      "familiaux": [{ "lien": "Père", "pathologie": "Infarctus", "age": "65" }]
+    },
+    "traitements": [{ "nom": "Metformine", "dose": "500 mg", "frequence": "2/j" }],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Stable",
+      "facteursDeclenchants": "Effort modéré (montée d’escaliers)",
+      "symptomesAssocies": ["Dyspnée légère à l'effort"],
+      "remarques": "Douleur disparaît à l'arrêt et répond à trinitrine"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/85 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Normal",
+    "examenCardiovasculaire": { "auscultation": "Rythme régulier, pas de souffle",  "inspection": "Normal"},
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { "palpation": "Normal" },
+    "examenNeurologique": { "conscience": "Normal" }
+  },
+  "availableExams": ["ECG", "Echographie", "Bilan sanguin", "Test d'effort", "Holter ECG", "Angiographie coronarienne", "IRM cardiaque", "Scintigraphie myocardique"],
+  "examResults": {
+    "ECG": "Normal au repos",
+    "Echographie": "Fonction systolique normale, pas d'anomalie segmentaire au repos",
+    "glycemie": "1.0 g/L",
+    "Bilan sanguin": "Troponine normale",
+    "Test d'effort": "Angor déclenché à l’effort modéré, sous-décalage ST V5-V6",
+    "Holter ECG": "Pas d’arythmie",
+    "Angiographie coronarienne": "Sténose 70% de l'artère circonflexe",
+    "IRM cardiaque": "Non indiqué",
+    "Scintigraphie myocardique": "Ischémie sous-maximale latérale gauche"
+  },
+    "possibleDiagnostics": ["Angor stable", "Syndrome coronarien aigu", "Insuffisance cardiaque", "Trouble du rythme"],
+  "correctDiagnostic": "Angor stable",
+  "feedback": {
+    "Angor stable": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": ["Bêta-bloquant", "Inhibiteur calcique", "Aspirine", "Adrénaline", "Trinitrine sublinguale (dérivé nitré)"],
+  "correctTreatments": ["Bêta-bloquant", "Trinitrine sublinguale (dérivé nitré)"],
+  "correction": "<h3>Angor stable</h3>\n<p>Douleur thoracique à l'effort, disparaissant à l'arrêt, trinitro-sensible et stable depuis 6 mois.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer l’ischémie par test d’effort ou scintigraphie myocardique</li><li>Coronarographie si sténose significative ou angor limitant</li><li>Traitement médical : bêta-bloquant trinitrine sublinguale (dérivé nitré)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Ignorer les facteurs de risque cardiovasculaire</li><li>Ne pas évaluer l’intensité de l’ischémie à l’effort</li></ul>"
+}
