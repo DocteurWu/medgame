@@ -1,0 +1,118 @@
+{
+  "id": "orl_vertiges_hypotension_orthostatique",
+  "patient": {
+    "nom": "Warren",
+    "prenom": "Ben",
+    "age": 42,
+    "sexe": "M",
+    "taille": "183 cm",
+    "poids": "89 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Vertiges intenses au lever depuis une semaine",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Entraînement pompier, course, port de charges" },
+      "tabac": { "quantite": "0" },
+      "alcool": { "quantite": "Occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Hydratation parfois insuffisante" },
+      "emploi": { "profession": "Pompier", "stress": "Élevé" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Épisodes d'hypotension lors d'efforts prolongés", "traitement": "Aucun" }
+      ],
+      "chirurgicaux": [
+        { "intervention": "Fracture du radius opérée", "date": "5 ans" }
+      ],
+      "familiaux": [
+        { "lien": "Père", "pathologie": "Hypertension", "age": "60" }
+      ]
+    },
+    "traitements": [
+      { "nom": "Ibuprofène", "dose": "400 mg", "frequence": "Selon douleurs musculaires" }
+    ],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "1 semaine",
+      "evolution": "Vertiges en augmentation, surtout le matin",
+      "facteursDeclenchants": "Passage de la position couchée à debout",
+      "symptomesAssocies": [
+        "Vision floue transitoire",
+        "Sensation de tête légère",
+        "Fatigue post-gardes",
+        "Sueurs froides lors des épisodes"
+      ],
+      "remarques": "Décrit une sensation de 'bascule en avant' sans rotation de l'environnement."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "118/76 mmHg",
+      "pouls": "82 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bonne condition physique mais fatigue visible",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal",
+      "orthostatisme": "Chute tensionnelle significative : -25 mmHg systolique au lever"
+    },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "coordination": "Normale",
+      "romberg": "Négatif",
+      "index": "Sans dysmétrie"
+    },
+    "examenMarche": {
+      "polygoneSustentation": "Normal",
+      "instabilite": "Légère à l'initiation de la marche",
+      "commentaire": "Pas d'atteinte cérébelleuse ou vestibulaire"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Bilan sanguin",
+    "Ionogramme",
+    "Glycémie",
+    "Tilt test",
+    "Orthostatisme"
+  ],
+  "examResults": {
+    "ECG": "Rythme sinusal normal",
+    "Bilan sanguin": "Normal",
+    "Ionogramme": "Légère hyponatrémie (134 mmol/L)",
+    "Glycémie": "Normale",
+    "Tilt test": "Hypotension orthostatique confirmée",
+    "Orthostatisme": "Baisse de 25 mmHg systolique et 12 mmHg diastolique au lever"
+  },
+  "possibleDiagnostics": [
+    "Hypotension orthostatique",
+    "Neuronite vestibulaire",
+    "VPPB",
+    "AVC du tronc cérébral",
+    "Anémie ferriprive"
+  ],
+  "correctDiagnostic": "Hypotension orthostatique",
+  "feedback": {
+    "Hypotension orthostatique": "Correct ! Vertiges non rotatoires, déclenchés par le lever, chute tensionnelle mesurée.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Hydratation orale",
+    "Augmentation apport en sel",
+    "Bas de contention",
+    "Arrêt des AINS",
+    "Éducation au lever progressif",
+    "Treatment médicamenteux (fludrocortisone si persistant)"
+  ],
+  "correctTreatments": [
+    "Hydratation orale",
+    "Augmentation apport en sel",
+    "Éducation au lever progressif"
+  ],
+  "correction": "<h3>Hypotension orthostatique</h3>\n<p>Les vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.</p>\n<h4>Points clés</h4>\n<ul><li>Vertiges non systématisés = origine centrale ou cardiovasculaire</li><li>Orthostatisme positif = diagnostic confirmé</li><li>Contexte de déshydratation et fortes dépenses physiques chez un pompier</li></ul>\n<h4>Prise en charge</h4>\n<ul><li>Réhydratation</li><li>Mesures physiques simples</li><li>Réévaluation si persistance</li></ul>"
+}

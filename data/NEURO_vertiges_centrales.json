@@ -1,0 +1,131 @@
+{
+  "id": "neuro_vertiges_centrales",
+  "patient": {
+    "nom": "O'Malley",
+    "prenom": "George",
+    "age": 29,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "76 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Vertiges intenses et instabilité à la marche depuis une chute avec brève perte de connaissance.",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Jogging occasionnel" },
+      "tabac": { "quantite": "0" },
+      "alcool": { "quantite": "Social, faible" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Interne en chirurgie", "stress": "Élevé" }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [
+        { "intervention": "Appendicectomie", "date": "12 ans" }
+      ],
+      "familiaux": [
+        { "lien": "Père", "pathologie": "HTA", "age": "50" }
+      ]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures après la chute",
+      "evolution": "Instabilité croissante",
+      "facteursDeclenchants": "Chute dans les escaliers de l'hôpital lors d'une garde",
+      "symptomesAssocies": [
+        "Céphalées occipitales",
+        "Troubles de la coordination",
+        "Nausées",
+        "Vision légèrement floue",
+        "Sensation de tangage permanent"
+      ],
+      "remarques": "Vertiges non rotatoires, non déclenchés par les mouvements de la tête."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "122/78 mmHg",
+      "pouls": "84 bpm",
+      "temperature": "37.0°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "17/min"
+    },
+    "aspectGeneral": "Marche très instable, patient anxieux mais conscient.",
+    "examenNeurologiqueGlobal": {
+      "etatConscience": "Normal, score de Glasgow 15",
+      "pairesCrâniennes": "Pas de paralysie faciale, réflexe photomoteur normal ; léger nystagmus vertical intermittent",
+      "coordination": "Dysmétrie doigt-nez bilatérale, plus marquée à gauche",
+      "sensibilite": "Normale",
+      "force": "Conservée 5/5 aux 4 membres",
+      "tonus": "Légèrement diminué aux membres inférieurs",
+      "reflexes": "Vifs et symétriques"
+    },
+    "testsNeurologiquesSpecifiques": {
+      "romberg": "Romberg positif avec oscillations importantes dans toutes les directions (atteinte centrale)",
+      "fukuda": "Déviation > 60° à gauche après 30 pas",
+      "testIndex": "Dyschronométrie et déviation fluctuante à gauche"
+    },
+    "examenMarche": {
+      "marcheSpontanee": "Large base, oscillations, instabilité majeure, élargissement du polygone de sustentation",
+      "instabiliteEbriueuse": "Présente, évoquant une atteinte cérébelleuse centrale",
+      "tremblements": "Tremulations posturales modérées des membres inférieurs",
+      "oscillationsMI": "Oscillations spontanées des membres inférieurs",
+      "hesitationFranchissementPorte": "Arrêts brusques avant les portes, reprise saccadée",
+      "raclementPieds": "Présent, difficulté à lever les pieds",
+      "fauchage": "Fauchage gauche intermittent",
+      "marcheTalon": "Impossible",
+      "marchePointe": "Très instable",
+      "marcheTandem": "Non réalisable",
+      "épreuveAveugle": "Déviation marquée vers la gauche",
+      "stationUnipodale": "Impossible > 1 seconde",
+      "commentaire": "Marche typique d'un syndrome cérébelleux central."
+    }
+  },
+  "availableExams": [
+    "IRM",
+    "Scanner",
+    "Bilan sanguin",
+    "Épreuve index-index",
+    "Test de Fukuda",
+    "Test de Romberg",
+    "Épreuve talon-genou"
+  ],
+  "examResults": {
+    "IRM": "Hypersignal cérébelleux gauche évoquant contusion post-traumatique.",
+    "Scanner": "Pas d’hémorragie intracrânienne.",
+    "Bilan sanguin": "Normal",
+    "Épreuve index-index": "Dysmétrie fluctuante",
+    "Test de Fukuda": "Rotation pathologique à gauche",
+    "Test de Romberg": "Positif avec oscillations multidirectionnelles",
+    "Épreuve talon-genou": "Ataxie manifeste à gauche"
+  },
+  "possibleDiagnostics": [
+    "Syndrome vertigineux périphérique",
+    "Commotion cérébrale simple",
+    "Syndrome cérébelleux post-traumatique",
+    "AVC du territoire cérébelleux",
+    "Trouble anxieux avec instabilité fonctionnelle"
+  ],
+  "correctDiagnostic": "Syndrome cérébelleux post-traumatique",
+  "feedback": {
+    "Syndrome cérébelleux post-traumatique": "Correct ! La dysmétrie, l’instabilité ébrieuse, le Romberg central et l’IRM sont typiques.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Surveillance neurologique rapprochée",
+    "Repos strict",
+    "Traitement des céphalées",
+    "Kinésithérapie vestibulaire et cérébelleuse",
+    "Hospitalisation en neuro",
+    "Antiémétiques",
+    "Corticothérapie"
+  ],
+  "correctTreatments": [
+    "Surveillance neurologique rapprochée",
+    "Hospitalisation en neuro",
+    "Kinésithérapie vestibulaire et cérébelleuse"
+  ],
+  "correction": "<h3>Syndrome cérébelleux post-traumatique</h3>\n<p>Les vertiges d'origine centrale se traduisent par une instabilité majeure, un Romberg central, une marche ébrieuse et des troubles de la coordination. Le contexte de chute avec perte de connaissance oriente vers un traumatisme crânien compliqué d’une contusion cérébelleuse.</p>\n<h4>Points clés</h4>\n<ul><li>Instabilité ébrieuse = cérébelleux</li><li>Romberg oscillant dans toutes les directions</li><li>Dysmétrie aux tests index-index et talon-genou</li><li>IRM indispensable</li></ul>\n<h4>Prise en charge</h4>\n<ul><li>Hospitalisation et surveillance</li><li>Rééducation cérébelleuse</li><li>Repos neurologique strict</li></ul>"
+}

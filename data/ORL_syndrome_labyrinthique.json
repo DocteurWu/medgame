@@ -1,0 +1,121 @@
+{
+  "id": "orl_syndrome_labyrinthique",
+  "patient": {
+    "nom": "Shepherd",
+    "prenom": "Amelia",
+    "age": 33,
+    "sexe": "F",
+    "taille": "169 cm",
+    "poids": "58 kg",
+    "groupeSanguin": "A-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Vertiges rotatoires intenses avec troubles auditifs depuis 24 heures",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Course occasionnelle, yoga" },
+      "tabac": { "quantite": "0" },
+      "alcool": { "quantite": "Rare, occasionnel" },
+      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
+      "emploi": { "profession": "Neurochirurgienne", "stress": "Élevé" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Migraines", "traitement": "Triptans si besoin" }
+      ],
+      "chirurgicaux": [
+        { "intervention": "Aucune", "date": "Jamais" }
+      ],
+      "familiaux": [
+        { "lien": "Sœur", "pathologie": "Surdité brusque idiopathique", "age": "38" }
+      ]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures",
+      "evolution": "Installation brutale",
+      "facteursDeclenchants": "Aucun",
+      "symptomesAssocies": [
+        "Nausées",
+        "Vomissements",
+        "Hypoacousie droite",
+        "Acouphènes droits",
+        "Otalgie droite"
+      ],
+      "remarques": "La patiente décrit une sensation d’oreille bouchée depuis 48 heures et une fièvre modérée"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "112/67 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "38.1°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "17/min"
+    },
+    "aspectGeneral": "Patiente nauséeuse, très gênée par les vertiges",
+    "examenCardiovasculaire": { "auscultation": "Normal" },
+    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenAbdominal": { 
+      "palpation": "Normal"
+    },
+    "examenNeurologique": { 
+      "conscience": "Normale",
+      "nystagmus": "Nystagmus horizontal battant à gauche, inhibé par la fixation"
+    },
+    "examenORL": {
+      "otoscopie": "Tympan droit congestif et bombé",
+      "audition": "Hypoacousie droite perçue",
+      "equilibre": "Romberg positif, chute latéralisée à droite"
+    }
+  },
+  "availableExams": [
+    "Romberg",
+    "Test de Fukuda",
+    "Test des index",
+    "Head Impulse Test (HIT)",
+    "Épreuve calorique",
+    "Audiogramme tonal",
+    "Tympanogramme",
+    "IRM des rochers",
+    "Biologie standard"
+  ],
+  "examResults": {
+    "Romberg": "Romberg positif avec chute latéralisée à droite",
+    "Test de Fukuda": "Déviation progressive de plus de 45° vers la droite",
+    "Test des index": "Déviation des index à droite",
+    "Head Impulse Test (HIT)": "Rattrapage correctif du regard à droite, en faveur d’une atteinte vestibulaire périphérique",
+    "Épreuve calorique": "Hyporéflexie vestibulaire droite",
+    "Audiogramme tonal": "Hypoacousie neurosensorielle droite prédominant sur les aigus",
+    "Tympanogramme": "Courbe plate (type B) compatible avec otite moyenne aiguë",
+    "IRM des rochers": "Pas d’atteinte centrale, hypersignal du labyrinthe droit évoquant une labyrinthite",
+    "Biologie standard": "CRP modérément augmentée"
+  },
+  "possibleDiagnostics": [
+    "Syndrome vestibulaire central",
+    "Névrite vestibulaire",
+    "Syndrome de Ménière",
+    "Labyrinthite aiguë",
+    "Syndrome de Cogan débutant"
+  ],
+  "correctDiagnostic": "Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan",
+  "feedback": {
+    "Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan": "Correct ! L'association vertiges intenses, hypoacousie, tympan inflammatoire et hyporéflexie périphérique oriente vers une labyrinthite. L’atteinte audio-vestibulaire inflammatoire peut évoquer un début de syndrome de Cogan.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Antibiothérapie adaptée",
+    "Corticothérapie courte",
+    "Antiémétiques",
+    "Repos strict en phase aiguë",
+    "Consultation ORL spécialisée",
+    "Traitement antalgique"
+  ],
+  "correctTreatments": [
+    "Antibiothérapie adaptée",
+    "Corticothérapie courte",
+    "Consultation ORL spécialisée"
+  ],
+  "correction": "<h3>Labyrinthite aiguë sur otite moyenne — suspicion de syndrome de Cogan</h3>\n<p>La patiente présente un syndrome vestibulaire périphérique aigu (nystagmus inhibé par la fixation, Romberg positif, hyporéflexie calorique), une hypoacousie neurosensorielle droite et une otite moyenne aiguë. Le tableau est compatible avec une labyrinthite, pouvant être la première manifestation d’un syndrome de Cogan.</p>\n<h4>Points clés</h4>\n<ul><li>Vertiges intenses + hypoacousie = atteinte audio-vestibulaire</li><li>Otoscope inflammatoire = étiologie otitique probable</li><li>Tests vestibulaires périphériques anormaux</li><li>IRM utile pour éliminer une atteinte centrale</li></ul>\n<h4>Prise en charge</h4>\n<ul><li>Antibiothérapie rapide</li><li>Corticoïdes si déficit cochléaire</li><li>Suivi ORL rapproché pour surveiller l'évolution auditive</li><li>Repos et traitement symptomatique</li></ul>"
+}
