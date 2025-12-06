@@ -1,0 +1,117 @@
+{
+  "id": "orl_cholesteatome",
+  "patient": {
+    "nom": "Wilson",
+    "prenom": "Joe",
+    "age": 38,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "82 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Vertiges rotatoires intenses et otorrhée chronique droite",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Travail debout au bar, marche quotidienne" },
+      "tabac": { "quantite": "10 cigarettes/jour" },
+      "alcool": { "quantite": "Consommation régulière (professionnelle)" },
+      "alimentation": { "regime": "Standard", "particularites": "Repas irréguliers" },
+      "emploi": { "profession": "Barman", "stress": "Modéré" }
+    },
+    "antecedents": {
+      "medicaux": [
+        { "type": "Otites moyennes chroniques", "traitement": "Antibiotiques intermittents" }
+      ],
+      "chirurgicaux": [
+        { "intervention": "Appendicectomie", "date": "À 15 ans" }
+      ],
+      "familiaux": [
+        { "lien": "Père", "pathologie": "Surdité progressive", "age": "50" }
+      ]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois",
+      "evolution": "Aggravation progressive avec épisodes vertigineux depuis 1 semaine",
+      "facteursDeclenchants": "Aucun — vertiges spontanés",
+      "symptomesAssocies": [
+        "Otorrhée purulente intermittente",
+        "Hypoacousie droite",
+        "Acouphènes",
+        "Sensation d’oreille pleine"
+      ],
+      "remarques": "Vertiges rotatoires brefs mais intenses, majorés en position tête penchée."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "128/79 mmHg",
+      "pouls": "84 bpm",
+      "temperature": "37.3°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient fatigué, gêné par les vertiges",
+    "examenORL": {
+      "otoscopie": "Bourgeon inflammatoire + perforation marginale avec squames blanches (aspect de cholestéatome)",
+      "otorrhee": "Purulente",
+      "hypoacousie": "Présente à droite"
+    },
+    "examenVestibulaire": {
+      "nystagmus": "Spontané, horizontal, battant vers la gauche",
+      "headImpulseTest": "Anormal à droite",
+      "Romberg": "Romberg latéralisé à droite",
+      "Unterberger": "Déviation progressive droite"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "motricite": "Normale",
+      "coordination": "Ataxie légère en rapport avec le déficit vestibulaire"
+    }
+  },
+  "availableExams": [
+    "Audiogramme",
+    "TDM rochers",
+    "IRM cérébrale",
+    "Épreuves caloriques",
+    "Bandelette urinaire",
+    "Prise de sang (CRP, NFS)"
+  ],
+  "examResults": {
+    "Audiogramme": "Hypoacousie mixte droite",
+    "TDM rochers": "Lyse osseuse de l’attique + masse hyperdense évocatrice de cholestéatome",
+    "IRM cérébrale": "Hyposignal T1/T2 rétrotympanique compatible",
+    "Épreuves caloriques": "Déficit vestibulaire périphérique droit",
+    "Bandelette urinaire": "Normale",
+    "Prise de sang (CRP, NFS)": "CRP légèrement augmentée (18 mg/L)"
+  },
+  "possibleDiagnostics": [
+    "Neuronite vestibulaire",
+    "Otite moyenne aiguë suppurée",
+    "Maladie de Ménière",
+    "Cholestéatome compliqué",
+    "Vertige central"
+  ],
+  "correctDiagnostic": "Cholestéatome compliqué",
+  "feedback": {
+    "Cholestéatome compliqué": "Correct ! L’otorrhée fétide, la perforation marginale et les squames blanches orientent fortement vers un cholestéatome. Le nystagmus périphérique confirme un vertige d’origine labyrinthique.",
+    "default": "Ce n’est pas le bon diagnostic."
+  },
+  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "possibleTreatments": [
+    "Antibiotiques locaux",
+    "Aspiration des sécrétions + nettoyage sous microscope",
+    "Corticoïdes",
+    "Vestibulosuppresseurs",
+    "Chirurgie d’exérèse du cholestéatome",
+    "Hospitalisation ORL"
+  ],
+  "correctTreatments": [
+    "Antibiotiques locaux",
+    "Aspiration des sécrétions + nettoyage sous microscope",
+    "Chirurgie d’exérèse du cholestéatome",
+    "Hospitalisation ORL"
+  ],
+  "correction": "<h3>Cholestéatome compliqué</h3>\n<p>Le cholestéatome est une lésion épidermique invasive du rocher entraînant otorrhée fétide, douleurs, hypoacousie et vertiges lorsque l’oreille interne est atteinte.</p>\n<h4>Points clés</h4>\n<ul><li>Perforation marginale + squames blanches = très évocateur.</li><li>Vertiges périphériques expliqués par l’extension au labyrinthe.</li><li>TDM des rochers indispensable.</li></ul>\n<h4>Prise en charge</h4>\n<ul><li>Nettoyage + antibiotiques locaux en première intention.</li><li>Traitement définitif : exérèse chirurgicale.</li><li>Surveillance audiométrique prolongée.</li></ul>"
+}

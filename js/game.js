@@ -27,6 +27,48 @@ const SHOW_RESULT_DELAY = 1;
 const BASE_SCORE = 100;
 const ATTEMPT_PENALTY = 10;
 
+// Configuration for clinical exam sections (label, icon)
+const EXAM_CONFIG = {
+    examenCardiovasculaire: { label: 'Cardiovasculaire', icon: 'fa-heartbeat' },
+    examenPulmonaire: { label: 'Pulmonaire', icon: 'fa-lungs' },
+    examenAbdominal: { label: 'Abdominal', icon: 'fa-procedures' },
+    examenNeurologique: { label: 'Neurologique', icon: 'fa-brain' },
+    examenORL: { label: 'ORL', icon: 'fa-ear-listen' },
+    examenVestibulaire: { label: 'Vestibulaire', icon: 'fa-compass' },
+    examenDermatologique: { label: 'Dermatologique', icon: 'fa-hand-dots' },
+    examenMusculosquelettique: { label: 'Musculosquelettique', icon: 'fa-bone' },
+    examenOphtalmologique: { label: 'Ophtalmologique', icon: 'fa-eye' },
+    examenUrologique: { label: 'Urologique', icon: 'fa-droplet' },
+    default: { label: 'Autre Examen', icon: 'fa-stethoscope' }
+};
+
+// Helper function to render an exam section dynamically
+function renderExamSection(key, data) {
+    const config = EXAM_CONFIG[key] || EXAM_CONFIG.default;
+    // Use a readable label: either from config or derive from key
+    const label = config.label !== 'Autre Examen' ? config.label : key.replace(/^examen/, '').replace(/([A-Z])/g, ' $1').trim();
+    const icon = config.icon;
+
+    let contentHtml = '';
+    if (typeof data === 'string') {
+        contentHtml = `<p>${data}</p>`;
+    } else if (typeof data === 'object' && data !== null) {
+        const items = Object.entries(data).map(([subKey, value]) => {
+            // Capitalize first letter of subKey for display
+            const displayKey = subKey.charAt(0).toUpperCase() + subKey.slice(1);
+            return `<li><strong>${displayKey}:</strong> ${value}</li>`;
+        }).join('');
+        contentHtml = `<ul>${items}</ul>`;
+    }
+
+    return `
+        <div class="exam-item">
+            <h4><i class="fas ${icon}"></i> ${label}</h4>
+            ${contentHtml}
+        </div>
+    `;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const motifHospitalisation = document.getElementById('motif-hospitalisation');
     const activitePhysique = document.getElementById('activite-physique');
@@ -50,10 +92,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const saturationO2 = document.getElementById('saturationO2');
     const frequenceRespiratoire = document.getElementById('frequenceRespiratoire');
     const aspectGeneral = document.getElementById('aspectGeneral');
-    const examenCardiovasculaire = document.getElementById('examenCardiovasculaire');
-    const examenPulmonaire = document.getElementById('examenPulmonaire');
-    const examenAbdominal = document.getElementById('examenAbdominal');
-    const examenNeurologique = document.getElementById('examenNeurologique');
     const examensResults = document.getElementById('examens-results');
     console.log('examensResults défini au début :', examensResults);
     const validateExamsButton = document.getElementById('validate-exams');
@@ -131,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return patient + motif + constantes + examsBlock;
     }
 
-function showCorrectionModal(text) {
+    function showCorrectionModal(text) {
         if (currentCase && currentCase.redacteur) {
             text += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
         }
@@ -603,10 +641,22 @@ function showCorrectionModal(text) {
         displayValue(frequenceRespiratoire, currentCase.examenClinique.constantes.frequenceRespiratoire);
         mountVitalMonitorAtConstants();
         displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral);
-        displayValue(examenCardiovasculaire, currentCase.examenClinique.examenCardiovasculaire.auscultation);
-        displayValue(examenPulmonaire, currentCase.examenClinique.examenPulmonaire.auscultation);
-        displayValue(examenAbdominal, currentCase.examenClinique.examenAbdominal.palpation);
-        displayValue(examenNeurologique, currentCase.examenClinique.examenNeurologique.conscience);
+
+        // Dynamic rendering of clinical exam sections
+        const examDetailsGrid = document.querySelector('.exam-details-grid');
+        if (examDetailsGrid) {
+            examDetailsGrid.innerHTML = ''; // Clear previous content
+            const examenClinique = currentCase.examenClinique || {};
+            const skipKeys = ['constantes', 'aspectGeneral']; // These are handled elsewhere
+
+            for (const key of Object.keys(examenClinique)) {
+                if (skipKeys.includes(key)) continue;
+                const examData = examenClinique[key];
+                if (examData) {
+                    examDetailsGrid.innerHTML += renderExamSection(key, examData);
+                }
+            }
+        }
 
         examensResults.innerHTML = '';
 

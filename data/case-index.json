@@ -6,5 +6,5 @@
   "gastro-entérologie": [],
   "immunologie": [],
   "uronephro":["nephro_pyélonéphrite_obstructive.json","nephro_varicocèle.json","nephro_IRA_obstructive.json","nephro_torsion_du_cordon_spermatique.json","nephro_orchiépididymite.json","ANDRO_dysfonction_erectile_militaire.json","URO_cystite_IST_chlamydia.json","URO_polyurie_diurese_osmotique_diabete.json", "URO_troubles_fonctionnels_femme_jeune.json"],
-  "neurosensorielle": []
+  "neurosensorielle": ["ORL_vertiges_hypotension_orthostatique.json","ORL_cholesteatome.json","NEURO_vertiges_centrales.json","ORL_syndrome_labyrinthique.json"]
 }
