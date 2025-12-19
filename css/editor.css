@@ -1,112 +1,159 @@
 /* Editor Specific Styles */
+:root {
+    --editor-primary: #a020f0;
+    --editor-secondary: #00d2ff;
+    --editor-danger: #ff4757;
+    --editor-success: #2ed573;
+}
+
 [contenteditable="true"] {
     outline: none;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
     min-width: 20px;
     display: inline-block;
+    transition: all 0.2s;
 }
 
 [contenteditable="true"]:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-bottom-color: var(--primary-color);
+    border-bottom-color: var(--editor-secondary);
 }
 
 [contenteditable="true"]:focus {
     background: rgba(255, 255, 255, 0.1);
     border-bottom-style: solid;
-    border-bottom-color: var(--primary-color);
+    border-bottom-color: var(--editor-secondary);
 }
 
-.edit-controls {
-    display: flex;
-    gap: 5px;
-    margin-top: 5px;
-}
-
+/* Action Buttons */
 .btn-add,
 .btn-remove {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
     color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 4px;
-    display: flex;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
     cursor: pointer;
-    font-size: 12px;
-    transition: all 0.2s;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-add {
+    color: var(--editor-success);
+    border-color: rgba(46, 213, 115, 0.3);
 }
 
 .btn-add:hover {
-    background: #2ecc71;
-    border-color: #2ecc71;
+    background: rgba(46, 213, 115, 0.1);
+    border-color: var(--editor-success);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 213, 115, 0.2);
+}
+
+.btn-remove {
+    color: var(--editor-danger);
+    border-color: rgba(255, 71, 87, 0.3);
+    padding: 6px 12px;
 }
 
 .btn-remove:hover {
-    background: #e74c3c;
-    border-color: #e74c3c;
+    background: rgba(255, 71, 87, 0.1);
+    border-color: var(--editor-danger);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.2);
+}
+
+/* Specific Layout Adjustments */
+.exam-item {
+    position: relative;
+    padding-bottom: 45px !important;
+}
+
+.exam-item .btn-remove {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.exam-item h4 {
+    color: var(--editor-secondary) !important;
+    font-family: var(--font-title);
+    letter-spacing: 1px;
+    margin-bottom: 15px !important;
+    text-transform: none !important;
 }
 
 .editor-footer {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--glass-border);
 }
 
 .btn-editor {
     background: var(--primary-color);
-    color: black;
+    color: white;
     border: none;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 12px;
     font-family: inherit;
-    font-weight: bold;
+    font-weight: 700;
     cursor: pointer;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
+    transition: all 0.3s ease;
 }
 
 .btn-editor.secondary {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
 }
 
 .btn-editor:hover {
-    filter: brightness(1.2);
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Specific item wrappers for lists */
 .editable-list-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 5px 0;
+    gap: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
 }
 
-.editable-list-item[contenteditable="true"] {
-    flex: 1;
-}
-
-.item-actions {
-    display: flex;
-    gap: 5px;
-    opacity: 0.3;
-    transition: opacity 0.2s;
-}
-
-.editable-list-item:hover .item-actions {
-    opacity: 1;
+.editable-list-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .constants-unit {
     color: var(--text-muted);
     font-size: 0.9em;
     margin-left: 4px;
+    font-style: italic;
+    opacity: 0.6;
+}
+
+/* Empty State/Placeholders */
+[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    color: var(--text-muted);
+    opacity: 0.5;
 }
