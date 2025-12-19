@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditeur de Cas - MedGame</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-user-md"></i> MEDGAME EDITOR
+                </a>
+            </div>
+
+            <div class="patient-mini-card">
+                <div class="patient-avatar" id="patient-initials">?</div>
+                <div class="patient-details">
+                    <h3 id="patient-nom-sidebar" contenteditable="true">Nom Prénom</h3>
+                    <p><span id="patient-age-sidebar" contenteditable="true">72</span> ans · <span
+                            id="patient-sexe-sidebar" contenteditable="true">M</span></p>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="section-anamnese">
+                    <i class="fas fa-comments"></i> 1. Anamnèse
+                </button>
+                <button class="nav-item" data-target="section-examen">
+                    <i class="fas fa-stethoscope"></i> 2. Examen Physique
+                </button>
+                <button class="nav-item" data-target="section-examens-comp">
+                    <i class="fas fa-microscope"></i> 3. Examens Compl.
+                </button>
+                <button class="nav-item" data-target="section-synthese">
+                    <i class="fas fa-check-circle"></i> 4. Synthèse & Correction
+                </button>
+            </nav>
+
+            <div class="editor-footer">
+                <input type="file" id="load-json" style="display: none;" accept=".json">
+                <button class="btn-editor secondary" onclick="document.getElementById('load-json').click()">
+                    <i class="fas fa-file-import"></i> Charger JSON
+                </button>
+                <button class="btn-editor" id="save-json">
+                    <i class="fas fa-save"></i> Sauvegarder JSON
+                </button>
+                <a href="index.html" class="quit-btn" style="margin-top: 10px;">RETOUR ACCUEIL</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="case-info">
+                    <span class="label">MOTIF D'ADMISSION</span>
+                    <h2 id="motif-hospitalisation" contenteditable="true">Entrez le motif...</h2>
+                </div>
+            </header>
+
+            <div class="content-scroll-area">
+                <!-- SECTION: ANAMNÈSE -->
+                <section id="section-anamnese" class="game-section active">
+                    <h2 class="section-header">1. INTERROGATOIRE</h2>
+                    <div class="grid-layout">
+                        <!-- Histoire de la Maladie -->
+                        <div class="medical-card">
+                            <h3 class="card-title">Histoire de la Maladie</h3>
+                            <div class="card-content">
+                                <div class="sub-section">
+                                    <h4>Début des symptômes</h4>
+                                    <p id="debut-symptomes" contenteditable="true">...</p>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Évolution</h4>
+                                    <p id="evolution" contenteditable="true">...</p>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Facteurs déclenchants</h4>
+                                    <p id="facteurs-declenchants" contenteditable="true">...</p>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Description de la douleur</h4>
+                                    <p id="description-douleur" contenteditable="true">...</p>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Symptômes associés</h4>
+                                    <p id="symptomes-associes" contenteditable="true">...</p>
+                                </div>
+                                <div class="remarques-box">
+                                    <i class="fas fa-pen"></i> <span id="remarques" contenteditable="true">...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terrain & Mode de vie -->
+                        <div class="medical-card">
+                            <h3 class="card-title">Terrain & Mode de vie</h3>
+                            <div class="card-content">
+                                <div class="sub-section">
+                                    <h4>Détails Patient</h4>
+                                    <p>Taille: <span id="patient-taille" contenteditable="true">...</span></p>
+                                    <p>Poids: <span id="patient-poids" contenteditable="true">...</span></p>
+                                    <p>Groupe Sanguin: <span id="patient-groupeSanguin"
+                                            contenteditable="true">...</span></p>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Antécédents Médicaux</h4>
+                                    <div id="antecedents-medicaux"></div>
+                                    <button class="btn-add"
+                                        onclick="addListItem('antecedents-medicaux', {type: 'Type', traitement: 'Traitement'})"><i
+                                            class="fas fa-plus"></i></button>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Traitements habituels</h4>
+                                    <div id="traitements-liste"></div>
+                                    <button class="btn-add"
+                                        onclick="addListItem('traitements-liste', {nom: 'Nom', dose: 'Dose', frequence: 'Fréquence'})"><i
+                                            class="fas fa-plus"></i></button>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Mode de vie</h4>
+                                    <p>Activité physique: <span id="activite-physique" contenteditable="true">...</span>
+                                    </p>
+                                    <p>Tabac: <span id="tabac-quantite" contenteditable="true">...</span> / <span
+                                            id="tabac-duree" contenteditable="true">...</span></p>
+                                    <p>Alcool: <span id="alcool" contenteditable="true">...</span></p>
+                                    <p>Alimentation: <span id="alimentation-regime" contenteditable="true">...</span> /
+                                        <span id="alimentation-particularites" contenteditable="true">...</span>
+                                    </p>
+                                    <p>Emploi: <span id="emploi-profession" contenteditable="true">...</span> / Stress:
+                                        <span id="emploi-stress" contenteditable="true">...</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: EXAMEN PHYSIQUE -->
+                <section id="section-examen" class="game-section">
+                    <h2 class="section-header">2. EXAMEN PHYSIQUE</h2>
+                    <div class="grid-layout">
+                        <div class="medical-card">
+                            <h3 class="card-title">Constantes & Aspect</h3>
+                            <div class="card-content">
+                                <p>Tension: <span id="tension" contenteditable="true">...</span> <span
+                                        class="constants-unit">mmHg</span></p>
+                                <p>Pouls: <span id="pouls" contenteditable="true">...</span> <span
+                                        class="constants-unit">bpm</span></p>
+                                <p>Température: <span id="temperature" contenteditable="true">...</span> <span
+                                        class="constants-unit">°C</span></p>
+                                <p>SpO2: <span id="saturationO2" contenteditable="true">...</span> <span
+                                        class="constants-unit">%</span></p>
+                                <p>Fréq. Resp: <span id="frequenceRespiratoire" contenteditable="true">...</span> <span
+                                        class="constants-unit">/min</span></p>
+                                <div class="remarques-box">
+                                    <strong>Aspect Général:</strong> <span id="aspectGeneral"
+                                        contenteditable="true">...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="medical-card">
+                            <h3 class="card-title">Détails de l'examen</h3>
+                            <div id="exam-details-list" class="exam-details-grid">
+                                <!-- Will be populated by JS -->
+                            </div>
+                            <button class="btn-add" id="add-exam-section" style="margin-top: 10px;"><i
+                                    class="fas fa-plus"></i> Ajouter une section d'examen</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: EXAMENS COMPLÉMENTAIRES -->
+                <section id="section-examens-comp" class="game-section">
+                    <h2 class="section-header">3. EXAMENS COMPLÉMENTAIRES</h2>
+                    <div class="medical-card">
+                        <h3 class="card-title">Liste des examens et résultats</h3>
+                        <div id="available-exams-list"></div>
+                        <button class="btn-add" onclick="addExamResult()"><i class="fas fa-plus"></i> Ajouter un
+                            examen</button>
+                    </div>
+                </section>
+
+                <!-- SECTION: SYNTHÈSE & DÉCISION -->
+                <section id="section-synthese" class="game-section">
+                    <h2 class="section-header">4. SYNTHÈSE & CORRECTION</h2>
+                    <div class="grid-layout">
+                        <div class="medical-card">
+                            <h3 class="card-title">Diagnostics & Traitements</h3>
+                            <div class="sub-section">
+                                <h4>Diagnostics Possibles</h4>
+                                <div id="possible-diagnostics"></div>
+                                <button class="btn-add" onclick="addListItemText('possible-diagnostics')"><i
+                                        class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="sub-section">
+                                <h4>Diagnostic Correct</h4>
+                                <p id="correctDiagnostic" contenteditable="true">...</p>
+                            </div>
+                            <div class="sub-section">
+                                <h4>Traitements Possibles</h4>
+                                <div id="possible-treatments"></div>
+                                <button class="btn-add" onclick="addListItemText('possible-treatments')"><i
+                                        class="fas fa-plus"></i></button>
+                            </div>
+                            <div class="sub-section">
+                                <h4>Traitements Corrects</h4>
+                                <div id="correct-treatments-list"></div>
+                                <button class="btn-add" onclick="addListItemText('correct-treatments-list')"><i
+                                        class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="medical-card">
+                            <h3 class="card-title">Correction & Feedback</h3>
+                            <div class="sub-section">
+                                <h4>Texte de Correction (HTML supporté)</h4>
+                                <div id="correction-text" contenteditable="true"
+                                    style="min-height: 200px; border: 1px solid var(--glass-border); padding: 10px; border-radius: 8px;">
+                                </div>
+                            </div>
+                            <div class="sub-section">
+                                <h4>Rédacteur</h4>
+                                <p id="redacteur" contenteditable="true">...</p>
+                            </div>
+                            <div class="sub-section">
+                                <h4>ID du cas (unique)</h4>
+                                <p id="case-id" contenteditable="true">case_id_here</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/editor.js"></script>
+</body>
+
+</html>
