@@ -1,0 +1,109 @@
+/* ==============================================
+   DEVICE CHECK OVERLAY - Block Small Screens
+   ============================================== */
+
+#device-warning-overlay {
+    display: none;
+    /* Hidden by default on large screens */
+}
+
+/* Show on small screens (phones and small tablets) */
+@media (max-width: 900px) {
+    #device-warning-overlay {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(135deg, rgba(0, 5, 16, 0.98) 0%, rgba(10, 20, 40, 0.98) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 99999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        box-sizing: border-box;
+    }
+
+    .device-warning-icon {
+        font-size: 5rem;
+        color: #00f2fe;
+        margin-bottom: 1.5rem;
+        animation: device-pulse 2s ease-in-out infinite;
+        filter: drop-shadow(0 0 30px rgba(0, 242, 254, 0.6));
+    }
+
+    @keyframes device-pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+    }
+
+    .device-warning-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 1rem;
+        letter-spacing: 2px;
+        background: linear-gradient(90deg, #ffffff, #00f2fe);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    }
+
+    .device-warning-message {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.7);
+        max-width: 400px;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .device-warning-hint {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.4);
+        padding: 0.8rem 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .device-warning-hint i {
+        color: #ff0055;
+        animation: rotate-phone 3s ease-in-out infinite;
+    }
+
+    @keyframes rotate-phone {
+
+        0%,
+        100% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(-15deg);
+        }
+
+        75% {
+            transform: rotate(90deg);
+        }
+    }
+}

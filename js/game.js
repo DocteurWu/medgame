@@ -572,10 +572,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function loadCase() {
+        // Prepare time but don't start timer yet
         timeLeft = getTimeLimit();
         displayTime(timeLeft);
-        clearInterval(timerInterval); // Effacer l'ancien intervalle
-        timerInterval = setInterval(updateTimer, 1000); // Démarrer le minuteur
+        clearInterval(timerInterval); // Clear any old interval
 
         if (cases.length === 0) {
             showNotification('Aucun cas clinique trouvé.');
@@ -748,6 +748,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         feedbackDisplay.textContent = '';
         score = 0;
         attempts = 0; // Réinitialiser le nombre d'essais
+
+        // Show nurse intro, then start the timer when dismissed
+        NurseIntro.show(
+            currentCase.patient,
+            currentCase.interrogatoire.motifHospitalisation,
+            () => {
+                // Start the timer only after nurse is dismissed
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        );
     }
 
     function calculateScore() {
