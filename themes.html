@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,10 +19,12 @@
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/device-check.css">
 
     <!-- Three.js pour la 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
+
 <body>
 
     <!-- Canvas pour l'arrière-plan 3D (ADN) -->
@@ -30,55 +33,56 @@
     <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
     <audio src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
         Votre navigateur ne prend pas en charge la music
-      </audio>
+    </audio>
 
     <!-- Scene overlay -->
     <div class="scene-overlay">
 
 
-    <h1 class="h1">Sélectionnez les UEs</h1>
-    <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
-    <div class="container">
-        <div class="themes-container">
-            <div id="themes-grid">
-                <div class="theme-card" data-theme="Cardiologie">
-                    <span class="emoji">❤️</span>
-                    <h2>Cardiologie</h2>
-                    <p class="theme-subtitle">Cas cliniques de cardiologie</p>
+        <h1 class="h1">Sélectionnez les UEs</h1>
+        <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
+        <div class="container">
+            <div class="themes-container">
+                <div id="themes-grid">
+                    <div class="theme-card" data-theme="Cardiologie">
+                        <span class="emoji">❤️</span>
+                        <h2>Cardiologie</h2>
+                        <p class="theme-subtitle">Cas cliniques de cardiologie</p>
+                    </div>
+                    <div class="theme-card" data-theme="Uronephro">
+                        <span class="emoji">🚻</span>
+                        <h2>Uro-néphrologie</h2>
+                        <p class="theme-subtitle">Pathologies urologiques et rénales</p>
+                    </div>
+                    <div class="theme-card" data-theme="Endocrinologie">
+                        <span class="emoji">🧠</span>
+                        <h2>Endocrinologie - Diabétologie - Nutrition</h2>
+                        <p class="theme-subtitle">Pathologies métaboliques et hormonales</p>
+                    </div>
+                    <div class="theme-card" data-theme="Neurosensorielle">
+                        <span class="emoji">🧠</span>
+                        <h2>Neurosensorielle</h2>
+                        <p class="theme-subtitle">Maladies des organes des sens</p>
+                    </div>
+                    <div class="theme-card" data-theme="A_venir">
+                        <span class="emoji">🚧</span>
+                        <h2>A venir ...</h2>
+                        <p class="theme-subtitle">Nouveau contenu à venir très bientôt</p>
+                    </div>
+                    <div class="theme-card" data-theme="A_venir">
+                        <span class="emoji">🚧</span>
+                        <h2>A venir ...</h2>
+                        <p class="theme-subtitle">Nouveau contenu à venir très bientôt</p>
+                    </div>
+
+
                 </div>
-                <div class="theme-card" data-theme="Uronephro">
-                    <span class="emoji">🚻</span>
-                    <h2>Uro-néphrologie</h2>
-                    <p class="theme-subtitle">Pathologies urologiques et rénales</p>
-                </div>
-                <div class="theme-card" data-theme="Endocrinologie">
-                    <span class="emoji">🧠</span>
-                    <h2>Endocrinologie - Diabétologie - Nutrition</h2>
-                    <p class="theme-subtitle">Pathologies métaboliques et hormonales</p>
-                </div>
-                <div class="theme-card" data-theme="Neurosensorielle"> 
-                    <span class="emoji">🧠</span>
-                    <h2>Neurosensorielle</h2>
-                    <p class="theme-subtitle">Maladies des organes des sens</p>
-                </div>
-                <div class="theme-card" data-theme="A_venir">
-                    <span class="emoji">🚧</span>
-                    <h2>A venir ...</h2>
-                    <p class="theme-subtitle">Nouveau contenu à venir très bientôt</p>
-                </div>
-                <div class="theme-card" data-theme="A_venir">
-                    <span class="emoji">🚧</span>
-                    <h2>A venir ...</h2>
-                    <p class="theme-subtitle">Nouveau contenu à venir très bientôt</p>
-                </div>
-                
-                
+                <p class="theme-info">Thèmes sélectionnés: <span id="selected-count">0</span> Cas disponibles: <span
+                        id="available-cases">X</span></p>
+                <button id="reset-button" class="reset-button">Réinitialiser</button>
+                <button id="start-button" disabled>Commencer</button>
             </div>
-            <p class="theme-info">Thèmes sélectionnés: <span id="selected-count">0</span> Cas disponibles: <span id="available-cases">X</span></p>
-            <button id="reset-button" class="reset-button">Réinitialiser</button>
-            <button id="start-button" disabled>Commencer</button>
         </div>
-    </div>
 
     </div>
 
@@ -213,5 +217,7 @@
             }
         });
     </script>
+    <script src="js/device-check.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,248 @@
+/* ========================================================================
+   NURSE NPC - Intro Overlay Styles (Dark Theme)
+   ======================================================================== */
+
+/* Fullscreen overlay that introduces the case - matches dark game theme */
+.nurse-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #0a0b1e;
+    /* Same as game --bg-dark */
+    background-image:
+        radial-gradient(circle at 30% 20%, rgba(100, 0, 200, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(0, 200, 255, 0.15) 0%, transparent 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.nurse-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nurse-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 700px;
+    text-align: center;
+}
+
+/* Infirmier floating animation */
+.npc-wrapper {
+    animation: floatY 3s ease-in-out infinite;
+    position: relative;
+}
+
+.npc-wrapper svg {
+    width: 220px;
+    height: 280px;
+}
+
+@keyframes floatY {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Blinking eyes */
+.eye-lid {
+    transform-origin: center;
+    animation: blink 5s infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    2%,
+    60%,
+    62%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    1%,
+    61% {
+        transform: scaleY(0.1);
+    }
+}
+
+/* Talking bubble subtle wobble - glassmorphism style */
+.speech-bubble {
+    animation: bubbleWobble 2.8s ease-in-out infinite;
+    transform-origin: bottom center;
+    background: rgba(20, 20, 40, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(160, 32, 240, 0.2);
+    padding: 1.5rem 2rem;
+    position: relative;
+    max-width: 450px;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes bubbleWobble {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+
+    25% {
+        transform: scale(1.02) rotate(-0.4deg);
+    }
+
+    50% {
+        transform: scale(0.99) rotate(0.4deg);
+    }
+
+    75% {
+        transform: scale(1.01) rotate(-0.2deg);
+    }
+}
+
+/* Bubble tail pointing up to nurse */
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 20px;
+    height: 20px;
+    background: rgba(20, 20, 40, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.speech-bubble p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+.speech-bubble .patient-name {
+    font-weight: 700;
+    color: #a855f7;
+    /* Purple accent */
+    text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+
+.speech-bubble .motif {
+    font-weight: 600;
+    color: #00d2ff;
+    /* Cyan accent like game */
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+/* Remove caret - cleaner look */
+.bubble-text::after {
+    display: none;
+}
+
+/* Pulse on stethoscope */
+.pulse-dot {
+    animation: pulse 1.6s ease-out infinite;
+    transform-origin: center;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    70% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+/* Progress bar for auto-dismiss countdown */
+.nurse-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 1.5rem 1.5rem;
+    overflow: hidden;
+}
+
+.nurse-progress-bar {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #22c55e 0%, #00d2ff 50%, #a855f7 100%);
+    transform-origin: left;
+    animation: progressShrink var(--nurse-duration, 6s) linear forwards;
+}
+
+@keyframes progressShrink {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* Click hint */
+.nurse-hint {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .nurse-container {
+        padding: 1rem;
+    }
+
+    .npc-wrapper svg {
+        width: 160px;
+        height: 200px;
+    }
+
+    .speech-bubble {
+        max-width: 90vw;
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+}
