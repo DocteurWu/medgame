@@ -453,6 +453,233 @@ body {
     padding-bottom: 0.2em;
 }
 
+
 .label {
     font-weight: bold;
+}
+
+/* --- MOTIFS MODAL --- */
+.motifs-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 5, 16, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.motifs-content {
+    background: rgba(230, 240, 255, 0.95);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 123, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-motifs {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-motifs:hover {
+    color: #ff0055;
+}
+
+#motifs-title {
+    color: #1a1a1a;
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 2px solid rgba(0, 123, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.motifs-actions {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.secondary-btn-modal {
+    background: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-main);
+}
+
+.secondary-btn-modal:hover {
+    background: #007bff;
+    color: white;
+}
+
+.motifs-list {
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.loading,
+.no-motifs,
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #495057;
+    font-weight: 500;
+}
+
+.error {
+    color: #dc3545;
+}
+
+.motif-item {
+    background: white;
+    margin-bottom: 12px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.motif-item:hover {
+    transform: translateX(10px);
+    border-color: #007bff;
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1);
+    background: #f8fbff;
+}
+
+.motif-item i {
+    color: #007bff;
+    font-size: 1.2rem;
+}
+
+.motif-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.motif-name {
+    color: #1a1a1a !important;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.motif-patient {
+    color: #495057 !important;
+    font-size: 0.9rem;
+}
+
+.played-badge {
+    background: #e7f5ed;
+    color: #1a8754;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.played-badge i {
+    font-size: 0.8rem;
+    color: #1a8754;
+}
+
+.motif-item.selected {
+    border-color: #007bff;
+    background: #eef7ff;
+    box-shadow: 0 0 0 2px #007bff;
+}
+
+.motif-item.selected::after {
+    content: '✓';
+    margin-left: auto;
+    background: #007bff;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}
+
+.start-session {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-family: var(--font-title);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.start-session:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.start-session:active {
+    transform: translateY(0);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Custom Scrollbar for Motifs List */
+.motifs-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.motifs-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.motifs-list::-webkit-scrollbar-thumb {
+    background: #007bff;
+    border-radius: 10px;
 }

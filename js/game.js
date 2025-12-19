@@ -281,7 +281,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function loadCasesData() {
         try {
-            // Récupérer les thèmes sélectionnés depuis localStorage
+            // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée
+            const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
+            if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
+                console.log('Loading selected session cases:', selectedCaseFiles);
+                const casesPromises = selectedCaseFiles.map(file =>
+                    fetch(`data/${file}`)
+                        .then(res => {
+                            if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
+                            return res.json();
+                        })
+                );
+                const results = await Promise.all(casesPromises);
+                // On peut vider ou garder selectedCaseFiles. On va le vider pour repartir de zéro au prochain coup
+                localStorage.removeItem('selectedCaseFiles');
+                return results;
+            }
+
+            // Vérifier d'abord si un cas spécifique UNIQUE a été sélectionné
+            const selectedCaseFile = localStorage.getItem('selectedCaseFile');
+            if (selectedCaseFile) {
+                console.log('Loading specific case:', selectedCaseFile);
+                const response = await fetch(`data/${selectedCaseFile}`);
+                if (!response.ok) throw new Error(`Fichier ${selectedCaseFile} introuvable`);
+                const caseData = await response.json();
+
+                // On nettoie le localStorage pour que les rechargements futurs ne restent pas bloqués sur ce cas
+                // (ou on le garde si on veut que le bouton "Rejouer" fonctionne, mais ici on va le vider car game.js
+                // utilise cases[] pour choisir. On va mettre ce cas unique dans la liste.)
+                localStorage.removeItem('selectedCaseFile');
+                return [caseData];
+            }
+
+            // Sinon, récupérer les thèmes sélectionnés depuis localStorage (Comportement original)
             const selectedThemes = JSON.parse(localStorage.getItem('selectedThemes')) || [];
             if (selectedThemes.length === 0) {
                 throw new Error('Aucun thème sélectionné');

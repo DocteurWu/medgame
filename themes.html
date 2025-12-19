@@ -77,13 +77,24 @@
 
 
                 </div>
-                <p class="theme-info">Thèmes sélectionnés: <span id="selected-count">0</span> Cas disponibles: <span
-                        id="available-cases">X</span></p>
-                <button id="reset-button" class="reset-button">Réinitialiser</button>
-                <button id="start-button" disabled>Commencer</button>
             </div>
         </div>
 
+
+        <!-- Modal pour la sélection des motifs -->
+        <div id="motifs-modal" class="motifs-modal" style="display: none;">
+            <div class="motifs-content">
+                <button id="close-motifs" class="close-motifs">&times;</button>
+                <h2 id="motifs-title">Choisissez un cas</h2>
+                <div id="motifs-actions" class="motifs-actions">
+                    <button id="select-unplayed" class="secondary-btn-modal">Sélectionner les cas non faits</button>
+                </div>
+                <div id="motifs-list" class="motifs-list">
+                    <!-- Les motifs seront injectés ici par JS -->
+                </div>
+                <button id="start-session" class="start-session" style="display: none;">Commencer la session</button>
+            </div>
+        </div>
     </div>
 
     <!-- Script 3D Background (ADN) -->
