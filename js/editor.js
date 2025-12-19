@@ -221,6 +221,7 @@ function getText(id) {
 
 function updateInitials() {
     const nom = getText('patient-nom-sidebar');
+    if (!nom) return;
     const initials = nom.split(' ').map(n => n.charAt(0)).join('').toUpperCase() || '?';
     document.getElementById('patient-initials').textContent = initials;
 }
@@ -232,10 +233,10 @@ function addListItem(containerId, template) {
 
     let html = '<div style="flex: 1;">';
     Object.keys(template).forEach(key => {
-        html += `<span data-key="${key}" contenteditable="true">${template[key]}</span> `;
+        html += `<span data-key="${key}" contenteditable="true" placeholder="${key}">${template[key]}</span> `;
     });
     html += '</div>';
-    html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>';
+    html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>';
 
     item.innerHTML = html;
     container.appendChild(item);
@@ -250,10 +251,10 @@ function renderObjectList(containerId, list, keys) {
         item.className = 'editable-list-item';
         let html = '<div style="flex: 1;">';
         keys.forEach(k => {
-            html += `<span data-key="${k}" contenteditable="true">${itemData[k] || ''}</span> `;
+            html += `<span data-key="${k}" contenteditable="true" placeholder="${k}">${itemData[k] || ''}</span> `;
         });
         html += '</div>';
-        html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>';
+        html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>';
         item.innerHTML = html;
         container.appendChild(item);
     });
@@ -266,7 +267,8 @@ function collectObjectList(containerId, keys) {
     return Array.from(items).map(item => {
         const obj = {};
         keys.forEach(k => {
-            obj[k] = item.querySelector(`[data-key="${k}"]`).textContent.trim();
+            const el = item.querySelector(`[data-key="${k}"]`);
+            obj[k] = el ? el.textContent.trim() : "";
         });
         return obj;
     });
@@ -277,8 +279,8 @@ function addListItemText(containerId) {
     const item = document.createElement('div');
     item.className = 'editable-list-item';
     item.innerHTML = `
-        <span contenteditable="true" style="flex: 1;">Nouveau...</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+        <span contenteditable="true" style="flex: 1;" placeholder="Texte...">...</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
     `;
     container.appendChild(item);
 }
@@ -292,7 +294,7 @@ function renderTextList(containerId, list) {
         item.className = 'editable-list-item';
         item.innerHTML = `
             <span contenteditable="true" style="flex: 1;">${txt}</span>
-            <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+            <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
         `;
         container.appendChild(item);
     });
@@ -310,9 +312,9 @@ function renderExamSection(key, data) {
     div.className = 'exam-item';
     div.setAttribute('data-key', key);
 
-    let html = `<h4 contenteditable="true">${key}</h4><ul>`;
+    let html = `<h4 contenteditable="true" placeholder="Nom de la section (ex: examenNeurologique)">${key}</h4><ul>`;
     Object.entries(data).forEach(([k, v]) => {
-        html += `<li><strong>${k}</strong>: <span contenteditable="true">${v}</span></li>`;
+        html += `<li><strong contenteditable="true" placeholder="label">${k}</strong>: <span contenteditable="true" placeholder="résultat">${v}</span></li>`;
     });
     html += '</ul>';
     html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer section</button>';
@@ -326,9 +328,9 @@ function addExamResult() {
     const div = document.createElement('div');
     div.className = 'editable-list-item';
     div.innerHTML = `
-        <strong contenteditable="true" data-type="exam-name">Nom Examen</strong>: 
-        <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;">Résultat...</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+        <strong contenteditable="true" data-type="exam-name" placeholder="Nom Examen">Nouveau Examen</strong>: 
+        <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;" placeholder="Résultat...">Résultat...</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
     `;
     list.appendChild(div);
 }
@@ -343,7 +345,7 @@ function renderExamResults(available, results) {
         div.innerHTML = `
             <strong contenteditable="true" data-type="exam-name">${name}</strong>: 
             <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;">${results ? (results[name] || '') : ''}</span>
-            <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+            <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
         `;
         list.appendChild(div);
     });
@@ -358,9 +360,11 @@ function collectExamResults() {
     const items = document.querySelectorAll('#available-exams-list .editable-list-item');
     const results = {};
     items.forEach(item => {
-        const name = item.querySelector('[data-type="exam-name"]').textContent.trim();
-        const value = item.querySelector('[data-type="exam-value"]').textContent.trim();
-        results[name] = value;
+        const nameEl = item.querySelector('[data-type="exam-name"]');
+        const valueEl = item.querySelector('[data-type="exam-value"]');
+        if (nameEl && valueEl) {
+            results[nameEl.textContent.trim()] = valueEl.textContent.trim();
+        }
     });
     return results;
 }
