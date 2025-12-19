@@ -281,6 +281,43 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function loadCasesData() {
         try {
+            // Preview Mode check
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('preview') === 'true') {
+                const previewData = sessionStorage.getItem('previewCase');
+                if (previewData) {
+                    console.log('Loading Preview Case from sessionStorage');
+                    // Add "Return to Editor" button
+                    const backBtn = document.createElement('button');
+                    backBtn.innerHTML = '<i class="fas fa-edit"></i> Quitter l\'aperçu / Modifier';
+                    backBtn.style.cssText = `
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        z-index: 1000;
+                        background: #a020f0;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 30px;
+                        font-family: inherit;
+                        font-weight: bold;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        transition: all 0.3s;
+                    `;
+                    backBtn.onmouseover = () => backBtn.style.transform = 'scale(1.05)';
+                    backBtn.onmouseout = () => backBtn.style.transform = 'scale(1)';
+                    backBtn.onclick = () => window.location.href = 'editor.html';
+                    document.body.appendChild(backBtn);
+
+                    return [JSON.parse(previewData)];
+                }
+            }
+
             // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée
             const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
             if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
@@ -614,19 +651,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
-        let playedCases = getCookie('playedCases');
-        playedCases = playedCases ? playedCases.split(',') : [];
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPreview = urlParams.get('preview') === 'true';
 
-        // Sélection aléatoire d’un cas non joué
-        let availableCases = cases.filter(caseItem => !playedCases.includes(caseItem.id));
+        if (isPreview) {
+            currentCase = cases[0]; // In preview, we only have one case
+            currentCaseIndex = 0;
+        } else {
+            let playedCases = getCookie('playedCases');
+            playedCases = playedCases ? playedCases.split(',') : [];
 
-        if (availableCases.length === 0) {
-            showNotification('Tous les cas ont été joués !');
-            return;
+            // Sélection aléatoire d’un cas non joué
+            let availableCases = cases.filter(caseItem => !playedCases.includes(caseItem.id));
+
+            if (availableCases.length === 0) {
+                showNotification('Tous les cas ont été joués !');
+                // Optionnel: réinitialiser si tout est joué ou proposer de rejouer
+                return;
+            }
+
+            currentCase = availableCases[Math.floor(Math.random() * availableCases.length)];
+            currentCaseIndex = cases.indexOf(currentCase);
         }
-
-        currentCase = availableCases[Math.floor(Math.random() * availableCases.length)];
-        currentCaseIndex = cases.indexOf(currentCase);
 
         displayValue(document.getElementById('patient-nom'), currentCase.patient.nom);
         displayValue(document.getElementById('patient-prenom'), currentCase.patient.prenom);

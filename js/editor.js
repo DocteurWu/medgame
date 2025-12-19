@@ -42,6 +42,26 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     });
 
+    // Preview Case handler
+    document.getElementById('preview-button').addEventListener('click', () => {
+        const data = collectData();
+        sessionStorage.setItem('previewCase', JSON.stringify(data));
+        window.location.href = 'game.html?preview=true';
+    });
+
+    // Check for existing preview data on load (to persist edits)
+    const existingPreview = sessionStorage.getItem('previewCase');
+    if (existingPreview) {
+        try {
+            const data = JSON.parse(existingPreview);
+            // Small delay to ensure DOM is ready for complex lists if needed, 
+            // but populateEditor should be fast enough.
+            populateEditor(data);
+        } catch (e) {
+            console.error("Error loading preview data", e);
+        }
+    }
+
     // Add Exam Section
     document.getElementById('add-exam-section').addEventListener('click', () => {
         const key = prompt('Nom de la section (ex: examenNeurologique, examenORL...)');
@@ -50,8 +70,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initial Empty State
-    renderExamSection('examenCardiovasculaire', { auscultation: "", inspection: "", palpation: "" });
+    // Initial Empty State with realistic defaults
+    // Constants
+    setText('tension', '120/80');
+    setText('pouls', '70');
+    setText('temperature', '37');
+    setText('saturationO2', '98');
+    setText('frequenceRespiratoire', '16');
+    setText('aspectGeneral', 'Bon état général, patient conscient et orienté.');
+
+    // Physical Exam Sections
+    renderExamSection('examenCardiovasculaire', { auscultation: "Bruits du cœur réguliers, pas de souffle.", inspection: "Pas de signe de choc, pas d'OMI.", palpation: "Pouls périphériques perçus." });
+    renderExamSection('examenPulmonaire', { auscultation: "Murmure vésiculaire symétrique, pas de bruit surajouté.", inspection: "Pas de signe de lutte.", percussion: "Normal." });
+    renderExamSection('examenAbdominal', { palpation: "Souple, indolore, pas de masse.", auscultation: "Bruits hydro-aériques normaux." });
+
+    // Common Complementary Exams
+    const defaultExams = ["NFS-Plaquettes", "Iono-Urée-Créat", "CRP", "ECG"];
+    const defaultResults = {
+        "NFS-Plaquettes": "Hb 14g/dL, Leuco 7000, Plaquettes 250 000",
+        "Iono-Urée-Créat": "Na 140, K 4.0, Créat 80 µmol/L",
+        "CRP": "< 5 mg/L",
+        "ECG": "Rythme sinusal, pas de trouble de repolarisation"
+    };
+    renderExamResults(defaultExams, defaultResults);
 
     // Handle Image Upload logic (Moved to global scope)
     const imgInput = document.getElementById('image-upload');
