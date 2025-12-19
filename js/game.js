@@ -997,12 +997,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const resultDiv = document.createElement('div');
                 resultDiv.className = 'exam-result-item';
                 const isObj = typeof result === 'object' && result !== null;
-                const text = isObj ? (result.text ?? JSON.stringify(result)) : result;
+                const text = isObj ? (result.value || result.text || JSON.stringify(result)) : result;
                 resultDiv.innerHTML = `<strong>${exam}:</strong> ${text}`;
                 if (isObj && result.image) {
                     const btn = document.createElement('button');
-                    btn.textContent = 'Voir l’image';
-                    btn.style.marginLeft = '8px';
+                    btn.innerHTML = '<i class="fas fa-image"></i> Voir l’imagerie';
+                    btn.className = 'btn-add'; // Use existing game button style if applicable, or custom
+                    btn.style.marginLeft = '12px';
+                    btn.style.padding = '4px 10px';
+                    btn.style.fontSize = '0.8em';
                     btn.addEventListener('click', () => {
                         showImageModal(result.image, 'Résultat: ' + exam);
                     });

@@ -52,6 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial Empty State
     renderExamSection('examenCardiovasculaire', { auscultation: "", inspection: "", palpation: "" });
+
+    // Handle Image Upload logic (Moved to global scope)
+    const imgInput = document.getElementById('image-upload');
+    let currentTargetItem = null;
+
+    window.triggerImageUpload = (btn) => {
+        currentTargetItem = btn.parentElement;
+        imgInput.click();
+    };
+
+    imgInput.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file || !currentTargetItem) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const base64 = event.target.result;
+            updateItemImage(currentTargetItem, base64);
+        };
+        reader.readAsDataURL(file);
+    };
 });
 
 function populateEditor(data) {
@@ -132,7 +152,22 @@ function populateEditor(data) {
     document.getElementById('correction-text').innerHTML = data.correction || '';
 }
 
+function updateItemImage(item, base64) {
+    let preview = item.querySelector('.image-preview');
+    if (!preview) {
+        preview = document.createElement('div');
+        preview.className = 'image-preview';
+        item.insertBefore(preview, item.querySelector('.btn-remove'));
+    }
+    preview.innerHTML = `
+        <img src="${base64}" style="height: 40px; border-radius: 4px; border: 1px solid var(--glass-border);">
+        <button class="btn-remove-img" onclick="this.parentElement.remove()" style="background: none; border: none; color: var(--editor-danger); cursor: pointer; padding: 0 5px;"><i class="fas fa-times"></i></button>
+    `;
+    preview.dataset.base64 = base64;
+}
+
 function collectData() {
+    // ...
     const data = {
         id: getText('case-id'),
         redacteur: getText('redacteur'),
@@ -330,6 +365,7 @@ function addExamResult() {
     div.innerHTML = `
         <strong contenteditable="true" data-type="exam-name" placeholder="Nom Examen">Nouveau Examen</strong>: 
         <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;" placeholder="Résultat...">Résultat...</span>
+        <button class="btn-add" style="padding: 6px 10px; font-size: 12px;" onclick="triggerImageUpload(this)"><i class="fas fa-image"></i></button>
         <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
     `;
     list.appendChild(div);
@@ -342,11 +378,30 @@ function renderExamResults(available, results) {
     available.forEach(name => {
         const div = document.createElement('div');
         div.className = 'editable-list-item';
-        div.innerHTML = `
+
+        const examData = results ? results[name] : null;
+        const textValue = typeof examData === 'object' ? (examData.value || '') : (examData || '');
+        const imageBase64 = typeof examData === 'object' ? (examData.image || null) : null;
+
+        let html = `
             <strong contenteditable="true" data-type="exam-name">${name}</strong>: 
-            <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;">${results ? (results[name] || '') : ''}</span>
+            <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;">${textValue}</span>
+        `;
+
+        if (imageBase64) {
+            html += `
+                <div class="image-preview" data-base64="${imageBase64}">
+                    <img src="${imageBase64}" style="height: 40px; border-radius: 4px; border: 1px solid var(--glass-border);">
+                    <button class="btn-remove-img" onclick="this.parentElement.remove()" style="background: none; border: none; color: var(--editor-danger); cursor: pointer; padding: 0 5px;"><i class="fas fa-times"></i></button>
+                </div>
+            `;
+        }
+
+        html += `
+            <button class="btn-add" style="padding: 6px 10px; font-size: 12px;" onclick="triggerImageUpload(this)"><i class="fas fa-image"></i></button>
             <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
         `;
+        div.innerHTML = html;
         list.appendChild(div);
     });
 }
@@ -362,8 +417,17 @@ function collectExamResults() {
     items.forEach(item => {
         const nameEl = item.querySelector('[data-type="exam-name"]');
         const valueEl = item.querySelector('[data-type="exam-value"]');
+        const imgEl = item.querySelector('.image-preview');
         if (nameEl && valueEl) {
-            results[nameEl.textContent.trim()] = valueEl.textContent.trim();
+            const name = nameEl.textContent.trim();
+            const value = valueEl.textContent.trim();
+            const image = imgEl ? imgEl.dataset.base64 : null;
+
+            if (image) {
+                results[name] = { value, image };
+            } else {
+                results[name] = value;
+            }
         }
     });
     return results;
