@@ -108,9 +108,161 @@ document.addEventListener('DOMContentLoaded', async () => {
     let attempts = 0;
     let timeLeft = getTimeLimit();
     let timerInterval;
+    let activeExams = []; // Track currently displayed exam results
     let fireworksInstance = null;
     let backgroundMusicEl = null;
     let vitalMonitorInstance = null;
+
+    // --- GATING SYSTEM (VERROUS) ---
+    let unlockedLocks = new Set();
+    try {
+        const savedLocks = sessionStorage.getItem('unlockedLocks');
+        if (savedLocks) unlockedLocks = new Set(JSON.parse(savedLocks));
+    } catch (e) { console.error("Error loading locks", e); }
+
+    function saveLocks() {
+        sessionStorage.setItem('unlockedLocks', JSON.stringify([...unlockedLocks]));
+    }
+
+    function isFieldLocked(path) {
+        if (!currentCase || !currentCase.locks) return false;
+        return currentCase.locks.some(lock =>
+            !unlockedLocks.has(lock.id) && lock.target_fields.includes(path)
+        );
+    }
+
+    function getLockForField(path) {
+        if (!currentCase || !currentCase.locks) return null;
+        return currentCase.locks.find(lock =>
+            !unlockedLocks.has(lock.id) && lock.target_fields.includes(path)
+        );
+    }
+
+    function normalizeText(text) {
+        return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    }
+
+    function showLockChallenge(lockId) {
+        console.log("showLockChallenge called with lockId:", lockId);
+        console.log("currentCase:", currentCase);
+
+        if (!currentCase) {
+            console.error("currentCase is not defined");
+            showNotification("Erreur: cas non chargé");
+            return;
+        }
+
+        if (!currentCase.locks || !Array.isArray(currentCase.locks)) {
+            console.error("currentCase.locks is not defined or not an array");
+            showNotification("Erreur: pas de verrous définis");
+            return;
+        }
+
+        const lock = currentCase.locks.find(l => l.id === lockId);
+        if (!lock) {
+            console.error("Lock not found:", lockId);
+            showNotification("Erreur: verrou introuvable");
+            return;
+        }
+
+        console.log("Lock found:", lock);
+
+        // Hide nurse intro if it's still showing to avoid timer conflicts
+        if (typeof NurseIntro !== 'undefined') {
+            NurseIntro.hide();
+        }
+
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'correction-overlay';
+        modalOverlay.style.display = 'flex';
+        modalOverlay.id = 'lock-challenge-modal';
+        modalOverlay.style.zIndex = '2000'; // Ensure it's above everything
+
+        let challengeHtml = '';
+        if (lock.type === 'SAISIE') {
+            challengeHtml = `
+                <div class="lock-modal">
+                    <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
+                    <p class="challenge-question">${lock.challenge.question}</p>
+                    <input type="text" id="lock-answer" placeholder="Votre réponse..." autocomplete="off">
+                    <p id="lock-error" class="error-feedback"></p>
+                    <div class="correction-actions">
+                        <button class="secondary-btn" id="lock-cancel">Annuler</button>
+                        <button class="primary-btn" id="lock-submit">Valider</button>
+                    </div>
+                </div>
+            `;
+        } else if (lock.type === 'QCM') {
+            const optionsHtml = lock.challenge.options.map((opt, i) =>
+                `<div class="mcq-option" data-index="${i}">${opt}</div>`
+            ).join('');
+
+            challengeHtml = `
+                <div class="lock-modal">
+                    <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
+                    <p class="challenge-question">${lock.challenge.question}</p>
+                    <div class="mcq-options">${optionsHtml}</div>
+                    <p id="lock-error" class="error-feedback"></p>
+                    <div class="correction-actions">
+                        <button class="secondary-btn" id="lock-cancel">Annuler</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        modalOverlay.innerHTML = challengeHtml;
+        document.body.appendChild(modalOverlay);
+
+        if (lock.type === 'SAISIE') {
+            const input = document.getElementById('lock-answer');
+            input.focus();
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') validateSaisie(); });
+            document.getElementById('lock-submit').addEventListener('click', validateSaisie);
+        } else {
+            document.querySelectorAll('.mcq-option').forEach(opt => {
+                opt.addEventListener('click', () => validateQCM(parseInt(opt.dataset.index)));
+            });
+        }
+
+        document.getElementById('lock-cancel').addEventListener('click', () => {
+            modalOverlay.remove();
+        });
+
+        function validateSaisie() {
+            const val = document.getElementById('lock-answer').value;
+            const answer = normalizeText(val);
+            const isCorrect = lock.challenge.expected_keywords.some(kw => normalizeText(kw) === answer || answer.includes(normalizeText(kw)));
+
+            if (isCorrect) {
+                unlock(lockId);
+                modalOverlay.remove();
+            } else {
+                document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
+                gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
+            }
+        }
+
+        function validateQCM(index) {
+            if (index === lock.challenge.correct_index) {
+                unlock(lockId);
+                modalOverlay.remove();
+            } else {
+                document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
+                gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
+            }
+        }
+    }
+
+    function unlock(lockId) {
+        unlockedLocks.add(lockId);
+        saveLocks();
+
+        // Refresh the UI to show the unlocked data
+        loadCase(true);
+    }
+
+    // Export globally for onclick handlers
+    window.showLockChallenge = showLockChallenge;
 
     function getTimeLimit() {
         const v = sessionStorage.getItem('timeLimitSeconds');
@@ -218,6 +370,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (fireworksInstance) fireworksInstance.stop();
         if (backgroundMusicEl) backgroundMusicEl.play();
         hideCorrectionModal();
+
+        currentCaseIndex++;
+        if (currentCaseIndex >= cases.length) {
+            window.location.href = 'index.html';
+            return;
+        }
         loadCase();
     });
 
@@ -396,9 +554,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function displayValue(element, value) {
+    function displayValue(element, value, path) {
         if (!element) return;
+
+        if (path && isFieldLocked(path)) {
+            const lock = getLockForField(path);
+            element.setAttribute('data-locked', 'true');
+            element.innerHTML = `
+                <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
+                    <i class="fas fa-lock"></i>
+                    <span class="challenge-text">DÉFI À RELEVER</span>
+                </div>
+            `;
+            return;
+        }
+
+        const isNew = element.getAttribute('data-locked') === 'true';
         element.textContent = value ?? '';
+
+        if (isNew) {
+            element.removeAttribute('data-locked');
+            element.classList.add('unlocked-data');
+        }
     }
 
     function parseBP(text) {
@@ -640,11 +817,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         vitalMonitorInstance.mount(mountPoint);
     }
 
-    function loadCase() {
+    function loadCase(isPartialRefresh = false) {
+        console.log("loadCase called, isPartialRefresh:", isPartialRefresh);
+        if (isPartialRefresh) console.trace("Trace for partial refresh");
+
         // Prepare time but don't start timer yet
-        timeLeft = getTimeLimit();
-        displayTime(timeLeft);
-        clearInterval(timerInterval); // Clear any old interval
+        if (!isPartialRefresh) {
+            timeLeft = getTimeLimit();
+            displayTime(timeLeft);
+            if (timerInterval) clearInterval(timerInterval);
+        } else {
+            // If partial refresh, we must be careful with NurseIntro
+            if (typeof NurseIntro !== 'undefined') {
+                // If we don't want the nurse to finish her previous talk and trigger callbacks
+                // we could potentially clear her callback here, but NurseIntro doesn't expose a way to clear it 
+                // easily without hiding her.
+            }
+        }
 
         if (cases.length === 0) {
             showNotification('Aucun cas clinique trouvé.');
@@ -654,33 +843,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const isPreview = urlParams.get('preview') === 'true';
 
-        if (isPreview) {
-            currentCase = cases[0]; // In preview, we only have one case
-            currentCaseIndex = 0;
-        } else {
-            let playedCases = getCookie('playedCases');
-            playedCases = playedCases ? playedCases.split(',') : [];
-
-            // Sélection aléatoire d’un cas non joué
-            let availableCases = cases.filter(caseItem => !playedCases.includes(caseItem.id));
-
-            if (availableCases.length === 0) {
-                showNotification('Tous les cas ont été joués !');
-                // Optionnel: réinitialiser si tout est joué ou proposer de rejouer
-                return;
-            }
-
-            currentCase = availableCases[Math.floor(Math.random() * availableCases.length)];
-            currentCaseIndex = cases.indexOf(currentCase);
+        if (!isPartialRefresh) {
+            currentCase = cases[currentCaseIndex];
         }
 
-        displayValue(document.getElementById('patient-nom'), currentCase.patient.nom);
-        displayValue(document.getElementById('patient-prenom'), currentCase.patient.prenom);
-        displayValue(document.getElementById('patient-age'), currentCase.patient.age);
-        displayValue(document.getElementById('patient-sexe'), currentCase.patient.sexe);
-        displayValue(document.getElementById('patient-taille'), currentCase.patient.taille);
-        displayValue(document.getElementById('patient-poids'), currentCase.patient.poids);
-        displayValue(document.getElementById('patient-groupeSanguin'), currentCase.patient.groupeSanguin);
+        displayValue(document.getElementById('patient-nom'), currentCase.patient.nom, 'patient.nom');
+        displayValue(document.getElementById('patient-prenom'), currentCase.patient.prenom, 'patient.prenom');
+        displayValue(document.getElementById('patient-age'), currentCase.patient.age, 'patient.age');
+        displayValue(document.getElementById('patient-sexe'), currentCase.patient.sexe, 'patient.sexe');
+        displayValue(document.getElementById('patient-taille'), currentCase.patient.taille, 'patient.taille');
+        displayValue(document.getElementById('patient-poids'), currentCase.patient.poids, 'patient.poids');
+        displayValue(document.getElementById('patient-groupeSanguin'), currentCase.patient.groupeSanguin, 'patient.groupeSanguin');
 
         // Update sidebar patient mini-card
         const patientNomSidebar = document.getElementById('patient-nom-sidebar');
@@ -696,29 +869,48 @@ document.addEventListener('DOMContentLoaded', async () => {
             patientInitials.textContent = initials;
         }
 
-        displayValue(motifHospitalisation, currentCase.interrogatoire.motifHospitalisation);
-        displayValue(activitePhysique, currentCase.interrogatoire.modeDeVie.activitePhysique.description);
-        displayValue(tabac, `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}`);
-        displayValue(alcool, currentCase.interrogatoire.modeDeVie.alcool.quantite);
-        displayValue(alimentation, `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}`);
-        displayValue(emploi, `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}`);
-        antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${ant.type} (${ant.traitement})</li>`).join('') + '</ul>';
-        antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${ant.intervention} (${ant.date})</li>`).join('') + '</ul>';
-        antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${ant.lien}: ${ant.pathologie} (${ant.age} ans)</li>`).join('') + '</ul>';
-        traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+        displayValue(motifHospitalisation, currentCase.interrogatoire.motifHospitalisation, 'interrogatoire.motifHospitalisation');
+        displayValue(activitePhysique, currentCase.interrogatoire.modeDeVie.activitePhysique.description, 'interrogatoire.modeDeVie.activitePhysique.description');
+        displayValue(tabac, `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}`, 'interrogatoire.modeDeVie.tabac');
+        displayValue(alcool, currentCase.interrogatoire.modeDeVie.alcool.quantite, 'interrogatoire.modeDeVie.alcool.quantite');
+        displayValue(alimentation, `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}`, 'interrogatoire.modeDeVie.alimentation');
+        displayValue(emploi, `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}`, 'interrogatoire.modeDeVie.emploi');
+
+        if (isFieldLocked('interrogatoire.antecedents')) {
+            const lock = getLockForField('interrogatoire.antecedents');
+            const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+            antecedentsMedicaux.innerHTML = placeholder;
+            antecedentsChirurgicaux.innerHTML = '';
+            antecedentsFamiliaux.innerHTML = '';
+        } else {
+            antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${ant.type} (${ant.traitement})</li>`).join('') + '</ul>';
+            antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${ant.intervention} (${ant.date})</li>`).join('') + '</ul>';
+            antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${ant.lien}: ${ant.pathologie} (${ant.age} ans)</li>`).join('') + '</ul>';
+        }
+
+        if (isFieldLocked('interrogatoire.traitements')) {
+            const lock = getLockForField('interrogatoire.traitements');
+            traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+        } else {
+            traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+        }
+
         allergiesListe.textContent = currentCase.interrogatoire.allergies.presence ? currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ') : 'Aucune';
-        displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes);
-        displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution);
-        displayValue(facteursDeclenchants, currentCase.interrogatoire.histoireMaladie.facteursDeclenchants);
-        displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '));
-        displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques);
-        displayValue(tension, currentCase.examenClinique.constantes.tension);
-        displayValue(pouls, currentCase.examenClinique.constantes.pouls);
-        displayValue(temperature, currentCase.examenClinique.constantes.temperature);
-        displayValue(saturationO2, currentCase.examenClinique.constantes.saturationO2);
-        displayValue(frequenceRespiratoire, currentCase.examenClinique.constantes.frequenceRespiratoire);
+
+        displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
+        displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution, 'interrogatoire.histoireMaladie.evolution');
+        displayValue(facteursDeclenchants, currentCase.interrogatoire.histoireMaladie.facteursDeclenchants, 'interrogatoire.histoireMaladie.facteursDeclenchants');
+        displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
+        displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques, 'interrogatoire.histoireMaladie.remarques');
+
+        displayValue(tension, currentCase.examenClinique.constantes.tension, 'examenClinique.constantes.tension');
+        displayValue(pouls, currentCase.examenClinique.constantes.pouls, 'examenClinique.constantes.pouls');
+        displayValue(temperature, currentCase.examenClinique.constantes.temperature, 'examenClinique.constantes.temperature');
+        displayValue(saturationO2, currentCase.examenClinique.constantes.saturationO2, 'examenClinique.constantes.saturationO2');
+        displayValue(frequenceRespiratoire, currentCase.examenClinique.constantes.frequenceRespiratoire, 'examenClinique.constantes.frequenceRespiratoire');
+
         mountVitalMonitorAtConstants();
-        displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral);
+        displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral, 'examenClinique.aspectGeneral');
 
         // Dynamic rendering of clinical exam sections
         const examDetailsGrid = document.querySelector('.exam-details-grid');
@@ -730,13 +922,32 @@ document.addEventListener('DOMContentLoaded', async () => {
             for (const key of Object.keys(examenClinique)) {
                 if (skipKeys.includes(key)) continue;
                 const examData = examenClinique[key];
+                const path = `examenClinique.${key}`;
                 if (examData) {
-                    examDetailsGrid.innerHTML += renderExamSection(key, examData);
+                    if (isFieldLocked(path)) {
+                        const lock = getLockForField(path);
+                        examDetailsGrid.innerHTML += `
+                            <div class="exam-item">
+                                <h4><i class="fas fa-lock lock-icon"></i> ${key}</h4>
+                                <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
+                                    <i class="fas fa-puzzle-piece"></i>
+                                    <span class="challenge-text">DÉFI À RELEVER</span>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        examDetailsGrid.innerHTML += renderExamSection(key, examData);
+                    }
                 }
             }
         }
 
-        examensResults.innerHTML = '';
+        if (!isPartialRefresh) {
+            examensResults.innerHTML = '';
+            activeExams = [];
+        } else {
+            renderExamResults();
+        }
 
         // Vider la liste des diagnostics possibles
         const diagnosticSelect = document.getElementById('diagnostic-select');
@@ -807,35 +1018,41 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        gsap.from(".medical-card", {
-            duration: 1,
-            y: 50,
-            opacity: 0,
-            stagger: 0.2,
-            ease: "power2.out"
-        });
+        if (!isPartialRefresh) {
+            gsap.from(".medical-card", {
+                duration: 1,
+                y: 50,
+                opacity: 0,
+                stagger: 0.2,
+                ease: "power2.out"
+            });
+        }
 
-        // Réinitialiser les traitements sélectionnés
-        selectedTreatments = [];
+        if (!isPartialRefresh) {
+            // Réinitialiser les traitements sélectionnés
+            selectedTreatments = [];
 
-        // Vider le feedback des traitements
-        document.getElementById('treatment-feedback').textContent = '';
+            // Vider le feedback des traitements
+            document.getElementById('treatment-feedback').textContent = '';
 
+            scoreDisplay.textContent = '';
+            feedbackDisplay.textContent = '';
+            score = 0;
+            attempts = 0; // Réinitialiser le nombre d'essais
+        }
 
-        scoreDisplay.textContent = '';
-        feedbackDisplay.textContent = '';
-        score = 0;
-        attempts = 0; // Réinitialiser le nombre d'essais
-
-        // Show nurse intro, then start the timer when dismissed
-        NurseIntro.show(
-            currentCase.patient,
-            currentCase.interrogatoire.motifHospitalisation,
-            () => {
-                // Start the timer only after nurse is dismissed
-                timerInterval = setInterval(updateTimer, 1000);
-            }
-        );
+        if (!isPartialRefresh) {
+            // Show nurse intro, then start the timer when dismissed
+            NurseIntro.show(
+                currentCase.patient,
+                currentCase.interrogatoire.motifHospitalisation,
+                () => {
+                    // Start the timer only after nurse is dismissed
+                    if (timerInterval) clearInterval(timerInterval);
+                    timerInterval = setInterval(updateTimer, 1000);
+                }
+            );
+        }
     }
 
     function calculateScore() {
@@ -1023,6 +1240,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
 
+    function renderExamResults() {
+        if (activeExams.length === 0) return;
+
+        examensResults.innerHTML = '<h4>Résultats des examens complémentaires :</h4>';
+
+        activeExams.forEach(exam => {
+            const path = `examResults.${exam}`;
+            const result = currentCase.examResults[exam] || "Résultat non disponible";
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'exam-result-item';
+
+            if (isFieldLocked(path)) {
+                const lock = getLockForField(path);
+                resultDiv.innerHTML = `
+                        <strong>${exam}:</strong>
+                        <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')" style="display:inline-flex; padding:5px 15px; margin-left:10px;">
+                            <i class="fas fa-lock" style="font-size:1rem;"></i>
+                            <span class="challenge-text" style="font-size:0.8rem;">DÉFI À RELEVER</span>
+                        </div>
+                    `;
+            } else {
+                const isObj = typeof result === 'object' && result !== null;
+                const text = isObj ? (result.value || result.text || JSON.stringify(result)) : result;
+                resultDiv.innerHTML = `<strong>${exam}:</strong> ${text}`;
+                if (isObj && result.image) {
+                    const btn = document.createElement('button');
+                    btn.innerHTML = '<i class="fas fa-image"></i> Voir l’imagerie';
+                    btn.className = 'btn-add';
+                    btn.style.marginLeft = '12px';
+                    btn.style.padding = '4px 10px';
+                    btn.style.fontSize = '0.8em';
+                    btn.addEventListener('click', () => {
+                        showImageModal(result.image, 'Résultat: ' + exam);
+                    });
+                    resultDiv.appendChild(btn);
+                }
+            }
+            examensResults.appendChild(resultDiv);
+        });
+    }
+
     document.getElementById('validate-exams').addEventListener('click', () => {
         const selectedExamButtons = document.querySelectorAll('.exam-btn.selected');
         const selectedExams = Array.from(selectedExamButtons).map(btn => btn.dataset.exam);
@@ -1036,33 +1294,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         examensResults.innerHTML = '<div class="loading">Analyse des examens en cours...</div>';
 
         setTimeout(() => {
-            examensResults.innerHTML = '<h4>Résultats des examens complémentaires :</h4>';
+            activeExams = selectedExams;
+            renderExamResults();
 
-            selectedExams.forEach(exam => {
-                const result = currentCase.examResults[exam] || "Résultat non disponible";
-                const resultDiv = document.createElement('div');
-                resultDiv.className = 'exam-result-item';
-                const isObj = typeof result === 'object' && result !== null;
-                const text = isObj ? (result.value || result.text || JSON.stringify(result)) : result;
-                resultDiv.innerHTML = `<strong>${exam}:</strong> ${text}`;
-                if (isObj && result.image) {
-                    const btn = document.createElement('button');
-                    btn.innerHTML = '<i class="fas fa-image"></i> Voir l’imagerie';
-                    btn.className = 'btn-add'; // Use existing game button style if applicable, or custom
-                    btn.style.marginLeft = '12px';
-                    btn.style.padding = '4px 10px';
-                    btn.style.fontSize = '0.8em';
-                    btn.addEventListener('click', () => {
-                        showImageModal(result.image, 'Résultat: ' + exam);
-                    });
-                    resultDiv.appendChild(btn);
-                }
-                examensResults.appendChild(resultDiv);
-            });
-
-            // Jouer le son d'examen
-            const examSound = new Audio('assets/sounds/bip.m4a');
-            examSound.play();
+            // Jouer le son d'examen (if possible)
+            try {
+                // Not playing bip.m4a as it doesn't exist
+            } catch (e) { }
 
         }, 1500); // Délai de 1.5 secondes pour simuler le temps d'analyse
     });
@@ -1070,8 +1308,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     function handleShowResultClick(event) {
         const examen = event.target.dataset.examen;
         // Simuler un délai avant d'afficher le résultat
-        const examSound = new Audio('assets/sounds/bip.m4a');
-        examSound.play();
 
         setTimeout(() => {
             const result = currentCase.examResults[examen] || "Résultat non disponible";
@@ -1107,13 +1343,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Validation is now handled solely by validate-traitement.
 
     nextCaseButton.addEventListener('click', () => {
-        currentCaseIndex = (currentCaseIndex + 1) % cases.length;
+        currentCaseIndex++;
+        if (currentCaseIndex >= cases.length) {
+            window.location.href = 'index.html';
+            return;
+        }
         loadCase();
     });
 
     async function initializeGame() {
         cases = await loadCasesData();
         if (cases.length > 0) {
+            showNotification(`Session démarrée : ${cases.length} cas chargé(s)`);
             loadCase();
         }
         displayTime(timeLeft);

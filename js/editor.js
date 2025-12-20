@@ -113,6 +113,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         reader.readAsDataURL(file);
     };
+
+    // --- LOCKS MANAGEMENT ---
+    document.getElementById('add-lock-btn').addEventListener('click', () => {
+        addLock({
+            id: 'lock_' + Date.now(),
+            type: 'SAISIE',
+            target_fields: [],
+            challenge: { question: 'Votre question ?', expected_keywords: [] },
+            feedback_error: 'Erreur...'
+        });
+    });
 });
 
 function populateEditor(data) {
@@ -181,6 +192,9 @@ function populateEditor(data) {
             }
         });
     }
+
+    // Locks
+    renderLocksList(data.locks);
 
     // Exam Results & Available Exams
     renderExamResults(data.availableExams, data.examResults);
@@ -264,7 +278,8 @@ function collectData() {
         possibleTreatments: collectTextList('possible-treatments'),
         correctTreatments: collectTextList('correct-treatments-list'),
         correction: document.getElementById('correction-text').innerHTML,
-        feedback: { default: "Diagnostic incorrect." }
+        feedback: { default: "Diagnostic incorrect." },
+        locks: collectLocks()
     };
 
     // Collect dynamic exams
@@ -472,4 +487,139 @@ function collectExamResults() {
         }
     });
     return results;
+}
+
+// --- NEW LOCKS FUNCTIONS ---
+
+function addLock(lockData) {
+    const container = document.getElementById('locks-list');
+    const div = document.createElement('div');
+    div.className = 'medical-card';
+    div.style.marginBottom = '20px';
+    div.style.position = 'relative';
+    div.dataset.id = lockData.id;
+
+    const type = lockData.type || 'SAISIE';
+
+    div.innerHTML = `
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px;">
+            <i class="fas fa-trash"></i>
+        </button>
+        <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap:15px;">
+            <div>
+                <h4 class="label">Config de base</h4>
+                <p>ID: <span class="lock-id" contenteditable="true">${lockData.id}</span></p>
+                <p>Type: 
+                    <select class="lock-type modern-select" style="padding:5px; font-size:0.9em; width:auto;">
+                        <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie de texte</option>
+                        <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM</option>
+                    </select>
+                </p>
+                <p>Champs cibles (chemins séparés par virgule):</p>
+                <div class="lock-targets" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; font-family:monospace; font-size:0.9em;">
+                    ${(lockData.target_fields || []).join(', ')}
+                </div>
+            </div>
+            <div>
+                <h4 class="label">Défi</h4>
+                <p>Question:</p>
+                <div class="lock-question" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; margin-bottom:10px;">
+                    ${lockData.challenge.question}
+                </div>
+                <div class="lock-challenge-details">
+                    <!-- Specific to type -->
+                </div>
+                <p>Message d'erreur:</p>
+                <div class="lock-error" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; font-size:0.9em;">
+                    ${lockData.feedback_error || ''}
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(div);
+    const detailsContainer = div.querySelector('.lock-challenge-details');
+    const typeSelect = div.querySelector('.lock-type');
+
+    const updateDetails = () => {
+        const currentType = typeSelect.value;
+        if (currentType === 'SAISIE') {
+            detailsContainer.innerHTML = `
+                <p>Mots-clés attendus (séparés par virgule):</p>
+                <div class="lock-keywords" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; margin-bottom:10px;">
+                    ${(lockData.challenge.expected_keywords || []).join(', ')}
+                </div>
+            `;
+        } else {
+            const options = lockData.challenge.options || ['Option 1', 'Option 2'];
+            const correct = lockData.challenge.correct_index || 0;
+
+            let optionsHtml = options.map((opt, i) => `
+                <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:5px;">
+                    <input type="radio" name="correct_${lockData.id}" ${i === correct ? 'checked' : ''} value="${i}">
+                    <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:5px; border-radius:4px;">${opt}</span>
+                    <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:2px 5px;"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+
+            detailsContainer.innerHTML = `
+                <p>Options QCM (cochez la bonne):</p>
+                <div class="mcq-options-list">${optionsHtml}</div>
+                <button class="btn-add" onclick="addMcqOption(this)" style="padding:5px 10px; font-size:0.8em; margin-bottom:10px;"><i class="fas fa-plus"></i> Option</button>
+            `;
+        }
+    };
+
+    typeSelect.addEventListener('change', updateDetails);
+    updateDetails();
+}
+
+window.addMcqOption = (btn) => {
+    const list = btn.previousElementSibling;
+    const lockId = btn.closest('.medical-card').dataset.id;
+    const div = document.createElement('div');
+    div.className = 'mcq-editor-option';
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';
+    div.style.gap = '10px';
+    div.style.marginBottom = '5px';
+    div.innerHTML = `
+        <input type="radio" name="correct_${lockId}" value="${list.children.length}">
+        <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:5px; border-radius:4px;">Nouvelle option</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:2px 5px;"><i class="fas fa-times"></i></button>
+    `;
+    list.appendChild(div);
+};
+
+function renderLocksList(locks) {
+    const container = document.getElementById('locks-list');
+    container.innerHTML = '';
+    if (!locks) return;
+    locks.forEach(lock => addLock(lock));
+}
+
+function collectLocks() {
+    const lockCards = document.querySelectorAll('#locks-list > .medical-card');
+    return Array.from(lockCards).map(card => {
+        const type = card.querySelector('.lock-type').value;
+        const lock = {
+            id: card.querySelector('.lock-id').textContent.trim(),
+            type: type,
+            target_fields: card.querySelector('.lock-targets').textContent.split(',').map(s => s.trim()).filter(s => s),
+            challenge: {
+                question: card.querySelector('.lock-question').textContent.trim()
+            },
+            feedback_error: card.querySelector('.lock-error').textContent.trim()
+        };
+
+        if (type === 'SAISIE') {
+            lock.challenge.expected_keywords = card.querySelector('.lock-keywords').textContent.split(',').map(s => s.trim()).filter(s => s);
+        } else {
+            const optionsList = card.querySelectorAll('.mcq-editor-option');
+            lock.challenge.options = Array.from(optionsList).map(opt => opt.querySelector('span').textContent.trim());
+            const checkedRadio = card.querySelector('input[type="radio"]:checked');
+            lock.challenge.correct_index = checkedRadio ? parseInt(checkedRadio.value) : 0;
+        }
+        return lock;
+    });
 }

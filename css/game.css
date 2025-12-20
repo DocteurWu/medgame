@@ -877,3 +877,145 @@ body {
         opacity: 0.8;
     }
 }
+
+/* Gating System (Verrous) Styles */
+.lock-placeholder {
+    background: rgba(46, 204, 113, 0.1);
+    border: 2px dashed rgba(46, 204, 113, 0.4);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 10px 0;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: pulse-border 2s infinite ease-in-out;
+}
+
+.lock-placeholder:hover {
+    background: rgba(46, 204, 113, 0.2);
+    border-color: rgba(46, 204, 113, 0.8);
+    transform: scale(1.02);
+}
+
+.lock-placeholder i {
+    font-size: 1.5rem;
+    color: #2ecc71;
+}
+
+.lock-placeholder .challenge-text {
+    font-weight: bold;
+    color: #2ecc71;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.lock-icon {
+    display: inline-block;
+    margin-left: 8px;
+    color: #f1c40f;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+@keyframes pulse-border {
+    0% { border-color: rgba(46, 204, 113, 0.4); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+    50% { border-color: rgba(46, 204, 113, 0.8); box-shadow: 0 0 10px 2px rgba(46, 204, 113, 0.2); }
+    100% { border-color: rgba(46, 204, 113, 0.4); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+.unlocked-data {
+    animation: reveal-data 0.8s ease forwards;
+}
+
+@keyframes reveal-data {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* Lock Challenge Modal */
+.lock-modal {
+    background: #1a1a2e;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid #2ecc71;
+    box-shadow: 0 0 30px rgba(46, 204, 113, 0.2);
+    text-align: center;
+    color: white; /* Ensure text is visible */
+}
+
+.lock-modal h3 {
+    color: #2ecc71;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.lock-modal .challenge-question {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.lock-modal input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.lock-modal input:focus {
+    outline: none;
+    border-color: #2ecc71;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.lock-modal .error-feedback {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    min-height: 1.2em;
+}
+
+.lock-modal .mcq-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.lock-modal .mcq-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lock-modal .mcq-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #2ecc71;
+}
+
+.lock-modal .mcq-option.selected {
+    background: rgba(46, 204, 113, 0.2);
+    border-color: #2ecc71;
+}
