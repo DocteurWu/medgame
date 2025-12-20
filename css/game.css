@@ -356,7 +356,7 @@ body {
 /* Exam Details Grid */
 .exam-details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 20px;
 }
 
@@ -922,9 +922,20 @@ body {
 }
 
 @keyframes pulse-border {
-    0% { border-color: rgba(46, 204, 113, 0.4); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-    50% { border-color: rgba(46, 204, 113, 0.8); box-shadow: 0 0 10px 2px rgba(46, 204, 113, 0.2); }
-    100% { border-color: rgba(46, 204, 113, 0.4); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+    0% {
+        border-color: rgba(46, 204, 113, 0.4);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
+
+    50% {
+        border-color: rgba(46, 204, 113, 0.8);
+        box-shadow: 0 0 10px 2px rgba(46, 204, 113, 0.2);
+    }
+
+    100% {
+        border-color: rgba(46, 204, 113, 0.4);
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
 }
 
 .unlocked-data {
@@ -937,6 +948,7 @@ body {
         transform: translateY(10px);
         filter: blur(5px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -954,7 +966,8 @@ body {
     border: 1px solid #2ecc71;
     box-shadow: 0 0 30px rgba(46, 204, 113, 0.2);
     text-align: center;
-    color: white; /* Ensure text is visible */
+    color: white;
+    /* Ensure text is visible */
 }
 
 .lock-modal h3 {
@@ -973,7 +986,7 @@ body {
     width: 100%;
     padding: 12px;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     color: white;
     font-size: 1rem;
@@ -1003,7 +1016,7 @@ body {
 
 .lock-modal .mcq-option {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 12px;
     border-radius: 8px;
     cursor: pointer;

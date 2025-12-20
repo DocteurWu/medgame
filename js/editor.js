@@ -397,17 +397,62 @@ function collectTextList(containerId) {
     return Array.from(container.querySelectorAll('span')).map(s => s.textContent.trim());
 }
 
+function formatExamKey(key) {
+    if (!key) return "";
+    // If it already seems formatted (has spaces or starts with capital), return it
+    if (key.includes(' ') || /^[A-Z]/.test(key)) return key;
+
+    // Remove "examen" prefix if it exists
+    let formatted = key.replace(/^examen/, '');
+    // Add space before capitals
+    formatted = formatted.replace(/([A-Z])/g, ' $1').trim();
+    // Capitalize first letter
+    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+}
+
+function createBulletHtml(k, v) {
+    return `<li>
+        <strong contenteditable="true" placeholder="label">${k}</strong>: 
+        <span contenteditable="true" placeholder="résultat">${v || ''}</span>
+        <i class="fas fa-times remove-bullet" onclick="this.parentElement.remove()" title="Supprimer ce point"></i>
+    </li>`;
+}
+
+window.addExamBullet = function (btn) {
+    const ul = btn.closest('.exam-item').querySelector('ul');
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <strong contenteditable="true" placeholder="label">Nouveau</strong>: 
+        <span contenteditable="true" placeholder="résultat">...</span>
+        <i class="fas fa-times remove-bullet" onclick="this.parentElement.remove()" title="Supprimer ce point"></i>
+    `;
+    ul.appendChild(li);
+    // Focus the new label
+    li.querySelector('strong').focus();
+};
+
 function renderExamSection(key, data) {
     const list = document.getElementById('exam-details-list');
     const div = document.createElement('div');
     div.className = 'exam-item';
     div.setAttribute('data-key', key);
 
-    let html = `<h4 contenteditable="true" placeholder="Nom de la section (ex: examenNeurologique)">${key}</h4><ul>`;
-    Object.entries(data).forEach(([k, v]) => {
-        html += `<li><strong contenteditable="true" placeholder="label">${k}</strong>: <span contenteditable="true" placeholder="résultat">${v}</span></li>`;
-    });
+    const displayTitle = formatExamKey(key);
+
+    let html = `<h4 contenteditable="true" placeholder="Nom de la section">${displayTitle}</h4><ul>`;
+    if (data && typeof data === 'object') {
+        Object.entries(data).forEach(([k, v]) => {
+            html += createBulletHtml(k, v);
+        });
+    }
     html += '</ul>';
+    html += `
+        <div class="exam-actions" style="margin-top: 10px; display: flex; gap: 10px;">
+            <button class="btn-add-bullet" onclick="addExamBullet(this)" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--editor-secondary); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em;">
+                <i class="fas fa-plus"></i> Ajouter un point
+            </button>
+        </div>
+    `;
     html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer section</button>';
 
     div.innerHTML = html;
@@ -489,17 +534,62 @@ function collectExamResults() {
     return results;
 }
 
-// --- NEW LOCKS FUNCTIONS ---
+function getAvailableFields() {
+    const fields = [];
+
+    // Interrogatoire
+    fields.push({ path: 'interrogatoire.histoireMaladie.debutSymptomes', label: 'Anamnèse: Début symptômes' });
+    fields.push({ path: 'interrogatoire.histoireMaladie.evolution', label: 'Anamnèse: Évolution' });
+    fields.push({ path: 'interrogatoire.histoireMaladie.facteursDeclenchants', label: 'Anamnèse: Facteurs déclenchants' });
+    fields.push({ path: 'interrogatoire.histoireMaladie.descriptionDouleur', label: 'Anamnèse: Description douleur' });
+    fields.push({ path: 'interrogatoire.histoireMaladie.symptomesAssocies', label: 'Anamnèse: Symptômes associés' });
+    fields.push({ path: 'interrogatoire.histoireMaladie.remarques', label: 'Anamnèse: Histoire - Remarques' });
+
+    fields.push({ path: 'interrogatoire.modeDeVie.activitePhysique.description', label: 'Mode de vie: Activité physique' });
+    fields.push({ path: 'interrogatoire.modeDeVie.tabac', label: 'Mode de vie: Tabac' });
+    fields.push({ path: 'interrogatoire.modeDeVie.alcool', label: 'Mode de vie: Alcool' });
+    fields.push({ path: 'interrogatoire.modeDeVie.alimentation', label: 'Mode de vie: Alimentation' });
+    fields.push({ path: 'interrogatoire.modeDeVie.emploi', label: 'Mode de vie: Emploi/Stress' });
+
+    fields.push({ path: 'interrogatoire.antecedents.medicaux', label: 'Anamnèse: Antécédents' });
+    fields.push({ path: 'interrogatoire.traitements', label: 'Anamnèse: Traitements habituels' });
+
+    // Examen Clinique
+    fields.push({ path: 'examenClinique.constantes.tension', label: 'Examen: Tension' });
+    fields.push({ path: 'examenClinique.constantes.pouls', label: 'Examen: Pouls' });
+    fields.push({ path: 'examenClinique.constantes.temperature', label: 'Examen: Température' });
+    fields.push({ path: 'examenClinique.constantes.saturationO2', label: 'Examen: SpO2' });
+    fields.push({ path: 'examenClinique.constantes.frequenceRespiratoire', label: 'Examen: FR' });
+    fields.push({ path: 'examenClinique.aspectGeneral', label: 'Examen: Aspect général' });
+
+    // Dynamic Examen Sections
+    const dynamicExams = document.querySelectorAll('.exam-item[data-key]');
+    dynamicExams.forEach(item => {
+        const key = item.getAttribute('data-key');
+        const title = item.querySelector('h4').textContent;
+        fields.push({ path: `examenClinique.${key}`, label: `Examen: ${title}` });
+    });
+
+    // Exam Results (each exam can be locked)
+    const examResults = document.querySelectorAll('#available-exams-list .editable-list-item');
+    examResults.forEach(item => {
+        const name = item.querySelector('[data-type="exam-name"]').textContent.trim();
+        fields.push({ path: `examResults.${name}`, label: `Résultat: ${name}` });
+    });
+
+    return fields;
+}
 
 function addLock(lockData) {
     const container = document.getElementById('locks-list');
     const div = document.createElement('div');
-    div.className = 'medical-card';
+    div.className = 'medical-card lock-card';
     div.style.marginBottom = '20px';
     div.style.position = 'relative';
     div.dataset.id = lockData.id;
 
     const type = lockData.type || 'SAISIE';
+    const availableFields = getAvailableFields();
 
     div.innerHTML = `
         <button class="btn-remove" onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px;">
@@ -507,30 +597,42 @@ function addLock(lockData) {
         </button>
         <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap:15px;">
             <div>
-                <h4 class="label">Config de base</h4>
-                <p>ID: <span class="lock-id" contenteditable="true">${lockData.id}</span></p>
-                <p>Type: 
-                    <select class="lock-type modern-select" style="padding:5px; font-size:0.9em; width:auto;">
+                <div class="lock-setting-item" style="display: none;">
+                    <span class="lock-label">ID du verrou:</span>
+                    <span class="lock-id" contenteditable="true">${lockData.id}</span>
+                </div>
+                <div class="lock-setting-item">
+                    <span class="lock-label">Mode de réponse:</span>
+                    <select class="lock-type modern-select">
                         <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie de texte</option>
-                        <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM</option>
+                        <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM (Choix multiple)</option>
                     </select>
-                </p>
-                <p>Champs cibles (chemins séparés par virgule):</p>
-                <div class="lock-targets" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; font-family:monospace; font-size:0.9em;">
-                    ${(lockData.target_fields || []).join(', ')}
+                </div>
+                
+                <div class="lock-setting-item" style="flex-direction: column; align-items: flex-start;">
+                    <span class="lock-label">Éléments à masquer:</span>
+                    <div class="field-selector-container" style="width: 100%;">
+                        <select class="field-picker modern-select" style="width: 100%; margin-bottom: 10px;">
+                            <option value="">-- Sélectionner un champ --</option>
+                            ${availableFields.map(f => `<option value="${f.path}">${f.label}</option>`).join('')}
+                        </select>
+                        <div class="selected-fields-tags">
+                            <!-- Tags will be inserted here -->
+                        </div>
+                    </div>
                 </div>
             </div>
             <div>
-                <h4 class="label">Défi</h4>
-                <p>Question:</p>
-                <div class="lock-question" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; margin-bottom:10px;">
+                <h4 class="label">Défi du verrou</h4>
+                <p class="lock-label">Question à poser :</p>
+                <div class="lock-question" contenteditable="true" placeholder="Ex: Quel examen demandez-vous ?" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--glass-border);">
                     ${lockData.challenge.question}
                 </div>
                 <div class="lock-challenge-details">
                     <!-- Specific to type -->
                 </div>
-                <p>Message d'erreur:</p>
-                <div class="lock-error" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; font-size:0.9em;">
+                <p class="lock-label" style="margin-top: 15px;">En cas d'erreur :</p>
+                <div class="lock-error" contenteditable="true" placeholder="Message d'erreur..." style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-size:0.9em; border: 1px solid var(--glass-border);">
                     ${lockData.feedback_error || ''}
                 </div>
             </div>
@@ -538,6 +640,34 @@ function addLock(lockData) {
     `;
 
     container.appendChild(div);
+
+    const tagsContainer = div.querySelector('.selected-fields-tags');
+    const fieldPicker = div.querySelector('.field-picker');
+
+    const addTag = (path) => {
+        if (!path) return;
+        const existingTags = Array.from(tagsContainer.querySelectorAll('.field-tag')).map(t => t.dataset.path);
+        if (existingTags.includes(path)) return;
+
+        const field = availableFields.find(f => f.path === path) || { label: path, path: path };
+        const tag = document.createElement('div');
+        tag.className = 'field-tag';
+        tag.dataset.path = path;
+        tag.innerHTML = `
+            <span>${field.label}</span>
+            <i class="fas fa-times" onclick="this.parentElement.remove()"></i>
+        `;
+        tagsContainer.appendChild(tag);
+    };
+
+    // Initialize tags
+    (lockData.target_fields || []).forEach(path => addTag(path));
+
+    fieldPicker.addEventListener('change', (e) => {
+        addTag(e.target.value);
+        e.target.value = '';
+    });
+
     const detailsContainer = div.querySelector('.lock-challenge-details');
     const typeSelect = div.querySelector('.lock-type');
 
@@ -545,8 +675,8 @@ function addLock(lockData) {
         const currentType = typeSelect.value;
         if (currentType === 'SAISIE') {
             detailsContainer.innerHTML = `
-                <p>Mots-clés attendus (séparés par virgule):</p>
-                <div class="lock-keywords" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; margin-bottom:10px;">
+                <p class="lock-label">Réponses acceptées (mots-clés séparés par virgule) :</p>
+                <div class="lock-keywords" contenteditable="true" placeholder="ex: poumon, pleurésie" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; border: 1px solid var(--glass-border);">
                     ${(lockData.challenge.expected_keywords || []).join(', ')}
                 </div>
             `;
@@ -555,17 +685,17 @@ function addLock(lockData) {
             const correct = lockData.challenge.correct_index || 0;
 
             let optionsHtml = options.map((opt, i) => `
-                <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:5px;">
+                <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                     <input type="radio" name="correct_${lockData.id}" ${i === correct ? 'checked' : ''} value="${i}">
-                    <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:5px; border-radius:4px;">${opt}</span>
-                    <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:2px 5px;"><i class="fas fa-times"></i></button>
+                    <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
+                    <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
                 </div>
             `).join('');
 
             detailsContainer.innerHTML = `
-                <p>Options QCM (cochez la bonne):</p>
+                <p class="lock-label">Options QCM (cochez la bonne réponse) :</p>
                 <div class="mcq-options-list">${optionsHtml}</div>
-                <button class="btn-add" onclick="addMcqOption(this)" style="padding:5px 10px; font-size:0.8em; margin-bottom:10px;"><i class="fas fa-plus"></i> Option</button>
+                <button class="btn-add" onclick="addMcqOption(this)" style="padding:8px 12px; font-size:0.8em; margin-top:10px;"><i class="fas fa-plus"></i> Ajouter une option</button>
             `;
         }
     };
@@ -576,17 +706,18 @@ function addLock(lockData) {
 
 window.addMcqOption = (btn) => {
     const list = btn.previousElementSibling;
-    const lockId = btn.closest('.medical-card').dataset.id;
+    const lockCard = btn.closest('.lock-card');
+    const lockId = lockCard.dataset.id;
     const div = document.createElement('div');
     div.className = 'mcq-editor-option';
     div.style.display = 'flex';
     div.style.alignItems = 'center';
     div.style.gap = '10px';
-    div.style.marginBottom = '5px';
+    div.style.marginBottom = '8px';
     div.innerHTML = `
         <input type="radio" name="correct_${lockId}" value="${list.children.length}">
-        <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:5px; border-radius:4px;">Nouvelle option</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:2px 5px;"><i class="fas fa-times"></i></button>
+        <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">Nouvelle option</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
     `;
     list.appendChild(div);
 };
@@ -599,13 +730,15 @@ function renderLocksList(locks) {
 }
 
 function collectLocks() {
-    const lockCards = document.querySelectorAll('#locks-list > .medical-card');
+    const lockCards = document.querySelectorAll('#locks-list > .lock-card');
     return Array.from(lockCards).map(card => {
         const type = card.querySelector('.lock-type').value;
+        const targetTags = Array.from(card.querySelectorAll('.field-tag')).map(t => t.dataset.path);
+
         const lock = {
             id: card.querySelector('.lock-id').textContent.trim(),
             type: type,
-            target_fields: card.querySelector('.lock-targets').textContent.split(',').map(s => s.trim()).filter(s => s),
+            target_fields: targetTags,
             challenge: {
                 question: card.querySelector('.lock-question').textContent.trim()
             },
@@ -618,7 +751,9 @@ function collectLocks() {
             const optionsList = card.querySelectorAll('.mcq-editor-option');
             lock.challenge.options = Array.from(optionsList).map(opt => opt.querySelector('span').textContent.trim());
             const checkedRadio = card.querySelector('input[type="radio"]:checked');
-            lock.challenge.correct_index = checkedRadio ? parseInt(checkedRadio.value) : 0;
+            const allRadios = Array.from(card.querySelectorAll('input[type="radio"]'));
+            const correctIndex = allRadios.indexOf(checkedRadio);
+            lock.challenge.correct_index = correctIndex >= 0 ? correctIndex : 0;
         }
         return lock;
     });

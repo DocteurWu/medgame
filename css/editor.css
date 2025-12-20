@@ -70,7 +70,59 @@
 /* Specific Layout Adjustments */
 .exam-item {
     position: relative;
-    padding-bottom: 45px !important;
+    padding-bottom: 55px !important;
+}
+
+.exam-item ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 10px;
+}
+
+.exam-item li {
+    padding: 8px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.exam-item li strong {
+    flex-shrink: 0;
+    min-width: 100px;
+    max-width: 150px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+
+.exam-item li span {
+    flex: 1;
+    min-width: 0;
+    /* Allow shrinking if needed, but flex: 1 should handle it */
+}
+
+.exam-item li:hover .remove-bullet {
+    opacity: 0.5;
+}
+
+.remove-bullet {
+    cursor: pointer;
+    font-size: 0.8em;
+    color: var(--editor-danger);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    padding: 5px;
+}
+
+.remove-bullet:hover {
+    opacity: 1 !important;
+    transform: scale(1.2);
+}
+
+.btn-add-bullet:hover {
+    background: rgba(0, 210, 255, 0.2) !important;
+    border-color: var(--editor-secondary) !important;
+    transform: translateY(-1px);
 }
 
 .exam-item .btn-remove {
@@ -193,4 +245,90 @@
 
 .btn-remove-img:hover {
     opacity: 1;
+}
+
+/* Locks UI Improvements */
+.lock-card {
+    border: 1px solid rgba(160, 32, 240, 0.2) !important;
+    background: rgba(160, 32, 240, 0.02) !important;
+}
+
+.lock-label {
+    display: block;
+    color: var(--editor-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.lock-setting-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.lock-label-inline {
+    min-width: 120px;
+}
+
+.modern-select {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.modern-select:hover {
+    border-color: var(--editor-secondary);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.selected-fields-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.field-tag {
+    background: rgba(0, 210, 255, 0.15) !important;
+    border: 1px solid rgba(0, 210, 255, 0.3) !important;
+    color: var(--editor-secondary) !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    font-size: 0.8rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: all 0.2s !important;
+    margin-bottom: 5px;
+}
+
+.field-tag i {
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+.field-tag i:hover {
+    opacity: 1;
+    color: var(--editor-danger);
+}
+
+.field-tag:hover {
+    background: rgba(0, 210, 255, 0.25) !important;
+}
+
+.lock-id {
+    font-family: monospace;
+    color: white;
+    font-size: 0.9em;
+    opacity: 0.8;
 }
