@@ -205,6 +205,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <p id="lock-error" class="error-feedback"></p>
                     <div class="correction-actions">
                         <button class="secondary-btn" id="lock-cancel">Annuler</button>
+                        <button class="primary-btn" id="lock-submit">Valider</button>
                     </div>
                 </div>
             `;
@@ -220,8 +221,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('lock-submit').addEventListener('click', validateSaisie);
         } else {
             document.querySelectorAll('.mcq-option').forEach(opt => {
-                opt.addEventListener('click', () => validateQCM(parseInt(opt.dataset.index)));
+                opt.addEventListener('click', () => {
+                    opt.classList.toggle('selected');
+                });
             });
+            document.getElementById('lock-submit').addEventListener('click', validateQCM);
         }
 
         document.getElementById('lock-cancel').addEventListener('click', () => {
@@ -242,8 +246,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        function validateQCM(index) {
-            if (index === lock.challenge.correct_index) {
+        function validateQCM() {
+            const selectedOptions = document.querySelectorAll('.mcq-option.selected');
+            const selectedIndices = Array.from(selectedOptions).map(opt => parseInt(opt.dataset.index));
+
+            const correctIndices = lock.challenge.correct_indices || (lock.challenge.correct_index !== undefined ? [lock.challenge.correct_index] : []);
+
+            // Sort results to compare
+            selectedIndices.sort((a, b) => a - b);
+            const sortedCorrect = [...correctIndices].sort((a, b) => a - b);
+
+            const isCorrect = selectedIndices.length === sortedCorrect.length &&
+                selectedIndices.every((val, index) => val === sortedCorrect[index]);
+
+            if (isCorrect) {
                 unlock(lockId);
                 modalOverlay.remove();
             } else {

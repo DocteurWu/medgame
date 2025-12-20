@@ -682,18 +682,18 @@ function addLock(lockData) {
             `;
         } else {
             const options = lockData.challenge.options || ['Option 1', 'Option 2'];
-            const correct = lockData.challenge.correct_index || 0;
+            const correctIndices = lockData.challenge.correct_indices || (lockData.challenge.correct_index !== undefined ? [lockData.challenge.correct_index] : [0]);
 
             let optionsHtml = options.map((opt, i) => `
                 <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <input type="radio" name="correct_${lockData.id}" ${i === correct ? 'checked' : ''} value="${i}">
+                    <input type="checkbox" class="correct-checkbox" ${correctIndices.includes(i) ? 'checked' : ''}>
                     <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
                     <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
                 </div>
             `).join('');
 
             detailsContainer.innerHTML = `
-                <p class="lock-label">Options QCM (cochez la bonne réponse) :</p>
+                <p class="lock-label">Options QCM (cochez les bonnes réponses) :</p>
                 <div class="mcq-options-list">${optionsHtml}</div>
                 <button class="btn-add" onclick="addMcqOption(this)" style="padding:8px 12px; font-size:0.8em; margin-top:10px;"><i class="fas fa-plus"></i> Ajouter une option</button>
             `;
@@ -706,8 +706,6 @@ function addLock(lockData) {
 
 window.addMcqOption = (btn) => {
     const list = btn.previousElementSibling;
-    const lockCard = btn.closest('.lock-card');
-    const lockId = lockCard.dataset.id;
     const div = document.createElement('div');
     div.className = 'mcq-editor-option';
     div.style.display = 'flex';
@@ -715,7 +713,7 @@ window.addMcqOption = (btn) => {
     div.style.gap = '10px';
     div.style.marginBottom = '8px';
     div.innerHTML = `
-        <input type="radio" name="correct_${lockId}" value="${list.children.length}">
+        <input type="checkbox" class="correct-checkbox">
         <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">Nouvelle option</span>
         <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
     `;
@@ -749,11 +747,14 @@ function collectLocks() {
             lock.challenge.expected_keywords = card.querySelector('.lock-keywords').textContent.split(',').map(s => s.trim()).filter(s => s);
         } else {
             const optionsList = card.querySelectorAll('.mcq-editor-option');
-            lock.challenge.options = Array.from(optionsList).map(opt => opt.querySelector('span').textContent.trim());
-            const checkedRadio = card.querySelector('input[type="radio"]:checked');
-            const allRadios = Array.from(card.querySelectorAll('input[type="radio"]'));
-            const correctIndex = allRadios.indexOf(checkedRadio);
-            lock.challenge.correct_index = correctIndex >= 0 ? correctIndex : 0;
+            lock.challenge.options = [];
+            lock.challenge.correct_indices = [];
+            optionsList.forEach((optDiv, index) => {
+                lock.challenge.options.push(optDiv.querySelector('span').textContent.trim());
+                if (optDiv.querySelector('.correct-checkbox').checked) {
+                    lock.challenge.correct_indices.push(index);
+                }
+            });
         }
         return lock;
     });
