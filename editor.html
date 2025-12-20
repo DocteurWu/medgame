@@ -42,20 +42,23 @@
                 <button class="nav-item" data-target="section-synthese">
                     <i class="fas fa-check-circle"></i> 4. Synthèse & Correction
                 </button>
+                <button class="nav-item" data-target="section-locks">
+                    <i class="fas fa-lock"></i> 5. Verrous (Défis)
+                </button>
             </nav>
 
             <div class="editor-footer">
                 <input type="file" id="load-json" style="display: none;" accept=".json">
                 <input type="file" id="image-upload" style="display: none;" accept="image/*">
                 <button class="btn-editor secondary" onclick="document.getElementById('load-json').click()">
-                    <i class="fas fa-file-import"></i> Charger JSON
+                    <i class="fas fa-file-import"></i> Charger un cas
                 </button>
                 <button class="btn-editor" id="save-json">
-                    <i class="fas fa-save"></i> Sauvegarder JSON
+                    <i class="fas fa-save"></i> Enregistrer
                 </button>
                 <button class="btn-editor" id="preview-button"
                     style="background: var(--editor-success); margin-top: 10px;">
-                    <i class="fas fa-play-circle"></i> Tester le cas
+                    <i class="fas fa-play-circle"></i> Tester
                 </button>
                 <a href="index.html" class="quit-btn" style="margin-top: 10px;">RETOUR ACCUEIL</a>
             </div>
@@ -241,6 +244,31 @@
                                 <h4>ID du cas (unique)</h4>
                                 <p id="case-id" contenteditable="true">case_id_here</p>
                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: VERROUS (DÉFIS) -->
+                <section id="section-locks" class="game-section">
+                    <h2 class="section-header">5. CONFIGURATION DES VERROUS</h2>
+                    <div class="medical-card full-width">
+                        <h3 class="card-title">Système de Gating (Verrous)</h3>
+                        <p class="label">Masquez des données tant qu'un défi n'est pas résolu.</p>
+
+                        <div id="locks-list" class="locks-container">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <button class="action-btn" id="add-lock-btn"
+                            style="background: var(--primary-color); border:none; border-radius:30px; padding:15px; color:white; font-weight:bold; cursor:pointer; width:100%; margin-top:20px;">
+                            <i class="fas fa-plus-circle"></i> AJOUTER UN VERROU
+                        </button>
+
+                        <div class="remarques-box" style="margin-top:20px; font-style: normal; font-size: 0.9em;">
+                            <strong>Note sur les Chemins des Champs (Target Fields):</strong><br>
+                            Utilisez le format : <code>interrogatoire.histoireMaladie.remarques</code>,
+                            <code>examenClinique.examenCardiovasculaire</code>, <code>examResults.ECG</code>, etc.<br>
+                            Séparez plusieurs champs par une virgule.
                         </div>
                     </div>
                 </section>
