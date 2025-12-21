@@ -424,24 +424,61 @@ body {
 
 @media (max-width: 480px) {
     .h1 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+        margin-top: 15px;
+    }
+
+    body {
+        overflow-y: auto;
+    }
+
+    .scene-overlay {
+        height: auto;
+        min-height: 100vh;
+        padding: 10px;
     }
 
     .container {
-        padding: 15px;
+        padding: 10px;
+        width: 95%;
+        margin: 10px auto;
+        max-height: none;
+        overflow: visible;
+    }
+
+    #themes-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
     }
 
     .theme-card {
-        height: 140px;
-        padding: 15px;
+        height: 80px;
+        padding: 10px;
+        min-width: unset;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 15px;
+    }
+
+    .theme-card .emoji {
+        font-size: 1.8rem;
+        margin-bottom: 0;
     }
 
     .theme-card h2 {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        text-align: left;
     }
 
     .theme-subtitle {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        display: none;
+    }
+
+    .back-link-bottom {
+        font-size: 0.85rem;
+        padding: 8px 12px;
     }
 }
 

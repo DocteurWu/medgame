@@ -27,7 +27,15 @@
     <!-- Canvas pour l'arrière-plan 3D (ADN) -->
     <div id="canvas-container"></div>
 
-    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
+    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Disable audio if MUSIC_ENABLED is 0
+        if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
+            document.getElementById('background-music').remove();
+        }
+    </script>
 
     <div class="scene-overlay">
         <div class="glass-card" id="main-card">

@@ -30,10 +30,21 @@
     <!-- Canvas pour l'arrière-plan 3D (ADN) -->
     <div id="canvas-container"></div>
 
-    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop></audio>
-    <audio src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
+    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio>
+    <audio id="background-music-autoplay" src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
         Votre navigateur ne prend pas en charge la music
     </audio>
+
+    <script src="js/config.js"></script>
+    <script>
+        // Disable audio if MUSIC_ENABLED is 0
+        if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
+            const audioMain = document.getElementById('background-music');
+            const audioAutoplay = document.getElementById('background-music-autoplay');
+            if (audioMain) audioMain.remove();
+            if (audioAutoplay) audioAutoplay.remove();
+        }
+    </script>
 
     <!-- Scene overlay -->
     <div class="scene-overlay">

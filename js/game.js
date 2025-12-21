@@ -1378,4 +1378,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     examensResults.innerHTML = '';
     initializeGame();
+
+    // --- SIDEBAR TOGGLE ---
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const appContainer = document.querySelector('.app-container');
+
+    if (sidebarToggle && appContainer) {
+        // Restore sidebar state from sessionStorage
+        const sidebarCollapsed = sessionStorage.getItem('sidebarCollapsed') === 'true';
+        if (sidebarCollapsed) {
+            appContainer.classList.add('sidebar-collapsed');
+        }
+
+        sidebarToggle.addEventListener('click', () => {
+            appContainer.classList.toggle('sidebar-collapsed');
+            const isCollapsed = appContainer.classList.contains('sidebar-collapsed');
+            sessionStorage.setItem('sidebarCollapsed', isCollapsed);
+        });
+    }
 });
