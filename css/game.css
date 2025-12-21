@@ -1032,3 +1032,213 @@ body {
     background: rgba(46, 204, 113, 0.2);
     border-color: #2ecc71;
 }
+
+/* ==========================================
+   SIDEBAR TOGGLE - Mobile Optimization
+   ========================================== */
+
+.sidebar-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    background: rgba(10, 10, 20, 0.95);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle:hover {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+/* Sidebar collapsed state */
+.app-container.sidebar-collapsed .sidebar {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+    border-right: none;
+}
+
+.app-container.sidebar-collapsed .main-content {
+    margin-left: 0;
+}
+
+/* Smooth transition for sidebar */
+.sidebar {
+    transition: width 0.3s ease, padding 0.3s ease;
+}
+
+.main-content {
+    transition: margin-left 0.3s ease;
+}
+
+/* Move toggle button when sidebar is visible */
+.app-container:not(.sidebar-collapsed) .sidebar-toggle {
+    left: calc(var(--sidebar-width) + 10px);
+}
+
+/* Toggle icon rotation */
+.app-container.sidebar-collapsed .sidebar-toggle i {
+    transform: rotate(180deg);
+}
+
+.sidebar-toggle i {
+    transition: transform 0.3s ease;
+}
+
+/* Desktop: position in top-bar to avoid hiding title */
+@media (min-width: 901px) {
+    .sidebar-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 101;
+    }
+
+    /* When sidebar is open, position toggle on right edge of sidebar */
+    .app-container:not(.sidebar-collapsed) .sidebar-toggle {
+        left: calc(var(--sidebar-width) - 22px);
+    }
+
+    .top-bar {
+        position: relative;
+    }
+
+    /* Add padding when sidebar is open */
+    .app-container:not(.sidebar-collapsed) .top-bar {
+        padding-left: 40px;
+    }
+
+    /* Add padding when sidebar is closed to avoid hiding title */
+    .app-container.sidebar-collapsed .top-bar {
+        padding-left: 70px;
+    }
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE STYLES
+   ========================================== */
+
+@media (max-width: 900px) {
+    :root {
+        --sidebar-width: 0;
+    }
+
+    .app-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .app-container.sidebar-collapsed .sidebar {
+        display: none;
+    }
+
+    .app-container:not(.sidebar-collapsed) .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        z-index: 99;
+    }
+
+    .sidebar-toggle {
+        left: 10px;
+        top: 15px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .app-container:not(.sidebar-collapsed) .sidebar-toggle {
+        left: 230px;
+    }
+
+    .top-bar {
+        padding: 15px 20px 15px 60px;
+    }
+
+    .case-info h2 {
+        font-size: 1.3rem;
+    }
+
+    .content-scroll-area {
+        padding: 20px 15px;
+        overflow-x: hidden;
+    }
+
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .exam-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medical-card {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 12px 15px 12px 55px;
+    }
+
+    .case-info .label {
+        font-size: 0.6rem;
+    }
+
+    .case-info h2 {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+
+    .content-scroll-area {
+        padding: 15px 10px;
+    }
+
+    .section-header {
+        font-size: 1rem;
+        padding-left: 10px;
+    }
+
+    .medical-card {
+        padding: 12px;
+        border-radius: 12px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .treatments-grid button {
+        flex: 1 1 100%;
+        padding: 12px;
+    }
+
+    .validate-final-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+
+    .correction-modal {
+        padding: 20px;
+        width: 95%;
+    }
+}

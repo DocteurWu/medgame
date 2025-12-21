@@ -6,20 +6,8 @@
     'use strict';
 
     // Create the overlay HTML
-    const overlayHTML = `
-        <div id="device-warning-overlay">
-            <i class="fas fa-desktop device-warning-icon"></i>
-            <h1 class="device-warning-title">Expérience Optimisée sur PC</h1>
-            <p class="device-warning-message">
-                Ce jeu de simulation médicale est conçu pour être joué sur un écran plus grand.
-                Veuillez utiliser un ordinateur ou une tablette en mode paysage pour une expérience optimale.
-            </p>
-            <div class="device-warning-hint">
-                <i class="fas fa-mobile-alt"></i>
-                <span>Tournez votre appareil ou passez sur PC</span>
-            </div>
-        </div>
-    `;
+    // DISABLED: Mobile optimization - overlay removed
+    const overlayHTML = ``;
 
     // Inject the overlay into the body when DOM is ready
     if (document.readyState === 'loading') {

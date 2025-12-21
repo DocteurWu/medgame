@@ -19,11 +19,24 @@
 
 <body>
 
-    <audio src="assets/sounds/heartbeat.mp3" autoplay loop hidden>
+    <audio id="heartbeat-audio" src="assets/sounds/heartbeat.mp3" autoplay loop hidden>
         Votre navigateur ne prend pas en charge la music
     </audio>
 
+    <script src="js/config.js"></script>
+    <script>
+        // Disable audio if MUSIC_ENABLED is 0
+        if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
+            const audio = document.getElementById('heartbeat-audio');
+            if (audio) audio.remove();
+        }
+    </script>
+
     <div class="app-container">
+        <!-- Sidebar Toggle Button -->
+        <button id="sidebar-toggle" class="sidebar-toggle" title="Afficher/Masquer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">

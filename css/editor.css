@@ -180,19 +180,48 @@
 /* Specific item wrappers for lists */
 .editable-list-item {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 12px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
     background: rgba(255, 255, 255, 0.03);
     border-radius: 10px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     border: 1px solid transparent;
     transition: all 0.2s;
+    min-height: 60px;
 }
 
 .editable-list-item:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Exam name styling */
+.editable-list-item strong[data-type="exam-name"] {
+    min-width: 150px;
+    max-width: 200px;
+    color: var(--editor-secondary);
+    font-size: 0.95rem;
+    padding: 4px 0;
+    flex-shrink: 0;
+}
+
+/* Exam value styling */
+.editable-list-item span[data-type="exam-value"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    line-height: 1.5;
+}
+
+/* Button group in exam items */
+.editable-list-item .btn-add,
+.editable-list-item .btn-remove {
+    flex-shrink: 0;
 }
 
 .constants-unit {
