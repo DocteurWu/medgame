@@ -263,31 +263,34 @@
 
         // Gestion Musique (Améliorée)
         const audio = document.getElementById('background-music');
-        audio.volume = 0.4; // Volume doux par défaut
 
-        const startAudio = () => {
-            const state = JSON.parse(sessionStorage.getItem('musicState'));
-            if (state && state.isPlaying === false) return;
+        if (audio) {
+            audio.volume = 0.4; // Volume doux par défaut
 
-            if (!state || !state.time) audio.currentTime = 0;
-            else audio.currentTime = state.time;
+            const startAudio = () => {
+                const state = JSON.parse(sessionStorage.getItem('musicState'));
+                if (state && state.isPlaying === false) return;
 
-            audio.play().then(() => {
-                sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: true, time: audio.currentTime }));
-            }).catch(() => console.log("Autoplay prevented"));
-        };
+                if (!state || !state.time) audio.currentTime = 0;
+                else audio.currentTime = state.time;
 
-        // Lance la musique au premier clic n'importe où
-        document.body.addEventListener('click', startAudio, { once: true });
+                audio.play().then(() => {
+                    sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: true, time: audio.currentTime }));
+                }).catch(() => console.log("Autoplay prevented"));
+            };
 
-        window.addEventListener('beforeunload', () => {
-            sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: !audio.paused, time: audio.currentTime }));
-        });
+            // Lance la musique au premier clic n'importe où
+            document.body.addEventListener('click', startAudio, { once: true });
 
-        window.addEventListener('load', () => {
-            const state = JSON.parse(sessionStorage.getItem('musicState'));
-            if (state && state.isPlaying) startAudio();
-        });
+            window.addEventListener('beforeunload', () => {
+                sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: !audio.paused, time: audio.currentTime }));
+            });
+
+            window.addEventListener('load', () => {
+                const state = JSON.parse(sessionStorage.getItem('musicState'));
+                if (state && state.isPlaying) startAudio();
+            });
+        }
 
         // Fonction transition douce
         function transitionTo(url) {
