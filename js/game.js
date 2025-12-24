@@ -925,6 +925,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
         displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques, 'interrogatoire.histoireMaladie.remarques');
 
+        const verbatimContainer = document.getElementById('patient-verbatim-container');
+        if (verbatimContainer) {
+            if (currentCase.interrogatoire.verbatim) {
+                verbatimContainer.style.display = 'flex';
+                const path = 'interrogatoire.verbatim';
+                if (isFieldLocked(path)) {
+                    const lock = getLockForField(path);
+                    verbatimContainer.innerHTML = `
+                        <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
+                            <i class="fas fa-lock"></i>
+                            <span class="challenge-text">PAROLE BLOQUÉE : DÉFI À RELEVER</span>
+                        </div>
+                    `;
+                } else {
+                    verbatimContainer.innerHTML = `<div class="verbatim-text">"${currentCase.interrogatoire.verbatim}"</div>`;
+                }
+            } else {
+                verbatimContainer.style.display = 'none';
+            }
+        }
+
         displayValue(tension, currentCase.examenClinique.constantes.tension, 'examenClinique.constantes.tension');
         displayValue(pouls, currentCase.examenClinique.constantes.pouls, 'examenClinique.constantes.pouls');
         displayValue(temperature, currentCase.examenClinique.constantes.temperature, 'examenClinique.constantes.temperature');

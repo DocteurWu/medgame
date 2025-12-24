@@ -878,6 +878,42 @@ body {
     }
 }
 
+/* Game Styles */
+.verbatim-container {
+    background: rgba(160, 32, 240, 0.05);
+    border-left: 4px solid var(--primary-color);
+    padding: 1.5rem;
+    border-radius: 0 15px 15px 0;
+    margin-bottom: 2rem;
+    position: relative;
+    font-style: italic;
+    color: #e0e0e0;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.verbatim-container::before {
+    content: '\f075';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    opacity: 0.5;
+}
+
+.verbatim-container .lock-placeholder {
+    width: 100%;
+    justify-content: center;
+}
+
+.verbatim-text {
+    flex: 1;
+}
+
 /* Gating System (Verrous) Styles */
 .lock-placeholder {
     background: rgba(46, 204, 113, 0.1);

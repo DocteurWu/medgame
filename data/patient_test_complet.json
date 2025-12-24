@@ -1,0 +1,168 @@
+{
+    "id": "patient_test_complet",
+    "redacteur": "",
+    "patient": {
+        "nom": "Dupont",
+        "prenom": "Jean",
+        "age": 58,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "85 kg",
+        "groupeSanguin": "A+"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Douleur abdominale aiguë",
+        "verbatim": "Docteur, j'ai une douleur atroce ici, sur le côté droit. Ça a commencé après le dîner hier soir et ça ne fait qu'empirer. J'ai même eu envie de vomir plusieurs fois.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sédentaire"
+            },
+            "tabac": {
+                "quantite": "10 PA",
+                "duree": "20 ans"
+            },
+            "alcool": {
+                "quantite": "Sociale"
+            },
+            "alimentation": {
+                "regime": "Riche",
+                "particularites": "Beaucoup de graisses"
+            },
+            "emploi": {
+                "profession": "Comptable",
+                "stress": "Élevé"
+            }
+        },
+        "antecedents": {
+            "medicaux": [
+                {
+                    "type": "HTA",
+                    "traitement": "Amlodipine"
+                }
+            ],
+            "chirurgicaux": [
+                {
+                    "intervention": "Appendicectomie",
+                    "date": "1985"
+                }
+            ],
+            "familiaux": []
+        },
+        "traitements": [
+            {
+                "nom": "Ramipril",
+                "dose": "5mg",
+                "frequence": "1/jour"
+            }
+        ],
+        "allergies": {
+            "presence": true,
+            "liste": [
+                {
+                    "allergene": "Pénicilline",
+                    "reaction": "Rash cutané"
+                }
+            ]
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "12 heures",
+            "evolution": "Progressivement s'aggravant",
+            "facteursDeclenchants": "Post-prandial",
+            "descriptionDouleur": "Coup de couteau, irradiation dorsale",
+            "symptomesAssocies": [
+                "Nausées",
+                "Vomissements"
+            ],
+            "remarques": "Le patient est très algique."
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "150/90 mmHg",
+            "pouls": "105 bpm",
+            "temperature": "38.5°C",
+            "saturationO2": "97%",
+            "frequenceRespiratoire": "20/min"
+        },
+        "aspectGeneral": "Patient prostré, en sueur",
+        "examenAbdominal": {
+            "palpation": "Défense en hypochondre droit, signe de Murphy positif.",
+            "auscultation": "Bruits hydro-aériques présents."
+        },
+        "examenCardiovasculaire": "Tachycardie sinusale, pas de souffle.",
+        "examenPulmonaire": "Murmure vésiculaire symétrique."
+    },
+    "availableExams": [
+        "NFS",
+        "CRP",
+        "Bilan hépatique",
+        "Échographie abdominale",
+        "Scanner AP"
+    ],
+    "examResults": {
+        "NFS": "Leucocytose à 14 000/mm3",
+        "CRP": "110 mg/L",
+        "Bilan hépatique": "ALAT/ASAT discrètement augmentées, Bilirubine normale",
+        "Échographie abdominale": "Épaississement de la paroi vésiculaire, calcul enclavé",
+        "Scanner AP": "Signes de cholécystite aiguë"
+    },
+    "possibleDiagnostics": [
+        "Cholécystite aiguë",
+        "Pancréatite aiguë",
+        "Ulcère perforé",
+        "Colique hépatique"
+    ],
+    "correctDiagnostic": "Cholécystite aiguë",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 15
+    },
+    "possibleTreatments": [
+        "Antibiothérapie",
+        "Cholécystectomie",
+        "Antalgiques IV",
+        "Repos digestif",
+        "Inhibiteurs de la pompe à protons"
+    ],
+    "correctTreatments": [
+        "Antibiothérapie",
+        "Cholécystectomie",
+        "Antalgiques IV",
+        "Repos digestif"
+    ],
+    "correction": "Il s'agit d'une cholécystite aiguë lithiasique confirmée par l'échographie et le scanner. La prise en charge repose sur l'antibiothérapie et la chirurgie.",
+    "locks": [
+        {
+            "id": "lock_verbatim",
+            "type": "SAISIE",
+            "target_fields": [
+                "interrogatoire.verbatim"
+            ],
+            "challenge": {
+                "question": "Quel organe est principalement suspecté ici ?",
+                "expected_keywords": [
+                    "vésicule",
+                    "foie"
+                ]
+            },
+            "feedback_error": "Pensez à la localisation de la douleur !"
+        }
+    ],
+    "postGameQuestions": [
+        {
+            "type": "QCM",
+            "challenge": {
+                "question": "Quel est le signe clinique caractéristique à la palpation ?",
+                "options": [
+                    "Signe de Murphy",
+                    "Signe de McBurney",
+                    "Signe de Rovsing"
+                ],
+                "correct_indices": [
+                    0
+                ]
+            },
+            "feedback_error": "Murphy est pathognomonique de la vésicule."
+        }
+    ]
+}

@@ -193,6 +193,7 @@ function populateEditor(data) {
             setText('facteurs-declenchants', data.interrogatoire.histoireMaladie.facteursDeclenchants);
             setText('description-douleur', data.interrogatoire.histoireMaladie.descriptionDouleur);
             setText('symptomes-associes', data.interrogatoire.histoireMaladie.symptomesAssocies?.join(', '));
+            setText('verbatim', data.interrogatoire.verbatim);
             setText('remarques', data.interrogatoire.histoireMaladie.remarques);
         }
     }
@@ -298,7 +299,8 @@ function collectData() {
                 descriptionDouleur: getText('description-douleur'),
                 symptomesAssocies: getText('symptomes-associes').split(',').map(s => s.trim()).filter(s => s),
                 remarques: getText('remarques')
-            }
+            },
+            verbatim: getText('verbatim')
         },
         examenClinique: {
             constantes: {
@@ -586,6 +588,7 @@ function getAvailableFields() {
     fields.push({ path: 'interrogatoire.histoireMaladie.descriptionDouleur', label: 'Anamnèse: Description douleur' });
     fields.push({ path: 'interrogatoire.histoireMaladie.symptomesAssocies', label: 'Anamnèse: Symptômes associés' });
     fields.push({ path: 'interrogatoire.histoireMaladie.remarques', label: 'Anamnèse: Histoire - Remarques' });
+    fields.push({ path: 'interrogatoire.verbatim', label: 'Anamnèse: Discours du patient' });
 
     fields.push({ path: 'interrogatoire.modeDeVie.activitePhysique.description', label: 'Mode de vie: Activité physique' });
     fields.push({ path: 'interrogatoire.modeDeVie.tabac', label: 'Mode de vie: Tabac' });
