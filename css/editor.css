@@ -276,8 +276,9 @@
     opacity: 1;
 }
 
-/* Locks UI Improvements */
-.lock-card {
+/* Locks and Quiz UI Improvements */
+.lock-card,
+.post-game-card {
     border: 1px solid rgba(160, 32, 240, 0.2) !important;
     background: rgba(160, 32, 240, 0.02) !important;
 }

@@ -106,6 +106,7 @@ body {
     margin-bottom: 0.2rem;
     background: linear-gradient(to right, #fff, var(--primary));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
 }

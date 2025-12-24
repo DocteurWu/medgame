@@ -279,6 +279,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Export globally for onclick handlers
     window.showLockChallenge = showLockChallenge;
+    window.showImageModal = showImageModal;
 
     function getTimeLimit() {
         const v = sessionStorage.getItem('timeLimitSeconds');
@@ -340,6 +341,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     function showCorrectionModal(text) {
         if (currentCase && currentCase.redacteur) {
             text += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
+        }
+        if (currentCase && currentCase.correctionImage) {
+            text = `<div style="text-align: center; margin-bottom: 20px;">
+                        <img src="${currentCase.correctionImage}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;" onclick="window.showImageModal('${currentCase.correctionImage}', 'Illustration Correction')">
+                    </div>` + text;
         }
         renderCorrectionContent(text || '');
         const overlay = document.getElementById('correction-overlay');
@@ -982,37 +988,52 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Générer dynamiquement les boutons d'examens pour ce cas
         const examensSection = document.getElementById('examens');
         const examCategoriesDiv = examensSection.querySelector('.exam-categories');
+        const validateExamsBtn = document.getElementById('validate-exams');
 
         // Vider les catégories d'examens existantes
         examCategoriesDiv.innerHTML = '';
 
-        // Vérifier si le cas a des examens disponibles
-        if (currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0) {
-            // Créez une seule catégorie pour tous les examens disponibles
-            const examCategoryDiv = document.createElement('div');
-            examCategoryDiv.className = 'exam-category';
-            examCategoryDiv.innerHTML = '<h3>Examens disponibles</h3>';
-
-            const examButtonsDiv = document.createElement('div');
-            examButtonsDiv.className = 'exam-buttons';
-
-            // Générer un bouton pour chaque examen disponible
-            currentCase.availableExams.forEach(exam => {
-                const button = document.createElement('button');
-                button.className = 'exam-btn';
-                button.dataset.exam = exam;
-                button.textContent = exam;
-                button.addEventListener('click', function () {
-                    this.classList.toggle('selected');
-                });
-                examButtonsDiv.appendChild(button);
-            });
-
-            examCategoryDiv.appendChild(examButtonsDiv);
-            examCategoriesDiv.appendChild(examCategoryDiv);
+        if (isFieldLocked('examensComplementaires')) {
+            const lock = getLockForField('examensComplementaires');
+            examCategoriesDiv.innerHTML = `
+                <div class="lock-placeholder section-lock" onclick="window.showLockChallenge('${lock.id}')" style="margin: 20px 0; padding: 40px; border-radius: 15px; background: rgba(0,0,0,0.3); border: 2px dashed var(--glass-border); flex-direction: column; cursor: pointer;">
+                    <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; color: var(--secondary-color);"></i>
+                    <h3 style="margin-bottom: 10px;">SECTION VERROUILLÉE</h3>
+                    <p>Relevez le défi sémiologique pour débloquer les prescriptions</p>
+                    <button class="primary-btn" style="margin-top: 20px;">RELEVER LE DÉFI</button>
+                </div>
+            `;
+            if (validateExamsBtn) validateExamsBtn.style.display = 'none';
         } else {
-            // Si aucun examen disponible, afficher un message
-            examCategoriesDiv.innerHTML = '<p>Aucun examen disponible pour ce cas.</p>';
+            if (validateExamsBtn) validateExamsBtn.style.display = 'block';
+            // Vérifier si le cas a des examens disponibles
+            if (currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0) {
+                // Créez une seule catégorie pour tous les examens disponibles
+                const examCategoryDiv = document.createElement('div');
+                examCategoryDiv.className = 'exam-category';
+                examCategoryDiv.innerHTML = '<h3>Examens disponibles</h3>';
+
+                const examButtonsDiv = document.createElement('div');
+                examButtonsDiv.className = 'exam-buttons';
+
+                // Générer un bouton pour chaque examen disponible
+                currentCase.availableExams.forEach(exam => {
+                    const button = document.createElement('button');
+                    button.className = 'exam-btn';
+                    button.dataset.exam = exam;
+                    button.textContent = exam;
+                    button.addEventListener('click', function () {
+                        this.classList.toggle('selected');
+                    });
+                    examButtonsDiv.appendChild(button);
+                });
+
+                examCategoryDiv.appendChild(examButtonsDiv);
+                examCategoriesDiv.appendChild(examCategoryDiv);
+            } else {
+                // Si aucun examen disponible, afficher un message
+                examCategoriesDiv.innerHTML = '<p>Aucun examen disponible pour ce cas.</p>';
+            }
         }
 
         // Afficher les traitements disponibles
@@ -1242,8 +1263,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
 
         // ALWAYS show correction and update cookie
-        const correctionText = currentCase.correction || `Diagnostic optimal: ${correctDiagnostic}\nTraitements optimaux: ${(correctTreatments || []).join(', ')}`;
-        showCorrectionModal(comparisonHtml + correctionText);
+        startPostGameQuiz(comparisonHtml);
 
         // Mise à jour du cookie
         let playedCases = getCookie('playedCases');
@@ -1258,6 +1278,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderExamResults() {
         if (activeExams.length === 0) return;
+
+        if (isFieldLocked('examensComplementaires')) {
+            examensResults.innerHTML = '<div class="lock-placeholder">Section verrouillée.</div>';
+            return;
+        }
 
         examensResults.innerHTML = '<h4>Résultats des examens complémentaires :</h4>';
 
@@ -1381,6 +1406,103 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- SIDEBAR TOGGLE ---
     const sidebarToggle = document.getElementById('sidebar-toggle');
+    // --- Post-Game Quiz System ---
+    let currentQuizIndex = 0;
+    let quizComparisonHtml = '';
+
+    function startPostGameQuiz(comparisonHtml) {
+        if (!currentCase.postGameQuestions || currentCase.postGameQuestions.length === 0) {
+            showCorrectionModal(comparisonHtml + (currentCase.correction || ''));
+            return;
+        }
+        currentQuizIndex = 0;
+        quizComparisonHtml = comparisonHtml;
+        showPostGameQuestion(0);
+    }
+
+    function showPostGameQuestion(index) {
+        const question = currentCase.postGameQuestions[index];
+        const modal = document.createElement('div');
+        modal.className = 'correction-overlay lock-challenge-overlay';
+        modal.id = 'quiz-modal';
+        modal.style.display = 'flex';
+
+        const isLast = index === currentCase.postGameQuestions.length - 1;
+
+        modal.innerHTML = `
+            <div class="lock-modal" style="border-color: var(--primary-color); box-shadow: 0 0 30px rgba(160, 32, 240, 0.2);">
+                <div style="font-size: 0.8rem; color: var(--primary-color); text-transform: uppercase; margin-bottom: 10px;">
+                    Question post-jeu ${index + 1}/${currentCase.postGameQuestions.length}
+                </div>
+                <h3>DÉFI FINAL</h3>
+                <div class="challenge-question">${question.challenge.question}</div>
+                <div id="quiz-details-container"></div>
+                <div class="error-feedback" id="quiz-error"></div>
+                <button class="action-btn" id="quiz-submit-btn" style="background: var(--primary-color); color: white;">
+                    ${isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE'}
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        const detailsContainer = modal.querySelector('#quiz-details-container');
+        if (question.type === 'SAISIE') {
+            detailsContainer.innerHTML = `<input type="text" id="quiz-input" placeholder="Votre réponse..." autocomplete="off">`;
+            const input = detailsContainer.querySelector('#quiz-input');
+            input.focus();
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') validateQuizAnswer();
+            });
+        } else {
+            detailsContainer.innerHTML = `<div class="mcq-options">
+                ${question.challenge.options.map((opt, i) => `
+                    <div class="mcq-option" data-index="${i}">${opt}</div>
+                `).join('')}
+            </div>`;
+            const options = detailsContainer.querySelectorAll('.mcq-option');
+            options.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    opt.classList.toggle('selected');
+                    opt.style.borderColor = opt.classList.contains('selected') ? 'var(--primary-color)' : 'rgba(255,255,255,0.1)';
+                    opt.style.background = opt.classList.contains('selected') ? 'rgba(160, 32, 240, 0.1)' : 'rgba(255,255,255,0.05)';
+                });
+            });
+        }
+
+        modal.querySelector('#quiz-submit-btn').addEventListener('click', validateQuizAnswer);
+
+        function validateQuizAnswer() {
+            let isCorrect = false;
+            if (question.type === 'SAISIE') {
+                const val = document.getElementById('quiz-input').value.toLowerCase().trim();
+                isCorrect = question.challenge.expected_keywords.some(k => val.includes(k.toLowerCase().trim()));
+            } else {
+                const selected = Array.from(detailsContainer.querySelectorAll('.mcq-option.selected')).map(opt => parseInt(opt.dataset.index));
+                const correct = question.challenge.correct_indices || [];
+                isCorrect = selected.length === correct.length && selected.every(idx => correct.includes(idx));
+            }
+
+            if (isCorrect) {
+                modal.remove();
+                if (isLast) {
+                    showCorrectionModal(quizComparisonHtml + (currentCase.correction || ''));
+                } else {
+                    showPostGameQuestion(index + 1);
+                }
+            } else {
+                document.getElementById('quiz-error').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${question.feedback_error || 'Réponse incorrecte'}`;
+                const btn = modal.querySelector('#quiz-submit-btn');
+                btn.style.background = '#e74c3c';
+                btn.textContent = 'RÉESSAYER';
+                setTimeout(() => {
+                    btn.style.background = 'var(--primary-color)';
+                    btn.textContent = isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE';
+                }, 1000);
+            }
+        }
+    }
+
     const appContainer = document.querySelector('.app-container');
 
     if (sidebarToggle && appContainer) {

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Éditeur de Cas - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/editor.css">
@@ -239,6 +240,13 @@
                                 <div id="correction-text" contenteditable="true"
                                     style="min-height: 200px; border: 1px solid var(--glass-border); padding: 10px; border-radius: 8px;">
                                 </div>
+                                <div id="correction-image-container" style="margin-top: 10px;">
+                                    <!-- Image preview will appear here -->
+                                </div>
+                                <button class="btn-add" style="margin-top: 10px;"
+                                    onclick="triggerImageUpload(this.parentElement)">
+                                    <i class="fas fa-image"></i> Ajouter une image à la correction
+                                </button>
                             </div>
                             <div class="sub-section">
                                 <h4>Rédacteur</h4>
@@ -268,6 +276,21 @@
                             <i class="fas fa-plus-circle"></i> AJOUTER UN VERROU
                         </button>
 
+                    </div>
+
+                    <!-- NOUVELLE SECTION: QUESTIONS POST-JEU -->
+                    <div class="medical-card full-width" style="margin-top: 30px;">
+                        <h3 class="card-title">Questions Post-Jeu (Quiz de fin)</h3>
+                        <p class="label">Ajoutez des questions qui apparaîtront après le diagnostic final.</p>
+
+                        <div id="post-game-questions-list" class="locks-container">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <button class="action-btn" id="add-post-game-question-btn"
+                            style="background: var(--primary-color); border:none; border-radius:30px; padding:15px; color:white; font-weight:bold; cursor:pointer; width:100%; margin-top:20px;">
+                            <i class="fas fa-question-circle"></i> AJOUTER UNE QUESTION POST-JEU
+                        </button>
                     </div>
                 </section>
             </div>

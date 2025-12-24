@@ -124,6 +124,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    document.getElementById('add-post-game-question-btn').addEventListener('click', () => {
+        addPostGameQuestion({
+            type: 'SAISIE',
+            challenge: { question: 'Question post-jeu ?', expected_keywords: [] },
+            feedback_error: 'Revoyez vos bases...'
+        });
+    });
+
     // --- SIDEBAR TOGGLE ---
     const sidebarToggle = document.getElementById('sidebar-toggle');
     const appContainer = document.querySelector('.app-container');
@@ -213,6 +221,9 @@ function populateEditor(data) {
     // Locks
     renderLocksList(data.locks);
 
+    // Post-Game Questions
+    renderPostGameQuestionsList(data.postGameQuestions);
+
     // Exam Results & Available Exams
     renderExamResults(data.availableExams, data.examResults);
 
@@ -222,6 +233,13 @@ function populateEditor(data) {
     renderTextList('possible-treatments', data.possibleTreatments);
     renderTextList('correct-treatments-list', data.correctTreatments);
     document.getElementById('correction-text').innerHTML = data.correction || '';
+
+    // Correction Image
+    const corrImgContainer = document.getElementById('correction-image-container');
+    if (corrImgContainer) corrImgContainer.innerHTML = '';
+    if (data.correctionImage && corrImgContainer) {
+        updateItemImage(corrImgContainer, data.correctionImage);
+    }
 }
 
 function updateItemImage(item, base64) {
@@ -229,11 +247,16 @@ function updateItemImage(item, base64) {
     if (!preview) {
         preview = document.createElement('div');
         preview.className = 'image-preview';
-        item.insertBefore(preview, item.querySelector('.btn-remove'));
+        const removeBtn = item.querySelector('.btn-remove');
+        if (removeBtn) {
+            item.insertBefore(preview, removeBtn);
+        } else {
+            item.appendChild(preview);
+        }
     }
     preview.innerHTML = `
-        <img src="${base64}" style="height: 40px; border-radius: 4px; border: 1px solid var(--glass-border);">
-        <button class="btn-remove-img" onclick="this.parentElement.remove()" style="background: none; border: none; color: var(--editor-danger); cursor: pointer; padding: 0 5px;"><i class="fas fa-times"></i></button>
+        <img src="${base64}" style="max-height: 150px; border-radius: 8px; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <button class="btn-remove-img" onclick="this.parentElement.remove()" style="background: rgba(255,0,0,0.2); border: none; color: white; cursor: pointer; padding: 5px 10px; border-radius: 5px; margin-left:10px;"><i class="fas fa-times"></i> Supprimer l'image</button>
     `;
     preview.dataset.base64 = base64;
 }
@@ -295,8 +318,10 @@ function collectData() {
         possibleTreatments: collectTextList('possible-treatments'),
         correctTreatments: collectTextList('correct-treatments-list'),
         correction: document.getElementById('correction-text').innerHTML,
+        correctionImage: document.querySelector('#correction-image-container .image-preview')?.dataset.base64 || null,
         feedback: { default: "Diagnostic incorrect." },
-        locks: collectLocks()
+        locks: collectLocks(),
+        postGameQuestions: collectPostGameQuestions()
     };
 
     // Collect dynamic exams
@@ -594,6 +619,9 @@ function getAvailableFields() {
         fields.push({ path: `examResults.${name}`, label: `Résultat: ${name}` });
     });
 
+    // Whole sections
+    fields.push({ path: 'examensComplementaires', label: 'Section: Examens Complémentaires' });
+
     return fields;
 }
 
@@ -746,33 +774,129 @@ function renderLocksList(locks) {
 
 function collectLocks() {
     const lockCards = document.querySelectorAll('#locks-list > .lock-card');
-    return Array.from(lockCards).map(card => {
-        const type = card.querySelector('.lock-type').value;
-        const targetTags = Array.from(card.querySelectorAll('.field-tag')).map(t => t.dataset.path);
+    return Array.from(lockCards).map(card => collectChallengeData(card));
+}
 
-        const lock = {
-            id: card.querySelector('.lock-id').textContent.trim(),
-            type: type,
-            target_fields: targetTags,
-            challenge: {
-                question: card.querySelector('.lock-question').textContent.trim()
-            },
-            feedback_error: card.querySelector('.lock-error').textContent.trim()
-        };
+function collectPostGameQuestions() {
+    const cards = document.querySelectorAll('#post-game-questions-list > .post-game-card');
+    return Array.from(cards).map(card => collectChallengeData(card));
+}
 
-        if (type === 'SAISIE') {
-            lock.challenge.expected_keywords = card.querySelector('.lock-keywords').textContent.split(',').map(s => s.trim()).filter(s => s);
+function collectChallengeData(card) {
+    const type = card.querySelector('.lock-type').value;
+    const challenge = {
+        question: card.querySelector('.lock-question').textContent.trim()
+    };
+
+    const data = {
+        type: type,
+        challenge: challenge,
+        feedback_error: card.querySelector('.lock-error').textContent.trim()
+    };
+
+    // Only locks have IDs and target fields
+    if (card.querySelector('.lock-id')) {
+        data.id = card.querySelector('.lock-id').textContent.trim();
+        data.target_fields = Array.from(card.querySelectorAll('.field-tag')).map(t => t.dataset.path);
+    }
+
+    if (type === 'SAISIE') {
+        challenge.expected_keywords = card.querySelector('.lock-keywords').textContent.split(',').map(s => s.trim()).filter(s => s);
+    } else {
+        const optionsList = card.querySelectorAll('.mcq-editor-option');
+        challenge.options = [];
+        challenge.correct_indices = [];
+        optionsList.forEach((optDiv, index) => {
+            challenge.options.push(optDiv.querySelector('span').textContent.trim());
+            if (optDiv.querySelector('.correct-checkbox').checked) {
+                challenge.correct_indices.push(index);
+            }
+        });
+    }
+    return data;
+}
+
+function addPostGameQuestion(questionData) {
+    const container = document.getElementById('post-game-questions-list');
+    const div = document.createElement('div');
+    div.className = 'medical-card post-game-card';
+    div.style.marginBottom = '20px';
+    div.style.position = 'relative';
+
+    const type = questionData.type || 'SAISIE';
+
+    div.innerHTML = `
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px;">
+            <i class="fas fa-trash"></i>
+        </button>
+        <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap:15px;">
+            <div>
+                <div class="lock-setting-item">
+                    <span class="lock-label">Type de question:</span>
+                    <select class="lock-type modern-select">
+                        <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie de texte (QROC)</option>
+                        <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <h4 class="label" style="color: var(--primary-color);">Question Quiz</h4>
+                <p class="lock-label">Énoncé :</p>
+                <div class="lock-question" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--glass-border);">
+                    ${questionData.challenge.question}
+                </div>
+                <div class="lock-challenge-details">
+                    <!-- Specific to type -->
+                </div>
+                <p class="lock-label" style="margin-top: 15px;">Correction/Feedback si faux :</p>
+                <div class="lock-error" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-size:0.9em; border: 1px solid var(--glass-border);">
+                    ${questionData.feedback_error || ''}
+                </div>
+            </div>
+        </div>
+    `;
+
+    container.appendChild(div);
+
+    const detailsContainer = div.querySelector('.lock-challenge-details');
+    const typeSelect = div.querySelector('.lock-type');
+
+    const updateDetails = () => {
+        const currentType = typeSelect.value;
+        if (currentType === 'SAISIE') {
+            detailsContainer.innerHTML = `
+                <p class="lock-label">Réponses acceptées (mots-clés) :</p>
+                <div class="lock-keywords" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; border: 1px solid var(--glass-border);">
+                    ${(questionData.challenge.expected_keywords || []).join(', ')}
+                </div>
+            `;
         } else {
-            const optionsList = card.querySelectorAll('.mcq-editor-option');
-            lock.challenge.options = [];
-            lock.challenge.correct_indices = [];
-            optionsList.forEach((optDiv, index) => {
-                lock.challenge.options.push(optDiv.querySelector('span').textContent.trim());
-                if (optDiv.querySelector('.correct-checkbox').checked) {
-                    lock.challenge.correct_indices.push(index);
-                }
-            });
+            const options = questionData.challenge.options || ['Option 1', 'Option 2'];
+            const correctIndices = questionData.challenge.correct_indices || [];
+
+            let optionsHtml = options.map((opt, i) => `
+                <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                    <input type="checkbox" class="correct-checkbox" ${correctIndices.includes(i) ? 'checked' : ''}>
+                    <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
+                    <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+
+            detailsContainer.innerHTML = `
+                <p class="lock-label">Options :</p>
+                <div class="mcq-options-list">${optionsHtml}</div>
+                <button class="btn-add" onclick="addMcqOption(this)" style="padding:8px 12px; font-size:0.8em; margin-top:10px; color: var(--primary-color); border-color: rgba(160, 32, 240, 0.3);"><i class="fas fa-plus"></i> Option</button>
+            `;
         }
-        return lock;
-    });
+    };
+
+    typeSelect.addEventListener('change', updateDetails);
+    updateDetails();
+}
+
+function renderPostGameQuestionsList(questions) {
+    const container = document.getElementById('post-game-questions-list');
+    container.innerHTML = '';
+    if (!questions) return;
+    questions.forEach(q => addPostGameQuestion(q));
 }
