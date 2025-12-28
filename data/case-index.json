@@ -12,7 +12,6 @@
     "CARDIO_hta_secondaire_hyperaldosteronisme.json",
     "CARDIO_angor_stable.json"
   ],
-  "gynécologie": [],
   "endocrinologie": [
     "EDN_diabetetype2_1.json",
     "EDN_Anorexie_1.json",
@@ -32,7 +31,7 @@
     "EDN_diabetetype1monogé.json"
   ],
   "hématologie": [],
-  "gastro-entérologie": [],
+  "appareil-digestif": [],
   "immunologie": [],
   "uronephro": [
     "nephro_pyélonéphrite_obstructive.json",
@@ -50,5 +49,6 @@
     "ORL_cholesteatome.json",
     "NEURO_vertiges_centrales.json",
     "ORL_syndrome_labyrinthique.json"
-  ]
+  ],
+  "neurologie/psychiatrie": []
 }

@@ -287,6 +287,78 @@ body {
     box-shadow: 0 0 0 2px #fda085, 0 10px 20px rgba(253, 160, 133, 0.2);
 }
 
+/* Neurologie / Psychiatrie - Tons Violets Profonds */
+.theme-card[data-theme="Neurologie/psychiatrie"] {
+    background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
+    border: 1px solid rgba(129, 140, 248, 0.3);
+}
+
+.theme-card[data-theme="Neurologie/psychiatrie"]:hover {
+    background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(129, 140, 248, 0.3);
+}
+
+.theme-card.selected[data-theme="Neurologie/psychiatrie"] {
+    background: linear-gradient(135deg, #a5b4fc 0%, #fff 100%);
+    border-color: #818cf8;
+    box-shadow: 0 0 0 2px #818cf8, 0 10px 20px rgba(129, 140, 248, 0.2);
+}
+
+/* Gynécologie - Tons Roses / Mauves */
+.theme-card[data-theme="Gynecologie"] {
+    background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%);
+    border: 1px solid rgba(244, 114, 182, 0.3);
+}
+
+.theme-card[data-theme="Gynecologie"]:hover {
+    background: linear-gradient(135deg, #f472b6 0%, #fbcfe8 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(244, 114, 182, 0.3);
+}
+
+.theme-card.selected[data-theme="Gynecologie"] {
+    background: linear-gradient(135deg, #fbcfe8 0%, #fff 100%);
+    border-color: #f472b6;
+    box-shadow: 0 0 0 2px #f472b6, 0 10px 20px rgba(244, 114, 182, 0.2);
+}
+
+/* Hématologie - Tons Rouges Profonds */
+.theme-card[data-theme="Hematologie"] {
+    background: linear-gradient(135deg, #fee2e2 0%, #ef4444 100%);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.theme-card[data-theme="Hematologie"]:hover {
+    background: linear-gradient(135deg, #ef4444 0%, #fee2e2 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3);
+}
+
+.theme-card.selected[data-theme="Hematologie"] {
+    background: linear-gradient(135deg, #fee2e2 0%, #fff 100%);
+    border-color: #ef4444;
+    box-shadow: 0 0 0 2px #ef4444, 0 10px 20px rgba(239, 68, 68, 0.2);
+}
+
+/* Appareil digestif - Tons Verts / Émeraude */
+.theme-card[data-theme="Appareil-digestif"] {
+    background: linear-gradient(135deg, #d1fae5 0%, #10b981 100%);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.theme-card[data-theme="Appareil-digestif"]:hover {
+    background: linear-gradient(135deg, #10b981 0%, #d1fae5 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
+}
+
+.theme-card.selected[data-theme="Appareil-digestif"] {
+    background: linear-gradient(135deg, #d1fae5 0%, #fff 100%);
+    border-color: #10b981;
+    box-shadow: 0 0 0 2px #10b981, 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
 /* A venir - Tons Gris/Neutres */
 .theme-card[data-theme="A_venir"] {
     background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
@@ -429,45 +501,48 @@ body {
     }
 
     body {
-        overflow-y: auto;
+        overflow: hidden;
+        /* Prevent background scroll */
     }
 
     .scene-overlay {
-        height: auto;
-        min-height: 100vh;
-        padding: 10px;
+        height: 100vh;
+        padding: 5px;
+        overflow: hidden;
     }
 
     .container {
         padding: 10px;
         width: 95%;
-        margin: 10px auto;
-        max-height: none;
-        overflow: visible;
+        margin: 5px auto;
+        max-height: 80vh;
+        /* Allow container to scroll instead of page */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     #themes-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 10px;
+        gap: 8px;
+        padding: 5px;
     }
 
     .theme-card {
-        height: 80px;
-        padding: 10px;
+        height: 70px;
+        padding: 8px 15px;
         min-width: unset;
         flex-direction: row;
         justify-content: flex-start;
-        gap: 15px;
+        gap: 12px;
     }
 
     .theme-card .emoji {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         margin-bottom: 0;
     }
 
     .theme-card h2 {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         text-align: left;
     }
 
@@ -477,8 +552,9 @@ body {
     }
 
     .back-link-bottom {
-        font-size: 0.85rem;
-        padding: 8px 12px;
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        margin-bottom: 5px;
     }
 }
 
