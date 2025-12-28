@@ -621,6 +621,14 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    flex: 1;
+}
+
+.motif-patient-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
 .motif-name {
@@ -632,6 +640,13 @@ body {
 .motif-patient {
     color: #495057 !important;
     font-size: 0.9rem;
+}
+
+.motif-redacteur {
+    color: #6c757d !important;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-left: 10px;
 }
 
 .played-badge {

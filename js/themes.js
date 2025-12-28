@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     file: file,
                     motif: data.interrogatoire.motifHospitalisation,
                     patient: `${data.patient.prenom} ${data.patient.nom}`,
+                    redacteur: data.redacteur || '',
                     isPlayed: playedCases.includes(data.id)
                 };
             }));
@@ -112,11 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusHtml = '<span class="played-badge"><i class="fas fa-check-circle"></i> Fait</span>';
             }
 
+            const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par "${item.redacteur}"</span>` : '';
+
             motifItem.innerHTML = `
                 <i class="fas fa-file-medical"></i>
                 <div class="motif-info">
                     <div class="motif-name">${item.motif} ${statusHtml}</div>
-                    <div class="motif-patient">Patient : ${item.patient}</div>
+                    <div class="motif-patient-row">
+                        <span class="motif-patient">Patient : ${item.patient}</span>
+                        ${redacteurHtml}
+                    </div>
                 </div>
             `;
 
