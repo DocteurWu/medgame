@@ -1500,8 +1500,8 @@ body::after {
     }
 
     .content-scroll-area {
-        padding: 20px 15px 80px 15px;
-        /* Added bottom padding for tab bar */
+        padding: 20px 15px 110px 15px;
+        /* Increased bottom padding for tab bar visibility */
         overflow-x: hidden;
     }
 
@@ -1552,7 +1552,7 @@ body::after {
     }
 
     .content-scroll-area {
-        padding: 12px 10px 70px 10px;
+        padding: 12px 10px 100px 10px;
     }
 
     .section-header {

@@ -231,8 +231,23 @@
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
+    .nurse-overlay {
+        overflow-y: auto;
+        display: block;
+        /* Change to display block for easier scrolling */
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
     .nurse-container {
         padding: 1rem;
+        width: 100%;
+        height: auto;
+        min-height: min-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
     }
 
     .npc-wrapper svg {

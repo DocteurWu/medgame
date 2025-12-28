@@ -1,0 +1,21 @@
+{
+    "name": "MedGame",
+    "short_name": "MedGame",
+    "description": "Simulation médicale clinique",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#000510",
+    "theme_color": "#00f2fe",
+    "icons": [
+        {
+            "src": "assets/images/icone.webp",
+            "sizes": "192x192",
+            "type": "image/webp"
+        },
+        {
+            "src": "assets/images/icone.webp",
+            "sizes": "512x512",
+            "type": "image/webp"
+        }
+    ]
+}
