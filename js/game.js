@@ -1634,4 +1634,54 @@ document.addEventListener('DOMContentLoaded', async () => {
             sessionStorage.setItem('sidebarCollapsed', isCollapsed);
         });
     }
+
+    // --- FULLSCREEN PROMPT LOGIC ---
+    function showFullscreenPrompt() {
+        if (document.getElementById('fullscreen-prompt') || document.fullscreenElement) return;
+
+        const prompt = document.createElement('div');
+        prompt.id = 'fullscreen-prompt';
+        prompt.style.cssText = `
+            position: fixed;
+            bottom: 85px; /* Above mobile tabs */
+            right: 15px;
+            background: rgba(0, 242, 254, 0.8);
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 1000;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.75rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        `;
+        prompt.innerHTML = '<i class="fas fa-expand"></i> PLEIN ÉCRAN';
+
+        prompt.addEventListener('click', () => {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log("Fullscreen blocked:", err.message);
+            });
+            prompt.remove();
+        });
+
+        document.body.appendChild(prompt);
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+        const existing = document.getElementById('fullscreen-prompt');
+        if (document.fullscreenElement && existing) {
+            existing.remove();
+        } else if (!document.fullscreenElement) {
+            showFullscreenPrompt();
+        }
+    });
+
+    // Check on load
+    showFullscreenPrompt();
 });

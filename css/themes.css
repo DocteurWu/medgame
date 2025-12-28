@@ -512,11 +512,11 @@ body {
     }
 
     .container {
-        padding: 10px;
+        padding: 10px 10px 50px 10px;
         width: 95%;
         margin: 5px auto;
-        max-height: 80vh;
-        /* Allow container to scroll instead of page */
+        max-height: 88vh;
+        /* Further increased padding for accessibility */
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
     }

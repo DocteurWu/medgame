@@ -340,13 +340,31 @@ body {
 
 /* Responsive */
 @media (max-width: 600px) {
+    body {
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .scene-overlay {
+        padding: 2rem 1rem;
+        height: auto;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     .glitch-title {
         font-size: 2.5rem;
     }
 
     .glass-card {
-        padding: 2rem;
-        width: 95%;
+        padding: 2.5rem 1.5rem;
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
     }
 
     .difficulty-selector {
