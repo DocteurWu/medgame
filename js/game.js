@@ -410,7 +410,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     function displayTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        document.getElementById('timer').textContent = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        const timeStr = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        document.getElementById('timer').textContent = timeStr;
+        const mobileTimer = document.getElementById('mobile-timer');
+        if (mobileTimer) mobileTimer.textContent = timeStr;
     }
 
     function updateTimer() {
@@ -768,6 +771,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const bpEl = document.getElementById('bp-value'); if (bpEl) bpEl.textContent = this.props.systolic + '/' + this.props.diastolic;
             const spo2El = document.getElementById('spo2-value'); if (spo2El) spo2El.textContent = this.props.spo2 + '%';
             const tempEl = document.getElementById('temp-value'); if (tempEl) tempEl.textContent = this.props.temperature.toFixed(1) + '°C';
+
+            // Update Compact Vitals for Mobile
+            const compactHr = document.getElementById('compact-hr');
+            const compactBp = document.getElementById('compact-bp');
+            const compactTemp = document.getElementById('compact-temp');
+            if (compactHr) compactHr.textContent = this.props.heartRate;
+            if (compactBp) compactBp.textContent = this.props.systolic + '/' + this.props.diastolic;
+            if (compactTemp) compactTemp.textContent = this.props.temperature.toFixed(1) + '°C';
+
             document.documentElement.style.setProperty('--heart-rate', this.props.heartRate);
             const spo2Label = document.getElementById('spo2-label'); const spo2Value = document.getElementById('spo2-value'); const low = this.props.spo2 <= 92;
             if (spo2Label) { spo2Label.style.color = low ? '#dc3545' : '#17a2b8'; }
@@ -800,6 +812,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             mountPoint.style.width = '100%';
             mountPoint.style.height = '100%';
             sidebarScope.appendChild(mountPoint);
+        }
+
+        // On mobile, we also have an overlay mount point
+        const mobileMount = document.getElementById('mobile-monitor-mount');
+        if (mobileMount) {
+            // If the overlay is active, we might want to prioritize it or clone?
+            // Realistically, the monitor should be where it's visible.
         }
 
         // Get values from the hidden spans
@@ -1412,6 +1431,82 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         loadCase();
     });
+
+    // --- MOBILE TABS LOGIC ---
+    const mobileTabs = document.querySelectorAll('.mobile-tab-item');
+
+    function switchMobileTab(tabId) {
+        // Update tab buttons
+        mobileTabs.forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.tab === tabId);
+        });
+
+        // Hide all sections first
+        sections.forEach(section => {
+            section.classList.remove('active');
+            section.classList.remove('mobile-active');
+        });
+
+        // Show relevant sections based on tab
+        if (tabId === 'anamnese') {
+            document.getElementById('section-anamnese').classList.add('mobile-active');
+            updateSidebarActive('section-anamnese');
+        } else if (tabId === 'examen') {
+            document.getElementById('section-examen-clinique').classList.add('mobile-active');
+            updateSidebarActive('section-examen-clinique');
+        } else if (tabId === 'exams') {
+            document.getElementById('section-examens').classList.add('mobile-active');
+            updateSidebarActive('section-examens');
+        } else if (tabId === 'decision') {
+            document.getElementById('section-synthese').classList.add('mobile-active');
+            updateSidebarActive('section-synthese');
+        }
+
+        // Scroll to top
+        document.querySelector('.content-scroll-area').scrollTop = 0;
+    }
+
+    function updateSidebarActive(targetId) {
+        navItems.forEach(nav => {
+            nav.classList.toggle('active', nav.dataset.target === targetId);
+        });
+    }
+
+    mobileTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            switchMobileTab(tab.dataset.tab);
+        });
+    });
+
+    window.toggleMobileMonitor = () => {
+        const overlay = document.getElementById('mobile-monitor-overlay');
+        const isOpening = !overlay.classList.contains('active');
+        overlay.classList.toggle('active');
+
+        if (isOpening) {
+            // When opening overlay, move the monitor mount to the overlay
+            const monitorMount = document.getElementById('vital-monitor-mount');
+            const overlayMount = document.getElementById('mobile-monitor-mount');
+            if (monitorMount && overlayMount) {
+                overlayMount.appendChild(monitorMount);
+                // Adjust size for overlay
+                monitorMount.style.height = '300px';
+            }
+        } else {
+            // When closing, move it back to the sidebar
+            const monitorMount = document.getElementById('vital-monitor-mount');
+            const sidebarScope = document.getElementById('sidebar-scope');
+            if (monitorMount && sidebarScope) {
+                sidebarScope.appendChild(monitorMount);
+                monitorMount.style.height = '100%';
+            }
+        }
+    };
+
+    // Initial mobile view setup
+    if (window.innerWidth <= 900) {
+        switchMobileTab('anamnese');
+    }
 
     async function initializeGame() {
         cases = await loadCasesData();

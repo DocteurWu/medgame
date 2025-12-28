@@ -100,6 +100,20 @@
                     <span class="label">MOTIF D'ADMISSION</span>
                     <h2 id="motif-hospitalisation">Chargement...</h2>
                 </div>
+                <!-- Compact Vitals for Mobile -->
+                <div id="compact-vitals" class="compact-vitals" onclick="window.toggleMobileMonitor()">
+                    <div class="vitals-summary">
+                        <span class="vitals-item"><i class="fas fa-heartbeat"></i> <span
+                                id="compact-hr">--</span></span>
+                        <span class="vitals-item"><i class="fas fa-tint"></i> <span id="compact-bp">--/--</span></span>
+                        <span class="vitals-item"><i class="fas fa-thermometer-half"></i> <span
+                                id="compact-temp">--</span></span>
+                    </div>
+                </div>
+                <!-- Mobile Timer -->
+                <div id="mobile-timer-container" class="mobile-timer">
+                    <div id="mobile-timer" class="timer-display">00:00</div>
+                </div>
             </header>
 
             <div class="content-scroll-area">
@@ -238,6 +252,37 @@
 
             </div>
         </main>
+
+        <!-- MOBILE TAB NAVIGATION -->
+        <nav class="mobile-tabs">
+            <button class="mobile-tab-item active" data-tab="anamnese">
+                <i class="fas fa-comments"></i>
+                <span>Anamnèse</span>
+            </button>
+            <button class="mobile-tab-item" data-tab="examen">
+                <i class="fas fa-stethoscope"></i>
+                <span>Examen</span>
+            </button>
+            <button class="mobile-tab-item" data-tab="exams">
+                <i class="fas fa-flask"></i>
+                <span>Exams</span>
+            </button>
+            <button class="mobile-tab-item" data-tab="decision">
+                <i class="fas fa-check-circle"></i>
+                <span>Décision</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- MOBILE MONITOR OVERLAY -->
+    <div id="mobile-monitor-overlay" class="mobile-monitor-overlay">
+        <div class="overlay-header">
+            <h3>MONITEUR PATIENT</h3>
+            <button class="close-overlay" onclick="window.toggleMobileMonitor()">&times;</button>
+        </div>
+        <div class="overlay-content">
+            <div id="mobile-monitor-mount"></div>
+        </div>
     </div>
 
     <div id="fireworks-container"></div>

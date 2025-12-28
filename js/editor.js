@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             sections.forEach(s => s.classList.remove('active'));
             document.getElementById(target).classList.add('active');
+
+            // Close sidebar on mobile after selection
+            const appContainer = document.querySelector('.app-container');
+            if (window.innerWidth <= 900 && appContainer) {
+                appContainer.classList.add('sidebar-collapsed');
+                sessionStorage.setItem('editorSidebarCollapsed', 'true');
+            }
         });
     });
 
