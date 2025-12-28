@@ -362,3 +362,110 @@
     font-size: 0.9em;
     opacity: 0.8;
 }
+
+/* ==========================================
+   MOBILE EDITOR STYLES
+   ========================================== */
+
+@media (max-width: 900px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    /* Override game.css hiding both sidebar and content */
+    .sidebar-toggle {
+        display: flex !important;
+        /* Force toggle visibility on mobile editor */
+        top: 15px;
+        left: 15px;
+        z-index: 1000;
+    }
+
+    .app-container:not(.sidebar-collapsed) .sidebar {
+        display: flex !important;
+        /* Show sidebar when not collapsed */
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 80% !important;
+        height: 100vh;
+        z-index: 999;
+        background: rgba(10, 10, 20, 0.98);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 1);
+        padding-top: 60px;
+    }
+
+    .app-container.sidebar-collapsed .sidebar {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100%;
+        padding-bottom: 50px;
+    }
+
+    .top-bar {
+        padding-left: 60px !important;
+    }
+
+    .content-scroll-area {
+        padding: 15px !important;
+    }
+
+    /* In editor, we want the active section to be visible regardless of .mobile-active */
+    .game-section.active {
+        display: block !important;
+    }
+
+    .grid-layout {
+        grid-template-columns: 1fr !important;
+    }
+
+    .medical-card {
+        padding: 15px;
+    }
+
+    .editable-list-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .editable-list-item span[data-type="exam-value"] {
+        min-width: 0;
+    }
+
+    .lock-setting-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* Adjust buttons for fingers */
+    .btn-editor,
+    .btn-add,
+    .btn-remove {
+        padding: 12px 20px;
+        min-height: 44px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar h2 {
+        font-size: 1rem !important;
+        white-space: normal;
+        /* Allow title to wrap */
+    }
+
+    .sidebar-toggle {
+        width: 38px;
+        height: 38px;
+    }
+
+    .medical-card .card-title {
+        font-size: 0.9rem;
+    }
+
+    .exam-item li strong {
+        min-width: 80px;
+    }
+}
