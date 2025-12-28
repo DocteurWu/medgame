@@ -7,8 +7,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Sélectionnez les UEs</title>
-    <link rel="icon" type="image/png" href="assets/images/icone.png">
+    <title>Sélection</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
 
     <!-- Fonts Modernes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,13 +31,13 @@
     <!-- Canvas pour l'arrière-plan 3D (ADN) -->
     <div id="canvas-container"></div>
 
-    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio>
+    <!-- <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio>
     <audio id="background-music-autoplay" src="assets/sounds/hospital_ambient.mp3" autoplay loop hidden>
         Votre navigateur ne prend pas en charge la music
-    </audio>
+    </audio> -->
 
     <script src="js/config.js"></script>
-    <script>
+    <!-- <script>
         // Disable audio if MUSIC_ENABLED is 0
         if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
             const audioMain = document.getElementById('background-music');
@@ -45,13 +45,13 @@
             if (audioMain) audioMain.remove();
             if (audioAutoplay) audioAutoplay.remove();
         }
-    </script>
+    </script> -->
 
     <!-- Scene overlay -->
     <div class="scene-overlay">
 
 
-        <h1 class="h1">Sélectionnez les UEs</h1>
+        <h1 class="h1">Sélectionnez l'UE</h1>
         <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
         <div class="container">
             <div class="themes-container">
@@ -233,7 +233,7 @@
             window.location.reload(true);
         }
     </script>
-    <script>
+    <!-- <script>
         const audio = document.getElementById('background-music');
 
         window.addEventListener('beforeunload', () => {
@@ -253,7 +253,7 @@
                 }, { once: true });
             }
         });
-    </script>
+    </script> -->
     <script src="js/device-check.js"></script>
 </body>
 

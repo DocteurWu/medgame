@@ -20,7 +20,7 @@
 
 body {
     font-family: var(--font-main);
-    background-image: url('../assets/images/FondAccueil.png');
+    background-image: url('../assets/images/FondAccueil.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

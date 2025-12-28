@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MedGame - Simulation Médicale</title>
-    <link rel="icon" type="image/png" href="assets/images/icone.png">
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
 
     <!-- Fonts Modernes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,15 +28,15 @@
     <!-- Canvas pour l'arrière-plan 3D (ADN) -->
     <div id="canvas-container"></div>
 
-    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio>
+    <!-- <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio> -->
 
     <script src="js/config.js"></script>
-    <script>
+    <!-- <script>
         // Disable audio if MUSIC_ENABLED is 0
         if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
             document.getElementById('background-music').remove();
         }
-    </script>
+    </script> -->
 
     <div class="scene-overlay">
         <div class="glass-card" id="main-card">
@@ -262,6 +262,7 @@
         saveBtn.addEventListener('click', saveSettings);
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
+        /*
         // Gestion Musique (Améliorée)
         const audio = document.getElementById('background-music');
 
@@ -292,6 +293,7 @@
                 if (state && state.isPlaying) startAudio();
             });
         }
+        */
 
         // Fonction transition douce
         function transitionTo(url) {

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutoriel - MedGame</title>
-    <link rel="icon" type="image/png" href="assets/images/icone.png">
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -348,15 +348,15 @@
 
 <body>
     <div id="canvas-container"></div>
-    <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio>
+    <!-- <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio> -->
 
     <script src="js/config.js"></script>
-    <script>
+    <!-- <script>
         // Disable audio if MUSIC_ENABLED is 0
         if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
             document.getElementById('background-music').remove();
         }
-    </script>
+    </script> -->
 
     <div class="scene-overlay">
         <div class="glass-card" id="tutorial-card">
@@ -507,10 +507,12 @@
         };
         init3D();
 
+        /*
         // Audio
         const audio = document.getElementById('background-music');
         audio.volume = 0.3;
         document.body.addEventListener('click', () => audio.play().catch(() => { }), { once: true });
+        */
 
         // Transition
         function transitionTo(url) {

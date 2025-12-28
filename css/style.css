@@ -22,7 +22,7 @@ a:hover {
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url('../assets/images/FondAccueil.png');
+    background-image: url('../assets/images/FondAccueil.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -123,10 +123,12 @@ body::before {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
     }
+
     70% {
         transform: scale(1.05);
         box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
     }
+
     100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
@@ -227,73 +229,116 @@ h1 {
 }
 
 .medgame-title {
-  font-family: "Tektur", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 700; /* Using 700 as a common bold weight */
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
+    font-family: "Tektur", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    /* Using 700 as a common bold weight */
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
 }
 
 /* Animations pour les lettres colorées */
 @keyframes color-change-m {
-    0% { color: #e74c3c; }
-    100% { color: #c0392b; }
+    0% {
+        color: #e74c3c;
+    }
+
+    100% {
+        color: #c0392b;
+    }
 }
+
 .letter-m {
     animation: color-change-m 2s infinite alternate;
     display: inline-block;
 }
 
 @keyframes color-change-e {
-    0% { color: #f39c12; }
-    100% { color: #d68910; }
+    0% {
+        color: #f39c12;
+    }
+
+    100% {
+        color: #d68910;
+    }
 }
+
 .letter-e {
     animation: color-change-e 2s infinite alternate;
     display: inline-block;
 }
 
 @keyframes color-change-d {
-    0% { color: #2ecc71; }
-    100% { color: #27ae60; }
+    0% {
+        color: #2ecc71;
+    }
+
+    100% {
+        color: #27ae60;
+    }
 }
+
 .letter-d {
     animation: color-change-d 2s infinite alternate;
     display: inline-block;
 }
 
 @keyframes color-change-g {
-    0% { color: #3498db; }
-    100% { color: #2980b9; }
+    0% {
+        color: #3498db;
+    }
+
+    100% {
+        color: #2980b9;
+    }
 }
+
 .letter-g {
     animation: color-change-g 2s infinite alternate;
     display: inline-block;
 }
 
 @keyframes color-change-a {
-    0% { color: #9b59b6; }
-    100% { color: #8e44ad; }
+    0% {
+        color: #9b59b6;
+    }
+
+    100% {
+        color: #8e44ad;
+    }
 }
+
 .letter-a {
     animation: color-change-a 2s infinite alternate;
     display: inline-block;
 }
 
 @keyframes color-change-m2 {
-    0% { color: #e67e22; }
-    100% { color: #d35400; }
+    0% {
+        color: #e67e22;
+    }
+
+    100% {
+        color: #d35400;
+    }
 }
+
 .letter-m2 {
     animation: color-change-m2 2s infinite alternate;
     display: inline-block;
 }
 
 @keyframes color-change-e2 {
-    0% { color: #1abc9c; }
-    100% { color: #16a085; }
+    0% {
+        color: #1abc9c;
+    }
+
+    100% {
+        color: #16a085;
+    }
 }
+
 .letter-e2 {
     animation: color-change-e2 2s infinite alternate;
     display: inline-block;
@@ -346,69 +391,112 @@ h1 {
 }
 
 @keyframes color-change-m {
-  0% { color: red; }
-  100% { color: orange; }
+    0% {
+        color: red;
+    }
+
+    100% {
+        color: orange;
+    }
 }
+
 .letter-m {
-  animation: color-change-m 2s infinite alternate;
+    animation: color-change-m 2s infinite alternate;
     color: red !important;
 }
 
 @keyframes color-change-e {
-  0% { color: orange; }
-  100% { color: yellow; }
+    0% {
+        color: orange;
+    }
+
+    100% {
+        color: yellow;
+    }
 }
+
 .letter-e {
-  animation: color-change-e 2s infinite alternate;
+    animation: color-change-e 2s infinite alternate;
     color: orange !important;
 }
 
 @keyframes color-change-d {
-  0% { color: yellow; }
-  100% { color: green; }
+    0% {
+        color: yellow;
+    }
+
+    100% {
+        color: green;
+    }
 }
+
 .letter-d {
-  animation: color-change-d 2s infinite alternate;
+    animation: color-change-d 2s infinite alternate;
     color: yellow !important;
 }
 
 @keyframes color-change-g {
-  0% { color: green; }
-  100% { color: blue; }
+    0% {
+        color: green;
+    }
+
+    100% {
+        color: blue;
+    }
 }
+
 .letter-g {
-  animation: color-change-g 2s infinite alternate;
+    animation: color-change-g 2s infinite alternate;
     color: green !important;
 }
 
 @keyframes color-change-a {
-  0% { color: blue; }
-  100% { color: indigo; }
+    0% {
+        color: blue;
+    }
+
+    100% {
+        color: indigo;
+    }
 }
+
 .letter-a {
-  animation: color-change-a 2s infinite alternate;
-  color: blue !important;
+    animation: color-change-a 2s infinite alternate;
+    color: blue !important;
 }
 
 @keyframes color-change-m2 {
-  0% { color: indigo; }
-  100% { color: violet; }
+    0% {
+        color: indigo;
+    }
+
+    100% {
+        color: violet;
+    }
 }
+
 .letter-m2 {
-  animation: color-change-m2 2s infinite alternate;
+    animation: color-change-m2 2s infinite alternate;
     color: indigo !important;
 }
+
 .letter-m2 {
-  animation: color-change-m2 2s infinite alternate;
+    animation: color-change-m2 2s infinite alternate;
     color: indigo !important;
 }
 
 @keyframes color-change-e2 {
-  0% { color: violet; }
-  100% { color: red; }
+    0% {
+        color: violet;
+    }
+
+    100% {
+        color: red;
+    }
 }
+
 .letter-e2 {
-  animation: color-change-e2 2s infinite alternate;
+    animation: color-change-e2 2s infinite alternate;
     color: violet !important;
 }
 
