@@ -251,7 +251,7 @@ function populateEditor(data) {
     setText('correctDiagnostic', data.correctDiagnostic);
     renderTextList('possible-treatments', data.possibleTreatments);
     renderTextList('correct-treatments-list', data.correctTreatments);
-    document.getElementById('correction-text').innerHTML = data.correction || '';
+    document.getElementById('correction-text').innerText = data.correction || '';
 
     // Correction Image
     const corrImgContainer = document.getElementById('correction-image-container');
@@ -337,7 +337,7 @@ function collectData() {
         scoringRules: { baseScore: 100, attemptPenalty: 10 },
         possibleTreatments: collectTextList('possible-treatments'),
         correctTreatments: collectTextList('correct-treatments-list'),
-        correction: document.getElementById('correction-text').innerHTML,
+        correction: document.getElementById('correction-text').innerText,
         correctionImage: document.querySelector('#correction-image-container .image-preview')?.dataset.base64 || null,
         feedback: { default: "Diagnostic incorrect." },
         locks: collectLocks(),
@@ -819,10 +819,15 @@ imgInputMcq.onchange = (e) => {
 };
 
 window.showCorrectionPreview = function () {
-    const html = document.getElementById('correction-text').innerHTML;
+    const text = document.getElementById('correction-text').innerText;
     const previewArea = document.getElementById('correction-preview-area');
     if (previewArea.style.display === 'none') {
-        previewArea.innerHTML = html;
+        if (window.renderCorrectionMd) {
+            window.renderCorrectionMd(text);
+        } else {
+            // Fallback if game.js isn't loaded/accessible
+            previewArea.innerHTML = text.replace(/\n/g, '<br>');
+        }
         previewArea.style.display = 'block';
         previewArea.style.background = 'white';
         previewArea.style.color = 'black';
