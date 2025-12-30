@@ -1,6 +1,6 @@
 {
   "id": "patient_test_complet",
-  "redacteur": "",
+  "redacteur": "Test test",
   "patient": {
     "nom": "Dupont",
     "prenom": "",
@@ -11,7 +11,7 @@
     "groupeSanguin": "A+"
   },
   "interrogatoire": {
-    "motifHospitalisation": "Douleur abdominale aiguë",
+    "motifHospitalisation": "Douleur aie test",
     "modeDeVie": {
       "activitePhysique": {
         "description": "Sédentaire"
