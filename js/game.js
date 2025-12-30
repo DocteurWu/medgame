@@ -849,12 +849,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 + '<defs><pattern id="vm-spo2-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0 L0 0 0 15" fill="none" stroke="#17a2b8" stroke-width="0.3"/></pattern></defs>'
                 + '<rect width="100%" height="100%" fill="url(#vm-spo2-grid)"/>'
                 + '</svg>'
-                + '<svg class="spo2-wave" style="position:absolute;inset:0;width:100%;height:100%">'
+                + '<svg viewBox="0 0 400 64" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
                 + '<defs><linearGradient id="vm-spo2Gradient" x1="0%" y1="0%" x2="100%" y2="0%">'
                 + '<stop offset="0%" stop-color="#17a2b8" stop-opacity="0"/><stop offset="10%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="50%" stop-color="#17a2b8"/><stop offset="90%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="100%" stop-color="#17a2b8" stop-opacity="0"/>'
                 + '</linearGradient></defs>'
+                + '<g id="spo2-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
                 + '<path id="spo2-path-1" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
                 + '<path id="spo2-path-2" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
+                + '</g>'
                 + '</svg>'
                 + '</div>'
                 + '</div>'
@@ -877,18 +879,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             );
         }
         initAnimatedWaves() {
-            const spo2Path1 = document.getElementById('spo2-path-1');
-            const spo2Path2 = document.getElementById('spo2-path-2');
-            const width = 200, baseY = 32, amp = 8; let p = 'M0,' + baseY;
-            for (let x = 0; x <= width; x += 5) { const y = baseY + Math.sin((x / width) * Math.PI * 4) * amp; p += ' L' + x + ',' + y; }
-            if (spo2Path1) spo2Path1.setAttribute('d', p);
-            if (spo2Path2) { spo2Path2.setAttribute('d', p); spo2Path2.setAttribute('transform', 'translate(200 0)'); }
-
-            // Ajouter une animation similaire à l'ECG
-            const spo2Wave = document.querySelector('.spo2-wave');
-            if (spo2Wave) {
-                spo2Wave.style.animation = 'spo2-scroll 6s linear infinite';
-            }
+            // Initial path sync
+            this.startAnimations();
         }
         updateDisplay() {
             const hrEl = document.getElementById('hr-value'); if (hrEl) hrEl.textContent = this.props.heartRate;
@@ -911,10 +903,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         startAnimations() {
             const pulse = document.getElementById('pulse-indicator'); const hr = this.props.heartRate; const bpm = 60 / hr; if (pulse) pulse.style.animationDuration = bpm + 's';
+
+            // ECG
             const l1 = document.getElementById('heart-line-1'); const l2 = document.getElementById('heart-line-2'); const amp = Math.min(25 + (hr - 60) * 0.3, 40); const path = this.generateECGPath(amp);
             if (l1) l1.setAttribute('d', path); if (l2) { l2.setAttribute('d', path); l2.setAttribute('transform', 'translate(400 0)'); }
-            const grp = document.getElementById('heart-group'); const speed = 6 - ((hr - 60) * 0.04); const dur = Math.max(2.5, Math.min(7, speed));
-            document.documentElement.style.setProperty('--ecg-speed', dur + 's'); if (grp) grp.style.animationDuration = dur + 's';
+
+            // SpO2 (Plethysmogram)
+            const s1 = document.getElementById('spo2-path-1'); const s2 = document.getElementById('spo2-path-2'); const sPath = this.generateSPO2Path(15);
+            if (s1) s1.setAttribute('d', sPath); if (s2) { s2.setAttribute('d', sPath); s2.setAttribute('transform', 'translate(400 0)'); }
+
+            const grp = document.getElementById('heart-group');
+            const sGrp = document.getElementById('spo2-group');
+            const speed = 6 - ((hr - 60) * 0.04); const dur = Math.max(2.5, Math.min(7, speed));
+            document.documentElement.style.setProperty('--ecg-speed', dur + 's');
+            if (grp) grp.style.animationDuration = dur + 's';
+            if (sGrp) sGrp.style.animationDuration = dur + 's';
+        }
+        generateSPO2Path(amp) {
+            const baseY = 40, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
+            for (let i = 0; i < beats; i++) {
+                const x = i * beatWidth;
+                // Realistic Pleth wave: quick rise, dicrotic notch
+                p += ` L ${x + 5},${baseY}`;
+                p += ` C ${x + 15},${baseY} ${x + 20},${baseY - amp} ${x + 25},${baseY - amp}`; // Peak
+                p += ` C ${x + 35},${baseY - amp} ${x + 40},${baseY - amp * 0.4} ${x + 45},${baseY - amp * 0.5}`; // Notch start
+                p += ` C ${x + 50},${baseY - amp * 0.6} ${x + 55},${baseY} ${x + 65},${baseY}`; // Slow decay
+                p += ` L ${x + beatWidth},${baseY}`;
+            }
+            return p;
         }
         generateECGPath(amp) {
             const baseY = 64, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
