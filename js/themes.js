@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusHtml = '<span class="played-badge"><i class="fas fa-check-circle"></i> Fait</span>';
             }
 
-            const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par "${item.redacteur}"</span>` : '';
+            const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par ${item.redacteur}</span>` : '';
 
             motifItem.innerHTML = `
                 <i class="fas fa-file-medical"></i>

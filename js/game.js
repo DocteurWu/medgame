@@ -425,6 +425,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
         if (inList) html += '</ul>';
+
+        // Post-process for bold and italic
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
+        html = html.replace(/_(.*?)_/g, '<em>$1</em>');
+
         contentEl.innerHTML = html;
     }
 

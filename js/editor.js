@@ -89,6 +89,12 @@ document.addEventListener('DOMContentLoaded', () => {
             "ECG": "Rythme sinusal, pas de trouble de repolarisation"
         };
         renderExamResults(defaultExams, defaultResults);
+
+        // Default Correction Example (Markdown)
+        const correctionEl = document.getElementById('correction-text');
+        if (correctionEl) {
+            correctionEl.innerText = "# Titre de la Correction\n\nCeci est un exemple de texte de correction utilisant le format **Markdown** simplifié.\n\n## Points Importants\n- Premier point à retenir\n- Deuxième point crucial\n- Troisième observation\n\nVous pouvez cliquer sur 'Aperçu du rendu' pour voir le résultat final.";
+        }
     }
 
     // Handle Image Upload logic (Moved to global scope)
