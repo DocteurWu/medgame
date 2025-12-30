@@ -1,0 +1,163 @@
+{
+  "id": "cardio_insuffisancecardiaque_webber",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "WEBBER Richard",
+    "prenom": "",
+    "age": 67,
+    "sexe": "M",
+    "taille": "172 cm",
+    "poids": "88 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée d'effort et œdèmes",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "10 PA",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Chronique anciennement"
+      },
+      "alimentation": {
+        "regime": "Déséquilibré",
+        "particularites": "Hypersodé"
+      },
+      "emploi": {
+        "profession": "Chirurgien",
+        "stress": "Elevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Alcoolisme Chronique",
+          "traitement": "Sevrage"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "IEC",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 2 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "descriptionDouleur": "/",
+      "symptomesAssocies": [
+        "Fatigue"
+      ],
+      "remarques": "Prise de poids récente"
+    },
+    "verbatim": "Je viens vous voir car je me sens très fatigué et dès que je fais un effort j'ai du mal à respirer. J'ai aussi remarqué que j'ai pris du poids."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/90 mmHg",
+      "pouls": "98 bpm",
+      "temperature": "36,9°C",
+      "saturationO2": "93%",
+      "frequenceRespiratoire": "22/min"
+    },
+    "aspectGeneral": "Fatigué",
+    "examenCardiovasculaire": {
+      "auscultation": "Galop B3",
+      "inspection": "OMI",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Crépitants basaux",
+      "inspection": "Pas de signe de lutte au repos",
+      "percussion": "légère matité en base"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie cardiaque",
+    "Scintigraphie cardiaque",
+    "Epreuve d'effort",
+    "Spirométrie"
+  ],
+  "examResults": {
+    "ECG": "Tachycardie sinusale",
+    "Echographie cardiaque": "FE à 35%, cardiomyopathie dilatée",
+    "Scintigraphie cardiaque": "Non indiquée",
+    "Epreuve d'effort": "Non indiquée",
+    "Spirométrie": "Non indiquée"
+  },
+  "possibleDiagnostics": [
+    "Cardiomyopathie congénitale",
+    "Insuffisance cardiaque",
+    "BPCO"
+  ],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Diurétiques",
+    "IEC",
+    "Bêta-Bloquants"
+  ],
+  "correctTreatments": [
+    "Diurétiques",
+    "IEC"
+  ],
+  "correction": "Cardiomyopathie alcoolique qui cause une insuffisance cardiaque :&nbsp;<br>&nbsp; &nbsp;-&gt; IC aiguë donc pas de Bêta-bloquants<br>&nbsp; &nbsp;-&gt; FE diminuée donc diurétiques pour réduire OMI et IEC pour traiter l'insuffisance cardiaque<br>Doit s'accompagner de règles hygiéno-diététiques.&nbsp;&nbsp;<br>",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Quels sont les facteurs de risques cardiovasculaires présents chez ce patient ?",
+        "options": [
+          "Age",
+          "Antécédents familiaux",
+          "tabagisme",
+          "diabète",
+          "Hypertension artérielle",
+          "Hypercholestérolémie",
+          "Surpoids",
+          "Sédentarité",
+          "Alcool"
+        ],
+        "correct_indices": [
+          0,
+          2,
+          4,
+          6,
+          7,
+          8
+        ]
+      },
+      "feedback_error": "Erreur...",
+      "id": "lock_1767044953469",
+      "target_fields": [
+        "examensComplementaires"
+      ]
+    }
+  ],
+  "postGameQuestions": []
+}

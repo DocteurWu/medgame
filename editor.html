@@ -62,10 +62,13 @@
                     <i class="fas fa-save"></i> Enregistrer
                 </button>
                 <button class="btn-editor" id="preview-button"
-                    style="background: var(--editor-success); margin-top: 10px;">
+                    style="background: var(--editor-success); margin-top: 5px;">
                     <i class="fas fa-play-circle"></i> Tester
                 </button>
-                <a href="index.html" class="quit-btn" style="margin-top: 10px;">RETOUR ACCUEIL</a>
+                <button class="btn-editor danger-discrete" onclick="clearEditor()" style="margin-top: 5px;">
+                    <i class="fas fa-trash-alt"></i> Tout supprimer
+                </button>
+                <a href="index.html" class="quit-btn" style="margin-top: 5px;">RETOUR ACCUEIL</a>
             </div>
         </aside>
 
@@ -253,6 +256,11 @@
                                     onclick="triggerImageUpload(this.parentElement)">
                                     <i class="fas fa-image"></i> Ajouter une image à la correction
                                 </button>
+                                <button class="btn-add" style="margin-top: 10px; background: var(--editor-info);"
+                                    onclick="showCorrectionPreview()">
+                                    <i class="fas fa-eye"></i> Aperçu du rendu HTML
+                                </button>
+                                <div id="correction-preview-area" style="display: none;"></div>
                             </div>
                             <div class="sub-section">
                                 <h4>Rédacteur</h4>

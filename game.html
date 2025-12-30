@@ -308,7 +308,14 @@
     <div id="image-overlay" class="image-overlay" aria-hidden="true">
         <div id="image-modal" class="image-modal" role="dialog" aria-modal="true" aria-labelledby="image-modal-caption">
             <button id="image-modal-close" class="image-close" aria-label="Fermer l'image">&times;</button>
-            <img id="image-modal-img" src="" alt="">
+            <div class="image-zoom-controls">
+                <button onclick="zoomImage(0.2)" title="Zoomer"><i class="fas fa-search-plus"></i></button>
+                <button onclick="zoomImage(-0.2)" title="Dézoomer"><i class="fas fa-search-minus"></i></button>
+                <button onclick="zoomImage(-currentZoom + 1)" title="Réinitialiser"><i class="fas fa-undo"></i></button>
+            </div>
+            <div class="image-scroll-container">
+                <img id="image-modal-img" src="" alt="">
+            </div>
             <div id="image-modal-caption" class="image-caption"></div>
         </div>
     </div>

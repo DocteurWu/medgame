@@ -56,50 +56,40 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'game.html?preview=true';
     });
 
-    // Check for existing preview data on load (to persist edits)
+    // Initial Empty State with realistic defaults
+    // ONLY if we don't have a preview or loaded case
     const existingPreview = sessionStorage.getItem('previewCase');
     if (existingPreview) {
         try {
             const data = JSON.parse(existingPreview);
-            // Small delay to ensure DOM is ready for complex lists if needed, 
-            // but populateEditor should be fast enough.
             populateEditor(data);
         } catch (e) {
             console.error("Error loading preview data", e);
         }
+    } else {
+        // Constants defaults
+        setText('tension', '120/80');
+        setText('pouls', '70');
+        setText('temperature', '37');
+        setText('saturationO2', '98');
+        setText('frequenceRespiratoire', '16');
+        setText('aspectGeneral', 'Bon état général, patient conscient et orienté.');
+
+        // Physical Exam Sections
+        renderExamSection('examenCardiovasculaire', { auscultation: "Bruits du cœur réguliers, pas de souffle.", inspection: "Pas de signe de choc, pas d'OMI.", palpation: "Pouls périphériques perçus." });
+        renderExamSection('examenPulmonaire', { auscultation: "Murmure vésiculaire symétrique, pas de bruit surajouté.", inspection: "Pas de signe de lutte.", percussion: "Normal." });
+        renderExamSection('examenAbdominal', { palpation: "Souple, indolore, pas de masse.", auscultation: "Bruits hydro-aériques normaux." });
+
+        // Common Complementary Exams
+        const defaultExams = ["NFS-Plaquettes", "Iono-Urée-Créat", "CRP", "ECG"];
+        const defaultResults = {
+            "NFS-Plaquettes": "Hb 14g/dL, Leuco 7000, Plaquettes 250 000",
+            "Iono-Urée-Créat": "Na 140, K 4.0, Créat 80 µmol/L",
+            "CRP": "< 5 mg/L",
+            "ECG": "Rythme sinusal, pas de trouble de repolarisation"
+        };
+        renderExamResults(defaultExams, defaultResults);
     }
-
-    // Add Exam Section
-    document.getElementById('add-exam-section').addEventListener('click', () => {
-        const key = prompt('Nom de la section (ex: examenNeurologique, examenORL...)');
-        if (key) {
-            renderExamSection(key, { "Champ1": "Valeur1" });
-        }
-    });
-
-    // Initial Empty State with realistic defaults
-    // Constants
-    setText('tension', '120/80');
-    setText('pouls', '70');
-    setText('temperature', '37');
-    setText('saturationO2', '98');
-    setText('frequenceRespiratoire', '16');
-    setText('aspectGeneral', 'Bon état général, patient conscient et orienté.');
-
-    // Physical Exam Sections
-    renderExamSection('examenCardiovasculaire', { auscultation: "Bruits du cœur réguliers, pas de souffle.", inspection: "Pas de signe de choc, pas d'OMI.", palpation: "Pouls périphériques perçus." });
-    renderExamSection('examenPulmonaire', { auscultation: "Murmure vésiculaire symétrique, pas de bruit surajouté.", inspection: "Pas de signe de lutte.", percussion: "Normal." });
-    renderExamSection('examenAbdominal', { palpation: "Souple, indolore, pas de masse.", auscultation: "Bruits hydro-aériques normaux." });
-
-    // Common Complementary Exams
-    const defaultExams = ["NFS-Plaquettes", "Iono-Urée-Créat", "CRP", "ECG"];
-    const defaultResults = {
-        "NFS-Plaquettes": "Hb 14g/dL, Leuco 7000, Plaquettes 250 000",
-        "Iono-Urée-Créat": "Na 140, K 4.0, Créat 80 µmol/L",
-        "CRP": "< 5 mg/L",
-        "ECG": "Rythme sinusal, pas de trouble de repolarisation"
-    };
-    renderExamResults(defaultExams, defaultResults);
 
     // Handle Image Upload logic (Moved to global scope)
     const imgInput = document.getElementById('image-upload');
@@ -156,7 +146,28 @@ document.addEventListener('DOMContentLoaded', () => {
             sessionStorage.setItem('editorSidebarCollapsed', isCollapsed);
         });
     }
+
+    // Add Exam Section Listener (moved out of initial block)
+    const addExamBtn = document.getElementById('add-exam-section');
+    if (addExamBtn) {
+        addExamBtn.addEventListener('click', () => {
+            const key = prompt('Nom de la section (ex: examenNeurologique, examenORL...)');
+            if (key) {
+                renderExamSection(key, { "Champ1": "Valeur1" });
+            }
+        });
+    }
 });
+
+window.clearEditor = function () {
+    if (confirm("Êtes-vous sûr de vouloir tout supprimer ? Cette action est irréversible.")) {
+        sessionStorage.removeItem('previewCase');
+        localStorage.removeItem('selectedCaseFile');
+        localStorage.removeItem('selectedCaseFiles');
+        alert("Éditeur nettoyé.");
+        location.reload();
+    }
+};
 
 function populateEditor(data) {
     if (!data) return;
@@ -743,6 +754,7 @@ function addLock(lockData) {
                 <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                     <input type="checkbox" class="correct-checkbox" ${correctIndices.includes(i) ? 'checked' : ''}>
                     <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
+                    <button class="btn-add" style="padding: 5px 8px; font-size: 10px;" onclick="triggerImageUploadMcq(this)" title="Ajouter une image"><i class="fas fa-image"></i></button>
                     <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
                 </div>
             `).join('');
@@ -770,9 +782,57 @@ window.addMcqOption = (btn) => {
     div.innerHTML = `
         <input type="checkbox" class="correct-checkbox">
         <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">Nouvelle option</span>
+        <button class="btn-add" style="padding: 5px 8px; font-size: 10px;" onclick="triggerImageUploadMcq(this)" title="Ajouter une image"><i class="fas fa-image"></i></button>
         <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
     `;
     list.appendChild(div);
+};
+
+window.triggerImageUploadMcq = (btn) => {
+    currentTargetItemMcq = btn.parentElement;
+    document.getElementById('image-upload-mcq').click();
+};
+
+let currentTargetItemMcq = null;
+const imgInputMcq = document.createElement('input');
+imgInputMcq.type = 'file';
+imgInputMcq.id = 'image-upload-mcq';
+imgInputMcq.accept = 'image/*';
+imgInputMcq.style.display = 'none';
+document.body.appendChild(imgInputMcq);
+
+imgInputMcq.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file || !currentTargetItemMcq) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const base64 = event.target.result;
+        const span = currentTargetItemMcq.querySelector('span[contenteditable]');
+        const img = document.createElement('img');
+        img.src = base64;
+        img.style.maxHeight = '100px';
+        img.style.display = 'block';
+        img.style.marginTop = '10px';
+        span.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+};
+
+window.showCorrectionPreview = function () {
+    const html = document.getElementById('correction-text').innerHTML;
+    const previewArea = document.getElementById('correction-preview-area');
+    if (previewArea.style.display === 'none') {
+        previewArea.innerHTML = html;
+        previewArea.style.display = 'block';
+        previewArea.style.background = 'white';
+        previewArea.style.color = 'black';
+        previewArea.style.padding = '20px';
+        previewArea.style.borderRadius = '8px';
+        previewArea.style.marginTop = '10px';
+        previewArea.style.border = '1px solid var(--primary-color)';
+    } else {
+        previewArea.style.display = 'none';
+    }
 };
 
 function renderLocksList(locks) {
@@ -795,13 +855,13 @@ function collectPostGameQuestions() {
 function collectChallengeData(card) {
     const type = card.querySelector('.lock-type').value;
     const challenge = {
-        question: card.querySelector('.lock-question').textContent.trim()
+        question: card.querySelector('.lock-question').innerHTML.trim()
     };
 
     const data = {
         type: type,
         challenge: challenge,
-        feedback_error: card.querySelector('.lock-error').textContent.trim()
+        feedback_error: card.querySelector('.lock-error').innerHTML.trim()
     };
 
     // Only locks have IDs and target fields
@@ -817,7 +877,7 @@ function collectChallengeData(card) {
         challenge.options = [];
         challenge.correct_indices = [];
         optionsList.forEach((optDiv, index) => {
-            challenge.options.push(optDiv.querySelector('span').textContent.trim());
+            challenge.options.push(optDiv.querySelector('span').innerHTML.trim());
             if (optDiv.querySelector('.correct-checkbox').checked) {
                 challenge.correct_indices.push(index);
             }
@@ -888,6 +948,7 @@ function addPostGameQuestion(questionData) {
                 <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                     <input type="checkbox" class="correct-checkbox" ${correctIndices.includes(i) ? 'checked' : ''}>
                     <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
+                    <button class="btn-add" style="padding: 5px 8px; font-size: 10px;" onclick="triggerImageUploadMcq(this)" title="Ajouter une image"><i class="fas fa-image"></i></button>
                     <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
                 </div>
             `).join('');
