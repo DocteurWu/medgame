@@ -249,12 +249,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                 modalOverlay.remove();
             } else if (lockAttempts >= 3) {
                 const correction = lock.challenge.expected_keywords.join(', ');
-                document.getElementById('lock-error').innerHTML = `<strong>Correction :</strong> ${correction}<br>${lock.feedback_error || ''}`;
+                const errorEl = document.getElementById('lock-error');
+                errorEl.innerHTML = `
+                    <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
+                        <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
+                        <div style="color: white; margin-bottom: 10px;">${correction}</div>
+                        ${lock.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${lock.feedback_error}</div>` : ''}
+                    </div>
+                `;
                 document.getElementById('lock-submit').style.display = 'none';
-                document.getElementById('lock-cancel').textContent = 'Continuer';
-                document.getElementById('lock-cancel').classList.remove('secondary-btn');
-                document.getElementById('lock-cancel').classList.add('primary-btn');
-                document.getElementById('lock-cancel').onclick = () => {
+                const input = document.getElementById('lock-answer');
+                if (input) {
+                    input.disabled = true;
+                    input.style.opacity = '0.7';
+                }
+                const cancelBtn = document.getElementById('lock-cancel');
+                cancelBtn.textContent = 'Continuer';
+                cancelBtn.classList.remove('secondary-btn');
+                cancelBtn.classList.add('primary-btn');
+                cancelBtn.style.width = '100%';
+                // Clear existing listeners by replacing the element or using a flag
+                const newCancelBtn = cancelBtn.cloneNode(true);
+                cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+                newCancelBtn.onclick = () => {
                     unlock(lockId);
                     modalOverlay.remove();
                 };
@@ -284,24 +301,41 @@ document.addEventListener('DOMContentLoaded', async () => {
                 modalOverlay.remove();
             } else if (lockAttempts >= 3) {
                 const correctionText = sortedCorrect.map(idx => lock.challenge.options[idx]).join(' + ');
-                document.getElementById('lock-error').innerHTML = `<strong>Correction :</strong> ${correctionText}<br>${lock.feedback_error || ''}`;
+                const errorEl = document.getElementById('lock-error');
+                errorEl.innerHTML = `
+                    <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
+                        <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
+                        <div style="color: white; margin-bottom: 10px;">${correctionText}</div>
+                        ${lock.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${lock.feedback_error}</div>` : ''}
+                    </div>
+                `;
                 document.getElementById('lock-submit').style.display = 'none';
-                document.getElementById('lock-cancel').textContent = 'Continuer';
-                document.getElementById('lock-cancel').classList.remove('secondary-btn');
-                document.getElementById('lock-cancel').classList.add('primary-btn');
-                document.getElementById('lock-cancel').onclick = () => {
-                    unlock(lockId);
-                    modalOverlay.remove();
-                };
-                // Highlight correct options
+
+                // Disable and highlight options
                 document.querySelectorAll('.mcq-option').forEach(opt => {
                     const idx = parseInt(opt.dataset.index);
+                    opt.style.pointerEvents = 'none'; // Disable clicking
                     if (sortedCorrect.includes(idx)) {
                         opt.classList.add('correct');
                         opt.style.borderColor = "#2ecc71";
                         opt.style.background = "rgba(46, 204, 113, 0.2)";
+                    } else {
+                        opt.style.opacity = '0.5';
                     }
                 });
+
+                const cancelBtn = document.getElementById('lock-cancel');
+                cancelBtn.textContent = 'Continuer';
+                cancelBtn.classList.remove('secondary-btn');
+                cancelBtn.classList.add('primary-btn');
+                cancelBtn.style.width = '100%';
+
+                const newCancelBtn = cancelBtn.cloneNode(true);
+                cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+                newCancelBtn.onclick = () => {
+                    unlock(lockId);
+                    modalOverlay.remove();
+                };
                 gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
             } else {
                 document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
@@ -333,20 +367,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderCorrectionContent(text) {
-        const contentEl = document.getElementById('correction-content');
+        const contentEl = document.getElementById('correction-content') || document.getElementById('correction-preview-area');
+        if (!contentEl) return;
+
         if (!text) {
             contentEl.innerHTML = '';
             return;
         }
+
+        // If it looks like HTML, just render it (legacy support)
         if (/<[a-z][\s\S]*>/i.test(text)) {
             contentEl.innerHTML = text;
             return;
         }
+
         const lines = text.split('\n');
         let html = '';
         let inList = false;
+
         for (let line of lines) {
             const t = line.trim();
+
+            // Handle Headers
+            if (t.startsWith('# ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h1>${escapeHtml(t.slice(2))}</h1>`;
+                continue;
+            }
+            if (t.startsWith('## ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h2>${escapeHtml(t.slice(3))}</h2>`;
+                continue;
+            }
+            if (t.startsWith('### ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h3>${escapeHtml(t.slice(4))}</h3>`;
+                continue;
+            }
+
+            // Handle Lists
             if (t.startsWith('- ')) {
                 if (!inList) {
                     html += '<ul>';
@@ -368,6 +427,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (inList) html += '</ul>';
         contentEl.innerHTML = html;
     }
+
+    // Export for editor.js use
+    window.renderCorrectionMd = renderCorrectionContent;
 
     function renderCaseSummary(c) {
         if (!c) return '';
@@ -1665,26 +1727,46 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             } else if (quizAttempts >= 3) {
                 let correction = '';
+                const corrIndices = question.type === 'QCM' ? (question.challenge.correct_indices || []) : [];
+
                 if (question.type === 'SAISIE') {
                     correction = question.challenge.expected_keywords.join(', ');
+                    const input = document.getElementById('quiz-input');
+                    if (input) {
+                        input.disabled = true;
+                        input.style.opacity = '0.7';
+                    }
                 } else {
-                    const corrIndices = question.challenge.correct_indices || [];
                     correction = corrIndices.map(idx => question.challenge.options[idx]).join(' + ');
-                    // Highlight correct options
+                    // Highlight correct options and disable others
                     detailsContainer.querySelectorAll('.mcq-option').forEach(opt => {
                         const idx = parseInt(opt.dataset.index);
+                        opt.style.pointerEvents = 'none';
                         if (corrIndices.includes(idx)) {
                             opt.style.borderColor = "#2ecc71";
                             opt.style.background = "rgba(46, 204, 113, 0.2)";
+                        } else {
+                            opt.style.opacity = '0.5';
                         }
                     });
                 }
-                document.getElementById('quiz-error').innerHTML = `<strong>Correction :</strong> ${correction}<br>${question.feedback_error || ''}`;
+
+                const errorEl = document.getElementById('quiz-error');
+                errorEl.innerHTML = `
+                    <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
+                        <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
+                        <div style="color: white; margin-bottom: 10px;">${correction}</div>
+                        ${question.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${question.feedback_error}</div>` : ''}
+                    </div>
+                `;
+
                 const btn = modal.querySelector('#quiz-submit-btn');
                 btn.textContent = isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE';
                 btn.style.background = '#2ecc71';
-                btn.removeEventListener('click', validateQuizAnswer);
-                btn.addEventListener('click', () => {
+
+                const newBtn = btn.cloneNode(true);
+                btn.parentNode.replaceChild(newBtn, btn);
+                newBtn.addEventListener('click', () => {
                     modal.remove();
                     if (isLast) {
                         showCorrectionModal(quizComparisonHtml + (currentCase.correction || ''));
