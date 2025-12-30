@@ -165,6 +165,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        let lockAttempts = 0;
+
         console.log("Lock found:", lock);
 
         // Hide nurse intro if it's still showing to avoid timer conflicts
@@ -201,7 +203,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="lock-modal">
                     <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
                     <p class="challenge-question">${lock.challenge.question}</p>
-                    <div class="mcq-options">${optionsHtml}</div>
+                    <div class="mcq-options">
+                        ${lock.challenge.options.map((opt, i) =>
+                `<div class="mcq-option" data-index="${i}">${opt}</div>`
+            ).join('')}
+                    </div>
                     <p id="lock-error" class="error-feedback"></p>
                     <div class="correction-actions">
                         <button class="secondary-btn" id="lock-cancel">Annuler</button>
@@ -233,6 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         function validateSaisie() {
+            lockAttempts++;
             const val = document.getElementById('lock-answer').value;
             const answer = normalizeText(val);
             const isCorrect = lock.challenge.expected_keywords.some(kw => normalizeText(kw) === answer || answer.includes(normalizeText(kw)));
@@ -240,6 +247,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (isCorrect) {
                 unlock(lockId);
                 modalOverlay.remove();
+            } else if (lockAttempts >= 3) {
+                const correction = lock.challenge.expected_keywords.join(', ');
+                document.getElementById('lock-error').innerHTML = `<strong>Correction :</strong> ${correction}<br>${lock.feedback_error || ''}`;
+                document.getElementById('lock-submit').style.display = 'none';
+                document.getElementById('lock-cancel').textContent = 'Continuer';
+                document.getElementById('lock-cancel').classList.remove('secondary-btn');
+                document.getElementById('lock-cancel').classList.add('primary-btn');
+                document.getElementById('lock-cancel').onclick = () => {
+                    unlock(lockId);
+                    modalOverlay.remove();
+                };
+                gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
             } else {
                 document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
                 gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
@@ -247,6 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         function validateQCM() {
+            lockAttempts++;
             const selectedOptions = document.querySelectorAll('.mcq-option.selected');
             const selectedIndices = Array.from(selectedOptions).map(opt => parseInt(opt.dataset.index));
 
@@ -262,6 +282,27 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (isCorrect) {
                 unlock(lockId);
                 modalOverlay.remove();
+            } else if (lockAttempts >= 3) {
+                const correctionText = sortedCorrect.map(idx => lock.challenge.options[idx]).join(' + ');
+                document.getElementById('lock-error').innerHTML = `<strong>Correction :</strong> ${correctionText}<br>${lock.feedback_error || ''}`;
+                document.getElementById('lock-submit').style.display = 'none';
+                document.getElementById('lock-cancel').textContent = 'Continuer';
+                document.getElementById('lock-cancel').classList.remove('secondary-btn');
+                document.getElementById('lock-cancel').classList.add('primary-btn');
+                document.getElementById('lock-cancel').onclick = () => {
+                    unlock(lockId);
+                    modalOverlay.remove();
+                };
+                // Highlight correct options
+                document.querySelectorAll('.mcq-option').forEach(opt => {
+                    const idx = parseInt(opt.dataset.index);
+                    if (sortedCorrect.includes(idx)) {
+                        opt.classList.add('correct');
+                        opt.style.borderColor = "#2ecc71";
+                        opt.style.background = "rgba(46, 204, 113, 0.2)";
+                    }
+                });
+                gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
             } else {
                 document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
                 gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
@@ -330,10 +371,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderCaseSummary(c) {
         if (!c) return '';
-        const patient = `<h4>Patient</h4><p>${escapeHtml(c.patient.nom)} ${escapeHtml(c.patient.prenom)} · ${escapeHtml(String(c.patient.age))} ans · ${escapeHtml(c.patient.sexe)}</p>`;
+        const patient = `<h4>Patient</h4><p>${escapeHtml(c.patient.nom)} ${escapeHtml(c.patient.prenom || '')} · ${escapeHtml(String(c.patient.age))} ans · ${escapeHtml(c.patient.sexe)}</p>
+        <p>Taille: ${escapeHtml(c.patient.taille || '--')} · Poids: ${escapeHtml(c.patient.poids || '--')} · Groupe: ${escapeHtml(c.patient.groupeSanguin || '--')}</p>`;
         const motif = `<p><strong>Motif:</strong> ${escapeHtml(c.interrogatoire.motifHospitalisation || '')}</p>`;
         const constantes = `<h4>Constantes</h4><p>Tension: ${escapeHtml(c.examenClinique.constantes.tension || '')} · Pouls: ${escapeHtml(c.examenClinique.constantes.pouls || '')} · Température: ${escapeHtml(c.examenClinique.constantes.temperature || '')} · SpO2: ${escapeHtml(c.examenClinique.constantes.saturationO2 || '')} · FR: ${escapeHtml(c.examenClinique.constantes.frequenceRespiratoire || '')}</p>`;
-        const exams = c.examResults ? Object.keys(c.examResults).map(k => `<div><strong>${escapeHtml(k)}:</strong> ${escapeHtml(typeof c.examResults[k] === 'string' ? c.examResults[k] : JSON.stringify(c.examResults[k]))}</div>`).join('') : '';
+        const exams = c.examResults ? Object.keys(c.examResults).map(k => `<div><strong>${escapeHtml(k)}:</strong> ${escapeHtml(typeof c.examResults[k] === 'string' ? c.examResults[k] : (c.examResults[k].value || ''))}</div>`).join('') : '';
         const examsBlock = exams ? `<h4>Résultats d'examens</h4>${exams}` : '';
         return patient + motif + constantes + examsBlock;
     }
@@ -357,6 +399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         overlay.style.display = 'none';
     }
 
+    let currentZoom = 1;
     function showImageModal(src, caption) {
         const overlay = document.getElementById('image-overlay');
         const img = document.getElementById('image-modal-img');
@@ -365,6 +408,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (img) img.alt = caption || '';
         if (cap) cap.textContent = caption || '';
         if (overlay) overlay.style.display = 'flex';
+        currentZoom = 1;
+        updateImageZoom();
     }
 
     function hideImageModal() {
@@ -373,6 +418,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (img) img.src = '';
         if (overlay) overlay.style.display = 'none';
     }
+
+    function updateImageZoom() {
+        const img = document.getElementById('image-modal-img');
+        if (img) img.style.transform = `scale(${currentZoom})`;
+    }
+
+    window.zoomImage = (delta) => {
+        currentZoom = Math.min(Math.max(currentZoom + delta, 0.5), 3);
+        updateImageZoom();
+    };
 
     document.getElementById('correction-back').addEventListener('click', () => {
         hideCorrectionModal();
@@ -1544,6 +1599,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         modal.style.display = 'flex';
 
         const isLast = index === currentCase.postGameQuestions.length - 1;
+        let quizAttempts = 0;
 
         modal.innerHTML = `
             <div class="lock-modal" style="border-color: var(--primary-color); box-shadow: 0 0 30px rgba(160, 32, 240, 0.2);">
@@ -1589,6 +1645,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         modal.querySelector('#quiz-submit-btn').addEventListener('click', validateQuizAnswer);
 
         function validateQuizAnswer() {
+            quizAttempts++;
             let isCorrect = false;
             if (question.type === 'SAISIE') {
                 const val = document.getElementById('quiz-input').value.toLowerCase().trim();
@@ -1606,14 +1663,45 @@ document.addEventListener('DOMContentLoaded', async () => {
                 } else {
                     showPostGameQuestion(index + 1);
                 }
+            } else if (quizAttempts >= 3) {
+                let correction = '';
+                if (question.type === 'SAISIE') {
+                    correction = question.challenge.expected_keywords.join(', ');
+                } else {
+                    const corrIndices = question.challenge.correct_indices || [];
+                    correction = corrIndices.map(idx => question.challenge.options[idx]).join(' + ');
+                    // Highlight correct options
+                    detailsContainer.querySelectorAll('.mcq-option').forEach(opt => {
+                        const idx = parseInt(opt.dataset.index);
+                        if (corrIndices.includes(idx)) {
+                            opt.style.borderColor = "#2ecc71";
+                            opt.style.background = "rgba(46, 204, 113, 0.2)";
+                        }
+                    });
+                }
+                document.getElementById('quiz-error').innerHTML = `<strong>Correction :</strong> ${correction}<br>${question.feedback_error || ''}`;
+                const btn = modal.querySelector('#quiz-submit-btn');
+                btn.textContent = isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE';
+                btn.style.background = '#2ecc71';
+                btn.removeEventListener('click', validateQuizAnswer);
+                btn.addEventListener('click', () => {
+                    modal.remove();
+                    if (isLast) {
+                        showCorrectionModal(quizComparisonHtml + (currentCase.correction || ''));
+                    } else {
+                        showPostGameQuestion(index + 1);
+                    }
+                });
             } else {
                 document.getElementById('quiz-error').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${question.feedback_error || 'Réponse incorrecte'}`;
                 const btn = modal.querySelector('#quiz-submit-btn');
                 btn.style.background = '#e74c3c';
                 btn.textContent = 'RÉESSAYER';
                 setTimeout(() => {
-                    btn.style.background = 'var(--primary-color)';
-                    btn.textContent = isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE';
+                    if (quizAttempts < 3) {
+                        btn.style.background = 'var(--primary-color)';
+                        btn.textContent = isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE';
+                    }
                 }, 1000);
             }
         }
@@ -1671,6 +1759,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         document.body.appendChild(prompt);
+
+        // Hide after 5 seconds
+        setTimeout(() => {
+            if (prompt.parentElement) {
+                prompt.style.opacity = '0';
+                prompt.style.transition = 'opacity 1s ease';
+                setTimeout(() => prompt.remove(), 1000);
+            }
+        }, 5000);
     }
 
     document.addEventListener('fullscreenchange', () => {

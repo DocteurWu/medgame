@@ -79,6 +79,10 @@
     margin-bottom: 10px;
 }
 
+.sidebar-header {
+    margin-bottom: 20px;
+}
+
 .exam-item li {
     padding: 8px 0;
     display: flex;
@@ -146,6 +150,8 @@
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid var(--glass-border);
+    flex-shrink: 0;
+    /* Don't allow footer to shrink */
 }
 
 .btn-editor {
@@ -169,6 +175,19 @@
 .btn-editor.secondary {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--glass-border);
+}
+
+.btn-editor.danger-discrete {
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    color: var(--editor-danger);
+    font-size: 0.75rem;
+    padding: 8px;
+}
+
+.btn-editor.danger-discrete:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: var(--editor-danger);
 }
 
 .btn-editor:hover {

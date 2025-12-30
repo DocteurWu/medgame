@@ -1,0 +1,134 @@
+{
+  "id": "cardio_insuffisancecardiaque_ellis",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "GREY Ellis",
+    "prenom": "",
+    "age": 78,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "A-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée et confusion",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Très réduite"
+      },
+      "tabac": {
+        "quantite": "15 PA",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Hydratation insuffisante"
+      },
+      "emploi": {
+        "profession": "Chirurgienne à la retraite",
+        "stress": "Anciennement élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "Diurétique"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Hydrochlorothiazide",
+        "dose": "25 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 3 semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Infection récente",
+      "descriptionDouleur": "/",
+      "symptomesAssocies": [
+        "Fatigue",
+        "confusion"
+      ],
+      "remarques": "Terrain fragile"
+    },
+    "verbatim": "[Confus]"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "150/85 mmHg",
+      "pouls": "96 bpm",
+      "temperature": "38°C",
+      "saturationO2": "92%",
+      "frequenceRespiratoire": "22/min"
+    },
+    "aspectGeneral": "Patient confus",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Crépitants",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Neurologique": {
+      "conscience": "Altérée"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Radio thoracique",
+    "Echographie cardiaque",
+    "Scintigraphie cardiaque",
+    "Test d'effort"
+  ],
+  "examResults": {
+    "ECG": "Pas interprétable",
+    "Radio thoracique": "Surcharge pulmonaire",
+    "Echographie cardiaque": "FE à 50 %, dysfonction diastolique",
+    "Scintigraphie cardiaque": "Non indiqué",
+    "Test d'effort": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "BPCO",
+    "Insuffisance cardiaque",
+    "Sepsis"
+  ],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Diurétique",
+    "Oxygénothérapie"
+  ],
+  "correctTreatments": [
+    "Diurétique"
+  ],
+  "correction": "&lt;h3&gt;Insuffisance cardiaque du sujet âgé&lt;/h3&gt;&lt;p&gt;Terrain fragile et dysfonction diastolique.&lt;/p&gt;\n                                ",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}
