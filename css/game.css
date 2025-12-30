@@ -1067,15 +1067,6 @@ body::after {
     }
 }
 
-@keyframes spo2-scroll {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-200px);
-    }
-}
 
 @keyframes pulse-dot {
     0% {
