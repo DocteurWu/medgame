@@ -1,6 +1,5 @@
 {
   "cardiologie": [
-    "patient_test_complet.json",
     "cardio_insuffisancecardiaque_burke.json",
     "cardio_insuffisancecardiaque_denny.json",
     "cardio_insuffisancecardiaque_ellis.json",
@@ -13,7 +12,8 @@
     "CARDIO_syncope_cardiaque.json",
     "CARDIO_retrecissement_aortique.json",
     "CARDIO_hta_secondaire_hyperaldosteronisme.json",
-    "CARDIO_angor_stable.json"
+    "CARDIO_angor_stable.json",
+    "patient_test_complet.json"
   ],
   "endocrinologie": [
     "EDN_diabetetype2_1.json",
@@ -34,7 +34,10 @@
     "EDN_diabetetype1monogé.json"
   ],
   "hématologie": [],
-  "appareil-digestif": [],
+  "appareil-digestif": [
+    "digestif_cancer_oeso_brandon.json",
+    "digestif_dyspepsie_elinor.json"
+  ],
   "immunologie": [],
   "uronephro": [
     "nephro_pyélonéphrite_obstructive.json",
@@ -53,5 +56,9 @@
     "NEURO_vertiges_centrales.json",
     "ORL_syndrome_labyrinthique.json"
   ],
-  "neurologie/psychiatrie": []
+  "neurologie/psychiatrie": [
+    "neuro_epilepsie_generalisee_oscar.json",
+    "neuro_epilepsie_temporale_elinordammert.json",
+    "neuro_polyneuropathie_jacques.json"
+  ]
 }

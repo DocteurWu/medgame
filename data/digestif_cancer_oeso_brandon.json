@@ -1,0 +1,162 @@
+{
+  "id": "digestif_cancer_oeso_brandon",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "de DELAFORD Brandon",
+    "prenom": "",
+    "age": 62,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "55",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dysphagie et amaigrissement",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "40 PA",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "..."
+      },
+      "emploi": {
+        "profession": "Colonel à la retraite",
+        "stress": "Anciennement élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 3 mois",
+      "evolution": "Aggravation progressive : difficulté à avaler des solides puis des liquides",
+      "facteursDeclenchants": "Manger",
+      "descriptionDouleur": "Blocage rétrosternal",
+      "symptomesAssocies": [
+        "Amaigrissement de 9 kg en 2 mois"
+      ],
+      "remarques": "Pas de pyrosis et pas de douleurs à la déglutition"
+    },
+    "verbatim": "Je viens vous voir car j'ai beaucoup de mal à manger depuis quelques mois et j'ai perdu beaucoup de poids récemment."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/70 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Altération de l'état général, IMC en baisse",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse, pas d'adénopathies sus-claviculaire",
+      "auscultation": "Bruits hydro-aériques normaux."
+    }
+  },
+  "availableExams": [
+    "Endoscopie oeso-gastro-duodénale (EOGD)",
+    "Scanner thoraco-abdominal",
+    "Manométrie",
+    "Bilan sanguin",
+    "Transit oeso-gastro-duodénal",
+    "pH-métrie œsophagienne"
+  ],
+  "examResults": {
+    "Endoscopie oeso-gastro-duodénale (EOGD)": "Masse sténosante irrégulière de l'œsophage moyen avec muqueuse ulcéréeBiopsie en faveur d'une lésion cancéreuse",
+    "Scanner thoraco-abdominal": "Epaississement de l'œsophage sans métastases",
+    "Manométrie": "Pas indiqué en première intention",
+    "Bilan sanguin": "Dénutrition",
+    "Transit oeso-gastro-duodénal": "Non indiqué en première intention",
+    "pH-métrie œsophagienne": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Diverticule de l'œsophage",
+    "Cancer de l'œsophage",
+    "reflux acide gastro-œsophagien",
+    "Trouble fonctionnel de l'œsophage"
+  ],
+  "correctDiagnostic": "Cancer de l'œsophage",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "IPP",
+    "Traitement antispasmodique",
+    "Traitement oncologique",
+    "Antibiotiques"
+  ],
+  "correctTreatments": [
+    "Traitement oncologique"
+  ],
+  "correction": "# Cancer de l'œsophage \n\nPrincipale cause de sténose œsophagienne\n\n## Points Importants\n- Perte de poids\n- Aggravation du solide au liquide\n- Faire EOGD et biopsie en première intention",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "A quoi est systématiquement associé l'EOGD dans ce cas ?",
+        "expected_keywords": [
+          "Biopsie",
+          "biopsies",
+          "biopsies œsophagiennes",
+          "biopsie œsophagienne"
+        ]
+      },
+      "feedback_error": "Si on suspecte une masse dont on ne connaît pas la nature...",
+      "id": "lock_1767308137574",
+      "target_fields": [
+        "examResults.Endoscopie oeso-gastro-duodénale (EOGD)"
+      ]
+    },
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Le patient a",
+        "options": [
+          "un IMC normal",
+          "un surpoids",
+          "une insuffisance pondérale",
+          "une obésité"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "Faire le calcul de l'IMC",
+      "id": "lock_1767309006303",
+      "target_fields": [
+        "examenClinique.aspectGeneral"
+      ]
+    }
+  ],
+  "postGameQuestions": []
+}

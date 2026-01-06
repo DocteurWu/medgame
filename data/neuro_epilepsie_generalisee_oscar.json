@@ -1,0 +1,159 @@
+{
+  "id": "neuro_epilepsie_generalisee_oscar",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "CASKEY Oscar",
+    "prenom": "",
+    "age": 22,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "AB+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Perte de connaissance",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Equitation régulièrement"
+      },
+      "tabac": {
+        "quantite": "2 PA",
+        "duree": "4 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Directeur d'une scierie",
+        "stress": "Elevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Cousin épileptique",
+          "traitement": "/"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 épisode",
+      "evolution": "/",
+      "facteursDeclenchants": "Non connu",
+      "descriptionDouleur": "Cri bref initial, chute brutale, perte de connaissance, raideur généralisée puis secousses bilatérales, morsure latérale de la langue",
+      "symptomesAssocies": [
+        "Confusion et céphalées pendant 30 min après la reprise de connaissance"
+      ],
+      "remarques": "Pas de prodrome vagale, pas de déclenchement émotionnel"
+    },
+    "verbatim": "J'étais debout devant mon bureau et d'un coup je me suis retrouvé par terre, je ne savais pas où j'étais et j'avais très mal à la tête. Hier, j'étais à une soirée où j'ai beaucoup bu et je n'ai pas beaucoup dormi."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/75 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    }
+  },
+  "availableExams": [
+    "EEG",
+    "IRM cérébrale",
+    "ECG",
+    "Scanner cérébral en urgence"
+  ],
+  "examResults": {
+    "EEG": "Normal",
+    "IRM cérébrale": "Normal",
+    "ECG": "Non indiqué",
+    "Scanner cérébral en urgence": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Syncope vaso-vagale",
+    "Absence typique",
+    "Crise épileptique généralisée tonico-clonique",
+    "Crise du lobe frontal"
+  ],
+  "correctDiagnostic": "Crise épileptique généralisée tonico-clonique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antiépileptique (valproate)",
+    "Mesures hygiéno-diététiques",
+    "Benzodiazépines"
+  ],
+  "correctTreatments": [
+    "Mesures hygiéno-diététiques"
+  ],
+  "correction": "# Crise épileptique généralisée tonico-cloniqueProbablement idiopathique (alcool et manque de sommeil)## Points Importants- Interrogatoire très important (et des proches aussi +++)- EEG utile pour différencier crise généralisée et focale mais peut-être normal même si l'épilepsie est vraie- Pas de traitement antiépileptique immédiat après une première crise isolée",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Qui doit-on interroger absolument pour avoir des informations sur cette perte de connaissance ?",
+        "options": [
+          "Le patient seul",
+          "Le patient et ses proches",
+          "Les proches seulement car le patient était confus"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Erreur...",
+      "id": "lock_1767379474535",
+      "target_fields": [
+        "interrogatoire.histoireMaladie.descriptionDouleur"
+      ]
+    },
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Pour quel type de perte de connaissance suspectée doit-on réaliser un ECG ? (1 mot)",
+        "expected_keywords": [
+          "syncope",
+          "syncopes"
+        ]
+      },
+      "feedback_error": "La perte de connaissance de cause cardiaque",
+      "id": "lock_1767380279711",
+      "target_fields": [
+        "examResults.ECG"
+      ]
+    }
+  ],
+  "postGameQuestions": []
+}

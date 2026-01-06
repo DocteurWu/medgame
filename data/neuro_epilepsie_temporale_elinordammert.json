@@ -1,0 +1,134 @@
+{
+  "id": "neuro_epilepsie_temporale_elinordammert",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "DAMMERT Elinor",
+    "prenom": "",
+    "age": 48,
+    "sexe": "F",
+    "taille": "159 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "B-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Episodes amnésiques",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Léger"
+      },
+      "tabac": {
+        "quantite": "2 PA",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Pescétarien (poisson)",
+        "particularites": "Equilibré"
+      },
+      "emploi": {
+        "profession": "Femme au foyer",
+        "stress": "Moyen"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Ramipril",
+        "dose": "2 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Première crise il y a 6 mois",
+      "evolution": "Crises répétées",
+      "facteursDeclenchants": "Aucun",
+      "descriptionDouleur": "Sensation de déjà-vu, anxiété brutale, tachycardie, fixité du regard, mâchonnement, dure 1 à 2 minutes",
+      "symptomesAssocies": [
+        "Amnésie de l'épisode"
+      ],
+      "remarques": "Pas de chute, pas de convulsion"
+    },
+    "verbatim": "Je viens vous voir car depuis quelques mois il m'arrive d'avoir des moments d'oubli incompréhensibles."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Neurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "EEG",
+    "ECG",
+    "Scanner cérébral",
+    "IRM cérébrale"
+  ],
+  "examResults": {
+    "EEG": "Présence de décharges paroxystiques à type de pointes et pointes-ondes, localisées à la région temporale droite",
+    "ECG": "Non indiqué",
+    "Scanner cérébral": "Non indiqué",
+    "IRM cérébrale": "lésion temporale droite"
+  },
+  "possibleDiagnostics": [
+    "Epilepsie temporale",
+    "Malaise vagale",
+    "Epilepsie généralisée",
+    "Trouble panique"
+  ],
+  "correctDiagnostic": "Epilepsie temporale",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antiépileptique focal",
+    "Benzodiazépines seules",
+    "Pas de traitements",
+    "Antidépresseur seul"
+  ],
+  "correctTreatments": [
+    "Antiépileptique focal"
+  ],
+  "correction": "# Epilepsie temporale\n\nCrise focale et non généralisée\n\n## Points Importants\n- Signes spécifiques à la région temporale\n- EEG et imagerie pour caractériser la crise (généralisée ou focale)\n- Traitement à donner car arguments pour une épilepsie vraie\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

@@ -7,7 +7,7 @@
     <title>MedGame - Simulation Médicale</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
 
-    <!-- Fonts Modernes -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -28,18 +28,8 @@
 
 <body>
 
-    <!-- Canvas pour l'arrière-plan 3D (ADN) -->
     <div id="canvas-container"></div>
-
-    <!-- <audio id="background-music" src="assets/sounds/hospital_ambient.mp3" loop style="display:none;"></audio> -->
-
     <script src="js/config.js"></script>
-    <!-- <script>
-        // Disable audio if MUSIC_ENABLED is 0
-        if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
-            document.getElementById('background-music').remove();
-        }
-    </script> -->
 
     <div class="scene-overlay">
         <div class="glass-card" id="main-card">
@@ -78,7 +68,7 @@
         </div>
     </div>
 
-    <!-- Modale Paramètres Refaite -->
+
     <div id="settings-modal" class="modal-backdrop">
         <div class="modal-glass">
             <div class="modal-header">
@@ -122,7 +112,7 @@
         </div>
     </div>
 
-    <!-- Script Logiciel & Animation -->
+    <!-- Script Animation -->
     <script>
         /* --- LOGIQUE 3D BACKGROUND (ADN) --- */
         const init3D = () => {
@@ -270,38 +260,7 @@
             // Logic removed for index.html
         });
 
-        /*
-        // Gestion Musique (Améliorée)
-        const audio = document.getElementById('background-music');
 
-        if (audio) {
-            audio.volume = 0.4; // Volume doux par défaut
-
-            const startAudio = () => {
-                const state = JSON.parse(sessionStorage.getItem('musicState'));
-                if (state && state.isPlaying === false) return;
-
-                if (!state || !state.time) audio.currentTime = 0;
-                else audio.currentTime = state.time;
-
-                audio.play().then(() => {
-                    sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: true, time: audio.currentTime }));
-                }).catch(() => console.log("Autoplay prevented"));
-            };
-
-            // Lance la musique au premier clic n'importe où
-            document.body.addEventListener('click', startAudio, { once: true });
-
-            window.addEventListener('beforeunload', () => {
-                sessionStorage.setItem('musicState', JSON.stringify({ isPlaying: !audio.paused, time: audio.currentTime }));
-            });
-
-            window.addEventListener('load', () => {
-                const state = JSON.parse(sessionStorage.getItem('musicState'));
-                if (state && state.isPlaying) startAudio();
-            });
-        }
-        */
 
         // Fonction transition douce
         function transitionTo(url) {
