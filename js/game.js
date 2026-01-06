@@ -450,17 +450,110 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function showCorrectionModal(text) {
-        if (currentCase && currentCase.redacteur) {
-            text += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
-        }
+        const contentEl = document.getElementById('correction-content');
+        if (!contentEl) return;
+
+        let finalHtml = '';
+
+        // First, prepend correction image if exists
         if (currentCase && currentCase.correctionImage) {
-            text = `<div style="text-align: center; margin-bottom: 20px;">
+            finalHtml += `<div style="text-align: center; margin-bottom: 20px;">
                         <img src="${currentCase.correctionImage}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;" onclick="window.showImageModal('${currentCase.correctionImage}', 'Illustration Correction')">
-                    </div>` + text;
+                    </div>`;
         }
-        renderCorrectionContent(text || '');
+
+        // Now parse the text - it might contain HTML (comparisonHtml) + markdown (correction)
+        // We need to handle this by detecting if it starts with HTML
+        if (text) {
+            // Check if text starts with HTML tags (comparison section)
+            const htmlMatch = text.match(/^(\s*<div[\s\S]*?<\/div>\s*<hr[^>]*>)/);
+            if (htmlMatch) {
+                // Extract HTML part and markdown part
+                const htmlPart = htmlMatch[1];
+                const markdownPart = text.substring(htmlMatch[0].length).trim();
+
+                // Add the comparison HTML as-is
+                finalHtml += htmlPart;
+
+                // Parse the markdown part
+                if (markdownPart) {
+                    finalHtml += parseMarkdown(markdownPart);
+                }
+            } else {
+                // No HTML prefix, parse whole text as markdown
+                finalHtml += parseMarkdown(text);
+            }
+        }
+
+        // Append redacteur credit if exists
+        if (currentCase && currentCase.redacteur) {
+            finalHtml += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
+        }
+
+        contentEl.innerHTML = finalHtml;
+
         const overlay = document.getElementById('correction-overlay');
         overlay.style.display = 'flex';
+    }
+
+    // Helper function to parse markdown to HTML
+    function parseMarkdown(text) {
+        if (!text) return '';
+
+        // First, try to add newlines before markdown patterns if they're missing
+        // This handles cases where the text is stored without proper line breaks
+        text = text.replace(/([^#\n])# /g, '$1\n# ');
+        text = text.replace(/([^\n])## /g, '$1\n## ');
+        text = text.replace(/([^\n])### /g, '$1\n### ');
+        text = text.replace(/([^\n])- /g, '$1\n- ');
+
+        const lines = text.split('\n');
+        let html = '';
+        let inList = false;
+
+        for (let line of lines) {
+            const t = line.trim();
+            if (!t) continue;
+
+            if (t.startsWith('# ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h3 style="color: var(--primary-color); margin: 12px 0 8px; font-size: 1.2em;">${escapeHtml(t.slice(2))}</h3>`;
+                continue;
+            }
+            if (t.startsWith('## ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h4 style="color: var(--secondary-color); margin: 10px 0 6px; font-size: 1.1em;">${escapeHtml(t.slice(3))}</h4>`;
+                continue;
+            }
+            if (t.startsWith('### ')) {
+                if (inList) { html += '</ul>'; inList = false; }
+                html += `<h5 style="margin: 8px 0 5px; font-size: 1em;">${escapeHtml(t.slice(4))}</h5>`;
+                continue;
+            }
+
+            if (t.startsWith('- ')) {
+                if (!inList) {
+                    html += '<ul style="margin: 8px 0; padding-left: 20px; font-size: 0.95em;">';
+                    inList = true;
+                }
+                html += '<li style="margin: 4px 0;">' + escapeHtml(t.slice(2)) + '</li>';
+            } else {
+                if (inList) {
+                    html += '</ul>';
+                    inList = false;
+                }
+                html += '<p style="margin: 6px 0; font-size: 0.95em;">' + escapeHtml(t) + '</p>';
+            }
+        }
+        if (inList) html += '</ul>';
+
+        // Post-process for bold and italic
+        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
+        html = html.replace(/_(.*?)_/g, '<em>$1</em>');
+
+        return html;
     }
 
     function hideCorrectionModal() {
@@ -1081,8 +1174,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
         displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution, 'interrogatoire.histoireMaladie.evolution');
         displayValue(facteursDeclenchants, currentCase.interrogatoire.histoireMaladie.facteursDeclenchants, 'interrogatoire.histoireMaladie.facteursDeclenchants');
+
+        // Display pain description
+        const descriptionDouleur = document.getElementById('description-douleur');
+        if (descriptionDouleur) {
+            displayValue(descriptionDouleur, currentCase.interrogatoire.histoireMaladie.descriptionDouleur || '', 'interrogatoire.histoireMaladie.descriptionDouleur');
+        }
+
         displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
         displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques, 'interrogatoire.histoireMaladie.remarques');
+
+        // Display patient details (taille/poids/groupeSanguin) in visible section
+        const patientTailleDisplay = document.getElementById('patient-taille-display');
+        const patientPoidsDisplay = document.getElementById('patient-poids-display');
+        const patientGroupeDisplay = document.getElementById('patient-groupe-display');
+        if (patientTailleDisplay) patientTailleDisplay.textContent = currentCase.patient.taille || '--';
+        if (patientPoidsDisplay) patientPoidsDisplay.textContent = currentCase.patient.poids || '--';
+        if (patientGroupeDisplay) patientGroupeDisplay.textContent = currentCase.patient.groupeSanguin || '--';
+
 
         const verbatimContainer = document.getElementById('patient-verbatim-container');
         if (verbatimContainer) {

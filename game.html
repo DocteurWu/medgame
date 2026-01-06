@@ -78,8 +78,6 @@
 
             <!-- SCOPE / VITAL MONITOR (Persistent) -->
             <div class="sidebar-scope" id="sidebar-scope">
-                <!-- The JS will mount the VitalSignsMonitor here -->
-                <!-- Hidden elements for JS to populate, used by the monitor -->
                 <div id="vitals-data" style="display: none;">
                     <span id="tension"></span>
                     <span id="pouls"></span>
@@ -103,7 +101,7 @@
                     <span class="label">MOTIF D'ADMISSION</span>
                     <h2 id="motif-hospitalisation">Chargement...</h2>
                 </div>
-                <!-- Compact Vitals for Mobile -->
+                <!-- Compact Vitals pour Mobile -->
                 <div id="compact-vitals" class="compact-vitals" onclick="window.toggleMobileMonitor()">
                     <div class="vitals-summary">
                         <span class="vitals-item"><i class="fas fa-heartbeat"></i> <span
@@ -126,15 +124,23 @@
                     <h2 class="section-header">1. INTERROGATOIRE</h2>
 
                     <div id="patient-verbatim-container" class="verbatim-container">
-                        <!-- Populated by JS -->
+
                     </div>
 
                     <div class="grid-layout">
-                        <!-- Histoire de la Maladie -->
-                        <div class="medical-card" id="histoire-maladie">
-                            <h3 class="card-title">Histoire de la Maladie</h3>
+                        <!-- Terrain & Antécédents -->
+                        <div class="medical-card" id="antecedents">
+                            <h3 class="card-title">Terrain & Antécédents</h3>
                             <div class="card-content">
-                                <!-- Mode de vie moved here -->
+                                <div class="sub-section" id="patient-details">
+                                    <h4>Détails Patient</h4>
+                                    <p><span class="label">Taille :</span> <span id="patient-taille-display"></span></p>
+                                    <p><span class="label">Poids :</span> <span id="patient-poids-display"></span></p>
+                                    <p><span class="label">Groupe sanguin :</span> <span
+                                            id="patient-groupe-display"></span>
+                                    </p>
+                                </div>
+
                                 <div class="sub-section" id="mode-de-vie">
                                     <h4>Mode de vie</h4>
                                     <ul>
@@ -146,21 +152,6 @@
                                     </ul>
                                 </div>
 
-                                <p><span class="label">Début :</span> <span id="debut-symptomes"></span></p>
-                                <p><span class="label">Contexte :</span> <span id="facteurs-declenchants"></span></p>
-                                <p><span class="label">Évolution :</span> <span id="evolution"></span></p>
-                                <p><span class="label">Signes associés :</span> <span id="symptomes-associes"></span>
-                                </p>
-                                <div class="remarques-box">
-                                    <i class="fas fa-pen"></i> <span id="remarques"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Terrain & Antécédents -->
-                        <div class="medical-card" id="antecedents">
-                            <h3 class="card-title">Terrain & Antécédents</h3>
-                            <div class="card-content">
                                 <div class="sub-section">
                                     <h4>Antécédents</h4>
                                     <div id="antecedents-medicaux"></div>
@@ -172,6 +163,22 @@
                                     <h4>Allergies / Traitements</h4>
                                     <p><span class="label">Allergies:</span> <span id="allergies-liste"></span></p>
                                     <p><span class="label">Tt habituel:</span> <span id="traitements-liste"></span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Histoire de la Maladie -->
+                        <div class="medical-card" id="histoire-maladie">
+                            <h3 class="card-title">Histoire de la Maladie</h3>
+                            <div class="card-content">
+                                <p><span class="label">Début :</span> <span id="debut-symptomes"></span></p>
+                                <p><span class="label">Contexte :</span> <span id="facteurs-declenchants"></span></p>
+                                <p><span class="label">Évolution :</span> <span id="evolution"></span></p>
+                                <p><span class="label">Douleur :</span> <span id="description-douleur"></span></p>
+                                <p><span class="label">Signes associés :</span> <span id="symptomes-associes"></span>
+                                </p>
+                                <div class="remarques-box">
+                                    <i class="fas fa-pen"></i> <span id="remarques"></span>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +203,7 @@
 
                     <div class="grid-layout">
                         <div class="medical-card full-width" id="examen-clinique">
-                            <!-- Note: Vitals are in sidebar. This contains only body exams. -->
+                            <!-- Note: Vitals sont dans la sidebar. This contains only body exams. -->
                             <h3 class="card-title">Examen par appareil</h3>
 
                             <div class="exam-details-grid">
@@ -231,7 +238,6 @@
                                     <option value="">Sélectionnez un diagnostic</option>
                                 </select>
                             </div>
-                            <!-- REMOVED validate-diagnostic button as requested -->
                             <p id="score" class="score-display"></p>
                             <p id="feedback" class="feedback-display"></p>
                             <p id="correctDiagnostic" class="hidden"></p>
@@ -240,7 +246,6 @@
                         <div class="medical-card">
                             <h3 class="card-title">Prescription & Prise en charge</h3>
                             <div id="availableTreatments" class="treatments-grid">
-                                <!-- Populated by JS -->
                             </div>
 
                             <div class="action-area">

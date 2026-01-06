@@ -1,0 +1,175 @@
+{
+  "id": "neuro_polyneuropathie_jacques",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "LANTIER Jacques",
+    "prenom": "",
+    "age": 62,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "77 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Perte de sensibilité des pieds",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "20 PA",
+        "duree": "40 ans"
+      },
+      "alcool": {
+        "quantite": "1 verre de vin par jour"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Trop gras"
+      },
+      "emploi": {
+        "profession": "Mécanicien de locomotive à la retraite",
+        "stress": "Léger"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Diabète de type 2 (depuis 15 ans)",
+          "traitement": "Metformine et insuline"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Metformine",
+        "dose": "500 mg",
+        "frequence": "2/j"
+      },
+      {
+        "nom": "Insuline",
+        "dose": "38 unités",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Premiers signes il y a 2 ans",
+      "evolution": "Lente et progressive",
+      "facteursDeclenchants": "/",
+      "descriptionDouleur": "paresthésie des pieds, sensation de marcher sur du coton, brûlures nocturnes, difficulté à la marche dans l'obscurité",
+      "symptomesAssocies": [
+        "/"
+      ],
+      "remarques": ""
+    },
+    "verbatim": "Je viens vous voir car depuis quelques temps je ne sens plus mes pieds."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Léger crépitants",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Neurologique": {
+      "sensibilité": "Hypoesthésie en chaussette, Perte de la sensibilité vibratoire en distale, Proprioception diminuée aux orteils",
+      "motricité": "Force conservée en proximal, Discrète faiblesse distale des releveurs du pied",
+      "réflexes": "ROT achilléens abolis, ROT rotuliens diminués",
+      "autres": "Pas de signe pyramidal, Pas de déficit focal"
+    }
+  },
+  "availableExams": [
+    "IRM médullaire",
+    "Ponction lombaire",
+    "ENMG",
+    "Scanner cérébral"
+  ],
+  "examResults": {
+    "IRM médullaire": "Non indiquée",
+    "Ponction lombaire": "Non indiquée",
+    "ENMG": "Diminution des amplitudes des potentiels sensitifs, Vitesses de conduction peu ralenties",
+    "Scanner cérébral": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Myélopathie",
+    "Syndrome de Guillain-Barré",
+    "Radiculopathie lombaire",
+    "Polyneuropathie périphérique"
+  ],
+  "correctDiagnostic": "Polyneuropathie périphérique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Corticoïdes",
+    "Traitement symptomatique des douleurs neuropathiques",
+    "Immunoglobulines",
+    "Neurochirurgie",
+    "Optimisation équilibre glycémique"
+  ],
+  "correctTreatments": [
+    "Traitement symptomatique des douleurs neuropathiques",
+    "Optimisation équilibre glycémique"
+  ],
+  "correction": "# Polyneuropathie périphérique sensitive prédominanteSensitive prédominante, longueur dépendante et d'origine diabétique## Points Importants- atteinte distale, symétrique et synchrone- Débute par les membres inférieurs- Le diabète est l'une des plus grandes causes",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "A quel déficit principal s'attend-on sur l'ENMG ?",
+        "options": [
+          "Sensitif",
+          "Moteur",
+          "Sensitif et moteur"
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "Erreur...",
+      "id": "lock_1767405008945",
+      "target_fields": [
+        "examResults.ENMG"
+      ]
+    }
+  ],
+  "postGameQuestions": [
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Quelle est l'autre grande cause (autre que métabolique) de polyneuropathie ?",
+        "expected_keywords": [
+          "toxique"
+        ]
+      },
+      "feedback_error": "L'alcool, les médicaments..."
+    }
+  ]
+}
