@@ -10,6 +10,21 @@ const NurseIntro = (() => {
     let autoDismissTimer = null;
     const AUTO_DISMISS_DURATION = 6000; // 6 seconds
 
+    const NURSE_PHRASES = [
+        `Bonjour Docteur ! Je vous présente {patient}, {age} ans. {pronoun} a été {admission} pour : {motif}.`,
+        `Docteur, votre nouveau patient : {patient}, {age} ans, {admission} pour {motif}.`,
+        `Bonjour ! {patient}, {age} ans, vient d'arriver. Motif : {motif}.`,
+        `Docteur, on a besoin de vous ! {patient}, {age} ans, {admission} pour {motif}.`,
+        `Vite Docteur ! {patient}, {age} ans, se présente pour {motif}.`,
+        `Ah Docteur, vous tombez bien ! Voici {patient}, {age} ans. {pronoun} consulte pour {motif}.`,
+        `Docteur ! J'ai {patient} pour vous, {age} ans, {admission} pour {motif}.`,
+        `Nouveau cas : {patient}, {age} ans. Motif d'admission : {motif}.`,
+        `{patient}, {age} ans, attend votre diagnostic. Motif : {motif}.`,
+        `Docteur, je vous amène {patient}, {age} ans. {pronoun} se plaint de {motif}.`,
+        `On vous attendait ! {patient}, {age} ans, est là pour {motif}.`,
+        `Bonjour Docteur ! {patient}, {age} ans, a été {admission} ce matin pour {motif}.`
+    ]
+
     /**
      * Injects the nurse overlay HTML into the DOM if not present.
      */
@@ -128,7 +143,13 @@ const NurseIntro = (() => {
         const pronoun = (patient.sexe && patient.sexe.toLowerCase().startsWith('f')) ? 'Elle' : 'Il';
         const admission = (patient.sexe && patient.sexe.toLowerCase().startsWith('f')) ? 'admise' : 'admis';
 
-        const text = `Bonjour Docteur ! Je vous présente <span class="patient-name">${patient.prenom} ${patient.nom}</span>, ${patient.age} ans. ${pronoun} a été ${admission} pour : <span class="motif">${motif}</span>.`;
+        const randomPhrase = NURSE_PHRASES[Math.floor(Math.random() * NURSE_PHRASES.length)];
+        const text = randomPhrase
+            .replace('{patient}', `<span class="patient-name">${patient.prenom} ${patient.nom}</span>`)
+            .replace('{age}', patient.age)
+            .replace('{pronoun}', pronoun)
+            .replace('{admission}', admission)
+            .replace('{motif}', `<span class="motif">${motif}</span>`);
 
         bubbleTextEl.innerHTML = text;
 
