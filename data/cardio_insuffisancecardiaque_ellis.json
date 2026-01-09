@@ -124,7 +124,7 @@
   "correctTreatments": [
     "Diurétique"
   ],
-  "correction": "&lt;h3&gt;Insuffisance cardiaque du sujet âgé&lt;/h3&gt;&lt;p&gt;Terrain fragile et dysfonction diastolique.&lt;/p&gt;\n                                ",
+  "correction": "&lt;h3&gt;Insuffisance cardiaque du sujet âgé&lt;/h3&gt;&lt;p&gt;Terrain fragile et dysfonction diastolique.&lt;/p&gt;",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

@@ -12,24 +12,52 @@
   "interrogatoire": {
     "motifHospitalisation": "Fatigue extrême et perte de poids rapide",
     "modeDeVie": {
-      "activitePhysique": { "description": "Faible, léthargie marquée" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "0" },
-      "alimentation": { "regime": "Insuffisant", "particularites": "Apports très limités, fièvre récente" },
-      "emploi": { "profession": "Aucun (enfant)", "stress": "Inconnu" }
+      "activitePhysique": {
+        "description": "Faible, léthargie marquée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Insuffisant",
+        "particularites": "Apports très limités, fièvre récente"
+      },
+      "emploi": {
+        "profession": "Aucun (enfant)",
+        "stress": "Inconnu"
+      }
     },
     "antecedents": {
-      "medicaux": ["Infection respiratoire récente"],
+      "medicaux": [
+        "Infection respiratoire récente"
+      ],
       "chirurgicaux": [],
-      "familiaux": [{ "lien": "Grand-mère", "pathologie": "Malnutrition", "age": "60" }]
+      "familiaux": [
+        {
+          "lien": "Grand-mère",
+          "pathologie": "Malnutrition",
+          "age": "60"
+        }
+      ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Quelques semaines",
       "evolution": "Rapide",
       "facteursDeclenchants": "Épisode fébrile prolongé",
-      "symptomesAssocies": ["Fièvre", "Diarrhée", "Perte musculaire marquée"],
+      "symptomesAssocies": [
+        "Fièvre",
+        "Diarrhée",
+        "Perte musculaire marquée"
+      ],
       "remarques": "Enfant vivant dans un contexte de ressources limitées."
     }
   },
@@ -42,10 +70,18 @@
       "frequenceRespiratoire": "24/min"
     },
     "aspectGeneral": "Cachectique, hypotrophie musculaire, faible graisse sous-cutanée",
-    "examenCardiovasculaire": { "auscultation": "Tachycardie légère" },
-    "examenPulmonaire": { "auscultation": "Râles fins à droite" },
-    "examenAbdominal": { "palpation": "Périmètre brachial 12 cm, abdomen souple" },
-    "examenNeurologique": { "conscience": "Léthargique mais orienté" }
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie légère"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles fins à droite"
+    },
+    "examenAbdominal": {
+      "palpation": "Périmètre brachial 12 cm, abdomen souple"
+    },
+    "examenNeurologique": {
+      "conscience": "Léthargique mais orienté"
+    }
   },
   "availableExams": [
     "Bilan sanguin complet",
@@ -99,7 +135,10 @@
     "Dénutrition marasmique": "Incorrect. La dénutrition marasmique est chronique, sans facteur aigu comme ici.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Renutrition progressive",
     "Antibiothérapie",
@@ -113,5 +152,5 @@
     "Antibiothérapie",
     "Supplémentation vitaminique"
   ],
-  "correction": "<h3>Dénutrition hypercatabolique</h3>\n<p>Perte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Renutrition prudente et progressive</li><li>Traitement de la cause (antibiothérapie)</li><li>Supplémentation micro‑nutritionnelle, surveillance clinique et biologique</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Renutrition trop rapide (risque de syndrome de renutrition inappropriée)</li><li>Oublier de traiter l’infection et de surveiller électrolytes</li></ul>"
+  "correction": "# Dénutrition hypercatabolique\n\nPerte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.\n\n## Bonnes pratiques\n\n- Renutrition prudente et progressive\n- Traitement de la cause (antibiothérapie)\n- Supplémentation micro‑nutritionnelle, surveillance clinique et biologique\n\n## Erreurs à éviter\n\n- Renutrition trop rapide (risque de syndrome de renutrition inappropriée)\n- Oublier de traiter l’infection et de surveiller électrolytes"
 }

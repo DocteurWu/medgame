@@ -134,7 +134,7 @@
     "Traitement symptomatique des douleurs neuropathiques",
     "Optimisation équilibre glycémique"
   ],
-  "correction": "# Polyneuropathie périphérique sensitive prédominanteSensitive prédominante, longueur dépendante et d'origine diabétique## Points Importants- atteinte distale, symétrique et synchrone- Débute par les membres inférieurs- Le diabète est l'une des plus grandes causes",
+  "correction": "# Polyneuropathie périphérique sensitive prédominanteSensitive prédominante, longueur dépendante et d'origine diabétique\n\n## Points Importants\n- atteinte distale, symétrique et synchrone\n- Débute par les membres inférieurs\n- Le diabète est l'une des plus grandes causes",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

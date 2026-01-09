@@ -13,26 +13,59 @@
   "interrogatoire": {
     "motifHospitalisation": "Fièvre et douleur lombaire droite intense",
     "modeDeVie": {
-      "activitePhysique": { "description": "Sédentaire" },
-      "tabac": { "quantite": "10 cigarettes/j" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Employé de bureau", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/j"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Employé de bureau",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Calculs rénaux récidivants", "traitement": "Antalgiques lors des crises" }
+        {
+          "type": "Calculs rénaux récidivants",
+          "traitement": "Antalgiques lors des crises"
+        }
       ],
-      "chirurgicaux": [{ "intervention": "Aucune", "date": "Jamais" }],
-      "familiaux": [{ "lien": "Mère", "pathologie": "Lithiase rénale", "age": "57" }]
+      "chirurgicaux": [
+        {
+          "intervention": "Aucune",
+          "date": "Jamais"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Lithiase rénale",
+          "age": "57"
+        }
+      ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "24 heures",
       "evolution": "Douleur lombaire droite fébrile, aggravation progressive",
       "facteursDeclenchants": "Antécédents de lithiase — suspicion de nouveau calcul",
-      "symptomesAssocies": ["Frissons", "Nausées", "Mictions douloureuses"],
+      "symptomesAssocies": [
+        "Frissons",
+        "Nausées",
+        "Mictions douloureuses"
+      ],
       "remarques": "Température élevée non soulagée par paracétamol"
     }
   },
@@ -45,10 +78,18 @@
       "frequenceRespiratoire": "22/min"
     },
     "aspectGeneral": "Patient fébrile, pâle, algique",
-    "examenCardiovasculaire": { "auscultation": "Tachycardie régulière" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Douleur FID et angle costo-vertébral droit très sensible" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie régulière"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Douleur FID et angle costo-vertébral droit très sensible"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
     "NFS",
@@ -89,7 +130,10 @@
     "Pyélonéphrite obstructive": "Diagnostic correct ! Urgence urologique.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Antibiothérapie IV",
     "Drainage par sonde JJ",
@@ -102,5 +146,5 @@
     "Drainage par sonde JJ",
     "Néphrostomie"
   ],
-  "correction": "<h3>Pyélonéphrite obstructive</h3>\n<p>Le patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile</li><li>Réaliser un scanner injecté en urgence</li><li>Initier une antibiothérapie IV à large spectre dès l'admission</li><li>Lever l'obstacle rapidement : sonde JJ ou néphrostomie</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Traiter comme une pyélonéphrite simple sans imagerie</li><li>Retarder le drainage en présence de sepsis</li><li>Oublier de surveiller la fonction rénale</li></ul>"
+  "correction": "# Pyélonéphrite obstructive\n\nLe patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile\n- Réaliser un scanner injecté en urgence\n- Initier une antibiothérapie IV à large spectre dès l'admission\n- Lever l'obstacle rapidement : sonde JJ ou néphrostomie\n\n## Erreurs à éviter\n\n- Traiter comme une pyélonéphrite simple sans imagerie\n- Retarder le drainage en présence de sepsis\n- Oublier de surveiller la fonction rénale"
 }

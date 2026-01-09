@@ -122,7 +122,7 @@
     "Diurétiques",
     "IEC"
   ],
-  "correction": "Cardiomyopathie alcoolique qui cause une insuffisance cardiaque :&nbsp;<br>&nbsp; &nbsp;-&gt; IC aiguë donc pas de Bêta-bloquants<br>&nbsp; &nbsp;-&gt; FE diminuée donc diurétiques pour réduire OMI et IEC pour traiter l'insuffisance cardiaque<br>Doit s'accompagner de règles hygiéno-diététiques.&nbsp;&nbsp;<br>",
+  "correction": "Cardiomyopathie alcoolique qui cause une insuffisance cardiaque :    -> IC aiguë donc pas de Bêta-bloquants   -> FE diminuée donc diurétiques pour réduire OMI et IEC pour traiter l'insuffisance cardiaqueDoit s'accompagner de règles hygiéno-diététiques.",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

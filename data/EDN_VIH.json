@@ -12,24 +12,48 @@
   "interrogatoire": {
     "motifHospitalisation": "Fatigue persistante et perte de poids inexpliquée",
     "modeDeVie": {
-      "activitePhysique": { "description": "Modérée, randonnées occasionnelles" },
-      "tabac": { "quantite": "5 cigarettes/jour", "duree": "10 ans" },
-      "alcool": { "quantite": "Social" },
-      "alimentation": { "regime": "Normal", "particularites": "Perte d’appétit récente" },
-      "emploi": { "profession": "Serveur", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Modérée, randonnées occasionnelles"
+      },
+      "tabac": {
+        "quantite": "5 cigarettes/jour",
+        "duree": "10 ans"
+      },
+      "alcool": {
+        "quantite": "Social"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Perte d’appétit récente"
+      },
+      "emploi": {
+        "profession": "Serveur",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
-      "medicaux": ["Épisode de fièvre prolongée il y a 3 mois"],
+      "medicaux": [
+        "Épisode de fièvre prolongée il y a 3 mois"
+      ],
       "chirurgicaux": [],
       "familiaux": []
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "2 mois",
       "evolution": "Progressive",
       "facteursDeclenchants": "Inconnus",
-      "symptomesAssocies": ["Fatigue", "Perte de poids (6 kg)", "Fièvre intermittente", "Sueurs nocturnes", "Ganglions palpables"],
+      "symptomesAssocies": [
+        "Fatigue",
+        "Perte de poids (6 kg)",
+        "Fièvre intermittente",
+        "Sueurs nocturnes",
+        "Ganglions palpables"
+      ],
       "remarques": "Patient rapporte une grippe mal soignée récemment."
     }
   },
@@ -42,11 +66,21 @@
       "frequenceRespiratoire": "18/min"
     },
     "aspectGeneral": "Amaigri, pâleur, fatigue visible",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normale, pas de masse" },
-    "examenNeurologique": { "conscience": "Normale" },
-    "examenGanglionnaire": { "observation": "Adénopathies cervicales et axillaires" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale, pas de masse"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenGanglionnaire": {
+      "observation": "Adénopathies cervicales et axillaires"
+    }
   },
   "availableExams": [
     "Bilan sanguin complet",
@@ -100,7 +134,10 @@
     "Lymphome": "Incorrect. Pas de masse ou anomalie au scanner.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Traitement antirétroviral (TARV)",
     "Antituberculeux",
@@ -112,5 +149,5 @@
   "correctTreatments": [
     "Traitement antirétroviral (TARV)"
   ],
-  "correction": "<h3>Infection par le VIH</h3>\n<p>Symptômes généraux, perte de poids, adénopathies, sérologie positive.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer par tests de confirmation, bilan initial (CD4, charge virale)</li><li>Initier un TARV adapté et accompagner l’adhérence</li><li>Vaccinations et dépistage des co‑infections</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Retarder la mise sous TARV sans raison valable</li><li>Oublier le suivi régulier et l’éducation thérapeutique</li></ul>"
+  "correction": "# Infection par le VIH\n\nSymptômes généraux, perte de poids, adénopathies, sérologie positive.\n\n## Bonnes pratiques\n\n- Confirmer par tests de confirmation, bilan initial (CD4, charge virale)\n- Initier un TARV adapté et accompagner l’adhérence\n- Vaccinations et dépistage des co‑infections\n\n## Erreurs à éviter\n\n- Retarder la mise sous TARV sans raison valable\n- Oublier le suivi régulier et l’éducation thérapeutique"
 }

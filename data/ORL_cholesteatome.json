@@ -12,25 +12,50 @@
   "interrogatoire": {
     "motifHospitalisation": "Vertiges rotatoires intenses et otorrhée chronique droite",
     "modeDeVie": {
-      "activitePhysique": { "description": "Travail debout au bar, marche quotidienne" },
-      "tabac": { "quantite": "10 cigarettes/jour" },
-      "alcool": { "quantite": "Consommation régulière (professionnelle)" },
-      "alimentation": { "regime": "Standard", "particularites": "Repas irréguliers" },
-      "emploi": { "profession": "Barman", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Travail debout au bar, marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour"
+      },
+      "alcool": {
+        "quantite": "Consommation régulière (professionnelle)"
+      },
+      "alimentation": {
+        "regime": "Standard",
+        "particularites": "Repas irréguliers"
+      },
+      "emploi": {
+        "profession": "Barman",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Otites moyennes chroniques", "traitement": "Antibiotiques intermittents" }
+        {
+          "type": "Otites moyennes chroniques",
+          "traitement": "Antibiotiques intermittents"
+        }
       ],
       "chirurgicaux": [
-        { "intervention": "Appendicectomie", "date": "À 15 ans" }
+        {
+          "intervention": "Appendicectomie",
+          "date": "À 15 ans"
+        }
       ],
       "familiaux": [
-        { "lien": "Père", "pathologie": "Surdité progressive", "age": "50" }
+        {
+          "lien": "Père",
+          "pathologie": "Surdité progressive",
+          "age": "50"
+        }
       ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Plusieurs mois",
       "evolution": "Aggravation progressive avec épisodes vertigineux depuis 1 semaine",
@@ -98,7 +123,10 @@
     "Cholestéatome compliqué": "Correct ! L’otorrhée fétide, la perforation marginale et les squames blanches orientent fortement vers un cholestéatome. Le nystagmus périphérique confirme un vertige d’origine labyrinthique.",
     "default": "Ce n’est pas le bon diagnostic."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Antibiotiques locaux",
     "Aspiration des sécrétions + nettoyage sous microscope",
@@ -113,5 +141,5 @@
     "Chirurgie d’exérèse du cholestéatome",
     "Hospitalisation ORL"
   ],
-  "correction": "<h3>Cholestéatome compliqué</h3>\n<p>Le cholestéatome est une lésion épidermique invasive du rocher entraînant otorrhée fétide, douleurs, hypoacousie et vertiges lorsque l’oreille interne est atteinte.</p>\n<h4>Points clés</h4>\n<ul><li>Perforation marginale + squames blanches = très évocateur.</li><li>Vertiges périphériques expliqués par l’extension au labyrinthe.</li><li>TDM des rochers indispensable.</li></ul>\n<h4>Prise en charge</h4>\n<ul><li>Nettoyage + antibiotiques locaux en première intention.</li><li>Traitement définitif : exérèse chirurgicale.</li><li>Surveillance audiométrique prolongée.</li></ul>"
+  "correction": "# Cholestéatome compliqué\n\nLe cholestéatome est une lésion épidermique invasive du rocher entraînant otorrhée fétide, douleurs, hypoacousie et vertiges lorsque l’oreille interne est atteinte.\n\n## Points clés\n\n- Perforation marginale + squames blanches = très évocateur.\n- Vertiges périphériques expliqués par l’extension au labyrinthe.\n- TDM des rochers indispensable.\n\n## Prise en charge\n\n- Nettoyage + antibiotiques locaux en première intention.\n- Traitement définitif : exérèse chirurgicale.\n- Surveillance audiométrique prolongée."
 }

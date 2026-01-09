@@ -12,11 +12,24 @@
   "interrogatoire": {
     "motifHospitalisation": "Régurgitations fréquentes après les repas",
     "modeDeVie": {
-      "activitePhysique": { "description": "Marche quotidienne" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Régurgite et remastique volontairement" },
-      "emploi": { "profession": "Étudiante", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Régurgite et remastique volontairement"
+      },
+      "emploi": {
+        "profession": "Étudiante",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
       "medicaux": [],
@@ -24,12 +37,17 @@
       "familiaux": []
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Un an",
       "evolution": "Stable",
       "facteursDeclenchants": "Après les repas",
-      "symptomesAssocies": ["Sensation de plaisir lors des régurgitations"],
+      "symptomesAssocies": [
+        "Sensation de plaisir lors des régurgitations"
+      ],
       "remarques": "Cache ce comportement à son entourage."
     }
   },
@@ -42,10 +60,18 @@
       "frequenceRespiratoire": "16/min"
     },
     "aspectGeneral": "Aspect normal, discrète pâleur",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normale" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
     "Bilan sanguin complet",
@@ -76,15 +102,31 @@
     "Sérologie VIH": "Négative",
     "Glycémie (contrôle)": "0.95 g/L"
   },
-  "possibleDiagnostics": ["ARFID", "Mérycisme", "Reflux gastro-œsophagien", "Trouble anxieux", "Sténose pylorique"],
+  "possibleDiagnostics": [
+    "ARFID",
+    "Mérycisme",
+    "Reflux gastro-œsophagien",
+    "Trouble anxieux",
+    "Sténose pylorique"
+  ],
   "correctDiagnostic": "Mérycisme",
   "feedback": {
     "Mérycisme": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Thérapie comportementale", "Gestion du stress", "Antiacides", "Suivi psychologique"],
-  "correctTreatments": ["Thérapie comportementale", "Suivi psychologique"]
-,
-  "correction": "<h3>Mérycisme</h3>\n<p>Régurgitations volontaires post‑prandiales avec remastication, sans lésion organique.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapies comportementales ciblées</li><li>Évaluation et suivi psychologique</li><li>Éducation nutritionnelle</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec reflux/obstacle digestif sans preuve</li><li>Ignorer la composante comportementale</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Thérapie comportementale",
+    "Gestion du stress",
+    "Antiacides",
+    "Suivi psychologique"
+  ],
+  "correctTreatments": [
+    "Thérapie comportementale",
+    "Suivi psychologique"
+  ],
+  "correction": "# Mérycisme\n\nRégurgitations volontaires post‑prandiales avec remastication, sans lésion organique.\n\n## Bonnes pratiques\n\n- Thérapies comportementales ciblées\n- Évaluation et suivi psychologique\n- Éducation nutritionnelle\n\n## Erreurs à éviter\n\n- Confondre avec reflux/obstacle digestif sans preuve\n- Ignorer la composante comportementale"
 }

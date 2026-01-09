@@ -12,24 +12,44 @@
   "interrogatoire": {
     "motifHospitalisation": "Ingestion répétée de substances non comestibles",
     "modeDeVie": {
-      "activitePhysique": { "description": "Activité limitée, jeux calmes" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "0" },
-      "alimentation": { "regime": "Normal", "particularites": "Consomme terre et papier" },
-      "emploi": { "profession": "Écolier", "stress": "Faible" }
+      "activitePhysique": {
+        "description": "Activité limitée, jeux calmes"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Consomme terre et papier"
+      },
+      "emploi": {
+        "profession": "Écolier",
+        "stress": "Faible"
+      }
     },
     "antecedents": {
-      "medicaux": ["Trouble du spectre autistique"],
+      "medicaux": [
+        "Trouble du spectre autistique"
+      ],
       "chirurgicaux": [],
       "familiaux": []
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Plusieurs mois",
       "evolution": "Stable",
       "facteursDeclenchants": "Inconnus",
-      "symptomesAssocies": ["Douleurs abdominales occasionnelles"],
+      "symptomesAssocies": [
+        "Douleurs abdominales occasionnelles"
+      ],
       "remarques": "Comportement observé surtout en période de stress ou d'ennui."
     }
   },
@@ -42,10 +62,18 @@
       "frequenceRespiratoire": "18/min"
     },
     "aspectGeneral": "Enfant mince, comportement agité",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Légère douleur diffuse" },
-    "examenNeurologique": { "conscience": "Normale, léger retard de développement" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Légère douleur diffuse"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale, léger retard de développement"
+    }
   },
   "availableExams": [
     "Bilan sanguin complet",
@@ -76,15 +104,31 @@
     "Sérologie hépatite": "Négative",
     "Glycémie (contrôle)": "0.9 g/L"
   },
-  "possibleDiagnostics": ["PICA", "Carence en fer", "Trouble obsessionnel compulsif", "Intoxication"],
+  "possibleDiagnostics": [
+    "PICA",
+    "Carence en fer",
+    "Trouble obsessionnel compulsif",
+    "Intoxication"
+  ],
   "correctDiagnostic": "PICA",
   "feedback": {
     "PICA": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Thérapie comportementale", "Supplémentation en fer", "Surveillance parentale", "Antidépresseurs"],
-  "correctTreatments": ["Thérapie comportementale", "Supplémentation en fer", "Surveillance parentale"]
-,
-  "correction": "<h3>PICA</h3>\n<p>Ingestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapies comportementales et aménagements environnementaux</li><li>Corriger les carences (fer)</li><li>Surveillance parentale et prévention des complications</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Minimiser les risques digestifs/toxiques</li><li>Ignorer le dépistage et la correction des carences</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Thérapie comportementale",
+    "Supplémentation en fer",
+    "Surveillance parentale",
+    "Antidépresseurs"
+  ],
+  "correctTreatments": [
+    "Thérapie comportementale",
+    "Supplémentation en fer",
+    "Surveillance parentale"
+  ],
+  "correction": "# PICA\n\nIngestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.\n\n## Bonnes pratiques\n\n- Thérapies comportementales et aménagements environnementaux\n- Corriger les carences (fer)\n- Surveillance parentale et prévention des complications\n\n## Erreurs à éviter\n\n- Minimiser les risques digestifs/toxiques\n- Ignorer le dépistage et la correction des carences"
 }

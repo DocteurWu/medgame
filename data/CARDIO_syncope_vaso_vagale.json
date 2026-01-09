@@ -13,11 +13,24 @@
   "interrogatoire": {
     "motifHospitalisation": "Malaise",
     "modeDeVie": {
-      "activitePhysique": { "description": "Modérée" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Etudiante", "stress": "Modérée" }
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Etudiante",
+        "stress": "Modérée"
+      }
     },
     "antecedents": {
       "medicaux": [],
@@ -25,12 +38,19 @@
       "familiaux": []
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Quelques minutes avant le malaise",
       "evolution": "Prodrome puis brève perte de connaissance",
       "facteursDeclenchants": "Station debout prolongée dans une salle chaud et bondée",
-      "symptomesAssocies": ["Sueurs", "Vision floue", "Vertiges"],
+      "symptomesAssocies": [
+        "Sueurs",
+        "Vision floue",
+        "Vertiges"
+      ],
       "remarques": "Récupération rapide et complète"
     }
   },
@@ -43,17 +63,40 @@
       "frequenceRespiratoire": "14/min"
     },
     "aspectGeneral": "Normal",
-    "examenCardiovasculaire": { "auscultation": "Normal",  "inspection": "Normal"},
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normal" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normal"
+    }
   },
-  "availableExams": ["ECG", "Echographie", "Radio thorax", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner"],
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner"
+  ],
   "examResults": {
     "ECG": "Normal",
     "Echographie": "RAS",
     "glycemie": "0,85 g/L",
-    "Radio thorax": { "text": "Normal", "image": "assets/images/MODIF_LE_NOM_ICI.jpg" },
+    "Radio thorax": {
+      "text": "Normal",
+      "image": "assets/images/MODIF_LE_NOM_ICI.jpg"
+    },
     "Bilan sanguin": "RAS",
     "Test d'effort": "Non réalisé",
     "Holter ECG": "RAS",
@@ -62,14 +105,32 @@
     "Scanner cardiaque": "RAS",
     "Angioscanner": "RAS"
   },
-    "possibleDiagnostics": ["Syncope vasovagale", "Hypotension orthostatique", "Trouble du rythme", "Epilepsie"],
+  "possibleDiagnostics": [
+    "Syncope vasovagale",
+    "Hypotension orthostatique",
+    "Trouble du rythme",
+    "Epilepsie"
+  ],
   "correctDiagnostic": "Syncope vasovagale",
   "feedback": {
     "Syncope vasovagale": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Hydratation", "Reconnaissance des prodromes", "Manœuvres de contre-pression", "Bêta-bloquants", "Pacemaker"],
-  "correctTreatments": ["Hydratation", "Reconnaissance des prodromes", "Manœuvres de contre-pression"],
-  "correction": "<h3>Syncope vasovagale</h3><p>Prodromes + déclenchement en station debout prolongée sont typiques.</p><h4>Bonnes pratiques</h4>\n<ul><li>Rassurer</li><li>Hydratation</li><li>Manœuvres de contre-pression (contracter jambes ou bras)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Examens inutiles si tableau typique</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Hydratation",
+    "Reconnaissance des prodromes",
+    "Manœuvres de contre-pression",
+    "Bêta-bloquants",
+    "Pacemaker"
+  ],
+  "correctTreatments": [
+    "Hydratation",
+    "Reconnaissance des prodromes",
+    "Manœuvres de contre-pression"
+  ],
+  "correction": "# Syncope vasovagale\n\nProdromes + déclenchement en station debout prolongée sont typiques.\n\n## Bonnes pratiques\n\n- Rassurer\n- Hydratation\n- Manœuvres de contre-pression (contracter jambes ou bras)\n\n## Erreurs à éviter\n\n- Examens inutiles si tableau typique"
 }

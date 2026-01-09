@@ -14,68 +14,109 @@
   "interrogatoire": {
     "motifHospitalisation": "Bilan de santé suite à fatigue persistante et suspicion de diabète de type 2",
     "modeDeVie": {
-      "activitePhysique": { 
-        "description": "Sédentaire, marche occasionnelle (10-15 min par semaine)", 
-        "frequence": "Rare" 
+      "activitePhysique": {
+        "description": "Sédentaire, marche occasionnelle (10-15 min par semaine)",
+        "frequence": "Rare"
       },
-      "tabac": { 
-        "quantite": "0 paquet-année", 
-        "duree": "0 ans", 
-        "statut": "Non-fumeuse" 
+      "tabac": {
+        "quantite": "0 paquet-année",
+        "duree": "0 ans",
+        "statut": "Non-fumeuse"
       },
-      "alcool": { 
-        "quantite": "Modéré", 
-        "details": "1-2 verres de vin par semaine" 
+      "alcool": {
+        "quantite": "Modéré",
+        "details": "1-2 verres de vin par semaine"
       },
-      "alimentation": { 
-        "regime": "Déséquilibré", 
-        "particularites": "Consommation excessive de produits sucrés (pâtisseries, sodas) et gras (fritures, charcuterie)", 
-        "frequenceRepas": "3 repas + grignotages fréquents" 
+      "alimentation": {
+        "regime": "Déséquilibré",
+        "particularites": "Consommation excessive de produits sucrés (pâtisseries, sodas) et gras (fritures, charcuterie)",
+        "frequenceRepas": "3 repas + grignotages fréquents"
       },
-      "emploi": { 
-        "profession": "Employée de bureau", 
-        "stress": "Modéré", 
-        "details": "Travail assis 8h/jour, pression liée aux délais" 
+      "emploi": {
+        "profession": "Employée de bureau",
+        "stress": "Modéré",
+        "details": "Travail assis 8h/jour, pression liée aux délais"
       },
-      "sommeil": { 
-        "duree": "6-7h/nuit", 
-        "qualite": "Moyenne, réveils fréquents" 
+      "sommeil": {
+        "duree": "6-7h/nuit",
+        "qualite": "Moyenne, réveils fréquents"
       }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Hypertension artérielle (HTA)", "debut": "2015", "traitement": "Captopril 25 mg 2x/jour" },
-        { "type": "Dyslipidémie", "debut": "2018", "traitement": "Atorvastatine 20 mg le soir" }
+        {
+          "type": "Hypertension artérielle (HTA)",
+          "debut": "2015",
+          "traitement": "Captopril 25 mg 2x/jour"
+        },
+        {
+          "type": "Dyslipidémie",
+          "debut": "2018",
+          "traitement": "Atorvastatine 20 mg le soir"
+        }
       ],
       "chirurgicaux": [
-        { "intervention": "Césarienne", "date": "2003", "indication": "Dystocie" }
+        {
+          "intervention": "Césarienne",
+          "date": "2003",
+          "indication": "Dystocie"
+        }
       ],
       "familiaux": [
-        { "lien": "Mère", "pathologie": "Diabète de type 2", "ageDiagnostic": "50", "ageActuel": "65" },
-        { "lien": "Père", "pathologie": "Infarctus du myocarde", "ageDiagnostic": "60", "ageDeces": "68" },
-        { "lien": "Tante maternelle", "pathologie": "Diabète type 2", "ageDiagnostic": "55", "ageActuel": "72" }
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète de type 2",
+          "ageDiagnostic": "50",
+          "ageActuel": "65"
+        },
+        {
+          "lien": "Père",
+          "pathologie": "Infarctus du myocarde",
+          "ageDiagnostic": "60",
+          "ageDeces": "68"
+        },
+        {
+          "lien": "Tante maternelle",
+          "pathologie": "Diabète type 2",
+          "ageDiagnostic": "55",
+          "ageActuel": "72"
+        }
       ],
       "gyneco-obstetricaux": [
-        { "grossesses": 2, "accouchements": 2, "notes": "Diabète gestationnel suspecté lors de la 2e grossesse" }
+        {
+          "grossesses": 2,
+          "accouchements": 2,
+          "notes": "Diabète gestationnel lors de la 2e grossesse, macrosomie fœtale (4.1 kg)"
+        }
       ]
     },
     "traitements": [
-      { "nom": "Captopril", "dose": "25 mg", "frequence": "2 fois par jour", "indication": "HTA" },
-      { "nom": "Atorvastatine", "dose": "20 mg", "frequence": "1 fois le soir", "indication": "Dyslipidémie" }
+      {
+        "nom": "Captopril",
+        "dose": "25 mg",
+        "frequence": "2 fois par jour",
+        "indication": "HTA"
+      },
+      {
+        "nom": "Atorvastatine",
+        "dose": "20 mg",
+        "frequence": "1 fois le soir",
+        "indication": "Dyslipidémie"
+      }
     ],
-    "allergies": { 
-      "presence": false, 
-      "liste": [], 
-      "notes": "Aucune allergie connue" 
+    "allergies": {
+      "presence": false,
+      "liste": [],
+      "notes": "Aucune allergie connue"
     },
     "histoireMaladie": {
       "debutSymptomes": "Plusieurs mois (estimé 8-12 mois)",
       "evolution": "Progressive",
       "facteursDeclenchants": "Aucun identifié, possible lien avec prise de poids",
       "symptomesAssocies": [
-        "Fatigue chronique", 
-        "Polyurie (réveils nocturnes fréquents pour uriner)", 
-        "Polydipsie (soif accrue)", 
+        "Fatigue chronique",
+        "Polyurie (réveils nocturnes fréquents pour uriner)",
+        "Polydipsie (soif accrue)",
         "Vision floue intermittente",
         "Paresthésies légères aux pieds"
       ],
@@ -90,25 +131,25 @@
       "saturationO2": "96%",
       "frequenceRespiratoire": "16/min"
     },
-    "aspectGeneral": "Surpoids marqué, obésité abdominale, IMC 36.2 kg/m² (obèse)",
-    "examenCardiovasculaire": { 
-      "auscultation": "Normal, pas de souffle", 
-      "poulsPeripheriques": "Présents et symétriques" 
+    "aspectGeneral": "Surpoids marqué, obésité abdominale, IMC 36.2 kg/m² (obésité classe II)",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal, pas de souffle",
+      "poulsPeripheriques": "Présents et symétriques"
     },
-    "examenPulmonaire": { 
-      "auscultation": "Normal, murmure vésiculaire présent bilatéral" 
+    "examenPulmonaire": {
+      "auscultation": "Normal, murmure vésiculaire présent bilatéral"
     },
-    "examenAbdominal": { 
-      "palpation": "Tour de taille 98 cm, adiposité viscérale marquée, pas de douleur", 
-      "foie": "Bord inférieur palpable sous le rebord costal" 
+    "examenAbdominal": {
+      "palpation": "Tour de taille 98 cm, adiposité viscérale marquée, pas de douleur",
+      "foie": "Bord inférieur palpable sous le rebord costal"
     },
-    "examenNeurologique": { 
-      "conscience": "Normale", 
-      "reflexes": "Normaux", 
-      "sensibilite": "Légère diminution tactile distale aux pieds" 
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "reflexes": "Normaux",
+      "sensibilite": "Légère diminution tactile distale aux pieds (monofilament)"
     },
-    "examenDermatologique": { 
-      "observation": "Peau sèche, pas de lésions infectieuses" 
+    "examenDermatologique": {
+      "observation": "Peau sèche, acanthosis nigricans au niveau du cou"
     }
   },
   "availableExams": [
@@ -117,39 +158,39 @@
     "Hémoglobine glyquée (HbA1c)",
     "Bilan lipidique",
     "Mesure du tour de taille",
-    "Test de tolérance au glucose",
+    "Test de tolérance au glucose (HGPO)",
     "ECG",
     "Échographie hépatique",
-    "Fond d’œil",
+    "Fond d'œil",
     "Dosage des anticorps anti-GAD",
     "Corps cétoniques urinaires",
+    "Créatininémie et DFG",
+    "Microalbuminurie",
     "Protéine C-réactive (CRP)",
     "IRM cérébrale",
     "Radiographie pulmonaire",
     "Sérologie VIH",
-    "Scanner thoracique",
-    "Électroencéphalogramme",
-    "Coloscopie"
+    "TSH"
   ],
   "examResults": {
-    "Bilan sanguin complet": "Glycémie 1.8 g/L, créatinine 0.9 mg/dL (normale), transaminases légèrement élevées (ALT 45 U/L, AST 38 U/L)",
-    "Glycémie à jeun": "1.8 g/L (180 mg/dL, hyperglycémie modérée)",
-    "Hémoglobine glyquée (HbA1c)": "8.2% (contrôle glycémique altéré)",
-    "Bilan lipidique": "Cholestérol total 2.5 g/L (250 mg/dL), Triglycérides 2.8 g/L (280 mg/dL), HDL 0.4 g/L (40 mg/dL), LDL 1.5 g/L (150 mg/dL)",
-    "Mesure du tour de taille": "98 cm (> 80 cm, syndrome métabolique)",
-    "Test de tolérance au glucose": "Glycémie à 2h : 2.2 g/L (220 mg/dL, intolérance au glucose)",
-    "ECG": "Rythme sinusal, pas d’anomalie ischémique",
-    "Échographie hépatique": "Stéatose hépatique modérée, pas de lésion focale",
-    "Fond d’œil": "Pas de rétinopathie diabétique détectée",
+    "Bilan sanguin complet": "Glycémie 1.8 g/L, créatinine 0.9 mg/dL (normale), transaminases légèrement élevées (ALAT 45 U/L, ASAT 38 U/L)",
+    "Glycémie à jeun": "1.8 g/L (180 mg/dL) - confirmée sur 2 prélèvements",
+    "Hémoglobine glyquée (HbA1c)": "8.2% (66 mmol/mol) - contrôle glycémique altéré",
+    "Bilan lipidique": "Cholestérol total 2.5 g/L, Triglycérides 2.8 g/L, HDL 0.4 g/L, LDL 1.5 g/L (calculé)",
+    "Mesure du tour de taille": "98 cm (> 80 cm chez la femme = obésité abdominale)",
+    "Test de tolérance au glucose (HGPO)": "Glycémie à 2h : 2.2 g/L (diabète confirmé)",
+    "ECG": "Rythme sinusal, pas d'anomalie ischémique",
+    "Échographie hépatique": "Stéatose hépatique modérée (NAFLD), pas de lésion focale",
+    "Fond d'œil": "Pas de rétinopathie diabétique détectée",
     "Dosage des anticorps anti-GAD": "Négatif",
     "Corps cétoniques urinaires": "Négatif",
-    "Protéine C-réactive (CRP)": "8 mg/L (légère inflammation chronique)",
+    "Créatininémie et DFG": "Créatinine 0.9 mg/dL, DFG > 90 mL/min (fonction rénale normale)",
+    "Microalbuminurie": "Normale (< 30 mg/24h)",
+    "Protéine C-réactive (CRP)": "8 mg/L (inflammation chronique de bas grade)",
     "IRM cérébrale": "Normale",
     "Radiographie pulmonaire": "Normale",
     "Sérologie VIH": "Négative",
-    "Scanner thoracique": "Normale",
-    "Électroencéphalogramme": "Normale",
-    "Coloscopie": "Normale"
+    "TSH": "Normale"
   },
   "possibleDiagnostics": [
     "Diabète de type 2",
@@ -161,32 +202,34 @@
   ],
   "correctDiagnostic": "Diabète de type 2",
   "feedback": {
-    "Diabète de type 2": "Diagnostic correct ! Patient > 45 ans, obésité abdominale (tour de taille > 80 cm), syndrome métabolique, antécédents familiaux, hyperglycémie modérée.",
-    "Diabète de type 1": "Incorrect. Pas d’anticorps ni de cétose, âge et surpoids incompatibles.",
-    "Diabète monogénique (MODY)": "Incorrect. Présence de surpoids et syndrome métabolique, pas de début précoce.",
-    "Pré-diabète": "Incorrect. Glycémie et HbA1c dépassent les seuils du pré-diabète.",
-    "default": "Diagnostic incorrect."
+    "Diabète de type 2": "Diagnostic correct ! Critères réunis : âge > 45 ans, obésité abdominale (tour de taille > 80 cm), syndrome métabolique complet, antécédents familiaux de DT2, diabète gestationnel, glycémie à jeun ≥ 1.26 g/L, HbA1c ≥ 6.5%, anticorps anti-GAD négatifs, pas de cétose.",
+    "Diabète de type 1": "Incorrect. Le DT1 se caractérise par une carence insulinique absolue d'origine auto-immune (anticorps anti-GAD positifs), une cétose et un début brutal chez un sujet jeune et mince. Ici : âge 52 ans, obésité, pas de cétose, anticorps négatifs.",
+    "Diabète monogénique (MODY)": "Incorrect. Le MODY se caractérise par un début précoce (< 25 ans), une hérédité autosomique dominante sur 3 générations consécutives et l'absence d'obésité/syndrome métabolique. Ici : surpoids marqué et début tardif.",
+    "Pré-diabète": "Incorrect. Le pré-diabète se définit par une glycémie à jeun entre 1.00-1.25 g/L ou une HbA1c entre 5.7-6.4%. Ici : glycémie 1.8 g/L et HbA1c 8.2% dépassent largement ces seuils → diabète avéré.",
+    "Syndrome métabolique isolé": "Incorrect. Le syndrome métabolique est effectivement présent (obésité abdominale, HTA, dyslipidémie) mais l'hyperglycémie dépasse le seuil du diabète (glycémie ≥ 1.26 g/L à jeun à 2 reprises).",
+    "Hyperthyroïdie": "Incorrect. L'hyperthyroïdie donne une hyperglycémie mais s'accompagne de tachycardie, tremblements, amaigrissement, thermophobie. Ici : obésité et TSH normale.",
+    "default": "Diagnostic incorrect. Analysez les critères diagnostiques du diabète : âge, IMC, tour de taille, antécédents familiaux et obstétricaux, glycémie à jeun, HbA1c, anticorps."
   },
-  "scoringRules": { 
-    "baseScore": 100, 
-    "attemptPenalty": 10, 
-    "timeBonus": "5 points par minute restante si < 10 min" 
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10,
+    "timeBonus": "5 points par minute restante si < 10 min"
   },
   "possibleTreatments": [
     "Metformine",
-    "Régime alimentaire équilibré",
-    "Activité physique régulière",
+    "Règles hygiéno-diététiques (régime + activité physique)",
     "Insulinothérapie",
-    "Sulfonylurées",
-    "Statines (dose augmentée)",
-    "Antihypertenseurs supplémentaires",
-    "Antithyroïdiens"
+    "Sulfamides hypoglycémiants",
+    "Inhibiteurs DPP-4",
+    "Analogues GLP-1",
+    "Inhibiteurs SGLT2",
+    "Optimisation du traitement antihypertenseur",
+    "Statines (augmentation de dose)"
   ],
   "correctTreatments": [
     "Metformine",
-    "Régime alimentaire équilibré",
-    "Activité physique régulière",
-    "Statines (dose augmentée)"
+    "Règles hygiéno-diététiques (régime + activité physique)",
+    "Statines (augmentation de dose)"
   ],
-  "correction": "<h3>Diabète de type 2</h3>\n<p>Portrait typique: âge > 45 ans, obésité abdominale, syndrome métabolique, anticorps négatifs.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Modifier le mode de vie (alimentation + activité physique)</li><li>Initier metformine en première intention</li><li>Traiter comorbidités (statines si dyslipidémie, contrôle HTA)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec DT1 sans cétose ni anticorps</li><li>Oublier le suivi HbA1c et la prévention cardiovasculaire</li></ul>"
+  "correction": "# Diabète de type 2\n\nPortrait typique : âge > 45 ans, obésité abdominale (IMC 36.2), syndrome métabolique complet, antécédents familiaux de DT2, diabète gestationnel, anticorps anti-GAD négatifs.\n\n## Critères diagnostiques\n\n- Glycémie à jeun ≥ 1.26 g/L (2 fois) OU\n- HbA1c ≥ 6.5% OU\n- Glycémie ≥ 2 g/L à n'importe quel moment avec symptômes\n\n## Prise en charge\n\n- Règles hygiéno-diététiques en première intention (alimentation équilibrée, activité physique 150 min/semaine)\n- Metformine en 1ère ligne si objectif HbA1c non atteint\n- Traitement des comorbidités (statines pour dyslipidémie, contrôle HTA)\n- Dépistage et prévention des complications (fond d'œil, microalbuminurie, examen des pieds)\n\n## Erreurs à éviter\n\n- Confondre avec DT1 en l'absence de cétose et d'anticorps\n- Oublier le bilan des complications et le suivi régulier (HbA1c tous les 3 mois)\n- Négliger l'éducation thérapeutique du patient"
 }

@@ -115,7 +115,7 @@
     "Traitement symptomatique",
     "Mesures hygiéno-diététiques"
   ],
-  "correction": "# Dyspepsie fonctionnelleLa dyspepsie n’est pas un diagnostic mais un ensemble de signes cliniques rapportés au tube digestif haut et notamment à l’estomac.## Points Importants de diagnostic- Absence de signes d'alarme- Douleurs post-prandiales non spécifiques- Terrain jeune## Traitement- Traitement symptomatique si pas d'Helicobacter pylori- Mesures hygiéno-diététiques (repas fractionnés, adapter l'alimentation)",
+  "correction": "# Dyspepsie fonctionnelleLa dyspepsie n’est pas un diagnostic mais un ensemble de signes cliniques rapportés au tube digestif haut et notamment à l’estomac.\n\n## Points Importants de diagnostic\n- Absence de signes d'alarme\n- Douleurs post-prandiales non spécifiques\n- Terrain jeune\n\n## Traitement\n- Traitement symptomatique si pas d'Helicobacter pylori\n- Mesures hygiéno-diététiques (repas fractionnés, adapter l'alimentation)",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

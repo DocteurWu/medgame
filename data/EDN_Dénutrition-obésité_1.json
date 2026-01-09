@@ -12,24 +12,55 @@
   "interrogatoire": {
     "motifHospitalisation": "Fatigue intense et perte de poids récente",
     "modeDeVie": {
-      "activitePhysique": { "description": "Sédentaire, employé de bureau" },
-      "tabac": { "quantite": "10 cigarettes/jour", "duree": "20 ans" },
-      "alcool": { "quantite": "Modéré" },
-      "alimentation": { "regime": "Réduction drastique récente", "particularites": "Prise alimentaire < 50% des besoins depuis 3 semaines" },
-      "emploi": { "profession": "Comptable", "stress": "Élevé" }
+      "activitePhysique": {
+        "description": "Sédentaire, employé de bureau"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Modéré"
+      },
+      "alimentation": {
+        "regime": "Réduction drastique récente",
+        "particularites": "Prise alimentaire < 50% des besoins depuis 3 semaines"
+      },
+      "emploi": {
+        "profession": "Comptable",
+        "stress": "Élevé"
+      }
     },
     "antecedents": {
-      "medicaux": ["Obésité (poids initial 100 kg il y a 6 mois)", "Hypertension artérielle"],
+      "medicaux": [
+        "Obésité (poids initial 100 kg il y a 6 mois)",
+        "Hypertension artérielle"
+      ],
       "chirurgicaux": [],
-      "familiaux": [{ "lien": "Père", "pathologie": "Cancer colorectal", "age": "70" }]
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Cancer colorectal",
+          "age": "70"
+        }
+      ]
     },
-    "traitements": ["Amlodipine 5 mg/jour (hypertension)"],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      "Amlodipine 5 mg/jour (hypertension)"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "Perte de 10 kg (10% du poids) en 6 mois",
       "facteursDeclenchants": "Stress intense et perte d’appétit",
-      "symptomesAssocies": ["Fatigue", "Faiblesse musculaire", "Nausées occasionnelles"],
+      "symptomesAssocies": [
+        "Fatigue",
+        "Faiblesse musculaire",
+        "Nausées occasionnelles"
+      ],
       "remarques": "Réduction alimentaire > 50% depuis plus de 2 semaines, antécédent d’obésité."
     }
   },
@@ -42,10 +73,18 @@
       "frequenceRespiratoire": "16/min"
     },
     "aspectGeneral": "Obèse mais amaigri récemment, pâleur légère",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Tour de taille 102 cm, adiposité encore présente" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Tour de taille 102 cm, adiposité encore présente"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
     "Bilan sanguin complet",
@@ -99,7 +138,10 @@
     "Cancer digestif": "Incorrect. Pas de signe malin à l’endoscopie ou au scanner.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Renutrition progressive",
     "Thérapie cognitivo-comportementale",
@@ -113,5 +155,5 @@
     "Renutrition progressive",
     "Supplémentation vitaminique"
   ],
-  "correction": "<h3>Dénutrition chez patient obèse</h3>\n<p>Perte de poids significative et réduction des apports > 50% malgré obésité persistante.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Renutrition progressive avec objectifs réalistes</li><li>Supplémentation si carences (albumine basse, vitamines)</li><li>Suivi pluridisciplinaire et réévaluation des comorbidités</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec simple régime ou cancer sans preuves</li><li>Renutrition trop rapide sans surveillance</li></ul>"
+  "correction": "# Dénutrition chez patient obèse\n\nPerte de poids significative et réduction des apports > 50% malgré obésité persistante.\n\n## Bonnes pratiques\n\n- Renutrition progressive avec objectifs réalistes\n- Supplémentation si carences (albumine basse, vitamines)\n- Suivi pluridisciplinaire et réévaluation des comorbidités\n\n## Erreurs à éviter\n\n- Confondre avec simple régime ou cancer sans preuves\n- Renutrition trop rapide sans surveillance"
 }

@@ -13,25 +13,50 @@
   "interrogatoire": {
     "motifHospitalisation": "Pollakiurie et brûlures mictionnelles depuis 4 jours",
     "modeDeVie": {
-      "activitePhysique": { "description": "Course et musculation 3 fois/semaine" },
-      "tabac": { "quantite": "Non fumeur" },
-      "alcool": { "quantite": "Consommation occasionnelle" },
-      "alimentation": { "regime": "Équilibré", "particularites": "Repas souvent pris à l’hôpital" },
-      "emploi": { "profession": "Interne en chirurgie", "stress": "Élevé" }
+      "activitePhysique": {
+        "description": "Course et musculation 3 fois/semaine"
+      },
+      "tabac": {
+        "quantite": "Non fumeur"
+      },
+      "alcool": {
+        "quantite": "Consommation occasionnelle"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Repas souvent pris à l’hôpital"
+      },
+      "emploi": {
+        "profession": "Interne en chirurgie",
+        "stress": "Élevé"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Rien de particulier", "traitement": "Aucun" }
+        {
+          "type": "Rien de particulier",
+          "traitement": "Aucun"
+        }
       ],
       "chirurgicaux": [
-        { "intervention": "Appendicectomie", "date": "à 17 ans" }
+        {
+          "intervention": "Appendicectomie",
+          "date": "à 17 ans"
+        }
       ],
       "familiaux": [
-        { "lien": "Mère", "pathologie": "Hypertension", "age": "61" }
+        {
+          "lien": "Mère",
+          "pathologie": "Hypertension",
+          "age": "61"
+        }
       ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "4 jours",
       "evolution": "Aggravation progressive",
@@ -54,13 +79,19 @@
       "frequenceRespiratoire": "14/min"
     },
     "aspectGeneral": "Bon état général, légèrement gêné",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { 
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
       "palpation": "Souple",
       "sensibilite": "Légère sensibilité sus-pubienne"
     },
-    "examenNeurologique": { "conscience": "Normale" },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
     "examenUrologique": {
       "examenExterne": "Méat urétral légèrement inflammatoire",
       "ecoulement": "Écoulement clair le matin",
@@ -95,7 +126,10 @@
     "Urétrite à Chlamydia (IST) responsable de pollakiurie et dysurie": "Correct ! BU inflammatoire + ECBU stérile + rapports non protégés + PCR Chlamydia positive = tableau typique d'urétrite à Chlamydia.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Doxycycline 100 mg x 2/j pendant 7 jours",
     "Azithromycine dose unique",
@@ -109,5 +143,5 @@
     "Traitement du/ de la partenaire",
     "Arrêt des rapports pendant le traitement"
   ],
-  "correction": "<h3>Urétrite à Chlamydia</h3>\n<p>Tableau d’infection sexuellement transmissible à Chlamydia trachomatis : pollakiurie, brûlures, BU inflammatoire, ECBU stérile et PCR positive.</p>\n<h4>Points clés</h4>\n<ul><li>Le couple « BU inflammatoire + ECBU stérile » évoque une IST</li><li>Chlamydia donne des symptômes mictionnels souvent trompeurs</li><li>Toujours traiter le partenaire et recommander l’abstinence temporaire</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Donner un antibiotique de cystite classique (ex : fosfomycine) — inefficace</li><li>Oublier le dépistage du partenaire</li><li>Ne pas rechercher d'autres IST en parallèle</li></ul>"
+  "correction": "# Urétrite à Chlamydia\n\nTableau d’infection sexuellement transmissible à Chlamydia trachomatis : pollakiurie, brûlures, BU inflammatoire, ECBU stérile et PCR positive.\n\n## Points clés\n\n- Le couple « BU inflammatoire + ECBU stérile » évoque une IST\n- Chlamydia donne des symptômes mictionnels souvent trompeurs\n- Toujours traiter le partenaire et recommander l’abstinence temporaire\n\n## Erreurs à éviter\n\n- Donner un antibiotique de cystite classique (ex : fosfomycine) — inefficace\n- Oublier le dépistage du partenaire\n- Ne pas rechercher d'autres IST en parallèle"
 }

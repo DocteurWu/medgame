@@ -1,86 +1,153 @@
 {
   "id": "EDN_Anorexie_1",
   "patient": {
-  "nom": "LEGRAND",
-  "prenom": "Théo",
-  "age": 26,
-  "sexe": "M",
-  "taille": "180 cm",
-  "poids": "65 kg",
-  "groupeSanguin": "A-"
+    "nom": "LEGRAND",
+    "prenom": "Théo",
+    "age": 26,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "65 kg",
+    "groupeSanguin": "A-",
+    "imc": "20.1 kg/m²"
   },
   "interrogatoire": {
-  "motifHospitalisation": "Baisse d'énergie et troubles digestifs",
-  "modeDeVie": {
-  "activitePhysique": { "description": "Pratique régulière de fitness" },
-  "tabac": { "quantite": "0", "duree": "0" },
-  "alcool": { "quantite": "Social" },
-  "alimentation": { "regime": "Contrôlé", "particularites": "Évite les matières grasses et certains glucides" },
-  "emploi": { "profession": "Comptable", "stress": "Modéré" }
-  },
-  "antecedents": {
-  "medicaux": [],
-  "chirurgicaux": [],
-  "familiaux": [{ "lien": "Père", "pathologie": "Surpoids", "age": "60" }]
-  },
-  "traitements": [],
-  "allergies": { "presence": false, "liste": [] },
-  "histoireMaladie": {
-  "debutSymptomes": "Quelques mois",
-  "evolution": "Progressive",
-  "facteursDeclenchants": "Volonté d'améliorer sa condition physique",
-  "symptomesAssocies": ["Fatigue", "Constipation", "Sensation de froid"],
-  "remarques": "Se sent mal à l'aise en public, surtout lors des repas. Devient anxieux s'il ne peut pas contrôler son alimentation."
-  }
+    "motifHospitalisation": "Baisse d'énergie et troubles digestifs",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Pratique intensive de fitness",
+        "frequence": "6-7 fois par semaine, parfois 2 séances/jour"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Social, rare"
+      },
+      "alimentation": {
+        "regime": "Très contrôlé",
+        "particularites": "Évite strictement les matières grasses et glucides simples, compte les calories, pesée des aliments"
+      },
+      "emploi": {
+        "profession": "Comptable",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Surpoids",
+          "age": "60"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois environ",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Volonté d'améliorer sa condition physique après une rupture sentimentale",
+      "symptomesAssocies": [
+        "Fatigue chronique",
+        "Constipation",
+        "Sensation de froid permanent",
+        "Irritabilité"
+      ],
+      "remarques": "Se sent mal à l'aise en public lors des repas. Devient très anxieux s'il ne peut pas contrôler son alimentation. Vérifie son poids plusieurs fois par jour."
+    }
   },
   "examenClinique": {
-  "constantes": {
-  "tension": "100/70 mmHg",
-  "pouls": "55 bpm",
-  "temperature": "36.4°C",
-  "saturationO2": "97%",
-  "frequenceRespiratoire": "15/min"
-  },
-  "aspectGeneral": "Apparence soignée, mince mais pas excessivement maigre",
-  "examenCardiovasculaire": { "auscultation": "Normal, léger ralentissement" },
-  "examenPulmonaire": { "auscultation": "Normal" },
-  "examenAbdominal": { "palpation": "Sensibilité abdominale" },
-  "examenNeurologique": { "conscience": "Normale" }
+    "constantes": {
+      "tension": "100/70 mmHg",
+      "pouls": "55 bpm",
+      "temperature": "36.4°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Apparence soignée, mince, légère fonte musculaire malgré l'exercice",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal, bradycardie sinusale"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sensibilité abdominale diffuse, météorisme"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenCutane": {
+      "observation": "Peau sèche, lanugo discret au niveau des avant-bras"
+    }
   },
   "availableExams": [
-  "Bilan sanguin complet",
-  "Bilan thyroïdien",
-  "Examen psychologique",
-  "Dosage des D-dimères",
-  "Sérologie VIH",
-  "Test de Guthrie",
-  "Coproculture",
-  "Analyse du liquide synovial",
-  "Dosage des anticorps anti-nucléaires",
-  "Electrophorèse des protéines"
+    "Bilan sanguin complet (NFS)",
+    "Ionogramme sanguin",
+    "Bilan thyroïdien (TSH, T4L)",
+    "Évaluation psychologique",
+    "ECG",
+    "Bilan hépatique",
+    "Glycémie à jeun",
+    "Albuminémie",
+    "Dosage des D-dimères",
+    "Sérologie VIH",
+    "Coproculture",
+    "Dosage des anticorps anti-nucléaires"
   ],
   "examResults": {
-  "Bilan sanguin complet": "Légère anémie, faible taux de potassium",
-  "Bilan thyroïdien": "Normal",
-  "Examen psychologique": "Signes d'anxiété et de préoccupations concernant le poids et l'alimentation",
-  "Dosage des D-dimères": "Normal",
-  "Sérologie VIH": "Négatif",
-  "Test de Guthrie": "Non applicable",
-  "Coproculture": "Absence de germes pathogènes",
-  "Analyse du liquide synovial": "Non contributif",
-  "Dosage des anticorps anti-nucléaires": "Négatif",
-  "Glycémie (contrôle)": "0.8 g/L",
-  "Electrophorèse des protéines": "RAS"
+    "Bilan sanguin complet (NFS)": "Anémie légère (Hb 11.5 g/dL), leucopénie modérée",
+    "Ionogramme sanguin": "Hypokaliémie (3.2 mmol/L), hypophosphorémie",
+    "Bilan thyroïdien (TSH, T4L)": "TSH normale, T4L limite basse (syndrome de basse T3)",
+    "Évaluation psychologique": "Préoccupations excessives concernant le poids et l'image corporelle, anxiété liée à l'alimentation, perfectionnisme",
+    "ECG": "Bradycardie sinusale à 52 bpm, QTc légèrement allongé",
+    "Bilan hépatique": "Transaminases légèrement élevées",
+    "Glycémie à jeun": "0.75 g/L (hypoglycémie modérée)",
+    "Albuminémie": "Normale",
+    "Dosage des D-dimères": "Normal",
+    "Sérologie VIH": "Négatif",
+    "Coproculture": "Absence de germes pathogènes",
+    "Dosage des anticorps anti-nucléaires": "Négatif"
   },
-  "possibleDiagnostics": ["Troubles anxieux", "Hypothyroïdie", "Troubles du comportement alimentaire", "Anorexie mentale"],
+  "possibleDiagnostics": [
+    "Anorexie mentale",
+    "Troubles anxieux généralisés",
+    "Hypothyroïdie",
+    "Trouble du comportement alimentaire non spécifié",
+    "Syndrome dépressif"
+  ],
   "correctDiagnostic": "Anorexie mentale",
   "feedback": {
-  "Anorexie mentale": "Diagnostic correct !",
-  "default": "Diagnostic incorrect."
+    "Anorexie mentale": "Diagnostic correct ! Critères DSM-5 réunis : restriction alimentaire avec apports insuffisants, peur intense de prendre du poids malgré un IMC normal-bas, perturbation de la perception corporelle. Signes associés : bradycardie, hypokaliémie, hyperactivité physique compensatoire.",
+    "Troubles anxieux généralisés": "Incorrect. L'anxiété est présente mais elle est centrée sur l'alimentation et le poids, ce qui est caractéristique de l'anorexie mentale. L'anxiété généralisée concernerait de multiples domaines de la vie.",
+    "Hypothyroïdie": "Incorrect. Le bilan thyroïdien montre un syndrome de basse T3 (adaptation métabolique à la restriction calorique), pas une hypothyroïdie primaire. La TSH est normale.",
+    "Trouble du comportement alimentaire non spécifié": "Trop vague. Les critères complets d'anorexie mentale sont réunis ici : restriction, peur de grossir, dysmorphophobie, retentissement somatique.",
+    "Syndrome dépressif": "Incorrect. Il n'y a pas de tristesse de l'humeur, d'anhédonie ou d'idées suicidaires. La fatigue s'explique par la restriction calorique.",
+    "default": "Diagnostic incorrect. Recherchez les critères DSM-5 de l'anorexie mentale : restriction, peur de grossir, dysmorphophobie."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Soutien nutritionnel", "Thérapie comportementale", "Gestion du stress", "Antidépresseurs", "Compléments alimentaires hyperprotéinés" ],
-  "correctTreatments": ["Soutien nutritionnel", "Thérapie comportementale", "Gestion du stress"]
-,
-  "correction": "<h3>Anorexie mentale</h3>\n<p>Restriction, préoccupations corporelles, signes somatiques (bradycardie possible, anémie).</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Approche multidisciplinaire: nutrition, psychothérapie, suivi médical</li><li>Plan de renutrition prudent et monitoré</li><li>Prise en charge des comorbidités anxieuses/dépressives</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Stigmatisation ou pression non thérapeutique</li><li>Renutrition trop rapide sans surveillance</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Prise en charge nutritionnelle progressive",
+    "Psychothérapie (TCC)",
+    "Suivi psychiatrique",
+    "Hospitalisation si critères de gravité",
+    "Antidépresseurs ISRS",
+    "Compléments alimentaires hyperprotéinés",
+    "Anxiolytiques"
+  ],
+  "correctTreatments": [
+    "Prise en charge nutritionnelle progressive",
+    "Psychothérapie (TCC)",
+    "Suivi psychiatrique"
+  ],
+  "correction": "# Anorexie mentale\n\nCas atypique : homme adulte. L'anorexie touche aussi les hommes (10-15% des cas), souvent sous-diagnostiquée.\n\n## Critères DSM-5\n\n- Restriction des apports énergétiques conduisant à un poids insuffisant\n- Peur intense de prendre du poids\n- Altération de la perception du poids ou de la forme corporelle\n\n## Signes de gravité à rechercher\n\n- IMC < 15 kg/m²\n- Bradycardie < 40 bpm\n- Hypokaliémie < 3 mmol/L\n- Hypoglycémie symptomatique\n- Allongement du QTc\n\n## Prise en charge\n\n- Équipe pluridisciplinaire : nutritionniste, psychiatre, psychologue\n- Contrat de soins et objectifs pondéraux réalistes\n- TCC recommandée chez l'adulte\n- Renutrition prudente (risque de syndrome de renutrition)\n\n## Erreurs à éviter\n\n- Sous-estimer car patient masculin ou IMC normal\n- Renutrition trop rapide sans surveillance électrolytique\n- Négliger le suivi cardiaque (ECG)"
 }

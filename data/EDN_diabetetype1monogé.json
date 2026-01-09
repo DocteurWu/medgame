@@ -12,28 +12,60 @@
   "interrogatoire": {
     "motifHospitalisation": "Soif persistante et fatigue légère",
     "modeDeVie": {
-      "activitePhysique": { "description": "Régulière, yoga et marche" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Équilibré", "particularites": "Pas de restriction" },
-      "emploi": { "profession": "Graphiste", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Régulière, yoga et marche"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Pas de restriction"
+      },
+      "emploi": {
+        "profession": "Graphiste",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
       "medicaux": [],
       "chirurgicaux": [],
       "familiaux": [
-        { "lien": "Mère", "pathologie": "Diabète diagnostiqué à 30 ans", "age": "50" },
-        { "lien": "Grand-père maternel", "pathologie": "Diabète diagnostiqué à 35 ans", "age": "75" },
-        { "lien": "Arrière-grand-mère maternelle", "pathologie": "Diabète diagnostiqué à 40 ans", "age": "décédée" }
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète diagnostiqué à 30 ans",
+          "age": "50"
+        },
+        {
+          "lien": "Grand-père maternel",
+          "pathologie": "Diabète diagnostiqué à 35 ans",
+          "age": "75"
+        },
+        {
+          "lien": "Arrière-grand-mère maternelle",
+          "pathologie": "Diabète diagnostiqué à 40 ans",
+          "age": "décédée"
+        }
       ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "Progressive",
       "facteursDeclenchants": "Inconnus",
-      "symptomesAssocies": ["Polydipsie", "Polyurie", "Fatigue modérée"],
+      "symptomesAssocies": [
+        "Polydipsie",
+        "Polyurie",
+        "Fatigue modérée"
+      ],
       "remarques": "Pas de perte de poids significative ni de symptômes cétoniques."
     }
   },
@@ -46,10 +78,18 @@
       "frequenceRespiratoire": "14/min"
     },
     "aspectGeneral": "Poids normal, pas de signe de dénutrition ou d’obésité",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normale" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
     "Glycémie à jeun",
@@ -103,7 +143,10 @@
     "Diabète de type 2": "Incorrect. Pas de surpoids ni de résistance insulinique marquée.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Sulfonylurées",
     "Insulinothérapie",
@@ -115,5 +158,5 @@
   "correctTreatments": [
     "Sulfonylurées"
   ],
-  "correction": "<h3>Diabète monogénique (MODY)</h3>\n<p>Début jeune, IMC normal, antécédents familiaux multiples, anticorps négatifs, mutation HNF1A.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer génétiquement (MODY)</li><li>Privilégier sulfonylurées chez MODY 3</li><li>Éducation thérapeutique et suivi glycémique</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Classer à tort en DT1 et initier insuline d’emblée sans indication</li><li>Ignorer le dépistage familial</li></ul>"
+  "correction": "# Diabète monogénique (MODY)\n\nDébut jeune, IMC normal, antécédents familiaux multiples, anticorps négatifs, mutation HNF1A.\n\n## Bonnes pratiques\n\n- Confirmer génétiquement (MODY)\n- Privilégier sulfonylurées chez MODY 3\n- Éducation thérapeutique et suivi glycémique\n\n## Erreurs à éviter\n\n- Classer à tort en DT1 et initier insuline d’emblée sans indication\n- Ignorer le dépistage familial"
 }

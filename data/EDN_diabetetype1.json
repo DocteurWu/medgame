@@ -12,11 +12,24 @@
   "interrogatoire": {
     "motifHospitalisation": "Fatigue extrême, soif intense et perte de poids rapide",
     "modeDeVie": {
-      "activitePhysique": { "description": "Modérée, étudiant actif" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal avant symptômes", "particularites": "Perte d’appétit récente" },
-      "emploi": { "profession": "Étudiant", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Modérée, étudiant actif"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal avant symptômes",
+        "particularites": "Perte d’appétit récente"
+      },
+      "emploi": {
+        "profession": "Étudiant",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
       "medicaux": [],
@@ -24,12 +37,22 @@
       "familiaux": []
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "3 semaines",
       "evolution": "Explosive",
       "facteursDeclenchants": "Inconnus",
-      "symptomesAssocies": ["Polyurie", "Polydipsie", "Amaigrissement (5 kg)", "Asthénie", "Nausées", "Douleurs abdominales"],
+      "symptomesAssocies": [
+        "Polyurie",
+        "Polydipsie",
+        "Amaigrissement (5 kg)",
+        "Asthénie",
+        "Nausées",
+        "Douleurs abdominales"
+      ],
       "remarques": "Symptômes rapidement aggravés, haleine fruitée rapportée."
     }
   },
@@ -42,10 +65,18 @@
       "frequenceRespiratoire": "22/min (dyspnée de Cheyne-Stokes)"
     },
     "aspectGeneral": "Amaigri, déshydraté, pâleur",
-    "examenCardiovasculaire": { "auscultation": "Tachycardie" },
-    "examenPulmonaire": { "auscultation": "Normal, respiration rapide" },
-    "examenAbdominal": { "palpation": "Douleurs diffuses" },
-    "examenNeurologique": { "conscience": "Léthargique mais orienté" }
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal, respiration rapide"
+    },
+    "examenAbdominal": {
+      "palpation": "Douleurs diffuses"
+    },
+    "examenNeurologique": {
+      "conscience": "Léthargique mais orienté"
+    }
   },
   "availableExams": [
     "Glycémie capillaire",
@@ -98,7 +129,10 @@
     "Diabète de type 2": "Incorrect. Pas de surpoids ni facteurs de risque métabolique.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Insulinothérapie",
     "Antibiotiques",
@@ -109,5 +143,5 @@
   "correctTreatments": [
     "Insulinothérapie"
   ],
-  "correction": "<h3>Diabète de type 1</h3>\n<p>Tableau clinique évocateur: hyperglycémie, cétonurie, acidose, anticorps anti‑GAD positifs.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer le diagnostic (anticorps, HbA1c, gaz du sang)</li><li>Initier l’insulinothérapie sans délai</li><li>Corriger les troubles hydro‑électrolytiques et éduquer le patient</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Retarder l’insuline chez un sujet jeune avec cétose</li><li>Confondre avec DT2 en présence d’amaigrissement et auto‑immunité</li></ul>"
+  "correction": "# Diabète de type 1\n\nTableau clinique évocateur: hyperglycémie, cétonurie, acidose, anticorps anti‑GAD positifs.\n\n## Bonnes pratiques\n\n- Confirmer le diagnostic (anticorps, HbA1c, gaz du sang)\n- Initier l’insulinothérapie sans délai\n- Corriger les troubles hydro‑électrolytiques et éduquer le patient\n\n## Erreurs à éviter\n\n- Retarder l’insuline chez un sujet jeune avec cétose\n- Confondre avec DT2 en présence d’amaigrissement et auto‑immunité"
 }
