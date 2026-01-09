@@ -1,0 +1,128 @@
+{
+  "id": "locomoteur_lomboradiculalgie_robert",
+  "redacteur": "diapo du prof",
+  "patient": {
+    "nom": "DAMMANN Robert",
+    "prenom": "",
+    "age": 25,
+    "sexe": "M",
+    "taille": "179 cm",
+    "poids": "84 kg",
+    "groupeSanguin": "B-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur lombaire",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Elevée (course)"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Directeur d'une société de vente de thé",
+        "stress": "Elevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": ".Apparition brutale le week-end dernier (EVA 7/10)",
+      "evolution": "/",
+      "facteursDeclenchants": "Douleur en portant un meuble lors d'un déménagement",
+      "descriptionDouleur": "Membre inférieur droit : douleur à type de décharge électrique, irradiant de la fesse à la face postéro-latérale de cuisse à la face antéro-externe du genou jusqu'au gros orteil",
+      "symptomesAssocies": [
+        "Douleur du membre inférieur droit"
+      ],
+      "remarques": "Douleurs cèdent au repos"
+    },
+    "verbatim": "Je viens vous voir car j'ai mal au dos depuis ce week-end. Je déménageais et d'un coup la douleur est apparue."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Rhumatoide": {
+      "inspection": "Rachis raide en antéflexion avec une attitude vicieuse en latéroflexion gauche",
+      "palpation": "Douleur reproduite à la palpation de l'épineuse L5"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Tumeur rachidienne",
+    "Arthrose",
+    "Lombo-radiculalgie L5 droite",
+    "Sténose du canal lombaire"
+  ],
+  "correctDiagnostic": "Lombo-radiculalgie L5 droite",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [],
+  "correctTreatments": [],
+  "correction": "# Lombo-radiculalgie L5 droite## Points Importants- trajet de la douleur au membre inférieur associé à L5",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Selon la description de la douleur, quel nerf est en cause ici ?",
+        "options": [
+          "L3",
+          "L4",
+          "L5",
+          "S1"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "douleur du membre inférieur \"irradiant de la fesse à la face postéro-latérale de cuisse à la face antéro-externe du genou jusqu'au gros orteil\"...",
+      "id": "lock_1767810614077",
+      "target_fields": [
+        "examenClinique.Rhumatoide"
+      ]
+    }
+  ],
+  "postGameQuestions": []
+}

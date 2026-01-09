@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgInput = document.getElementById('image-upload');
     let currentTargetItem = null;
 
-    window.triggerImageUpload = (btn) => {
-        currentTargetItem = btn.parentElement;
+    window.triggerImageUpload = (el) => {
+        currentTargetItem = el.tagName === 'BUTTON' ? el.parentElement : el;
         imgInput.click();
     };
 
@@ -794,8 +794,8 @@ window.addMcqOption = (btn) => {
     list.appendChild(div);
 };
 
-window.triggerImageUploadMcq = (btn) => {
-    currentTargetItemMcq = btn.parentElement;
+window.triggerImageUploadMcq = (el) => {
+    currentTargetItemMcq = el.tagName === 'BUTTON' ? el.parentElement : el;
     document.getElementById('image-upload-mcq').click();
 };
 
@@ -827,6 +827,8 @@ imgInputMcq.onchange = (e) => {
 window.showCorrectionPreview = function () {
     const text = document.getElementById('correction-text').innerText;
     const previewArea = document.getElementById('correction-preview-area');
+    const corrImageContainer = document.getElementById('correction-image-container');
+
     if (previewArea.style.display === 'none') {
         if (window.renderCorrectionMd) {
             window.renderCorrectionMd(text);
@@ -834,6 +836,21 @@ window.showCorrectionPreview = function () {
             // Fallback if game.js isn't loaded/accessible
             previewArea.innerHTML = text.replace(/\n/g, '<br>');
         }
+
+        // Add the correction image to the preview if it exists
+        const imagePreview = corrImageContainer ? corrImageContainer.querySelector('.image-preview') : null;
+        if (imagePreview) {
+            const img = imagePreview.querySelector('img');
+            if (img) {
+                const imgClone = img.cloneNode(true);
+                imgClone.style.maxWidth = '100%';
+                imgClone.style.maxHeight = '400px';
+                imgClone.style.marginTop = '20px';
+                imgClone.style.display = 'block';
+                previewArea.appendChild(imgClone);
+            }
+        }
+
         previewArea.style.display = 'block';
         previewArea.style.background = 'white';
         previewArea.style.color = 'black';
