@@ -485,6 +485,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             finalHtml += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
         }
 
+        // Append case ID if exists (small, low contrast for reference)
+        if (currentCase && currentCase.id) {
+            finalHtml += `<div style="font-size: 0.7em; color: rgba(58, 52, 52, 0.2); text-align: right; margin-top: 5px;">ID: ${escapeHtml(currentCase.id)}</div>`;
+        }
+
         contentEl.innerHTML = finalHtml;
 
         const overlay = document.getElementById('correction-overlay');
