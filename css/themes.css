@@ -359,6 +359,24 @@ body {
     box-shadow: 0 0 0 2px #10b981, 0 10px 20px rgba(16, 185, 129, 0.2);
 }
 
+/* Locomoteur - Tons Gris / Os / Beige */
+.theme-card[data-theme="Locomoteur"] {
+    background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    border: 1px solid rgba(226, 209, 195, 0.3);
+}
+
+.theme-card[data-theme="Locomoteur"]:hover {
+    background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(226, 209, 195, 0.4);
+}
+
+.theme-card.selected[data-theme="Locomoteur"] {
+    background: linear-gradient(135deg, #fdfcfb 0%, #fff 100%);
+    border-color: #d2b48c;
+    box-shadow: 0 0 0 2px #d2b48c, 0 10px 20px rgba(210, 180, 140, 0.2);
+}
+
 /* A venir - Tons Gris/Neutres */
 .theme-card[data-theme="A_venir"] {
     background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);

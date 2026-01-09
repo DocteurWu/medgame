@@ -1,0 +1,131 @@
+{
+  "id": "locomoteur_arthrite_Mirko",
+  "redacteur": "diapo du prof",
+  "patient": {
+    "nom": "CZENTOVIC Mirko",
+    "prenom": "",
+    "age": 50,
+    "sexe": "M",
+    "taille": "186 cm",
+    "poids": "81 kg",
+    "groupeSanguin": "AB+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur du pied droit",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Champion du monde des échecs",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Apparition brutale il y a 3j d'emblée très douloureuses (EVA 8/10)",
+      "evolution": "Paroxystique",
+      "facteursDeclenchants": "/",
+      "descriptionDouleur": "Douleur de la première articulation métatarso-phalangienne(MTP1) du pied droit en coup de poignard, maximales la nuit et la matin au réveil",
+      "symptomesAssocies": [
+        "Difficulté à marcher"
+      ],
+      "remarques": "..."
+    },
+    "verbatim": "Je viens vous voir car je me suis réveillé avec une grosse douleur au pied droit"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Rhumatoïde": {
+      "inspection": "Gros orteil droit rouge et gonflé",
+      "palpation": "Gros orteil droit chaud",
+      "mobilisation active": "Normale",
+      "mobilisation passive": "Normale",
+      "mobilité contrariée": "Normale"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Ankylose de la MTP1",
+    "Arthrite aiguë de la MTP1",
+    "Tendinopathie simple du gros orteil droit",
+    "Rupture tendineuse du gros orteil droit",
+    "Laxité du gros orteil droit"
+  ],
+  "correctDiagnostic": "Arthrite aiguë de la MTP1",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [],
+  "correctTreatments": [],
+  "correction": "# Arthrite aiguë de la MTP1## Points Importants- Repérer une douleur inflammatoire",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Selon les informations de l'interrogatoire, quel est le mécanisme de le douleur ?",
+        "options": [
+          "Mécanique",
+          "Inflammatoire",
+          "On ne peut pas savoir"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Les douleurs sont \"maximales la nuit et le matin au réveil\"...",
+      "id": "lock_1767809447559",
+      "target_fields": [
+        "examenClinique.Rhumatoïde"
+      ]
+    }
+  ],
+  "postGameQuestions": []
+}

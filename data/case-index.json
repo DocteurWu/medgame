@@ -60,5 +60,10 @@
     "neuro_epilepsie_generalisee_oscar.json",
     "neuro_epilepsie_temporale_elinordammert.json",
     "neuro_polyneuropathie_jacques.json"
+  ],
+  "locomoteur": [
+    "locomoteur_arthrite_Mirko.json",
+    "locomoteur_lomboradiculalgie_robert.json",
+    "locomoteur_tendinopathie_lisa.json"
   ]
 }

@@ -1,0 +1,142 @@
+{
+  "id": "locomoteur_tendinopathie_lisa",
+  "redacteur": "diapo du prof",
+  "patient": {
+    "nom": "BERNDLE Lisa",
+    "prenom": "",
+    "age": 45,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "57 kg",
+    "groupeSanguin": "0-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur de hanche gauche",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "Occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Ecrivaine",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 4 mois",
+      "evolution": "Aggravation",
+      "facteursDeclenchants": "La marche et la montée des escaliers",
+      "descriptionDouleur": "Douleur hanche gauche en regard du grand trochanter",
+      "symptomesAssocies": [
+        "/"
+      ],
+      "remarques": "La douleur ne réveille pas la nuit et pas de dérouillage matinal"
+    },
+    "verbatim": "Je viens vous voir car j'ai mal à la hanche depuis un moment et ça m'empêche de marcher."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/70 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Locomoteur": {
+      "palpation": "Reproduction de la douleur à la palpation du bord postéro-supérieur du grand trochanter ainsi qu'en fin de rotation interne et en abduction contrariée",
+      "appui monopodal": "Tenu",
+      "marche": "Boiterie d'esquive"
+    }
+  },
+  "availableExams": [
+    "Scanner pelvien",
+    "IRM pelvien",
+    "Echographie pelvienne"
+  ],
+  "examResults": {
+    "Scanner pelvien": "Non indiqué",
+    "IRM pelvien": "Non indiqué",
+    "Echographie pelvienne": "Non indiquée"
+  },
+  "possibleDiagnostics": [
+    "Ankylose",
+    "Arthrite du genou",
+    "Rupture tendineuse du moyen fessier gauche",
+    "Tendinopathie simple du moyen fessier gauche"
+  ],
+  "correctDiagnostic": "Tendinopathie simple du moyen fessier gauche",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Kinésithérapie",
+    "Traitement antalgique"
+  ],
+  "correctTreatments": [
+    "Kinésithérapie",
+    "Traitement antalgique"
+  ],
+  "correction": "# Tendinopathie simple du moyen fessier gauche\n\n## Points Importants\n- Triade tendineuse à rechercher\n\n\n\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "A partir des informations recueillies à l'interrogatoire, quel est le mécanisme à l'origine de la douleur ?",
+        "options": [
+          "Mécanique",
+          "Inflammatoire",
+          "On ne peut pas savoir"
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "\"La douleur ne réveille pas la nuit et pas de dérouillage matinal\"...",
+      "id": "lock_1767807726703",
+      "target_fields": [
+        "examenClinique.Locomoteur"
+      ]
+    }
+  ],
+  "postGameQuestions": []
+}

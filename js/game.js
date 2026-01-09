@@ -455,34 +455,29 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         let finalHtml = '';
 
-        // First, prepend correction image if exists
-        if (currentCase && currentCase.correctionImage) {
-            finalHtml += `<div style="text-align: center; margin-bottom: 20px;">
-                        <img src="${currentCase.correctionImage}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;" onclick="window.showImageModal('${currentCase.correctionImage}', 'Illustration Correction')">
-                    </div>`;
+        if (text) {
+            // Check if it's the split comparison + correction format
+            const htmlMatch = text.match(/^([\s\S]*?<hr[^>]*>)([\s\S]*)$/);
+            if (htmlMatch) {
+                const comparisonHtml = htmlMatch[1];
+                const correctionMd = htmlMatch[2];
+                finalHtml += comparisonHtml;
+                finalHtml += parseMarkdown(correctionMd);
+            } else {
+                // If it looks like HTML, render it; otherwise parse as markdown
+                if (/<[a-z][\s\S]*>/i.test(text)) {
+                    finalHtml += text;
+                } else {
+                    finalHtml += parseMarkdown(text);
+                }
+            }
         }
 
-        // Now parse the text - it might contain HTML (comparisonHtml) + markdown (correction)
-        // We need to handle this by detecting if it starts with HTML
-        if (text) {
-            // Check if text starts with HTML tags (comparison section)
-            const htmlMatch = text.match(/^(\s*<div[\s\S]*?<\/div>\s*<hr[^>]*>)/);
-            if (htmlMatch) {
-                // Extract HTML part and markdown part
-                const htmlPart = htmlMatch[1];
-                const markdownPart = text.substring(htmlMatch[0].length).trim();
-
-                // Add the comparison HTML as-is
-                finalHtml += htmlPart;
-
-                // Parse the markdown part
-                if (markdownPart) {
-                    finalHtml += parseMarkdown(markdownPart);
-                }
-            } else {
-                // No HTML prefix, parse whole text as markdown
-                finalHtml += parseMarkdown(text);
-            }
+        // Now append correction image if exists (moved to bottom)
+        if (currentCase && currentCase.correctionImage) {
+            finalHtml += `<div style="text-align: center; margin-top: 20px;">
+                        <img src="${currentCase.correctionImage}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;" onclick="window.showImageModal('${currentCase.correctionImage}', 'Illustration Correction')">
+                    </div>`;
         }
 
         // Append redacteur credit if exists

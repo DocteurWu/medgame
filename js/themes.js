@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     themeCards.forEach(card => {
         card.addEventListener('click', async () => {
             const theme = card.dataset.theme;
-            if (theme === 'A_venir') return;
 
             // Afficher le modal des motifs
             showMotifsForTheme(theme);
