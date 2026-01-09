@@ -13,24 +13,65 @@
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée d'effort et malaise à l'effort",
     "modeDeVie": {
-      "activitePhysique": { "description": "Marche quotidienne" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Retraité", "stress": "Faible" }
+      "activitePhysique": {
+        "description": "Marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
     },
     "antecedents": {
-      "medicaux": [{ "type": "HTA", "traitement": "IEC" }],
-      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2000" }],
-      "familiaux": [{ "lien": "Père", "pathologie": "Mort subite", "age": "75" }]
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2000"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Mort subite",
+          "age": "75"
+        }
+      ]
     },
-    "traitements": [{ "nom": "Enalapril (IEC)", "dose": "10 mg", "frequence": "1/j" }],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      {
+        "nom": "Enalapril (IEC)",
+        "dose": "10 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "Progressive",
       "facteursDeclenchants": "Effort",
-      "symptomesAssocies": ["Angor à l'effort", "Malaise"],
+      "symptomesAssocies": [
+        "Angor à l'effort",
+        "Malaise"
+      ],
       "remarques": "Episodes de chute de tension à l'effort"
     }
   },
@@ -43,17 +84,40 @@
       "frequenceRespiratoire": "18/min"
     },
     "aspectGeneral": "Normal",
-    "examenCardiovasculaire": { "auscultation": "Souffle systolique râpeux, max au foyer aortique, irradiation caotides",  "inspection": "Normal"},
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normal" }
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique râpeux, max au foyer aortique, irradiation caotides",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normal"
+    }
   },
-  "availableExams": ["ECG", "Echographie", "Radio thorax", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner"],
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner"
+  ],
   "examResults": {
     "ECG": "Hypertrophie ventriculaire gauche, Sokolow-Lyon à 45mm",
     "Echographie": "Valve aortique calcifiée",
     "glycemie": "1.0 g/L",
-    "Radio thorax": { "text": "Coeur légèrement élargi", "image": "assets/images/MODIF_LE_NOM_ICI.jpg" },
+    "Radio thorax": {
+      "text": "Coeur légèrement élargi",
+      "image": "assets/images/MODIF_LE_NOM_ICI.jpg"
+    },
     "Bilan sanguin": "RAS",
     "Test d'effort": "Limité par malaise",
     "Holter ECG": "RAS",
@@ -62,14 +126,29 @@
     "Scanner cardiaque": "RAS",
     "Angioscanner": "RAS"
   },
-    "possibleDiagnostics": ["Rétrécissement aortique", "Insuffisance cardiaque", "Arythmie", "Angor stable"],
+  "possibleDiagnostics": [
+    "Rétrécissement aortique",
+    "Insuffisance cardiaque",
+    "Arythmie",
+    "Angor stable"
+  ],
   "correctDiagnostic": "Rétrécissement aortique",
   "feedback": {
     "Rétrécissement aortique": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["IEC", "Diurétiques", "Remplacement valvulaire aortique", "Bêta-bloquants"],
-  "correctTreatments": ["Remplacement valvulaire aortique"],
-  "correction": "<h3>Rétrécissement aortique serré</h3>\n<p>Dyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer par échocardiographie-Doppler (gradient, surface, HVG)</li><li>Surveiller la fonction ventriculaire gauche</li><li>Planifier remplacement valvulaire (chirurgie ou TAVI)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Omettre l'évaluation du gradient et de la surface valvulaire</li><li>Ne pas corriger les facteurs de risque cardiovasculaires associés</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "IEC",
+    "Diurétiques",
+    "Remplacement valvulaire aortique",
+    "Bêta-bloquants"
+  ],
+  "correctTreatments": [
+    "Remplacement valvulaire aortique"
+  ],
+  "correction": "# Rétrécissement aortique serré\n\nDyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.\n\n## Bonnes pratiques\n\n- Confirmer par échocardiographie-Doppler (gradient, surface, HVG)\n- Surveiller la fonction ventriculaire gauche\n- Planifier remplacement valvulaire (chirurgie ou TAVI)\n\n## Erreurs à éviter\n\n- Omettre l'évaluation du gradient et de la surface valvulaire\n- Ne pas corriger les facteurs de risque cardiovasculaires associés"
 }

@@ -1,134 +1,134 @@
 {
-    "id": "test_gating",
-    "patient": {
-        "nom": "Test",
-        "prenom": "Gating",
-        "age": 45,
-        "sexe": "F",
-        "taille": "165 cm",
-        "poids": "60 kg",
-        "groupeSanguin": "O+"
+  "id": "test_gating",
+  "patient": {
+    "nom": "Test",
+    "prenom": "Gating",
+    "age": 45,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur thoracique suspecte",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0 PA",
+        "duree": "0 ans"
+      },
+      "alcool": {
+        "quantite": "Nulle"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Ingénieur",
+        "stress": "Moyen"
+      }
     },
-    "interrogatoire": {
-        "motifHospitalisation": "Douleur thoracique suspecte",
-        "modeDeVie": {
-            "activitePhysique": {
-                "description": "Modérée"
-            },
-            "tabac": {
-                "quantite": "0 PA",
-                "duree": "0 ans"
-            },
-            "alcool": {
-                "quantite": "Nulle"
-            },
-            "alimentation": {
-                "regime": "Équilibré",
-                "particularites": "Aucune"
-            },
-            "emploi": {
-                "profession": "Ingénieur",
-                "stress": "Moyen"
-            }
-        },
-        "antecedents": {
-            "medicaux": [
-                {
-                    "type": "Asthme",
-                    "traitement": "Ventaline"
-                }
-            ],
-            "chirurgicaux": [],
-            "familiaux": []
-        },
-        "traitements": [],
-        "allergies": {
-            "presence": false,
-            "liste": []
-        },
-        "histoireMaladie": {
-            "debutSymptomes": "1 heure",
-            "evolution": "Brutale",
-            "facteursDeclenchants": "Repos",
-            "symptomesAssocies": [
-                "Sueur"
-            ],
-            "remarques": "Le patient a également une légère dyspnée d'effort."
-        }
-    },
-    "examenClinique": {
-        "constantes": {
-            "tension": "120/80 mmHg",
-            "pouls": "80 bpm",
-            "temperature": "37°C",
-            "saturationO2": "98%",
-            "frequenceRespiratoire": "16/min"
-        },
-        "aspectGeneral": "Angoissé",
-        "examenCardiovasculaire": {
-            "auscultation": "Bruits du cœur normaux"
-        }
-    },
-    "availableExams": [
-        "ECG",
-        "Troponine"
-    ],
-    "examResults": {
-        "ECG": "Infarctus du myocarde (ST+)",
-        "Troponine": "Elevée"
-    },
-    "locks": [
+    "antecedents": {
+      "medicaux": [
         {
-            "id": "lock_histoire",
-            "type": "SAISIE",
-            "target_fields": [
-                "interrogatoire.histoireMaladie.remarques"
-            ],
-            "challenge": {
-                "question": "Quel est le mot de passe pour voir les remarques ? (Indice: cardiologie)",
-                "expected_keywords": [
-                    "cardiologie"
-                ]
-            },
-            "feedback_error": "Mauvais mot de passe. Essayez 'cardiologie'."
-        },
-        {
-            "id": "lock_ecg",
-            "type": "QCM",
-            "target_fields": [
-                "examResults.ECG"
-            ],
-            "challenge": {
-                "question": "Quel examen est indispensable devant une douleur thoracique ?",
-                "options": [
-                    "Scanner",
-                    "ECG",
-                    "IRM",
-                    "Radio thorax"
-                ],
-                "correct_index": 1
-            },
-            "feedback_error": "Pensez au standard d'urgence !"
+          "type": "Asthme",
+          "traitement": "Ventaline"
         }
-    ],
-    "possibleDiagnostics": [
-        "IDM",
-        "Péricardite",
-        "Angoisse"
-    ],
-    "correctDiagnostic": "IDM",
-    "scoringRules": {
-        "baseScore": 100,
-        "attemptPenalty": 10
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
     },
-    "possibleTreatments": [
-        "Aspirine",
-        "Coronarographie",
-        "Repos"
-    ],
-    "correctTreatments": [
-        "Aspirine",
-        "Coronarographie"
-    ],
-    "correction": "IDM ST+ nécessite une prise en charge en urgence."
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 heure",
+      "evolution": "Brutale",
+      "facteursDeclenchants": "Repos",
+      "symptomesAssocies": [
+        "Sueur"
+      ],
+      "remarques": "Le patient a également une légère dyspnée d'effort."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "80 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Angoissé",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur normaux"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Troponine"
+  ],
+  "examResults": {
+    "ECG": "Infarctus du myocarde (ST+)",
+    "Troponine": "Elevée"
+  },
+  "locks": [
+    {
+      "id": "lock_histoire",
+      "type": "SAISIE",
+      "target_fields": [
+        "interrogatoire.histoireMaladie.remarques"
+      ],
+      "challenge": {
+        "question": "Quel est le mot de passe pour voir les remarques ? (Indice: cardiologie)",
+        "expected_keywords": [
+          "cardiologie"
+        ]
+      },
+      "feedback_error": "Mauvais mot de passe. Essayez 'cardiologie'."
+    },
+    {
+      "id": "lock_ecg",
+      "type": "QCM",
+      "target_fields": [
+        "examResults.ECG"
+      ],
+      "challenge": {
+        "question": "Quel examen est indispensable devant une douleur thoracique ?",
+        "options": [
+          "Scanner",
+          "ECG",
+          "IRM",
+          "Radio thorax"
+        ],
+        "correct_index": 1
+      },
+      "feedback_error": "Pensez au standard d'urgence !"
+    }
+  ],
+  "possibleDiagnostics": [
+    "IDM",
+    "Péricardite",
+    "Angoisse"
+  ],
+  "correctDiagnostic": "IDM",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Aspirine",
+    "Coronarographie",
+    "Repos"
+  ],
+  "correctTreatments": [
+    "Aspirine",
+    "Coronarographie"
+  ],
+  "correction": "IDM ST+ nécessite une prise en charge en urgence."
 }

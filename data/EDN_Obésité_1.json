@@ -12,24 +12,55 @@
   "interrogatoire": {
     "motifHospitalisation": "Fatigue chronique et douleurs articulaires",
     "modeDeVie": {
-      "activitePhysique": { "description": "Sédentaire, joueur professionnel de League of Legends" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Hypercalorique", "particularites": "Préférence pour snacks et boissons énergétiques" },
-      "emploi": { "profession": "Joueur pro e-sport (LoL)", "stress": "Élevé en compétition" }
+      "activitePhysique": {
+        "description": "Sédentaire, joueur professionnel de League of Legends"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Hypercalorique",
+        "particularites": "Préférence pour snacks et boissons énergétiques"
+      },
+      "emploi": {
+        "profession": "Joueur pro e-sport (LoL)",
+        "stress": "Élevé en compétition"
+      }
     },
     "antecedents": {
-      "medicaux": ["Arthrose genou droit", "Obésité depuis l’adolescence"],
+      "medicaux": [
+        "Arthrose genou droit",
+        "Obésité depuis l’adolescence"
+      ],
       "chirurgicaux": [],
-      "familiaux": [{ "lien": "Mère", "pathologie": "Diabète type 2", "age": "55" }]
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2",
+          "age": "55"
+        }
+      ]
     },
-    "traitements": ["Paracétamol occasionnel pour arthrose"],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      "Paracétamol occasionnel pour arthrose"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Plusieurs années",
       "evolution": "Progressive",
       "facteursDeclenchants": "Mode de vie sédentaire et alimentation riche",
-      "symptomesAssocies": ["Fatigue", "Douleurs articulaires", "Essoufflement léger"],
+      "symptomesAssocies": [
+        "Fatigue",
+        "Douleurs articulaires",
+        "Essoufflement léger"
+      ],
       "remarques": "Peu motivé pour changer son alimentation ou augmenter son activité physique."
     }
   },
@@ -42,11 +73,21 @@
       "frequenceRespiratoire": "18/min"
     },
     "aspectGeneral": "Obèse, démarche lente due à l’arthrose",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Tour de taille 110 cm, adiposité marquée" },
-    "examenNeurologique": { "conscience": "Normale" },
-    "examenOsteoarticulaire": { "genouDroit": "Signes d’arthrose, douleur à la mobilisation" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Tour de taille 110 cm, adiposité marquée"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenOsteoarticulaire": {
+      "genouDroit": "Signes d’arthrose, douleur à la mobilisation"
+    }
   },
   "availableExams": [
     "Bilan sanguin complet",
@@ -99,7 +140,10 @@
     "Obésité": "Diagnostic correct ! Liée à un mode de vie sédentaire et une alimentation hypercalorique.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Régime hypocalorique",
     "Activité physique adaptée",
@@ -114,5 +158,5 @@
     "Activité physique adaptée",
     "Antalgiques pour arthrose"
   ],
-  "correction": "<h3>Obésité</h3>\n<p>IMC élevé, tour de taille important, douleurs articulaires et comorbidités associées.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Programme nutritionnel hypocalorique individualisé</li><li>Activité physique adaptée et progressivité</li><li>Prise en charge des comorbidités (arthrose, bilan métabolique)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Interventions médicamenteuses sans prise en charge du mode de vie</li><li>Objectifs irréalistes et non sécurisés</li></ul>"
+  "correction": "# Obésité\n\nIMC élevé, tour de taille important, douleurs articulaires et comorbidités associées.\n\n## Bonnes pratiques\n\n- Programme nutritionnel hypocalorique individualisé\n- Activité physique adaptée et progressivité\n- Prise en charge des comorbidités (arthrose, bilan métabolique)\n\n## Erreurs à éviter\n\n- Interventions médicamenteuses sans prise en charge du mode de vie\n- Objectifs irréalistes et non sécurisés"
 }

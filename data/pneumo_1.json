@@ -12,24 +12,64 @@
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée et œdèmes",
     "modeDeVie": {
-      "activitePhysique": { "description": "Sédentaire" },
-      "tabac": { "quantite": "20 P/J", "duree": "30 ans" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Retraité", "stress": "Faible" }
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "20 P/J",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
     },
     "antecedents": {
-      "medicaux": [{ "type": "HTA", "traitement": "IEC" }],
-      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2000" }],
-      "familiaux": [{ "lien": "Père", "pathologie": "Infarctus", "age": "70" }]
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2000"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Infarctus",
+          "age": "70"
+        }
+      ]
     },
-    "traitements": [{ "nom": "Amlodipine", "dose": "5 mg", "frequence": "1/j" }],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      {
+        "nom": "Amlodipine",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "2 semaines",
       "evolution": "Progressive",
       "facteursDeclenchants": "Effort",
-      "symptomesAssocies": ["Fatigue"],
+      "symptomesAssocies": [
+        "Fatigue"
+      ],
       "remarques": "Aucun"
     }
   },
@@ -42,10 +82,18 @@
       "frequenceRespiratoire": "20/min"
     },
     "aspectGeneral": "Pâleur",
-    "examenCardiovasculaire": { "auscultation": "Souffle systolique" },
-    "examenPulmonaire": { "auscultation": "Râles crépitants" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles crépitants"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
     "ECG",
@@ -90,15 +138,30 @@
     "Dosage des anticorps anti-nucléaires": "Négatif",
     "glycemie": "1.1 g/L"
   },
-  "possibleDiagnostics": ["Insuffisance cardiaque", "Pneumonie", "Embolie pulmonaire", "Asthme"],
+  "possibleDiagnostics": [
+    "Insuffisance cardiaque",
+    "Pneumonie",
+    "Embolie pulmonaire",
+    "Asthme"
+  ],
   "correctDiagnostic": "Insuffisance cardiaque",
   "feedback": {
     "Insuffisance cardiaque": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Oxygénothérapie", "Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Bêta-bloquants"],
-  "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"]
-,
-  "correction": "<h3>Insuffisance cardiaque</h3>\n<p>Dyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Diurétiques pour décongestion, IEC pour le remodelage</li><li>Évaluer la FE et rechercher cause ischémique si indiqué</li><li>Éducation, suivi du poids, adaptation thérapeutique</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec pneumonie sans arguments infectieux</li><li>Ignorer l’optimisation du traitement de fond</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Oxygénothérapie",
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)",
+    "Bêta-bloquants"
+  ],
+  "correctTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)"
+  ],
+  "correction": "# Insuffisance cardiaque\n\nDyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.\n\n## Bonnes pratiques\n\n- Diurétiques pour décongestion, IEC pour le remodelage\n- Évaluer la FE et rechercher cause ischémique si indiqué\n- Éducation, suivi du poids, adaptation thérapeutique\n\n## Erreurs à éviter\n\n- Confondre avec pneumonie sans arguments infectieux\n- Ignorer l’optimisation du traitement de fond"
 }

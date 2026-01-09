@@ -13,11 +13,24 @@
   "interrogatoire": {
     "motifHospitalisation": "HTA sévère détectée lors bilan pré-opératoire",
     "modeDeVie": {
-      "activitePhysique": { "description": "Marche occasionnelle" },
-      "tabac": { "quantite": "5/jj", "duree": "15 ans" },
-      "alcool": { "quantite": "3 verres/sem" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Informaticien", "stress": "Elevé" }
+      "activitePhysique": {
+        "description": "Marche occasionnelle"
+      },
+      "tabac": {
+        "quantite": "5/jj",
+        "duree": "15 ans"
+      },
+      "alcool": {
+        "quantite": "3 verres/sem"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Informaticien",
+        "stress": "Elevé"
+      }
     },
     "antecedents": {
       "medicaux": [],
@@ -25,12 +38,18 @@
       "familiaux": []
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "HTA persistante malgré restriction sel",
       "facteursDeclenchants": "Aucun",
-      "symptomesAssocies": ["Crampes musculaires", "Fatigue"],
+      "symptomesAssocies": [
+        "Crampes musculaires",
+        "Fatigue"
+      ],
       "remarques": "Hypokaliémie récurrente"
     }
   },
@@ -43,12 +62,35 @@
       "frequenceRespiratoire": "16/min"
     },
     "aspectGeneral": "Normal",
-    "examenCardiovasculaire": { "auscultation": "Normal",  "inspection": "Normal"},
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
-  "availableExams": ["ECG", "Echographie", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner", "Ionogramme", "Créatinine", "Dosage aldostérone/plasma rénine", "Scanner surrénalien"],
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner",
+    "Ionogramme",
+    "Créatinine",
+    "Dosage aldostérone/plasma rénine",
+    "Scanner surrénalien"
+  ],
   "examResults": {
     "ECG": "Normal",
     "Echographie": "RAS",
@@ -62,17 +104,32 @@
     "Angioscanner": "RAS",
     "Ionogramme": "Na : 142 mmol/L, K : 2,9 mmol/L",
     "Créatinine": "0.9 mg/dL, DFG 90 ml/min",
-   "Dosage aldostérone/plasma rénine": "Aldostérone élevée, rénine basse",
-   "Scanner surrénalien": "Adénome surrénalien droit 1.5 cm"
+    "Dosage aldostérone/plasma rénine": "Aldostérone élevée, rénine basse",
+    "Scanner surrénalien": "Adénome surrénalien droit 1.5 cm"
   },
-    "possibleDiagnostics": ["HTA essentielle", "HTA secondaire par hyperaldostéronisme primaire", "Coarctation aortique", "Phéochromocytome"],
+  "possibleDiagnostics": [
+    "HTA essentielle",
+    "HTA secondaire par hyperaldostéronisme primaire",
+    "Coarctation aortique",
+    "Phéochromocytome"
+  ],
   "correctDiagnostic": "HTA secondaire par hyperaldostéronisme primaire",
   "feedback": {
     "HTA secondaire par hyperaldostéronisme primaire": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Spironolactone", "IEC", "Chirurgie surrénalienne", "Bêta-bloquants"],
-  "correctTreatments": ["Chirurgie surrénalienne"],
-  "correction": "<h3>HTA secondaire : hyperaldostéronisme primaire</h3>\n<p>HTA sévère, hypokaliémie, aldostérone élevée et rénine basse orientent vers un adénome surrénalien (syndrome de Conn).</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmation par dosage aldostérone/rénine</li><li>Scanner surrénalien pour localisation</li><li>Chirurgie (surrénalectomie) si unilatérale</li><li>Suivi tensionnel post-opératoire</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Ne pas vérifier hypokaliémie</li><li>Confondre avec HTA essentielle et débuter traitement sans imagerie</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Spironolactone",
+    "IEC",
+    "Chirurgie surrénalienne",
+    "Bêta-bloquants"
+  ],
+  "correctTreatments": [
+    "Chirurgie surrénalienne"
+  ],
+  "correction": "# HTA secondaire : hyperaldostéronisme primaire\n\nHTA sévère, hypokaliémie, aldostérone élevée et rénine basse orientent vers un adénome surrénalien (syndrome de Conn).\n\n## Bonnes pratiques\n\n- Confirmation par dosage aldostérone/rénine\n- Scanner surrénalien pour localisation\n- Chirurgie (surrénalectomie) si unilatérale\n- Suivi tensionnel post-opératoire\n\n## Erreurs à éviter\n\n- Ne pas vérifier hypokaliémie\n- Confondre avec HTA essentielle et débuter traitement sans imagerie"
 }

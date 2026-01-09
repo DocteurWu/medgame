@@ -114,7 +114,7 @@
   "correctTreatments": [
     "Mesures hygiéno-diététiques"
   ],
-  "correction": "# Crise épileptique généralisée tonico-cloniqueProbablement idiopathique (alcool et manque de sommeil)## Points Importants- Interrogatoire très important (et des proches aussi +++)- EEG utile pour différencier crise généralisée et focale mais peut-être normal même si l'épilepsie est vraie- Pas de traitement antiépileptique immédiat après une première crise isolée",
+  "correction": "# Crise épileptique généralisée tonico-cloniqueProbablement idiopathique (alcool et manque de sommeil)\n\n## Points Importants\n- Interrogatoire très important (et des proches aussi +++)\n- EEG utile pour différencier crise généralisée et focale mais peut-être normal même si l'épilepsie est vraie\n- Pas de traitement antiépileptique immédiat après une première crise isolée",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

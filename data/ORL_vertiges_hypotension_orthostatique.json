@@ -12,27 +12,56 @@
   "interrogatoire": {
     "motifHospitalisation": "Vertiges intenses au lever depuis une semaine",
     "modeDeVie": {
-      "activitePhysique": { "description": "Entraînement pompier, course, port de charges" },
-      "tabac": { "quantite": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Hydratation parfois insuffisante" },
-      "emploi": { "profession": "Pompier", "stress": "Élevé" }
+      "activitePhysique": {
+        "description": "Entraînement pompier, course, port de charges"
+      },
+      "tabac": {
+        "quantite": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Hydratation parfois insuffisante"
+      },
+      "emploi": {
+        "profession": "Pompier",
+        "stress": "Élevé"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Épisodes d'hypotension lors d'efforts prolongés", "traitement": "Aucun" }
+        {
+          "type": "Épisodes d'hypotension lors d'efforts prolongés",
+          "traitement": "Aucun"
+        }
       ],
       "chirurgicaux": [
-        { "intervention": "Fracture du radius opérée", "date": "5 ans" }
+        {
+          "intervention": "Fracture du radius opérée",
+          "date": "5 ans"
+        }
       ],
       "familiaux": [
-        { "lien": "Père", "pathologie": "Hypertension", "age": "60" }
+        {
+          "lien": "Père",
+          "pathologie": "Hypertension",
+          "age": "60"
+        }
       ]
     },
     "traitements": [
-      { "nom": "Ibuprofène", "dose": "400 mg", "frequence": "Selon douleurs musculaires" }
+      {
+        "nom": "Ibuprofène",
+        "dose": "400 mg",
+        "frequence": "Selon douleurs musculaires"
+      }
     ],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "1 semaine",
       "evolution": "Vertiges en augmentation, surtout le matin",
@@ -59,7 +88,9 @@
       "auscultation": "Normal",
       "orthostatisme": "Chute tensionnelle significative : -25 mmHg systolique au lever"
     },
-    "examenPulmonaire": { "auscultation": "Normal" },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
     "examenNeurologique": {
       "conscience": "Normale",
       "coordination": "Normale",
@@ -100,7 +131,10 @@
     "Hypotension orthostatique": "Correct ! Vertiges non rotatoires, déclenchés par le lever, chute tensionnelle mesurée.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Hydratation orale",
     "Augmentation apport en sel",
@@ -114,5 +148,5 @@
     "Augmentation apport en sel",
     "Éducation au lever progressif"
   ],
-  "correction": "<h3>Hypotension orthostatique</h3>\n<p>Les vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.</p>\n<h4>Points clés</h4>\n<ul><li>Vertiges non systématisés = origine centrale ou cardiovasculaire</li><li>Orthostatisme positif = diagnostic confirmé</li><li>Contexte de déshydratation et fortes dépenses physiques chez un pompier</li></ul>\n<h4>Prise en charge</h4>\n<ul><li>Réhydratation</li><li>Mesures physiques simples</li><li>Réévaluation si persistance</li></ul>"
+  "correction": "# Hypotension orthostatique\n\nLes vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.\n\n## Points clés\n\n- Vertiges non systématisés = origine centrale ou cardiovasculaire\n- Orthostatisme positif = diagnostic confirmé\n- Contexte de déshydratation et fortes dépenses physiques chez un pompier\n\n## Prise en charge\n\n- Réhydratation\n- Mesures physiques simples\n- Réévaluation si persistance"
 }

@@ -12,24 +12,64 @@
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée et œdèmes",
     "modeDeVie": {
-      "activitePhysique": { "description": "Sédentaire" },
-      "tabac": { "quantite": "20 PA", "duree": "30 ans" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Retraité", "stress": "Faible" }
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "20 PA",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
     },
     "antecedents": {
-      "medicaux": [{ "type": "HTA", "traitement": "IEC" }],
-      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2000" }],
-      "familiaux": [{ "lien": "Père", "pathologie": "Infarctus", "age": "70" }]
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2000"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Infarctus",
+          "age": "70"
+        }
+      ]
     },
-    "traitements": [{ "nom": "Amlodipine", "dose": "5 mg", "frequence": "1/j" }],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      {
+        "nom": "Amlodipine",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "2 semaines",
       "evolution": "Progressive",
       "facteursDeclenchants": "Effort",
-      "symptomesAssocies": ["Fatigue"],
+      "symptomesAssocies": [
+        "Fatigue"
+      ],
       "remarques": "Aucun"
     }
   },
@@ -42,17 +82,39 @@
       "frequenceRespiratoire": "20/min"
     },
     "aspectGeneral": "Pâleur",
-    "examenCardiovasculaire": { "auscultation": "Souffle systolique" },
-    "examenPulmonaire": { "auscultation": "Râles crépitants" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles crépitants"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
-  "availableExams": ["ECG", "Echographie", "Radio thorax", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner"],
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner"
+  ],
   "examResults": {
     "ECG": "Tachycardie sinusale",
     "Echographie": "Fraction d’éjection réduite",
     "glycemie": "1.0 g/L",
-    "Radio thorax": { "text": "Infiltrat basal droit", "image": "assets/images/default-patient.jpg" },
+    "Radio thorax": {
+      "text": "Infiltrat basal droit",
+      "image": "assets/images/default-patient.jpg"
+    },
     "Bilan sanguin": "RAS",
     "Test d'effort": "Positif",
     "Holter ECG": "RAS",
@@ -61,14 +123,30 @@
     "Scanner cardiaque": "RAS",
     "Angioscanner": "RAS"
   },
-    "possibleDiagnostics": ["Insuffisance cardiaque", "Valvulopathie", "Trouble du rythme", "Angor stable"],
+  "possibleDiagnostics": [
+    "Insuffisance cardiaque",
+    "Valvulopathie",
+    "Trouble du rythme",
+    "Angor stable"
+  ],
   "correctDiagnostic": "Insuffisance cardiaque",
   "feedback": {
     "Insuffisance cardiaque": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)", "Bêta-bloquants", "Digitaliques"],
-  "correctTreatments": ["Diurétiques", "Inhibiteurs de l'enzyme de conversion (IEC)"],
-  "correction": "<h3>Insuffisance cardiaque</h3>\n<p>Dyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Évaluer la fraction d’éjection à l’échographie</li><li>Initier diurétiques et IEC en première intention</li><li>Surveiller le poids, la diurèse et l’ionogramme</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Oublier l’adaptation des doses selon la fonction rénale</li><li>Négliger la recherche d’une cause ischémique en cas de suspicion</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)",
+    "Bêta-bloquants",
+    "Digitaliques"
+  ],
+  "correctTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)"
+  ],
+  "correction": "# Insuffisance cardiaque\n\nDyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.\n\n## Bonnes pratiques\n\n- Évaluer la fraction d’éjection à l’échographie\n- Initier diurétiques et IEC en première intention\n- Surveiller le poids, la diurèse et l’ionogramme\n\n## Erreurs à éviter\n\n- Oublier l’adaptation des doses selon la fonction rénale\n- Négliger la recherche d’une cause ischémique en cas de suspicion"
 }

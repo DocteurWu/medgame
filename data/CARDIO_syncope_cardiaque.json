@@ -13,24 +13,68 @@
   "interrogatoire": {
     "motifHospitalisation": "Perte de connaissance brutale",
     "modeDeVie": {
-      "activitePhysique": { "description": "Faible" },
-      "tabac": { "quantite": "Ancien fumeur (1 paquet/j)", "duree": "Pendant 30 ans puis arrêt il y a 10 ans" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Retraité", "stress": "Faible" }
+      "activitePhysique": {
+        "description": "Faible"
+      },
+      "tabac": {
+        "quantite": "Ancien fumeur (1 paquet/j)",
+        "duree": "Pendant 30 ans puis arrêt il y a 10 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
     },
     "antecedents": {
-      "medicaux": [{ "type": "Cardiopathie ischémique", "traitement": "Aspirine" }, { "type": "HTA", "traitement": "ARA2" }],
+      "medicaux": [
+        {
+          "type": "Cardiopathie ischémique",
+          "traitement": "Aspirine"
+        },
+        {
+          "type": "HTA",
+          "traitement": "ARA2"
+        }
+      ],
       "chirurgicaux": [],
-      "familiaux": [{ "lien": "Père", "pathologie": "Mort subite", "age": "78" }]
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Mort subite",
+          "age": "78"
+        }
+      ]
     },
-    "traitements": [{ "nom": "Aspirine", "dose": "75 mg", "frequence": "1/j" }, { "nom": "Losartan (ARA2)", "dose": "50 mg", "frequence": "1/j" } ],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      {
+        "nom": "Aspirine",
+        "dose": "75 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Losartan (ARA2)",
+        "dose": "50 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Quelques secondes avant la chute",
       "evolution": "Survenue brutale, sans prodrome, évènement unique",
       "facteursDeclenchants": "Aucun déclencheur, survenue au repos",
-      "symptomesAssocies": ["Palpitations brèves juste avant la perte de connaissance"],
+      "symptomesAssocies": [
+        "Palpitations brèves juste avant la perte de connaissance"
+      ],
       "remarques": "Récupération rapide après quelques secondes"
     }
   },
@@ -43,17 +87,40 @@
       "frequenceRespiratoire": "14/min"
     },
     "aspectGeneral": "Contusion légère au front (chute)",
-    "examenCardiovasculaire": { "auscultation": "Rythme irrégulier",  "inspection": "Normal"},
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normal" }
+    "examenCardiovasculaire": {
+      "auscultation": "Rythme irrégulier",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normal"
+    }
   },
-  "availableExams": ["ECG", "Echographie", "Radio thorax", "Bilan sanguin", "Test d'effort", "Holter ECG", "Coronarographie", "IRM cardiaque", "Scanner cardiaque", "Angioscanner"],
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner"
+  ],
   "examResults": {
     "ECG": "Trouble du rythme intermittent (irrégularité)",
     "Echographie": "Fraction d'éjection normale, cicatrice ancienne d'infarctus",
     "glycemie": "0,92 g/L",
-    "Radio thorax": { "text": "Cardiomégalie modérée", "image": "assets/images/MODIF_LE_NOM_ICI.jpg" },
+    "Radio thorax": {
+      "text": "Cardiomégalie modérée",
+      "image": "assets/images/MODIF_LE_NOM_ICI.jpg"
+    },
     "Bilan sanguin": "RAS",
     "Test d'effort": "Non réalisé",
     "Holter ECG": "Épisodes de pauses sinusales brèves",
@@ -62,24 +129,31 @@
     "Scanner cardiaque": "RAS",
     "Angioscanner": "RAS"
   },
-    "possibleDiagnostics": ["Syncope cardiaque",
+  "possibleDiagnostics": [
+    "Syncope cardiaque",
     "Syncope vasovagale",
     "Hypotension orthostatique",
     "Crise d’épilepsie"
-],
+  ],
   "correctDiagnostic": "Syncope cardiaque",
   "feedback": {
     "Syncope cardiaque": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Implantation d'un pacemaker",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Implantation d'un pacemaker",
     "Hospitalisation en cardiologie",
     "Hydratation",
     "Arrêt du tabac",
     "Beta-bloquants"
-],
-  "correctTreatments": ["Implantation d'un pacemaker",
-    "Hospitalisation en cardiologie"],
-  "correction": "<h3>Syncope cardiaque</h3><p>Survenue brutale, sans prodrome, contexte de cardiopathie + anomalies ECG = très évocateur.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Hospitalisation en cardiologie</li><li>Monitoring</li><li>Pacemaker si trouble de conduction confirmé</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Rassurer à tort : syncope cardiaque = potentiellement grave</li></ul>"
+  ],
+  "correctTreatments": [
+    "Implantation d'un pacemaker",
+    "Hospitalisation en cardiologie"
+  ],
+  "correction": "# Syncope cardiaque\n\nSurvenue brutale, sans prodrome, contexte de cardiopathie + anomalies ECG = très évocateur.\n\n## Bonnes pratiques\n\n- Hospitalisation en cardiologie\n- Monitoring\n- Pacemaker si trouble de conduction confirmé\n\n## Erreurs à éviter\n\n- Rassurer à tort : syncope cardiaque = potentiellement grave"
 }

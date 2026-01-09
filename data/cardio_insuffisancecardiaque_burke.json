@@ -125,7 +125,7 @@
   "correctTreatments": [
     "IEC"
   ],
-  "correction": "IC à FE préservée&nbsp;<br>&nbsp; &nbsp;-&gt; Pas d'OMI donc pas besoin de diurétiques<br>&nbsp; &nbsp;-&gt; IEC comme traitement de l'insuffisance cardiaque<br>HTA (facteur de risque majeur d'IC) cause l'HVG<br>",
+  "correction": "IC à FE préservée    -> Pas d'OMI donc pas besoin de diurétiques   -> IEC comme traitement de l'insuffisance cardiaqueHTA (facteur de risque majeur d'IC) cause l'HVG",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

@@ -13,24 +13,59 @@
   "interrogatoire": {
     "motifHospitalisation": "Douleur thoracique à l'effort",
     "modeDeVie": {
-      "activitePhysique": { "description": "Marche régulière 30 min/jour" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Occasionnel" },
-      "alimentation": { "regime": "Méditerranéen", "particularites": "Aucune" },
-      "emploi": { "profession": "Secrétaire", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Marche régulière 30 min/jour"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Méditerranéen",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Secrétaire",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
-      "medicaux": [{ "type": "Diabète de type 2", "traitement": "Diabète de type 2" }],
+      "medicaux": [
+        {
+          "type": "Diabète de type 2",
+          "traitement": "Diabète de type 2"
+        }
+      ],
       "chirurgicaux": [],
-      "familiaux": [{ "lien": "Père", "pathologie": "Infarctus", "age": "65" }]
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Infarctus",
+          "age": "65"
+        }
+      ]
     },
-    "traitements": [{ "nom": "Metformine", "dose": "500 mg", "frequence": "2/j" }],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      {
+        "nom": "Metformine",
+        "dose": "500 mg",
+        "frequence": "2/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "Stable",
       "facteursDeclenchants": "Effort modéré (montée d’escaliers)",
-      "symptomesAssocies": ["Dyspnée légère à l'effort"],
+      "symptomesAssocies": [
+        "Dyspnée légère à l'effort"
+      ],
       "remarques": "Douleur disparaît à l'arrêt et répond à trinitrine"
     }
   },
@@ -43,12 +78,30 @@
       "frequenceRespiratoire": "18/min"
     },
     "aspectGeneral": "Normal",
-    "examenCardiovasculaire": { "auscultation": "Rythme régulier, pas de souffle",  "inspection": "Normal"},
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Normal" },
-    "examenNeurologique": { "conscience": "Normal" }
+    "examenCardiovasculaire": {
+      "auscultation": "Rythme régulier, pas de souffle",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normal"
+    }
   },
-  "availableExams": ["ECG", "Echographie", "Bilan sanguin", "Test d'effort", "Holter ECG", "Angiographie coronarienne", "IRM cardiaque", "Scintigraphie myocardique"],
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Angiographie coronarienne",
+    "IRM cardiaque",
+    "Scintigraphie myocardique"
+  ],
   "examResults": {
     "ECG": "Normal au repos",
     "Echographie": "Fonction systolique normale, pas d'anomalie segmentaire au repos",
@@ -60,14 +113,31 @@
     "IRM cardiaque": "Non indiqué",
     "Scintigraphie myocardique": "Ischémie sous-maximale latérale gauche"
   },
-    "possibleDiagnostics": ["Angor stable", "Syndrome coronarien aigu", "Insuffisance cardiaque", "Trouble du rythme"],
+  "possibleDiagnostics": [
+    "Angor stable",
+    "Syndrome coronarien aigu",
+    "Insuffisance cardiaque",
+    "Trouble du rythme"
+  ],
   "correctDiagnostic": "Angor stable",
   "feedback": {
     "Angor stable": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
-  "possibleTreatments": ["Bêta-bloquant", "Inhibiteur calcique", "Aspirine", "Adrénaline", "Trinitrine sublinguale (dérivé nitré)"],
-  "correctTreatments": ["Bêta-bloquant", "Trinitrine sublinguale (dérivé nitré)"],
-  "correction": "<h3>Angor stable</h3>\n<p>Douleur thoracique à l'effort, disparaissant à l'arrêt, trinitro-sensible et stable depuis 6 mois.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Confirmer l’ischémie par test d’effort ou scintigraphie myocardique</li><li>Coronarographie si sténose significative ou angor limitant</li><li>Traitement médical : bêta-bloquant trinitrine sublinguale (dérivé nitré)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Ignorer les facteurs de risque cardiovasculaire</li><li>Ne pas évaluer l’intensité de l’ischémie à l’effort</li></ul>"
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Bêta-bloquant",
+    "Inhibiteur calcique",
+    "Aspirine",
+    "Adrénaline",
+    "Trinitrine sublinguale (dérivé nitré)"
+  ],
+  "correctTreatments": [
+    "Bêta-bloquant",
+    "Trinitrine sublinguale (dérivé nitré)"
+  ],
+  "correction": "# Angor stable\n\nDouleur thoracique à l'effort, disparaissant à l'arrêt, trinitro-sensible et stable depuis 6 mois.\n\n## Bonnes pratiques\n\n- Confirmer l’ischémie par test d’effort ou scintigraphie myocardique\n- Coronarographie si sténose significative ou angor limitant\n- Traitement médical : bêta-bloquant trinitrine sublinguale (dérivé nitré)\n\n## Erreurs à éviter\n\n- Ignorer les facteurs de risque cardiovasculaire\n- Ne pas évaluer l’intensité de l’ischémie à l’effort"
 }

@@ -124,7 +124,7 @@
   "correctTreatments": [
     "Antiépileptique focal"
   ],
-  "correction": "# Epilepsie temporale\n\nCrise focale et non généralisée\n\n## Points Importants\n- Signes spécifiques à la région temporale\n- EEG et imagerie pour caractériser la crise (généralisée ou focale)\n- Traitement à donner car arguments pour une épilepsie vraie\n",
+  "correction": "# Epilepsie temporale\n\nCrise focale et non généralisée\n\n## Points Importants\n- Signes spécifiques à la région temporale\n- EEG et imagerie pour caractériser la crise (généralisée ou focale)\n- Traitement à donner car arguments pour une épilepsie vraie",
   "correctionImage": null,
   "feedback": {
     "default": "Diagnostic incorrect."

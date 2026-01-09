@@ -13,28 +13,61 @@
   "interrogatoire": {
     "motifHospitalisation": "Baisse de la qualité des érections depuis plusieurs mois",
     "modeDeVie": {
-      "activitePhysique": { "description": "Entraînement militaire régulier" },
-      "tabac": { "quantite": "0", "duree": "toujours" },
-      "alcool": { "quantite": "2-3 verres/semaine" },
-      "alimentation": { "regime": "Proteinée", "particularites": "Repas irréguliers lors des missions" },
-      "emploi": { "profession": "Officier militaire – opérations extérieures", "stress": "Très élevé" }
+      "activitePhysique": {
+        "description": "Entraînement militaire régulier"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "toujours"
+      },
+      "alcool": {
+        "quantite": "2-3 verres/semaine"
+      },
+      "alimentation": {
+        "regime": "Proteinée",
+        "particularites": "Repas irréguliers lors des missions"
+      },
+      "emploi": {
+        "profession": "Officier militaire – opérations extérieures",
+        "stress": "Très élevé"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Hypertension artérielle débutante", "traitement": "Amlodipine 5 mg/j" },
-        { "type": "Stress post-traumatique", "traitement": "Suivi psychologique" }
+        {
+          "type": "Hypertension artérielle débutante",
+          "traitement": "Amlodipine 5 mg/j"
+        },
+        {
+          "type": "Stress post-traumatique",
+          "traitement": "Suivi psychologique"
+        }
       ],
       "chirurgicaux": [
-        { "intervention": "Laparotomie pour plaie abdominale en mission", "date": "Il y a 5 ans" }
+        {
+          "intervention": "Laparotomie pour plaie abdominale en mission",
+          "date": "Il y a 5 ans"
+        }
       ],
       "familiaux": [
-        { "lien": "Père", "pathologie": "Hypertension et cardiopathie ischémique", "age": "72" }
+        {
+          "lien": "Père",
+          "pathologie": "Hypertension et cardiopathie ischémique",
+          "age": "72"
+        }
       ]
     },
     "traitements": [
-      { "nom": "Amlodipine", "dose": "5 mg", "fréquence": "1/j" }
+      {
+        "nom": "Amlodipine",
+        "dose": "5 mg",
+        "fréquence": "1/j"
+      }
     ],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "Progressive",
@@ -57,10 +90,18 @@
       "frequenceRespiratoire": "14/min"
     },
     "aspectGeneral": "Fatigue accumulée, hypervigilance",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Souple, RAS" },
-    "examenNeurologique": { "conscience": "Normale" },
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, RAS"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
     "examenUrologique": {
       "testSensibilite": "Sensibilité périnéale normale",
       "examenPenien": "Normal",
@@ -97,7 +138,10 @@
     "Dysfonction érectile mixte (psychogène + vasculaire)": "Correct ! Facteurs vasculaires légers + stress post-traumatique + fatigue = DE mixte.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "IPPDE5 (ex : sildenafil)",
     "Thérapie psychologique",
@@ -112,5 +156,5 @@
     "Optimisation du traitement antihypertenseur",
     "Hygiène de vie : sommeil, activité physique, réduction stress"
   ],
-  "correction": "<h3>Dysfonction érectile mixte</h3>\n<p>Le patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Rechercher systématiquement des facteurs cardiovasculaires</li><li>Évaluer la part psychogène via questionnaires et interrogatoire</li><li>IPPDE5 en 1re intention en cas d’absence de contre-indication</li><li>Prise en charge du stress et du sommeil</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Mettre d’emblée un traitement hormonal sans hypogonadisme avéré</li><li>Oublier la dimension psychogène dans les DE post-traumatiques</li><li>Ignorer les facteurs cardio-vasculaires débutants</li></ul>"
+  "correction": "# Dysfonction érectile mixte\n\nLe patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement des facteurs cardiovasculaires\n- Évaluer la part psychogène via questionnaires et interrogatoire\n- IPPDE5 en 1re intention en cas d’absence de contre-indication\n- Prise en charge du stress et du sommeil\n\n## Erreurs à éviter\n\n- Mettre d’emblée un traitement hormonal sans hypogonadisme avéré\n- Oublier la dimension psychogène dans les DE post-traumatiques\n- Ignorer les facteurs cardio-vasculaires débutants"
 }

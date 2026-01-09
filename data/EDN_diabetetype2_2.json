@@ -12,27 +12,59 @@
   "interrogatoire": {
     "motifHospitalisation": "Fatigue et vision floue occasionnelle",
     "modeDeVie": {
-      "activitePhysique": { "description": "Sédentaire, peu d’exercice" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "Modéré" },
-      "alimentation": { "regime": "Riche en sucres et graisses", "particularites": "Préférence pour plats préparés" },
-      "emploi": { "profession": "Employé de bureau", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Sédentaire, peu d’exercice"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Modéré"
+      },
+      "alimentation": {
+        "regime": "Riche en sucres et graisses",
+        "particularites": "Préférence pour plats préparés"
+      },
+      "emploi": {
+        "profession": "Employé de bureau",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
-      "medicaux": ["Hypertension artérielle"],
+      "medicaux": [
+        "Hypertension artérielle"
+      ],
       "chirurgicaux": [],
       "familiaux": [
-        { "lien": "Mère", "pathologie": "Diabète type 2", "age": "78" },
-        { "lien": "Grand-père paternel", "pathologie": "Diabète", "age": "décédé" }
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2",
+          "age": "78"
+        },
+        {
+          "lien": "Grand-père paternel",
+          "pathologie": "Diabète",
+          "age": "décédé"
+        }
       ]
     },
-    "traitements": ["Lisinopril 10 mg/jour (hypertension)"],
-    "allergies": { "presence": false, "liste": [] },
+    "traitements": [
+      "Lisinopril 10 mg/jour (hypertension)"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "1 an",
       "evolution": "Lente",
       "facteursDeclenchants": "Inconnus",
-      "symptomesAssocies": ["Fatigue", "Soif modérée", "Vision floue par moments"],
+      "symptomesAssocies": [
+        "Fatigue",
+        "Soif modérée",
+        "Vision floue par moments"
+      ],
       "remarques": "Poids de naissance : 4,2 kg, mère avait un diabète gestationnel."
     }
   },
@@ -45,10 +77,18 @@
       "frequenceRespiratoire": "16/min"
     },
     "aspectGeneral": "Surpoids marqué, obésité abdominale",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Tour de taille 108 cm, adiposité viscérale" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Tour de taille 108 cm, adiposité viscérale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
     "Glycémie à jeun",
@@ -102,7 +142,10 @@
     "Diabète monogénique (MODY)": "Incorrect. Présence de surpoids et syndrome métabolique.",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Activité physique régulière",
     "Régime alimentaire équilibré",
@@ -118,5 +161,5 @@
     "Metformine",
     "Statines"
   ],
-  "correction": "<h3>Diabète de type 2</h3>\n<p>Surpoids abdominal, hyperglycémie, HbA1c élevée, anticorps négatifs: compatible DT2.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Mesures hygiéno‑diététiques structurées</li><li>Metformine si non contre‑indiquée</li><li>Prise en charge du risque cardio‑métabolique (statines, HTA)</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Classer DT1 sans éléments (anticorps, cétose)</li><li>Négliger le suivi (HbA1c, complications micro/macrovasculaires)</li></ul>"
+  "correction": "# Diabète de type 2\n\nSurpoids abdominal, hyperglycémie, HbA1c élevée, anticorps négatifs: compatible DT2.\n\n## Bonnes pratiques\n\n- Mesures hygiéno‑diététiques structurées\n- Metformine si non contre‑indiquée\n- Prise en charge du risque cardio‑métabolique (statines, HTA)\n\n## Erreurs à éviter\n\n- Classer DT1 sans éléments (anticorps, cétose)\n- Négliger le suivi (HbA1c, complications micro/macrovasculaires)"
 }

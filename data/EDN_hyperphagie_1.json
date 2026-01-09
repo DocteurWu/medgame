@@ -1,117 +1,135 @@
 {
   "id": "EDN_hyperphagie_1",
   "patient": {
-  "nom": "DUPONT",
-  "prenom": "Lucas",
-  "age": 22,
-  "sexe": "M",
-  "taille": "185 cm",
-  "poids": "100 kg",
-  "groupeSanguin": "A+"
+    "nom": "DUPONT",
+    "prenom": "Lucas",
+    "age": 22,
+    "sexe": "M",
+    "taille": "185 cm",
+    "poids": "100 kg",
+    "groupeSanguin": "A+"
   },
   "interrogatoire": {
-  "motifHospitalisation": " Prise de poids et crises de boulimie ",
-  "modeDeVie": {
-  "activitePhysique": {
-  "description": "Sédentaire"
-  },
-  "tabac": {
-  "quantite": "0",
-  "duree": "0"
-  },
-  "alcool": {
-  "quantite": "Modérée"
-  },
-  "alimentation": {
-  "regime": " Aléatoire, périodes de restriction suivies de crises ",
-  "particularites": " Mange de grandes quantités en peu de temps, souvent seul "
-  },
-  "emploi": {
-  "profession": "Employé de bureau",
-  "stress": "Modéré"
-  }
-  },
-  "antecedents": {
-  "medicaux": [],
-  "chirurgicaux": [],
-  "familiaux": [{
-  "lien": "Père",
-  "pathologie": " Obésité, diabète de type 2 ",
-  "age": "55"
-  }]
-  },
-  "traitements": [],
-  "allergies": {
-  "presence": false,
-  "liste": []
-  },
-  "histoireMaladie": {
-  "debutSymptomes": " Environ un an ",
-  "evolution": "Progressive",
-  "facteursDeclenchants": " Stress, ennui, émotions négatives ",
-  "symptomesAssocies": [" Culpabilité, honte, prise de poids "],
-  "remarques": " Se sent mal à l'aise en public, surtout lors des repas. Tendance à s'isoler "
-  }
+    "motifHospitalisation": " Prise de poids et crises de boulimie ",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Modérée"
+      },
+      "alimentation": {
+        "regime": " Aléatoire, périodes de restriction suivies de crises ",
+        "particularites": " Mange de grandes quantités en peu de temps, souvent seul "
+      },
+      "emploi": {
+        "profession": "Employé de bureau",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": " Obésité, diabète de type 2 ",
+          "age": "55"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": " Environ un an ",
+      "evolution": "Progressive",
+      "facteursDeclenchants": " Stress, ennui, émotions négatives ",
+      "symptomesAssocies": [
+        " Culpabilité, honte, prise de poids "
+      ],
+      "remarques": " Se sent mal à l'aise en public, surtout lors des repas. Tendance à s'isoler "
+    }
   },
   "examenClinique": {
-  "constantes": {
-  "tension": "130/85 mmHg",
-  "pouls": "85 bpm",
-  "temperature": "36.8°C",
-  "saturationO2": "97%",
-  "frequenceRespiratoire": "18/min"
-  },
-  "aspectGeneral": " Surpoids ",
-  "examenCardiovasculaire": {
-  "auscultation": "Normal"
-  },
-  "examenPulmonaire": {
-  "auscultation": "Normal"
-  },
-  "examenAbdominal": {
-  "palpation": "Non contributif"
-  },
-  "examenNeurologique": {
-  "conscience": "Normale"
-  }
+    "constantes": {
+      "tension": "130/85 mmHg",
+      "pouls": "85 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": " Surpoids ",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Non contributif"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
   "availableExams": [
-  "Bilan sanguin complet",
-  "Bilan thyroïdien",
-  "Examen psychologique",
-  "Dosage de la glycémie",
-  "Bilan lipidique",
-  "Électrocardiogramme (ECG)",
-  "Mesure de la kaliémie",
-  "Dosage de l'amylase",
-  "Dosage de la lipase",
-  "Fibroscopie oeso-gastrique"
+    "Bilan sanguin complet",
+    "Bilan thyroïdien",
+    "Examen psychologique",
+    "Dosage de la glycémie",
+    "Bilan lipidique",
+    "Électrocardiogramme (ECG)",
+    "Mesure de la kaliémie",
+    "Dosage de l'amylase",
+    "Dosage de la lipase",
+    "Fibroscopie oeso-gastrique"
   ],
   "examResults": {
-  "Bilan sanguin complet": "Normal",
-  "Bilan thyroïdien": "Normal",
-  "Examen psychologique": " Signes de dépression et d'anxiété, préoccupations concernant le poids et l'alimentation ",
-  "Dosage de la glycémie": "Normal",
-  "Bilan lipidique": " Cholestérol légèrement élevé ",
-  "Glycémie (contrôle)": "1.1 g/L",
-  "Électrocardiogramme (ECG)": "Normal",
-  "Mesure de la kaliémie": "Normal",
-  "Dosage de l'amylase": "Normal",
-  "Dosage de la lipase": "Normal",
-  "Fibroscopie oeso-gastrique": "Normal"
+    "Bilan sanguin complet": "Normal",
+    "Bilan thyroïdien": "Normal",
+    "Examen psychologique": " Signes de dépression et d'anxiété, préoccupations concernant le poids et l'alimentation ",
+    "Dosage de la glycémie": "Normal",
+    "Bilan lipidique": " Cholestérol légèrement élevé ",
+    "Glycémie (contrôle)": "1.1 g/L",
+    "Électrocardiogramme (ECG)": "Normal",
+    "Mesure de la kaliémie": "Normal",
+    "Dosage de l'amylase": "Normal",
+    "Dosage de la lipase": "Normal",
+    "Fibroscopie oeso-gastrique": "Normal"
   },
-  "possibleDiagnostics": ["Hyperphagie boulimique", "Dépression", "Troubles anxieux", "Anorexie mentale", "Troubles du comportement alimentaire non spécifiés (TCANS)"],
+  "possibleDiagnostics": [
+    "Hyperphagie boulimique",
+    "Dépression",
+    "Troubles anxieux",
+    "Anorexie mentale",
+    "Troubles du comportement alimentaire non spécifiés (TCANS)"
+  ],
   "correctDiagnostic": "Hyperphagie boulimique",
   "feedback": {
-  "Hyperphagie boulimique": "Diagnostic correct !",
-  "default": "Diagnostic incorrect."
+    "Hyperphagie boulimique": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
   },
   "scoringRules": {
-  "baseScore": 100,
-  "attemptPenalty": 10
+    "baseScore": 100,
+    "attemptPenalty": 10
   },
-  "possibleTreatments": ["Thérapie cognitivo-comportementale", "Soutien nutritionnel", "CBD", "Activité physique adaptée"],
-  "correctTreatments": ["Thérapie cognitivo-comportementale", "Soutien nutritionnel", "Activité physique adaptée"]
- ,
-  "correction": "<h3>Hyperphagie boulimique</h3>\n<p>Crises récurrentes avec perte de contrôle, culpabilité et prise de poids.</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Thérapie cognitivo‑comportementale</li><li>Soutien nutritionnel et structure des repas</li><li>Prise en charge des comorbidités anxiodépressives</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Stigmatisation et injonctions non thérapeutiques</li><li>Ignorer la comorbidité somatique (métabolique)</li></ul>"
- }
+  "possibleTreatments": [
+    "Thérapie cognitivo-comportementale",
+    "Soutien nutritionnel",
+    "CBD",
+    "Activité physique adaptée"
+  ],
+  "correctTreatments": [
+    "Thérapie cognitivo-comportementale",
+    "Soutien nutritionnel",
+    "Activité physique adaptée"
+  ],
+  "correction": "# Hyperphagie boulimique\n\nCrises récurrentes avec perte de contrôle, culpabilité et prise de poids.\n\n## Bonnes pratiques\n\n- Thérapie cognitivo‑comportementale\n- Soutien nutritionnel et structure des repas\n- Prise en charge des comorbidités anxiodépressives\n\n## Erreurs à éviter\n\n- Stigmatisation et injonctions non thérapeutiques\n- Ignorer la comorbidité somatique (métabolique)"
+}

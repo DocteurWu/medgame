@@ -13,26 +13,58 @@
   "interrogatoire": {
     "motifHospitalisation": "Douleur scrotale gauche chronique",
     "modeDeVie": {
-      "activitePhysique": { "description": "Course à pied et musculation" },
-      "tabac": { "quantite": "0" },
-      "alcool": { "quantite": "Occasionnel (1-2 verres/semaine)" },
-      "alimentation": { "regime": "Normal", "particularites": "Aucune" },
-      "emploi": { "profession": "Technicien en logistique", "stress": "Modéré" }
+      "activitePhysique": {
+        "description": "Course à pied et musculation"
+      },
+      "tabac": {
+        "quantite": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel (1-2 verres/semaine)"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Technicien en logistique",
+        "stress": "Modéré"
+      }
     },
     "antecedents": {
       "medicaux": [
-        { "type": "Aucun", "traitement": "Aucun" }
+        {
+          "type": "Aucun",
+          "traitement": "Aucun"
+        }
       ],
-      "chirurgicaux": [{ "intervention": "Appendicectomie", "date": "2016" }],
-      "familiaux": [{ "lien": "Frère", "pathologie": "Varicocèle opérée", "age": "29" }]
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2016"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Frère",
+          "pathologie": "Varicocèle opérée",
+          "age": "29"
+        }
+      ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Plusieurs mois",
       "evolution": "Pesanteur scrotale majorée en fin de journée",
       "facteursDeclenchants": "Station debout prolongée, efforts physiques",
-      "symptomesAssocies": ["Gêne à la marche", "Disconfort à l’effort"],
+      "symptomesAssocies": [
+        "Gêne à la marche",
+        "Disconfort à l’effort"
+      ],
       "remarques": "Amélioration en position allongée"
     }
   },
@@ -45,12 +77,32 @@
       "frequenceRespiratoire": "15/min"
     },
     "aspectGeneral": "Patient non fébrile, en bon état général",
-    "examenCardiovasculaire": { "auscultation": "Normal" },
-    "examenPulmonaire": { "auscultation": "Normal" },
-    "examenAbdominal": { "palpation": "Sans anomalies" },
-    "examenNeurologique": { "conscience": "Normale" }
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sans anomalies"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
   },
-  "availableExams": ["Créatininémie", "Urée", "Ionogramme sanguin", "CRP", "Bandelette urinaire", "Protéinurie des 24h", "Albuminurie", "Échographie rénale et vésicale", "Scanner abdomino-pelvien", "Echographie appareil urinaire", "Spermogramme"],
+  "availableExams": [
+    "Créatininémie",
+    "Urée",
+    "Ionogramme sanguin",
+    "CRP",
+    "Bandelette urinaire",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Echographie appareil urinaire",
+    "Spermogramme"
+  ],
   "examResults": {
     "Créatininémie": "Normale",
     "Urée": "Normale",
@@ -75,7 +127,10 @@
     "Varicocèle": "Diagnostic correct !",
     "default": "Diagnostic incorrect."
   },
-  "scoringRules": { "baseScore": 100, "attemptPenalty": 10 },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
   "possibleTreatments": [
     "Contention scrotale",
     "Antalgiques",
@@ -88,5 +143,5 @@
     "Antalgiques",
     "Embolisation veineuse"
   ],
-  "correction": "<h3>Varicocèle</h3>\n<p>Le patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).</p>\n<h4>Bonnes pratiques</h4>\n<ul><li>Évaluer l’impact sur la douleur, la fertilité et la qualité de vie</li><li>Proposer Doppler systématique pour la classification</li><li>Embolisation ou ligature veineuse si douleur persistante ou infertilité</li><li>Conseiller port de suspensoir, éviter efforts prolongés</li></ul>\n<h4>Erreurs à éviter</h4>\n<ul><li>Confondre avec une hydrocèle ou hernie inguinale</li><li>Sous-estimer les symptômes gênants</li><li>Négliger un spermogramme si désir de fertilité</li></ul>"
+  "correction": "# Varicocèle\n\nLe patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).\n\n## Bonnes pratiques\n\n- Évaluer l’impact sur la douleur, la fertilité et la qualité de vie\n- Proposer Doppler systématique pour la classification\n- Embolisation ou ligature veineuse si douleur persistante ou infertilité\n- Conseiller port de suspensoir, éviter efforts prolongés\n\n## Erreurs à éviter\n\n- Confondre avec une hydrocèle ou hernie inguinale\n- Sous-estimer les symptômes gênants\n- Négliger un spermogramme si désir de fertilité"
 }
