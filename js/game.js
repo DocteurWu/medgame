@@ -1162,14 +1162,42 @@ document.addEventListener('DOMContentLoaded', async () => {
             antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${ant.lien}: ${ant.pathologie} (${ant.age} ans)</li>`).join('') + '</ul>';
         }
 
+        // Traitements: masquer si vide
+        const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
         if (isFieldLocked('interrogatoire.traitements')) {
             const lock = getLockForField('interrogatoire.traitements');
             traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+            if (traitementsContainer) traitementsContainer.style.display = '';
         } else {
-            traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+            const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
+            if (hasTraitements) {
+                traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+                if (traitementsContainer) traitementsContainer.style.display = '';
+            } else {
+                if (traitementsContainer) traitementsContainer.style.display = 'none';
+            }
         }
 
-        allergiesListe.textContent = currentCase.interrogatoire.allergies.presence ? currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ') : 'Aucune';
+        // Allergies: masquer si aucune allergie
+        const allergiesContainer = allergiesListe ? allergiesListe.closest('p') : null;
+        const hasAllergies = currentCase.interrogatoire.allergies && currentCase.interrogatoire.allergies.presence && currentCase.interrogatoire.allergies.liste && currentCase.interrogatoire.allergies.liste.length > 0;
+        if (hasAllergies) {
+            allergiesListe.textContent = currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ');
+            if (allergiesContainer) allergiesContainer.style.display = '';
+        } else {
+            if (allergiesContainer) allergiesContainer.style.display = 'none';
+        }
+
+        // Masquer la sous-section entière si ni allergies ni traitements ne sont présentes
+        const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
+        const allergiesSubSection = allergiesListe ? allergiesListe.closest('.sub-section') : null;
+        if (allergiesSubSection) {
+            if (!hasAllergies && !hasTraitements && !isFieldLocked('interrogatoire.traitements')) {
+                allergiesSubSection.style.display = 'none';
+            } else {
+                allergiesSubSection.style.display = '';
+            }
+        }
 
         displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
         displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution, 'interrogatoire.histoireMaladie.evolution');
@@ -1367,6 +1395,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             attempts = 0; // Réinitialiser le nombre d'essais
         }
 
+        // Masquer/afficher l'onglet Examens Complémentaires selon la disponibilité des examens
+        updateExamsTabVisibility();
+
         if (!isPartialRefresh) {
             // Show nurse intro, then start the timer when dismissed
             NurseIntro.show(
@@ -1378,6 +1409,28 @@ document.addEventListener('DOMContentLoaded', async () => {
                     timerInterval = setInterval(updateTimer, 1000);
                 }
             );
+        }
+    }
+
+    function updateExamsTabVisibility() {
+        const hasExams = currentCase && currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0;
+
+        // Sidebar navigation - onglet Examens Compl.
+        const sidebarExamTab = document.querySelector('.nav-item[data-target="section-examens"]');
+        if (sidebarExamTab) {
+            sidebarExamTab.style.display = hasExams ? '' : 'none';
+        }
+
+        // Mobile tabs navigation - onglet Exams
+        const mobileExamTab = document.querySelector('.mobile-tab-item[data-tab="exams"]');
+        if (mobileExamTab) {
+            mobileExamTab.style.display = hasExams ? '' : 'none';
+        }
+
+        // La section elle-même
+        const examSection = document.getElementById('section-examens');
+        if (examSection) {
+            examSection.style.display = hasExams ? '' : 'none';
         }
     }
 
