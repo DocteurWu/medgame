@@ -1,0 +1,141 @@
+{
+  "id": "neuro_crise_convulsive_généralisée_Lexie",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Lexie Grey",
+    "prenom": "",
+    "age": 25,
+    "sexe": "F",
+    "taille": "1,65 m",
+    "poids": "58 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Crise convulsive généralisée",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "modérée - 1 fois par semaine"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "toujours"
+      },
+      "alcool": {
+        "quantite": "non"
+      },
+      "alimentation": {
+        "regime": "",
+        "particularites": ""
+      },
+      "emploi": {
+        "profession": "Etudiante",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Les symptômes ont débuté de manière brutale, le jour de l'admission aux urgences",
+      "evolution": "Évolution favorable avec résolution spontané de la crise disparition progressive de la confusion post-critique",
+      "facteursDeclenchants": "Privation de sommeil importante dans les jours précédents l'épisode",
+      "descriptionDouleur": "Myalgies diffuses post-critiques",
+      "symptomesAssocies": [
+        "Perte de connaissance",
+        "morsure latérale de la langue",
+        "incontinence urinaire",
+        "confusion post-critique"
+      ],
+      "remarques": "pas de déficit focal persistant"
+    },
+    "verbatim": "J'étais chez moi, je révisais puis d'un coup j'ai eu comme un trou noir. Après je me suis réveillée par terre avec les pompiers autour de moi. J'étais très fatiguée et perdue. J'avais mal partout."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/75 mmHg",
+      "pouls": "95 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patiente consciente mais somnolente",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Neurologique": {
+      "conscience": "score de Glasgow 14/15, la patiente répond aux questions",
+      "fonctions supérieures": "discours ralenti, pas d'aphasie, récupération progressive de son orientation",
+      "paires crâniennes": "pupilles réactives, motricité oculaire conservée,  pas de paralysie faciale, sensibilité faciale normale, déglutition et phonation normales",
+      "sensibilité": "superficielle et profonde conservée, pas de trouble sensitif focal",
+      "réflexes ostéo-tendineux": "présents et symétriques, pas de signe pyramidal (Babinski négatif)",
+      "coordination/équilibre": "pas d'ataxie"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Scanner cérébral sans injection",
+    "EEG (à distance de la crise)",
+    "Glycémie capillaire",
+    "Bilan hépatique",
+    "Bilan gynécologique",
+    "Calcémie"
+  ],
+  "examResults": {
+    "ECG": "Rythme sinusal, pas de trouble de repolarisation",
+    "Scanner cérébral sans injection": "Pas d'anomalie intracrânienne aiguë",
+    "EEG (à distance de la crise)": "anomalies paroxystiques généralisées",
+    "Glycémie capillaire": "1,05 g/L",
+    "Bilan hépatique": "RAS",
+    "Bilan gynécologique": "beta-HCG négatif (RAS)",
+    "Calcémie": "RAS"
+  },
+  "possibleDiagnostics": [
+    "Crise d'épilepsie généralisée tonico-clonique",
+    "Syncope convulsivante",
+    "Crise psychogène non épileptique",
+    "Trouble métabolique aigu",
+    "Intoxication/sevrage"
+  ],
+  "correctDiagnostic": "Crise d'épilepsie généralisée tonico-clonique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Surveillance clinique",
+    "Mesures hygiène-diététiques",
+    "Apport de glucose IV",
+    "Benzodiazépines",
+    "Supplémentation calcique",
+    "Valproate"
+  ],
+  "correctTreatments": [
+    "Surveillance clinique",
+    "Mesures hygiène-diététiques"
+  ],
+  "correction": "Correction – Crise convulsive généralisée chez une femme de 25 ansPoints Importants :Première crise convulsive généralisée tonico-clonique, d’installation brutale, avec perte de connaissanceSémiologie évocatrice d’une crise d’épilepsie : morsure latérale de langue, incontinence urinaire, phase post-critique confuseFacteur déclenchant probable : privation de sommeil dans un contexte de stressBilan biologique et imagerie normaux, éliminant une cause métabolique ou structurelle aiguëEEG évocateur, augmentant le risque de récidive sans suffire à poser une épilepsie avéréeDiagnostic retenu : crise isolée et non épilepsie avérée à ce stadePas de traitement antiépileptique de fond immédiat, mais surveillance et suivi neurologiqueImportance des mesures hygiéno-diététiques et de l’éducation de la patiente",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

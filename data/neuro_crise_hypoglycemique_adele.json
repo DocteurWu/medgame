@@ -1,0 +1,142 @@
+{
+  "id": "case_id_crise_hypoglycemique",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Adele Webber",
+    "prenom": "",
+    "age": 68,
+    "sexe": "F",
+    "taille": "1,62 m",
+    "poids": "70 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Crise convulsive secondaire à une hypoglycémie",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "non"
+      },
+      "alimentation": {
+        "regime": "irrégulier",
+        "particularites": "repas sautés"
+      },
+      "emploi": {
+        "profession": "Retraitée",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "diabète de type 2 insulinorequérant depuis 12 ans",
+          "traitement": "Insuline basale-bolus (glargine + rapide)"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "insuline glargine",
+        "dose": "20 UI",
+        "frequence": "le soir"
+      },
+      {
+        "nom": "insuline rapide",
+        "dose": "6 UI/repas",
+        "frequence": "avant les repas"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale après injection d’insuline",
+      "evolution": "Amélioration rapide après correction métabolique",
+      "facteursDeclenchants": "Injection d’insuline sans prise alimentaire",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": [
+        "Perte de connaissance",
+        "Sueurs profuses",
+        "Tremblements",
+        "Confusion"
+      ],
+      "remarques": "Crise symptomatique métabolique"
+    },
+    "verbatim": "Je n’avais rien mangé et j’ai pris mon insuline comme d’habitude."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/65 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.5°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patiente pâle, moite, asthénique, vigilance altérée à l’arrivée avec amélioration rapide après apport glucosé",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle",
+      "inspection": "Pas de signe de choc",
+      "palpation": "Pouls périphériques présents et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de râles",
+      "inspection": "Pas de détresse respiratoire",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, indolore",
+      "auscultation": "Bruits hydro-aériques présents"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 13/15 à l’admission puis 15/15 après correction",
+      "fonctionssuperieures": "Confusion transitoire rapidement réversible",
+      "pairescraniennes": "Normales",
+      "motricite": "Force conservée aux quatre membres",
+      "sensibilite": "Normale",
+      "reflexesosteotendineux": "Présents et symétriques, Babinski négatif",
+      "coordinationequilibre": "Normales après correction"
+    }
+  },
+  "availableExams": [
+    "Glycémie capillaire",
+    "Ionogramme sanguin",
+    "Scanner cérébral"
+  ],
+  "examResults": {
+    "Glycémie capillaire": "0.38 g/L",
+    "Ionogramme sanguin": "Normal",
+    "Scanner cérébral": "Absence d’anomalie intracrânienne aiguë"
+  },
+  "possibleDiagnostics": [
+    "Crise convulsive secondaire à une hypoglycémie",
+    "Épilepsie"
+  ],
+  "correctDiagnostic": "Crise convulsive secondaire à une hypoglycémie",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Glucose IV",
+    "Traitement antiépileptique"
+  ],
+  "correctTreatments": [
+    "Glucose IV"
+  ],
+  "correction": "Correction – Crise convulsive secondaire à une hypoglycémie\n\nPoints Importants\n\nPatiente diabétique de type 2 traitée par insuline\nSurvenue d’une crise convulsive aiguë dans un contexte de jeûne\nFacteur déclenchant identifié : injection d’insuline rapide sans prise alimentaire\nGlycémie capillaire très basse (0,38 g/L) à l’admission\nAbsence d’arguments pour une épilepsie (pas d’antécédent, imagerie normale)\nDiagnostic retenu : crise convulsive symptomatique hypoglycémique\nAmélioration rapide après apport de glucose IV\nAucune indication à un traitement antiépileptique\nImportance de la réévaluation du traitement insulinique et de l’éducation thérapeutique\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

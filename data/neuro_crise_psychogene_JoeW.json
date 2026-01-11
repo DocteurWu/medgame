@@ -1,0 +1,148 @@
+{
+  "id": "neuro_crise_psychogene_JoeW",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Joe Wilson",
+    "prenom": "",
+    "age": 29,
+    "sexe": "F",
+    "taille": "1,68 m",
+    "poids": "60 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Épisodes répétés de mouvements anormaux avec impression de perte de contrôle",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "irrégulière"
+      },
+      "tabac": {
+        "quantite": "occasionnel",
+        "duree": "5 ans"
+      },
+      "alcool": {
+        "quantite": "occasionnel"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "repas parfois sautés en période de stress"
+      },
+      "emploi": {
+        "profession": "Assistante administrative",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive depuis plusieurs mois",
+      "evolution": "Épisodes fluctuants, récurrents, non stéréotypés",
+      "facteursDeclenchants": "Stress émotionnel intense",
+      "descriptionDouleur": "Oppression thoracique transitoire",
+      "symptomesAssocies": [
+        "Mouvements asynchrones des membres",
+        "Cris pendant les épisodes",
+        "Pleurs",
+        "Absence de phase post-critique"
+      ],
+      "remarques": "Absence de morsure de langue et d’incontinence"
+    },
+    "verbatim": "Je me sentais très stressée, puis mon corps s’est mis à bouger sans que je puisse contrôler."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "125/80 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patiente vigilante, anxieuse, bon état général",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle",
+      "inspection": "Absence de signe d’insuffisance cardiaque",
+      "palpation": "Pouls périphériques présents et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire bien perçu, pas de râles",
+      "inspection": "Respiration calme hors épisode",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore",
+      "auscultation": "Bruits hydro-aériques normaux"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 15/15",
+      "fonctionssuperieures": "Discours cohérent, orientation temporo-spatiale conservée",
+      "pairescraniennes": "Normales",
+      "motricite": "Force normale aux quatre membres",
+      "sensibilite": "Normale",
+      "reflexesosteotendineux": "Symétriques, Babinski négatif",
+      "coordinationequilibre": "Normaux"
+    }
+  },
+  "availableExams": [
+    "Glycémie capillaire",
+    "Ionogramme sanguin",
+    "EEG",
+    "IRM cérébrale"
+  ],
+  "examResults": {
+    "Glycémie capillaire": "0.95 g/L",
+    "Ionogramme sanguin": "Normal",
+    "EEG": "Absence d’activité épileptiforme",
+    "IRM cérébrale": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Crise psychogène non épileptique",
+    "Crise d’épilepsie",
+    "Trouble anxieux avec manifestations somatiques"
+  ],
+  "correctDiagnostic": "Crise psychogène non épileptique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antiépileptique",
+    "Psychothérapie",
+    "Prise en charge psychiatrique"
+  ],
+  "correctTreatments": [
+    "Psychothérapie",
+    "Prise en charge psychiatrique"
+  ],
+  "correction": "\nCorrection – Crise psychogène non épileptique\n\nPoints importants\n\nLes épisodes décrits ne correspondent pas à une crise d’épilepsie typique : les mouvements sont asynchrones, non stéréotypés, avec conscience préservée ou rapidement récupérée.\nL’absence de morsure latérale de langue, d’incontinence urinaire et de phase post-critique est un argument fort contre une crise épileptique.\nLe contexte de stress émotionnel, les antécédents de trouble anxieux et la labilité émotionnelle orientent vers une origine psychogène.\nLes examens complémentaires (EEG, imagerie cérébrale, bilan biologique) sont strictement normaux, éliminant une cause neurologique ou métabolique.\nLe diagnostic retenu est celui de crise psychogène non épileptique, à différencier impérativement de l’épilepsie pour éviter un traitement inadapté.\nLa prise en charge repose sur une approche psychiatrique et psychothérapeutique, sans indication à un traitement antiépileptique.\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "<p class=\"MsoNormal\" style=\"line-height: 18.4px; font-size: medium; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);\"><span style=\"color: white;\">Quel élément est le plus en faveur d’une crise symptomatique plutôt que d’une épilepsie ?<o:p></o:p></span></p>",
+        "options": [
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Présence de mouvements convulsifs</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>",
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Glycémie capillaire à 0,38 g/L</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>",
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Perte de connaissance&nbsp;</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>",
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Âge de la patiente&nbsp;</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Une hypoglycémie sévère est une cause aiguë et réversible de crise convulsive."
+    }
+  ]
+}
