@@ -59,7 +59,11 @@
   "neurologie/psychiatrie": [
     "neuro_epilepsie_generalisee_oscar.json",
     "neuro_epilepsie_temporale_elinordammert.json",
-    "neuro_polyneuropathie_jacques.json"
+    "neuro_polyneuropathie_jacques.json",
+    "neuro_crise_psychogene_JoeW.json",
+    "neuro_epilepsie_averee_mary.json",
+    "neuro_crise_convulsive_généralisée_Lexie.json",
+    "neuro_crise_hypoglycemique_adele.json"
   ],
   "locomoteur": [
     "locomoteur_arthrite_Mirko.json",

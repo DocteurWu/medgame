@@ -1,0 +1,113 @@
+{
+  "id": "case_id_epilepsie_averee",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Mary Portman",
+    "prenom": "",
+    "age": 32,
+    "sexe": "F",
+    "taille": "1,78 m",
+    "poids": "75 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Crises convulsives généralisées répétées",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "occasionnel",
+        "duree": "10 ans"
+      },
+      "alcool": {
+        "quantite": "modérée"
+      },
+      "alimentation": {
+        "regime": "normal",
+        "particularites": ""
+      },
+      "emploi": {
+        "profession": "Employé",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Crises survenues brutalement au domicile",
+      "evolution": "Deux crises en 24 heures avec confusion post-critique",
+      "facteursDeclenchants": "Privation de sommeil et consommation d’alcool",
+      "descriptionDouleur": "Céphalées et myalgies post-critiques",
+      "symptomesAssocies": [
+        "Perte de connaissance",
+        "Morsure latérale de la langue",
+        "Incontinence urinaire",
+        "Confusion post-critique prolongée"
+      ],
+      "remarques": "Notion de récidive"
+    },
+    "verbatim": "Ce n’est pas la première fois que ça m’arrive, mais je n’ai jamais pris de traitement."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "125/80 mmHg",
+      "pouls": "100 bpm",
+      "temperature": "37°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient conscient, fatigué",
+    "Neurologique": {
+      "conscience": "Glasgow 14/15",
+      "deficitfocal": "absent"
+    }
+  },
+  "availableExams": [
+    "Ionogramme",
+    "Scanner cérébral",
+    "EEG"
+  ],
+  "examResults": {
+    "Ionogramme": "normal",
+    "Scanner cérébral": "normal",
+    "EEG": "anomalies épileptiformes généralisées"
+  },
+  "possibleDiagnostics": [
+    "Épilepsie généralisée",
+    "Crise isolée",
+    "Crise psychogène"
+  ],
+  "correctDiagnostic": "Épilepsie généralisée avérée",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antiépileptique de fond",
+    "Mesures hygiéno-diététiques"
+  ],
+  "correctTreatments": [
+    "Traitement antiépileptique de fond"
+  ],
+  "correction": "Points Importants\n\nCrises convulsives généralisées récidivantes, non provoquées\nAntécédent personnel et familial évocateur d’épilepsie\nFacteurs favorisants : privation de sommeil, alcool\nSémiologie typique : perte de connaissance, morsure de langue, confusion post-critique\nEEG pathologique avec anomalies épileptiformes généralisées\nDiagnostic retenu : épilepsie généralisée avérée\nIndication à un traitement antiépileptique de fond\nNécessité d’une éducation thérapeutique et de mesures hygiéno-diététiques\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}
