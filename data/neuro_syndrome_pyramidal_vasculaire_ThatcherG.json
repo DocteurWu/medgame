@@ -1,0 +1,136 @@
+{
+  "id": "neuro_syndrome_pyramidal_vasculaire_ThatcherG",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Thatcher Grey",
+    "prenom": "",
+    "age": 72,
+    "sexe": "M",
+    "taille": "1,70 m",
+    "poids": "82 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Installation brutale d’une difficulté à mobiliser le côté droit du corps avec trouble de la marche",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "oui",
+        "duree": "40 paquets-années"
+      },
+      "alcool": {
+        "quantite": "modérée"
+      },
+      "alimentation": {
+        "regime": "déséquilibré",
+        "particularites": "riche en sel et en graisses"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale au repos, sans traumatisme",
+      "evolution": "Déficit moteur stable depuis l’apparition",
+      "facteursDeclenchants": "Aucun facteur déclenchant identifié",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": [
+        "Faiblesse du bras et de la jambe droits",
+        "Difficulté à parler de façon articulée",
+        "Gêne à la marche",
+        "Chute sans perte de connaissance"
+      ],
+      "remarques": "Tableau évocateur d’un accident vasculaire cérébral aigu"
+    },
+    "verbatim": "Mon bras et ma jambe droits ne répondaient plus d’un coup."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "170/95 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "17/min"
+    },
+    "aspectGeneral": "Patient conscient, coopérant, présentant une asymétrie posturale",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers",
+      "inspection": "Pas de signe d’insuffisance cardiaque",
+      "palpation": "Pouls périphériques présents"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire bien perçu",
+      "inspection": "Pas de détresse respiratoire",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple et indolore",
+      "auscultation": "Bruits hydro-aériques présents"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 15/15",
+      "fonctions superieures": "Pas de trouble cognitif majeur",
+      "paires craniennes": "Discrète paralysie faciale centrale droite",
+      "motricite": "Hémiparésie droite proportionnelle, force cotée à 3/5",
+      "sensibilite": "Conservée",
+      "reflexes osteotendineux": "Vifs à droite, normaux à gauche",
+      "coordination equilibre": "Marche difficile",
+      "signes pyramidaux": "Signe de Babinski positif à droite,Hypertonie spastique,Clonus discret"
+    }
+  },
+  "availableExams": [
+    "Scanner cérébral en urgence",
+    "IRM cérébrale",
+    "Bilan biologique",
+    "ECG"
+  ],
+  "examResults": {
+    "Scanner cérébral en urgence": "Absence d’hémorragie intracrânienne",
+    "IRM cérébrale": "Infarctus ischémique capsulo-lenticulaire gauche",
+    "Bilan biologique": "Hyperglycémie modérée",
+    "ECG": "Rythme sinusal"
+  },
+  "possibleDiagnostics": [
+    "Accident vasculaire cérébral ischémique",
+    "Hématome intracérébral",
+    "Crise comitiale avec déficit post-critique",
+    "Syndrome pyramidal secondaire à un AVC ischémique capsulo-lenticulaire gauche"
+  ],
+  "correctDiagnostic": "Syndrome pyramidal secondaire à un AVC ischémique capsulo-lenticulaire gauche",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Thrombolyse",
+    "Antiagrégant plaquettaire",
+    "Contrôle tensionnel",
+    "Rééducation motrice",
+    "Prise en charge des facteurs de risque"
+  ],
+  "correctTreatments": [
+    "Antiagrégant plaquettaire",
+    "Prise en charge des facteurs de risque",
+    "Rééducation motrice"
+  ],
+  "correction": "Syndrome pyramidal par AVC ischémique\n\n·       L’installation brutale d’un déficit moteur évoque en priorité un accident vasculaire cérébral.\n\n·       Le syndrome pyramidal associe :\n\no   Déficit moteur central (hémiparésie)\n\no   Hypertonie spastique\n\no   Hyperréflexie ostéo-tendineuse\n\no   Signe de Babinski positif\n\n·       Le déficit est controlatéral à la lésion cérébrale.\n\n·       L’atteinte capsulo-lenticulaire est une localisation classique responsable d’une hémiparésie proportionnelle.\n\n·       Les facteurs de risque vasculaires (HTA, diabète, dyslipidémie, tabagisme) sont déterminants.\n\n·       Le scanner cérébral en urgence élimine une hémorragie avant tout traitement.\n\n·       L’IRM cérébrale permet de confirmer l’AVC ischémique et sa topographie.\n\n·       Les diagnostics différentiels initiaux sont :\n\no   AVC hémorragique\n\no   Crise comitiale avec déficit post-critique\n\n·       La prise en charge repose sur :\n\no   Traitement antithrombotique adapté\n\no   Contrôle strict des facteurs de risque\n\no   Rééducation motrice précoce\n\n·       Le pronostic fonctionnel dépend de la rapidité de la prise en charge et de la localisation de la lésion.\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

@@ -1,0 +1,113 @@
+{
+  "id": "neuro_syndrome_sensitif_peripherique_diabetique_bobR",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Bob Rop",
+    "prenom": "",
+    "age": 64,
+    "sexe": "M",
+    "taille": "1,73 m",
+    "poids": "88 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Paresthésies distales progressives des membres inférieurs avec instabilité à la marche",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "oui",
+        "duree": "30 paquets-années"
+      },
+      "alcool": {
+        "quantite": "occasionnelle"
+      },
+      "alimentation": {
+        "regime": "déséquilibré",
+        "particularites": "riche en sucres rapides"
+      },
+      "emploi": {
+        "profession": "Chauffeur routier",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive sur plusieurs mois",
+      "evolution": "Aggravation lente et continue",
+      "facteursDeclenchants": "Déséquilibre glycémique chronique",
+      "descriptionDouleur": "Brûlures et décharges électriques distales",
+      "symptomesAssocies": [
+        "Fourmillements des pieds",
+        "Hypoesthésie en chaussettes",
+        "Douleurs neuropathiques nocturnes",
+        "Instabilité à la marche majorée dans l’obscurité"
+      ],
+      "remarques": "Atteinte distale, bilatérale et symétrique évocatrice d’un syndrome sensitif périphérique"
+    },
+    "verbatim": "J’ai l’impression de marcher sur du coton et j’ai souvent des brûlures dans les pieds."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/85 mmHg",
+      "pouls": "76 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient en bon état général, démarche prudente",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Force musculaire conservée",
+      "sensibilite": "Hypoesthésie tactile et thermo-algésique distale bilatérale des membres inférieurs",
+      "sensibilite profonde": "Diminution de la sensibilité vibratoire aux malléoles",
+      "reflexes osteotendineux": "Abolition des réflexes achilléens bilatéralement",
+      "coordination equilibre": "Ataxie sensitive",
+      "signes associes": "Signe de Romberg positif"
+    }
+  },
+  "availableExams": [
+    "Bilan glycémique",
+    "Électroneuromyogramme"
+  ],
+  "examResults": {
+    "Bilan glycémique": "HbA1c à 9.2%",
+    "Électroneuromyogramme": "Polyneuropathie sensitive distale symétrique"
+  },
+  "possibleDiagnostics": [
+    "Syndrome sensitif périphérique secondaire à une polyneuropathie diabétique",
+    "Neuropathie périphérique métabolique",
+    "Neuropathie sensitive chronique"
+  ],
+  "correctDiagnostic": "Syndrome sensitif périphérique secondaire à une polyneuropathie diabétique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Équilibrage glycémique strict",
+    "Traitement antalgique neuropathique",
+    "Prévention des complications podologiques"
+  ],
+  "correctTreatments": [
+    "Équilibrage glycémique strict",
+    "Traitement antalgique neuropathique"
+  ],
+  "correction": "·  Le syndrome sensitif périphérique touche les nerfs périphériques·  Atteinte distale, bilatérale et symétrique·  Sensibilité superficielle et profonde atteintes·  Réflexes ostéo-tendineux souvent diminués ou abolis·  Douleurs neuropathiques fréquentes·  ENMG = examen clé·  Traitement = cause + symptomatique",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

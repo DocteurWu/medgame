@@ -1,0 +1,113 @@
+{
+  "id": "neuro_syndrome_sensitif_central_cordons_postérieurs_MarieC",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Marie Claire",
+    "prenom": "",
+    "age": 58,
+    "sexe": "F",
+    "taille": "1,65 m",
+    "poids": "62 kg",
+    "groupeSanguin": "O-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Troubles progressifs de l’équilibre avec difficulté à se repérer dans l’espace",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "modérée"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "faible"
+      },
+      "alimentation": {
+        "regime": "restrictif",
+        "particularites": "régime végétalien strict"
+      },
+      "emploi": {
+        "profession": "Bibliothécaire",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive sur plusieurs mois",
+      "evolution": "Aggravation lente des troubles de la marche",
+      "facteursDeclenchants": "Carence nutritionnelle chronique",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": [
+        "Instabilité à la marche",
+        "Chutes à répétition",
+        "Paresthésies des membres inférieurs",
+        "Difficulté à percevoir la position des pieds"
+      ],
+      "remarques": "Tableau évocateur d’une atteinte de la sensibilité profonde"
+    },
+    "verbatim": "Je tiens debout tant que je regarde mes pieds, sinon je tombe."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/75 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Patiente vigilante, démarche instable et talonnante",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Force musculaire conservée",
+      "sensibilite": "Sensibilité superficielle conservée",
+      "sensibilite profonde": "Abolition de la sensibilité vibratoire et proprioceptive aux membres inférieurs",
+      "reflexes osteotendineux": "Présents et symétriques",
+      "coordination equilibre": "Ataxie sensitive marquée",
+      "signes associes": "Signe de Romberg positif, Marche talonnante"
+    }
+  },
+  "availableExams": [
+    "Dosage de la vitamine B12",
+    "IRM médullaire"
+  ],
+  "examResults": {
+    "Dosage de la vitamine B12": "Effondré",
+    "IRM médullaire": "Hypersignal des cordons postérieurs"
+  },
+  "possibleDiagnostics": [
+    "Myélopathie carentielle",
+    "Sclérose combinée de la moelle",
+    "Atteinte dégénérative des cordons postérieurs",
+    "Syndrome sensitif central par atteinte des cordons postérieurs secondaire à une carence en vitamine B12"
+  ],
+  "correctDiagnostic": "Syndrome sensitif central par atteinte des cordons postérieurs secondaire à une carence en vitamine B12",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Supplémentation en vitamine B12",
+    "Rééducation de l’équilibre",
+    "Suivi neurologique"
+  ],
+  "correctTreatments": [
+    "Supplémentation parentérale en vitamine B12"
+  ],
+  "correction": "·  Le syndrome sensitif central touche les voies sensitives centrales\n\n·  Sensibilité profonde atteinte, sensibilité superficielle souvent conservée\n\n·  Ataxie sensitive sans déficit moteur\n\n·  Romberg positif = signe clé\n\n·  IRM médullaire indispensable\n\n·  Carence en B12 = cause classique et réversible si traitée précocement\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}
