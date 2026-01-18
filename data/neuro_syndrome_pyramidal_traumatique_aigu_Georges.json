@@ -1,0 +1,142 @@
+{
+  "id": "syndrome_pyramidal_traumatique_aigu",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Georges O’Malley",
+    "prenom": "",
+    "age": 34,
+    "sexe": "M",
+    "taille": "1,78 m",
+    "poids": "75 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Troubles moteurs progressifs avec difficulté à la marche et diminution de l’usage du membre supérieur droit dans un contexte post-traumatique récent",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "modérée, liée à l’activité professionnelle hospitalière"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "occasionnelle"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "repas réguliers"
+      },
+      "emploi": {
+        "profession": "Interne en chirurgie",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale immédiatement après un accident de la voie publique avec projection et choc crânien",
+      "evolution": "Installation rapide d’un déficit moteur central avec aggravation progressive sur les premières heures",
+      "facteursDeclenchants": "Traumatisme crânio-encéphalique violent avec mécanisme de décélération brutale",
+      "descriptionDouleur": "Céphalées intenses diffuses, majorées par les mouvements",
+      "symptomesAssocies": [
+        "Faiblesse du membre supérieur et inférieur droits",
+        "Raideur musculaire progressive",
+        "Difficulté à la marche",
+        "Troubles de la parole de type dysarthrie",
+        "Céphalées post-traumatiques",
+        "Nausées sans vomissements"
+      ],
+      "remarques": "Tableau évocateur d’une atteinte centrale du faisceau pyramidal d’origine traumatique aiguë"
+    },
+    "verbatim": "Je n’arrive plus à bouger correctement mon bras et ma jambe droits depuis l’accident."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/80 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37.2°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient conscient, anxieux, présentant une posture asymétrique avec attitude en flexion du membre supérieur droit",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle",
+      "inspection": "Bonne perfusion périphérique",
+      "palpation": "Pouls périphériques présents et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire bien perçu et symétrique",
+      "inspection": "Pas de signe de détresse respiratoire",
+      "percussion": "Sonorité normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, indolore",
+      "auscultation": "Bruits hydro-aériques normaux"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 14/15 (confusion légère initiale post-traumatique)",
+      "fonctionssuperieures": "Fonctions cognitives globalement conservées, ralentissement psychomoteur",
+      "pairescraniennes": "Pas d’atteinte objectivée",
+      "motricite": "Hémiparésie droite prédominant au membre supérieur, force cotée à 3/5 au bras droit et 4/5 à la jambe droite",
+      "sensibilite": "Sensibilité conservée sans déficit objectif",
+      "reflexesosteotendineux": "Vifs et polycinétiques à droite, normaux à gauche",
+      "coordinationequilibre": "Altération de la marche avec démarche spastique",
+      "signespyramidaux": "Signe de Babinski positif à droite,Hypertonie spastique,Signe du couteau de canif,Clonus de la cheville droite"
+    }
+  },
+  "availableExams": [
+    "Scanner cérébral en urgence",
+    "IRM cérébrale",
+    "IRM médullaire",
+    "Bilan biologique standard"
+  ],
+  "examResults": {
+    "Scanner cérébral en urgence": "Contusion hémorragique fronto-pariétale gauche sans engagement",
+    "IRM cérébrale": "Lésion traumatique aiguë du faisceau pyramidal gauche avec œdème péri-lésionnel",
+    "IRM médullaire": "Absence de lésion médullaire associée",
+    "Bilan biologique standard": "Sans anomalie significative"
+  },
+  "possibleDiagnostics": [
+    "Syndrome pyramidal aigu secondaire à une lésion traumatique du faisceau pyramidal gauche",
+    "Accident vasculaire cérébral post-traumatique du faisceau pyramidal gauche",
+    "Compression médullaire aiguë"
+  ],
+  "correctDiagnostic": "Syndrome pyramidal aigu secondaire à une lésion traumatique du faisceau pyramidal gauche",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement anti-œdémateux",
+    "Corticothérapie",
+    "Rééducation fonctionnelle intensive",
+    "Chirurgie neurotraumatologique",
+    "Surveillance neurologique rapprochée"
+  ],
+  "correctTreatments": [
+    "Surveillance neurologique rapprochée",
+    "Traitement anti-œdémateux",
+    "Rééducation fonctionnelle intensive"
+  ],
+  "correction": "Le syndrome pyramidal traduit une atteinte du motoneurone central (faisceau pyramidal).\nIl se manifeste par :·       Déficit moteur central (hémiparésie ou hémiplégie)·       Hypertonie spastique·       Hyperréflexie ostéo-tendineuse·       Signe de Babinski positif·       Clonus possible\nLe déficit est controlatéral à la lésion cérébrale. \nLe contexte traumatique crânien récent est un élément clé de l’anamnèse. \nL’absence de trouble sensitif oriente vers une atteinte motrice pure.\nL’imagerie cérébrale est indispensable :·       Scanner en urgence pour éliminer une lésion compressive·       IRM pour préciser l’atteinte du faisceau pyramidal\nLes principaux diagnostics différentiels sont : Accident vasculaire cérébral, Compression médullaire, Lésion expansive intracrânienne\nLa prise en charge repose sur : Surveillance neurologique rapprochée, Traitement de l’œdème cérébral, Rééducation motrice précoce\nL’évolution dépend de la sévérité de la lésion et de la précocité de la prise en charge.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

@@ -36,7 +36,9 @@
   "hématologie": [],
   "appareil-digestif": [
     "digestif_cancer_oeso_brandon.json",
-    "digestif_dyspepsie_elinor.json"
+    "digestif_dyspepsie_elinor.json",
+    "digestif_cancer_gastrique_Jirō.json",
+    "digestif_reflux_gastro_oesophagien_nick.json"
   ],
   "immunologie": [],
   "uronephro": [
@@ -63,7 +65,12 @@
     "neuro_crise_psychogene_JoeW.json",
     "neuro_epilepsie_averee_mary.json",
     "neuro_crise_convulsive_généralisée_Lexie.json",
-    "neuro_crise_hypoglycemique_adele.json"
+    "neuro_crise_hypoglycemique_adele.json",
+    "neuro_syndrome_cordon_posterieur_Blaise.json",
+    "neuro_syndrome_pyramidal_traumatique_aigu_Georges.json",
+    "neuro_syndrome_pyramidal_vasculaire_ThatcherG.json",
+    "neuro_syndrome_sensitif_central_cordons_postérieurs_MarieC.json",
+    "neuro_syndrome_sensitif_peripherique_diabetique_bobR.json"
   ],
   "locomoteur": [
     "locomoteur_arthrite_Mirko.json",
