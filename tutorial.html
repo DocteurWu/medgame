@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/index.css">
@@ -20,6 +20,7 @@
         body {
             overflow: hidden;
             /* Ensure no scrollbars */
+            background-color: var(--dark-bg);
         }
 
         .scene-overlay {
@@ -30,6 +31,7 @@
             align-items: center;
             width: 100%;
             height: 100vh;
+            z-index: 10;
         }
 
         .glass-card {
@@ -40,12 +42,12 @@
             /* Wider for better horizontal layout */
             background: rgba(10, 15, 30, 0.65);
             /* Darker, more premium glass */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
             box-shadow:
-                0 0 40px rgba(0, 242, 254, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(0, 242, 254, 0.05);
             border-radius: 20px;
             padding: 2rem;
             display: flex;
@@ -71,15 +73,13 @@
 
         .tutorial-title {
             font-family: var(--font-title);
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: 2.8rem;
+            font-weight: 800;
             letter-spacing: 4px;
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
             margin: 0;
-            text-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+            text-transform: uppercase;
         }
 
         .tutorial-subtitle {
@@ -99,21 +99,22 @@
         }
 
         .step-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 15, 30, 0.4);
+            border: 1px solid var(--glass-border);
             border-radius: 16px;
             padding: 1.5rem;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         .step-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 242, 254, 0.3);
+            background: rgba(15, 20, 40, 0.6);
+            border-color: rgba(0, 242, 254, 0.4);
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 242, 254, 0.1);
         }
 
         .step-card::before {
@@ -155,8 +156,8 @@
 
         /* Conseils Section */
         .conseils-bar {
-            background: linear-gradient(90deg, rgba(0, 242, 254, 0.05) 0%, rgba(255, 0, 85, 0.05) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: linear-gradient(90deg, rgba(0, 242, 254, 0.08) 0%, rgba(179, 136, 255, 0.08) 100%);
+            border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 1rem 2rem;
             display: flex;
@@ -205,7 +206,7 @@
         }
 
         .btn-premium {
-            background: transparent;
+            background: rgba(0, 242, 254, 0.1);
             border: 1px solid var(--primary);
             color: var(--primary);
             font-family: var(--font-title);
@@ -213,7 +214,7 @@
             padding: 0.8rem 2.5rem;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
             text-transform: uppercase;
             letter-spacing: 2px;
             position: relative;
@@ -222,12 +223,15 @@
             display: inline-flex;
             align-items: center;
             gap: 0.8rem;
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
         }
 
         .btn-premium:hover {
             background: var(--primary);
             color: #000;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
+            transform: translateY(-2px);
+            font-weight: 700;
         }
 
         .version-text {
@@ -424,76 +428,219 @@
     </div>
 
     <script>
-        // 3D Background
+        // 3D Background - Deep Sci-Fi Theme
         const init3D = () => {
             const container = document.getElementById('canvas-container');
             const scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x000510, 0.002);
 
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            // Brouillard ultra-profond pour l'immersion
+            scene.fog = new THREE.FogExp2(0x050714, 0.03);
+
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
+
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Opti perf
             container.appendChild(renderer.domElement);
 
-            const particlesCount = 700;
-            const posArray = new Float32Array(particlesCount * 3);
-            const colorArray = new Float32Array(particlesCount * 3);
+            // GESTION SOURIS (Parallaxe)
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
 
-            for (let i = 0; i < particlesCount; i++) {
-                const i3 = i * 3;
-                const angle = i * 0.1;
-                const radius = 3;
-                const rise = i * 0.05 - 15;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.001;
+                mouseY = (event.clientY - windowHalfY) * 0.001;
+            });
 
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius;
-                const x2 = Math.cos(angle + Math.PI) * radius;
-                const z2 = Math.sin(angle + Math.PI) * radius;
+            // 1. PARTICULES DE FOND (Poussière cosmique/cellulaire)
+            const bgParticlesGeo = new THREE.BufferGeometry();
+            const bgParticlesCount = 800;
+            const bgPosArray = new Float32Array(bgParticlesCount * 3);
+            const bgColorArray = new Float32Array(bgParticlesCount * 3);
 
-                if (i % 2 === 0) {
-                    posArray[i3] = x + (Math.random() - 0.5) * 0.5;
-                    posArray[i3 + 1] = rise;
-                    posArray[i3 + 2] = z + (Math.random() - 0.5) * 0.5;
-                    colorArray[i3] = 0.1; colorArray[i3 + 1] = 0.8; colorArray[i3 + 2] = 1.0;
-                } else {
-                    posArray[i3] = x2 + (Math.random() - 0.5) * 0.5;
-                    posArray[i3 + 1] = rise;
-                    posArray[i3 + 2] = z2 + (Math.random() - 0.5) * 0.5;
-                    colorArray[i3] = 1.0; colorArray[i3 + 1] = 0.2; colorArray[i3 + 2] = 0.6;
-                }
+            for (let i = 0; i < bgParticlesCount * 3; i += 3) {
+                bgPosArray[i] = (Math.random() - 0.5) * 40;
+                bgPosArray[i + 1] = (Math.random() - 0.5) * 40;
+                bgPosArray[i + 2] = (Math.random() - 0.5) * 30 - 10;
+
+                // Teintes sombres cyan/violet
+                bgColorArray[i] = Math.random() * 0.2;
+                bgColorArray[i + 1] = Math.random() * 0.5 + 0.2;
+                bgColorArray[i + 2] = Math.random() * 0.8 + 0.2;
             }
+            bgParticlesGeo.setAttribute('position', new THREE.BufferAttribute(bgPosArray, 3));
+            bgParticlesGeo.setAttribute('color', new THREE.BufferAttribute(bgColorArray, 3));
 
-            const particlesGeometry = new THREE.BufferGeometry();
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+            const particleTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
 
-            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
-            const material = new THREE.PointsMaterial({
-                size: 0.15,
-                map: sprite,
+            const bgMaterial = new THREE.PointsMaterial({
+                size: 0.08,
+                map: particleTexture,
                 transparent: true,
+                opacity: 0.4,
                 vertexColors: true,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
+            const bgMesh = new THREE.Points(bgParticlesGeo, bgMaterial);
+            scene.add(bgMesh);
 
-            const particlesMesh = new THREE.Points(particlesGeometry, material);
-            scene.add(particlesMesh);
 
-            camera.position.z = 8;
-            camera.position.y = -5;
+            // 2. DOUBLE HÉLICE ADN PRINCIPALE
+            const dnaGroup = new THREE.Group();
+            const particlesGeometry = new THREE.BufferGeometry();
+
+            const particlesCount = 1500; // Plus dense
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+            const scalesArray = new Float32Array(particlesCount); // Tailles variables
+
+            const radius = 2.5; // Largeur de l'hélice
+            const verticalSpacing = 0.025; // Espacement vertical
+            const twistSpeed = 0.15; // Torsion
+
+            for (let i = 0; i < particlesCount; i++) {
+                const i3 = i * 3;
+
+                // Calcul de la hauteur centrée
+                const rise = (i * verticalSpacing) - ((particlesCount * verticalSpacing) / 2);
+                const angle = i * twistSpeed;
+
+                // Alternance entre les 3 éléments de l'ADN (Brin A, Brin B, Connexions)
+                const type = i % 3;
+
+                let x, z;
+                let r, g, b;
+
+                if (type === 0 || type === 1) {
+                    // Les montants extérieurs
+                    const offsetAngle = type === 0 ? 0 : Math.PI; // Opposés
+                    x = Math.cos(angle + offsetAngle) * radius;
+                    z = Math.sin(angle + offsetAngle) * radius;
+
+                    // Dispersion organique
+                    x += (Math.random() - 0.5) * 0.3;
+                    z += (Math.random() - 0.5) * 0.3;
+
+                    if (type === 0) {
+                        // Cyan éclatant
+                        r = 0.0; g = 0.95; b = 1.0;
+                    } else {
+                        // Violet/Rose néon
+                        r = 0.7; g = 0.53; b = 1.0;
+                    }
+                    scalesArray[i] = Math.random() * 0.5 + 0.5; // Particules plus grosses
+
+                } else {
+                    // Les ponts/connexions entra les deux brins (plus rassemblés au centre)
+                    const linkPos = (Math.random() * 2) - 1; // -1 to 1
+                    x = Math.cos(angle) * (radius * linkPos);
+                    z = Math.sin(angle) * (radius * linkPos);
+
+                    // Dispersion
+                    x += (Math.random() - 0.5) * 0.1;
+                    z += (Math.random() - 0.5) * 0.1;
+
+                    // Blanc/Bleu très clair pour les ponts
+                    r = 0.6; g = 0.8; b = 1.0;
+                    scalesArray[i] = Math.random() * 0.2 + 0.1; // Particules plus fines
+                }
+
+                posArray[i3] = x;
+                posArray[i3 + 1] = rise;
+                posArray[i3 + 2] = z;
+
+                colorArray[i3] = r;
+                colorArray[i3 + 1] = g;
+                colorArray[i3 + 2] = b;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+            particlesGeometry.setAttribute('aScale', new THREE.BufferAttribute(scalesArray, 1));
+
+            // Shader personnalisé pour les particules ADN avec glow
+            const shaderMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0 },
+                    uTexture: { value: particleTexture }
+                },
+                vertexShader: `
+                    uniform float uTime;
+                    attribute float aScale;
+                    varying vec3 vColor;
+                    void main() {
+                        vColor = color;
+                        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                        // Pulse effect based on time and position
+                        float pulse = sin(position.y * 2.0 + uTime * 3.0) * 0.2 + 0.8;
+                        gl_PointSize = 15.0 * aScale * pulse * (10.0 / -mvPosition.z);
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    uniform sampler2D uTexture;
+                    varying vec3 vColor;
+                    void main() {
+                        vec4 texColor = texture2D(uTexture, gl_PointCoord);
+                        // Soft glow blending
+                        gl_FragColor = vec4(vColor, 1.0) * texColor;
+                    }
+                `,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true
+            });
+
+            const dnaMesh = new THREE.Points(particlesGeometry, shaderMaterial);
+            dnaGroup.add(dnaMesh);
+
+            // Incliner légèrement l'ADN
+            dnaGroup.rotation.z = 0.2;
+            dnaGroup.rotation.x = 0.1;
+            scene.add(dnaGroup);
+
+            // Placement caméra
+            camera.position.z = 12;
+
+            // ANIMATION LOOP
+            const clock = new THREE.Clock();
 
             const animate = () => {
                 requestAnimationFrame(animate);
-                particlesMesh.rotation.y += 0.003;
-                particlesMesh.rotation.z += 0.001;
-                const time = Date.now() * 0.0005;
-                camera.position.y += Math.sin(time) * 0.01;
+                const elapsedTime = clock.getElapsedTime();
+
+                // Smooth mouse follow
+                targetX = mouseX * 2;
+                targetY = mouseY * 2;
+
+                dnaGroup.rotation.y += 0.002; // Rotation automatique ADN
+
+                // Interaction souris avec inertie
+                dnaGroup.rotation.x += (targetY * 0.5 - dnaGroup.rotation.x) * 0.05;
+                dnaGroup.rotation.z = 0.2 + (targetX * 0.3); // Tilt based on mouse X
+
+                // Update shader uniforms
+                shaderMaterial.uniforms.uTime.value = elapsedTime;
+
+                // Animate background particles slowly
+                bgMesh.rotation.y = elapsedTime * 0.05;
+                bgMesh.rotation.x = elapsedTime * 0.02;
+
+                // Mouvement flottaison de la caméra
+                camera.position.y = Math.sin(elapsedTime * 0.5) * 0.5;
+                camera.position.x += (mouseX * 5 - camera.position.x) * 0.02;
+
                 renderer.render(scene, camera);
             };
             animate();
 
+            // Resize handler
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();

@@ -1,0 +1,116 @@
+{
+  "id": "epaule_luxation_antérieure_complete",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Martin Moreau",
+    "prenom": "",
+    "age": 24,
+    "sexe": "M",
+    "taille": "1,80 m",
+    "poids": "78 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur aiguë de l’épaule droite avec impotence fonctionnelle totale après traumatisme sportif",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "sport intensif avec pratique du rugby"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "occasionnelle"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Étudiant en STAPS",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale lors d’un plaquage avec bras en abduction et rotation externe",
+      "evolution": "Douleur immédiate intense avec impossibilité de mobiliser le membre supérieur",
+      "facteursDeclenchants": "Traumatisme direct en position à risque",
+      "descriptionDouleur": "Douleur aiguë, vive, irradiant vers le bras",
+      "symptomesAssocies": [
+        "Impotence fonctionnelle complète",
+        "Déformation visible de l’épaule",
+        "Anxiété liée à la douleur"
+      ],
+      "remarques": "Tableau typique de luxation gléno-humérale antérieure"
+    },
+    "verbatim": "J’ai senti mon épaule sortir, je ne peux plus bouger le bras."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/85 mmHg",
+      "pouls": "92 bpm",
+      "temperature": "37.0°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient algique, attitude antalgique avec soutien du membre supérieur",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Impossibilité de toute mobilisation active de l’épaule",
+      "sensibilite": "Hypoesthésie discrète du moignon de l’épaule",
+      "sensibiliteprofonde": "Non testable du fait de la douleur",
+      "reflexesosteotendineux": "Conservés au coude et au poignet",
+      "coordinationequilibre": "Non évaluée",
+      "signesassocies": "Signe de l’épaulette,Comblement du sillon delto-pectoral,Douleur à la palpation antérieure"
+    }
+  },
+  "availableExams": [
+    "Radiographie de l’épaule avant réduction",
+    "Radiographie de contrôle après réduction",
+    "IRM de l’épaule à distance"
+  ],
+  "examResults": {
+    "Radiographie de l’épaule avant réduction": "Luxation antérieure gléno-humérale sans fracture associée",
+    "Radiographie de contrôle après réduction": "Bonne congruence articulaire",
+    "IRM de l’épaule à distance": "Encoche de Hill-Sachs sans lésion majeure de la coiffe"
+  },
+  "possibleDiagnostics": [
+    "Luxation antérieure de l’épaule droite",
+    "Subluxation gléno-humérale antérieure",
+    "Fracture-luxation de l’épaule"
+  ],
+  "correctDiagnostic": "Luxation antérieure de l’épaule droite",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Réduction orthopédique en urgence",
+    "Immobilisation temporaire",
+    "Antalgiques",
+    "Rééducation fonctionnelle secondaire"
+  ],
+  "correctTreatments": [
+    "Réduction orthopédique en urgence",
+    "Immobilisation temporaire",
+    "Rééducation fonctionnelle secondaire"
+  ],
+  "correction": "Le patient consulte pour une douleur aiguë post-traumatique de l’épaule avec impotence fonctionnelle totale et déformation visible. L’attitude antalgique et le signe de l’épaulette sont caractéristiques. La radiographie confirme une luxation antérieure de l’épaule. Il s’agit d’une urgence traumatologique nécessitant une réduction rapide suivie d’une immobilisation et d’une rééducation secondaire.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

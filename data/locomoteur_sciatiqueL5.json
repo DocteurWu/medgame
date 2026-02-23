@@ -1,0 +1,127 @@
+{
+  "id": "case_sciatique_01",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "Karim D.",
+    "prenom": "",
+    "age": 45,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "92 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur bas du dos et douleur dans la jambe droite",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Hypercalorique",
+        "particularites": "Surpoids"
+      },
+      "emploi": {
+        "profession": "Magasinier",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "",
+        "dose": "",
+        "frequence": ""
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Après port de charge lourde",
+      "evolution": "Douleur persistante depuis 10 jours",
+      "facteursDeclenchants": "Effort de soulèvement",
+      "descriptionDouleur": "Douleur lombaire vive irradiant face postéro-latérale jambe droite jusqu’au pied",
+      "symptomesAssocies": [
+        "Paresthésies dos du pied"
+      ],
+      "remarques": "Douleur majorée à la toux"
+    },
+    "verbatim": "La douleur descend jusqu’au pied."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/85 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient algique.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "palpation": "Pouls OK"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": [
+    "IRM lombaire",
+    "Radiographie du rachis",
+    "NFS"
+  ],
+  "examResults": {
+    "IRM lombaire": "Hernie discale L4-L5 postéro-latérale droite avec conflit radiculaire L5",
+    "Radiographie du rachis": "Aucune anomalie",
+    "NFS": "Hb : 14 g/dLHématocrite : 42 %Leucocytes : 6 800 /mm³PNN : 4 000 /mm³Lymphocytes : 2 000 /mm³Plaquettes : 250 000 /mm³"
+  },
+  "possibleDiagnostics": [
+    "Lombalgie commune",
+    "Sciatique L5",
+    "Cruralgie"
+  ],
+  "correctDiagnostic": "Sciatique L5",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Repos et AINS",
+    "Infiltration épidurale",
+    "Chirurgie en urgence"
+  ],
+  "correctTreatments": [
+    "Repos et AINS"
+  ],
+  "correction": "# Sciatique L5\n\n## Points Importants\n- Douleur radiculaire trajet L5\n- Signe de Lasègue positif\n- Hernie discale L4-L5\n- Traitement médical en première intention",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

@@ -1,0 +1,131 @@
+{
+  "id": "case_canal_lombaire_02",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "Jean B.",
+    "prenom": "",
+    "age": 72,
+    "sexe": "M",
+    "taille": "170 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "B+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleurs des membres inférieurs à la marche",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche quotidienne limitée récemment"
+      },
+      "tabac": {
+        "quantite": "Ancien fumeur",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "1 verre/jour"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Arthrose lombaire",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Paracétamol",
+        "dose": "500mg",
+        "frequence": "3 fois/jour"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Progressif depuis 1 an",
+      "evolution": "Aggravation progressive",
+      "facteursDeclenchants": "Marche prolongée",
+      "descriptionDouleur": "Douleurs bilatérales des mollets irradiant vers les cuisses, obligeant à l’arrêt après 200 mètres",
+      "symptomesAssocies": [
+        "Paresthésies des pieds"
+      ],
+      "remarques": "Amélioration nette en position penchée en avant"
+    },
+    "verbatim": "Je dois m’arrêter au bout de quelques minutes quand je marche."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/80 mmHg",
+      "pouls": "75 bpm",
+      "temperature": "36.9°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "Pas d'œdèmes",
+      "palpation": "Pouls périphériques perçus et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": [
+    "NFS-Plaquettes",
+    "CRP",
+    "Radiographie lombaire",
+    "Écho-Doppler artériel des membres inférieurs",
+    "IRM lombaire"
+  ],
+  "examResults": {
+    "NFS-Plaquettes": "Hb 13.5 g/dL, Leuco 7200/mm³, Plaquettes 240 000/mm³",
+    "CRP": "< 5 mg/L",
+    "Radiographie lombaire": "Arthrose interapophysaire postérieure, pincement discal L3-L4 et L4-L5",
+    "Écho-Doppler artériel des membres inférieurs": "Perméabilité artérielle conservée, absence de sténose significative",
+    "IRM lombaire": "Rétrécissement du canal lombaire L3-L4 et L4-L5 avec hypertrophie des ligaments jaunes et conflit radiculaire bilatéral"
+  },
+  "possibleDiagnostics": [
+    "Claudication artérielle",
+    "Canal lombaire étroit",
+    "Sciatique aiguë"
+  ],
+  "correctDiagnostic": "Canal lombaire étroit",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééducation et antalgiques",
+    "Laminectomie de décompression",
+    "Antibiothérapie"
+  ],
+  "correctTreatments": [
+    "Laminectomie de décompression"
+  ],
+  "correction": "# Canal lombaire étroit\n\n## Points Importants\n- Claudication neurogène\n- Douleur bilatérale à la marche\n- Amélioration en flexion\n- Doppler normal éliminant cause vasculaire\n- IRM confirmatrice",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

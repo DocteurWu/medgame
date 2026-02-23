@@ -1,0 +1,110 @@
+{
+  "id": "epaule_tendinopathie_coiffe",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Michel Dupont",
+    "prenom": "",
+    "age": 55,
+    "sexe": "M",
+    "taille": "1,75 m",
+    "poids": "82 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur chronique de l’épaule droite majorée à l’élévation du bras",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "travail manuel répétitif"
+      },
+      "tabac": {
+        "quantite": "oui",
+        "duree": "20 paquets-années"
+      },
+      "alcool": {
+        "quantite": "modérée"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Peintre en bâtiment",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive depuis plusieurs mois",
+      "evolution": "Douleur mécanique croissante",
+      "facteursDeclenchants": "Mouvements répétitifs au-dessus de la tête",
+      "descriptionDouleur": "Douleur latérale de l’épaule irradiant vers le bras",
+      "symptomesAssocies": [
+        "Douleur nocturne en décubitus",
+        "Diminution de la force à l’élévation"
+      ],
+      "remarques": "Tableau évocateur d’une atteinte de la coiffe des rotateurs"
+    },
+    "verbatim": "J’ai mal dès que je lève le bras pour peindre."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/80 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient en bon état général",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Force diminuée à l’abduction contre résistance",
+      "sensibilite": "Normale",
+      "sensibiliteprofonde": "Normale",
+      "reflexesosteotendineux": "Conservés",
+      "coordinationequilibre": "Normale",
+      "signesassocies": "Signe de Jobe positif,Arc douloureux entre 60 et 120 degrés"
+    }
+  },
+  "availableExams": [
+    "Échographie de l’épaule",
+    "IRM de l’épaule"
+  ],
+  "examResults": {
+    "Échographie de l’épaule": "Tendinopathie du sus-épineux sans rupture",
+    "IRM de l’épaule": "Pas de rupture transfixiante"
+  },
+  "possibleDiagnostics": [
+    "Tendinopathie du sus-épineux",
+    "Conflit sous-acromial"
+  ],
+  "correctDiagnostic": "Tendinopathie du sus-épineux",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Chirurgie réparatrice",
+    "Rééducation de l'épaule",
+    "Antalgiques"
+  ],
+  "correctTreatments": [
+    "Rééducation de l’épaule",
+    "Antalgiques"
+  ],
+  "correction": "Ce cas correspond à une tendinopathie de la coiffe des rotateurs, touchant le tendon du sus-épineux, favorisée par des mouvements répétés au-dessus de la tête. La douleur est mécanique, latéralisée à l’épaule, majorée à l’abduction, avec un arc douloureux et un signe de Jobe positif, sans limitation passive ni déficit neurologique. L’imagerie confirme l’absence de rupture, orientant vers une prise en charge fonctionnelle et rééducative.\n\nÉléments clés :\n\n·       Douleur mécanique de l’épaule\n\n·       Arc douloureux 60–120°\n\n·       Jobe positif\n\n·       Mobilité passive conservée\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

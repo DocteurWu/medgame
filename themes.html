@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap"
         rel="stylesheet">
 
     <!-- Icons & Styles -->
@@ -32,6 +32,11 @@
 <body>
 
     <div id="canvas-container"></div>
+    <!-- Radial gradient overlay for atmospheric depth -->
+    <div
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: radial-gradient(circle at center, transparent 0%, rgba(5, 7, 20, 0.8) 100%); z-index: 0;">
+    </div>
+
     <script src="js/config.js"></script>
 
     <!-- Scene overlay -->
@@ -112,91 +117,214 @@
 
     <!-- Script 3D Background (ADN) -->
     <script>
-        /* --- LOGIQUE 3D BACKGROUND (ADN) --- */
+        /* --- LOGIQUE 3D BACKGROUND (ADN - Deep Sci-Fi Theme) --- */
         const init3D = () => {
             const container = document.getElementById('canvas-container');
             const scene = new THREE.Scene();
-            // Ajout d'un brouillard pour la profondeur
-            scene.fog = new THREE.FogExp2(0x000510, 0.002);
 
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            // Brouillard ultra-profond pour l'immersion
+            scene.fog = new THREE.FogExp2(0x050714, 0.03);
+
+            const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
 
             renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Opti perf
             container.appendChild(renderer.domElement);
 
-            // Création des particules ADN
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 700;
-            const posArray = new Float32Array(particlesCount * 3);
-            const colorArray = new Float32Array(particlesCount * 3);
+            // GESTION SOURIS (Parallaxe)
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
 
-            for (let i = 0; i < particlesCount; i++) {
-                // Double helice logic
-                const i3 = i * 3;
-                const angle = i * 0.1;
-                const radius = 3;
-                const rise = i * 0.05 - 15; // Hauteur
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.001;
+                mouseY = (event.clientY - windowHalfY) * 0.001;
+            });
 
-                // Strand 1
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius;
+            // 1. PARTICULES DE FOND (Poussière cosmique/cellulaire)
+            const bgParticlesGeo = new THREE.BufferGeometry();
+            const bgParticlesCount = 800;
+            const bgPosArray = new Float32Array(bgParticlesCount * 3);
+            const bgColorArray = new Float32Array(bgParticlesCount * 3);
 
-                // Strand 2 (offset by PI)
-                const x2 = Math.cos(angle + Math.PI) * radius;
-                const z2 = Math.sin(angle + Math.PI) * radius;
+            for (let i = 0; i < bgParticlesCount * 3; i += 3) {
+                bgPosArray[i] = (Math.random() - 0.5) * 40;
+                bgPosArray[i + 1] = (Math.random() - 0.5) * 40;
+                bgPosArray[i + 2] = (Math.random() - 0.5) * 30 - 10;
 
-                // On alterne entre les deux brins pour remplir le tableau
-                if (i % 2 === 0) {
-                    posArray[i3] = x + (Math.random() - 0.5) * 0.5;
-                    posArray[i3 + 1] = rise;
-                    posArray[i3 + 2] = z + (Math.random() - 0.5) * 0.5;
-                    // Couleur Cyan/Bleu
-                    colorArray[i3] = 0.1;
-                    colorArray[i3 + 1] = 0.8;
-                    colorArray[i3 + 2] = 1.0;
-                } else {
-                    posArray[i3] = x2 + (Math.random() - 0.5) * 0.5;
-                    posArray[i3 + 1] = rise;
-                    posArray[i3 + 2] = z2 + (Math.random() - 0.5) * 0.5;
-                    // Couleur Violet/Rose
-                    colorArray[i3] = 1.0;
-                    colorArray[i3 + 1] = 0.2;
-                    colorArray[i3 + 2] = 0.6;
-                }
+                // Teintes sombres cyan/violet
+                bgColorArray[i] = Math.random() * 0.2;
+                bgColorArray[i + 1] = Math.random() * 0.5 + 0.2;
+                bgColorArray[i + 2] = Math.random() * 0.8 + 0.2;
             }
+            bgParticlesGeo.setAttribute('position', new THREE.BufferAttribute(bgPosArray, 3));
+            bgParticlesGeo.setAttribute('color', new THREE.BufferAttribute(bgColorArray, 3));
 
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+            const particleTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
 
-            // Texture de particule (cercle soft)
-            const sprite = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/disc.png');
-
-            const material = new THREE.PointsMaterial({
-                size: 0.15,
-                map: sprite,
+            const bgMaterial = new THREE.PointsMaterial({
+                size: 0.08,
+                map: particleTexture,
                 transparent: true,
+                opacity: 0.4,
                 vertexColors: true,
                 blending: THREE.AdditiveBlending,
                 depthWrite: false
             });
+            const bgMesh = new THREE.Points(bgParticlesGeo, bgMaterial);
+            scene.add(bgMesh);
 
-            const particlesMesh = new THREE.Points(particlesGeometry, material);
-            scene.add(particlesMesh);
 
-            camera.position.z = 8;
-            camera.position.y = -5;
+            // 2. DOUBLE HÉLICE ADN PRINCIPALE
+            const dnaGroup = new THREE.Group();
+            const particlesGeometry = new THREE.BufferGeometry();
 
-            // Animation Loop
+            const particlesCount = 1500; // Plus dense
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+            const scalesArray = new Float32Array(particlesCount); // Tailles variables
+
+            const radius = 2.5; // Largeur de l'hélice
+            const verticalSpacing = 0.025; // Espacement vertical
+            const twistSpeed = 0.15; // Torsion
+
+            for (let i = 0; i < particlesCount; i++) {
+                const i3 = i * 3;
+                const progress = i / particlesCount;
+
+                // Calcul de la hauteur centrée
+                const rise = (i * verticalSpacing) - ((particlesCount * verticalSpacing) / 2);
+                const angle = i * twistSpeed;
+
+                // Alternance entre les 3 éléments de l'ADN (Brin A, Brin B, Connexions)
+                const type = i % 3;
+
+                let x, z;
+                let r, g, b;
+
+                if (type === 0 || type === 1) {
+                    // Les montants extérieurs
+                    const offsetAngle = type === 0 ? 0 : Math.PI; // Opposés
+                    x = Math.cos(angle + offsetAngle) * radius;
+                    z = Math.sin(angle + offsetAngle) * radius;
+
+                    // Dispersion organique
+                    x += (Math.random() - 0.5) * 0.3;
+                    z += (Math.random() - 0.5) * 0.3;
+
+                    if (type === 0) {
+                        // Cyan éclatant
+                        r = 0.0; g = 0.95; b = 1.0;
+                    } else {
+                        // Violet/Rose néon
+                        r = 0.7; g = 0.53; b = 1.0;
+                    }
+                    scalesArray[i] = Math.random() * 0.5 + 0.5; // Particules plus grosses
+
+                } else {
+                    // Les ponts/connexions entra les deux brins (plus rassemblés au centre)
+                    const linkPos = (Math.random() * 2) - 1; // -1 to 1
+                    x = Math.cos(angle) * (radius * linkPos);
+                    z = Math.sin(angle) * (radius * linkPos);
+
+                    // Dispersion
+                    x += (Math.random() - 0.5) * 0.1;
+                    z += (Math.random() - 0.5) * 0.1;
+
+                    // Blanc/Bleu très clair pour les ponts
+                    r = 0.6; g = 0.8; b = 1.0;
+                    scalesArray[i] = Math.random() * 0.2 + 0.1; // Particules plus fines
+                }
+
+                posArray[i3] = x;
+                posArray[i3 + 1] = rise;
+                posArray[i3 + 2] = z;
+
+                colorArray[i3] = r;
+                colorArray[i3 + 1] = g;
+                colorArray[i3 + 2] = b;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+            particlesGeometry.setAttribute('aScale', new THREE.BufferAttribute(scalesArray, 1));
+
+            // Shader personnalisé pour les particules ADN avec glow
+            const shaderMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0 },
+                    uTexture: { value: particleTexture }
+                },
+                vertexShader: `
+                    uniform float uTime;
+                    attribute float aScale;
+                    varying vec3 vColor;
+                    void main() {
+                        vColor = color;
+                        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                        // Pulse effect based on time and position
+                        float pulse = sin(position.y * 2.0 + uTime * 3.0) * 0.2 + 0.8;
+                        gl_PointSize = 15.0 * aScale * pulse * (10.0 / -mvPosition.z);
+                        gl_Position = projectionMatrix * mvPosition;
+                    }
+                `,
+                fragmentShader: `
+                    uniform sampler2D uTexture;
+                    varying vec3 vColor;
+                    void main() {
+                        vec4 texColor = texture2D(uTexture, gl_PointCoord);
+                        // Soft glow blending
+                        gl_FragColor = vec4(vColor, 1.0) * texColor;
+                    }
+                `,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true
+            });
+
+            const dnaMesh = new THREE.Points(particlesGeometry, shaderMaterial);
+            dnaGroup.add(dnaMesh);
+
+            // Incliner légèrement l'ADN
+            dnaGroup.rotation.z = 0.2;
+            dnaGroup.rotation.x = 0.1;
+            scene.add(dnaGroup);
+
+            // Placement caméra
+            camera.position.z = 12;
+
+            // ANIMATION LOOP
+            const clock = new THREE.Clock();
+
             const animate = () => {
                 requestAnimationFrame(animate);
-                particlesMesh.rotation.y += 0.003;
-                particlesMesh.rotation.z += 0.001;
+                const elapsedTime = clock.getElapsedTime();
 
-                // Effet de flottement caméra
-                const time = Date.now() * 0.0005;
-                camera.position.y += Math.sin(time) * 0.01;
+                // Smooth mouse follow
+                targetX = mouseX * 2;
+                targetY = mouseY * 2;
+
+                dnaGroup.rotation.y += 0.002; // Rotation automatique ADN
+
+                // Interaction souris avec inertie
+                dnaGroup.rotation.x += (targetY * 0.5 - dnaGroup.rotation.x) * 0.05;
+                dnaGroup.rotation.z = 0.2 + (targetX * 0.3); // Tilt based on mouse X
+
+                // Update shader uniforms
+                shaderMaterial.uniforms.uTime.value = elapsedTime;
+
+                // Animate background particles slowly
+                bgMesh.rotation.y = elapsedTime * 0.05;
+                bgMesh.rotation.x = elapsedTime * 0.02;
+
+                // Mouvement flottaison de la caméra
+                camera.position.y = Math.sin(elapsedTime * 0.5) * 0.5;
+                camera.position.x += (mouseX * 5 - camera.position.x) * 0.02;
 
                 renderer.render(scene, camera);
             };

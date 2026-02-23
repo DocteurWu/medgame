@@ -1,0 +1,128 @@
+{
+  "id": "case_rachialgie_inflammatoire_DFGSM3",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "Sami A.",
+    "prenom": "",
+    "age": 24,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleurs lombaires depuis 6 mois",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sport occasionnel"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Étudiant",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Paracétamol (automédication)",
+        "dose": "500mg",
+        "frequence": "Si douleurs"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Progressif, sans traumatisme",
+      "evolution": "Douleurs chroniques persistantes depuis 6 mois",
+      "facteursDeclenchants": "Aucun facteur mécanique",
+      "descriptionDouleur": "Douleur lombaire basse bilatérale, réveils nocturnes en deuxième partie de nuit",
+      "symptomesAssocies": [
+        "Raideur matinale supérieure à 30 minutes",
+        "Amélioration à l’activité physique",
+        "Fatigue"
+      ],
+      "remarques": "Pas de troubles sphinctériens, pas de fièvre"
+    },
+    "verbatim": "J’ai mal surtout la nuit, et ça va mieux quand je bouge."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/75 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.9°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Bon état général.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "palpation": "Pouls présents"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": [
+    "NFS-Plaquettes",
+    "CRP",
+    "VS",
+    "Radiographie du bassin (articulations sacro-iliaques)"
+  ],
+  "examResults": {
+    "NFS-Plaquettes": "Hb 13.8 g/dL, Leuco 7000/mm³, Plaquettes 280 000/mm³",
+    "CRP": "18 mg/L",
+    "VS": "35 mm à la 1ère heure",
+    "Radiographie du bassin (articulations sacro-iliaques)": "Flou des berges sacro-iliaques bilatérales évocateur de sacro-iliite débutante"
+  },
+  "possibleDiagnostics": [
+    "Lombalgie commune",
+    "Spondyloarthrite axiale débutante",
+    "Sciatique L5",
+    "Fracture vertébrale"
+  ],
+  "correctDiagnostic": "Spondyloarthrite axiale débutante",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "AINS en première intention",
+    "Repos strict prolongé",
+    "Antibiothérapie",
+    "Chirurgie urgente"
+  ],
+  "correctTreatments": [
+    "AINS en première intention"
+  ],
+  "correction": "# Rachialgie inflammatoire\n\n## Points Importants\n- Sujet jeune (< 40 ans)\n- Douleur chronique > 3 mois\n- Raideur matinale > 30 minutes\n- Réveil nocturne en deuxième partie de nuit\n- Amélioration à l’activité\n- Syndrome inflammatoire biologique\n- Sacro-iliite radiologique\n\nÉvoquer une spondyloarthrite devant toute lombalgie inflammatoire chez un sujet jeune.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

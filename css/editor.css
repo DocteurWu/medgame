@@ -1,9 +1,11 @@
 /* Editor Specific Styles */
 :root {
-    --editor-primary: #a020f0;
-    --editor-secondary: #00d2ff;
+    --editor-primary: #b388ff;
+    /* Purple Neon */
+    --editor-secondary: #00f2fe;
+    /* Cyan */
     --editor-danger: #ff4757;
-    --editor-success: #2ed573;
+    --editor-success: #2ecc71;
 }
 
 [contenteditable="true"] {

@@ -1,0 +1,84 @@
+{
+  "id": "case_scoliose_01",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "L.",
+    "prenom": "Camille",
+    "age": 14,
+    "sexe": "F",
+    "taille": "162 cm",
+    "poids": "48 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Asymétrie du dos et suspicion de scoliose",
+    "modeDeVie": {
+      "activitePhysique": { "description": "Danse 2 fois/semaine" },
+      "tabac": { "quantite": "0", "duree": "0" },
+      "alcool": { "quantite": "0" },
+      "alimentation": { "regime": "Équilibré", "particularites": "Aucune" },
+      "emploi": { "profession": "Collégienne", "stress": "Modéré (scolaire)" }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": ["Mère ayant eu une scoliose adolescente"]
+    },
+    "traitements": [],
+    "allergies": { "presence": false, "liste": [] },
+    "histoireMaladie": {
+      "debutSymptomes": "Découverte récente par la mère",
+      "evolution": "Aggravation progressive sur 6 mois",
+      "facteursDeclenchants": "Croissance rapide",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": ["Asymétrie des épaules"],
+      "remarques": "Pas de déficit neurologique"
+    },
+    "verbatim": "Ma maman trouve que j’ai le dos de travers."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Bon état général.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "palpation": "Pouls présents"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": ["Radiographie du rachis"],
+  "examResults": {
+    "Radiographie du rachis": "Scoliose thoracique droite, angle de Cobb à 25°"
+  },
+  "possibleDiagnostics": [
+    "Scoliose idiopathique",
+    "Attitude scoliotique",
+    "Cyphose"
+  ],
+  "correctDiagnostic": "Scoliose idiopathique",
+  "possibleTreatments": [
+    "Surveillance simple",
+    "Corset orthopédique",
+    "Chirurgie"
+  ],
+  "correctTreatments": ["Corset orthopédique"],
+  "correction": "# Scoliose idiopathique\n\n## Points Importants\n- Déformation tridimensionnelle du rachis\n- Angle de Cobb > 10°\n- Risque évolutif en période de croissance\n- Traitement par corset si > 20° chez l’adolescente en croissance",
+  "correctionImage": null,
+  "feedback": { "default": "Réfléchir à l’âge et à l’angle de Cobb." },
+  "locks": [],
+  "postGameQuestions": []
+}

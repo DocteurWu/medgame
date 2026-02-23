@@ -1,0 +1,113 @@
+{
+  "id": "epaule_arthrose_gleno_humerale_complete",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Jean Petit",
+    "prenom": "",
+    "age": 72,
+    "sexe": "M",
+    "taille": "1,68 m",
+    "poids": "80 kg",
+    "groupeSanguin": "A-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur mécanique chronique de l’épaule droite avec limitation fonctionnelle progressive",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "activité physique limitée par la douleur"
+      },
+      "tabac": {
+        "quantite": "ancien fumeur",
+        "duree": "sevré depuis 10 ans"
+      },
+      "alcool": {
+        "quantite": "faible"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Ancien ouvrier du bâtiment",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Évolution insidieuse depuis plusieurs années",
+      "evolution": "Aggravation progressive avec perte d’autonomie",
+      "facteursDeclenchants": "Utilisation prolongée du membre supérieur",
+      "descriptionDouleur": "Douleur mécanique profonde de l’épaule",
+      "symptomesAssocies": [
+        "Raideur matinale brève",
+        "Crépitations articulaires",
+        "Diminution progressive des amplitudes"
+      ],
+      "remarques": "Tableau évocateur d’une pathologie dégénérative articulaire"
+    },
+    "verbatim": "J’ai de plus en plus de mal à lever le bras et ça craque."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/80 mmHg",
+      "pouls": "74 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient âgé avec limitation fonctionnelle de l’épaule",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Diminution globale des amplitudes actives et passives",
+      "sensibilite": "Normale",
+      "sensibiliteprofonde": "Normale",
+      "reflexesosteotendineux": "Conservés",
+      "coordinationequilibre": "Normale",
+      "signesassocies": "Crépitations à la mobilisation,Douleur en fin de course,Amyotrophie modérée de l’épaule"
+    }
+  },
+  "availableExams": [
+    "Radiographie de l’épaule",
+    "IRM de l’épaule"
+  ],
+  "examResults": {
+    "Radiographie de l’épaule": "Pincement articulaire gléno-huméral, ostéophytes",
+    "IRM de l’épaule": "Remaniements dégénératifs sans rupture massive de la coiffe"
+  },
+  "possibleDiagnostics": [
+    "Arthrose gléno-humérale droite",
+    "Omarthrose centrée",
+    "Pathologie dégénérative de l’épaule"
+  ],
+  "correctDiagnostic": "Arthrose gléno-humérale droite",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antalgiques",
+    "Anti-inflammatoires",
+    "Rééducation fonctionnelle",
+    "Infiltrations intra-articulaires"
+  ],
+  "correctTreatments": [
+    "Antalgiques",
+    "Rééducation fonctionnelle"
+  ],
+  "correction": "Ce cas est marqué par une douleur mécanique chronique de l’épaule, associée à une raideur progressive et des crépitations à la mobilisation. Le contexte d’âge avancé et les anomalies radiologiques (pincement articulaire) orientent vers une arthrose gléno-humérale. La prise en charge est symptomatique, reposant sur le traitement antalgique et la rééducation fonctionnelle",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

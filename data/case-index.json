@@ -75,6 +75,14 @@
   "locomoteur": [
     "locomoteur_arthrite_Mirko.json",
     "locomoteur_lomboradiculalgie_robert.json",
-    "locomoteur_tendinopathie_lisa.json"
+    "locomoteur_tendinopathie_lisa.json",
+    "locomoteur_sciatiqueL5.json",
+    "locomoteur_scoliose.json",
+    "locomoteur_canal_lombaire.json",
+    "locomoteur_epaule_arthrose_gleno_humerale_complete.json",
+    "locomoteur_epaule_capsulite.json",
+    "locomoteur_epaule_luxation_anterieure_complete.json",
+    "locomoteur_epaule_tendinopathie_coiffe.json",
+    "locomoteur_racHialgie.json"
   ]
 }

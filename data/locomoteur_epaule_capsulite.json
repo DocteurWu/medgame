@@ -1,0 +1,119 @@
+{
+  "id": "epaule_capsulite",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Marie Leroy",
+    "prenom": "",
+    "age": 60,
+    "sexe": "F",
+    "taille": "1,62 m",
+    "poids": "68 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Raideur progressive et douloureuse de l’épaule gauche",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "faible"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Secrétaire",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "",
+        "dose": "",
+        "frequence": ""
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation insidieuse",
+      "evolution": "Aggravation progressive de la raideur",
+      "facteursDeclenchants": "Aucun traumatisme",
+      "descriptionDouleur": "Douleur diffuse de l’épaule",
+      "symptomesAssocies": [
+        "Limitation globale des mouvements",
+        "Douleurs nocturnes"
+      ],
+      "remarques": "Raideur active et passive"
+    },
+    "verbatim": "Je n’arrive plus du tout à bouger mon épaule."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "125/75 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.5°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Patiente gênée dans les mouvements",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Limitation sévère active et passive",
+      "sensibilite": "Normale",
+      "sensibiliteprofonde": "Normale",
+      "reflexesosteotendineux": "Conservés",
+      "coordinationequilibre": "Normale",
+      "signesassocies": "Raideur globale de l’épaule"
+    }
+  },
+  "availableExams": [
+    "Radiographie de l’épaule",
+    "IRM de l'épaule"
+  ],
+  "examResults": {
+    "Radiographie de l’épaule": "Absence d’anomalie osseuse",
+    "IRM de l'épaule": "Epaississement de la capsule articulaire et du ligament coraco-huméral"
+  },
+  "possibleDiagnostics": [
+    "Capsulite rétractile",
+    "Tendinopathie de la coiffe des rotateurs"
+  ],
+  "correctDiagnostic": "Capsulite rétractile",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééducation prolongée",
+    "Antalgiques"
+  ],
+  "correctTreatments": [
+    "Rééducation prolongée"
+  ],
+  "correction": "La patiente présente une douleur diffuse de l’épaule associée à une raideur progressive, avec une limitation des mobilités actives et passives dans tous les plans. Le contexte de diabète et l’absence d’anomalie radiologique renforcent le diagnostic de capsulite rétractile. Ce tableau correspond à une atteinte capsulaire nécessitant une rééducation douce et prolongée, avec une évolution lente mais généralement favorable.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": []
+}

@@ -1,15 +1,19 @@
 /* --- VARIABLES & RESET --- */
 :root {
     --primary: #00f2fe;
-    --secondary: #4facfe;
-    --accent: #ff0055;
-    --dark-bg: #000510;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    /* Cyan */
+    --secondary: #b388ff;
+    /* Purple Neon */
+    --accent: #ff4757;
+    /* Coral Red for warnings/hearts */
+    --dark-bg: #050714;
+    /* Deep Night Blue */
+    --glass-bg: rgba(10, 15, 30, 0.6);
+    --glass-border: rgba(0, 242, 254, 0.15);
     --text-main: #ffffff;
-    --text-muted: rgba(255, 255, 255, 0.7);
-    --font-main: 'Rajdhani', sans-serif;
-    --font-title: 'Orbitron', sans-serif;
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --font-main: 'Inter', sans-serif;
+    --font-title: 'Outfit', sans-serif;
 }
 
 * {
@@ -20,12 +24,12 @@
 
 body {
     font-family: var(--font-main);
-    background-image: url('../assets/images/FondAccueil.webp');
+    background: radial-gradient(circle at center, transparent 0%, var(--dark-bg) 100%),
+        url('../assets/images/FondAccueil.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-color: var(--dark-bg);
-    /* Fallback color */
     color: var(--text-main);
     height: 100vh;
     overflow: hidden;
@@ -43,6 +47,19 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
+    pointer-events: auto;
+    /* Let mouse events reach canvas for interaction */
+}
+
+/* Subtile background atmospheric glow overlay */
+#canvas-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 7, 20, 0.8) 100%);
     pointer-events: none;
 }
 
@@ -50,21 +67,26 @@ body {
 .scene-overlay {
     perspective: 1000px;
     z-index: 10;
+    pointer-events: none;
+    /* Let hover pass through to canvas when not on card */
 }
 
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     padding: 3rem 4rem;
     width: 100%;
     max-width: 500px;
     text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
+        inset 0 0 20px rgba(0, 242, 254, 0.05); // Inner subtle glow
     transform-style: preserve-3d;
     transition: transform 0.1s ease;
+    pointer-events: auto;
+    /* Enable clicks on card */
 }
 
 /* --- TYPOGRAPHY & HEADER --- */
@@ -72,8 +94,8 @@ body {
     font-size: 3rem;
     color: var(--accent);
     margin-bottom: 1rem;
-    animation: heartbeat 1.5s infinite;
-    text-shadow: 0 0 20px rgba(255, 0, 85, 0.5);
+    animation: heartbeat 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 0 0 25px rgba(255, 71, 87, 0.6);
 }
 
 @keyframes heartbeat {
@@ -101,21 +123,22 @@ body {
 .glitch-title {
     font-family: var(--font-title);
     font-size: 3.5rem;
-    font-weight: 900;
+    font-weight: 800;
     letter-spacing: 2px;
     margin-bottom: 0.2rem;
-    background: linear-gradient(to right, #fff, var(--primary));
+    background: linear-gradient(135deg, #ffffff, var(--primary));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     position: relative;
+    text-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
 }
 
 .subtitle {
     color: var(--secondary);
     font-size: 1.1rem;
     font-weight: 500;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     margin-bottom: 2.5rem;
     text-transform: uppercase;
 }
@@ -129,21 +152,22 @@ body {
 
 .btn-3d {
     position: relative;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(10, 15, 30, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     color: white;
     font-family: var(--font-title);
+    font-weight: 600;
     font-size: 1rem;
     padding: 1.2rem 2rem;
     border-radius: 12px;
     cursor: pointer;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: flex;
     align-items: center;
     justify-content: center;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
 }
 
 .btn-content {
@@ -161,15 +185,17 @@ body {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, var(--secondary), var(--primary));
+    opacity: 0.8;
     z-index: 1;
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .btn-3d:hover {
     border-color: var(--primary);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 242, 254, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 242, 254, 0.3),
+        0 0 10px rgba(179, 136, 255, 0.4);
 }
 
 .btn-3d:hover .btn-layer {
@@ -177,23 +203,33 @@ body {
 }
 
 /* Specific button styles */
+.btn-3d.primary .btn-layer {
+    background: linear-gradient(90deg, #00c6ff, var(--primary));
+}
+
 .btn-3d.primary:hover {
-    box-shadow: 0 0 30px rgba(79, 172, 254, 0.4);
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
 }
 
 .btn-3d.secondary .btn-layer {
-    background: linear-gradient(90deg, #43e97b, #38f9d7);
+    background: linear-gradient(90deg, #9b51e0, var(--secondary));
+}
+
+.btn-3d.secondary:hover {
+    box-shadow: 0 0 30px rgba(179, 136, 255, 0.4);
+    border-color: var(--secondary);
 }
 
 .btn-3d.tertiary .btn-layer {
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
 }
 
 .disclaimer {
     margin-top: 2rem;
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 1rem;
 }
 
