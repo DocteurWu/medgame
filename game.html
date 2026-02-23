@@ -127,7 +127,15 @@
 
                 <!-- SECTION: ANAMNÈSE -->
                 <section id="section-anamnese" class="game-section active">
-                    <h2 class="section-header">1. INTERROGATOIRE</h2>
+                    <div
+                        style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                        <h2 class="section-header" style="margin:0;">1. INTERROGATOIRE</h2>
+                        <button id="btn-reveal-all" onclick="window.revealAllInterrogatoire()"
+                            style="background:rgba(255,165,0,0.12); border:1px solid rgba(255,165,0,0.4); color:#ffb347; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:0.88rem; white-space:nowrap; transition:all 0.2s;">
+                            <i class="fas fa-eye"></i> Tout afficher <span
+                                style="opacity:0.75; font-size:0.82em;">(-48s)</span>
+                        </button>
+                    </div>
 
                     <div id="patient-verbatim-container" class="verbatim-container">
 
