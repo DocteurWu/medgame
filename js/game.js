@@ -113,6 +113,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     let backgroundMusicEl = null;
     let vitalMonitorInstance = null;
 
+    // --- URGENCE MODE GLOBALS ---
+    let isUrgenceMode = false;
+    let currentUrgenceNode = null;
+    let urgenceTimerTimeout = null;
+
     // --- GATING SYSTEM (VERROUS) ---
     let unlockedLocks = new Set();
     try {
@@ -1218,6 +1223,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!isPartialRefresh) {
             currentCase = cases[currentCaseIndex];
+
+            // Urgence Mode Check
+            if (currentCase.gameplayConfig && currentCase.gameplayConfig.startNode) {
+                isUrgenceMode = true;
+                currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
+            } else {
+                isUrgenceMode = false;
+                currentUrgenceNode = null;
+            }
         }
 
         displayValue(document.getElementById('patient-nom'), currentCase.patient.nom, 'patient.nom');
@@ -1583,13 +1597,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Start the timer only after nurse is dismissed
                     if (timerInterval) clearInterval(timerInterval);
                     timerInterval = setInterval(updateTimer, 1000);
+
+                    if (isUrgenceMode) renderUrgenceState();
                 }
             );
+        } else if (isUrgenceMode) {
+            renderUrgenceState();
         }
     }
 
     function updateExamsTabVisibility() {
         const hasExams = currentCase && currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0;
+
+        // Urgence tab visibility
+        const navIntervention = document.getElementById('nav-intervention-rapide');
+        const mobileIntervention = document.getElementById('mobile-tab-intervention');
+        if (navIntervention) navIntervention.style.display = isUrgenceMode ? '' : 'none';
+        if (mobileIntervention) mobileIntervention.style.display = isUrgenceMode ? '' : 'none';
 
         // Sidebar navigation - onglet Examens Compl.
         const sidebarExamTab = document.querySelector('.nav-item[data-target="section-examens"]');
@@ -1950,6 +1974,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (tabId === 'decision') {
             document.getElementById('section-synthese').classList.add('mobile-active');
             updateSidebarActive('section-synthese');
+        } else if (tabId === 'intervention-rapide') {
+            document.getElementById('section-intervention-rapide').classList.add('mobile-active');
+            updateSidebarActive('section-intervention-rapide');
         }
 
         // Scroll to top
@@ -2160,6 +2187,112 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }, 1000);
             }
         }
+    }
+
+    // --- URGENCE MODE LOGIC ---
+    function renderUrgenceState() {
+        if (!isUrgenceMode || !currentUrgenceNode) return;
+
+        const banner = document.getElementById('urgence-description-banner');
+        if (banner) {
+            banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${currentUrgenceNode.descriptionClinique}`;
+            banner.style.background = 'rgba(255, 71, 87, 0.3)';
+            setTimeout(() => { banner.style.background = 'rgba(255, 71, 87, 0.1)'; }, 1000);
+        }
+
+
+        if (currentUrgenceNode.constantesCibles && vitalMonitorInstance) {
+            const cibles = currentUrgenceNode.constantesCibles;
+            const bpStr = cibles.tension || "120/80";
+            const bp = parseBP(bpStr);
+            vitalMonitorInstance.updateProps({
+                systolic: bp.systolic,
+                diastolic: bp.diastolic,
+                heartRate: parseInt(cibles.pouls) || 72,
+                spo2: parseInt(cibles.saturationO2) || 98,
+                temperature: parseFloat(cibles.temperature) || 36.6,
+                respiratoryRate: parseInt(cibles.frequenceRespiratoire) || 16
+            });
+            const tEl = document.getElementById('tension'); if (tEl) tEl.textContent = cibles.tension || '';
+            const pEl = document.getElementById('pouls'); if (pEl) pEl.textContent = cibles.pouls || '';
+            const sEl = document.getElementById('saturationO2'); if (sEl) sEl.textContent = cibles.saturationO2 || '';
+            const fEl = document.getElementById('frequenceRespiratoire'); if (fEl) fEl.textContent = cibles.frequenceRespiratoire || '';
+        }
+
+        const actionsContainer = document.getElementById('urgence-actions-container');
+        if (actionsContainer) {
+            actionsContainer.innerHTML = '';
+            if (currentUrgenceNode.actionsDisponibles) {
+                currentUrgenceNode.actionsDisponibles.forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'action-btn';
+                    btn.style.margin = '5px';
+                    btn.innerHTML = `<i class="fas fa-syringe"></i> ${action.label} <span style="font-size:0.8em; opacity:0.8;">(-${action.tempsExecutionSec}s)</span>`;
+                    btn.onclick = () => executeUrgenceAction(action);
+                    actionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+        if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
+            urgenceTimerTimeout = setTimeout(() => {
+                showNotification(`⚠️ ALERTE : ${currentUrgenceNode.evolutionAuto.motif}`);
+                transitionUrgenceState(currentUrgenceNode.evolutionAuto.nextNode);
+            }, currentUrgenceNode.evolutionAuto.delaiSecondes * 1000);
+        }
+
+        if (currentUrgenceNode.isEndState) {
+            if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+            if (timerInterval) clearInterval(timerInterval);
+
+            const playedCases = getCookie('playedCases');
+            let arr = playedCases ? playedCases.split(',') : [];
+            if (!arr.includes(currentCase.id)) {
+                arr.push(currentCase.id);
+                setCookie('playedCases', arr.join(','), 365);
+            }
+
+            setTimeout(() => {
+                let html = `<h2>${currentUrgenceNode.success ? '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Patient Sauvé' : '<i class="fas fa-skull" style="color: #e74c3c;"></i> Échec Critique'}</h2>`;
+                html += `<p>${currentUrgenceNode.descriptionClinique}</p>`;
+                if (currentCase.correction) {
+                    html += `<hr>${currentCase.correction}`;
+                }
+                showCorrectionModal(html);
+
+                if (currentUrgenceNode.success) {
+                    const container = document.querySelector('#fireworks-container');
+                    const fireworks = new Fireworks(container, { duration: 3 });
+                    fireworksInstance = fireworks;
+                    fireworks.start();
+                    const successSound = new Audio('assets/sounds/feux_artifice.mp3');
+                    successSound.play();
+                } else {
+                    const failSound = new Audio('assets/sounds/flatline.mp3');
+                    failSound.play().catch(e => console.log('No fail sound playing'));
+                }
+            }, 1000);
+        }
+    }
+
+    function executeUrgenceAction(action) {
+        if (window.deductTime) {
+            window.deductTime(action.tempsExecutionSec);
+        }
+        if (action.feedback) {
+            showNotification(action.feedback);
+        }
+        transitionUrgenceState(action.nextNode);
+    }
+
+    function transitionUrgenceState(nextNodeId) {
+        if (!currentCase.nodes || !currentCase.nodes[nextNodeId]) {
+            console.error("Unknown node:", nextNodeId);
+            return;
+        }
+        currentUrgenceNode = currentCase.nodes[nextNodeId];
+        renderUrgenceState();
     }
 
     const appContainer = document.querySelector('.app-container');

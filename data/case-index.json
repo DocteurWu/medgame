@@ -84,5 +84,8 @@
     "locomoteur_epaule_luxation_anterieure_complete.json",
     "locomoteur_epaule_tendinopathie_coiffe.json",
     "locomoteur_racHialgie.json"
+  ],
+  "urgence": [
+    "urgence_choc_anaphylactique_01.json"
   ]
 }
