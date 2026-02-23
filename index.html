@@ -10,7 +10,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800;900&display=swap"
+        rel="stylesheet">
 
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -75,30 +77,22 @@
             </div>
 
             <div class="modal-body">
-                <p class="setting-label">Difficulté (Temps imparti)</p>
+                <p class="setting-label">Degré d'immersion</p>
                 <div class="difficulty-selector">
                     <label class="diff-option">
-                        <input type="radio" name="timeMode" value="facile">
+                        <input type="radio" name="immersionMode" value="classique">
                         <span class="diff-card green">
-                            <i class="fas fa-user-md"></i>
-                            <span>Interne</span>
-                            <small>8 min</small>
+                            <i class="fas fa-book-open"></i>
+                            <span>Classique</span>
+                            <small>Tout affiché</small>
                         </span>
                     </label>
                     <label class="diff-option">
-                        <input type="radio" name="timeMode" value="normal">
+                        <input type="radio" name="immersionMode" value="immersif">
                         <span class="diff-card blue">
-                            <i class="fas fa-user-nurse"></i>
-                            <span>Senior</span>
-                            <small>4 min</small>
-                        </span>
-                    </label>
-                    <label class="diff-option">
-                        <input type="radio" name="timeMode" value="dur">
-                        <span class="diff-card red">
-                            <i class="fas fa-hospital-user"></i>
-                            <span>Urgence</span>
-                            <small>2m 30s</small>
+                            <i class="fas fa-user-secret"></i>
+                            <span>Immersif</span>
+                            <small>Mode Investigation (poser les questions) EN COURS DE DEV</small>
                         </span>
                     </label>
                 </div>
@@ -147,7 +141,7 @@
 
                 // Dispersion pour un effet nuageux
                 const scatter = (Math.random() - 0.5) * 0.8;
-                
+
                 dnaPos[i3] = x + scatter;
                 dnaPos[i3 + 1] = rise + (Math.random() - 0.5) * 0.5;
                 dnaPos[i3 + 2] = z + scatter;
@@ -191,8 +185,6 @@
                 },
                 vertexShader: `
                     attribute float size;
-                    attribute vec3 color;
-                    varying vec3 vColor;
                     void main() {
                         vColor = color;
                         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
@@ -202,7 +194,6 @@
                 `,
                 fragmentShader: `
                     uniform sampler2D pointTexture;
-                    varying vec3 vColor;
                     void main() {
                         gl_FragColor = vec4(vColor, 1.0) * texture2D(pointTexture, gl_PointCoord);
                     }
@@ -230,13 +221,13 @@
                 bgPos[i3 + 2] = (Math.random() - 0.5) * 50 - 10; // Pousser vers l'arrière
 
                 bgColor[i3] = 0.0;
-                bgColor[i3+1] = 0.3 + Math.random() * 0.3;
-                bgColor[i3+2] = 0.6 + Math.random() * 0.4;
+                bgColor[i3 + 1] = 0.3 + Math.random() * 0.3;
+                bgColor[i3 + 2] = 0.6 + Math.random() * 0.4;
             }
 
             bgGeometry.setAttribute('position', new THREE.BufferAttribute(bgPos, 3));
             bgGeometry.setAttribute('color', new THREE.BufferAttribute(bgColor, 3));
-            
+
             const bgMaterial = new THREE.PointsMaterial({
                 size: 0.1,
                 vertexColors: true,
@@ -254,7 +245,7 @@
             const linkPos = new Float32Array(linkCount * 6);
             const linkColor = new Float32Array(linkCount * 6);
 
-            for(let i=0; i<linkCount; i++) {
+            for (let i = 0; i < linkCount; i++) {
                 const phase = (i * 4) * 0.15;
                 const radius = 2.5;
                 const rise = ((i * 4) * 0.04) - 25;
@@ -266,22 +257,22 @@
 
                 const baseIdx = i * 6;
                 linkPos[baseIdx] = x1;
-                linkPos[baseIdx+1] = rise;
-                linkPos[baseIdx+2] = z1;
-                linkPos[baseIdx+3] = x2;
-                linkPos[baseIdx+4] = rise;
-                linkPos[baseIdx+5] = z2;
+                linkPos[baseIdx + 1] = rise;
+                linkPos[baseIdx + 2] = z1;
+                linkPos[baseIdx + 3] = x2;
+                linkPos[baseIdx + 4] = rise;
+                linkPos[baseIdx + 5] = z2;
 
-                for(let c=0; c<6; c+=3) {
-                    linkColor[baseIdx+c] = 0.4;
-                    linkColor[baseIdx+c+1] = 0.8;
-                    linkColor[baseIdx+c+2] = 1.0;
+                for (let c = 0; c < 6; c += 3) {
+                    linkColor[baseIdx + c] = 0.4;
+                    linkColor[baseIdx + c + 1] = 0.8;
+                    linkColor[baseIdx + c + 2] = 1.0;
                 }
             }
 
             linkGeometry.setAttribute('position', new THREE.BufferAttribute(linkPos, 3));
             linkGeometry.setAttribute('color', new THREE.BufferAttribute(linkColor, 3));
-            
+
             const linkMaterial = new THREE.LineBasicMaterial({
                 vertexColors: true,
                 transparent: true,
@@ -319,7 +310,7 @@
                 // Rotation douce avec inertie vers la souris
                 dnaMesh.rotation.y += 0.004 + (targetX - dnaMesh.rotation.y) * 0.02;
                 dnaMesh.rotation.x += (targetY - dnaMesh.rotation.x) * 0.02;
-                
+
                 linkMesh.rotation.y = dnaMesh.rotation.y;
                 linkMesh.rotation.x = dnaMesh.rotation.x;
 
@@ -347,9 +338,8 @@
         /* --- LOGIQUE JEU & UI --- */
 
         // Gestion Paramètres
-        if (!sessionStorage.getItem('timeLimitSeconds')) {
-            sessionStorage.setItem('timeMode', 'normal');
-            sessionStorage.setItem('timeLimitSeconds', '240');
+        if (!sessionStorage.getItem('immersionMode')) {
+            sessionStorage.setItem('immersionMode', 'classique');
         }
 
         const settingsBtn = document.getElementById('settings-button');
@@ -359,23 +349,16 @@
 
         const openModal = () => {
             modal.classList.add('active');
-            const currentMode = sessionStorage.getItem('timeMode') || 'normal';
-            const radio = document.querySelector(`input[name="timeMode"][value="${currentMode}"]`);
+            const current = sessionStorage.getItem('immersionMode') || 'classique';
+            const radio = document.querySelector(`input[name="immersionMode"][value="${current}"]`);
             if (radio) radio.checked = true;
         };
-
         const closeModal = () => modal.classList.remove('active');
 
         const saveSettings = () => {
-            const checked = document.querySelector('input[name="timeMode"]:checked');
+            const checked = document.querySelector('input[name="immersionMode"]:checked');
             if (checked) {
-                const mode = checked.value;
-                let sec = 240;
-                if (mode === 'dur') sec = 150;
-                if (mode === 'facile') sec = 480;
-
-                sessionStorage.setItem('timeMode', mode);
-                sessionStorage.setItem('timeLimitSeconds', String(sec));
+                sessionStorage.setItem('immersionMode', checked.value);
                 closeModal();
             }
         };

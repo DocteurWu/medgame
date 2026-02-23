@@ -357,9 +357,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.showImageModal = showImageModal;
 
     function getTimeLimit() {
-        const v = sessionStorage.getItem('timeLimitSeconds');
-        const n = v ? parseInt(v, 10) : 240;
-        return isNaN(n) ? 240 : n;
+        return 480;
     }
 
     function escapeHtml(str) {
@@ -633,11 +631,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (mobileTimer) mobileTimer.textContent = timeStr;
     }
 
+    window.deductTime = function (seconds) {
+        if (timeLeft <= 0) return false;
+        timeLeft -= seconds;
+        if (timeLeft <= 0) {
+            timeLeft = 0;
+            displayTime(0);
+            return false; // Game over logic will handle the rest via interval naturally or we wait for next tick
+        }
+        displayTime(timeLeft);
+        return true;
+    };
+
     function updateTimer() {
         if (timeLeft > 0) {
             timeLeft--;
             displayTime(timeLeft);
-        } else {
+        } else if (timeLeft === 0) {
+            timeLeft = -1; // Flag to prevent multiple triggers
             clearInterval(timerInterval);
             showNotification('Temps écoulé !');
             const playedCases = getCookie('playedCases');
@@ -819,6 +830,91 @@ document.addEventListener('DOMContentLoaded', async () => {
             element.classList.add('unlocked-data');
         }
     }
+
+    function displayQuestionBtn(element, questionText, value, path, isHtml = false) {
+        if (!element) return;
+
+        if (path && isFieldLocked(path)) {
+            const lock = getLockForField(path);
+            element.setAttribute('data-locked', 'true');
+            element.innerHTML = `
+                <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
+                    <i class="fas fa-lock"></i>
+                    <span class="challenge-text">DÉFI À RELEVER</span>
+                </div>
+            `;
+            return;
+        }
+
+        element.innerHTML = '';
+        const btn = document.createElement('button');
+        btn.className = 'btn-question primary-btn';
+        btn.innerHTML = `<i class="fas fa-question-circle"></i> ${questionText} <span style="font-size:0.8em; opacity:0.8; margin-left:5px;">(-5s)</span>`;
+        btn.style.margin = '5px 0';
+        btn.style.width = '100%';
+        btn.style.textAlign = 'left';
+
+        btn.onclick = () => {
+            if (typeof window.deductTime === 'function') {
+                const hasTime = window.deductTime(5);
+                if (!hasTime) {
+                    showNotification("Temps in-game insuffisant pour poser cette question.");
+                    return;
+                }
+            }
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Le patient réfléchit...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+
+            setTimeout(() => {
+                const isNew = element.getAttribute('data-locked') === 'true';
+                let finalVal = value;
+                // Handling empty or placeholder states
+                if (!finalVal || (typeof finalVal === 'string' && finalVal.trim() === '') || finalVal === 'undefined depuis undefined' || finalVal === 'undefined, undefined' || finalVal === 'undefined, stress: undefined') {
+                    finalVal = "Rien de particulier.";
+                    isHtml = false;
+                }
+                const content = isHtml ? finalVal : escapeHtml(finalVal);
+                element.innerHTML = `<span class="answer-fade-in">${content}</span>`;
+                if (isNew) {
+                    element.removeAttribute('data-locked');
+                    element.classList.add('unlocked-data');
+                }
+            }, 1000);
+        };
+
+        element.appendChild(btn);
+    }
+
+    window.revealAllInterrogatoire = function () {
+        const section = document.getElementById('section-anamnese');
+        if (!section) return;
+
+        // Only count buttons not yet answered
+        const btns = Array.from(section.querySelectorAll('.btn-question:not([disabled])'));
+        if (btns.length === 0) {
+            showNotification('Tout est déjà affiché !');
+            return;
+        }
+
+        // 20% discount: N questions × 5s × 0.8
+        const cost = Math.round(btns.length * 5 * 0.8);
+        const hasTime = window.deductTime ? window.deductTime(cost) : true;
+        if (!hasTime) {
+            showNotification('Temps in-game insuffisant.');
+            return;
+        }
+
+        // Hide the button itself
+        const revealBtn = document.getElementById('btn-reveal-all');
+        if (revealBtn) revealBtn.style.display = 'none';
+
+        // Trigger each button with a small stagger for a nice reveal
+        btns.forEach((btn, i) => {
+            setTimeout(() => btn.click(), i * 120);
+        });
+    };
 
     function parseBP(text) {
         const m = (text || '').match(/(\d{2,3})\/(\d{2,3})/);
@@ -1100,6 +1196,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             timeLeft = getTimeLimit();
             displayTime(timeLeft);
             if (timerInterval) clearInterval(timerInterval);
+            // Reset the "Tout afficher" button for the new case
+            const revealBtn = document.getElementById('btn-reveal-all');
+            if (revealBtn) revealBtn.style.display = '';
         } else {
             // If partial refresh, we must be careful with NurseIntro
             if (typeof NurseIntro !== 'undefined') {
@@ -1144,73 +1243,150 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         displayValue(motifHospitalisation, currentCase.interrogatoire.motifHospitalisation, 'interrogatoire.motifHospitalisation');
-        displayValue(activitePhysique, currentCase.interrogatoire.modeDeVie.activitePhysique.description, 'interrogatoire.modeDeVie.activitePhysique.description');
-        displayValue(tabac, `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}`, 'interrogatoire.modeDeVie.tabac');
-        displayValue(alcool, currentCase.interrogatoire.modeDeVie.alcool.quantite, 'interrogatoire.modeDeVie.alcool.quantite');
-        displayValue(alimentation, `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}`, 'interrogatoire.modeDeVie.alimentation');
-        displayValue(emploi, `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}`, 'interrogatoire.modeDeVie.emploi');
 
-        if (isFieldLocked('interrogatoire.antecedents')) {
-            const lock = getLockForField('interrogatoire.antecedents');
-            const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
-            antecedentsMedicaux.innerHTML = placeholder;
-            antecedentsChirurgicaux.innerHTML = '';
-            antecedentsFamiliaux.innerHTML = '';
-        } else {
-            antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${ant.type} (${ant.traitement})</li>`).join('') + '</ul>';
-            antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${ant.intervention} (${ant.date})</li>`).join('') + '</ul>';
-            antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${ant.lien}: ${ant.pathologie} (${ant.age} ans)</li>`).join('') + '</ul>';
-        }
+        const immersionMode = sessionStorage.getItem('immersionMode') || 'classique';
+        const revealAllBtn = document.getElementById('btn-reveal-all');
 
-        // Traitements: masquer si vide
-        const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
-        if (isFieldLocked('interrogatoire.traitements')) {
-            const lock = getLockForField('interrogatoire.traitements');
-            traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
-            if (traitementsContainer) traitementsContainer.style.display = '';
-        } else {
-            const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
-            if (hasTraitements) {
-                traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+        if (immersionMode === 'classique') {
+            // ===== MODE CLASSIQUE: tout affiché d'office =====
+            if (revealAllBtn) revealAllBtn.style.display = 'none';
+
+            displayValue(activitePhysique, currentCase.interrogatoire.modeDeVie.activitePhysique.description, 'interrogatoire.modeDeVie.activitePhysique.description');
+            displayValue(tabac, `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}`, 'interrogatoire.modeDeVie.tabac');
+            displayValue(alcool, currentCase.interrogatoire.modeDeVie.alcool.quantite, 'interrogatoire.modeDeVie.alcool.quantite');
+            displayValue(alimentation, `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}`, 'interrogatoire.modeDeVie.alimentation');
+            displayValue(emploi, `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}`, 'interrogatoire.modeDeVie.emploi');
+
+            if (isFieldLocked('interrogatoire.antecedents')) {
+                const lock = getLockForField('interrogatoire.antecedents');
+                const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+                antecedentsMedicaux.innerHTML = placeholder;
+                antecedentsChirurgicaux.innerHTML = '';
+                antecedentsFamiliaux.innerHTML = '';
+            } else {
+                antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${ant.type} (${ant.traitement})</li>`).join('') + '</ul>';
+                antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${ant.intervention} (${ant.date})</li>`).join('') + '</ul>';
+                antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${ant.lien}: ${ant.pathologie} (${ant.age} ans)</li>`).join('') + '</ul>';
+            }
+
+            const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
+            if (isFieldLocked('interrogatoire.traitements')) {
+                const lock = getLockForField('interrogatoire.traitements');
+                traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
                 if (traitementsContainer) traitementsContainer.style.display = '';
             } else {
-                if (traitementsContainer) traitementsContainer.style.display = 'none';
+                const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
+                if (hasTraitements) {
+                    traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+                    if (traitementsContainer) traitementsContainer.style.display = '';
+                } else {
+                    if (traitementsContainer) traitementsContainer.style.display = 'none';
+                }
             }
-        }
 
-        // Allergies: masquer si aucune allergie
-        const allergiesContainer = allergiesListe ? allergiesListe.closest('p') : null;
-        const hasAllergies = currentCase.interrogatoire.allergies && currentCase.interrogatoire.allergies.presence && currentCase.interrogatoire.allergies.liste && currentCase.interrogatoire.allergies.liste.length > 0;
-        if (hasAllergies) {
-            allergiesListe.textContent = currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ');
-            if (allergiesContainer) allergiesContainer.style.display = '';
-        } else {
-            if (allergiesContainer) allergiesContainer.style.display = 'none';
-        }
-
-        // Masquer la sous-section entière si ni allergies ni traitements ne sont présentes
-        const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
-        const allergiesSubSection = allergiesListe ? allergiesListe.closest('.sub-section') : null;
-        if (allergiesSubSection) {
-            if (!hasAllergies && !hasTraitements && !isFieldLocked('interrogatoire.traitements')) {
-                allergiesSubSection.style.display = 'none';
+            const allergiesContainer = allergiesListe ? allergiesListe.closest('p') : null;
+            const hasAllergies = currentCase.interrogatoire.allergies && currentCase.interrogatoire.allergies.presence && currentCase.interrogatoire.allergies.liste && currentCase.interrogatoire.allergies.liste.length > 0;
+            if (hasAllergies) {
+                allergiesListe.textContent = currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ');
+                if (allergiesContainer) allergiesContainer.style.display = '';
             } else {
-                allergiesSubSection.style.display = '';
+                if (allergiesContainer) allergiesContainer.style.display = 'none';
             }
+
+            const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
+            const allergiesSubSection = allergiesListe ? allergiesListe.closest('.sub-section') : null;
+            if (allergiesSubSection) {
+                if (!hasAllergies && !hasTraitements && !isFieldLocked('interrogatoire.traitements')) {
+                    allergiesSubSection.style.display = 'none';
+                } else {
+                    allergiesSubSection.style.display = '';
+                }
+            }
+
+            displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
+            displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution, 'interrogatoire.histoireMaladie.evolution');
+            displayValue(facteursDeclenchants, currentCase.interrogatoire.histoireMaladie.facteursDeclenchants, 'interrogatoire.histoireMaladie.facteursDeclenchants');
+
+            const descriptionDouleur = document.getElementById('description-douleur');
+            if (descriptionDouleur) {
+                displayValue(descriptionDouleur, currentCase.interrogatoire.histoireMaladie.descriptionDouleur || '', 'interrogatoire.histoireMaladie.descriptionDouleur');
+            }
+
+            displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
+            displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques, 'interrogatoire.histoireMaladie.remarques');
+
+        } else {
+            // ===== MODE IMMERSIF: questions interactives =====
+            if (revealAllBtn) revealAllBtn.style.display = '';
+
+            const activitePhysiqueData = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.activitePhysique ? currentCase.interrogatoire.modeDeVie.activitePhysique.description : '';
+            displayQuestionBtn(activitePhysique, 'Faites-vous du sport ?', activitePhysiqueData, 'interrogatoire.modeDeVie.activitePhysique.description');
+
+            const tabacQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.tabac ? `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}` : '';
+            displayQuestionBtn(tabac, 'Fumez-vous ?', tabacQ, 'interrogatoire.modeDeVie.tabac');
+
+            const alcoolQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.alcool ? currentCase.interrogatoire.modeDeVie.alcool.quantite : '';
+            displayQuestionBtn(alcool, 'Consommez-vous de l\'alcool ?', alcoolQ, 'interrogatoire.modeDeVie.alcool.quantite');
+
+            const alimQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.alimentation ? `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}` : '';
+            displayQuestionBtn(alimentation, 'Avez-vous un régime alimentaire particulier ?', alimQ, 'interrogatoire.modeDeVie.alimentation');
+
+            const emploiQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.emploi ? `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}` : '';
+            displayQuestionBtn(emploi, 'Quelle est votre profession ?', emploiQ, 'interrogatoire.modeDeVie.emploi');
+
+            if (isFieldLocked('interrogatoire.antecedents')) {
+                const lock = getLockForField('interrogatoire.antecedents');
+                const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+                antecedentsMedicaux.innerHTML = placeholder;
+                antecedentsChirurgicaux.innerHTML = '';
+                antecedentsFamiliaux.innerHTML = '';
+            } else {
+                let valMed = (currentCase.interrogatoire.antecedents && currentCase.interrogatoire.antecedents.medicaux && currentCase.interrogatoire.antecedents.medicaux.length) ? '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>' : '';
+                displayQuestionBtn(antecedentsMedicaux, 'Avez-vous des maladies chroniques ou antécédents médicaux ?', valMed, 'interrogatoire.antecedents.medicaux', true);
+
+                let valChir = (currentCase.interrogatoire.antecedents && currentCase.interrogatoire.antecedents.chirurgicaux && currentCase.interrogatoire.antecedents.chirurgicaux.length) ? '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.date)})</li>`).join('') + '</ul>' : '';
+                displayQuestionBtn(antecedentsChirurgicaux, 'Avez-vous déjà été opéré(e) ?', valChir, 'interrogatoire.antecedents.chirurgicaux', true);
+
+                let valFam = (currentCase.interrogatoire.antecedents && currentCase.interrogatoire.antecedents.familiaux && currentCase.interrogatoire.antecedents.familiaux.length) ? '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie)} (${escapeHtml(ant.age)} ans)</li>`).join('') + '</ul>' : '';
+                displayQuestionBtn(antecedentsFamiliaux, 'Y a-t-il des maladies particulières dans votre famille ?', valFam, 'interrogatoire.antecedents.familiaux', true);
+            }
+
+            const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
+            if (traitementsContainer) traitementsContainer.style.display = '';
+
+            if (isFieldLocked('interrogatoire.traitements')) {
+                const lock = getLockForField('interrogatoire.traitements');
+                traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+            } else {
+                const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
+                let valTrait = hasTraitements ? currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ') : '';
+                displayQuestionBtn(traitementsListe, 'Prenez-vous un traitement médical actuellement ?', valTrait, 'interrogatoire.traitements');
+            }
+
+            const allergiesContainer = allergiesListe ? allergiesListe.closest('p') : null;
+            if (allergiesContainer) allergiesContainer.style.display = '';
+
+            const hasAllergies = currentCase.interrogatoire.allergies && currentCase.interrogatoire.allergies.presence && currentCase.interrogatoire.allergies.liste && currentCase.interrogatoire.allergies.liste.length > 0;
+            let valAllergies = hasAllergies ? currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ') : '';
+            displayQuestionBtn(allergiesListe, 'Avez-vous des allergies connues ?', valAllergies, 'interrogatoire.allergies');
+
+            const allergiesSubSection = allergiesListe ? allergiesListe.closest('.sub-section') : null;
+            if (allergiesSubSection) allergiesSubSection.style.display = '';
+
+            const hm = currentCase.interrogatoire.histoireMaladie || {};
+            displayQuestionBtn(debutSymptomes, 'Quand vos symptômes ont-ils commencé ?', hm.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
+            displayQuestionBtn(evolution, 'Comment les symptômes évoluent-ils ?', hm.evolution, 'interrogatoire.histoireMaladie.evolution');
+            displayQuestionBtn(facteursDeclenchants, 'Y a-t-il des facteurs qui déclenchent vos maux ?', hm.facteursDeclenchants, 'interrogatoire.histoireMaladie.facteursDeclenchants');
+
+            const descriptionDouleur = document.getElementById('description-douleur');
+            if (descriptionDouleur) {
+                displayQuestionBtn(descriptionDouleur, 'Pouvez-vous décrire la douleur ?', hm.descriptionDouleur, 'interrogatoire.histoireMaladie.descriptionDouleur');
+            }
+
+            const valAssoc = (hm.symptomesAssocies && hm.symptomesAssocies.length) ? hm.symptomesAssocies.join(', ') : '';
+            displayQuestionBtn(symptomesAssocies, 'Avez-vous d\'autres symptômes associés ?', valAssoc, 'interrogatoire.histoireMaladie.symptomesAssocies');
+            displayQuestionBtn(remarques, 'Avez-vous d\'autres remarques ?', hm.remarques, 'interrogatoire.histoireMaladie.remarques');
         }
-
-        displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
-        displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution, 'interrogatoire.histoireMaladie.evolution');
-        displayValue(facteursDeclenchants, currentCase.interrogatoire.histoireMaladie.facteursDeclenchants, 'interrogatoire.histoireMaladie.facteursDeclenchants');
-
-        // Display pain description
-        const descriptionDouleur = document.getElementById('description-douleur');
-        if (descriptionDouleur) {
-            displayValue(descriptionDouleur, currentCase.interrogatoire.histoireMaladie.descriptionDouleur || '', 'interrogatoire.histoireMaladie.descriptionDouleur');
-        }
-
-        displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
-        displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques, 'interrogatoire.histoireMaladie.remarques');
 
         // Display patient details (taille/poids/groupeSanguin) in visible section
         const patientTailleDisplay = document.getElementById('patient-taille-display');
@@ -1673,19 +1849,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
 
+        // 120s in-game time deduction for any exams requested
+        if (typeof window.deductTime === 'function') {
+            const hasTime = window.deductTime(120);
+            if (!hasTime) {
+                showNotification('Temps in-game insuffisant (2 min requises).');
+                return;
+            }
+        }
+
         // Afficher les résultats avec un délai simulé
-        examensResults.innerHTML = '<div class="loading">Analyse des examens en cours...</div>';
+        examensResults.innerHTML = '<div class="loading">Analyse des examens en cours... (Patientez environ 10 secondes)</div>';
+        const validateBtn = document.getElementById('validate-exams');
+        if (validateBtn) validateBtn.disabled = true;
 
         setTimeout(() => {
             activeExams = selectedExams;
             renderExamResults();
+            if (validateBtn) validateBtn.disabled = false;
 
             // Jouer le son d'examen (if possible)
             try {
                 // Not playing bip.m4a as it doesn't exist
             } catch (e) { }
 
-        }, 1500); // Délai de 1.5 secondes pour simuler le temps d'analyse
+        }, 10000); // Délai de 10 secondes pour simuler le vrai délai (coût de 2 min in-game)
     });
 
     function handleShowResultClick(event) {
