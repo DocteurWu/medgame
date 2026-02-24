@@ -250,6 +250,7 @@
                     <div class="grid-layout">
                         <div class="medical-card full-width"
                             style="border-top: 4px solid #ff4757; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.2);">
+                            <div id="urgence-timer-display" class="urgence-timer-display">00:00</div>
                             <div id="urgence-description-banner"
                                 style="background: rgba(255, 71, 87, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 1.1em; color: #ff6b81; border-left: 5px solid #ff4757; transition: all 0.3s ease;">
                                 <!-- Description clinique dynamique de l'état d'urgence -->
@@ -258,6 +259,9 @@
                             <div id="urgence-actions-container" class="treatments-grid"
                                 style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
                                 <!-- Boutons d'action générés dynamiquement par game.js -->
+                            </div>
+                            <div id="urgence-action-log" class="urgence-action-log">
+                                <!-- Log des actions -->
                             </div>
                         </div>
                     </div>
