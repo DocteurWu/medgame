@@ -1,0 +1,251 @@
+{
+    "id": "urgence_hypoglycemie_01",
+    "redacteur": "Dr. Jules",
+    "patient": {
+        "nom": "Martin",
+        "prenom": "Thomas",
+        "age": 25,
+        "sexe": "M",
+        "taille": "178 cm",
+        "poids": "72 kg",
+        "groupeSanguin": "O+"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Retrouvé inconscient par ses amis.",
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 30 minutes",
+            "evolution": "Rapide, perte de connaissance brutale",
+            "facteursDeclenchants": "Effort physique intense (match de foot) sans collation ?",
+            "descriptionDouleur": "Aucune plainte douloureuse rapportée avant la perte de connaissance",
+            "symptomesAssocies": [
+                "Sueurs profuses",
+                "Tremblements initiaux",
+                "Confusion"
+            ],
+            "remarques": "Patient connu pour un diabète de type 1."
+        },
+        "antecedents": {
+            "medicaux": [
+                {
+                    "type": "Diabète de type 1",
+                    "traitement": "Insuline Basal/Bolus"
+                }
+            ],
+            "chirurgicaux": [
+                {
+                    "intervention": "Appendicectomie",
+                    "date": "2015"
+                }
+            ],
+            "familiaux": []
+        },
+        "traitements": [
+            {
+                "nom": "Insuline Glargine",
+                "dose": "22 UI",
+                "frequence": "Au coucher"
+            },
+            {
+                "nom": "Insuline Aspart",
+                "dose": "Selon glucides",
+                "frequence": "Aux repas"
+            }
+        ],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sportif amateur (Football 2x/semaine)"
+            },
+            "tabac": {
+                "quantite": "Non-fumeur",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Occasionnelle"
+            },
+            "alimentation": {
+                "regime": "Contrôlé en glucides",
+                "particularites": "Bonne observance générale"
+            },
+            "emploi": {
+                "profession": "Étudiant",
+                "stress": "Moyen"
+            }
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "110/70",
+            "pouls": 110,
+            "temperature": 36.5,
+            "saturationO2": 97,
+            "frequenceRespiratoire": 18
+        },
+        "aspectGeneral": "Patient inconscient (GCS 7 : Y2 V2 M3), en sueurs, pâle."
+    },
+    "gameplayConfig": {
+        "startNode": "etat_initial"
+    },
+    "nodes": {
+        "etat_initial": {
+            "id": "etat_initial",
+            "descriptionClinique": "Le patient est inconscient, moite, en sueurs profuses. Tachycardie sinusale à 110 bpm. GCS à 7. La glycémie capillaire affiche 'Lo' (< 0.20 g/L).",
+            "constantesCibles": {
+                "tension": "110/70",
+                "pouls": 110,
+                "saturationO2": 97,
+                "frequenceRespiratoire": 18
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 60,
+                "nextNode": "etat_convulsions",
+                "motif": "La neuroglucopénie s'aggrave, le cerveau souffre du manque de glucose."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Injection Glucose 30% (G30) IV Directe",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_reveil",
+                    "feedback": "Geste salvateur ! Le glucose remonte rapidement la glycémie."
+                },
+                {
+                    "label": "Injection Glucagon 1mg IM",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_reveil_lent",
+                    "feedback": "Bonne alternative en l'absence de voie veineuse immédiate. L'action est un peu plus lente."
+                },
+                {
+                    "label": "Resucrage PO (Jus d'orange)",
+                    "type": "erreur",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_initial",
+                    "feedback": "Impossible ! Le patient est inconscient, risque majeur d'inhalation (fausse route)."
+                },
+                {
+                    "label": "Injection Insuline Rapide 10 UI",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_coma_profond",
+                    "feedback": "ERREUR FATALE ! Vous avez confondu hypo et hyperglycémie. Le patient s'effondre."
+                }
+            ]
+        },
+        "etat_reveil": {
+            "id": "etat_reveil",
+            "descriptionClinique": "Le patient ouvre les yeux après quelques minutes. Il est confus mais répond aux ordres simples. Les sueurs diminuent.",
+            "constantesCibles": {
+                "tension": "120/75",
+                "pouls": 90,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 16
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_guerison",
+                "motif": "Récupération progressive des fonctions supérieures."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Collation Glucidique (Pain + Fromage)",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Indispensable pour prévenir la récidive de l'hypoglycémie une fois le patient réveillé."
+                },
+                {
+                    "label": "Surveillance simple",
+                    "type": "soin",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Le patient va mieux, mais une collation est nécessaire pour éviter la rechute."
+                }
+            ]
+        },
+        "etat_reveil_lent": {
+            "id": "etat_reveil_lent",
+            "descriptionClinique": "Le réveil est progressif mais plus lent qu'avec le glucose IV. Le patient grimace, commence à bouger.",
+            "constantesCibles": {
+                "tension": "115/70",
+                "pouls": 100,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 18
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 40,
+                "nextNode": "etat_guerison",
+                "motif": "Le glycogène hépatique a été mobilisé."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Poser une VVP et G10%",
+                    "type": "soin",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_reveil",
+                    "feedback": "Sécurité prise. Le patient se réveille complètement."
+                }
+            ]
+        },
+        "etat_convulsions": {
+            "id": "etat_convulsions",
+            "descriptionClinique": "Crise convulsive tonicoclonique généralisée. Le patient ne respire plus efficacement. Cyanose.",
+            "constantesCibles": {
+                "tension": "140/90",
+                "pouls": 130,
+                "saturationO2": 85,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_coma_profond",
+                "motif": "L'hypoxie cérébrale et la neuroglucopénie entraînent des lésions irréversibles."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Injection Glucose 30% IV + Benzodiazépine",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_reveil_lent",
+                    "feedback": "Traitement de la cause (hypoglycémie) et du symptôme (convulsion). C'était moins une !"
+                },
+                {
+                    "label": "Canule de Guedel + Oxygène",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_convulsions",
+                    "feedback": "C'est bien pour l'oxygénation, mais ça ne traite pas l'hypoglycémie qui tue le cerveau !"
+                }
+            ]
+        },
+        "etat_guerison": {
+            "id": "etat_guerison",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le patient est totalement conscient, orienté. Glycémie de contrôle à 1.10 g/L. Il mangera une collation sous surveillance.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": 80,
+                "saturationO2": 99,
+                "frequenceRespiratoire": 16
+            },
+            "correction": "## Correction : Hypoglycémie Sévère\n\n- **Diagnostic** : Coma hypoglycémique chez un diabétique de type 1.\n- **Signes clés** : Inconscience brutale, sueurs profuses, contexte d'effort, glycémie 'Lo'.\n- **Traitement** : \n  - **Urgence absolue** : Resucrage intraveineux (G30% ou G50%) si VVP possible.\n  - **Alternative** : Glucagon IM si pas d'accès veineux (plus lent, risque de nausées, inefficace si réserves hépatiques vides).\n  - **Contre-indication** : Resucrage PO chez un patient inconscient (risque d'inhalation).\n  - **Après réveil** : Collation glucidique lente indispensable pour éviter la récidive."
+        },
+        "etat_coma_profond": {
+            "id": "etat_coma_profond",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Le patient ne se réveille pas. L'hypoglycémie prolongée a causé des lésions cérébrales irréversibles (décérébration). Transfert en réanimation sans espoir de récupération ad integrum.",
+            "constantesCibles": {
+                "tension": "80/40",
+                "pouls": 140,
+                "saturationO2": 90,
+                "frequenceRespiratoire": 10
+            },
+            "correction": "## ÉCHEC : Séquelles neurologiques graves\n\nL'hypoglycémie est une urgence absolue car le cerveau est glucodépendant. Chaque minute compte. L'attente ou l'erreur de traitement (insuline !) conduit à la mort neuronale."
+        }
+    }
+}

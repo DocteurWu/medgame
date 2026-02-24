@@ -117,6 +117,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isUrgenceMode = false;
     let currentUrgenceNode = null;
     let urgenceTimerTimeout = null;
+    let urgenceStartTime = 0;
+    let urgenceElapsedTimeInterval = null;
+    let urgenceActionLog = [];
+
+    function updateUrgenceTimerDisplay() {
+        const display = document.getElementById('urgence-timer-display');
+        if (!display) return;
+
+        const elapsed = Math.floor((Date.now() - urgenceStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        display.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function renderUrgenceLog() {
+        const container = document.getElementById('urgence-action-log');
+        if (!container) return;
+
+        container.innerHTML = urgenceActionLog.map(entry => `
+            <div class="log-entry ${entry.type === 'success' ? 'success' : (entry.type === 'critical' ? 'critical' : '')}">
+                <span class="timestamp">[${entry.time}]</span> ${entry.message}
+            </div>
+        `).join('');
+        container.scrollTop = container.scrollHeight;
+    }
 
     // --- GATING SYSTEM (VERROUS) ---
     let unlockedLocks = new Set();
@@ -1228,9 +1253,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentCase.gameplayConfig && currentCase.gameplayConfig.startNode) {
                 isUrgenceMode = true;
                 currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
+
+                // Init Urgence specific vars
+                urgenceStartTime = Date.now();
+                urgenceActionLog = [];
+                if (urgenceElapsedTimeInterval) clearInterval(urgenceElapsedTimeInterval);
+                urgenceElapsedTimeInterval = setInterval(updateUrgenceTimerDisplay, 1000);
             } else {
                 isUrgenceMode = false;
                 currentUrgenceNode = null;
+                if (urgenceElapsedTimeInterval) clearInterval(urgenceElapsedTimeInterval);
             }
         }
 
@@ -2234,10 +2266,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
+        renderUrgenceLog();
+
         if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
         if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
             urgenceTimerTimeout = setTimeout(() => {
                 showNotification(`⚠️ ALERTE : ${currentUrgenceNode.evolutionAuto.motif}`);
+
+                // Log auto evolution
+                const elapsed = Math.floor((Date.now() - urgenceStartTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                const timeStr = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+                urgenceActionLog.push({
+                    time: timeStr,
+                    message: `⚠️ DÉGRADATION : ${currentUrgenceNode.evolutionAuto.motif}`,
+                    type: 'critical'
+                });
+
                 transitionUrgenceState(currentUrgenceNode.evolutionAuto.nextNode);
             }, currentUrgenceNode.evolutionAuto.delaiSecondes * 1000);
         }
@@ -2280,6 +2327,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (window.deductTime) {
             window.deductTime(action.tempsExecutionSec);
         }
+
+        // Log action
+        const elapsed = Math.floor((Date.now() - urgenceStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        const timeStr = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        let logType = 'normal';
+        if (action.type === 'traitement_cle') logType = 'success';
+        if (action.type === 'erreur') logType = 'critical';
+
+        urgenceActionLog.push({
+            time: timeStr,
+            message: action.label,
+            type: logType
+        });
+
         if (action.feedback) {
             showNotification(action.feedback);
         }
