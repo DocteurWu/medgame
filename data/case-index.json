@@ -86,6 +86,7 @@
     "locomoteur_racHialgie.json"
   ],
   "urgence": [
-    "urgence_choc_anaphylactique_01.json"
+    "urgence_choc_anaphylactique_01.json",
+    "urgence_hypoglycemie_01.json"
   ]
 }

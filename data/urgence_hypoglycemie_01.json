@@ -1,0 +1,388 @@
+{
+    "id": "urgence_hypoglycemie_01",
+    "redacteur": "Dr. Urgence",
+    "patient": {
+        "nom": "Martin",
+        "prenom": "Léo",
+        "age": 26,
+        "sexe": "M",
+        "taille": "178 cm",
+        "poids": "72 kg",
+        "groupeSanguin": "O+"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Troubles de la conscience et agitation.",
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 30 minutes",
+            "evolution": "Aggravation rapide",
+            "facteursDeclenchants": "Effort physique intense ce matin, repas sauté à midi.",
+            "descriptionDouleur": "Non applicable",
+            "symptomesAssocies": [
+                "Sueurs profuses",
+                "Agitation",
+                "Propos incohérents"
+            ],
+            "remarques": "Patient connu pour un diabète de type 1 depuis l'enfance."
+        },
+        "antecedents": {
+            "medicaux": [
+                {
+                    "type": "Diabète de type 1",
+                    "traitement": "Insuline Basal-Bolus"
+                }
+            ],
+            "chirurgicaux": [
+                {
+                    "intervention": "Appendicectomie",
+                    "date": "2015"
+                }
+            ],
+            "familiaux": []
+        },
+        "traitements": [
+            {
+                "nom": "Lantus",
+                "dose": "24 UI",
+                "frequence": "Soir"
+            },
+            {
+                "nom": "NovoRapid",
+                "dose": "Variable",
+                "frequence": "Aux repas"
+            }
+        ],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sportif (Course à pied)"
+            },
+            "tabac": {
+                "quantite": "Non-fumeur",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Occasionnelle"
+            },
+            "alimentation": {
+                "regime": "Equilibré",
+                "particularites": "Gestion des glucides"
+            },
+            "emploi": {
+                "profession": "Architecte",
+                "stress": "Moyen"
+            }
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "130/80",
+            "pouls": 110,
+            "temperature": 36.5,
+            "saturationO2": 98,
+            "frequenceRespiratoire": 20
+        },
+        "aspectGeneral": "Patient stuporeux, en sueurs, pâle. Réagit à la stimulation vigoureuse mais retombe en léthargie."
+    },
+    "gameplayConfig": {
+        "startNode": "etat_initial"
+    },
+    "nodes": {
+        "etat_initial": {
+            "id": "etat_initial",
+            "descriptionClinique": "Le patient est pâle, couvert de sueurs. Tachycarde à 110/min. Il grogne quand on le stimule. GCS évalué à 10 (Y3 V3 M4).",
+            "constantesCibles": {
+                "tension": "130/80",
+                "pouls": 110,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 20
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 60,
+                "nextNode": "etat_convulsions",
+                "motif": "La neuroglucopénie s'aggrave, le cerveau souffre du manque de glucose."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Mesurer Glycémie Capillaire (Dextro)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_apres_dextro",
+                    "feedback": "Geste indispensable devant tout trouble de la conscience !"
+                },
+                {
+                    "label": "Poser une Voie Veineuse Périphérique",
+                    "type": "soin",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_vvp_sans_diag",
+                    "feedback": "La voie est posée, mais vous n'avez pas encore de diagnostic."
+                },
+                {
+                    "label": "Injecter Insuline Rapide 10 UI SC",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_coma_profond",
+                    "feedback": "Erreur fatale ! Vous supposez une acidocétose sans preuve. Le patient s'effondre."
+                },
+                {
+                    "label": "Scanner Cérébral en urgence",
+                    "type": "erreur",
+                    "tempsExecutionSec": 30,
+                    "nextNode": "etat_degradation_temps",
+                    "feedback": "Vous perdez du temps. Le patient convulsé dans le scanner."
+                }
+            ]
+        },
+        "etat_apres_dextro": {
+            "id": "etat_apres_dextro",
+            "descriptionClinique": "Le dextro affiche 'LO' (< 0.20 g/L). Le diagnostic est une hypoglycémie sévère. Le patient est toujours inconscient.",
+            "constantesCibles": {
+                "tension": "125/75",
+                "pouls": 115,
+                "saturationO2": 97,
+                "frequenceRespiratoire": 20
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_convulsions",
+                "motif": "L'hypoglycémie non corrigée mène aux convulsions."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Injecter Glucagon 1mg IM",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_reveil_glucagon",
+                    "feedback": "Injection réalisée. C'est le traitement de choix en l'absence de voie veineuse."
+                },
+                {
+                    "label": "Faire boire du jus d'orange",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_fausse_route",
+                    "feedback": "Impossible ! Le patient est trop somnolent. Il fait une fausse route et s'étouffe."
+                },
+                {
+                    "label": "Poser une VVP pour faire du G30%",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_vvp_avec_diag",
+                    "feedback": "Bonne idée, la voie veineuse permettra une correction rapide."
+                }
+            ]
+        },
+        "etat_vvp_sans_diag": {
+            "id": "etat_vvp_sans_diag",
+            "descriptionClinique": "VVP en place. Vous ne connaissez toujours pas la glycémie. Le patient est toujours inconscient.",
+            "constantesCibles": {
+                "tension": "128/78",
+                "pouls": 112,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 20
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_convulsions",
+                "motif": "Le temps passe..."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Mesurer Glycémie Capillaire",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_vvp_avec_diag",
+                    "feedback": "Enfin ! Le dextro affiche 'LO'."
+                },
+                {
+                    "label": "Injecter Glucose 30% (G30) IVD - Test thérapeutique",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_guerison_iv",
+                    "feedback": "Pari risqué sans dextro, mais devant ce tableau chez un diabétique, c'est salvateur."
+                }
+            ]
+        },
+        "etat_vvp_avec_diag": {
+            "id": "etat_vvp_avec_diag",
+            "descriptionClinique": "Vous avez une voie veineuse et vous savez que la glycémie est effondrée ('LO').",
+            "constantesCibles": {
+                "tension": "125/75",
+                "pouls": 115,
+                "saturationO2": 97,
+                "frequenceRespiratoire": 20
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_convulsions",
+                "motif": "Agissez vite !"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Injecter 2 ampoules de G30% IVD",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_guerison_iv",
+                    "feedback": "Le resucrage IV est la méthode la plus rapide et efficace."
+                },
+                {
+                    "label": "Injecter Glucagon 1mg IM",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_reveil_glucagon",
+                    "feedback": "Possible, mais puisque vous avez une voie, le G30% est préférable (moins de nausées, plus rapide)."
+                }
+            ]
+        },
+        "etat_convulsions": {
+            "id": "etat_convulsions",
+            "descriptionClinique": "Le patient présente des convulsions tonico-cloniques généralisées. Il ne respire plus efficacement.",
+            "constantesCibles": {
+                "tension": "160/90",
+                "pouls": 140,
+                "saturationO2": 85,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_coma_post_critique",
+                "motif": "La crise cède mais laisse place à un coma profond."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Injecter G30% IVD (si VVP) ou Glucagon IM",
+                    "type": "geste_urgence",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_reveil_difficile",
+                    "feedback": "Le traitement de la cause (hypoglycémie) arrêtera aussi les convulsions."
+                },
+                {
+                    "label": "Injecter Benzodiazépines (Valium/Rivotril)",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_coma_sedate",
+                    "feedback": "Cela arrête la crise, mais n'oublie pas de traiter l'hypoglycémie ! Sinon les dégâts cérébraux continuent."
+                }
+            ]
+        },
+        "etat_fausse_route": {
+            "id": "etat_fausse_route",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Le patient inhale le liquide. Bronchospasme sévère, hypoxie réfractaire. Arrêt cardiaque hypoxique imminent.",
+            "constantesCibles": {
+                "tension": "60/40",
+                "pouls": 150,
+                "saturationO2": 60,
+                "frequenceRespiratoire": 40
+            },
+            "correction": "Ne jamais rien donner par la bouche à un patient dont la conscience est altérée !"
+        },
+        "etat_coma_profond": {
+            "id": "etat_coma_profond",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Suite à l'injection d'insuline, la glycémie devient nulle. Décérébration. Séquelles neurologiques irréversibles ou décès.",
+            "constantesCibles": {
+                "tension": "80/40",
+                "pouls": 50,
+                "saturationO2": 90,
+                "frequenceRespiratoire": 8
+            },
+            "correction": "Injecter de l'insuline à un patient hypoglycémique est une erreur fatale."
+        },
+        "etat_degradation_temps": {
+            "id": "etat_degradation_temps",
+            "descriptionClinique": "Pendant le transport au scanner, le patient convulse. Vous n'avez pas le matériel de réa dans le couloir.",
+            "constantesCibles": {
+                "tension": "150/90",
+                "pouls": 130,
+                "saturationO2": 80,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 10,
+                "nextNode": "etat_coma_post_critique",
+                "motif": "Retard de prise en charge."
+            },
+            "actionsDisponibles": []
+        },
+        "etat_coma_post_critique": {
+            "id": "etat_coma_post_critique",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Le patient est dans le coma, intubé ventilé. L'hypoglycémie prolongée a probablement causé des lésions corticales.",
+            "constantesCibles": {
+                "tension": "110/60",
+                "pouls": 90,
+                "saturationO2": 99,
+                "frequenceRespiratoire": 14
+            },
+            "correction": "L'hypoglycémie doit être corrigée en quelques minutes pour éviter les séquelles."
+        },
+        "etat_coma_sedate": {
+            "id": "etat_coma_sedate",
+            "descriptionClinique": "Le patient ne convulse plus mais reste dans un coma profond aréactif. La glycémie est toujours LO.",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": 100,
+                "saturationO2": 94,
+                "frequenceRespiratoire": 12
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 20,
+                "nextNode": "etat_coma_post_critique",
+                "motif": "Neuroglucopénie persistante."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Resucrage IV (G30%) en urgence",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_reveil_difficile",
+                    "feedback": "C'est la seule chance de le sauver."
+                }
+            ]
+        },
+        "etat_guerison_iv": {
+            "id": "etat_guerison_iv",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Spectaculaire ! En moins de 2 minutes, le patient ouvre les yeux, vous parle, et demande ce qu'il s'est passé. Il a faim.",
+            "constantesCibles": {
+                "tension": "120/70",
+                "pouls": 80,
+                "saturationO2": 99,
+                "frequenceRespiratoire": 16
+            },
+            "correction": "L'injection IV de glucose hypertonique est le traitement de référence. L'effet est immédiat."
+        },
+        "etat_reveil_glucagon": {
+            "id": "etat_reveil_glucagon",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Après 10-15 minutes, le patient émerge doucement. Il se plaint de nausées importantes (effet secondaire du Glucagon).",
+            "constantesCibles": {
+                "tension": "125/75",
+                "pouls": 90,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 18
+            },
+            "correction": "Le Glucagon IM est une excellente alternative sans voie veineuse. Il mobilise les réserves de glycogène hépatique."
+        },
+        "etat_reveil_difficile": {
+            "id": "etat_reveil_difficile",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le patient se réveille très lentement. Il reste confus (état post-critique), mais la glycémie remonte. Il faudra le surveiller.",
+            "constantesCibles": {
+                "tension": "120/70",
+                "pouls": 85,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 16
+            },
+            "correction": "Sauvé, mais le retard de traitement a conduit à des convulsions. Attention à la rapidité !"
+        }
+    }
+}
