@@ -625,7 +625,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function displayTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
-        const timeStr = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        const timeStr = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
         document.getElementById('timer').textContent = timeStr;
         const mobileTimer = document.getElementById('mobile-timer');
         if (mobileTimer) mobileTimer.textContent = timeStr;
@@ -1716,7 +1716,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const incorrectSelectedCount = selectedTreatments.filter(t => !correctTreatments.includes(t)).length;
 
             // Award points for correct treatments, penalize for incorrect ones
-            const treatmentPointsPerCorrect = treatmentWeight / correctTreatments.length;
+            // Max: if selected number exceeds correct 
+            const treatmentPointsPerCorrect = treatmentWeight / Math.max(correctTreatments.length, selectedTreatments.length);
             percentageScore += correctSelectedCount * treatmentPointsPerCorrect;
 
             // Optionally penalize for wrong treatments (commented out for now)
