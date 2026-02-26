@@ -254,10 +254,27 @@
                                 style="background: rgba(255, 71, 87, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 1.1em; color: #ff6b81; border-left: 5px solid #ff4757; transition: all 0.3s ease;">
                                 <!-- Description clinique dynamique de l'état d'urgence -->
                             </div>
-                            <h3 class="card-title">Actions Immédiates Disponibles</h3>
+                            <!-- Node Progress Bar -->
+                            <div class="node-timer-container" style="margin-bottom: 20px; background: rgba(0,0,0,0.3); height: 6px; border-radius: 3px; overflow: hidden;">
+                                <div id="node-timer-bar" class="node-timer-bar"></div>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h3 class="card-title" style="margin: 0;">Actions Immédiates Disponibles</h3>
+                                <div id="urgence-timer-display" style="font-family: monospace; font-size: 1.2rem; color: #ff4757; font-weight: bold;">00:00</div>
+                            </div>
+
                             <div id="urgence-actions-container" class="treatments-grid"
                                 style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
                                 <!-- Boutons d'action générés dynamiquement par game.js -->
+                            </div>
+
+                            <!-- Urgence Timeline -->
+                            <div class="urgence-timeline-container" style="margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(255, 71, 87, 0.3);">
+                                <h4 style="color: rgba(255, 255, 255, 0.7); margin-bottom: 10px; font-size: 0.9rem; text-transform: uppercase;">Historique des actions</h4>
+                                <div id="urgence-timeline" class="urgence-timeline">
+                                    <!-- Log entries will be added here -->
+                                </div>
                             </div>
                         </div>
                     </div>
