@@ -25,6 +25,8 @@
     <!-- Ajout de Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/fireworks.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -34,7 +36,18 @@
     </audio>
 
     <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
     <script>
+        // Masquer la page immédiatement, puis vérifier l'authentification
+        document.documentElement.style.visibility = 'hidden';
+        (async function () {
+            const user = await window.requireAuth();
+            if (user) {
+                document.documentElement.style.visibility = 'visible';
+            }
+            // Si non connecté, requireAuth redirige → on ne révèle jamais la page
+        })();
+
         // Disable audio if MUSIC_ENABLED is 0
         if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
             const audio = document.getElementById('heartbeat-audio');

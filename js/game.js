@@ -734,11 +734,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée
-            const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-            if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
-                console.log('Loading selected session cases:', selectedCaseFiles);
-                const casesPromises = selectedCaseFiles.map(file =>
+            // 1. SUPABASE FETCH (If applicable)
+            if (typeof supabase !== 'undefined') {
+                const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
+                if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
+                    try {
+                        const { data, error } = await supabase
+                            .from('cases')
+                            .select('*')
+                            .in('id', selectedCaseFiles);
+
+                        if (!error && data && data.length > 0) {
+                            console.log('Loading cases from Supabase:', data.length);
+                            localStorage.removeItem('selectedCaseFiles');
+                            return data.map(c => c.content);
+                        }
+                    } catch (err) {
+                        console.warn("Supabase fetch failed, falling back to local files", err);
+                    }
+                }
+            }
+
+            // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée (Fallback local)
+            const selectedCaseFilesLocal = JSON.parse(localStorage.getItem('selectedCaseFiles'));
+            if (selectedCaseFilesLocal && Array.isArray(selectedCaseFilesLocal) && selectedCaseFilesLocal.length > 0) {
+                console.log('Loading selected session cases:', selectedCaseFilesLocal);
+                const casesPromises = selectedCaseFilesLocal.map(file =>
                     fetch(`data/${file}`)
                         .then(res => {
                             if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
@@ -1807,14 +1828,64 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ALWAYS show correction and update cookie
         startPostGameQuiz(comparisonHtml);
 
-        // Mise à jour du cookie
+        // Mise à jour du cookie local
         let playedCases = getCookie('playedCases');
         playedCases = playedCases ? playedCases.split(',') : [];
         if (!playedCases.includes(currentCase.id)) {
             playedCases.push(currentCase.id);
             setCookie('playedCases', playedCases.join(','), 365);
         }
+
+        // SUPABASE: Sauvegarde de la session de jeu et XP
+        if (typeof supabase !== 'undefined') {
+            supabase.auth.getUser().then(async ({ data: { user } }) => {
+                if (user) {
+                    try {
+                        const stats = {
+                            attempts: attempts,
+                            diagnosticCorrect: diagnosticCorrect,
+                            selectedTreatments: selectedTreatments
+                        };
+
+                        // 1. Enregistrer la session
+                        const { error: sessionError } = await supabase
+                            .from('play_sessions')
+                            .insert([
+                                {
+                                    user_id: user.id,
+                                    case_id: currentCase.id,
+                                    score: percentageScore,
+                                    stats: stats
+                                }
+                            ]);
+                        if (sessionError) throw sessionError;
+
+                        // 2. Mettre à jour l'XP global (optionnel selon le RLS, mais on a fait une policy for update)
+                        // Plutôt que de lire puis écrire (risque de race condition), 
+                        // pour l'instant on lit l'XP actuel et on ajoute le score du cas.
+                        const { data: profile, error: profileErr } = await supabase
+                            .from('profiles')
+                            .select('total_xp')
+                            .eq('id', user.id)
+                            .single();
+
+                        if (!profileErr && profile) {
+                            const newXp = profile.total_xp + percentageScore;
+                            await supabase
+                                .from('profiles')
+                                .update({ total_xp: newXp })
+                                .eq('id', user.id);
+                        }
+
+                        console.log("Progression sauvegardée dans Supabase ! XP gagné:", percentageScore);
+                    } catch (err) {
+                        console.error("Erreur lors de la sauvegarde Supabase :", err);
+                    }
+                }
+            });
+        }
     });
+
 
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
 

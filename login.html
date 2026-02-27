@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedGame - Connexion</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <div class="scene-overlay">
+        <div class="glass-card" id="login-card">
+            <div class="header-content">
+                <div class="icon-pulse" style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h1 class="glitch-title" data-text="CONNEXION" style="font-size: 2.5rem;">MEDGAME</h1>
+                <p class="subtitle" id="form-subtitle">Accès Étudiant / Médecin</p>
+            </div>
+
+            <!-- Formulire de Connexion -->
+            <form id="auth-form" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Adresse Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Mot de passe" required>
+                </div>
+
+                <div id="auth-error" class="error-message"></div>
+                <div id="auth-success" class="success-message"></div>
+
+                <div class="button-container" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn-3d primary" id="submit-btn">
+                        <span class="btn-content" id="submit-text"><i class="fas fa-sign-in-alt"></i> Se
+                            connecter</span>
+                        <div class="btn-layer"></div>
+                    </button>
+
+                    <button type="button" class="btn-3d tertiary" id="toggle-mod-btn" style="padding: 0.8rem 1rem;">
+                        <span class="btn-content"><i class="fas fa-user-plus"></i> Créer un compte</span>
+                        <div class="btn-layer"></div>
+                    </button>
+                </div>
+            </form>
+
+            <p class="disclaimer">L'authentification est requise pour sauvegarder votre progression et créer des cas.
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Effet 3D Tilt sur la carte
+        const card = document.getElementById('login-card');
+        document.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+    </script>
+</body>
+
+</html>
