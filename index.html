@@ -16,7 +16,7 @@
 
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index.css?v=1.1">
     <link rel="stylesheet" href="css/device-check.css">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -58,7 +58,7 @@
                     <i class="fas fa-heartbeat"></i>
                 </div>
                 <h1 class="glitch-title" data-text="MEDGAME">MEDGAME</h1>
-                <p class="subtitle">Simulation Clinique à Bichat
+                <p class="subtitle">Simulation Clinique à Bichat</p>
             </div>
 
             <div class="button-container">
@@ -101,6 +101,16 @@
         </div>
     </div>
 
+    <!-- Classement Top Joueurs (masqué par défaut) -->
+    <div class="leaderboard-panel" id="leaderboard" style="display: none;">
+        <div class="leaderboard-header">
+            <h3><i class="fas fa-trophy"></i> Top Médecins</h3>
+        </div>
+        <div class="leaderboard-list" id="leaderboard-list">
+            <div style="text-align:center; color:rgba(255,255,255,0.5); padding: 20px 0;">Chargement...</div>
+        </div>
+    </div>
+
 
     <div id="settings-modal" class="modal-backdrop">
         <div class="modal-glass">
@@ -127,6 +137,20 @@
                             <span>Immersif</span>
                             <small>Mode Investigation (poser les questions) EN COURS DE DEV</small>
                         </span>
+                    </label>
+                </div>
+
+                <p class="setting-label" style="margin-top: 25px;">Confidentialité</p>
+                <div
+                    style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; margin-top: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 600; font-size: 0.9rem; color: #fff;">Profil Public</span>
+                        <small style="color: rgba(255,255,255,0.5); font-size: 0.72rem;">Apparaître dans le
+                            classement</small>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="setting-public-toggle" checked>
+                        <span class="slider round"></span>
                     </label>
                 </div>
             </div>
@@ -382,20 +406,45 @@
         const closeBtn = document.getElementById('settings-close-icon');
         const saveBtn = document.getElementById('settings-save');
 
-        const openModal = () => {
+        const openModal = async () => {
             modal.classList.add('active');
             const current = sessionStorage.getItem('immersionMode') || 'classique';
             const radio = document.querySelector(`input[name="immersionMode"][value="${current}"]`);
             if (radio) radio.checked = true;
+
+            // Charger l'état de confidentialité depuis Supabase
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    const { data, error } = await supabase.from('profiles').select('is_public').eq('id', session.user.id).single();
+                    if (!error && data) {
+                        document.getElementById('setting-public-toggle').checked = data.is_public;
+                    }
+                }
+            }
         };
         const closeModal = () => modal.classList.remove('active');
 
-        const saveSettings = () => {
+        const saveSettings = async () => {
             const checked = document.querySelector('input[name="immersionMode"]:checked');
             if (checked) {
                 sessionStorage.setItem('immersionMode', checked.value);
-                closeModal();
             }
+
+            // Sauvegarder la confidentialité dans Supabase
+            const isPublic = document.getElementById('setting-public-toggle').checked;
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    const { error } = await supabase.from('profiles').update({ is_public: isPublic }).eq('id', session.user.id);
+                    if (error) console.error("Erreur sauvegarde confidentialité:", error);
+                    else if (window.loadLeaderboard) {
+                        window.loadLeaderboard();
+                    }
+                }
+            }
+
+            closeModal();
         };
 
         settingsBtn.addEventListener('click', openModal);
@@ -447,6 +496,13 @@
                     const editorBtn = document.getElementById('editor-button');
                     if (editorBtn) editorBtn.style.marginTop = '10px';
 
+                    // Afficher le classement
+                    const lb = document.getElementById('leaderboard');
+                    if (lb) {
+                        lb.style.display = 'flex';
+                        if (window.loadLeaderboard) window.loadLeaderboard();
+                    }
+
                     const username = session.user.email.split('@')[0];
                     let xpText = "0 XP";
                     let rankText = "Externe";
@@ -480,6 +536,57 @@
                 }
             }
         });
+    </script>
+    <script>
+        window.loadLeaderboard = async function () {
+            const listContainer = document.getElementById('leaderboard-list');
+            if (!listContainer || typeof supabase === 'undefined') return;
+
+            try {
+                const { data: topPlayers, error } = await supabase
+                    .from('profiles')
+                    .select('username, total_xp, rank')
+                    .eq('is_public', true)
+                    .order('total_xp', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                if (!topPlayers || topPlayers.length === 0) {
+                    listContainer.innerHTML = '<div style="text-align:center; color:rgba(255,255,255,0.5); padding: 20px 0;">Aucun classement disponible.</div>';
+                    return;
+                }
+
+                listContainer.innerHTML = '';
+                topPlayers.forEach((player, index) => {
+                    // Optionnel: ne pas afficher tous les 0 XP s'il y en a trop
+                    if (player.total_xp === 0 && index > 4) return;
+
+                    const rankPos = index + 1;
+                    const item = document.createElement('div');
+                    item.className = `leaderboard-item ${rankPos <= 3 ? 'rank-' + rankPos : ''}`;
+
+                    const username = player.username ? player.username.split('@')[0] : 'Anonyme';
+                    const role = player.rank || 'Externe';
+
+                    item.innerHTML = `
+                        <div class="lb-rank">${rankPos}</div>
+                        <div class="lb-info">
+                            <span class="lb-name">${username}</span>
+                            <span class="lb-role">${role}</span>
+                        </div>
+                        <div class="lb-xp">${player.total_xp} XP</div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+
+            } catch (err) {
+                console.error("Erreur chargement classement:", err);
+                listContainer.innerHTML = '<div style="text-align:center; color:#ff4757; padding: 20px 0;">Erreur de chargement.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
     </script>
     <script src="js/device-check.js"></script>
 </body>
