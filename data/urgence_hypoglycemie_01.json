@@ -1,0 +1,243 @@
+{
+    "id": "urgence_hypoglycemie_01",
+    "redacteur": "Dr. Urgence",
+    "patient": {
+        "nom": "Bernard",
+        "prenom": "Thérèse",
+        "age": 72,
+        "sexe": "F",
+        "taille": "165 cm",
+        "poids": "70 kg",
+        "groupeSanguin": "B-"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Troubles de la conscience.",
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 30 minutes",
+            "evolution": "Aggravation rapide vers le coma",
+            "facteursDeclenchants": "Retard de repas ?",
+            "descriptionDouleur": "Aucune",
+            "symptomesAssocies": [
+                "Sueurs profuses",
+                "Agitation initiale"
+            ],
+            "remarques": "Patiente diabétique connue."
+        },
+        "antecedents": {
+            "medicaux": [
+                {
+                    "type": "Diabète de type 2",
+                    "traitement": "Insuline + ADO"
+                }
+            ],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [
+            {
+                "nom": "Lantus",
+                "dose": "20 UI",
+                "frequence": "Soir"
+            },
+            {
+                "nom": "Novorapid",
+                "dose": "Selon protocole",
+                "frequence": "Repas"
+            }
+        ],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Marche"
+            },
+            "tabac": {
+                "quantite": "Jamais",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Jamais"
+            },
+            "alimentation": {
+                "regime": "Diabétique",
+                "particularites": "A sauté le déjeuner"
+            },
+            "emploi": {
+                "profession": "Retraitée",
+                "stress": "Faible"
+            }
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "140/85",
+            "pouls": 110,
+            "temperature": 36.8,
+            "saturationO2": 97,
+            "frequenceRespiratoire": 18
+        },
+        "aspectGeneral": "Coma calme (GCS 7 : Y2 V2 M3). Sueurs froides importantes. Pas de signe de focalisation."
+    },
+    "gameplayConfig": {
+        "startNode": "etat_initial"
+    },
+    "nodes": {
+        "etat_initial": {
+            "id": "etat_initial",
+            "descriptionClinique": "La patiente est dans le coma. Elle respire seule. Elle est en sueurs. Glasgow 7.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": 110,
+                "saturationO2": 97,
+                "frequenceRespiratoire": 18
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 60,
+                "nextNode": "etat_convulsions",
+                "motif": "La neuroglucopénie s'aggrave."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Glycémie Capillaire (Dextro)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_dextro",
+                    "feedback": "Dextro : 'LO' (< 0.2 g/L). Hypoglycémie sévère confirmée !"
+                },
+                {
+                    "label": "Scanner cérébral en urgence",
+                    "type": "erreur",
+                    "tempsExecutionSec": 120,
+                    "nextNode": "etat_convulsions",
+                    "feedback": "Erreur classique ! Tout trouble de conscience = Dextro d'abord. Vous perdez un temps critique."
+                },
+                {
+                    "label": "Intubation Oro-trachéale",
+                    "type": "geste_urgence",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_initial_intube",
+                    "feedback": "C'est indiqué pour protéger les voies aériennes (GCS<8), mais ce n'est pas la cause. Il fallait faire le dextro avant !"
+                }
+            ]
+        },
+        "etat_initial_intube": {
+            "id": "etat_initial_intube",
+            "descriptionClinique": "Patiente intubée-ventilée. Toujours comateuse. Sueurs persistantes.",
+            "constantesCibles": { "tension": "130/80", "pouls": 105, "saturationO2": 100, "frequenceRespiratoire": "Ventilé" },
+            "evolutionAuto": { "delaiSecondes": 40, "nextNode": "etat_convulsions", "motif": "Cerveau en souffrance glucidique." },
+            "actionsDisponibles": [
+                {
+                    "label": "Glycémie Capillaire",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_dextro",
+                    "feedback": "Enfin ! Dextro < 0.20 g/L."
+                }
+            ]
+        },
+        "etat_dextro": {
+            "id": "etat_dextro",
+            "descriptionClinique": "Le diagnostic est certain : Hypoglycémie profonde. Il faut resucrer vite.",
+            "constantesCibles": {
+                "tension": "135/80",
+                "pouls": 112,
+                "saturationO2": 97,
+                "frequenceRespiratoire": 18
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_convulsions",
+                "motif": "Agir vite !"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "G30% IVD (2 ampoules)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_reveil",
+                    "feedback": "L'effet est quasi immédiat par voie veineuse."
+                },
+                {
+                    "label": "Glucagon 1mg IM",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_reveil_lent",
+                    "feedback": "Possible si pas d'accès veineux, mais moins efficace chez le diabétique de type 2 (réserves glycogène ?) et moins rapide que l'IV."
+                },
+                {
+                    "label": "Insuline Rapide 10 UI",
+                    "type": "erreur",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_deces",
+                    "feedback": "Criminel ! Vous aggravez l'hypoglycémie. Décès cérébral assuré."
+                }
+            ]
+        },
+        "etat_convulsions": {
+            "id": "etat_convulsions",
+            "descriptionClinique": "Crise convulsive généralisée tonico-clonique. Le cerveau souffre trop.",
+            "constantesCibles": {
+                "tension": "160/100",
+                "pouls": 140,
+                "saturationO2": 85,
+                "frequenceRespiratoire": "Apnée"
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_sequelles",
+                "motif": "État de mal hypoglycémique."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "G30% IVD + Diazépam",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_reveil_difficile",
+                    "feedback": "Traitement de la cause et du symptôme. C'est la seule chance."
+                }
+            ]
+        },
+        "etat_reveil": {
+            "id": "etat_reveil",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "La patiente ouvre les yeux, parle, demande ce qui s'est passé. Les sueurs disparaissent. Dextro de contrôle : 1.2 g/L.",
+            "constantesCibles": {
+                "tension": "130/75",
+                "pouls": 80,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 16
+            }
+        },
+        "etat_reveil_lent": {
+            "id": "etat_reveil_lent",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le réveil est progressif (10-15 min). La patiente a mal à la tête et nauséeuse (effet Glucagon). Dextro : 0.9 g/L. Posez une perfusion de G10%.",
+            "constantesCibles": { "tension": "130/75", "pouls": 90, "saturationO2": 98, "frequenceRespiratoire": 16 }
+        },
+        "etat_reveil_difficile": {
+            "id": "etat_reveil_difficile",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Arrêt des convulsions. Coma post-critique persistant puis réveil lent avec confusion. Surveillance neuro rapprochée.",
+            "constantesCibles": { "tension": "140/80", "pouls": 100, "saturationO2": 95, "frequenceRespiratoire": 18 }
+        },
+        "etat_sequelles": {
+            "id": "etat_sequelles",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Encéphalopathie post-hypoglycémique. La patiente reste dans le coma végétatif malgré la normalisation de la glycémie. Lésions irréversibles.",
+            "constantesCibles": { "tension": "110/60", "pouls": 70, "saturationO2": 94, "frequenceRespiratoire": 12 }
+        },
+        "etat_deces": {
+            "id": "etat_deces",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Décès par erreur médicale majeure (injection d'insuline sur hypoglycémie).",
+            "constantesCibles": { "tension": "0/0", "pouls": 0, "saturationO2": 0, "frequenceRespiratoire": 0 }
+        }
+    }
+}

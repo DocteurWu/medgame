@@ -117,6 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isUrgenceMode = false;
     let currentUrgenceNode = null;
     let urgenceTimerTimeout = null;
+    let urgenceStartTime = null;
+    let urgenceScore = 100;
+    let urgenceActionHistory = [];
+    let urgenceGlobalTimerInterval = null;
 
     // --- GATING SYSTEM (VERROUS) ---
     let unlockedLocks = new Set();
@@ -1249,9 +1253,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentCase.gameplayConfig && currentCase.gameplayConfig.startNode) {
                 isUrgenceMode = true;
                 currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
+                // Initialize urgency specific variables
+                urgenceStartTime = Date.now();
+                urgenceScore = 100;
+                urgenceActionHistory = [];
+                startUrgenceMode();
             } else {
                 isUrgenceMode = false;
                 currentUrgenceNode = null;
+                if (urgenceGlobalTimerInterval) clearInterval(urgenceGlobalTimerInterval);
             }
         }
 
@@ -2261,6 +2271,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- URGENCE MODE LOGIC ---
+    function startUrgenceMode() {
+        if (urgenceGlobalTimerInterval) clearInterval(urgenceGlobalTimerInterval);
+        urgenceGlobalTimerInterval = setInterval(updateUrgenceTimer, 1000);
+        updateUrgenceTimer();
+    }
+
+    function updateUrgenceTimer() {
+        const timerDisplay = document.getElementById('urgence-timer-display');
+        if (!timerDisplay || !urgenceStartTime) return;
+
+        const now = Date.now();
+        const diff = Math.floor((now - urgenceStartTime) / 1000);
+        const minutes = Math.floor(diff / 60);
+        const seconds = diff % 60;
+        timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+
+    function calculateUrgenceScore(actionType, timeTaken) {
+        let delta = 0;
+        if (actionType === 'traitement_cle') delta = 20;
+        else if (actionType === 'soin') delta = 5;
+        else if (actionType === 'erreur') delta = -15;
+        else if (actionType === 'geste_urgence') delta = 10;
+
+        // Time penalty logic could go here
+
+        urgenceScore = Math.max(0, Math.min(100, urgenceScore + delta));
+        // Update score display if exists
+        // ...
+    }
+
     function renderUrgenceState() {
         if (!isUrgenceMode || !currentUrgenceNode) return;
 
@@ -2306,6 +2347,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+        // Update Node Timer Bar
+        const timerBar = document.getElementById('node-timer-bar');
+        if (timerBar) {
+            timerBar.style.transition = 'none';
+            timerBar.style.width = '100%';
+
+            if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
+                // Force reflow
+                void timerBar.offsetWidth;
+                timerBar.style.transition = `width ${currentUrgenceNode.evolutionAuto.delaiSecondes}s linear`;
+                timerBar.style.width = '0%';
+            }
+        }
+
+        // Render Timeline
+        const timelineContainer = document.getElementById('urgence-timeline');
+        if (timelineContainer) {
+            timelineContainer.innerHTML = urgenceActionHistory.map(entry => {
+                let typeClass = 'neutral';
+                if (entry.type === 'traitement_cle') typeClass = 'good';
+                if (entry.type === 'erreur') typeClass = 'bad';
+                return `
+                    <div class="timeline-entry ${typeClass}">
+                        <span>${entry.label}</span>
+                        <span class="timeline-time">${entry.timestamp}</span>
+                    </div>
+                `;
+            }).join('');
+            // Scroll to bottom
+            if (timelineContainer.parentElement) {
+                timelineContainer.parentElement.scrollTop = timelineContainer.parentElement.scrollHeight;
+            }
+        }
+
+        // Toggle Stress Mode
+        if (currentUrgenceNode.id.includes('arret') || currentUrgenceNode.id.includes('deces') || currentUrgenceNode.id.includes('critique')) {
+            document.body.classList.add('stress-mode');
+        } else {
+            document.body.classList.remove('stress-mode');
+        }
+
+        if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
         if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
             urgenceTimerTimeout = setTimeout(() => {
                 showNotification(`⚠️ ALERTE : ${currentUrgenceNode.evolutionAuto.motif}`);
@@ -2316,6 +2399,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (currentUrgenceNode.isEndState) {
             if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
             if (timerInterval) clearInterval(timerInterval);
+            if (urgenceGlobalTimerInterval) clearInterval(urgenceGlobalTimerInterval);
 
             const playedCases = getCookie('playedCases');
             let arr = playedCases ? playedCases.split(',') : [];
@@ -2326,6 +2410,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             setTimeout(() => {
                 let html = `<h2>${currentUrgenceNode.success ? '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Patient Sauvé' : '<i class="fas fa-skull" style="color: #e74c3c;"></i> Échec Critique'}</h2>`;
+                html += `<div style="text-align:center; font-size:1.5rem; margin:10px 0; font-weight:bold; color:${currentUrgenceNode.success ? '#2ecc71' : '#e74c3c'}">Score Urgence: ${urgenceScore}/100</div>`;
                 html += `<p>${currentUrgenceNode.descriptionClinique}</p>`;
                 if (currentCase.correction) {
                     html += `<hr>${currentCase.correction}`;
@@ -2354,6 +2439,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (action.feedback) {
             showNotification(action.feedback);
         }
+
+        // Log action
+        const now = Date.now();
+        const diff = Math.floor((now - urgenceStartTime) / 1000);
+        const minutes = Math.floor(diff / 60);
+        const seconds = diff % 60;
+        const timestamp = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        urgenceActionHistory.push({
+            label: action.label,
+            type: action.type,
+            timestamp: timestamp
+        });
+
+        // Update Score
+        calculateUrgenceScore(action.type, action.tempsExecutionSec);
+
         transitionUrgenceState(action.nextNode);
     }
 

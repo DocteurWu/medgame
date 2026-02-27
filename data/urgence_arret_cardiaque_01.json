@@ -1,0 +1,275 @@
+{
+    "id": "urgence_arret_cardiaque_01",
+    "redacteur": "Dr. Urgence",
+    "patient": {
+        "nom": "Martin",
+        "prenom": "Jean",
+        "age": 68,
+        "sexe": "M",
+        "taille": "175 cm",
+        "poids": "82 kg",
+        "groupeSanguin": "O+"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Effondrement brutal dans la salle d'attente.",
+        "histoireMaladie": {
+            "debutSymptomes": "Immédiat",
+            "evolution": "Arrêt cardiorespiratoire",
+            "facteursDeclenchants": "Inconnu",
+            "descriptionDouleur": "N/A (inconscient)",
+            "symptomesAssocies": [],
+            "remarques": "Patient inconscient, ne respire pas."
+        },
+        "antecedents": {
+            "medicaux": [
+                {
+                    "type": "Hypertension artérielle",
+                    "traitement": "Bithérapie"
+                },
+                {
+                    "type": "Cardiopathie ischémique",
+                    "traitement": "Stent en 2018"
+                }
+            ],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [
+            {
+                "nom": "Aspirine",
+                "dose": "75mg",
+                "frequence": "1/j"
+            }
+        ],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sédentaire"
+            },
+            "tabac": {
+                "quantite": "Ancien fumeur",
+                "duree": "Arrêt 10 ans"
+            },
+            "alcool": {
+                "quantite": "Social"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": ""
+            },
+            "emploi": {
+                "profession": "Retraité",
+                "stress": "Moyen"
+            }
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "0/0",
+            "pouls": 0,
+            "temperature": 36.5,
+            "saturationO2": 0,
+            "frequenceRespiratoire": 0
+        },
+        "aspectGeneral": "Inconscient, aréactif, cyanosé."
+    },
+    "gameplayConfig": {
+        "startNode": "etat_initial"
+    },
+    "nodes": {
+        "etat_initial": {
+            "id": "etat_initial",
+            "descriptionClinique": "Vous arrivez. Le patient est au sol. Inconscient. Pas de mouvement thoracique.",
+            "constantesCibles": {
+                "tension": "IMPRENABLE",
+                "pouls": 0,
+                "saturationO2": "??",
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 15,
+                "nextNode": "etat_deces_nocpr",
+                "motif": "L'absence de RCP immédiate condamne le cerveau."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier la conscience et le pouls carotidien",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_diagnostic_acr",
+                    "feedback": "Pas de réponse. Pas de pouls perçu. C'est un ACR."
+                },
+                {
+                    "label": "Mettre sous O2 au masque",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_deces_nocpr",
+                    "feedback": "Inutile ! Le sang ne circule pas. Priorité au massage !"
+                },
+                {
+                    "label": "Prendre la tension",
+                    "type": "erreur",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_deces_nocpr",
+                    "feedback": "Vous perdez un temps fou. Le patient est mort cliniquement, il faut masser."
+                }
+            ]
+        },
+        "etat_diagnostic_acr": {
+            "id": "etat_diagnostic_acr",
+            "descriptionClinique": "Diagnostic d'ACR posé. Le temps presse.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": 0,
+                "saturationO2": 0,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 10,
+                "nextNode": "etat_deces_nocpr",
+                "motif": "No flow = mort cérébrale."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Débuter MCE (30:2) et appeler renfort/chariot",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_cpr_cycle1",
+                    "feedback": "MCE débuté. Le 'Low Flow' irrigue le cerveau."
+                },
+                {
+                    "label": "Intuber immédiatement",
+                    "type": "erreur",
+                    "tempsExecutionSec": 30,
+                    "nextNode": "etat_deces_nocpr",
+                    "feedback": "L'intubation interrompt le massage trop longtemps au début. CAB (Compressions first)."
+                }
+            ]
+        },
+        "etat_cpr_cycle1": {
+            "id": "etat_cpr_cycle1",
+            "descriptionClinique": "Le massage est en cours. Le défibrillateur est posé. Le scope affiche une ASYSTOLIE (ligne plate).",
+            "constantesCibles": {
+                "tension": "MCE",
+                "pouls": "MCE",
+                "saturationO2": "?",
+                "frequenceRespiratoire": "Ventilé"
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_deces_nocpr",
+                "motif": "Le massage s'arrête ou devient inefficace."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Choc électrique externe (200J)",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_cpr_cycle1_error",
+                    "feedback": "On ne choque PAS une asystolie ! C'est inutile et délétère (lésion myocardique)."
+                },
+                {
+                    "label": "Adrénaline 1mg IV + Sécuriser VA (Intubation/Masque laryngé)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_cpr_cycle2",
+                    "feedback": "L'adrénaline est le vasopresseur de choix pour l'asystolie. On continue le massage."
+                },
+                {
+                    "label": "Arrêter pour prendre le pouls",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_cpr_cycle1",
+                    "feedback": "Ne pas interrompre le massage sauf pour l'analyse du rythme (toutes les 2 min)."
+                }
+            ]
+        },
+        "etat_cpr_cycle1_error": {
+            "id": "etat_cpr_cycle1_error",
+            "descriptionClinique": "Vous avez choqué une asystolie. Le rythme reste plat. Reprenez le massage !",
+            "constantesCibles": { "tension": "MCE", "pouls": 0, "saturationO2": 0, "frequenceRespiratoire": 0 },
+            "evolutionAuto": { "delaiSecondes": 15, "nextNode": "etat_deces_nocpr", "motif": "Temps perdu." },
+            "actionsDisponibles": [
+                {
+                    "label": "Reprendre MCE + Adrénaline 1mg IV",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_cpr_cycle2",
+                    "feedback": "Correction de tir."
+                }
+            ]
+        },
+        "etat_cpr_cycle2": {
+            "id": "etat_cpr_cycle2",
+            "descriptionClinique": "Cycle 2 min terminé. Analyse du rythme : Rythme Sinusal lent, complexes fins. Pouls perçu !",
+            "constantesCibles": {
+                "tension": "60/40",
+                "pouls": 40,
+                "saturationO2": 85,
+                "frequenceRespiratoire": 12
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_deces_rechute",
+                "motif": "L'instabilité hémodynamique post-ROSC nécessite une prise en charge (vasopresseurs)."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Arrêt MCE, optimiser oxygénation, Noradrénaline si besoin",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_rosc",
+                    "feedback": "RACS (Reprise d'Activité Cardiaque Spontanée) ! On stabilise."
+                },
+                {
+                    "label": "Continuer le massage cardiaque",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_rosc_trauma",
+                    "feedback": "Attention, masser sur un coeur qui bat peut provoquer des lésions ou une FV."
+                }
+            ]
+        },
+        "etat_rosc": {
+            "id": "etat_rosc",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le patient a récupéré une activité cardiaque (ROSC). TA 100/60 sous Noradrénaline. Transfert immédiat en Coronarographie/Réa.",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": 85,
+                "saturationO2": 96,
+                "frequenceRespiratoire": 14
+            }
+        },
+        "etat_rosc_trauma": {
+            "id": "etat_rosc_trauma",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le patient a récupéré mais se plaint de douleurs thoraciques (côtes cassées). Surveillance Réa.",
+            "constantesCibles": {
+                "tension": "90/50",
+                "pouls": 95,
+                "saturationO2": 94,
+                "frequenceRespiratoire": 18
+            }
+        },
+        "etat_deces_nocpr": {
+            "id": "etat_deces_nocpr",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Décès. Le 'No Flow' initial a été trop long ou la prise en charge inadaptée.",
+            "constantesCibles": { "tension": "0/0", "pouls": 0, "saturationO2": 0, "frequenceRespiratoire": 0 }
+        },
+        "etat_deces_rechute": {
+            "id": "etat_deces_rechute",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Le patient a refait un arrêt (FV) non témoigné ou non pris en charge. Décès.",
+            "constantesCibles": { "tension": "0/0", "pouls": 0, "saturationO2": 0, "frequenceRespiratoire": 0 }
+        }
+    }
+}

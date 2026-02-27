@@ -21,7 +21,7 @@
                 "Sensation de malaise",
                 "Démangeaisons"
             ],
-            "remarques": "Patient agité."
+            "remarques": "Patient agité, difficulté à parler."
         },
         "antecedents": {
             "medicaux": [],
@@ -61,13 +61,13 @@
     },
     "examenClinique": {
         "constantes": {
-            "tension": "90/50",
-            "pouls": 115,
+            "tension": "85/50",
+            "pouls": 120,
             "temperature": 37.2,
-            "saturationO2": 92,
-            "frequenceRespiratoire": 28
+            "saturationO2": 90,
+            "frequenceRespiratoire": 30
         },
-        "aspectGeneral": "Agité, couvert d'urticaire."
+        "aspectGeneral": "Agité, couvert d'urticaire, tirage sus-sternal."
     },
     "gameplayConfig": {
         "startNode": "etat_initial"
@@ -75,79 +75,62 @@
     "nodes": {
         "etat_initial": {
             "id": "etat_initial",
-            "descriptionClinique": "Le patient est agité, couvert d'urticaire. Il respire avec un sifflement (wheezing) audibible à distance. Sueurs profuses.",
+            "descriptionClinique": "Le patient est en détresse respiratoire aiguë. Urticaire géant. Stridor inspiratoire et wheezing. Tension basse.",
             "constantesCibles": {
-                "tension": "90/50",
-                "pouls": 115,
-                "saturationO2": 92,
-                "frequenceRespiratoire": 28
+                "tension": "85/50",
+                "pouls": 120,
+                "saturationO2": 90,
+                "frequenceRespiratoire": 30
             },
             "evolutionAuto": {
-                "delaiSecondes": 45,
+                "delaiSecondes": 40,
                 "nextNode": "etat_degradation1",
-                "motif": "Le choc s'installe, la tension chute faute de traitement rapide."
+                "motif": "Le choc s'aggrave rapidement sans adrénaline."
             },
             "actionsDisponibles": [
                 {
-                    "label": "Mettre sous Oxygène (Masque Haute Concentration)",
+                    "label": "Mettre sous Oxygène (MHC 15L/min)",
                     "type": "soin",
                     "tempsExecutionSec": 5,
                     "nextNode": "etat_initial_O2",
-                    "feedback": "L'oxygène est posé, la saturation s'améliore légèrement mais la cause n'est pas traitée."
+                    "feedback": "C'est bien pour l'hypoxie, mais l'obstruction des voies aériennes et le choc hémodynamique continuent."
                 },
                 {
                     "label": "Injection Adrénaline 0.5mg IM",
                     "type": "traitement_cle",
                     "tempsExecutionSec": 10,
                     "nextNode": "etat_guerison",
-                    "feedback": "Vous injectez l'adrénaline en intramusculaire. Le patient respire mieux presque immédiatement."
+                    "feedback": "Excellent ! L'adrénaline IM est le SEUL traitement qui inverse le processus anaphylactique (vasoconstriction, bronchodilatation, arrêt de la fuite capillaire)."
                 },
                 {
-                    "label": "Donner Antihistaminique PO",
+                    "label": "Donner Antihistaminique PO/IV",
                     "type": "erreur",
                     "tempsExecutionSec": 15,
-                    "nextNode": "etat_degradation1",
-                    "feedback": "Le patient a du mal à avaler, l'effet sera trop lent pour une urgence vitale. Vous perdez un temps précieux !"
+                    "nextNode": "etat_retard_antihist",
+                    "feedback": "Inefficace sur le choc et l'obstruction laryngée. Vous perdez un temps précieux !"
+                },
+                {
+                    "label": "Remplissage vasculaire 500cc",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_initial_remplissage",
+                    "feedback": "Utile pour l'hypovolémie relative, mais ne lève pas le bronchospasme ni l'oedème laryngé."
                 }
             ]
         },
         "etat_initial_O2": {
             "id": "etat_initial_O2",
-            "descriptionClinique": "Le patient a l'O2, la saturation remonte un peu, mais la tension continue de baisser et l'œdème gonfle.",
+            "descriptionClinique": "Malgré l'O2, le stridor s'intensifie. Le patient devient confus. La TA chute.",
             "constantesCibles": {
-                "tension": "85/45",
-                "pouls": 125,
-                "saturationO2": 97,
-                "frequenceRespiratoire": 26
+                "tension": "80/40",
+                "pouls": 130,
+                "saturationO2": 94,
+                "frequenceRespiratoire": 32
             },
             "evolutionAuto": {
-                "delaiSecondes": 30,
+                "delaiSecondes": 25,
                 "nextNode": "etat_degradation1",
-                "motif": "L'oxygène ne suffit pas sans adrénaline. L'insuffisance circulatoire s'aggrave."
-            },
-            "actionsDisponibles": [
-                {
-                    "label": "Injection Adrénaline 0.5mg IM",
-                    "type": "traitement_cle",
-                    "tempsExecutionSec": 10,
-                    "nextNode": "etat_guerison",
-                    "feedback": "L'adrénaline remonte la tension et lève le bronchospasme ! Bonne décision."
-                }
-            ]
-        },
-        "etat_degradation1": {
-            "id": "etat_degradation1",
-            "descriptionClinique": "Le patient devient somnolent. Cyanose des lèvres. L'œdème de Quincke obstrue les voies aériennes. Pouls filant.",
-            "constantesCibles": {
-                "tension": "60/30",
-                "pouls": 145,
-                "saturationO2": 84,
-                "frequenceRespiratoire": 35
-            },
-            "evolutionAuto": {
-                "delaiSecondes": 20,
-                "nextNode": "etat_arret_cardiaque",
-                "motif": "Arrêt respiratoire puis cardiaque."
+                "motif": "L'oxygène seul ne suffit pas. L'hypoperfusion cérébrale s'installe."
             },
             "actionsDisponibles": [
                 {
@@ -155,34 +138,144 @@
                     "type": "traitement_cle",
                     "tempsExecutionSec": 5,
                     "nextNode": "etat_guerison",
-                    "feedback": "Injection réalisée en urgence absolue ! Cela a pris plus de temps pour agir mais le patient sort de collapsus."
+                    "feedback": "Sauvetage de justesse ! L'état s'améliore rapidement."
+                },
+                {
+                    "label": "Corticoïdes IV",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_degradation1",
+                    "feedback": "Les corticoïdes agissent en plusieurs heures (prévention biphasique). Inutile en phase aiguë de choc."
+                }
+            ]
+        },
+        "etat_retard_antihist": {
+            "id": "etat_retard_antihist",
+            "descriptionClinique": "Le patient ne peut plus avaler sa salive. L'antihistaminique n'a eu aucun effet sur la tension qui s'effondre.",
+            "constantesCibles": {
+                "tension": "70/35",
+                "pouls": 140,
+                "saturationO2": 88,
+                "frequenceRespiratoire": 35
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 20,
+                "nextNode": "etat_degradation1",
+                "motif": "Erreur de priorité thérapeutique fatale."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Adrénaline 0.5mg IM (Urgence)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_guerison_tardive",
+                    "feedback": "C'était moins une. Le patient mettra plus de temps à récupérer."
+                }
+            ]
+        },
+        "etat_initial_remplissage": {
+            "id": "etat_initial_remplissage",
+            "descriptionClinique": "La tension remonte à peine. La respiration est toujours aussi sifflante et difficile.",
+            "constantesCibles": {
+                "tension": "85/45",
+                "pouls": 125,
+                "saturationO2": 91,
+                "frequenceRespiratoire": 30
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 20,
+                "nextNode": "etat_degradation1",
+                "motif": "La fuite capillaire continue tant que l'adrénaline n'est pas faite."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Adrénaline 0.5mg IM",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Bonne réaction."
+                }
+            ]
+        },
+        "etat_degradation1": {
+            "id": "etat_degradation1",
+            "descriptionClinique": "Gasping. Cyanose. Le patient perd connaissance. Pouls carotidien filant.",
+            "constantesCibles": {
+                "tension": "50/20",
+                "pouls": 150,
+                "saturationO2": 70,
+                "frequenceRespiratoire": 8
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 15,
+                "nextNode": "etat_arret_cardiaque",
+                "motif": "Arrêt cardiorespiratoire hypoxique et distributif."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Adrénaline 1mg IVD (Titration)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_guerison_rea",
+                    "feedback": "À ce stade de collapsus, la voie IV (titrée) ou IM répétée est vitale. Le patient partira en réa."
                 },
                 {
                     "label": "Intubation Oro-trachéale",
                     "type": "geste_urgence",
-                    "tempsExecutionSec": 15,
-                    "nextNode": "etat_arret_cardiaque",
-                    "feedback": "Échec de l'intubation à cause de l'œdème majeur. Le patient s'épuise. Il fallait faire de l'adrénaline d'abord."
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_echec_intubation",
+                    "feedback": "L'oedème est massif. L'intubation est impossible sans préparation ou cricothyrotomie. Vous perdez le patient."
                 }
             ]
+        },
+        "etat_echec_intubation": {
+            "id": "etat_echec_intubation",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Impossible d'intuber (\"No No\"). L'hypoxie s'est prolongée trop longtemps. Asystolie.",
+            "constantesCibles": { "tension": "0/0", "pouls": 0, "saturationO2": 0, "frequenceRespiratoire": 0 }
         },
         "etat_guerison": {
             "id": "etat_guerison",
             "isEndState": true,
             "success": true,
-            "descriptionClinique": "L'urticaire régresse, la respiration s'apaise. La tension remonte. Le patient est sauvé et sera transféré en réanimation pour surveillance.",
+            "descriptionClinique": "Spectaculaire : en quelques minutes, le patient respire mieux, le stridor disparaît, la TA remonte. Surveillance 6h minimum.",
             "constantesCibles": {
                 "tension": "120/75",
                 "pouls": 90,
-                "saturationO2": 99,
+                "saturationO2": 98,
                 "frequenceRespiratoire": 16
+            }
+        },
+        "etat_guerison_tardive": {
+            "id": "etat_guerison_tardive",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le patient récupère lentement. Il gardera une hypotension transitoire nécessitant un remplissage. Transfert UHCD.",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": 100,
+                "saturationO2": 95,
+                "frequenceRespiratoire": 20
+            }
+        },
+        "etat_guerison_rea": {
+            "id": "etat_guerison_rea",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Le patient a été récupéré in extremis. Il nécessite une surveillance continue en réanimation (risque de rebond).",
+            "constantesCibles": {
+                "tension": "95/50",
+                "pouls": 110,
+                "saturationO2": 92,
+                "frequenceRespiratoire": 24
             }
         },
         "etat_arret_cardiaque": {
             "id": "etat_arret_cardiaque",
             "isEndState": true,
             "success": false,
-            "descriptionClinique": "Tracé plat sur l'ECG. Le patient est en arrêt cardiorespiratoire (asystolie). Les manoeuvres de réanimation débutent, mais l'issue est sombre.",
+            "descriptionClinique": "Asystolie. Le retard à l'injection d'adrénaline a été fatal. Le choc anaphylactique a évolué vers l'arrêt cardiaque irréversible.",
             "constantesCibles": {
                 "tension": "0/0",
                 "pouls": 0,
