@@ -1430,7 +1430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Dynamic rendering of clinical exam sections
         const examDetailsGrid = document.querySelector('.exam-details-grid');
         if (examDetailsGrid) {
-            examDetailsGrid.innerHTML = ''; // Clear previous content
+            let examHtml = ''; // Use a string to accumulate HTML
             const examenClinique = currentCase.examenClinique || {};
             const skipKeys = ['constantes', 'aspectGeneral']; // These are handled elsewhere
 
@@ -1441,7 +1441,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (examData) {
                     if (isFieldLocked(path)) {
                         const lock = getLockForField(path);
-                        examDetailsGrid.innerHTML += `
+                        examHtml += `
                             <div class="exam-item">
                                 <h4><i class="fas fa-lock lock-icon"></i> ${key}</h4>
                                 <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
@@ -1451,10 +1451,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </div>
                         `;
                     } else {
-                        examDetailsGrid.innerHTML += renderExamSection(key, examData);
+                        examHtml += renderExamSection(key, examData);
                     }
                 }
             }
+            examDetailsGrid.innerHTML = examHtml; // Set innerHTML once
         }
 
         if (!isPartialRefresh) {
