@@ -22,6 +22,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- Three.js pour la 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -30,6 +33,23 @@
 
     <div id="canvas-container"></div>
     <script src="js/config.js"></script>
+
+    <!-- Badge utilisateur connecté (coin haut droit) -->
+    <div id="user-badge-top"
+        style="display:none; position:fixed; top:18px; right:22px; z-index:1000; align-items:center; gap:10px; background:rgba(10,15,40,0.75); backdrop-filter:blur(12px); border:1px solid rgba(0,242,254,0.25); border-radius:50px; padding:8px 16px 8px 10px; box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+        <div
+            style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-user-md" style="color:#0a0f28;font-size:0.85rem;"></i>
+        </div>
+        <span id="top-username"
+            style="color:#fff;font-weight:600;font-size:0.9rem;font-family:'Outfit',sans-serif;">...</span>
+        <button onclick="window.logoutUser()" title="Se déconnecter"
+            style="background:rgba(255,71,87,0.12);border:1px solid rgba(255,71,87,0.3);color:#ff4757;cursor:pointer;padding:5px 10px;border-radius:20px;font-size:0.78rem;transition:all 0.2s;font-family:'Outfit',sans-serif;"
+            onmouseover="this.style.background='rgba(255,71,87,0.25)'"
+            onmouseout="this.style.background='rgba(255,71,87,0.12)'">
+            <i class="fas fa-sign-out-alt"></i> Quitter
+        </button>
+    </div>
 
     <div class="scene-overlay">
         <div class="glass-card" id="main-card">
@@ -42,23 +62,36 @@
             </div>
 
             <div class="button-container">
-                <button class="btn-3d primary" id="play-button" onclick="transitionTo('themes.html')">
+                <!-- Boutons réservés aux utilisateurs connectés -->
+                <button class="btn-3d primary auth-only" id="play-button" onclick="transitionTo('themes.html')"
+                    style="display:none;">
                     <span class="btn-content"><i class="fas fa-play"></i> Commencer ma garde</span>
                     <div class="btn-layer"></div>
                 </button>
 
+                <!-- Section auth: login ou déconnexion -->
+                <div id="auth-section" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-3d" id="login-nav-button" onclick="transitionTo('login.html')"
+                        style="border-color: rgba(0, 242, 254, 0.4);">
+                        <span class="btn-content"><i class="fas fa-user-md"></i> Connexion / Inscription</span>
+                        <div class="btn-layer" style="background: linear-gradient(90deg, #4facfe, #00f2fe);"></div>
+                    </button>
+                </div>
+
+                <!-- Toujours visible -->
                 <button class="btn-3d secondary" id="tutorial-button" onclick="transitionTo('tutorial.html')">
                     <span class="btn-content"><i class="fas fa-book-medical"></i> Comment jouer ?</span>
                     <div class="btn-layer"></div>
                 </button>
 
-                <button class="btn-3d tertiary" id="settings-button">
+                <!-- Boutons réservés aux utilisateurs connectés -->
+                <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;">
                     <span class="btn-content"><i class="fas fa-sliders-h"></i> Réglages</span>
                     <div class="btn-layer"></div>
                 </button>
 
-                <button class="btn-3d" id="editor-button" onclick="transitionTo('editor.html')"
-                    style="margin-top: 10px; border-color: rgba(255, 255, 255, 0.2);">
+                <button class="btn-3d auth-only" id="editor-button" onclick="transitionTo('editor.html')"
+                    style="display:none; margin-top: 10px; border-color: rgba(255, 255, 255, 0.2);">
                     <span class="btn-content"><i class="fas fa-edit"></i>Créer/modifier un Cas</span>
                     <div class="btn-layer" style="background: linear-gradient(90deg, #ff9a9e, #fecfef);"></div>
                 </button>
@@ -389,6 +422,63 @@
             const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
             const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+    </script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check session to update Auth UI on index
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+
+                if (session) {
+                    // --- Utilisateur CONNECTÉ ---
+
+                    // Cacher le bouton de login, montrer les boutons auth-only
+                    document.getElementById('login-nav-button').style.display = 'none';
+                    document.getElementById('auth-section').style.borderTop = 'none';
+                    document.getElementById('auth-section').style.paddingTop = '0';
+                    document.getElementById('auth-section').style.marginTop = '0';
+
+                    document.querySelectorAll('.auth-only').forEach(el => {
+                        el.style.display = '';
+                    });
+                    // Corriger le margin de editor-button
+                    const editorBtn = document.getElementById('editor-button');
+                    if (editorBtn) editorBtn.style.marginTop = '10px';
+
+                    const username = session.user.email.split('@')[0];
+                    let xpText = "0 XP";
+                    let rankText = "Externe";
+
+                    // Fetch profile info
+                    try {
+                        const { data: profile, error } = await supabase
+                            .from('profiles')
+                            .select('total_xp, rank')
+                            .eq('id', session.user.id)
+                            .single();
+
+                        if (!error && profile) {
+                            xpText = `${profile.total_xp} XP`;
+                            rankText = profile.rank || "Externe";
+                        }
+                    } catch (err) {
+                        console.error("Erreur chargement profil:", err);
+                    }
+
+                    // Badge haut droit
+                    const badge = document.getElementById('user-badge-top');
+                    badge.style.display = 'flex';
+                    document.getElementById('top-username').innerHTML =
+                        `${username} <span style="font-size:0.75em;opacity:0.75;margin-left:6px;background:rgba(0,242,254,0.18);padding:2px 7px;border-radius:20px;font-weight:400;">${rankText} • ${xpText}</span>`;
+
+                } else {
+                    // --- Utilisateur NON connecté ---
+                    // Seulement "Comment jouer" et "Connexion" visibles (déjà l'état par défaut)
+                    document.getElementById('user-badge-top').style.display = 'none';
+                }
+            }
         });
     </script>
     <script src="js/device-check.js"></script>

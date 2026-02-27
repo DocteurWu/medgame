@@ -27,21 +27,49 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // Charge l’index des cas
-    fetch('data/case-index.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erreur lors du chargement de case-index.json');
+    // Charge l’index des cas (depuis Supabase si disponible, sinon fallback local)
+    async function initCases() {
+        if (typeof supabase !== 'undefined') {
+            try {
+                const { data, error } = await supabase
+                    .from('cases')
+                    .select('id, title, specialty, content');
+
+                if (error) throw error;
+
+                // On reconstruit un objet casesData pour la compatibilité avec le reste du code
+                casesData = {};
+                data.forEach(c => {
+                    const spec = c.specialty.toLowerCase();
+                    if (!casesData[spec]) casesData[spec] = [];
+                    casesData[spec].push(c.id); // On stocke les IDs pour fetcher le content plus tard ou on les a déjà
+                });
+                // On garde une map globale id -> content pour éviter les fetchs répétitifs
+                window.allSupabaseCases = data;
+
+                console.log('Cases data chargé depuis Supabase :', casesData);
+                return;
+            } catch (err) {
+                console.error('Erreur Supabase, fallback sur local :', err);
             }
-            return response.json();
-        })
-        .then(data => {
-            casesData = data;
-            console.log('Cases data chargé :', casesData);
-        })
-        .catch(error => {
-            console.error('Erreur lors du chargement des cas :', error);
-        });
+        }
+
+        // Fallback local
+        fetch('data/case-index.json')
+            .then(response => {
+                if (!response.ok) throw new Error('Erreur lors du chargement de case-index.json');
+                return response.json();
+            })
+            .then(data => {
+                casesData = data;
+                console.log('Cases data chargé localement :', casesData);
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement des cas :', error);
+            });
+    }
+
+    initCases();
 
     // Gestion des clics sur les cartes de thème
     themeCards.forEach(card => {
@@ -66,23 +94,68 @@ document.addEventListener('DOMContentLoaded', () => {
         motifsList.innerHTML = '<div class="loading">Chargement des motifs...</div>';
         motifsModal.style.display = 'flex';
 
+        let playedCases = [];
         const playedCasesStr = getCookie('playedCases') || '';
-        const playedCases = playedCasesStr.split(',').filter(id => id !== '');
+        if (playedCasesStr) {
+            playedCases = playedCasesStr.split(',').filter(id => id !== '');
+        }
+
+        // Fetch Supabase played cases if available
+        if (typeof supabase !== 'undefined') {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    const { data: plays, error } = await supabase
+                        .from('play_sessions')
+                        .select('case_id')
+                        .eq('user_id', session.user.id);
+
+                    if (!error && plays) {
+                        const supabasePlayed = plays.map(p => p.case_id);
+                        // Merge cookies and supabase
+                        playedCases = [...new Set([...playedCases, ...supabasePlayed])];
+                    }
+                }
+            } catch (err) {
+                console.error("Erreur lors de la récupération de l'historique:", err);
+            }
+        }
 
         try {
-            const motifs = await Promise.all(caseFiles.map(async (file) => {
-                const response = await fetch(`data/${file}`);
-                if (!response.ok) return null;
-                const data = await response.json();
-                return {
-                    id: data.id,
-                    file: file,
-                    motif: data.interrogatoire.motifHospitalisation,
-                    patient: `${data.patient.prenom} ${data.patient.nom}`,
-                    redacteur: data.redacteur || '',
-                    isPlayed: playedCases.includes(data.id)
-                };
-            }));
+            let motifs = [];
+
+            if (window.allSupabaseCases) {
+                // Utilisation des données déjà chargées depuis Supabase
+                motifs = window.allSupabaseCases
+                    .filter(c => c.specialty.toLowerCase() === themeLower)
+                    .map(c => {
+                        const data = c.content;
+                        return {
+                            id: data.id,
+                            file: c.id, // On utilise l'ID Supabase comme "file" pour game.js
+                            motif: data.interrogatoire?.motifHospitalisation || "Sans motif",
+                            patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
+                            redacteur: data.redacteur || '',
+                            isPlayed: playedCases.includes(data.id),
+                            isSupabase: true
+                        };
+                    });
+            } else {
+                // Fallback fetch local
+                motifs = await Promise.all(caseFiles.map(async (file) => {
+                    const response = await fetch(`data/${file}`);
+                    if (!response.ok) return null;
+                    const data = await response.json();
+                    return {
+                        id: data.id,
+                        file: file,
+                        motif: data.interrogatoire.motifHospitalisation,
+                        patient: `${data.patient.prenom} ${data.patient.nom}`,
+                        redacteur: data.redacteur || '',
+                        isPlayed: playedCases.includes(data.id)
+                    };
+                }));
+            }
 
             // Filtrer les cas qui n'ont pas pu être chargés
             currentThemeMotifs = motifs.filter(m => m !== null);
