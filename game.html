@@ -38,15 +38,10 @@
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // Masquer la page immédiatement, puis vérifier l'authentification
-        document.documentElement.style.visibility = 'hidden';
-        (async function () {
-            const user = await window.requireAuth();
-            if (user) {
-                document.documentElement.style.visibility = 'visible';
-            }
-            // Si non connecté, requireAuth redirige → on ne révèle jamais la page
-        })();
+        // Vérifier l'authentification
+        document.addEventListener('DOMContentLoaded', async () => {
+            await window.requireAuth();
+        });
 
         // Disable audio if MUSIC_ENABLED is 0
         if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
