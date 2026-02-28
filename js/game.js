@@ -117,6 +117,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isUrgenceMode = false;
     let currentUrgenceNode = null;
     let urgenceTimerTimeout = null;
+    let urgenceStartTime = null;
+    let urgenceScore = 0;
+    let urgenceActionHistory = [];
+    let urgenceInterval = null;
 
     // --- GATING SYSTEM (VERROUS) ---
     let unlockedLocks = new Set();
@@ -1597,6 +1601,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Réinitialiser les traitements sélectionnés
             selectedTreatments = [];
 
+            // Réinitialiser variables Urgence
+            urgenceStartTime = null;
+            urgenceScore = 0;
+            urgenceActionHistory = [];
+            if (urgenceInterval) clearInterval(urgenceInterval);
+            const urgenceTimeline = document.getElementById('urgence-timeline');
+            if (urgenceTimeline) urgenceTimeline.innerHTML = '';
+            const nodeTimerBar = document.getElementById('node-timer-bar');
+            if (nodeTimerBar) {
+                gsap.killTweensOf(nodeTimerBar);
+                nodeTimerBar.style.width = '100%';
+            }
+
             // Vider le feedback des traitements
             document.getElementById('treatment-feedback').textContent = '';
 
@@ -2264,6 +2281,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderUrgenceState() {
         if (!isUrgenceMode || !currentUrgenceNode) return;
 
+        const sectionIntervention = document.getElementById('section-intervention-rapide');
+        if (sectionIntervention) {
+            sectionIntervention.classList.add('stress-mode');
+        }
+
+        if (!urgenceStartTime) {
+            urgenceStartTime = Date.now();
+            if (urgenceInterval) clearInterval(urgenceInterval);
+            urgenceInterval = setInterval(() => {
+                const elapsedSeconds = Math.floor((Date.now() - urgenceStartTime) / 1000);
+                const m = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+                const s = (elapsedSeconds % 60).toString().padStart(2, '0');
+                const timerDisplay = document.getElementById('urgence-timer-display');
+                if (timerDisplay) timerDisplay.textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        const scoreDisplay = document.getElementById('urgence-score-display');
+        if (scoreDisplay) scoreDisplay.textContent = `Score: ${urgenceScore}`;
+
         const banner = document.getElementById('urgence-description-banner');
         if (banner) {
             banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${currentUrgenceNode.descriptionClinique}`;
@@ -2306,16 +2343,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+        const nodeTimerBar = document.getElementById('node-timer-bar');
+        if (nodeTimerBar) {
+            gsap.killTweensOf(nodeTimerBar);
+            nodeTimerBar.style.width = '100%';
+        }
+
         if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
+            if (nodeTimerBar) {
+                gsap.to(nodeTimerBar, {
+                    width: '0%',
+                    duration: currentUrgenceNode.evolutionAuto.delaiSecondes,
+                    ease: "linear"
+                });
+            }
             urgenceTimerTimeout = setTimeout(() => {
                 showNotification(`⚠️ ALERTE : ${currentUrgenceNode.evolutionAuto.motif}`);
                 transitionUrgenceState(currentUrgenceNode.evolutionAuto.nextNode);
             }, currentUrgenceNode.evolutionAuto.delaiSecondes * 1000);
+        } else {
+            if (nodeTimerBar) nodeTimerBar.style.width = '0%';
         }
 
         if (currentUrgenceNode.isEndState) {
             if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
             if (timerInterval) clearInterval(timerInterval);
+            if (urgenceInterval) clearInterval(urgenceInterval);
+
+            const sectionIntervention = document.getElementById('section-intervention-rapide');
+            if (sectionIntervention) {
+                sectionIntervention.classList.remove('stress-mode');
+            }
 
             const playedCases = getCookie('playedCases');
             let arr = playedCases ? playedCases.split(',') : [];
@@ -2354,6 +2412,39 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (action.feedback) {
             showNotification(action.feedback);
         }
+
+        // Log action in history
+        const elapsedSeconds = Math.floor((Date.now() - urgenceStartTime) / 1000);
+        const m = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+        const s = (elapsedSeconds % 60).toString().padStart(2, '0');
+        const timeStr = `${m}:${s}`;
+
+        urgenceActionHistory.push({ time: timeStr, label: action.label, type: action.type });
+        const timeline = document.getElementById('urgence-timeline');
+        if (timeline) {
+            let color = 'white';
+            if (action.type === 'traitement_cle' || action.type === 'geste_urgence') color = '#2ecc71';
+            if (action.type === 'soin') color = '#3498db';
+            if (action.type === 'erreur') color = '#e74c3c';
+
+            const entry = document.createElement('div');
+            entry.className = 'timeline-entry';
+            entry.innerHTML = `<span class="timeline-time">[${timeStr}]</span> <span style="color: ${color}">${action.label}</span>`;
+            timeline.appendChild(entry);
+            timeline.scrollTop = timeline.scrollHeight;
+        }
+
+        // Update score
+        if (action.type === 'traitement_cle' || action.type === 'geste_urgence') {
+            urgenceScore += 10;
+        } else if (action.type === 'soin') {
+            urgenceScore += 5;
+        } else if (action.type === 'erreur') {
+            urgenceScore -= 10;
+        }
+        const scoreDisplay = document.getElementById('urgence-score-display');
+        if (scoreDisplay) scoreDisplay.textContent = `Score: ${urgenceScore}`;
+
         transitionUrgenceState(action.nextNode);
     }
 
