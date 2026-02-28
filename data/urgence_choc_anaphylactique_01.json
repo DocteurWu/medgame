@@ -107,7 +107,7 @@
                     "type": "erreur",
                     "tempsExecutionSec": 15,
                     "nextNode": "etat_degradation1",
-                    "feedback": "Le patient a du mal à avaler, l'effet sera trop lent pour une urgence vitale. Vous perdez un temps précieux !"
+                    "feedback": "Le patient a du mal à avaler, l'effet sera trop lent pour une urgence vitale (> 30 min). Vous perdez un temps précieux !"
                 }
             ]
         },
@@ -122,8 +122,8 @@
             },
             "evolutionAuto": {
                 "delaiSecondes": 30,
-                "nextNode": "etat_degradation1",
-                "motif": "L'oxygène ne suffit pas sans adrénaline. L'insuffisance circulatoire s'aggrave."
+                "nextNode": "etat_degradation_respiratoire",
+                "motif": "L'oxygène ne suffit pas sans adrénaline. La gêne respiratoire s'accentue."
             },
             "actionsDisponibles": [
                 {
@@ -132,6 +132,30 @@
                     "tempsExecutionSec": 10,
                     "nextNode": "etat_guerison",
                     "feedback": "L'adrénaline remonte la tension et lève le bronchospasme ! Bonne décision."
+                }
+            ]
+        },
+        "etat_degradation_respiratoire": {
+            "id": "etat_degradation_respiratoire",
+            "descriptionClinique": "Le stridor devient franc. Le tirage intercostal est très marqué. Le patient ne peut plus parler. Le collapsus cardio-vasculaire s'annonce.",
+            "constantesCibles": {
+                "tension": "75/40",
+                "pouls": 135,
+                "saturationO2": 88,
+                "frequenceRespiratoire": 32
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 25,
+                "nextNode": "etat_degradation1",
+                "motif": "Hypoxie sévère et collapsus cardio-vasculaire imminent."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Injection Adrénaline 0.5mg IM",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Vous rattrapez la situation de justesse avec l'adrénaline."
                 }
             ]
         },

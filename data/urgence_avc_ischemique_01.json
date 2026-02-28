@@ -1,0 +1,250 @@
+{
+    "id": "urgence_avc_ischemique_01",
+    "redacteur": "Dr. Urgence",
+    "patient": {
+        "nom": "Durand",
+        "prenom": "Sophie",
+        "age": 72,
+        "sexe": "F",
+        "taille": "165 cm",
+        "poids": "68 kg",
+        "groupeSanguin": "A-"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Hémiplégie droite et perte de la parole d'apparition brutale.",
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 1 heure et 30 minutes",
+            "evolution": "D'emblée maximal",
+            "facteursDeclenchants": "Aucun (au repos)",
+            "descriptionDouleur": "Pas de céphalée",
+            "symptomesAssocies": [
+                "Hémiplégie droite",
+                "Aphasie",
+                "Déviation de la commissure labiale"
+            ],
+            "remarques": "Heure de début connue avec précision."
+        },
+        "antecedents": {
+            "medicaux": [
+                {"type": "Fibrillation atriale (FA)", "traitement": "Non anticoagulée (refus du patient)"},
+                {"type": "Diabète type 2", "traitement": "Metformine"}
+            ],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [
+            {"nom": "Metformine", "dose": "1000mg", "frequence": "2/j"}
+        ],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Marche régulière"
+            },
+            "tabac": {
+                "quantite": "Non-fumeur",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Abstinente"
+            },
+            "alimentation": {
+                "regime": "Equilibré",
+                "particularites": "Aucune"
+            },
+            "emploi": {
+                "profession": "Retraitée",
+                "stress": "Faible"
+            }
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "180/95",
+            "pouls": 110,
+            "temperature": 37.0,
+            "saturationO2": 97,
+            "frequenceRespiratoire": 16
+        },
+        "aspectGeneral": "Consciente, très anxieuse. Hémiplégie brachio-faciale droite, aphasie globale."
+    },
+    "gameplayConfig": {
+        "startNode": "etat_initial"
+    },
+    "nodes": {
+        "etat_initial": {
+            "id": "etat_initial",
+            "descriptionClinique": "Suspicion d'AVC avec délai symptomatique < 4.5h. Score NIHSS évalué à 16.",
+            "constantesCibles": {
+                "tension": "180/95",
+                "pouls": 110,
+                "saturationO2": 97,
+                "frequenceRespiratoire": 16
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 60,
+                "nextNode": "etat_degradation1",
+                "motif": "La pénombre ischémique souffre. Le temps, c'est du cerveau (Time is Brain)."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Scanner ou IRM cérébrale en urgence",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_imagerie",
+                    "feedback": "Excellente décision. Il faut exclure une hémorragie avant tout traitement."
+                },
+                {
+                    "label": "Aspirine 250mg IV",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_degradation1",
+                    "feedback": "Erreur fatale ! Ne jamais donner d'antiagrégant ou anticoagulant sans imagerie (risque d'hémorragie cérébrale)."
+                },
+                {
+                    "label": "Baisser la tension (Loxen IV)",
+                    "type": "soin",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_initial",
+                    "feedback": "Une hypertension jusqu'à 220/120 est tolérée à la phase aiguë (sauf si thrombolyse prévue, cible < 185/110). La baisser trop vite réduit la perfusion cérébrale."
+                }
+            ]
+        },
+        "etat_imagerie": {
+            "id": "etat_imagerie",
+            "descriptionClinique": "L'IRM confirme un AVC ischémique sylvien gauche sans saignement. L'occlusion proximale est confirmée.",
+            "constantesCibles": {
+                "tension": "175/90",
+                "pouls": 105,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 16
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_degradation2",
+                "motif": "L'ischémie s'aggrave de minute en minute."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Thrombolyse IV (Actilyse)",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_thrombolyse",
+                    "feedback": "Début de l'alteplase IV (dans la fenêtre de 4.5h). Bon réflexe !"
+                },
+                {
+                    "label": "Thrombectomie mécanique directe",
+                    "type": "geste_urgence",
+                    "tempsExecutionSec": 25,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Geste majeur pour l'occlusion d'un gros vaisseau, souvent couplé à la thrombolyse. Succès de la recanalisation."
+                },
+                {
+                    "label": "Héparine IV",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_echec",
+                    "feedback": "L'héparine à dose curative n'est pas indiquée en première intention à la phase aiguë (risque de transformation hémorragique)."
+                }
+            ]
+        },
+        "etat_thrombolyse": {
+            "id": "etat_thrombolyse",
+            "descriptionClinique": "La thrombolyse est en cours. Une thrombectomie mécanique est également organisée avec le neuroradiologue.",
+            "constantesCibles": {
+                "tension": "140/80",
+                "pouls": 95,
+                "saturationO2": 98,
+                "frequenceRespiratoire": 15
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_guerison",
+                "motif": "Amélioration clinique suite à la recanalisation."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Surveillance en UNV",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 5,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Transfert en Unité Neuro-Vasculaire. Décision parfaite."
+                }
+            ]
+        },
+        "etat_degradation1": {
+            "id": "etat_degradation1",
+            "descriptionClinique": "Le temps passe. Le patient est somnolent. La pénombre ischémique se transforme en nécrose définitive.",
+            "constantesCibles": {
+                "tension": "190/100",
+                "pouls": 115,
+                "saturationO2": 95,
+                "frequenceRespiratoire": 18
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 60,
+                "nextNode": "etat_echec",
+                "motif": "Dommages cérébraux irréversibles majeurs."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "IRM cérébrale",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_imagerie",
+                    "feedback": "Enfin ! Vous réalisez l'imagerie avec beaucoup de retard."
+                }
+            ]
+        },
+        "etat_degradation2": {
+            "id": "etat_degradation2",
+            "descriptionClinique": "La fenêtre thérapeutique pour la thrombolyse se réduit drastiquement.",
+            "constantesCibles": {
+                "tension": "180/95",
+                "pouls": 110,
+                "saturationO2": 96,
+                "frequenceRespiratoire": 17
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 40,
+                "nextNode": "etat_echec",
+                "motif": "La fenêtre de 4.5h est dépassée. Les séquelles seront lourdes."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Thrombectomie",
+                    "type": "geste_urgence",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Sauvetage in extremis de la zone ischémiée (fenêtre jusqu'à 6h, voire 24h sur critères)."
+                }
+            ]
+        },
+        "etat_guerison": {
+            "id": "etat_guerison",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Levée de l'obstacle artériel. Le patient récupère progressivement sa motricité et la parole. Il est pris en charge en UNV.",
+            "constantesCibles": {
+                "tension": "130/80",
+                "pouls": 80,
+                "saturationO2": 99,
+                "frequenceRespiratoire": 14
+            }
+        },
+        "etat_echec": {
+            "id": "etat_echec",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Le temps perdu a provoqué des lésions cérébrales irréversibles étendues. Hémiplégie séquellaire sévère et risque vital engagé par œdème cérébral majeur.",
+            "constantesCibles": {
+                "tension": "210/110",
+                "pouls": 120,
+                "saturationO2": 92,
+                "frequenceRespiratoire": 22
+            }
+        }
+    }
+}

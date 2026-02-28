@@ -1,0 +1,242 @@
+{
+    "id": "urgence_arret_cardiaque_01",
+    "redacteur": "Dr. Urgence",
+    "patient": {
+        "nom": "Martin",
+        "prenom": "Jean",
+        "age": 65,
+        "sexe": "M",
+        "taille": "175 cm",
+        "poids": "85 kg",
+        "groupeSanguin": "O+"
+    },
+    "interrogatoire": {
+        "motifHospitalisation": "Malaise brutal avec perte de connaissance.",
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 5 minutes",
+            "evolution": "Arrêt brutal",
+            "facteursDeclenchants": "Effort physique modéré",
+            "descriptionDouleur": "Douleur thoracique rapportée juste avant le malaise",
+            "symptomesAssocies": [
+                "Perte de connaissance",
+                "Absence de respiration"
+            ],
+            "remarques": "Patient retrouvé au sol, témoin présent."
+        },
+        "antecedents": {
+            "medicaux": [
+                {"type": "Hypertension artérielle", "traitement": "Ramipril"},
+                {"type": "Hypercholestérolémie", "traitement": "Atorvastatine"}
+            ],
+            "chirurgicaux": [],
+            "familiaux": [
+                {"lien": "Père", "pathologie": "Infarctus du myocarde", "age": 60}
+            ]
+        },
+        "traitements": [
+            {"nom": "Ramipril", "dose": "5mg", "frequence": "1/j"},
+            {"nom": "Atorvastatine", "dose": "20mg", "frequence": "1/j"}
+        ],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sédentaire"
+            },
+            "tabac": {
+                "quantite": "Ancien fumeur",
+                "duree": "Arrêt il y a 10 ans"
+            },
+            "alcool": {
+                "quantite": "1 verre/jour"
+            },
+            "alimentation": {
+                "regime": "Riche en sel et graisses",
+                "particularites": "Aucune"
+            },
+            "emploi": {
+                "profession": "Retraité (ancien cadre)",
+                "stress": "Modéré"
+            }
+        }
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "0/0",
+            "pouls": 0,
+            "temperature": 36.5,
+            "saturationO2": 0,
+            "frequenceRespiratoire": 0
+        },
+        "aspectGeneral": "Inconscient, aréactif, pas de respiration spontanée."
+    },
+    "gameplayConfig": {
+        "startNode": "etat_initial"
+    },
+    "nodes": {
+        "etat_initial": {
+            "id": "etat_initial",
+            "descriptionClinique": "Le patient est inconscient, ne respire pas. L'ECG de surface montre une fibrillation ventriculaire (FV).",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": 0,
+                "saturationO2": 0,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_degradation1",
+                "motif": "La FV dégénère en asystolie sans choc rapide."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Choc électrique externe (CEE) 150J-200J",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_post_choc",
+                    "feedback": "Choc délivré ! Reprise immédiate du massage cardiaque (RCP)."
+                },
+                {
+                    "label": "Masser seulement sans défibriller",
+                    "type": "soin",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_degradation1",
+                    "feedback": "Le massage aide, mais la FV nécessite un choc électrique rapide pour être résolue."
+                },
+                {
+                    "label": "Injection Adrénaline 1mg IV/IO",
+                    "type": "erreur",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_degradation1",
+                    "feedback": "Dans une FV, le choc est prioritaire. L'adrénaline se donne après le 3e choc ou immédiatement en asystolie."
+                }
+            ]
+        },
+        "etat_post_choc": {
+            "id": "etat_post_choc",
+            "descriptionClinique": "Vous effectuez la RCP pendant 2 minutes après le 1er choc. Le scope est de nouveau analysable : la FV persiste.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": 0,
+                "saturationO2": 0,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 60,
+                "nextNode": "etat_degradation1",
+                "motif": "La RCP est interrompue trop longtemps, le rythme dégénère."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "2e Choc (CEE) + RCP",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_post_choc_2",
+                    "feedback": "Deuxième choc délivré, suivi de la RCP."
+                },
+                {
+                    "label": "Amiodarone 300mg IV",
+                    "type": "erreur",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_degradation1",
+                    "feedback": "L'Amiodarone se donne après le 3e choc dans les rythmes choquables."
+                }
+            ]
+        },
+        "etat_post_choc_2": {
+            "id": "etat_post_choc_2",
+            "descriptionClinique": "Après 2 min de RCP, la FV persiste. C'est le moment d'optimiser le traitement médicamenteux.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": 0,
+                "saturationO2": 0,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 45,
+                "nextNode": "etat_degradation1",
+                "motif": "La fatigue s'installe, le muscle cardiaque s'épuise sans traitement."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "3e Choc + Adrénaline 1mg + Amiodarone 300mg",
+                    "type": "geste_urgence",
+                    "tempsExecutionSec": 20,
+                    "nextNode": "etat_guerison",
+                    "feedback": "Excellent ! Protocole ACLS respecté pour FV réfractaire."
+                },
+                {
+                    "label": "3e Choc seul",
+                    "type": "soin",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_degradation1",
+                    "feedback": "Le choc est utile, mais les recommandations indiquent l'ajout d'Adrénaline et Amiodarone après le 3e choc."
+                }
+            ]
+        },
+        "etat_degradation1": {
+            "id": "etat_degradation1",
+            "descriptionClinique": "L'ECG montre maintenant une ligne isoélectrique : Asystolie.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": 0,
+                "saturationO2": 0,
+                "frequenceRespiratoire": 0
+            },
+            "evolutionAuto": {
+                "delaiSecondes": 30,
+                "nextNode": "etat_arret_cardiaque",
+                "motif": "Sans reprise circulatoire, l'issue est fatale."
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "RCP continue + Adrénaline 1mg",
+                    "type": "traitement_cle",
+                    "tempsExecutionSec": 15,
+                    "nextNode": "etat_guerison",
+                    "feedback": "C'est la prise en charge correcte de l'asystolie. On recherche également les causes réversibles."
+                },
+                {
+                    "label": "Choc électrique externe (CEE)",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_arret_cardiaque",
+                    "feedback": "L'asystolie n'est pas un rythme choquable. Vous avez interrompu le massage pour rien."
+                },
+                {
+                    "label": "Atropine 1mg IV",
+                    "type": "erreur",
+                    "tempsExecutionSec": 10,
+                    "nextNode": "etat_arret_cardiaque",
+                    "feedback": "L'Atropine n'est plus recommandée dans le protocole d'arrêt cardiaque en asystolie."
+                }
+            ]
+        },
+        "etat_guerison": {
+            "id": "etat_guerison",
+            "isEndState": true,
+            "success": true,
+            "descriptionClinique": "Retour à une circulation spontanée (RACS) ! Le patient a un pouls palpable. La pression artérielle remonte doucement. Transfert immédiat en soins intensifs cardiologiques (USIC).",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": 85,
+                "saturationO2": 94,
+                "frequenceRespiratoire": 14
+            }
+        },
+        "etat_arret_cardiaque": {
+            "id": "etat_arret_cardiaque",
+            "isEndState": true,
+            "success": false,
+            "descriptionClinique": "Malgré vos efforts prolongés, le rythme reste en asystolie. La réanimation est arrêtée. Heure du décès notée.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": 0,
+                "saturationO2": 0,
+                "frequenceRespiratoire": 0
+            }
+        }
+    }
+}
