@@ -746,8 +746,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         if (!error && data && data.length > 0) {
                             console.log('Loading cases from Supabase:', data.length);
+                            // Merge ID and Content for game logic
+                            const processed = data.map(c => {
+                                const content = c.content;
+                                if (!content.id) content.id = c.id;
+                                return content;
+                            });
                             localStorage.removeItem('selectedCaseFiles');
-                            return data.map(c => c.content);
+                            return processed;
                         }
                     } catch (err) {
                         console.warn("Supabase fetch failed, falling back to local files", err);

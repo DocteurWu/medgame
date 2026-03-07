@@ -91,15 +91,24 @@
                 </button>
 
                 <button class="btn-3d auth-only" id="editor-button" onclick="transitionTo('editor.html')"
-                    style="display:none; margin-top: 10px; border-color: rgba(255, 255, 255, 0.2);">
-                    <span class="btn-content"><i class="fas fa-edit"></i>Créer/modifier un Cas</span>
+                    style="display:none; border-color: rgba(255, 255, 255, 0.2);">
+                    <span class="btn-content"><i class="fas fa-edit"></i> Créer / Soumettre un Cas</span>
                     <div class="btn-layer" style="background: linear-gradient(90deg, #ff9a9e, #fecfef);"></div>
                 </button>
+
             </div>
 
             <p class="disclaimer">Simulation à but éducatif uniquement (logique)</p>
         </div>
     </div>
+
+    <!-- Bouton Admin exclusif (En dehors) -->
+    <button id="admin-button" onclick="transitionTo('admin.html')"
+        style="display:none; position:fixed; bottom:25px; left:25px; z-index:1000; padding:12px 24px; border-radius:30px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff4757; font-family:'Outfit', sans-serif; font-weight:600; cursor:pointer; backdrop-filter:blur(10px); transition:all 0.3s; box-shadow:0 4px 15px rgba(0,0,0,0.3); align-items:center; gap:10px;"
+        onmouseover="this.style.background='rgba(255,71,87,0.3)'; this.style.transform='scale(1.05)';"
+        onmouseout="this.style.background='rgba(255,71,87,0.15)'; this.style.transform='scale(1)';">
+        <i class="fas fa-user-shield"></i> Administration Système
+    </button>
 
     <!-- Classement Top Joueurs (masqué par défaut) -->
     <div class="leaderboard-panel" id="leaderboard" style="display: none;">
@@ -140,18 +149,39 @@
                     </label>
                 </div>
 
-                <p class="setting-label" style="margin-top: 25px;">Confidentialité</p>
+                <p class="setting-label" style="margin-top: 25px;">Mon Profil</p>
                 <div
-                    style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; margin-top: 10px; border: 1px solid rgba(255,255,255,0.08);">
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-weight: 600; font-size: 0.9rem; color: #fff;">Profil Public</span>
-                        <small style="color: rgba(255,255,255,0.5); font-size: 0.72rem;">Apparaître dans le
-                            classement</small>
+                    style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                    <!-- Toggle Public -->
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.9rem; color: #fff;">Profil Public</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.72rem;">Apparaître dans le
+                                classement</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-public-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                    <label class="switch">
-                        <input type="checkbox" id="setting-public-toggle" checked>
-                        <span class="slider round"></span>
-                    </label>
+
+                    <!-- Séparateur -->
+                    <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05);"></div>
+
+                    <!-- Pseudonyme -->
+                    <div class="setting-input-group" style="margin: 0;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label class="setting-label"
+                                style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);"><i
+                                    class="fas fa-user-edit"></i> Pseudonyme</label>
+                            <span id="username-status"
+                                style="font-size: 0.65rem; color: rgba(255,255,255,0.4); background: rgba(0,0,0,0.2); padding: 3px 6px; border-radius: 6px; font-weight: 500;">Modifiable
+                                1x/sem</span>
+                        </div>
+                        <input type="text" id="setting-username" class="setting-input" placeholder="Ton pseudo..."
+                            style="padding: 10px 14px; font-size: 0.9rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
+                    </div>
                 </div>
             </div>
 
@@ -412,13 +442,51 @@
             const radio = document.querySelector(`input[name="immersionMode"][value="${current}"]`);
             if (radio) radio.checked = true;
 
-            // Charger l'état de confidentialité depuis Supabase
+            const usernameInput = document.getElementById('setting-username');
+            const usernameStatus = document.getElementById('username-status');
+
+            // État par défaut
+            usernameInput.disabled = true;
+            usernameInput.value = "Chargement...";
+
+            // Charger les données du profil depuis Supabase
             if (typeof supabase !== 'undefined') {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session) {
-                    const { data, error } = await supabase.from('profiles').select('is_public').eq('id', session.user.id).single();
+                    const { data, error } = await supabase
+                        .from('profiles')
+                        .select('username, is_public, username_updated_at')
+                        .eq('id', session.user.id)
+                        .single();
+
                     if (!error && data) {
                         document.getElementById('setting-public-toggle').checked = data.is_public;
+
+                        // Gestion du pseudonyme
+                        const defaultPseudo = session.user.email.substring(0, 3) + '***';
+                        const currentUsername = data.username || defaultPseudo;
+                        usernameInput.value = currentUsername;
+
+                        // Vérifier la date du dernier changement (1 semaine = 7 jours)
+                        const lastUpdate = data.username_updated_at ? new Date(data.username_updated_at) : null;
+                        const now = new Date();
+                        const offset = 7 * 24 * 60 * 60 * 1000; // 7 jours en ms
+
+                        if (!lastUpdate || (now - lastUpdate) > offset) {
+                            usernameInput.disabled = false;
+                            usernameStatus.innerHTML = '<i class="fas fa-pen"></i> Changement dispo';
+                            usernameStatus.style.color = 'rgba(255, 255, 255, 0.5)';
+                        } else {
+                            const nextUpdate = new Date(lastUpdate.getTime() + offset);
+                            const diffDays = Math.ceil((nextUpdate - now) / (24 * 60 * 60 * 1000));
+                            usernameInput.disabled = true;
+                            usernameStatus.innerHTML = `<i class="fas fa-lock"></i> Bloqué (${diffDays}j)`;
+                            usernameStatus.style.color = 'rgba(255, 255, 255, 0.3)';
+                        }
+                    } else if (error) {
+                        console.error("Erreur chargement profil:", error);
+                        usernameInput.value = session.user.email.split('@')[0];
+                        usernameInput.disabled = false;
                     }
                 }
             }
@@ -426,24 +494,55 @@
         const closeModal = () => modal.classList.remove('active');
 
         const saveSettings = async () => {
+            const saveBtn = document.getElementById('settings-save');
+            const originalText = saveBtn.textContent;
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Sabre au clair...";
+
             const checked = document.querySelector('input[name="immersionMode"]:checked');
             if (checked) {
                 sessionStorage.setItem('immersionMode', checked.value);
             }
 
-            // Sauvegarder la confidentialité dans Supabase
+            const newUsername = document.getElementById('setting-username').value.trim();
             const isPublic = document.getElementById('setting-public-toggle').checked;
+
             if (typeof supabase !== 'undefined') {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session) {
-                    const { error } = await supabase.from('profiles').update({ is_public: isPublic }).eq('id', session.user.id);
-                    if (error) console.error("Erreur sauvegarde confidentialité:", error);
-                    else if (window.loadLeaderboard) {
-                        window.loadLeaderboard();
+                    const updateData = { is_public: isPublic };
+
+                    // N'ajouter le username que s'il a changé et n'est pas vide et que l'input n'est pas disabled
+                    const usernameInput = document.getElementById('setting-username');
+                    if (!usernameInput.disabled && newUsername && newUsername.length >= 3) {
+                        updateData.username = newUsername;
+                        updateData.username_updated_at = new Date().toISOString();
+                    }
+
+                    const { error } = await supabase
+                        .from('profiles')
+                        .update(updateData)
+                        .eq('id', session.user.id);
+
+                    if (error) {
+                        console.error("Erreur sauvegarde réglages:", error);
+                        alert("Erreur lors de la sauvegarde : " + error.message);
+                    } else {
+                        if (window.loadLeaderboard) window.loadLeaderboard();
+                        // Mettre à jour le badge si besoin
+                        const topUsername = document.getElementById('top-username');
+                        if (topUsername && newUsername) {
+                            // On garde le rang et l'xp
+                            const currentBadgeHtml = topUsername.innerHTML;
+                            const badgeParts = currentBadgeHtml.split('<span');
+                            topUsername.innerHTML = `${newUsername} <span${badgeParts[1]}`;
+                        }
                     }
                 }
             }
 
+            saveBtn.disabled = false;
+            saveBtn.textContent = originalText;
             closeModal();
         };
 
@@ -483,18 +582,12 @@
                 if (session) {
                     // --- Utilisateur CONNECTÉ ---
 
-                    // Cacher le bouton de login, montrer les boutons auth-only
-                    document.getElementById('login-nav-button').style.display = 'none';
-                    document.getElementById('auth-section').style.borderTop = 'none';
-                    document.getElementById('auth-section').style.paddingTop = '0';
-                    document.getElementById('auth-section').style.marginTop = '0';
+                    // Cacher la section auth, montrer les boutons auth-only
+                    document.getElementById('auth-section').style.display = 'none';
 
                     document.querySelectorAll('.auth-only').forEach(el => {
                         el.style.display = '';
                     });
-                    // Corriger le margin de editor-button
-                    const editorBtn = document.getElementById('editor-button');
-                    if (editorBtn) editorBtn.style.marginTop = '10px';
 
                     // Afficher le classement
                     const lb = document.getElementById('leaderboard');
@@ -503,19 +596,18 @@
                         if (window.loadLeaderboard) window.loadLeaderboard();
                     }
 
-                    const username = session.user.email.split('@')[0];
-                    let xpText = "0 XP";
-                    let rankText = "Externe";
-
                     // Fetch profile info
+                    const defaultPseudo = session.user.email.substring(0, 3) + '***';
+                    let displayedUsername = defaultPseudo;
                     try {
                         const { data: profile, error } = await supabase
                             .from('profiles')
-                            .select('total_xp, rank')
+                            .select('username, total_xp, rank')
                             .eq('id', session.user.id)
                             .single();
 
                         if (!error && profile) {
+                            if (profile.username) displayedUsername = profile.username;
                             xpText = `${profile.total_xp} XP`;
                             rankText = profile.rank || "Externe";
                         }
@@ -527,7 +619,13 @@
                     const badge = document.getElementById('user-badge-top');
                     badge.style.display = 'flex';
                     document.getElementById('top-username').innerHTML =
-                        `${username} <span style="font-size:0.75em;opacity:0.75;margin-left:6px;background:rgba(0,242,254,0.18);padding:2px 7px;border-radius:20px;font-weight:400;">${rankText} • ${xpText}</span>`;
+                        `${displayedUsername} <span style="font-size:0.75em;opacity:0.75;margin-left:6px;background:rgba(0,242,254,0.18);padding:2px 7px;border-radius:20px;font-weight:400;">${rankText} • ${xpText}</span>`;
+
+                    // Vérifier si Admin
+                    if (await window.isAdmin()) {
+                        const adminBtn = document.getElementById('admin-button');
+                        if (adminBtn) adminBtn.style.display = 'flex';
+                    }
 
                 } else {
                     // --- Utilisateur NON connecté ---
@@ -566,7 +664,7 @@
                     const item = document.createElement('div');
                     item.className = `leaderboard-item ${rankPos <= 3 ? 'rank-' + rankPos : ''}`;
 
-                    const username = player.username ? player.username.split('@')[0] : 'Anonyme';
+                    const username = player.username || 'Anonyme';
                     const role = player.rank || 'Externe';
 
                     item.innerHTML = `

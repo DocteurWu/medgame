@@ -46,6 +46,27 @@
                     <input type="password" id="password" placeholder="Mot de passe" required>
                 </div>
 
+                <!-- Sélection du Role (uniquement Inscription) -->
+                <div id="role-group" style="display: none; margin-top: 0.5rem;">
+                    <p
+                        style="font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 0.8rem; text-align: left; padding-left: 5px;">
+                        Votre année d'étude :</p>
+                    <div class="role-selector">
+                        <label class="role-option">
+                            <input type="radio" name="rank" value="DFGSM2" required>
+                            <span class="role-card">DFGSM2</span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="rank" value="DFGSM3">
+                            <span class="role-card">DFGSM3</span>
+                        </label>
+                        <label class="role-option">
+                            <input type="radio" name="rank" value="Autre">
+                            <span class="role-card">Autre</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div id="auth-error" class="error-message"></div>
                 <div id="auth-success" class="success-message"></div>
 

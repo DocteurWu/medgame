@@ -68,16 +68,20 @@
                     <i class="fas fa-file-import"></i> Charger un cas
                 </button>
                 <button class="btn-editor" id="save-json">
-                    <i class="fas fa-save"></i> Enregistrer
+                    <i class="fas fa-save"></i> Enregistrer JSON
                 </button>
-                <button class="btn-editor" id="preview-button"
-                    style="background: var(--editor-success); margin-top: 5px;">
+                <button class="btn-editor" id="push-supabase" style="background: var(--editor-success);">
+                    <i class="fas fa-cloud-upload-alt"></i> Publier / Soumettre
+                </button>
+                <button class="btn-editor" id="preview-button" style="background: var(--editor-info); margin-top: 5px;">
                     <i class="fas fa-play-circle"></i> Tester
                 </button>
                 <button class="btn-editor danger-discrete" onclick="clearEditor()" style="margin-top: 5px;">
                     <i class="fas fa-trash-alt"></i> Tout supprimer
                 </button>
                 <a href="index.html" class="quit-btn" style="margin-top: 5px;">RETOUR ACCUEIL</a>
+                <a href="admin.html" id="admin-link" class="quit-btn"
+                    style="margin-top: 5px; background: var(--editor-primary); display: none;">ESPACE ADMIN</a>
             </div>
         </aside>
 

@@ -67,6 +67,47 @@
     border: 1px solid rgba(46, 204, 113, 0.3);
 }
 
+/* Role Selector Styles */
+.role-selector {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.role-option {
+    flex: 1;
+    cursor: pointer;
+}
+
+.role-option input {
+    display: none;
+}
+
+.role-card {
+    display: block;
+    padding: 12px 5px;
+    text-align: center;
+    background: rgba(10, 15, 30, 0.4);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.role-option input:checked+.role-card {
+    border-color: var(--primary);
+    color: white;
+    background: rgba(0, 242, 254, 0.15);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+}
+
+.role-option:hover .role-card {
+    border-color: rgba(0, 242, 254, 0.6);
+    background: rgba(10, 15, 30, 0.6);
+}
+
 /* Spinner pour le bouton */
 .fa-spinner {
     animation: spin 1s linear infinite;

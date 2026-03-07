@@ -33,19 +33,24 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const { data, error } = await supabase
                     .from('cases')
-                    .select('id, title, specialty, content');
+                    .select('id, title, specialty, content, display_order, status');
 
                 if (error) throw error;
 
+                // Filter: only published or no status (legacy cases)
+                const published = data
+                    .filter(c => !c.status || c.status === 'published')
+                    .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+
                 // On reconstruit un objet casesData pour la compatibilité avec le reste du code
                 casesData = {};
-                data.forEach(c => {
-                    const spec = c.specialty.toLowerCase();
+                published.forEach(c => {
+                    const spec = (c.specialty || 'autre').toLowerCase();
                     if (!casesData[spec]) casesData[spec] = [];
-                    casesData[spec].push(c.id); // On stocke les IDs pour fetcher le content plus tard ou on les a déjà
+                    casesData[spec].push(c.id);
                 });
                 // On garde une map globale id -> content pour éviter les fetchs répétitifs
-                window.allSupabaseCases = data;
+                window.allSupabaseCases = published;
 
                 console.log('Cases data chargé depuis Supabase :', casesData);
                 return;

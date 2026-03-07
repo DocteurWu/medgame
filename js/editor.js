@@ -153,16 +153,76 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Add Exam Section Listener (moved out of initial block)
-    const addExamBtn = document.getElementById('add-exam-section');
-    if (addExamBtn) {
-        addExamBtn.addEventListener('click', () => {
-            const key = prompt('Nom de la section (ex: examenNeurologique, examenORL...)');
-            if (key) {
-                renderExamSection(key, { "Champ1": "Valeur1" });
+    // Push to Supabase handler
+    document.getElementById('push-supabase').addEventListener('click', async () => {
+        const data = collectData();
+        const btn = document.getElementById('push-supabase');
+        const originalHtml = btn.innerHTML;
+
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+        btn.disabled = true;
+
+        try {
+            const user = await window.requireAuth();
+            if (!user) return;
+
+            const isUserAdmin = await window.isAdmin();
+            const editingId = sessionStorage.getItem('editingCaseId');
+
+            let status = isUserAdmin ? 'published' : 'pending';
+            let specialty = prompt("Spécialité du cas ?", data.specialty || "Cardiologie");
+            if (!specialty) specialty = "Cardiologie";
+
+            let result;
+            if (isUserAdmin && editingId) {
+                // Update existing case
+                result = await supabase
+                    .from('cases')
+                    .update({
+                        content: data,
+                        specialty: specialty,
+                        title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
+                        author_name: data.redacteur || user.email
+                    })
+                    .eq('id', editingId);
+
+                if (!result.error) alert("Cas mis à jour avec succès !");
+            } else {
+                // Insert new case
+                result = await supabase
+                    .from('cases')
+                    .insert([{
+                        id: data.id || 'case_' + Date.now(),
+                        content: data,
+                        specialty: specialty,
+                        title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
+                        status: status,
+                        author_name: data.redacteur || user.email
+                    }]);
+
+                if (!result.error) {
+                    if (isUserAdmin) alert("Nouveau cas publié !");
+                    else alert("Cas soumis pour review ! Merci pour votre contribution.");
+                }
             }
-        });
-    }
+
+            if (result.error) throw result.error;
+        } catch (err) {
+            console.error("Push error:", err);
+            alert("Erreur lors de l'envoi : " + err.message);
+        } finally {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+        }
+    });
+
+    // Check admin link visibility
+    (async () => {
+        if (await window.isAdmin()) {
+            const adminLink = document.getElementById('admin-link');
+            if (adminLink) adminLink.style.display = 'flex';
+        }
+    })();
 });
 
 window.clearEditor = function () {
