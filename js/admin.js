@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (target === 'section-cases') loadCasesGrid();
             if (target === 'section-review') loadReviewList();
             if (target === 'section-stats') updateStats();
+            if (target === 'section-banned') loadBannedWords();
         });
     });
 
@@ -346,4 +347,106 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateStats();
         }
     };
+
+    // 9. Banned Pseudos Section
+    async function loadBannedWords() {
+        const list = document.getElementById('banned-words-list');
+        list.innerHTML = '<div class="empty-state" style="width: 100%;"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>';
+
+        const TIMEOUT_MS = 5000; // 5 seconds timeout
+
+        try {
+            const fetchPromise = supabase
+                .from('banned_usernames')
+                .select('*')
+                .order('word', { ascending: true });
+
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Request timed out')), TIMEOUT_MS)
+            );
+
+            const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
+
+            if (error) {
+                if (error.code === '42P01') { // Relation does not exist
+                    list.innerHTML = `<div class="empty-state" style="width: 100%;">
+                        ATTENTION : La table <b>banned_usernames</b> n'existe pas dans Supabase.<br>
+                        Veuillez la créer via l'éditeur SQL avec :<br>
+                        <code>CREATE TABLE banned_usernames (word TEXT PRIMARY KEY, created_at TIMESTAMPTZ DEFAULT NOW());</code>
+                    </div>`;
+                } else if (error.message === 'Request timed out') {
+                    list.innerHTML = `<div class="empty-state" style="width: 100%;">Erreur : La requête a expiré après ${TIMEOUT_MS / 1000} secondes. Vérifiez votre connexion ou la disponibilité de Supabase.</div>`;
+                } else if (error.message.includes('Failed to fetch')) {
+                    list.innerHTML = `<div class="empty-state" style="width: 100%;">Erreur de connexion : Impossible de joindre le serveur Supabase. Vérifiez votre connexion internet.</div>`;
+                } else {
+                    list.innerHTML = `<div class="empty-state" style="width: 100%;">Erreur Supabase : ${error.message} (Code: ${error.code || 'N/A'})</div>`;
+                }
+                console.error("Supabase error loading banned words:", error);
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                list.innerHTML = '<div class="empty-state" style="width: 100%;">Aucun mot interdit répertorié.</div>';
+                return;
+            }
+
+            list.innerHTML = data.map(w => `
+                <div style="background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.3); color: #ff4757; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-weight: 500;">
+                    ${w.word}
+                    <i class="fas fa-times" onclick="deleteBannedWord('${w.word}')" style="cursor: pointer; opacity: 0.7; transition: 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7"></i>
+                </div>
+            `).join('');
+
+        } catch (err) {
+            console.error("Unexpected error loading banned words:", err);
+            if (err.message === 'Request timed out') {
+                list.innerHTML = `<div class="empty-state" style="width: 100%;">Erreur : La requête a expiré après ${TIMEOUT_MS / 1000} secondes. Vérifiez votre connexion ou la disponibilité de Supabase.</div>`;
+            } else {
+                list.innerHTML = `<div class="empty-state" style="width: 100%;">Une erreur inattendue est survenue : ${err.message}</div>`;
+            }
+        }
+    }
+
+    document.getElementById('add-banned-btn')?.addEventListener('click', async () => {
+        const input = document.getElementById('new-banned-word');
+        const word = input.value.trim().toLowerCase();
+
+        if (!word) return;
+
+        try {
+            const { error } = await supabase
+                .from('banned_usernames')
+                .insert([{ word: word }]);
+
+            if (error) {
+                if (error.code === '23505') {
+                    alert('Ce mot est déjà dans la liste.');
+                } else {
+                    throw error;
+                }
+            } else {
+                input.value = '';
+                loadBannedWords();
+            }
+        } catch (err) {
+            console.error("Error adding banned word:", err);
+            alert("Erreur: La table existe-t-elle ? (" + err.message + ")");
+        }
+    });
+
+    window.deleteBannedWord = async (word) => {
+        try {
+            const { error } = await supabase
+                .from('banned_usernames')
+                .delete()
+                .eq('word', word);
+
+            if (error) throw error;
+            loadBannedWords();
+        } catch (err) {
+            console.error("Error deleting banned word:", err);
+            alert("Erreur lors de la suppression.");
+        }
+    };
 });
+

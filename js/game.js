@@ -1761,20 +1761,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             percentageScore += diagnosticWeight;
         }
 
-        // Treatment score
-        if (correctTreatments.length > 0) {
-            const correctSelectedCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
-            const incorrectSelectedCount = selectedTreatments.filter(t => !correctTreatments.includes(t)).length;
+        // --- FATAL ERROR CHECK ---
+        const fatalTreatments = currentCase.fatalTreatments || [];
+        const selectedFatalTreatments = selectedTreatments.filter(t => fatalTreatments.includes(t));
+        const hasFatalError = selectedFatalTreatments.length > 0;
 
-            // Award points for correct treatments, penalize for incorrect ones
+        // Treatment score
+        if (correctTreatments.length > 0 && !hasFatalError) {
+            const correctSelectedCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
+            // Award points for correct treatments
             const treatmentPointsPerCorrect = treatmentWeight / correctTreatments.length;
             percentageScore += correctSelectedCount * treatmentPointsPerCorrect;
-
-            // Optionally penalize for wrong treatments (commented out for now)
-            // percentageScore -= incorrectSelectedCount * (treatmentPointsPerCorrect / 2);
         }
+        // If fatal error: treatment portion stays at 0
 
         percentageScore = Math.max(0, Math.min(100, Math.round(percentageScore)));
+
+        // --- TIME BONUS (up to +10%) ---
+        const totalTime = getTimeLimit();
+        const timeBonus = (timeLeft > 0)
+            ? Math.round(10 * (timeLeft / totalTime))
+            : 0;
+        const xpEarned = percentageScore + timeBonus;
 
         // Build color-coded comparison HTML
         const diagnosticCorrect = selectedDiagnostic === correctDiagnostic;
@@ -1805,12 +1813,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             return `<span style="${style}">${t}</span>`;
         }).join(' ');
 
+        // Build fatal error banner if applicable
+        const fatalBanner = hasFatalError ? `
+            <div style="background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
+                <div style="color: #e74c3c; font-size: 1.4em; font-weight: bold; margin-bottom: 6px;"><i class="fas fa-skull-crossbones"></i> ERREUR FATALE COMMISE</div>
+                <p style="color: rgba(255,255,255,0.85); margin: 0;">Les traitements suivants sont contre-indiqués ou dangereux : <strong style="color:#e74c3c;">${selectedFatalTreatments.join(', ')}</strong></p>
+                <p style="color: rgba(255,255,255,0.6); font-size: 0.85em; margin-top: 6px;">Score de traitement annulé. En médecine, prescrire un soin contre-indiqué peut mettre la vie du patient en danger.</p>
+            </div>
+        ` : '';
+
+        // Build time bonus display
+        const timeBonusHtml = timeBonus > 0 ? `
+            <div style="display:inline-block; background: rgba(79,172,254,0.15); border:1px solid rgba(79,172,254,0.4); border-radius:8px; padding: 4px 12px; margin-left: 10px; font-size:0.75em; color: #4facfe; vertical-align:middle;">
+                <i class="fas fa-clock"></i> +${timeBonus} XP Bonus Temps
+            </div>
+        ` : '';
+
         const comparisonHtml = `
+            ${fatalBanner}
             <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                 <div style="text-align: center; margin-bottom: 15px;">
                     <h3 style="color: ${percentageScore >= 50 ? '#2ecc71' : '#e74c3c'}; font-size: 2em; margin: 0;">
-                        Score: ${percentageScore}%
+                        Score: ${percentageScore}% ${timeBonusHtml}
                     </h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
                 </div>
                 <div style="margin-bottom: 10px;">
                     <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
@@ -1850,7 +1876,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const stats = {
                             attempts: attempts,
                             diagnosticCorrect: diagnosticCorrect,
-                            selectedTreatments: selectedTreatments
+                            selectedTreatments: selectedTreatments,
+                            hasFatalError: hasFatalError,
+                            timeBonus: timeBonus
                         };
 
                         // 1. Enregistrer la session
@@ -1866,9 +1894,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             ]);
                         if (sessionError) throw sessionError;
 
-                        // 2. Mettre à jour l'XP global (optionnel selon le RLS, mais on a fait une policy for update)
-                        // Plutôt que de lire puis écrire (risque de race condition), 
-                        // pour l'instant on lit l'XP actuel et on ajoute le score du cas.
+                        // 2. Mettre à jour l'XP global (score + bonus de temps)
                         const { data: profile, error: profileErr } = await supabase
                             .from('profiles')
                             .select('total_xp')
@@ -1876,14 +1902,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                             .single();
 
                         if (!profileErr && profile) {
-                            const newXp = profile.total_xp + percentageScore;
+                            const newXp = profile.total_xp + xpEarned;
                             await supabase
                                 .from('profiles')
                                 .update({ total_xp: newXp })
                                 .eq('id', user.id);
                         }
 
-                        console.log("Progression sauvegardée dans Supabase ! XP gagné:", percentageScore);
+                        console.log("Progression sauvegardée dans Supabase ! XP gagné:", xpEarned, "(Score:", percentageScore, "+ Bonus Temps:", timeBonus, ")");
                     } catch (err) {
                         console.error("Erreur lors de la sauvegarde Supabase :", err);
                     }

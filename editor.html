@@ -248,6 +248,17 @@
                                         class="fas fa-plus"></i> Ajouter un traitement</button>
                             </div>
                             <div class="sub-section">
+                                <h4 style="color: #e74c3c;"><i class="fas fa-skull-crossbones"></i> Traitements Fatals
+                                </h4>
+                                <p style="font-size: 0.82em; color: rgba(231,76,60,0.8); margin-bottom: 8px;">Si le
+                                    joueur sélectionne un de ces traitements, le score de traitement tombe à 0. Ils
+                                    doivent aussi figurer dans "Traitements Possibles".</p>
+                                <div id="fatal-treatments"></div>
+                                <button class="btn-add" style="border-color: rgba(231,76,60,0.5); color: #e74c3c;"
+                                    onclick="addListItemText('fatal-treatments')"><i class="fas fa-plus"></i> Ajouter un
+                                    traitement fatal</button>
+                            </div>
+                            <div class="sub-section">
                                 <h4>Traitements Corrects</h4>
                                 <div id="correct-treatments-list"></div>
                                 <button class="btn-add" onclick="addListItemText('correct-treatments-list')"><i

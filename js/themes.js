@@ -93,11 +93,42 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStartSessionButton();
 
         const themeLower = theme.toLowerCase();
-        const caseFiles = casesData[themeLower] || [];
+        const mapKeys = { 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
+        const searchSpec = mapKeys[themeLower] || themeLower;
+
+        const motifsGraph = document.getElementById('motifs-graph');
+        const motifsActions = document.getElementById('motifs-actions');
+        const motifsContent = document.querySelector('.motifs-content');
 
         motifsTitle.textContent = `Thème : ${theme}`;
-        motifsList.innerHTML = '<div class="loading">Chargement des motifs...</div>';
         motifsModal.style.display = 'flex';
+
+        // INTERCEPTION: Si un Graphe existe pour ce thème, on l'affiche plein écran dans la modal
+        if (casesData[searchSpec]) {
+            const graphIdExists = casesData[searchSpec].some(id => id.startsWith('graph_'));
+            if (graphIdExists) {
+                motifsList.style.display = 'none';
+                motifsActions.style.display = 'none';
+                startSessionBtn.style.display = 'none';
+
+                motifsGraph.style.display = 'block';
+                motifsContent.classList.add('graph-mode');
+
+                // Initialiser la carte à l'intérieur
+                if (window.initPlayerMap) {
+                    window.initPlayerMap(theme);
+                }
+                return; // Ne pas exécuter la suite de l'affichage classique par liste
+            }
+        }
+
+        // --- AFFICHAGE CLASSIQUE (Liste) ---
+        motifsList.style.display = 'block';
+        motifsActions.style.display = 'flex';
+        motifsGraph.style.display = 'none';
+        motifsContent.classList.remove('graph-mode');
+
+        motifsList.innerHTML = '<div class="loading">Chargement des motifs...</div>';
 
         let playedCases = [];
         const playedCasesStr = getCookie('playedCases') || '';
@@ -249,12 +280,18 @@ document.addEventListener('DOMContentLoaded', () => {
     closeMotifsBtn.addEventListener('click', () => {
         motifsModal.style.display = 'none';
         selectedCaseFiles = [];
+        document.querySelector('.motifs-content').classList.remove('graph-mode');
+        const graph = document.getElementById('motifs-graph');
+        if (graph) graph.style.display = 'none';
     });
 
     window.addEventListener('click', (event) => {
         if (event.target === motifsModal) {
             motifsModal.style.display = 'none';
             selectedCaseFiles = [];
+            document.querySelector('.motifs-content').classList.remove('graph-mode');
+            const graph = document.getElementById('motifs-graph');
+            if (graph) graph.style.display = 'none';
         }
     });
 });

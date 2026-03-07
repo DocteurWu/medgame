@@ -316,6 +316,7 @@ function populateEditor(data) {
     renderTextList('possible-diagnostics', data.possibleDiagnostics);
     setText('correctDiagnostic', data.correctDiagnostic);
     renderTextList('possible-treatments', data.possibleTreatments);
+    renderTextList('fatal-treatments', data.fatalTreatments || []);
     renderTextList('correct-treatments-list', data.correctTreatments);
     document.getElementById('correction-text').innerText = data.correction || '';
 
@@ -402,6 +403,7 @@ function collectData() {
         correctDiagnostic: getText('correctDiagnostic'),
         scoringRules: { baseScore: 100, attemptPenalty: 10 },
         possibleTreatments: collectTextList('possible-treatments'),
+        fatalTreatments: collectTextList('fatal-treatments'),
         correctTreatments: collectTextList('correct-treatments-list'),
         correction: document.getElementById('correction-text').innerText,
         correctionImage: document.querySelector('#correction-image-container .image-preview')?.dataset.base64 || null,

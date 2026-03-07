@@ -515,6 +515,24 @@
                     // N'ajouter le username que s'il a changé et n'est pas vide et que l'input n'est pas disabled
                     const usernameInput = document.getElementById('setting-username');
                     if (!usernameInput.disabled && newUsername && newUsername.length >= 3) {
+
+                        // --- VÉRIFICATION MOTS INTERDITS ---
+                        const { data: bannedWords, error: bannedErr } = await supabase
+                            .from('banned_usernames')
+                            .select('word');
+
+                        if (!bannedErr && bannedWords) {
+                            const newUsernameLower = newUsername.toLowerCase();
+                            const isBanned = bannedWords.some(bw => newUsernameLower.includes(bw.word.toLowerCase()));
+                            if (isBanned) {
+                                alert("Ce pseudonyme contient un mot interdit et ne peut pas être utilisé.");
+                                saveBtn.textContent = originalText;
+                                saveBtn.disabled = false;
+                                return; // Stoppe la sauvegarde
+                            }
+                        }
+                        // ------------------------------------
+
                         updateData.username = newUsername;
                         updateData.username_updated_at = new Date().toISOString();
                     }
@@ -599,6 +617,13 @@
                     // Fetch profile info
                     const defaultPseudo = session.user.email.substring(0, 3) + '***';
                     let displayedUsername = defaultPseudo;
+
+                    // Helper: calcule le niveau depuis le XP total (XP_requis = 150 * Niveau^1.5)
+                    function calculateLevel(xp) {
+                        if (!xp || xp <= 0) return 1;
+                        return Math.floor(Math.pow(xp / 150, 2 / 3)) + 1;
+                    }
+
                     try {
                         const { data: profile, error } = await supabase
                             .from('profiles')
@@ -608,8 +633,9 @@
 
                         if (!error && profile) {
                             if (profile.username) displayedUsername = profile.username;
-                            xpText = `${profile.total_xp} XP`;
-                            rankText = profile.rank || "Externe";
+                            const niveau = calculateLevel(profile.total_xp || 0);
+                            xpText = `${profile.total_xp || 0} XP`;
+                            rankText = `Niv. ${niveau} ${profile.rank ? '· ' + profile.rank : ''}`;
                         }
                     } catch (err) {
                         console.error("Erreur chargement profil:", err);
