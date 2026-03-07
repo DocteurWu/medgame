@@ -20,6 +20,7 @@
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/player_map.css">
     <link rel="stylesheet" href="css/device-check.css">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -121,12 +122,30 @@
             <div class="motifs-content">
                 <button id="close-motifs" class="close-motifs">&times;</button>
                 <h2 id="motifs-title">Choisissez un cas</h2>
+
                 <div id="motifs-actions" class="motifs-actions">
                     <button id="select-unplayed" class="secondary-btn-modal">Sélectionner les cas non faits</button>
                 </div>
+
+                <!-- Vue Liste Classique -->
                 <div id="motifs-list" class="motifs-list">
                     <!-- Les motifs seront injectés ici par JS -->
                 </div>
+
+                <!-- Vue Graphe Map (caché par défaut, prend tout l'espace quand actif) -->
+                <div id="motifs-graph" class="motifs-graph" style="display: none;">
+                    <div id="map-viewport" class="map-viewport">
+                        <div id="map-canvas" class="map-canvas">
+                            <svg id="paths-layer" class="paths-layer"></svg>
+                            <div id="nodes-layer" class="nodes-layer"></div>
+                        </div>
+                    </div>
+                    <div id="loading-overlay" class="map-loading">
+                        <div class="spinner"><i class="fas fa-circle-notch fa-spin"></i></div>
+                        <h3>Analyse du parcours...</h3>
+                    </div>
+                </div>
+
                 <button id="start-session" class="start-session" style="display: none;">Commencer la session</button>
             </div>
         </div>
@@ -359,6 +378,7 @@
     </script>
 
     <script src="js/themes.js?v=20251220-1645"></script>
+    <script src="js/player_map.js"></script>
     <script>
         // Forcer le rechargement de game.html
         if (window.location.href.endsWith('game.html')) {

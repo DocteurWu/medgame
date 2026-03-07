@@ -1,0 +1,670 @@
+/* 
+   ==========================================================================
+   Variables & Theme
+   ========================================================================== 
+*/
+:root {
+    /* Colors */
+    --bg-dark: #07070a;
+    --bg-panel: #14141c;
+    --bg-panel-border: rgba(255, 255, 255, 0.08);
+    --bg-grid: #1a1a24;
+
+    --primary-color: #00e0ff;
+    --primary-hover: #00f2fe;
+
+    --text-color: #ffffff;
+    --text-muted: #8b8b9b;
+
+    --node-bg: #1c1c28;
+    --node-border: #323246;
+    --node-border-active: #00e0ff;
+
+    --connection-color: #4a4a6a;
+    --connection-active: #00e0ff;
+
+    --socket-bg: #2d2d3f;
+    --socket-border: #00e0ff;
+
+    --urgences-color: #ff4757;
+    --pediatrie-color: #2ed573;
+    --cardio-color: #ffa502;
+    --default-badge: #57606f;
+
+    --danger-color: #ff4757;
+    --danger-hover: #ff6b81;
+
+    /* Fonts */
+    --font-ui: 'Inter', sans-serif;
+    --font-title: 'Outfit', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.dark-theme {
+    background-color: var(--bg-dark);
+    color: var(--text-color);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 
+   ==========================================================================
+   Header
+   ========================================================================== 
+*/
+.editor-header {
+    height: 60px;
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--bg-panel-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--primary-color);
+}
+
+.header-titles {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--default-badge);
+}
+
+.badge-urgences {
+    background: rgba(255, 71, 87, 0.2);
+    color: var(--urgences-color);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.badge-pediatrie {
+    background: rgba(46, 213, 115, 0.2);
+    color: var(--pediatrie-color);
+    border: 1px solid rgba(46, 213, 115, 0.3);
+}
+
+h1 {
+    font-family: var(--font-title);
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+h1 span {
+    font-family: var(--font-ui);
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.header-right {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: #000;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 
+   ==========================================================================
+   Workspace Layout
+   ========================================================================== 
+*/
+.workspace {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--bg-panel-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-section {
+    padding: 20px;
+    border-bottom: 1px solid var(--bg-panel-border);
+}
+
+.sidebar-section.flex-grow {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+h3 {
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+/* Tools Grid */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.tool-btn {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.tool-btn.active {
+    background: rgba(0, 224, 255, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.tool-btn.danger:hover {
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger-hover);
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+#search-scenarios {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--bg-panel-border);
+    color: white;
+    padding: 10px 10px 10px 35px;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#search-scenarios:focus {
+    border-color: var(--primary-color);
+}
+
+/* Library List */
+.library-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom Scrollbar for sidebar */
+.library-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.library-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.library-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.library-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dotted rgba(255, 255, 255, 0.1);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: grab;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.library-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.library-item h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.library-item span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* 
+   ==========================================================================
+   Viewport / Canvas Area
+   ========================================================================== 
+*/
+.viewport {
+    flex: 1;
+    position: relative;
+    background-color: var(--bg-dark);
+    /* Grid background */
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position: center bottom;
+    overflow: hidden;
+    cursor: default;
+    /* changes based on tool */
+}
+
+/* When space bar is held */
+.viewport.grabbing {
+    cursor: grabbing !important;
+}
+
+.viewport-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: var(--bg-panel);
+    border: 1px solid var(--bg-panel-border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    z-index: 50;
+}
+
+.viewport-controls button {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.viewport-controls button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#zoom-level {
+    padding: 0 10px;
+    font-size: 0.85rem;
+    font-family: var(--font-title);
+    min-width: 50px;
+    text-align: center;
+}
+
+/* The actual scalable/pannable container */
+.canvas-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    /* Transformation updated by JS */
+    transform-origin: 0 0;
+}
+
+/* 
+   ==========================================================================
+   Nodes & Sockets
+   ========================================================================== 
+*/
+
+#nodes-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    /* Let events pass to the node elements themselves */
+}
+
+.node {
+    position: absolute;
+    background: var(--node-bg);
+    border: 1px solid var(--node-border);
+    border-radius: 10px;
+    width: 260px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    pointer-events: auto;
+    /* Re-enable events for nodes */
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    /* Center transform so pos X/Y is the center of the node usually, but for DOM positioning top-left is easier. Let's stick to top-left for math simplicity */
+    transform: translate(-50%, -50%);
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.node:hover {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.node.selected {
+    border-color: var(--node-border-active);
+    box-shadow: 0 0 0 1px var(--node-border-active), 0 10px 40px rgba(0, 224, 255, 0.2);
+    z-index: 10;
+}
+
+.node-header {
+    padding: 12px 15px;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: grab;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.node-header:active {
+    cursor: grabbing;
+}
+
+.node-theme-bar {
+    height: 4px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top-left-radius: 9px;
+    border-top-right-radius: 9px;
+    background: var(--default-badge);
+}
+
+.node[data-theme="Urgences"] .node-theme-bar {
+    background: var(--urgences-color);
+}
+
+.node[data-theme="Pédiatrie"] .node-theme-bar {
+    background: var(--pediatrie-color);
+}
+
+.node h4 {
+    margin: 4px 0 0 0;
+    font-size: 1rem;
+    font-family: var(--font-title);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.node-content {
+    padding: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    min-height: 50px;
+    position: relative;
+}
+
+.node-chapter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    color: var(--primary-color);
+    background: rgba(0, 224, 255, 0.08);
+    border: 1px solid rgba(0, 224, 255, 0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-top: 6px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Sockets */
+.socket {
+    width: 14px;
+    height: 14px;
+    background: var(--socket-bg);
+    border: 2px solid var(--text-muted);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: crosshair;
+    transition: all 0.2s;
+    z-index: 2;
+}
+
+.socket:hover {
+    transform: translateY(-50%) scale(1.3);
+    border-color: white;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.socket.input {
+    left: -7px;
+}
+
+.socket.output {
+    right: -7px;
+}
+
+.socket.connected {
+    background: var(--socket-border);
+    border-color: white;
+}
+
+/* 
+   ==========================================================================
+   Connections (SVG Layers)
+   ========================================================================== 
+*/
+#svg-layer {
+    position: absolute;
+    top: -5000px;
+    left: -5000px;
+    width: 10000px;
+    /* Huge canvas for drawing lines arbitrary distances */
+    height: 10000px;
+    pointer-events: none;
+    /* Let events pass to canvas */
+    overflow: visible;
+}
+
+/* Offset coordinates in paths by 5000 */
+
+.connection-path {
+    fill: none;
+    stroke: var(--connection-color);
+    stroke-width: 3px;
+    cursor: pointer;
+    pointer-events: stroke;
+    /* Clickable */
+    transition: stroke 0.2s, stroke-width 0.2s;
+    marker-end: url(#arrowhead);
+}
+
+.connection-path:hover {
+    stroke: var(--connection-active);
+    stroke-width: 5px;
+    filter: url(#glow);
+}
+
+.connection-path.selected {
+    stroke: var(--primary-color);
+    stroke-width: 4px;
+    filter: url(#glow);
+    marker-end: url(#arrowhead-active);
+}
+
+.connection-path.temp {
+    stroke: var(--primary-color);
+    stroke-width: 4px;
+    stroke-dasharray: 8 4;
+    filter: url(#glow);
+    animation: dash 0.5s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -12;
+    }
+}
+
+/* 
+   ==========================================================================
+   Modals
+   ========================================================================== 
+*/
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-panel);
+    border: 1px solid var(--bg-panel-border);
+    border-radius: 12px;
+    padding: 25px;
+    width: 400px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.form-control {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--bg-panel-border);
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-family: var(--font-ui);
+    outline: none;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+}
