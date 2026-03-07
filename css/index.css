@@ -82,7 +82,8 @@ body {
     max-width: 500px;
     text-align: center;
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8),
-        inset 0 0 20px rgba(0, 242, 254, 0.05); // Inner subtle glow
+        inset 0 0 20px rgba(0, 242, 254, 0.05);
+    /* Inner subtle glow */
     transform-style: preserve-3d;
     transition: transform 0.1s ease;
     pointer-events: auto;
@@ -600,39 +601,84 @@ input:checked+.slider:before {
 }
 
 @media (max-width: 1000px) {
-    .leaderboard-panel {
-        display: none;
-        /* Masquer sur petits écrans pour l'instant */
-    }
-}
-
-/* Responsive */
-@media (max-width: 600px) {
     body {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        /* Garantit le centrage horizontal des enfants */
         overflow-y: auto;
         height: auto;
         min-height: 100vh;
+        padding: 5.5rem 1rem 3rem 1rem;
+    }
+
+    /* Centrage du badge utilisateur sur mobile */
+    #user-badge-top {
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        width: fit-content;
+        max-width: 95%;
+        white-space: nowrap;
+        margin: 0 auto;
     }
 
     .scene-overlay {
-        padding: 2rem 1rem;
         height: auto;
-        min-height: 100vh;
+        min-height: unset;
+        width: 100%;
+        max-width: 500px;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
-    }
-
-    .glitch-title {
-        font-size: 2.5rem;
+        margin-bottom: 2rem;
     }
 
     .glass-card {
-        padding: 2.5rem 1.5rem;
         width: 100%;
+        max-width: 500px;
+    }
+
+    .leaderboard-panel {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        max-height: 500px;
+        animation: none;
+        /* Removed horizontal slide animation for mobile */
+    }
+}
+
+/* Responsive pour mobiles plus petits */
+@media (max-width: 600px) {
+    body {
+        padding: 6rem 0.8rem 2rem 0.8rem;
+    }
+
+    #user-badge-top {
+        padding: 6px 12px 6px 8px !important;
+        font-size: 0.85rem !important;
+        width: 90%;
+        /* Prend plus de place sur petit écran pour éviter le wrap */
+        justify-content: center;
+    }
+
+    .glitch-title {
+        font-size: 2.2rem;
+    }
+
+    .glass-card {
+        padding: 2rem 1.2rem;
         max-width: 400px;
-        margin-bottom: 20px;
+    }
+
+    .leaderboard-panel {
+        max-width: 400px;
+        padding: 1.2rem;
     }
 
     .difficulty-selector {
