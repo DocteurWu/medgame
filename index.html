@@ -618,6 +618,7 @@
                     // Fetch profile info
                     const defaultPseudo = session.user.email.substring(0, 3) + '***';
                     let displayedUsername = defaultPseudo;
+                    let niveau = 1;
 
                     // Helper: calcule le niveau depuis le XP total (XP_requis = 150 * Niveau^1.5)
                     function calculateLevel(xp) {
@@ -634,7 +635,7 @@
 
                         if (!error && profile) {
                             if (profile.username) displayedUsername = profile.username;
-                            const niveau = calculateLevel(profile.total_xp || 0);
+                            niveau = calculateLevel(profile.total_xp || 0);
                             xpText = `${profile.total_xp || 0} XP`;
                             rankText = `Niv. ${niveau} ${profile.rank ? '· ' + profile.rank : ''}`;
                         }
@@ -648,10 +649,28 @@
                     document.getElementById('top-username').innerHTML =
                         `${displayedUsername} <span style="font-size:0.75em;opacity:0.75;margin-left:6px;background:rgba(0,242,254,0.18);padding:2px 7px;border-radius:20px;font-weight:400;">${rankText} • ${xpText}</span>`;
 
+                    const isAdminUser = await window.isAdmin();
+
                     // Vérifier si Admin
-                    if (await window.isAdmin()) {
+                    if (isAdminUser) {
                         const adminBtn = document.getElementById('admin-button');
                         if (adminBtn) adminBtn.style.display = 'flex';
+                    }
+
+                    // Gérer le bouton Éditeur (Niveau 2 requis)
+                    const editorBtn = document.getElementById('editor-button');
+                    if (editorBtn) {
+                        if (niveau >= 2 || isAdminUser) {
+                            // Laisser le comportement interactif/visuel par défaut
+                        } else {
+                            // Verrouiller
+                            editorBtn.onclick = () => alert("Le mode Création de Cas est débloqué à partir du Niveau 2 ! Jouez quelques cas pour gagner de l'XP.");
+                            const contentSpan = editorBtn.querySelector('.btn-content');
+                            if (contentSpan) contentSpan.innerHTML = '<i class="fas fa-lock"></i> Créer un Cas (Niv. 2)';
+                            const btnLayer = editorBtn.querySelector('.btn-layer');
+                            if (btnLayer) btnLayer.style.background = 'rgba(255,255,255,0.05)';
+                            editorBtn.style.opacity = '0.6';
+                        }
                     }
 
                 } else {

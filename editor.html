@@ -235,7 +235,8 @@
                                 <h4>Diagnostics Possibles</h4>
                                 <p style="font-size:0.8em; color:rgba(255,255,255,0.5); margin-bottom:8px;">Cliquez sur
                                     <span style="color:#2ecc71;">●</span> pour marquer le diagnostic
-                                    <strong>correct</strong>.</p>
+                                    <strong>correct</strong>.
+                                </p>
                                 <div id="possible-diagnostics"></div>
                                 <button class="btn-add" onclick="addDiagnosticItem()"><i class="fas fa-plus"></i>
                                     Ajouter un diagnostic</button>
@@ -325,9 +326,25 @@
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // Vérifier l'authentification
+        // Vérifier l'authentification et le Niveau 2+
         document.addEventListener('DOMContentLoaded', async () => {
-            await window.requireAuth();
+            const user = await window.requireAuth();
+            if (user) {
+                const isAdmin = await window.isAdmin();
+                if (!isAdmin) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('total_xp')
+                        .eq('id', user.id)
+                        .single();
+                    const xp = profile ? (profile.total_xp || 0) : 0;
+                    const niveau = Math.floor(Math.pow(xp / 150, 2 / 3)) + 1;
+                    if (niveau < 2) {
+                        alert("Accès refusé. Vous devez atteindre le Niveau 2 pour accéder à l'éditeur.");
+                        window.location.href = 'index.html';
+                    }
+                }
+            }
         });
     </script>
     <script src="js/game.js"></script>
