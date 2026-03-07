@@ -1,31 +1,68 @@
 # 🎮 Medgame
 
-Medgame est un jeu éducatif simulant des scénarios médicaux pour tester tes connaissances du semestre 🏥. Ce n’est pas une source officielle 📚, mais un outil basé sur les références et mis à jour régulièrement.
+Medgame est une plateforme éducative interactive simulant des scénarios médicaux pour tester les connaissances cliniques 🏥. Initialement conçu pour le DFGSM2/DFGSM3, c'est un outil open-source évolutif permettant de transformer l'apprentissage de la sémiologie en une expérience immersive.
 
-C'est une version uniquement destinée au DFGSM2 pour le S2 - si t'aimes l'idée et que ce n'est pas ton année, tu peux changer les UEs et créer tes cas ! C'est ça l'open source.
+---
 
-## 🎯 Présentation générale
+## 🚀 Fonctionnalités Principales
 
-Medgame est une application web interactive conçue pour aider les étudiants en médecine à tester leurs connaissances à travers des cas cliniques réalistes. Le jeu propose une interface intuitive et immersive qui plonge les joueurs dans des scénarios médicaux variés.
+*   **Cas Cliniques Immersifs** : Scénarios détaillés avec anamnèse interactive, examens physiques et complémentaires.
+*   **Système de "Gating" (Verrous)** : Progression conditionnée par la résolution de défis sémiologiques.
+*   **Éditeur de Cas Intégré** : Créez et soumettez vos propres cas cliniques directement depuis l'interface.
+*   **Gestion de Progression (Supabase)** : Sauvegarde de l'historique, calcul du score (0-100%) et gain d'XP.
+*   **Mode Urgence** : Scénarios chronométrés pour simuler la pression des soins critiques.
 
-### 🚀 Fonctionnalités principales
+---
 
-*   **Cas cliniques réalistes** : Des scénarios médicaux détaillés qui simulent des situations du monde réel
-*   **Thèmes médicaux variés** : Cardio, endocrinologie, neurologie, gastro-entérologie et bien plus
-*   **Interface utilisateur conviviale** : Une expérience de jeu fluide et intuitive
-*   **Système de progression** : Suivi des performances et avancement dans les différents thèmes
-*   **Base de données extensible** : Ajout facile de nouveaux cas et thèmes
+## 🛠 Stack Technique
 
-### 🧩 Thèmes disponibles
+*   **Frontend** : HTML5, Vanilla CSS3 (Design Verre/Néon), Vanilla JS (ES6+).
+*   **Backend & Auth** : [Supabase](https://supabase.com/) (PostgreSQL, Auth, RLS).
+*   **Animation** : GSAP pour les effets visuels et les moniteurs de constantes.
+*   **Déploiement** : Docker (Nginx Alpine) optimisé pour l'architecture x86 et ARM64 (Orange Pi/Raspberry Pi).
 
-Le jeu propose une variété de thèmes médicaux couvrant les principales spécialités :
+---
 
-*   Cardiologie
-*   Endocrinologie
-*   Neurologie
-*   Gastro-entérologie
-*   Néphrologie
-*   Et bien d'autres...
+## 📈 Roadmap & Système de Niveaux
+
+Le projet évolue vers un système communautaire basé sur le mérite :
+
+*   **Niveau 1 (Externe)** : Accès standard aux cas publiés.
+*   **Niveau 2** : Statistiques avancées et badges de spécialité.
+*   **Niveau 3 (Interne - 1500 XP)** : **Déblocage de l'Éditeur** pour proposer et éditer des cas.
+*   **Niveau 5 (Professeur)** : Pouvoir de validation (Reviewer) sur les cas soumis par la communauté.
+
+---
+
+## 🔧 Installation & Déploiement
+
+### 1. Installation Locale (Développement)
+```bash
+# Cloner le dépôt
+git clone https://github.com/DocteurWu/medgame.git
+cd medgame-main
+
+# Lancer un serveur local (ex: port 8888)
+npx http-server -p 8888
+```
+
+### 2. Déploiement Docker (Auto-hébergement)
+Idéal pour un Orange Pi ou un serveur domestique :
+```bash
+docker build -t medgame .
+docker run -d -p 8888:8888 medgame
+```
+
+---
+
+## 🔐 Sécurité & RLS
+
+Pour protéger la base de données, le **Row Level Security (RLS)** doit être activé sur Supabase. 
+*   Les cas `published` sont visibles par tous.
+*   Les cas `pending` ne sont visibles que par l'auteur et les administrateurs.
+*   La modification des profils est restreinte à l'utilisateur connecté.
+
+---
 
 ## 🤝 Contributions
 

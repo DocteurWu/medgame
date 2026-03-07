@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éditeur de Scénarios | MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&family=Tektur:wght@400;700&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/graph_editor.css">
+</head>
+
+<body class="dark-theme">
+
+    <!-- HEADER -->
+    <header class="editor-header">
+        <div class="header-left">
+            <a href="admin.html" class="back-btn" title="Retour à l'administration"><i
+                    class="fas fa-arrow-left"></i></a>
+            <div class="header-titles">
+                <span class="badge" id="theme-badge">MODULE</span>
+                <h1>Éditeur de Scénarios <span>(Node Graph)</span></h1>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-secondary" id="btn-recenter"><i class="fas fa-crosshairs"></i> Recadrer</button>
+            <button class="btn btn-primary" id="btn-save"><i class="fas fa-save"></i> Sauvegarder</button>
+        </div>
+    </header>
+
+    <!-- WORKSPACE -->
+    <main class="workspace">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Outils</h3>
+                <div class="tools-grid">
+                    <button class="tool-btn active" id="tool-select" title="Sélection / Déplacement">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </button>
+                    <button class="tool-btn" id="tool-add" title="Ajouter Nœud">
+                        <i class="fas fa-plus-square"></i>
+                    </button>
+                    <!-- <button class="tool-btn" id="tool-link" title="Mode Liaison Rapide">
+                        <i class="fas fa-link"></i>
+                    </button> -->
+                    <button class="tool-btn danger" id="tool-delete" title="Supprimer la sélection (Suppr)">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>UE active</h3>
+                <h4 id="active-theme-title"
+                    style="color:var(--text-color); margin: 0 0 10px 0; font-family: var(--font-title);">Tous</h4>
+            </div>
+
+            <div class="sidebar-section flex-grow">
+                <h3>Cas Disponibles <span
+                        style="font-size: 0.8em; font-weight: normal; color:var(--text-muted);">(Glisser-déposer)</span>
+                </h3>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher..." id="search-scenarios">
+                </div>
+
+                <div class="library-list" id="library-list">
+                    <!-- Loading state -->
+                    <div style="text-align:center; padding: 20px; color: var(--text-muted);">
+                        <i class="fas fa-spinner fa-spin"></i> Chargement...
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CANVAS AREA -->
+        <section class="viewport" id="viewport">
+            <div class="canvas-wrapper" id="canvas">
+                <!-- SVG for connections -->
+                <svg id="svg-layer" preserveAspectRatio="none">
+                    <defs>
+                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="3" result="blur" />
+                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                        </filter>
+                        <!-- Arrowhead marker for connections -->
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="var(--connection-color)" />
+                        </marker>
+                        <marker id="arrowhead-active" markerWidth="10" markerHeight="7" refX="9" refY="3.5"
+                            orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="var(--connection-active)" />
+                        </marker>
+                    </defs>
+                    <g id="paths-layer"></g>
+                    <path id="temp-connection" class="connection-path temp" d="" style="display:none;"></path>
+                </svg>
+
+                <!-- HTML Nodes -->
+                <div id="nodes-layer"></div>
+            </div>
+
+            <!-- Controls Overlay -->
+            <div class="viewport-controls">
+                <button id="zoom-in" title="Zoomer (+)"><i class="fas fa-plus"></i></button>
+                <div id="zoom-level">100%</div>
+                <button id="zoom-out" title="Dézoomer (-)"><i class="fas fa-minus"></i></button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for new node properties -->
+    <div id="node-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 style="margin-top:0;">Propriétés du Nœud</h3>
+            <div class="form-group">
+                <label>Titre</label>
+                <input type="text" id="node-prop-title" class="form-control" placeholder="Titre du bloc">
+            </div>
+            <div class="form-group">
+                <label>Chapitre</label>
+                <select id="node-prop-chapter" class="form-control">
+                    <option value="">-- Aucun --</option>
+                    <option value="Etats de choc">Etats de choc</option>
+                    <option value="Brûlures">Brûlures</option>
+                    <option value="Pédiatrie (Dyspnée, états de choc, F°, convulsions)">Pédiatrie (Dyspnée...)</option>
+                    <option value="Comas">Comas</option>
+                    <option value="Arrêt cardiaque">Arrêt cardiaque</option>
+                    <option value="Organisation des Urgences, chaîne de soins, triage">Organisation Urgences</option>
+                    <option value="Détresse respiratoire">Détresse respiratoire</option>
+                    <option value="Accouchement inopiné">Accouchement inopiné</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="node-prop-desc" class="form-control" rows="3" placeholder="Description rapide"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Thème Associé</label>
+                <select id="node-prop-theme" class="form-control">
+                    <option value="Urgences">Urgences</option>
+                    <option value="Pédiatrie">Pédiatrie</option>
+                    <option value="Cardiologie">Cardiologie</option>
+                    <option value="Général">Général</option>
+                </select>
+            </div>
+            <div class="modal-actions" style="margin-top:20px; text-align:right;">
+                <button class="btn btn-secondary" id="modal-cancel">Annuler</button>
+                <button class="btn btn-primary" id="modal-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/graph_editor.js"></script>
+</body>
+
+</html>

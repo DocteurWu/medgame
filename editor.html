@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/editor.css">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -66,16 +68,20 @@
                     <i class="fas fa-file-import"></i> Charger un cas
                 </button>
                 <button class="btn-editor" id="save-json">
-                    <i class="fas fa-save"></i> Enregistrer
+                    <i class="fas fa-save"></i> Enregistrer JSON
                 </button>
-                <button class="btn-editor" id="preview-button"
-                    style="background: var(--editor-success); margin-top: 5px;">
+                <button class="btn-editor" id="push-supabase" style="background: var(--editor-success);">
+                    <i class="fas fa-cloud-upload-alt"></i> Publier / Soumettre
+                </button>
+                <button class="btn-editor" id="preview-button" style="background: var(--editor-info); margin-top: 5px;">
                     <i class="fas fa-play-circle"></i> Tester
                 </button>
                 <button class="btn-editor danger-discrete" onclick="clearEditor()" style="margin-top: 5px;">
                     <i class="fas fa-trash-alt"></i> Tout supprimer
                 </button>
                 <a href="index.html" class="quit-btn" style="margin-top: 5px;">RETOUR ACCUEIL</a>
+                <a href="admin.html" id="admin-link" class="quit-btn"
+                    style="margin-top: 5px; background: var(--editor-primary); display: none;">ESPACE ADMIN</a>
             </div>
         </aside>
 
@@ -227,25 +233,24 @@
                             <h3 class="card-title">Diagnostics & Traitements</h3>
                             <div class="sub-section">
                                 <h4>Diagnostics Possibles</h4>
+                                <p style="font-size:0.8em; color:rgba(255,255,255,0.5); margin-bottom:8px;">Cliquez sur
+                                    <span style="color:#2ecc71;">●</span> pour marquer le diagnostic
+                                    <strong>correct</strong>.
+                                </p>
                                 <div id="possible-diagnostics"></div>
-                                <button class="btn-add" onclick="addListItemText('possible-diagnostics')"><i
-                                        class="fas fa-plus"></i> Ajouter un diagnostic</button>
-                            </div>
-                            <div class="sub-section">
-                                <h4>Diagnostic Correct</h4>
-                                <p id="correctDiagnostic" contenteditable="true">...</p>
+                                <button class="btn-add" onclick="addDiagnosticItem()"><i class="fas fa-plus"></i>
+                                    Ajouter un diagnostic</button>
                             </div>
                             <div class="sub-section">
                                 <h4>Traitements Possibles</h4>
+                                <p style="font-size:0.8em; color:rgba(255,255,255,0.5); margin-bottom:8px;">
+                                    <span style="color:#2ecc71;">✓</span> Correct &nbsp;|&nbsp;
+                                    <span style="color:#e74c3c;">☠</span> Fatal &nbsp;|&nbsp;
+                                    <span style="color:rgba(255,255,255,0.4);">○</span> Faux (neutre)
+                                </p>
                                 <div id="possible-treatments"></div>
-                                <button class="btn-add" onclick="addListItemText('possible-treatments')"><i
-                                        class="fas fa-plus"></i> Ajouter un traitement</button>
-                            </div>
-                            <div class="sub-section">
-                                <h4>Traitements Corrects</h4>
-                                <div id="correct-treatments-list"></div>
-                                <button class="btn-add" onclick="addListItemText('correct-treatments-list')"><i
-                                        class="fas fa-plus"></i> Ajouter un traitement correct</button>
+                                <button class="btn-add" onclick="addTreatmentItem()"><i class="fas fa-plus"></i> Ajouter
+                                    un traitement</button>
                             </div>
                         </div>
 
@@ -318,6 +323,30 @@
         </main>
     </div>
 
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Vérifier l'authentification et le Niveau 2+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = await window.requireAuth();
+            if (user) {
+                const isAdmin = await window.isAdmin();
+                if (!isAdmin) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('total_xp')
+                        .eq('id', user.id)
+                        .single();
+                    const xp = profile ? (profile.total_xp || 0) : 0;
+                    const niveau = Math.floor(Math.pow(xp / 150, 2 / 3)) + 1;
+                    if (niveau < 2) {
+                        alert("Accès refusé. Vous devez atteindre le Niveau 2 pour accéder à l'éditeur.");
+                        window.location.href = 'index.html';
+                    }
+                }
+            }
+        });
+    </script>
     <script src="js/game.js"></script>
     <script src="js/editor.js"></script>
 </body>
