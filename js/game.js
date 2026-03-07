@@ -113,6 +113,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     let backgroundMusicEl = null;
     let vitalMonitorInstance = null;
 
+    // --- URGENCE MODE GLOBALS ---
+    let isUrgenceMode = false;
+    let currentUrgenceNode = null;
+    let urgenceTimerTimeout = null;
+
     // --- GATING SYSTEM (VERROUS) ---
     let unlockedLocks = new Set();
     try {
@@ -729,11 +734,38 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée
-            const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-            if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
-                console.log('Loading selected session cases:', selectedCaseFiles);
-                const casesPromises = selectedCaseFiles.map(file =>
+            // 1. SUPABASE FETCH (If applicable)
+            if (typeof supabase !== 'undefined') {
+                const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
+                if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
+                    try {
+                        const { data, error } = await supabase
+                            .from('cases')
+                            .select('*')
+                            .in('id', selectedCaseFiles);
+
+                        if (!error && data && data.length > 0) {
+                            console.log('Loading cases from Supabase:', data.length);
+                            // Merge ID and Content for game logic
+                            const processed = data.map(c => {
+                                const content = c.content;
+                                if (!content.id) content.id = c.id;
+                                return content;
+                            });
+                            localStorage.removeItem('selectedCaseFiles');
+                            return processed;
+                        }
+                    } catch (err) {
+                        console.warn("Supabase fetch failed, falling back to local files", err);
+                    }
+                }
+            }
+
+            // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée (Fallback local)
+            const selectedCaseFilesLocal = JSON.parse(localStorage.getItem('selectedCaseFiles'));
+            if (selectedCaseFilesLocal && Array.isArray(selectedCaseFilesLocal) && selectedCaseFilesLocal.length > 0) {
+                console.log('Loading selected session cases:', selectedCaseFilesLocal);
+                const casesPromises = selectedCaseFilesLocal.map(file =>
                     fetch(`data/${file}`)
                         .then(res => {
                             if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
@@ -1218,6 +1250,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!isPartialRefresh) {
             currentCase = cases[currentCaseIndex];
+
+            // Urgence Mode Check
+            if (currentCase.gameplayConfig && currentCase.gameplayConfig.startNode) {
+                isUrgenceMode = true;
+                currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
+            } else {
+                isUrgenceMode = false;
+                currentUrgenceNode = null;
+            }
         }
 
         displayValue(document.getElementById('patient-nom'), currentCase.patient.nom, 'patient.nom');
@@ -1583,13 +1624,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Start the timer only after nurse is dismissed
                     if (timerInterval) clearInterval(timerInterval);
                     timerInterval = setInterval(updateTimer, 1000);
+
+                    if (isUrgenceMode) renderUrgenceState();
                 }
             );
+        } else if (isUrgenceMode) {
+            renderUrgenceState();
         }
     }
 
     function updateExamsTabVisibility() {
         const hasExams = currentCase && currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0;
+
+        // Urgence tab visibility
+        const navIntervention = document.getElementById('nav-intervention-rapide');
+        const mobileIntervention = document.getElementById('mobile-tab-intervention');
+        if (navIntervention) navIntervention.style.display = isUrgenceMode ? '' : 'none';
+        if (mobileIntervention) mobileIntervention.style.display = isUrgenceMode ? '' : 'none';
 
         // Sidebar navigation - onglet Examens Compl.
         const sidebarExamTab = document.querySelector('.nav-item[data-target="section-examens"]');
@@ -1710,8 +1761,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             percentageScore += diagnosticWeight;
         }
 
+        // --- FATAL ERROR CHECK ---
+        const fatalTreatments = currentCase.fatalTreatments || [];
+        const selectedFatalTreatments = selectedTreatments.filter(t => fatalTreatments.includes(t));
+        const hasFatalError = selectedFatalTreatments.length > 0;
+
         // Treatment score
-        if (correctTreatments.length > 0) {
+        if (correctTreatments.length > 0 && !hasFatalError) {
             const correctSelectedCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
             const incorrectSelectedCount = selectedTreatments.filter(t => !correctTreatments.includes(t)).length;
 
@@ -1719,12 +1775,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Max: if selected number exceeds correct 
             const treatmentPointsPerCorrect = treatmentWeight / Math.max(correctTreatments.length, selectedTreatments.length);
             percentageScore += correctSelectedCount * treatmentPointsPerCorrect;
-
-            // Optionally penalize for wrong treatments (commented out for now)
-            // percentageScore -= incorrectSelectedCount * (treatmentPointsPerCorrect / 2);
         }
+        // If fatal error: treatment portion stays at 0
 
         percentageScore = Math.max(0, Math.min(100, Math.round(percentageScore)));
+
+        // --- TIME BONUS (up to +10%) ---
+        const totalTime = getTimeLimit();
+        const timeBonus = (timeLeft > 0)
+            ? Math.round(10 * (timeLeft / totalTime))
+            : 0;
+        const xpEarned = percentageScore + timeBonus;
 
         // Build color-coded comparison HTML
         const diagnosticCorrect = selectedDiagnostic === correctDiagnostic;
@@ -1755,12 +1816,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             return `<span style="${style}">${t}</span>`;
         }).join(' ');
 
+        // Build fatal error banner if applicable
+        const fatalBanner = hasFatalError ? `
+            <div style="background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
+                <div style="color: #e74c3c; font-size: 1.4em; font-weight: bold; margin-bottom: 6px;"><i class="fas fa-skull-crossbones"></i> ERREUR FATALE COMMISE</div>
+                <p style="color: rgba(255,255,255,0.85); margin: 0;">Les traitements suivants sont contre-indiqués ou dangereux : <strong style="color:#e74c3c;">${selectedFatalTreatments.join(', ')}</strong></p>
+                <p style="color: rgba(255,255,255,0.6); font-size: 0.85em; margin-top: 6px;">Score de traitement annulé. En médecine, prescrire un soin contre-indiqué peut mettre la vie du patient en danger.</p>
+            </div>
+        ` : '';
+
+        // Build time bonus display
+        const timeBonusHtml = timeBonus > 0 ? `
+            <div style="display:inline-block; background: rgba(79,172,254,0.15); border:1px solid rgba(79,172,254,0.4); border-radius:8px; padding: 4px 12px; margin-left: 10px; font-size:0.75em; color: #4facfe; vertical-align:middle;">
+                <i class="fas fa-clock"></i> +${timeBonus} XP Bonus Temps
+            </div>
+        ` : '';
+
         const comparisonHtml = `
+            ${fatalBanner}
             <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                 <div style="text-align: center; margin-bottom: 15px;">
                     <h3 style="color: ${percentageScore >= 50 ? '#2ecc71' : '#e74c3c'}; font-size: 2em; margin: 0;">
-                        Score: ${percentageScore}%
+                        Score: ${percentageScore}% ${timeBonusHtml}
                     </h3>
+                    <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
                 </div>
                 <div style="margin-bottom: 10px;">
                     <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
@@ -1784,14 +1863,64 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ALWAYS show correction and update cookie
         startPostGameQuiz(comparisonHtml);
 
-        // Mise à jour du cookie
+        // Mise à jour du cookie local
         let playedCases = getCookie('playedCases');
         playedCases = playedCases ? playedCases.split(',') : [];
         if (!playedCases.includes(currentCase.id)) {
             playedCases.push(currentCase.id);
             setCookie('playedCases', playedCases.join(','), 365);
         }
+
+        // SUPABASE: Sauvegarde de la session de jeu et XP
+        if (typeof supabase !== 'undefined') {
+            supabase.auth.getUser().then(async ({ data: { user } }) => {
+                if (user) {
+                    try {
+                        const stats = {
+                            attempts: attempts,
+                            diagnosticCorrect: diagnosticCorrect,
+                            selectedTreatments: selectedTreatments,
+                            hasFatalError: hasFatalError,
+                            timeBonus: timeBonus
+                        };
+
+                        // 1. Enregistrer la session
+                        const { error: sessionError } = await supabase
+                            .from('play_sessions')
+                            .insert([
+                                {
+                                    user_id: user.id,
+                                    case_id: currentCase.id,
+                                    score: percentageScore,
+                                    stats: stats
+                                }
+                            ]);
+                        if (sessionError) throw sessionError;
+
+                        // 2. Mettre à jour l'XP global (score + bonus de temps)
+                        const { data: profile, error: profileErr } = await supabase
+                            .from('profiles')
+                            .select('total_xp')
+                            .eq('id', user.id)
+                            .single();
+
+                        if (!profileErr && profile) {
+                            const newXp = profile.total_xp + xpEarned;
+                            await supabase
+                                .from('profiles')
+                                .update({ total_xp: newXp })
+                                .eq('id', user.id);
+                        }
+
+                        console.log("Progression sauvegardée dans Supabase ! XP gagné:", xpEarned, "(Score:", percentageScore, "+ Bonus Temps:", timeBonus, ")");
+                    } catch (err) {
+                        console.error("Erreur lors de la sauvegarde Supabase :", err);
+                    }
+                }
+            });
+        }
     });
+
 
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
 
@@ -1951,6 +2080,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (tabId === 'decision') {
             document.getElementById('section-synthese').classList.add('mobile-active');
             updateSidebarActive('section-synthese');
+        } else if (tabId === 'intervention-rapide') {
+            document.getElementById('section-intervention-rapide').classList.add('mobile-active');
+            updateSidebarActive('section-intervention-rapide');
         }
 
         // Scroll to top
@@ -2161,6 +2293,112 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }, 1000);
             }
         }
+    }
+
+    // --- URGENCE MODE LOGIC ---
+    function renderUrgenceState() {
+        if (!isUrgenceMode || !currentUrgenceNode) return;
+
+        const banner = document.getElementById('urgence-description-banner');
+        if (banner) {
+            banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${currentUrgenceNode.descriptionClinique}`;
+            banner.style.background = 'rgba(255, 71, 87, 0.3)';
+            setTimeout(() => { banner.style.background = 'rgba(255, 71, 87, 0.1)'; }, 1000);
+        }
+
+
+        if (currentUrgenceNode.constantesCibles && vitalMonitorInstance) {
+            const cibles = currentUrgenceNode.constantesCibles;
+            const bpStr = cibles.tension || "120/80";
+            const bp = parseBP(bpStr);
+            vitalMonitorInstance.updateProps({
+                systolic: bp.systolic,
+                diastolic: bp.diastolic,
+                heartRate: parseInt(cibles.pouls) || 72,
+                spo2: parseInt(cibles.saturationO2) || 98,
+                temperature: parseFloat(cibles.temperature) || 36.6,
+                respiratoryRate: parseInt(cibles.frequenceRespiratoire) || 16
+            });
+            const tEl = document.getElementById('tension'); if (tEl) tEl.textContent = cibles.tension || '';
+            const pEl = document.getElementById('pouls'); if (pEl) pEl.textContent = cibles.pouls || '';
+            const sEl = document.getElementById('saturationO2'); if (sEl) sEl.textContent = cibles.saturationO2 || '';
+            const fEl = document.getElementById('frequenceRespiratoire'); if (fEl) fEl.textContent = cibles.frequenceRespiratoire || '';
+        }
+
+        const actionsContainer = document.getElementById('urgence-actions-container');
+        if (actionsContainer) {
+            actionsContainer.innerHTML = '';
+            if (currentUrgenceNode.actionsDisponibles) {
+                currentUrgenceNode.actionsDisponibles.forEach(action => {
+                    const btn = document.createElement('button');
+                    btn.className = 'action-btn';
+                    btn.style.margin = '5px';
+                    btn.innerHTML = `<i class="fas fa-syringe"></i> ${action.label} <span style="font-size:0.8em; opacity:0.8;">(-${action.tempsExecutionSec}s)</span>`;
+                    btn.onclick = () => executeUrgenceAction(action);
+                    actionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+        if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
+            urgenceTimerTimeout = setTimeout(() => {
+                showNotification(`⚠️ ALERTE : ${currentUrgenceNode.evolutionAuto.motif}`);
+                transitionUrgenceState(currentUrgenceNode.evolutionAuto.nextNode);
+            }, currentUrgenceNode.evolutionAuto.delaiSecondes * 1000);
+        }
+
+        if (currentUrgenceNode.isEndState) {
+            if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+            if (timerInterval) clearInterval(timerInterval);
+
+            const playedCases = getCookie('playedCases');
+            let arr = playedCases ? playedCases.split(',') : [];
+            if (!arr.includes(currentCase.id)) {
+                arr.push(currentCase.id);
+                setCookie('playedCases', arr.join(','), 365);
+            }
+
+            setTimeout(() => {
+                let html = `<h2>${currentUrgenceNode.success ? '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Patient Sauvé' : '<i class="fas fa-skull" style="color: #e74c3c;"></i> Échec Critique'}</h2>`;
+                html += `<p>${currentUrgenceNode.descriptionClinique}</p>`;
+                if (currentCase.correction) {
+                    html += `<hr>${currentCase.correction}`;
+                }
+                showCorrectionModal(html);
+
+                if (currentUrgenceNode.success) {
+                    const container = document.querySelector('#fireworks-container');
+                    const fireworks = new Fireworks(container, { duration: 3 });
+                    fireworksInstance = fireworks;
+                    fireworks.start();
+                    const successSound = new Audio('assets/sounds/feux_artifice.mp3');
+                    successSound.play();
+                } else {
+                    const failSound = new Audio('assets/sounds/flatline.mp3');
+                    failSound.play().catch(e => console.log('No fail sound playing'));
+                }
+            }, 1000);
+        }
+    }
+
+    function executeUrgenceAction(action) {
+        if (window.deductTime) {
+            window.deductTime(action.tempsExecutionSec);
+        }
+        if (action.feedback) {
+            showNotification(action.feedback);
+        }
+        transitionUrgenceState(action.nextNode);
+    }
+
+    function transitionUrgenceState(nextNodeId) {
+        if (!currentCase.nodes || !currentCase.nodes[nextNodeId]) {
+            console.error("Unknown node:", nextNodeId);
+            return;
+        }
+        currentUrgenceNode = currentCase.nodes[nextNodeId];
+        renderUrgenceState();
     }
 
     const appContainer = document.querySelector('.app-container');

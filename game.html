@@ -25,6 +25,8 @@
     <!-- Ajout de Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/fireworks.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -34,7 +36,13 @@
     </audio>
 
     <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
     <script>
+        // Vérifier l'authentification
+        document.addEventListener('DOMContentLoaded', async () => {
+            await window.requireAuth();
+        });
+
         // Disable audio if MUSIC_ENABLED is 0
         if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
             const audio = document.getElementById('heartbeat-audio');
@@ -76,6 +84,10 @@
                 </button>
                 <button class="nav-item" data-target="section-examens">
                     <i class="fas fa-flask"></i> Examens Compl.
+                </button>
+                <button class="nav-item" id="nav-intervention-rapide" data-target="section-intervention-rapide"
+                    style="display: none; color: #ff4757; text-shadow: 0 0 5px rgba(255, 71, 87, 0.5);">
+                    <i class="fas fa-bolt"></i> Intervention Vite!
                 </button>
                 <button class="nav-item" data-target="section-synthese">
                     <i class="fas fa-check-circle"></i> Synthèse & Décision
@@ -239,6 +251,26 @@
                     </div>
                 </section>
 
+                <!-- SECTION: INTERVENTION RAPIDE (Urgence) -->
+                <section id="section-intervention-rapide" class="game-section">
+                    <h2 class="section-header" style="color: #ff4757;"><i class="fas fa-bolt"></i> INTERVENTION RAPIDE
+                    </h2>
+                    <div class="grid-layout">
+                        <div class="medical-card full-width"
+                            style="border-top: 4px solid #ff4757; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.2);">
+                            <div id="urgence-description-banner"
+                                style="background: rgba(255, 71, 87, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 1.1em; color: #ff6b81; border-left: 5px solid #ff4757; transition: all 0.3s ease;">
+                                <!-- Description clinique dynamique de l'état d'urgence -->
+                            </div>
+                            <h3 class="card-title">Actions Immédiates Disponibles</h3>
+                            <div id="urgence-actions-container" class="treatments-grid"
+                                style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                                <!-- Boutons d'action générés dynamiquement par game.js -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- SECTION: SYNTHÈSE & DÉCISION -->
                 <section id="section-synthese" class="game-section">
                     <h2 class="section-header">4. SYNTHÈSE & DÉCISION</h2>
@@ -292,6 +324,11 @@
             <button class="mobile-tab-item" data-tab="decision">
                 <i class="fas fa-check-circle"></i>
                 <span>Décision</span>
+            </button>
+            <button class="mobile-tab-item" id="mobile-tab-intervention" data-tab="intervention-rapide"
+                style="color: #ff4757;">
+                <i class="fas fa-bolt"></i>
+                <span>Intervention</span>
             </button>
         </nav>
     </div>

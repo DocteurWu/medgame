@@ -1,0 +1,120 @@
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    background: rgba(10, 15, 30, 0.4);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+    background: rgba(10, 15, 30, 0.6);
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.error-message {
+    color: #ff4757;
+    font-size: 0.9rem;
+    text-align: center;
+    min-height: 20px;
+    display: none;
+    background: rgba(255, 71, 87, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.success-message {
+    color: #2ecc71;
+    font-size: 0.9rem;
+    text-align: center;
+    min-height: 20px;
+    display: none;
+    background: rgba(46, 204, 113, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+/* Role Selector Styles */
+.role-selector {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.role-option {
+    flex: 1;
+    cursor: pointer;
+}
+
+.role-option input {
+    display: none;
+}
+
+.role-card {
+    display: block;
+    padding: 12px 5px;
+    text-align: center;
+    background: rgba(10, 15, 30, 0.4);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.role-option input:checked+.role-card {
+    border-color: var(--primary);
+    color: white;
+    background: rgba(0, 242, 254, 0.15);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+}
+
+.role-option:hover .role-card {
+    border-color: rgba(0, 242, 254, 0.6);
+    background: rgba(10, 15, 30, 0.6);
+}
+
+/* Spinner pour le bouton */
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

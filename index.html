@@ -16,11 +16,15 @@
 
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/index.css?v=1.2">
     <link rel="stylesheet" href="css/device-check.css">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Three.js pour la 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -31,6 +35,23 @@
     <div id="canvas-container"></div>
     <script src="js/config.js"></script>
 
+    <!-- Badge utilisateur connecté (coin haut droit) -->
+    <div id="user-badge-top"
+        style="display:none; position:fixed; top:18px; right:22px; z-index:1000; align-items:center; gap:10px; background:rgba(10,15,40,0.75); backdrop-filter:blur(12px); border:1px solid rgba(0,242,254,0.25); border-radius:50px; padding:8px 16px 8px 10px; box-shadow:0 4px 20px rgba(0,0,0,0.4);">
+        <div
+            style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-user-md" style="color:#0a0f28;font-size:0.85rem;"></i>
+        </div>
+        <span id="top-username"
+            style="color:#fff;font-weight:600;font-size:0.9rem;font-family:'Outfit',sans-serif;">...</span>
+        <button onclick="window.logoutUser()" title="Se déconnecter"
+            style="background:rgba(255,71,87,0.12);border:1px solid rgba(255,71,87,0.3);color:#ff4757;cursor:pointer;padding:5px 10px;border-radius:20px;font-size:0.78rem;transition:all 0.2s;font-family:'Outfit',sans-serif;"
+            onmouseover="this.style.background='rgba(255,71,87,0.25)'"
+            onmouseout="this.style.background='rgba(255,71,87,0.12)'">
+            <i class="fas fa-sign-out-alt"></i> Quitter
+        </button>
+    </div>
+
     <div class="scene-overlay">
         <div class="glass-card" id="main-card">
             <div class="header-content">
@@ -38,33 +59,65 @@
                     <i class="fas fa-heartbeat"></i>
                 </div>
                 <h1 class="glitch-title" data-text="MEDGAME">MEDGAME</h1>
-                <p class="subtitle">Simulation Clinique à Bichat
+                <p class="subtitle">Simulation Clinique à Bichat</p>
             </div>
 
             <div class="button-container">
-                <button class="btn-3d primary" id="play-button" onclick="transitionTo('themes.html')">
+                <!-- Boutons réservés aux utilisateurs connectés -->
+                <button class="btn-3d primary auth-only" id="play-button" onclick="transitionTo('themes.html')"
+                    style="display:none;">
                     <span class="btn-content"><i class="fas fa-play"></i> Commencer ma garde</span>
                     <div class="btn-layer"></div>
                 </button>
 
+                <!-- Section auth: login ou déconnexion -->
+                <div id="auth-section" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="btn-3d" id="login-nav-button" onclick="transitionTo('login.html')"
+                        style="border-color: rgba(0, 242, 254, 0.4);">
+                        <span class="btn-content"><i class="fas fa-user-md"></i> Connexion / Inscription</span>
+                        <div class="btn-layer" style="background: linear-gradient(90deg, #4facfe, #00f2fe);"></div>
+                    </button>
+                </div>
+
+                <!-- Toujours visible -->
                 <button class="btn-3d secondary" id="tutorial-button" onclick="transitionTo('tutorial.html')">
                     <span class="btn-content"><i class="fas fa-book-medical"></i> Comment jouer ?</span>
                     <div class="btn-layer"></div>
                 </button>
 
-                <button class="btn-3d tertiary" id="settings-button">
+                <!-- Boutons réservés aux utilisateurs connectés -->
+                <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;">
                     <span class="btn-content"><i class="fas fa-sliders-h"></i> Réglages</span>
                     <div class="btn-layer"></div>
                 </button>
 
-                <button class="btn-3d" id="editor-button" onclick="transitionTo('editor.html')"
-                    style="margin-top: 10px; border-color: rgba(255, 255, 255, 0.2);">
-                    <span class="btn-content"><i class="fas fa-edit"></i>Créer/modifier un Cas</span>
+                <button class="btn-3d auth-only" id="editor-button" onclick="transitionTo('editor.html')"
+                    style="display:none; border-color: rgba(255, 255, 255, 0.2);">
+                    <span class="btn-content"><i class="fas fa-edit"></i> Créer / Soumettre un Cas</span>
                     <div class="btn-layer" style="background: linear-gradient(90deg, #ff9a9e, #fecfef);"></div>
                 </button>
+
             </div>
 
             <p class="disclaimer">Simulation à but éducatif uniquement (logique)</p>
+        </div>
+    </div>
+
+    <!-- Bouton Admin exclusif (En dehors) -->
+    <button id="admin-button" onclick="transitionTo('admin.html')"
+        style="display:none; position:fixed; bottom:25px; left:25px; z-index:1000; padding:12px 24px; border-radius:30px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff4757; font-family:'Outfit', sans-serif; font-weight:600; cursor:pointer; backdrop-filter:blur(10px); transition:all 0.3s; box-shadow:0 4px 15px rgba(0,0,0,0.3); align-items:center; gap:10px;"
+        onmouseover="this.style.background='rgba(255,71,87,0.3)'; this.style.transform='scale(1.05)';"
+        onmouseout="this.style.background='rgba(255,71,87,0.15)'; this.style.transform='scale(1)';">
+        <i class="fas fa-user-shield"></i> Administration Système
+    </button>
+
+    <!-- Classement Top Joueurs (masqué par défaut) -->
+    <div class="leaderboard-panel" id="leaderboard" style="display: none;">
+        <div class="leaderboard-header">
+            <h3><i class="fas fa-trophy"></i> Top Médecins</h3>
+        </div>
+        <div class="leaderboard-list" id="leaderboard-list">
+            <div style="text-align:center; color:rgba(255,255,255,0.5); padding: 20px 0;">Chargement...</div>
         </div>
     </div>
 
@@ -95,6 +148,41 @@
                             <small>Mode Investigation (poser les questions) EN COURS DE DEV</small>
                         </span>
                     </label>
+                </div>
+
+                <p class="setting-label" style="margin-top: 25px;">Mon Profil</p>
+                <div
+                    style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                    <!-- Toggle Public -->
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.9rem; color: #fff;">Profil Public</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.72rem;">Apparaître dans le
+                                classement</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-public-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <!-- Séparateur -->
+                    <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05);"></div>
+
+                    <!-- Pseudonyme -->
+                    <div class="setting-input-group" style="margin: 0;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label class="setting-label"
+                                style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);"><i
+                                    class="fas fa-user-edit"></i> Pseudonyme</label>
+                            <span id="username-status"
+                                style="font-size: 0.65rem; color: rgba(255,255,255,0.4); background: rgba(0,0,0,0.2); padding: 3px 6px; border-radius: 6px; font-weight: 500;">Modifiable
+                                1x/sem</span>
+                        </div>
+                        <input type="text" id="setting-username" class="setting-input" placeholder="Ton pseudo..."
+                            style="padding: 10px 14px; font-size: 0.9rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
+                    </div>
                 </div>
             </div>
 
@@ -349,20 +437,132 @@
         const closeBtn = document.getElementById('settings-close-icon');
         const saveBtn = document.getElementById('settings-save');
 
-        const openModal = () => {
+        const openModal = async () => {
             modal.classList.add('active');
             const current = sessionStorage.getItem('immersionMode') || 'classique';
             const radio = document.querySelector(`input[name="immersionMode"][value="${current}"]`);
             if (radio) radio.checked = true;
+
+            const usernameInput = document.getElementById('setting-username');
+            const usernameStatus = document.getElementById('username-status');
+
+            // État par défaut
+            usernameInput.disabled = true;
+            usernameInput.value = "Chargement...";
+
+            // Charger les données du profil depuis Supabase
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    const { data, error } = await supabase
+                        .from('profiles')
+                        .select('username, is_public, username_updated_at')
+                        .eq('id', session.user.id)
+                        .single();
+
+                    if (!error && data) {
+                        document.getElementById('setting-public-toggle').checked = data.is_public;
+
+                        // Gestion du pseudonyme
+                        const defaultPseudo = session.user.email.substring(0, 3) + '***';
+                        const currentUsername = data.username || defaultPseudo;
+                        usernameInput.value = currentUsername;
+
+                        // Vérifier la date du dernier changement (1 semaine = 7 jours)
+                        const lastUpdate = data.username_updated_at ? new Date(data.username_updated_at) : null;
+                        const now = new Date();
+                        const offset = 7 * 24 * 60 * 60 * 1000; // 7 jours en ms
+
+                        if (!lastUpdate || (now - lastUpdate) > offset) {
+                            usernameInput.disabled = false;
+                            usernameStatus.innerHTML = '<i class="fas fa-pen"></i> Changement dispo';
+                            usernameStatus.style.color = 'rgba(255, 255, 255, 0.5)';
+                        } else {
+                            const nextUpdate = new Date(lastUpdate.getTime() + offset);
+                            const diffDays = Math.ceil((nextUpdate - now) / (24 * 60 * 60 * 1000));
+                            usernameInput.disabled = true;
+                            usernameStatus.innerHTML = `<i class="fas fa-lock"></i> Bloqué (${diffDays}j)`;
+                            usernameStatus.style.color = 'rgba(255, 255, 255, 0.3)';
+                        }
+                    } else if (error) {
+                        console.error("Erreur chargement profil:", error);
+                        usernameInput.value = session.user.email.split('@')[0];
+                        usernameInput.disabled = false;
+                    }
+                }
+            }
         };
         const closeModal = () => modal.classList.remove('active');
 
-        const saveSettings = () => {
+        const saveSettings = async () => {
+            const saveBtn = document.getElementById('settings-save');
+            const originalText = saveBtn.textContent;
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Sabre au clair...";
+
             const checked = document.querySelector('input[name="immersionMode"]:checked');
             if (checked) {
                 sessionStorage.setItem('immersionMode', checked.value);
-                closeModal();
             }
+
+            const newUsername = document.getElementById('setting-username').value.trim();
+            const isPublic = document.getElementById('setting-public-toggle').checked;
+
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    const updateData = { is_public: isPublic };
+
+                    // N'ajouter le username que s'il a changé et n'est pas vide et que l'input n'est pas disabled
+                    const usernameInput = document.getElementById('setting-username');
+                    if (!usernameInput.disabled && newUsername && newUsername.length >= 3) {
+
+                        // --- VÉRIFICATION MOTS INTERDITS ---
+                        const { data: bannedWords, error: bannedErr } = await supabase
+                            .from('banned_usernames')
+                            .select('word');
+
+                        if (!bannedErr && bannedWords) {
+                            const newUsernameLower = newUsername.toLowerCase();
+                            const isBanned = bannedWords.some(bw => newUsernameLower.includes(bw.word.toLowerCase()));
+                            if (isBanned) {
+                                alert("Ce pseudonyme contient un mot interdit et ne peut pas être utilisé.");
+                                saveBtn.textContent = originalText;
+                                saveBtn.disabled = false;
+                                return; // Stoppe la sauvegarde
+                            }
+                        }
+                        // ------------------------------------
+
+                        updateData.username = newUsername;
+                        updateData.username_updated_at = new Date().toISOString();
+                    }
+
+                    const { error } = await supabase
+                        .from('profiles')
+                        .update(updateData)
+                        .eq('id', session.user.id);
+
+                    if (error) {
+                        console.error("Erreur sauvegarde réglages:", error);
+                        alert("Erreur lors de la sauvegarde : " + error.message);
+                    } else {
+                        if (window.loadLeaderboard) window.loadLeaderboard();
+                        // Mettre à jour le badge si besoin
+                        const topUsername = document.getElementById('top-username');
+                        if (topUsername && newUsername) {
+                            // On garde le rang et l'xp
+                            const currentBadgeHtml = topUsername.innerHTML;
+                            const badgeParts = currentBadgeHtml.split('<span');
+                            topUsername.innerHTML = `${newUsername} <span${badgeParts[1]}`;
+                        }
+                    }
+                }
+            }
+
+            saveBtn.disabled = false;
+            saveBtn.textContent = originalText;
+            closeModal();
         };
 
         settingsBtn.addEventListener('click', openModal);
@@ -390,6 +590,147 @@
             const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
+    </script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Check session to update Auth UI on index
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+
+                if (session) {
+                    // --- Utilisateur CONNECTÉ ---
+
+                    // Cacher la section auth, montrer les boutons auth-only
+                    document.getElementById('auth-section').style.display = 'none';
+
+                    document.querySelectorAll('.auth-only').forEach(el => {
+                        el.style.display = '';
+                    });
+
+                    // Afficher le classement
+                    const lb = document.getElementById('leaderboard');
+                    if (lb) {
+                        lb.style.display = 'flex';
+                        if (window.loadLeaderboard) window.loadLeaderboard();
+                    }
+
+                    // Fetch profile info
+                    const defaultPseudo = session.user.email.substring(0, 3) + '***';
+                    let displayedUsername = defaultPseudo;
+                    let niveau = 1;
+
+                    // Helper: calcule le niveau depuis le XP total (XP_requis = 150 * Niveau^1.5)
+                    function calculateLevel(xp) {
+                        if (!xp || xp <= 0) return 1;
+                        return Math.floor(Math.pow(xp / 150, 2 / 3)) + 1;
+                    }
+
+                    try {
+                        const { data: profile, error } = await supabase
+                            .from('profiles')
+                            .select('username, total_xp, rank')
+                            .eq('id', session.user.id)
+                            .single();
+
+                        if (!error && profile) {
+                            if (profile.username) displayedUsername = profile.username;
+                            niveau = calculateLevel(profile.total_xp || 0);
+                            xpText = `${profile.total_xp || 0} XP`;
+                            rankText = `Niv. ${niveau} ${profile.rank ? '· ' + profile.rank : ''}`;
+                        }
+                    } catch (err) {
+                        console.error("Erreur chargement profil:", err);
+                    }
+
+                    // Badge haut droit
+                    const badge = document.getElementById('user-badge-top');
+                    badge.style.display = 'flex';
+                    document.getElementById('top-username').innerHTML =
+                        `${displayedUsername} <span style="font-size:0.75em;opacity:0.75;margin-left:6px;background:rgba(0,242,254,0.18);padding:2px 7px;border-radius:20px;font-weight:400;">${rankText} • ${xpText}</span>`;
+
+                    const isAdminUser = await window.isAdmin();
+
+                    // Vérifier si Admin
+                    if (isAdminUser) {
+                        const adminBtn = document.getElementById('admin-button');
+                        if (adminBtn) adminBtn.style.display = 'flex';
+                    }
+
+                    // Gérer le bouton Éditeur (Niveau 2 requis)
+                    const editorBtn = document.getElementById('editor-button');
+                    if (editorBtn) {
+                        if (niveau >= 2 || isAdminUser) {
+                            // Laisser le comportement interactif/visuel par défaut
+                        } else {
+                            // Verrouiller
+                            editorBtn.onclick = () => alert("Le mode Création de Cas est débloqué à partir du Niveau 2 ! Jouez quelques cas pour gagner de l'XP.");
+                            const contentSpan = editorBtn.querySelector('.btn-content');
+                            if (contentSpan) contentSpan.innerHTML = '<i class="fas fa-lock"></i> Créer un Cas (Niv. 2)';
+                            const btnLayer = editorBtn.querySelector('.btn-layer');
+                            if (btnLayer) btnLayer.style.background = 'rgba(255,255,255,0.05)';
+                            editorBtn.style.opacity = '0.6';
+                        }
+                    }
+
+                } else {
+                    // --- Utilisateur NON connecté ---
+                    // Seulement "Comment jouer" et "Connexion" visibles (déjà l'état par défaut)
+                    document.getElementById('user-badge-top').style.display = 'none';
+                }
+            }
+        });
+    </script>
+    <script>
+        window.loadLeaderboard = async function () {
+            const listContainer = document.getElementById('leaderboard-list');
+            if (!listContainer || typeof supabase === 'undefined') return;
+
+            try {
+                const { data: topPlayers, error } = await supabase
+                    .from('profiles')
+                    .select('username, total_xp, rank')
+                    .eq('is_public', true)
+                    .order('total_xp', { ascending: false })
+                    .limit(10);
+
+                if (error) throw error;
+
+                if (!topPlayers || topPlayers.length === 0) {
+                    listContainer.innerHTML = '<div style="text-align:center; color:rgba(255,255,255,0.5); padding: 20px 0;">Aucun classement disponible.</div>';
+                    return;
+                }
+
+                listContainer.innerHTML = '';
+                topPlayers.forEach((player, index) => {
+                    // Optionnel: ne pas afficher tous les 0 XP s'il y en a trop
+                    if (player.total_xp === 0 && index > 4) return;
+
+                    const rankPos = index + 1;
+                    const item = document.createElement('div');
+                    item.className = `leaderboard-item ${rankPos <= 3 ? 'rank-' + rankPos : ''}`;
+
+                    const username = player.username || 'Anonyme';
+                    const role = player.rank || 'Externe';
+
+                    item.innerHTML = `
+                        <div class="lb-rank">${rankPos}</div>
+                        <div class="lb-info">
+                            <span class="lb-name">${username}</span>
+                            <span class="lb-role">${role}</span>
+                        </div>
+                        <div class="lb-xp">${player.total_xp} XP</div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+
+            } catch (err) {
+                console.error("Erreur chargement classement:", err);
+                listContainer.innerHTML = '<div style="text-align:center; color:#ff4757; padding: 20px 0;">Erreur de chargement.</div>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
     </script>
     <script src="js/device-check.js"></script>
 </body>

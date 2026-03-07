@@ -153,16 +153,76 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Add Exam Section Listener (moved out of initial block)
-    const addExamBtn = document.getElementById('add-exam-section');
-    if (addExamBtn) {
-        addExamBtn.addEventListener('click', () => {
-            const key = prompt('Nom de la section (ex: examenNeurologique, examenORL...)');
-            if (key) {
-                renderExamSection(key, { "Champ1": "Valeur1" });
+    // Push to Supabase handler
+    document.getElementById('push-supabase').addEventListener('click', async () => {
+        const data = collectData();
+        const btn = document.getElementById('push-supabase');
+        const originalHtml = btn.innerHTML;
+
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+        btn.disabled = true;
+
+        try {
+            const user = await window.requireAuth();
+            if (!user) return;
+
+            const isUserAdmin = await window.isAdmin();
+            const editingId = sessionStorage.getItem('editingCaseId');
+
+            let status = isUserAdmin ? 'published' : 'pending';
+            let specialty = prompt("Spécialité du cas ?", data.specialty || "Cardiologie");
+            if (!specialty) specialty = "Cardiologie";
+
+            let result;
+            if (isUserAdmin && editingId) {
+                // Update existing case
+                result = await supabase
+                    .from('cases')
+                    .update({
+                        content: data,
+                        specialty: specialty,
+                        title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
+                        author_name: data.redacteur || user.email
+                    })
+                    .eq('id', editingId);
+
+                if (!result.error) alert("Cas mis à jour avec succès !");
+            } else {
+                // Insert new case
+                result = await supabase
+                    .from('cases')
+                    .insert([{
+                        id: data.id || 'case_' + Date.now(),
+                        content: data,
+                        specialty: specialty,
+                        title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
+                        status: status,
+                        author_name: data.redacteur || user.email
+                    }]);
+
+                if (!result.error) {
+                    if (isUserAdmin) alert("Nouveau cas publié !");
+                    else alert("Cas soumis pour review ! Merci pour votre contribution.");
+                }
             }
-        });
-    }
+
+            if (result.error) throw result.error;
+        } catch (err) {
+            console.error("Push error:", err);
+            alert("Erreur lors de l'envoi : " + err.message);
+        } finally {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+        }
+    });
+
+    // Check admin link visibility
+    (async () => {
+        if (await window.isAdmin()) {
+            const adminLink = document.getElementById('admin-link');
+            if (adminLink) adminLink.style.display = 'flex';
+        }
+    })();
 });
 
 window.clearEditor = function () {
@@ -252,11 +312,9 @@ function populateEditor(data) {
     // Exam Results & Available Exams
     renderExamResults(data.availableExams, data.examResults);
 
-    // Synthesis
-    renderTextList('possible-diagnostics', data.possibleDiagnostics);
-    setText('correctDiagnostic', data.correctDiagnostic);
-    renderTextList('possible-treatments', data.possibleTreatments);
-    renderTextList('correct-treatments-list', data.correctTreatments);
+    // Synthesis - Unified lists
+    populateDiagnosticList(data.possibleDiagnostics, data.correctDiagnostic);
+    populateTreatmentList(data.possibleTreatments, data.correctTreatments, data.fatalTreatments);
     document.getElementById('correction-text').innerText = data.correction || '';
 
     // Correction Image
@@ -338,11 +396,12 @@ function collectData() {
         },
         availableExams: collectAvailableExams(),
         examResults: collectExamResults(),
-        possibleDiagnostics: collectTextList('possible-diagnostics'),
-        correctDiagnostic: getText('correctDiagnostic'),
+        possibleDiagnostics: collectDiagnosticList(),
+        correctDiagnostic: collectCorrectDiagnostic(),
         scoringRules: { baseScore: 100, attemptPenalty: 10 },
-        possibleTreatments: collectTextList('possible-treatments'),
-        correctTreatments: collectTextList('correct-treatments-list'),
+        possibleTreatments: collectTreatmentAttr('all'),
+        correctTreatments: collectTreatmentAttr('correct'),
+        fatalTreatments: collectTreatmentAttr('fatal'),
         correction: document.getElementById('correction-text').innerText,
         correctionImage: document.querySelector('#correction-image-container .image-preview')?.dataset.base64 || null,
         feedback: { default: "Diagnostic incorrect." },
@@ -462,7 +521,94 @@ function renderTextList(containerId, list) {
 function collectTextList(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return [];
-    return Array.from(container.querySelectorAll('span')).map(s => s.textContent.trim());
+    return Array.from(container.querySelectorAll('span[data-text]')).map(s => s.dataset.text).filter(s => s);
+}
+
+// ---- UNIFIED DIAGNOSTIC LIST ----
+window.addDiagnosticItem = function (txt = '...', isCorrect = false) {
+    const container = document.getElementById('possible-diagnostics');
+    const id = 'diag_radio_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    const item = document.createElement('div');
+    item.className = 'editable-list-item';
+    item.style.alignItems = 'center';
+    item.style.gap = '10px';
+    item.innerHTML = `
+        <label title="Marquer comme diagnostic correct" style="cursor:pointer; display:flex; align-items:center; gap:6px; flex-shrink:0;">
+            <input type="radio" name="correct-diagnostic-radio" style="accent-color:#2ecc71; width:16px; height:16px; cursor:pointer;" ${isCorrect ? 'checked' : ''}>
+            <span style="color:#2ecc71; font-size:0.8em; white-space:nowrap;">Correct</span>
+        </label>
+        <span data-text="${txt.replace(/"/g, '&quot;')}" contenteditable="true" style="flex:1;" oninput="this.dataset.text=this.textContent.trim()">${txt}</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>
+    `;
+    container.appendChild(item);
+};
+
+function populateDiagnosticList(possibleDiags, correctDiag) {
+    const container = document.getElementById('possible-diagnostics');
+    container.innerHTML = '';
+    (possibleDiags || []).forEach(d => addDiagnosticItem(d, d === correctDiag));
+}
+
+function collectDiagnosticList() {
+    return Array.from(document.querySelectorAll('#possible-diagnostics [data-text]'))
+        .map(el => el.dataset.text).filter(s => s);
+}
+
+function collectCorrectDiagnostic() {
+    const checked = document.querySelector('#possible-diagnostics input[type="radio"]:checked');
+    if (!checked) return '';
+    const span = checked.closest('.editable-list-item').querySelector('[data-text]');
+    return span ? span.dataset.text : '';
+}
+
+// ---- UNIFIED TREATMENT LIST ----
+window.addTreatmentItem = function (txt = '...', isCorrect = false, isFatal = false) {
+    const container = document.getElementById('possible-treatments');
+    const item = document.createElement('div');
+    item.className = 'editable-list-item';
+    item.style.alignItems = 'center';
+    item.style.gap = '8px';
+    item.innerHTML = `
+        <label title="Correct" style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-shrink:0;">
+            <input type="checkbox" class="correct-check" style="accent-color:#2ecc71; width:15px; height:15px; cursor:pointer;" ${isCorrect ? 'checked' : ''}>
+            <span style="color:#2ecc71; font-size:0.78em;">✓</span>
+        </label>
+        <label title="Traitement Fatal (contre-indiqué)" style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-shrink:0;">
+            <input type="checkbox" class="fatal-check" style="accent-color:#e74c3c; width:15px; height:15px; cursor:pointer;" ${isFatal ? 'checked' : ''}>
+            <span style="color:#e74c3c; font-size:0.78em;">☠</span>
+        </label>
+        <span data-text="${txt.replace(/"/g, '&quot;')}" contenteditable="true" style="flex:1;" oninput="this.dataset.text=this.textContent.trim()">${txt}</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>
+    `;
+    // Auto-uncheck fatal if correct is checked (and vice versa)
+    const correctCb = item.querySelector('.correct-check');
+    const fatalCb = item.querySelector('.fatal-check');
+    correctCb.addEventListener('change', () => { if (correctCb.checked) fatalCb.checked = false; });
+    fatalCb.addEventListener('change', () => { if (fatalCb.checked) correctCb.checked = false; });
+    container.appendChild(item);
+};
+
+function populateTreatmentList(possible, correct, fatal) {
+    const container = document.getElementById('possible-treatments');
+    container.innerHTML = '';
+    const correctSet = new Set(correct || []);
+    const fatalSet = new Set(fatal || []);
+    (possible || []).forEach(t => addTreatmentItem(t, correctSet.has(t), fatalSet.has(t)));
+}
+
+function collectTreatmentAttr(type) {
+    const items = document.querySelectorAll('#possible-treatments .editable-list-item');
+    const results = [];
+    items.forEach(item => {
+        const text = item.querySelector('[data-text]')?.dataset.text || '';
+        if (!text) return;
+        const isCorrect = item.querySelector('.correct-check')?.checked;
+        const isFatal = item.querySelector('.fatal-check')?.checked;
+        if (type === 'all') results.push(text);
+        else if (type === 'correct' && isCorrect) results.push(text);
+        else if (type === 'fatal' && isFatal) results.push(text);
+    });
+    return results;
 }
 
 function formatExamKey(key) {
