@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formSubtitle = document.getElementById('form-subtitle');
     const errorTarget = document.getElementById('auth-error');
     const successTarget = document.getElementById('auth-success');
+    const roleGroup = document.getElementById('role-group');
 
     let isLoginMode = true; // true = Connexion, false = Création de compte
 
@@ -27,12 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 formSubtitle.textContent = "Accès Étudiant / Médecin";
                 document.querySelector('.glitch-title').setAttribute('data-text', 'CONNEXION');
                 document.querySelector('.glitch-title').textContent = 'CONNEXION';
+                if (roleGroup) roleGroup.style.display = 'none';
             } else {
                 submitText.innerHTML = '<i class="fas fa-user-plus"></i> S\'inscrire';
                 toggleModBtn.innerHTML = '<span class="btn-content"><i class="fas fa-sign-in-alt"></i> J\'ai déjà un compte</span><div class="btn-layer"></div>';
                 formSubtitle.textContent = "Rejoindre le Staff de Bichat";
                 document.querySelector('.glitch-title').setAttribute('data-text', 'INSCRIPTION');
                 document.querySelector('.glitch-title').textContent = 'INSCRIPTION';
+                if (roleGroup) roleGroup.style.display = 'block';
             }
         });
 
@@ -70,9 +73,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 } else {
                     // INSCRIPTION
+                    const selectedRank = document.querySelector('input[name="rank"]:checked')?.value || 'Autre';
+
                     const { data, error } = await supabase.auth.signUp({
                         email: email,
                         password: password,
+                        options: {
+                            data: {
+                                rank: selectedRank
+                            }
+                        }
                     });
 
                     if (error) throw error;
@@ -82,6 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         successTarget.textContent = "Compte créé ! Veuillez vérifier vos emails pour confirmer votre adresse.";
                         successTarget.style.display = 'block';
                     } else {
+                        // Mettre à jour manuellement le profil au cas où le trigger n'aurait pas tout pris
+                        if (data.user) {
+                            await supabase
+                                .from('profiles')
+                                .update({ rank: selectedRank })
+                                .eq('id', data.user.id);
+                        }
+
                         // Inscription réussie et connexion automatique
                         successTarget.textContent = "Inscription réussie ! Bienvenue.";
                         successTarget.style.display = 'block';
@@ -122,9 +140,26 @@ async function checkAndRedirectIfLoggedIn() {
     }
 }
 
+// Vérifie si l'utilisateur a le rôle admin
+window.isAdmin = async function () {
+    if (typeof supabase === 'undefined') return false;
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return false;
+
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+    if (error || !data) return false;
+    return data.role === 'admin';
+}
+
 // Vérifie si l'utilisateur est connecté. Sinon, redirige vers login.html.
 // À inclure au début des scripts sensibles (game.js, editor.js, themes.js)
-window.requireAuth = async function (redirectUrl = 'login.html') {
+window.requireAuth = async function (redirectUrl = 'login.html', requireAdmin = false) {
     if (typeof supabase === 'undefined') {
         console.warn("Supabase not initialized, skipping auth check.");
         return null;
@@ -138,6 +173,15 @@ window.requireAuth = async function (redirectUrl = 'login.html') {
         sessionStorage.setItem('redirectAfterLogin', window.location.href);
         window.location.href = redirectUrl;
         return null;
+    }
+
+    if (requireAdmin) {
+        const isUserAdmin = await window.isAdmin();
+        if (!isUserAdmin) {
+            console.log("Accès refusé: Administrateur requis.");
+            window.location.href = 'index.html';
+            return null;
+        }
     }
 
     return session.user;

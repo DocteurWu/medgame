@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/editor.css">
+
+    <style>
+        /* Specific Admin Styles extending game/editor CSS elements */
+        :root {
+            --admin-primary: #ff4757;
+            --admin-secondary: #2f3542;
+            --admin-warning: #ffa502;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .stat-val {
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .specialty-section {
+            margin-bottom: 40px;
+        }
+
+        .specialty-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .specialty-header h2 {
+            font-family: var(--font-title);
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .drag-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            min-height: 80px;
+        }
+
+        .case-card {
+            background: rgba(10, 15, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: grab;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .case-card:hover {
+            transform: translateY(-5px);
+            background: rgba(10, 15, 40, 0.8);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.15);
+        }
+
+        .case-card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: rgba(255, 165, 2, 0.15);
+            color: var(--admin-warning);
+            border: 1px solid rgba(255, 165, 2, 0.3);
+        }
+
+        .case-content h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .case-content p {
+            margin: 5px 0 0 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .case-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .case-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .action-edit:hover {
+            background: #3c40c6;
+        }
+
+        .action-delete:hover {
+            background: #ff4d4d;
+        }
+
+        .action-approve:hover {
+            background: #2ecc71;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 40px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0.5;
+        }
+
+        /* Override editor section styles */
+        .game-section {
+            display: none;
+        }
+
+        .game-section.active {
+            display: block;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a14;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+    </style>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <div id="loading" class="loading-overlay">
+        <div class="spinner"><i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--admin-primary);"></i>
+        </div>
+        <p style="margin-top: 20px;">Vérification des accès administrateur...</p>
+    </div>
+
+    <!-- Align with editor.html layout -->
+    <div class="app-container">
+        <!-- Sidebar Toggle Button -->
+        <button id="sidebar-toggle" class="sidebar-toggle" title="Afficher/Masquer le menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-user-shield" style="color: var(--admin-primary);"></i> MEDGAME ADMIN
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active nav-link" data-target="section-stats" data-section="section-stats">
+                    <i class="fas fa-chart-pie"></i> Vue d'ensemble
+                </button>
+                <button class="nav-item nav-link" data-target="section-cases" data-section="section-cases">
+                    <i class="fas fa-folder-open"></i> Gérer les Cas
+                </button>
+                <button class="nav-item nav-link" data-target="section-review" data-section="section-review">
+                    <i class="fas fa-user-edit"></i> Review Joueurs <span id="pending-count-nav" class="badge"
+                        style="background: var(--admin-primary); margin-left: auto; display: none;">0</span>
+                </button>
+                <button class="nav-item" onclick="window.location.href='editor.html'">
+                    <i class="fas fa-plus-circle"></i> Créer Cas
+                </button>
+            </nav>
+
+            <div class="editor-footer">
+                <a href="index.html" class="quit-btn" style="margin-top: 5px;">RETOUR ACCUEIL</a>
+                <button class="btn-editor danger-discrete" onclick="window.logoutUser()" style="margin-top: 5px;">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="case-info">
+                    <span class="label" style="color: var(--admin-primary);">SYSTEM ADMINISTRATION</span>
+                    <h2 id="top-bar-title">Vue d'ensemble</h2>
+                </div>
+            </header>
+
+            <div class="content-scroll-area">
+
+                <!-- SECTION OVERVIEW -->
+                <section id="section-stats" class="game-section admin-section active">
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <span class="stat-label">Cas publiés</span>
+                            <span class="stat-val" id="count-published">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">En attente de review</span>
+                            <span class="stat-val" id="count-pending" style="color: var(--admin-warning);">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Joueurs inscrits</span>
+                            <span class="stat-val" id="count-users">0</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Parties jouées</span>
+                            <span class="stat-val" id="count-sessions">0</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION CASES MANAGEMENT -->
+                <section id="section-cases" class="game-section admin-section">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <p style="color: var(--text-muted);">Glissez-déposez les cartes pour réorganiser l'ordre
+                            d'affichage. <br>L'ordre est pris en compte globalement pour les joueurs.</p>
+                        <button class="primary-btn" id="save-order-btn"
+                            style="background: var(--admin-primary); padding: 10px 20px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer;">
+                            <i class="fas fa-save"></i> Enregistrer l'ordre
+                        </button>
+                    </div>
+
+                    <div id="specialties-container">
+                        <div class="empty-state">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            Chargement des spécialités...
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION PLAYER REVIEWS -->
+                <section id="section-review" class="game-section admin-section">
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Cas cliniques soumis par la communauté et
+                        en attente de validation.</p>
+
+                    <div id="review-list" class="drag-container" style="grid-template-columns: 1fr;">
+                        <div class="empty-state">
+                            <i class="fas fa-check-double"></i>
+                            Aucun cas en attente de review. Tout est à jour !
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        // Update top bar title depending on active section
+        document.querySelectorAll('.nav-link').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const text = e.target.textContent.trim();
+                document.getElementById('top-bar-title').textContent = text;
+            });
+        });
+
+        // Sidebar logic from editor
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const appContainer = document.querySelector('.app-container');
+
+        if (sidebarToggle && appContainer) {
+            const sidebarCollapsed = sessionStorage.getItem('adminSidebarCollapsed') === 'true';
+            if (sidebarCollapsed) {
+                appContainer.classList.add('sidebar-collapsed');
+            }
+
+            sidebarToggle.addEventListener('click', () => {
+                appContainer.classList.toggle('sidebar-collapsed');
+                const isCollapsed = appContainer.classList.contains('sidebar-collapsed');
+                sessionStorage.setItem('adminSidebarCollapsed', isCollapsed);
+            });
+        }
+    </script>
+</body>
+
+</html>

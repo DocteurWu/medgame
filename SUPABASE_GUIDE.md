@@ -22,10 +22,16 @@ Nous utilisons trois tables principales :
 
 ### Table `profiles` (Les Utilisateurs)
 *   **Rôle** : Stocke les statistiques globales de chaque joueur.
-*   **Colonnes clés** : `id` (lié au compte Auth), `username`, `total_xp`, `rank` (Externe, Interne, etc.).
-
-### Table `play_sessions` (L'Historique)
-*   **Rôle** : Enregistre chaque partie terminée.
+*   **Colonnes- `profiles`:
+    - `id`: uuid (references auth.users, PK)
+    - `username`: text
+    - `total_xp`: int8 (default 0)
+    - `rank`: text (default 'Externe')
+    - `role`: text (default 'player', options: 'player', 'admin')
+    - `is_public`: boolean (default true)
+    - `avatar_url`: text
+    - `username_updated_at`: timestamp
+re chaque partie terminée.
 *   **Colonnes clés** : `user_id`, `case_id`, `score` (0-100), `stats` (détails des erreurs).
 
 ---
@@ -74,3 +80,7 @@ await supabase.from('play_sessions').insert([{ user_id, case_id, score }]);
 
 ---
 *Doc rédigée pour l'équipe MedGame - Février 2026*
+### FAQ: Comment devenir Admin ?
+1. Allez dans le **SQL Editor** de Supabase.
+2. Exécutez : `UPDATE profiles SET role = 'admin' WHERE id = 'VOTRE_UUID_SUPABASE';`
+3. Vous pouvez trouver votre UUID dans l'onglet **Authentication** ou dans la table `profiles`.

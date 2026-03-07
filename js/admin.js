@@ -1,0 +1,349 @@
+/**
+ * MedGame Admin Logic
+ * Handles Case Management, Drag & Drop, and Reviews
+ */
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Check Auth & Admin Role
+    const user = await window.requireAuth('login.html', true);
+    if (!user) return; // Redirection handled by requireAuth
+
+    // Hide loader
+    document.getElementById('loading').style.opacity = '0';
+    setTimeout(() => {
+        document.getElementById('loading').style.display = 'none';
+    }, 500);
+
+    // 2. Navigation Logic
+    const navLinks = document.querySelectorAll('.nav-link[data-section]');
+    const sections = document.querySelectorAll('.admin-section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = link.dataset.section;
+
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+
+            sections.forEach(s => s.classList.remove('active'));
+            document.getElementById(target).classList.add('active');
+
+            if (target === 'section-cases') loadCasesGrid();
+            if (target === 'section-review') loadReviewList();
+            if (target === 'section-stats') updateStats();
+        });
+    });
+
+    // 3. Global State
+    let allCases = [];
+    let specialties = [];
+
+    // 4. Load Stats
+    async function updateStats() {
+        try {
+            const { data: allCasesData, error: casesErr } = await supabase.from('cases').select('status');
+
+            let publishedCount = 0;
+            let pendingCount = 0;
+            if (!casesErr && allCasesData) {
+                publishedCount = allCasesData.filter(c => !c.status || c.status === 'published').length;
+                pendingCount = allCasesData.filter(c => c.status === 'pending').length;
+            }
+
+            const { count: usersCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+            const { count: sessionsCount } = await supabase.from('play_sessions').select('*', { count: 'exact', head: true });
+
+            document.getElementById('count-published').textContent = publishedCount || 0;
+            document.getElementById('count-pending').textContent = pendingCount || 0;
+            document.getElementById('count-users').textContent = usersCount || 0;
+            document.getElementById('count-sessions').textContent = sessionsCount || 0;
+
+            if (pendingCount > 0) {
+                const navBadge = document.getElementById('pending-count-nav');
+                navBadge.textContent = pendingCount;
+                navBadge.style.display = 'inline-block';
+            }
+        } catch (err) {
+            console.error("Error fetching stats:", err);
+        }
+    }
+
+    updateStats();
+
+    // 5. Case Management (Drag & Drop)
+    async function loadCasesGrid() {
+        const container = document.getElementById('specialties-container');
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Chargement des thèmes...</div>';
+
+        try {
+            const { data, error } = await supabase.from('cases').select('*');
+
+            if (error) throw error;
+
+            console.log('[ADMIN] Raw data from Supabase:', data);
+            console.log('[ADMIN] Number of cases:', data ? data.length : 0);
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-database"></i> Aucun cas trouvé dans Supabase.<br><small>Avez-vous lancé le script de migration ?</small></div>';
+                return;
+            }
+
+            // Log unique specialties for debugging
+            const uniqueSpecs = [...new Set(data.map(c => c.specialty))];
+            console.log('[ADMIN] Unique specialties in DB:', uniqueSpecs);
+
+            // Filter: Published or no status (legacy data from migration)
+            const publishedCases = data.filter(c => !c.status || c.status === 'published');
+            console.log('[ADMIN] Published cases after filter:', publishedCases.length);
+
+            // Sort by display_order
+            publishedCases.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
+            allCases = publishedCases;
+
+            // Build specialties PURELY from database data
+            specialties = uniqueSpecs.filter(s => s);
+            // Ensure urgence is always shown
+            if (!specialties.some(s => s.toLowerCase() === 'urgence')) {
+                specialties.push('urgence');
+            }
+
+            container.innerHTML = '';
+
+            specialties.forEach(spec => {
+                const specLower = spec.toLowerCase();
+                const casesInSpec = allCases.filter(c => (c.specialty || '').toLowerCase() === specLower);
+
+                const section = document.createElement('div');
+                section.className = 'specialty-section';
+                // Capitalize first letter for display
+                const displayName = spec.charAt(0).toUpperCase() + spec.slice(1);
+                section.innerHTML = `
+                    <div class="specialty-header">
+                        <h2>${displayName}</h2>
+                        <span class="badge" style="background: rgba(255,255,255,0.05); color: #747d8c;">${casesInSpec.length} cas</span>
+                    </div>
+                    <div class="case-list drag-container" data-specialty="${spec}">
+                        ${casesInSpec.map(c => renderCaseCard(c)).join('')}
+                        ${casesInSpec.length === 0 ? '<div class="empty-state" style="padding: 20px; font-size: 0.8rem;">Aucun cas publié dans cette catégorie</div>' : ''}
+                    </div>
+                `;
+                container.appendChild(section);
+            });
+
+            initDragAndDrop();
+        } catch (err) {
+            console.error("Error loading grid:", err);
+            container.innerHTML = `<div class="empty-state">Erreur lors du chargement des cas :<br><small>${err.message}</small></div>`;
+        }
+    }
+
+    function renderCaseCard(c) {
+        const content = c.content || {};
+        const motif = content.interrogatoire?.motifHospitalisation || content.title || c.title || 'Sans titre';
+        const patientName = content.patient ? `${content.patient.nom || ''} (${content.patient.age || '?'} ans, ${content.patient.sexe || '?'})` : 'Patient inconnu';
+        return `
+            <div class="case-card" draggable="true" data-id="${c.id}">
+                <div class="case-badges">
+                    <span class="badge badge-status">${c.specialty || 'N/A'}</span>
+                    <span class="badge" style="background: rgba(160, 32, 240, 0.1); color: #a020f0;">ID: ${c.id}</span>
+                </div>
+                <div class="case-content">
+                    <h3>${motif}</h3>
+                    <p>${patientName}</p>
+                </div>
+                <div class="case-footer">
+                    <div class="case-author">
+                        <i class="fas fa-pen-nib"></i> ${c.author_name || content.redacteur || 'Anonyme'}
+                    </div>
+                    <div class="case-actions">
+                        <button class="action-btn action-edit" onclick="editCase('${c.id}')" title="Modifier">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn action-delete" onclick="deleteCase('${c.id}')" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // 6. Drag & Drop Engine
+    function initDragAndDrop() {
+        const containers = document.querySelectorAll('.drag-container');
+        let draggedElement = null;
+
+        document.querySelectorAll('.case-card').forEach(card => {
+            card.addEventListener('dragstart', () => {
+                draggedElement = card;
+                card.classList.add('dragging');
+            });
+
+            card.addEventListener('dragend', () => {
+                draggedElement = null;
+                card.classList.remove('dragging');
+            });
+        });
+
+        containers.forEach(container => {
+            container.addEventListener('dragover', e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(container, e.clientY);
+                if (afterElement == null) {
+                    container.appendChild(draggedElement);
+                } else {
+                    container.insertBefore(draggedElement, afterElement);
+                }
+            });
+        });
+    }
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.case-card:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    // 7. Save Order Logic
+    document.getElementById('save-order-btn').addEventListener('click', async () => {
+        const containers = document.querySelectorAll('.drag-container');
+        const updates = [];
+        let order = 0;
+
+        containers.forEach(container => {
+            const spec = container.dataset.specialty;
+            const cards = container.querySelectorAll('.case-card');
+            cards.forEach(card => {
+                updates.push({
+                    id: card.dataset.id,
+                    display_order: order++,
+                    specialty: spec
+                });
+            });
+        });
+
+        const btn = document.getElementById('save-order-btn');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enregistrement...';
+        btn.disabled = true;
+
+        try {
+            for (const update of updates) {
+                await supabase
+                    .from('cases')
+                    .update({ display_order: update.display_order, specialty: update.specialty })
+                    .eq('id', update.id);
+            }
+            alert("L'ordre et les thèmes ont été mis à jour avec succès !");
+        } catch (err) {
+            console.error("Save error:", err);
+            alert("Erreur lors de l'enregistrement de l'ordre.");
+        } finally {
+            btn.innerHTML = originalHtml;
+            btn.disabled = false;
+        }
+    });
+
+    // 8. Review Section
+    async function loadReviewList() {
+        const list = document.getElementById('review-list');
+        list.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Chargement des soumissions...</div>';
+
+        try {
+            const { data, error } = await supabase
+                .from('cases')
+                .select('*')
+                .eq('status', 'pending')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-check-double"></i> Aucun cas en attente de review.</div>';
+                return;
+            }
+
+            list.innerHTML = data.map(c => {
+                const content = c.content || {};
+                return `
+                <div class="case-card" style="cursor: default;">
+                    <div class="case-badges">
+                        <span class="badge badge-pending">EN ATTENTE</span>
+                        <span class="badge" style="background: rgba(255,255,255,0.05); color: #747d8c;">Soumis le ${new Date(c.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div class="case-content">
+                        <h3>${content.interrogatoire?.motifHospitalisation || 'Sans titre'}</h3>
+                        <p>Specialté suggérée: <strong>${c.specialty}</strong></p>
+                    </div>
+                    <div class="case-footer">
+                        <div class="case-author">
+                            <i class="fas fa-user-circle"></i> Proposé par ${c.author_name || content.redacteur || 'Anonyme'}
+                        </div>
+                        <div class="case-actions">
+                            <button class="action-btn" onclick="openReview('${c.id}')" title="Ouvrir dans l'éditeur" style="background: var(--admin-primary); width: auto; padding: 0 15px;">
+                                <i class="fas fa-eye"></i> REVIEW & EDIT
+                            </button>
+                            <button class="action-btn action-approve" onclick="approveCase('${c.id}')" title="Approuver directement">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="action-btn action-delete" onclick="deleteCase('${c.id}')" title="Rejeter">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+        } catch (err) {
+            console.error("Error loading reviews:", err);
+        }
+    }
+
+    // Global actions for onclick
+    window.editCase = (id) => {
+        const c = allCases.find(item => item.id === id);
+        if (c) {
+            sessionStorage.setItem('previewCase', JSON.stringify(c.content));
+            sessionStorage.setItem('editingCaseId', id);
+            window.location.href = 'editor.html';
+        }
+    };
+
+    window.openReview = async (id) => {
+        const { data, error } = await supabase.from('cases').select('content').eq('id', id).single();
+        if (data) {
+            sessionStorage.setItem('previewCase', JSON.stringify(data.content));
+            sessionStorage.setItem('editingCaseId', id);
+            window.location.href = 'editor.html';
+        }
+    };
+
+    window.approveCase = async (id) => {
+        if (!confirm("Voulez-vous publier ce cas ?")) return;
+        const { error } = await supabase.from('cases').update({ status: 'published' }).eq('id', id);
+        if (!error) {
+            loadReviewList();
+            updateStats();
+        }
+    };
+
+    window.deleteCase = async (id) => {
+        if (!confirm("Êtes-vous sûr de vouloir supprimer/rejeter ce cas ?")) return;
+        const { error } = await supabase.from('cases').delete().eq('id', id);
+        if (!error) {
+            loadCasesGrid();
+            loadReviewList();
+            updateStats();
+        }
+    };
+});
