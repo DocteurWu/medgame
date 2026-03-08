@@ -138,10 +138,11 @@ window.initPlayerMap = async (themeName) => {
     }
 
     // --- Render ---
-    const viewport = document.getElementById('map-viewport');
-    const canvas = document.getElementById('map-canvas');
-    const nodesLayer = document.getElementById('nodes-layer');
-    const pathsLayer = document.getElementById('paths-layer');
+    // Re-acquire DOM references each time initPlayerMap is called to avoid stale closures
+    let viewport = document.getElementById('map-viewport');
+    let canvas = document.getElementById('map-canvas');
+    let nodesLayer = document.getElementById('nodes-layer');
+    let pathsLayer = document.getElementById('paths-layer');
 
     function applyTransform() {
         // Applique uniquement la translation aux nodes layer
@@ -262,20 +263,48 @@ window.initPlayerMap = async (themeName) => {
     }
 
     // --- Map Initialization ---
+    // Wait for the container to have real dimensions before computing layout.
+    // When switching from display:none, the browser may not have laid out the element yet.
     function initMap() {
         const container = document.getElementById('motifs-graph');
-        const containerW = container.clientWidth;
-        const containerH = container.clientHeight;
 
-        state.transform = autoFitTransform(containerW, containerH);
+        function tryInit(retries) {
+            const containerW = container.clientWidth;
+            const containerH = container.clientHeight;
 
-        applyTransform();
-        renderNodes();
-        renderConnections();
+            if ((containerW === 0 || containerH === 0) && retries > 0) {
+                // Container not laid out yet, wait one frame and retry
+                requestAnimationFrame(() => tryInit(retries - 1));
+                return;
+            }
 
-        // Mouse pan
-        if (window._mapPanBound) return;
-        window._mapPanBound = true;
+            // Fallback: if still 0, use reasonable defaults
+            const w = containerW || 800;
+            const h = containerH || 500;
+
+            state.transform = autoFitTransform(w, h);
+
+            applyTransform();
+            renderNodes();
+            renderConnections();
+
+            // Setup pan & zoom (remove old listeners to avoid duplicates)
+            setupInteractions();
+        }
+
+        // Start with a requestAnimationFrame to ensure the browser has painted
+        requestAnimationFrame(() => tryInit(10));
+    }
+
+    function setupInteractions() {
+        // Clean up previous listeners by replacing the viewport element reference
+        // (we use a flag + AbortController pattern)
+        if (window._mapAbortController) {
+            window._mapAbortController.abort();
+        }
+        const ac = new AbortController();
+        window._mapAbortController = ac;
+        const signal = ac.signal;
 
         let panning = false, px = 0, py = 0;
 
@@ -286,7 +315,7 @@ window.initPlayerMap = async (themeName) => {
                 viewport.classList.add('grabbing');
                 e.preventDefault();
             }
-        });
+        }, { signal });
 
         window.addEventListener('mousemove', (e) => {
             if (!panning) return;
@@ -294,12 +323,12 @@ window.initPlayerMap = async (themeName) => {
             state.transform.y += e.clientY - py;
             px = e.clientX; py = e.clientY;
             applyTransform();
-        });
+        }, { signal });
 
         window.addEventListener('mouseup', () => {
             panning = false;
             viewport.classList.remove('grabbing');
-        });
+        }, { signal });
 
         // Wheel zoom
         viewport.addEventListener('wheel', (e) => {
@@ -319,7 +348,7 @@ window.initPlayerMap = async (themeName) => {
             state.transform.y -= ry * (ratio - 1);
             state.transform.scale = newScale;
             applyTransform();
-        }, { passive: false });
+        }, { passive: false, signal });
     }
 
     // --- Start ---

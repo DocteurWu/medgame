@@ -323,6 +323,11 @@ function populateEditor(data) {
     if (data.correctionImage && corrImgContainer) {
         updateItemImage(corrImgContainer, data.correctionImage);
     }
+
+    // Mini Graph Editor (Urgence Dynamique)
+    if (typeof loadMiniGraphData === 'function') {
+        loadMiniGraphData(data);
+    }
 }
 
 function updateItemImage(item, base64) {
@@ -422,6 +427,16 @@ function collectData() {
         });
         data.examenClinique[key] = val;
     });
+
+    // Merge Mini Graph Data for Urgence mode
+    if (typeof exportMiniGraphData === 'function') {
+        const miniGraphData = exportMiniGraphData();
+        if (miniGraphData) {
+            data.gameplayConfig = miniGraphData.gameplayConfig;
+            data.nodes = miniGraphData.nodes;
+            data.editorData = miniGraphData.editorData;
+        }
+    }
 
     return data;
 }
