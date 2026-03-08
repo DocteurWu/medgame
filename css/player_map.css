@@ -5,69 +5,47 @@
    ======================================================================== */
 
 .motifs-content.graph-mode {
-    width: 85vw !important;
-    max-width: 85vw !important;
+    width: 90vw !important;
+    max-width: 1200px !important;
     height: 85vh !important;
     max-height: 85vh !important;
     padding: 20px 25px !important;
     display: flex !important;
     flex-direction: column !important;
+    background: var(--bg-dark);
+    /* Reste dans la DA de base */
 }
 
 .motifs-content.graph-mode #motifs-title {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     flex-shrink: 0;
+    text-align: center;
+    color: #00e0ff;
 }
 
 /* ========================================================================
-   GRAPH CONTAINER — Takes all remaining space
+   GRAPH CONTAINER
    ======================================================================== */
 
 .motifs-graph {
     --pm-primary: #00e0ff;
+    /* Cyan néon */
     --pm-success: #00d26a;
-    --pm-locked: #1a1e2e;
-    --pm-glass: rgba(255, 255, 255, 0.06);
-    --pm-grid: rgba(0, 224, 255, 0.025);
+    /* Vert vif */
+    --pm-danger: #ff3333;
+    /* Rouge vif */
+    --pm-locked-bg: #1c212b;
+    /* Gris très sombre */
+    --pm-unlocked-bg: #111a28;
+    --pm-glass: rgba(255, 255, 255, 0.05);
 
     position: relative;
     flex: 1 1 auto;
     min-height: 0;
-    /* important for flex child */
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid var(--pm-glass);
-    background: #060a18;
-}
-
-/* ========================================================================
-   LOADING
-   ======================================================================== */
-
-.map-loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(6, 10, 24, 0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-    color: var(--pm-primary);
-}
-
-.map-loading .spinner {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.map-loading h3 {
-    font-family: 'Outfit', sans-serif;
-    letter-spacing: 1.5px;
-    font-size: 1rem;
+    background: #080b12;
+    /* Légèrement plus sombre que le body pour détacher la map */
 }
 
 /* ========================================================================
@@ -98,246 +76,302 @@
 }
 
 /* ========================================================================
-   SVG Layer
+   SVG Layer (Lignes de connexion)
    ======================================================================== */
 
 .motifs-graph .paths-layer {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    /* La toile SVG fait 10000x10000 pour éviter tout clipping natif du navigateur */
+    top: -5000px;
+    left: -5000px;
+    width: 10000px;
+    height: 10000px;
     pointer-events: none;
     overflow: visible;
 }
 
 .motifs-graph .connection-path {
     fill: none;
-    stroke: rgba(255, 255, 255, 0.08);
-    stroke-width: 2.5px;
+    stroke-linecap: round;
     pointer-events: none;
-    stroke-dasharray: 8 6;
 }
 
-.motifs-graph .connection-path.validated {
-    stroke: var(--pm-success);
-    stroke-dasharray: none;
-    stroke-width: 3px;
-    filter: drop-shadow(0 0 4px var(--pm-success));
+/* Chemins inactifs (gris discret) */
+.motifs-graph .connection-path.inactive {
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 2px;
 }
 
+/* Chemins actifs (Néon Cyan) */
 .motifs-graph .connection-path.active {
     stroke: var(--pm-primary);
-    stroke-dasharray: none;
-    stroke-width: 3px;
-    filter: drop-shadow(0 0 6px rgba(0, 224, 255, 0.5));
-    animation: pm-flow 1.5s linear infinite;
-}
-
-@keyframes pm-flow {
-    0% {
-        stroke-dasharray: 12 8;
-        stroke-dashoffset: 20;
-    }
-
-    100% {
-        stroke-dasharray: 12 8;
-        stroke-dashoffset: 0;
-    }
+    stroke-width: 4px;
+    filter: drop-shadow(0 0 6px rgba(0, 224, 255, 0.6));
 }
 
 /* ========================================================================
-   NODES — Base
+   NODES
    ======================================================================== */
 
 .motifs-graph .nodes-layer {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
 }
 
 .motifs-graph .map-node {
     position: absolute;
     width: 320px;
-    /* AGGRANDISSEMENT - approx 4 noeuds max par écran */
-    background: rgba(12, 16, 30, 0.92);
-    border-radius: 10px;
-    backdrop-filter: blur(8px);
-    border: 1.5px solid var(--pm-glass);
+    border-radius: 12px;
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     transform: translate(-50%, -50%);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
-    overflow: visible;
+    padding: 15px 20px 25px 20px;
+    /* Espace en bas pour le bouton incrusté */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Top Indicator Dots */
+.motifs-graph .map-node-status-dot {
+    position: absolute;
+    top: -6px;
+    right: 30px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #555;
+    border: 2px solid #080b12;
+}
+
+.motifs-graph .map-node.unlocked .map-node-status-dot,
+.motifs-graph .map-node.completed .map-node-status-dot {
+    background: var(--pm-success);
+    box-shadow: 0 0 8px var(--pm-success);
+}
+
+.motifs-graph .map-node.locked .map-node-status-dot {
+    background: var(--pm-danger);
+    box-shadow: 0 0 8px var(--pm-danger);
 }
 
 /* --- Node Header --- */
 .motifs-graph .map-node-header {
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.025);
-    border-bottom: 1px solid var(--pm-glass);
-    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
 }
 
-.motifs-graph .map-node-header h4 {
-    margin: 0;
-    font-size: 0.88rem;
+.motifs-graph .map-node-icon {
+    font-size: 1.5rem;
+    color: var(--pm-primary);
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+.motifs-graph .map-node-title {
     font-family: 'Outfit', sans-serif;
-    font-weight: 600;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin: 0;
+}
+
+/* --- Node Body --- */
+.motifs-graph .map-node-desc {
+    font-size: 0.85rem;
+    color: #a0a5b5;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.motifs-graph .map-node-meta {
+    font-size: 0.75rem;
+    color: #667;
+    margin-bottom: 2px;
+}
+
+.motifs-graph .map-node-author {
+    font-size: 0.75rem;
+    color: #556;
+    font-style: italic;
+    margin-bottom: 15px;
+    /* Espace avant le bouton */
+}
+
+/* --- Play Button (Encapsulated) --- */
+.motifs-graph .map-btn-wrapper {
+    position: absolute;
+    bottom: -18px;
+    /* Dépasse légèrement en bas */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.motifs-graph .map-play-btn {
+    background: #080b12;
+    color: var(--pm-primary);
+    border: 2px solid var(--pm-primary);
+    border-radius: 20px;
+    padding: 6px 24px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 224, 255, 0.2), inset 0 0 5px rgba(0, 224, 255, 0.1);
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     gap: 8px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.motifs-graph .map-node-chapter {
-    display: inline-flex;
+.motifs-graph .map-play-btn:hover {
+    background: var(--pm-primary);
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.6);
+}
+
+/* --- Blocked Notification (Lock) --- */
+.motifs-graph .map-locked-badge {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    background: var(--pm-danger);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 4px;
-    font-size: 0.62rem;
-    color: var(--pm-primary);
-    margin-top: 5px;
-    opacity: 0.7;
+    font-size: 1rem;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.4);
+    border: 3px solid #080b12;
 }
 
-/* --- Node Body --- */
-.motifs-graph .map-node-body {
-    padding: 12px 14px;
-    font-size: 0.78rem;
-    color: #8b92a5;
-    line-height: 1.45;
-    min-height: 35px;
+.motifs-graph .map-locked-req {
+    background: rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 10px -20px -25px -20px;
+    padding: 10px 20px;
+    border-radius: 0 0 12px 12px;
+    font-size: 0.8rem;
+    color: #888;
+    text-align: center;
 }
 
-/* --- Status Badge --- */
-.motifs-graph .map-node-badge {
+.motifs-graph .map-locked-req-badge {
     position: absolute;
     bottom: -14px;
     left: 50%;
     transform: translateX(-50%);
-    background: #060a18;
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border: 1px solid var(--pm-glass);
+    background: #111;
+    color: #666;
+    border: 1px solid #333;
+    padding: 4px 16px;
+    border-radius: 15px;
+    font-size: 0.75rem;
     white-space: nowrap;
-    letter-spacing: 0.5px;
 }
 
 /* --- Sockets --- */
 .motifs-graph .map-socket {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    border: 3px solid #080b12;
 }
 
 .motifs-graph .map-socket.in {
-    left: -5px;
+    left: -7px;
 }
 
 .motifs-graph .map-socket.out {
-    right: -5px;
+    right: -7px;
 }
 
 /* ========================================================================
-   NODE STATES
+   NODE STATES (Style Spécifique)
    ======================================================================== */
 
-/* --- LOCKED ---  */
-.motifs-graph .map-node.locked {
-    opacity: 0.45;
-    background: var(--pm-locked);
-    border-color: rgba(255, 255, 255, 0.04);
-    cursor: not-allowed;
-    filter: grayscale(0.8) brightness(0.7);
-}
-
-.motifs-graph .map-node.locked .map-node-header {
-    background: rgba(0, 0, 0, 0.25);
-}
-
-.motifs-graph .map-node.locked .map-node-badge {
-    color: #555;
-    border-color: #2a2a2a;
-}
-
-/* --- UNLOCKED (Playable) --- */
-.motifs-graph .map-node.unlocked {
-    cursor: pointer;
-    border-color: rgba(0, 224, 255, 0.35);
-    background: rgba(12, 18, 35, 0.95);
-    box-shadow: 0 0 20px rgba(0, 224, 255, 0.08);
-}
-
-.motifs-graph .map-node.unlocked:hover {
-    transform: translate(-50%, -52%);
-    box-shadow: 0 12px 35px rgba(0, 224, 255, 0.2);
-    border-color: var(--pm-primary);
-}
-
-.motifs-graph .map-node.unlocked .map-node-badge {
-    color: var(--pm-primary);
-    border-color: rgba(0, 224, 255, 0.3);
-    background: rgba(0, 224, 255, 0.06);
-    box-shadow: 0 0 10px rgba(0, 224, 255, 0.15);
-    animation: pm-pulse 2s infinite;
-}
-
-.motifs-graph .map-node.unlocked .map-socket {
-    background: var(--pm-primary);
-}
-
-/* --- COMPLETED --- */
+/* --- UNLOCKED / COMPLETED --- */
+.motifs-graph .map-node.unlocked,
 .motifs-graph .map-node.completed {
-    cursor: pointer;
-    border-color: rgba(0, 210, 106, 0.35);
-    background: rgba(8, 25, 18, 0.9);
+    background: var(--pm-unlocked-bg);
+    border: 2px solid var(--pm-primary);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.15), inset 0 0 20px rgba(0, 224, 255, 0.05);
 }
 
-.motifs-graph .map-node.completed .map-node-header {
-    background: rgba(0, 210, 106, 0.08);
-}
-
+.motifs-graph .map-node.unlocked:hover,
 .motifs-graph .map-node.completed:hover {
     transform: translate(-50%, -52%);
-    box-shadow: 0 12px 35px rgba(0, 210, 106, 0.2);
-    border-color: var(--pm-success);
+    box-shadow: 0 12px 30px rgba(0, 224, 255, 0.25), inset 0 0 20px rgba(0, 224, 255, 0.1);
 }
 
-.motifs-graph .map-node.completed .map-node-badge {
-    color: var(--pm-success);
-    border-color: rgba(0, 210, 106, 0.3);
-    background: rgba(0, 210, 106, 0.06);
+.motifs-graph .map-node.unlocked .map-socket.in,
+.motifs-graph .map-node.completed .map-socket.in,
+.motifs-graph .map-node.unlocked .map-socket.out,
+.motifs-graph .map-node.completed .map-socket.out {
+    background: var(--pm-primary);
+    box-shadow: 0 0 8px var(--pm-primary);
 }
 
-.motifs-graph .map-node.completed .map-socket {
-    background: var(--pm-success);
-    box-shadow: 0 0 4px var(--pm-success);
+/* --- LOCKED --- */
+.motifs-graph .map-node.locked {
+    background: var(--pm-locked-bg);
+    border: 2px solid #333;
+    cursor: not-allowed;
+    opacity: 0.85;
 }
 
-@keyframes pm-pulse {
-    0% {
-        box-shadow: 0 0 5px rgba(0, 224, 255, 0.15);
-    }
+.motifs-graph .map-node.locked .map-node-icon {
+    color: #555;
+}
 
-    50% {
-        box-shadow: 0 0 15px rgba(0, 224, 255, 0.45);
-    }
+.motifs-graph .map-node.locked .map-node-title {
+    color: #aaa;
+}
 
-    100% {
-        box-shadow: 0 0 5px rgba(0, 224, 255, 0.15);
-    }
+.motifs-graph .map-node.locked .map-socket.in {
+    background: var(--pm-primary);
+    /* Le fil entrant est cyan donc prise cyan */
+    box-shadow: 0 0 8px var(--pm-primary);
+}
+
+.motifs-graph .map-node.locked .map-socket.out {
+    background: #444;
+    /* Pas de jus qui sort */
+}
+
+/* Loading */
+.map-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(8, 11, 18, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    color: var(--pm-primary);
+}
+
+.map-loading .spinner {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.map-loading h3 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 1.5px;
+    font-size: 1rem;
 }

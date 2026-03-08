@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/index.css?v=1.2">
     <link rel="stylesheet" href="css/device-check.css">
+    <link rel="stylesheet" href="css/arena.css">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -102,6 +103,15 @@
             <p class="disclaimer">Simulation à but éducatif uniquement (logique)</p>
         </div>
     </div>
+
+    <!-- Bulle de Notification (Mode Arena) -->
+    <a href="#" id="arena-bubble" class="arena-bubble" onclick="joinArena(event)">
+        <div class="arena-icon"><i class="fas fa-broadcast-tower"></i></div>
+        <div class="arena-text">
+            <h3 class="arena-title" id="arena-bubble-title">MODE ARENA</h3>
+            <p class="arena-status" id="arena-bubble-status">Recherche...</p>
+        </div>
+    </a>
 
     <!-- Bouton Admin exclusif (En dehors) -->
     <button id="admin-button" onclick="transitionTo('admin.html')"
@@ -592,6 +602,7 @@
         });
     </script>
     <script src="js/auth.js"></script>
+    <script src="js/arena_client.js"></script>
     <script>
         // Check session to update Auth UI on index
         document.addEventListener('DOMContentLoaded', async () => {

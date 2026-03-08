@@ -265,6 +265,9 @@
                 <button class="nav-item nav-link" data-target="section-banned" data-section="section-banned">
                     <i class="fas fa-ban"></i> Pseudos Interdits
                 </button>
+                <button class="nav-item nav-link" data-target="section-arena" data-section="section-arena">
+                    <i class="fas fa-broadcast-tower" style="color: #ff9f43;"></i> Événement Arena
+                </button>
                 <button class="nav-item" onclick="window.location.href='editor.html'">
                     <i class="fas fa-plus-circle"></i> Créer Cas
                 </button>
@@ -380,6 +383,19 @@
                     </div>
                 </section>
 
+                <!-- SECTION ARENA LIVE EVENT -->
+                <section id="section-arena" class="game-section admin-section">
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Planifier et gérer un événement QCM en
+                        direct (Mode Arena) pour tous les joueurs.</p>
+
+                    <div id="arena-admin-root">
+                        <!-- L'UI sera générée par arena_admin.js -->
+                        <div class="empty-state">
+                            <i class="fas fa-circle-notch fa-spin"></i> Chargement du module Arena...
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </main>
     </div>
@@ -388,6 +404,7 @@
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/admin.js"></script>
+    <script src="js/arena_admin.js"></script>
     <script>
         // Update top bar title depending on active section
         document.querySelectorAll('.nav-link').forEach(btn => {

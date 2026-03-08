@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedCaseFiles = []; // Liste des fichiers sélectionnés pour la session
     let currentThemeInModal = '';
     let currentThemeMotifs = []; // To store loaded motifs for the current theme
+    let casesReady = null; // Promise that resolves when casesData is loaded
 
     // Helper for cookies
     function getCookie(name) {
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
-    // Charge l’index des cas (depuis Supabase si disponible, sinon fallback local)
+    // Charge l'index des cas (depuis Supabase si disponible, sinon fallback local)
     async function initCases() {
         if (typeof supabase !== 'undefined') {
             try {
@@ -60,21 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Fallback local
-        fetch('data/case-index.json')
-            .then(response => {
-                if (!response.ok) throw new Error('Erreur lors du chargement de case-index.json');
-                return response.json();
-            })
-            .then(data => {
-                casesData = data;
-                console.log('Cases data chargé localement :', casesData);
-            })
-            .catch(error => {
-                console.error('Erreur lors du chargement des cas :', error);
-            });
+        const response = await fetch('data/case-index.json');
+        if (!response.ok) throw new Error('Erreur lors du chargement de case-index.json');
+        casesData = await response.json();
+        console.log('Cases data chargé localement :', casesData);
     }
 
-    initCases();
+    // Store the promise so showMotifsForTheme can await it
+    casesReady = initCases().catch(err => {
+        console.error('Erreur lors du chargement des cas :', err);
+    });
 
     // Gestion des clics sur les cartes de thème
     themeCards.forEach(card => {
@@ -88,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Afficher les motifs pour un thème
     async function showMotifsForTheme(theme) {
+        // Wait for casesData to be fully loaded before proceeding
+        await casesReady;
+
         currentThemeInModal = theme;
         selectedCaseFiles = [];
         updateStartSessionButton();
