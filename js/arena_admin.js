@@ -208,6 +208,14 @@ function renderWaitingDashboard(root) {
             }).join('')
         }
                     </div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button onclick="saveQcmBank()" style="flex:1; padding: 8px; border-radius: 6px; border: 1px solid rgba(46,204,113,0.4); background: rgba(46,204,113,0.1); color: #2ecc71; cursor: pointer; font-weight: bold; font-size: 0.85rem;" ${currentQuestions.length === 0 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''}>
+                            <i class="fas fa-save"></i> Sauvegarder ce QCM
+                        </button>
+                        <button onclick="loadQcmBank()" style="flex:1; padding: 8px; border-radius: 6px; border: 1px solid rgba(0,242,254,0.4); background: rgba(0,242,254,0.1); color: #00f2fe; cursor: pointer; font-weight: bold; font-size: 0.85rem;">
+                            <i class="fas fa-folder-open"></i> Charger un QCM
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -519,6 +527,125 @@ async function cancelArenaEvent() {
 
     if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
     else alert(error.message);
+}
+// ==========================================
+// QCM BANK (SAVE / LOAD)
+// ==========================================
+
+async function saveQcmBank() {
+    if (!currentEvent || currentQuestions.length === 0) return alert("Aucune question à sauvegarder.");
+    const name = prompt("Donnez un nom à ce QCM pour le retrouver plus tard :");
+    if (!name || !name.trim()) return;
+
+    const questionsData = currentQuestions.map(q => ({
+        question: q.question,
+        sub_question: q.sub_question || null,
+        image_url: q.image_url || null,
+        options: q.options,
+        correct_indices: q.correct_indices,
+        time_limit: q.time_limit || 45,
+        correction_time_limit: q.correction_time_limit || 20,
+        explanation: q.explanation || null
+    }));
+
+    const user = await window.requireAuth();
+    const { error } = await supabase.from('arena_qcm_banks').insert([{
+        name: name.trim(),
+        questions: questionsData,
+        admin_id: user.id
+    }]);
+
+    if (error) return alert("Erreur: " + error.message);
+    alert(`✅ QCM "${name.trim()}" sauvegardé avec ${questionsData.length} questions !`);
+}
+
+async function loadQcmBank() {
+    if (!currentEvent) return;
+
+    const { data: banks, error } = await supabase
+        .from('arena_qcm_banks')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) return alert("Erreur: " + error.message);
+    if (!banks || banks.length === 0) return alert("Aucun QCM sauvegardé.");
+
+    // Build a selection modal
+    const root = document.getElementById('arena-admin-root');
+    const overlay = document.createElement('div');
+    overlay.id = 'qcm-bank-overlay';
+    overlay.style.cssText = 'position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:1000; display:flex; align-items:center; justify-content:center; padding:20px;';
+    overlay.innerHTML = `
+        <div style="background: #0a0f28; border: 1px solid var(--admin-primary); border-radius: 12px; padding: 25px; max-width: 550px; width: 100%; max-height: 80vh; overflow-y: auto;">
+            <h3 style="margin-top:0; color:white; font-family: var(--font-title);"><i class="fas fa-folder-open"></i> Charger un QCM sauvegardé</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                ${banks.map(b => {
+        const qs = Array.isArray(b.questions) ? b.questions : JSON.parse(b.questions);
+        return `
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color:white;">${b.name}</strong>
+                            <p style="margin:3px 0 0; color:var(--text-muted); font-size:0.8rem;">${qs.length} questions · ${new Date(b.created_at).toLocaleDateString('fr-FR')}</p>
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button onclick="confirmLoadBank('${b.id}')" style="padding: 6px 14px; border-radius: 6px; border: none; background: var(--admin-primary); color: white; cursor: pointer; font-weight: bold; font-size: 0.85rem;">
+                                <i class="fas fa-download"></i> Charger
+                            </button>
+                            <button onclick="deleteQcmBank('${b.id}')" style="padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,71,87,0.3); background: transparent; color: #ff4757; cursor: pointer; font-size: 0.85rem;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>`;
+    }).join('')}
+            </div>
+            <button onclick="document.getElementById('qcm-bank-overlay').remove()" style="margin-top: 15px; width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.6); cursor: pointer;">
+                Annuler
+            </button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+async function confirmLoadBank(bankId) {
+    if (!currentEvent) return;
+    const overlay = document.getElementById('qcm-bank-overlay');
+
+    const { data: bank } = await supabase.from('arena_qcm_banks').select('*').eq('id', bankId).single();
+    if (!bank) return alert("QCM non trouvé.");
+
+    const questions = Array.isArray(bank.questions) ? bank.questions : JSON.parse(bank.questions);
+    if (!confirm(`Charger "${bank.name}" (${questions.length} questions) ? Cela ajoutera les questions à l'événement actuel.`)) return;
+
+    // Insert all questions into the current event
+    const inserts = questions.map((q, i) => ({
+        event_id: currentEvent.id,
+        order_num: currentQuestions.length + i,
+        question: q.question,
+        sub_question: q.sub_question || null,
+        image_url: q.image_url || null,
+        options: q.options,
+        correct_indices: q.correct_indices,
+        time_limit: q.time_limit || 45,
+        correction_time_limit: q.correction_time_limit || 20,
+        explanation: q.explanation || null
+    }));
+
+    const { data, error } = await supabase.from('arena_questions').insert(inserts).select();
+    if (error) return alert("Erreur: " + error.message);
+
+    if (data) currentQuestions.push(...data);
+    if (overlay) overlay.remove();
+    renderEventDashboard();
+}
+
+async function deleteQcmBank(bankId) {
+    if (!confirm("Supprimer ce QCM sauvegardé ?")) return;
+    const { error } = await supabase.from('arena_qcm_banks').delete().eq('id', bankId);
+    if (error) return alert("Erreur: " + error.message);
+    // Re-open the modal
+    const overlay = document.getElementById('qcm-bank-overlay');
+    if (overlay) overlay.remove();
+    loadQcmBank();
 }
 
 let answerCounts = [0, 0, 0, 0, 0];
