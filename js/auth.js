@@ -73,7 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 } else {
                     // INSCRIPTION
-                    const selectedRank = document.querySelector('input[name="rank"]:checked')?.value || 'Autre';
+                    const rankInput = document.querySelector('input[name="rank"]:checked');
+                    if (!rankInput) {
+                        throw new Error("Veuillez sélectionner votre année d'étude.");
+                    }
+                    const selectedRank = rankInput.value;
 
                     const { data, error } = await supabase.auth.signUp({
                         email: email,
@@ -87,20 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (error) throw error;
 
-                    if (data.user && data.session === null) {
-                        // Inscription réussie mais confirmation d'email requise (si activé dans Supabase)
+                    if (data.user) {
+                        // Forcer la mise à jour du profil avec le bon rang
+                        // On utilise upsert pour s'assurer que ça passe même si le profil n'est pas encore créé par le trigger
+                        await supabase
+                            .from('profiles')
+                            .upsert({
+                                id: data.user.id,
+                                rank: selectedRank,
+                                username: email.split('@')[0] // Pseudo par défaut
+                            });
+                    }
+
+                    if (data.session === null) {
                         successTarget.textContent = "Compte créé ! Veuillez vérifier vos emails pour confirmer votre adresse.";
                         successTarget.style.display = 'block';
                     } else {
-                        // Mettre à jour manuellement le profil au cas où le trigger n'aurait pas tout pris
-                        if (data.user) {
-                            await supabase
-                                .from('profiles')
-                                .update({ rank: selectedRank })
-                                .eq('id', data.user.id);
-                        }
-
-                        // Inscription réussie et connexion automatique
                         successTarget.textContent = "Inscription réussie ! Bienvenue.";
                         successTarget.style.display = 'block';
                         setTimeout(() => {
