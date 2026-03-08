@@ -1,4 +1,4 @@
-// js/player_map.js — Auto-fit skill tree inside themes.html modal
+// js/player_map.js — Cyberpunk high-fidelity skill tree matching UI mockup
 
 window.initPlayerMap = async (themeName) => {
     const user = await window.requireAuth();
@@ -40,8 +40,6 @@ window.initPlayerMap = async (themeName) => {
             const mapKeys = { 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
             const spec = mapKeys[themeName.toLowerCase()] || themeName.toLowerCase();
 
-            console.log('[PlayerMap] Loading graph for specialty:', spec);
-
             const { data, error } = await supabase
                 .from('cases')
                 .select('content')
@@ -49,21 +47,7 @@ window.initPlayerMap = async (themeName) => {
                 .eq('specialty', spec)
                 .maybeSingle();
 
-            console.log('[PlayerMap] Supabase response:', { data, error });
-
-            if (error) {
-                console.error('[PlayerMap] Supabase error:', error);
-                if (loadingEl) loadingEl.innerHTML = `
-                    <div style="text-align:center;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:2.5rem; color:#ff6b6b; margin-bottom:15px;"></i>
-                        <h3 style="color:#ccc;">Erreur de chargement</h3>
-                        <p style="color:#888; margin-top:8px; font-size:0.85rem;">${error.message || 'Erreur Supabase'}</p>
-                    </div>`;
-                return false;
-            }
-
-            if (!data || !data.content) {
-                console.warn('[PlayerMap] No graph data found for', spec);
+            if (error || !data || !data.content) {
                 if (loadingEl) loadingEl.innerHTML = `
                     <div style="text-align:center;">
                         <i class="fas fa-project-diagram" style="font-size:2.5rem; color:#555; margin-bottom:15px;"></i>
@@ -73,8 +57,6 @@ window.initPlayerMap = async (themeName) => {
                 return false;
             }
 
-            console.log('[PlayerMap] Graph loaded:', data.content.nodes?.length, 'nodes,', data.content.connections?.length, 'connections');
-
             state.nodes = data.content.nodes || [];
             state.connections = data.content.connections || [];
 
@@ -83,8 +65,8 @@ window.initPlayerMap = async (themeName) => {
             initMap();
             return true;
         } catch (err) {
-            console.error("[PlayerMap] Critical error:", err);
-            if (loadingEl) loadingEl.innerHTML = `<h3 style="color:red;">Erreur critique: ${err.message}</h3>`;
+            console.error("Map load error:", err);
+            if (loadingEl) loadingEl.innerHTML = `<h3 style="color:red;">Erreur de chargement</h3>`;
             return false;
         }
     }
@@ -109,7 +91,8 @@ window.initPlayerMap = async (themeName) => {
             state.nodes.forEach(n => {
                 if (state.nodeStatus[n.id] === 'locked') {
                     const parents = parentsOf[n.id];
-                    if (parents.every(pId => state.nodeStatus[pId] === 'completed')) {
+                    // Si pas de parents on débloque direct (racine du graphe)
+                    if (parents.length === 0 || parents.every(pId => state.nodeStatus[pId] === 'completed')) {
                         state.nodeStatus[n.id] = 'unlocked';
                         changed = true;
                     }
@@ -119,15 +102,13 @@ window.initPlayerMap = async (themeName) => {
     }
 
     // --- AUTO-FIT: Calculate transform to fit all nodes in the container ---
-    let graphBoundingBox = { width: 1000, height: 1000, minX: 0, maxX: 1000, minY: 0, maxY: 1000 };
-    const NODE_W = 320; // Correspond à la nouvelle taille CSS
-
     function autoFitTransform(containerW, containerH) {
         if (state.nodes.length === 0) return { x: containerW / 2, y: containerH / 2, scale: 1 };
 
-        const NODE_H = 100; // Hauteur approximative d'un nœud
-        const PADDING_X = 150; // Marges horizontales généreuses
-        const PADDING_Y = 100; // Marges verticales généreuses
+        const NODE_W = 320;
+        const NODE_H = 150; // Hauteur approximative d'un nœud + bouton
+        const PADDING_X = 100; // Marges
+        const PADDING_Y = 100;
 
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         state.nodes.forEach(n => {
@@ -137,22 +118,14 @@ window.initPlayerMap = async (themeName) => {
             maxY = Math.max(maxY, n.y + NODE_H / 2);
         });
 
-        // Save for SVG sizing later
-        graphBoundingBox = {
-            minX: minX - PADDING_X,
-            maxX: maxX + PADDING_X,
-            minY: minY - PADDING_Y,
-            maxY: maxY + PADDING_Y,
-            width: (maxX - minX) + PADDING_X * 2,
-            height: (maxY - minY) + PADDING_Y * 2
-        };
+        const graphW = (maxX - minX) + PADDING_X * 2;
+        const graphH = (maxY - minY) + PADDING_Y * 2;
 
-        const scaleX = containerW / graphBoundingBox.width;
-        const scaleY = containerH / graphBoundingBox.height;
+        const scaleX = containerW / graphW;
+        const scaleY = containerH / graphH;
 
-        // On prend l'échelle la plus restrictive pour tout faire rentrer, mais pas plus petit que 0.3 ni plus grand que 1.5
         let scale = Math.min(scaleX, scaleY);
-        scale = Math.max(0.3, Math.min(scale, 1.3));
+        scale = Math.max(0.3, Math.min(scale, 1.2)); // Restrict zoom
 
         const centerX = (minX + maxX) / 2;
         const centerY = (minY + maxY) / 2;
@@ -171,14 +144,11 @@ window.initPlayerMap = async (themeName) => {
     const pathsLayer = document.getElementById('paths-layer');
 
     function applyTransform() {
-        canvas.style.transform = `translate(${state.transform.x}px, ${state.transform.y}px) scale(${state.transform.scale})`;
+        // Applique uniquement la translation aux nodes layer
+        nodesLayer.style.transform = `translate(${state.transform.x}px, ${state.transform.y}px) scale(${state.transform.scale})`;
 
-        // Ensure SVG does not clip bounding box elements
-        if (pathsLayer) {
-            pathsLayer.style.width = Math.max(4000, graphBoundingBox.width * 2) + 'px';
-            pathsLayer.style.height = Math.max(4000, graphBoundingBox.height * 2) + 'px';
-            pathsLayer.style.overflow = 'visible';
-        }
+        // Pour les chemins (SVG), meme translation. La viewBox est infinie (-5000).
+        pathsLayer.style.transform = `translate(${state.transform.x}px, ${state.transform.y}px) scale(${state.transform.scale})`;
     }
 
     function renderNodes() {
@@ -190,35 +160,50 @@ window.initPlayerMap = async (themeName) => {
             el.style.left = node.x + 'px';
             el.style.top = node.y + 'px';
 
-            let icon = '', badgeContent = '';
+            const iconClass = node.title.toLowerCase().includes('respiratoire') ? 'fa-lungs' :
+                (status === 'locked' ? 'fa-lock' : 'fa-head-side-medical');
+
+            // Find parents to show requirements if locked
+            let reqHtml = '';
             if (status === 'locked') {
-                icon = '<i class="fas fa-lock" style="color:#555;"></i>';
-                badgeContent = '<i class="fas fa-lock"></i> Bloqué';
-            } else if (status === 'unlocked') {
-                icon = '<i class="fas fa-stethoscope" style="color:var(--pm-primary);"></i>';
-                badgeContent = '<i class="fas fa-play"></i> Jouer';
-            } else if (status === 'completed') {
-                const best = playSessions.filter(s => s.case_id === node.caseId).reduce((m, s) => Math.max(m, s.score), 0);
-                icon = '<i class="fas fa-check-circle" style="color:var(--pm-success);"></i>';
-                badgeContent = `<i class="fas fa-check"></i> ${best}%`;
+                const parents = state.connections.filter(c => c.toNode === node.id).map(c => {
+                    const parentNode = state.nodes.find(n => n.id === c.fromNode);
+                    return parentNode ? parentNode.title : 'Précédent';
+                });
+                const reqText = parents.length > 0 ? `Requis : ${parents.join(', ')}` : `Bloqué`;
+
+                reqHtml = `
+                    <div class="map-locked-req">
+                        ${reqText}
+                        <div class="map-locked-req-badge"><i class="fas fa-lock"></i> Bloqué</div>
+                    </div>
+                `;
             }
 
-            const chapterTag = node.chapter ? `<div class="map-node-chapter"><i class="fas fa-tag"></i> ${node.chapter}</div>` : '';
+            // Bottom action button format
+            let actionHtml = '';
+            if (status === 'unlocked' || status === 'completed') {
+                actionHtml = `
+                    <div class="map-btn-wrapper">
+                        <button class="map-play-btn"><i class="fas fa-play"></i> Jouer</button>
+                    </div>
+                `;
+            }
 
             el.innerHTML = `
+                <div class="map-node-status-dot"></div>
                 <div class="map-node-header">
-                    <h4>${icon} ${node.title}</h4>
-                    ${chapterTag}
+                    <i class="fas ${iconClass} map-node-icon"></i>
+                    <h4 class="map-node-title">${node.title}</h4>
                 </div>
-                <div class="map-node-body">
-                    ${node.desc || '<span style="opacity:0.4;font-style:italic;">—</span>'}
-                </div>
+                <div class="map-node-desc">${node.desc || ''}</div>
+                ${reqHtml}
+                ${actionHtml}
                 <div class="map-socket in"></div>
                 <div class="map-socket out"></div>
-                <div class="map-node-badge">${badgeContent}</div>
             `;
 
-            // Click handler
+            // Click handler sur tout le bloc si actif
             el.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (status === 'locked') {
@@ -230,10 +215,10 @@ window.initPlayerMap = async (themeName) => {
                     localStorage.setItem('selectedThemes', JSON.stringify([formattedTheme]));
                     localStorage.setItem('selectedCaseFiles', JSON.stringify([node.caseId]));
                     localStorage.removeItem('selectedCaseFile');
-                    el.style.transform = 'translate(-50%, -50%) scale(0.92)';
+                    el.style.transform = 'translate(-50%, -50%) scale(0.95)';
                     setTimeout(() => { window.location.href = 'game.html'; }, 200);
                 } else {
-                    alert("Ce noeud n'est pas lié à un cas clinique.");
+                    alert("Ce noeud n'est lié à aucun cas clinique réel. (Seulement un test admin)");
                 }
             });
 
@@ -243,36 +228,33 @@ window.initPlayerMap = async (themeName) => {
 
     function renderConnections() {
         pathsLayer.innerHTML = '';
-        const NODE_W = 240; // Same as CSS width
+        const NODE_W = 320; // Exact node width from CSS
+        const SVG_OFFSET = 5000; // Compensating for top: -5000 left: -5000 in CSS
 
         state.connections.forEach(conn => {
             const fromN = state.nodes.find(n => n.id === conn.fromNode);
             const toN = state.nodes.find(n => n.id === conn.toNode);
             if (!fromN || !toN) return;
 
-            // In CSS, nodes have transform: translate(-50%, -50%).
-            // The output socket is at the right edge, input socket at the left edge.
-            // Right edge X = node.x + (width / 2)
-            // Left edge X = node.x - (width / 2)
+            // X = Center +/- Half Width | Y = Center
+            const sx = fromN.x + (NODE_W / 2) + SVG_OFFSET;
+            const sy = fromN.y + SVG_OFFSET;
+            const ex = toN.x - (NODE_W / 2) + SVG_OFFSET;
+            const ey = toN.y + SVG_OFFSET;
 
-            const sx = fromN.x + (NODE_W / 2);
-            const sy = fromN.y;
-            const ex = toN.x - (NODE_W / 2);
-            const ey = toN.y;
-
-            // Dist formula for bezier control points to create smooth curves
-            const dist = Math.max(Math.abs(ex - sx) * 0.5, 50);
+            // Constrain bezier width minimum spacing
+            const dist = Math.max(Math.abs(ex - sx) * 0.4, 60);
 
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('d', `M ${sx} ${sy} C ${sx + dist} ${sy}, ${ex - dist} ${ey}, ${ex} ${ey}`);
             path.classList.add('connection-path');
 
             const fs = state.nodeStatus[fromN.id];
-            const ts = state.nodeStatus[toN.id];
-            if (fs === 'completed' && ts === 'completed') {
-                path.classList.add('validated');
-            } else if (fs === 'completed' && ts === 'unlocked') {
+            // Le rendu visuel dépend du noeud d'origine : si l'origine est dispo, la ligne "coule" vers la cible
+            if (fs === 'completed' || fs === 'unlocked') {
                 path.classList.add('active');
+            } else {
+                path.classList.add('inactive');
             }
 
             pathsLayer.appendChild(path);
@@ -291,14 +273,14 @@ window.initPlayerMap = async (themeName) => {
         renderNodes();
         renderConnections();
 
-        // Pan support (subtle, for tweaking)
+        // Mouse pan
         if (window._mapPanBound) return;
         window._mapPanBound = true;
 
         let panning = false, px = 0, py = 0;
 
         viewport.addEventListener('mousedown', (e) => {
-            if (e.target === viewport || e.target.closest('.map-node') === null) {
+            if (e.target === viewport || !e.target.closest('.map-node')) {
                 panning = true;
                 px = e.clientX; py = e.clientY;
                 viewport.classList.add('grabbing');
@@ -319,12 +301,12 @@ window.initPlayerMap = async (themeName) => {
             viewport.classList.remove('grabbing');
         });
 
-        // Scroll zoom (subtle)
+        // Wheel zoom
         viewport.addEventListener('wheel', (e) => {
             e.preventDefault();
             const delta = -e.deltaY * 0.001;
             let newScale = state.transform.scale * (1 + delta);
-            newScale = Math.max(0.3, Math.min(newScale, 2));
+            newScale = Math.max(0.25, Math.min(newScale, 2.5));
 
             const rect = viewport.getBoundingClientRect();
             const mx = e.clientX - rect.left;
@@ -340,6 +322,6 @@ window.initPlayerMap = async (themeName) => {
         }, { passive: false });
     }
 
-    // --- Run ---
+    // --- Start ---
     await loadGraph();
 };
