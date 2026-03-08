@@ -2329,12 +2329,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (actionsContainer) {
             actionsContainer.innerHTML = '';
             if (currentUrgenceNode.actionsDisponibles) {
-                currentUrgenceNode.actionsDisponibles.forEach(action => {
+                currentUrgenceNode.actionsDisponibles.forEach((action, index) => {
                     const btn = document.createElement('button');
                     btn.className = 'action-btn';
+                    btn.id = `urg-action-btn-${index}`;
                     btn.style.margin = '5px';
                     btn.innerHTML = `<i class="fas fa-syringe"></i> ${action.label} <span style="font-size:0.8em; opacity:0.8;">(-${action.tempsExecutionSec}s)</span>`;
-                    btn.onclick = () => executeUrgenceAction(action);
+                    btn.onclick = () => executeUrgenceAction(action, btn);
                     actionsContainer.appendChild(btn);
                 });
             }
@@ -2382,14 +2383,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function executeUrgenceAction(action) {
+    function executeUrgenceAction(action, clickedButton) {
+        // Prevent concurrent actions and stop auto degradation
+        if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
+
+        // Disable all buttons in the container
+        const actionsContainer = document.getElementById('urgence-actions-container');
+        if (actionsContainer) {
+            const buttons = actionsContainer.querySelectorAll('.action-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+            });
+        }
+
+        // Show spinner on the clicked button
+        const originalContent = clickedButton.innerHTML;
+        clickedButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> En cours (${action.tempsExecutionSec}s)...`;
+        clickedButton.style.opacity = '1';
+        clickedButton.style.background = 'var(--primary-color)';
+        clickedButton.style.color = '#000';
+
+        // Deduct in-game time immediately
         if (window.deductTime) {
             window.deductTime(action.tempsExecutionSec);
         }
-        if (action.feedback) {
-            showNotification(action.feedback);
-        }
-        transitionUrgenceState(action.nextNode);
+
+        // Wait real seconds before transitioning
+        const delayMs = action.tempsExecutionSec * 1000;
+
+        setTimeout(() => {
+            if (action.feedback) {
+                showNotification(action.feedback);
+            }
+            transitionUrgenceState(action.nextNode);
+        }, delayMs);
     }
 
     function transitionUrgenceState(nextNodeId) {

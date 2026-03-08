@@ -59,6 +59,9 @@
                 <button class="nav-item" data-target="section-locks">
                     <i class="fas fa-lock"></i> 5. Verrous (Défis)
                 </button>
+                <button class="nav-item" data-target="section-urgence-dyn" style="border-left: 3px solid #e74c3c;">
+                    <i class="fas fa-heartbeat" style="color:#e74c3c;"></i> 6. Dynamiques
+                </button>
             </nav>
 
             <div class="editor-footer">
@@ -319,9 +322,397 @@
                         </button>
                     </div>
                 </section>
+
+                <!-- SECTION: URGENCES DYNAMIQUES (INTRA-CAS) -->
+                <section id="section-urgence-dyn" class="game-section">
+                    <h2 class="section-header" style="color: #e74c3c;"><i class="fas fa-heartbeat"></i> 6.
+                        DYNAMIQUES</h2>
+
+                    <div class="medical-card full-width">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div>
+                                <h3 class="card-title" style="margin-bottom: 5px;">Mode Dynamique</h3>
+                                <p class="label" style="margin: 0;">Activer ce mode transformera ce QCM en un scénario
+                                    interactif à plusieurs états.</p>
+                            </div>
+                            <label class="switch"
+                                style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                                <input type="checkbox" id="enable-urgence-mode"
+                                    style="opacity: 0; width: 0; height: 0;">
+                                <span class="slider round"
+                                    style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px;"></span>
+                            </label>
+                        </div>
+
+                        <div id="urgence-editor-container" style="display: none;">
+                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+
+                            <p class="label">Créez les différents états cliniques par lesquels le patient passera, et
+                                reliez-les par des actions médicales.</p>
+
+                            <!-- Mini Node Editor -->
+                            <div class="mini-graph-editor" id="mini-graph-editor"
+                                style="position: relative; width: 100%; height: 600px; background: #1a1a24; border: 1px solid var(--glass-border); border-radius: 8px; overflow: hidden; margin-top: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);">
+
+                                <div class="graph-toolbar"
+                                    style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 10px; background: rgba(0,0,0,0.7); padding: 8px; border-radius: 8px; backdrop-filter: blur(5px);">
+                                    <button class="btn btn-primary" id="add-state-node"><i class="fas fa-plus"></i>
+                                        Nouvel État</button>
+                                </div>
+
+                                <div class="canvas-wrapper" id="mini-canvas"
+                                    style="position: absolute; top:0; left:0; width:100%; height:100%; transform-origin: 0 0; cursor: grab;">
+                                    <svg id="mini-svg-layer"
+                                        style="position: absolute; top:0; left:0; width:100%; height:100%; overflow: visible; z-index: 1;">
+                                        <defs>
+                                            <marker id="arrowhead-mini" markerWidth="10" markerHeight="7" refX="9"
+                                                refY="3.5" orient="auto">
+                                                <polygon points="0 0, 10 3.5, 0 7" fill="#a020f0" />
+                                            </marker>
+                                        </defs>
+                                        <g id="mini-paths-layer"></g>
+                                        <path id="mini-temp-connection" d="" fill="none" stroke="#a020f0"
+                                            stroke-width="3" stroke-dasharray="5,5" style="display:none;"></path>
+                                    </svg>
+                                    <div id="mini-nodes-layer"
+                                        style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p
+                                style="font-size: 0.8em; color: rgba(255,255,255,0.5); margin-top: 10px; text-align: center;">
+                                <i class="fas fa-info-circle"></i> Glissez pour vous déplacer dans la zone. Cliquez sur
+                                "Nouvel État" pour ajouter un nœud. Cliquez sur le point droit d'un nœud et tirez vers
+                                le point gauche d'un autre pour créer une action.
+                            </p>
+
+                        </div>
+
+                    </div>
+                </section>
             </div>
         </main>
     </div>
+
+    <!-- Modals for Intra-Case Graph Editor -->
+
+    <!-- State Node Properties Modal -->
+    <div id="state-modal" class="modal-overlay" style="display: none; z-index: 1000;">
+        <div class="modal-content" style="max-width: 600px;">
+            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-procedures"></i> Propriétés de l'État
+            </h3>
+
+            <div class="form-group">
+                <label>Nom de l'état (interne)</label>
+                <input type="text" id="state-prop-name" class="form-control" placeholder="Ex: Choc initial">
+            </div>
+
+            <div class="form-group">
+                <label>Description Clinique (Visible par le joueur)</label>
+                <textarea id="state-prop-desc" class="form-control" rows="3"
+                    placeholder="Ex: Le patient est marbré, tachycarde et hypotendu..."></textarea>
+            </div>
+
+            <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <div class="form-group">
+                    <label>Tension (mmHg)</label>
+                    <input type="text" id="state-prop-ta" class="form-control" placeholder="Ex: 80/50">
+                </div>
+                <div class="form-group">
+                    <label>Pouls (bpm)</label>
+                    <input type="number" id="state-prop-fc" class="form-control" placeholder="Ex: 130">
+                </div>
+                <div class="form-group">
+                    <label>SpO2 (%)</label>
+                    <input type="number" id="state-prop-spo2" class="form-control" placeholder="Ex: 88">
+                </div>
+                <div class="form-group">
+                    <label>Fréq. Resp (/min)</label>
+                    <input type="number" id="state-prop-fr" class="form-control" placeholder="Ex: 28">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                    <input type="checkbox" id="state-prop-is-end">
+                    <span><strong>Ceci est un état final (Fin du cas)</strong></span>
+                </label>
+            </div>
+
+            <div id="state-end-options"
+                style="display: none; margin-left: 20px; padding: 10px; border-left: 2px solid var(--primary-color);">
+                <div class="form-group">
+                    <label>Résultat de la fin</label>
+                    <select id="state-prop-success" class="form-control">
+                        <option value="true">Succès (Patient Sauvé)</option>
+                        <option value="false">Échec (Patient Décédé / Aggravé)</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+            <h4 style="margin-top:0; color:var(--urgences-color); font-size: 0.9em;"><i class="fas fa-clock"></i>
+                Dégradation Automatique (Optionnel)</h4>
+            <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Si le joueur ne fait rien
+                pendant X secondes in-game, l'état évoluera automatiquement vers un autre nœud.</p>
+
+            <div class="grid-layout" style="grid-template-columns: 1fr 2fr; gap: 10px;">
+                <div class="form-group">
+                    <label>Délai (Secondes)</label>
+                    <input type="number" id="state-prop-auto-time" class="form-control"
+                        placeholder="Ex: 60 (0 = Désactivé)">
+                </div>
+                <div class="form-group">
+                    <label>Vers l'état...</label>
+                    <select id="state-prop-auto-next" class="form-control">
+                        <option value="">Aucun</option>
+                        <!-- Options dynamically loaded from JS -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Message d'alerte lors de la dégradation</label>
+                <input type="text" id="state-prop-auto-msg" class="form-control"
+                    placeholder="Ex: Le patient convulse !">
+            </div>
+
+            <div class="modal-actions" style="margin-top:20px; text-align:right;">
+                <button class="btn btn-secondary" id="state-modal-cancel">Annuler</button>
+                <button class="btn btn-primary" id="state-modal-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edge (Action) Properties Modal -->
+    <div id="action-modal" class="modal-overlay" style="display: none; z-index: 1000;">
+        <div class="modal-content">
+            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-syringe"></i> Définir l'Action</h3>
+
+            <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px;">
+                Cette action permettra de passer de <strong id="action-from-name">...</strong> vers <strong
+                    id="action-to-name">...</strong>.
+            </p>
+
+            <div class="form-group">
+                <label>Nom de l'action (Bouton pour le joueur)</label>
+                <input type="text" id="action-prop-label" class="form-control" placeholder="Ex: Donner 1mg Adrénaline">
+            </div>
+
+            <div class="form-group">
+                <label>Coût en temps (Secondes in-game)</label>
+                <input type="number" id="action-prop-time" class="form-control" value="0" placeholder="Ex: 30">
+            </div>
+
+            <div class="form-group">
+                <label>Feedback (Message affiché après action)</label>
+                <input type="text" id="action-prop-feedback" class="form-control"
+                    placeholder="Ex: Adrénaline administrée.">
+            </div>
+
+            <div class="modal-actions" style="margin-top:20px; text-align:right;">
+                <button class="btn btn-secondary" id="action-modal-cancel">Annuler</button>
+                <button class="btn btn-primary" id="action-modal-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Overlay & Content (needed for state/action modals) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #14141c;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 25px;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+
+        .modal-content .form-group {
+            margin-bottom: 15px;
+        }
+
+        .modal-content .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #8b8b9b;
+            font-size: 0.9rem;
+        }
+
+        .modal-content .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .modal-content .form-control:focus {
+            border-color: var(--primary-color);
+        }
+
+        .modal-content .grid-layout {
+            display: grid;
+        }
+
+        .modal-content select.form-control {
+            appearance: auto;
+        }
+
+        /* Slider Switch CSS */
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #2ecc71;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2ecc71;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Mini Node Editor Styles */
+        .mini-node {
+            position: absolute;
+            background: rgba(30, 30, 40, 0.9);
+            border: 2px solid #555;
+            border-radius: 8px;
+            width: 200px;
+            padding: 10px;
+            color: white;
+            cursor: move;
+            user-select: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.2s;
+        }
+
+        .mini-node.start-node {
+            border-color: #2ecc71;
+        }
+
+        .mini-node.end-node {
+            border-color: #e74c3c;
+        }
+
+        .mini-node.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-color);
+        }
+
+        .mini-node-header {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .mini-node-content {
+            font-size: 0.8em;
+            color: #ccc;
+        }
+
+        .mini-node-content div {
+            margin-bottom: 3px;
+        }
+
+        .mini-socket {
+            width: 14px;
+            height: 14px;
+            background: #555;
+            border: 2px solid #222;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: crosshair;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .mini-socket:hover {
+            background: var(--primary-color);
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .mini-socket.input {
+            left: -7px;
+        }
+
+        .mini-socket.output {
+            right: -7px;
+        }
+
+        .mini-connection {
+            fill: none;
+            stroke: #888;
+            stroke-width: 3;
+            cursor: pointer;
+            transition: stroke 0.2s;
+        }
+
+        .mini-connection:hover {
+            stroke: #fff;
+            stroke-width: 4;
+        }
+
+        .mini-connection.selected {
+            stroke: var(--primary-color);
+            filter: drop-shadow(0 0 5px var(--primary-color));
+        }
+    </style>
 
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
@@ -348,6 +739,7 @@
         });
     </script>
     <script src="js/game.js"></script>
+    <script src="js/editor_mini_graph.js"></script>
     <script src="js/editor.js"></script>
 </body>
 
