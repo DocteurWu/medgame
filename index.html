@@ -94,7 +94,7 @@
 
                 <button class="btn-3d auth-only" id="editor-button" onclick="transitionTo('editor.html')"
                     style="display:none; border-color: rgba(255, 255, 255, 0.2);">
-                    <span class="btn-content"><i class="fas fa-edit"></i> Créer / Soumettre un Cas</span>
+                    <span class="btn-content"><i class="fas fa-edit"></i> Créer / Améliorer un Cas</span>
                     <div class="btn-layer" style="background: linear-gradient(90deg, #ff9a9e, #fecfef);"></div>
                 </button>
 
@@ -677,7 +677,7 @@
                             // Verrouiller
                             editorBtn.onclick = () => alert("Le mode Création de Cas est débloqué à partir du Niveau 2 ! Jouez quelques cas pour gagner de l'XP.");
                             const contentSpan = editorBtn.querySelector('.btn-content');
-                            if (contentSpan) contentSpan.innerHTML = '<i class="fas fa-lock"></i> Créer un Cas (Niv. 2)';
+                            if (contentSpan) contentSpan.innerHTML = '<i class="fas fa-lock"></i> Créer /Améliorer un Cas (Niv. 2)';
                             const btnLayer = editorBtn.querySelector('.btn-layer');
                             if (btnLayer) btnLayer.style.background = 'rgba(255,255,255,0.05)';
                             editorBtn.style.opacity = '0.6';

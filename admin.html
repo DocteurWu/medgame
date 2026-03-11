@@ -260,7 +260,7 @@
                 </button>
                 <button class="nav-item nav-link" data-target="section-review" data-section="section-review">
                     <i class="fas fa-user-edit"></i> Review Joueurs <span id="pending-count-nav" class="badge"
-                        style="background: var(--admin-primary); margin-left: auto; display: none;">0</span>
+                        style="background: rgba(255,255,255,0.1); margin-left: auto; display: inline-block;">0</span>
                 </button>
                 <button class="nav-item nav-link" data-target="section-banned" data-section="section-banned">
                     <i class="fas fa-ban"></i> Pseudos Interdits
@@ -304,16 +304,55 @@
                             <span class="stat-val" id="count-published">0</span>
                         </div>
                         <div class="stat-card">
-                            <span class="stat-label">En attente de review</span>
-                            <span class="stat-val" id="count-pending" style="color: var(--admin-warning);">0</span>
-                        </div>
-                        <div class="stat-card">
                             <span class="stat-label">Joueurs inscrits</span>
                             <span class="stat-val" id="count-users">0</span>
                         </div>
                         <div class="stat-card">
                             <span class="stat-label">Parties jouées</span>
                             <span class="stat-val" id="count-sessions">0</span>
+                        </div>
+                    </div>
+
+                    <!-- NEW PLAYERS TABLE -->
+                    <div class="users-table-container" style="margin-top: 40px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                            <h2 style="font-family: var(--font-title); color: white; margin: 0; font-size: 1.5rem;">
+                                <i class="fas fa-users" style="color: var(--admin-primary); margin-right: 10px;"></i>
+                                Liste des Joueurs
+                            </h2>
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <input type="text" id="user-search" placeholder="Rechercher un pseudo..." style="padding: 8px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: var(--font-main); outline: none;">
+                                <select id="user-role-filter" style="padding: 8px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: var(--font-main); outline: none; cursor:pointer;">
+                                    <option value="all">Tous les rôles</option>
+                                    <option value="admin">Admins</option>
+                                    <option value="joueur">Joueurs</option>
+                                </select>
+                                <select id="user-level-filter" style="padding: 8px 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white; font-family: var(--font-main); outline: none; cursor:pointer;">
+                                    <option value="all">Tous les niveaux</option>
+                                    <option value="dfgsm2">DFGSM2</option>
+                                    <option value="dfgsm3">DFGSM3</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="background: rgba(10, 15, 40, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse; color: white;">
+                                <thead>
+                                    <tr style="background: rgba(255, 255, 255, 0.05); text-align: left; border-bottom: 1px solid var(--glass-border);">
+                                        <th class="sortable-col" data-sort="pseudo" style="padding: 15px 20px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; cursor: pointer; transition: color 0.2s;">Pseudo <i class="fas fa-sort sort-indicator"></i></th>
+                                        <th class="sortable-col" data-sort="role" style="padding: 15px 20px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; cursor: pointer; transition: color 0.2s;">Rôle <i class="fas fa-sort sort-indicator"></i></th>
+                                        <th class="sortable-col" data-sort="niveau" style="padding: 15px 20px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; cursor: pointer; transition: color 0.2s;">Niveau <i class="fas fa-sort sort-indicator"></i></th>
+                                        <th class="sortable-col" data-sort="xp" style="padding: 15px 20px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; cursor: pointer; transition: color 0.2s;">XP <i class="fas fa-sort-down sort-indicator" style="color: var(--admin-primary)"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <tr>
+                                        <td colspan="4" style="padding: 30px; text-align: center; color: var(--text-muted);">
+                                            <i class="fas fa-circle-notch fa-spin"></i> Chargement des joueurs...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </section>

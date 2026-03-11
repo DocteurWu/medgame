@@ -49,6 +49,152 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     });
 
+    // Unlocked Cases (Improvements) handler
+    const btnLoadOptions = document.getElementById('btn-load-options');
+    const loadOptionsModal = document.getElementById('load-options-modal');
+    const loadOptionsClose = document.getElementById('load-options-close');
+    const btnOpenUnlocked = document.getElementById('btn-open-unlocked');
+    
+    const unlockedModal = document.getElementById('unlocked-cases-modal');
+    const unlockedClose = document.getElementById('unlocked-cases-close');
+    const unlockedList = document.getElementById('unlocked-cases-list');
+
+    if (btnLoadOptions && loadOptionsModal && btnOpenUnlocked && unlockedModal) {
+        btnLoadOptions.addEventListener('click', () => {
+            loadOptionsModal.style.display = 'flex';
+        });
+
+        loadOptionsClose.addEventListener('click', () => {
+            loadOptionsModal.style.display = 'none';
+        });
+
+        btnOpenUnlocked.addEventListener('click', async () => {
+            loadOptionsModal.style.display = 'none';
+            unlockedModal.style.display = 'flex';
+            unlockedList.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Chargement des cas débloqués...</div>';
+
+            try {
+                let playedCases = [];
+                const playedCasesStr = (document.cookie.split('; ').find(row => row.startsWith('playedCases=')) || '').split('=')[1];
+                if (playedCasesStr) {
+                    playedCases = playedCasesStr.split(',').filter(id => id !== '');
+                }
+
+                if (typeof supabase !== 'undefined') {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (session) {
+                        const { data: plays } = await supabase
+                            .from('play_sessions')
+                            .select('case_id')
+                            .eq('user_id', session.user.id);
+                        if (plays) {
+                            const supabasePlayed = plays.map(p => p.case_id);
+                            playedCases = [...new Set([...playedCases, ...supabasePlayed])];
+                        }
+                    }
+                }
+
+                if (playedCases.length === 0) {
+                    unlockedList.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">Vous n'avez pas encore terminé de cas. Jouez un cas d'abord pour pouvoir l'améliorer.</div>`;
+                    return;
+                }
+
+                let allCases = [];
+                if (typeof window.allSupabaseCases !== 'undefined' && window.allSupabaseCases) {
+                    allCases = window.allSupabaseCases;
+                } else if (typeof supabase !== 'undefined') {
+                    const { data } = await supabase.from('cases').select('id, title, specialty, content, status');
+                    allCases = data || [];
+                }
+
+                if (allCases.length === 0) {
+                    const response = await fetch('data/case-index.json');
+                    if (response.ok) {
+                        const index = await response.json();
+                        for (const spec in index) {
+                            for (const file of index[spec]) {
+                                if (playedCases.includes(file.replace('.json', ''))) {
+                                    allCases.push({ id: file.replace('.json', ''), title: file, specialty: spec, isLocal: true, file: file });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                const unlockedCases = allCases.filter(c => playedCases.includes(c.id));
+
+                if (unlockedCases.length === 0) {
+                    unlockedList.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">Aucun de vos cas terminés n'est disponible.</div>`;
+                    return;
+                }
+
+                unlockedList.innerHTML = '';
+                unlockedCases.forEach(c => {
+                    const item = document.createElement('div');
+                    item.className = 'motif-item';
+                    item.style.cursor = 'pointer';
+                    item.style.background = 'rgba(255,255,255,0.05)';
+                    item.style.padding = '15px';
+                    item.style.borderRadius = '8px';
+                    item.style.border = '1px solid rgba(255,255,255,0.1)';
+                    item.style.marginBottom = '10px';
+                    
+                    item.innerHTML = `
+                        <div style="font-weight: bold; color: var(--primary-color);"><i class="fas fa-file-medical"></i> ${c.title || c.id}</div>
+                        <div style="font-size: 0.8em; color: var(--text-muted); margin-top: 5px;">Spécialité : ${c.specialty || 'Non définie'}</div>
+                    `;
+
+                    item.addEventListener('mouseenter', () => { item.style.background = 'rgba(255,255,255,0.1)'; });
+                    item.addEventListener('mouseleave', () => { item.style.background = 'rgba(255,255,255,0.05)'; });
+                    
+                    item.addEventListener('click', async () => {
+                        unlockedModal.style.display = 'none';
+                        item.innerHTML = 'Chargement...';
+                        
+                        let caseData = null;
+                        if (c.content) {
+                            caseData = c.content;
+                        } else if (c.isLocal) {
+                            const res = await fetch(`data/${c.file}`);
+                            if (res.ok) caseData = await res.json();
+                        } else {
+                            const { data, error } = await supabase.from('cases').select('content').eq('id', c.id).single();
+                            if (data && !error) caseData = data.content;
+                        }
+
+                        if (caseData) {
+                            sessionStorage.setItem('isImprovement', 'true');
+                            sessionStorage.setItem('originalCaseId', caseData.id);
+                            populateEditor(caseData);
+                            alert('Cas chargé pour amélioration ! Lorsque vous cliquerez sur "Soumettre", il sera envoyé comme une nouvelle proposition (Review).');
+                        } else {
+                            alert("Impossible de charger les données du cas.");
+                        }
+                    });
+
+                    unlockedList.appendChild(item);
+                });
+
+            } catch (err) {
+                console.error("Error loading unlocked cases:", err);
+                unlockedList.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Erreur lors du chargement des cas.</div>';
+            }
+        });
+
+        unlockedClose.addEventListener('click', () => {
+            unlockedModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === unlockedModal) {
+                unlockedModal.style.display = 'none';
+            }
+            if (e.target === loadOptionsModal) {
+                loadOptionsModal.style.display = 'none';
+            }
+        });
+    }
+
     // Preview Case handler
     document.getElementById('preview-button').addEventListener('click', () => {
         const data = collectData();
@@ -168,13 +314,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isUserAdmin = await window.isAdmin();
             const editingId = sessionStorage.getItem('editingCaseId');
+            const isImprovement = sessionStorage.getItem('isImprovement') === 'true';
 
             let status = isUserAdmin ? 'published' : 'pending';
             let specialty = prompt("Spécialité du cas ?", data.specialty || "Cardiologie");
             if (!specialty) specialty = "Cardiologie";
 
             let result;
-            if (isUserAdmin && editingId) {
+            if (isUserAdmin && editingId && !isImprovement) {
                 // Update existing case
                 result = await supabase
                     .from('cases')
@@ -188,11 +335,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!result.error) alert("Cas mis à jour avec succès !");
             } else {
-                // Insert new case
+                // Insert new case (or improvement)
+                let newId = data.id || 'case_' + Date.now();
+                if (isImprovement) {
+                    newId = newId + '_amelioration_' + Date.now();
+                    data.id = newId; // Update internal ID for content
+                }
+
                 result = await supabase
                     .from('cases')
                     .insert([{
-                        id: data.id || 'case_' + Date.now(),
+                        id: newId,
                         content: data,
                         specialty: specialty,
                         title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
@@ -201,7 +354,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }]);
 
                 if (!result.error) {
-                    if (isUserAdmin) alert("Nouveau cas publié !");
+                    if (isUserAdmin && !isImprovement) alert("Nouveau cas publié !");
+                    else if (isImprovement) {
+                        alert("Amélioration soumise pour review ! Merci !");
+                        sessionStorage.removeItem('isImprovement'); // Clear flag
+                    }
                     else alert("Cas soumis pour review ! Merci pour votre contribution.");
                 }
             }

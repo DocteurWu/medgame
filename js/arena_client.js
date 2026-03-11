@@ -53,6 +53,12 @@ function updateBubbleUI() {
     titleEl.innerText = activeArenaEvent.title || "ÉVÉNEMENT ARENA";
 
     if (activeArenaEvent.status === 'waiting') {
+        if (activeArenaEvent.show_countdown === false) {
+            // Countdown hidden by admin — hide bubble entirely
+            bubble.classList.remove('visible', 'live');
+            if (arenaTimerInterval) clearInterval(arenaTimerInterval);
+            return;
+        }
         bubble.classList.remove('live');
         startCountdown();
     } else {

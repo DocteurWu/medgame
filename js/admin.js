@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Global State
     let allCases = [];
     let specialties = [];
+    let allUsers = [];
+    let currentSort = { column: 'xp', asc: false };
 
     // 4. Load Stats
     async function updateStats() {
@@ -52,23 +54,145 @@ document.addEventListener('DOMContentLoaded', async () => {
                 pendingCount = allCasesData.filter(c => c.status === 'pending').length;
             }
 
-            const { count: usersCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+            const { data: usersData, error: usersErr } = await supabase
+                .from('profiles')
+                .select('*')
+                .order('total_xp', { ascending: false });
+
+            const usersCount = usersData ? usersData.length : 0;
             const { count: sessionsCount } = await supabase.from('play_sessions').select('*', { count: 'exact', head: true });
 
             document.getElementById('count-published').textContent = publishedCount || 0;
-            document.getElementById('count-pending').textContent = pendingCount || 0;
+            const countPendingEl = document.getElementById('count-pending');
+            if (countPendingEl) countPendingEl.textContent = pendingCount || 0;
             document.getElementById('count-users').textContent = usersCount || 0;
             document.getElementById('count-sessions').textContent = sessionsCount || 0;
 
-            if (pendingCount > 0) {
-                const navBadge = document.getElementById('pending-count-nav');
+            if (usersErr) {
+                console.error("Error loading users:", usersErr);
+                const tbody = document.getElementById('users-table-body');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: #ff4757;">Erreur lors du chargement des joueurs.</td></tr>';
+            } else {
+                allUsers = usersData || [];
+                renderUsersTable();
+            }
+
+            const navBadge = document.getElementById('pending-count-nav');
+            if (navBadge) {
                 navBadge.textContent = pendingCount;
-                navBadge.style.display = 'inline-block';
+                if (pendingCount > 0) {
+                    navBadge.style.background = 'var(--admin-warning)';
+                    navBadge.style.color = 'white';
+                } else {
+                    navBadge.style.background = 'rgba(255,255,255,0.1)';
+                    navBadge.style.color = '#747d8c';
+                }
             }
         } catch (err) {
             console.error("Error fetching stats:", err);
         }
     }
+
+    function renderUsersTable() {
+        const tbody = document.getElementById('users-table-body');
+        if (!tbody) return;
+
+        const searchTerm = (document.getElementById('user-search')?.value || '').toLowerCase();
+        const roleFilter = document.getElementById('user-role-filter')?.value || 'all';
+        const levelFilter = document.getElementById('user-level-filter')?.value || 'all';
+
+        let filtered = allUsers.filter(u => {
+            const matchSearch = (u.username || 'Anonyme').toLowerCase().includes(searchTerm);
+            const matchRole = roleFilter === 'all' || u.role === roleFilter || (roleFilter === 'joueur' && (!u.role || u.role !== 'admin'));
+            
+            let uRank = (u.rank || 'autre').toLowerCase();
+            let matchLevel = false;
+            if (levelFilter === 'all') matchLevel = true;
+            else if (levelFilter === 'dfgsm2' && uRank.includes('dfgsm2')) matchLevel = true;
+            else if (levelFilter === 'dfgsm3' && uRank.includes('dfgsm3')) matchLevel = true;
+            else if (levelFilter === 'autre' && !uRank.includes('dfgsm2') && !uRank.includes('dfgsm3')) matchLevel = true;
+
+            return matchSearch && matchRole && matchLevel;
+        });
+
+        filtered.sort((a, b) => {
+            let valA, valB;
+            if (currentSort.column === 'pseudo') {
+                valA = (a.username || 'Anonyme').toLowerCase();
+                valB = (b.username || 'Anonyme').toLowerCase();
+            } else if (currentSort.column === 'role') {
+                valA = (a.role || 'joueur').toLowerCase();
+                valB = (b.role || 'joueur').toLowerCase();
+            } else if (currentSort.column === 'niveau') {
+                valA = (a.rank || 'autre').toLowerCase();
+                valB = (b.rank || 'autre').toLowerCase();
+            } else {
+                valA = a.total_xp || 0;
+                valB = b.total_xp || 0;
+            }
+            
+            if (valA < valB) return currentSort.asc ? -1 : 1;
+            if (valA > valB) return currentSort.asc ? 1 : -1;
+            return 0;
+        });
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">Aucun joueur trouvé.</td></tr>';
+        } else {
+            tbody.innerHTML = filtered.map(user => {
+                const isAdmin = user.role === 'admin';
+                const roleBadge = isAdmin 
+                    ? '<span class="badge" style="background: rgba(255, 71, 87, 0.15); color: var(--admin-primary); border: 1px solid rgba(255, 71, 87, 0.3);">Admin</span>'
+                    : '<span class="badge" style="background: rgba(255, 255, 255, 0.05); color: #747d8c; border: 1px solid rgba(255, 255, 255, 0.1);">Joueur</span>';
+                    
+                return `
+                    <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 15px 20px; font-weight: 500;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-user-circle" style="color: var(--text-muted); font-size: 1.2rem;"></i>
+                                ${user.username || 'Anonyme'}
+                            </div>
+                        </td>
+                        <td style="padding: 15px 20px;">${roleBadge}</td>
+                        <td style="padding: 15px 20px;"><span style="color: #4facfe; font-weight: 600;">${user.rank || 'Autre'}</span></td>
+                        <td style="padding: 15px 20px; font-family: var(--font-title); font-weight: 700;">${user.total_xp || 0} XP</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Update Sort Icons
+        document.querySelectorAll('.sortable-col .sort-indicator').forEach(icon => {
+            icon.className = 'fas fa-sort sort-indicator';
+            icon.style.color = 'inherit';
+        });
+        const activeCol = document.querySelector(`.sortable-col[data-sort="${currentSort.column}"]`);
+        if (activeCol) {
+            const icon = activeCol.querySelector('.sort-indicator');
+            if (icon) {
+                icon.className = currentSort.asc ? 'fas fa-sort-up sort-indicator' : 'fas fa-sort-down sort-indicator';
+                icon.style.color = 'var(--admin-primary)';
+            }
+        }
+    }
+
+    // Event Listeners for Filters & Sort
+    document.getElementById('user-search')?.addEventListener('input', renderUsersTable);
+    document.getElementById('user-role-filter')?.addEventListener('change', renderUsersTable);
+    document.getElementById('user-level-filter')?.addEventListener('change', renderUsersTable);
+
+    document.querySelectorAll('.sortable-col').forEach(th => {
+        th.addEventListener('click', () => {
+            const column = th.dataset.sort;
+            if (currentSort.column === column) {
+                currentSort.asc = !currentSort.asc;
+            } else {
+                currentSort.column = column;
+                currentSort.asc = column === 'xp' ? false : true;
+            }
+            renderUsersTable();
+        });
+    });
 
     updateStats();
 

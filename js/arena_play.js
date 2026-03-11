@@ -165,14 +165,19 @@ async function processEventState() {
 
                     ${hasStarted
                     ? `<p style="font-size: 1.2rem; margin-top: 15px; font-weight: bold; color: #2ecc71; animation: pulse-live 1.5s infinite;">L'hôte lancera la partie d'une seconde à l'autre...</p>`
-                    : `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                    : currentEvent.show_countdown === false
+                        ? `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                               <p style="color:#ffa502; margin:0; font-size:1.1rem; font-weight:bold;"><i class="fas fa-clock"></i> L'événement va bientôt commencer</p>
+                               <p style="color:var(--text-muted); margin:8px 0 0 0; font-size:0.9rem;">Restez sur cette page, la partie démarrera automatiquement.</p>
+                           </div>`
+                        : `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
                                <p style="color:var(--text-muted); margin:0 0 5px 0; font-size:0.9rem;">L'événement démarre dans :</p>
                                <div id="arena-wait-timer" style="font-family: monospace; font-size: 2rem; font-weight: 800; color: white;">--:--:--</div>
                            </div>`
                 }
                 </div>`;
 
-            if (!hasStarted) startWaitingTimer(currentEvent.scheduled_at);
+            if (!hasStarted && currentEvent.show_countdown !== false) startWaitingTimer(currentEvent.scheduled_at);
             break;
 
         case 'starting':
