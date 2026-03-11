@@ -86,6 +86,12 @@
     "locomoteur_racHialgie.json"
   ],
   "urgence": [
-    "urgence_choc_anaphylactique_01.json"
+    "urgence_choc_anaphylactique_01.json",
+    "urgence_demo_acr.json",
+    "urgence_demo_hemorragie.json",
+    "urgence_demo_obstruction.json",
+    "urgence_demo_inconscient.json",
+    "urgence_demo_brulure.json",
+    "urgence_demo_malaise.json"
   ]
 }

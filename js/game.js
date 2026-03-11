@@ -2331,10 +2331,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (currentUrgenceNode.actionsDisponibles) {
                 currentUrgenceNode.actionsDisponibles.forEach((action, index) => {
                     const btn = document.createElement('button');
-                    btn.className = 'action-btn';
+                    btn.className = 'urgence-action-btn';
                     btn.id = `urg-action-btn-${index}`;
-                    btn.style.margin = '5px';
-                    btn.innerHTML = `<i class="fas fa-syringe"></i> ${action.label} <span style="font-size:0.8em; opacity:0.8;">(-${action.tempsExecutionSec}s)</span>`;
+
+                    // Determine icon based on label keywords
+                    let icon = 'fa-user-md';
+                    const label = action.label.toLowerCase();
+                    if (label.includes('massage') || label.includes('acr') || label.includes('compression')) icon = 'fa-heartbeat';
+                    if (label.includes('défibrillation') || label.includes('dae') || label.includes('choc')) icon = 'fa-bolt';
+                    if (label.includes('oxygène') || label.includes('o2') || label.includes('ventilation') || label.includes('libérer')) icon = 'fa-mask-ventilator';
+                    if (label.includes('médicament') || label.includes('injection') || label.includes('adrénaline') || label.includes('perfusion')) icon = 'fa-syringe';
+                    if (label.includes('garrot') || label.includes('pansement') || label.includes('hémorragie')) icon = 'fa-band-aid';
+                    if (label.includes('bilan') || label.includes('samu') || label.includes('appeler')) icon = 'fa-phone-alt';
+                    if (label.includes('position') || label.includes('pls') || label.includes('debout')) icon = 'fa-person-falling';
+
+                    btn.innerHTML = `
+                        <i class="fas ${icon}"></i> 
+                        <span class="btn-text" style="flex:1;">${action.label}</span>
+                        <span class="time-badge">-${action.tempsExecutionSec}s</span>
+                    `;
                     btn.onclick = () => executeUrgenceAction(action, btn);
                     actionsContainer.appendChild(btn);
                 });
@@ -2361,11 +2376,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             setTimeout(() => {
-                let html = `<h2>${currentUrgenceNode.success ? '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Patient Sauvé' : '<i class="fas fa-skull" style="color: #e74c3c;"></i> Échec Critique'}</h2>`;
-                html += `<p>${currentUrgenceNode.descriptionClinique}</p>`;
-                if (currentCase.correction) {
-                    html += `<hr>${currentCase.correction}`;
+                let html = `<div style="text-align:center; padding: 20px;">`;
+                html += `<div style="font-size: 3rem; margin-bottom: 20px;">${currentUrgenceNode.success ? '<i class="fas fa-heart-pulse" style="color: #2ecc71; text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);"></i>' : '<i class="fas fa-skull-crossbones" style="color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.5);"></i>'}</div>`;
+                html += `<h2 style="font-family: var(--font-title); font-size: 2rem; color: ${currentUrgenceNode.success ? '#2ecc71' : '#ff4757'};">${currentUrgenceNode.success ? 'PATIENT SAUVÉ !' : 'ÉCHEC CRITIQUE'}</h2>`;
+                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1);">
+                            <p style="font-size: 1.1rem; line-height: 1.6; margin: 0;">${currentUrgenceNode.descriptionClinique}</p>
+                         </div>`;
+
+                if (currentUrgenceNode.xpReward > 0) {
+                    html += `<div style="background: linear-gradient(90deg, rgba(0, 242, 254, 0.1), rgba(179, 136, 255, 0.1)); border: 1px solid var(--primary-color); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                <i class="fas fa-star" style="color: #ffb347;"></i>
+                                <span style="font-weight: 800; font-family: var(--font-title); letter-spacing: 1px;">+${currentUrgenceNode.xpReward} XP GAGNÉS</span>
+                             </div>`;
                 }
+
+                if (currentCase.correction) {
+                    html += `<div style="text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.95rem; opacity: 0.9;">
+                                <h3 style="color: var(--primary-color); font-size: 1rem; text-transform: uppercase; margin-bottom: 10px;">CORRECTION & PROTOCOLE</h3>
+                                ${currentCase.correction}
+                             </div>`;
+                }
+                html += `</div>`;
+
                 showCorrectionModal(html);
 
                 if (currentUrgenceNode.success) {
@@ -2379,7 +2411,39 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const failSound = new Audio('assets/sounds/flatline.mp3');
                     failSound.play().catch(e => console.log('No fail sound playing'));
                 }
+
+                // Award XP if defined
+                if (currentUrgenceNode.xpReward && currentUrgenceNode.xpReward > 0) {
+                    awardUrgenceXp(currentUrgenceNode.xpReward);
+                }
+
             }, 1000);
+        }
+    }
+
+    async function awardUrgenceXp(xpAmount) {
+        if (!window.supabase) return;
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session && session.user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('total_xp')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (profile) {
+                    const newXp = (profile.total_xp || 0) + xpAmount;
+                    await supabase
+                        .from('profiles')
+                        .update({ total_xp: newXp })
+                        .eq('id', session.user.id);
+
+                    showNotification(`Tu as gagné ${xpAmount} XP !`, 'success');
+                }
+            }
+        } catch (error) {
+            console.error("Erreur lors de l'attribution de l'XP :", error);
         }
     }
 
@@ -2390,11 +2454,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Disable all buttons in the container
         const actionsContainer = document.getElementById('urgence-actions-container');
         if (actionsContainer) {
-            const buttons = actionsContainer.querySelectorAll('.action-btn');
-            buttons.forEach(btn => {
-                btn.disabled = true;
-                btn.style.opacity = '0.5';
-                btn.style.cursor = 'not-allowed';
+            const buttons = actionsContainer.querySelectorAll('.urgence-action-btn');
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.style.opacity = '0.5';
+                b.style.cursor = 'not-allowed';
             });
         }
 
@@ -2410,15 +2474,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.deductTime(action.tempsExecutionSec);
         }
 
-        // Wait real seconds before transitioning
-        const delayMs = action.tempsExecutionSec * 1000;
+        // Wait a fixed 5 real seconds before transitioning (regardless of in-game time cost)
+        const REAL_DELAY_MS = 5000;
 
         setTimeout(() => {
             if (action.feedback) {
                 showNotification(action.feedback);
             }
             transitionUrgenceState(action.nextNode);
-        }, delayMs);
+        }, REAL_DELAY_MS);
     }
 
     function transitionUrgenceState(nextNodeId) {

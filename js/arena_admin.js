@@ -137,6 +137,13 @@ function renderCreateEventForm() {
                     <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 5px;">Date et Heure du lancement (Heure locale)</label>
                     <input type="datetime-local" id="arena-new-date" style="max-width: 400px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
                 </div>
+                <div style="display: flex; align-items: center; gap: 12px; margin-top: 5px;">
+                    <label style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="arena-show-countdown" checked style="width: 18px; height: 18px; accent-color: var(--admin-primary); cursor: pointer;">
+                        Afficher le décompte aux joueurs
+                    </label>
+                    <span style="color: rgba(255,255,255,0.3); font-size: 0.8rem;">(bulle d'accueil + salle d'attente)</span>
+                </div>
                 <div style="margin-top: 10px;">
                     <button class="primary-btn" onclick="arenaCreateEvent()" style="background: var(--admin-primary); padding: 10px 20px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer;">
                         Créer l'événement
@@ -179,6 +186,12 @@ function renderWaitingDashboard(root) {
                             <button onclick="editEventDescription()" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:rgba(255,255,255,0.8); padding:4px 8px; border-radius:4px; font-size:0.8rem; cursor:pointer; margin-bottom:10px;"><i class="fas fa-edit"></i> Modifier le programme</button>
                             <p style="color: var(--text-muted); margin: 0;"><i class="fas fa-clock"></i> Prévu le : ${dateObj.toLocaleString('fr-FR')}</p>
                             <p style="color: #00f2fe; margin: 5px 0 0 0; font-weight:bold;"><i class="fas fa-users"></i> Joueurs en attente : <span id="arena-players-count">${playersCount}</span></p>
+                            <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                                <label style="color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="toggle-countdown" ${currentEvent.show_countdown !== false ? 'checked' : ''} onchange="toggleCountdownVisibility(this.checked)" style="width: 16px; height: 16px; accent-color: var(--admin-primary); cursor: pointer;">
+                                    <i class="fas fa-eye"></i> Décompte visible pour les joueurs
+                                </label>
+                            </div>
                         </div>
                         <span class="badge" style="background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; white-space: nowrap;">EN ATTENTE</span>
                     </div>
@@ -378,6 +391,8 @@ async function arenaCreateEvent() {
     const dateUtc = new Date(dateLocal).toISOString();
     const { data: { session } } = await supabase.auth.getSession();
 
+    const showCountdown = document.getElementById('arena-show-countdown')?.checked !== false;
+
     const { data, error } = await supabase
         .from('arena_events')
         .insert([{
@@ -386,7 +401,8 @@ async function arenaCreateEvent() {
             xp_rewards: xpRewards,
             scheduled_at: dateUtc,
             status: 'waiting',
-            admin_id: session.user.id
+            admin_id: session.user.id,
+            show_countdown: showCountdown
         }])
         .select('*');
 
@@ -750,5 +766,15 @@ window.editEventDescription = async function () {
             currentEvent.description = newDesc;
             renderEventDashboard();
         }
+    }
+};
+
+window.toggleCountdownVisibility = async function (show) {
+    if (!currentEvent) return;
+    const { error } = await supabase.from('arena_events').update({ show_countdown: show }).eq('id', currentEvent.id);
+    if (error) {
+        alert("Erreur: " + error.message);
+    } else {
+        currentEvent.show_countdown = show;
     }
 };

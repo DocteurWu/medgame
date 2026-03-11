@@ -201,6 +201,7 @@ function addMiniNode(x, y, isStart = false) {
         constantesCibles: { tension: '', pouls: '', saturationO2: '', temperature: '', frequenceRespiratoire: '' },
         isEndState: false,
         success: true,
+        xpReward: 0,
         evolutionAuto: { delaiSecondes: 0, nextNode: '', motif: '' }
     });
     renderMiniNodes();
@@ -403,6 +404,7 @@ function openStateModal(nodeId) {
     document.getElementById('state-prop-is-end').checked = node.isEndState;
     document.getElementById('state-end-options').style.display = node.isEndState ? 'block' : 'none';
     document.getElementById('state-prop-success').value = node.success ? 'true' : 'false';
+    document.getElementById('state-prop-xp').value = node.xpReward || 0;
 
     // Populate "Next node" dropdown for auto evolution
     const autoNextSelect = document.getElementById('state-prop-auto-next');
@@ -436,6 +438,7 @@ function saveStateModal() {
 
         node.isEndState = document.getElementById('state-prop-is-end').checked;
         node.success = document.getElementById('state-prop-success').value === 'true';
+        node.xpReward = parseInt(document.getElementById('state-prop-xp').value) || 0;
 
         const autoTime = parseInt(document.getElementById('state-prop-auto-time').value) || 0;
         const autoNext = document.getElementById('state-prop-auto-next').value;
@@ -552,7 +555,9 @@ function exportMiniGraphData() {
             constantesCibles: node.constantesCibles,
             actionsDisponibles: actionsDisponibles,
             isEndState: node.isEndState,
-            success: node.success
+            success: node.success,
+            xpReward: node.xpReward || 0,
+            evolutionAuto: node.evolutionAuto || null
         };
     });
 
