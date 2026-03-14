@@ -965,18 +965,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 5000); // Délai de 5 secondes pour simuler le vrai délai (coût de 2 min in-game)
     });
 
-    function handleShowResultClick(event) {
-        const examen = event.target.dataset.examen;
-        // Simuler un délai avant d'afficher le résultat
-
-        setTimeout(() => {
-            const result = currentCase.examResults[examen] || "Résultat non disponible";
-            const resultDiv = document.createElement('div');
-            resultDiv.innerHTML = `<strong>${examen}:</strong> ${typeof result === 'object' ? JSON.stringify(result) : result}`;
-            examensResults.appendChild(resultDiv);
-        }, 1000); // Délai de 1 seconde
-    }
-
     // Sidebar Navigation Logic
     const navItems = document.querySelectorAll('.nav-item');
     const sections = document.querySelectorAll('.game-section');
@@ -1339,4 +1327,46 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Check on load
     showFullscreenPrompt();
+
+    // --- KEYBOARD SHORTCUTS ---
+    document.addEventListener('keydown', (e) => {
+        // Ignore if user is typing in an input/select/textarea
+        const tag = (e.target.tagName || '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+        // Ignore if correction modal is open
+        const correctionOverlay = document.getElementById('correction-overlay');
+        if (correctionOverlay && correctionOverlay.style.display === 'flex') return;
+        // Ignore if image modal is open
+        const imageOverlay = document.getElementById('image-overlay');
+        if (imageOverlay && imageOverlay.style.display === 'flex') return;
+
+        if (e.key === 'Enter' || e.key === '1') {
+            e.preventDefault();
+            const btn = document.getElementById('validate-traitement');
+            if (btn) btn.click();
+        } else if (e.key === '2') {
+            e.preventDefault();
+            const btn = document.getElementById('validate-exams');
+            if (btn && btn.style.display !== 'none') btn.click();
+        } else if (e.key === '3') {
+            e.preventDefault();
+            // Go to Synthèse tab
+            const syntheseTab = document.querySelector('.nav-item[data-target="section-synthese"]');
+            if (syntheseTab) syntheseTab.click();
+        } else if (e.key === 'Escape') {
+            hideCorrectionModal();
+        }
+    });
+
+    // --- QUIT CONFIRMATION ---
+    const quitBtns = document.querySelectorAll('.quit-btn, a[href="index.html"]');
+    quitBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const confirmMsg = 'Quitter la partie ? Votre progression non sauvegardée sera perdue.';
+            if (confirm(confirmMsg)) {
+                window.location.href = 'index.html';
+            }
+        });
+    });
 });

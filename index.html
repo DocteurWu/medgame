@@ -405,6 +405,8 @@
                     const defaultPseudo = session.user.email.substring(0, 3) + '***';
                     let displayedUsername = defaultPseudo;
                     let niveau = 1;
+                    let xpText = '0 XP';
+                    let rankText = 'Niv. 1';
 
                     // Helper: calcule le niveau depuis le XP total (XP_requis = 150 * Niveau^1.5)
                     function calculateLevel(xp) {
