@@ -147,6 +147,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
 
+    /**
+     * Calcule la distance de Levenshtein entre deux chaînes.
+     * Plus le nombre est bas, plus les chaînes sont proches.
+     */
+    function getLevenshteinDistance(a, b) {
+        if (a.length === 0) return b.length;
+        if (b.length === 0) return a.length;
+        const matrix = [];
+        for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+        for (let i = 1; i <= b.length; i++) {
+            for (let j = 1; j <= a.length; j++) {
+                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                    matrix[i][j] = matrix[i - 1][j - 1];
+                } else {
+                    matrix[i][j] = Math.min(
+                        matrix[i - 1][j - 1] + 1, // substitution
+                        matrix[i][j - 1] + 1,     // insertion
+                        matrix[i - 1][j] + 1      // suppression
+                    );
+                }
+            }
+        }
+        return matrix[b.length][a.length];
+    }
+
+    /**
+     * Détermine si deux mots sont "assez proches" selon leur longueur.
+     */
+    function isFuzzyMatch(input, keyword) {
+        if (!input || !keyword) return false;
+        const dist = getLevenshteinDistance(input, keyword);
+        // Stratégie de tolérance :
+        if (keyword.length <= 3) return dist === 0; // Trop court : pas d'erreur permise (ex: HTA)
+        if (keyword.length <= 6) return dist <= 1; // 1 erreur max (ex: Angine)
+        return dist <= 2; // 2 erreurs max pour les mots longs (ex: Appendicite)
+    }
+
     function showLockChallenge(lockId) {
         console.log("showLockChallenge called with lockId:", lockId);
         console.log("currentCase:", currentCase);
@@ -247,7 +285,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             lockAttempts++;
             const val = document.getElementById('lock-answer').value;
             const answer = normalizeText(val);
-            const isCorrect = lock.challenge.expected_keywords.some(kw => normalizeText(kw) === answer || answer.includes(normalizeText(kw)));
+            
+            // fuzzy match
+            const isCorrect = lock.challenge.expected_keywords.some(kw => {
+                const normalizedKW = normalizeText(kw);
+                // 1. Exact match or inclusion
+                if (normalizedKW === answer || answer.includes(normalizedKW)) return true;
+                
+                // 2. Fuzzy match (word by word)
+                const words = answer.split(/\s+/);
+                return words.some(word => isFuzzyMatch(word, normalizedKW));
+            });
 
             if (isCorrect) {
                 unlock(lockId);
@@ -1231,6 +1279,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Reset the "Tout afficher" button for the new case
             const revealBtn = document.getElementById('btn-reveal-all');
             if (revealBtn) revealBtn.style.display = '';
+            
         } else {
             // If partial refresh, we must be careful with NurseIntro
             if (typeof NurseIntro !== 'undefined') {
@@ -1997,6 +2046,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             activeExams = selectedExams;
             renderExamResults();
             if (validateBtn) validateBtn.disabled = false;
+            
+            // Navigate to next section
+            const nextNavItem = document.querySelector('.nav-item[data-target="section-synthese"]');
+            if (nextNavItem) nextNavItem.click();
 
             // Jouer le son d'examen (if possible)
             try {
@@ -2216,8 +2269,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             quizAttempts++;
             let isCorrect = false;
             if (question.type === 'SAISIE') {
-                const val = document.getElementById('quiz-input').value.toLowerCase().trim();
-                isCorrect = question.challenge.expected_keywords.some(k => val.includes(k.toLowerCase().trim()));
+                const val = document.getElementById('quiz-input').value;
+                const answer = normalizeText(val);
+                
+                isCorrect = question.challenge.expected_keywords.some(kw => {
+                    const normalizedKW = normalizeText(kw);
+                    if (normalizedKW === answer || answer.includes(normalizedKW)) return true;
+                    
+                    const words = answer.split(/\s+/);
+                    return words.some(word => isFuzzyMatch(word, normalizedKW));
+                });
             } else {
                 const selected = Array.from(detailsContainer.querySelectorAll('.mcq-option.selected')).map(opt => parseInt(opt.dataset.index));
                 const correct = question.challenge.correct_indices || [];

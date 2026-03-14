@@ -43,8 +43,11 @@
             style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#4facfe,#00f2fe);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <i class="fas fa-user-md" style="color:#0a0f28;font-size:0.85rem;"></i>
         </div>
-        <span id="top-username"
-            style="color:#fff;font-weight:600;font-size:0.9rem;font-family:'Outfit',sans-serif;">...</span>
+        <span id="top-username" onclick="transitionTo('profile.html')"
+            style="color:#fff;font-weight:600;font-size:0.9rem;font-family:'Outfit',sans-serif;cursor:pointer;"
+            title="Voir mon profil">
+            <span style="opacity:0.7;font-size:0.8em;">Cliquez pour voir le profil</span>
+        </span>
         <button onclick="window.logoutUser()" title="Se déconnecter"
             style="background:rgba(255,71,87,0.12);border:1px solid rgba(255,71,87,0.3);color:#ff4757;cursor:pointer;padding:5px 10px;border-radius:20px;font-size:0.78rem;transition:all 0.2s;font-family:'Outfit',sans-serif;"
             onmouseover="this.style.background='rgba(255,71,87,0.25)'"
@@ -202,239 +205,11 @@
         </div>
     </div>
 
-    <!-- Script Animation -->
+    <!-- Three.js Background Module -->
+    <script src="js/three-background.js"></script>
+
+    <!-- Game Logic -->
     <script>
-        /* --- LOGIQUE 3D BACKGROUND (ADN + FLUIDE) --- */
-        const init3D = () => {
-            const container = document.getElementById('canvas-container');
-            const scene = new THREE.Scene();
-            // Brouillard plus profond, tons bleu nuit/violet
-            scene.fog = new THREE.FogExp2(0x050714, 0.04);
-
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Opti perf
-            container.appendChild(renderer.domElement);
-
-            // 1. L'ADN Principal (Double Hélice)
-            const dnaGeometry = new THREE.BufferGeometry();
-            const dnaCount = 1500;
-            const dnaPos = new Float32Array(dnaCount * 3);
-            const dnaColor = new Float32Array(dnaCount * 3);
-            const dnaSizes = new Float32Array(dnaCount);
-
-            for (let i = 0; i < dnaCount; i++) {
-                const i3 = i * 3;
-                const phase = i * 0.15;
-                const radius = 2.5 + Math.sin(i * 0.05) * 0.2; // Légère ondulation
-                const rise = (i * 0.04) - 25;
-
-                const isStrand1 = i % 2 === 0;
-                const angle = isStrand1 ? phase : phase + Math.PI;
-
-                const x = Math.cos(angle) * radius;
-                const z = Math.sin(angle) * radius;
-
-                // Dispersion pour un effet nuageux
-                const scatter = (Math.random() - 0.5) * 0.8;
-
-                dnaPos[i3] = x + scatter;
-                dnaPos[i3 + 1] = rise + (Math.random() - 0.5) * 0.5;
-                dnaPos[i3 + 2] = z + scatter;
-
-                // Couleurs: Cyan (Strand 1) et Violet néon (Strand 2)
-                if (isStrand1) {
-                    dnaColor[i3] = 0.0;     // R
-                    dnaColor[i3 + 1] = 0.95; // G
-                    dnaColor[i3 + 2] = 1.0;  // B
-                } else {
-                    dnaColor[i3] = 0.7;     // R
-                    dnaColor[i3 + 1] = 0.2;  // G
-                    dnaColor[i3 + 2] = 1.0;  // B
-                }
-
-                dnaSizes[i] = Math.random() * 2.0 + 0.5;
-            }
-
-            dnaGeometry.setAttribute('position', new THREE.BufferAttribute(dnaPos, 3));
-            dnaGeometry.setAttribute('color', new THREE.BufferAttribute(dnaColor, 3));
-            dnaGeometry.setAttribute('size', new THREE.BufferAttribute(dnaSizes, 1));
-
-            // Texture glowy soft
-            const canvasSprite = document.createElement('canvas');
-            canvasSprite.width = 32;
-            canvasSprite.height = 32;
-            const ctx = canvasSprite.getContext('2d');
-            const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-            gradient.addColorStop(0, 'rgba(255,255,255,1)');
-            gradient.addColorStop(0.2, 'rgba(255,255,255,0.8)');
-            gradient.addColorStop(0.5, 'rgba(255,255,255,0.2)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 32, 32);
-            const sprite = new THREE.CanvasTexture(canvasSprite);
-
-            // Shaders personnalisés pour pouvoir utiliser l'attribut 'size'
-            const dnaMaterial = new THREE.ShaderMaterial({
-                uniforms: {
-                    pointTexture: { value: sprite }
-                },
-                vertexShader: `
-                    attribute float size;
-                    varying vec3 vColor;
-                    void main() {
-                        vColor = color;
-                        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                        gl_PointSize = size * (300.0 / -mvPosition.z);
-                        gl_Position = projectionMatrix * mvPosition;
-                    }
-                `,
-                fragmentShader: `
-                    uniform sampler2D pointTexture;
-                    varying vec3 vColor;
-                    void main() {
-                        gl_FragColor = vec4(vColor, 1.0) * texture2D(pointTexture, gl_PointCoord);
-                    }
-                `,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false,
-                transparent: true,
-                vertexColors: true
-            });
-
-            const dnaMesh = new THREE.Points(dnaGeometry, dnaMaterial);
-            scene.add(dnaMesh);
-
-
-            // 2. Particules d'arrière-plan (Poussière ambiante)
-            const bgGeometry = new THREE.BufferGeometry();
-            const bgCount = 2000;
-            const bgPos = new Float32Array(bgCount * 3);
-            const bgColor = new Float32Array(bgCount * 3);
-
-            for (let i = 0; i < bgCount; i++) {
-                const i3 = i * 3;
-                bgPos[i3] = (Math.random() - 0.5) * 50;
-                bgPos[i3 + 1] = (Math.random() - 0.5) * 50;
-                bgPos[i3 + 2] = (Math.random() - 0.5) * 50 - 10; // Pousser vers l'arrière
-
-                bgColor[i3] = 0.0;
-                bgColor[i3 + 1] = 0.3 + Math.random() * 0.3;
-                bgColor[i3 + 2] = 0.6 + Math.random() * 0.4;
-            }
-
-            bgGeometry.setAttribute('position', new THREE.BufferAttribute(bgPos, 3));
-            bgGeometry.setAttribute('color', new THREE.BufferAttribute(bgColor, 3));
-
-            const bgMaterial = new THREE.PointsMaterial({
-                size: 0.1,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.4,
-                blending: THREE.AdditiveBlending
-            });
-            const bgMesh = new THREE.Points(bgGeometry, bgMaterial);
-            scene.add(bgMesh);
-
-
-            // 3. Liaisons ADN (Lignes entre les brins)
-            const linkGeometry = new THREE.BufferGeometry();
-            const linkCount = 375; // Une liaison
-            const linkPos = new Float32Array(linkCount * 6);
-            const linkColor = new Float32Array(linkCount * 6);
-
-            for (let i = 0; i < linkCount; i++) {
-                const phase = (i * 4) * 0.15;
-                const radius = 2.5;
-                const rise = ((i * 4) * 0.04) - 25;
-
-                const x1 = Math.cos(phase) * radius;
-                const z1 = Math.sin(phase) * radius;
-                const x2 = Math.cos(phase + Math.PI) * radius;
-                const z2 = Math.sin(phase + Math.PI) * radius;
-
-                const baseIdx = i * 6;
-                linkPos[baseIdx] = x1;
-                linkPos[baseIdx + 1] = rise;
-                linkPos[baseIdx + 2] = z1;
-                linkPos[baseIdx + 3] = x2;
-                linkPos[baseIdx + 4] = rise;
-                linkPos[baseIdx + 5] = z2;
-
-                for (let c = 0; c < 6; c += 3) {
-                    linkColor[baseIdx + c] = 0.4;
-                    linkColor[baseIdx + c + 1] = 0.8;
-                    linkColor[baseIdx + c + 2] = 1.0;
-                }
-            }
-
-            linkGeometry.setAttribute('position', new THREE.BufferAttribute(linkPos, 3));
-            linkGeometry.setAttribute('color', new THREE.BufferAttribute(linkColor, 3));
-
-            const linkMaterial = new THREE.LineBasicMaterial({
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.15,
-                blending: THREE.AdditiveBlending
-            });
-            const linkMesh = new THREE.LineSegments(linkGeometry, linkMaterial);
-            scene.add(linkMesh);
-
-            camera.position.z = 12;
-            camera.position.y = -2;
-
-            // Curseur interactif
-            let mouseX = 0;
-            let mouseY = 0;
-            let targetX = 0;
-            let targetY = 0;
-            const windowHalfX = window.innerWidth / 2;
-            const windowHalfY = window.innerHeight / 2;
-
-            document.addEventListener('mousemove', (event) => {
-                mouseX = (event.clientX - windowHalfX) * 0.001;
-                mouseY = (event.clientY - windowHalfY) * 0.001;
-            });
-
-            // Animation Loop
-            let time = 0;
-            const animate = () => {
-                requestAnimationFrame(animate);
-                time += 0.008;
-
-                targetX = mouseX * 2;
-                targetY = mouseY * 2;
-
-                // Rotation douce avec inertie vers la souris
-                dnaMesh.rotation.y += 0.004 + (targetX - dnaMesh.rotation.y) * 0.02;
-                dnaMesh.rotation.x += (targetY - dnaMesh.rotation.x) * 0.02;
-
-                linkMesh.rotation.y = dnaMesh.rotation.y;
-                linkMesh.rotation.x = dnaMesh.rotation.x;
-
-                // Mouvement parallaxe du background
-                bgMesh.rotation.y = time * 0.1 + mouseX * 0.5;
-                bgMesh.rotation.x = time * 0.05 + mouseY * 0.5;
-
-                // Flottement de la caméra
-                camera.position.y += (Math.sin(time * 1.5) * 1.0 - 2 - camera.position.y) * 0.02;
-
-                renderer.render(scene, camera);
-            };
-            animate();
-
-            // Resize handler
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        };
-
-        init3D();
-
         /* --- LOGIQUE JEU & UI --- */
 
         // Gestion Paramètres
@@ -744,6 +519,7 @@
         document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
     </script>
     <script src="js/device-check.js"></script>
+    <script src="js/service-worker-registration.js"></script>
 </body>
 
 </html>

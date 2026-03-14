@@ -238,112 +238,6 @@ h1 {
         "wdth" 100;
 }
 
-/* Animations pour les lettres colorées */
-@keyframes color-change-m {
-    0% {
-        color: #e74c3c;
-    }
-
-    100% {
-        color: #c0392b;
-    }
-}
-
-.letter-m {
-    animation: color-change-m 2s infinite alternate;
-    display: inline-block;
-}
-
-@keyframes color-change-e {
-    0% {
-        color: #f39c12;
-    }
-
-    100% {
-        color: #d68910;
-    }
-}
-
-.letter-e {
-    animation: color-change-e 2s infinite alternate;
-    display: inline-block;
-}
-
-@keyframes color-change-d {
-    0% {
-        color: #2ecc71;
-    }
-
-    100% {
-        color: #27ae60;
-    }
-}
-
-.letter-d {
-    animation: color-change-d 2s infinite alternate;
-    display: inline-block;
-}
-
-@keyframes color-change-g {
-    0% {
-        color: #3498db;
-    }
-
-    100% {
-        color: #2980b9;
-    }
-}
-
-.letter-g {
-    animation: color-change-g 2s infinite alternate;
-    display: inline-block;
-}
-
-@keyframes color-change-a {
-    0% {
-        color: #9b59b6;
-    }
-
-    100% {
-        color: #8e44ad;
-    }
-}
-
-.letter-a {
-    animation: color-change-a 2s infinite alternate;
-    display: inline-block;
-}
-
-@keyframes color-change-m2 {
-    0% {
-        color: #e67e22;
-    }
-
-    100% {
-        color: #d35400;
-    }
-}
-
-.letter-m2 {
-    animation: color-change-m2 2s infinite alternate;
-    display: inline-block;
-}
-
-@keyframes color-change-e2 {
-    0% {
-        color: #1abc9c;
-    }
-
-    100% {
-        color: #16a085;
-    }
-}
-
-.letter-e2 {
-    animation: color-change-e2 2s infinite alternate;
-    display: inline-block;
-}
-
 /* Design responsive */
 @media (max-width: 768px) {
     .container {
@@ -473,11 +367,6 @@ h1 {
     100% {
         color: violet;
     }
-}
-
-.letter-m2 {
-    animation: color-change-m2 2s infinite alternate;
-    color: indigo !important;
 }
 
 .letter-m2 {
