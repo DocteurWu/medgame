@@ -1,73 +1,5 @@
 // Y'a qql qui va lire le code ?? si oui veuillez me contacter sur discord : docteur_wu
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.classList.add('notification');
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.remove();
-    }, 3000); // Remove after 3 seconds
-}
-const NOTIFICATION_DURATION = 3000;
-const DEFAULT_TIME_LIMIT = 240;
-const DEFAULT_ECG_HEIGHT = 96;
-const DEFAULT_SPO2_HEIGHT = 48;
-const VITAL_SIGN_VARIATION = 0.025;
-const DEFAULT_HEART_RATE = 72;
-const DEFAULT_SPO2 = 98;
-const DEFAULT_TEMPERATURE = 36.6;
-const DEFAULT_RESPIRATORY_RATE = 16;
-const GSAP_DURATION = 1;
-const GSAP_Y = 50;
-const GSAP_STAGGER = 0.2;
-const FIREWORKS_DURATION = 3;
-const COOKIE_EXPIRY_DAYS = 365;
-const EXAM_ANALYSIS_DELAY = 1.5;
-const SHOW_RESULT_DELAY = 1;
-const BASE_SCORE = 100;
-const ATTEMPT_PENALTY = 10;
-
-// Configuration for clinical exam sections (label, icon)
-const EXAM_CONFIG = {
-    examenCardiovasculaire: { label: 'Cardiovasculaire', icon: 'fa-heartbeat' },
-    examenPulmonaire: { label: 'Pulmonaire', icon: 'fa-lungs' },
-    examenAbdominal: { label: 'Abdominal', icon: 'fa-procedures' },
-    examenNeurologique: { label: 'Neurologique', icon: 'fa-brain' },
-    examenORL: { label: 'ORL', icon: 'fa-ear-listen' },
-    examenVestibulaire: { label: 'Vestibulaire', icon: 'fa-compass' },
-    examenDermatologique: { label: 'Dermatologique', icon: 'fa-hand-dots' },
-    examenMusculosquelettique: { label: 'Musculosquelettique', icon: 'fa-bone' },
-    examenOphtalmologique: { label: 'Ophtalmologique', icon: 'fa-eye' },
-    examenUrologique: { label: 'Urologique', icon: 'fa-droplet' },
-    default: { label: 'Autre Examen', icon: 'fa-stethoscope' }
-};
-
-// Helper function to render an exam section dynamically
-function renderExamSection(key, data) {
-    const config = EXAM_CONFIG[key] || EXAM_CONFIG.default;
-    // Use a readable label: either from config or derive from key
-    const label = config.label !== 'Autre Examen' ? config.label : key.replace(/^examen/, '').replace(/([A-Z])/g, ' $1').trim();
-    const icon = config.icon;
-
-    let contentHtml = '';
-    if (typeof data === 'string') {
-        contentHtml = `<p>${data}</p>`;
-    } else if (typeof data === 'object' && data !== null) {
-        const items = Object.entries(data).map(([subKey, value]) => {
-            // Capitalize first letter of subKey for display
-            const displayKey = subKey.charAt(0).toUpperCase() + subKey.slice(1);
-            return `<li><strong>${displayKey}:</strong> ${value}</li>`;
-        }).join('');
-        contentHtml = `<ul>${items}</ul>`;
-    }
-
-    return `
-        <div class="exam-item">
-            <h4><i class="fas ${icon}"></i> ${label}</h4>
-            ${contentHtml}
-        </div>
-    `;
-}
+// Utilities (showNotification, escapeHtml, parseMarkdown, cookies, etc.) moved to js/utils.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     const motifHospitalisation = document.getElementById('motif-hospitalisation');
@@ -104,1110 +36,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentCaseIndex = 0;
     let currentCase = null;
     let score = 0;
-    let selectedTreatments = [];
-    let attempts = 0;
-    let timeLeft = getTimeLimit();
-    let timerInterval;
+    // selectedTreatments & attempts now in scoringState (scoring.js)
+    // timeLeft & timerInterval now in timerState (timer.js)
+    timerState.onTimeUp = () => {
+        const t = timerState.currentCase;
+        const defaultText = t && t.correctDiagnostic ? `Diagnostic optimal: ${t.correctDiagnostic}\nTraitements optimaux: ${(t.correctTreatments || []).join(', ')}` : '';
+        showCorrectionModal(t && t.correction ? t.correction : defaultText);
+    };
     let activeExams = []; // Track currently displayed exam results
-    let fireworksInstance = null;
-    let backgroundMusicEl = null;
+    // uiState.fireworksInstance & uiState.backgroundMusicEl now in uiState (ui.js)
     let vitalMonitorInstance = null;
 
-    // --- URGENCE MODE GLOBALS ---
-    let isUrgenceMode = false;
-    let currentUrgenceNode = null;
-    let urgenceTimerTimeout = null;
-
-    // --- GATING SYSTEM (VERROUS) ---
-    let unlockedLocks = new Set();
-    try {
-        const savedLocks = sessionStorage.getItem('unlockedLocks');
-        if (savedLocks) unlockedLocks = new Set(JSON.parse(savedLocks));
-    } catch (e) { console.error("Error loading locks", e); }
-
-    function saveLocks() {
-        sessionStorage.setItem('unlockedLocks', JSON.stringify([...unlockedLocks]));
-    }
-
-    function isFieldLocked(path) {
-        if (!currentCase || !currentCase.locks) return false;
-        return currentCase.locks.some(lock =>
-            !unlockedLocks.has(lock.id) && lock.target_fields.includes(path)
-        );
-    }
-
-    function getLockForField(path) {
-        if (!currentCase || !currentCase.locks) return null;
-        return currentCase.locks.find(lock =>
-            !unlockedLocks.has(lock.id) && lock.target_fields.includes(path)
-        );
-    }
-
-    function normalizeText(text) {
-        return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-    }
-
-    /**
-     * Calcule la distance de Levenshtein entre deux chaînes.
-     * Plus le nombre est bas, plus les chaînes sont proches.
-     */
-    function getLevenshteinDistance(a, b) {
-        if (a.length === 0) return b.length;
-        if (b.length === 0) return a.length;
-        const matrix = [];
-        for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-        for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-        for (let i = 1; i <= b.length; i++) {
-            for (let j = 1; j <= a.length; j++) {
-                if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                    matrix[i][j] = matrix[i - 1][j - 1];
-                } else {
-                    matrix[i][j] = Math.min(
-                        matrix[i - 1][j - 1] + 1, // substitution
-                        matrix[i][j - 1] + 1,     // insertion
-                        matrix[i - 1][j] + 1      // suppression
-                    );
-                }
-            }
-        }
-        return matrix[b.length][a.length];
-    }
-
-    /**
-     * Détermine si deux mots sont "assez proches" selon leur longueur.
-     */
-    function isFuzzyMatch(input, keyword) {
-        if (!input || !keyword) return false;
-        const dist = getLevenshteinDistance(input, keyword);
-        // Stratégie de tolérance :
-        if (keyword.length <= 3) return dist === 0; // Trop court : pas d'erreur permise (ex: HTA)
-        if (keyword.length <= 6) return dist <= 1; // 1 erreur max (ex: Angine)
-        return dist <= 2; // 2 erreurs max pour les mots longs (ex: Appendicite)
-    }
-
-    function showLockChallenge(lockId) {
-        console.log("showLockChallenge called with lockId:", lockId);
-        console.log("currentCase:", currentCase);
-
-        if (!currentCase) {
-            console.error("currentCase is not defined");
-            showNotification("Erreur: cas non chargé");
-            return;
-        }
-
-        if (!currentCase.locks || !Array.isArray(currentCase.locks)) {
-            console.error("currentCase.locks is not defined or not an array");
-            showNotification("Erreur: pas de verrous définis");
-            return;
-        }
-
-        const lock = currentCase.locks.find(l => l.id === lockId);
-        if (!lock) {
-            console.error("Lock not found:", lockId);
-            showNotification("Erreur: verrou introuvable");
-            return;
-        }
-
-        let lockAttempts = 0;
-
-        console.log("Lock found:", lock);
-
-        // Hide nurse intro if it's still showing to avoid timer conflicts
-        if (typeof NurseIntro !== 'undefined') {
-            NurseIntro.hide();
-        }
-
-        const modalOverlay = document.createElement('div');
-        modalOverlay.className = 'correction-overlay';
-        modalOverlay.style.display = 'flex';
-        modalOverlay.id = 'lock-challenge-modal';
-        modalOverlay.style.zIndex = '2000'; // Ensure it's above everything
-
-        let challengeHtml = '';
-        if (lock.type === 'SAISIE') {
-            challengeHtml = `
-                <div class="lock-modal">
-                    <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
-                    <p class="challenge-question">${lock.challenge.question}</p>
-                    <input type="text" id="lock-answer" placeholder="Votre réponse..." autocomplete="off">
-                    <p id="lock-error" class="error-feedback"></p>
-                    <div class="correction-actions">
-                        <button class="secondary-btn" id="lock-cancel">Annuler</button>
-                        <button class="primary-btn" id="lock-submit">Valider</button>
-                    </div>
-                </div>
-            `;
-        } else if (lock.type === 'QCM') {
-            const optionsHtml = lock.challenge.options.map((opt, i) =>
-                `<div class="mcq-option" data-index="${i}">${opt}</div>`
-            ).join('');
-
-            challengeHtml = `
-                <div class="lock-modal">
-                    <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
-                    <p class="challenge-question">${lock.challenge.question}</p>
-                    <div class="mcq-options">
-                        ${lock.challenge.options.map((opt, i) =>
-                `<div class="mcq-option" data-index="${i}">${opt}</div>`
-            ).join('')}
-                    </div>
-                    <p id="lock-error" class="error-feedback"></p>
-                    <div class="correction-actions">
-                        <button class="secondary-btn" id="lock-cancel">Annuler</button>
-                        <button class="primary-btn" id="lock-submit">Valider</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        modalOverlay.innerHTML = challengeHtml;
-        document.body.appendChild(modalOverlay);
-
-        if (lock.type === 'SAISIE') {
-            const input = document.getElementById('lock-answer');
-            input.focus();
-            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') validateSaisie(); });
-            document.getElementById('lock-submit').addEventListener('click', validateSaisie);
-        } else {
-            document.querySelectorAll('.mcq-option').forEach(opt => {
-                opt.addEventListener('click', () => {
-                    opt.classList.toggle('selected');
-                });
-            });
-            document.getElementById('lock-submit').addEventListener('click', validateQCM);
-        }
-
-        document.getElementById('lock-cancel').addEventListener('click', () => {
-            modalOverlay.remove();
-        });
-
-        function validateSaisie() {
-            lockAttempts++;
-            const val = document.getElementById('lock-answer').value;
-            const answer = normalizeText(val);
-            
-            // fuzzy match
-            const isCorrect = lock.challenge.expected_keywords.some(kw => {
-                const normalizedKW = normalizeText(kw);
-                // 1. Exact match or inclusion
-                if (normalizedKW === answer || answer.includes(normalizedKW)) return true;
-                
-                // 2. Fuzzy match (word by word)
-                const words = answer.split(/\s+/);
-                return words.some(word => isFuzzyMatch(word, normalizedKW));
-            });
-
-            if (isCorrect) {
-                unlock(lockId);
-                modalOverlay.remove();
-            } else if (lockAttempts >= 3) {
-                const correction = lock.challenge.expected_keywords.join(', ');
-                const errorEl = document.getElementById('lock-error');
-                errorEl.innerHTML = `
-                    <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
-                        <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
-                        <div style="color: white; margin-bottom: 10px;">${correction}</div>
-                        ${lock.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${lock.feedback_error}</div>` : ''}
-                    </div>
-                `;
-                document.getElementById('lock-submit').style.display = 'none';
-                const input = document.getElementById('lock-answer');
-                if (input) {
-                    input.disabled = true;
-                    input.style.opacity = '0.7';
-                }
-                const cancelBtn = document.getElementById('lock-cancel');
-                cancelBtn.textContent = 'Continuer';
-                cancelBtn.classList.remove('secondary-btn');
-                cancelBtn.classList.add('primary-btn');
-                cancelBtn.style.width = '100%';
-                // Clear existing listeners by replacing the element or using a flag
-                const newCancelBtn = cancelBtn.cloneNode(true);
-                cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-                newCancelBtn.onclick = () => {
-                    unlock(lockId);
-                    modalOverlay.remove();
-                };
-                gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
-            } else {
-                document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
-                gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
-            }
-        }
-
-        function validateQCM() {
-            lockAttempts++;
-            const selectedOptions = document.querySelectorAll('.mcq-option.selected');
-            const selectedIndices = Array.from(selectedOptions).map(opt => parseInt(opt.dataset.index));
-
-            const correctIndices = lock.challenge.correct_indices || (lock.challenge.correct_index !== undefined ? [lock.challenge.correct_index] : []);
-
-            // Sort results to compare
-            selectedIndices.sort((a, b) => a - b);
-            const sortedCorrect = [...correctIndices].sort((a, b) => a - b);
-
-            const isCorrect = selectedIndices.length === sortedCorrect.length &&
-                selectedIndices.every((val, index) => val === sortedCorrect[index]);
-
-            if (isCorrect) {
-                unlock(lockId);
-                modalOverlay.remove();
-            } else if (lockAttempts >= 3) {
-                const correctionText = sortedCorrect.map(idx => lock.challenge.options[idx]).join(' + ');
-                const errorEl = document.getElementById('lock-error');
-                errorEl.innerHTML = `
-                    <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
-                        <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
-                        <div style="color: white; margin-bottom: 10px;">${correctionText}</div>
-                        ${lock.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${lock.feedback_error}</div>` : ''}
-                    </div>
-                `;
-                document.getElementById('lock-submit').style.display = 'none';
-
-                // Disable and highlight options
-                document.querySelectorAll('.mcq-option').forEach(opt => {
-                    const idx = parseInt(opt.dataset.index);
-                    opt.style.pointerEvents = 'none'; // Disable clicking
-                    if (sortedCorrect.includes(idx)) {
-                        opt.classList.add('correct');
-                        opt.style.borderColor = "#2ecc71";
-                        opt.style.background = "rgba(46, 204, 113, 0.2)";
-                    } else {
-                        opt.style.opacity = '0.5';
-                    }
-                });
-
-                const cancelBtn = document.getElementById('lock-cancel');
-                cancelBtn.textContent = 'Continuer';
-                cancelBtn.classList.remove('secondary-btn');
-                cancelBtn.classList.add('primary-btn');
-                cancelBtn.style.width = '100%';
-
-                const newCancelBtn = cancelBtn.cloneNode(true);
-                cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-                newCancelBtn.onclick = () => {
-                    unlock(lockId);
-                    modalOverlay.remove();
-                };
-                gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
-            } else {
-                document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
-                gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
-            }
-        }
-    }
-
-    function unlock(lockId) {
-        unlockedLocks.add(lockId);
-        saveLocks();
-
-        // Refresh the UI to show the unlocked data
-        loadCase(true);
-    }
-
-    // Export globally for onclick handlers
-    window.showLockChallenge = showLockChallenge;
-    window.showImageModal = showImageModal;
-
-    function getTimeLimit() {
-        return 480;
-    }
-
-    function escapeHtml(str) {
-        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    function renderCorrectionContent(text) {
-        const contentEl = document.getElementById('correction-content') || document.getElementById('correction-preview-area');
-        if (!contentEl) return;
-
-        if (!text) {
-            contentEl.innerHTML = '';
-            return;
-        }
-
-        // If it looks like HTML, just render it (legacy support)
-        if (/<[a-z][\s\S]*>/i.test(text)) {
-            contentEl.innerHTML = text;
-            return;
-        }
-
-        const lines = text.split('\n');
-        let html = '';
-        let inList = false;
-
-        for (let line of lines) {
-            const t = line.trim();
-
-            // Handle Headers
-            if (t.startsWith('# ')) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += `<h1>${escapeHtml(t.slice(2))}</h1>`;
-                continue;
-            }
-            if (t.startsWith('## ')) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += `<h2>${escapeHtml(t.slice(3))}</h2>`;
-                continue;
-            }
-            if (t.startsWith('### ')) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += `<h3>${escapeHtml(t.slice(4))}</h3>`;
-                continue;
-            }
-
-            // Handle Lists
-            if (t.startsWith('- ')) {
-                if (!inList) {
-                    html += '<ul>';
-                    inList = true;
-                }
-                html += '<li>' + escapeHtml(t.slice(2)) + '</li>';
-            } else {
-                if (inList) {
-                    html += '</ul>';
-                    inList = false;
-                }
-                if (t === '') {
-                    html += '<br>';
-                } else {
-                    html += '<p>' + escapeHtml(t) + '</p>';
-                }
-            }
-        }
-        if (inList) html += '</ul>';
-
-        // Post-process for bold and italic
-        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
-        html = html.replace(/_(.*?)_/g, '<em>$1</em>');
-
-        contentEl.innerHTML = html;
-    }
-
-    // Export for editor.js use
-    window.renderCorrectionMd = renderCorrectionContent;
-
-    function renderCaseSummary(c) {
-        if (!c) return '';
-        const patient = `<h4>Patient</h4><p>${escapeHtml(c.patient.nom)} ${escapeHtml(c.patient.prenom || '')} · ${escapeHtml(String(c.patient.age))} ans · ${escapeHtml(c.patient.sexe)}</p>
-        <p>Taille: ${escapeHtml(c.patient.taille || '--')} · Poids: ${escapeHtml(c.patient.poids || '--')} · Groupe: ${escapeHtml(c.patient.groupeSanguin || '--')}</p>`;
-        const motif = `<p><strong>Motif:</strong> ${escapeHtml(c.interrogatoire.motifHospitalisation || '')}</p>`;
-        const constantes = `<h4>Constantes</h4><p>Tension: ${escapeHtml(c.examenClinique.constantes.tension || '')} · Pouls: ${escapeHtml(c.examenClinique.constantes.pouls || '')} · Température: ${escapeHtml(c.examenClinique.constantes.temperature || '')} · SpO2: ${escapeHtml(c.examenClinique.constantes.saturationO2 || '')} · FR: ${escapeHtml(c.examenClinique.constantes.frequenceRespiratoire || '')}</p>`;
-        const exams = c.examResults ? Object.keys(c.examResults).map(k => `<div><strong>${escapeHtml(k)}:</strong> ${escapeHtml(typeof c.examResults[k] === 'string' ? c.examResults[k] : (c.examResults[k].value || ''))}</div>`).join('') : '';
-        const examsBlock = exams ? `<h4>Résultats d'examens</h4>${exams}` : '';
-        return patient + motif + constantes + examsBlock;
-    }
-
-    function showCorrectionModal(text) {
-        const contentEl = document.getElementById('correction-content');
-        if (!contentEl) return;
-
-        let finalHtml = '';
-
-        if (text) {
-            // Check if it's the split comparison + correction format
-            const htmlMatch = text.match(/^([\s\S]*?<hr[^>]*>)([\s\S]*)$/);
-            if (htmlMatch) {
-                const comparisonHtml = htmlMatch[1];
-                const correctionMd = htmlMatch[2];
-                finalHtml += comparisonHtml;
-                finalHtml += parseMarkdown(correctionMd);
-            } else {
-                // If it looks like HTML, render it; otherwise parse as markdown
-                if (/<[a-z][\s\S]*>/i.test(text)) {
-                    finalHtml += text;
-                } else {
-                    finalHtml += parseMarkdown(text);
-                }
-            }
-        }
-
-        // Now append correction image if exists (moved to bottom)
-        if (currentCase && currentCase.correctionImage) {
-            finalHtml += `<div style="text-align: center; margin-top: 20px;">
-                        <img src="${currentCase.correctionImage}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;" onclick="window.showImageModal('${currentCase.correctionImage}', 'Illustration Correction')">
-                    </div>`;
-        }
-
-        // Append redacteur credit if exists
-        if (currentCase && currentCase.redacteur) {
-            finalHtml += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(currentCase.redacteur)} pour avoir rédigé ce cas !</div>`;
-        }
-
-        // Append case ID if exists (small, low contrast for reference)
-        if (currentCase && currentCase.id) {
-            finalHtml += `<div style="font-size: 0.7em; color: rgba(58, 52, 52, 0.2); text-align: right; margin-top: 5px;">ID: ${escapeHtml(currentCase.id)}</div>`;
-        }
-
-        contentEl.innerHTML = finalHtml;
-
-        const overlay = document.getElementById('correction-overlay');
-        overlay.style.display = 'flex';
-    }
-
-    // Helper function to parse markdown to HTML
-    function parseMarkdown(text) {
-        if (!text) return '';
-
-        // First, try to add newlines before markdown patterns if they're missing
-        // This handles cases where the text is stored without proper line breaks
-        text = text.replace(/([^#\n])# /g, '$1\n# ');
-        text = text.replace(/([^\n])## /g, '$1\n## ');
-        text = text.replace(/([^\n])### /g, '$1\n### ');
-        text = text.replace(/([^\n])- /g, '$1\n- ');
-
-        const lines = text.split('\n');
-        let html = '';
-        let inList = false;
-
-        for (let line of lines) {
-            const t = line.trim();
-            if (!t) continue;
-
-            if (t.startsWith('# ')) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += `<h3 style="color: var(--primary-color); margin: 12px 0 8px; font-size: 1.2em;">${escapeHtml(t.slice(2))}</h3>`;
-                continue;
-            }
-            if (t.startsWith('## ')) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += `<h4 style="color: var(--secondary-color); margin: 10px 0 6px; font-size: 1.1em;">${escapeHtml(t.slice(3))}</h4>`;
-                continue;
-            }
-            if (t.startsWith('### ')) {
-                if (inList) { html += '</ul>'; inList = false; }
-                html += `<h5 style="margin: 8px 0 5px; font-size: 1em;">${escapeHtml(t.slice(4))}</h5>`;
-                continue;
-            }
-
-            if (t.startsWith('- ')) {
-                if (!inList) {
-                    html += '<ul style="margin: 8px 0; padding-left: 20px; font-size: 0.95em;">';
-                    inList = true;
-                }
-                html += '<li style="margin: 4px 0;">' + escapeHtml(t.slice(2)) + '</li>';
-            } else {
-                if (inList) {
-                    html += '</ul>';
-                    inList = false;
-                }
-                html += '<p style="margin: 6px 0; font-size: 0.95em;">' + escapeHtml(t) + '</p>';
-            }
-        }
-        if (inList) html += '</ul>';
-
-        // Post-process for bold and italic
-        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
-        html = html.replace(/_(.*?)_/g, '<em>$1</em>');
-
-        return html;
-    }
-
-    function hideCorrectionModal() {
-        const overlay = document.getElementById('correction-overlay');
-        overlay.style.display = 'none';
-    }
-
-    let currentZoom = 1;
-    function showImageModal(src, caption) {
-        const overlay = document.getElementById('image-overlay');
-        const img = document.getElementById('image-modal-img');
-        const cap = document.getElementById('image-modal-caption');
-        if (img) img.src = src || '';
-        if (img) img.alt = caption || '';
-        if (cap) cap.textContent = caption || '';
-        if (overlay) overlay.style.display = 'flex';
-        currentZoom = 1;
-        updateImageZoom();
-    }
-
-    function hideImageModal() {
-        const overlay = document.getElementById('image-overlay');
-        const img = document.getElementById('image-modal-img');
-        if (img) img.src = '';
-        if (overlay) overlay.style.display = 'none';
-    }
-
-    function updateImageZoom() {
-        const img = document.getElementById('image-modal-img');
-        if (img) img.style.transform = `scale(${currentZoom})`;
-    }
-
-    window.zoomImage = (delta) => {
-        currentZoom = Math.min(Math.max(currentZoom + delta, 0.5), 3);
-        updateImageZoom();
-    };
-
-    document.getElementById('correction-back').addEventListener('click', () => {
-        hideCorrectionModal();
-    });
-
-    document.getElementById('toggle-case-review').addEventListener('click', () => {
-        const panel = document.getElementById('case-review');
-        if (panel.style.display === 'none' || panel.style.display === '') {
-            panel.style.display = 'block';
-            panel.innerHTML = renderCaseSummary(currentCase);
-        } else {
-            panel.style.display = 'none';
-        }
-    });
-
-    document.getElementById('correction-next').addEventListener('click', () => {
-        if (fireworksInstance) fireworksInstance.stop();
-        if (backgroundMusicEl) backgroundMusicEl.play();
-        hideCorrectionModal();
-
+    // Urgence mode moved to js/urgenceMode.js
+
+    // Lock system moved to js/lockSystem.js
+    initLockSystem();
+    lockSystem.onLoadCase = (isPartial) => loadCase(isPartial);
+
+    // UI functions moved to js/ui.js
+    initUI();
+    uiState.onCorrectionNext = () => {
+        if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
+        if (uiState.backgroundMusicEl) uiState.backgroundMusicEl.play();
         currentCaseIndex++;
         if (currentCaseIndex >= cases.length) {
             window.location.href = 'index.html';
             return;
         }
         loadCase();
-    });
-
-    const imageCloseBtn = document.getElementById('image-modal-close');
-    if (imageCloseBtn) imageCloseBtn.addEventListener('click', hideImageModal);
-    const imageOverlay = document.getElementById('image-overlay');
-    if (imageOverlay) imageOverlay.addEventListener('click', (e) => { if (e.target && e.target.id === 'image-overlay') hideImageModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideImageModal(); });
-
-    function displayTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        const timeStr = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-        document.getElementById('timer').textContent = timeStr;
-        const mobileTimer = document.getElementById('mobile-timer');
-        if (mobileTimer) mobileTimer.textContent = timeStr;
-    }
-
-    window.deductTime = function (seconds) {
-        if (timeLeft <= 0) return false;
-        timeLeft -= seconds;
-        if (timeLeft <= 0) {
-            timeLeft = 0;
-            displayTime(0);
-            return false; // Game over logic will handle the rest via interval naturally or we wait for next tick
-        }
-        displayTime(timeLeft);
-        return true;
     };
 
-    function updateTimer() {
-        if (timeLeft > 0) {
-            timeLeft--;
-            displayTime(timeLeft);
-        } else if (timeLeft === 0) {
-            timeLeft = -1; // Flag to prevent multiple triggers
-            clearInterval(timerInterval);
-            showNotification('Temps écoulé !');
-            const playedCases = getCookie('playedCases');
-            let arr = playedCases ? playedCases.split(',') : [];
-            if (!arr.includes(currentCase.id)) {
-                arr.push(currentCase.id);
-                setCookie('playedCases', arr.join(','), 365);
-            }
-            const defaultText = currentCase && currentCase.correctDiagnostic ? `Diagnostic optimal: ${currentCase.correctDiagnostic}\nTraitements optimaux: ${(currentCase.correctTreatments || []).join(', ')}` : '';
-            showCorrectionModal(currentCase && currentCase.correction ? currentCase.correction : defaultText);
-        }
-    }
+    // loadCasesData moved to js/caseLoader.js (global)
 
-    // Cookie management functions
-    function setCookie(name, value, days) {
-        let expires = "";
-        if (days) {
-            let date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    }
+    // displayValue, displayQuestionBtn, revealAllInterrogatoire moved to js/ui.js
 
-    function getCookie(name) {
-        let nameEQ = name + "=";
-        let ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    }
-
-    function eraseCookie(name) {
-        document.cookie = name + '=; path=/; Max-Age=-99999999;';
-    }
-
-
-
-    async function loadCasesData() {
-        try {
-            // Preview Mode check
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('preview') === 'true') {
-                const previewData = sessionStorage.getItem('previewCase');
-                if (previewData) {
-                    console.log('Loading Preview Case from sessionStorage');
-                    // Add "Return to Editor" button
-                    const backBtn = document.createElement('button');
-                    backBtn.innerHTML = '<i class="fas fa-edit"></i> Quitter l\'aperçu / Modifier';
-                    backBtn.style.cssText = `
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        z-index: 1000;
-                        background: #a020f0;
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 30px;
-                        font-family: inherit;
-                        font-weight: bold;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                        cursor: pointer;
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                        transition: all 0.3s;
-                    `;
-                    backBtn.onmouseover = () => backBtn.style.transform = 'scale(1.05)';
-                    backBtn.onmouseout = () => backBtn.style.transform = 'scale(1)';
-                    backBtn.onclick = () => window.location.href = 'editor.html';
-                    document.body.appendChild(backBtn);
-
-                    return [JSON.parse(previewData)];
-                }
-            }
-
-            // 1. SUPABASE FETCH (If applicable)
-            if (typeof supabase !== 'undefined') {
-                const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-                if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
-                    try {
-                        const { data, error } = await supabase
-                            .from('cases')
-                            .select('*')
-                            .in('id', selectedCaseFiles);
-
-                        if (!error && data && data.length > 0) {
-                            console.log('Loading cases from Supabase:', data.length);
-                            // Merge ID and Content for game logic
-                            const processed = data.map(c => {
-                                const content = c.content;
-                                if (!content.id) content.id = c.id;
-                                return content;
-                            });
-                            localStorage.removeItem('selectedCaseFiles');
-                            return processed;
-                        }
-                    } catch (err) {
-                        console.warn("Supabase fetch failed, falling back to local files", err);
-                    }
-                }
-            }
-
-            // Vérifier d'abord si une session de MULTIPLES CAS a été sélectionnée (Fallback local)
-            const selectedCaseFilesLocal = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-            if (selectedCaseFilesLocal && Array.isArray(selectedCaseFilesLocal) && selectedCaseFilesLocal.length > 0) {
-                console.log('Loading selected session cases:', selectedCaseFilesLocal);
-                const casesPromises = selectedCaseFilesLocal.map(file =>
-                    fetch(`data/${file}`)
-                        .then(res => {
-                            if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
-                            return res.json();
-                        })
-                );
-                const results = await Promise.all(casesPromises);
-                // On peut vider ou garder selectedCaseFiles. On va le vider pour repartir de zéro au prochain coup
-                localStorage.removeItem('selectedCaseFiles');
-                return results;
-            }
-
-            // Vérifier d'abord si un cas spécifique UNIQUE a été sélectionné
-            const selectedCaseFile = localStorage.getItem('selectedCaseFile');
-            if (selectedCaseFile) {
-                console.log('Loading specific case:', selectedCaseFile);
-                const response = await fetch(`data/${selectedCaseFile}`);
-                if (!response.ok) throw new Error(`Fichier ${selectedCaseFile} introuvable`);
-                const caseData = await response.json();
-
-                // On nettoie le localStorage pour que les rechargements futurs ne restent pas bloqués sur ce cas
-                // (ou on le garde si on veut que le bouton "Rejouer" fonctionne, mais ici on va le vider car game.js
-                // utilise cases[] pour choisir. On va mettre ce cas unique dans la liste.)
-                localStorage.removeItem('selectedCaseFile');
-                return [caseData];
-            }
-
-            // Sinon, récupérer les thèmes sélectionnés depuis localStorage (Comportement original)
-            const selectedThemes = JSON.parse(localStorage.getItem('selectedThemes')) || [];
-            if (selectedThemes.length === 0) {
-                throw new Error('Aucun thème sélectionné');
-            }
-
-            // Charger l’index des cas
-            const response = await fetch('data/case-index.json');
-            if (!response.ok) {
-                throw new Error(`Erreur HTTP: ${response.status}`);
-            }
-            const caseIndex = await response.json();
-
-            // Filtrer les fichiers pour les thèmes sélectionnés (insensible à la casse)
-            let caseFiles = [];
-            console.log('Selected themes:', selectedThemes);
-            selectedThemes.forEach(theme => {
-                const themeLower = theme.toLowerCase(); // Convertir en minuscules
-                if (caseIndex[themeLower]) {
-                    caseFiles = caseFiles.concat(caseIndex[themeLower]);
-                }
-            });
-            console.log('Case files found:', caseFiles);
-
-            if (caseFiles.length === 0) {
-                throw new Error('Aucun cas disponible pour les thèmes sélectionnés');
-            }
-
-            // Charger les données de chaque fichier
-            const casesPromises = caseFiles.map(file =>
-                fetch(`data/${file}`)
-                    .then(res => {
-                        if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
-                        return res.json();
-                    })
-            );
-            const cases = await Promise.all(casesPromises);
-            console.log('Cas chargés :', cases);
-            return cases;
-        } catch (error) {
-            console.error('Erreur lors du chargement des cas :', error);
-            showNotification('Erreur lors du chargement des cas cliniques : ' + error.message);
-            return [];
-        }
-    }
-
-    function displayValue(element, value, path) {
-        if (!element) return;
-
-        if (path && isFieldLocked(path)) {
-            const lock = getLockForField(path);
-            element.setAttribute('data-locked', 'true');
-            element.innerHTML = `
-                <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
-                    <i class="fas fa-lock"></i>
-                    <span class="challenge-text">DÉFI À RELEVER</span>
-                </div>
-            `;
-            return;
-        }
-
-        const isNew = element.getAttribute('data-locked') === 'true';
-        element.textContent = value ?? '';
-
-        if (isNew) {
-            element.removeAttribute('data-locked');
-            element.classList.add('unlocked-data');
-        }
-    }
-
-    function displayQuestionBtn(element, questionText, value, path, isHtml = false) {
-        if (!element) return;
-
-        if (path && isFieldLocked(path)) {
-            const lock = getLockForField(path);
-            element.setAttribute('data-locked', 'true');
-            element.innerHTML = `
-                <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
-                    <i class="fas fa-lock"></i>
-                    <span class="challenge-text">DÉFI À RELEVER</span>
-                </div>
-            `;
-            return;
-        }
-
-        element.innerHTML = '';
-        const btn = document.createElement('button');
-        btn.className = 'btn-question primary-btn';
-        btn.innerHTML = `<i class="fas fa-question-circle"></i> ${questionText} <span style="font-size:0.8em; opacity:0.8; margin-left:5px;">(-5s)</span>`;
-        btn.style.margin = '5px 0';
-        btn.style.width = '100%';
-        btn.style.textAlign = 'left';
-
-        btn.onclick = () => {
-            if (typeof window.deductTime === 'function') {
-                const hasTime = window.deductTime(5);
-                if (!hasTime) {
-                    showNotification("Temps in-game insuffisant pour poser cette question.");
-                    return;
-                }
-            }
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Le patient réfléchit...';
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-
-            setTimeout(() => {
-                const isNew = element.getAttribute('data-locked') === 'true';
-                let finalVal = value;
-                // Handling empty or placeholder states
-                if (!finalVal || (typeof finalVal === 'string' && finalVal.trim() === '') || finalVal === 'undefined depuis undefined' || finalVal === 'undefined, undefined' || finalVal === 'undefined, stress: undefined') {
-                    finalVal = "Rien de particulier.";
-                    isHtml = false;
-                }
-                const content = isHtml ? finalVal : escapeHtml(finalVal);
-                element.innerHTML = `<span class="answer-fade-in">${content}</span>`;
-                if (isNew) {
-                    element.removeAttribute('data-locked');
-                    element.classList.add('unlocked-data');
-                }
-            }, 1000);
-        };
-
-        element.appendChild(btn);
-    }
-
-    window.revealAllInterrogatoire = function () {
-        const section = document.getElementById('section-anamnese');
-        if (!section) return;
-
-        // Only count buttons not yet answered
-        const btns = Array.from(section.querySelectorAll('.btn-question:not([disabled])'));
-        if (btns.length === 0) {
-            showNotification('Tout est déjà affiché !');
-            return;
-        }
-
-        // 20% discount: N questions × 5s × 0.8
-        const cost = Math.round(btns.length * 5 * 0.8);
-        const hasTime = window.deductTime ? window.deductTime(cost) : true;
-        if (!hasTime) {
-            showNotification('Temps in-game insuffisant.');
-            return;
-        }
-
-        // Hide the button itself
-        const revealBtn = document.getElementById('btn-reveal-all');
-        if (revealBtn) revealBtn.style.display = 'none';
-
-        // Trigger each button with a small stagger for a nice reveal
-        btns.forEach((btn, i) => {
-            setTimeout(() => btn.click(), i * 120);
-        });
-    };
-
-    function parseBP(text) {
-        const m = (text || '').match(/(\d{2,3})\/(\d{2,3})/);
-        return m ? { systolic: +m[1], diastolic: +m[2] } : { systolic: 120, diastolic: 80 };
-    }
-
-    function parseNum(text) {
-        const m = (text || '').match(/[\d]+(?:[\.,][\d]+)?/);
-        return m ? parseFloat(m[0].replace(',', '.')) : NaN;
-    }
-
-    class VitalSignsMonitor {
-        constructor(props, layout) {
-            this.props = props;
-            this.layout = layout || { ecgH: 96, spo2H: 48 };
-            // Stocker les valeurs de base pour les calculs de variation
-            this.baseValues = { ...props };
-            // Calculer les intervalles de variation (±2.5%)
-            this.calculateVariationRanges();
-            this.updateInterval = null;
-        }
-        calculateVariationRanges() {
-            // Créer des intervalles de variation de ±2.5% autour des valeurs de base
-            const variationPercent = 0.025; // 2.5%
-            this.variationRanges = {
-                systolic: {
-                    min: Math.round(this.baseValues.systolic * (1 - variationPercent)),
-                    max: Math.round(this.baseValues.systolic * (1 + variationPercent))
-                },
-                diastolic: {
-                    min: Math.round(this.baseValues.diastolic * (1 - variationPercent)),
-                    max: Math.round(this.baseValues.diastolic * (1 + variationPercent))
-                },
-                heartRate: {
-                    min: Math.round(this.baseValues.heartRate * (1 - variationPercent)),
-                    max: Math.round(this.baseValues.heartRate * (1 + variationPercent))
-                },
-                temperature: {
-                    // Pour la température, garder 1 décimale mais faire varier autour de ±2.5%
-                    min: Math.round((this.baseValues.temperature * (1 - variationPercent)) * 10) / 10,
-                    max: Math.round((this.baseValues.temperature * (1 + variationPercent)) * 10) / 10
-                },
-                spo2: {
-                    min: Math.round(this.baseValues.spo2 * (1 - variationPercent)),
-                    max: Math.round(this.baseValues.spo2 * (1 + variationPercent))
-                },
-                respiratoryRate: {
-                    min: Math.round(this.baseValues.respiratoryRate * (1 - variationPercent)),
-                    max: Math.round(this.baseValues.respiratoryRate * (1 + variationPercent))
-                }
-            };
-        }
-        generateRandomValue(range) {
-            return Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
-        }
-        updateVitalsValues() {
-            // Mettre à jour les valeurs avec variation aléatoire dans les intervalles
-            this.props.systolic = this.generateRandomValue(this.variationRanges.systolic);
-            this.props.diastolic = this.generateRandomValue(this.variationRanges.diastolic);
-            this.props.heartRate = this.generateRandomValue(this.variationRanges.heartRate);
-
-            // Température spéciale (avec 1 décimale)
-            const tempVariation = (Math.random() * (this.variationRanges.temperature.max - this.variationRanges.temperature.min)) + this.variationRanges.temperature.min;
-            this.props.temperature = Math.round(tempVariation * 10) / 10;
-
-            this.props.spo2 = this.generateRandomValue(this.variationRanges.spo2);
-            this.props.respiratoryRate = this.generateRandomValue(this.variationRanges.respiratoryRate);
-
-            // Mettre à jour l'affichage et les animations
-            this.updateDisplay();
-            this.startAnimations();
-        }
-        startVitalUpdates() {
-            // Démarrer les mises à jour périodiques (toutes les 3-5 secondes)
-            const updateInterval = 3000 + Math.random() * 2000; // 3-5 secondes aléatoirement
-            this.updateInterval = setInterval(() => {
-                this.updateVitalsValues();
-            }, updateInterval);
-        }
-        stopVitalUpdates() {
-            if (this.updateInterval) {
-                clearInterval(this.updateInterval);
-                this.updateInterval = null;
-            }
-        }
-        mount(root) { this.root = root; this.root.innerHTML = this.template(); this.initAnimatedWaves(); this.updateDisplay(); this.startAnimations(); this.startVitalUpdates(); }
-        template() {
-            return (
-                '<div class="vm" style="position:relative; overflow:hidden;">'
-                + '<div class="vm-crt-overlay"></div>' // CRT Overlay
-                + '<div class="vm-header"><div style="color:#007bff;font-weight:700;text-shadow:0 0 5px rgba(0,123,255,0.5)">ECG</div><div style="color:#e0e0e0">HR: <span id="hr-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.heartRate + '</span> BPM</div></div>'
-                // Main flex container for scope and vitals cards
-                + '<div style="display:flex; gap:8px; align-items:stretch;">'
-                // Left side: ECG and SpO2 scopes
-                + '<div style="flex:1; min-width:0;">'
-                + '<div style="position:relative;height:' + this.layout.ecgH + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(0,123,255,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
-                + '<div class="vm-scanline"></div>' // Scanline
-                + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
-                + '<defs><pattern id="vm-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 L0 0 0 20" fill="none" stroke="#007bff" stroke-width="0.5"/></pattern></defs>'
-                + '<rect width="100%" height="100%" fill="url(#vm-grid)"/>'
-                + '</svg>'
-                + '<svg viewBox="0 0 400 128" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
-                + '<defs><linearGradient id="vm-heartGradient" x1="0%" y1="0%" x2="100%" y2="0%">'
-                + '<stop offset="0%" stop-color="#007bff" stop-opacity="0"/><stop offset="10%" stop-color="#007bff" stop-opacity="0.8"/><stop offset="50%" stop-color="#007bff"/><stop offset="90%" stop-color="#007bff" stop-opacity="0.8"/><stop offset="100%" stop-color="#007bff" stop-opacity="0"/>'
-                + '</linearGradient></defs>'
-                + '<g id="heart-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
-                + '<path id="heart-line-1" class="vm-line-glow" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
-                + '<path id="heart-line-2" class="vm-line-glow" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
-                + '</g>'
-                + '</svg>'
-                + '<div id="pulse-indicator" style="position:absolute;top:8px;right:8px;width:10px;height:10px;background:#dc3545;border-radius:50%;box-shadow:0 0 10px #dc3545;animation:pulse-dot calc(60s / var(--heart-rate,72)) infinite"></div>'
-                + '</div>'
-                + '<div style="margin-top:8px">'
-                + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
-                + '<div id="spo2-label" style="color:#17a2b8;font-weight:700;text-shadow:0 0 5px rgba(23,162,184,0.5)">SpO₂</div>'
-                + '<div id="spo2-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.spo2 + '%</div>'
-                + '</div>'
-                + '<div style="position:relative;height:' + this.layout.spo2H + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(23,162,184,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
-                + '<div class="vm-scanline" style="animation-delay: 1s;"></div>' // Scanline delayed
-                + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
-                + '<defs><pattern id="vm-spo2-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0 L0 0 0 15" fill="none" stroke="#17a2b8" stroke-width="0.3"/></pattern></defs>'
-                + '<rect width="100%" height="100%" fill="url(#vm-spo2-grid)"/>'
-                + '</svg>'
-                + '<svg viewBox="0 0 400 64" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
-                + '<defs><linearGradient id="vm-spo2Gradient" x1="0%" y1="0%" x2="100%" y2="0%">'
-                + '<stop offset="0%" stop-color="#17a2b8" stop-opacity="0"/><stop offset="10%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="50%" stop-color="#17a2b8"/><stop offset="90%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="100%" stop-color="#17a2b8" stop-opacity="0"/>'
-                + '</linearGradient></defs>'
-                + '<g id="spo2-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
-                + '<path id="spo2-path-1" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
-                + '<path id="spo2-path-2" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
-                + '</g>'
-                + '</svg>'
-                + '</div>'
-                + '</div>'
-                + '</div>' // End left side
-                // Right side: Tension and Temperature cards
-                + '<div style="display:flex; flex-direction:column; gap:8px; width:80px; flex-shrink:0;">'
-                + '<div class="vm-card" style="flex:1; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2); display:flex; flex-direction:column; justify-content:center; padding:6px;">'
-                + '<div style="color:#6c757d;font-size:10px;margin-bottom:2px;text-align:center;">TENSION</div>'
-                + '<div id="bp-value" style="color:#fff;font-weight:700;font-size:13px;text-align:center;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
-                + '<div style="color:#007bff;font-size:9px;text-align:center;">mmHg</div>'
-                + '</div>'
-                + '<div class="vm-card" style="flex:1; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2); display:flex; flex-direction:column; justify-content:center; padding:6px;">'
-                + '<div style="color:#6c757d;font-size:10px;margin-bottom:2px;text-align:center;">TEMP</div>'
-                + '<div id="temp-value" style="color:#fff;font-weight:700;font-size:13px;text-align:center;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.temperature.toFixed(1) + '°C</div>'
-                + '<div style="color:#007bff;font-size:9px;text-align:center;"></div>'
-                + '</div>'
-                + '</div>' // End right side
-                + '</div>' // End main flex container
-                + '</div>'
-            );
-        }
-        initAnimatedWaves() {
-            // Initial path sync
-            this.startAnimations();
-        }
-        updateDisplay() {
-            const hrEl = document.getElementById('hr-value'); if (hrEl) hrEl.textContent = this.props.heartRate;
-            const bpEl = document.getElementById('bp-value'); if (bpEl) bpEl.textContent = this.props.systolic + '/' + this.props.diastolic;
-            const spo2El = document.getElementById('spo2-value'); if (spo2El) spo2El.textContent = this.props.spo2 + '%';
-            const tempEl = document.getElementById('temp-value'); if (tempEl) tempEl.textContent = this.props.temperature.toFixed(1) + '°C';
-
-            // Update Compact Vitals for Mobile
-            const compactHr = document.getElementById('compact-hr');
-            const compactBp = document.getElementById('compact-bp');
-            const compactTemp = document.getElementById('compact-temp');
-            if (compactHr) compactHr.textContent = this.props.heartRate;
-            if (compactBp) compactBp.textContent = this.props.systolic + '/' + this.props.diastolic;
-            if (compactTemp) compactTemp.textContent = this.props.temperature.toFixed(1) + '°C';
-
-            document.documentElement.style.setProperty('--heart-rate', this.props.heartRate);
-            const spo2Label = document.getElementById('spo2-label'); const spo2Value = document.getElementById('spo2-value'); const low = this.props.spo2 <= 92;
-            if (spo2Label) { spo2Label.style.color = low ? '#dc3545' : '#17a2b8'; }
-            if (spo2Value) { spo2Value.style.color = low ? '#dc3545' : '#333'; }
-        }
-        startAnimations() {
-            const pulse = document.getElementById('pulse-indicator'); const hr = this.props.heartRate; const bpm = 60 / hr; if (pulse) pulse.style.animationDuration = bpm + 's';
-
-            // ECG
-            const l1 = document.getElementById('heart-line-1'); const l2 = document.getElementById('heart-line-2'); const amp = Math.min(25 + (hr - 60) * 0.3, 40); const path = this.generateECGPath(amp);
-            if (l1) l1.setAttribute('d', path); if (l2) { l2.setAttribute('d', path); l2.setAttribute('transform', 'translate(400 0)'); }
-
-            // SpO2 (Plethysmogram)
-            const s1 = document.getElementById('spo2-path-1'); const s2 = document.getElementById('spo2-path-2'); const sPath = this.generateSPO2Path(15);
-            if (s1) s1.setAttribute('d', sPath); if (s2) { s2.setAttribute('d', sPath); s2.setAttribute('transform', 'translate(400 0)'); }
-
-            const grp = document.getElementById('heart-group');
-            const sGrp = document.getElementById('spo2-group');
-            const speed = 6 - ((hr - 60) * 0.04); const dur = Math.max(2.5, Math.min(7, speed));
-            document.documentElement.style.setProperty('--ecg-speed', dur + 's');
-            if (grp) grp.style.animationDuration = dur + 's';
-            if (sGrp) sGrp.style.animationDuration = dur + 's';
-        }
-        generateSPO2Path(amp) {
-            const baseY = 40, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
-            for (let i = 0; i < beats; i++) {
-                const x = i * beatWidth;
-                // Realistic Pleth wave: quick rise, dicrotic notch
-                p += ` L ${x + 5},${baseY}`;
-                p += ` C ${x + 15},${baseY} ${x + 20},${baseY - amp} ${x + 25},${baseY - amp}`; // Peak
-                p += ` C ${x + 35},${baseY - amp} ${x + 40},${baseY - amp * 0.4} ${x + 45},${baseY - amp * 0.5}`; // Notch start
-                p += ` C ${x + 50},${baseY - amp * 0.6} ${x + 55},${baseY} ${x + 65},${baseY}`; // Slow decay
-                p += ` L ${x + beatWidth},${baseY}`;
-            }
-            return p;
-        }
-        generateECGPath(amp) {
-            const baseY = 64, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
-            for (let i = 0; i < beats; i++) { const x = i * beatWidth; p += ' L' + (x + 5) + ',' + baseY; p += ' Q' + (x + 10) + ',' + (baseY - amp * 0.25) + ' ' + (x + 15) + ',' + baseY; p += ' L' + (x + 22) + ',' + (baseY + amp * 0.25); p += ' L' + (x + 30) + ',' + (baseY - amp); p += ' L' + (x + 38) + ',' + (baseY + amp * 0.5); p += ' L' + (x + 48) + ',' + baseY; p += ' Q' + (x + 55) + ',' + (baseY - amp * 0.35) + ' ' + (x + 62) + ',' + baseY; p += ' L' + (x + beatWidth) + ',' + baseY; }
-            return p;
-        }
-        updateProps(np) { this.props = { ...this.props, ...np }; this.updateDisplay(); this.startAnimations(); }
-    }
+    // parseBP, parseNum, VitalSignsMonitor class moved to js/vitalSigns.js
 
     function mountVitalMonitorAtConstants() {
         const sidebarScope = document.getElementById('sidebar-scope');
@@ -1264,6 +127,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const spo2H = 35;
 
         vitalMonitorInstance = new VitalSignsMonitor(monitorProps, { ecgH, spo2H });
+        urgenceState.vitalMonitorInstance = vitalMonitorInstance;
         vitalMonitorInstance.mount(mountPoint);
     }
 
@@ -1273,9 +137,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Prepare time but don't start timer yet
         if (!isPartialRefresh) {
-            timeLeft = getTimeLimit();
-            displayTime(timeLeft);
-            if (timerInterval) clearInterval(timerInterval);
+            timerState.timeLeft = getTimeLimit();
+            displayTime(timerState.timeLeft);
+            if (timerState.timerInterval) clearInterval(timerState.timerInterval);
             // Reset the "Tout afficher" button for the new case
             const revealBtn = document.getElementById('btn-reveal-all');
             if (revealBtn) revealBtn.style.display = '';
@@ -1299,14 +163,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!isPartialRefresh) {
             currentCase = cases[currentCaseIndex];
+            timerState.currentCase = currentCase;
+            lockSystem.currentCase = currentCase;
+            scoringState.currentCase = currentCase;
+            uiState.currentCase = currentCase;
+            urgenceState.currentCase = currentCase;
 
             // Urgence Mode Check
             if (currentCase.gameplayConfig && currentCase.gameplayConfig.startNode) {
-                isUrgenceMode = true;
-                currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
+                urgenceState.isUrgenceMode = true;
+                urgenceState.currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
             } else {
-                isUrgenceMode = false;
-                currentUrgenceNode = null;
+                urgenceState.isUrgenceMode = false;
+                urgenceState.currentUrgenceNode = null;
             }
         }
 
@@ -1650,7 +519,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!isPartialRefresh) {
             // Réinitialiser les traitements sélectionnés
-            selectedTreatments = [];
+            scoringState.selectedTreatments = [];
 
             // Vider le feedback des traitements
             document.getElementById('treatment-feedback').textContent = '';
@@ -1658,7 +527,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             scoreDisplay.textContent = '';
             feedbackDisplay.textContent = '';
             score = 0;
-            attempts = 0; // Réinitialiser le nombre d'essais
+            scoringState.attempts = 0; // Réinitialiser le nombre d'essais
         }
 
         // Masquer/afficher l'onglet Examens Complémentaires selon la disponibilité des examens
@@ -1671,13 +540,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentCase.interrogatoire.motifHospitalisation,
                 () => {
                     // Start the timer only after nurse is dismissed
-                    if (timerInterval) clearInterval(timerInterval);
-                    timerInterval = setInterval(updateTimer, 1000);
+                    if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+                    timerState.timerInterval = setInterval(updateTimer, 1000);
 
-                    if (isUrgenceMode) renderUrgenceState();
+                    if (urgenceState.isUrgenceMode) renderUrgenceState();
                 }
             );
-        } else if (isUrgenceMode) {
+        } else if (urgenceState.isUrgenceMode) {
             renderUrgenceState();
         }
     }
@@ -1688,8 +557,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Urgence tab visibility
         const navIntervention = document.getElementById('nav-intervention-rapide');
         const mobileIntervention = document.getElementById('mobile-tab-intervention');
-        if (navIntervention) navIntervention.style.display = isUrgenceMode ? '' : 'none';
-        if (mobileIntervention) mobileIntervention.style.display = isUrgenceMode ? '' : 'none';
+        if (navIntervention) navIntervention.style.display = urgenceState.isUrgenceMode ? '' : 'none';
+        if (mobileIntervention) mobileIntervention.style.display = urgenceState.isUrgenceMode ? '' : 'none';
 
         // Sidebar navigation - onglet Examens Compl.
         const sidebarExamTab = document.querySelector('.nav-item[data-target="section-examens"]');
@@ -1710,29 +579,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function calculateScore() {
-        let baseScore = currentCase.scoringRules.baseScore || 100;
-        let attemptPenalty = currentCase.scoringRules.attemptPenalty || 10;
-        return Math.max(0, baseScore - (attempts * attemptPenalty)); // Le score ne peut pas être négatif
-    }
-
-
-
-    function handleTraitementClick(event) {
-        const traitement = event.target.dataset.traitement;
-        if (selectedTreatments.includes(traitement)) {
-            selectedTreatments = selectedTreatments.filter(t => t !== traitement);
-            event.target.classList.remove('selected');
-            event.target.setAttribute('aria-selected', 'false');
-        } else {
-            selectedTreatments.push(traitement);
-            event.target.classList.add('selected');
-            event.target.setAttribute('aria-selected', 'true');
-        }
-    }
+    // calculateScore, handleTraitementClick, calculateDetailedScore, calculateXpEarned moved to js/scoring.js
 
     document.getElementById('validate-traitement').addEventListener('click', () => {
-        attempts++;
+        scoringState.attempts++;
+        const attempts = scoringState.attempts;
+        const selectedTreatments = scoringState.selectedTreatments;
         const correctTreatments = currentCase.correctTreatments;
         const selectedDiagnostic = document.getElementById('diagnostic-select').value;
         const correctDiagnostic = currentCase.correctDiagnostic;
@@ -1744,23 +596,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             score = calculateScore();
             feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
 
-            // Ajout des feux d'artifice
-            const container = document.querySelector('#fireworks-container');
-            const fireworks = new Fireworks(container, {
-                duration: 3, // Durée de l'animation en secondes
-            });
+            // Arrêter les fireworks s'ils sont actifs (remplacé par étoiles dans le modal)
+            if (uiState.fireworksInstance) {
+                try { uiState.fireworksInstance.stop(); } catch(e) {}
+            }
 
-            // Sauvegarde de l'élément audio pour le réutiliser plus tard
+            // Arrêter la musique
             const backgroundMusic = document.querySelector('audio');
             if (backgroundMusic) backgroundMusic.pause();
-
-            // Lecture du son de succès
-            const successSound = new Audio('assets/sounds/feux_artifice.mp3');
-            successSound.play();
-
-            fireworksInstance = fireworks;
-            backgroundMusicEl = backgroundMusic;
-            fireworks.start();
 
             scoreDisplay.textContent = `Score final: ${score}`;
             document.getElementById('treatment-feedback').textContent = '';
@@ -1831,10 +674,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // --- TIME BONUS (up to +10%) ---
         const totalTime = getTimeLimit();
-        const timeBonus = (timeLeft > 0)
-            ? Math.round(10 * (timeLeft / totalTime))
+        const timeBonus = (timerState.timeLeft > 0)
+            ? Math.round(10 * (timerState.timeLeft / totalTime))
             : 0;
-        const xpEarned = percentageScore + timeBonus;
+
+        // --- ANTI-FARM: Calculate XP based on attempt number ---
+        // Get attempt count for this case
+        const caseAttemptsKey = `case_attempts_${currentCase.id}`;
+        let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey)) || 0;
+        caseAttempts++;
+        localStorage.setItem(caseAttemptsKey, caseAttempts);
+
+        // Calculate XP based on attempt number
+        let xpEarned = 0;
+        let xpMessage = '';
+
+        if (caseAttempts === 1) {
+            // First attempt: normal XP
+            xpEarned = percentageScore + timeBonus;
+            xpMessage = 'Première tentative - XP complet';
+        } else if (caseAttempts === 2) {
+            // Second attempt: average of both scores
+            const previousScoreKey = `case_score_${currentCase.id}`;
+            const previousScore = parseInt(localStorage.getItem(previousScoreKey)) || percentageScore;
+            const averageScore = Math.round((previousScore + percentageScore) / 2);
+            xpEarned = averageScore + timeBonus;
+            xpMessage = `Deuxième tentative - Moyenne: ${averageScore}%`;
+        } else {
+            // Third+ attempt: no XP (anti-farm)
+            xpEarned = 0;
+            xpMessage = `Tentative #${caseAttempts} - Pas d'XP`;
+        }
+
+        // Save current score for future average calculation
+        localStorage.setItem(`case_score_${currentCase.id}`, percentageScore);
 
         // Build color-coded comparison HTML
         const diagnosticCorrect = selectedDiagnostic === correctDiagnostic;
@@ -1881,14 +754,49 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
         ` : '';
 
+        // Calculate stars (0-3 based on performance)
+        function calculateStars(score, hasFatalError, timeBonus) {
+            if (hasFatalError) return 0;
+            
+            let stars = 0;
+            
+            // Score criterion (60% weight)
+            if (score >= 80) stars += 2;
+            else if (score >= 50) stars += 1;
+            
+            // Time bonus criterion (40% weight)
+            if (timeBonus > 0) stars += 1;
+            
+            return Math.min(stars, 3);
+        }
+        
+        const stars = calculateStars(percentageScore, hasFatalError, timeBonus);
+        
+        function renderStars(stars) {
+            let html = '<div class="stars-display" style="display: flex; justify-content: center; gap: 10px; margin: 15px 0;">';
+            for (let i = 1; i <= 3; i++) {
+                if (i <= stars) {
+                    html += '<i class="fas fa-star star-filled" style="font-size: 2rem; color: #ffc107; text-shadow: 0 0 15px rgba(255, 193, 7, 0.6);"></i>';
+                } else {
+                    html += '<i class="far fa-star star-empty" style="font-size: 2rem; color: rgba(255, 255, 255, 0.2);"></i>';
+                }
+            }
+            html += '</div>';
+            return html;
+        }
+
         const comparisonHtml = `
             ${fatalBanner}
             <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                 <div style="text-align: center; margin-bottom: 15px;">
+                    ${renderStars(stars)}
                     <h3 style="color: ${percentageScore >= 50 ? '#2ecc71' : '#e74c3c'}; font-size: 2em; margin: 0;">
                         Score: ${percentageScore}% ${timeBonusHtml}
                     </h3>
                     <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
+                    <p style="color: ${caseAttempts > 2 ? '#e74c3c' : 'rgba(255,255,255,0.5)'}; font-size:0.75em; margin-top: 5px;">
+                        <i class="fas fa-info-circle"></i> ${xpMessage}
+                    </p>
                 </div>
                 <div style="margin-bottom: 10px;">
                     <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
@@ -1927,10 +835,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     try {
                         const stats = {
                             attempts: attempts,
+                            caseAttempts: caseAttempts,  // Track how many times this case was attempted
                             diagnosticCorrect: diagnosticCorrect,
                             selectedTreatments: selectedTreatments,
                             hasFatalError: hasFatalError,
-                            timeBonus: timeBonus
+                            timeBonus: timeBonus,
+                            xpEarned: xpEarned
                         };
 
                         // 1. Enregistrer la session
@@ -1961,7 +871,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 .eq('id', user.id);
                         }
 
-                        console.log("Progression sauvegardée dans Supabase ! XP gagné:", xpEarned, "(Score:", percentageScore, "+ Bonus Temps:", timeBonus, ")");
+                        console.log("Progression sauvegardée ! XP:", xpEarned, "(Tentative:", caseAttempts, "| Score:", percentageScore, "+ Bonus:", timeBonus, ") -", xpMessage);
                     } catch (err) {
                         console.error("Erreur lors de la sauvegarde Supabase :", err);
                     }
@@ -2038,7 +948,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Afficher les résultats avec un délai simulé
-        examensResults.innerHTML = '<div class="loading">Analyse des examens en cours... (Patientez environ 10 secondes)</div>';
+        examensResults.innerHTML = '<div class="loading">Analyse des examens en cours... (Patientez environ 5 secondes)</div>';
         const validateBtn = document.getElementById('validate-exams');
         if (validateBtn) validateBtn.disabled = true;
 
@@ -2046,17 +956,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             activeExams = selectedExams;
             renderExamResults();
             if (validateBtn) validateBtn.disabled = false;
-            
-            // Navigate to next section
-            const nextNavItem = document.querySelector('.nav-item[data-target="section-synthese"]');
-            if (nextNavItem) nextNavItem.click();
 
             // Jouer le son d'examen (if possible)
             try {
                 // Not playing bip.m4a as it doesn't exist
             } catch (e) { }
 
-        }, 10000); // Délai de 10 secondes pour simuler le vrai délai (coût de 2 min in-game)
+        }, 5000); // Délai de 5 secondes pour simuler le vrai délai (coût de 2 min in-game)
     });
 
     function handleShowResultClick(event) {
@@ -2190,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             showNotification(`Session démarrée : ${cases.length} cas chargé(s)`);
             loadCase();
         }
-        displayTime(timeLeft);
+        displayTime(timerState.timeLeft);
     }
 
     examensResults.innerHTML = '';
@@ -2356,204 +1262,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- URGENCE MODE LOGIC ---
-    function renderUrgenceState() {
-        if (!isUrgenceMode || !currentUrgenceNode) return;
-
-        const banner = document.getElementById('urgence-description-banner');
-        if (banner) {
-            banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${currentUrgenceNode.descriptionClinique}`;
-            banner.style.background = 'rgba(255, 71, 87, 0.3)';
-            setTimeout(() => { banner.style.background = 'rgba(255, 71, 87, 0.1)'; }, 1000);
-        }
-
-
-        if (currentUrgenceNode.constantesCibles && vitalMonitorInstance) {
-            const cibles = currentUrgenceNode.constantesCibles;
-            const bpStr = cibles.tension || "120/80";
-            const bp = parseBP(bpStr);
-            vitalMonitorInstance.updateProps({
-                systolic: bp.systolic,
-                diastolic: bp.diastolic,
-                heartRate: parseInt(cibles.pouls) || 72,
-                spo2: parseInt(cibles.saturationO2) || 98,
-                temperature: parseFloat(cibles.temperature) || 36.6,
-                respiratoryRate: parseInt(cibles.frequenceRespiratoire) || 16
-            });
-            const tEl = document.getElementById('tension'); if (tEl) tEl.textContent = cibles.tension || '';
-            const pEl = document.getElementById('pouls'); if (pEl) pEl.textContent = cibles.pouls || '';
-            const sEl = document.getElementById('saturationO2'); if (sEl) sEl.textContent = cibles.saturationO2 || '';
-            const fEl = document.getElementById('frequenceRespiratoire'); if (fEl) fEl.textContent = cibles.frequenceRespiratoire || '';
-        }
-
-        const actionsContainer = document.getElementById('urgence-actions-container');
-        if (actionsContainer) {
-            actionsContainer.innerHTML = '';
-            if (currentUrgenceNode.actionsDisponibles) {
-                currentUrgenceNode.actionsDisponibles.forEach((action, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'urgence-action-btn';
-                    btn.id = `urg-action-btn-${index}`;
-
-                    // Determine icon based on label keywords
-                    let icon = 'fa-user-md';
-                    const label = action.label.toLowerCase();
-                    if (label.includes('massage') || label.includes('acr') || label.includes('compression')) icon = 'fa-heartbeat';
-                    if (label.includes('défibrillation') || label.includes('dae') || label.includes('choc')) icon = 'fa-bolt';
-                    if (label.includes('oxygène') || label.includes('o2') || label.includes('ventilation') || label.includes('libérer')) icon = 'fa-mask-ventilator';
-                    if (label.includes('médicament') || label.includes('injection') || label.includes('adrénaline') || label.includes('perfusion')) icon = 'fa-syringe';
-                    if (label.includes('garrot') || label.includes('pansement') || label.includes('hémorragie')) icon = 'fa-band-aid';
-                    if (label.includes('bilan') || label.includes('samu') || label.includes('appeler')) icon = 'fa-phone-alt';
-                    if (label.includes('position') || label.includes('pls') || label.includes('debout')) icon = 'fa-person-falling';
-
-                    btn.innerHTML = `
-                        <i class="fas ${icon}"></i> 
-                        <span class="btn-text" style="flex:1;">${action.label}</span>
-                        <span class="time-badge">-${action.tempsExecutionSec}s</span>
-                    `;
-                    btn.onclick = () => executeUrgenceAction(action, btn);
-                    actionsContainer.appendChild(btn);
-                });
-            }
-        }
-
-        if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
-        if (currentUrgenceNode.evolutionAuto && currentUrgenceNode.evolutionAuto.delaiSecondes) {
-            urgenceTimerTimeout = setTimeout(() => {
-                showNotification(`⚠️ ALERTE : ${currentUrgenceNode.evolutionAuto.motif}`);
-                transitionUrgenceState(currentUrgenceNode.evolutionAuto.nextNode);
-            }, currentUrgenceNode.evolutionAuto.delaiSecondes * 1000);
-        }
-
-        if (currentUrgenceNode.isEndState) {
-            if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
-            if (timerInterval) clearInterval(timerInterval);
-
-            const playedCases = getCookie('playedCases');
-            let arr = playedCases ? playedCases.split(',') : [];
-            if (!arr.includes(currentCase.id)) {
-                arr.push(currentCase.id);
-                setCookie('playedCases', arr.join(','), 365);
-            }
-
-            setTimeout(() => {
-                let html = `<div style="text-align:center; padding: 20px;">`;
-                html += `<div style="font-size: 3rem; margin-bottom: 20px;">${currentUrgenceNode.success ? '<i class="fas fa-heart-pulse" style="color: #2ecc71; text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);"></i>' : '<i class="fas fa-skull-crossbones" style="color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.5);"></i>'}</div>`;
-                html += `<h2 style="font-family: var(--font-title); font-size: 2rem; color: ${currentUrgenceNode.success ? '#2ecc71' : '#ff4757'};">${currentUrgenceNode.success ? 'PATIENT SAUVÉ !' : 'ÉCHEC CRITIQUE'}</h2>`;
-                html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1);">
-                            <p style="font-size: 1.1rem; line-height: 1.6; margin: 0;">${currentUrgenceNode.descriptionClinique}</p>
-                         </div>`;
-
-                if (currentUrgenceNode.xpReward > 0) {
-                    html += `<div style="background: linear-gradient(90deg, rgba(0, 242, 254, 0.1), rgba(179, 136, 255, 0.1)); border: 1px solid var(--primary-color); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                                <i class="fas fa-star" style="color: #ffb347;"></i>
-                                <span style="font-weight: 800; font-family: var(--font-title); letter-spacing: 1px;">+${currentUrgenceNode.xpReward} XP GAGNÉS</span>
-                             </div>`;
-                }
-
-                if (currentCase.correction) {
-                    html += `<div style="text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.95rem; opacity: 0.9;">
-                                <h3 style="color: var(--primary-color); font-size: 1rem; text-transform: uppercase; margin-bottom: 10px;">CORRECTION & PROTOCOLE</h3>
-                                ${currentCase.correction}
-                             </div>`;
-                }
-                html += `</div>`;
-
-                showCorrectionModal(html);
-
-                if (currentUrgenceNode.success) {
-                    const container = document.querySelector('#fireworks-container');
-                    const fireworks = new Fireworks(container, { duration: 3 });
-                    fireworksInstance = fireworks;
-                    fireworks.start();
-                    const successSound = new Audio('assets/sounds/feux_artifice.mp3');
-                    successSound.play();
-                } else {
-                    const failSound = new Audio('assets/sounds/flatline.mp3');
-                    failSound.play().catch(e => console.log('No fail sound playing'));
-                }
-
-                // Award XP if defined
-                if (currentUrgenceNode.xpReward && currentUrgenceNode.xpReward > 0) {
-                    awardUrgenceXp(currentUrgenceNode.xpReward);
-                }
-
-            }, 1000);
-        }
-    }
-
-    async function awardUrgenceXp(xpAmount) {
-        if (!window.supabase) return;
-        try {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session && session.user) {
-                const { data: profile } = await supabase
-                    .from('profiles')
-                    .select('total_xp')
-                    .eq('id', session.user.id)
-                    .single();
-
-                if (profile) {
-                    const newXp = (profile.total_xp || 0) + xpAmount;
-                    await supabase
-                        .from('profiles')
-                        .update({ total_xp: newXp })
-                        .eq('id', session.user.id);
-
-                    showNotification(`Tu as gagné ${xpAmount} XP !`, 'success');
-                }
-            }
-        } catch (error) {
-            console.error("Erreur lors de l'attribution de l'XP :", error);
-        }
-    }
-
-    function executeUrgenceAction(action, clickedButton) {
-        // Prevent concurrent actions and stop auto degradation
-        if (urgenceTimerTimeout) clearTimeout(urgenceTimerTimeout);
-
-        // Disable all buttons in the container
-        const actionsContainer = document.getElementById('urgence-actions-container');
-        if (actionsContainer) {
-            const buttons = actionsContainer.querySelectorAll('.urgence-action-btn');
-            buttons.forEach(b => {
-                b.disabled = true;
-                b.style.opacity = '0.5';
-                b.style.cursor = 'not-allowed';
-            });
-        }
-
-        // Show spinner on the clicked button
-        const originalContent = clickedButton.innerHTML;
-        clickedButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> En cours (${action.tempsExecutionSec}s)...`;
-        clickedButton.style.opacity = '1';
-        clickedButton.style.background = 'var(--primary-color)';
-        clickedButton.style.color = '#000';
-
-        // Deduct in-game time immediately
-        if (window.deductTime) {
-            window.deductTime(action.tempsExecutionSec);
-        }
-
-        // Wait a fixed 5 real seconds before transitioning (regardless of in-game time cost)
-        const REAL_DELAY_MS = 5000;
-
-        setTimeout(() => {
-            if (action.feedback) {
-                showNotification(action.feedback);
-            }
-            transitionUrgenceState(action.nextNode);
-        }, REAL_DELAY_MS);
-    }
-
-    function transitionUrgenceState(nextNodeId) {
-        if (!currentCase.nodes || !currentCase.nodes[nextNodeId]) {
-            console.error("Unknown node:", nextNodeId);
-            return;
-        }
-        currentUrgenceNode = currentCase.nodes[nextNodeId];
-        renderUrgenceState();
-    }
+    // Urgence mode logic moved to js/urgenceMode.js
+    // Sync urgence state with currentCase (done in loadCase)
 
     const appContainer = document.querySelector('.app-container');
 
