@@ -37,3 +37,5 @@ Supabase Snippet Medical Case Records.csv
 SUPABASE_GUIDE.md
 SUPABASE_GUIDE.md
 SUPABASE_ARENA.sql
+generate_hashes.py
+integrity.json
