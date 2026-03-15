@@ -1158,12 +1158,35 @@ onDomReady(async () => {
         tab.addEventListener('click', () => {
             switchMobileTab(tab.dataset.tab);
         });
+        // Keyboard accessibility for mobile tabs
+        tab.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                switchMobileTab(tab.dataset.tab);
+            }
+        });
     });
+
+    // Keyboard accessibility for compact vitals (acts as button)
+    const compactVitalsBtn = document.getElementById('compact-vitals');
+    if (compactVitalsBtn) {
+        compactVitalsBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.toggleMobileMonitor();
+            }
+        });
+    }
 
     window.toggleMobileMonitor = () => {
         const overlay = document.getElementById('mobile-monitor-overlay');
         const isOpening = !overlay.classList.contains('active');
         overlay.classList.toggle('active');
+        overlay.setAttribute('aria-hidden', !isOpening);
+
+        // Update aria-expanded on the trigger button
+        const compactVitals = document.getElementById('compact-vitals');
+        if (compactVitals) compactVitals.setAttribute('aria-expanded', isOpening);
 
         if (isOpening) {
             // When opening overlay, move the monitor mount to the overlay
@@ -1476,6 +1499,17 @@ onDomReady(async () => {
             const btn = document.getElementById('validate-traitement');
             if (btn) btn.click();
         } else if (e.key === 'Escape') {
+            // Close any open overlay/modal
+            const imageOverlay = document.getElementById('image-overlay');
+            if (imageOverlay && imageOverlay.style.display === 'flex') {
+                if (typeof closeImageModal === 'function') closeImageModal();
+                return;
+            }
+            const mobileMonitor = document.getElementById('mobile-monitor-overlay');
+            if (mobileMonitor && mobileMonitor.classList.contains('active')) {
+                if (window.toggleMobileMonitor) window.toggleMobileMonitor();
+                return;
+            }
             hideCorrectionModal();
         }
     });

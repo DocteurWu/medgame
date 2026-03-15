@@ -124,7 +124,8 @@
     <button id="admin-button" onclick="transitionTo('admin.html')"
         style="display:none; position:fixed; bottom:25px; left:25px; z-index:1000; padding:12px 24px; border-radius:30px; background:rgba(255,71,87,0.15); border:1px solid rgba(255,71,87,0.4); color:#ff4757; font-family:'Outfit', sans-serif; font-weight:600; cursor:pointer; backdrop-filter:blur(10px); transition:all 0.3s; box-shadow:0 4px 15px rgba(0,0,0,0.3); align-items:center; gap:10px;"
         onmouseover="this.style.background='rgba(255,71,87,0.3)'; this.style.transform='scale(1.05)';"
-        onmouseout="this.style.background='rgba(255,71,87,0.15)'; this.style.transform='scale(1)';">
+        onmouseout="this.style.background='rgba(255,71,87,0.15)'; this.style.transform='scale(1)';"
+        aria-label="Accéder à l'administration système">
         <i class="fas fa-user-shield"></i> Administration Système
     </button>
 
@@ -139,11 +140,11 @@
     </div>
 
 
-    <div id="settings-modal" class="modal-backdrop">
+    <div id="settings-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="Configuration" aria-hidden="true">
         <div class="modal-glass">
             <div class="modal-header">
-                <h2><i class="fas fa-cog"></i> Configuration</h2>
-                <button class="close-icon" id="settings-close-icon"><i class="fas fa-times"></i></button>
+                <h2><i class="fas fa-cog" aria-hidden="true"></i> Configuration</h2>
+                <button class="close-icon" id="settings-close-icon" aria-label="Fermer les réglages"><i class="fas fa-times" aria-hidden="true"></i></button>
             </div>
 
             <div class="modal-body">
@@ -360,6 +361,13 @@
         closeBtn.addEventListener('click', closeModal);
         saveBtn.addEventListener('click', saveSettings);
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // Escape key closes settings modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
 
         // Listen for escape key or other exit methods
         document.addEventListener('fullscreenchange', () => {
