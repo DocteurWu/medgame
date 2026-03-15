@@ -174,7 +174,6 @@ window.requireAuth = async function (redirectUrl = 'login.html', requireAdmin = 
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) {
-        console.log("Accès refusé. Redirection vers la page de connexion.");
         // Utiliser sessionStorage pour rediriger l'utilisateur vers la page qu'il voulait après login
         sessionStorage.setItem('redirectAfterLogin', window.location.href);
         window.location.href = redirectUrl;
@@ -184,7 +183,6 @@ window.requireAuth = async function (redirectUrl = 'login.html', requireAdmin = 
     if (requireAdmin) {
         const isUserAdmin = await window.isAdmin();
         if (!isUserAdmin) {
-            console.log("Accès refusé: Administrateur requis.");
             window.location.href = 'index.html';
             return null;
         }

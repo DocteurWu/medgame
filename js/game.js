@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const aspectGeneral = document.getElementById('aspectGeneral');
     const examensResults = document.getElementById('examens-results');
     const validateExamsButton = document.getElementById('validate-exams');
-    // const validateDiagnosticButton = document.getElementById('validate-diagnostic'); // REMOVED
     const scoreDisplay = document.getElementById('score');
     const feedbackDisplay = document.getElementById('feedback');
     const nextCaseButton = document.getElementById('next-case');
@@ -615,7 +614,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!allTreatmentsCorrect || selectedTreatments.length !== correctTreatments.length) {
                 feedback += "Traitement incorrect ou incomplet.";
                 document.getElementById('treatment-feedback').textContent = feedback;
-                // REMOVED: Failure sound
             }
 
             // Score remains 0 if incorrect
@@ -867,7 +865,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 .eq('id', user.id);
                         }
 
-                        console.log("Progression sauvegardée ! XP:", xpEarned, "(Tentative:", caseAttempts, "| Score:", percentageScore, "+ Bonus:", timeBonus, ") -", xpMessage);
                     } catch (err) {
                         console.error("Erreur lors de la sauvegarde Supabase :", err);
                     }
@@ -983,7 +980,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // validateDiagnosticButton listener REMOVED as it is no longer used.
     // Validation is now handled solely by validate-traitement.
 
     nextCaseButton.addEventListener('click', () => {
@@ -1302,9 +1298,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         prompt.innerHTML = '<i class="fas fa-expand"></i> PLEIN ÉCRAN';
 
         prompt.addEventListener('click', () => {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.log("Fullscreen blocked:", err.message);
-            });
+            document.documentElement.requestFullscreen().catch(() => {});
             prompt.remove();
         });
 

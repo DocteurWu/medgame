@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 // On garde une map globale id -> content pour éviter les fetchs répétitifs
                 window.allSupabaseCases = published;
 
-                console.log('Cases data chargé depuis Supabase :', casesData);
                 return;
             } catch (err) {
                 console.error('Erreur Supabase, fallback sur local :', err);
@@ -64,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch('data/case-index.json');
         if (!response.ok) throw new Error('Erreur lors du chargement de case-index.json');
         casesData = await response.json();
-        console.log('Cases data chargé localement :', casesData);
     }
 
     // Store the promise so showMotifsForTheme can await it

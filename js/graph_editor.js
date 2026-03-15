@@ -352,7 +352,6 @@ async function loadGraph() {
         try {
             const content = JSON.parse(localData);
             if (content.nodes && content.nodes.length > 0) {
-                console.log(`[GRAPH] Loaded from localStorage (${content.nodes.length} nodes, saved: ${content.savedAt || 'unknown'})`);
                 applyGraphContent(content);
                 // Still try to sync from Supabase in background in case it's newer
                 syncFromSupabase();

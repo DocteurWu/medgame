@@ -19,10 +19,8 @@ const CONFIG = {
 
     if (typeof createClient === 'function') {
         window.supabase = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
-        console.log("Supabase client initialized successfully.");
     } else if (typeof window.createClient === 'function') {
         window.supabase = window.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
-        console.log("Supabase client initialized successfully (via global createClient).");
     } else {
         console.error("Supabase SDK not found. Make sure to include the script tag.");
     }

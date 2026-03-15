@@ -5,6 +5,13 @@
  * Charge les cas depuis Supabase, localStorage, ou fichiers JSON locaux.
  */
 
+/**
+ * Charge les cas cliniques depuis Supabase, localStorage ou fichiers JSON locaux.
+ * Gère le mode preview, la sélection par thèmes, et le fallback local.
+ *
+ * @async
+ * @returns {Promise<Array<Object>>} Liste des cas cliniques chargés
+ */
 async function loadCasesData() {
     try {
         // Preview Mode check
@@ -12,7 +19,6 @@ async function loadCasesData() {
         if (urlParams.get('preview') === 'true') {
             const previewData = sessionStorage.getItem('previewCase');
             if (previewData) {
-                console.log('Loading Preview Case from sessionStorage');
                 const backBtn = document.createElement('button');
                 backBtn.innerHTML = '<i class="fas fa-edit"></i> Quitter l\'aperçu / Modifier';
                 backBtn.style.cssText = `
@@ -54,7 +60,6 @@ async function loadCasesData() {
                         .in('id', selectedCaseFiles);
 
                     if (!error && data && data.length > 0) {
-                        console.log('Loading cases from Supabase:', data.length);
                         const processed = data.map(c => {
                             const content = c.content;
                             if (!content.id) content.id = c.id;
@@ -72,7 +77,6 @@ async function loadCasesData() {
         // Fallback local: multiple cases
         const selectedCaseFilesLocal = JSON.parse(localStorage.getItem('selectedCaseFiles'));
         if (selectedCaseFilesLocal && Array.isArray(selectedCaseFilesLocal) && selectedCaseFilesLocal.length > 0) {
-            console.log('Loading selected session cases:', selectedCaseFilesLocal);
             const casesPromises = selectedCaseFilesLocal.map(file =>
                 fetch(`data/${file}`)
                     .then(res => {
@@ -88,7 +92,6 @@ async function loadCasesData() {
         // Single case
         const selectedCaseFile = localStorage.getItem('selectedCaseFile');
         if (selectedCaseFile) {
-            console.log('Loading specific case:', selectedCaseFile);
             const response = await fetch(`data/${selectedCaseFile}`);
             if (!response.ok) throw new Error(`Fichier ${selectedCaseFile} introuvable`);
             const caseData = await response.json();
@@ -109,14 +112,12 @@ async function loadCasesData() {
         const caseIndex = await response.json();
 
         let caseFiles = [];
-        console.log('Selected themes:', selectedThemes);
         selectedThemes.forEach(theme => {
             const themeLower = theme.toLowerCase();
             if (caseIndex[themeLower]) {
                 caseFiles = caseFiles.concat(caseIndex[themeLower]);
             }
         });
-        console.log('Case files found:', caseFiles);
 
         if (caseFiles.length === 0) {
             throw new Error('Aucun cas disponible pour les thèmes sélectionnés');
@@ -137,16 +138,15 @@ async function loadCasesData() {
         const cases = results
             .filter(r => r.status === 'fulfilled' && r.value !== null)
             .map(r => r.value);
-        
+
         if (cases.length < caseFiles.length) {
             console.warn(`${caseFiles.length - cases.length} cas n'ont pas pu être chargés`);
         }
-        
+
         if (cases.length === 0) {
             throw new Error('Aucun cas disponible');
         }
-        
-        console.log('Cas chargés :', cases);
+
         return cases;
     } catch (error) {
         console.error('Erreur lors du chargement des cas :', error);

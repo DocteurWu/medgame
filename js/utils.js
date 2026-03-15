@@ -103,6 +103,11 @@ function isFuzzyMatch(input, keyword) {
 /**
  * Parse du markdown en HTML stylisé (sans dépendance DOM).
  */
+/**
+ * Convertit un texte markdown basique en HTML (bold, italic, listes).
+ * @param {string} text - Texte markdown
+ * @returns {string} HTML généré
+ */
 function parseMarkdown(text) {
     if (!text) return '';
 
