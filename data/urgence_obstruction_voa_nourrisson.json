@@ -50,7 +50,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Mise en bouche d'un morceau de fruit",
       "descriptionDouleur": "Incapable de pleurer normalement",
-      "asymptomesAssocies": ["Toux inefficace", "Cyanose des lèvres", "Agitation"],
+      "asymptomesAssocies": [
+        "Toux inefficace",
+        "Cyanose des lèvres",
+        "Agitation"
+      ],
       "remarques": "La mère est paniquée"
     },
     "verbatim": "Mon bébé... il étouffe ! Il ne peut plus crier ! Ses lèvres sont bleues !"
@@ -123,10 +127,14 @@
           "Laryngite aiguë",
           "Malaise vagal"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'association mise en bouche + cyanose + absence de cri = obstruction totale par corps étranger. C'est une urgence vitale immédiate.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg04_technique",
@@ -139,10 +147,14 @@
           "Mettre le doigt dans la bouche pour attraper le corps étranger",
           "Le retourner tête en bas et le secouer"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Chez le nourrisson (<1 an), on commence par 5 claques dans le dos sur l'avant-bras avec la tête plus basse que le corps. Le Heimlich est contre-indiqué chez le nourrisson.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -152,165 +164,208 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Théo, 1 an, était dans sa chaise haute en train de manger des morceaux de fruit. Sa mère vous appelle en hurlant : le bébé ne crie plus, ses lèvres deviennent bleues, il ouvre grand les yeux et la bouche mais aucun son ne sort. Il fait des efforts de toux très faibles.",
+      "descriptionClinique": "Théo, 1 an, était dans sa chaise haute. Sa mère vous appelle en hurlant : il ne crie plus, ses lèvres deviennent bleues, il ouvre grand les yeux et la bouche mais aucun son ne sort. Il fait des efforts de toux très faibles, inefficaces.",
       "constantesCibles": {
-        "tension": "Non mesurée",
         "pouls": "140",
         "saturationO2": "82",
-        "temperature": "37",
-        "frequenceRespiratoire": "Irrégulière"
+        "frequenceRespiratoire": "Inefficace"
       },
       "actionsDisponibles": [
         {
           "label": "Prendre le bébé sur l'avant-bras, tête basse, et donner 5 claques dans le dos",
           "tempsExecutionSec": 15,
-          "feedback": "Vous allongez Théo sur votre avant-bras, tête plus basse que le corps. 5 claques sèches entre les omoplates.",
+          "feedback": "Vous allongez Théo sur votre avant-bras, tête plus basse que le corps, en soutenant sa tête. 5 claques sèches entre les omoplates. C'est la procédure correcte.",
           "nextNode": "s2"
         },
         {
           "label": "Ouvrir la bouche du bébé et chercher le corps étranger avec votre doigt",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR : vous ne voyez rien et repoussez le morceau de fruit plus profondément. L'obstruction s'aggrave !",
+          "feedback": "ERREUR AFGSU : C'est un 'balayage à l'aveugle'. Vous ne voyez rien et risquez de repousser le morceau de fruit plus profondément, rendant l'obstruction irrémédiable.",
           "nextNode": "s_err_finger"
         },
         {
-          "label": "Lui donner de l'eau pour déboucher",
+          "label": "Le suspendre par les pieds et le secouer",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR GRAVE : L'eau sur un corps étranger complet va provoquer une noyade à sec et l'arrêt cardiaque.",
-          "nextNode": "s_err_water"
+          "feedback": "ERREUR GRAVE AFGSU : Secouer un nourrisson est extrêmement dangereux (syndrome du bébé secoué) et inefficace pour une obstruction. Vous risquez des lésions cérébrales et cervicales.",
+          "nextNode": "s_err_shake"
+        },
+        {
+          "label": "Tenter la manœuvre de Heimlich (compressions abdominales)",
+          "type": "erreur",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR AFGSU : La manœuvre de Heimlich est contre-indiquée chez le nourrisson (< 1 an) en raison du risque de lésions des organes abdominaux (foie, rate).",
+          "nextNode": "s_err_heimlich"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Après 5 claques dans le dos, le morceau de fruit n'est toujours pas sorti. Théo devient de plus en plus cyanosé. Sa saturation chute à 75%.",
+      "descriptionClinique": "Après 5 claques dans le dos, le morceau de fruit n'est toujours pas sorti. Théo devient de plus en plus cyanosé et mou.",
       "constantesCibles": {
-        "tension": "Non mesurée",
         "pouls": "150",
         "saturationO2": "75",
-        "temperature": "37",
         "frequenceRespiratoire": "Quasi inexistante"
       },
       "actionsDisponibles": [
         {
-          "label": "Retourner Théo sur le dos sur l'autre avant-bras et donner 5 compressions thoraciques (2 doigts)",
+          "label": "Retourner Théo sur le dos et donner 5 compressions thoraciques (2 doigts)",
           "tempsExecutionSec": 15,
-          "feedback": "Vous retournez Théo. 5 compressions thoraciques au milieu du sternum avec l'index et le majeur.",
+          "feedback": "Vous retournez Théo sur votre autre avant-bras. 5 compressions thoraciques au milieu du sternum avec l'index et le majeur. C'est la suite de l'algorithme.",
           "nextNode": "s3"
         },
         {
-          "label": "Continuer les claques dans le dos indéfiniment",
+          "label": "Continuer les claques dans le dos",
           "tempsExecutionSec": 30,
-          "feedback": "Les claques seules n'ont pas fonctionné. Le changement de technique est indispensable (alterner 5 claques / 5 compressions).",
-          "nextNode": "s3_late"
+          "feedback": "Les claques seules n'ont pas fonctionné. L'algorithme AFGSU est clair : il faut ALTERNER 5 claques dans le dos et 5 compressions thoraciques.",
+          "nextNode": "s_err_no_altern"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Après 5 compressions thoraciques, vous retournez Théo sur le ventre. Au 2ème cycle de claques, vous voyez un petit morceau de pomme sortir de sa bouche !",
+      "descriptionClinique": "Après les 5 compressions thoraciques, le corps étranger n'est toujours pas visible. Théo perd connaissance. Il est flasque et ne respire plus du tout.",
       "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "145",
-        "saturationO2": "80",
-        "temperature": "37",
-        "frequenceRespiratoire": "Reprend"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier que Théo respire normalement et appeler le 15",
-          "tempsExecutionSec": 30,
-          "feedback": "Théo se met à pleurer ! La respiration reprend. Le 15 est appelé pour surveillance.",
-          "nextNode": "s4_good"
-        },
-        {
-          "label": "Donner de l'eau au bébé pour vérifier qu'il avale",
-          "tempsExecutionSec": 15,
-          "feedback": "Théo est encore agité et les voies aériennes sont inflammées. Risque de re-obstruction. Attendez l'avis du 15.",
-          "nextNode": "s4_good"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_late": {
-      "id": "s3_late",
-      "descriptionClinique": "Théo a perdu connaissance par hypoxie prolongée.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "160",
-        "saturationO2": "60",
-        "temperature": "36.5",
+        "pouls": "60",
+        "saturationO2": "50",
         "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
-          "label": "Débuter la RCP du nourrisson (30 compressions / 2 insufflations) et vérifier la bouche",
-          "tempsExecutionSec": 30,
-          "feedback": "Pendant la RCP, vous vérifiez la bouche et voyez le morceau de fruit. Vous l'extrayez délicatement. La respiration reprend.",
-          "nextNode": "s4_resus"
+          "label": "Alerter le 15, poser Théo au sol et commencer la RCP (30 compressions)",
+          "tempsExecutionSec": 20,
+          "feedback": "Le nourrisson est inconscient. Vous passez à l'algorithme de l'arrêt cardiaque. Vous alertez et commencez immédiatement le massage cardiaque.",
+          "nextNode": "s4_rcp"
+        },
+        {
+          "label": "Paniquer et crier",
+          "tempsExecutionSec": 15,
+          "feedback": "La situation est critique, mais la panique fait perdre un temps vital. Chaque seconde compte.",
+          "nextNode": "s_err_panic"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
-    "s4_good": {
-      "id": "s4_good",
-      "descriptionClinique": "Le morceau de pomme est sorti. Théo pleure fort (bon signe !). Le 15 vous rassure et demande un contrôle en pédiatrie. La mère vous serre dans ses bras en pleurant. Réflexes parfaits.",
+    "s4_rcp": {
+      "id": "s4_rcp",
+      "descriptionClinique": "Vous avez fait 30 compressions thoraciques. Avant de faire les insufflations, vous ouvrez la bouche de Théo pour vérifier.",
       "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "130",
+        "pouls": "Incertain",
+        "saturationO2": "45",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Vous voyez le morceau de fruit ! Vous le retirez délicatement avec votre petit doigt.",
+          "tempsExecutionSec": 10,
+          "feedback": "Le massage cardiaque a permis de déloger l'obstacle ! Vous l'extrayez avec précaution. C'est le seul moment où il est permis de mettre le doigt.",
+          "nextNode": "s5_expulsion"
+        },
+        {
+          "label": "Vous ne voyez rien, vous tentez les 2 insufflations.",
+          "tempsExecutionSec": 10,
+          "feedback": "L'air ne passe pas. Le thorax ne se soulève pas. L'obstacle est toujours en place. Il faut continuer la RCP.",
+          "nextNode": "s4_rcp_continue"
+        }
+      ]
+    },
+    "s4_rcp_continue": {
+      "id": "s4_rcp_continue",
+      "descriptionClinique": "Les insufflations sont inefficaces. Vous reprenez immédiatement un cycle de 30 compressions thoraciques.",
+      "constantesCibles": {
+        "pouls": "Incertain",
+        "saturationO2": "40",
+        "frequenceRespiratoire": "0"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 30,
+        "nextNode": "s4_rcp",
+        "motif": "La RCP continue. Il faut vérifier la bouche après chaque cycle de 30 compressions."
+      },
+      "actionsDisponibles": []
+    },
+    "s5_expulsion": {
+      "id": "s5_expulsion",
+      "descriptionClinique": "Le morceau de pomme est sorti. Vous tentez une insufflation : le thorax se soulève ! Théo se met à tousser puis à pleurer faiblement.",
+      "constantesCibles": {
+        "pouls": "100",
+        "saturationO2": "85",
+        "frequenceRespiratoire": "Reprise (30/min)"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Mettre Théo en PLS pour nourrisson et surveiller sa respiration en attendant le SAMU.",
+          "tempsExecutionSec": 20,
+          "feedback": "Parfait. La respiration a repris, il est inconscient, la PLS est indiquée pour protéger les voies aériennes. Le SAMU arrive.",
+          "nextNode": "s_good_end"
+        }
+      ]
+    },
+    "s_good_end": {
+      "id": "s_good_end",
+      "descriptionClinique": "Le SAMU pédiatrique prend le relais. Théo est transféré à l'hôpital pour surveillance. Grâce à votre application rigoureuse et rapide de l'algorithme, il n'aura probablement aucune séquelle.",
+      "constantesCibles": {
+        "pouls": "120",
         "saturationO2": "98",
-        "temperature": "37",
         "frequenceRespiratoire": "35"
       },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s4_resus": {
-      "id": "s4_resus",
-      "descriptionClinique": "Grâce à votre persévérance, le corps étranger est extrait et Théo recommence à respirer. Le SAMU pédiatrique prend le relais. Pronostic neurologique incertain mais des chances de récupération grâce à la RCP rapide.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "120",
-        "saturationO2": "90",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "20"
-      },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": true
     },
     "s_err_finger": {
       "id": "s_err_finger",
-      "descriptionClinique": "Votre doigt a repoussé le morceau de fruit dans la trachée. Obstruction complète. Théo fait un arrêt cardiaque hypoxique.",
+      "descriptionClinique": "Votre doigt a repoussé le morceau de fruit dans la trachée. L'obstruction est maintenant complète et plus profonde. Théo devient bleu et fait un arrêt cardiaque en quelques secondes.",
       "constantesCibles": {
-        "tension": "Non mesurée",
         "pouls": "0",
         "saturationO2": "0",
-        "temperature": "36",
         "frequenceRespiratoire": "0"
       },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": false
     },
-    "s_err_water": {
-      "id": "s_err_water",
-      "descriptionClinique": "L'eau ne peut pas passer derrière le corps étranger et provoque une inhalation. Théo se noie à sec. Arrêt cardiaque.",
+    "s_err_shake": {
+      "id": "s_err_shake",
+      "descriptionClinique": "En secouant Théo, vous provoquez une hémorragie cérébrale massive. Il fait un arrêt cardiaque sur fond de lésions neurologiques irréversibles.",
       "constantesCibles": {
-        "tension": "Non mesurée",
         "pouls": "0",
         "saturationO2": "0",
-        "temperature": "36",
         "frequenceRespiratoire": "0"
       },
-      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_heimlich": {
+      "id": "s_err_heimlich",
+      "descriptionClinique": "Les compressions abdominales provoquent une fracture du foie. Théo fait une hémorragie interne massive en plus de son obstruction. L'issue est fatale.",
+      "constantesCibles": {
+        "pouls": "0",
+        "saturationO2": "20",
+        "frequenceRespiratoire": "0"
+      },
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_no_altern": {
+      "id": "s_err_no_altern",
+      "descriptionClinique": "En ne faisant que des claques dans le dos, vous perdez du temps. L'hypoxie s'aggrave et Théo perd connaissance. Il fallait alterner avec les compressions thoraciques.",
+      "constantesCibles": {
+        "pouls": "50",
+        "saturationO2": "55",
+        "frequenceRespiratoire": "0"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 20,
+        "nextNode": "s_err_panic",
+        "motif": "Perte de connaissance menant à l'arrêt cardiaque."
+      },
+      "actionsDisponibles": []
+    },
+    "s_err_panic": {
+      "id": "s_err_panic",
+      "descriptionClinique": "Le temps perdu en panique est fatal. Théo fait un arrêt cardiaque par anoxie. Les chances de récupération sont maintenant quasi nulles.",
+      "constantesCibles": {
+        "pouls": "0",
+        "saturationO2": "0",
+        "frequenceRespiratoire": "0"
+      },
       "isEndState": true,
       "success": false
     }
