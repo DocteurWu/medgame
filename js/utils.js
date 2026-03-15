@@ -171,18 +171,18 @@ function renderExamSection(key, data) {
 
     let contentHtml = '';
     if (typeof data === 'string') {
-        contentHtml = `<p>${data}</p>`;
+        contentHtml = `<p>${escapeHtml(data)}</p>`;
     } else if (typeof data === 'object' && data !== null) {
         const items = Object.entries(data).map(([subKey, value]) => {
-            const displayKey = subKey.charAt(0).toUpperCase() + subKey.slice(1);
-            return `<li><strong>${displayKey}:</strong> ${value}</li>`;
+            const displayKey = escapeHtml(subKey.charAt(0).toUpperCase() + subKey.slice(1));
+            return `<li><strong>${displayKey}:</strong> ${escapeHtml(String(value))}</li>`;
         }).join('');
         contentHtml = `<ul>${items}</ul>`;
     }
 
     return `
         <div class="exam-item">
-            <h4><i class="fas ${icon}"></i> ${label}</h4>
+            <h4><i class="fas ${icon}"></i> ${escapeHtml(label)}</h4>
             ${contentHtml}
         </div>
     `;
