@@ -349,7 +349,7 @@ onDomReady(async () => {
                 displayValue(descriptionDouleur, currentCase.interrogatoire.histoireMaladie.descriptionDouleur || '', 'interrogatoire.histoireMaladie.descriptionDouleur');
             }
 
-            displayValue(symptomesAssocies, currentCase.interrogatoire.histoireMaladie.symptomesAssocies.join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
+            displayValue(symptomesAssocies, (currentCase.interrogatoire.histoireMaladie.symptomesAssocies || []).join(', '), 'interrogatoire.histoireMaladie.symptomesAssocies');
             displayValue(remarques, currentCase.interrogatoire.histoireMaladie.remarques, 'interrogatoire.histoireMaladie.remarques');
 
         } else {
