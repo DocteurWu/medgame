@@ -92,7 +92,16 @@ function playSound(name) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+// Safe DOMContentLoaded wrapper — works even if script loads after DOM is ready
+function onDomReady(fn) {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(fn, 0);
+    } else {
+        document.addEventListener('DOMContentLoaded', fn);
+    }
+}
+
+onDomReady(async () => {
     const motifHospitalisation = document.getElementById('motif-hospitalisation');
     const activitePhysique = document.getElementById('activite-physique');
     const tabac = document.getElementById('tabac');
