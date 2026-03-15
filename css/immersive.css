@@ -1,0 +1,625 @@
+/* ============================================
+   MedGame - Immersive UX Enhancements
+   CSS Animations, Transitions & Micro-interactions
+   ============================================ */
+
+/* ==================== SECTION TRANSITIONS ==================== */
+
+/* Enhanced section transitions */
+.game-section {
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-section.entering {
+    animation: sectionSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.game-section.leaving {
+    animation: sectionSlideOut 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+@keyframes sectionSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+        filter: blur(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes sectionSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.98);
+        filter: blur(4px);
+    }
+}
+
+/* ==================== MEDICAL CARD ENHANCEMENTS ==================== */
+
+/* Card entrance with stagger - handled by game.js */
+.medical-card {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Card shimmer effect on hover */
+.medical-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 242, 254, 0.03),
+        transparent
+    );
+    transition: left 0.8s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.medical-card:hover::after {
+    left: 100%;
+}
+
+/* ==================== ANSWER BUTTON ANIMATIONS ==================== */
+
+/* Question buttons enhanced */
+.btn-question {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btn-question::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    pointer-events: none;
+}
+
+.btn-question:hover:not(:disabled)::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-question:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 242, 254, 0.2),
+                0 0 0 1px rgba(0, 242, 254, 0.3);
+}
+
+.btn-question:active:not(:disabled) {
+    transform: translateY(-1px) scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* ==================== ANSWER REVEAL ANIMATIONS ==================== */
+
+.answer-fade-in {
+    animation: answerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes answerReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+        filter: blur(4px);
+    }
+    50% {
+        filter: blur(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* ==================== TREATMENT BUTTON FEEDBACK ==================== */
+
+.treatments-grid button {
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.treatments-grid button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%),
+        rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+
+.treatments-grid button:active::after {
+    opacity: 1;
+    transition: opacity 0.1s;
+}
+
+.treatments-grid button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+}
+
+.treatments-grid button:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.treatments-grid button.selected {
+    animation: selectPulse 0.4s ease;
+}
+
+@keyframes selectPulse {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.08); }
+    60% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* Correct treatment feedback */
+.treatments-grid button.correct-treatment {
+    animation: correctPulse 0.6s ease;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.5),
+                0 0 40px rgba(46, 204, 113, 0.2);
+}
+
+@keyframes correctPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6); }
+    30% { transform: scale(1.05); }
+    60% { transform: scale(0.98); }
+    100% { transform: scale(1); box-shadow: 0 0 20px rgba(46, 204, 113, 0.5); }
+}
+
+/* Incorrect treatment feedback */
+.treatments-grid button.incorrect-treatment {
+    animation: incorrectShake 0.5s ease;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+}
+
+@keyframes incorrectShake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-6px) rotate(-1deg); }
+    30% { transform: translateX(5px) rotate(1deg); }
+    45% { transform: translateX(-4px) rotate(-0.5deg); }
+    60% { transform: translateX(3px) rotate(0.5deg); }
+    75% { transform: translateX(-2px); }
+}
+
+/* ==================== SCORE ANIMATION ==================== */
+
+.score-display {
+    transition: all 0.3s ease;
+}
+
+.score-display.score-up {
+    animation: scoreUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.score-display.score-down {
+    animation: scoreDown 0.5s ease;
+}
+
+@keyframes scoreUp {
+    0% { transform: scale(1); color: inherit; }
+    30% { transform: scale(1.3); color: #2ecc71; text-shadow: 0 0 20px rgba(46, 204, 113, 0.6); }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); color: #2ecc71; }
+}
+
+@keyframes scoreDown {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.1) translateX(-5px); color: #e74c3c; }
+    40% { transform: scale(0.95) translateX(5px); }
+    60% { transform: scale(1.05) translateX(-3px); }
+    80% { transform: scale(0.98); }
+    100% { transform: scale(1); color: #e74c3c; }
+}
+
+/* Floating score popup */
+.score-popup {
+    position: absolute;
+    font-weight: 800;
+    font-size: 1.5rem;
+    pointer-events: none;
+    z-index: 100;
+    animation: scoreFloat 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.score-popup.positive {
+    color: #2ecc71;
+    text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.score-popup.negative {
+    color: #e74c3c;
+    text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+}
+
+@keyframes scoreFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-30px) scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px) scale(0.8);
+    }
+}
+
+/* ==================== CORRECT / INCORRECT FEEDBACK ==================== */
+
+/* Visual feedback ring for correct answer */
+.feedback-correct {
+    animation: feedbackCorrectRing 0.8s ease forwards;
+}
+
+@keyframes feedbackCorrectRing {
+    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6); }
+    50% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
+    100% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); border-color: #2ecc71; }
+}
+
+/* Visual feedback for incorrect */
+.feedback-incorrect {
+    animation: feedbackIncorrectShake 0.5s ease;
+}
+
+@keyframes feedbackIncorrectShake {
+    0%, 100% { transform: translateX(0); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+    15% { transform: translateX(-8px); box-shadow: 0 0 15px rgba(231, 76, 60, 0.4); }
+    30% { transform: translateX(6px); }
+    45% { transform: translateX(-4px); }
+    60% { transform: translateX(3px); }
+    75% { transform: translateX(-1px); }
+}
+
+/* ==================== LOADING / SPINNER ==================== */
+
+.loading {
+    position: relative;
+    padding: 20px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.loading::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 242, 254, 0.2);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: immersiveSpinner 0.8s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes immersiveSpinner {
+    to { transform: rotate(360deg); }
+}
+
+/* Exam results loading animation */
+.exam-results-container .loading {
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* ==================== EXAM BUTTON ENHANCEMENTS ==================== */
+
+.exam-btn {
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+}
+
+.exam-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 15px rgba(179, 136, 255, 0.2);
+}
+
+.exam-btn.selected {
+    animation: examSelectBounce 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes examSelectBounce {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.1); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* ==================== VALIDATE BUTTONS ==================== */
+
+.action-btn,
+.validate-final-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn::before,
+.validate-final-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.action-btn:hover::before,
+.validate-final-btn:hover::before {
+    left: 100%;
+}
+
+/* Button click ripple */
+.action-btn:active,
+.validate-final-btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+/* ==================== CORRECTION MODAL ENHANCEMENTS ==================== */
+
+.correction-overlay {
+    animation: overlayFadeIn 0.4s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.correction-modal {
+    animation: modalSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+        filter: blur(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Stars animation */
+.star-filled {
+    animation: starPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.star-filled:nth-child(1) { animation-delay: 0.2s; }
+.star-filled:nth-child(2) { animation-delay: 0.4s; }
+.star-filled:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes starPop {
+    from {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.3) rotate(10deg);
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* ==================== SIDEBAR NAV ENHANCEMENTS ==================== */
+
+.nav-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 0;
+    background: var(--primary-color);
+    transform: translateY(-50%);
+    transition: height 0.3s ease;
+    border-radius: 0 2px 2px 0;
+}
+
+.nav-item:hover::before {
+    height: 60%;
+}
+
+.nav-item.active::before {
+    height: 70%;
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+/* ==================== VERBATIM CONTAINER ==================== */
+
+.verbatim-container {
+    transition: all 0.4s ease;
+}
+
+.verbatim-container:hover {
+    background: rgba(160, 32, 240, 0.08);
+    transform: translateX(4px);
+}
+
+/* ==================== TIMER PULSE ==================== */
+
+.timer-display {
+    transition: all 0.3s ease;
+}
+
+.timer-display.warning {
+    animation: timerWarning 1s ease infinite;
+    color: #ffc107 !important;
+}
+
+.timer-display.critical {
+    animation: timerCritical 0.5s ease infinite;
+    color: #e74c3c !important;
+}
+
+@keyframes timerWarning {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 193, 7, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(255, 193, 7, 0.8); }
+}
+
+@keyframes timerCritical {
+    0%, 100% { text-shadow: 0 0 10px rgba(231, 76, 60, 0.3); transform: scale(1); }
+    50% { text-shadow: 0 0 25px rgba(231, 76, 60, 1); transform: scale(1.05); }
+}
+
+/* ==================== LOCK CHALLENGE ==================== */
+
+.lock-placeholder {
+    transition: all 0.3s ease;
+}
+
+.lock-placeholder:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+}
+
+/* ==================== URGENCE SECTION ==================== */
+
+#section-intervention-rapide {
+    transition: all 0.4s ease;
+}
+
+#urgence-description-banner {
+    animation: urgencyPulse 2s ease-in-out infinite;
+}
+
+@keyframes urgencyPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px 5px rgba(255, 71, 87, 0.1);
+    }
+}
+
+/* ==================== NOTIFICATION ENHANCEMENT ==================== */
+
+.notification {
+    animation: notifSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@keyframes notifSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* ==================== QUIZ MODAL ==================== */
+
+.lock-challenge-overlay {
+    animation: overlayFadeIn 0.3s ease forwards;
+}
+
+.lock-modal {
+    animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.lock-modal .mcq-option {
+    transition: all 0.25s ease;
+}
+
+.lock-modal .mcq-option:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
+
+@media (max-width: 768px) {
+    .medical-card:hover {
+        transform: none;
+    }
+
+    .medical-card:hover::after {
+        display: none;
+    }
+
+    .btn-question:hover:not(:disabled) {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .treatments-grid button:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Reduce animation intensity on small screens */
+    .game-section.entering {
+        animation-duration: 0.3s;
+    }
+
+    .correction-modal {
+        animation-duration: 0.3s;
+    }
+}
+
+/* ==================== REDUCED MOTION ==================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

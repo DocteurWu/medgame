@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/index.css?v=1.2">
     <link rel="stylesheet" href="css/device-check.css">
     <link rel="stylesheet" href="css/arena.css">
+    <link rel="stylesheet" href="css/immersive.css">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -205,6 +206,8 @@
         </div>
     </div>
 
+    <!-- Audio Module -->
+    <script src="js/audio.js"></script>
     <!-- Three.js Background Module -->
     <script src="js/three-background.js"></script>
 
@@ -362,9 +365,11 @@
 
 
 
-        // Fonction transition douce
+        // Fonction transition douce avec audio
         function transitionTo(url) {
+            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('click');
             document.body.style.opacity = 0;
+            document.body.style.transition = 'opacity 0.5s ease';
             setTimeout(() => window.location.href = url, 500);
         }
 
