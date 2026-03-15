@@ -130,10 +130,9 @@ onDomReady(async () => {
     const feedbackDisplay = document.getElementById('feedback');
     const nextCaseButton = document.getElementById('next-case');
 
-    let cases = [];
-    let currentCaseIndex = 0;
-    let currentCase = null;
-    let score = 0;
+    // Use gameState for centralized state management
+    // Variables moved to gameState: cases, currentCaseIndex, currentCase, score, activeExams, vitalMonitorInstance
+    
     // selectedTreatments & attempts now in scoringState (scoring.js)
     // timeLeft & timerInterval now in timerState (timer.js)
     timerState.onTimeUp = () => {
@@ -141,9 +140,6 @@ onDomReady(async () => {
         const defaultText = t && t.correctDiagnostic ? `Diagnostic optimal: ${t.correctDiagnostic}\nTraitements optimaux: ${(t.correctTreatments || []).join(', ')}` : '';
         showCorrectionModal(t && t.correction ? t.correction : defaultText);
     };
-    let activeExams = []; // Track currently displayed exam results
-    // uiState.fireworksInstance & uiState.backgroundMusicEl now in uiState (ui.js)
-    let vitalMonitorInstance = null;
 
     // Urgence mode moved to js/urgenceMode.js
 
@@ -156,8 +152,7 @@ onDomReady(async () => {
     uiState.onCorrectionNext = () => {
         if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
         if (uiState.backgroundMusicEl) uiState.backgroundMusicEl.play();
-        currentCaseIndex++;
-        if (currentCaseIndex >= cases.length) {
+        if (!gameState.nextCase()) {
             window.location.href = 'index.html';
             return;
         }
@@ -216,17 +211,17 @@ onDomReady(async () => {
             respiratoryRate: parseNum(text.resp) || 16
         };
 
-        if (vitalMonitorInstance) {
-            vitalMonitorInstance.stopVitalUpdates();
+        if (gameState.vitalMonitorInstance) {
+            gameState.vitalMonitorInstance.stopVitalUpdates();
             mountPoint.innerHTML = '';
         }
 
         const ecgH = 70;
         const spo2H = 35;
 
-        vitalMonitorInstance = new VitalSignsMonitor(monitorProps, { ecgH, spo2H });
-        urgenceState.vitalMonitorInstance = vitalMonitorInstance;
-        vitalMonitorInstance.mount(mountPoint);
+        gameState.vitalMonitorInstance = new VitalSignsMonitor(monitorProps, { ecgH, spo2H });
+        urgenceState.vitalMonitorInstance = gameState.vitalMonitorInstance;
+        gameState.vitalMonitorInstance.mount(mountPoint);
     }
 
     function loadCase(isPartialRefresh = false) {
@@ -248,7 +243,7 @@ onDomReady(async () => {
             }
         }
 
-        if (cases.length === 0) {
+        if (gameState.cases.length === 0) {
             showNotification('Aucun cas clinique trouvé.');
             return;
         }
@@ -257,22 +252,10 @@ onDomReady(async () => {
         const isPreview = urlParams.get('preview') === 'true';
 
         if (!isPartialRefresh) {
-            currentCase = cases[currentCaseIndex];
-            timerState.currentCase = currentCase;
-            lockSystem.currentCase = currentCase;
-            scoringState.currentCase = currentCase;
-            uiState.currentCase = currentCase;
-            urgenceState.currentCase = currentCase;
-
-            // Urgence Mode Check
-            if (currentCase.gameplayConfig && currentCase.gameplayConfig.startNode) {
-                urgenceState.isUrgenceMode = true;
-                urgenceState.currentUrgenceNode = currentCase.nodes[currentCase.gameplayConfig.startNode];
-            } else {
-                urgenceState.isUrgenceMode = false;
-                urgenceState.currentUrgenceNode = null;
-            }
+            gameState.setCase(gameState.currentCaseIndex);
         }
+
+        const currentCase = gameState.currentCase;
 
         displayValue(document.getElementById('patient-nom'), currentCase.patient.nom, 'patient.nom');
         displayValue(document.getElementById('patient-prenom'), currentCase.patient.prenom, 'patient.prenom');
@@ -513,7 +496,7 @@ onDomReady(async () => {
 
         if (!isPartialRefresh) {
             examensResults.innerHTML = '';
-            activeExams = [];
+            gameState.clearActiveExams();
         } else {
             renderExamResults();
         }
@@ -625,7 +608,7 @@ onDomReady(async () => {
 
             scoreDisplay.textContent = '';
             feedbackDisplay.textContent = '';
-            score = 0;
+            gameState.setScore(0);
             scoringState.attempts = 0; // Réinitialiser le nombre d'essais
         }
 
@@ -692,16 +675,16 @@ onDomReady(async () => {
         const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
 
         if (isCorrect) {
-            score = calculateScore();
+            gameState.setScore(calculateScore());
             feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
-            scoreDisplay.textContent = `Score final: ${score}`;
+            scoreDisplay.textContent = `Score final: ${gameState.score}`;
             document.getElementById('treatment-feedback').textContent = '';
             
             // Immersive feedback
             playSound('correct');
             scoreDisplay.classList.add('score-up');
             addVisualFeedback(feedbackDisplay, 'correct');
-            showScorePopup(scoreDisplay, score, true);
+            showScorePopup(scoreDisplay, gameState.score, true);
 
             // Arrêter les fireworks s'ils sont actifs (remplacé par étoiles dans le modal)
             if (uiState.fireworksInstance) {
@@ -732,7 +715,7 @@ onDomReady(async () => {
             showScorePopup(scoreDisplay, 0, false);
 
             // Score remains 0 if incorrect
-            scoreDisplay.textContent = `Score final: ${score}`;
+            scoreDisplay.textContent = `Score final: ${gameState.score}`;
         }
 
         // Gestion des classes CSS pour les boutons de traitement avec stagger
@@ -999,7 +982,7 @@ onDomReady(async () => {
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
 
     function renderExamResults() {
-        if (activeExams.length === 0) return;
+        if (gameState.activeExams.length === 0) return;
 
         if (isFieldLocked('examensComplementaires')) {
             examensResults.innerHTML = '<div class="lock-placeholder">Section verrouillée.</div>';
@@ -1008,7 +991,7 @@ onDomReady(async () => {
 
         examensResults.innerHTML = '<h4>Résultats des examens complémentaires :</h4>';
 
-        activeExams.forEach(exam => {
+        gameState.activeExams.forEach(exam => {
             const path = `examResults.${exam}`;
             const result = currentCase.examResults[exam] || "Résultat non disponible";
             const resultDiv = document.createElement('div');
@@ -1071,7 +1054,7 @@ onDomReady(async () => {
         if (validateBtn) validateBtn.disabled = true;
 
         setTimeout(() => {
-            activeExams = selectedExams;
+            gameState.activeExams = selectedExams;
             renderExamResults();
             if (validateBtn) validateBtn.disabled = false;
 
@@ -1115,8 +1098,7 @@ onDomReady(async () => {
     // Validation is now handled solely by validate-traitement.
 
     nextCaseButton.addEventListener('click', () => {
-        currentCaseIndex++;
-        if (currentCaseIndex >= cases.length) {
+        if (!gameState.nextCase()) {
             window.location.href = 'index.html';
             return;
         }
@@ -1215,11 +1197,12 @@ onDomReady(async () => {
         loadingEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;text-align:center;background:rgba(0,0,0,0.8);padding:30px 50px;border-radius:15px;backdrop-filter:blur(10px);border:1px solid rgba(0,242,254,0.2);';
         document.body.appendChild(loadingEl);
         
-        cases = await loadCasesData();
+        const cases = await loadCasesData();
+        gameState.setCases(cases);
         loadingEl.remove();
         
-        if (cases.length > 0) {
-            showNotification(`Session démarrée : ${cases.length} cas chargé(s)`);
+        if (gameState.cases.length > 0) {
+            showNotification(`Session démarrée : ${gameState.cases.length} cas chargé(s)`);
             playSound('reveal');
             loadCase();
         }
@@ -1477,19 +1460,21 @@ onDomReady(async () => {
         const imageOverlay = document.getElementById('image-overlay');
         if (imageOverlay && imageOverlay.style.display === 'flex') return;
 
-        if (e.key === 'Enter' || e.key === '1') {
+        const navItems = Array.from(document.querySelectorAll('.nav-item:not([style*="display: none"])'));
+        const activeIdx = navItems.findIndex(item => item.classList.contains('active'));
+
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            const nextIdx = (activeIdx + 1) % navItems.length;
+            if (navItems[nextIdx]) navItems[nextIdx].click();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const prevIdx = (activeIdx - 1 + navItems.length) % navItems.length;
+            if (navItems[prevIdx]) navItems[prevIdx].click();
+        } else if (e.key === 'Enter') {
             e.preventDefault();
             const btn = document.getElementById('validate-traitement');
             if (btn) btn.click();
-        } else if (e.key === '2') {
-            e.preventDefault();
-            const btn = document.getElementById('validate-exams');
-            if (btn && btn.style.display !== 'none') btn.click();
-        } else if (e.key === '3') {
-            e.preventDefault();
-            // Go to Synthèse tab
-            const syntheseTab = document.querySelector('.nav-item[data-target="section-synthese"]');
-            if (syntheseTab) syntheseTab.click();
         } else if (e.key === 'Escape') {
             hideCorrectionModal();
         }

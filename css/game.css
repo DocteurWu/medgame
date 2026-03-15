@@ -90,6 +90,7 @@ body::after {
     z-index: 10;
     position: relative;
     transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
+    will-change: width;
 }
 
 .sidebar::after {
@@ -488,6 +489,7 @@ body::after {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    will-change: opacity, transform;
 }
 
 /* Staggered animation pour les cartes */

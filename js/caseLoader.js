@@ -3,7 +3,79 @@
  * Phase 8 du refactoring : extrait de game.js
  *
  * Charge les cas depuis Supabase, localStorage, ou fichiers JSON locaux.
+ * Optimisé avec cache mémoire et localStorage TTL.
  */
+
+const caseLoaderCache = {
+    memory: new Map(),
+    localStorageKey: 'medgame_case_cache',
+    ttl: 10 * 60 * 1000,
+
+    get(key) {
+        const cached = this.memory.get(key);
+        if (cached && Date.now() - cached.timestamp < this.ttl) {
+            return cached.data;
+        }
+        this.memory.delete(key);
+        return null;
+    },
+
+    set(key, data) {
+        this.memory.set(key, { data, timestamp: Date.now() });
+        this.saveToLocalStorage(key, data);
+    },
+
+    saveToLocalStorage(key, data) {
+        try {
+            const storage = JSON.parse(localStorage.getItem(this.localStorageKey) || '{}');
+            storage[key] = { data, timestamp: Date.now() };
+            Object.keys(storage).forEach(k => {
+                if (Date.now() - storage[k].timestamp > this.ttl) delete storage[k];
+            });
+            localStorage.setItem(this.localStorageKey, JSON.stringify(storage));
+        } catch (e) { console.warn('Cache localStorage failed', e); }
+    },
+
+    getFromLocalStorage(key) {
+        try {
+            const storage = JSON.parse(localStorage.getItem(this.localStorageKey) || '{}');
+            const cached = storage[key];
+            if (cached && Date.now() - cached.timestamp < this.ttl) {
+                this.memory.set(key, cached);
+                return cached.data;
+            }
+        } catch (e) {}
+        return null;
+    }
+};
+
+function lazyLoadCase(file) {
+    const cacheKey = `case_${file}`;
+    const cached = caseLoaderCache.get(cacheKey) || caseLoaderCache.getFromLocalStorage(cacheKey);
+    if (cached) return Promise.resolve(cached);
+
+    return fetch(`data/${file}`)
+        .then(res => {
+            if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
+            return res.json();
+        })
+        .then(data => {
+            caseLoaderCache.set(cacheKey, data);
+            return data;
+        });
+}
+
+async function loadCasesMetadata() {
+    const cacheKey = 'case_index';
+    const cached = caseLoaderCache.get(cacheKey) || caseLoaderCache.getFromLocalStorage(cacheKey);
+    if (cached) return cached;
+
+    const response = await fetch('data/case-index.json');
+    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+    const data = await response.json();
+    caseLoaderCache.set(cacheKey, data);
+    return data;
+}
 
 /**
  * Charge les cas cliniques depuis Supabase, localStorage ou fichiers JSON locaux.
@@ -74,27 +146,18 @@ async function loadCasesData() {
             }
         }
 
-        // Fallback local: multiple cases
+        // Fallback local: multiple cases (with cache)
         const selectedCaseFilesLocal = JSON.parse(localStorage.getItem('selectedCaseFiles'));
         if (selectedCaseFilesLocal && Array.isArray(selectedCaseFilesLocal) && selectedCaseFilesLocal.length > 0) {
-            const casesPromises = selectedCaseFilesLocal.map(file =>
-                fetch(`data/${file}`)
-                    .then(res => {
-                        if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
-                        return res.json();
-                    })
-            );
-            const results = await Promise.all(casesPromises);
+            const results = await Promise.all(selectedCaseFilesLocal.map(lazyLoadCase));
             localStorage.removeItem('selectedCaseFiles');
             return results;
         }
 
-        // Single case
+        // Single case (with cache)
         const selectedCaseFile = localStorage.getItem('selectedCaseFile');
         if (selectedCaseFile) {
-            const response = await fetch(`data/${selectedCaseFile}`);
-            if (!response.ok) throw new Error(`Fichier ${selectedCaseFile} introuvable`);
-            const caseData = await response.json();
+            const caseData = await lazyLoadCase(selectedCaseFile);
             localStorage.removeItem('selectedCaseFile');
             return [caseData];
         }
@@ -105,11 +168,7 @@ async function loadCasesData() {
             throw new Error('Aucun thème sélectionné');
         }
 
-        const response = await fetch('data/case-index.json');
-        if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
-        }
-        const caseIndex = await response.json();
+        const caseIndex = await loadCasesMetadata();
 
         let caseFiles = [];
         selectedThemes.forEach(theme => {
@@ -123,18 +182,7 @@ async function loadCasesData() {
             throw new Error('Aucun cas disponible pour les thèmes sélectionnés');
         }
 
-        const casesPromises = caseFiles.map(file =>
-            fetch(`data/${file}`)
-                .then(res => {
-                    if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
-                    return res.json();
-                })
-                .catch(err => {
-                    console.warn(`Erreur chargement ${file}:`, err.message);
-                    return null;
-                })
-        );
-        const results = await Promise.allSettled(casesPromises);
+        const results = await Promise.allSettled(caseFiles.map(lazyLoadCase));
         const cases = results
             .filter(r => r.status === 'fulfilled' && r.value !== null)
             .map(r => r.value);
