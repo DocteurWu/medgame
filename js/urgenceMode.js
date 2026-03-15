@@ -122,7 +122,7 @@ function renderUrgenceState() {
             } else {
                 try {
                     const failSound = new Audio('assets/sounds/flatline.mp3');
-                    failSound.play().catch(e => console.log('No fail sound playing'));
+                    failSound.play().catch(() => {});
                 } catch(e) {}
             }
 

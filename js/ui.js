@@ -160,6 +160,12 @@ window.zoomImage = (delta) => {
 
 // ==================== DISPLAY HELPERS ====================
 
+/**
+ * Affiche une valeur dans un élément DOM, avec support du masquage (lock).
+ * @param {HTMLElement} element - Élément cible
+ * @param {*} value - Valeur à afficher
+ * @param {string} path - Chemin du champ (pour vérifier les locks)
+ */
 function displayValue(element, value, path) {
     if (!element) return;
 

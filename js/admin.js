@@ -206,8 +206,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (error) throw error;
 
-            console.log('[ADMIN] Raw data from Supabase:', data);
-            console.log('[ADMIN] Number of cases:', data ? data.length : 0);
 
             if (!data || data.length === 0) {
                 container.innerHTML = '<div class="empty-state"><i class="fas fa-database"></i> Aucun cas trouvé dans Supabase.<br><small>Avez-vous lancé le script de migration ?</small></div>';
@@ -216,11 +214,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Log unique specialties for debugging
             const uniqueSpecs = [...new Set(data.map(c => c.specialty))];
-            console.log('[ADMIN] Unique specialties in DB:', uniqueSpecs);
 
             // Filter: Published or no status (legacy data from migration)
             const publishedCases = data.filter(c => !c.status || c.status === 'published');
-            console.log('[ADMIN] Published cases after filter:', publishedCases.length);
 
             // Sort by display_order
             publishedCases.sort((a, b) => (a.display_order || 0) - (b.display_order || 0));

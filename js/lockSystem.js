@@ -35,10 +35,12 @@ function getLockForField(path) {
     );
 }
 
+/**
+ * Affiche la modale de défi sémiologique pour déverrouiller un champ.
+ * @param {string} lockId - Identifiant du verrou
+ */
 function showLockChallenge(lockId) {
-    console.log("showLockChallenge called with lockId:", lockId);
     const currentCase = lockSystem.currentCase;
-    console.log("currentCase:", currentCase);
 
     if (!currentCase) {
         console.error("currentCase is not defined");
@@ -60,8 +62,6 @@ function showLockChallenge(lockId) {
     }
 
     let lockAttempts = 0;
-
-    console.log("Lock found:", lock);
 
     // Hide nurse intro if it's still showing
     if (typeof NurseIntro !== 'undefined') {
@@ -246,3 +246,4 @@ function unlock(lockId) {
 }
 
 window.showLockChallenge = showLockChallenge;
+dow.showLockChallenge = showLockChallenge;

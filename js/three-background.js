@@ -84,7 +84,6 @@ const ThreeBackground = (function() {
         // Gestion du resize
         window.addEventListener('resize', handleResize);
         
-        console.log('ThreeBackground initialized:', options.type);
     }
     
     /**
@@ -311,7 +310,6 @@ const ThreeBackground = (function() {
         dnaMesh = null;
         bgMesh = null;
         
-        console.log('ThreeBackground destroyed');
     }
     
     // API publique

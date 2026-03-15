@@ -704,11 +704,9 @@ function updateAnswersStats(answerIndices) {
     const countEl = document.getElementById('answered-count');
     if (countEl) countEl.innerText = `${answeredPlayersCount}/${playersCount}`;
 
-    console.log(`Réponses: ${answeredPlayersCount}/${playersCount}`);
 
     // If all players have answered and we're still in question_active, fast-forward to correction
     if (currentEvent && currentEvent.status === 'question_active' && playersCount > 0 && answeredPlayersCount >= playersCount) {
-        console.log("Tout le monde a répondu ! Passage à la correction automatique.");
         showAnswer();
     }
 }
