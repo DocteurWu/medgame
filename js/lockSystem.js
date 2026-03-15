@@ -246,4 +246,3 @@ function unlock(lockId) {
 }
 
 window.showLockChallenge = showLockChallenge;
-dow.showLockChallenge = showLockChallenge;
