@@ -711,7 +711,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             ? 'background: rgba(46, 204, 113, 0.3); padding: 5px; border-radius: 4px;'
             : 'background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;';
 
-        // Build treatments list with color coding
+        // Build treatments list with color coding (escape treatment names to prevent XSS)
         let userTreatmentsHtml = '';
         if (selectedTreatments.length === 0) {
             userTreatmentsHtml = '<span style="background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;">Aucun</span>';
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const style = isCorrect
                     ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
                     : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
-                return `<span style="${style}">${t}</span>`;
+                return `<span style="${style}">${escapeHtml(t)}</span>`;
             }).join(' ');
         }
 
@@ -731,14 +731,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const style = wasSelected
                 ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
                 : 'background: rgba(255, 193, 7, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
-            return `<span style="${style}">${t}</span>`;
+            return `<span style="${style}">${escapeHtml(t)}</span>`;
         }).join(' ');
 
         // Build fatal error banner if applicable
         const fatalBanner = hasFatalError ? `
             <div style="background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
                 <div style="color: #e74c3c; font-size: 1.4em; font-weight: bold; margin-bottom: 6px;"><i class="fas fa-skull-crossbones"></i> ERREUR FATALE COMMISE</div>
-                <p style="color: rgba(255,255,255,0.85); margin: 0;">Les traitements suivants sont contre-indiqués ou dangereux : <strong style="color:#e74c3c;">${selectedFatalTreatments.join(', ')}</strong></p>
+                <p style="color: rgba(255,255,255,0.85); margin: 0;">Les traitements suivants sont contre-indiqués ou dangereux : <strong style="color:#e74c3c;">${escapeHtml(selectedFatalTreatments.join(', '))}</strong></p>
                 <p style="color: rgba(255,255,255,0.6); font-size: 0.85em; margin-top: 6px;">Score de traitement annulé. En médecine, prescrire un soin contre-indiqué peut mettre la vie du patient en danger.</p>
             </div>
         ` : '';
@@ -791,17 +791,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </h3>
                     <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
                     <p style="color: ${caseAttempts > 2 ? '#e74c3c' : 'rgba(255,255,255,0.5)'}; font-size:0.75em; margin-top: 5px;">
-                        <i class="fas fa-info-circle"></i> ${xpMessage}
+                        <i class="fas fa-info-circle"></i> ${escapeHtml(xpMessage)}
                     </p>
                 </div>
                 <div style="margin-bottom: 10px;">
                     <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
-                    <p><strong>Diagnostic:</strong> <span style="${diagnosticUserStyle}">${selectedDiagnostic || 'Aucun'}</span></p>
+                    <p><strong>Diagnostic:</strong> <span style="${diagnosticUserStyle}">${escapeHtml(selectedDiagnostic || 'Aucun')}</span></p>
                     <p><strong>Traitements:</strong> ${userTreatmentsHtml}</p>
                 </div>
                 <div>
                     <h4 style="color: #2ecc71; margin-bottom: 5px;">Réponse Attendue</h4>
-                    <p><strong>Diagnostic:</strong> ${correctDiagnostic}</p>
+                    <p><strong>Diagnostic:</strong> ${escapeHtml(correctDiagnostic)}</p>
                     <p><strong>Traitements:</strong> ${expectedTreatmentsHtml}</p>
                     <p style="font-size: 0.9em; color: #aaa; margin-top: 5px;">
                         <span style="background: rgba(46, 204, 113, 0.3); padding: 2px 6px; border-radius: 3px;">Vert</span> = Correct | 
@@ -1220,8 +1220,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 errorEl.innerHTML = `
                     <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
                         <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
-                        <div style="color: white; margin-bottom: 10px;">${correction}</div>
-                        ${question.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${question.feedback_error}</div>` : ''}
+                        <div style="color: white; margin-bottom: 10px;">${escapeHtml(correction)}</div>
+                        ${question.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${escapeHtml(question.feedback_error)}</div>` : ''}
                     </div>
                 `;
 
@@ -1240,7 +1240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 });
             } else {
-                document.getElementById('quiz-error').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${question.feedback_error || 'Réponse incorrecte'}`;
+                document.getElementById('quiz-error').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${escapeHtml(question.feedback_error || 'Réponse incorrecte')}`;
                 const btn = modal.querySelector('#quiz-submit-btn');
                 btn.style.background = '#e74c3c';
                 btn.textContent = 'RÉESSAYER';
