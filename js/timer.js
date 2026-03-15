@@ -24,6 +24,17 @@ function displayTime(seconds) {
     if (timerEl) timerEl.textContent = timeStr;
     const mobileTimer = document.getElementById('mobile-timer');
     if (mobileTimer) mobileTimer.textContent = timeStr;
+    
+    // Update timer visual state (warning/critical)
+    const timerEls = [timerEl, mobileTimer].filter(Boolean);
+    timerEls.forEach(el => {
+        el.classList.remove('warning', 'critical');
+        if (seconds <= 30 && seconds > 0) {
+            el.classList.add('critical');
+        } else if (seconds <= 120 && seconds > 30) {
+            el.classList.add('warning');
+        }
+    });
 }
 
 window.deductTime = function (seconds) {

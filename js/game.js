@@ -1,6 +1,97 @@
 // Y'a qql qui va lire le code ?? si oui veuillez me contacter sur discord : docteur_wu
 // Utilities (showNotification, escapeHtml, parseMarkdown, cookies, etc.) moved to js/utils.js
 
+// ==================== IMMERSIVE HELPERS ====================
+
+/**
+ * Animer une transition de section avec fade/slide
+ */
+function animateSectionTransition(fromSection, toSection) {
+    if (!fromSection || !toSection) return;
+    
+    // Add leaving animation
+    fromSection.classList.add('leaving');
+    
+    setTimeout(() => {
+        fromSection.classList.remove('active', 'mobile-active', 'leaving');
+        toSection.classList.add('active', 'entering');
+        
+        setTimeout(() => {
+            toSection.classList.remove('entering');
+        }, 600);
+    }, 300);
+}
+
+/**
+ * Animer les cartes médicales avec stagger
+ */
+function animateCards(container) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.medical-card');
+    cards.forEach((card, i) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 80 + i * 100);
+    });
+}
+
+/**
+ * Afficher un popup de score flottant
+ */
+function showScorePopup(element, value, isPositive) {
+    if (!element) return;
+    const popup = document.createElement('div');
+    popup.className = `score-popup ${isPositive ? 'positive' : 'negative'}`;
+    popup.textContent = isPositive ? `+${value}` : `${value}`;
+    
+    const rect = element.getBoundingClientRect();
+    popup.style.position = 'fixed';
+    popup.style.left = `${rect.left + rect.width / 2}px`;
+    popup.style.top = `${rect.top}px`;
+    popup.style.transform = 'translateX(-50%)';
+    
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 1200);
+}
+
+/**
+ * Ajouter feedback visuel sur un élément
+ */
+function addVisualFeedback(element, type) {
+    if (!element) return;
+    const className = type === 'correct' ? 'feedback-correct' : 'feedback-incorrect';
+    element.classList.add(className);
+    setTimeout(() => element.classList.remove(className), 800);
+}
+
+/**
+ * Mettre à jour l'état visuel du timer
+ */
+function updateTimerVisualState() {
+    const timerEls = document.querySelectorAll('.timer-display');
+    timerEls.forEach(el => {
+        el.classList.remove('warning', 'critical');
+        if (timerState.timeLeft <= 30) {
+            el.classList.add('critical');
+        } else if (timerState.timeLeft <= 120) {
+            el.classList.add('warning');
+        }
+    });
+}
+
+/**
+ * Wrapper pour jouer un son de façon sûre
+ */
+function playSound(name) {
+    if (typeof MedGameAudio !== 'undefined') {
+        MedGameAudio.play(name);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const motifHospitalisation = document.getElementById('motif-hospitalisation');
     const activitePhysique = document.getElementById('activite-physique');
@@ -471,6 +562,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     button.textContent = exam;
                     button.addEventListener('click', function () {
                         this.classList.toggle('selected');
+                        playSound('select');
                     });
                     examButtonsDiv.appendChild(button);
                 });
@@ -497,7 +589,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 button.dataset.traitement = traitement;
                 button.setAttribute('aria-selected', 'false');
                 button.setAttribute('role', 'button');
-                button.addEventListener('click', handleTraitementClick);
+                button.addEventListener('click', (e) => {
+                    handleTraitementClick(e);
+                    playSound('click');
+                });
                 availableTreatments.appendChild(button);
             });
         }
@@ -590,6 +685,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (isCorrect) {
             score = calculateScore();
             feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
+            scoreDisplay.textContent = `Score final: ${score}`;
+            document.getElementById('treatment-feedback').textContent = '';
+            
+            // Immersive feedback
+            playSound('correct');
+            scoreDisplay.classList.add('score-up');
+            addVisualFeedback(feedbackDisplay, 'correct');
+            showScorePopup(scoreDisplay, score, true);
 
             // Arrêter les fireworks s'ils sont actifs (remplacé par étoiles dans le modal)
             if (uiState.fireworksInstance) {
@@ -599,14 +702,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Arrêter la musique
             const backgroundMusic = document.querySelector('audio');
             if (backgroundMusic) backgroundMusic.pause();
-
-            scoreDisplay.textContent = `Score final: ${score}`;
-            document.getElementById('treatment-feedback').textContent = '';
         } else {
             let feedback = '';
             if (selectedDiagnostic !== correctDiagnostic) {
                 feedback += 'Diagnostic incorrect. ';
                 feedbackDisplay.textContent = feedback;
+                addVisualFeedback(feedbackDisplay, 'incorrect');
             }
 
             const allTreatmentsCorrect = correctTreatments.every(t => selectedTreatments.includes(t));
@@ -616,23 +717,34 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('treatment-feedback').textContent = feedback;
             }
 
+            // Immersive feedback for incorrect
+            playSound('incorrect');
+            scoreDisplay.classList.add('score-down');
+            showScorePopup(scoreDisplay, 0, false);
+
             // Score remains 0 if incorrect
             scoreDisplay.textContent = `Score final: ${score}`;
         }
 
-        // Gestion des classes CSS pour les boutons de traitement
+        // Gestion des classes CSS pour les boutons de traitement avec stagger
         const treatmentButtons = document.querySelectorAll('#availableTreatments button');
-        treatmentButtons.forEach(button => {
+        treatmentButtons.forEach((button, idx) => {
             const traitement = button.dataset.traitement;
-            button.classList.remove('correct-treatment', 'incorrect-treatment'); // Retirer les classes précédentes
+            button.classList.remove('correct-treatment', 'incorrect-treatment');
 
             if (correctTreatments.includes(traitement)) {
                 if (selectedTreatments.includes(traitement)) {
-                    button.classList.add('correct-treatment'); // Vert si correct et sélectionné
+                    setTimeout(() => {
+                        button.classList.add('correct-treatment');
+                        playSound('correct');
+                    }, idx * 80);
                 }
             } else {
                 if (selectedTreatments.includes(traitement)) {
-                    button.classList.add('incorrect-treatment'); // Rouge si incorrect et sélectionné
+                    setTimeout(() => {
+                        button.classList.add('incorrect-treatment');
+                        playSound('incorrect');
+                    }, idx * 80);
                 }
             }
         });
@@ -812,6 +924,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
 
         // ALWAYS show correction and update cookie
+        playSound('complete');
         startPostGameQuiz(comparisonHtml);
 
         // Mise à jour du cookie local
@@ -928,8 +1041,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (selectedExams.length === 0) {
             showNotification('Veuillez sélectionner au moins un examen.');
+            playSound('alert');
             return;
         }
+        
+        playSound('click');
 
         // 120s in-game time deduction for any exams requested
         if (typeof window.deductTime === 'function') {
@@ -964,18 +1080,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     navItems.forEach(item => {
         item.addEventListener('click', () => {
+            playSound('click');
+            
             // Remove active class from all items
             navItems.forEach(nav => nav.classList.remove('active'));
             // Add active class to clicked item
             item.classList.add('active');
 
-            // Hide all sections
-            sections.forEach(section => section.classList.remove('active'));
+            // Get current active section
+            const currentSection = document.querySelector('.game-section.active');
+            
             // Show target section
             const targetId = item.dataset.target;
             const targetSection = document.getElementById(targetId);
-            if (targetSection) {
-                targetSection.classList.add('active');
+            
+            if (targetSection && currentSection !== targetSection) {
+                // Use animated transition
+                animateSectionTransition(currentSection, targetSection);
+                // Animate cards in new section
+                setTimeout(() => animateCards(targetSection), 350);
             }
         });
     });
@@ -995,33 +1118,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mobileTabs = document.querySelectorAll('.mobile-tab-item');
 
     function switchMobileTab(tabId) {
+        playSound('click');
+        
         // Update tab buttons
         mobileTabs.forEach(tab => {
             tab.classList.toggle('active', tab.dataset.tab === tabId);
         });
 
+        const sectionMap = {
+            'anamnese': 'section-anamnese',
+            'examen': 'section-examen-clinique',
+            'exams': 'section-examens',
+            'decision': 'section-synthese',
+            'intervention-rapide': 'section-intervention-rapide'
+        };
+
+        // Get current active section
+        const currentSection = document.querySelector('.game-section.mobile-active');
+        const targetId = sectionMap[tabId];
+        const targetSection = document.getElementById(targetId);
+        
         // Hide all sections first
         sections.forEach(section => {
-            section.classList.remove('active');
-            section.classList.remove('mobile-active');
+            section.classList.remove('active', 'mobile-active', 'entering', 'leaving');
         });
 
-        // Show relevant sections based on tab
-        if (tabId === 'anamnese') {
-            document.getElementById('section-anamnese').classList.add('mobile-active');
-            updateSidebarActive('section-anamnese');
-        } else if (tabId === 'examen') {
-            document.getElementById('section-examen-clinique').classList.add('mobile-active');
-            updateSidebarActive('section-examen-clinique');
-        } else if (tabId === 'exams') {
-            document.getElementById('section-examens').classList.add('mobile-active');
-            updateSidebarActive('section-examens');
-        } else if (tabId === 'decision') {
-            document.getElementById('section-synthese').classList.add('mobile-active');
-            updateSidebarActive('section-synthese');
-        } else if (tabId === 'intervention-rapide') {
-            document.getElementById('section-intervention-rapide').classList.add('mobile-active');
-            updateSidebarActive('section-intervention-rapide');
+        if (targetSection) {
+            targetSection.classList.add('mobile-active', 'entering');
+            updateSidebarActive(targetId);
+            animateCards(targetSection);
+            
+            setTimeout(() => {
+                targetSection.classList.remove('entering');
+            }, 500);
         }
 
         // Scroll to top
@@ -1074,7 +1203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const loadingEl = document.createElement('div');
         loadingEl.id = 'game-loading';
         loadingEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3rem;color:var(--primary-color);margin-bottom:15px;"></i><p>Chargement des cas cliniques...</p>';
-        loadingEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;text-align:center;background:rgba(0,0,0,0.8);padding:30px 50px;border-radius:15px;';
+        loadingEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;text-align:center;background:rgba(0,0,0,0.8);padding:30px 50px;border-radius:15px;backdrop-filter:blur(10px);border:1px solid rgba(0,242,254,0.2);';
         document.body.appendChild(loadingEl);
         
         cases = await loadCasesData();
@@ -1082,6 +1211,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (cases.length > 0) {
             showNotification(`Session démarrée : ${cases.length} cas chargé(s)`);
+            playSound('reveal');
             loadCase();
         }
         displayTime(timerState.timeLeft);

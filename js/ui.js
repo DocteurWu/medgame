@@ -218,14 +218,17 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
             const hasTime = window.deductTime(5);
             if (!hasTime) {
                 showNotification("Temps in-game insuffisant pour poser cette question.");
+                if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('alert');
                 return;
             }
         }
 
+        if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('click');
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Le patient réfléchit...';
         btn.disabled = true;
 
         setTimeout(() => {
+            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('reveal');
             if (isHtml) {
                 const safeValue = value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 element.innerHTML = `<div class="answer-fade-in unlocked-data" style="text-align: left; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; margin: 5px 0;">${safeValue}</div>`;
@@ -255,9 +258,12 @@ window.revealAllInterrogatoire = function() {
         const hasTime = window.deductTime(cost);
         if (!hasTime) {
             showNotification('Temps in-game insuffisant.');
+            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('alert');
             return;
         }
     }
+
+    if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('select');
 
     // Cacher le bouton "tout afficher"
     const revealBtn = document.getElementById('btn-reveal-all');

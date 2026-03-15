@@ -1,6 +1,7 @@
 /**
  * Three.js Background Module - MedGame
  * Module partagé pour les animations de fond 3D
+ * Enhanced with mouse reactivity, ambient glow, and smooth transitions
  * 
  * Usage:
  *   ThreeBackground.init('canvas-container', { type: 'dna' });
@@ -11,17 +12,20 @@ const ThreeBackground = (function() {
     'use strict';
     
     let scene, camera, renderer, animationId;
-    let dnaMesh, bgMesh;
+    let dnaMesh, bgMesh, glowMesh;
     let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
     let clock;
+    let isHovering = false;
     
     const defaultOptions = {
         type: 'dna',           // 'dna' | 'particles'
         fogColor: 0x050714,
         fogDensity: 0.03,
-        particleCount: 800,
+        particleCount: 1000,
         dnaCount: 1500,
-        enableMouse: true
+        enableMouse: true,
+        enableGlow: true
     };
     
     let options = {};
@@ -70,6 +74,11 @@ const ThreeBackground = (function() {
         }
         createBackgroundParticles();
         
+        // Ambient glow effect
+        if (options.enableGlow) {
+            createAmbientGlow();
+        }
+        
         // Gestion souris
         if (options.enableMouse) {
             initMouseInteraction();
@@ -84,6 +93,54 @@ const ThreeBackground = (function() {
         // Gestion du resize
         window.addEventListener('resize', handleResize);
         
+    }
+    
+    /**
+     * Créer un effet de glow ambiant
+     */
+    function createAmbientGlow() {
+        const glowGeometry = new THREE.SphereGeometry(8, 32, 32);
+        const glowMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uMouse: { value: new THREE.Vector2(0, 0) },
+                uColor1: { value: new THREE.Color(0x00f2fe) },
+                uColor2: { value: new THREE.Color(0xb388ff) }
+            },
+            vertexShader: `
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                void main() {
+                    vPosition = position;
+                    vNormal = normal;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float uTime;
+                uniform vec2 uMouse;
+                uniform vec3 uColor1;
+                uniform vec3 uColor2;
+                varying vec3 vPosition;
+                varying vec3 vNormal;
+                void main() {
+                    float fresnel = pow(1.0 - abs(dot(vNormal, vec3(0.0, 0.0, 1.0))), 3.0);
+                    float wave = sin(vPosition.y * 0.5 + uTime * 0.8) * 0.5 + 0.5;
+                    float mouseInfluence = length(uMouse) * 0.3;
+                    vec3 color = mix(uColor1, uColor2, wave + mouseInfluence);
+                    float alpha = fresnel * 0.08 * (0.7 + mouseInfluence);
+                    gl_FragColor = vec4(color, alpha);
+                }
+            `,
+            transparent: true,
+            side: THREE.BackSide,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending
+        });
+        
+        glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+        glowMesh.position.z = -5;
+        scene.add(glowMesh);
     }
     
     /**
@@ -233,33 +290,58 @@ const ThreeBackground = (function() {
     }
     
     /**
-     * Initialiser l'interaction souris
+     * Initialiser l'interaction souris avec tracking fluide
      */
     function initMouseInteraction() {
-        const windowHalfX = window.innerWidth / 2;
-        const windowHalfY = window.innerHeight / 2;
-        
         document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX - windowHalfX) * 0.001;
-            mouseY = (event.clientY - windowHalfY) * 0.001;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+            targetMouseX = (event.clientX - windowHalfX) * 0.001;
+            targetMouseY = (event.clientY - windowHalfY) * 0.001;
+            isHovering = true;
         });
+        
+        document.addEventListener('mouseleave', () => {
+            isHovering = false;
+        });
+        
+        // Touch support for mobile
+        document.addEventListener('touchmove', (event) => {
+            if (event.touches.length > 0) {
+                const touch = event.touches[0];
+                const windowHalfX = window.innerWidth / 2;
+                const windowHalfY = window.innerHeight / 2;
+                targetMouseX = (touch.clientX - windowHalfX) * 0.001;
+                targetMouseY = (touch.clientY - windowHalfY) * 0.001;
+            }
+        }, { passive: true });
     }
     
     /**
-     * Boucle d'animation
+     * Boucle d'animation avec mouse smoothing
      */
     function animate() {
         animationId = requestAnimationFrame(animate);
         
         const elapsedTime = clock.getElapsedTime();
         
-        // Rotation automatique
+        // Smooth mouse interpolation (lerp)
+        const lerpFactor = isHovering ? 0.08 : 0.02;
+        mouseX += (targetMouseX - mouseX) * lerpFactor;
+        mouseY += (targetMouseY - mouseY) * lerpFactor;
+        
+        // Rotation automatique + interaction souris
         if (window._dnaGroup) {
             window._dnaGroup.rotation.y += 0.002;
             
-            // Interaction souris avec inertie
-            window._dnaGroup.rotation.x += (mouseY * 0.5 - window._dnaGroup.rotation.x) * 0.05;
-            window._dnaGroup.rotation.z = 0.2 + (mouseX * 0.3);
+            // Interaction souris avec inertie douce
+            window._dnaGroup.rotation.x += (mouseY * 0.6 - window._dnaGroup.rotation.x) * 0.06;
+            window._dnaGroup.rotation.z = 0.2 + (mouseX * 0.4);
+            
+            // Scale pulse based on mouse movement
+            const mouseSpeed = Math.abs(targetMouseX - mouseX) + Math.abs(targetMouseY - mouseY);
+            const targetScale = 1 + mouseSpeed * 2;
+            window._dnaGroup.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.05);
             
             // Update shader
             if (window._dnaGroup.children[0] && window._dnaGroup.children[0].material.uniforms) {
@@ -267,15 +349,33 @@ const ThreeBackground = (function() {
             }
         }
         
-        // Rotation des particules
+        // Rotation des particules - reacts to mouse
         if (bgMesh) {
-            bgMesh.rotation.y = elapsedTime * 0.05;
-            bgMesh.rotation.x = elapsedTime * 0.02;
+            bgMesh.rotation.y = elapsedTime * 0.05 + mouseX * 0.1;
+            bgMesh.rotation.x = elapsedTime * 0.02 + mouseY * 0.05;
+            
+            // Particle speed boost on mouse movement
+            const particleMaterial = bgMesh.material;
+            if (particleMaterial) {
+                const mouseInfluence = Math.min(1, Math.abs(mouseX) + Math.abs(mouseY));
+                particleMaterial.opacity = 0.3 + mouseInfluence * 0.2;
+            }
         }
         
-        // Mouvement caméra flottant
-        camera.position.y = Math.sin(elapsedTime * 0.5) * 0.5;
-        camera.position.x += (mouseX * 5 - camera.position.x) * 0.02;
+        // Ambient glow follows mouse
+        if (glowMesh && glowMesh.material.uniforms) {
+            glowMesh.material.uniforms.uTime.value = elapsedTime;
+            glowMesh.material.uniforms.uMouse.value.set(mouseX, mouseY);
+            glowMesh.rotation.y = mouseX * 0.3;
+            glowMesh.rotation.x = mouseY * 0.2;
+        }
+        
+        // Mouvement caméra flottant - smoother
+        const floatY = Math.sin(elapsedTime * 0.5) * 0.3;
+        const floatX = Math.cos(elapsedTime * 0.3) * 0.2;
+        camera.position.y += (floatY + mouseY * 2 - camera.position.y) * 0.03;
+        camera.position.x += (floatX + mouseX * 3 - camera.position.x) * 0.03;
+        camera.lookAt(0, 0, 0);
         
         renderer.render(scene, camera);
     }
