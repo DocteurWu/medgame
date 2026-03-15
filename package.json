@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Medgame est un jeu éducatif simulant des scénarios médicaux pour tester tes connaissances du semestre 🏥. Ce n’est pas une source officielle 📚, mais un outil basé sur les références et mis à jour régulièrement.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
