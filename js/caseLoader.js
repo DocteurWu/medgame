@@ -128,8 +128,24 @@ async function loadCasesData() {
                     if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
                     return res.json();
                 })
+                .catch(err => {
+                    console.warn(`Erreur chargement ${file}:`, err.message);
+                    return null;
+                })
         );
-        const cases = await Promise.all(casesPromises);
+        const results = await Promise.allSettled(casesPromises);
+        const cases = results
+            .filter(r => r.status === 'fulfilled' && r.value !== null)
+            .map(r => r.value);
+        
+        if (cases.length < caseFiles.length) {
+            console.warn(`${caseFiles.length - cases.length} cas n'ont pas pu être chargés`);
+        }
+        
+        if (cases.length === 0) {
+            throw new Error('Aucun cas disponible');
+        }
+        
         console.log('Cas chargés :', cases);
         return cases;
     } catch (error) {

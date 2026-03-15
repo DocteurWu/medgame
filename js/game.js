@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const frequenceRespiratoire = document.getElementById('frequenceRespiratoire');
     const aspectGeneral = document.getElementById('aspectGeneral');
     const examensResults = document.getElementById('examens-results');
-    console.log('examensResults défini au début :', examensResults);
     const validateExamsButton = document.getElementById('validate-exams');
     // const validateDiagnosticButton = document.getElementById('validate-diagnostic'); // REMOVED
     const scoreDisplay = document.getElementById('score');
@@ -132,9 +131,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function loadCase(isPartialRefresh = false) {
-        console.log("loadCase called, isPartialRefresh:", isPartialRefresh);
-        if (isPartialRefresh) console.trace("Trace for partial refresh");
-
         // Prepare time but don't start timer yet
         if (!isPartialRefresh) {
             timerState.timeLeft = getTimeLimit();
@@ -223,9 +219,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 antecedentsChirurgicaux.innerHTML = '';
                 antecedentsFamiliaux.innerHTML = '';
             } else {
-                antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${ant.type} (${ant.traitement})</li>`).join('') + '</ul>';
-                antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${ant.intervention} (${ant.date})</li>`).join('') + '</ul>';
-                antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${ant.lien}: ${ant.pathologie} (${ant.age} ans)</li>`).join('') + '</ul>';
+                antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>';
+                antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.date)})</li>`).join('') + '</ul>';
+                antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie)} (${escapeHtml(ant.age)} ans)</li>`).join('') + '</ul>';
             }
 
             const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
@@ -370,7 +366,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </div>
                     `;
                 } else {
-                    verbatimContainer.innerHTML = `<div class="verbatim-text">"${currentCase.interrogatoire.verbatim}"</div>`;
+                    verbatimContainer.innerHTML = `<div class="verbatim-text">"${escapeHtml(currentCase.interrogatoire.verbatim)}"</div>`;
                 }
             } else {
                 verbatimContainer.style.display = 'none';
@@ -911,7 +907,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 const isObj = typeof result === 'object' && result !== null;
                 const text = isObj ? (result.value || result.text || JSON.stringify(result)) : result;
-                resultDiv.innerHTML = `<strong>${exam}:</strong> ${text}`;
+                resultDiv.innerHTML = `<strong>${escapeHtml(exam)}:</strong> ${escapeHtml(String(text))}`;
                 if (isObj && result.image) {
                     const btn = document.createElement('button');
                     btn.innerHTML = '<i class="fas fa-image"></i> Voir l’imagerie';
@@ -1079,7 +1075,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function initializeGame() {
+        const loadingEl = document.createElement('div');
+        loadingEl.id = 'game-loading';
+        loadingEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3rem;color:var(--primary-color);margin-bottom:15px;"></i><p>Chargement des cas cliniques...</p>';
+        loadingEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;text-align:center;background:rgba(0,0,0,0.8);padding:30px 50px;border-radius:15px;';
+        document.body.appendChild(loadingEl);
+        
         cases = await loadCasesData();
+        loadingEl.remove();
+        
         if (cases.length > 0) {
             showNotification(`Session démarrée : ${cases.length} cas chargé(s)`);
             loadCase();

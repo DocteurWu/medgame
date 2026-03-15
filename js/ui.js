@@ -221,7 +221,8 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
 
         setTimeout(() => {
             if (isHtml) {
-                element.innerHTML = `<div class="answer-fade-in unlocked-data" style="text-align: left; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; margin: 5px 0;">${value}</div>`;
+                const safeValue = value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                element.innerHTML = `<div class="answer-fade-in unlocked-data" style="text-align: left; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; margin: 5px 0;">${safeValue}</div>`;
             } else {
                 element.innerHTML = `<div class="answer-fade-in unlocked-data" style="text-align: left; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; margin: 5px 0;">${escapeHtml(value ?? '')}</div>`;
             }

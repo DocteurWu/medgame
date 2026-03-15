@@ -1,0 +1,43 @@
+version: 1
+project:
+  name: medgame-main
+  description: Medgame est un jeu éducatif simulant des scénarios médicaux pour tester tes connaissances du semestre 🏥. Ce n’est pas une source officielle 📚, mais un outil basé sur les références et mis à jour régulièrement.
+  type: unknown
+  path: /home/dietpi/car-hub/medgame
+stack:
+  languages:
+    - name: javascript
+      confidence: 90
+      source: package.json
+  frameworks: []
+  libraries: []
+  styling: []
+  testing: []
+  databases:
+    - name: supabase
+      version: 2.98.0
+      confidence: 100
+      source: package.json
+  tools:
+    - name: docker
+      confidence: 100
+      source: Dockerfile
+  runtime:
+    - name: nodejs
+      confidence: 100
+      source: package.json
+patterns:
+  apiStyle: rest
+skills:
+  installed: []
+  recommended: []
+  excluded: []
+  autoSync: true
+  securityLevel: medium
+  testingRequired: false
+agents:
+  detected: []
+  synced: []
+  disabled: []
+createdAt: 2026-03-15T00:07:26.901Z
+updatedAt: 2026-03-15T00:07:26.902Z

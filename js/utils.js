@@ -194,6 +194,26 @@ function getTimeLimit() {
     return 480;
 }
 
+// ==================== SAFE DOM UTILITIES ====================
+
+/**
+ * Insère du HTML dans un élément de manière plus sûre.
+ * Échappe d'abord le texte, puis autorise uniquement un sous-ensemble de balises.
+ * Pour du HTML riche (comparaison correction), utilisez directement innerHTML avec confiance.
+ * @param {HTMLElement} el - L'élément cible
+ * @param {string} html - Le HTML à insérer
+ * @param {boolean} [trusted=false] - Si true, insère tel quel (contenu déjà vérifié)
+ */
+function safeSetInnerHTML(el, html, trusted = false) {
+    if (!el) return;
+    if (trusted) {
+        el.innerHTML = html;
+    } else {
+        // Use textContent for untrusted content to prevent XSS
+        el.textContent = html;
+    }
+}
+
 // ==================== COOKIE MANAGEMENT ====================
 
 function setCookie(name, value, days) {
@@ -203,20 +223,29 @@ function setCookie(name, value, days) {
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    // Encode name and value to prevent injection, add SameSite=Lax
+    const encodedName = encodeURIComponent(name);
+    const encodedValue = encodeURIComponent(value || "");
+    document.cookie = `${encodedName}=${encodedValue}${expires}; path=/; SameSite=Lax`;
 }
 
 function getCookie(name) {
-    let nameEQ = name + "=";
-    let ca = document.cookie.split(';');
+    const encodedName = encodeURIComponent(name) + "=";
+    const ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        let c = ca[i].trim();
+        if (c.indexOf(encodedName) === 0) {
+            try {
+                return decodeURIComponent(c.substring(encodedName.length));
+            } catch (e) {
+                return c.substring(encodedName.length);
+            }
+        }
     }
     return null;
 }
 
 function eraseCookie(name) {
-    document.cookie = name + '=; path=/; Max-Age=-99999999;';
+    const encodedName = encodeURIComponent(name);
+    document.cookie = `${encodedName}=; path=/; Max-Age=-99999999; SameSite=Lax`;
 }
