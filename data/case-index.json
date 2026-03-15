@@ -92,6 +92,12 @@
     "urgence_demo_obstruction.json",
     "urgence_demo_inconscient.json",
     "urgence_demo_brulure.json",
-    "urgence_demo_malaise.json"
+    "urgence_demo_malaise.json",
+    "urgence_choc_hemorragique_art_membre.json",
+    "urgence_brulure_thermique_etendue.json",
+    "urgence_arret_cardiaque_sportive.json",
+    "urgence_obstruction_voa_nourrisson.json",
+    "urgence_noyade_piscine.json",
+    "urgence_malaise_traumatisme_rachidien.json"
   ]
 }

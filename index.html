@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MedGame - Simulation médicale clinique interactive pour étudiants en médecine">
     <title>MedGame - Simulation Médicale</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
 
@@ -33,8 +34,10 @@
 </head>
 
 <body>
+    <!-- Skip navigation link -->
+    <a href="#main-card" class="skip-link" style="position:absolute;top:-100px;left:0;background:#00f2fe;color:#000;padding:12px 24px;z-index:99999;font-weight:700;text-decoration:none;border-radius:0 0 8px 0;">Aller au contenu principal</a>
 
-    <div id="canvas-container"></div>
+    <div id="canvas-container" aria-hidden="true"></div>
     <script src="js/config.js"></script>
 
     <!-- Badge utilisateur connecté (coin haut droit) -->
@@ -58,47 +61,47 @@
     </div>
 
     <div class="scene-overlay">
-        <div class="glass-card" id="main-card">
+        <div class="glass-card" id="main-card" role="main">
             <div class="header-content">
-                <div class="icon-pulse">
+                <div class="icon-pulse" aria-hidden="true">
                     <i class="fas fa-heartbeat"></i>
                 </div>
                 <h1 class="glitch-title" data-text="MEDGAME">MEDGAME</h1>
                 <p class="subtitle">Simulation Clinique à Bichat</p>
             </div>
 
-            <div class="button-container">
+            <div class="button-container" role="group" aria-label="Actions principales">
                 <!-- Boutons réservés aux utilisateurs connectés -->
                 <button class="btn-3d primary auth-only" id="play-button" onclick="transitionTo('themes.html')"
-                    style="display:none;">
-                    <span class="btn-content"><i class="fas fa-play"></i> Commencer ma garde</span>
+                    style="display:none;" aria-label="Commencer une partie">
+                    <span class="btn-content"><i class="fas fa-play" aria-hidden="true"></i> Commencer ma garde</span>
                     <div class="btn-layer"></div>
                 </button>
 
                 <!-- Section auth: login ou déconnexion -->
                 <div id="auth-section" style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="btn-3d" id="login-nav-button" onclick="transitionTo('login.html')"
-                        style="border-color: rgba(0, 242, 254, 0.4);">
-                        <span class="btn-content"><i class="fas fa-user-md"></i> Connexion / Inscription</span>
+                        style="border-color: rgba(0, 242, 254, 0.4);" aria-label="Se connecter ou créer un compte">
+                        <span class="btn-content"><i class="fas fa-user-md" aria-hidden="true"></i> Connexion / Inscription</span>
                         <div class="btn-layer" style="background: linear-gradient(90deg, #4facfe, #00f2fe);"></div>
                     </button>
                 </div>
 
                 <!-- Toujours visible -->
-                <button class="btn-3d secondary" id="tutorial-button" onclick="transitionTo('tutorial.html')">
-                    <span class="btn-content"><i class="fas fa-book-medical"></i> Comment jouer ?</span>
+                <button class="btn-3d secondary" id="tutorial-button" onclick="transitionTo('tutorial.html')" aria-label="Comment jouer au jeu">
+                    <span class="btn-content"><i class="fas fa-book-medical" aria-hidden="true"></i> Comment jouer ?</span>
                     <div class="btn-layer"></div>
                 </button>
 
                 <!-- Boutons réservés aux utilisateurs connectés -->
-                <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;">
-                    <span class="btn-content"><i class="fas fa-sliders-h"></i> Réglages</span>
+                <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;" aria-label="Ouvrir les réglages">
+                    <span class="btn-content"><i class="fas fa-sliders-h" aria-hidden="true"></i> Réglages</span>
                     <div class="btn-layer"></div>
                 </button>
 
                 <button class="btn-3d auth-only" id="editor-button" onclick="transitionTo('editor.html')"
-                    style="display:none; border-color: rgba(255, 255, 255, 0.2);">
-                    <span class="btn-content"><i class="fas fa-edit"></i> Créer / Améliorer un Cas</span>
+                    style="display:none; border-color: rgba(255, 255, 255, 0.2);" aria-label="Créer ou améliorer un cas clinique">
+                    <span class="btn-content"><i class="fas fa-edit" aria-hidden="true"></i> Créer / Améliorer un Cas</span>
                     <div class="btn-layer" style="background: linear-gradient(90deg, #ff9a9e, #fecfef);"></div>
                 </button>
 
@@ -109,8 +112,8 @@
     </div>
 
     <!-- Bulle de Notification (Mode Arena) -->
-    <a href="#" id="arena-bubble" class="arena-bubble" onclick="joinArena(event)">
-        <div class="arena-icon"><i class="fas fa-broadcast-tower"></i></div>
+    <a href="#" id="arena-bubble" class="arena-bubble" onclick="joinArena(event)" role="button" aria-label="Rejoindre le mode Arena">
+        <div class="arena-icon" aria-hidden="true"><i class="fas fa-broadcast-tower"></i></div>
         <div class="arena-text">
             <h3 class="arena-title" id="arena-bubble-title">MODE ARENA</h3>
             <p class="arena-status" id="arena-bubble-status">Recherche...</p>
