@@ -613,6 +613,136 @@
     }
 }
 
+/* ==================== URGENCE ACTION BUTTONS (Dynamic Game Engine) ==================== */
+
+.urgence-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.urgence-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.urgence-action-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.urgence-action-btn:hover:not(:disabled)::before {
+    width: 6px;
+}
+
+.urgence-action-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.urgence-action-btn:disabled {
+    cursor: not-allowed;
+}
+
+.urgence-action-btn i:first-child {
+    font-size: 1.3rem;
+    min-width: 28px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.urgence-action-btn .btn-text {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.urgence-action-btn .time-badge {
+    background: rgba(255, 71, 87, 0.2);
+    color: #ff6b81;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Action type variants */
+.urgence-action-btn.action-correct {
+    border-color: rgba(46, 204, 113, 0.3);
+}
+.urgence-action-btn.action-correct::before {
+    background: #2ecc71;
+}
+.urgence-action-btn.action-correct:hover:not(:disabled) {
+    background: rgba(46, 204, 113, 0.15);
+    border-color: rgba(46, 204, 113, 0.5);
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+}
+.urgence-action-btn.action-correct .time-badge {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.urgence-action-btn.action-error {
+    border-color: rgba(255, 71, 87, 0.2);
+}
+.urgence-action-btn.action-error::before {
+    background: #ff4757;
+}
+.urgence-action-btn.action-error:hover:not(:disabled) {
+    background: rgba(255, 71, 87, 0.12);
+    border-color: rgba(255, 71, 87, 0.4);
+}
+
+.urgence-action-btn.action-support {
+    border-color: rgba(0, 242, 254, 0.2);
+}
+.urgence-action-btn.action-support::before {
+    background: #00f2fe;
+}
+.urgence-action-btn.action-support:hover:not(:disabled) {
+    background: rgba(0, 242, 254, 0.1);
+    border-color: rgba(0, 242, 254, 0.4);
+}
+.urgence-action-btn.action-support .time-badge {
+    background: rgba(0, 242, 254, 0.15);
+    color: #00f2fe;
+}
+
+.urgence-action-btn.action-urgence {
+    border-color: rgba(255, 165, 0, 0.3);
+}
+.urgence-action-btn.action-urgence::before {
+    background: #ffa500;
+}
+.urgence-action-btn.action-urgence:hover:not(:disabled) {
+    background: rgba(255, 165, 0, 0.12);
+    border-color: rgba(255, 165, 0, 0.5);
+}
+.urgence-action-btn.action-urgence .time-badge {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+}
+
 /* ==================== REDUCED MOTION ==================== */
 
 @media (prefers-reduced-motion: reduce) {

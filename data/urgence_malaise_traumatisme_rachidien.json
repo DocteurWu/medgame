@@ -36,11 +36,19 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Hypertension artérielle traitée", "Diabète type 2"],
+      "medicaux": [
+        "Hypertension artérielle traitée",
+        "Diabète type 2"
+      ],
       "chirurgicaux": [],
-      "familiaux": ["Père : infarctus à 50 ans"]
+      "familiaux": [
+        "Père : infarctus à 50 ans"
+      ]
     },
-    "traitements": ["Amlodipine 5mg/j", "Metformine 1000mg x2/j"],
+    "traitements": [
+      "Amlodipine 5mg/j",
+      "Metformine 1000mg x2/j"
+    ],
     "allergies": {
       "presence": false,
       "liste": []
@@ -50,7 +58,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Sortie de route dans un fossé, ceinture non bouclée",
       "descriptionDouleur": "Douleur cervicale vive, douleur thoracique antérieure",
-      "asymptomesAssocies": ["Impossibilité de bouger les jambes", "Gêne respiratoire", "Sueurs"],
+      "asymptomesAssocies": [
+        "Impossibilité de bouger les jambes",
+        "Gêne respiratoire",
+        "Sueurs"
+      ],
       "remarques": "Témoin : impact frontal, pare-brise fissuré"
     },
     "verbatim": "Je ne sens plus mes jambes... j'ai mal au cou... j'ai du mal à respirer..."
@@ -125,10 +137,14 @@
           "Une lésion médullaire cervicale avec paralysie",
           "Une compression des nerfs au niveau des cuisses"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'impossibilité de sentir les jambes après un traumatisme cervical = déficit moteur/sensitif des membres inférieurs = lésion médullaire cervicale. C'est un signe neurologique de gravité majeure.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg07_extrication",
@@ -141,10 +157,14 @@
           "Par le pare-brise cassé",
           "En le soulevant par les épaules"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'extraction d'urgence se fait en maintenant l'axe tête-cou-tronc. Si le véhicule brûle et qu'on doit sortir la victime, on le fait par la portière avec maintien de l'axe, jamais par les pieds (flexion cervicale catastrophique).",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -166,13 +186,13 @@
         {
           "label": "Maintenir la tête manuellement en position neutre, le rassurer, appeler le 15",
           "tempsExecutionSec": 15,
-          "feedback": "Vous placez vos mains de chaque côté de sa tête pour la maintenir en position neutre. Le 15 est appelé.",
+          "feedback": "Geste prioritaire. Vous placez vos mains de chaque côté de sa tête pour la maintenir en position neutre. Le 15 est appelé.",
           "nextNode": "s2"
         },
         {
           "label": "Le sortir du véhicule rapidement par la portière pour le coucher au sol",
           "tempsExecutionSec": 20,
-          "feedback": "ERREUR : sans maintien de l'axe, la sortie du véhicule crée une flexion cervicale qui aggrave la lésion médullaire.",
+          "feedback": "ERREUR FATALE : sans maintien de l'axe, la sortie du véhicule crée une flexion cervicale qui aggrave la lésion médullaire.",
           "nextNode": "s_err_extract"
         },
         {
@@ -180,6 +200,12 @@
           "tempsExecutionSec": 15,
           "feedback": "ERREUR : jamais demander à un traumatisé cervical de bouger. La mobilisation active peut aggraver la lésion.",
           "nextNode": "s_err_move"
+        },
+        {
+          "label": "Se concentrer sur sa respiration et lui donner de l'oxygène sans toucher son cou",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR : la détresse respiratoire est probablement liée au trauma rachidien. Ignorer le maintien de l'axe est une faute grave.",
+          "nextNode": "s_err_no_axis"
         }
       ],
       "isEndState": false,
@@ -187,7 +213,7 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Marc est maintenu immobile. Vous parlez au 15.",
+      "descriptionClinique": "Marc est maintenu immobile. Vous êtes en ligne avec le 15. Le régulateur vous demande un bilan précis.",
       "constantesCibles": {
         "tension": "150/95",
         "pouls": "90",
@@ -197,15 +223,15 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Transmettre : accident voiture, TC + rachis cervical, déficit des membres inférieurs, détresse respiratoire, pas de saignement majeur",
+          "label": "Transmettre : AVP, homme 45 ans, conscient, douleur cervicale, ne sent plus ses jambes, détresse respi, Sat 91%.",
           "tempsExecutionSec": 30,
-          "feedback": "Bilan complet transmis. Le régulateur envoie SMUR + pompiers pour extraction sur plan dur.",
+          "feedback": "Bilan complet et précis. Le régulateur comprend la gravité (suspicion de choc neurogénique/lésion médullaire haute) et envoie SMUR + pompiers pour extraction.",
           "nextNode": "s3"
         },
         {
           "label": "Dire : « y'a un accidenté qui peut pas bouger, envoyez une ambulance »",
           "tempsExecutionSec": 15,
-          "feedback": "Bilan insuffisant. L'information « déficit neurologique + mécanisme cervical » est cruciale pour le niveau de réponse.",
+          "feedback": "Bilan insuffisant. L'information « déficit neurologique + mécanisme cervical » est cruciale. Le niveau de réponse risque d'être inadapté.",
           "nextNode": "s3_late"
         }
       ],
@@ -214,7 +240,7 @@
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Vous maintenez la tête de Marc. Sa saturation descend à 88% et il devient de plus en plus dyspnéique.",
+      "descriptionClinique": "En attendant les secours, vous maintenez la tête de Marc. Sa saturation descend à 88% et il devient de plus en plus dyspnéique, sa respiration est paradoxale.",
       "constantesCibles": {
         "tension": "145/90",
         "pouls": "95",
@@ -224,24 +250,45 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Transmettre la dégradation respiratoire au 15",
+          "label": "Rappeler le 15 pour signaler l'aggravation respiratoire majeure",
           "tempsExecutionSec": 10,
-          "feedback": "Le SAMU accélère. Le déficit respiratoire monte (atteinte médullaire haute + possible hémothorax).",
+          "feedback": "Excellent réflexe. Le SAMU se prépare à une possible intubation. Le déficit respiratoire monte (atteinte médullaire C3-C5 + probable hémothorax).",
           "nextNode": "s4"
         },
         {
-          "label": "Ne rien faire, il va s'arranger",
+          "label": "Penser que c'est le stress et continuer à le rassurer",
           "tempsExecutionSec": 30,
-          "feedback": "ERREUR : la détresse respiratoire chez un cervical peut évoluer vers l'arrêt respiratoire. Chaque seconde compte.",
+          "feedback": "ERREUR : la détresse respiratoire chez un cervical est un signe de gravité extrême (paralysie du diaphragme). Ne pas la signaler retarde la prise en charge spécialisée.",
           "nextNode": "s4_late"
         }
       ],
       "isEndState": false,
       "success": true
     },
+    "s3_late": {
+      "id": "s3_late",
+      "descriptionClinique": "Le bilan incomplet a conduit à l'envoi d'une ambulance simple. Le délai d'arrivée du SMUR est allongé de 15 minutes. Marc s'aggrave.",
+      "constantesCibles": {
+        "tension": "135/85",
+        "pouls": "100",
+        "saturationO2": "85",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "30"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Rappeler le 15 en urgence pour signaler la dégradation",
+          "tempsExecutionSec": 10,
+          "feedback": "Vous corrigez l'erreur initiale. Le SMUR est finalement déclenché en urgence.",
+          "nextNode": "s4"
+        }
+      ],
+      "isEndState": false,
+      "success": false
+    },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Les pompiers arrivent avec un collier cervical et un plan dur. Ils reprennent le maintien de l'axe.",
+      "descriptionClinique": "Les pompiers arrivent avec un collier cervical et un plan dur. Ils se positionnent pour prendre le relais du maintien de l'axe.",
       "constantesCibles": {
         "tension": "140/85",
         "pouls": "92",
@@ -251,66 +298,72 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Transmettre le relais proprement : maintien cervical depuis X minutes, déficit MI, saturation en baisse",
+          "label": "Transmettre le relais : « Maintien depuis 10 min, déficit MI, Sat en baisse, aggravation respi. »",
           "tempsExecutionSec": 20,
-          "feedback": "Transfert de soin efficace. Les pompiers poursuivent l'extraction.",
-          "nextNode": "s5_good"
+          "feedback": "Transfert de soin efficace. Les pompiers posent le collier cervical et préparent l'extraction coordonnée.",
+          "nextNode": "s5"
+        },
+        {
+          "label": "Laisser les pompiers faire sans donner de consignes",
+          "tempsExecutionSec": 5,
+          "feedback": "Un bon sauveteur transmet son bilan. L'absence de communication peut entraîner une perte d'information cruciale.",
+          "nextNode": "s5"
         }
       ],
       "isEndState": false,
       "success": true
     },
-    "s5_good": {
-      "id": "s5_good",
-      "descriptionClinique": "Marc est extrait sur plan dur avec maintien cervical parfait. Le SMUR transporte en neurochirurgie. Le scanner confirme une fracture cervicale C5 avec compression médullaire et un hémothorax droit. Votre maintien de l'axe cervical a prévenu une aggravation de la lésion médullaire. Le pronostic fonctionnel est meilleur grâce à votre intervention.",
+    "s4_late": {
+      "id": "s4_late",
+      "descriptionClinique": "Le temps perdu est critique. Marc fait un arrêt respiratoire par paralysie diaphragmatique. Vous devez commencer la ventilation artificielle en maintenant l'axe, une manœuvre extrêmement difficile.",
       "constantesCibles": {
-        "tension": "140/85",
+        "tension": "80/50",
+        "pouls": "45",
+        "saturationO2": "65",
+        "temperature": "36",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Commencer le bouche-à-bouche en attendant le SMUR",
+          "tempsExecutionSec": 60,
+          "feedback": "Pronostic neurologique et vital très engagé. L'arrêt respiratoire hypoxique va rapidement mener à l'arrêt cardiaque.",
+          "nextNode": "s_final_death"
+        }
+      ],
+      "isEndState": false,
+      "success": false
+    },
+    "s5": {
+      "id": "s5",
+      "descriptionClinique": "L'extraction est en cours, coordonnée par le chef d'agrès des pompiers. Le SMUR arrive et le médecin prend le lead.",
+      "constantesCibles": {
+        "tension": "130/80",
         "pouls": "88",
         "saturationO2": "92",
         "temperature": "36.8",
         "frequenceRespiratoire": "22"
       },
-      "actionsDisponibles": [],
-      "isEndState": true,
+      "actionsDisponibles": [
+        {
+          "label": "Participer à l'extraction sur plan dur en suivant les ordres",
+          "tempsExecutionSec": 120,
+          "feedback": "L'extraction est réalisée parfaitement dans l'axe. Marc est médicalisé, oxygéné, et prêt pour le transport.",
+          "nextNode": "s_final_good"
+        }
+      ],
+      "isEndState": false,
       "success": true
-    },
-    "s3_late": {
-      "id": "s3_late",
-      "descriptionClinique": "Bilan incomplet. SMUR standard envoyé, pas d'équipe spécialisée rachis. Délai supplémentaire.",
-      "constantesCibles": {
-        "tension": "135/85",
-        "pouls": "88",
-        "saturationO2": "90",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s4_late": {
-      "id": "s4_late",
-      "descriptionClinique": "Marc fait un arrêt respiratoire par atteinte médullaire haute non détecté à temps. Intubation de terrain difficile. Pronostic neurologique très défavorable.",
-      "constantesCibles": {
-        "tension": "80/50",
-        "pouls": "110",
-        "saturationO2": "65",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
     },
     "s_err_extract": {
       "id": "s_err_extract",
-      "descriptionClinique": "L'extraction sans maintien de l'axe a provoqué une flexion cervicale. La moelle est sectionnée au niveau C5. Marc devient tétraplégique définitif.",
+      "descriptionClinique": "L'extraction sans maintien de l'axe a provoqué une flexion cervicale. La moelle est sectionnée au niveau C5. Marc devient tétraplégique et arrête de respirer.",
       "constantesCibles": {
-        "tension": "140/90",
-        "pouls": "100",
-        "saturationO2": "85",
+        "tension": "70/40",
+        "pouls": "40",
+        "saturationO2": "50",
         "temperature": "36.5",
-        "frequenceRespiratoire": "20"
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -318,17 +371,59 @@
     },
     "s_err_move": {
       "id": "s_err_move",
-      "descriptionClinique": "En bougeant les jambes sur instruction, Marc a mobilisé son rachis cervical. Aggravation brutale du déficit neurologique.",
+      "descriptionClinique": "En bougeant les jambes sur instruction, Marc a mobilisé une fracture cervicale instable. Aggravation brutale du déficit neurologique, il perd connaissance.",
       "constantesCibles": {
-        "tension": "145/95",
-        "pouls": "110",
-        "saturationO2": "80",
+        "tension": "85/55",
+        "pouls": "50",
+        "saturationO2": "70",
         "temperature": "36.5",
-        "frequenceRespiratoire": "24"
+        "frequenceRespiratoire": "8"
       },
       "actionsDisponibles": [],
       "isEndState": true,
       "success": false
+    },
+    "s_err_no_axis": {
+      "id": "s_err_no_axis",
+      "descriptionClinique": "En vous concentrant sur la respiration, vous avez négligé l'axe. Un simple mouvement de tête de Marc pour tousser a aggravé la lésion. Il crie de douleur puis perd la sensibilité des bras.",
+      "constantesCibles": {
+        "tension": "90/60",
+        "pouls": "55",
+        "saturationO2": "82",
+        "temperature": "36.7",
+        "frequenceRespiratoire": "12"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_final_death": {
+      "id": "s_final_death",
+      "descriptionClinique": "Malgré les efforts de réanimation, l'hypoxie prolongée due à l'arrêt respiratoire non pris en charge à temps a conduit à un arrêt cardiaque irréversible. Marc décède sur les lieux.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_final_good": {
+      "id": "s_final_good",
+      "descriptionClinique": "Marc est transporté en neurochirurgie. Le scanner confirme une fracture cervicale C5 avec compression médullaire et un hémothorax. Votre maintien de l'axe et vos bilans précis ont prévenu une aggravation et permis une prise en charge optimale. Le pronostic fonctionnel est bien meilleur grâce à vous.",
+      "constantesCibles": {
+        "tension": "120/75",
+        "pouls": "80",
+        "saturationO2": "99",
+        "temperature": "37",
+        "frequenceRespiratoire": "16"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": true
     }
   }
 }

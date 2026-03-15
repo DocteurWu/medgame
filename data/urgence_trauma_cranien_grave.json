@@ -50,7 +50,11 @@
       "evolution": "En amélioration apparente",
       "facteursDeclenchants": "Chute de vélo à ~25 km/h, casque non porté",
       "descriptionDouleur": "Céphalées intenses",
-      "asymptomesAssocies": ["Perte de connaissance de quelques secondes", "Vomissements (1 épisode)", "Amnésie partielle de l'accident"],
+      "asymptomesAssocies": [
+        "Perte de connaissance de quelques secondes",
+        "Vomissements (1 épisode)",
+        "Amnésie partielle de l'accident"
+      ],
       "remarques": "Le témoin dit qu'il est resté inconscient environ 30 secondes"
     },
     "verbatim": "J'ai mal à la tête... qu'est-ce qui s'est passé ? Je ne me souviens pas de la chute..."
@@ -125,10 +129,14 @@
           "Signes d'un simple malaise vagal",
           "Signes d'intoxication alcoolique"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "PCI (Perte de Connaissance Initiale) + vomissements + amnésie = signes de gravité du TC. Ces 3 signes ensemble imposent un avis médical en urgence.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg_tc_position",
@@ -141,10 +149,14 @@
           "Le mettre en PLS",
           "Le faire marcher pour vérifier qu'il est bien"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Un traumatisé crânien doit rester allongé avec l'axe tête-cou-tronc maintenu. Le risque est une lésion médullaire associée. L'asseoir est une erreur grave.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -154,144 +166,234 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Thomas, 19 ans, est au sol après une chute de vélo à 25 km/h sans casque. Un témoin vous dit qu'il est resté inconscient 30 secondes. Il se réveille progressivement, a vomi une fois, et répète « qu'est-ce qui s'est passé ? ». Vous voyez une plaie au cuir chevelu qui saigne modérément.",
+      "descriptionClinique": "Thomas, 19 ans, est au sol après une chute de vélo à 25 km/h sans casque. Un témoin vous dit qu'il est resté inconscient 30 secondes. Il se réveille, a vomi une fois, et répète « qu'est-ce qui s'est passé ? ». Vous voyez une plaie au cuir chevelu qui saigne modérément.",
       "constantesCibles": {
         "tension": "135/85",
         "pouls": "65",
         "saturationO2": "97",
-        "temperature": "37",
         "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [
         {
-          "label": "Le maintenir immobile, couvrir la plaie, surveiller sa conscience, appeler le 15",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous protégez la plaie et maintenez Thomas en position allongée. Le 15 est alerté.",
+          "label": "Lui dire de ne pas bouger, maintenir sa tête dans l'axe, et appeler le 15",
+          "tempsExecutionSec": 20,
+          "feedback": "Excellent réflexe. La priorité absolue est d'immobiliser le rachis cervical. Vous alertez immédiatement les secours.",
           "nextNode": "s2"
         },
         {
-          "label": "Le relever et l'asseoir sur un banc",
+          "label": "Le relever et l'asseoir sur un banc pour qu'il soit plus à l'aise",
           "tempsExecutionSec": 20,
-          "feedback": "ERREUR : l'asseoir peut aggraver une lésion médullaire cervicale. Gardez-le allongé !",
+          "feedback": "ERREUR GRAVE AFGSU : Mobiliser un traumatisé crânien peut aggraver une lésion médullaire cervicale et provoquer une paralysie. C'est une faute majeure.",
           "nextNode": "s_err_sit"
         },
         {
-          "label": "Lui donner un verre d'eau et une serviette sur la plaie",
+          "label": "Lui donner un verre d'eau et nettoyer sa plaie avec un mouchoir",
           "tempsExecutionSec": 15,
-          "feedback": "Piège : un TC avec vomissements = risque d'inhalation. Pas de boisson. Serviette oui, mais maintenez l'axe.",
-          "nextNode": "s2"
+          "feedback": "PIÈGE AFGSU : Un TC avec vomissements ne doit jamais boire (risque d'inhalation). Se focaliser sur la plaie est une erreur de priorité. L'axe tête-cou-tronc est vital.",
+          "nextNode": "s_err_water"
+        },
+        {
+          "label": "Le laisser seul pour aller chercher de l'aide",
+          "type": "erreur",
+          "tempsExecutionSec": 30,
+          "feedback": "ERREUR AFGSU : Ne jamais laisser seule une victime potentiellement instable. Une dégradation peut survenir à tout moment. Il faut appeler à l'aide ou utiliser son téléphone.",
+          "nextNode": "s_err_abandon"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Thomas est maintenu allongé. Vous compressez doucement la plaie du cuir chevelu. Le 15 vous demande des précisions.",
+      "descriptionClinique": "Thomas est maintenu allongé, l'axe du cou stabilisé. Vous êtes en ligne avec le 15. Le régulateur vous demande un bilan précis.",
       "constantesCibles": {
         "tension": "135/85",
         "pouls": "65",
         "saturationO2": "97",
-        "temperature": "37",
         "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [
         {
           "label": "Transmettre : TC avec PCI de 30s, vomissements, amnésie, plaie cuir chevelu, pas de casque",
           "tempsExecutionSec": 30,
-          "feedback": "Bilan complet. Le régulateur envoie un SMUR avec suspicion de TC grave.",
+          "feedback": "Bilan complet et précis. Le régulateur identifie immédiatement les signes de gravité et envoie un SMUR avec suspicion de TC grave.",
           "nextNode": "s3"
         },
         {
-          "label": "Dire : « il s'est cogné la tête mais ça va, il parle »",
+          "label": "Dire : « il est tombé de vélo, il saigne de la tête mais ça va, il parle »",
           "tempsExecutionSec": 15,
-          "feedback": "Bilan dangereusement incomplet. Le PCI + vomissements + amnésie changent tout. Le SMUR n'est pas envoyé en priorité.",
+          "feedback": "Bilan dangereusement incomplet. La PCI, les vomissements et l'amnésie sont des signes de gravité majeurs. Le régulateur pourrait sous-estimer la situation.",
           "nextNode": "s_err_minimize"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Sous votre surveillance, Thomas devient soudainement plus somnolent. Il répond de plus en plus lentement. Ses pupilles semblent asymétriques. La bradycardie s'accentue (55 bpm) et la tension monte (150/95).",
+      "descriptionClinique": "En attendant le SMUR, Thomas devient soudainement agité, puis se raidit. Son corps est secoué de convulsions pendant environ une minute.",
       "constantesCibles": {
-        "tension": "150/95",
-        "pouls": "55",
-        "saturationO2": "96",
-        "temperature": "37",
-        "frequenceRespiratoire": "10"
+        "tension": "145/90",
+        "pouls": "80",
+        "saturationO2": "94",
+        "frequenceRespiratoire": "Irrégulière"
       },
       "actionsDisponibles": [
         {
-          "label": "Transmettre l'aggravation au 15 : somnolence, asymétrie pupillaire, HTA + bradycardie",
-          "tempsExecutionSec": 15,
-          "feedback": "Triade de Cushing (HTA + bradycardie + troubles respiratoires) = hypertension intracrânienne ! Le SAMU accélère.",
-          "nextNode": "s4_good"
+          "label": "Protéger sa tête, ne pas entraver ses mouvements, et chronométrer la crise",
+          "tempsExecutionSec": 60,
+          "feedback": "Bonne gestion de la crise convulsive. Vous protégez le patient sans essayer de le contenir, ce qui serait dangereux.",
+          "nextNode": "s3_post_crise"
         },
         {
-          "label": "Le laisser dormir, il est juste fatigué par la chute",
-          "tempsExecutionSec": 30,
-          "feedback": "ERREUR MORTELLE : la somnolence après un TC n'est JAMAIS normale. C'est un signe de compression cérébrale.",
-          "nextNode": "s_err_sleep"
+          "label": "Tenter de lui mettre quelque chose dans la bouche pour ne pas qu'il avale sa langue",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR AFGSU : C'est un mythe dangereux. On ne met JAMAIS rien dans la bouche d'une personne qui convulse. Risque de fracture dentaire, d'obstruction et de morsure.",
+          "nextNode": "s_err_mouth"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
-    "s4_good": {
-      "id": "s4_good",
-      "descriptionClinique": "Le SMUR neurochirurgie arrive en 6 minutes. Thomas est intubé sur place et transporté pour un scanner en urgence. Un hématome extradural est identifié et opéré immédiatement. Votre surveillance attentive et votre alerte précise ont sauvé Thomas. La lucidité initiale était un faux bon signe — classique du TC grave.",
+    "s3_post_crise": {
+      "id": "s3_post_crise",
+      "descriptionClinique": "Après la crise, Thomas est flasque, sa respiration est bruyante. Il est maintenant profondément inconscient (ne répond plus du tout).",
+      "constantesCibles": {
+        "tension": "140/90",
+        "pouls": "60",
+        "saturationO2": "92",
+        "frequenceRespiratoire": "8"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Le mettre en Position Latérale de Sécurité (PLS) en attendant le SMUR",
+          "tempsExecutionSec": 20,
+          "feedback": "Normalement, on ne mobilise pas un traumatisé du rachis. Mais ici, il est inconscient et respire, avec un risque d'inhalation. La PLS est un compromis vital. Vous informez le 15.",
+          "nextNode": "s_pls"
+        }
+      ]
+    },
+    "s_pls": {
+      "id": "s_pls",
+      "descriptionClinique": "Thomas est en PLS. Sa respiration est un peu meilleure. Vous continuez de surveiller en attendant les secours. Ses pupilles vous semblent de taille inégale.",
       "constantesCibles": {
         "tension": "150/95",
         "pouls": "55",
-        "saturationO2": "96",
-        "temperature": "37",
+        "saturationO2": "93",
         "frequenceRespiratoire": "10"
       },
-      "actionsDisponibles": [],
+      "evolutionAuto": {
+        "delaiSecondes": 90,
+        "nextNode": "s_cushing",
+        "motif": "L'hématome intracrânien se développe, provoquant une hypertension intracrânienne (HTIC)."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Transmettre l'aggravation au 15 : crise convulsive, coma, anisocorie (pupilles inégales)",
+          "tempsExecutionSec": 15,
+          "feedback": "Informations cruciales. L'anisocorie est un signe d'engagement cérébral imminent. Le SAMU accélère et pré-alerte le bloc de neurochirurgie.",
+          "nextNode": "s4_good"
+        }
+      ]
+    },
+    "s_cushing": {
+      "id": "s_cushing",
+      "descriptionClinique": "La respiration de Thomas devient très lente et irrégulière. Sa tension artérielle monte en flèche et son pouls ralentit encore. C'est la triade de Cushing, signe d'HTIC majeure.",
+      "constantesCibles": {
+        "tension": "180/100",
+        "pouls": "45",
+        "saturationO2": "88",
+        "frequenceRespiratoire": "6"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 60,
+        "nextNode": "s_err_sleep",
+        "motif": "L'engagement cérébral va provoquer un arrêt respiratoire puis cardiaque."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Rappeler le 15 pour signaler la bradycardie et l'hypertension extrêmes",
+          "tempsExecutionSec": 15,
+          "feedback": "Vous confirmez la gravité extrême de la situation. Le SMUR est à 2 minutes.",
+          "nextNode": "s4_good"
+        }
+      ]
+    },
+    "s4_good": {
+      "id": "s4_good",
+      "descriptionClinique": "Le SMUR arrive. Thomas est immédiatement intubé, ventilé et reçoit des traitements pour diminuer la pression intracrânienne. Il est transporté en urgence absolue au déchocage. Un hématome extradural est opéré. Votre surveillance et vos alertes précises ont été décisives.",
+      "constantesCibles": {
+        "tension": "160/95",
+        "pouls": "50",
+        "saturationO2": "99",
+        "frequenceRespiratoire": "12 (ventilé)"
+      },
       "isEndState": true,
       "success": true
     },
     "s_err_sit": {
       "id": "s_err_sit",
-      "descriptionClinique": "En le relevant, vous avez mobilisé un rachis cervical potentiellement fracturé. Thomas devient tétraplégique au niveau C4.",
+      "descriptionClinique": "En le relevant, vous avez mobilisé une fracture instable du rachis cervical. Thomas crie de douleur puis perd toute motricité et sensibilité dans ses 4 membres. Il est tétraplégique.",
       "constantesCibles": {
-        "tension": "135/85",
-        "pouls": "65",
-        "saturationO2": "97",
-        "temperature": "37",
-        "frequenceRespiratoire": "14"
+        "tension": "90/50",
+        "pouls": "50",
+        "saturationO2": "95",
+        "frequenceRespiratoire": "10"
       },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": false
     },
     "s_err_minimize": {
       "id": "s_err_minimize",
-      "descriptionClinique": "Le SMUR arrive trop tard. L'hématome extradural non détecté a comprimé le tronc cérébral. Décès.",
+      "descriptionClinique": "Le régulateur envoie une ambulance simple. Le temps que l'équipe évalue la situation et demande un SMUR, 20 minutes précieuses sont perdues. Thomas sombre dans le coma pendant le transport. L'hématome est opéré trop tard, laissant des séquelles neurologiques lourdes.",
       "constantesCibles": {
         "tension": "200/120",
         "pouls": "40",
         "saturationO2": "70",
-        "temperature": "37",
         "frequenceRespiratoire": "5"
       },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": false
     },
     "s_err_sleep": {
       "id": "s_err_sleep",
-      "descriptionClinique": "Thomas s'endort et ne se réveille plus. Compression cérébrale par hématome extradural. Sans surveillance, aucun signe d'alerte n'a été transmis. Pronostic neurologique catastrophique.",
+      "descriptionClinique": "La dégradation rapide mène à un arrêt respiratoire par compression du tronc cérébral. Le cœur s'arrête quelques instants plus tard. À l'arrivée du SMUR, il est trop tard.",
       "constantesCibles": {
         "tension": "0/0",
         "pouls": "0",
         "saturationO2": "0",
-        "temperature": "36",
         "frequenceRespiratoire": "0"
       },
-      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_water": {
+      "id": "s_err_water",
+      "descriptionClinique": "En essayant de boire, Thomas fait une fausse route et s'étouffe. Il se met à tousser violemment, ce qui augmente la pression intracrânienne et aggrave son état neurologique.",
+      "constantesCibles": {
+        "tension": "150/90",
+        "pouls": "60",
+        "saturationO2": "90",
+        "frequenceRespiratoire": "25"
+      },
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_abandon": {
+      "id": "s_err_abandon",
+      "descriptionClinique": "Pendant que vous êtes parti, Thomas a convulsé puis est tombé dans le coma. Personne n'était là pour le surveiller, le mettre en PLS ou alerter le 15 de l'aggravation. Il est retrouvé en arrêt respiratoire.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "frequenceRespiratoire": "0"
+      },
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_mouth": {
+      "id": "s_err_mouth",
+      "descriptionClinique": "En forçant un objet dans sa bouche, vous lui cassez plusieurs dents qui sont inhalées dans les bronches. La crise passée, il présente une détresse respiratoire majeure surajoutée au trauma crânien.",
+      "constantesCibles": {
+        "tension": "140/90",
+        "pouls": "70",
+        "saturationO2": "85",
+        "frequenceRespiratoire": "28"
+      },
       "isEndState": true,
       "success": false
     }

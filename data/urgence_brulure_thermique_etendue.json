@@ -36,15 +36,22 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Asthme modéré"],
+      "medicaux": [
+        "Asthme modéré"
+      ],
       "chirurgicaux": [],
       "familiaux": []
     },
-    "traitements": ["Ventoline si besoin"],
+    "traitements": [
+      "Ventoline si besoin"
+    ],
     "allergies": {
       "presence": true,
       "liste": [
-        {"allergene": "Pénicilline", "reaction": "Urticaire"}
+        {
+          "allergene": "Pénicilline",
+          "reaction": "Urticaire"
+        }
       ]
     },
     "histoireMaladie": {
@@ -52,7 +59,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Casserole d'eau bouillante renversée sur le torse et les bras",
       "descriptionDouleur": "Douleur vive, brûlante, à la face antérieure du tronc et aux deux bras",
-      "asymptomesAssocies": ["Cloques", "Rougeur intense", "Douleur vive"],
+      "asymptomesAssocies": [
+        "Cloques",
+        "Rougeur intense",
+        "Douleur vive"
+      ],
       "remarques": "Accident de cuisine"
     },
     "verbatim": "Aïe ! Ça brûle terriblement ! Regardez mes bras, c'est tout rouge et ça fait des bulles..."
@@ -127,10 +138,14 @@
           "36%",
           "50%"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "Tronc antérieur (18%) + bras droit (9%) + bras gauche (9%) = 36%. La règle des 9 de Lund-Browder permet d'estimer rapidement la surface brûlée.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg02_traitement",
@@ -143,10 +158,14 @@
           "Les couvrir de désinfectant coloré",
           "Appliquer du beurre dessus"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Les phlyctènes forment un pansement naturel stérile. Les percer expose au risque d'infection. C'est un piège classique du cours AFGSU.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -156,185 +175,176 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Nadia, 28 ans, a renversé une casserole d'eau bouillante sur son torse et ses deux bras en cuisine. Elle hurle de douleur. Vous voyez une rougeur étendue avec de grandes cloques remplies de liquide clair sur la face antérieure du tronc et les deux avant-bras. Pas de flammes, pas de fumée.",
+      "descriptionClinique": "Nadia a renversé une casserole d'eau bouillante sur son torse et ses bras. Elle hurle de douleur. Vous voyez une rougeur étendue avec de grandes cloques sur le tronc et les deux avant-bras. Ses vêtements sont imbibés d'eau chaude.",
       "constantesCibles": {
-        "tension": "125/80",
         "pouls": "95",
-        "saturationO2": "98",
-        "temperature": "37.2",
         "frequenceRespiratoire": "20"
       },
       "actionsDisponibles": [
         {
-          "label": "Aller ouvrir le robinet et faire couler de l'eau tiède sur les brûlures",
+          "label": "La guider sous la douche et faire couler de l'eau à 15-20°C sur les brûlures.",
           "tempsExecutionSec": 15,
-          "feedback": "L'eau tiède coule doucement sur les brûlures. Nadia crie moins fort. C'est le bon réflexe.",
+          "feedback": "Excellent réflexe. Le refroidissement immédiat avec de l'eau à la bonne température ('règle des 15': 15°C, à 15 cm, pendant 15 min) est le geste qui sauve.",
           "nextNode": "s2"
         },
         {
-          "label": "Percer les cloques pour évacuer le liquide",
+          "label": "Appliquer de la glace directement sur les cloques pour calmer la douleur.",
           "tempsExecutionSec": 20,
-          "feedback": "ERREUR : vous créez une porte d'entrée pour les bactéries. Les phlyctènes sont des pansements naturels stériles !",
-          "nextNode": "s_err_blisters"
+          "feedback": "ERREUR AFGSU : La glace est trop froide et provoque une vasoconstriction extrême qui aggrave la brûlure (gelure sur brûlure).",
+          "nextNode": "s_err_ice"
         },
         {
-          "label": "Appliquer du beurre dessus pour calmer la brûlure",
+          "label": "Appliquer une pommade grasse ou du dentifrice.",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR GRAVE : Le beurre isole la chaleur et aggrave la brûlure. C'est un remède de grand-mère DANGEREUX.",
+          "feedback": "ERREUR GRAVE AFGSU : Les corps gras 'cuisent' la brûlure en retenant la chaleur et infectent la plaie. C'est un remède de grand-mère dangereux.",
           "nextNode": "s_err_butter"
+        },
+        {
+          "label": "Percer les cloques pour évacuer le liquide et soulager la pression.",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR AFGSU : Les cloques (phlyctènes) sont un pansement naturel stérile. Les percer ouvre une porte d'entrée aux infections.",
+          "nextNode": "s_err_blisters"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Nadia est sous l'eau tiède depuis 3 minutes. La douleur diminue. Ses vêtements en coton sont mouillés et collés aux brûlures.",
+      "descriptionClinique": "Nadia est sous l'eau tiède depuis 5 minutes. La douleur diminue. Ses vêtements en coton sont mouillés. Elle porte une montre et des bagues.",
       "constantesCibles": {
-        "tension": "120/78",
         "pouls": "88",
-        "saturationO2": "98",
-        "temperature": "37",
         "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
-          "label": "Continuer le refroidissement au moins 10 minutes",
-          "tempsExecutionSec": 60,
-          "feedback": "Le refroidissement prolongé permet de limiter la profondeur de la brûlure. C'est essentiel.",
+          "label": "Continuer le refroidissement et retirer délicatement les bijoux (montre, bagues).",
+          "tempsExecutionSec": 20,
+          "feedback": "Très bonne initiative. L'œdème va s'installer rapidement et les bijoux peuvent se transformer en garrots. Il faut les enlever tant que c'est possible.",
           "nextNode": "s3"
         },
         {
-          "label": "Arrêter l'eau et retirer les vêtements en tirant dessus",
+          "label": "Arracher les vêtements qui collent à la peau.",
           "tempsExecutionSec": 20,
-          "feedback": "Les vêtements adhérents arrachent la peau brûlée. On ne retire QUE ce qui vient facilement.",
+          "feedback": "ERREUR : On ne retire que les vêtements qui ne collent pas. Arracher ceux qui adhèrent reviendrait à arracher la peau avec.",
           "nextNode": "s_err_clothes"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Après 10 minutes de refroidissement, Nadia a moins mal. Les brûlures sont toujours rouges et œdématiées. Vous estimez la surface à environ 30-35% (tronc antérieur + deux bras).",
+      "descriptionClinique": "Après 15 minutes de refroidissement, la douleur est plus supportable. Nadia commence à frissonner. Les brûlures sont très étendues (tronc antérieur + 2 bras = ~36% de surface corporelle).",
       "constantesCibles": {
-        "tension": "118/76",
         "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "37",
+        "temperature": "36.8",
         "frequenceRespiratoire": "17"
       },
       "actionsDisponibles": [
         {
-          "label": "Couvrir avec un drap propre et appeler le 15",
+          "label": "Arrêter le refroidissement, la couvrir avec un drap propre et sec, et appeler le 15.",
           "tempsExecutionSec": 30,
-          "feedback": "Drap propre posé. Le 15 est alerté. L'opérateur vous guide.",
+          "feedback": "Parfait. Vous avez respecté la durée de refroidissement et vous identifiez le risque d'hypothermie. L'alerte est la prochaine étape logique.",
           "nextNode": "s4"
         },
         {
-          "label": "Appliquer du désinfectant et mettre des pansements individuels",
-          "tempsExecutionSec": 30,
-          "feedback": "Piège : le désinfectant est irritant sur les brûlures. Un drap propre suffit.",
-          "nextNode": "s4"
+          "label": "Continuer le refroidissement pendant 30 minutes pour être sûr.",
+          "tempsExecutionSec": 60,
+          "feedback": "PIÈGE AFGSU : Sur une surface aussi étendue, un refroidissement trop prolongé entraîne une hypothermie sévère, ce qui complique la prise en charge. 15 minutes suffisent.",
+          "nextNode": "s_err_hypothermia"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Le 15 vous demande de décrire la situation.",
+      "descriptionClinique": "Le régulateur du 15 vous demande un bilan précis de la situation.",
       "constantesCibles": {
-        "tension": "118/76",
-        "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "17"
+        "pouls": "90",
+        "temperature": "36.9",
+        "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
-          "label": "Décrire : brûlures par eau bouillante, tronc et bras, 2e degré, surface ~30%, refroidie 10 min, pas de VAS touchées",
+          "label": "Décrire : femme 28 ans, brûlure par eau bouillante, ~35% de surface, 2ème degré (cloques), refroidie 15 min, consciente, frissonne.",
           "tempsExecutionSec": 30,
-          "feedback": "Bilan complet. Le régulateur envoie une équipe spécialisée brûlés.",
+          "feedback": "Bilan complet et professionnel. Le régulateur comprend immédiatement la gravité (surface > 10%) et envoie un SMUR et pré-alerte le centre des grands brûlés.",
           "nextNode": "s5_good"
         },
         {
-          "label": "Dire : « elle s'est brûlée, ça fait des cloques »",
+          "label": "Dire : « elle s'est beaucoup brûlée, ça fait des cloques partout ».",
           "tempsExecutionSec": 15,
-          "feedback": "Bilan trop imprécis. Le régulateur ne peut pas évaluer la gravité.",
+          "feedback": "Bilan trop imprécis. Le régulateur ne peut pas évaluer la gravité (surface ? profondeur ?). Cela retarde l'envoi des moyens adaptés.",
           "nextNode": "s_err_alert"
         }
-      ],
-      "isEndState": false,
-      "success": true
+      ]
     },
     "s5_good": {
       "id": "s5_good",
-      "descriptionClinique": "L'équipe spécialisée arrive rapidement. Nadia est prise en charge et transférée au centre des brûlés. Le refroidissement précoce a limité la profondeur des brûlures. Bonne gestion.",
+      "descriptionClinique": "Le SMUR arrive rapidement. Nadia est perfusée, reçoit des antalgiques puissants et est enveloppée dans une couverture de survie. Elle est transférée au centre des brûlés. Votre gestion initiale a été parfaite et a limité la gravité des lésions.",
       "constantesCibles": {
-        "tension": "118/76",
         "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "17"
+        "temperature": "37.1",
+        "frequenceRespiratoire": "16"
       },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": true
     },
-    "s_err_blisters": {
-      "id": "s_err_blisters",
-      "descriptionClinique": "Les cloques percées exposent le derme aux bactéries. Surinfection sévère dans les heures suivantes. Cicatrisation retardée de plusieurs semaines.",
+    "s_err_ice": {
+      "id": "s_err_ice",
+      "descriptionClinique": "La glace a provoqué des lésions de gelure sur les zones brûlées. La peau, déjà endommagée, est maintenant nécrosée en profondeur. La brûlure est passée du 2ème au 3ème degré.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "100",
-        "saturationO2": "98",
-        "temperature": "38",
-        "frequenceRespiratoire": "20"
+        "pouls": "110",
+        "frequenceRespiratoire": "24"
       },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": false
     },
     "s_err_butter": {
       "id": "s_err_butter",
-      "descriptionClinique": "Le beurre isole la chaleur et empêche le refroidissement. La brûlure progresse du 2e degré superficiel vers le 2e degré profond. L'équipe hospitalière doit tout nettoyer au bloc.",
+      "descriptionClinique": "La matière grasse a emprisonné la chaleur, poursuivant la cuisson des tissus. De plus, la plaie est maintenant souillée, ce qui nécessitera un débridement chirurgical douloureux et augmente massivement le risque d'infection.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "100",
-        "saturationO2": "98",
-        "temperature": "37.5",
+        "pouls": "105",
         "frequenceRespiratoire": "22"
       },
-      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_blisters": {
+      "id": "s_err_blisters",
+      "descriptionClinique": "Les cloques percées exposent le derme à l'air libre et aux bactéries. La douleur est exacerbée et le risque d'infection est majeur. La cicatrisation sera plus longue et compliquée.",
+      "constantesCibles": {
+        "pouls": "100",
+        "frequenceRespiratoire": "22"
+      },
       "isEndState": true,
       "success": false
     },
     "s_err_clothes": {
       "id": "s_err_clothes",
-      "descriptionClinique": "Le coton adhère aux brûlures. L'arrachage décolle la peau fragilisée et aggrave les lésions.",
+      "descriptionClinique": "En arrachant les vêtements, vous avez décollé de larges lambeaux de peau. Les plaies sont maintenant à vif, très douloureuses et saignantes. Vous avez aggravé les lésions.",
       "constantesCibles": {
-        "tension": "115/75",
-        "pouls": "105",
-        "saturationO2": "97",
-        "temperature": "37",
-        "frequenceRespiratoire": "22"
+        "pouls": "115",
+        "frequenceRespiratoire": "25"
       },
-      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_hypothermia": {
+      "id": "s_err_hypothermia",
+      "descriptionClinique": "Le refroidissement prolongé sur une grande surface a fait chuter la température corporelle de Nadia à 35°C. Elle est en hypothermie sévère, ce qui complique la réanimation (troubles du rythme, de la coagulation).",
+      "constantesCibles": {
+        "pouls": "60",
+        "temperature": "35.1",
+        "frequenceRespiratoire": "14"
+      },
       "isEndState": true,
       "success": false
     },
     "s_err_alert": {
       "id": "s_err_alert",
-      "descriptionClinique": "Alerte insuffisante. Le SMUR standard arrive sans équipement brûlés. Perte de temps critique pour une prise en charge adaptée.",
+      "descriptionClinique": "Face à un bilan imprécis, le régulateur envoie une ambulance privée. L'équipe, non formée pour les grands brûlés, perd du temps avant de demander un SMUR. Ce retard de prise en charge spécialisée augmente le risque de complications.",
       "constantesCibles": {
-        "tension": "118/76",
-        "pouls": "90",
-        "saturationO2": "98",
-        "temperature": "37",
+        "pouls": "95",
+        "temperature": "36.5",
         "frequenceRespiratoire": "18"
       },
-      "actionsDisponibles": [],
       "isEndState": true,
       "success": false
     }

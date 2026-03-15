@@ -252,6 +252,8 @@ onDomReady(async () => {
         const isPreview = urlParams.get('preview') === 'true';
 
         if (!isPartialRefresh) {
+            // Reset urgence state for the new case
+            if (typeof resetUrgenceState === 'function') resetUrgenceState();
             gameState.setCase(gameState.currentCaseIndex);
         }
 

@@ -50,7 +50,12 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Crampes en nageant, débutant en natation, vient de manger",
       "descriptionDouleur": "Inconscient, pas de plainte",
-      "asymptomesAssocies": ["Toux persistante", "Difficulté respiratoire", "Pâleur", "Tremblements"],
+      "asymptomesAssocies": [
+        "Toux persistante",
+        "Difficulté respiratoire",
+        "Pâleur",
+        "Tremblements"
+      ],
       "remarques": "Retiré de l'eau par un sauveteur après ~1 minute d'immersion"
     },
     "verbatim": "Il a coulé tout à coup, il toussait en sortant de l'eau puis s'est éteint..."
@@ -123,10 +128,14 @@
           "Oui, car il a les lèvres bleues",
           "Il faut commencer le massage par précaution"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'ACR = pas de conscience + PAS de respiration. Maxime respire encore → c'est un inconscient qui respire → PLS. Le massage cardiaque est INUTILE et DANGEREUX si le cœur bat.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg06_position",
@@ -139,10 +148,14 @@
           "Tête en bas pour vider les poumons",
           "Position latérale de sécurité (PLS)"
         ],
-        "correct_indices": [3]
+        "correct_indices": [
+          3
+        ]
       },
       "feedback_error": "PLS = position latérale de sécurité. Elle permet de protéger les voies aériennes (langue, vomissements) tout en maintenant la respiration. Aucune des autres positions n'est adaptée.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -152,7 +165,7 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Maxime, 15 ans, sort de la piscine sur le bord. Le maître-nageur l'a repêché après 1 minute sous l'eau. Maxime est au bord, tremblant, les yeux vitreux. Il tousse faiblement, a de l'écume rosée aux lèvres, et ne répond pas quand on l'appelle. Il respire mais de façon superficielle et rapide.",
+      "descriptionClinique": "Maxime, 15 ans, est sorti de la piscine. Il est au bord, tremblant, les yeux vitreux. Il tousse faiblement, a de l'écume rosée aux lèvres, et ne répond pas. Il respire mais de façon superficielle et rapide.",
       "constantesCibles": {
         "tension": "100/60",
         "pouls": "110",
@@ -164,14 +177,26 @@
         {
           "label": "Vérifier la respiration : pencher l'oreille vers sa bouche, regarder le thorax",
           "tempsExecutionSec": 10,
-          "feedback": "Vous constatez qu'il respire (24/min) mais faiblement. Il tousse par intermittence.",
+          "feedback": "Vous constatez qu'il respire (mouvements thoraciques présents). C'est un inconscient qui respire.",
           "nextNode": "s2"
         },
         {
           "label": "Pendre Maxime la tête en bas pour évacuer l'eau des poumons",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR DANGEREUSE : ce geste ne sert à rien (l'eau est absorbée par les poumons) et retarde la prise en charge. De plus, il peut faire vomir et aspirer.",
+          "feedback": "ERREUR FATALE : ce geste barbare ne vide pas l'eau des poumons, provoque des vomissements avec inhalation et retarde la prise en charge.",
           "nextNode": "s_err_hang"
+        },
+        {
+          "label": "Commencer le massage cardiaque immédiatement car il est cyanosé",
+          "tempsExecutionSec": 30,
+          "feedback": "ERREUR : il respire ! Le massage est inutile et peut provoquer un arrêt cardiaque (commotio cordis).",
+          "nextNode": "s_err_mce"
+        },
+        {
+          "label": "Faire des compressions abdominales (Heimlich) pour vider l'eau",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR : Heimlich est pour l'obstruction par corps ÉTRANGER, pas pour la noyade. Cela peut provoquer des régurgitations et des lésions.",
+          "nextNode": "s_err_thrusts"
         }
       ],
       "isEndState": false,
@@ -179,26 +204,26 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Maxime respire mais est inconscient. Les râles sont nets dans sa poitrine. Il frissonne (température 35.5°C). L'écume rosée aux lèvres indique un œdème pulmonaire débutant.",
+      "descriptionClinique": "Maxime respire mais est inconscient. Les râles sont nets dans sa poitrine. Il frissonne violemment (température 35.5°C).",
       "constantesCibles": {
         "tension": "100/60",
         "pouls": "110",
-        "saturationO2": "88",
+        "saturationO2": "87",
         "temperature": "35.5",
         "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [
         {
-          "label": "Mettre Maxime en PLS sur le côté (pas de crainte de lésion rachidienne ici)",
+          "label": "Mettre Maxime en PLS sur le côté et appeler le 15",
           "tempsExecutionSec": 20,
-          "feedback": "PLS correctement positionnée. Sa respiration se stabilise un peu. Les voies aériennes sont protégées.",
+          "feedback": "PLS correctement positionnée. Les voies aériennes sont protégées des vomissements potentiels. Le 15 est alerté.",
           "nextNode": "s3"
         },
         {
-          "label": "Débuter le massage cardiaque car il ne répond pas",
+          "label": "Le laisser sur le dos en attendant les secours",
           "tempsExecutionSec": 30,
-          "feedback": "ERREUR : il respire ! Le massage est inutile et peut arrêter un cœur qui bat. PLS, pas MCE.",
-          "nextNode": "s_err_mce"
+          "feedback": "ERREUR : sur le dos, un inconscient risque l'obstruction des voies aériennes par sa langue ou l'inhalation de vomissements, fréquents après une noyade.",
+          "nextNode": "s_err_supine"
         }
       ],
       "isEndState": false,
@@ -206,25 +231,33 @@
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Maxime est en PLS. Ses vêtements sont trempés et il tremble violemment.",
+      "descriptionClinique": "Maxime est en PLS. Ses vêtements sont trempés et il tremble de plus en plus fort.",
+      "evolutionAuto": {
+        "delaySec": 45,
+        "constantes": {
+          "temperature": "35.0",
+          "saturationO2": "85"
+        },
+        "description": "L'hypothermie s'aggrave au contact du sol froid et des vêtements mouillés."
+      },
       "constantesCibles": {
-        "tension": "100/60",
-        "pouls": "110",
-        "saturationO2": "88",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "24"
+        "tension": "95/55",
+        "pouls": "115",
+        "saturationO2": "86",
+        "temperature": "35.2",
+        "frequenceRespiratoire": "22"
       },
       "actionsDisponibles": [
         {
-          "label": "Retirer ses vêtements mouillés et le couvrir avec des couvertures sèches",
+          "label": "Retirer ses vêtements mouillés et le couvrir avec des serviettes sèches/couvertures",
           "tempsExecutionSec": 30,
-          "feedback": "Vêtements retirés, couvertures posées. L'hypothermie est combattue. Bon réflexe.",
+          "feedback": "Excellent réflexe. La lutte contre l'hypothermie est une priorité absolue chez le noyé.",
           "nextNode": "s4"
         },
         {
-          "label": "Le laisser avec ses vêtements pour ne pas le déshabiller",
+          "label": "Le laisser avec ses vêtements pour ne pas 'prendre froid'",
           "tempsExecutionSec": 10,
-          "feedback": "Les vêtements mouillés aggravent l'hypothermie. Il faut les retirer rapidement.",
+          "feedback": "ERREUR : les vêtements mouillés accélèrent la perte de chaleur et aggravent l'hypothermie, qui peut être mortelle.",
           "nextNode": "s3_cold"
         }
       ],
@@ -233,46 +266,52 @@
     },
     "s3_cold": {
       "id": "s3_cold",
-      "descriptionClinique": "L'hypothermie s'aggrave. Maxime tremble de plus en plus et devient cyanosé.",
+      "descriptionClinique": "L'hypothermie s'aggrave (34.5°C). Maxime présente des troubles du rythme cardiaque à cause du froid. Sa respiration devient irrégulière.",
       "constantesCibles": {
         "tension": "90/55",
-        "pouls": "100",
+        "pouls": "120",
         "saturationO2": "82",
-        "temperature": "34",
-        "frequenceRespiratoire": "20"
+        "temperature": "34.5",
+        "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
           "label": "Retirer les vêtements et couvrir en urgence",
           "tempsExecutionSec": 20,
-          "feedback": "Vous rattrapez le temps perdu. Couvertures posées.",
+          "feedback": "Vous réagissez enfin, mais le patient a déjà subi les effets délétères du froid.",
           "nextNode": "s4"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": false
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "PLS en place, couvertures. Le 15 est alerté.",
+      "descriptionClinique": "En PLS, couvert, Maxime commence à reprendre conscience. Il ouvre les yeux, semble confus et dit qu'il a froid.",
       "constantesCibles": {
-        "tension": "100/60",
-        "pouls": "110",
-        "saturationO2": "88",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "24"
+        "tension": "105/65",
+        "pouls": "100",
+        "saturationO2": "90",
+        "temperature": "36.0",
+        "frequenceRespiratoire": "20"
       },
       "actionsDisponibles": [
         {
-          "label": "Surveiller la respiration en continu et vérifier qu'il ne s'aggrave pas",
+          "label": "Le rassurer, le maintenir couvert et attendre le SMUR en surveillant",
           "tempsExecutionSec": 60,
-          "feedback": "Surveillance active. La respiration reste présente. Le SMUR arrive.",
+          "feedback": "Parfait. Même s'il va mieux, une surveillance hospitalière est indispensable.",
           "nextNode": "s5_good"
         },
         {
-          "label": "Lui donner de l'eau chaude à boire",
+          "label": "Puisqu'il va mieux, l'autoriser à rentrer chez lui avec ses parents",
           "tempsExecutionSec": 15,
-          "feedback": "INTERDIT : il est inconscient ! Risque d'inhalation mortelle.",
+          "feedback": "ERREUR GRAVE : risque de 'noyade secondaire'. L'eau dans les poumons peut provoquer un œdème pulmonaire mortel dans les heures qui suivent.",
+          "nextNode": "s_err_secondary_drowning"
+        },
+        {
+          "label": "Lui donner une boisson chaude pour le réchauffer",
+          "tempsExecutionSec": 15,
+          "feedback": "INTERDIT : il est confus et sort d'inconscience. Risque de fausse route et d'aggravation respiratoire.",
           "nextNode": "s_err_drink"
         }
       ],
@@ -281,12 +320,12 @@
     },
     "s5_good": {
       "id": "s5_good",
-      "descriptionClinique": "Le SMUR oxygène Maxime et le transporte en réanimation pour surveillance d'œdème pulmonaire post-noyade. Réchauffement actif en cours. Votre PLS précoce et la lutte contre l'hypothermie ont été décisifs.",
+      "descriptionClinique": "Le SMUR arrive. Vous transmettez un bilan complet. Maxime est oxygéné et transporté en réanimation pour surveillance de l'œdème pulmonaire post-noyade et réchauffement actif.",
       "constantesCibles": {
         "tension": "110/70",
-        "pouls": "100",
-        "saturationO2": "95",
-        "temperature": "36",
+        "pouls": "95",
+        "saturationO2": "96",
+        "temperature": "36.2",
         "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [],
@@ -309,7 +348,7 @@
     },
     "s_err_mce": {
       "id": "s_err_mce",
-      "descriptionClinique": "Les compressions thoraciques sur un cœur qui bat ont provoqué une arythmie. Maxime fait un arrêt cardiaque réel.",
+      "descriptionClinique": "Les compressions thoraciques sur un cœur qui bat ont provoqué une fibrillation ventriculaire. Maxime fait un arrêt cardiaque réel.",
       "constantesCibles": {
         "tension": "0/0",
         "pouls": "0",
@@ -323,12 +362,54 @@
     },
     "s_err_drink": {
       "id": "s_err_drink",
-      "descriptionClinique": "L'eau chaude a été inhalée par Maxime (inconscient). Pneumopathie d'inhalation massive. Arrêt respiratoire.",
+      "descriptionClinique": "La boisson chaude a été inhalée (fausse route). Maxime s'étouffe, tousse violemment puis fait un arrêt respiratoire sur des poumons déjà lésés.",
+      "constantesCibles": {
+        "tension": "80/50",
+        "pouls": "130",
+        "saturationO2": "60",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_supine": {
+      "id": "s_err_supine",
+      "descriptionClinique": "Laissé sur le dos, Maxime a vomi et tout inhalé. Il est maintenant en arrêt respiratoire, le visage couvert de vomi.",
       "constantesCibles": {
         "tension": "0/0",
         "pouls": "0",
         "saturationO2": "0",
-        "temperature": "34",
+        "temperature": "35.4",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_thrusts": {
+      "id": "s_err_thrusts",
+      "descriptionClinique": "Les compressions abdominales ont fait régurgiter le contenu de l'estomac, qui a été immédiatement inhalé dans les poumons. La situation est maintenant bien pire.",
+      "constantesCibles": {
+        "tension": "90/50",
+        "pouls": "125",
+        "saturationO2": "75",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "15"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_secondary_drowning": {
+      "id": "s_err_secondary_drowning",
+      "descriptionClinique": "Renvoyé chez lui, Maxime a développé une détresse respiratoire aiguë 2 heures plus tard dans son lit. Le temps que les parents appellent le 15, il était déjà en arrêt cardiaque. Il décède à l'hôpital.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "36.5",
         "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],

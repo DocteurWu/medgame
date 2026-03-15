@@ -36,11 +36,17 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Insuffisance veineuse des membres inférieurs"],
-      "chirurgicaux": ["Cholécystectomie"],
+      "medicaux": [
+        "Insuffisance veineuse des membres inférieurs"
+      ],
+      "chirurgicaux": [
+        "Cholécystectomie"
+      ],
       "familiaux": []
     },
-    "traitements": ["Daflon"],
+    "traitements": [
+      "Daflon"
+    ],
     "allergies": {
       "presence": false,
       "liste": []
@@ -50,7 +56,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Morceau de viande mal mastiqué",
       "descriptionDouleur": "Impossibilité de parler",
-      "asymptomesAssocies": ["Toux absente", "Cyanose du visage", "Signe d'étouffement (mains à la gorge)"],
+      "asymptomesAssocies": [
+        "Toux absente",
+        "Cyanose du visage",
+        "Signe d'étouffement (mains à la gorge)"
+      ],
       "remarques": "Table voisine alertée par le bruit"
     },
     "verbatim": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge)."
@@ -124,10 +134,14 @@
           "Une obstruction TOTALE des voies aériennes",
           "Une crise d'angoisse"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'absence de toux et de parole, associée à la cyanose et au geste universel, définit l'obstruction TOTALE. L'obstruction partielle permet encore de tousser.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg08_sequence",
@@ -140,10 +154,14 @@
           "5 compressions abdominales (manœuvre de Heimlich)",
           "Attendre que ça passe"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'AFGSU préconise d'alterner 5 claques / 5 compressions abdominales. Si les claques échouent, on passe au Heimlich. Ne JAMAIS rester sur une technique inefficace.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -153,7 +171,7 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Vous êtes au restaurant. À la table voisine, Henri, 68 ans, se lève brusquement de sa chaise. Il porte ses mains à sa gorge (geste universel d'étouffement), ne produit aucun son, et son visage vire au bleu. Ses yeux sont écarquillés de terreur. Il ne tousse pas, il ne parle pas. Les autres convives ne comprennent pas ce qui se passe.",
+      "descriptionClinique": "Au restaurant, Henri, 68 ans, se lève brusquement. Il porte ses mains à sa gorge, ne produit aucun son, et son visage vire au bleu. Il ne tousse pas. C'est une obstruction totale.",
       "constantesCibles": {
         "tension": "140/85",
         "pouls": "100",
@@ -163,22 +181,28 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Identifier : obstruction TOTALE. Lui donner 5 claques vigoureuses entre les omoplates, penché en avant",
+          "label": "Lui donner 5 claques vigoureuses entre les omoplates, penché en avant",
           "tempsExecutionSec": 15,
-          "feedback": "Vous plaquez Henri en avant et lui donnez 5 claques sèches entre les omoplates. Rien ne sort.",
+          "feedback": "Vous penchez Henri en avant et lui donnez 5 claques sèches entre les omoplates. Rien ne sort.",
           "nextNode": "s2"
         },
         {
-          "label": "Lui demander : « Est-ce que vous allez bien ? Vous vous étouffez ? »",
+          "label": "L'encourager à tousser",
           "tempsExecutionSec": 10,
-          "feedback": "Il acquiesce de la tête mais ne peut pas répondre. Vous perdez 10 secondes précieuses.",
+          "feedback": "ERREUR : il ne peut pas tousser, l'air ne passe pas. C'est une obstruction TOTALE. Vous perdez un temps précieux.",
           "nextNode": "s2_delayed"
         },
         {
           "label": "Lui donner un verre d'eau pour débloquer",
           "tempsExecutionSec": 10,
-          "feedback": "L'eau coule sur le morceau de viande et pénètre dans les poumons. Henri se noie à sec.",
+          "feedback": "ERREUR FATALE : L'eau ne peut pas passer et va remplir l'arrière-gorge, aggravant la situation.",
           "nextNode": "s_err_water"
+        },
+        {
+          "label": "Tenter de retirer l'objet avec vos doigts (balayage à l'aveugle)",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR DANGEREUSE : le balayage à l'aveugle risque d'enfoncer le corps étranger encore plus profondément. On ne retire que ce que l'on voit.",
+          "nextNode": "s_err_sweep"
         }
       ],
       "isEndState": false,
@@ -186,26 +210,32 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Les 5 claques n'ont rien donné. Henri devient violacé. Il ne peut toujours pas tousser ni parler.",
+      "descriptionClinique": "Les 5 claques n'ont rien donné. Henri devient violacé. Il est obèse et vous avez du mal à entourer sa taille.",
       "constantesCibles": {
-        "tension": "140/85",
+        "tension": "145/90",
         "pouls": "110",
         "saturationO2": "75",
         "temperature": "36.5",
-        "frequenceRespiratoire": "Irrégulière"
+        "frequenceRespiratoire": "Faible"
       },
       "actionsDisponibles": [
         {
-          "label": "Passer aux 5 compressions abdominales (Heimlich) : se placer derrière, poing au-dessus du nombril",
+          "label": "Passer aux compressions thoraciques (alternative à Heimlich pour personne obèse)",
           "tempsExecutionSec": 15,
-          "feedback": "Vous vous placez derrière Henri, poing au creux épigastrique. 5 compressions sèches vers le haut et l'arrière.",
+          "feedback": "Excellente adaptation ! Vous vous placez derrière Henri et effectuez 5 compressions sur le sternum, comme pour un massage cardiaque.",
           "nextNode": "s3"
+        },
+        {
+          "label": "S'acharner avec des compressions abdominales inefficaces",
+          "tempsExecutionSec": 15,
+          "feedback": "Vos mains glissent et les compressions sont inefficaces. Henri perd connaissance.",
+          "nextNode": "s3_late"
         },
         {
           "label": "Répéter 5 autres claques dans le dos",
           "tempsExecutionSec": 15,
-          "feedback": "Les claques seules n'ont pas suffi. Il faut CHANGER de technique : Heimlich.",
-          "nextNode": "s3_late"
+          "feedback": "Les claques seules n'ont pas suffi. Il faut alterner avec une autre technique. Vous perdez du temps.",
+          "nextNode": "s2_delayed"
         }
       ],
       "isEndState": false,
@@ -213,46 +243,46 @@
     },
     "s2_delayed": {
       "id": "s2_delayed",
-      "descriptionClinique": "Henri a perdu 10 secondes. Sa cyanose s'aggrave. Vous commencez les claques mais il est déjà affaibli.",
+      "descriptionClinique": "Henri a perdu 10-15 secondes précieuses. Sa cyanose s'aggrave, il commence à vaciller.",
       "constantesCibles": {
         "tension": "140/85",
         "pouls": "115",
         "saturationO2": "70",
         "temperature": "36.5",
-        "frequenceRespiratoire": "Faible"
+        "frequenceRespiratoire": "Gasp"
       },
       "actionsDisponibles": [
         {
-          "label": "5 claques vigoureuses puis Heimlich immédiatement",
+          "label": "5 claques vigoureuses puis compressions thoraciques immédiatement",
           "tempsExecutionSec": 20,
-          "feedback": "Vous enchaînez claques puis Heimlich. Le morceau de viande bouge.",
+          "feedback": "Vous enchaînez enfin les bonnes manœuvres. Le temps perdu a affaibli Henri.",
           "nextNode": "s3"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": false
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "À la 3ème compression abdominale, le morceau de viande est expulsé violemment. Henri inspire bruyamment et tousse.",
+      "descriptionClinique": "À la 3ème compression thoracique, le morceau de viande est expulsé. Henri inspire bruyamment, tousse, et reprend des couleurs.",
       "constantesCibles": {
-        "tension": "140/85",
+        "tension": "150/90",
         "pouls": "105",
         "saturationO2": "88",
         "temperature": "36.5",
-        "frequenceRespiratoire": "Reprend"
+        "frequenceRespiratoire": "Reprend (20/min)"
       },
       "actionsDisponibles": [
         {
-          "label": "Le rassurer, le faire asseoir, appeler le 15 pour avis médical",
+          "label": "Le rassurer, le faire asseoir, appeler le 15 pour avis médical systématique",
           "tempsExecutionSec": 30,
-          "feedback": "Henri respire. Vous appelez le 15. L'opérateur demande de surveiller car Heimlich peut causer des lésions internes.",
+          "feedback": "Parfait. Un avis médical est OBLIGATOIRE après des manœuvres de désobstruction (risque de lésions internes).",
           "nextNode": "s4_good"
         },
         {
-          "label": "Le laisser repartir à sa table, tout va bien maintenant",
+          "label": "Le laisser repartir à sa table, 'plus de peur que de mal'",
           "tempsExecutionSec": 10,
-          "feedback": "ERREUR : le Heimlich peut provoquer une rupture de la rate ou du diaphragme. Un avis médical est OBLIGATOIRE.",
+          "feedback": "ERREUR GRAVE : les compressions peuvent causer des lésions (côtes, rate...). Ne pas faire vérifier par un médecin est une faute.",
           "nextNode": "s_err_leave"
         }
       ],
@@ -261,19 +291,19 @@
     },
     "s3_late": {
       "id": "s3_late",
-      "descriptionClinique": "Henri perd connaissance par hypoxie.",
+      "descriptionClinique": "Henri perd connaissance et s'effondre sur le sol. Il ne respire plus.",
       "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "120",
-        "saturationO2": "60",
+        "tension": "Indétectable",
+        "pouls": "Absent",
+        "saturationO2": "50",
         "temperature": "36",
         "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
-          "label": "Commencer la RCP (massages thoraciques)",
+          "label": "Commencer la RCP (30 compressions thoraciques)",
           "tempsExecutionSec": 30,
-          "feedback": "Les compressions thoraciques peuvent mobiliser le corps étranger. Vous vérifiez la bouche et voyez le morceau.",
+          "feedback": "Vous allongez Henri, alertez le 15 et commencez le massage cardiaque. C'est la bonne séquence.",
           "nextNode": "s4_resus"
         }
       ],
@@ -282,7 +312,7 @@
     },
     "s4_good": {
       "id": "s4_good",
-      "descriptionClinique": "Le 15 envoie une équipe de contrôle. Henri va bien, pas de lésion visible. Il vous serre la main avec des larmes dans les yeux. Réflexes parfaits.",
+      "descriptionClinique": "Le 15 envoie une ambulance. L'examen aux urgences ne révèle pas de lésion. Henri vous remercie chaleureusement. Vos gestes et votre sang-froid l'ont sauvé.",
       "constantesCibles": {
         "tension": "135/80",
         "pouls": "80",
@@ -296,13 +326,34 @@
     },
     "s4_resus": {
       "id": "s4_resus",
-      "descriptionClinique": "Pendant la RCP, le morceau de viande sort. Henri reprend conscience. Le SAMU le transporte pour surveillance. Pronostic réservé mais pas de séquelle neurologique grâce à la RCP rapide.",
+      "descriptionClinique": "Après 30 compressions, vous ouvrez la bouche pour ventiler et vous VOYEZ le morceau de viande. Vous le retirez avec vos doigts.",
       "constantesCibles": {
-        "tension": "130/80",
-        "pouls": "90",
-        "saturationO2": "92",
+        "tension": "Indétectable",
+        "pouls": "Absent",
+        "saturationO2": "60",
         "temperature": "36",
-        "frequenceRespiratoire": "18"
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Retirer le morceau et continuer la RCP",
+          "tempsExecutionSec": 60,
+          "feedback": "Parfait. Le MCE a mobilisé l'objet. Après retrait, les insufflations passent et Henri reprend une activité cardiaque.",
+          "nextNode": "s5_resus_success"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s5_resus_success": {
+      "id": "s5_resus_success",
+      "descriptionClinique": "Grâce à une RCP rapide et efficace, Henri est réanimé à l'arrivée du SMUR. Il sera hospitalisé avec un bon pronostic.",
+      "constantesCibles": {
+        "tension": "110/70",
+        "pouls": "90",
+        "saturationO2": "94",
+        "temperature": "36",
+        "frequenceRespiratoire": "12"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -310,7 +361,7 @@
     },
     "s_err_water": {
       "id": "s_err_water",
-      "descriptionClinique": "L'eau a été inhalée sur le corps étranger. Double obstruction : alimentaire + hydrique. Arrêt cardiaque immédiat.",
+      "descriptionClinique": "L'eau a inondé les voies aériennes sans déloger l'obstacle. Henri subit une noyade sèche et un étouffement. Arrêt cardiaque immédiat.",
       "constantesCibles": {
         "tension": "0/0",
         "pouls": "0",
@@ -324,13 +375,27 @@
     },
     "s_err_leave": {
       "id": "s_err_leave",
-      "descriptionClinique": "Henri fait une hémorragie interne par rupture splénique 3 heures plus tard (complication du Heimlich). Il décède à l'hôpital. L'absence de surveillance post-geste a été fatale.",
+      "descriptionClinique": "Henri rentre chez lui. Il décède 3 heures plus tard d'une hémorragie interne due à une rupture de la rate (complication des compressions). L'absence d'avis médical a été fatale.",
       "constantesCibles": {
         "tension": "60/30",
         "pouls": "130",
         "saturationO2": "85",
         "temperature": "36",
         "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_sweep": {
+      "id": "s_err_sweep",
+      "descriptionClinique": "En essayant de crocheter l'objet, vous l'avez enfoncé plus profondément dans la trachée, le rendant impossible à extraire sans chirurgie. Henri suffoque et perd connaissance rapidement.",
+      "constantesCibles": {
+        "tension": "Indétectable",
+        "pouls": "Faible",
+        "saturationO2": "40",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
