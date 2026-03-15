@@ -634,6 +634,7 @@ onDomReady(async () => {
     }
 
     function updateExamsTabVisibility() {
+        const currentCase = gameState.currentCase;
         const hasExams = currentCase && currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0;
 
         // Urgence tab visibility
@@ -664,6 +665,7 @@ onDomReady(async () => {
     // calculateScore, handleTraitementClick, calculateDetailedScore, calculateXpEarned moved to js/scoring.js
 
     document.getElementById('validate-traitement').addEventListener('click', () => {
+        const currentCase = gameState.currentCase;
         scoringState.attempts++;
         const attempts = scoringState.attempts;
         const selectedTreatments = scoringState.selectedTreatments;
@@ -982,6 +984,7 @@ onDomReady(async () => {
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
 
     function renderExamResults() {
+        const currentCase = gameState.currentCase;
         if (gameState.activeExams.length === 0) return;
 
         if (isFieldLocked('examensComplementaires')) {
@@ -1242,6 +1245,7 @@ onDomReady(async () => {
     let quizComparisonHtml = '';
 
     function startPostGameQuiz(comparisonHtml) {
+        const currentCase = gameState.currentCase;
         if (!currentCase.postGameQuestions || currentCase.postGameQuestions.length === 0) {
             showCorrectionModal(comparisonHtml + (currentCase.correction || ''));
             return;
@@ -1252,6 +1256,7 @@ onDomReady(async () => {
     }
 
     function showPostGameQuestion(index) {
+        const currentCase = gameState.currentCase;
         const question = currentCase.postGameQuestions[index];
         const modal = document.createElement('div');
         modal.className = 'correction-overlay lock-challenge-overlay';
