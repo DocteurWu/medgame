@@ -98,6 +98,10 @@
     "urgence_arret_cardiaque_sportive.json",
     "urgence_obstruction_voa_nourrisson.json",
     "urgence_noyade_piscine.json",
-    "urgence_malaise_traumatisme_rachidien.json"
+    "urgence_malaise_traumatisme_rachidien.json",
+    "urgence_trauma_cranien_grave.json",
+    "urgence_obstruction_voa_adulte_restaurant.json",
+    "urgence_inconscient_pls_bar.json",
+    "urgence_trauma_membre_amputation.json"
   ]
 }
