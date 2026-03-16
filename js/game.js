@@ -253,6 +253,10 @@ onDomReady(async () => {
         if (!isPartialRefresh) {
             // Reset urgence state for the new case
             if (typeof resetUrgenceState === 'function') resetUrgenceState();
+
+            // Reset skill cards for new case
+            if (typeof skillCards !== 'undefined') skillCards.resetForNewCase();
+
             gameState.setCase(gameState.currentCaseIndex);
         }
 
@@ -993,6 +997,11 @@ onDomReady(async () => {
                 if (streakResult.milestone) {
                     showNotification(`${streakResult.milestone.icon} ${streakResult.milestone.label} — Streak de ${streakResult.newStreak} !`);
                 }
+
+                // === SKILL CARDS: Reward on streak milestones ===
+                if (typeof skillCards !== 'undefined') {
+                    skillCards.rewardStreak(streakResult.newStreak);
+                }
             } else {
                 streakSystem.recordLoss();
             }
@@ -1257,6 +1266,11 @@ onDomReady(async () => {
         // === STREAK SYSTEM: Initialize ===
         if (typeof streakSystem !== 'undefined') {
             streakSystem.init();
+        }
+
+        // === SKILL CARDS: Initialize ===
+        if (typeof skillCards !== 'undefined') {
+            skillCards.init();
         }
 
         // === EXAM MODE: Check if requested ===

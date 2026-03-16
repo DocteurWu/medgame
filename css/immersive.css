@@ -754,3 +754,54 @@
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ==================== SKILL CARDS ==================== */
+
+/* Sidebar skill cards section */
+#skill-cards-sidebar {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 4px;
+}
+
+/* Floating skill cards bar (mobile / top area) */
+#skill-cards-bar {
+    position: relative;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+#skill-cards-bar .skill-card-mini {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#skill-cards-bar .skill-card-mini:hover:not([disabled]) {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.3);
+}
+
+#skill-cards-bar .skill-card-mini:active:not([disabled]) {
+    transform: scale(0.95);
+}
+
+/* Skill card button hover glow in sidebar */
+.skill-card-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transition: left 0.5s ease;
+}
+
+.skill-card-btn:hover::before {
+    left: 100%;
+}
