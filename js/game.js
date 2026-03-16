@@ -152,6 +152,14 @@ onDomReady(async () => {
     uiState.onCorrectionNext = () => {
         if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
         if (uiState.backgroundMusicEl) uiState.backgroundMusicEl.play();
+
+        // === EXAM MODE: Handle next case ===
+        if (typeof examMode !== 'undefined' && examMode.isActive) {
+            if (!examMode.nextCase()) {
+                return; // examMode.finish() called inside
+            }
+        }
+
         if (!gameState.nextCase()) {
             window.location.href = 'index.html';
             return;
@@ -984,6 +992,26 @@ onDomReady(async () => {
                 }
             });
         }
+
+        // === STREAK SYSTEM: Record win or loss ===
+        if (typeof streakSystem !== 'undefined') {
+            if (isCorrect && !hasFatalError) {
+                const streakResult = streakSystem.recordWin(currentCase.id);
+                // Apply streak multiplier to XP
+                xpEarned = streakSystem.applyMultiplier(xpEarned);
+                if (streakResult.milestone) {
+                    showNotification(`${streakResult.milestone.icon} ${streakResult.milestone.label} — Streak de ${streakResult.newStreak} !`);
+                }
+            } else {
+                streakSystem.recordLoss();
+            }
+        }
+
+        // === EXAM MODE: Record result ===
+        if (typeof examMode !== 'undefined' && examMode.isActive) {
+            const timeSpent = getTimeLimit() - timerState.timeLeft;
+            examMode.recordResult(currentCase.id, percentageScore, isCorrect && !hasFatalError, timeSpent, hasFatalError);
+        }
     });
 
 
@@ -1107,6 +1135,13 @@ onDomReady(async () => {
     // Validation is now handled solely by validate-traitement.
 
     nextCaseButton.addEventListener('click', () => {
+        // === EXAM MODE: Check if exam is active ===
+        if (typeof examMode !== 'undefined' && examMode.isActive) {
+            if (!examMode.nextCase()) {
+                return; // examMode.finish() is called inside nextCase when done
+            }
+        }
+
         if (!gameState.nextCase()) {
             window.location.href = 'index.html';
             return;
@@ -1233,6 +1268,20 @@ onDomReady(async () => {
         gameState.setCases(cases);
         loadingEl.remove();
         
+        // === STREAK SYSTEM: Initialize ===
+        if (typeof streakSystem !== 'undefined') {
+            streakSystem.init();
+        }
+
+        // === EXAM MODE: Check if requested ===
+        if (localStorage.getItem('examModeRequest') === 'true') {
+            localStorage.removeItem('examModeRequest');
+            if (typeof examMode !== 'undefined') {
+                examMode.init(gameState.cases);
+                showNotification('📋 Mode Examen activé — 10 cas, chrono global, pas d\'indices !');
+            }
+        }
+
         if (gameState.cases.length > 0) {
             showNotification(`Session démarrée : ${gameState.cases.length} cas chargé(s)`);
             playSound('reveal');

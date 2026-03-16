@@ -93,6 +93,16 @@
                     <div class="btn-layer"></div>
                 </button>
 
+                <!-- Mode Examen (toujours visible) -->
+                <button class="btn-3d" id="exam-button" onclick="transitionTo('exam.html')"
+                    style="border-color: rgba(255, 71, 87, 0.4);" aria-label="Mode Examen - 10 cas chronométrés">
+                    <span class="btn-content"><i class="fas fa-clipboard-check" aria-hidden="true"></i> 📋 Mode Examen</span>
+                    <div class="btn-layer" style="background: linear-gradient(90deg, #ff4757, #ff6b81);"></div>
+                </button>
+
+                <!-- Streak display on home -->
+                <div id="home-streak-display" style="text-align:center; padding: 10px; color: rgba(255,255,255,0.3); font-size: 0.85rem;"></div>
+
                 <!-- Boutons réservés aux utilisateurs connectés -->
                 <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;" aria-label="Ouvrir les réglages">
                     <span class="btn-content"><i class="fas fa-sliders-h" aria-hidden="true"></i> Réglages</span>
@@ -535,6 +545,24 @@
         }
 
         document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
+    </script>
+    <script>
+        // Display streak info on home page
+        (function() {
+            try {
+                const saved = localStorage.getItem('medgame_streak');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const el = document.getElementById('home-streak-display');
+                    if (el && data.bestStreak > 0) {
+                        const icon = data.currentStreak >= 10 ? '👑' : data.currentStreak >= 5 ? '⚡' : data.currentStreak >= 3 ? '🔥' : '🎯';
+                        el.innerHTML = data.currentStreak > 0
+                            ? `${icon} Streak actuelle: <strong style="color:#fff">${data.currentStreak}</strong> · 🏆 Record: <strong style="color:#ffd700">${data.bestStreak}</strong>`
+                            : `🏆 Meilleure streak: <strong style="color:#ffd700">${data.bestStreak}</strong>`;
+                    }
+                }
+            } catch(e) {}
+        })();
     </script>
     <script src="js/device-check.js"></script>
 </body>
