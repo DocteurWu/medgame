@@ -1,6 +1,9 @@
 {
   "id": "urgence_choc_anaphylactique_01",
-  "redacteur": "Dr. Urgence",
+  "title": "Choc Anaphylactique par Piqûre de Guêpe",
+  "specialty": "urgence",
+  "difficulty": 2,
+  "redacteur": "Clawd UE10",
   "patient": {
     "nom": "Dupont",
     "prenom": "Luc",
@@ -12,32 +15,6 @@
   },
   "interrogatoire": {
     "motifHospitalisation": "Détresse respiratoire et éruption cutanée suite à une piqûre de guêpe.",
-    "histoireMaladie": {
-      "debutSymptomes": "Il y a 10 minutes",
-      "evolution": "Rapide",
-      "facteursDeclenchants": "Piqûre de guêpe présumée",
-      "descriptionDouleur": "Pas de douleur spécifique, gêne respiratoire",
-      "symptomesAssocies": [
-        "Sensation de malaise",
-        "Démangeaisons"
-      ],
-      "remarques": "Patient agité."
-    },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
-    },
-    "traitements": [],
-    "allergies": {
-      "presence": true,
-      "liste": [
-        {
-          "allergene": "Venin d'hyménoptères",
-          "reaction": "Choc anaphylactique (suspicion actuelle)"
-        }
-      ]
-    },
     "modeDeVie": {
       "activitePhysique": {
         "description": "Sportif régulier"
@@ -57,75 +34,200 @@
         "profession": "Jardinier",
         "stress": "Faible"
       }
-    }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": true,
+      "liste": [
+        {
+          "allergene": "Venin d'hyménoptères",
+          "reaction": "Choc anaphylactique (suspicion actuelle)"
+        }
+      ]
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 10 minutes",
+      "evolution": "Rapide, progressive",
+      "facteursDeclenchants": "Piqûre de guêpe dans le jardin",
+      "descriptionDouleur": "Pas de douleur spécifique, sensation de gêne respiratoire et de serrement de gorge",
+      "asymptomesAssocies": [
+        "Urticaire généralisé",
+        "Sensation de malaise",
+        "Démangeaisons",
+        "Angoisse"
+      ],
+      "remarques": "Patient agité, conscient. Antécédent d'allergie connu aux hyménoptères."
+    },
+    "verbatim": "J'étouffe... j'ai l'impression que ma gorge se serre... ça gratte partout..."
   },
   "examenClinique": {
     "constantes": {
-      "tension": "90/50",
-      "pouls": 115,
-      "temperature": 37.2,
-      "saturationO2": 92,
-      "frequenceRespiratoire": 28
+      "tension": "90/50 mmHg",
+      "pouls": "115 bpm",
+      "temperature": "37.2°C",
+      "saturationO2": "92%",
+      "frequenceRespiratoire": "28/min"
     },
-    "aspectGeneral": "Agité, couvert d'urticaire."
+    "aspectGeneral": "Agité, couvert d'urticaire géant sur le torse et le visage. Sueurs profuses.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie, bruits sourds",
+      "inspection": "Urticaire généralisé, érythème du visage",
+      "palpation": "Pouls rapide, filant. Peau moite."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Wheezing bilatéral audible à distance (sifflement expiratoire)",
+      "inspection": "Polypnée, battement des ailes du nez",
+      "percussion": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple",
+      "auscultation": "Bruits normaux"
+    }
   },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Choc anaphylactique sévère par piqûre d'hyménoptère",
+    "Crise d'asthme aiguë",
+    "Œdème de Quincke isolé",
+    "Malaise vagal"
+  ],
+  "correctDiagnostic": "Choc anaphylactique sévère par piqûre d'hyménoptère",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Injection Adrénaline 0.5mg IM dans la face externe de la cuisse",
+    "Donner Antihistaminique par voie orale",
+    "Mettre sous Oxygène (Masque Haute Concentration)",
+    "Utiliser un bronchodilatateur (Ventoline)",
+    "Surélever les jambes",
+    "Donner à boire de l'eau froide",
+    "Alerter le 15"
+  ],
+  "correctTreatments": [
+    "Injection Adrénaline 0.5mg IM dans la face externe de la cuisse",
+    "Mettre sous Oxygène (Masque Haute Concentration)",
+    "Alerter le 15"
+  ],
+  "fatalTreatments": [
+    "Surélever les jambes"
+  ],
+  "correction": "# Correction : Choc Anaphylactique par Piqûre de Guêpe\n\n## Diagnostic\nAssociation de 3 éléments = choc anaphylactique :\n1. **Exposition connue** : piqûre d'hyménoptère + allergie connue\n2. **Cutanéo-muqueux** : urticaire généralisé, angioedème\n3. **Atteinte respiratoire ET circulatoire** : wheezing + hypotension (90/50)\n\n## Piège AFGSU classique\nLe wheezing fait penser à l'asthme → tentation de donner de la Ventoline. **ERREUR** : le bronchospasme allergique ne répond pas aux bronchodilatateurs seuls. Seule l'adrénaline agit sur la dégranulation mastocytaire, l'œdème ET le bronchospasme.\n\n## Conduite à tenir (AFGSU)\n1. **Adrénaline IMMÉDIATE** : 0.5mg IM (0.5 mL d'adrénaline 1/1000) dans la face externe de la cuisse\n2. **Oxygène** : masque haute concentration 15L/min\n3. **Allonger** les jambes surélevées (SAUF si détresse respiratoire majeure → position assise)\n4. **Alerte 15** : mentionner « choc anaphylactique en cours »\n5. **Préparer 2ème dose** d'adrénaline si pas d'amélioration en 5 min\n6. **NE JAMAIS** donner à boire, ni antihistaminique seul, ni corticoïdes seuls (trop lents)\n\n## Réaction biphasique\n20% des chocs anaphylactiques ont une 2ème vague 2-12h après. Surveillance hospitalière obligatoire 24h minimum.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Terminé."
+  },
+  "locks": [
+    {
+      "id": "lock_ana_diagnostic",
+      "type": "QCM",
+      "challenge": {
+        "question": "Luc est couvert d'urticaire, siffle en respirant, et sa tension est à 90/50 après une piqûre de guêpe. Quel est le diagnostic ?",
+        "options": [
+          "Crise d'asthme aiguë",
+          "Choc anaphylactique sévère",
+          "Malaise vagal",
+          "Œdème de Quincke bénin"
+        ],
+        "correct_indices": [1]
+      },
+      "feedback_error": "L'association piqûre d'hyménoptère + urticaire + wheezing + hypotension = choc anaphylactique. L'atteinte cardiovasculaire (hypotension) le distingue de l'œdème de Quincke isolé.",
+      "target_fields": ["correctDiagnostic"]
+    },
+    {
+      "id": "lock_ana_adrenaline",
+      "type": "QCM",
+      "challenge": {
+        "question": "Quel est le traitement de première intention du choc anaphylactique ?",
+        "options": [
+          "Ventoline (bronchodilatateur)",
+          "Antihistaminique (anti-allergique)",
+          "Adrénaline 0.5mg IM dans la cuisse",
+          "Corticoïdes IV"
+        ],
+        "correct_indices": [2]
+      },
+      "feedback_error": "L'adrénaline est le SEUL traitement de première intention du choc anaphylactique AFGSU. Elle agit en quelques minutes sur la vasodilatation, le bronchospasme et l'œdème. Les autres traitements sont trop lents pour la phase aiguë.",
+      "target_fields": ["correctTreatments"]
+    },
+    {
+      "id": "lock_ana_dose",
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Quelle est la dose d'adrénaline à injecter par voie intramusculaire chez l'adulte en cas de choc anaphylactique ? (en mg)",
+        "answer": "0.5",
+        "alternatives": ["1", "0.3", "5", "1mg"]
+      },
+      "feedback_error": "La dose adulte standard AFGSU est 0.5mg (soit 0.5 mL d'adrénaline au 1/1000). 0.3mg est la dose pédiatrique. 1mg est la dose IV (réanimation), jamais en auto-injecteur.",
+      "target_fields": ["correctTreatments"]
+    }
+  ],
+  "postGameQuestions": [],
   "gameplayConfig": {
     "startNode": "etat_initial"
   },
   "nodes": {
     "etat_initial": {
       "id": "etat_initial",
-      "descriptionClinique": "Le patient est agité, couvert d'urticaire géant sur le torse et le visage. Il respire avec un sifflement (wheezing) audible à distance. Sueurs profuses. Il dit : « J'étouffe... j'ai l'impression que ma gorge se serre. »",
+      "descriptionClinique": "Luc, 34 ans, jardinier, a été piqué par une guêpe il y a 10 minutes. Il est couvert d'urticaire géant sur le torse et le visage. Il respire avec un sifflement (wheezing) audible à distance. Sueurs profuses. Il dit : « J'étouffe... j'ai l'impression que ma gorge se serre. »",
       "constantesCibles": {
         "tension": "90/50",
-        "pouls": 115,
-        "saturationO2": 92,
-        "frequenceRespiratoire": 28
+        "pouls": "115",
+        "saturationO2": "92",
+        "temperature": "37.2",
+        "frequenceRespiratoire": "28"
       },
       "evolutionAuto": {
         "delaiSecondes": 45,
         "nextNode": "etat_degradation1",
-        "motif": "Le choc s'installe, la tension chute et l'oedème de Quincke progresse faute de traitement rapide."
+        "motif": "Le choc s'installe, la tension chute et l'œdème de Quincke progresse faute de traitement rapide."
       },
       "actionsDisponibles": [
         {
-          "label": "Injection Adrénaline 0.5mg IM dans la cuisse",
+          "label": "Injection Adrénaline 0.5mg IM dans la face externe de la cuisse",
           "type": "traitement_cle",
           "tempsExecutionSec": 10,
           "nextNode": "etat_amelioration_post_adrenaline",
           "feedback": "Vous injectez l'adrénaline en intramusculaire dans la cuisse. C'est le traitement de première ligne. Le patient respire mieux presque immédiatement."
         },
         {
-          "label": "Donner Antihistaminique PO (comprimé)",
+          "label": "Donner un comprimé d'Antihistaminique (Cetirizine)",
           "type": "erreur",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
-          "feedback": "ERREUR AFGSU : Le patient a du mal à avaler, l'effet sera beaucoup trop lent pour une urgence vitale. Vous perdez un temps précieux !"
+          "feedback": "ERREUR AFGSU : Le patient a du mal à avaler (œdème de la gorge), l'effet oral sera trop lent (30-60 min). Vous perdez un temps vital ! L'adrénaline est le seul traitement d'urgence."
         },
         {
-          "label": "Mettre sous Oxygène (Masque Haute Concentration)",
+          "label": "Mettre sous Oxygène (Masque Haute Concentration 15L/min)",
           "type": "soin",
           "tempsExecutionSec": 5,
           "nextNode": "etat_initial_O2",
-          "feedback": "L'oxygène est posé. C'est une bonne mesure de soutien, mais ça ne traite pas la cause (la dégranulation mastocytaire). La saturation s'améliore légèrement mais le choc progresse."
+          "feedback": "L'oxygène est posé. Bonne mesure de soutien, mais ça ne traite pas la cause (la dégranulation mastocytaire). La saturation s'améliore légèrement mais le choc progresse."
         },
         {
-          "label": "Utiliser un bronchodilatateur (type Ventoline)",
+          "label": "Utiliser un bronchodilatateur (Ventoline inhalée)",
           "type": "erreur",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
-          "feedback": "PIÈGE AFGSU : Le wheezing n'est pas un asthme classique mais un bronchospasme allergique. La Ventoline sera inefficace sur l'oedème et l'hypotension. L'adrénaline est le seul traitement qui sauve."
+          "feedback": "PIÈGE AFGSU : Le wheezing n'est pas un asthme classique mais un bronchospasme allergique. La Ventoline sera inefficace sur l'œdème et l'hypotension. L'adrénaline est le seul traitement qui sauve."
         }
       ]
     },
     "etat_initial_O2": {
       "id": "etat_initial_O2",
-      "descriptionClinique": "Le patient a l'O2, sa saturation remonte un peu, mais il est de plus en plus agité. La tension continue de baisser et son visage gonfle à vue d'oeil.",
+      "descriptionClinique": "Le patient a l'O2, sa saturation remonte à 96%, mais il est de plus en plus agité. La tension continue de baisser et son visage gonfle à vue d'œil. Les lèvres sont tuméfiées.",
       "constantesCibles": {
         "tension": "85/45",
-        "pouls": 125,
-        "saturationO2": 96,
-        "frequenceRespiratoire": 30
+        "pouls": "125",
+        "saturationO2": "96",
+        "frequenceRespiratoire": "30"
       },
       "evolutionAuto": {
         "delaiSecondes": 30,
@@ -134,29 +236,36 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Injection Adrénaline 0.5mg IM",
+          "label": "Injection Adrénaline 0.5mg IM dans la cuisse",
           "type": "traitement_cle",
           "tempsExecutionSec": 10,
           "nextNode": "etat_amelioration_post_adrenaline",
-          "feedback": "L'adrénaline remonte la tension et lève le bronchospasme ! Bonne décision, même si elle aurait pu être prise plus tôt."
+          "feedback": "L'adrénaline remonte la tension et lève le bronchospasme ! Bonne décision, même si elle aurait dû être prise en premier."
         },
         {
           "label": "Surélever les jambes du patient",
-          "type": "soin",
+          "type": "erreur",
           "tempsExecutionSec": 5,
-          "nextNode": "etat_degradation1_aggravee",
-          "feedback": "PIÈGE AFGSU : Surélever les jambes est bon pour le choc hypovolémique, mais ici le problème principal est la détresse respiratoire. Cette position peut l'aggraver. Il fallait prioriser l'adrénaline."
+          "nextNode": "etat_degradation_position",
+          "feedback": "PIÈGE AFGSU : Surélever les jambes est bon pour le choc hypovolémique, mais ici le problème principal est la détresse respiratoire. Cette position aggrave l'essoufflement et l'œdème laryngé."
+        },
+        {
+          "label": "Donner de l'eau fraîche pour calmer les démangeaisons",
+          "type": "erreur",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_degradation1",
+          "feedback": "INTERDIT : le patient a un œdème de la gorge. Boire risque l'inhalation et l'asphyxie. Il fallait injecter l'adrénaline !"
         }
       ]
     },
     "etat_amelioration_post_adrenaline": {
       "id": "etat_amelioration_post_adrenaline",
-      "descriptionClinique": "Après l'injection d'adrénaline, le sifflement respiratoire diminue, l'urticaire commence à pâlir. Le patient se sent moins oppressé. La tension remonte.",
+      "descriptionClinique": "Après l'injection d'adrénaline, le sifflement respiratoire diminue nettement, l'urticaire commence à pâlir. Le patient se sent moins oppressé. La tension remonte progressivement.",
       "constantesCibles": {
         "tension": "110/70",
-        "pouls": 100,
-        "saturationO2": 98,
-        "frequenceRespiratoire": 20
+        "pouls": "100",
+        "saturationO2": "98",
+        "frequenceRespiratoire": "20"
       },
       "evolutionAuto": {
         "delaiSecondes": 120,
@@ -165,32 +274,32 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Alerter le 15, mettre O2, préparer une 2ème dose d'adrénaline et des corticoïdes IV",
+          "label": "Alerter le 15, maintenir O2, préparer une 2ème dose d'adrénaline et des corticoïdes IV",
           "type": "soin",
           "tempsExecutionSec": 20,
           "nextNode": "etat_stabilise_surveillance",
-          "feedback": "Excellente gestion. Vous anticipez la suite de la prise en charge : surveillance, oxygène et traitements de seconde ligne."
+          "feedback": "Excellente gestion. Vous anticipez la suite : surveillance hospitalière obligatoire pour le risque de réaction biphasique."
         },
         {
           "label": "Considérer le patient comme sauvé et relâcher la surveillance",
           "type": "erreur",
           "tempsExecutionSec": 10,
           "nextNode": "etat_rebond_anaphylactique",
-          "feedback": "ERREUR : L'amélioration peut être temporaire. Un choc anaphylactique nécessite une surveillance hospitalière d'au moins 24h à cause du risque de réaction biphasique."
+          "feedback": "ERREUR GRAVE : L'amélioration peut être temporaire. Un choc anaphylactique nécessite une surveillance hospitalière d'au moins 24h. La réaction biphasique peut être mortelle."
         }
       ]
     },
     "etat_degradation1": {
       "id": "etat_degradation1",
-      "descriptionClinique": "Le patient devient somnolent, sa peau est marbrée. Cyanose des lèvres. L'œdème de Quincke obstrue les voies aériennes, le son respiratoire est faible. Pouls filant.",
+      "descriptionClinique": "Le patient devient somnolent, sa peau est marbrée. Cyanose des lèvres. L'œdème de Quincke obstrue les voies aériennes, le son respiratoire est faible. Pouls filant à 145 bpm. La tension s'effondre.",
       "constantesCibles": {
         "tension": "60/30",
-        "pouls": 145,
-        "saturationO2": 84,
-        "frequenceRespiratoire": 35
+        "pouls": "145",
+        "saturationO2": "84",
+        "frequenceRespiratoire": "35"
       },
       "evolutionAuto": {
-        "delaiSecondes": 30,
+        "delaiSecondes": 25,
         "nextNode": "etat_arret_cardiaque",
         "motif": "Collapsus circulatoire et respiratoire menant à l'arrêt cardiaque."
       },
@@ -200,25 +309,32 @@
           "type": "traitement_cle",
           "tempsExecutionSec": 5,
           "nextNode": "etat_recuperation_in_extremis",
-          "feedback": "Injection réalisée en urgence absolue ! Cela a pris plus de temps pour agir mais le patient sort lentement du collapsus."
+          "feedback": "Injection réalisée en urgence absolue ! Le patient sort lentement du collapsus. L'adrénaline agit mais le retard a été coûteux."
         },
         {
-          "label": "Intubation Oro-trachéale",
-          "type": "geste_urgence",
+          "label": "Tenter une intubation oro-trachéale",
+          "type": "erreur",
           "tempsExecutionSec": 15,
           "nextNode": "etat_arret_cardiaque",
-          "feedback": "Échec de l'intubation à cause de l'œdème majeur. Le patient s'épuise. Il fallait faire de l'adrénaline d'abord pour réduire l'oedème."
+          "feedback": "Échec de l'intubation à cause de l'œdème laryngé majeur (gonflement massif). Le patient s'épuise. Il fallait l'adrénaline D'ABORD pour réduire l'œdème."
+        },
+        {
+          "label": "Mettre en position latérale de sécurité (PLS)",
+          "type": "erreur",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "ERREUR : la PLS est pour un inconscient qui respire. Ici le problème est l'obstruction des voies aériennes par l'œdème. L'adrénaline est la seule solution."
         }
       ]
     },
-    "etat_degradation1_aggravee": {
-      "id": "etat_degradation1_aggravee",
-      "descriptionClinique": "La position allongée a augmenté la gêne respiratoire. Le patient est paniqué, cyanosé, et commence à perdre connaissance. Pouls imprenable.",
+    "etat_degradation_position": {
+      "id": "etat_degradation_position",
+      "descriptionClinique": "La position jambes surélevées a aggravé la détresse respiratoire. Le patient est paniqué, cyanosé, et commence à perdre connaissance. Pouls imprenable au poignet.",
       "constantesCibles": {
         "tension": "50/30",
-        "pouls": 150,
-        "saturationO2": 80,
-        "frequenceRespiratoire": 38
+        "pouls": "150",
+        "saturationO2": "80",
+        "frequenceRespiratoire": "38"
       },
       "evolutionAuto": {
         "delaiSecondes": 20,
@@ -227,41 +343,41 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Injection Adrénaline 0.5mg IM en urgence absolue",
+          "label": "Remettre en position assise et injecter Adrénaline 0.5mg IM en urgence",
           "type": "traitement_cle",
-          "tempsExecutionSec": 5,
+          "tempsExecutionSec": 8,
           "nextNode": "etat_recuperation_in_extremis",
-          "feedback": "Vous parvenez à injecter l'adrénaline juste avant l'arrêt. Le patient est récupéré in extremis."
+          "feedback": "Vous parvenez à injecter l'adrénaline en urgence absolue. Le patient est récupéré in extremis, mais le pronostic reste engagé."
         }
       ]
     },
     "etat_recuperation_in_extremis": {
       "id": "etat_recuperation_in_extremis",
-      "descriptionClinique": "L'adrénaline fait effet lentement. Le patient reste très hypotendu et somnolent, mais la cyanose régresse. La respiration redevient audible.",
+      "descriptionClinique": "L'adrénaline fait effet lentement. Le patient reste très hypotendu et somnolent, mais la cyanose régresse progressivement. La respiration redevient audible, le wheezing diminue.",
       "constantesCibles": {
         "tension": "75/40",
-        "pouls": 130,
-        "saturationO2": 90,
-        "frequenceRespiratoire": 25
+        "pouls": "130",
+        "saturationO2": "90",
+        "frequenceRespiratoire": "25"
       },
       "actionsDisponibles": [
         {
-          "label": "Alerter le 15, mettre O2, préparer une 2ème dose d'adrénaline",
+          "label": "Alerter le 15 en urgence, maintenir O2, préparer une 2ème dose d'adrénaline",
           "type": "soin",
           "tempsExecutionSec": 10,
           "nextNode": "etat_stabilise_surveillance",
-          "feedback": "Le SMUR est en route. La prise en charge se poursuit. Le patient a eu chaud."
+          "feedback": "Le SMUR est en route. La prise en charge se poursuit. Le patient a eu très chaud — réaction biphasique possible."
         }
       ]
     },
     "etat_rebond_anaphylactique": {
       "id": "etat_rebond_anaphylactique",
-      "descriptionClinique": "Environ 2 heures après l'injection, alors que tout semblait aller mieux, le patient se plaint à nouveau de démangeaisons, et sa respiration redevient sifflante. La tension chute à nouveau.",
+      "descriptionClinique": "Environ 2 heures après l'injection, alors que tout semblait aller mieux, le patient se plaint à nouveau de démangeaisons intenses. La respiration redevient sifflante. La tension chute à nouveau.",
       "constantesCibles": {
         "tension": "95/55",
-        "pouls": 110,
-        "saturationO2": 94,
-        "frequenceRespiratoire": 24
+        "pouls": "110",
+        "saturationO2": "94",
+        "frequenceRespiratoire": "24"
       },
       "evolutionAuto": {
         "delaiSecondes": 60,
@@ -270,18 +386,18 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Injection d'une deuxième dose d'Adrénaline 0.5mg IM",
+          "label": "Injection d'une 2ème dose d'Adrénaline 0.5mg IM",
           "type": "traitement_cle",
           "tempsExecutionSec": 10,
           "nextNode": "etat_stabilise_surveillance",
-          "feedback": "Bonne réaction ! La deuxième dose contrôle la réaction biphasique. Le patient sera mis sous perfusion de corticoïdes pour éviter une troisième vague."
+          "feedback": "Bonne réaction ! La deuxième dose contrôle la réaction biphasique. Le patient sera mis sous perfusion de corticoïdes en hospitalisation."
         },
         {
-          "label": "Administrer des corticoïdes IV seuls",
+          "label": "Administrer des corticoïdes IV seuls (sans adrénaline)",
           "type": "erreur",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
-          "feedback": "Les corticoïdes sont trop lents à agir pour une urgence. L'adrénaline reste le traitement de choix pour la phase aiguë, même lors d'une réaction biphasique."
+          "feedback": "PIÈGE AFGSU : Les corticoïdes mettent 30-60 minutes à agir. Trop lents pour la phase aiguë d'une réaction biphasique. L'adrénaline reste le traitement d'urgence, même en 2ème dose."
         }
       ]
     },
@@ -289,36 +405,24 @@
       "id": "etat_stabilise_surveillance",
       "isEndState": true,
       "success": true,
-      "descriptionClinique": "Le patient est stable sous oxygène et surveillance scopique. Le SMUR arrive et prend en charge le transfert en réanimation pour surveillance continue et traitement complémentaire. Vous avez parfaitement géré la situation.",
+      "descriptionClinique": "Le patient est stable sous oxygène et surveillance scopique. Le SMUR arrive et prend en charge le transfert en réanimation pour surveillance continue (minimum 24h) et traitement complémentaire (corticoïdes, antihistaminiques IV). Vous avez parfaitement géré la situation.",
       "constantesCibles": {
         "tension": "120/75",
-        "pouls": 90,
-        "saturationO2": 99,
-        "frequenceRespiratoire": 16
-      }
-    },
-    "etat_guerison": {
-      "id": "etat_guerison",
-      "isEndState": true,
-      "success": true,
-      "descriptionClinique": "L'urticaire régresse, la respiration s'apaise. La tension remonte. Le patient est sauvé et sera transféré en réanimation pour surveillance.",
-      "constantesCibles": {
-        "tension": "120/75",
-        "pouls": 90,
-        "saturationO2": 99,
-        "frequenceRespiratoire": 16
+        "pouls": "90",
+        "saturationO2": "99",
+        "frequenceRespiratoire": "16"
       }
     },
     "etat_arret_cardiaque": {
       "id": "etat_arret_cardiaque",
       "isEndState": true,
       "success": false,
-      "descriptionClinique": "Tracé plat sur l'ECG. Le patient est en arrêt cardiorespiratoire (asystolie) par collapsus hypoxique et anoxique. Les manœuvres de réanimation débutent, mais l'issue est sombre en raison du retard de traitement.",
+      "descriptionClinique": "Tracé plat sur l'ECG. Le patient est en arrêt cardiorespiratoire (asystolie) par collapsus hypoxique et anoxique. Les manœuvres de réanimation débutent, mais le retard de prise en charge par adrénaline rend l'issue très sombre.",
       "constantesCibles": {
         "tension": "0/0",
-        "pouls": 0,
-        "saturationO2": 0,
-        "frequenceRespiratoire": 0
+        "pouls": "0",
+        "saturationO2": "0",
+        "frequenceRespiratoire": "0"
       }
     }
   }
