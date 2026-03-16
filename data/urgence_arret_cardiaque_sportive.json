@@ -178,7 +178,7 @@
           "tempsExecutionSec": 10,
           "feedback": "Pas de réponse. Vous basculez sa tête en arrière, mais il n'y a aucun mouvement respiratoire. Vous ne sentez pas de pouls carotidien.",
           "nextNode": "s2",
-          "type": "erreur"
+          "type": "support"
         },
         {
           "label": "La mettre en PLS (position latérale de sécurité) immédiatement.",
@@ -232,7 +232,7 @@
           "tempsExecutionSec": 10,
           "feedback": "Parfait. Vous activez la chaîne de survie : alerte, demande du DAE et début immédiat des compressions thoraciques.",
           "nextNode": "s3",
-          "type": "erreur"
+          "type": "traitement_cle"
         },
         {
           "label": "Commencer le massage cardiaque sans alerter personne.",
@@ -326,9 +326,24 @@
         "nextNode": "s5_shock_advised",
         "motif": "Le DAE détecte une Fibrillation Ventriculaire."
       },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
+      "actionsDisponibles": [
+        {
+          "label": "Crier « Écartez-vous ! » et appuyer sur le bouton de choc",
+          "tempsExecutionSec": 8,
+          "feedback": "Choc délivré ! Le DAE analyse à nouveau le rythme.",
+          "nextNode": "s6_post_shock",
+          "type": "traitement_cle"
+        },
+        {
+          "label": "Attendre que le DAE décide quoi faire",
+          "tempsExecutionSec": 15,
+          "feedback": "Le DAE attend votre action. Chaque seconde compte !",
+          "nextNode": "s_err_wait_shock",
+          "type": "erreur"
+        }
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s5_shock_advised": {
       "id": "s5_shock_advised",
@@ -429,6 +444,12 @@
         "saturationO2": "0",
         "frequenceRespiratoire": "0"
       },
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_wait_shock": {
+      "id": "s_err_wait_shock",
+      "descriptionClinique": "Vous n'avez pas appuyé sur le bouton de choc. Le DAE a recommandé un choc mais personne ne l'a délivré. L'arrêt cardiaque se prolonge.",
       "isEndState": true,
       "success": false
     }
