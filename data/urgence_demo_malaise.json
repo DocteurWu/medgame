@@ -90,13 +90,58 @@
   "possibleTreatments": [],
   "correctTreatments": [],
   "fatalTreatments": [],
-  "correction": "# Correction : Douleur Thoracique Suspecte\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+  "correction": "# Correction : Douleur Thoracique Suspecte (Malaise Cardiaque)\n\n## Diagnostic\nDouleur thoracique (rétrosternale, irradiation bras gauche/mâchoire), sueurs, pâleur, sensation d'oppression = suspecter un **syndrome coronarien aigu (SCA)**. À différencier d'un simple malaise vagal (bradycardie, pâleur, sensation de malaise).\n\n## Conduite à tenir AFGSU\n1. **Allonger** la victime en position semi-assise (demi-assise, jambes fléchies)\n2. **Alerter** le 15/112 — préciser \"douleur thoracique suspecte\"\n3. **Rassurer** la victime, ne pas la laisser seule\n4. **Déboutonner** les vêtements serrés (col, ceinture)\n5. **Ne rien donner à boire/manger** (risque de vomissement)\n6. **Préparer l'aspirine** (300 mg à croisser) UNIQUEMENT si le SAMU le conseille par téléphone\n7. **Surveiller** l'état de conscience et la respiration\n\n## Pièges classiques\n- **Laisser la victime marcher** → L'effort aggrave un SCA, elle doit RESTER ALLONGÉE\n- **Donner de la trinitrine sans avis médical** → Peut provoquer un arrêt si infarctus du VD\n- **Ignorer une douleur atypique** → Les femmes, diabétiques et personnes âgées présentent des douleurs atypiques (ventre, dos)\n- **Penser à un simple malaise vagal** → SCA et vagal peuvent se ressembler au début → TOUJOURS alerter\n\n## Points clés AFGSU\n- Une douleur thoracique qui dure > 20 min = alerte systématique\n- Le délai de prise en charge est CRUCIAL (\"Time is muscle\")\n- Aspirine = antiagrégant, empêche la formation de caillots (mais ne les dissout pas)\n- Éviter tout effort physique à la victime en attendant les secours",
   "correctionImage": null,
   "feedback": {
     "default": "Terminé."
   },
   "locks": [],
-  "postGameQuestions": [],
+  "postGameQuestions": [
+    {
+      "question": "Quelle position adopter face à une victime de douleur thoracique suspecte ?",
+      "options": [
+        "Allongé plat sur le dos",
+        "Semi-assise (demi-assise, jambes fléchies)",
+        "Assise sur une chaise",
+        "Sur le ventre"
+      ],
+      "correctIndex": 1,
+      "explanation": "La position semi-assise facilite la respiration et diminue le retour veineux, réduisant le travail du coeur. C'est la position recommandée en cas de suspicion de SCA."
+    },
+    {
+      "question": "Un diabétique présentant un malaise thoracique a-t-il toujours les symptômes classiques ?",
+      "options": [
+        "Oui, toujours",
+        "Non, la neuropathie diabétique peut masquer la douleur",
+        "Uniquement s'il est insulinodépendant",
+        "Uniquement en cas d'hypoglycémie"
+      ],
+      "correctIndex": 1,
+      "explanation": "Les patients diabétiques peuvent présenter des douleurs atypiques voire indolores en raison de la neuropathie. Un malaise chez un diabétique doit TOUJOURS alerter."
+    },
+    {
+      "question": "Que ne doit-on PAS faire face à une suspicion de douleur cardiaque ?",
+      "options": [
+        "Alerter le 15",
+        "Allonger la victime",
+        "Lui donner de la trinitrine sans avis médical",
+        "Déboutonner ses vêtements serrés"
+      ],
+      "correctIndex": 2,
+      "explanation": "La trinitrine est contre-indiquée dans l'infarctus du ventricule droit et peut provoquer un arrêt. Ne jamais administrer sans avis du médecin du SAMU."
+    },
+    {
+      "question": "Quelle est la différence entre un malaise vagal et un syndrome coronarien aigu ?",
+      "options": [
+        "Impossible de les différencier",
+        "Le vagal = bradycardie + pâleur ; Le SCA = douleur thoracique + tachycardie",
+        "Le vagal est plus grave",
+        "Le SCA ne touche que les hommes"
+      ],
+      "correctIndex": 1,
+      "explanation": "Malaise vagal : ralentissement du coeur (bradycardie), pâleur, sueurs froides, sensation de malaise. SCA : douleur thoracique, oppression, tachycardie. Mais les deux peuvent se confondre au début → TOUJOURS alerter."
+    }
+  ],
   "gameplayConfig": {
     "startNode": "s1"
   },

@@ -90,13 +90,58 @@
   "possibleTreatments": [],
   "correctTreatments": [],
   "fatalTreatments": [],
-  "correction": "# Correction : Inconscience et PLS\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+  "correction": "# Correction : Inconscience et PLS (Position Latérale de Sécurité)\n\n## Diagnostic\nVictime **inconsciente mais qui respire** (respire normalement, pouls présent). L'inconscience avec ventilation efficace = PLS. L'objectif est de protéger les voies aériennes en évitant l'obstruction par la langue ou les vomissements.\n\n## Conduite à tenir AFGSU\n1. **Évaluer la conscience** : secouer doucement les épaules, appeler fort\n2. **Vérifier la respiration** : regarder-écouter-sentir (max 10 sec)\n3. Si elle respire → **Alerter** le 15/112 \"personne inconsciente qui respire\"\n4. **Mettre en PLS** :\n   - Bras du côté proche le long du corps\n   - Bras éloigné plié à 90° face à la victime\n   - Main éloignée sous la joue opposée\n   - Fléchir la jambe éloignée\n   - Retourner la victime sur le côté en tirant par la jambe fléchie\n5. **Ouvrir la bouche** pour laisser couler d'éventuels vomissements\n6. **Surveiller la respiration** en continu\n\n## Pièges classiques\n- **Mettre en PLS quelqu'un qui NE RESPIRE PAS** → La PLS est UNIQUEMENT pour les inconscients qui respirent. Si pas de respiration → MASSAGE\n- **Tourner la tête uniquement** → La PLS tourne tout le corps, pas juste la tête\n- **Ne pas surveiller la respiration** → L'inconscient peut s'arrêter de respirer à tout moment\n- **Mettre un coussin/sac sous la tête** → Inutile, la main sous la joue suffit\n\n## Points clés AFGSU\n- La PLS empêche l'obstruction des voies aériennes par la langue\n- Position sur le côté droit pour les femmes enceintes (>20 SA)\n- Vérifier la respiration toutes les minutes après la mise en PLS\n- Si arrêt respiratoire → Retourner sur le dos et COMMENCER LE MASSAGE",
   "correctionImage": null,
   "feedback": {
     "default": "Terminé."
   },
   "locks": [],
-  "postGameQuestions": [],
+  "postGameQuestions": [
+    {
+      "question": "Quand doit-on mettre une victime en Position Latérale de Sécurité (PLS) ?",
+      "options": [
+        "Quand elle est inconsciente et ne respire pas",
+        "Quand elle est inconsciente mais respire normalement",
+        "Quand elle a mal au dos",
+        "Quand elle fait un arrêt cardiaque"
+      ],
+      "correctIndex": 1,
+      "explanation": "La PLS est réservée aux victimes INCONSCIENTES qui RESPIRENT. Si pas de respiration → massage cardiaque immédiat."
+    },
+    {
+      "question": "Toutes les combien de temps faut-il vérifier la respiration d'une victime en PLS ?",
+      "options": [
+        "Toutes les 5 minutes",
+        "Toutes les 2 minutes",
+        "Toutes les minutes",
+        "Toutes les 10 minutes"
+      ],
+      "correctIndex": 2,
+      "explanation": "AFGSU : vérifier la respiration TOUTES LES MINUTES. Une victime inconsciente peut s'arrêter de respirer à tout moment."
+    },
+    {
+      "question": "Dans quel cas met-on une victime sur le côté DROIT en PLS ?",
+      "options": [
+        "Quand elle vomit",
+        "Pour les femmes enceintes après 20 SA",
+        "Quand elle a mal au côté gauche",
+        "Il n'y a pas de différence entre côté droit et gauche"
+      ],
+      "correctIndex": 1,
+      "explanation": "Pour les femmes enceintes (> 20 semaines d'aménorrhée), la PLS se fait sur le côté DROIT pour éviter la compression de la veine cave inférieure par l'utérus gravide."
+    },
+    {
+      "question": "Que faire si la victime en PLS commence à vomir ?",
+      "options": [
+        "La remettre sur le dos",
+        "Ouvrir la bouche et laisser couler les vomissements",
+        "Lui donner de l'eau",
+        "Lui taper dans le dos"
+      ],
+      "correctIndex": 1,
+      "explanation": "Ouvrir la bouche de la victime pour permettre aux vomissements de s'écouler naturellement vers l'extérieur. La PLS est justement conçue pour ça."
+    }
+  ],
   "gameplayConfig": {
     "startNode": "s1"
   },

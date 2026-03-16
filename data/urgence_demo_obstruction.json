@@ -90,13 +90,58 @@
   "possibleTreatments": [],
   "correctTreatments": [],
   "fatalTreatments": [],
-  "correction": "# Correction : Obstruction Totale (Étouffement)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+  "correction": "# Correction : Obstruction Totale (Étouffement)\n\n## Diagnostic\n**Geste universel** (mains à la gorge) + **impossibilité de parler/tousser** + **cyanose** + **absence de bruit respiratoire** = obstruction TOTALE des voies aériennes. C'est une urgence vitale — mort en 3-4 minutes sans intervention.\n\n## Conduite à tenir AFGSU\n1. **Identifier** l'obstruction totale (pas de toux, pas de parole, pas de respiration)\n2. **5 claques vigoureuses** dans le dos, entre les omoplates\n   - Victime penchée en avant\n   - Paume de la main entre les omoplates\n   - Claques sèches et vigoureuses (pas des tapes !)\n3. Si inefficace → **5 compressions abdominales (Heimlich)**\n   - Se placer derrière la victime\n   - Poing au-dessus du nombril, sous le sternum\n   - Tirer sec vers soi et vers le haut\n4. **Alterner** 5 claques / 5 compressions jusqu'à expulsion\n5. Si **perte de connaissance** → Allonger et commencer le **massage cardiaque** (les compressions thoraciques peuvent mobiliser le corps étranger)\n6. **Alerter** le 15/112\n\n## Pièges classiques\n- **Donner de l'eau** → L'eau ne passe pas derrière le bouchon et risque d'être inhalée = AGGRAVATION\n- **Claques molles** → Il faut frapper FORT, c'est une urgence vitale\n- **Heimlich mal positionné** → Poing SOUS le sternum, pas sur les côtes (risque de fracture)\n- **Arrêter trop tôt** → Même après une quinte de toux, vérifier que la victime respire normalement\n\n## Points clés AFGSU\n- Obstruction PARTIELLE (tousse, parle) → Laisser tousser, ne PAS claquer\n- Obstruction TOTALE (ne tousse plus) → INTERVIENT IMMÉDIATEMENT\n- Chez le nourrisson (<1 an) : claques interscapulaires + compressions thoraciques (PAS Heimlich)\n- La manœuvre de Heimlich chez la femme enceinte/obèse : compressions THORACIQUES",
   "correctionImage": null,
   "feedback": {
     "default": "Terminé."
   },
   "locks": [],
-  "postGameQuestions": [],
+  "postGameQuestions": [
+    {
+      "question": "Comment différencier une obstruction PARTIELLE d'une obstruction TOTALE ?",
+      "options": [
+        "Partielle = tousse et parle ; Totale = ne tousse plus, ne parle plus",
+        "Partielle = inconscient ; Totale = conscient",
+        "Impossible de les différencier",
+        "Partielle = bleue ; Totale = rouge"
+      ],
+      "correctIndex": 0,
+      "explanation": "Obstruction PARTIELLE : la victime tousse, parle (même difficilement), respire → la laisser tousser. Obstruction TOTALE : plus de toux, plus de parole, cyanose → INTERVENIR immédiatement."
+    },
+    {
+      "question": "Combien de claques dorsales applique-t-on avant de passer à Heimlich ?",
+      "options": [
+        "3 claques",
+        "5 claques",
+        "10 claques",
+        "1 seule claque"
+      ],
+      "correctIndex": 1,
+      "explanation": "AFGSU : 5 claques vigoureuses entre les omoplates (paume de la main), puis si inefficace → 5 compressions abdominales. Alterner."
+    },
+    {
+      "question": "Peut-on administrer de l'eau à une personne en obstruction pour débloquer ?",
+      "options": [
+        "Oui, ça aide à faire passer le corps étranger",
+        "Non, l'eau risque d'être inhalée et aggrave l'obstruction",
+        "Uniquement de l'eau tiède",
+        "Uniquement si la victime peut déglutir"
+      ],
+      "correctIndex": 1,
+      "explanation": "Ne JAMAIS donner de l'eau : le bouchon empêche le passage et l'eau est inhalée dans les bronches → pneumopathie d'inhalation + aggravation de l'obstruction."
+    },
+    {
+      "question": "Que faire face à un nourrisson (< 1 an) en obstruction totale ?",
+      "options": [
+        "Heimlich normal",
+        "5 claques interscapulaires + 5 compressions thoraciques",
+        "Seulement des claques dans le dos",
+        "Mettre le nourrisson à l'envers et secouer"
+      ],
+      "correctIndex": 1,
+      "explanation": "Chez le nourrisson : PAS d'Heimlich (risque de lésion des organes abdominaux). On alterne 5 claques interscapulaires (nourrisson tête en bas) et 5 compressions thoraciques (2 doigts)."
+    }
+  ],
   "gameplayConfig": {
     "startNode": "s1"
   },
