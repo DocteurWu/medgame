@@ -36,11 +36,15 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Diabète type 2 équilibré"],
+      "medicaux": [
+        "Diabète type 2 équilibré"
+      ],
       "chirurgicaux": [],
       "familiaux": []
     },
-    "traitements": ["Metformine 500mg x2/j"],
+    "traitements": [
+      "Metformine 500mg x2/j"
+    ],
     "allergies": {
       "presence": false,
       "liste": []
@@ -50,7 +54,11 @@
       "evolution": "Aiguë, brutal",
       "facteursDeclenchants": "Cisaille industrielle — glissement de la main",
       "descriptionDouleur": "Douleur vive à l'index droit",
-      "asymptomesAssocies": ["Section du doigt", "Saignement modéré à abondant", "Choc"],
+      "asymptomesAssocies": [
+        "Section du doigt",
+        "Saignement modéré à abondant",
+        "Choc"
+      ],
       "remarques": "Accident du travail. Le doigt sectionné est au sol."
     },
     "verbatim": "Aaargh ! Mon doigt ! Regardez... il est coupé ! J'ai tellement mal !"
@@ -125,10 +133,14 @@
           "Le mettre dans de l'alcool à 90°",
           "Le laisser à température ambiante jusqu'au SAMU"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Rinçage + linge humide + sac étanche + glace (sans contact direct). La glace directe congèle et détruit les tissus. L'alcool les dessèche. La température ambiante les nécrose.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     },
     {
       "id": "lock_urg10_piege",
@@ -141,10 +153,14 @@
           "Parce que la glace est trop froide pour les nerfs",
           "Parce qu'il faut le garder à température corporelle"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Le contact direct avec la glace provoque une congélation des tissus (cristaux de glace dans les cellules). Les tissus détruits ne peuvent plus être réimplantés. C'est le piège #1 du cours AFGSU sur les amputations.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -154,12 +170,12 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Karim, 40 ans, ouvrier en métallurgie, vient de se faire sectionner l'index droit par une cisaille industrielle. Il hurle de douleur. La main droite saigne. Au sol, vous voyez le doigt sectionné. Karim est pâle, en sueur, tachycarde.",
+      "descriptionClinique": "Un ouvrier de 38 ans a eu le doigt sectionné par une scie sur table. L'amputation est nette au niveau de l'index droit. Le saignement est modéré mais constant. Il est conscient, tachycarde (105), en état de stress aigu.",
       "constantesCibles": {
         "tension": "135/90",
         "pouls": "105",
         "saturationO2": "98",
-        "temperature": "36.5",
+        "temperature": "37",
         "frequenceRespiratoire": "22"
       },
       "actionsDisponibles": [
@@ -187,13 +203,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Le moignon est comprimé. Le saignement est contrôlé. Vous voyez le doigt sectionné au sol, à côté de la machine.",
+      "descriptionClinique": "Vous comprimez le moignon avec un pansement stérile. La compression est efficace. Vous avez 2 priorités : arrêter le saignement et conserver le segment amputé.",
       "constantesCibles": {
-        "tension": "130/85",
-        "pouls": "100",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "20"
+        "tension": "125/82",
+        "pouls": "110",
+        "saturationO2": "97",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [
         {
@@ -220,13 +236,13 @@
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Le doigt est dans le sac. Vous avez besoin de glace.",
+      "descriptionClinique": "Le moignon est comprimé et surélevé. La victime est calme mais pâle. Pouls à 115, début de réaction vagale et de stress hémorragique même si la plaie est petite.",
       "constantesCibles": {
-        "tension": "130/85",
-        "pouls": "100",
-        "saturationO2": "98",
+        "tension": "115/72",
+        "pouls": "115",
+        "saturationO2": "96",
         "temperature": "36.5",
-        "frequenceRespiratoire": "20"
+        "frequenceRespiratoire": "26"
       },
       "actionsDisponibles": [
         {
@@ -247,13 +263,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Le doigt est bien conservé. Karim va mieux, le saignement est contrôlé. Vous appelez le 15.",
+      "descriptionClinique": "Le segment amputé est récupéré. Il est enveloppé dans un linge humide, mis dans un sac plastique, puis dans un sac plastique avec de la glace (JAMAIS au contact direct de la glace). Constantes stables.",
       "constantesCibles": {
-        "tension": "125/80",
-        "pouls": "95",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "18"
+        "tension": "105/65",
+        "pouls": "118",
+        "saturationO2": "95",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "26"
       },
       "actionsDisponibles": [
         {
@@ -274,13 +290,13 @@
     },
     "s5_good": {
       "id": "s5_good",
-      "descriptionClinique": "L'équipe microchirurgicale est alertée et prête au bloc. Karim est transporté rapidement. La réimplantation de l'index est réalisée avec succès dans les 3 heures grâce à votre conservation optimale du segment. Le diabète sera surveillé pendant la cicatrisation. Votre prise en charge irréprochable a permis cette réimplantation.",
+      "descriptionClinique": "Les secours arrivent. La victime et le segment amputé sont transférés au centre chirurgical. Délai d'ischémie maîtrisé. Réimplantation possible.",
       "constantesCibles": {
-        "tension": "120/75",
-        "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "16"
+        "tension": "100/60",
+        "pouls": "112",
+        "saturationO2": "95",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -288,13 +304,13 @@
     },
     "s5_incomplete": {
       "id": "s5_incomplete",
-      "descriptionClinique": "SMUR standard envoyé, sans équipe microchirurgicale. Délai supplémentaire avant réimplantation. Le résultat fonctionnel sera moins bon.",
+      "descriptionClinique": "Le segment a été récupéré correctement mais la compression du moignon n'est pas optimale. Saignement persistant. Les secours renforcent la contention.",
       "constantesCibles": {
-        "tension": "120/75",
-        "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "16"
+        "tension": "105/65",
+        "pouls": "115",
+        "saturationO2": "96",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "25"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -304,11 +320,11 @@
       "id": "s2_delayed",
       "descriptionClinique": "Vous avez récupéré le doigt mais le moignon a saigné pendant 15 secondes de plus. Karim est plus pâle. Légère aggravation de l'état de choc.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "110",
-        "saturationO2": "97",
-        "temperature": "36",
-        "frequenceRespiratoire": "24"
+        "tension": "110/68",
+        "pouls": "120",
+        "saturationO2": "94",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "28"
       },
       "actionsDisponibles": [
         {
@@ -325,43 +341,46 @@
       "id": "s_err_ice",
       "descriptionClinique": "Le doigt directement dans la glace a subi une congélation. Les tissus sont détruits par les cristaux de glace. Le chirurgien ne peut pas réimplanter. Karim garde un moignon.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "90",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "18"
+        "tension": "115/72",
+        "pouls": "118",
+        "saturationO2": "95",
+        "temperature": "36",
+        "frequenceRespiratoire": "26"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : La glace au contact direct du segment amputé provoque des gelures et détruit les tissus. On utilise TOUJOURS un linge humide + sac + glace autour du sac."
     },
     "s_err_ice2": {
       "id": "s_err_ice2",
       "descriptionClinique": "La glace en contact direct avec le doigt = congélation. Même erreur que la précédente. Tissus irréversiblement détruits.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "90",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "18"
+        "tension": "110/70",
+        "pouls": "115",
+        "saturationO2": "94",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : L'immersion dans l'eau glacée est trop agressive. Protocole AFGSU : envelopper le segment dans un linge humide, double sac, glace autour."
     },
     "s_err_alcohol": {
       "id": "s_err_alcohol",
       "descriptionClinique": "L'alcool à 90° a desséché et nécrosé les tissus du doigt. Réimplantation impossible.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "90",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "18"
+        "tension": "115/72",
+        "pouls": "120",
+        "saturationO2": "93",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "28"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Désinfecter un moignon avec de l'alcool provoque une nécrose tissulaire. On comprime simplement avec un pansement stérile. Pas de désinfection pré-hospitalière."
     }
   }
 }

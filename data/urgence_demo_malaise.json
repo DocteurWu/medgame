@@ -57,11 +57,11 @@
   },
   "examenClinique": {
     "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
+      "tension": "100/60 mmHg",
+      "pouls": "58 bpm",
       "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "14/min"
     },
     "aspectGeneral": "Variable selon le cas",
     "examenCardiovasculaire": {
@@ -103,13 +103,13 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Jean est assis, très pâle, transpire abondamment. Il dit avoir 'un poids énorme' sur le cœur.",
+      "descriptionClinique": "Une femme de 50 ans est affalée sur une chaise dans un café. Elle est pâle, couverte de sueurs froides, les mains tremblantes. Elle murmure : 'Je... je ne me sens pas bien... j'ai la tête qui tourne...'",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "100/60",
+        "pouls": "58",
+        "saturationO2": "94",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [
         {
@@ -130,13 +130,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "La douleur est apparue au repos il y a 20 min. Elle va dans la mâchoire.",
+      "descriptionClinique": "La victime est de plus en plus faible. Elle est en état pré-syncopal : pouls lent (55), tension basse (95/55), sueurs, nausées. Vous la rassurez.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "95/55",
+        "pouls": "55",
+        "saturationO2": "93",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "13"
       },
       "actionsDisponibles": [
         {
@@ -157,13 +157,13 @@
     },
     "s3_appel": {
       "id": "s3_appel",
-      "descriptionClinique": "Le médecin du 15 vous demande s'il a déjà fait un infarctus.",
+      "descriptionClinique": "Un témoin compose le 15. Vous maintenez la victime en position semi-assise (jambe surélevée si possible). Les constantes se stabilisent légèrement.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "98/58",
+        "pouls": "56",
+        "saturationO2": "94",
+        "temperature": "36.4",
+        "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [
         {
@@ -184,13 +184,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Jean devient brusquement très essoufflé et commence à tousser (OAP suspecté).",
+      "descriptionClinique": "La position semi-assise et le calme permettent une légère amélioration. La victime est moins nauséeuse, le pouls remonte à 60. La couleur revient.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "100/62",
+        "pouls": "60",
+        "saturationO2": "95",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "15"
       },
       "actionsDisponibles": [
         {
@@ -211,12 +211,12 @@
     },
     "s5_good": {
       "id": "s5_good",
-      "descriptionClinique": "Le SMUR arrive en 8 minutes. Vous donnez votre bilan.",
+      "descriptionClinique": "L'amélioration est nette. Tension 110/68, pouls 65. La victime boit un peu d'eau sucrée (si tolérance digestive OK). Le SAMU confirme un malaise vagal.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
+        "tension": "110/68",
+        "pouls": "65",
+        "saturationO2": "96",
+        "temperature": "36.5",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [
@@ -232,12 +232,12 @@
     },
     "s6_victory": {
       "id": "s6_victory",
-      "descriptionClinique": "Jean est dirigé vers la coronarographie en urgence. Il s'en sort sans séquelles !",
+      "descriptionClinique": "Le SAMU prend le relais. La victime est stable, ECG normal, glycémie normale. Diagnostic confirmé : malaise vagal. Aucune hospitalisation nécessaire. Bonne prise en charge.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
+        "tension": "115/72",
+        "pouls": "68",
+        "saturationO2": "97",
+        "temperature": "36.5",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
@@ -248,57 +248,61 @@
       "id": "s_err_drug",
       "descriptionClinique": "Il était allergique ou ce n'était pas un IDM. Complication inutile.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "85/45",
+        "pouls": "50",
+        "saturationO2": "88",
+        "temperature": "36",
+        "frequenceRespiratoire": "10"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "INTERDIT EN AFGSU : Donner un médicament sans prescription médicale est strictement interdit. Perte de conscience et aggravation."
     },
     "s_err_wait": {
       "id": "s_err_wait",
       "descriptionClinique": "L'infarctus a foudroyé son cœur avant l'appel tardif.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "70/35",
+        "pouls": "45",
+        "saturationO2": "82",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "8"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Ne pas surveiller ni alerter face à un malaise vagal. La victime a évolué vers un arrêt cardiaque par bradycardie extrême."
     },
     "s_err_aggro": {
       "id": "s_err_aggro",
       "descriptionClinique": "Sans bilan clair, les secours sont arrivés sans matériel de réanimation.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "160/100",
+        "pouls": "110",
+        "saturationO2": "90",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "22"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Lever brutalement la victime déclenche un réflexe vagal massif. Il faut toujours procéder lentement et surveiller."
     },
     "s_err_suffocation": {
       "id": "s_err_suffocation",
       "descriptionClinique": "L'allongement a provoqué un arrêt respiratoire immédiat par défaillance cardiaque.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "75/40",
+        "pouls": "48",
+        "saturationO2": "75",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "6"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : La victime en position sur le dos a inhalé (nausées/vomissements). Arrêt respiratoire. La PLS ou semi-assise est impérative."
     }
   },
   "editorData": {

@@ -17,7 +17,7 @@
     "motifHospitalisation": "Arrêt Cardio-Respiratoire (ACR)",
     "modeDeVie": {
       "activitePhysique": {
-        "description": "ND"
+        "description": "Sédentaire, employé de bureau"
       },
       "tabac": {
         "quantite": "ND",
@@ -36,9 +36,14 @@
       }
     },
     "antecedents": {
-      "medicaux": [],
+      "medicaux": [
+        "Hypertension artérielle",
+        "Diabète type 2"
+      ],
       "chirurgicaux": [],
-      "familiaux": []
+      "familiaux": [
+        "Infarctus du père à 55 ans"
+      ]
     },
     "traitements": [],
     "allergies": {
@@ -48,22 +53,22 @@
     "histoireMaladie": {
       "debutSymptomes": "Brutal",
       "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
+      "facteursDeclenchants": "Effort physique modéré (course pour attraper un bus)",
+      "descriptionDouleur": "N/A - Perte de connaissance brutale",
       "asymptomesAssocies": [],
       "remarques": "Cas de démonstration secouriste"
     },
-    "verbatim": "..."
+    "verbatim": "Le témoin : 'Il courait et puis il est tombé comme ça, d'un coup...'"
   },
   "examenClinique": {
     "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
+      "tension": "Indétectable",
+      "pouls": "0 bpm",
       "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+      "saturationO2": "0%",
+      "frequenceRespiratoire": "0/min"
     },
-    "aspectGeneral": "Variable selon le cas",
+    "aspectGeneral": "Homme de 58 ans au sol, cyanosé, flasque, sans mouvement spontané. Pas de réponse aux stimulations.",
     "examenCardiovasculaire": {
       "auscultation": "ND",
       "inspection": "ND",
@@ -103,13 +108,13 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
+      "descriptionClinique": "Un homme de 58 ans est allongé au sol dans un centre commercial. La zone semble sûre. Il est cyanosé, flasque, sans mouvement spontané. Les passants s'arrêtent, paniqués.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -130,13 +135,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
+      "descriptionClinique": "La victime est totalement inconsciente. Vous êtes au sol avec elle. Un passant est à proximité. Il faut déléguer rapidement.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -157,13 +162,13 @@
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
+      "descriptionClinique": "Le témoin part chercher un DAE. Vous êtes seul avec la victime inconsciente. Vous devez vérifier la respiration avant toute chose.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -184,13 +189,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
+      "descriptionClinique": "La victime est en arrêt cardio-respiratoire. Elle ne respire pas. Le témoin est parti chercher le DAE. Vous démarrez le massage thoracique : 30 compressions / 2 insufflations, taux de compression ≥ 100/min, profondeur 5-6 cm.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0 (compressions)",
+        "saturationO2": "0",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -211,13 +216,13 @@
     },
     "s5": {
       "id": "s5",
-      "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
+      "descriptionClinique": "Le témoin revient avec le DAE. Après vos 2 premiers cycles de RCP, vous allumez l'appareil. Électrodes posées, le DAE analyse : 'Choc électrique recommandé, ne touchez pas la victime.'",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "FV",
+        "saturationO2": "0",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -238,13 +243,13 @@
     },
     "s6": {
       "id": "s6",
-      "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
+      "descriptionClinique": "Le choc est délivré. La victime a un sursaut musculaire mais reste sans conscience ni respiration. Le DAE dit : 'Reprenez immédiatement le massage.'",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0 (compressions)",
+        "saturationO2": "15",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -265,12 +270,12 @@
     },
     "s7_good": {
       "id": "s7_good",
-      "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
+      "descriptionClinique": "Les secours arrivent (pompiers puis SMUR). Grâce à votre RCP précoce et au choc du DAE, le rythme cardiaque est restauré (ROSC). La victime est transportée en réanimation. Vous avez fait la différence.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
+        "tension": "100/60",
+        "pouls": "85",
+        "saturationO2": "92",
+        "temperature": "36",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
@@ -281,85 +286,91 @@
       "id": "s_err_direct",
       "descriptionClinique": "Masser une personne qui dort ou qui a juste fait un malaise sans vérifier est une faute grave.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
+        "tension": "130/85",
+        "pouls": "72",
         "saturationO2": "98",
         "temperature": "37",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : En AFGSU, on commence TOUJOURS par vérifier la conscience (appeler + secouer + douleur) puis la respiration pendant 10 secondes. Masser quelqu'un qui respire est dangereux."
     },
     "s_err_solo": {
       "id": "s_err_solo",
       "descriptionClinique": "En situation d'urgence, déléguer la recherche du DAE est vital pour rester auprès de la victime.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : En situation d'ACR, chaque seconde compte. Vous devez DÉLÉGUER l'alerte et le DAE pour rester auprès de la victime et maintenir le massage."
     },
     "s_err_pls": {
       "id": "s_err_pls",
       "descriptionClinique": "Mettre un ACR en PLS garantit le décès par hypoxie cérébrale.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "36",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : La PLS est réservée aux victimes INCONSCIENTES qui RESPIRENT. Mettre un ACR en PLS condamne la victime par hypoxie cérébrale irréversible."
     },
     "s_err_abandon": {
       "id": "s_err_abandon",
       "descriptionClinique": "Le cerveau meurt en 4 minutes. Votre absence a été fatale.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : Le cerveau souffre dès 3 minutes sans oxygène. Abandonner la victime même quelques secondes pour chercher un DAE vous-même est une erreur grave."
     },
     "s_err_nodae": {
       "id": "s_err_nodae",
       "descriptionClinique": "Ne pas utiliser le DAE disponible réduit les chances de survie de 90% à 5%.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "FV persistante",
+        "saturationO2": "0",
+        "temperature": "36",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Le DAE est le SEUL moyen de traiter la fibrillation ventriculaire (cause la + fréquente d'ACR). Sans DAE, le taux de survie passe de 40-90% à <5%."
     },
     "s_err_pause": {
       "id": "s_err_pause",
       "descriptionClinique": "Le sang s'arrête de circuler dès que vous arrêtez de masser. Les organes sont lésés.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "Indétectable",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Les pauses dans la RCP sont mortelles. Le débit sanguin cérébral tombe à zéro dès l'arrêt des compressions. On ne s'arrête QUE pour le choc DAE (< 5 sec de pause)."
     }
   },
   "editorData": {

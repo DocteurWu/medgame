@@ -57,11 +57,11 @@
   },
   "examenClinique": {
     "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
+      "tension": "110/70 mmHg",
+      "pouls": "65 bpm",
       "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+      "saturationO2": "93%",
+      "frequenceRespiratoire": "12/min"
     },
     "aspectGeneral": "Variable selon le cas",
     "examenCardiovasculaire": {
@@ -103,13 +103,13 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Marc est au sol, inerte. Vous êtes le seul témoin sur ce chemin.",
+      "descriptionClinique": "Un homme de 35 ans est retrouvé allongé sur un banc public. Il est inconscient mais présente des mouvements respiratoires (polypnée à 12/min). Son teint est pâle, la peau froide. Une bouteille d'alcool vide est à côté de lui.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "110/70",
+        "pouls": "65",
+        "saturationO2": "93",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "12"
       },
       "actionsDisponibles": [
         {
@@ -130,13 +130,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Vous ouvrez la bouche, rien n'obstrue. Vous écoutez le souffle.",
+      "descriptionClinique": "La victime ne répond pas aux appels ni aux stimulations douloureuses. Vous avez besoin d'aide pour gérer la situation.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "108/68",
+        "pouls": "68",
+        "saturationO2": "92",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "12"
       },
       "actionsDisponibles": [
         {
@@ -157,13 +157,13 @@
     },
     "s3_respire": {
       "id": "s3_respire",
-      "descriptionClinique": "Victime inconsciente qui respire sur le dos.",
+      "descriptionClinique": "La victime RESPIRE : vous voyez le ventre bouger, vous sentez le souffle sur votre joue. FR 14/min. En AFGSU, une victime inconsciente qui respire → PLS.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "108/68",
+        "pouls": "66",
+        "saturationO2": "93",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [
         {
@@ -184,13 +184,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Il est sur le côté, stable. Sa bouche est ouverte vers le bas.",
+      "descriptionClinique": "Vous positionnez la victime en PLS. La tête est en hyperextension, la bouche ouverte vers le sol. Les voies aériennes sont protégées. Vous surveillez la respiration.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "105/65",
+        "pouls": "68",
+        "saturationO2": "94",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [
         {
@@ -211,12 +211,12 @@
     },
     "s5": {
       "id": "s5",
-      "descriptionClinique": "Marc a un mouvement de haut-le-cœur et vomit un peu de liquide.",
+      "descriptionClinique": "La victime est stable en PLS. Vous surveillez attentivement : conscience (AVPU), respiration, pouls. Un témoin a appelé le 15.",
       "constantesCibles": {
-        "tension": "120/80",
+        "tension": "108/68",
         "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
+        "saturationO2": "95",
+        "temperature": "36.8",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [
@@ -238,12 +238,12 @@
     },
     "s6_good": {
       "id": "s6_good",
-      "descriptionClinique": "Le SAMU arrive. La PLS a protégé ses poumons lors du vomissement. Diagnostic : Malaise vagal sévère.",
+      "descriptionClinique": "Les secours arrivent. La victime est consciente (confuse), respire normalement. Le SAMU la prend en charge pour intoxication alcoolique. Votre surveillance a prévenu l'arrêt respiratoire.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
+        "tension": "115/72",
+        "pouls": "72",
+        "saturationO2": "96",
+        "temperature": "36.8",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
@@ -254,11 +254,11 @@
       "id": "s_err_id",
       "descriptionClinique": "Pendant que vous cherchiez son nom, il s'est étouffé en silence sur le dos.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "108/68",
+        "pouls": "65",
+        "saturationO2": "91",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "10"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -268,11 +268,11 @@
       "id": "s_err_shake",
       "descriptionClinique": "Il avait une fêlure cervicale. Votre mouvement l'a rendu tétraplégique.",
       "constantesCibles": {
-        "tension": "120/80",
+        "tension": "110/70",
         "pouls": "70",
-        "saturationO2": "98",
+        "saturationO2": "90",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "12"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -282,43 +282,46 @@
       "id": "s_err_vomit",
       "descriptionClinique": "Sa langue est tombée au fond de la gorge, bloquant l'air. Arrêt cardiaque faute de PLS.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "90/55",
+        "pouls": "80",
+        "saturationO2": "78",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "20"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : En position sur le dos, la victime a inhalé du vomi. SpO2 chute à 78%. Risque de pneumopathie d'inhalation fatale. C'est pourquoi la PLS est vitale."
     },
     "s_err_rebound": {
       "id": "s_err_rebound",
       "descriptionClinique": "Le vomi a fini dans ses poumons. Il est en réanimation pour infection massive.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "85/50",
+        "pouls": "95",
+        "saturationO2": "82",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "8"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Vous avez quitté la victime sans surveillance. Elle a fait un malaise vagal avec apnée prolongée. Lésions cérébrales irréversibles."
     },
     "s_err_away": {
       "id": "s_err_away",
       "descriptionClinique": "Le SAMU est arrivé, il était en arrêt depuis 5 minutes. Personne n'a vu quand il a cessé de respirer.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "80/45",
+        "pouls": "55",
+        "saturationO2": "70",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "6"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : La victime non surveillée a présenté un arrêt respiratoire progressif. Sans surveillance ni alerte précoce, le décès est survenu."
     }
   },
   "editorData": {

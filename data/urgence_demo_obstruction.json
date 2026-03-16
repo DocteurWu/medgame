@@ -57,11 +57,11 @@
   },
   "examenClinique": {
     "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
+      "tension": "140/90 mmHg",
+      "pouls": "110 bpm",
       "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+      "saturationO2": "88%",
+      "frequenceRespiratoire": "Irrégulière"
     },
     "aspectGeneral": "Variable selon le cas",
     "examenCardiovasculaire": {
@@ -103,13 +103,13 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Sophie se lève brusquement, ne peut plus parler, porte les mains à sa gorge et devient bleue (cyanose).",
+      "descriptionClinique": "Au restaurant, un homme de 55 ans se lève brusquement, les mains à la gorge, le visage cyanosé. Il ne peut ni parler, ni tousser, ni respirer. Ses yeux sont écarquillés de terreur. Signes d'obstruction complète des VOA.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "140/90",
+        "pouls": "110",
+        "saturationO2": "88",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "Irrégulière"
       },
       "actionsDisponibles": [
         {
@@ -130,13 +130,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "C'est une obstruction TOTALE (pas de toux, pas de bruit).",
+      "descriptionClinique": "La cyanose s'intensifie. L'homme perd connaissance en quelques secondes. Saturation en chute libre (82%). Il n'émet aucun son. Le mécanisme est clair : corps étranger bloquant les voies aériennes.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "145/92",
+        "pouls": "115",
+        "saturationO2": "82",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "Gasp"
       },
       "actionsDisponibles": [
         {
@@ -157,13 +157,13 @@
     },
     "s3_claques": {
       "id": "s3_claques",
-      "descriptionClinique": "Après 5 claques, le corps étranger n'est toujours pas sorti. Sophie s'épuise.",
+      "descriptionClinique": "Vous pratiquez 5 claques interscapulaires (couché sur le ventre, tête en bas). Un morceau de viande est expulsé. La victime reprend une respiration gasp. Saturation remonte.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "140/88",
+        "pouls": "108",
+        "saturationO2": "90",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "Reprend"
       },
       "actionsDisponibles": [
         {
@@ -184,13 +184,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Vous exercez des pressions sèches vers l'arrière et le haut.",
+      "descriptionClinique": "La respiration se normalise progressivement. La victime est confuse, essoufflée. Saturation 95%, pouls 100. Vous le mettez en position confortable.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "135/85",
+        "pouls": "100",
+        "saturationO2": "95",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
@@ -211,13 +211,13 @@
     },
     "s_unconscious": {
       "id": "s_unconscious",
-      "descriptionClinique": "Elle ne réagit plus et ne respire plus.",
+      "descriptionClinique": "La victime est inconsciente. Elle ne respire pas. En AFGSU : RCP (30:2) immédiatement. Après chaque cycle, vérifier si un corps étranger est visible dans la bouche.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "90/50",
+        "pouls": "120",
+        "saturationO2": "70",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [
         {
@@ -232,13 +232,13 @@
     },
     "s5_victory": {
       "id": "s5_victory",
-      "descriptionClinique": "Elle respire mais est très choquée. Elle a mal au ventre.",
+      "descriptionClinique": "Le corps étranger est expulsé. La victime respire normalement, conscience recouvrée. Elle tousse. Les constantes se normalisent.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "130/82",
+        "pouls": "95",
+        "saturationO2": "97",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
@@ -259,12 +259,12 @@
     },
     "s7_good": {
       "id": "s7_good",
-      "descriptionClinique": "Le corps étranger est sorti. Le médecin confirme l'absence de lésion. Bravo.",
+      "descriptionClinique": "Les secours arrivent. La victime est stabilisée, oxymétrie à 98%. Surveillance hospitalière recommandée (risque de complications tardives).",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
+        "tension": "125/80",
+        "pouls": "88",
         "saturationO2": "98",
-        "temperature": "37",
+        "temperature": "36.8",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
@@ -273,13 +273,13 @@
     },
     "s6_resus": {
       "id": "s6_resus",
-      "descriptionClinique": "Grâce à votre prise en charge de l'inconscience, le corps étranger a bougé et elle a été réanimée par le SAMU.",
+      "descriptionClinique": "Après RCP et extraction du corps étranger, la victime reprend une respiration spontanée. Elle est prise en charge par le SAMU.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "110/65",
+        "pouls": "90",
+        "saturationO2": "94",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "14"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -289,43 +289,46 @@
       "id": "s_err_water",
       "descriptionClinique": "Verser de l'eau sur un bouchon alimentaire a provoqué un arrêt immédiat.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "140/88",
+        "pouls": "110",
+        "saturationO2": "85",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : Donner à boire à une victime en obstruction complète aggrave le blocage et provoque un arrêt respiratoire. NE JAMAIS donner à boire."
     },
     "s_err_time": {
       "id": "s_err_time",
       "descriptionClinique": "L'absence de Heimlich a conduit à une issue fatale faute d'oxygène.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "60/30",
+        "pouls": "0",
+        "saturationO2": "40",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "0"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : Sans intervention (claques + compressions), la cyanose progresse vers l'arrêt cardiaque en 4-6 minutes. Trop tard pour le DAE."
     },
     "s_err_injury": {
       "id": "s_err_injury",
       "descriptionClinique": "Sophie a fait une hémorragie interne 2 heures plus tard. Ne jamais négliger le suivi après Heimlich.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
+        "tension": "100/60",
+        "pouls": "85",
+        "saturationO2": "92",
+        "temperature": "36.8",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Les compressions abdominales (Heimlich) peuvent causer des lésions viscérales. Chez l'adulte, on préfère les claques interscapulaires si la victime est consciente."
     }
   },
   "editorData": {

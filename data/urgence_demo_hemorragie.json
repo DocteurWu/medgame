@@ -57,11 +57,11 @@
   },
   "examenClinique": {
     "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
+      "tension": "125/80 mmHg",
+      "pouls": "105 bpm",
       "temperature": "37°C",
       "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+      "frequenceRespiratoire": "22/min"
     },
     "aspectGeneral": "Variable selon le cas",
     "examenCardiovasculaire": {
@@ -103,13 +103,13 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Julien s'est coupé la cuisse. Un sang rouge vif gicle en jets pulsatiles (hémorragie artérielle).",
+      "descriptionClinique": "Un homme de 45 ans s'est sectionné le poignet avec une lame de scie circulaire. Le sang est rouge vif, giclant en jets pulsatiles. Il est conscient mais très anxieux. La flaque au sol grossit rapidement.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "125/80",
+        "pouls": "105",
+        "saturationO2": "96",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "22"
       },
       "actionsDisponibles": [
         {
@@ -130,13 +130,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "Le sang continue de couler malgré votre main. Julien pâlit et devient confus.",
+      "descriptionClinique": "Vous comprimez avec un linge propre. Le sang percole malgré la pression. La victime pâlit, transpire, son pouls s'accélère. Signes de début de choc hémorragique.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "115/72",
+        "pouls": "112",
+        "saturationO2": "95",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [
         {
@@ -157,13 +157,13 @@
     },
     "s3_failed_comp": {
       "id": "s3_failed_comp",
-      "descriptionClinique": "La compression simple échoue. Julien a soif et son pouls est filant.",
+      "descriptionClinique": "La compression seule est insuffisante. Le sang traverse le linge. La victime se plaint de vertiges. Il faut passer au garrot hémorragique.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "100/60",
+        "pouls": "120",
+        "saturationO2": "93",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "26"
       },
       "actionsDisponibles": [
         {
@@ -184,13 +184,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Le saignement s'arrête enfin totalement. Julien est livide.",
+      "descriptionClinique": "Vous posez un garrot à quelques cm au-dessus de la plaie et serrez. Le saignement s'arrête net. Victime allongée, couverte, jambes surélevées. Vous notez l'heure de pose.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "95/55",
+        "pouls": "125",
+        "saturationO2": "92",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "28"
       },
       "actionsDisponibles": [
         {
@@ -211,13 +211,13 @@
     },
     "s5": {
       "id": "s5",
-      "descriptionClinique": "Le garrot est en place. Julien respire vite (25/min).",
+      "descriptionClinique": "La victime est en position anti-choc. Elle est pâle, frissonnante, assoiffée. Ne JAMAIS donner à boire. Vous composez le 15.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "90/50",
+        "pouls": "128",
+        "saturationO2": "90",
+        "temperature": "36",
+        "frequenceRespiratoire": "28"
       },
       "actionsDisponibles": [
         {
@@ -238,13 +238,13 @@
     },
     "s6": {
       "id": "s6",
-      "descriptionClinique": "Vous faites l'alerte précise au 15.",
+      "descriptionClinique": "Vous transmettez le bilan : 'Plaie artérielle du poignet, garrot posé à [heure], état de choc hémorragique, victime consciente, anticoagulée.' Le régulateur envoie un SMUR.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "88/50",
+        "pouls": "125",
+        "saturationO2": "92",
+        "temperature": "36",
+        "frequenceRespiratoire": "26"
       },
       "actionsDisponibles": [
         {
@@ -259,13 +259,13 @@
     },
     "s7_good": {
       "id": "s7_good",
-      "descriptionClinique": "Grâce au garrot précoce, Julien arrive vivant au bloc opératoire. Votre sang-froid a fait la différence.",
+      "descriptionClinique": "Le SMUR déchoque la victime. Elle est transférée au bloc opératoire. Le garrot et l'heure notée ont permis une prise en charge chirurgicale optimale. Victime sauvée.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "85/50",
+        "pouls": "120",
+        "saturationO2": "93",
+        "temperature": "36",
+        "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [],
       "isEndState": true,
@@ -275,57 +275,61 @@
       "id": "s_err_lost",
       "descriptionClinique": "Une section fémorale peut tuer en 2 minutes. Chercher du matériel sans comprimer est fatal.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "60/30",
+        "pouls": "145",
+        "saturationO2": "78",
+        "temperature": "35",
+        "frequenceRespiratoire": "32"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : Choc hémorragique irréversible. Sans garrot ni compression efficace, la perte sanguine est >2 L en quelques minutes. Arrêt cardiaque hypovolémique."
     },
     "s_err_shock": {
       "id": "s_err_shock",
       "descriptionClinique": "Le sang perdu ne se remplace pas sur place. Le retard du garrot a causé l'arrêt cardiaque.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "50/20",
+        "pouls": "150",
+        "saturationO2": "70",
+        "temperature": "34.5",
+        "frequenceRespiratoire": "35"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : Le choc hémorragique n'a pas été traité à temps. Constantes en effondrement terminal. Décès avant l'arrivée des secours."
     },
     "s_err_loose": {
       "id": "s_err_loose",
       "descriptionClinique": "Le desserrage provoque un relargage de toxines et une reprise de l'hémorragie massive.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "55/25",
+        "pouls": "140",
+        "saturationO2": "75",
+        "temperature": "34.8",
+        "frequenceRespiratoire": "34"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR FATALE : Desserrer un garrot relargue les métabolites toxiques (hyperkaliémie, acidose lactique). Reprise fatale du saignement."
     },
     "s_err_drink": {
       "id": "s_err_drink",
       "descriptionClinique": "L'aspiration gastrique a compliqué son sauvetage au bloc.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "70/40",
+        "pouls": "130",
+        "saturationO2": "85",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "30"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "INTERDIT EN AFGSU : Ne jamais faire boire une victime en choc hémorragique. Risque d'inhalation gastrique lors de l'intubation au bloc opératoire."
     }
   },
   "editorData": {

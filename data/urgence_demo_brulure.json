@@ -57,11 +57,11 @@
   },
   "examenClinique": {
     "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
+      "tension": "130/85 mmHg",
+      "pouls": "100 bpm",
       "temperature": "37°C",
       "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+      "frequenceRespiratoire": "22/min"
     },
     "aspectGeneral": "Variable selon le cas",
     "examenCardiovasculaire": {
@@ -103,13 +103,13 @@
   "nodes": {
     "s1": {
       "id": "s1",
-      "descriptionClinique": "Lucas vient de renverser un bidon d'acide chlorhydrique sur ses mains et ses jambes.",
+      "descriptionClinique": "Un ouvrier de 40 ans a renversé un récipient d'eau bouillante sur son avant-bras gauche. La peau est rouge vif, enflée, très douloureuse. Il crie et serre son bras.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "130/85",
+        "pouls": "100",
+        "saturationO2": "97",
+        "temperature": "37.2",
+        "frequenceRespiratoire": "22"
       },
       "actionsDisponibles": [
         {
@@ -136,13 +136,13 @@
     },
     "s2": {
       "id": "s2",
-      "descriptionClinique": "L'eau doit couler mais Lucas a froid au reste du corps.",
+      "descriptionClinique": "Vous commencez l'irrigation à l'eau froide. La douleur diminue légèrement. L'érythème couvre environ 15% de la surface corporelle (bras + thorax partiel). La victime est anxieuse, tachycarde.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
+        "tension": "128/82",
+        "pouls": "105",
+        "saturationO2": "96",
         "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "frequenceRespiratoire": "20"
       },
       "actionsDisponibles": [
         {
@@ -163,13 +163,13 @@
     },
     "s3": {
       "id": "s3",
-      "descriptionClinique": "Le rinçage dure depuis 10 minutes. Lucas demande d'arrêter.",
+      "descriptionClinique": "Après 5 min d'irrigation, la douleur est mieux tolérée. Des phlyctènes (cloques) se forment. Le pouls redescend progressivement vers 88.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "125/80",
+        "pouls": "98",
+        "saturationO2": "97",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
@@ -190,13 +190,13 @@
     },
     "s4": {
       "id": "s4",
-      "descriptionClinique": "Vous transmettez le nom du produit (Acide HCl).",
+      "descriptionClinique": "Irrigation maintenue 20 minutes au total. Les constantes se stabilisent. La victime reste vigilante, soulagée par le refroidissement continu.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "120/78",
+        "pouls": "92",
+        "saturationO2": "97",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "18"
       },
       "actionsDisponibles": [
         {
@@ -211,12 +211,12 @@
     },
     "s5_good": {
       "id": "s5_good",
-      "descriptionClinique": "Le rinçage précoce et prolongé a évité la greffe de peau. Excellent réflexe.",
+      "descriptionClinique": "Les secours arrivent. Brûlure du 2e degré superficiel (présence de phlyctènes), estimation SPT 15%. La victime est transférée vers le centre des brûlés. Votre conduite a été exemplaire.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
+        "tension": "120/75",
+        "pouls": "88",
         "saturationO2": "98",
-        "temperature": "37",
+        "temperature": "36.8",
         "frequenceRespiratoire": "16"
       },
       "actionsDisponibles": [],
@@ -227,57 +227,61 @@
       "id": "s_err_paper",
       "descriptionClinique": "Vous avez décapé la peau déjà fragilisée par l'acide.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "135/90",
+        "pouls": "115",
+        "saturationO2": "95",
+        "temperature": "37.5",
+        "frequenceRespiratoire": "25"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : En AFGSU, on NE met RIEN sur une brûlure (pas de glace directe, pas de papier, pas de pansement compressif). L'eau froide est la seule mesure de refroidissement locale."
     },
     "s_err_neutral": {
       "id": "s_err_neutral",
       "descriptionClinique": "Le mélange Acide/Base a littéralement 'cuit' les mains de Lucas.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "130/85",
+        "pouls": "108",
+        "saturationO2": "96",
+        "temperature": "37.2",
+        "frequenceRespiratoire": "22"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Les solutions désinfectantes ne sont pas recommandées en pré-hospitalier pour une brûlure étendue. L'eau froide suffit."
     },
     "s_err_cream": {
       "id": "s_err_cream",
       "descriptionClinique": "L'acide a continué à agir sous la couche de crème grasse.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "125/82",
+        "pouls": "110",
+        "saturationO2": "95",
+        "temperature": "37.3",
+        "frequenceRespiratoire": "24"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : On ne met JAMAIS de crème, beurre, dentifrice ou huile sur une brûlure. Cela retient la chaleur et augmente le risque d'infection."
     },
     "s_err_deep": {
       "id": "s_err_deep",
       "descriptionClinique": "Les tendons ont été atteints car l'acide n'avait pas été totalement éliminé.",
       "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
+        "tension": "95/55",
+        "pouls": "130",
+        "saturationO2": "88",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "30"
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "feedback": "ERREUR : Sans refroidissement prolongé (20 min minimum) ni alerte, la brûlure s'approfondit. Choc hypovolémique et état de choc thermique. La victime est décédée."
     }
   },
   "editorData": {
