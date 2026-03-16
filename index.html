@@ -93,6 +93,12 @@
                     <div class="btn-layer"></div>
                 </button>
 
+                <!-- Galerie de Patients (toujours visible) -->
+                <button class="btn-3d" id="gallery-button" onclick="patientGallery.show()" aria-label="Voir la galerie de patients">
+                    <span class="btn-content"><i class="fas fa-hospital-user" aria-hidden="true"></i> Galerie de Patients <span id="gallery-badge" class="gallery-badge" style="display:none;">0</span></span>
+                    <div class="btn-layer"></div>
+                </button>
+
                     <div class="btn-layer" style="background: linear-gradient(90deg, #ff4757, #ff6b81);"></div>
                 </button>
 
@@ -218,6 +224,8 @@
 
     <!-- Audio Module -->
     <script src="js/audio.js"></script>
+    <!-- Patient Gallery Module -->
+    <script src="js/patientGallery.js"></script>
     <!-- Three.js Background Module -->
     <script src="js/three-background.js"></script>
 
@@ -555,6 +563,28 @@
                         el.innerHTML = data.currentStreak > 0
                             ? `${icon} Streak actuelle: <strong style="color:#fff">${data.currentStreak}</strong> · 🏆 Record: <strong style="color:#ffd700">${data.bestStreak}</strong>`
                             : `🏆 Meilleure streak: <strong style="color:#ffd700">${data.bestStreak}</strong>`;
+                    }
+                }
+                // Gallery badge update
+                if (typeof patientGallery !== 'undefined') {
+                    const newCount = patientGallery.getNewCount();
+                    const badge = document.getElementById('gallery-badge');
+                    if (badge && newCount > 0) {
+                        badge.textContent = newCount;
+                        badge.style.display = 'inline-flex';
+                    }
+                    // Update gallery button text with stats
+                    const stats = patientGallery.getStats();
+                    if (stats.totalPlayed > 0) {
+                        const galleryBtn = document.getElementById('gallery-button');
+                        if (galleryBtn) {
+                            const btnContent = galleryBtn.querySelector('.btn-content');
+                            if (btnContent) {
+                                const savedCount = stats.totalSaved;
+                                const totalCount = stats.totalPlayed;
+                                btnContent.innerHTML = `<i class="fas fa-hospital-user" aria-hidden="true"></i> Galerie de Patients <span style="opacity:0.6; font-size:0.85em;">(${savedCount}/${totalCount})</span> ${newCount > 0 ? `<span class="gallery-badge">${newCount}</span>` : ''}`;
+                            }
+                        }
                     }
                 }
             } catch(e) {}

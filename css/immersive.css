@@ -805,3 +805,706 @@
 .skill-card-btn:hover::before {
     left: 100%;
 }
+
+/* ==================== PATIENT GALLERY ==================== */
+
+#gallery-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+#gallery-overlay.gallery-visible {
+    opacity: 1;
+}
+
+#gallery-overlay.gallery-hiding {
+    opacity: 0;
+}
+
+.gallery-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px 0;
+}
+
+.gallery-header {
+    margin-bottom: 25px;
+}
+
+.gallery-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.gallery-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.gallery-title i {
+    color: #4facfe;
+}
+
+.gallery-close-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-close-btn:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: rgba(255, 71, 87, 0.4);
+    color: #ff4757;
+}
+
+/* Stats Bar */
+.gallery-stats-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gallery-stat {
+    text-align: center;
+    min-width: 70px;
+    flex: 1;
+}
+
+.gallery-stat-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+}
+
+.gallery-stat.saved .gallery-stat-value {
+    color: #2ecc71;
+}
+
+.gallery-stat.lost .gallery-stat-value {
+    color: #e74c3c;
+}
+
+.gallery-stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+}
+
+/* Filters */
+.gallery-filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.gallery-filter-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Outfit', sans-serif;
+}
+
+.gallery-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+.gallery-filter-btn.active {
+    background: rgba(79, 172, 254, 0.15);
+    border-color: rgba(79, 172, 254, 0.4);
+    color: #4facfe;
+}
+
+.gallery-sort-select {
+    margin-left: auto;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.82rem;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    outline: none;
+}
+
+.gallery-sort-select option {
+    background: #1a1a2e;
+    color: white;
+}
+
+/* Patient Grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* Patient Card */
+.gallery-patient-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.gallery-patient-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(79, 172, 254, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-patient-card.saved {
+    border-left: 3px solid #2ecc71;
+}
+
+.gallery-patient-card.lost {
+    border-left: 3px solid #e74c3c;
+    opacity: 0.85;
+}
+
+.gallery-patient-card.lost:hover {
+    opacity: 1;
+}
+
+.patient-card-status {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 1.1rem;
+}
+
+.patient-card-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: white;
+    flex-shrink: 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.patient-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.patient-card-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 30px;
+}
+
+.patient-card-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.patient-card-spec {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.patient-card-diagnostic {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.patient-card-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+}
+
+.patient-card-score {
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+}
+
+.patient-card-diff {
+    padding: 1px 8px;
+    border-radius: 8px;
+    border: 1px solid;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.patient-card-date {
+    color: rgba(255, 255, 255, 0.3);
+    margin-left: auto;
+}
+
+.patient-card-replays {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+/* Empty State */
+.gallery-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.gallery-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    opacity: 0.4;
+}
+
+.gallery-empty h3 {
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.gallery-empty p {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.9rem;
+}
+
+/* Progress Bar */
+.gallery-progress {
+    padding: 16px 0;
+}
+
+.gallery-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.gallery-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2ecc71, #4facfe);
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gallery-progress-text {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-align: center;
+}
+
+/* ==================== PATIENT DETAIL MODAL ==================== */
+
+.gallery-detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-detail-overlay.gallery-detail-visible {
+    opacity: 1;
+}
+
+.gallery-detail-modal {
+    background: linear-gradient(145deg, rgba(20, 20, 45, 0.98), rgba(30, 30, 60, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: galleryDetailIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes galleryDetailIn {
+    from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.gallery-detail-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-detail-close:hover {
+    background: rgba(255, 71, 87, 0.15);
+    color: #ff4757;
+}
+
+.gallery-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gallery-detail-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-detail-identity h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 4px 0;
+}
+
+.gallery-detail-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    flex-wrap: wrap;
+}
+
+.gallery-detail-section {
+    margin-bottom: 22px;
+}
+
+.gallery-detail-section h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0 0 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gallery-detail-section h3 i {
+    color: #4facfe;
+}
+
+.gallery-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.gallery-detail-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.gallery-detail-item-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 4px;
+}
+
+.gallery-detail-item-value {
+    font-size: 0.95rem;
+    color: white;
+    font-weight: 600;
+}
+
+.gallery-detail-correction {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.6;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.gallery-detail-actions {
+    text-align: center;
+    padding-top: 16px;
+}
+
+.gallery-replay-btn {
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gallery-replay-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ==================== NEW PATIENT POPUP ==================== */
+
+.new-patient-popup-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border-radius: 16px;
+    background: rgba(20, 20, 45, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    min-width: 300px;
+}
+
+.new-patient-popup-content.saved {
+    border-left: 3px solid #2ecc71;
+}
+
+.new-patient-popup-content.lost {
+    border-left: 3px solid #e74c3c;
+}
+
+.new-patient-popup-icon {
+    font-size: 2rem;
+}
+
+.new-patient-popup-text {
+    flex: 1;
+}
+
+.new-patient-popup-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+}
+
+.new-patient-popup-subtitle {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 2px;
+}
+
+.new-patient-popup-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(79, 172, 254, 0.3);
+    background: rgba(79, 172, 254, 0.1);
+    color: #4facfe;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.new-patient-popup-btn:hover {
+    background: rgba(79, 172, 254, 0.2);
+    border-color: rgba(79, 172, 254, 0.5);
+}
+
+/* ==================== GALLERY BUTTON ON INDEX ==================== */
+
+#gallery-button {
+    border-color: rgba(168, 85, 247, 0.4) !important;
+}
+
+#gallery-button .btn-layer {
+    background: linear-gradient(90deg, #a855f7, #ec4899) !important;
+}
+
+.gallery-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: #e74c3c;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0 5px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .gallery-stats-bar {
+        gap: 8px;
+        padding: 12px 14px;
+    }
+    
+    .gallery-stat-value {
+        font-size: 1.2rem;
+    }
+    
+    .gallery-title {
+        font-size: 1.4rem;
+    }
+    
+    .gallery-detail-modal {
+        padding: 20px;
+        max-height: 90vh;
+    }
+    
+    .gallery-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== ENHANCED MEDICAL AUDIO CSS ==================== */
+
+/* Audio toggle button */
+.audio-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.audio-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.audio-toggle-btn.muted {
+    color: #e74c3c;
+    border-color: rgba(231, 76, 60, 0.3);
+}

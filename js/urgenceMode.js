@@ -399,6 +399,25 @@ function handleEndState(currentUrgenceNode, currentCase) {
             } catch(e) {}
         }
 
+        // === PATIENT GALLERY: Record urgence outcome ===
+        if (typeof patientGallery !== 'undefined' && currentCase) {
+            const isSuccess = currentUrgenceNode.success === true;
+            const urgenceScore = isSuccess ? (currentUrgenceNode.xpReward ? Math.min(100, currentUrgenceNode.xpReward) : 100) : 0;
+            const galleryResult = patientGallery.recordPatient(currentCase, {
+                success: isSuccess,
+                score: urgenceScore,
+                diagnostic: isSuccess ? currentCase.correctDiagnostic : '(urgence)',
+                treatments: urgenceState.actionsPerformed.map(a => a.label),
+                timeSpent: 0,
+                attempts: 1
+            });
+            if (galleryResult) {
+                setTimeout(() => {
+                    patientGallery.showNewPatientPopup(galleryResult);
+                }, 2000);
+            }
+        }
+
         // Attribution XP
         if (isSuccess && currentUrgenceNode.xpReward && currentUrgenceNode.xpReward > 0) {
             awardUrgenceXp(currentUrgenceNode.xpReward);

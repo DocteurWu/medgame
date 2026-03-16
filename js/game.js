@@ -685,6 +685,22 @@ onDomReady(async () => {
         const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
         const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
 
+        // === PATIENT GALLERY: Calculate result for recording ===
+        const galleryTimeSpent = getTimeLimit() - timerState.timeLeft;
+        const fatalTreatments = currentCase.fatalTreatments || [];
+        const selectedFatalTreatments = selectedTreatments.filter(t => fatalTreatments.includes(t));
+        const hasFatalError = selectedFatalTreatments.length > 0;
+        let galleryScore = 0;
+        const diagWeight = 50;
+        const treatWeight = 50;
+        if (selectedDiagnostic === correctDiagnostic) galleryScore += diagWeight;
+        if (correctTreatments.length > 0 && !hasFatalError) {
+            const correctCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
+            galleryScore += correctCount * (treatWeight / Math.max(correctTreatments.length, selectedTreatments.length));
+        }
+        galleryScore = Math.max(0, Math.min(100, Math.round(galleryScore)));
+        const gallerySuccess = isCorrect && !hasFatalError;
+
         if (isCorrect) {
             gameState.setScore(calculateScore());
             feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
@@ -1004,6 +1020,24 @@ onDomReady(async () => {
                 }
             } else {
                 streakSystem.recordLoss();
+            }
+        }
+
+        // === PATIENT GALLERY: Record patient outcome ===
+        if (typeof patientGallery !== 'undefined') {
+            const galleryResult = patientGallery.recordPatient(currentCase, {
+                success: gallerySuccess,
+                score: galleryScore,
+                diagnostic: selectedDiagnostic,
+                treatments: selectedTreatments,
+                timeSpent: galleryTimeSpent,
+                attempts: scoringState.attempts
+            });
+            // Show popup after correction modal closes
+            if (galleryResult) {
+                setTimeout(() => {
+                    patientGallery.showNewPatientPopup(galleryResult);
+                }, 1500);
             }
         }
 

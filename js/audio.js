@@ -173,6 +173,130 @@ const MedGameAudio = (function () {
             const now = audioCtx.currentTime;
             createOscillator(600, 'sine', now, 0.06, 0.12);
             createOscillator(800, 'sine', now + 0.04, 0.06, 0.1);
+        },
+
+        /**
+         * Bip de moniteur cardiaque réaliste (ECG R-wave)
+         * Un bip court à fréquence pure, comme un vrai monitor
+         */
+        monitorBeep() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Main beep: 1000Hz, 80ms, très court et sec
+            createOscillator(1000, 'sine', now, 0.08, 0.15);
+            // Harmonique légère pour le réalisme
+            createOscillator(2000, 'sine', now, 0.04, 0.05);
+        },
+
+        /**
+         * Alarme critique — double ton descendant (comme un vrai monitor)
+         * Pattern: HIGH-low-HIGH-low (répété)
+         */
+        criticalAlarm() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Premier ton haut
+            createOscillator(880, 'square', now, 0.12, 0.12);
+            createOscillator(1320, 'sine', now, 0.08, 0.06);
+            // Ton bas
+            createOscillator(680, 'square', now + 0.15, 0.12, 0.12);
+            createOscillator(1020, 'sine', now + 0.15, 0.08, 0.06);
+            // Répétition
+            createOscillator(880, 'square', now + 0.35, 0.12, 0.12);
+            createOscillator(680, 'square', now + 0.5, 0.12, 0.12);
+        },
+
+        /**
+         * Flatline — ton continu sinusoïdal 1000Hz
+         */
+        flatline() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Ton continu de 2 secondes
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1000, now);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.12, now + 0.05);
+            gain.gain.setValueAtTime(0.12, now + 1.8);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+            osc.connect(gain);
+            gain.connect(masterGain);
+            osc.start(now);
+            osc.stop(now + 2.2);
+        },
+
+        /**
+         * Défibrillation — son de charge puis décharge
+         */
+        defibrillator() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Son de charge (montée en fréquence)
+            const chargeOsc = audioCtx.createOscillator();
+            const chargeGain = audioCtx.createGain();
+            chargeOsc.type = 'sawtooth';
+            chargeOsc.frequency.setValueAtTime(100, now);
+            chargeOsc.frequency.exponentialRampToValueAtTime(800, now + 1.2);
+            chargeGain.gain.setValueAtTime(0, now);
+            chargeGain.gain.linearRampToValueAtTime(0.06, now + 0.1);
+            chargeGain.gain.setValueAtTime(0.06, now + 1.0);
+            chargeGain.gain.linearRampToValueAtTime(0, now + 1.3);
+            chargeOsc.connect(chargeGain);
+            chargeGain.connect(masterGain);
+            chargeOsc.start(now);
+            chargeOsc.stop(now + 1.3);
+            // Décharge (bruit blanc simulé par oscillateur rapide)
+            createOscillator(150, 'sawtooth', now + 1.4, 0.3, 0.2);
+            createOscillator(80, 'square', now + 1.4, 0.2, 0.15);
+        },
+
+        /**
+         * Son de ventilation manuelle (BVM) — souffle rythmé
+         */
+        ventilation() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Créer un bruit de souffle via oscillateur basse fréquence
+            const bufferSize = audioCtx.sampleRate * 0.6;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / bufferSize);
+            }
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 400;
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.15, now + 0.15);
+            gain.gain.linearRampToValueAtTime(0.08, now + 0.35);
+            gain.gain.linearRampToValueAtTime(0, now + 0.55);
+            source.connect(filter);
+            filter.connect(gain);
+            gain.connect(masterGain);
+            source.start(now);
+            source.stop(now + 0.6);
+        },
+
+        /**
+         * Son de notification de galerie — petit ding joyeux
+         */
+        galleryOpen() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            createOscillator(523.25, 'sine', now, 0.15, 0.15);  // C5
+            createOscillator(659.25, 'sine', now + 0.08, 0.15, 0.12);  // E5
+            createOscillator(783.99, 'sine', now + 0.15, 0.2, 0.1);   // G5
         }
     };
 
