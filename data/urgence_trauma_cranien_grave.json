@@ -199,7 +199,9 @@
           "feedback": "ERREUR AFGSU : Ne jamais laisser seule une victime potentiellement instable. Une dégradation peut survenir à tout moment. Il faut appeler à l'aide ou utiliser son téléphone.",
           "nextNode": "s_err_abandon"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s2": {
       "id": "s2",
@@ -223,7 +225,9 @@
           "feedback": "Bilan dangereusement incomplet. La PCI, les vomissements et l'amnésie sont des signes de gravité majeurs. Le régulateur pourrait sous-estimer la situation.",
           "nextNode": "s_err_minimize"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s3": {
       "id": "s3",
@@ -247,7 +251,9 @@
           "feedback": "ERREUR AFGSU : C'est un mythe dangereux. On ne met JAMAIS rien dans la bouche d'une personne qui convulse. Risque de fracture dentaire, d'obstruction et de morsure.",
           "nextNode": "s_err_mouth"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s3_post_crise": {
       "id": "s3_post_crise",
@@ -265,7 +271,9 @@
           "feedback": "Normalement, on ne mobilise pas un traumatisé du rachis. Mais ici, il est inconscient et respire, avec un risque d'inhalation. La PLS est un compromis vital. Vous informez le 15.",
           "nextNode": "s_pls"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s_pls": {
       "id": "s_pls",
@@ -288,7 +296,9 @@
           "feedback": "Informations cruciales. L'anisocorie est un signe d'engagement cérébral imminent. Le SAMU accélère et pré-alerte le bloc de neurochirurgie.",
           "nextNode": "s4_good"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s_cushing": {
       "id": "s_cushing",
@@ -311,7 +321,9 @@
           "feedback": "Vous confirmez la gravité extrême de la situation. Le SMUR est à 2 minutes.",
           "nextNode": "s4_good"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s4_good": {
       "id": "s4_good",

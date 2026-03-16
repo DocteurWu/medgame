@@ -191,7 +191,9 @@
           "feedback": "C'est une stimulation, mais elle est inefficace et fait perdre du temps. Il faut une évaluation structurée : conscience, puis respiration.",
           "nextNode": "s1_retard"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s1_retard": {
       "id": "s1_retard",
@@ -208,7 +210,9 @@
           "feedback": "Vous avez perdu un peu de temps, mais vous vous reprenez.",
           "nextNode": "s2"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s2": {
       "id": "s2",
@@ -237,7 +241,9 @@
           "feedback": "Chaque minute sans massage cardiaque diminue les chances de survie de 10%. L'attente est mortelle.",
           "nextNode": "s_err_wait"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s3": {
       "id": "s3",
@@ -266,7 +272,9 @@
           "feedback": "ERREUR AFGSU : On n'interrompt JAMAIS le massage pour vérifier le pouls (sauf instruction du DAE ou arrivée des secours). Chaque pause fait chuter la pression de perfusion cérébrale à zéro.",
           "nextNode": "s_err_check_pulse"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s4": {
       "id": "s4",
@@ -289,7 +297,9 @@
           "feedback": "Vous perdez 15-20 secondes de massage. Il fallait utiliser l'aide disponible pour minimiser la pause.",
           "nextNode": "s5_dae_analysis"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s5_dae_analysis": {
       "id": "s5_dae_analysis",
@@ -304,7 +314,9 @@
         "nextNode": "s5_shock_advised",
         "motif": "Le DAE détecte une Fibrillation Ventriculaire."
       },
-      "actionsDisponibles": []
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
     },
     "s5_shock_advised": {
       "id": "s5_shock_advised",
@@ -321,7 +333,9 @@
           "feedback": "Le choc est délivré. Le corps d'Elena sursaute. Le DAE annonce : « Reprenez immédiatement la réanimation cardio-pulmonaire. »",
           "nextNode": "s6_post_shock"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s6_post_shock": {
       "id": "s6_post_shock",
@@ -344,7 +358,9 @@
           "feedback": "ERREUR : Le DAE ne vous le demande pas. Il faut reprendre le massage IMMÉDIATEMENT après le choc. Le cœur est 'sidéré' et a besoin du massage pour se relancer.",
           "nextNode": "s_good_end"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s_good_end": {
       "id": "s_good_end",

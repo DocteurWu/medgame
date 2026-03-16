@@ -196,7 +196,9 @@
           "feedback": "ERREUR AFGSU : La manœuvre de Heimlich est contre-indiquée chez le nourrisson (< 1 an) en raison du risque de lésions des organes abdominaux (foie, rate).",
           "nextNode": "s_err_heimlich"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s2": {
       "id": "s2",
@@ -219,7 +221,9 @@
           "feedback": "Les claques seules n'ont pas fonctionné. L'algorithme AFGSU est clair : il faut ALTERNER 5 claques dans le dos et 5 compressions thoraciques.",
           "nextNode": "s_err_no_altern"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s3": {
       "id": "s3",
@@ -242,7 +246,9 @@
           "feedback": "La situation est critique, mais la panique fait perdre un temps vital. Chaque seconde compte.",
           "nextNode": "s_err_panic"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s4_rcp": {
       "id": "s4_rcp",
@@ -265,7 +271,9 @@
           "feedback": "L'air ne passe pas. Le thorax ne se soulève pas. L'obstacle est toujours en place. Il faut continuer la RCP.",
           "nextNode": "s4_rcp_continue"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s4_rcp_continue": {
       "id": "s4_rcp_continue",
@@ -280,7 +288,9 @@
         "nextNode": "s4_rcp",
         "motif": "La RCP continue. Il faut vérifier la bouche après chaque cycle de 30 compressions."
       },
-      "actionsDisponibles": []
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
     },
     "s5_expulsion": {
       "id": "s5_expulsion",
@@ -297,7 +307,9 @@
           "feedback": "Parfait. La respiration a repris, il est inconscient, la PLS est indiquée pour protéger les voies aériennes. Le SAMU arrive.",
           "nextNode": "s_good_end"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s_good_end": {
       "id": "s_good_end",
@@ -356,7 +368,9 @@
         "nextNode": "s_err_panic",
         "motif": "Perte de connaissance menant à l'arrêt cardiaque."
       },
-      "actionsDisponibles": []
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
     },
     "s_err_panic": {
       "id": "s_err_panic",

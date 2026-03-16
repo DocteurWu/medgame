@@ -136,10 +136,14 @@
           "Malaise vagal",
           "Œdème de Quincke bénin"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'association piqûre d'hyménoptère + urticaire + wheezing + hypotension = choc anaphylactique. L'atteinte cardiovasculaire (hypotension) le distingue de l'œdème de Quincke isolé.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_ana_adrenaline",
@@ -152,10 +156,14 @@
           "Adrénaline 0.5mg IM dans la cuisse",
           "Corticoïdes IV"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'adrénaline est le SEUL traitement de première intention du choc anaphylactique AFGSU. Elle agit en quelques minutes sur la vasodilatation, le bronchospasme et l'œdème. Les autres traitements sont trop lents pour la phase aiguë.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     },
     {
       "id": "lock_ana_dose",
@@ -163,10 +171,17 @@
       "challenge": {
         "question": "Quelle est la dose d'adrénaline à injecter par voie intramusculaire chez l'adulte en cas de choc anaphylactique ? (en mg)",
         "answer": "0.5",
-        "alternatives": ["1", "0.3", "5", "1mg"]
+        "alternatives": [
+          "1",
+          "0.3",
+          "5",
+          "1mg"
+        ]
       },
       "feedback_error": "La dose adulte standard AFGSU est 0.5mg (soit 0.5 mL d'adrénaline au 1/1000). 0.3mg est la dose pédiatrique. 1mg est la dose IV (réanimation), jamais en auto-injecteur.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -217,8 +232,16 @@
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
           "feedback": "PIÈGE AFGSU : Le wheezing n'est pas un asthme classique mais un bronchospasme allergique. La Ventoline sera inefficace sur l'œdème et l'hypotension. L'adrénaline est le seul traitement qui sauve."
+        },
+        {
+          "label": "Préparer une injection de corticoïdes IV (Dexsol)",
+          "tempsExecutionSec": 30,
+          "feedback": "PIÈGE AFGSU : Les corticoïdes mettent 30-60 minutes à agir ! Ils sont INUTILES en phase aiguë. Seule l'adrénaline sauve dans les premières minutes.",
+          "nextNode": "s_err_corticoide_first"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "etat_initial_O2": {
       "id": "etat_initial_O2",
@@ -246,7 +269,7 @@
           "label": "Surélever les jambes du patient",
           "type": "erreur",
           "tempsExecutionSec": 5,
-          "nextNode": "etat_degradation_position",
+          "nextNode": "s_err_position_legs",
           "feedback": "PIÈGE AFGSU : Surélever les jambes est bon pour le choc hypovolémique, mais ici le problème principal est la détresse respiratoire. Cette position aggrave l'essoufflement et l'œdème laryngé."
         },
         {
@@ -256,7 +279,9 @@
           "nextNode": "etat_degradation1",
           "feedback": "INTERDIT : le patient a un œdème de la gorge. Boire risque l'inhalation et l'asphyxie. Il fallait injecter l'adrénaline !"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "etat_amelioration_post_adrenaline": {
       "id": "etat_amelioration_post_adrenaline",
@@ -277,7 +302,7 @@
           "label": "Alerter le 15, maintenir O2, préparer une 2ème dose d'adrénaline et des corticoïdes IV",
           "type": "soin",
           "tempsExecutionSec": 20,
-          "nextNode": "etat_stabilise_surveillance",
+          "nextNode": "etat_alerte",
           "feedback": "Excellente gestion. Vous anticipez la suite : surveillance hospitalière obligatoire pour le risque de réaction biphasique."
         },
         {
@@ -286,8 +311,16 @@
           "tempsExecutionSec": 10,
           "nextNode": "etat_rebond_anaphylactique",
           "feedback": "ERREUR GRAVE : L'amélioration peut être temporaire. Un choc anaphylactique nécessite une surveillance hospitalière d'au moins 24h. La réaction biphasique peut être mortelle."
+        },
+        {
+          "label": "Ranger la trousse, le patient va mieux, pas besoin du 15",
+          "tempsExecutionSec": 10,
+          "feedback": "ERREUR FATALE : L'amélioration initiale peut être trompeuse. La réaction biphasique (20% des cas) est mortelle sans surveillance. Le 15 est OBLIGATOIRE.",
+          "nextNode": "s_err_no_alert"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "etat_degradation1": {
       "id": "etat_degradation1",
@@ -325,31 +358,9 @@
           "nextNode": "etat_arret_cardiaque",
           "feedback": "ERREUR : la PLS est pour un inconscient qui respire. Ici le problème est l'obstruction des voies aériennes par l'œdème. L'adrénaline est la seule solution."
         }
-      ]
-    },
-    "etat_degradation_position": {
-      "id": "etat_degradation_position",
-      "descriptionClinique": "La position jambes surélevées a aggravé la détresse respiratoire. Le patient est paniqué, cyanosé, et commence à perdre connaissance. Pouls imprenable au poignet.",
-      "constantesCibles": {
-        "tension": "50/30",
-        "pouls": "150",
-        "saturationO2": "80",
-        "frequenceRespiratoire": "38"
-      },
-      "evolutionAuto": {
-        "delaiSecondes": 20,
-        "nextNode": "etat_arret_cardiaque",
-        "motif": "Arrêt respiratoire imminent suivi de l'arrêt cardiaque."
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Remettre en position assise et injecter Adrénaline 0.5mg IM en urgence",
-          "type": "traitement_cle",
-          "tempsExecutionSec": 8,
-          "nextNode": "etat_recuperation_in_extremis",
-          "feedback": "Vous parvenez à injecter l'adrénaline en urgence absolue. Le patient est récupéré in extremis, mais le pronostic reste engagé."
-        }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "etat_recuperation_in_extremis": {
       "id": "etat_recuperation_in_extremis",
@@ -365,10 +376,12 @@
           "label": "Alerter le 15 en urgence, maintenir O2, préparer une 2ème dose d'adrénaline",
           "type": "soin",
           "tempsExecutionSec": 10,
-          "nextNode": "etat_stabilise_surveillance",
+          "nextNode": "etat_alerte",
           "feedback": "Le SMUR est en route. La prise en charge se poursuit. Le patient a eu très chaud — réaction biphasique possible."
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "etat_rebond_anaphylactique": {
       "id": "etat_rebond_anaphylactique",
@@ -389,7 +402,7 @@
           "label": "Injection d'une 2ème dose d'Adrénaline 0.5mg IM",
           "type": "traitement_cle",
           "tempsExecutionSec": 10,
-          "nextNode": "etat_stabilise_surveillance",
+          "nextNode": "etat_alerte",
           "feedback": "Bonne réaction ! La deuxième dose contrôle la réaction biphasique. Le patient sera mis sous perfusion de corticoïdes en hospitalisation."
         },
         {
@@ -399,7 +412,9 @@
           "nextNode": "etat_degradation1",
           "feedback": "PIÈGE AFGSU : Les corticoïdes mettent 30-60 minutes à agir. Trop lents pour la phase aiguë d'une réaction biphasique. L'adrénaline reste le traitement d'urgence, même en 2ème dose."
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "etat_stabilise_surveillance": {
       "id": "etat_stabilise_surveillance",
@@ -424,6 +439,89 @@
         "saturationO2": "0",
         "frequenceRespiratoire": "0"
       }
+    },
+    "s_err_drink": {
+      "id": "s_err_drink",
+      "descriptionClinique": "Luc boit avidement le verre d'eau. Quelques secondes plus tard, il tousse, s'étouffe, et vomit. L'œdème laryngé empêche la déglutition. Le liquide est inhalé dans les poumons.",
+      "constantesCibles": {
+        "tension": "70/40",
+        "pouls": "130",
+        "saturationO2": "75",
+        "frequenceRespiratoire": "35"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "etat_alerte": {
+      "id": "etat_alerte",
+      "descriptionClinique": "Le SMUR est en route. Luc est stabilisé sous adrénaline et O2. Vous surveillez ses constantes. Son pouls redescend, sa tension remonte progressivement.",
+      "constantesCibles": {
+        "tension": "115/70",
+        "pouls": "95",
+        "saturationO2": "97",
+        "frequenceRespiratoire": "18"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Rester vigilant et surveiller une éventuelle réaction biphasique",
+          "tempsExecutionSec": 30,
+          "feedback": "Bonne surveillance. Vous restez aux côtés du patient en attendant le SMUR.",
+          "nextNode": "etat_stabilise_surveillance"
+        },
+        {
+          "label": "Ranger la trousse et se détendre",
+          "tempsExecutionSec": 10,
+          "feedback": "ERREUR : la surveillance doit être continue. La réaction biphasique peut survenir à tout moment.",
+          "nextNode": "etat_rebond_anaphylactique"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_err_position_legs": {
+      "id": "s_err_position_legs",
+      "descriptionClinique": "La position jambes surélevées a aggravé la détresse respiratoire. Le patient est paniqué, cyanosé, et commence à perdre connaissance. Pouls imprenable au poignet.",
+      "constantesCibles": {
+        "tension": "50/30",
+        "pouls": "150",
+        "saturationO2": "80",
+        "frequenceRespiratoire": "38"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 20,
+        "nextNode": "etat_arret_cardiaque",
+        "motif": "Arrêt respiratoire imminent suivi de l'arrêt cardiaque."
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_corticoide_first": {
+      "id": "s_err_corticoide_first",
+      "descriptionClinique": "Vous injectez des corticoïdes IV en pensant traiter le choc anaphylactique. Mais les corticoïdes mettent 30-60 minutes à agir. Pendant ce temps, le collapsus s'aggrave. Luc perd connaissance.",
+      "constantesCibles": {
+        "tension": "50/20",
+        "pouls": "150",
+        "saturationO2": "65",
+        "frequenceRespiratoire": "40"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_err_no_alert": {
+      "id": "s_err_no_alert",
+      "descriptionClinique": "Luc semble mieux après l'adrénaline. Vous ne prévenez pas le 15. 45 minutes plus tard, la réaction biphasique le frappe en pleine rue. Pas de SMUR, pas de 2ème dose. L'issue est fatale.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
     }
   }
 }

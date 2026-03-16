@@ -205,7 +205,9 @@
           "feedback": "ERREUR AFGSU : Les cloques (phlyctènes) sont un pansement naturel stérile. Les percer ouvre une porte d'entrée aux infections.",
           "nextNode": "s_err_blisters"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s2": {
       "id": "s2",
@@ -227,7 +229,9 @@
           "feedback": "ERREUR : On ne retire que les vêtements qui ne collent pas. Arracher ceux qui adhèrent reviendrait à arracher la peau avec.",
           "nextNode": "s_err_clothes"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s3": {
       "id": "s3",
@@ -250,7 +254,9 @@
           "feedback": "PIÈGE AFGSU : Sur une surface aussi étendue, un refroidissement trop prolongé entraîne une hypothermie sévère, ce qui complique la prise en charge. 15 minutes suffisent.",
           "nextNode": "s_err_hypothermia"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s4": {
       "id": "s4",
@@ -273,7 +279,9 @@
           "feedback": "Bilan trop imprécis. Le régulateur ne peut pas évaluer la gravité (surface ? profondeur ?). Cela retarde l'envoi des moyens adaptés.",
           "nextNode": "s_err_alert"
         }
-      ]
+      ],
+      "isEndState": false,
+      "success": true
     },
     "s5_good": {
       "id": "s5_good",
