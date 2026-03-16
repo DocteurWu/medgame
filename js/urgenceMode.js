@@ -569,7 +569,42 @@ function resetUrgenceState() {
     const countdownBar = document.getElementById('evolution-countdown-bar');
     if (countdownBar) countdownBar.remove();
 
+    urgenceState.isUrgenceMode = false;
+    urgenceState.currentUrgenceNode = null;
+    urgenceState.currentCase = null;
     urgenceState.nodeHistory = [];
     urgenceState.actionsPerformed = [];
     urgenceState.evolutionTimeLeft = 0;
+}
+
+/**
+ * Initialiser le mode urgence pour un cas avec gameplayConfig.startNode
+ * @param {Object} currentCase - Le cas clinique chargé
+ * @returns {boolean} true si le mode urgence a été activé
+ */
+function initUrgenceMode(currentCase) {
+    if (!currentCase || !currentCase.gameplayConfig || !currentCase.gameplayConfig.startNode) {
+        urgenceState.isUrgenceMode = false;
+        toggleUrgenceSection(false);
+        return false;
+    }
+
+    const startNodeId = currentCase.gameplayConfig.startNode;
+    const nodes = currentCase.nodes || {};
+
+    if (!nodes[startNodeId]) {
+        console.error(`[UrgenceMode] startNode '${startNodeId}' introuvable dans les nodes du cas ${currentCase.id}`);
+        urgenceState.isUrgenceMode = false;
+        toggleUrgenceSection(false);
+        return false;
+    }
+
+    urgenceState.isUrgenceMode = true;
+    urgenceState.currentCase = currentCase;
+    urgenceState.currentUrgenceNode = nodes[startNodeId];
+    urgenceState.nodeHistory = [];
+    urgenceState.actionsPerformed = [];
+
+    toggleUrgenceSection(true);
+    return true;
 }

@@ -259,6 +259,9 @@ onDomReady(async () => {
 
         const currentCase = gameState.currentCase;
 
+        // === MOTEUR DE JEU DYNAMIQUE : Initialiser le mode urgence si gameplayConfig.startNode existe ===
+        initUrgenceMode(currentCase);
+
         displayValue(document.getElementById('patient-nom'), currentCase.patient.nom, 'patient.nom');
         displayValue(document.getElementById('patient-prenom'), currentCase.patient.prenom, 'patient.prenom');
         displayValue(document.getElementById('patient-age'), currentCase.patient.age, 'patient.age');
@@ -639,11 +642,12 @@ onDomReady(async () => {
         const currentCase = gameState.currentCase;
         const hasExams = currentCase && currentCase.availableExams && Array.isArray(currentCase.availableExams) && currentCase.availableExams.length > 0;
 
-        // Urgence tab visibility
+        // Urgence tab visibility (toujours basé sur urgenceState.isUrgenceMode, initialisé par initUrgenceMode)
         const navIntervention = document.getElementById('nav-intervention-rapide');
         const mobileIntervention = document.getElementById('mobile-tab-intervention');
-        if (navIntervention) navIntervention.style.display = urgenceState.isUrgenceMode ? '' : 'none';
-        if (mobileIntervention) mobileIntervention.style.display = urgenceState.isUrgenceMode ? '' : 'none';
+        const showUrgence = urgenceState.isUrgenceMode;
+        if (navIntervention) navIntervention.style.display = showUrgence ? '' : 'none';
+        if (mobileIntervention) mobileIntervention.style.display = showUrgence ? '' : 'none';
 
         // Sidebar navigation - onglet Examens Compl.
         const sidebarExamTab = document.querySelector('.nav-item[data-target="section-examens"]');
