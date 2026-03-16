@@ -627,10 +627,10 @@ onDomReady(async () => {
                     if (timerState.timerInterval) clearInterval(timerState.timerInterval);
                     timerState.timerInterval = setInterval(updateTimer, 1000);
 
-                    if (urgenceState.isUrgenceMode) renderUrgenceState();
+                    if (urgenceState.isUrgenceMode && urgenceState.currentUrgenceNode) renderUrgenceState();
                 }
             );
-        } else if (urgenceState.isUrgenceMode) {
+        } else if (urgenceState.isUrgenceMode && urgenceState.currentUrgenceNode) {
             renderUrgenceState();
         }
     }

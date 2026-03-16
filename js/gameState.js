@@ -40,7 +40,7 @@ const gameState = {
             }
             if (typeof urgenceState !== 'undefined') {
                 urgenceState.currentCase = this.currentCase;
-                if (this.currentCase && this.currentCase.gameplayConfig && this.currentCase.gameplayConfig.startNode) {
+                if (this.currentCase && this.currentCase.gameplayConfig && this.currentCase.gameplayConfig.startNode && this.currentCase.nodes && this.currentCase.nodes[this.currentCase.gameplayConfig.startNode]) {
                     urgenceState.isUrgenceMode = true;
                     urgenceState.currentUrgenceNode = this.currentCase.nodes[this.currentCase.gameplayConfig.startNode];
                 } else {
