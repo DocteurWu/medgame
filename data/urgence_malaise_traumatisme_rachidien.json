@@ -187,25 +187,29 @@
           "label": "Maintenir la tête manuellement en position neutre, le rassurer, appeler le 15",
           "tempsExecutionSec": 15,
           "feedback": "Geste prioritaire. Vous placez vos mains de chaque côté de sa tête pour la maintenir en position neutre. Le 15 est appelé.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Le sortir du véhicule rapidement par la portière pour le coucher au sol",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR FATALE : sans maintien de l'axe, la sortie du véhicule crée une flexion cervicale qui aggrave la lésion médullaire.",
-          "nextNode": "s_err_extract"
+          "nextNode": "s_err_extract",
+          "type": "erreur"
         },
         {
           "label": "Lui demander de bouger les jambes pour voir ce qui va",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR : jamais demander à un traumatisé cervical de bouger. La mobilisation active peut aggraver la lésion.",
-          "nextNode": "s_err_move"
+          "nextNode": "s_err_move",
+          "type": "erreur"
         },
         {
           "label": "Se concentrer sur sa respiration et lui donner de l'oxygène sans toucher son cou",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR : la détresse respiratoire est probablement liée au trauma rachidien. Ignorer le maintien de l'axe est une faute grave.",
-          "nextNode": "s_err_no_axis"
+          "nextNode": "s_err_no_axis",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -226,13 +230,15 @@
           "label": "Transmettre : AVP, homme 45 ans, conscient, douleur cervicale, ne sent plus ses jambes, détresse respi, Sat 91%.",
           "tempsExecutionSec": 30,
           "feedback": "Bilan complet et précis. Le régulateur comprend la gravité (suspicion de choc neurogénique/lésion médullaire haute) et envoie SMUR + pompiers pour extraction.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Dire : « y'a un accidenté qui peut pas bouger, envoyez une ambulance »",
           "tempsExecutionSec": 15,
           "feedback": "Bilan insuffisant. L'information « déficit neurologique + mécanisme cervical » est cruciale. Le niveau de réponse risque d'être inadapté.",
-          "nextNode": "s3_late"
+          "nextNode": "s3_late",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -253,13 +259,15 @@
           "label": "Rappeler le 15 pour signaler l'aggravation respiratoire majeure",
           "tempsExecutionSec": 10,
           "feedback": "Excellent réflexe. Le SAMU se prépare à une possible intubation. Le déficit respiratoire monte (atteinte médullaire C3-C5 + probable hémothorax).",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Penser que c'est le stress et continuer à le rassurer",
           "tempsExecutionSec": 30,
           "feedback": "ERREUR : la détresse respiratoire chez un cervical est un signe de gravité extrême (paralysie du diaphragme). Ne pas la signaler retarde la prise en charge spécialisée.",
-          "nextNode": "s4_late"
+          "nextNode": "s4_late",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -280,7 +288,8 @@
           "label": "Rappeler le 15 en urgence pour signaler la dégradation",
           "tempsExecutionSec": 10,
           "feedback": "Vous corrigez l'erreur initiale. Le SMUR est finalement déclenché en urgence.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -301,13 +310,15 @@
           "label": "Transmettre le relais : « Maintien depuis 10 min, déficit MI, Sat en baisse, aggravation respi. »",
           "tempsExecutionSec": 20,
           "feedback": "Transfert de soin efficace. Les pompiers posent le collier cervical et préparent l'extraction coordonnée.",
-          "nextNode": "s5"
+          "nextNode": "s5",
+          "type": "support"
         },
         {
           "label": "Laisser les pompiers faire sans donner de consignes",
           "tempsExecutionSec": 5,
           "feedback": "Un bon sauveteur transmet son bilan. L'absence de communication peut entraîner une perte d'information cruciale.",
-          "nextNode": "s5"
+          "nextNode": "s5",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -328,7 +339,8 @@
           "label": "Commencer le bouche-à-bouche en attendant le SMUR",
           "tempsExecutionSec": 60,
           "feedback": "Pronostic neurologique et vital très engagé. L'arrêt respiratoire hypoxique va rapidement mener à l'arrêt cardiaque.",
-          "nextNode": "s_final_death"
+          "nextNode": "s_final_death",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -349,7 +361,8 @@
           "label": "Participer à l'extraction sur plan dur en suivant les ordres",
           "tempsExecutionSec": 120,
           "feedback": "L'extraction est réalisée parfaitement dans l'axe. Marc est médicalisé, oxygéné, et prêt pour le transport.",
-          "nextNode": "s_final_good"
+          "nextNode": "s_final_good",
+          "type": "support"
         }
       ],
       "isEndState": false,

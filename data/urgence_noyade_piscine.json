@@ -178,25 +178,29 @@
           "label": "Vérifier la respiration : pencher l'oreille vers sa bouche, regarder le thorax",
           "tempsExecutionSec": 10,
           "feedback": "Vous constatez qu'il respire (mouvements thoraciques présents). C'est un inconscient qui respire.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Pendre Maxime la tête en bas pour évacuer l'eau des poumons",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR FATALE : ce geste barbare ne vide pas l'eau des poumons, provoque des vomissements avec inhalation et retarde la prise en charge.",
-          "nextNode": "s_err_hang"
+          "nextNode": "s_err_hang",
+          "type": "erreur"
         },
         {
           "label": "Commencer le massage cardiaque immédiatement car il est cyanosé",
           "tempsExecutionSec": 30,
           "feedback": "ERREUR : il respire ! Le massage est inutile et peut provoquer un arrêt cardiaque (commotio cordis).",
-          "nextNode": "s_err_mce"
+          "nextNode": "s_err_mce",
+          "type": "erreur"
         },
         {
           "label": "Faire des compressions abdominales (Heimlich) pour vider l'eau",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR : Heimlich est pour l'obstruction par corps ÉTRANGER, pas pour la noyade. Cela peut provoquer des régurgitations et des lésions.",
-          "nextNode": "s_err_thrusts"
+          "nextNode": "s_err_thrusts",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -217,13 +221,15 @@
           "label": "Mettre Maxime en PLS sur le côté et appeler le 15",
           "tempsExecutionSec": 20,
           "feedback": "PLS correctement positionnée. Les voies aériennes sont protégées des vomissements potentiels. Le 15 est alerté.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Le laisser sur le dos en attendant les secours",
           "tempsExecutionSec": 30,
           "feedback": "ERREUR : sur le dos, un inconscient risque l'obstruction des voies aériennes par sa langue ou l'inhalation de vomissements, fréquents après une noyade.",
-          "nextNode": "s_err_supine"
+          "nextNode": "s_err_supine",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -252,13 +258,15 @@
           "label": "Retirer ses vêtements mouillés et le couvrir avec des serviettes sèches/couvertures",
           "tempsExecutionSec": 30,
           "feedback": "Excellent réflexe. La lutte contre l'hypothermie est une priorité absolue chez le noyé.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Le laisser avec ses vêtements pour ne pas 'prendre froid'",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR : les vêtements mouillés accélèrent la perte de chaleur et aggravent l'hypothermie, qui peut être mortelle.",
-          "nextNode": "s3_cold"
+          "nextNode": "s3_cold",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -279,7 +287,8 @@
           "label": "Retirer les vêtements et couvrir en urgence",
           "tempsExecutionSec": 20,
           "feedback": "Vous réagissez enfin, mais le patient a déjà subi les effets délétères du froid.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -300,19 +309,22 @@
           "label": "Le rassurer, le maintenir couvert et attendre le SMUR en surveillant",
           "tempsExecutionSec": 60,
           "feedback": "Parfait. Même s'il va mieux, une surveillance hospitalière est indispensable.",
-          "nextNode": "s5_good"
+          "nextNode": "s5_good",
+          "type": "support"
         },
         {
           "label": "Puisqu'il va mieux, l'autoriser à rentrer chez lui avec ses parents",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR GRAVE : risque de 'noyade secondaire'. L'eau dans les poumons peut provoquer un œdème pulmonaire mortel dans les heures qui suivent.",
-          "nextNode": "s_err_secondary_drowning"
+          "nextNode": "s_err_secondary_drowning",
+          "type": "erreur"
         },
         {
           "label": "Lui donner une boisson chaude pour le réchauffer",
           "tempsExecutionSec": 15,
           "feedback": "INTERDIT : il est confus et sort d'inconscience. Risque de fausse route et d'aggravation respiratoire.",
-          "nextNode": "s_err_drink"
+          "nextNode": "s_err_drink",
+          "type": "erreur"
         }
       ],
       "isEndState": false,

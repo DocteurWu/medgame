@@ -185,25 +185,29 @@
           "label": "La guider sous la douche et faire couler de l'eau à 15-20°C sur les brûlures.",
           "tempsExecutionSec": 15,
           "feedback": "Excellent réflexe. Le refroidissement immédiat avec de l'eau à la bonne température ('règle des 15': 15°C, à 15 cm, pendant 15 min) est le geste qui sauve.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Appliquer de la glace directement sur les cloques pour calmer la douleur.",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR AFGSU : La glace est trop froide et provoque une vasoconstriction extrême qui aggrave la brûlure (gelure sur brûlure).",
-          "nextNode": "s_err_ice"
+          "nextNode": "s_err_ice",
+          "type": "erreur"
         },
         {
           "label": "Appliquer une pommade grasse ou du dentifrice.",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR GRAVE AFGSU : Les corps gras 'cuisent' la brûlure en retenant la chaleur et infectent la plaie. C'est un remède de grand-mère dangereux.",
-          "nextNode": "s_err_butter"
+          "nextNode": "s_err_butter",
+          "type": "erreur"
         },
         {
           "label": "Percer les cloques pour évacuer le liquide et soulager la pression.",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR AFGSU : Les cloques (phlyctènes) sont un pansement naturel stérile. Les percer ouvre une porte d'entrée aux infections.",
-          "nextNode": "s_err_blisters"
+          "nextNode": "s_err_blisters",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -221,13 +225,15 @@
           "label": "Continuer le refroidissement et retirer délicatement les bijoux (montre, bagues).",
           "tempsExecutionSec": 20,
           "feedback": "Très bonne initiative. L'œdème va s'installer rapidement et les bijoux peuvent se transformer en garrots. Il faut les enlever tant que c'est possible.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Arracher les vêtements qui collent à la peau.",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR : On ne retire que les vêtements qui ne collent pas. Arracher ceux qui adhèrent reviendrait à arracher la peau avec.",
-          "nextNode": "s_err_clothes"
+          "nextNode": "s_err_clothes",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -246,13 +252,15 @@
           "label": "Arrêter le refroidissement, la couvrir avec un drap propre et sec, et appeler le 15.",
           "tempsExecutionSec": 30,
           "feedback": "Parfait. Vous avez respecté la durée de refroidissement et vous identifiez le risque d'hypothermie. L'alerte est la prochaine étape logique.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Continuer le refroidissement pendant 30 minutes pour être sûr.",
           "tempsExecutionSec": 60,
           "feedback": "PIÈGE AFGSU : Sur une surface aussi étendue, un refroidissement trop prolongé entraîne une hypothermie sévère, ce qui complique la prise en charge. 15 minutes suffisent.",
-          "nextNode": "s_err_hypothermia"
+          "nextNode": "s_err_hypothermia",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -271,13 +279,15 @@
           "label": "Décrire : femme 28 ans, brûlure par eau bouillante, ~35% de surface, 2ème degré (cloques), refroidie 15 min, consciente, frissonne.",
           "tempsExecutionSec": 30,
           "feedback": "Bilan complet et professionnel. Le régulateur comprend immédiatement la gravité (surface > 10%) et envoie un SMUR et pré-alerte le centre des grands brûlés.",
-          "nextNode": "s5_good"
+          "nextNode": "s5_good",
+          "type": "support"
         },
         {
           "label": "Dire : « elle s'est beaucoup brûlée, ça fait des cloques partout ».",
           "tempsExecutionSec": 15,
           "feedback": "Bilan trop imprécis. Le régulateur ne peut pas évaluer la gravité (surface ? profondeur ?). Cela retarde l'envoi des moyens adaptés.",
-          "nextNode": "s_err_alert"
+          "nextNode": "s_err_alert",
+          "type": "erreur"
         }
       ],
       "isEndState": false,

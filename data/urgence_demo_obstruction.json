@@ -161,13 +161,15 @@
           "label": "Lui demander : 'Est-ce que vous vous étouffez ?'",
           "tempsExecutionSec": 30,
           "feedback": "Elle acquiesce de la tête, incapable de produire un son.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Lui taper dans le dos immédiatement",
           "tempsExecutionSec": 30,
           "feedback": "Vous commencez les claques sans bilan, mais c'est efficace.",
-          "nextNode": "s3_claques"
+          "nextNode": "s3_claques",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -188,13 +190,15 @@
           "label": "Pratiquer 5 claques vigoureuses dans le dos",
           "tempsExecutionSec": 30,
           "feedback": "Vous penchez Sophie en avant et frappez entre les omoplates.",
-          "nextNode": "s3_claques"
+          "nextNode": "s3_claques",
+          "type": "support"
         },
         {
           "label": "L'aider à boire un verre d'eau",
           "tempsExecutionSec": 30,
           "feedback": "L'eau aggrave l'obstruction par dessus le corps étranger.",
-          "nextNode": "s_err_water"
+          "nextNode": "s_err_water",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -215,13 +219,15 @@
           "label": "Passer à la manoeuvre de Heimlich (compressions abd)",
           "tempsExecutionSec": 30,
           "feedback": "Vous vous placez derrière elle, poing au dessus du nombril.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Continuer les claques à l'infini",
           "tempsExecutionSec": 30,
           "feedback": "L'inefficacité des claques impose le changement de technique.",
-          "nextNode": "s_err_time"
+          "nextNode": "s_err_time",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -242,13 +248,15 @@
           "label": "Le corps étranger est expulsé violemment",
           "tempsExecutionSec": 30,
           "feedback": "Le morceau de viande ressort. Sophie inspire à pleins poumons.",
-          "nextNode": "s5_victory"
+          "nextNode": "s5_victory",
+          "type": "support"
         },
         {
           "label": "Sophie perd connaissance et s'effondre",
           "tempsExecutionSec": 30,
           "feedback": "L'obstruction a causé une hypoxie trop longue.",
-          "nextNode": "s_unconscious"
+          "nextNode": "s_unconscious",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -269,7 +277,8 @@
           "label": "Débuter immédiatement une RCP (massages)",
           "tempsExecutionSec": 30,
           "feedback": "Le massage peut aider à mobiliser le corps étranger.",
-          "nextNode": "s6_resus"
+          "nextNode": "s6_resus",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,
@@ -290,13 +299,15 @@
           "label": "Appeler le 15 pour avis médical obligatoire",
           "tempsExecutionSec": 30,
           "feedback": "Essentiel car Heimlich peut causer des lésions internes.",
-          "nextNode": "s7_good"
+          "nextNode": "s7_good",
+          "type": "support"
         },
         {
           "label": "La laisser repartir car elle respire",
           "tempsExecutionSec": 30,
           "feedback": "Risque de rupture d'organe non détectée.",
-          "nextNode": "s_err_injury"
+          "nextNode": "s_err_injury",
+          "type": "erreur"
         }
       ],
       "isEndState": false,

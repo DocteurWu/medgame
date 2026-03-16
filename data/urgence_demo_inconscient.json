@@ -161,13 +161,15 @@
           "label": "Vérifier la conscience et l'absence de trauma",
           "tempsExecutionSec": 30,
           "feedback": "Inconscient. Pas de signe de chute évidente sur la tête.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Chercher ses papiers d'abord",
           "tempsExecutionSec": 30,
           "feedback": "La priorité est vitale, pas administrative !",
-          "nextNode": "s_err_id"
+          "nextNode": "s_err_id",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -188,13 +190,15 @@
           "label": "Vérifier respiration pendant 10 secondes",
           "tempsExecutionSec": 30,
           "feedback": "Il respire. Fréquence : 14/min (Normal).",
-          "nextNode": "s3_respire"
+          "nextNode": "s3_respire",
+          "type": "support"
         },
         {
           "label": "Le secouer pour qu'il se réveille",
           "tempsExecutionSec": 30,
           "feedback": "Inutile et dangereux s'il y a un trauma caché.",
-          "nextNode": "s_err_shake"
+          "nextNode": "s_err_shake",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -215,13 +219,15 @@
           "label": "Mettre Marc en Position Latérale de Sécurité (PLS)",
           "tempsExecutionSec": 30,
           "feedback": "Bras en équerre, jambe fléchie, basculement doucement.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Le laisser sur le dos en surveillant",
           "tempsExecutionSec": 30,
           "feedback": "Risque majeur d'étouffement par sa propre langue ou vomissement.",
-          "nextNode": "s_err_vomit"
+          "nextNode": "s_err_vomit",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -242,13 +248,15 @@
           "label": "Alerter le 15 et rester à côté",
           "tempsExecutionSec": 30,
           "feedback": "Le 15 demande de rester en ligne. 'Est-ce qu'il continue de respirer ?'",
-          "nextNode": "s5"
+          "nextNode": "s5",
+          "type": "support"
         },
         {
           "label": "S'éloigner pour aller chercher de l'aide",
           "tempsExecutionSec": 30,
           "feedback": "Il pourrait s'arrêter de respirer à tout moment sans que vous le sachiez.",
-          "nextNode": "s_err_away"
+          "nextNode": "s_err_away",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -269,13 +277,15 @@
           "label": "Vérifier que le liquide s'écoule bien hors de la bouche",
           "tempsExecutionSec": 30,
           "feedback": "Le liquide sort grâce à la gravité. Marc ne s'étouffe pas.",
-          "nextNode": "s6_good"
+          "nextNode": "s6_good",
+          "type": "support"
         },
         {
           "label": "Le remettre sur le dos pour mieux nettoyer",
           "tempsExecutionSec": 30,
           "feedback": "Inhalation immédiate du vomi. Complication pulmonaire grave.",
-          "nextNode": "s_err_rebound"
+          "nextNode": "s_err_rebound",
+          "type": "erreur"
         }
       ],
       "isEndState": false,

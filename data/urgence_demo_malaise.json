@@ -161,13 +161,15 @@
           "label": "Mettre Jean au repos strict (assis ou allongé)",
           "tempsExecutionSec": 30,
           "feedback": "Position de confort adoptée. Diminution du travail cardiaque.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Lui donner de l'aspirine tout de suite",
           "tempsExecutionSec": 30,
           "feedback": "Jamais de médicament sans l'avis formel du médecin régulateur du 15.",
-          "nextNode": "s_err_drug"
+          "nextNode": "s_err_drug",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -188,13 +190,15 @@
           "label": "Appeler le 15 immédiatement (Alerte précoce)",
           "tempsExecutionSec": 30,
           "feedback": "Vous donnez les constantes : Pâleur, sueurs, douleur thoracique.",
-          "nextNode": "s3_appel"
+          "nextNode": "s3_appel",
+          "type": "support"
         },
         {
           "label": "Attendre 10 min pour voir si ça passe",
           "tempsExecutionSec": 30,
           "feedback": "Le muscle cardiaque meurt chaque minute. Le temps, c'est du muscle.",
-          "nextNode": "s_err_wait"
+          "nextNode": "s_err_wait",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -215,13 +219,15 @@
           "label": "Interroger Jean sur ses antécédents",
           "tempsExecutionSec": 30,
           "feedback": "Il a déjà eu un stent il y a 5 ans. Information cruciale.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Dire au médecin : 'Dépêchez-vous au lieu de poser des questions !'",
           "tempsExecutionSec": 30,
           "feedback": "Vous empêchez le tri médical, l'ambulance n'est pas envoyée avec le bon niveau d'urgence.",
-          "nextNode": "s_err_aggro"
+          "nextNode": "s_err_aggro",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -242,13 +248,15 @@
           "label": "Le maintenir assis verticalement",
           "tempsExecutionSec": 30,
           "feedback": "Aide à libérer les poumons de la congestion.",
-          "nextNode": "s5_good"
+          "nextNode": "s5_good",
+          "type": "support"
         },
         {
           "label": "L'allonger pour qu'il se repose mieux",
           "tempsExecutionSec": 30,
           "feedback": "Il s'étouffe car le sang reflue dans ses poumons.",
-          "nextNode": "s_err_suffocation"
+          "nextNode": "s_err_suffocation",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -269,7 +277,8 @@
           "label": "Transmettre les antécédents et l'heure de début de douleur",
           "tempsExecutionSec": 30,
           "feedback": "Transmission parfaite.",
-          "nextNode": "s6_victory"
+          "nextNode": "s6_victory",
+          "type": "support"
         }
       ],
       "isEndState": false,

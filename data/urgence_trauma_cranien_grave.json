@@ -178,19 +178,22 @@
           "label": "Lui dire de ne pas bouger, maintenir sa tête dans l'axe, et appeler le 15",
           "tempsExecutionSec": 20,
           "feedback": "Excellent réflexe. La priorité absolue est d'immobiliser le rachis cervical. Vous alertez immédiatement les secours.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Le relever et l'asseoir sur un banc pour qu'il soit plus à l'aise",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR GRAVE AFGSU : Mobiliser un traumatisé crânien peut aggraver une lésion médullaire cervicale et provoquer une paralysie. C'est une faute majeure.",
-          "nextNode": "s_err_sit"
+          "nextNode": "s_err_sit",
+          "type": "erreur"
         },
         {
           "label": "Lui donner un verre d'eau et nettoyer sa plaie avec un mouchoir",
           "tempsExecutionSec": 15,
           "feedback": "PIÈGE AFGSU : Un TC avec vomissements ne doit jamais boire (risque d'inhalation). Se focaliser sur la plaie est une erreur de priorité. L'axe tête-cou-tronc est vital.",
-          "nextNode": "s_err_water"
+          "nextNode": "s_err_water",
+          "type": "erreur"
         },
         {
           "label": "Le laisser seul pour aller chercher de l'aide",
@@ -217,13 +220,15 @@
           "label": "Transmettre : TC avec PCI de 30s, vomissements, amnésie, plaie cuir chevelu, pas de casque",
           "tempsExecutionSec": 30,
           "feedback": "Bilan complet et précis. Le régulateur identifie immédiatement les signes de gravité et envoie un SMUR avec suspicion de TC grave.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Dire : « il est tombé de vélo, il saigne de la tête mais ça va, il parle »",
           "tempsExecutionSec": 15,
           "feedback": "Bilan dangereusement incomplet. La PCI, les vomissements et l'amnésie sont des signes de gravité majeurs. Le régulateur pourrait sous-estimer la situation.",
-          "nextNode": "s_err_minimize"
+          "nextNode": "s_err_minimize",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -243,13 +248,15 @@
           "label": "Protéger sa tête, ne pas entraver ses mouvements, et chronométrer la crise",
           "tempsExecutionSec": 60,
           "feedback": "Bonne gestion de la crise convulsive. Vous protégez le patient sans essayer de le contenir, ce qui serait dangereux.",
-          "nextNode": "s3_post_crise"
+          "nextNode": "s3_post_crise",
+          "type": "support"
         },
         {
           "label": "Tenter de lui mettre quelque chose dans la bouche pour ne pas qu'il avale sa langue",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR AFGSU : C'est un mythe dangereux. On ne met JAMAIS rien dans la bouche d'une personne qui convulse. Risque de fracture dentaire, d'obstruction et de morsure.",
-          "nextNode": "s_err_mouth"
+          "nextNode": "s_err_mouth",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -269,7 +276,8 @@
           "label": "Le mettre en Position Latérale de Sécurité (PLS) en attendant le SMUR",
           "tempsExecutionSec": 20,
           "feedback": "Normalement, on ne mobilise pas un traumatisé du rachis. Mais ici, il est inconscient et respire, avec un risque d'inhalation. La PLS est un compromis vital. Vous informez le 15.",
-          "nextNode": "s_pls"
+          "nextNode": "s_pls",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -294,7 +302,8 @@
           "label": "Transmettre l'aggravation au 15 : crise convulsive, coma, anisocorie (pupilles inégales)",
           "tempsExecutionSec": 15,
           "feedback": "Informations cruciales. L'anisocorie est un signe d'engagement cérébral imminent. Le SAMU accélère et pré-alerte le bloc de neurochirurgie.",
-          "nextNode": "s4_good"
+          "nextNode": "s4_good",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -319,7 +328,8 @@
           "label": "Rappeler le 15 pour signaler la bradycardie et l'hypertension extrêmes",
           "tempsExecutionSec": 15,
           "feedback": "Vous confirmez la gravité extrême de la situation. Le SMUR est à 2 minutes.",
-          "nextNode": "s4_good"
+          "nextNode": "s4_good",
+          "type": "support"
         }
       ],
       "isEndState": false,

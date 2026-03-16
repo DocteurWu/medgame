@@ -177,19 +177,22 @@
           "label": "Vérifier la conscience (secouer les épaules, crier « Ça va ? ») et la respiration.",
           "tempsExecutionSec": 10,
           "feedback": "Pas de réponse. Vous basculez sa tête en arrière, mais il n'y a aucun mouvement respiratoire. Vous ne sentez pas de pouls carotidien.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "erreur"
         },
         {
           "label": "La mettre en PLS (position latérale de sécurité) immédiatement.",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR FATALE AFGSU : la PLS est pour l'inconscient QUI RESPIRE. Une victime en arrêt cardiaque mise en PLS est une victime qui meurt. Perdre du temps = perdre la victime.",
-          "nextNode": "s_err_pls"
+          "nextNode": "s_err_pls",
+          "type": "erreur"
         },
         {
           "label": "Lui donner des claques sur le visage pour la réveiller.",
           "tempsExecutionSec": 10,
           "feedback": "C'est une stimulation, mais elle est inefficace et fait perdre du temps. Il faut une évaluation structurée : conscience, puis respiration.",
-          "nextNode": "s1_retard"
+          "nextNode": "s1_retard",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -208,7 +211,8 @@
           "label": "Passer à l'étape suivante : alerter et masser.",
           "tempsExecutionSec": 5,
           "feedback": "Vous avez perdu un peu de temps, mais vous vous reprenez.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -227,19 +231,22 @@
           "label": "Crier : « Appelez le 15 ! Cherchez un défibrillateur ! » et commencer le massage cardiaque.",
           "tempsExecutionSec": 10,
           "feedback": "Parfait. Vous activez la chaîne de survie : alerte, demande du DAE et début immédiat des compressions thoraciques.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "erreur"
         },
         {
           "label": "Commencer le massage cardiaque sans alerter personne.",
           "tempsExecutionSec": 10,
           "feedback": "Masser est bien, mais sans alerte, les secours n'arriveront jamais et le DAE non plus. Vous serez vite épuisé et inefficace.",
-          "nextNode": "s_err_no_alert"
+          "nextNode": "s_err_no_alert",
+          "type": "erreur"
         },
         {
           "label": "Attendre que quelqu'un d'autre prenne l'initiative.",
           "tempsExecutionSec": 30,
           "feedback": "Chaque minute sans massage cardiaque diminue les chances de survie de 10%. L'attente est mortelle.",
-          "nextNode": "s_err_wait"
+          "nextNode": "s_err_wait",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -258,19 +265,22 @@
           "label": "Faire 2 insufflations (bouche-à-bouche) puis reprendre 30 compressions.",
           "tempsExecutionSec": 60,
           "feedback": "Vous maintenez le cycle 30:2. Chaque compression perfuse le cerveau en oxygène.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "erreur"
         },
         {
           "label": "Ne faire que les compressions thoraciques en continu.",
           "tempsExecutionSec": 60,
           "feedback": "C'est une option acceptable, surtout si vous n'êtes pas formé ou à l'aise avec le bouche-à-bouche. Le plus important est de ne pas interrompre les compressions.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "erreur"
         },
         {
           "label": "Arrêter pour vérifier le pouls toutes les 30 compressions.",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR AFGSU : On n'interrompt JAMAIS le massage pour vérifier le pouls (sauf instruction du DAE ou arrivée des secours). Chaque pause fait chuter la pression de perfusion cérébrale à zéro.",
-          "nextNode": "s_err_check_pulse"
+          "nextNode": "s_err_check_pulse",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -289,13 +299,15 @@
           "label": "Demander à l'autre personne de poser les électrodes PENDANT que vous continuez le massage.",
           "tempsExecutionSec": 30,
           "feedback": "Excellent travail d'équipe. Le massage n'est interrompu que le temps de l'analyse du DAE. Temps de pause minimal.",
-          "nextNode": "s5_dae_analysis"
+          "nextNode": "s5_dae_analysis",
+          "type": "erreur"
         },
         {
           "label": "Arrêter le massage pour poser vous-même les électrodes.",
           "tempsExecutionSec": 30,
           "feedback": "Vous perdez 15-20 secondes de massage. Il fallait utiliser l'aide disponible pour minimiser la pause.",
-          "nextNode": "s5_dae_analysis"
+          "nextNode": "s5_dae_analysis",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -331,7 +343,8 @@
           "label": "Crier « Écartez-vous ! » et appuyer sur le bouton de choc.",
           "tempsExecutionSec": 5,
           "feedback": "Le choc est délivré. Le corps d'Elena sursaute. Le DAE annonce : « Reprenez immédiatement la réanimation cardio-pulmonaire. »",
-          "nextNode": "s6_post_shock"
+          "nextNode": "s6_post_shock",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,
@@ -350,13 +363,15 @@
           "label": "Reprendre immédiatement les compressions thoraciques.",
           "tempsExecutionSec": 30,
           "feedback": "Parfait. Le cœur a besoin d'être perfusé immédiatement après le choc pour repartir. Vous continuez jusqu'à l'arrivée du SAMU.",
-          "nextNode": "s_good_end"
+          "nextNode": "s_good_end",
+          "type": "support"
         },
         {
           "label": "Vérifier si elle respire ou si elle a un pouls avant de reprendre.",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR : Le DAE ne vous le demande pas. Il faut reprendre le massage IMMÉDIATEMENT après le choc. Le cœur est 'sidéré' et a besoin du massage pour se relancer.",
-          "nextNode": "s_good_end"
+          "nextNode": "s_good_end",
+          "type": "support"
         }
       ],
       "isEndState": false,

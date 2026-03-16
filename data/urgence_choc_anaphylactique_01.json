@@ -214,21 +214,21 @@
         },
         {
           "label": "Donner un comprimé d'Antihistaminique (Cetirizine)",
-          "type": "erreur",
+          "type": "support",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
           "feedback": "ERREUR AFGSU : Le patient a du mal à avaler (œdème de la gorge), l'effet oral sera trop lent (30-60 min). Vous perdez un temps vital ! L'adrénaline est le seul traitement d'urgence."
         },
         {
           "label": "Mettre sous Oxygène (Masque Haute Concentration 15L/min)",
-          "type": "soin",
+          "type": "support",
           "tempsExecutionSec": 5,
           "nextNode": "etat_initial_O2",
           "feedback": "L'oxygène est posé. Bonne mesure de soutien, mais ça ne traite pas la cause (la dégranulation mastocytaire). La saturation s'améliore légèrement mais le choc progresse."
         },
         {
           "label": "Utiliser un bronchodilatateur (Ventoline inhalée)",
-          "type": "erreur",
+          "type": "support",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
           "feedback": "PIÈGE AFGSU : Le wheezing n'est pas un asthme classique mais un bronchospasme allergique. La Ventoline sera inefficace sur l'œdème et l'hypotension. L'adrénaline est le seul traitement qui sauve."
@@ -237,7 +237,8 @@
           "label": "Préparer une injection de corticoïdes IV (Dexsol)",
           "tempsExecutionSec": 30,
           "feedback": "PIÈGE AFGSU : Les corticoïdes mettent 30-60 minutes à agir ! Ils sont INUTILES en phase aiguë. Seule l'adrénaline sauve dans les premières minutes.",
-          "nextNode": "s_err_corticoide_first"
+          "nextNode": "s_err_corticoide_first",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -274,7 +275,7 @@
         },
         {
           "label": "Donner de l'eau fraîche pour calmer les démangeaisons",
-          "type": "erreur",
+          "type": "support",
           "tempsExecutionSec": 10,
           "nextNode": "etat_degradation1",
           "feedback": "INTERDIT : le patient a un œdème de la gorge. Boire risque l'inhalation et l'asphyxie. Il fallait injecter l'adrénaline !"
@@ -300,14 +301,14 @@
       "actionsDisponibles": [
         {
           "label": "Alerter le 15, maintenir O2, préparer une 2ème dose d'adrénaline et des corticoïdes IV",
-          "type": "soin",
+          "type": "traitement_cle",
           "tempsExecutionSec": 20,
           "nextNode": "etat_alerte",
           "feedback": "Excellente gestion. Vous anticipez la suite : surveillance hospitalière obligatoire pour le risque de réaction biphasique."
         },
         {
           "label": "Considérer le patient comme sauvé et relâcher la surveillance",
-          "type": "erreur",
+          "type": "support",
           "tempsExecutionSec": 10,
           "nextNode": "etat_rebond_anaphylactique",
           "feedback": "ERREUR GRAVE : L'amélioration peut être temporaire. Un choc anaphylactique nécessite une surveillance hospitalière d'au moins 24h. La réaction biphasique peut être mortelle."
@@ -316,7 +317,8 @@
           "label": "Ranger la trousse, le patient va mieux, pas besoin du 15",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR FATALE : L'amélioration initiale peut être trompeuse. La réaction biphasique (20% des cas) est mortelle sans surveillance. Le 15 est OBLIGATOIRE.",
-          "nextNode": "s_err_no_alert"
+          "nextNode": "s_err_no_alert",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -374,7 +376,7 @@
       "actionsDisponibles": [
         {
           "label": "Alerter le 15 en urgence, maintenir O2, préparer une 2ème dose d'adrénaline",
-          "type": "soin",
+          "type": "traitement_cle",
           "tempsExecutionSec": 10,
           "nextNode": "etat_alerte",
           "feedback": "Le SMUR est en route. La prise en charge se poursuit. Le patient a eu très chaud — réaction biphasique possible."
@@ -407,7 +409,7 @@
         },
         {
           "label": "Administrer des corticoïdes IV seuls (sans adrénaline)",
-          "type": "erreur",
+          "type": "traitement_cle",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
           "feedback": "PIÈGE AFGSU : Les corticoïdes mettent 30-60 minutes à agir. Trop lents pour la phase aiguë d'une réaction biphasique. L'adrénaline reste le traitement d'urgence, même en 2ème dose."
@@ -467,13 +469,15 @@
           "label": "Rester vigilant et surveiller une éventuelle réaction biphasique",
           "tempsExecutionSec": 30,
           "feedback": "Bonne surveillance. Vous restez aux côtés du patient en attendant le SMUR.",
-          "nextNode": "etat_stabilise_surveillance"
+          "nextNode": "etat_stabilise_surveillance",
+          "type": "support"
         },
         {
           "label": "Ranger la trousse et se détendre",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR : la surveillance doit être continue. La réaction biphasique peut survenir à tout moment.",
-          "nextNode": "etat_rebond_anaphylactique"
+          "nextNode": "etat_rebond_anaphylactique",
+          "type": "support"
         }
       ],
       "isEndState": false,

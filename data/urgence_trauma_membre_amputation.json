@@ -183,19 +183,22 @@
           "label": "Comprimer le moignon avec un pansement compressif",
           "tempsExecutionSec": 15,
           "feedback": "Vous posez un pansement compressif sur le moignon. Le saignement ralentit. Karim gémit mais le pire est passé.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Récupérer le doigt en premier",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR : la priorité est le MOIGNON (victime vivante avant le segment). Le saignement continue pendant que vous cherchez le doigt.",
-          "nextNode": "s2_delayed"
+          "nextNode": "s2_delayed",
+          "type": "support"
         },
         {
           "label": "Mettre un garrot au poignet",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR : le garrot au poignet est excessif. Un pansement compressif suffit pour un saignement digital. Le garrot détruit la main entière.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,
@@ -216,19 +219,22 @@
           "label": "Récupérer le doigt, le rincer à l'eau claire, le mettre dans un linge humide puis dans un sac étanche",
           "tempsExecutionSec": 30,
           "feedback": "Doigt récupéré, rincé, enveloppé dans un linge humide, mis dans un sac plastique. Conservation correcte.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Mettre le doigt directement dans un seau de glace pour le conserver",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR GRAVE : le contact direct avec la glace congèle les tissus ! Les cellules éclatent. Le doigt sera irréimplantable.",
-          "nextNode": "s_err_ice"
+          "nextNode": "s_err_ice",
+          "type": "erreur"
         },
         {
           "label": "Mettre le doigt dans l'alcool à 90° pour le désinfecter",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR : l'alcool dessèche et détruit les tissus. La réimplantation sera impossible.",
-          "nextNode": "s_err_alcohol"
+          "nextNode": "s_err_alcohol",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -249,13 +255,15 @@
           "label": "Placer le SAC dans un récipient avec de la glace (pas de contact direct)",
           "tempsExecutionSec": 15,
           "feedback": "Le sac est posé sur la glace. Le froid ralentit la dégradation des tissus sans les congeler. Parfait.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Verser de la glace directement dans le sac avec le doigt",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR : la glace en contact direct avec le doigt = congélation ! Le sac doit être SÉPARÉ de la glace.",
-          "nextNode": "s_err_ice2"
+          "nextNode": "s_err_ice2",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -276,13 +284,15 @@
           "label": "Transmettre : amputation traumatique index droit, moignon comprimé, segment conservé dans sac + glace, patient diabétique",
           "tempsExecutionSec": 30,
           "feedback": "Bilan complet. Le régulateur envoie une équipe microchirurgicale. La mention diabète aide le chirurgien.",
-          "nextNode": "s5_good"
+          "nextNode": "s5_good",
+          "type": "support"
         },
         {
           "label": "Dire : « il s'est coupé le doigt, envoyez une ambulance »",
           "tempsExecutionSec": 15,
           "feedback": "Bilan incomplet. L'information « segment conservé » est cruciale : elle déclenche l'équipe microchirurgicale.",
-          "nextNode": "s5_incomplete"
+          "nextNode": "s5_incomplete",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -331,7 +341,8 @@
           "label": "Comprimer le moignon immédiatement",
           "tempsExecutionSec": 10,
           "feedback": "Compression effectuée. Le saignement s'arrête.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         }
       ],
       "isEndState": false,

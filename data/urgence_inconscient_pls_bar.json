@@ -50,7 +50,11 @@
       "evolution": "Dégradation de la conscience",
       "facteursDeclenchants": "Excès d'alcool lors d'une soirée étudiante, à jeun",
       "descriptionDouleur": "Inconscient, ne répond pas",
-      "asymptomesAssocies": ["Haleine éthylique", "Vomissements", "Inconscience"],
+      "asymptomesAssocies": [
+        "Haleine éthylique",
+        "Vomissements",
+        "Inconscience"
+      ],
       "remarques": "Un ami l'a trouvé au sol. Ils étaient plusieurs à boire."
     },
     "verbatim": "L'ami : « Il a trop bu... on l'a retrouvé par terre... il respire mais il ne se réveille pas... y'a du vomi... »"
@@ -124,10 +128,14 @@
           "Oui, par précaution",
           "Non, il faut juste le mettre en position assise"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "La respiration est présente (même lente). On ne fait JAMAIS de massage si le cœur bat. L'indication du MCE = absence totale de respiration. Ici → PLS.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg09_position",
@@ -140,10 +148,14 @@
           "Le mettre en PLS (sur le côté) et nettoyer la bouche",
           "L'asseoir contre un mur"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "PLS = sur le CÔTÉ. Sur le ventre, la langue peut obstruer et les vomissements sont inhalés. Sur le dos, les vomissements coulent dans la trachée. La PLS sur le côté permet un drainage des voies aériennes.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -166,19 +178,22 @@
           "label": "Vérifier la respiration : regarder le thorax, écouter à côté de la bouche",
           "tempsExecutionSec": 10,
           "feedback": "Thorax qui se soulève, respiration audible (lente). Il respire.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Le secouer vigoureusement pour le réveiller",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR : le secouer peut provoquer un réflexe nauséeux et des vomissements supplémentaires. Risque d'inhalation.",
-          "nextNode": "s_err_shake"
+          "nextNode": "s_err_shake",
+          "type": "erreur"
         },
         {
           "label": "Lui donner du café noir pour le dégriser",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR : le café ne dégrise pas. En plus, il est inconscient → le café va dans les poumons.",
-          "nextNode": "s_err_coffee"
+          "nextNode": "s_err_coffee",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -199,13 +214,15 @@
           "label": "Le mettre en PLS : le retourner sur le côté, nettoyer la bouche, surveiller la respiration",
           "tempsExecutionSec": 30,
           "feedback": "Vous retournez Tristan sur le côté (PLS), essuyez les vomissements. Les voies aériennes sont protégées.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Le mettre en position assise contre le mur",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR : en position assise, la tête tombe en avant et la langue/les vomissements obstruent. PLS obligatoire.",
-          "nextNode": "s_err_sit"
+          "nextNode": "s_err_sit",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -226,13 +243,15 @@
           "label": "Le couvrir avec une veste, surveiller la respiration, appeler le 15",
           "tempsExecutionSec": 30,
           "feedback": "Jacket posé, le 15 est alerté. L'opérateur vous guide et envoie une équipe.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Le laisser et dire à son ami de s'occuper de lui",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR : sans surveillance, il peut vomir et s'étouffer en quelques minutes. La responsabilité est engagée.",
-          "nextNode": "s_err_abandon"
+          "nextNode": "s_err_abandon",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -253,13 +272,15 @@
           "label": "Nettoyer la bouche, maintenir la PLS, vérifier que la respiration continue",
           "tempsExecutionSec": 30,
           "feedback": "Vous nettoyez et vérifiez. La respiration est toujours là. La PLS a sauvé Tristan de l'inhalation.",
-          "nextNode": "s5_good"
+          "nextNode": "s5_good",
+          "type": "support"
         },
         {
           "label": "Le retourner sur le dos pour mieux nettoyer",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR MORTELLE : sur le dos, le vomi coule dans la trachée. On ne sort JAMAIS de la PLS.",
-          "nextNode": "s_err_back"
+          "nextNode": "s_err_back",
+          "type": "erreur"
         }
       ],
       "isEndState": false,

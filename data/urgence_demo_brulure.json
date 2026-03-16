@@ -161,19 +161,22 @@
           "label": "Rincer abondamment à l'eau courante (tempérée)",
           "tempsExecutionSec": 30,
           "feedback": "Rallongement du rinçage immédiat.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Essuyer le produit avec du papier absorbant",
           "tempsExecutionSec": 30,
           "feedback": "L'acide pénètre encore plus sous la pression de l'essuyage.",
-          "nextNode": "s_err_paper"
+          "nextNode": "s_err_paper",
+          "type": "erreur"
         },
         {
           "label": "Chercher un produit pour neutraliser l'acide",
           "tempsExecutionSec": 30,
           "feedback": "La réaction chimique de neutralisation produit de la chaleur et brûle encore plus.",
-          "nextNode": "s_err_neutral"
+          "nextNode": "s_err_neutral",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -194,13 +197,15 @@
           "label": "Retirer les vêtements imbibés tout en rinçant",
           "tempsExecutionSec": 30,
           "feedback": "Indispensable pour stopper l'action du produit chimique.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Appliquer de la pommade Biafine",
           "tempsExecutionSec": 30,
           "feedback": "La pommade emprisonne le produit chimique dans la chair !",
-          "nextNode": "s_err_cream"
+          "nextNode": "s_err_cream",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -221,13 +226,15 @@
           "label": "Maintenir le rinçage jusqu'à l'arrivée des secours",
           "tempsExecutionSec": 30,
           "feedback": "En chimique, le rinçage doit être très long (parfois 30 min+).",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Arrêter dès que la douleur diminue un peu",
           "tempsExecutionSec": 30,
           "feedback": "Le produit continue de ronger les couches profondes sans douleur immédiate.",
-          "nextNode": "s_err_deep"
+          "nextNode": "s_err_deep",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -248,7 +255,8 @@
           "label": "Protéger la zone rincée avec un champ propre (sans serrer)",
           "tempsExecutionSec": 30,
           "feedback": "Empêche l'infection et l'hypothermie.",
-          "nextNode": "s5_good"
+          "nextNode": "s5_good",
+          "type": "support"
         }
       ],
       "isEndState": false,

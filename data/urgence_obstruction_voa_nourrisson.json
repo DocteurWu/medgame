@@ -175,19 +175,22 @@
           "label": "Prendre le bébé sur l'avant-bras, tête basse, et donner 5 claques dans le dos",
           "tempsExecutionSec": 15,
           "feedback": "Vous allongez Théo sur votre avant-bras, tête plus basse que le corps, en soutenant sa tête. 5 claques sèches entre les omoplates. C'est la procédure correcte.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Ouvrir la bouche du bébé et chercher le corps étranger avec votre doigt",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR AFGSU : C'est un 'balayage à l'aveugle'. Vous ne voyez rien et risquez de repousser le morceau de fruit plus profondément, rendant l'obstruction irrémédiable.",
-          "nextNode": "s_err_finger"
+          "nextNode": "s_err_finger",
+          "type": "erreur"
         },
         {
           "label": "Le suspendre par les pieds et le secouer",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR GRAVE AFGSU : Secouer un nourrisson est extrêmement dangereux (syndrome du bébé secoué) et inefficace pour une obstruction. Vous risquez des lésions cérébrales et cervicales.",
-          "nextNode": "s_err_shake"
+          "nextNode": "s_err_shake",
+          "type": "erreur"
         },
         {
           "label": "Tenter la manœuvre de Heimlich (compressions abdominales)",
@@ -213,13 +216,15 @@
           "label": "Retourner Théo sur le dos et donner 5 compressions thoraciques (2 doigts)",
           "tempsExecutionSec": 15,
           "feedback": "Vous retournez Théo sur votre autre avant-bras. 5 compressions thoraciques au milieu du sternum avec l'index et le majeur. C'est la suite de l'algorithme.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "Continuer les claques dans le dos",
           "tempsExecutionSec": 30,
           "feedback": "Les claques seules n'ont pas fonctionné. L'algorithme AFGSU est clair : il faut ALTERNER 5 claques dans le dos et 5 compressions thoraciques.",
-          "nextNode": "s_err_no_altern"
+          "nextNode": "s_err_no_altern",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -238,13 +243,15 @@
           "label": "Alerter le 15, poser Théo au sol et commencer la RCP (30 compressions)",
           "tempsExecutionSec": 20,
           "feedback": "Le nourrisson est inconscient. Vous passez à l'algorithme de l'arrêt cardiaque. Vous alertez et commencez immédiatement le massage cardiaque.",
-          "nextNode": "s4_rcp"
+          "nextNode": "s4_rcp",
+          "type": "traitement_cle"
         },
         {
           "label": "Paniquer et crier",
           "tempsExecutionSec": 15,
           "feedback": "La situation est critique, mais la panique fait perdre un temps vital. Chaque seconde compte.",
-          "nextNode": "s_err_panic"
+          "nextNode": "s_err_panic",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -263,13 +270,15 @@
           "label": "Vous voyez le morceau de fruit ! Vous le retirez délicatement avec votre petit doigt.",
           "tempsExecutionSec": 10,
           "feedback": "Le massage cardiaque a permis de déloger l'obstacle ! Vous l'extrayez avec précaution. C'est le seul moment où il est permis de mettre le doigt.",
-          "nextNode": "s5_expulsion"
+          "nextNode": "s5_expulsion",
+          "type": "support"
         },
         {
           "label": "Vous ne voyez rien, vous tentez les 2 insufflations.",
           "tempsExecutionSec": 10,
           "feedback": "L'air ne passe pas. Le thorax ne se soulève pas. L'obstacle est toujours en place. Il faut continuer la RCP.",
-          "nextNode": "s4_rcp_continue"
+          "nextNode": "s4_rcp_continue",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -305,7 +314,8 @@
           "label": "Mettre Théo en PLS pour nourrisson et surveiller sa respiration en attendant le SAMU.",
           "tempsExecutionSec": 20,
           "feedback": "Parfait. La respiration a repris, il est inconscient, la PLS est indiquée pour protéger les voies aériennes. Le SAMU arrive.",
-          "nextNode": "s_good_end"
+          "nextNode": "s_good_end",
+          "type": "support"
         }
       ],
       "isEndState": false,

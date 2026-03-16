@@ -184,25 +184,29 @@
           "label": "Lui donner 5 claques vigoureuses entre les omoplates, penché en avant",
           "tempsExecutionSec": 15,
           "feedback": "Vous penchez Henri en avant et lui donnez 5 claques sèches entre les omoplates. Rien ne sort.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "L'encourager à tousser",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR : il ne peut pas tousser, l'air ne passe pas. C'est une obstruction TOTALE. Vous perdez un temps précieux.",
-          "nextNode": "s2_delayed"
+          "nextNode": "s2_delayed",
+          "type": "support"
         },
         {
           "label": "Lui donner un verre d'eau pour débloquer",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR FATALE : L'eau ne peut pas passer et va remplir l'arrière-gorge, aggravant la situation.",
-          "nextNode": "s_err_water"
+          "nextNode": "s_err_water",
+          "type": "erreur"
         },
         {
           "label": "Tenter de retirer l'objet avec vos doigts (balayage à l'aveugle)",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR DANGEREUSE : le balayage à l'aveugle risque d'enfoncer le corps étranger encore plus profondément. On ne retire que ce que l'on voit.",
-          "nextNode": "s_err_sweep"
+          "nextNode": "s_err_sweep",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -223,19 +227,22 @@
           "label": "Passer aux compressions thoraciques (alternative à Heimlich pour personne obèse)",
           "tempsExecutionSec": 15,
           "feedback": "Excellente adaptation ! Vous vous placez derrière Henri et effectuez 5 compressions sur le sternum, comme pour un massage cardiaque.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         },
         {
           "label": "S'acharner avec des compressions abdominales inefficaces",
           "tempsExecutionSec": 15,
           "feedback": "Vos mains glissent et les compressions sont inefficaces. Henri perd connaissance.",
-          "nextNode": "s3_late"
+          "nextNode": "s3_late",
+          "type": "support"
         },
         {
           "label": "Répéter 5 autres claques dans le dos",
           "tempsExecutionSec": 15,
           "feedback": "Les claques seules n'ont pas suffi. Il faut alterner avec une autre technique. Vous perdez du temps.",
-          "nextNode": "s2_delayed"
+          "nextNode": "s2_delayed",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -256,7 +263,8 @@
           "label": "5 claques vigoureuses puis compressions thoraciques immédiatement",
           "tempsExecutionSec": 20,
           "feedback": "Vous enchaînez enfin les bonnes manœuvres. Le temps perdu a affaibli Henri.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -277,13 +285,15 @@
           "label": "Le rassurer, le faire asseoir, appeler le 15 pour avis médical systématique",
           "tempsExecutionSec": 30,
           "feedback": "Parfait. Un avis médical est OBLIGATOIRE après des manœuvres de désobstruction (risque de lésions internes).",
-          "nextNode": "s4_good"
+          "nextNode": "s4_good",
+          "type": "support"
         },
         {
           "label": "Le laisser repartir à sa table, 'plus de peur que de mal'",
           "tempsExecutionSec": 10,
           "feedback": "ERREUR GRAVE : les compressions peuvent causer des lésions (côtes, rate...). Ne pas faire vérifier par un médecin est une faute.",
-          "nextNode": "s_err_leave"
+          "nextNode": "s_err_leave",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -304,7 +314,8 @@
           "label": "Commencer la RCP (30 compressions thoraciques)",
           "tempsExecutionSec": 30,
           "feedback": "Vous allongez Henri, alertez le 15 et commencez le massage cardiaque. C'est la bonne séquence.",
-          "nextNode": "s4_resus"
+          "nextNode": "s4_resus",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,
@@ -339,7 +350,8 @@
           "label": "Retirer le morceau et continuer la RCP",
           "tempsExecutionSec": 60,
           "feedback": "Parfait. Le MCE a mobilisé l'objet. Après retrait, les insufflations passent et Henri reprend une activité cardiaque.",
-          "nextNode": "s5_resus_success"
+          "nextNode": "s5_resus_success",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,

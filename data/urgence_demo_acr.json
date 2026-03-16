@@ -166,13 +166,15 @@
           "label": "Vérifier la conscience (Appeler, secouer, stimuler)",
           "tempsExecutionSec": 30,
           "feedback": "Aucune réponse, aucun mouvement.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Pratiquer un massage cardiaque immédiat",
           "tempsExecutionSec": 30,
           "feedback": "Vous n'avez pas encore vérifié s'il respire !",
-          "nextNode": "s_err_direct"
+          "nextNode": "s_err_direct",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -193,13 +195,15 @@
           "label": "Crier 'A l'aide !', demander un DAE",
           "tempsExecutionSec": 30,
           "feedback": "Un témoin s'arrête. Vous lui demandez de chercher un DAE.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "traitement_cle"
         },
         {
           "label": "Sortir votre téléphone pour appeler le 15 seul",
           "tempsExecutionSec": 30,
           "feedback": "Vous perdez des secondes précieuses sans libérer les voies aériennes.",
-          "nextNode": "s_err_solo"
+          "nextNode": "s_err_solo",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -220,13 +224,15 @@
           "label": "LVA et vérifier la respiration (10s)",
           "tempsExecutionSec": 30,
           "feedback": "Ventre et poitrine ne bougent pas. Aucun souffle.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "support"
         },
         {
           "label": "Mettre en PLS par précaution",
           "tempsExecutionSec": 30,
           "feedback": "ERRARE : On ne met jamais en PLS une victime qui ne respire pas !",
-          "nextNode": "s_err_pls"
+          "nextNode": "s_err_pls",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -247,13 +253,15 @@
           "label": "Alerter le 15, donner l'adresse précise et débuter RCP",
           "tempsExecutionSec": 30,
           "feedback": "Le 15 est en ligne. Vous commencez les compressions (30:2).",
-          "nextNode": "s5"
+          "nextNode": "s5",
+          "type": "traitement_cle"
         },
         {
           "label": "Chercher le DAE vous-même en laissant la victime",
           "tempsExecutionSec": 30,
           "feedback": "La victime reste sans massage trop longtemps.",
-          "nextNode": "s_err_abandon"
+          "nextNode": "s_err_abandon",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -274,13 +282,15 @@
           "label": "Allumer le DAE et suivre les instructions vocales",
           "tempsExecutionSec": 30,
           "feedback": "Le DAE analyse... 'Choc recommandé, ne touchez pas la victime'.",
-          "nextNode": "s6"
+          "nextNode": "s6",
+          "type": "traitement_cle"
         },
         {
           "label": "Continuer le massage sans s'occuper du DAE",
           "tempsExecutionSec": 30,
           "feedback": "Le DAE est la priorité absolue pour choquer un rythme fibrillant.",
-          "nextNode": "s_err_nodae"
+          "nextNode": "s_err_nodae",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -301,13 +311,15 @@
           "label": "Reprendre immédiatement la RCP (compressions)",
           "tempsExecutionSec": 30,
           "feedback": "Vous reprenez le massage comme demandé par l'appareil.",
-          "nextNode": "s7_good"
+          "nextNode": "s7_good",
+          "type": "traitement_cle"
         },
         {
           "label": "Attendre que le DAE analyse à nouveau",
           "tempsExecutionSec": 30,
           "feedback": "Il faut masser entre les analyses (2 minutes) !",
-          "nextNode": "s_err_pause"
+          "nextNode": "s_err_pause",
+          "type": "erreur"
         }
       ],
       "isEndState": false,

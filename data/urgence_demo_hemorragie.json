@@ -161,13 +161,15 @@
           "label": "Comprimer immédiatement la plaie avec la main",
           "tempsExecutionSec": 30,
           "feedback": "Vous saturez la plaie de pression. Le saignement diminue.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Chercher une trousse de secours",
           "tempsExecutionSec": 30,
           "feedback": "Chaque seconde compte, la flaque de sang s'agrandit de façon critique.",
-          "nextNode": "s_err_lost"
+          "nextNode": "s_err_lost",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -188,13 +190,15 @@
           "label": "Apposer un pansement compressif (Chut)",
           "tempsExecutionSec": 30,
           "feedback": "Le pansement est traversé instantanément par le flux.",
-          "nextNode": "s3_failed_comp"
+          "nextNode": "s3_failed_comp",
+          "type": "support"
         },
         {
           "label": "Poser un garrot tactique (ou improvisé) au-dessus",
           "tempsExecutionSec": 30,
           "feedback": "Vous serrez le garrot sur le haut de la cuisse.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,
@@ -215,13 +219,15 @@
           "label": "Maintenir la compression et poser un 2ème pansement",
           "tempsExecutionSec": 30,
           "feedback": "Trop tard, il entre en choc hémorragique sévère.",
-          "nextNode": "s_err_shock"
+          "nextNode": "s_err_shock",
+          "type": "erreur"
         },
         {
           "label": "Passer au garrot immédiatement",
           "tempsExecutionSec": 30,
           "feedback": "Dernière chance saisie.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,
@@ -242,13 +248,15 @@
           "label": "Noter l'heure de pose du garrot",
           "tempsExecutionSec": 30,
           "feedback": "Heure notée : 23:45. Vital pour les chirurgiens.",
-          "nextNode": "s5"
+          "nextNode": "s5",
+          "type": "traitement_cle"
         },
         {
           "label": "Desserrer le garrot pour voir si ça saigne encore",
           "tempsExecutionSec": 30,
           "feedback": "ERRARE : On ne desserre JAMAIS un garrot !",
-          "nextNode": "s_err_loose"
+          "nextNode": "s_err_loose",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -269,13 +277,15 @@
           "label": "Allonger la victime, jambes surélevées et couvrir",
           "tempsExecutionSec": 30,
           "feedback": "Lutte contre l'état de choc et l'hypothermie.",
-          "nextNode": "s6"
+          "nextNode": "s6",
+          "type": "support"
         },
         {
           "label": "Lui donner à boire (grande soif)",
           "tempsExecutionSec": 30,
           "feedback": "Interdit. Risque d'inhalation lors de l'anesthésie imminente.",
-          "nextNode": "s_err_drink"
+          "nextNode": "s_err_drink",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -296,7 +306,8 @@
           "label": "Passer le bilan complet : Garrot + Signes de choc",
           "tempsExecutionSec": 30,
           "feedback": "Le régulateur envoie un SMUR et prépare le déchoquage.",
-          "nextNode": "s7_good"
+          "nextNode": "s7_good",
+          "type": "traitement_cle"
         }
       ],
       "isEndState": false,

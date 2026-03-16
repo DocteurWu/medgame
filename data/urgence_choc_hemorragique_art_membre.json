@@ -37,7 +37,9 @@
     },
     "antecedents": {
       "medicaux": [],
-      "chirurgicaux": ["Appendicectomie à 12 ans"],
+      "chirurgicaux": [
+        "Appendicectomie à 12 ans"
+      ],
       "familiaux": []
     },
     "traitements": [],
@@ -50,7 +52,11 @@
       "evolution": "Aiguë, brutale",
       "facteursDeclenchants": "Tronçonneuse a glissé sur la cuisse gauche",
       "descriptionDouleur": "Douleur vive à la cuisse",
-      "asymptomesAssocies": ["Saignement abondant", "Pâleur", "Sueurs"],
+      "asymptomesAssocies": [
+        "Saignement abondant",
+        "Pâleur",
+        "Sueurs"
+      ],
       "remarques": "Accident domestique en bricolage"
     },
     "verbatim": "Je... je me suis coupé... ça saigne beaucoup... je suis tout pâle..."
@@ -124,10 +130,14 @@
           "Hémorragie artérielle",
           "Hémorragie interne"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "Le sang rouge vif en jets pulsatiles est caractéristique d'une plaie artérielle. Le sang veineux est plus sombre et coule de façon continue.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg01_garrot",
@@ -135,10 +145,17 @@
       "challenge": {
         "question": "Vous posez un garrot. Combien de centimètres au-dessus de la plaie doit-il être positionné ? (réponse en chiffre)",
         "answer": "3",
-        "alternatives": ["2", "4", "5", "quelques"]
+        "alternatives": [
+          "2",
+          "4",
+          "5",
+          "quelques"
+        ]
       },
       "feedback_error": "Le garrot doit être posé quelques centimètres au-dessus de la plaie (idéalement 3-5 cm). JAMAIS sur une articulation.",
-      "target_fields": ["possibleTreatments"]
+      "target_fields": [
+        "possibleTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -161,19 +178,22 @@
           "label": "Comprimer immédiatement la plaie avec les mains (gants)",
           "tempsExecutionSec": 15,
           "feedback": "Vous mettez vos gants et plaquez vos mains sur la plaie. Le saignement ralentit mais continue par les interstices.",
-          "nextNode": "s2"
+          "nextNode": "s2",
+          "type": "support"
         },
         {
           "label": "Chercher un garrot dans la trousse",
           "tempsExecutionSec": 30,
           "feedback": "Vous perdez 30 secondes précieuses. La flaque de sang s'agrandit au sol. Lucas commence à avoir des vertiges.",
-          "nextNode": "s_err_delay"
+          "nextNode": "s_err_delay",
+          "type": "erreur"
         },
         {
           "label": "Poser un pansement compressif par-dessus la plaie",
           "tempsExecutionSec": 20,
           "feedback": "Le pansement est traversé instantanément par le flux artériel. C'est insuffisant face à une artère sectionnée.",
-          "nextNode": "s2_trap"
+          "nextNode": "s2_trap",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -194,13 +214,15 @@
           "label": "Poser un garrot quelques cm au-dessus de la plaie",
           "tempsExecutionSec": 20,
           "feedback": "Vous serrez le garrot sur le haut de la cuisse, au-dessus de la plaie. Le saignement s'arrête net.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "traitement_cle"
         },
         {
           "label": "Doubler la compression avec un 2ème pansement compressif",
           "tempsExecutionSec": 25,
           "feedback": "Le flux artériel traverse les deux pansements. Vous perdez un temps fatal.",
-          "nextNode": "s_err_shock"
+          "nextNode": "s_err_shock",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -221,13 +243,15 @@
           "label": "Retirer le pansement et poser un garrot",
           "tempsExecutionSec": 20,
           "feedback": "Dernière chance : vous retirez le pansement imbibé et posez le garrot. Le saignement cesse.",
-          "nextNode": "s3"
+          "nextNode": "s3",
+          "type": "traitement_cle"
         },
         {
           "label": "Appliquer un hémostatique par-dessus le pansement",
           "tempsExecutionSec": 30,
           "feedback": "Le temps passe, le sang continue. Lucas s'effondre en état de choc sévère.",
-          "nextNode": "s_err_shock"
+          "nextNode": "s_err_shock",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -248,13 +272,15 @@
           "label": "Noter l'heure de pose du garrot",
           "tempsExecutionSec": 10,
           "feedback": "Heure notée : 14h37. Information vitale transmise aux secours.",
-          "nextNode": "s4"
+          "nextNode": "s4",
+          "type": "traitement_cle"
         },
         {
           "label": "Desserrer le garrot pour vérifier si ça saigne encore",
           "tempsExecutionSec": 15,
           "feedback": "ERREUR FATALE : On ne desserre JAMAIS un garrot ! Relargage de toxines et reprise du saignement.",
-          "nextNode": "s_err_loosen"
+          "nextNode": "s_err_loosen",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
@@ -275,13 +301,15 @@
           "label": "Lui donner un verre d'eau (il a soif)",
           "tempsExecutionSec": 15,
           "feedback": "INTERDIT : risque d'inhalation gastrique lors de l'anesthésie au bloc. Vous aggravez la situation.",
-          "nextNode": "s_err_drink"
+          "nextNode": "s_err_drink",
+          "type": "erreur"
         },
         {
           "label": "Allonger, surélever les jambes, couvrir avec une couverture",
           "tempsExecutionSec": 20,
           "feedback": "Parfait : position anti-choc, lutte contre l'hypothermie. Lucas cesse de trembler un peu.",
-          "nextNode": "s5"
+          "nextNode": "s5",
+          "type": "support"
         }
       ],
       "isEndState": false,
@@ -302,13 +330,15 @@
           "label": "Donner le bilan au 15 : garrot posé, état de choc, mécanisme",
           "tempsExecutionSec": 30,
           "feedback": "Le régulateur envoie un SMUR pour déchoquage et prépare le bloc opératoire. Bravo.",
-          "nextNode": "s6_good"
+          "nextNode": "s6_good",
+          "type": "traitement_cle"
         },
         {
           "label": "Dire juste « il saigne, envoyez quelqu'un »",
           "tempsExecutionSec": 20,
           "feedback": "Bilan insuffisant. Le SMUR n'est pas envoyé en priorité. Délai mortel.",
-          "nextNode": "s_err_alert"
+          "nextNode": "s_err_alert",
+          "type": "erreur"
         }
       ],
       "isEndState": false,
