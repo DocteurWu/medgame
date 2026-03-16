@@ -1,334 +1,359 @@
 {
-  "id": "urgence_urg_07",
-  "title": "Malaise avec Traumatisme Rachidien — Accident de Véhicule",
-  "specialty": "urgence",
-  "difficulty": 3,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Dubois",
-    "prenom": "Marc",
-    "age": 45,
-    "sexe": "M",
-    "taille": "175 cm",
-    "poids": "85 kg",
-    "groupeSanguin": "A-"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Accident de la route : véhicule sorti de la route dans un fossé.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "Sédentaire"
-      },
-      "tabac": {
-        "quantite": "20 cigarettes/jour",
-        "duree": "25 ans"
-      },
-      "alcool": {
-        "quantite": "Aucune"
-      },
-      "alimentation": {
-        "regime": "Normal",
-        "particularites": "Aucune"
-      },
-      "emploi": {
-        "profession": "Commercial",
-        "stress": "Élevé"
-      }
+    "id": "urgence_urg_07",
+    "title": "Malaise avec Traumatisme Rachidien — Accident de Véhicule",
+    "specialty": "urgence",
+    "difficulty": 3,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Dubois",
+        "prenom": "Marc",
+        "age": 45,
+        "sexe": "M",
+        "taille": "175 cm",
+        "poids": "85 kg",
+        "groupeSanguin": "A-"
     },
-    "antecedents": {
-      "medicaux": ["Hypertension artérielle traitée", "Diabète type 2"],
-      "chirurgicaux": [],
-      "familiaux": ["Père : infarctus à 50 ans"]
-    },
-    "traitements": ["Amlodipine 5mg/j", "Metformine 1000mg x2/j"],
-    "allergies": {
-      "presence": false,
-      "liste": []
-    },
-    "histoireMaladie": {
-      "debutSymptomes": "Il y a 10 minutes",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Sortie de route dans un fossé, ceinture non bouclée",
-      "descriptionDouleur": "Douleur cervicale vive, douleur thoracique antérieure",
-      "asymptomesAssocies": ["Impossibilité de bouger les jambes", "Gêne respiratoire", "Sueurs"],
-      "remarques": "Témoin : impact frontal, pare-brise fissuré"
-    },
-    "verbatim": "Je ne sens plus mes jambes... j'ai mal au cou... j'ai du mal à respirer..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "150/95 mmHg",
-      "pouls": "90 bpm",
-      "temperature": "36.8°C",
-      "saturationO2": "91%",
-      "frequenceRespiratoire": "22/min"
-    },
-    "aspectGeneral": "Conscient, anxieux, en sueur. Allongé dans le véhicule. Immobile par douleur cervicale. Pas de saignement visible majeur. Dyspnée modérée.",
-    "examenCardiovasculaire": {
-      "auscultation": "Tachycardie, pas de souffle",
-      "inspection": "Marques de ceinture thoracique (ceinture abdominale mal positionnée ?)",
-      "palpation": "Pouls radial présent, pouls fémoral présent mais paraparésie (faiblesse des jambes)"
-    },
-    "examenPulmonaire": {
-      "auscultation": "Diminution du murmure vésiculaire à droite, râles à la base",
-      "inspection": "Diminution des amplitudes respiratoires",
-      "percussion": "Matité à droite"
-    },
-    "examenAbdominal": {
-      "palpation": "Sensibilité abdominale haute",
-      "auscultation": "ND (ne pas mobiliser)"
-    }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Traumatisme rachidien cervical avec déficit neurologique + traumatisme thoraco-abdominal associé",
-    "Traumatisme cervical simple sans déficit",
-    "Traumatisme isolé du rachis",
-    "Contusion thoracique simple"
-  ],
-  "correctDiagnostic": "Traumatisme rachidien cervical avec déficit neurologique + traumatisme thoraco-abdominal associé",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "Maintenir l'axe tête-cou-tronc en permanence",
-    "Poser un collier cervical rigide",
-    "Sortir la victime du véhicule par les pieds",
-    "Surveiller la conscience et la respiration",
-    "Alerte 15 avec bilan complet"
-  ],
-  "correctTreatments": [
-    "Maintenir l'axe tête-cou-tronc en permanence",
-    "Poser un collier cervical rigide",
-    "Surveiller la conscience et la respiration",
-    "Alerte 15 avec bilan complet"
-  ],
-  "fatalTreatments": [
-    "Sortir la victime du véhicule par les pieds"
-  ],
-  "correction": "# Correction : Traumatisme Rachidien avec Déficit et Trauma Associé\n\n## Diagnostic\nLe tableau associe :\n- **Déficit neurologique** : « je ne sens plus mes jambes » = lésion médullaire cervicale\n- **Signes thoraciques** : diminution du MV à droite, matité → probable hémothorax\n- **Signes abdominaux** : sensibilité haute → possible lésion splénique ou hépatique\n\nC'est un **polytraumatisé** dont la priorité est la protection rachidienne.\n\n## Règle d'or AFGSU\n**MAINTENIR L'AXE TÊTE-COU-TRONC** en permanence chez tout traumatisé du rachis.\n\n## Conduite à tenir\n1. **Ne pas bouger** la victime sauf danger vital immédiat\n2. **Maintenir manuellement** l'axe tête-cou-tronc (un sauveteur en permanence)\n3. **Poser un collier cervical** rigide si disponible\n4. **Extraction par plan dur** (pompiers) → éviter la flexion/rotation\n5. **NE JAMAIS** sortir par les pieds\n6. Alerte 15 avec mécanisme + déficit neurologique\n\n## Piège classique\nSortir un accidenté de voiture « par les pieds » crée une flexion cervicale catastrophique qui peut sectionner la moelle. L'extraction doit toujours se faire avec maintien de l'axe.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg07_neuro",
-      "type": "QCM",
-      "challenge": {
-        "question": "Marc dit « je ne sens plus mes jambes » après un traumatisme du cou. Que signifie ce signe ?",
-        "options": [
-          "Une simple contusion des jambes",
-          "Un signe psychologique de stress post-traumatique",
-          "Une lésion médullaire cervicale avec paralysie",
-          "Une compression des nerfs au niveau des cuisses"
+    "interrogatoire": {
+        "motifHospitalisation": "Accident de la route : véhicule sorti de la route dans un fossé.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sédentaire"
+            },
+            "tabac": {
+                "quantite": "20 cigarettes/jour",
+                "duree": "25 ans"
+            },
+            "alcool": {
+                "quantite": "Aucune"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": "Aucune"
+            },
+            "emploi": {
+                "profession": "Commercial",
+                "stress": "Élevé"
+            }
+        },
+        "antecedents": {
+            "medicaux": [
+                "Hypertension artérielle traitée",
+                "Diabète type 2"
+            ],
+            "chirurgicaux": [],
+            "familiaux": [
+                "Père : infarctus à 50 ans"
+            ]
+        },
+        "traitements": [
+            "Amlodipine 5mg/j",
+            "Metformine 1000mg x2/j"
         ],
-        "correct_indices": [2]
-      },
-      "feedback_error": "L'impossibilité de sentir les jambes après un traumatisme cervical = déficit moteur/sensitif des membres inférieurs = lésion médullaire cervicale. C'est un signe neurologique de gravité majeure.",
-      "target_fields": ["correctDiagnostic"]
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 10 minutes",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Sortie de route dans un fossé, ceinture non bouclée",
+            "descriptionDouleur": "Douleur cervicale vive, douleur thoracique antérieure",
+            "asymptomesAssocies": [
+                "Impossibilité de bouger les jambes",
+                "Gêne respiratoire",
+                "Sueurs"
+            ],
+            "remarques": "Témoin : impact frontal, pare-brise fissuré"
+        },
+        "verbatim": "Je ne sens plus mes jambes... j'ai mal au cou... j'ai du mal à respirer..."
     },
-    {
-      "id": "lock_urg07_extrication",
-      "type": "QCM",
-      "challenge": {
-        "question": "Le véhicule est en feu. Il faut sortir Marc. Comment faites-vous ?",
-        "options": [
-          "Par les pieds, en le tirant vers l'arrière",
-          "Par la portière, en maintenant l'axe tête-cou-tronc aligné",
-          "Par le pare-brise cassé",
-          "En le soulevant par les épaules"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "L'extraction d'urgence se fait en maintenant l'axe tête-cou-tronc. Si le véhicule brûle et qu'on doit sortir la victime, on le fait par la portière avec maintien de l'axe, jamais par les pieds (flexion cervicale catastrophique).",
-      "target_fields": ["correctTreatments"]
+    "examenClinique": {
+        "constantes": {
+            "tension": "150/95 mmHg",
+            "pouls": "90 bpm",
+            "temperature": "36.8°C",
+            "saturationO2": "91%",
+            "frequenceRespiratoire": "22/min"
+        },
+        "aspectGeneral": "Conscient, anxieux, en sueur. Allongé dans le véhicule. Immobile par douleur cervicale. Pas de saignement visible majeur. Dyspnée modérée.",
+        "examenCardiovasculaire": {
+            "auscultation": "Tachycardie, pas de souffle",
+            "inspection": "Marques de ceinture thoracique (ceinture abdominale mal positionnée ?)",
+            "palpation": "Pouls radial présent, pouls fémoral présent mais paraparésie (faiblesse des jambes)"
+        },
+        "examenPulmonaire": {
+            "auscultation": "Diminution du murmure vésiculaire à droite, râles à la base",
+            "inspection": "Diminution des amplitudes respiratoires",
+            "percussion": "Matité à droite"
+        },
+        "examenAbdominal": {
+            "palpation": "Sensibilité abdominale haute",
+            "auscultation": "ND (ne pas mobiliser)"
+        }
+    },
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Traumatisme rachidien cervical avec déficit neurologique + traumatisme thoraco-abdominal associé",
+        "Traumatisme cervical simple sans déficit",
+        "Traumatisme isolé du rachis",
+        "Contusion thoracique simple"
+    ],
+    "correctDiagnostic": "Traumatisme rachidien cervical avec déficit neurologique + traumatisme thoraco-abdominal associé",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
+    },
+    "possibleTreatments": [
+        "Maintenir l'axe tête-cou-tronc en permanence",
+        "Poser un collier cervical rigide",
+        "Sortir la victime du véhicule par les pieds",
+        "Surveiller la conscience et la respiration",
+        "Alerte 15 avec bilan complet"
+    ],
+    "correctTreatments": [
+        "Maintenir l'axe tête-cou-tronc en permanence",
+        "Poser un collier cervical rigide",
+        "Surveiller la conscience et la respiration",
+        "Alerte 15 avec bilan complet"
+    ],
+    "fatalTreatments": [
+        "Sortir la victime du véhicule par les pieds"
+    ],
+    "correction": "# Correction : Traumatisme Rachidien avec Déficit et Trauma Associé\n\n## Diagnostic\nLe tableau associe :\n- **Déficit neurologique** : « je ne sens plus mes jambes » = lésion médullaire cervicale\n- **Signes thoraciques** : diminution du MV à droite, matité → probable hémothorax\n- **Signes abdominaux** : sensibilité haute → possible lésion splénique ou hépatique\n\nC'est un **polytraumatisé** dont la priorité est la protection rachidienne.\n\n## Règle d'or AFGSU\n**MAINTENIR L'AXE TÊTE-COU-TRONC** en permanence chez tout traumatisé du rachis.\n\n## Conduite à tenir\n1. **Ne pas bouger** la victime sauf danger vital immédiat\n2. **Maintenir manuellement** l'axe tête-cou-tronc (un sauveteur en permanence)\n3. **Poser un collier cervical** rigide si disponible\n4. **Extraction par plan dur** (pompiers) → éviter la flexion/rotation\n5. **NE JAMAIS** sortir par les pieds\n6. Alerte 15 avec mécanisme + déficit neurologique\n\n## Piège classique\nSortir un accidenté de voiture « par les pieds » crée une flexion cervicale catastrophique qui peut sectionner la moelle. L'extraction doit toujours se faire avec maintien de l'axe.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
+    },
+    "locks": [
+        {
+            "id": "lock_urg07_neuro",
+            "type": "QCM",
+            "challenge": {
+                "question": "Marc dit « je ne sens plus mes jambes » après un traumatisme du cou. Que signifie ce signe ?",
+                "options": [
+                    "Une simple contusion des jambes",
+                    "Un signe psychologique de stress post-traumatique",
+                    "Une lésion médullaire cervicale avec paralysie",
+                    "Une compression des nerfs au niveau des cuisses"
+                ],
+                "correct_indices": [
+                    2
+                ]
+            },
+            "feedback_error": "L'impossibilité de sentir les jambes après un traumatisme cervical = déficit moteur/sensitif des membres inférieurs = lésion médullaire cervicale. C'est un signe neurologique de gravité majeure.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
+        },
+        {
+            "id": "lock_urg07_extrication",
+            "type": "QCM",
+            "challenge": {
+                "question": "Le véhicule est en feu. Il faut sortir Marc. Comment faites-vous ?",
+                "options": [
+                    "Par les pieds, en le tirant vers l'arrière",
+                    "Par la portière, en maintenant l'axe tête-cou-tronc aligné",
+                    "Par le pare-brise cassé",
+                    "En le soulevant par les épaules"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "L'extraction d'urgence se fait en maintenant l'axe tête-cou-tronc. Si le véhicule brûle et qu'on doit sortir la victime, on le fait par la portière avec maintien de l'axe, jamais par les pieds (flexion cervicale catastrophique).",
+            "target_fields": [
+                "correctTreatments"
+            ]
+        }
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
+    },
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Vous arrivez sur un accident de la route. Une voiture est dans un fossé, pare-brise fissuré. Le conducteur, Marc, 45 ans, est à l'intérieur, conscient. Il se plaint de douleur au cou et dit « je ne sens plus mes jambes ». Il a du mal à respirer. La ceinture abdominale est visible marquée sur son thorax.",
+            "constantesCibles": {
+                "tension": "150/95",
+                "pouls": "90",
+                "saturationO2": "91",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Maintenir la tête manuellement en position neutre, le rassurer, appeler le 15",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Vous placez vos mains de chaque côté de sa tête pour la maintenir en position neutre. Le 15 est appelé.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Le sortir du véhicule rapidement par la portière pour le coucher au sol",
+                    "tempsExecutionSec": 20,
+                    "feedback": "ERREUR : sans maintien de l'axe, la sortie du véhicule crée une flexion cervicale qui aggrave la lésion médullaire.",
+                    "nextNode": "s_err_extract"
+                },
+                {
+                    "label": "Lui demander de bouger les jambes pour voir ce qui va",
+                    "tempsExecutionSec": 15,
+                    "feedback": "ERREUR : jamais demander à un traumatisé cervical de bouger. La mobilisation active peut aggraver la lésion.",
+                    "nextNode": "s_err_move"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Marc est maintenu immobile. Vous parlez au 15.",
+            "constantesCibles": {
+                "tension": "150/95",
+                "pouls": "90",
+                "saturationO2": "91",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Transmettre : accident voiture, TC + rachis cervical, déficit des membres inférieurs, détresse respiratoire, pas de saignement majeur",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Bilan complet transmis. Le régulateur envoie SMUR + pompiers pour extraction sur plan dur.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Dire : « y'a un accidenté qui peut pas bouger, envoyez une ambulance »",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Bilan insuffisant. L'information « déficit neurologique + mécanisme cervical » est cruciale pour le niveau de réponse.",
+                    "nextNode": "s3_late"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Vous maintenez la tête de Marc. Sa saturation descend à 88% et il devient de plus en plus dyspnéique.",
+            "constantesCibles": {
+                "tension": "145/90",
+                "pouls": "95",
+                "saturationO2": "88",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "28"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Transmettre la dégradation respiratoire au 15",
+                    "tempsExecutionSec": 10,
+                    "feedback": "Le SAMU accélère. Le déficit respiratoire monte (atteinte médullaire haute + possible hémothorax).",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Ne rien faire, il va s'arranger",
+                    "tempsExecutionSec": 30,
+                    "feedback": "ERREUR : la détresse respiratoire chez un cervical peut évoluer vers l'arrêt respiratoire. Chaque seconde compte.",
+                    "nextNode": "s4_late"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Les pompiers arrivent avec un collier cervical et un plan dur. Ils reprennent le maintien de l'axe.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "92",
+                "saturationO2": "88",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "26"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Transmettre le relais proprement : maintien cervical depuis X minutes, déficit MI, saturation en baisse",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Transfert de soin efficace. Les pompiers poursuivent l'extraction.",
+                    "nextNode": "s5_good"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5_good": {
+            "id": "s5_good",
+            "descriptionClinique": "Marc est extrait sur plan dur avec maintien cervical parfait. Le SMUR transporte en neurochirurgie. Le scanner confirme une fracture cervicale C5 avec compression médullaire et un hémothorax droit. Votre maintien de l'axe cervical a prévenu une aggravation de la lésion médullaire. Le pronostic fonctionnel est meilleur grâce à votre intervention.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "88",
+                "saturationO2": "92",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 125
+        },
+        "s3_late": {
+            "id": "s3_late",
+            "descriptionClinique": "Bilan incomplet. SMUR standard envoyé, pas d'équipe spécialisée rachis. Délai supplémentaire.",
+            "constantesCibles": {
+                "tension": "135/85",
+                "pouls": "88",
+                "saturationO2": "90",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 125
+        },
+        "s4_late": {
+            "id": "s4_late",
+            "descriptionClinique": "Marc fait un arrêt respiratoire par atteinte médullaire haute non détecté à temps. Intubation de terrain difficile. Pronostic neurologique très défavorable.",
+            "constantesCibles": {
+                "tension": "80/50",
+                "pouls": "110",
+                "saturationO2": "65",
+                "temperature": "36",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_extract": {
+            "id": "s_err_extract",
+            "descriptionClinique": "L'extraction sans maintien de l'axe a provoqué une flexion cervicale. La moelle est sectionnée au niveau C5. Marc devient tétraplégique définitif.",
+            "constantesCibles": {
+                "tension": "140/90",
+                "pouls": "100",
+                "saturationO2": "85",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "20"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_move": {
+            "id": "s_err_move",
+            "descriptionClinique": "En bougeant les jambes sur instruction, Marc a mobilisé son rachis cervical. Aggravation brutale du déficit neurologique.",
+            "constantesCibles": {
+                "tension": "145/95",
+                "pouls": "110",
+                "saturationO2": "80",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "24"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Vous arrivez sur un accident de la route. Une voiture est dans un fossé, pare-brise fissuré. Le conducteur, Marc, 45 ans, est à l'intérieur, conscient. Il se plaint de douleur au cou et dit « je ne sens plus mes jambes ». Il a du mal à respirer. La ceinture abdominale est visible marquée sur son thorax.",
-      "constantesCibles": {
-        "tension": "150/95",
-        "pouls": "90",
-        "saturationO2": "91",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Maintenir la tête manuellement en position neutre, le rassurer, appeler le 15",
-          "tempsExecutionSec": 15,
-          "feedback": "Vous placez vos mains de chaque côté de sa tête pour la maintenir en position neutre. Le 15 est appelé.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Le sortir du véhicule rapidement par la portière pour le coucher au sol",
-          "tempsExecutionSec": 20,
-          "feedback": "ERREUR : sans maintien de l'axe, la sortie du véhicule crée une flexion cervicale qui aggrave la lésion médullaire.",
-          "nextNode": "s_err_extract"
-        },
-        {
-          "label": "Lui demander de bouger les jambes pour voir ce qui va",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR : jamais demander à un traumatisé cervical de bouger. La mobilisation active peut aggraver la lésion.",
-          "nextNode": "s_err_move"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Marc est maintenu immobile. Vous parlez au 15.",
-      "constantesCibles": {
-        "tension": "150/95",
-        "pouls": "90",
-        "saturationO2": "91",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Transmettre : accident voiture, TC + rachis cervical, déficit des membres inférieurs, détresse respiratoire, pas de saignement majeur",
-          "tempsExecutionSec": 30,
-          "feedback": "Bilan complet transmis. Le régulateur envoie SMUR + pompiers pour extraction sur plan dur.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Dire : « y'a un accidenté qui peut pas bouger, envoyez une ambulance »",
-          "tempsExecutionSec": 15,
-          "feedback": "Bilan insuffisant. L'information « déficit neurologique + mécanisme cervical » est cruciale pour le niveau de réponse.",
-          "nextNode": "s3_late"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Vous maintenez la tête de Marc. Sa saturation descend à 88% et il devient de plus en plus dyspnéique.",
-      "constantesCibles": {
-        "tension": "145/90",
-        "pouls": "95",
-        "saturationO2": "88",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "28"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Transmettre la dégradation respiratoire au 15",
-          "tempsExecutionSec": 10,
-          "feedback": "Le SAMU accélère. Le déficit respiratoire monte (atteinte médullaire haute + possible hémothorax).",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Ne rien faire, il va s'arranger",
-          "tempsExecutionSec": 30,
-          "feedback": "ERREUR : la détresse respiratoire chez un cervical peut évoluer vers l'arrêt respiratoire. Chaque seconde compte.",
-          "nextNode": "s4_late"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Les pompiers arrivent avec un collier cervical et un plan dur. Ils reprennent le maintien de l'axe.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "92",
-        "saturationO2": "88",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "26"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Transmettre le relais proprement : maintien cervical depuis X minutes, déficit MI, saturation en baisse",
-          "tempsExecutionSec": 20,
-          "feedback": "Transfert de soin efficace. Les pompiers poursuivent l'extraction.",
-          "nextNode": "s5_good"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5_good": {
-      "id": "s5_good",
-      "descriptionClinique": "Marc est extrait sur plan dur avec maintien cervical parfait. Le SMUR transporte en neurochirurgie. Le scanner confirme une fracture cervicale C5 avec compression médullaire et un hémothorax droit. Votre maintien de l'axe cervical a prévenu une aggravation de la lésion médullaire. Le pronostic fonctionnel est meilleur grâce à votre intervention.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "88",
-        "saturationO2": "92",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s3_late": {
-      "id": "s3_late",
-      "descriptionClinique": "Bilan incomplet. SMUR standard envoyé, pas d'équipe spécialisée rachis. Délai supplémentaire.",
-      "constantesCibles": {
-        "tension": "135/85",
-        "pouls": "88",
-        "saturationO2": "90",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s4_late": {
-      "id": "s4_late",
-      "descriptionClinique": "Marc fait un arrêt respiratoire par atteinte médullaire haute non détecté à temps. Intubation de terrain difficile. Pronostic neurologique très défavorable.",
-      "constantesCibles": {
-        "tension": "80/50",
-        "pouls": "110",
-        "saturationO2": "65",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_extract": {
-      "id": "s_err_extract",
-      "descriptionClinique": "L'extraction sans maintien de l'axe a provoqué une flexion cervicale. La moelle est sectionnée au niveau C5. Marc devient tétraplégique définitif.",
-      "constantesCibles": {
-        "tension": "140/90",
-        "pouls": "100",
-        "saturationO2": "85",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "20"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_move": {
-      "id": "s_err_move",
-      "descriptionClinique": "En bougeant les jambes sur instruction, Marc a mobilisé son rachis cervical. Aggravation brutale du déficit neurologique.",
-      "constantesCibles": {
-        "tension": "145/95",
-        "pouls": "110",
-        "saturationO2": "80",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "24"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  }
 }

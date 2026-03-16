@@ -1,299 +1,315 @@
 {
-  "id": "urgence_trauma_cranien_grave",
-  "title": "Traumatisme Crânien Grave — Chute de Vélo sans Casque",
-  "specialty": "urgence",
-  "difficulty": 2,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Bernard",
-    "prenom": "Thomas",
-    "age": 19,
-    "sexe": "M",
-    "taille": "182 cm",
-    "poids": "78 kg",
-    "groupeSanguin": "AB+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Chute de vélo avec choc à la tête, perte de connaissance brève.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "Vélo urbain quotidien"
-      },
-      "tabac": {
-        "quantite": "Non-fumeur",
-        "duree": ""
-      },
-      "alcool": {
-        "quantite": "Pas ce soir"
-      },
-      "alimentation": {
-        "regime": "Normal",
-        "particularites": "Aucune"
-      },
-      "emploi": {
-        "profession": "Étudiant",
-        "stress": "Faible"
-      }
+    "id": "urgence_trauma_cranien_grave",
+    "title": "Traumatisme Crânien Grave — Chute de Vélo sans Casque",
+    "specialty": "urgence",
+    "difficulty": 2,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Bernard",
+        "prenom": "Thomas",
+        "age": 19,
+        "sexe": "M",
+        "taille": "182 cm",
+        "poids": "78 kg",
+        "groupeSanguin": "AB+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
-    },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
-    },
-    "histoireMaladie": {
-      "debutSymptomes": "Il y a 10 minutes",
-      "evolution": "En amélioration apparente",
-      "facteursDeclenchants": "Chute de vélo à ~25 km/h, casque non porté",
-      "descriptionDouleur": "Céphalées intenses",
-      "asymptomesAssocies": ["Perte de connaissance de quelques secondes", "Vomissements (1 épisode)", "Amnésie partielle de l'accident"],
-      "remarques": "Le témoin dit qu'il est resté inconscient environ 30 secondes"
-    },
-    "verbatim": "J'ai mal à la tête... qu'est-ce qui s'est passé ? Je ne me souviens pas de la chute..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "135/85 mmHg",
-      "pouls": "65 bpm",
-      "temperature": "37°C",
-      "saturationO2": "97%",
-      "frequenceRespiratoire": "14/min"
-    },
-    "aspectGeneral": "Conscient mais désorienté. Plaie au cuir chevelu pariétal droit avec saignement modéré. Hématome en développement. Regard flou.",
-    "examenCardiovasculaire": {
-      "auscultation": "Rythme régulier, bradycardie relative",
-      "inspection": "Pas d'hémorragie visible ailleurs",
-      "palpation": "Pouls radial régulier"
-    },
-    "examenPulmonaire": {
-      "auscultation": "Normale",
-      "inspection": "Ventilation normale",
-      "percussion": "Normal"
-    },
-    "examenAbdominal": {
-      "palpation": "Abdomen souple",
-      "auscultation": "Normal"
-    }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Traumatisme crânien avec signes de gravité (PCI, amnésie, vomissements)",
-    "Traumatisme crânien léger sans gravité",
-    "Commotion cérébrale simple",
-    "Intoxication alcoolique"
-  ],
-  "correctDiagnostic": "Traumatisme crânien avec signes de gravité (PCI, amnésie, vomissements)",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "Maintenir l'axe tête-cou-tronc immobile",
-    "Poser un collier cervical si disponible",
-    "L'asseoir pour qu'il se sente mieux",
-    "Surveiller la conscience toutes les 5 min",
-    "Alerte 15 immédiate"
-  ],
-  "correctTreatments": [
-    "Maintenir l'axe tête-cou-tronc immobile",
-    "Poser un collier cervical si disponible",
-    "Surveiller la conscience toutes les 5 min",
-    "Alerte 15 immédiate"
-  ],
-  "fatalTreatments": [
-    "L'asseoir pour qu'il se sente mieux"
-  ],
-  "correction": "# Correction : Traumatisme Crânien avec Signes de Gravité\n\n## Diagnostic\nL'association des critères suivants signe un TC grave :\n- **Cinétique importante** (chute à 25 km/h)\n- **PCI** (perte de connaissance initiale > quelques secondes)\n- **Amnésie** de l'accident (« je ne me souviens pas »)\n- **Vomissements** (signe d'hypertension intracrânienne)\n- **Céphalées persistantes**\n- **Bradycardie** relative (signe de Cushing débutant)\n\n## Risques\n- Hématome extradural (classique : lucidité initiale puis dégradation)\n- Lésion médullaire cervicale associée (rachis à protéger)\n\n## Conduite à tenir (AFGSU)\n1. **Maintenir l'axe tête-cou-tronc** (manuellement si pas de collier)\n2. **Ne pas mobiliser** la victime sauf danger vital\n3. **Ne JAMAIS** asseoir un traumatisé crânien\n4. Surveiller la conscience (parler, questions simples)\n5. Alerte 15 pour avis neurochirurgical\n\n## Piège classique\nLa « lucidité initiale » est un faux bon signe. Un patient TC qui va « bien » puis se dégrade est le tableau typique de l'hématome extradural. Ne jamais minimiser un TC avec PCI + vomissements.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg_tc_gravite",
-      "type": "QCM",
-      "challenge": {
-        "question": "Thomas a perdu connaissance 30 secondes, a vomi et ne se souvient pas de l'accident. Quels sont ces signes ?",
-        "options": [
-          "Bénins, pas d'inquiétude",
-          "Signes de gravité d'un traumatisme crânien",
-          "Signes d'un simple malaise vagal",
-          "Signes d'intoxication alcoolique"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "PCI (Perte de Connaissance Initiale) + vomissements + amnésie = signes de gravité du TC. Ces 3 signes ensemble imposent un avis médical en urgence.",
-      "target_fields": ["correctDiagnostic"]
-    },
-    {
-      "id": "lock_urg_tc_position",
-      "type": "QCM",
-      "challenge": {
-        "question": "Thomas veut s'asseoir parce qu'il a mal. Que devez-vous faire ?",
-        "options": [
-          "Le laisser s'asseoir pour être plus confortable",
-          "Le maintenir allongé avec l'axe tête-cou-tronc aligné",
-          "Le mettre en PLS",
-          "Le faire marcher pour vérifier qu'il est bien"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "Un traumatisé crânien doit rester allongé avec l'axe tête-cou-tronc maintenu. Le risque est une lésion médullaire associée. L'asseoir est une erreur grave.",
-      "target_fields": ["correctTreatments"]
-    }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Thomas, 19 ans, est au sol après une chute de vélo à 25 km/h sans casque. Un témoin vous dit qu'il est resté inconscient 30 secondes. Il se réveille progressivement, a vomi une fois, et répète « qu'est-ce qui s'est passé ? ». Vous voyez une plaie au cuir chevelu qui saigne modérément.",
-      "constantesCibles": {
-        "tension": "135/85",
-        "pouls": "65",
-        "saturationO2": "97",
-        "temperature": "37",
-        "frequenceRespiratoire": "14"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Le maintenir immobile, couvrir la plaie, surveiller sa conscience, appeler le 15",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous protégez la plaie et maintenez Thomas en position allongée. Le 15 est alerté.",
-          "nextNode": "s2"
+    "interrogatoire": {
+        "motifHospitalisation": "Chute de vélo avec choc à la tête, perte de connaissance brève.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Vélo urbain quotidien"
+            },
+            "tabac": {
+                "quantite": "Non-fumeur",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Pas ce soir"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": "Aucune"
+            },
+            "emploi": {
+                "profession": "Étudiant",
+                "stress": "Faible"
+            }
         },
-        {
-          "label": "Le relever et l'asseoir sur un banc",
-          "tempsExecutionSec": 20,
-          "feedback": "ERREUR : l'asseoir peut aggraver une lésion médullaire cervicale. Gardez-le allongé !",
-          "nextNode": "s_err_sit"
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
         },
-        {
-          "label": "Lui donner un verre d'eau et une serviette sur la plaie",
-          "tempsExecutionSec": 15,
-          "feedback": "Piège : un TC avec vomissements = risque d'inhalation. Pas de boisson. Serviette oui, mais maintenez l'axe.",
-          "nextNode": "s2"
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 10 minutes",
+            "evolution": "En amélioration apparente",
+            "facteursDeclenchants": "Chute de vélo à ~25 km/h, casque non porté",
+            "descriptionDouleur": "Céphalées intenses",
+            "asymptomesAssocies": [
+                "Perte de connaissance de quelques secondes",
+                "Vomissements (1 épisode)",
+                "Amnésie partielle de l'accident"
+            ],
+            "remarques": "Le témoin dit qu'il est resté inconscient environ 30 secondes"
+        },
+        "verbatim": "J'ai mal à la tête... qu'est-ce qui s'est passé ? Je ne me souviens pas de la chute..."
+    },
+    "examenClinique": {
+        "constantes": {
+            "tension": "135/85 mmHg",
+            "pouls": "65 bpm",
+            "temperature": "37°C",
+            "saturationO2": "97%",
+            "frequenceRespiratoire": "14/min"
+        },
+        "aspectGeneral": "Conscient mais désorienté. Plaie au cuir chevelu pariétal droit avec saignement modéré. Hématome en développement. Regard flou.",
+        "examenCardiovasculaire": {
+            "auscultation": "Rythme régulier, bradycardie relative",
+            "inspection": "Pas d'hémorragie visible ailleurs",
+            "palpation": "Pouls radial régulier"
+        },
+        "examenPulmonaire": {
+            "auscultation": "Normale",
+            "inspection": "Ventilation normale",
+            "percussion": "Normal"
+        },
+        "examenAbdominal": {
+            "palpation": "Abdomen souple",
+            "auscultation": "Normal"
         }
-      ],
-      "isEndState": false,
-      "success": true
     },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Thomas est maintenu allongé. Vous compressez doucement la plaie du cuir chevelu. Le 15 vous demande des précisions.",
-      "constantesCibles": {
-        "tension": "135/85",
-        "pouls": "65",
-        "saturationO2": "97",
-        "temperature": "37",
-        "frequenceRespiratoire": "14"
-      },
-      "actionsDisponibles": [
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Traumatisme crânien avec signes de gravité (PCI, amnésie, vomissements)",
+        "Traumatisme crânien léger sans gravité",
+        "Commotion cérébrale simple",
+        "Intoxication alcoolique"
+    ],
+    "correctDiagnostic": "Traumatisme crânien avec signes de gravité (PCI, amnésie, vomissements)",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
+    },
+    "possibleTreatments": [
+        "Maintenir l'axe tête-cou-tronc immobile",
+        "Poser un collier cervical si disponible",
+        "L'asseoir pour qu'il se sente mieux",
+        "Surveiller la conscience toutes les 5 min",
+        "Alerte 15 immédiate"
+    ],
+    "correctTreatments": [
+        "Maintenir l'axe tête-cou-tronc immobile",
+        "Poser un collier cervical si disponible",
+        "Surveiller la conscience toutes les 5 min",
+        "Alerte 15 immédiate"
+    ],
+    "fatalTreatments": [
+        "L'asseoir pour qu'il se sente mieux"
+    ],
+    "correction": "# Correction : Traumatisme Crânien avec Signes de Gravité\n\n## Diagnostic\nL'association des critères suivants signe un TC grave :\n- **Cinétique importante** (chute à 25 km/h)\n- **PCI** (perte de connaissance initiale > quelques secondes)\n- **Amnésie** de l'accident (« je ne me souviens pas »)\n- **Vomissements** (signe d'hypertension intracrânienne)\n- **Céphalées persistantes**\n- **Bradycardie** relative (signe de Cushing débutant)\n\n## Risques\n- Hématome extradural (classique : lucidité initiale puis dégradation)\n- Lésion médullaire cervicale associée (rachis à protéger)\n\n## Conduite à tenir (AFGSU)\n1. **Maintenir l'axe tête-cou-tronc** (manuellement si pas de collier)\n2. **Ne pas mobiliser** la victime sauf danger vital\n3. **Ne JAMAIS** asseoir un traumatisé crânien\n4. Surveiller la conscience (parler, questions simples)\n5. Alerte 15 pour avis neurochirurgical\n\n## Piège classique\nLa « lucidité initiale » est un faux bon signe. Un patient TC qui va « bien » puis se dégrade est le tableau typique de l'hématome extradural. Ne jamais minimiser un TC avec PCI + vomissements.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
+    },
+    "locks": [
         {
-          "label": "Transmettre : TC avec PCI de 30s, vomissements, amnésie, plaie cuir chevelu, pas de casque",
-          "tempsExecutionSec": 30,
-          "feedback": "Bilan complet. Le régulateur envoie un SMUR avec suspicion de TC grave.",
-          "nextNode": "s3"
+            "id": "lock_urg_tc_gravite",
+            "type": "QCM",
+            "challenge": {
+                "question": "Thomas a perdu connaissance 30 secondes, a vomi et ne se souvient pas de l'accident. Quels sont ces signes ?",
+                "options": [
+                    "Bénins, pas d'inquiétude",
+                    "Signes de gravité d'un traumatisme crânien",
+                    "Signes d'un simple malaise vagal",
+                    "Signes d'intoxication alcoolique"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "PCI (Perte de Connaissance Initiale) + vomissements + amnésie = signes de gravité du TC. Ces 3 signes ensemble imposent un avis médical en urgence.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
         },
         {
-          "label": "Dire : « il s'est cogné la tête mais ça va, il parle »",
-          "tempsExecutionSec": 15,
-          "feedback": "Bilan dangereusement incomplet. Le PCI + vomissements + amnésie changent tout. Le SMUR n'est pas envoyé en priorité.",
-          "nextNode": "s_err_minimize"
+            "id": "lock_urg_tc_position",
+            "type": "QCM",
+            "challenge": {
+                "question": "Thomas veut s'asseoir parce qu'il a mal. Que devez-vous faire ?",
+                "options": [
+                    "Le laisser s'asseoir pour être plus confortable",
+                    "Le maintenir allongé avec l'axe tête-cou-tronc aligné",
+                    "Le mettre en PLS",
+                    "Le faire marcher pour vérifier qu'il est bien"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "Un traumatisé crânien doit rester allongé avec l'axe tête-cou-tronc maintenu. Le risque est une lésion médullaire associée. L'asseoir est une erreur grave.",
+            "target_fields": [
+                "correctTreatments"
+            ]
         }
-      ],
-      "isEndState": false,
-      "success": true
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Sous votre surveillance, Thomas devient soudainement plus somnolent. Il répond de plus en plus lentement. Ses pupilles semblent asymétriques. La bradycardie s'accentue (55 bpm) et la tension monte (150/95).",
-      "constantesCibles": {
-        "tension": "150/95",
-        "pouls": "55",
-        "saturationO2": "96",
-        "temperature": "37",
-        "frequenceRespiratoire": "10"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Transmettre l'aggravation au 15 : somnolence, asymétrie pupillaire, HTA + bradycardie",
-          "tempsExecutionSec": 15,
-          "feedback": "Triade de Cushing (HTA + bradycardie + troubles respiratoires) = hypertension intracrânienne ! Le SAMU accélère.",
-          "nextNode": "s4_good"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Thomas, 19 ans, est au sol après une chute de vélo à 25 km/h sans casque. Un témoin vous dit qu'il est resté inconscient 30 secondes. Il se réveille progressivement, a vomi une fois, et répète « qu'est-ce qui s'est passé ? ». Vous voyez une plaie au cuir chevelu qui saigne modérément.",
+            "constantesCibles": {
+                "tension": "135/85",
+                "pouls": "65",
+                "saturationO2": "97",
+                "temperature": "37",
+                "frequenceRespiratoire": "14"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Le maintenir immobile, couvrir la plaie, surveiller sa conscience, appeler le 15",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous protégez la plaie et maintenez Thomas en position allongée. Le 15 est alerté.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Le relever et l'asseoir sur un banc",
+                    "tempsExecutionSec": 20,
+                    "feedback": "ERREUR : l'asseoir peut aggraver une lésion médullaire cervicale. Gardez-le allongé !",
+                    "nextNode": "s_err_sit"
+                },
+                {
+                    "label": "Lui donner un verre d'eau et une serviette sur la plaie",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Piège : un TC avec vomissements = risque d'inhalation. Pas de boisson. Serviette oui, mais maintenez l'axe.",
+                    "nextNode": "s2"
+                }
+            ],
+            "isEndState": false,
+            "success": true
         },
-        {
-          "label": "Le laisser dormir, il est juste fatigué par la chute",
-          "tempsExecutionSec": 30,
-          "feedback": "ERREUR MORTELLE : la somnolence après un TC n'est JAMAIS normale. C'est un signe de compression cérébrale.",
-          "nextNode": "s_err_sleep"
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Thomas est maintenu allongé. Vous compressez doucement la plaie du cuir chevelu. Le 15 vous demande des précisions.",
+            "constantesCibles": {
+                "tension": "135/85",
+                "pouls": "65",
+                "saturationO2": "97",
+                "temperature": "37",
+                "frequenceRespiratoire": "14"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Transmettre : TC avec PCI de 30s, vomissements, amnésie, plaie cuir chevelu, pas de casque",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Bilan complet. Le régulateur envoie un SMUR avec suspicion de TC grave.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Dire : « il s'est cogné la tête mais ça va, il parle »",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Bilan dangereusement incomplet. Le PCI + vomissements + amnésie changent tout. Le SMUR n'est pas envoyé en priorité.",
+                    "nextNode": "s_err_minimize"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Sous votre surveillance, Thomas devient soudainement plus somnolent. Il répond de plus en plus lentement. Ses pupilles semblent asymétriques. La bradycardie s'accentue (55 bpm) et la tension monte (150/95).",
+            "constantesCibles": {
+                "tension": "150/95",
+                "pouls": "55",
+                "saturationO2": "96",
+                "temperature": "37",
+                "frequenceRespiratoire": "10"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Transmettre l'aggravation au 15 : somnolence, asymétrie pupillaire, HTA + bradycardie",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Triade de Cushing (HTA + bradycardie + troubles respiratoires) = hypertension intracrânienne ! Le SAMU accélère.",
+                    "nextNode": "s4_good"
+                },
+                {
+                    "label": "Le laisser dormir, il est juste fatigué par la chute",
+                    "tempsExecutionSec": 30,
+                    "feedback": "ERREUR MORTELLE : la somnolence après un TC n'est JAMAIS normale. C'est un signe de compression cérébrale.",
+                    "nextNode": "s_err_sleep"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4_good": {
+            "id": "s4_good",
+            "descriptionClinique": "Le SMUR neurochirurgie arrive en 6 minutes. Thomas est intubé sur place et transporté pour un scanner en urgence. Un hématome extradural est identifié et opéré immédiatement. Votre surveillance attentive et votre alerte précise ont sauvé Thomas. La lucidité initiale était un faux bon signe — classique du TC grave.",
+            "constantesCibles": {
+                "tension": "150/95",
+                "pouls": "55",
+                "saturationO2": "96",
+                "temperature": "37",
+                "frequenceRespiratoire": "10"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 100
+        },
+        "s_err_sit": {
+            "id": "s_err_sit",
+            "descriptionClinique": "En le relevant, vous avez mobilisé un rachis cervical potentiellement fracturé. Thomas devient tétraplégique au niveau C4.",
+            "constantesCibles": {
+                "tension": "135/85",
+                "pouls": "65",
+                "saturationO2": "97",
+                "temperature": "37",
+                "frequenceRespiratoire": "14"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_minimize": {
+            "id": "s_err_minimize",
+            "descriptionClinique": "Le SMUR arrive trop tard. L'hématome extradural non détecté a comprimé le tronc cérébral. Décès.",
+            "constantesCibles": {
+                "tension": "200/120",
+                "pouls": "40",
+                "saturationO2": "70",
+                "temperature": "37",
+                "frequenceRespiratoire": "5"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_sleep": {
+            "id": "s_err_sleep",
+            "descriptionClinique": "Thomas s'endort et ne se réveille plus. Compression cérébrale par hématome extradural. Sans surveillance, aucun signe d'alerte n'a été transmis. Pronostic neurologique catastrophique.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "36",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
         }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4_good": {
-      "id": "s4_good",
-      "descriptionClinique": "Le SMUR neurochirurgie arrive en 6 minutes. Thomas est intubé sur place et transporté pour un scanner en urgence. Un hématome extradural est identifié et opéré immédiatement. Votre surveillance attentive et votre alerte précise ont sauvé Thomas. La lucidité initiale était un faux bon signe — classique du TC grave.",
-      "constantesCibles": {
-        "tension": "150/95",
-        "pouls": "55",
-        "saturationO2": "96",
-        "temperature": "37",
-        "frequenceRespiratoire": "10"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_sit": {
-      "id": "s_err_sit",
-      "descriptionClinique": "En le relevant, vous avez mobilisé un rachis cervical potentiellement fracturé. Thomas devient tétraplégique au niveau C4.",
-      "constantesCibles": {
-        "tension": "135/85",
-        "pouls": "65",
-        "saturationO2": "97",
-        "temperature": "37",
-        "frequenceRespiratoire": "14"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_minimize": {
-      "id": "s_err_minimize",
-      "descriptionClinique": "Le SMUR arrive trop tard. L'hématome extradural non détecté a comprimé le tronc cérébral. Décès.",
-      "constantesCibles": {
-        "tension": "200/120",
-        "pouls": "40",
-        "saturationO2": "70",
-        "temperature": "37",
-        "frequenceRespiratoire": "5"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_sleep": {
-      "id": "s_err_sleep",
-      "descriptionClinique": "Thomas s'endort et ne se réveille plus. Compression cérébrale par hématome extradural. Sans surveillance, aucun signe d'alerte n'a été transmis. Pronostic neurologique catastrophique.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
     }
-  }
 }

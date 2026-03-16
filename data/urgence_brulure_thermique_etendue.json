@@ -1,342 +1,366 @@
 {
-  "id": "urgence_urg_02",
-  "title": "Brûlure Thermique Étendue du Tronc et des Bras",
-  "specialty": "urgence",
-  "difficulty": 2,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Petit",
-    "prenom": "Nadia",
-    "age": 28,
-    "sexe": "F",
-    "taille": "165 cm",
-    "poids": "62 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Brûlures par projection d'eau bouillante lors d'un accident domestique.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "Sédentaire"
-      },
-      "tabac": {
-        "quantite": "Non-fumeuse",
-        "duree": ""
-      },
-      "alcool": {
-        "quantite": "Aucune"
-      },
-      "alimentation": {
-        "regime": "Normal",
-        "particularites": "Aucune"
-      },
-      "emploi": {
-        "profession": "Enseignante",
-        "stress": "Modéré"
-      }
+    "id": "urgence_urg_02",
+    "title": "Brûlure Thermique Étendue du Tronc et des Bras",
+    "specialty": "urgence",
+    "difficulty": 2,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Petit",
+        "prenom": "Nadia",
+        "age": 28,
+        "sexe": "F",
+        "taille": "165 cm",
+        "poids": "62 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": ["Asthme modéré"],
-      "chirurgicaux": [],
-      "familiaux": []
-    },
-    "traitements": ["Ventoline si besoin"],
-    "allergies": {
-      "presence": true,
-      "liste": [
-        {"allergene": "Pénicilline", "reaction": "Urticaire"}
-      ]
-    },
-    "histoireMaladie": {
-      "debutSymptomes": "Il y a 20 minutes",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Casserole d'eau bouillante renversée sur le torse et les bras",
-      "descriptionDouleur": "Douleur vive, brûlante, à la face antérieure du tronc et aux deux bras",
-      "asymptomesAssocies": ["Cloques", "Rougeur intense", "Douleur vive"],
-      "remarques": "Accident de cuisine"
-    },
-    "verbatim": "Aïe ! Ça brûle terriblement ! Regardez mes bras, c'est tout rouge et ça fait des bulles..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "125/80 mmHg",
-      "pouls": "95 bpm",
-      "temperature": "37.2°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "20/min"
-    },
-    "aspectGeneral": "Consciente, anxieuse, grimace de douleur. Rougeur étendue avec phlyctènes au tronc et aux deux bras.",
-    "examenCardiovasculaire": {
-      "auscultation": "Tachycardie modérée, pas de souffle",
-      "inspection": "Pas d'hémorragie visible",
-      "palpation": "Pouls radial présent bilatéral"
-    },
-    "examenPulmonaire": {
-      "auscultation": "Respiration normale, pas de wheezing",
-      "inspection": "Pas de brûlure des voies aériennes supérieures",
-      "percussion": "Normal"
-    },
-    "examenAbdominal": {
-      "palpation": "Abdomen souple",
-      "auscultation": "Normal"
-    }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Brûlures du 2ème degré superficiel sur 18% de la surface corporelle",
-    "Brûlures du 3ème degré étendues",
-    "Brûlures du 1er degré uniquement"
-  ],
-  "correctDiagnostic": "Brûlures du 2ème degré superficiel sur 18% de la surface corporelle",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "Refroidir avec de l'eau tiède (15-25°C) pendant plus de 10 min",
-    "Percer les cloques pour évacuer le liquide",
-    "Retirer les vêtements adhérents de force",
-    "Appliquer du beurre ou de la crème sur les brûlures",
-    "Couvrir avec un pansement ou un drap propre",
-    "Alerte 15"
-  ],
-  "correctTreatments": [
-    "Refroidir avec de l'eau tiède (15-25°C) pendant plus de 10 min",
-    "Couvrir avec un pansement ou un drap propre",
-    "Alerte 15"
-  ],
-  "fatalTreatments": [
-    "Percer les cloques pour évacuer le liquide",
-    "Appliquer du beurre ou de la crème sur les brûlures"
-  ],
-  "correction": "# Correction : Brûlures Thermiques Étendues\n\n## Diagnostic\nRougeur, douleur vive et phlyctènes (cloques) = **brûlure du 2ème degré superficiel**. La surface corporelle atteinte est estimée par la règle des 9 : Tronc antérieur = 18%, chaque membre supérieur = 9%. Ici : tronc (18%) + 2 bras (18%) = évalué à 18% environ (tronc seul antérieur).\n\n## Signes de gravité retenus\n- Surface >10% → transfert hospitalier obligatoire\n- Localisation tronc (proximité organes vitaux)\n- Pas de brûlure des VAS ni des zones critiques (face, mains, périnée)\n\n## Pièges classiques\n- **Percer les cloques** : NON ! Les phlyctènes forment un pansement naturel stérile\n- **Beurre, crème, dentifrice** : NON ! Ça aggrave la brûlure et complique le nettoyage médical\n- **Retirer les vêtements adhérents** : NON ! Les laisser en place sauf s'ils sont encore brûlants\n\n## Conduite à tenir (AFGSU)\n1. Supprimer la cause (éloigner la source de chaleur)\n2. Refroidir avec de l'eau tiède (15-25°C) pendant >10 min (<5 min si étendue)\n3. Retirer les vêtements pendant l'arrosage SAUF s'ils adhèrent\n4. NE PAS percer les cloques\n5. Couvrir par un pansement ou drap propre\n6. Alerte 15 pour estimation et transfert",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg02_surface",
-      "type": "QCM",
-      "challenge": {
-        "question": "Le tronc antérieur = 18% de la surface corporelle (règle des 9). Les brûlures couvrent le tronc antérieur et les deux bras (9% chacun). Quelle est la surface totale brûlée approximative ?",
-        "options": [
-          "9%",
-          "18%",
-          "36%",
-          "50%"
+    "interrogatoire": {
+        "motifHospitalisation": "Brûlures par projection d'eau bouillante lors d'un accident domestique.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sédentaire"
+            },
+            "tabac": {
+                "quantite": "Non-fumeuse",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Aucune"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": "Aucune"
+            },
+            "emploi": {
+                "profession": "Enseignante",
+                "stress": "Modéré"
+            }
+        },
+        "antecedents": {
+            "medicaux": [
+                "Asthme modéré"
+            ],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [
+            "Ventoline si besoin"
         ],
-        "correct_indices": [2]
-      },
-      "feedback_error": "Tronc antérieur (18%) + bras droit (9%) + bras gauche (9%) = 36%. La règle des 9 de Lund-Browder permet d'estimer rapidement la surface brûlée.",
-      "target_fields": ["correctDiagnostic"]
+        "allergies": {
+            "presence": true,
+            "liste": [
+                {
+                    "allergene": "Pénicilline",
+                    "reaction": "Urticaire"
+                }
+            ]
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 20 minutes",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Casserole d'eau bouillante renversée sur le torse et les bras",
+            "descriptionDouleur": "Douleur vive, brûlante, à la face antérieure du tronc et aux deux bras",
+            "asymptomesAssocies": [
+                "Cloques",
+                "Rougeur intense",
+                "Douleur vive"
+            ],
+            "remarques": "Accident de cuisine"
+        },
+        "verbatim": "Aïe ! Ça brûle terriblement ! Regardez mes bras, c'est tout rouge et ça fait des bulles..."
     },
-    {
-      "id": "lock_urg02_traitement",
-      "type": "QCM",
-      "challenge": {
-        "question": "Face aux phlyctènes (cloques) de brûlure, que doit-on faire ?",
-        "options": [
-          "Les percer pour évacuer le liquide",
-          "Les laisser intactes (elles protègent la plaie)",
-          "Les couvrir de désinfectant coloré",
-          "Appliquer du beurre dessus"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "Les phlyctènes forment un pansement naturel stérile. Les percer expose au risque d'infection. C'est un piège classique du cours AFGSU.",
-      "target_fields": ["correctTreatments"]
+    "examenClinique": {
+        "constantes": {
+            "tension": "125/80 mmHg",
+            "pouls": "95 bpm",
+            "temperature": "37.2°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "20/min"
+        },
+        "aspectGeneral": "Consciente, anxieuse, grimace de douleur. Rougeur étendue avec phlyctènes au tronc et aux deux bras.",
+        "examenCardiovasculaire": {
+            "auscultation": "Tachycardie modérée, pas de souffle",
+            "inspection": "Pas d'hémorragie visible",
+            "palpation": "Pouls radial présent bilatéral"
+        },
+        "examenPulmonaire": {
+            "auscultation": "Respiration normale, pas de wheezing",
+            "inspection": "Pas de brûlure des voies aériennes supérieures",
+            "percussion": "Normal"
+        },
+        "examenAbdominal": {
+            "palpation": "Abdomen souple",
+            "auscultation": "Normal"
+        }
+    },
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Brûlures du 2ème degré superficiel sur 18% de la surface corporelle",
+        "Brûlures du 3ème degré étendues",
+        "Brûlures du 1er degré uniquement"
+    ],
+    "correctDiagnostic": "Brûlures du 2ème degré superficiel sur 18% de la surface corporelle",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
+    },
+    "possibleTreatments": [
+        "Refroidir avec de l'eau tiède (15-25°C) pendant plus de 10 min",
+        "Percer les cloques pour évacuer le liquide",
+        "Retirer les vêtements adhérents de force",
+        "Appliquer du beurre ou de la crème sur les brûlures",
+        "Couvrir avec un pansement ou un drap propre",
+        "Alerte 15"
+    ],
+    "correctTreatments": [
+        "Refroidir avec de l'eau tiède (15-25°C) pendant plus de 10 min",
+        "Couvrir avec un pansement ou un drap propre",
+        "Alerte 15"
+    ],
+    "fatalTreatments": [
+        "Percer les cloques pour évacuer le liquide",
+        "Appliquer du beurre ou de la crème sur les brûlures"
+    ],
+    "correction": "# Correction : Brûlures Thermiques Étendues\n\n## Diagnostic\nRougeur, douleur vive et phlyctènes (cloques) = **brûlure du 2ème degré superficiel**. La surface corporelle atteinte est estimée par la règle des 9 : Tronc antérieur = 18%, chaque membre supérieur = 9%. Ici : tronc (18%) + 2 bras (18%) = évalué à 18% environ (tronc seul antérieur).\n\n## Signes de gravité retenus\n- Surface >10% → transfert hospitalier obligatoire\n- Localisation tronc (proximité organes vitaux)\n- Pas de brûlure des VAS ni des zones critiques (face, mains, périnée)\n\n## Pièges classiques\n- **Percer les cloques** : NON ! Les phlyctènes forment un pansement naturel stérile\n- **Beurre, crème, dentifrice** : NON ! Ça aggrave la brûlure et complique le nettoyage médical\n- **Retirer les vêtements adhérents** : NON ! Les laisser en place sauf s'ils sont encore brûlants\n\n## Conduite à tenir (AFGSU)\n1. Supprimer la cause (éloigner la source de chaleur)\n2. Refroidir avec de l'eau tiède (15-25°C) pendant >10 min (<5 min si étendue)\n3. Retirer les vêtements pendant l'arrosage SAUF s'ils adhèrent\n4. NE PAS percer les cloques\n5. Couvrir par un pansement ou drap propre\n6. Alerte 15 pour estimation et transfert",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
+    },
+    "locks": [
+        {
+            "id": "lock_urg02_surface",
+            "type": "QCM",
+            "challenge": {
+                "question": "Le tronc antérieur = 18% de la surface corporelle (règle des 9). Les brûlures couvrent le tronc antérieur et les deux bras (9% chacun). Quelle est la surface totale brûlée approximative ?",
+                "options": [
+                    "9%",
+                    "18%",
+                    "36%",
+                    "50%"
+                ],
+                "correct_indices": [
+                    2
+                ]
+            },
+            "feedback_error": "Tronc antérieur (18%) + bras droit (9%) + bras gauche (9%) = 36%. La règle des 9 de Lund-Browder permet d'estimer rapidement la surface brûlée.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
+        },
+        {
+            "id": "lock_urg02_traitement",
+            "type": "QCM",
+            "challenge": {
+                "question": "Face aux phlyctènes (cloques) de brûlure, que doit-on faire ?",
+                "options": [
+                    "Les percer pour évacuer le liquide",
+                    "Les laisser intactes (elles protègent la plaie)",
+                    "Les couvrir de désinfectant coloré",
+                    "Appliquer du beurre dessus"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "Les phlyctènes forment un pansement naturel stérile. Les percer expose au risque d'infection. C'est un piège classique du cours AFGSU.",
+            "target_fields": [
+                "correctTreatments"
+            ]
+        }
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
+    },
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Nadia, 28 ans, a renversé une casserole d'eau bouillante sur son torse et ses deux bras en cuisine. Elle hurle de douleur. Vous voyez une rougeur étendue avec de grandes cloques remplies de liquide clair sur la face antérieure du tronc et les deux avant-bras. Pas de flammes, pas de fumée.",
+            "constantesCibles": {
+                "tension": "125/80",
+                "pouls": "95",
+                "saturationO2": "98",
+                "temperature": "37.2",
+                "frequenceRespiratoire": "20"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Aller ouvrir le robinet et faire couler de l'eau tiède sur les brûlures",
+                    "tempsExecutionSec": 15,
+                    "feedback": "L'eau tiède coule doucement sur les brûlures. Nadia crie moins fort. C'est le bon réflexe.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Percer les cloques pour évacuer le liquide",
+                    "tempsExecutionSec": 20,
+                    "feedback": "ERREUR : vous créez une porte d'entrée pour les bactéries. Les phlyctènes sont des pansements naturels stériles !",
+                    "nextNode": "s_err_blisters"
+                },
+                {
+                    "label": "Appliquer du beurre dessus pour calmer la brûlure",
+                    "tempsExecutionSec": 15,
+                    "feedback": "ERREUR GRAVE : Le beurre isole la chaleur et aggrave la brûlure. C'est un remède de grand-mère DANGEREUX.",
+                    "nextNode": "s_err_butter"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Nadia est sous l'eau tiède depuis 3 minutes. La douleur diminue. Ses vêtements en coton sont mouillés et collés aux brûlures.",
+            "constantesCibles": {
+                "tension": "120/78",
+                "pouls": "88",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "18"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Continuer le refroidissement au moins 10 minutes",
+                    "tempsExecutionSec": 60,
+                    "feedback": "Le refroidissement prolongé permet de limiter la profondeur de la brûlure. C'est essentiel.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Arrêter l'eau et retirer les vêtements en tirant dessus",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Les vêtements adhérents arrachent la peau brûlée. On ne retire QUE ce qui vient facilement.",
+                    "nextNode": "s_err_clothes"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Après 10 minutes de refroidissement, Nadia a moins mal. Les brûlures sont toujours rouges et œdématiées. Vous estimez la surface à environ 30-35% (tronc antérieur + deux bras).",
+            "constantesCibles": {
+                "tension": "118/76",
+                "pouls": "85",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "17"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Couvrir avec un drap propre et appeler le 15",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Drap propre posé. Le 15 est alerté. L'opérateur vous guide.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Appliquer du désinfectant et mettre des pansements individuels",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Piège : le désinfectant est irritant sur les brûlures. Un drap propre suffit.",
+                    "nextNode": "s4"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Le 15 vous demande de décrire la situation.",
+            "constantesCibles": {
+                "tension": "118/76",
+                "pouls": "85",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "17"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Décrire : brûlures par eau bouillante, tronc et bras, 2e degré, surface ~30%, refroidie 10 min, pas de VAS touchées",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Bilan complet. Le régulateur envoie une équipe spécialisée brûlés.",
+                    "nextNode": "s5_good"
+                },
+                {
+                    "label": "Dire : « elle s'est brûlée, ça fait des cloques »",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Bilan trop imprécis. Le régulateur ne peut pas évaluer la gravité.",
+                    "nextNode": "s_err_alert"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5_good": {
+            "id": "s5_good",
+            "descriptionClinique": "L'équipe spécialisée arrive rapidement. Nadia est prise en charge et transférée au centre des brûlés. Le refroidissement précoce a limité la profondeur des brûlures. Bonne gestion.",
+            "constantesCibles": {
+                "tension": "118/76",
+                "pouls": "85",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "17"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 100
+        },
+        "s_err_blisters": {
+            "id": "s_err_blisters",
+            "descriptionClinique": "Les cloques percées exposent le derme aux bactéries. Surinfection sévère dans les heures suivantes. Cicatrisation retardée de plusieurs semaines.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "100",
+                "saturationO2": "98",
+                "temperature": "38",
+                "frequenceRespiratoire": "20"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_butter": {
+            "id": "s_err_butter",
+            "descriptionClinique": "Le beurre isole la chaleur et empêche le refroidissement. La brûlure progresse du 2e degré superficiel vers le 2e degré profond. L'équipe hospitalière doit tout nettoyer au bloc.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "100",
+                "saturationO2": "98",
+                "temperature": "37.5",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_clothes": {
+            "id": "s_err_clothes",
+            "descriptionClinique": "Le coton adhère aux brûlures. L'arrachage décolle la peau fragilisée et aggrave les lésions.",
+            "constantesCibles": {
+                "tension": "115/75",
+                "pouls": "105",
+                "saturationO2": "97",
+                "temperature": "37",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_alert": {
+            "id": "s_err_alert",
+            "descriptionClinique": "Alerte insuffisante. Le SMUR standard arrive sans équipement brûlés. Perte de temps critique pour une prise en charge adaptée.",
+            "constantesCibles": {
+                "tension": "118/76",
+                "pouls": "90",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "18"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Nadia, 28 ans, a renversé une casserole d'eau bouillante sur son torse et ses deux bras en cuisine. Elle hurle de douleur. Vous voyez une rougeur étendue avec de grandes cloques remplies de liquide clair sur la face antérieure du tronc et les deux avant-bras. Pas de flammes, pas de fumée.",
-      "constantesCibles": {
-        "tension": "125/80",
-        "pouls": "95",
-        "saturationO2": "98",
-        "temperature": "37.2",
-        "frequenceRespiratoire": "20"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Aller ouvrir le robinet et faire couler de l'eau tiède sur les brûlures",
-          "tempsExecutionSec": 15,
-          "feedback": "L'eau tiède coule doucement sur les brûlures. Nadia crie moins fort. C'est le bon réflexe.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Percer les cloques pour évacuer le liquide",
-          "tempsExecutionSec": 20,
-          "feedback": "ERREUR : vous créez une porte d'entrée pour les bactéries. Les phlyctènes sont des pansements naturels stériles !",
-          "nextNode": "s_err_blisters"
-        },
-        {
-          "label": "Appliquer du beurre dessus pour calmer la brûlure",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR GRAVE : Le beurre isole la chaleur et aggrave la brûlure. C'est un remède de grand-mère DANGEREUX.",
-          "nextNode": "s_err_butter"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Nadia est sous l'eau tiède depuis 3 minutes. La douleur diminue. Ses vêtements en coton sont mouillés et collés aux brûlures.",
-      "constantesCibles": {
-        "tension": "120/78",
-        "pouls": "88",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "18"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Continuer le refroidissement au moins 10 minutes",
-          "tempsExecutionSec": 60,
-          "feedback": "Le refroidissement prolongé permet de limiter la profondeur de la brûlure. C'est essentiel.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Arrêter l'eau et retirer les vêtements en tirant dessus",
-          "tempsExecutionSec": 20,
-          "feedback": "Les vêtements adhérents arrachent la peau brûlée. On ne retire QUE ce qui vient facilement.",
-          "nextNode": "s_err_clothes"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Après 10 minutes de refroidissement, Nadia a moins mal. Les brûlures sont toujours rouges et œdématiées. Vous estimez la surface à environ 30-35% (tronc antérieur + deux bras).",
-      "constantesCibles": {
-        "tension": "118/76",
-        "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "17"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Couvrir avec un drap propre et appeler le 15",
-          "tempsExecutionSec": 30,
-          "feedback": "Drap propre posé. Le 15 est alerté. L'opérateur vous guide.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Appliquer du désinfectant et mettre des pansements individuels",
-          "tempsExecutionSec": 30,
-          "feedback": "Piège : le désinfectant est irritant sur les brûlures. Un drap propre suffit.",
-          "nextNode": "s4"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Le 15 vous demande de décrire la situation.",
-      "constantesCibles": {
-        "tension": "118/76",
-        "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "17"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Décrire : brûlures par eau bouillante, tronc et bras, 2e degré, surface ~30%, refroidie 10 min, pas de VAS touchées",
-          "tempsExecutionSec": 30,
-          "feedback": "Bilan complet. Le régulateur envoie une équipe spécialisée brûlés.",
-          "nextNode": "s5_good"
-        },
-        {
-          "label": "Dire : « elle s'est brûlée, ça fait des cloques »",
-          "tempsExecutionSec": 15,
-          "feedback": "Bilan trop imprécis. Le régulateur ne peut pas évaluer la gravité.",
-          "nextNode": "s_err_alert"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5_good": {
-      "id": "s5_good",
-      "descriptionClinique": "L'équipe spécialisée arrive rapidement. Nadia est prise en charge et transférée au centre des brûlés. Le refroidissement précoce a limité la profondeur des brûlures. Bonne gestion.",
-      "constantesCibles": {
-        "tension": "118/76",
-        "pouls": "85",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "17"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_blisters": {
-      "id": "s_err_blisters",
-      "descriptionClinique": "Les cloques percées exposent le derme aux bactéries. Surinfection sévère dans les heures suivantes. Cicatrisation retardée de plusieurs semaines.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "100",
-        "saturationO2": "98",
-        "temperature": "38",
-        "frequenceRespiratoire": "20"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_butter": {
-      "id": "s_err_butter",
-      "descriptionClinique": "Le beurre isole la chaleur et empêche le refroidissement. La brûlure progresse du 2e degré superficiel vers le 2e degré profond. L'équipe hospitalière doit tout nettoyer au bloc.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "100",
-        "saturationO2": "98",
-        "temperature": "37.5",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_clothes": {
-      "id": "s_err_clothes",
-      "descriptionClinique": "Le coton adhère aux brûlures. L'arrachage décolle la peau fragilisée et aggrave les lésions.",
-      "constantesCibles": {
-        "tension": "115/75",
-        "pouls": "105",
-        "saturationO2": "97",
-        "temperature": "37",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_alert": {
-      "id": "s_err_alert",
-      "descriptionClinique": "Alerte insuffisante. Le SMUR standard arrive sans équipement brûlés. Perte de temps critique pour une prise en charge adaptée.",
-      "constantesCibles": {
-        "tension": "118/76",
-        "pouls": "90",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "18"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  }
 }

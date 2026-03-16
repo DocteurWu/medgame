@@ -1,544 +1,549 @@
 {
-  "id": "urgence_demo_malaise",
-  "title": "Douleur Thoracique Suspecte",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Dr. Demo",
-  "patient": {
-    "nom": "Jean",
-    "prenom": "John",
-    "age": 65,
-    "sexe": "M",
-    "taille": "180 cm",
-    "poids": "80 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Douleur Thoracique Suspecte",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "ND",
-        "particularites": "ND"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_demo_malaise",
+    "title": "Douleur Thoracique Suspecte",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Dr. Demo",
+    "patient": {
+        "nom": "Jean",
+        "prenom": "John",
+        "age": 65,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "80 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Douleur Thoracique Suspecte",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "ND",
+                "particularites": "ND"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Aucun",
+            "descriptionDouleur": "Variable",
+            "asymptomesAssocies": [],
+            "remarques": "Cas de démonstration secouriste"
+        },
+        "verbatim": "..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "120/80 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "37°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "16/min"
+        },
+        "aspectGeneral": "Variable selon le cas",
+        "examenCardiovasculaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
-      "asymptomesAssocies": [],
-      "remarques": "Cas de démonstration secouriste"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [],
+    "correctDiagnostic": "",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+    "possibleTreatments": [],
+    "correctTreatments": [],
+    "fatalTreatments": [],
+    "correction": "# Correction : Douleur Thoracique Suspecte\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Variable selon le cas",
-    "examenCardiovasculaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "palpation": "ND"
+    "locks": [],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "percussion": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Jean est assis, très pâle, transpire abondamment. Il dit avoir 'un poids énorme' sur le cœur.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Mettre Jean au repos strict (assis ou allongé)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Position de confort adoptée. Diminution du travail cardiaque.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Lui donner de l'aspirine tout de suite",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Jamais de médicament sans l'avis formel du médecin régulateur du 15.",
+                    "nextNode": "s_err_drug"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "La douleur est apparue au repos il y a 20 min. Elle va dans la mâchoire.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Appeler le 15 immédiatement (Alerte précoce)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous donnez les constantes : Pâleur, sueurs, douleur thoracique.",
+                    "nextNode": "s3_appel"
+                },
+                {
+                    "label": "Attendre 10 min pour voir si ça passe",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le muscle cardiaque meurt chaque minute. Le temps, c'est du muscle.",
+                    "nextNode": "s_err_wait"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3_appel": {
+            "id": "s3_appel",
+            "descriptionClinique": "Le médecin du 15 vous demande s'il a déjà fait un infarctus.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Interroger Jean sur ses antécédents",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il a déjà eu un stent il y a 5 ans. Information cruciale.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Dire au médecin : 'Dépêchez-vous au lieu de poser des questions !'",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous empêchez le tri médical, l'ambulance n'est pas envoyée avec le bon niveau d'urgence.",
+                    "nextNode": "s_err_aggro"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Jean devient brusquement très essoufflé et commence à tousser (OAP suspecté).",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Le maintenir assis verticalement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Aide à libérer les poumons de la congestion.",
+                    "nextNode": "s5_good"
+                },
+                {
+                    "label": "L'allonger pour qu'il se repose mieux",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il s'étouffe car le sang reflue dans ses poumons.",
+                    "nextNode": "s_err_suffocation"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5_good": {
+            "id": "s5_good",
+            "descriptionClinique": "Le SMUR arrive en 8 minutes. Vous donnez votre bilan.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Transmettre les antécédents et l'heure de début de douleur",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Transmission parfaite.",
+                    "nextNode": "s6_victory"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s6_victory": {
+            "id": "s6_victory",
+            "descriptionClinique": "Jean est dirigé vers la coronarographie en urgence. Il s'en sort sans séquelles !",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_drug": {
+            "id": "s_err_drug",
+            "descriptionClinique": "Il était allergique ou ce n'était pas un IDM. Complication inutile.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_wait": {
+            "id": "s_err_wait",
+            "descriptionClinique": "L'infarctus a foudroyé son cœur avant l'appel tardif.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_aggro": {
+            "id": "s_err_aggro",
+            "descriptionClinique": "Sans bilan clair, les secours sont arrivés sans matériel de réanimation.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_suffocation": {
+            "id": "s_err_suffocation",
+            "descriptionClinique": "L'allongement a provoqué un arrêt respiratoire immédiat par défaillance cardiaque.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "editorData": {
+        "miniGraph": {
+            "nodes": [
+                {
+                    "id": "s1",
+                    "x": 100,
+                    "y": 100,
+                    "name": "Douleur Poitrine",
+                    "descriptionClinique": "Jean est assis, très pâle, transpire abondamment. Il dit avoir 'un poids énorme' sur le cœur.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s2",
+                    "x": 400,
+                    "y": 100,
+                    "name": "Interrogatoire PQRST",
+                    "descriptionClinique": "La douleur est apparue au repos il y a 20 min. Elle va dans la mâchoire.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s3_appel",
+                    "x": 700,
+                    "y": 100,
+                    "name": "Consigne du Régulateur",
+                    "descriptionClinique": "Le médecin du 15 vous demande s'il a déjà fait un infarctus.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s4",
+                    "x": 100,
+                    "y": 300,
+                    "name": "Aggravation subite",
+                    "descriptionClinique": "Jean devient brusquement très essoufflé et commence à tousser (OAP suspecté).",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s5_good",
+                    "x": 400,
+                    "y": 300,
+                    "name": "Arrivée SMUR",
+                    "descriptionClinique": "Le SMUR arrive en 8 minutes. Vous donnez votre bilan.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s6_victory",
+                    "x": 700,
+                    "y": 300,
+                    "name": "Succès : Prise en charge rapide",
+                    "descriptionClinique": "Jean est dirigé vers la coronarographie en urgence. Il s'en sort sans séquelles !",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s_err_drug",
+                    "x": 100,
+                    "y": 500,
+                    "name": "Échec : Erreur médicamenteuse",
+                    "descriptionClinique": "Il était allergique ou ce n'était pas un IDM. Complication inutile.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_wait",
+                    "x": 400,
+                    "y": 500,
+                    "name": "Échec : Nécrose étendue",
+                    "descriptionClinique": "L'infarctus a foudroyé son cœur avant l'appel tardif.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_aggro",
+                    "x": 700,
+                    "y": 500,
+                    "name": "Échec : Retard de secours",
+                    "descriptionClinique": "Sans bilan clair, les secours sont arrivés sans matériel de réanimation.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_suffocation",
+                    "x": 100,
+                    "y": 700,
+                    "name": "Échec : Étouffement positionnel",
+                    "descriptionClinique": "L'allongement a provoqué un arrêt respiratoire immédiat par défaillance cardiaque.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                }
+            ],
+            "connections": [
+                {
+                    "id": "conn_1_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s2",
+                    "label": "Mettre Jean au repos strict (assis ou allongé)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Position de confort adoptée. Diminution du travail cardiaque."
+                },
+                {
+                    "id": "conn_2_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s_err_drug",
+                    "label": "Lui donner de l'aspirine tout de suite",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Jamais de médicament sans l'avis formel du médecin régulateur du 15."
+                },
+                {
+                    "id": "conn_3_1773010006438",
+                    "fromId": "s2",
+                    "toId": "s3_appel",
+                    "label": "Appeler le 15 immédiatement (Alerte précoce)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous donnez les constantes : Pâleur, sueurs, douleur thoracique."
+                },
+                {
+                    "id": "conn_4_1773010006438",
+                    "fromId": "s2",
+                    "toId": "s_err_wait",
+                    "label": "Attendre 10 min pour voir si ça passe",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le muscle cardiaque meurt chaque minute. Le temps, c'est du muscle."
+                },
+                {
+                    "id": "conn_5_1773010006438",
+                    "fromId": "s3_appel",
+                    "toId": "s4",
+                    "label": "Interroger Jean sur ses antécédents",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il a déjà eu un stent il y a 5 ans. Information cruciale."
+                },
+                {
+                    "id": "conn_6_1773010006438",
+                    "fromId": "s3_appel",
+                    "toId": "s_err_aggro",
+                    "label": "Dire au médecin : 'Dépêchez-vous au lieu de poser des questions !'",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous empêchez le tri médical, l'ambulance n'est pas envoyée avec le bon niveau d'urgence."
+                },
+                {
+                    "id": "conn_7_1773010006438",
+                    "fromId": "s4",
+                    "toId": "s5_good",
+                    "label": "Le maintenir assis verticalement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Aide à libérer les poumons de la congestion."
+                },
+                {
+                    "id": "conn_8_1773010006438",
+                    "fromId": "s4",
+                    "toId": "s_err_suffocation",
+                    "label": "L'allonger pour qu'il se repose mieux",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il s'étouffe car le sang reflue dans ses poumons."
+                },
+                {
+                    "id": "conn_9_1773010006438",
+                    "fromId": "s5_good",
+                    "toId": "s6_victory",
+                    "label": "Transmettre les antécédents et l'heure de début de douleur",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Transmission parfaite."
+                }
+            ]
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [],
-  "correctDiagnostic": "",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [],
-  "correctTreatments": [],
-  "fatalTreatments": [],
-  "correction": "# Correction : Douleur Thoracique Suspecte\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Jean est assis, très pâle, transpire abondamment. Il dit avoir 'un poids énorme' sur le cœur.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Mettre Jean au repos strict (assis ou allongé)",
-          "tempsExecutionSec": 30,
-          "feedback": "Position de confort adoptée. Diminution du travail cardiaque.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Lui donner de l'aspirine tout de suite",
-          "tempsExecutionSec": 30,
-          "feedback": "Jamais de médicament sans l'avis formel du médecin régulateur du 15.",
-          "nextNode": "s_err_drug"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "La douleur est apparue au repos il y a 20 min. Elle va dans la mâchoire.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Appeler le 15 immédiatement (Alerte précoce)",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous donnez les constantes : Pâleur, sueurs, douleur thoracique.",
-          "nextNode": "s3_appel"
-        },
-        {
-          "label": "Attendre 10 min pour voir si ça passe",
-          "tempsExecutionSec": 30,
-          "feedback": "Le muscle cardiaque meurt chaque minute. Le temps, c'est du muscle.",
-          "nextNode": "s_err_wait"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_appel": {
-      "id": "s3_appel",
-      "descriptionClinique": "Le médecin du 15 vous demande s'il a déjà fait un infarctus.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Interroger Jean sur ses antécédents",
-          "tempsExecutionSec": 30,
-          "feedback": "Il a déjà eu un stent il y a 5 ans. Information cruciale.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Dire au médecin : 'Dépêchez-vous au lieu de poser des questions !'",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous empêchez le tri médical, l'ambulance n'est pas envoyée avec le bon niveau d'urgence.",
-          "nextNode": "s_err_aggro"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Jean devient brusquement très essoufflé et commence à tousser (OAP suspecté).",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Le maintenir assis verticalement",
-          "tempsExecutionSec": 30,
-          "feedback": "Aide à libérer les poumons de la congestion.",
-          "nextNode": "s5_good"
-        },
-        {
-          "label": "L'allonger pour qu'il se repose mieux",
-          "tempsExecutionSec": 30,
-          "feedback": "Il s'étouffe car le sang reflue dans ses poumons.",
-          "nextNode": "s_err_suffocation"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5_good": {
-      "id": "s5_good",
-      "descriptionClinique": "Le SMUR arrive en 8 minutes. Vous donnez votre bilan.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Transmettre les antécédents et l'heure de début de douleur",
-          "tempsExecutionSec": 30,
-          "feedback": "Transmission parfaite.",
-          "nextNode": "s6_victory"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s6_victory": {
-      "id": "s6_victory",
-      "descriptionClinique": "Jean est dirigé vers la coronarographie en urgence. Il s'en sort sans séquelles !",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_drug": {
-      "id": "s_err_drug",
-      "descriptionClinique": "Il était allergique ou ce n'était pas un IDM. Complication inutile.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_wait": {
-      "id": "s_err_wait",
-      "descriptionClinique": "L'infarctus a foudroyé son cœur avant l'appel tardif.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_aggro": {
-      "id": "s_err_aggro",
-      "descriptionClinique": "Sans bilan clair, les secours sont arrivés sans matériel de réanimation.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_suffocation": {
-      "id": "s_err_suffocation",
-      "descriptionClinique": "L'allongement a provoqué un arrêt respiratoire immédiat par défaillance cardiaque.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  },
-  "editorData": {
-    "miniGraph": {
-      "nodes": [
-        {
-          "id": "s1",
-          "x": 100,
-          "y": 100,
-          "name": "Douleur Poitrine",
-          "descriptionClinique": "Jean est assis, très pâle, transpire abondamment. Il dit avoir 'un poids énorme' sur le cœur.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s2",
-          "x": 400,
-          "y": 100,
-          "name": "Interrogatoire PQRST",
-          "descriptionClinique": "La douleur est apparue au repos il y a 20 min. Elle va dans la mâchoire.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s3_appel",
-          "x": 700,
-          "y": 100,
-          "name": "Consigne du Régulateur",
-          "descriptionClinique": "Le médecin du 15 vous demande s'il a déjà fait un infarctus.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s4",
-          "x": 100,
-          "y": 300,
-          "name": "Aggravation subite",
-          "descriptionClinique": "Jean devient brusquement très essoufflé et commence à tousser (OAP suspecté).",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s5_good",
-          "x": 400,
-          "y": 300,
-          "name": "Arrivée SMUR",
-          "descriptionClinique": "Le SMUR arrive en 8 minutes. Vous donnez votre bilan.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s6_victory",
-          "x": 700,
-          "y": 300,
-          "name": "Succès : Prise en charge rapide",
-          "descriptionClinique": "Jean est dirigé vers la coronarographie en urgence. Il s'en sort sans séquelles !",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s_err_drug",
-          "x": 100,
-          "y": 500,
-          "name": "Échec : Erreur médicamenteuse",
-          "descriptionClinique": "Il était allergique ou ce n'était pas un IDM. Complication inutile.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_wait",
-          "x": 400,
-          "y": 500,
-          "name": "Échec : Nécrose étendue",
-          "descriptionClinique": "L'infarctus a foudroyé son cœur avant l'appel tardif.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_aggro",
-          "x": 700,
-          "y": 500,
-          "name": "Échec : Retard de secours",
-          "descriptionClinique": "Sans bilan clair, les secours sont arrivés sans matériel de réanimation.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_suffocation",
-          "x": 100,
-          "y": 700,
-          "name": "Échec : Étouffement positionnel",
-          "descriptionClinique": "L'allongement a provoqué un arrêt respiratoire immédiat par défaillance cardiaque.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        }
-      ],
-      "connections": [
-        {
-          "id": "conn_1_1773010006438",
-          "fromId": "s1",
-          "toId": "s2",
-          "label": "Mettre Jean au repos strict (assis ou allongé)",
-          "tempsExecutionSec": 30,
-          "feedback": "Position de confort adoptée. Diminution du travail cardiaque."
-        },
-        {
-          "id": "conn_2_1773010006438",
-          "fromId": "s1",
-          "toId": "s_err_drug",
-          "label": "Lui donner de l'aspirine tout de suite",
-          "tempsExecutionSec": 30,
-          "feedback": "Jamais de médicament sans l'avis formel du médecin régulateur du 15."
-        },
-        {
-          "id": "conn_3_1773010006438",
-          "fromId": "s2",
-          "toId": "s3_appel",
-          "label": "Appeler le 15 immédiatement (Alerte précoce)",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous donnez les constantes : Pâleur, sueurs, douleur thoracique."
-        },
-        {
-          "id": "conn_4_1773010006438",
-          "fromId": "s2",
-          "toId": "s_err_wait",
-          "label": "Attendre 10 min pour voir si ça passe",
-          "tempsExecutionSec": 30,
-          "feedback": "Le muscle cardiaque meurt chaque minute. Le temps, c'est du muscle."
-        },
-        {
-          "id": "conn_5_1773010006438",
-          "fromId": "s3_appel",
-          "toId": "s4",
-          "label": "Interroger Jean sur ses antécédents",
-          "tempsExecutionSec": 30,
-          "feedback": "Il a déjà eu un stent il y a 5 ans. Information cruciale."
-        },
-        {
-          "id": "conn_6_1773010006438",
-          "fromId": "s3_appel",
-          "toId": "s_err_aggro",
-          "label": "Dire au médecin : 'Dépêchez-vous au lieu de poser des questions !'",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous empêchez le tri médical, l'ambulance n'est pas envoyée avec le bon niveau d'urgence."
-        },
-        {
-          "id": "conn_7_1773010006438",
-          "fromId": "s4",
-          "toId": "s5_good",
-          "label": "Le maintenir assis verticalement",
-          "tempsExecutionSec": 30,
-          "feedback": "Aide à libérer les poumons de la congestion."
-        },
-        {
-          "id": "conn_8_1773010006438",
-          "fromId": "s4",
-          "toId": "s_err_suffocation",
-          "label": "L'allonger pour qu'il se repose mieux",
-          "tempsExecutionSec": 30,
-          "feedback": "Il s'étouffe car le sang reflue dans ses poumons."
-        },
-        {
-          "id": "conn_9_1773010006438",
-          "fromId": "s5_good",
-          "toId": "s6_victory",
-          "label": "Transmettre les antécédents et l'heure de début de douleur",
-          "tempsExecutionSec": 30,
-          "feedback": "Transmission parfaite."
-        }
-      ]
-    }
-  }
 }

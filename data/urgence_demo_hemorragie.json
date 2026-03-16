@@ -1,603 +1,608 @@
 {
-  "id": "urgence_demo_hemorragie",
-  "title": "Hémorragie Massive (Section Artérielle)",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Dr. Demo",
-  "patient": {
-    "nom": "Julien",
-    "prenom": "John",
-    "age": 24,
-    "sexe": "M",
-    "taille": "180 cm",
-    "poids": "80 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Hémorragie Massive (Section Artérielle)",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "ND",
-        "particularites": "ND"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_demo_hemorragie",
+    "title": "Hémorragie Massive (Section Artérielle)",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Dr. Demo",
+    "patient": {
+        "nom": "Julien",
+        "prenom": "John",
+        "age": 24,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "80 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Hémorragie Massive (Section Artérielle)",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "ND",
+                "particularites": "ND"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Aucun",
+            "descriptionDouleur": "Variable",
+            "asymptomesAssocies": [],
+            "remarques": "Cas de démonstration secouriste"
+        },
+        "verbatim": "..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "120/80 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "37°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "16/min"
+        },
+        "aspectGeneral": "Variable selon le cas",
+        "examenCardiovasculaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
-      "asymptomesAssocies": [],
-      "remarques": "Cas de démonstration secouriste"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [],
+    "correctDiagnostic": "",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+    "possibleTreatments": [],
+    "correctTreatments": [],
+    "fatalTreatments": [],
+    "correction": "# Correction : Hémorragie Massive (Section Artérielle)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Variable selon le cas",
-    "examenCardiovasculaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "palpation": "ND"
+    "locks": [],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "percussion": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Julien s'est coupé la cuisse. Un sang rouge vif gicle en jets pulsatiles (hémorragie artérielle).",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Comprimer immédiatement la plaie avec la main",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous saturez la plaie de pression. Le saignement diminue.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Chercher une trousse de secours",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Chaque seconde compte, la flaque de sang s'agrandit de façon critique.",
+                    "nextNode": "s_err_lost"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Le sang continue de couler malgré votre main. Julien pâlit et devient confus.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Apposer un pansement compressif (Chut)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le pansement est traversé instantanément par le flux.",
+                    "nextNode": "s3_failed_comp"
+                },
+                {
+                    "label": "Poser un garrot tactique (ou improvisé) au-dessus",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous serrez le garrot sur le haut de la cuisse.",
+                    "nextNode": "s4"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3_failed_comp": {
+            "id": "s3_failed_comp",
+            "descriptionClinique": "La compression simple échoue. Julien a soif et son pouls est filant.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Maintenir la compression et poser un 2ème pansement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Trop tard, il entre en choc hémorragique sévère.",
+                    "nextNode": "s_err_shock"
+                },
+                {
+                    "label": "Passer au garrot immédiatement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Dernière chance saisie.",
+                    "nextNode": "s4"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Le saignement s'arrête enfin totalement. Julien est livide.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Noter l'heure de pose du garrot",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Heure notée : 23:45. Vital pour les chirurgiens.",
+                    "nextNode": "s5"
+                },
+                {
+                    "label": "Desserrer le garrot pour voir si ça saigne encore",
+                    "tempsExecutionSec": 30,
+                    "feedback": "ERRARE : On ne desserre JAMAIS un garrot !",
+                    "nextNode": "s_err_loose"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5": {
+            "id": "s5",
+            "descriptionClinique": "Le garrot est en place. Julien respire vite (25/min).",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Allonger la victime, jambes surélevées et couvrir",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Lutte contre l'état de choc et l'hypothermie.",
+                    "nextNode": "s6"
+                },
+                {
+                    "label": "Lui donner à boire (grande soif)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Interdit. Risque d'inhalation lors de l'anesthésie imminente.",
+                    "nextNode": "s_err_drink"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s6": {
+            "id": "s6",
+            "descriptionClinique": "Vous faites l'alerte précise au 15.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Passer le bilan complet : Garrot + Signes de choc",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le régulateur envoie un SMUR et prépare le déchoquage.",
+                    "nextNode": "s7_good"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s7_good": {
+            "id": "s7_good",
+            "descriptionClinique": "Grâce au garrot précoce, Julien arrive vivant au bloc opératoire. Votre sang-froid a fait la différence.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_lost": {
+            "id": "s_err_lost",
+            "descriptionClinique": "Une section fémorale peut tuer en 2 minutes. Chercher du matériel sans comprimer est fatal.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_shock": {
+            "id": "s_err_shock",
+            "descriptionClinique": "Le sang perdu ne se remplace pas sur place. Le retard du garrot a causé l'arrêt cardiaque.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_loose": {
+            "id": "s_err_loose",
+            "descriptionClinique": "Le desserrage provoque un relargage de toxines et une reprise de l'hémorragie massive.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_drink": {
+            "id": "s_err_drink",
+            "descriptionClinique": "L'aspiration gastrique a compliqué son sauvetage au bloc.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "editorData": {
+        "miniGraph": {
+            "nodes": [
+                {
+                    "id": "s1",
+                    "x": 100,
+                    "y": 100,
+                    "name": "La Scie Circulaire",
+                    "descriptionClinique": "Julien s'est coupé la cuisse. Un sang rouge vif gicle en jets pulsatiles (hémorragie artérielle).",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s2",
+                    "x": 400,
+                    "y": 100,
+                    "name": "Compression Insuffisante",
+                    "descriptionClinique": "Le sang continue de couler malgré votre main. Julien pâlit et devient confus.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s3_failed_comp",
+                    "x": 700,
+                    "y": 100,
+                    "name": "Aggravation",
+                    "descriptionClinique": "La compression simple échoue. Julien a soif et son pouls est filant.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s4",
+                    "x": 100,
+                    "y": 300,
+                    "name": "Garrot Posé",
+                    "descriptionClinique": "Le saignement s'arrête enfin totalement. Julien est livide.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s5",
+                    "x": 400,
+                    "y": 300,
+                    "name": "Bilan Complémentaire",
+                    "descriptionClinique": "Le garrot est en place. Julien respire vite (25/min).",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s6",
+                    "x": 700,
+                    "y": 300,
+                    "name": "Alerte SAMU",
+                    "descriptionClinique": "Vous faites l'alerte précise au 15.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s7_good",
+                    "x": 100,
+                    "y": 500,
+                    "name": "Succès : Vie sauvée",
+                    "descriptionClinique": "Grâce au garrot précoce, Julien arrive vivant au bloc opératoire. Votre sang-froid a fait la différence.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s_err_lost",
+                    "x": 400,
+                    "y": 500,
+                    "name": "Échec : Perte de temps",
+                    "descriptionClinique": "Une section fémorale peut tuer en 2 minutes. Chercher du matériel sans comprimer est fatal.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_shock",
+                    "x": 700,
+                    "y": 500,
+                    "name": "Échec : Choc irréversible",
+                    "descriptionClinique": "Le sang perdu ne se remplace pas sur place. Le retard du garrot a causé l'arrêt cardiaque.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_loose",
+                    "x": 100,
+                    "y": 700,
+                    "name": "Échec : Faute technique",
+                    "descriptionClinique": "Le desserrage provoque un relargage de toxines et une reprise de l'hémorragie massive.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_drink",
+                    "x": 400,
+                    "y": 700,
+                    "name": "Échec : Complication pré-op",
+                    "descriptionClinique": "L'aspiration gastrique a compliqué son sauvetage au bloc.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                }
+            ],
+            "connections": [
+                {
+                    "id": "conn_1_1773010006436",
+                    "fromId": "s1",
+                    "toId": "s2",
+                    "label": "Comprimer immédiatement la plaie avec la main",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous saturez la plaie de pression. Le saignement diminue."
+                },
+                {
+                    "id": "conn_2_1773010006436",
+                    "fromId": "s1",
+                    "toId": "s_err_lost",
+                    "label": "Chercher une trousse de secours",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Chaque seconde compte, la flaque de sang s'agrandit de façon critique."
+                },
+                {
+                    "id": "conn_3_1773010006436",
+                    "fromId": "s2",
+                    "toId": "s3_failed_comp",
+                    "label": "Apposer un pansement compressif (Chut)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le pansement est traversé instantanément par le flux."
+                },
+                {
+                    "id": "conn_4_1773010006436",
+                    "fromId": "s2",
+                    "toId": "s4",
+                    "label": "Poser un garrot tactique (ou improvisé) au-dessus",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous serrez le garrot sur le haut de la cuisse."
+                },
+                {
+                    "id": "conn_5_1773010006436",
+                    "fromId": "s3_failed_comp",
+                    "toId": "s_err_shock",
+                    "label": "Maintenir la compression et poser un 2ème pansement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Trop tard, il entre en choc hémorragique sévère."
+                },
+                {
+                    "id": "conn_6_1773010006436",
+                    "fromId": "s3_failed_comp",
+                    "toId": "s4",
+                    "label": "Passer au garrot immédiatement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Dernière chance saisie."
+                },
+                {
+                    "id": "conn_7_1773010006436",
+                    "fromId": "s4",
+                    "toId": "s5",
+                    "label": "Noter l'heure de pose du garrot",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Heure notée : 23:45. Vital pour les chirurgiens."
+                },
+                {
+                    "id": "conn_8_1773010006436",
+                    "fromId": "s4",
+                    "toId": "s_err_loose",
+                    "label": "Desserrer le garrot pour voir si ça saigne encore",
+                    "tempsExecutionSec": 30,
+                    "feedback": "ERRARE : On ne desserre JAMAIS un garrot !"
+                },
+                {
+                    "id": "conn_9_1773010006436",
+                    "fromId": "s5",
+                    "toId": "s6",
+                    "label": "Allonger la victime, jambes surélevées et couvrir",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Lutte contre l'état de choc et l'hypothermie."
+                },
+                {
+                    "id": "conn_10_1773010006436",
+                    "fromId": "s5",
+                    "toId": "s_err_drink",
+                    "label": "Lui donner à boire (grande soif)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Interdit. Risque d'inhalation lors de l'anesthésie imminente."
+                },
+                {
+                    "id": "conn_11_1773010006436",
+                    "fromId": "s6",
+                    "toId": "s7_good",
+                    "label": "Passer le bilan complet : Garrot + Signes de choc",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le régulateur envoie un SMUR et prépare le déchoquage."
+                }
+            ]
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [],
-  "correctDiagnostic": "",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [],
-  "correctTreatments": [],
-  "fatalTreatments": [],
-  "correction": "# Correction : Hémorragie Massive (Section Artérielle)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Julien s'est coupé la cuisse. Un sang rouge vif gicle en jets pulsatiles (hémorragie artérielle).",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Comprimer immédiatement la plaie avec la main",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous saturez la plaie de pression. Le saignement diminue.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Chercher une trousse de secours",
-          "tempsExecutionSec": 30,
-          "feedback": "Chaque seconde compte, la flaque de sang s'agrandit de façon critique.",
-          "nextNode": "s_err_lost"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Le sang continue de couler malgré votre main. Julien pâlit et devient confus.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Apposer un pansement compressif (Chut)",
-          "tempsExecutionSec": 30,
-          "feedback": "Le pansement est traversé instantanément par le flux.",
-          "nextNode": "s3_failed_comp"
-        },
-        {
-          "label": "Poser un garrot tactique (ou improvisé) au-dessus",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous serrez le garrot sur le haut de la cuisse.",
-          "nextNode": "s4"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_failed_comp": {
-      "id": "s3_failed_comp",
-      "descriptionClinique": "La compression simple échoue. Julien a soif et son pouls est filant.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Maintenir la compression et poser un 2ème pansement",
-          "tempsExecutionSec": 30,
-          "feedback": "Trop tard, il entre en choc hémorragique sévère.",
-          "nextNode": "s_err_shock"
-        },
-        {
-          "label": "Passer au garrot immédiatement",
-          "tempsExecutionSec": 30,
-          "feedback": "Dernière chance saisie.",
-          "nextNode": "s4"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Le saignement s'arrête enfin totalement. Julien est livide.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Noter l'heure de pose du garrot",
-          "tempsExecutionSec": 30,
-          "feedback": "Heure notée : 23:45. Vital pour les chirurgiens.",
-          "nextNode": "s5"
-        },
-        {
-          "label": "Desserrer le garrot pour voir si ça saigne encore",
-          "tempsExecutionSec": 30,
-          "feedback": "ERRARE : On ne desserre JAMAIS un garrot !",
-          "nextNode": "s_err_loose"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5": {
-      "id": "s5",
-      "descriptionClinique": "Le garrot est en place. Julien respire vite (25/min).",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Allonger la victime, jambes surélevées et couvrir",
-          "tempsExecutionSec": 30,
-          "feedback": "Lutte contre l'état de choc et l'hypothermie.",
-          "nextNode": "s6"
-        },
-        {
-          "label": "Lui donner à boire (grande soif)",
-          "tempsExecutionSec": 30,
-          "feedback": "Interdit. Risque d'inhalation lors de l'anesthésie imminente.",
-          "nextNode": "s_err_drink"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s6": {
-      "id": "s6",
-      "descriptionClinique": "Vous faites l'alerte précise au 15.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Passer le bilan complet : Garrot + Signes de choc",
-          "tempsExecutionSec": 30,
-          "feedback": "Le régulateur envoie un SMUR et prépare le déchoquage.",
-          "nextNode": "s7_good"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s7_good": {
-      "id": "s7_good",
-      "descriptionClinique": "Grâce au garrot précoce, Julien arrive vivant au bloc opératoire. Votre sang-froid a fait la différence.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_lost": {
-      "id": "s_err_lost",
-      "descriptionClinique": "Une section fémorale peut tuer en 2 minutes. Chercher du matériel sans comprimer est fatal.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_shock": {
-      "id": "s_err_shock",
-      "descriptionClinique": "Le sang perdu ne se remplace pas sur place. Le retard du garrot a causé l'arrêt cardiaque.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_loose": {
-      "id": "s_err_loose",
-      "descriptionClinique": "Le desserrage provoque un relargage de toxines et une reprise de l'hémorragie massive.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_drink": {
-      "id": "s_err_drink",
-      "descriptionClinique": "L'aspiration gastrique a compliqué son sauvetage au bloc.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  },
-  "editorData": {
-    "miniGraph": {
-      "nodes": [
-        {
-          "id": "s1",
-          "x": 100,
-          "y": 100,
-          "name": "La Scie Circulaire",
-          "descriptionClinique": "Julien s'est coupé la cuisse. Un sang rouge vif gicle en jets pulsatiles (hémorragie artérielle).",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s2",
-          "x": 400,
-          "y": 100,
-          "name": "Compression Insuffisante",
-          "descriptionClinique": "Le sang continue de couler malgré votre main. Julien pâlit et devient confus.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s3_failed_comp",
-          "x": 700,
-          "y": 100,
-          "name": "Aggravation",
-          "descriptionClinique": "La compression simple échoue. Julien a soif et son pouls est filant.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s4",
-          "x": 100,
-          "y": 300,
-          "name": "Garrot Posé",
-          "descriptionClinique": "Le saignement s'arrête enfin totalement. Julien est livide.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s5",
-          "x": 400,
-          "y": 300,
-          "name": "Bilan Complémentaire",
-          "descriptionClinique": "Le garrot est en place. Julien respire vite (25/min).",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s6",
-          "x": 700,
-          "y": 300,
-          "name": "Alerte SAMU",
-          "descriptionClinique": "Vous faites l'alerte précise au 15.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s7_good",
-          "x": 100,
-          "y": 500,
-          "name": "Succès : Vie sauvée",
-          "descriptionClinique": "Grâce au garrot précoce, Julien arrive vivant au bloc opératoire. Votre sang-froid a fait la différence.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s_err_lost",
-          "x": 400,
-          "y": 500,
-          "name": "Échec : Perte de temps",
-          "descriptionClinique": "Une section fémorale peut tuer en 2 minutes. Chercher du matériel sans comprimer est fatal.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_shock",
-          "x": 700,
-          "y": 500,
-          "name": "Échec : Choc irréversible",
-          "descriptionClinique": "Le sang perdu ne se remplace pas sur place. Le retard du garrot a causé l'arrêt cardiaque.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_loose",
-          "x": 100,
-          "y": 700,
-          "name": "Échec : Faute technique",
-          "descriptionClinique": "Le desserrage provoque un relargage de toxines et une reprise de l'hémorragie massive.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_drink",
-          "x": 400,
-          "y": 700,
-          "name": "Échec : Complication pré-op",
-          "descriptionClinique": "L'aspiration gastrique a compliqué son sauvetage au bloc.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        }
-      ],
-      "connections": [
-        {
-          "id": "conn_1_1773010006436",
-          "fromId": "s1",
-          "toId": "s2",
-          "label": "Comprimer immédiatement la plaie avec la main",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous saturez la plaie de pression. Le saignement diminue."
-        },
-        {
-          "id": "conn_2_1773010006436",
-          "fromId": "s1",
-          "toId": "s_err_lost",
-          "label": "Chercher une trousse de secours",
-          "tempsExecutionSec": 30,
-          "feedback": "Chaque seconde compte, la flaque de sang s'agrandit de façon critique."
-        },
-        {
-          "id": "conn_3_1773010006436",
-          "fromId": "s2",
-          "toId": "s3_failed_comp",
-          "label": "Apposer un pansement compressif (Chut)",
-          "tempsExecutionSec": 30,
-          "feedback": "Le pansement est traversé instantanément par le flux."
-        },
-        {
-          "id": "conn_4_1773010006436",
-          "fromId": "s2",
-          "toId": "s4",
-          "label": "Poser un garrot tactique (ou improvisé) au-dessus",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous serrez le garrot sur le haut de la cuisse."
-        },
-        {
-          "id": "conn_5_1773010006436",
-          "fromId": "s3_failed_comp",
-          "toId": "s_err_shock",
-          "label": "Maintenir la compression et poser un 2ème pansement",
-          "tempsExecutionSec": 30,
-          "feedback": "Trop tard, il entre en choc hémorragique sévère."
-        },
-        {
-          "id": "conn_6_1773010006436",
-          "fromId": "s3_failed_comp",
-          "toId": "s4",
-          "label": "Passer au garrot immédiatement",
-          "tempsExecutionSec": 30,
-          "feedback": "Dernière chance saisie."
-        },
-        {
-          "id": "conn_7_1773010006436",
-          "fromId": "s4",
-          "toId": "s5",
-          "label": "Noter l'heure de pose du garrot",
-          "tempsExecutionSec": 30,
-          "feedback": "Heure notée : 23:45. Vital pour les chirurgiens."
-        },
-        {
-          "id": "conn_8_1773010006436",
-          "fromId": "s4",
-          "toId": "s_err_loose",
-          "label": "Desserrer le garrot pour voir si ça saigne encore",
-          "tempsExecutionSec": 30,
-          "feedback": "ERRARE : On ne desserre JAMAIS un garrot !"
-        },
-        {
-          "id": "conn_9_1773010006436",
-          "fromId": "s5",
-          "toId": "s6",
-          "label": "Allonger la victime, jambes surélevées et couvrir",
-          "tempsExecutionSec": 30,
-          "feedback": "Lutte contre l'état de choc et l'hypothermie."
-        },
-        {
-          "id": "conn_10_1773010006436",
-          "fromId": "s5",
-          "toId": "s_err_drink",
-          "label": "Lui donner à boire (grande soif)",
-          "tempsExecutionSec": 30,
-          "feedback": "Interdit. Risque d'inhalation lors de l'anesthésie imminente."
-        },
-        {
-          "id": "conn_11_1773010006436",
-          "fromId": "s6",
-          "toId": "s7_good",
-          "label": "Passer le bilan complet : Garrot + Signes de choc",
-          "tempsExecutionSec": 30,
-          "feedback": "Le régulateur envoie un SMUR et prépare le déchoquage."
-        }
-      ]
-    }
-  }
 }

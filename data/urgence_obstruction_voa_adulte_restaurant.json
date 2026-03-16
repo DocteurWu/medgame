@@ -1,340 +1,362 @@
 {
-  "id": "urgence_obstruction_voa_adulte_restaurant",
-  "title": "Étouffement au Restaurant — Obstruction Totale chez l'Adulte",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Rousseau",
-    "prenom": "Henri",
-    "age": 68,
-    "sexe": "M",
-    "taille": "172 cm",
-    "poids": "90 kg",
-    "groupeSanguin": "O+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Étouffement brutal au restaurant.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "Sédentaire"
-      },
-      "tabac": {
-        "quantite": "Non-fumeur",
-        "duree": ""
-      },
-      "alcool": {
-        "quantite": "Un verre de vin au repas"
-      },
-      "alimentation": {
-        "regime": "Normal",
-        "particularites": "Porte un dentier, l'a retiré pour manger"
-      },
-      "emploi": {
-        "profession": "Retraité",
-        "stress": "Faible"
-      }
+    "id": "urgence_obstruction_voa_adulte_restaurant",
+    "title": "Étouffement au Restaurant — Obstruction Totale chez l'Adulte",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Rousseau",
+        "prenom": "Henri",
+        "age": 68,
+        "sexe": "M",
+        "taille": "172 cm",
+        "poids": "90 kg",
+        "groupeSanguin": "O+"
     },
-    "antecedents": {
-      "medicaux": ["Insuffisance veineuse des membres inférieurs"],
-      "chirurgicaux": ["Cholécystectomie"],
-      "familiaux": []
-    },
-    "traitements": ["Daflon"],
-    "allergies": {
-      "presence": false,
-      "liste": []
-    },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal, en cours de repas",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Morceau de viande mal mastiqué",
-      "descriptionDouleur": "Impossibilité de parler",
-      "asymptomesAssocies": ["Toux absente", "Cyanose du visage", "Signe d'étouffement (mains à la gorge)"],
-      "remarques": "Table voisine alertée par le bruit"
-    },
-    "verbatim": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge)."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "140/85 mmHg",
-      "pouls": "100 bpm",
-      "temperature": "36.5°C",
-      "saturationO2": "En chute rapide",
-      "frequenceRespiratoire": "Tentatives inefficaces"
-    },
-    "aspectGeneral": "Assis à table, ne peut pas parler, ne peut pas tousser, visage cyanosé, yeux écarquillés, mains serrées autour de la gorge. Lutte visiblement pour respirer.",
-    "examenCardiovasculaire": {
-      "auscultation": "Tachycardie",
-      "inspection": "Cyanose progressive",
-      "palpation": "ND"
-    },
-    "examenPulmonaire": {
-      "auscultation": "Silence respiratoire",
-      "inspection": "Efforts respiratoires inefficaces",
-      "percussion": "ND"
-    },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
-    }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Obstruction totale des voies aériennes par corps étranger",
-    "Obstruction partielle des voies aériennes",
-    "Infarctus du myocarde",
-    "Crise d'asthme aiguë"
-  ],
-  "correctDiagnostic": "Obstruction totale des voies aériennes par corps étranger",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "5 claques vigoureuses entre les omoplates",
-    "Manœuvre de Heimlich (compressions abdominales)",
-    "Lui donner un verre d'eau pour débloquer",
-    "Lui taper dans le dos légèrement",
-    "RCP si perte de connaissance"
-  ],
-  "correctTreatments": [
-    "5 claques vigoureuses entre les omoplates",
-    "Manœuvre de Heimlich (compressions abdominales)",
-    "RCP si perte de connaissance"
-  ],
-  "fatalTreatments": [
-    "Lui donner un verre d'eau pour débloquer"
-  ],
-  "correction": "# Correction : Obstruction Totale des Voies Aériennes — Adulte\n\n## Diagnostic\nLe **geste universel d'étouffement** (mains à la gorge) + **absence totale de toux** + **impossibilité de parler** + **cyanose** = obstruction TOTALE des voies aériennes.\n\n## Distinction clé AFGSU\n| Signe | Obstruction PARTIELLE | Obstruction TOTALE |\n|-------|----------------------|--------------------|\n| Toux | OUI, forte | NON |  \n| Parole | OUI, difficile | NON |\n| Respiration | Bruyante | Absente |\n| Cyanose | Non | OUI |\n\n## Conduite à tenir (AFGSU)\n1. Identifier le geste universel d'étouffement\n2. **5 claques vigoureuses entre les omoplates** (pencher la victime en avant)\n3. Si inefficace → **5 compressions abdominales (Heimlich)**\n4. Alterner jusqu'à expulsion ou perte de connaissance\n5. Si perte de connaissance → **RCP** (le massage peut mobiliser le corps étranger)\n\n## Points clés chez l'adulte âgé\n- Dentier retiré = mastication moins efficace → risque de fausse route augmenté\n- Les claques doivent être VIGOUREUSES (pas des petites tapes)\n- Heimlich : poing au-dessus du nombril, pression sèche vers le haut et l'arrière\n\n## Piège classique\nDonner de l'eau pour « débloquer » aggrave l'obstruction. L'eau ne peut pas passer derrière le bouchon et provoque une inhalation supplémentaire.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg08_diagnostic",
-      "type": "QCM",
-      "challenge": {
-        "question": "Henri fait le geste universel d'étouffement, ne peut ni parler ni tousser, et devient bleu. Que se passe-t-il ?",
-        "options": [
-          "Un infarctus avec gêne respiratoire",
-          "Une obstruction PARTIELLE des voies aériennes",
-          "Une obstruction TOTALE des voies aériennes",
-          "Une crise d'angoisse"
+    "interrogatoire": {
+        "motifHospitalisation": "Étouffement brutal au restaurant.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Sédentaire"
+            },
+            "tabac": {
+                "quantite": "Non-fumeur",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Un verre de vin au repas"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": "Porte un dentier, l'a retiré pour manger"
+            },
+            "emploi": {
+                "profession": "Retraité",
+                "stress": "Faible"
+            }
+        },
+        "antecedents": {
+            "medicaux": [
+                "Insuffisance veineuse des membres inférieurs"
+            ],
+            "chirurgicaux": [
+                "Cholécystectomie"
+            ],
+            "familiaux": []
+        },
+        "traitements": [
+            "Daflon"
         ],
-        "correct_indices": [2]
-      },
-      "feedback_error": "L'absence de toux et de parole, associée à la cyanose et au geste universel, définit l'obstruction TOTALE. L'obstruction partielle permet encore de tousser.",
-      "target_fields": ["correctDiagnostic"]
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal, en cours de repas",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Morceau de viande mal mastiqué",
+            "descriptionDouleur": "Impossibilité de parler",
+            "asymptomesAssocies": [
+                "Toux absente",
+                "Cyanose du visage",
+                "Signe d'étouffement (mains à la gorge)"
+            ],
+            "remarques": "Table voisine alertée par le bruit"
+        },
+        "verbatim": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge)."
     },
-    {
-      "id": "lock_urg08_sequence",
-      "type": "QCM",
-      "challenge": {
-        "question": "Après 5 claques dans le dos inefficaces, que faites-vous ensuite ?",
-        "options": [
-          "Continuer les claques indéfiniment",
-          "Donner un verre d'eau",
-          "5 compressions abdominales (manœuvre de Heimlich)",
-          "Attendre que ça passe"
-        ],
-        "correct_indices": [2]
-      },
-      "feedback_error": "L'AFGSU préconise d'alterner 5 claques / 5 compressions abdominales. Si les claques échouent, on passe au Heimlich. Ne JAMAIS rester sur une technique inefficace.",
-      "target_fields": ["correctTreatments"]
+    "examenClinique": {
+        "constantes": {
+            "tension": "140/85 mmHg",
+            "pouls": "100 bpm",
+            "temperature": "36.5°C",
+            "saturationO2": "En chute rapide",
+            "frequenceRespiratoire": "Tentatives inefficaces"
+        },
+        "aspectGeneral": "Assis à table, ne peut pas parler, ne peut pas tousser, visage cyanosé, yeux écarquillés, mains serrées autour de la gorge. Lutte visiblement pour respirer.",
+        "examenCardiovasculaire": {
+            "auscultation": "Tachycardie",
+            "inspection": "Cyanose progressive",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "Silence respiratoire",
+            "inspection": "Efforts respiratoires inefficaces",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
+    },
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Obstruction totale des voies aériennes par corps étranger",
+        "Obstruction partielle des voies aériennes",
+        "Infarctus du myocarde",
+        "Crise d'asthme aiguë"
+    ],
+    "correctDiagnostic": "Obstruction totale des voies aériennes par corps étranger",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
+    },
+    "possibleTreatments": [
+        "5 claques vigoureuses entre les omoplates",
+        "Manœuvre de Heimlich (compressions abdominales)",
+        "Lui donner un verre d'eau pour débloquer",
+        "Lui taper dans le dos légèrement",
+        "RCP si perte de connaissance"
+    ],
+    "correctTreatments": [
+        "5 claques vigoureuses entre les omoplates",
+        "Manœuvre de Heimlich (compressions abdominales)",
+        "RCP si perte de connaissance"
+    ],
+    "fatalTreatments": [
+        "Lui donner un verre d'eau pour débloquer"
+    ],
+    "correction": "# Correction : Obstruction Totale des Voies Aériennes — Adulte\n\n## Diagnostic\nLe **geste universel d'étouffement** (mains à la gorge) + **absence totale de toux** + **impossibilité de parler** + **cyanose** = obstruction TOTALE des voies aériennes.\n\n## Distinction clé AFGSU\n| Signe | Obstruction PARTIELLE | Obstruction TOTALE |\n|-------|----------------------|--------------------|\n| Toux | OUI, forte | NON |  \n| Parole | OUI, difficile | NON |\n| Respiration | Bruyante | Absente |\n| Cyanose | Non | OUI |\n\n## Conduite à tenir (AFGSU)\n1. Identifier le geste universel d'étouffement\n2. **5 claques vigoureuses entre les omoplates** (pencher la victime en avant)\n3. Si inefficace → **5 compressions abdominales (Heimlich)**\n4. Alterner jusqu'à expulsion ou perte de connaissance\n5. Si perte de connaissance → **RCP** (le massage peut mobiliser le corps étranger)\n\n## Points clés chez l'adulte âgé\n- Dentier retiré = mastication moins efficace → risque de fausse route augmenté\n- Les claques doivent être VIGOUREUSES (pas des petites tapes)\n- Heimlich : poing au-dessus du nombril, pression sèche vers le haut et l'arrière\n\n## Piège classique\nDonner de l'eau pour « débloquer » aggrave l'obstruction. L'eau ne peut pas passer derrière le bouchon et provoque une inhalation supplémentaire.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
+    },
+    "locks": [
+        {
+            "id": "lock_urg08_diagnostic",
+            "type": "QCM",
+            "challenge": {
+                "question": "Henri fait le geste universel d'étouffement, ne peut ni parler ni tousser, et devient bleu. Que se passe-t-il ?",
+                "options": [
+                    "Un infarctus avec gêne respiratoire",
+                    "Une obstruction PARTIELLE des voies aériennes",
+                    "Une obstruction TOTALE des voies aériennes",
+                    "Une crise d'angoisse"
+                ],
+                "correct_indices": [
+                    2
+                ]
+            },
+            "feedback_error": "L'absence de toux et de parole, associée à la cyanose et au geste universel, définit l'obstruction TOTALE. L'obstruction partielle permet encore de tousser.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
+        },
+        {
+            "id": "lock_urg08_sequence",
+            "type": "QCM",
+            "challenge": {
+                "question": "Après 5 claques dans le dos inefficaces, que faites-vous ensuite ?",
+                "options": [
+                    "Continuer les claques indéfiniment",
+                    "Donner un verre d'eau",
+                    "5 compressions abdominales (manœuvre de Heimlich)",
+                    "Attendre que ça passe"
+                ],
+                "correct_indices": [
+                    2
+                ]
+            },
+            "feedback_error": "L'AFGSU préconise d'alterner 5 claques / 5 compressions abdominales. Si les claques échouent, on passe au Heimlich. Ne JAMAIS rester sur une technique inefficace.",
+            "target_fields": [
+                "correctTreatments"
+            ]
+        }
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
+    },
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Vous êtes au restaurant. À la table voisine, Henri, 68 ans, se lève brusquement de sa chaise. Il porte ses mains à sa gorge (geste universel d'étouffement), ne produit aucun son, et son visage vire au bleu. Ses yeux sont écarquillés de terreur. Il ne tousse pas, il ne parle pas. Les autres convives ne comprennent pas ce qui se passe.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "100",
+                "saturationO2": "85",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "Irrégulière"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Identifier : obstruction TOTALE. Lui donner 5 claques vigoureuses entre les omoplates, penché en avant",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Vous plaquez Henri en avant et lui donnez 5 claques sèches entre les omoplates. Rien ne sort.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Lui demander : « Est-ce que vous allez bien ? Vous vous étouffez ? »",
+                    "tempsExecutionSec": 10,
+                    "feedback": "Il acquiesce de la tête mais ne peut pas répondre. Vous perdez 10 secondes précieuses.",
+                    "nextNode": "s2_delayed"
+                },
+                {
+                    "label": "Lui donner un verre d'eau pour débloquer",
+                    "tempsExecutionSec": 10,
+                    "feedback": "L'eau coule sur le morceau de viande et pénètre dans les poumons. Henri se noie à sec.",
+                    "nextNode": "s_err_water"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Les 5 claques n'ont rien donné. Henri devient violacé. Il ne peut toujours pas tousser ni parler.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "110",
+                "saturationO2": "75",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "Irrégulière"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Passer aux 5 compressions abdominales (Heimlich) : se placer derrière, poing au-dessus du nombril",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Vous vous placez derrière Henri, poing au creux épigastrique. 5 compressions sèches vers le haut et l'arrière.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Répéter 5 autres claques dans le dos",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Les claques seules n'ont pas suffi. Il faut CHANGER de technique : Heimlich.",
+                    "nextNode": "s3_late"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2_delayed": {
+            "id": "s2_delayed",
+            "descriptionClinique": "Henri a perdu 10 secondes. Sa cyanose s'aggrave. Vous commencez les claques mais il est déjà affaibli.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "115",
+                "saturationO2": "70",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "Faible"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "5 claques vigoureuses puis Heimlich immédiatement",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Vous enchaînez claques puis Heimlich. Le morceau de viande bouge.",
+                    "nextNode": "s3"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "À la 3ème compression abdominale, le morceau de viande est expulsé violemment. Henri inspire bruyamment et tousse.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "105",
+                "saturationO2": "88",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "Reprend"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Le rassurer, le faire asseoir, appeler le 15 pour avis médical",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Henri respire. Vous appelez le 15. L'opérateur demande de surveiller car Heimlich peut causer des lésions internes.",
+                    "nextNode": "s4_good"
+                },
+                {
+                    "label": "Le laisser repartir à sa table, tout va bien maintenant",
+                    "tempsExecutionSec": 10,
+                    "feedback": "ERREUR : le Heimlich peut provoquer une rupture de la rate ou du diaphragme. Un avis médical est OBLIGATOIRE.",
+                    "nextNode": "s_err_leave"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3_late": {
+            "id": "s3_late",
+            "descriptionClinique": "Henri perd connaissance par hypoxie.",
+            "constantesCibles": {
+                "tension": "140/85",
+                "pouls": "120",
+                "saturationO2": "60",
+                "temperature": "36",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Commencer la RCP (massages thoraciques)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Les compressions thoraciques peuvent mobiliser le corps étranger. Vous vérifiez la bouche et voyez le morceau.",
+                    "nextNode": "s4_resus"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4_good": {
+            "id": "s4_good",
+            "descriptionClinique": "Le 15 envoie une équipe de contrôle. Henri va bien, pas de lésion visible. Il vous serre la main avec des larmes dans les yeux. Réflexes parfaits.",
+            "constantesCibles": {
+                "tension": "135/80",
+                "pouls": "80",
+                "saturationO2": "98",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s4_resus": {
+            "id": "s4_resus",
+            "descriptionClinique": "Pendant la RCP, le morceau de viande sort. Henri reprend conscience. Le SAMU le transporte pour surveillance. Pronostic réservé mais pas de séquelle neurologique grâce à la RCP rapide.",
+            "constantesCibles": {
+                "tension": "130/80",
+                "pouls": "90",
+                "saturationO2": "92",
+                "temperature": "36",
+                "frequenceRespiratoire": "18"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_water": {
+            "id": "s_err_water",
+            "descriptionClinique": "L'eau a été inhalée sur le corps étranger. Double obstruction : alimentaire + hydrique. Arrêt cardiaque immédiat.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "36",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_leave": {
+            "id": "s_err_leave",
+            "descriptionClinique": "Henri fait une hémorragie interne par rupture splénique 3 heures plus tard (complication du Heimlich). Il décède à l'hôpital. L'absence de surveillance post-geste a été fatale.",
+            "constantesCibles": {
+                "tension": "60/30",
+                "pouls": "130",
+                "saturationO2": "85",
+                "temperature": "36",
+                "frequenceRespiratoire": "28"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Vous êtes au restaurant. À la table voisine, Henri, 68 ans, se lève brusquement de sa chaise. Il porte ses mains à sa gorge (geste universel d'étouffement), ne produit aucun son, et son visage vire au bleu. Ses yeux sont écarquillés de terreur. Il ne tousse pas, il ne parle pas. Les autres convives ne comprennent pas ce qui se passe.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "100",
-        "saturationO2": "85",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "Irrégulière"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Identifier : obstruction TOTALE. Lui donner 5 claques vigoureuses entre les omoplates, penché en avant",
-          "tempsExecutionSec": 15,
-          "feedback": "Vous plaquez Henri en avant et lui donnez 5 claques sèches entre les omoplates. Rien ne sort.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Lui demander : « Est-ce que vous allez bien ? Vous vous étouffez ? »",
-          "tempsExecutionSec": 10,
-          "feedback": "Il acquiesce de la tête mais ne peut pas répondre. Vous perdez 10 secondes précieuses.",
-          "nextNode": "s2_delayed"
-        },
-        {
-          "label": "Lui donner un verre d'eau pour débloquer",
-          "tempsExecutionSec": 10,
-          "feedback": "L'eau coule sur le morceau de viande et pénètre dans les poumons. Henri se noie à sec.",
-          "nextNode": "s_err_water"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Les 5 claques n'ont rien donné. Henri devient violacé. Il ne peut toujours pas tousser ni parler.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "110",
-        "saturationO2": "75",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "Irrégulière"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Passer aux 5 compressions abdominales (Heimlich) : se placer derrière, poing au-dessus du nombril",
-          "tempsExecutionSec": 15,
-          "feedback": "Vous vous placez derrière Henri, poing au creux épigastrique. 5 compressions sèches vers le haut et l'arrière.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Répéter 5 autres claques dans le dos",
-          "tempsExecutionSec": 15,
-          "feedback": "Les claques seules n'ont pas suffi. Il faut CHANGER de technique : Heimlich.",
-          "nextNode": "s3_late"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2_delayed": {
-      "id": "s2_delayed",
-      "descriptionClinique": "Henri a perdu 10 secondes. Sa cyanose s'aggrave. Vous commencez les claques mais il est déjà affaibli.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "115",
-        "saturationO2": "70",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "Faible"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "5 claques vigoureuses puis Heimlich immédiatement",
-          "tempsExecutionSec": 20,
-          "feedback": "Vous enchaînez claques puis Heimlich. Le morceau de viande bouge.",
-          "nextNode": "s3"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "À la 3ème compression abdominale, le morceau de viande est expulsé violemment. Henri inspire bruyamment et tousse.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "105",
-        "saturationO2": "88",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "Reprend"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Le rassurer, le faire asseoir, appeler le 15 pour avis médical",
-          "tempsExecutionSec": 30,
-          "feedback": "Henri respire. Vous appelez le 15. L'opérateur demande de surveiller car Heimlich peut causer des lésions internes.",
-          "nextNode": "s4_good"
-        },
-        {
-          "label": "Le laisser repartir à sa table, tout va bien maintenant",
-          "tempsExecutionSec": 10,
-          "feedback": "ERREUR : le Heimlich peut provoquer une rupture de la rate ou du diaphragme. Un avis médical est OBLIGATOIRE.",
-          "nextNode": "s_err_leave"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_late": {
-      "id": "s3_late",
-      "descriptionClinique": "Henri perd connaissance par hypoxie.",
-      "constantesCibles": {
-        "tension": "140/85",
-        "pouls": "120",
-        "saturationO2": "60",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Commencer la RCP (massages thoraciques)",
-          "tempsExecutionSec": 30,
-          "feedback": "Les compressions thoraciques peuvent mobiliser le corps étranger. Vous vérifiez la bouche et voyez le morceau.",
-          "nextNode": "s4_resus"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4_good": {
-      "id": "s4_good",
-      "descriptionClinique": "Le 15 envoie une équipe de contrôle. Henri va bien, pas de lésion visible. Il vous serre la main avec des larmes dans les yeux. Réflexes parfaits.",
-      "constantesCibles": {
-        "tension": "135/80",
-        "pouls": "80",
-        "saturationO2": "98",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s4_resus": {
-      "id": "s4_resus",
-      "descriptionClinique": "Pendant la RCP, le morceau de viande sort. Henri reprend conscience. Le SAMU le transporte pour surveillance. Pronostic réservé mais pas de séquelle neurologique grâce à la RCP rapide.",
-      "constantesCibles": {
-        "tension": "130/80",
-        "pouls": "90",
-        "saturationO2": "92",
-        "temperature": "36",
-        "frequenceRespiratoire": "18"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_water": {
-      "id": "s_err_water",
-      "descriptionClinique": "L'eau a été inhalée sur le corps étranger. Double obstruction : alimentaire + hydrique. Arrêt cardiaque immédiat.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_leave": {
-      "id": "s_err_leave",
-      "descriptionClinique": "Henri fait une hémorragie interne par rupture splénique 3 heures plus tard (complication du Heimlich). Il décède à l'hôpital. L'absence de surveillance post-geste a été fatale.",
-      "constantesCibles": {
-        "tension": "60/30",
-        "pouls": "130",
-        "saturationO2": "85",
-        "temperature": "36",
-        "frequenceRespiratoire": "28"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  }
 }

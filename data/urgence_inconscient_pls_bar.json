@@ -1,353 +1,371 @@
 {
-  "id": "urgence_inconscient_pls_bar",
-  "title": "Inconscient qui Respire — Alcoolémie au Sortir d'un Bar",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Nguyen",
-    "prenom": "Tristan",
-    "age": 20,
-    "sexe": "M",
-    "taille": "176 cm",
-    "poids": "70 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Jeune homme inconscient au sol devant un bar.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "Occasionnel"
-      },
-      "tabac": {
-        "quantite": "Occasionnel",
-        "duree": ""
-      },
-      "alcool": {
-        "quantite": "Consommation excessive ce soir (soirée étudiante)"
-      },
-      "alimentation": {
-        "regime": "Normal",
-        "particularites": "N'a pas mangé ce soir"
-      },
-      "emploi": {
-        "profession": "Étudiant",
-        "stress": "Modéré"
-      }
+    "id": "urgence_inconscient_pls_bar",
+    "title": "Inconscient qui Respire — Alcoolémie au Sortir d'un Bar",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Nguyen",
+        "prenom": "Tristan",
+        "age": 20,
+        "sexe": "M",
+        "taille": "176 cm",
+        "poids": "70 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Jeune homme inconscient au sol devant un bar.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Occasionnel"
+            },
+            "tabac": {
+                "quantite": "Occasionnel",
+                "duree": ""
+            },
+            "alcool": {
+                "quantite": "Consommation excessive ce soir (soirée étudiante)"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": "N'a pas mangé ce soir"
+            },
+            "emploi": {
+                "profession": "Étudiant",
+                "stress": "Modéré"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Progressif depuis 2 heures",
+            "evolution": "Dégradation de la conscience",
+            "facteursDeclenchants": "Excès d'alcool lors d'une soirée étudiante, à jeun",
+            "descriptionDouleur": "Inconscient, ne répond pas",
+            "asymptomesAssocies": [
+                "Haleine éthylique",
+                "Vomissements",
+                "Inconscience"
+            ],
+            "remarques": "Un ami l'a trouvé au sol. Ils étaient plusieurs à boire."
+        },
+        "verbatim": "L'ami : « Il a trop bu... on l'a retrouvé par terre... il respire mais il ne se réveille pas... y'a du vomi... »"
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "100/60 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "36°C",
+            "saturationO2": "94%",
+            "frequenceRespiratoire": "10/min"
+        },
+        "aspectGeneral": "Jeune homme inconscient, au sol sur le ventre, odeur forte d'alcool. Vomissements visibles autour de la bouche et au sol. Respiration lente mais présente. Peau froide et pâle.",
+        "examenCardiovasculaire": {
+            "auscultation": "Rythme régulier, bradycardie relative",
+            "inspection": "Pâleur, marbrures",
+            "palpation": "Pouls radial faible"
+        },
+        "examenPulmonaire": {
+            "auscultation": "Râles (présence de vomissements dans les voies aériennes)",
+            "inspection": "Ventilation superficielle",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND (ne pas mobiliser)",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Progressif depuis 2 heures",
-      "evolution": "Dégradation de la conscience",
-      "facteursDeclenchants": "Excès d'alcool lors d'une soirée étudiante, à jeun",
-      "descriptionDouleur": "Inconscient, ne répond pas",
-      "asymptomesAssocies": ["Haleine éthylique", "Vomissements", "Inconscience"],
-      "remarques": "Un ami l'a trouvé au sol. Ils étaient plusieurs à boire."
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Coma éthylique avec inhalation de vomissements — inconscient qui respire",
+        "Arrêt cardiaque",
+        "Overdose médicamenteuse",
+        "Traumatisme crânien associé (chute)"
+    ],
+    "correctDiagnostic": "Coma éthylique avec inhalation de vomissements — inconscient qui respire",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "L'ami : « Il a trop bu... on l'a retrouvé par terre... il respire mais il ne se réveille pas... y'a du vomi... »"
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "100/60 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "36°C",
-      "saturationO2": "94%",
-      "frequenceRespiratoire": "10/min"
+    "possibleTreatments": [
+        "Mettre en PLS (inconscient qui respire)",
+        "Nettoyer la bouche et surveiller la respiration",
+        "Débuter un massage cardiaque",
+        "Le secouer pour le réveiller",
+        "Couvrir et alerter le 15"
+    ],
+    "correctTreatments": [
+        "Mettre en PLS (inconscient qui respire)",
+        "Nettoyer la bouche et surveiller la respiration",
+        "Couvrir et alerter le 15"
+    ],
+    "fatalTreatments": [
+        "Débuter un massage cardiaque"
+    ],
+    "correction": "# Correction : Coma Éthylique — Inconscient qui Respire\n\n## Diagnostic\nInconscience + respiration présente (lente = 10/min) + vomissements + contexte d'excès d'alcool = **inconscient qui respire** sous coma éthylique, avec risque majeur d'**inhalation de vomissements**.\n\n## Distinction AFGSU\n- **Inconscient QUI respire** → PLS + surveillance\n- **Inconscient qui NE respire PAS** → ACR → MCE + DAE\n\nIci : respiration à 10/min (lente mais présente) → PLS\n\n## Risques vitaux\n1. **Inhalation de vomissements** : cause majeure de décès par coma éthylique\n2. **Hypothermie** : peau froide, température 36°C, alcool = vasodilatation\n3. **Dépression respiratoire** : fréquence à 10/min (normale 12-20)\n\n## Conduite à tenir (AFGSU)\n1. Vérifier la respiration (regarder le thorax, écouter, sentir)\n2. Si respire → **PLS** (protège les voies aériennes des vomissements)\n3. Nettoyer la bouche des vomissements (doigt en crochet si besoin)\n4. Couvrir (lutte hypothermie)\n5. **Surveiller la respiration en permanence** (risque d'ACR)\n6. Alerte 15\n\n## Piège classique\nNe JAMAIS :\n- Donner du café pour « dégriser » → n'empêche pas le coma\n- Secouer la victime → risque de vomir et d'inhaler\n- Laisser sur le dos → risque d'étouffement par vomissements\n- Commencer le massage → le cœur bat encore !",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Jeune homme inconscient, au sol sur le ventre, odeur forte d'alcool. Vomissements visibles autour de la bouche et au sol. Respiration lente mais présente. Peau froide et pâle.",
-    "examenCardiovasculaire": {
-      "auscultation": "Rythme régulier, bradycardie relative",
-      "inspection": "Pâleur, marbrures",
-      "palpation": "Pouls radial faible"
+    "locks": [
+        {
+            "id": "lock_urg09_respiration",
+            "type": "QCM",
+            "challenge": {
+                "question": "Tristan est inconscient mais respire à 10/min. Faut-il commencer un massage cardiaque ?",
+                "options": [
+                    "Oui, car 10/min c'est trop peu",
+                    "Non, c'est un inconscient qui respire → mettre en PLS",
+                    "Oui, par précaution",
+                    "Non, il faut juste le mettre en position assise"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "La respiration est présente (même lente). On ne fait JAMAIS de massage si le cœur bat. L'indication du MCE = absence totale de respiration. Ici → PLS.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
+        },
+        {
+            "id": "lock_urg09_position",
+            "type": "QCM",
+            "challenge": {
+                "question": "Tristan est sur le ventre avec du vomi autour de la bouche. Que faites-vous ?",
+                "options": [
+                    "Le laisser sur le ventre",
+                    "Le retourner sur le dos pour mieux surveiller",
+                    "Le mettre en PLS (sur le côté) et nettoyer la bouche",
+                    "L'asseoir contre un mur"
+                ],
+                "correct_indices": [
+                    2
+                ]
+            },
+            "feedback_error": "PLS = sur le CÔTÉ. Sur le ventre, la langue peut obstruer et les vomissements sont inhalés. Sur le dos, les vomissements coulent dans la trachée. La PLS sur le côté permet un drainage des voies aériennes.",
+            "target_fields": [
+                "correctTreatments"
+            ]
+        }
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "Râles (présence de vomissements dans les voies aériennes)",
-      "inspection": "Ventilation superficielle",
-      "percussion": "ND"
-    },
-    "examenAbdominal": {
-      "palpation": "ND (ne pas mobiliser)",
-      "auscultation": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Il est 2h du matin. Devant un bar, un jeune homme, Tristan, 20 ans, est au sol. Un ami paniqué vous dit qu'il a « trop bu ». Tristan est sur le ventre, il respire lentement mais il y a du vomi partout autour de lui. L'odeur d'alcool est forte.",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": "70",
+                "saturationO2": "94",
+                "temperature": "36",
+                "frequenceRespiratoire": "10"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier la respiration : regarder le thorax, écouter à côté de la bouche",
+                    "tempsExecutionSec": 10,
+                    "feedback": "Thorax qui se soulève, respiration audible (lente). Il respire.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Le secouer vigoureusement pour le réveiller",
+                    "tempsExecutionSec": 10,
+                    "feedback": "ERREUR : le secouer peut provoquer un réflexe nauséeux et des vomissements supplémentaires. Risque d'inhalation.",
+                    "nextNode": "s_err_shake"
+                },
+                {
+                    "label": "Lui donner du café noir pour le dégriser",
+                    "tempsExecutionSec": 20,
+                    "feedback": "ERREUR : le café ne dégrise pas. En plus, il est inconscient → le café va dans les poumons.",
+                    "nextNode": "s_err_coffee"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Tristan respire (10/min) mais il est inconscient. Du vomi est visible sur sa bouche et son menton. Son corps est froid (36°C).",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": "70",
+                "saturationO2": "94",
+                "temperature": "36",
+                "frequenceRespiratoire": "10"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Le mettre en PLS : le retourner sur le côté, nettoyer la bouche, surveiller la respiration",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous retournez Tristan sur le côté (PLS), essuyez les vomissements. Les voies aériennes sont protégées.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Le mettre en position assise contre le mur",
+                    "tempsExecutionSec": 20,
+                    "feedback": "ERREUR : en position assise, la tête tombe en avant et la langue/les vomissements obstruent. PLS obligatoire.",
+                    "nextNode": "s_err_sit"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Tristan est en PLS sur le côté droit. Les voies aériennes sont dégagées. L'ami vous regarde, paniqué.",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": "70",
+                "saturationO2": "94",
+                "temperature": "36",
+                "frequenceRespiratoire": "10"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Le couvrir avec une veste, surveiller la respiration, appeler le 15",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Jacket posé, le 15 est alerté. L'opérateur vous guide et envoie une équipe.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Le laisser et dire à son ami de s'occuper de lui",
+                    "tempsExecutionSec": 10,
+                    "feedback": "ERREUR : sans surveillance, il peut vomir et s'étouffer en quelques minutes. La responsabilité est engagée.",
+                    "nextNode": "s_err_abandon"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Tristan vomit à nouveau en PLS. Le vomi coule hors de sa bouche (grâce à la position sur le côté).",
+            "constantesCibles": {
+                "tension": "100/60",
+                "pouls": "68",
+                "saturationO2": "93",
+                "temperature": "36",
+                "frequenceRespiratoire": "10"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Nettoyer la bouche, maintenir la PLS, vérifier que la respiration continue",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous nettoyez et vérifiez. La respiration est toujours là. La PLS a sauvé Tristan de l'inhalation.",
+                    "nextNode": "s5_good"
+                },
+                {
+                    "label": "Le retourner sur le dos pour mieux nettoyer",
+                    "tempsExecutionSec": 15,
+                    "feedback": "ERREUR MORTELLE : sur le dos, le vomi coule dans la trachée. On ne sort JAMAIS de la PLS.",
+                    "nextNode": "s_err_back"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5_good": {
+            "id": "s5_good",
+            "descriptionClinique": "Le SMUR arrive et prend en charge Tristan. Injection de vitamines et surveillance en réanimation pour coma éthylique. Votre PLS précoce a empêché l'inhalation de vomissements qui est la première cause de mortalité dans les comas éthyliques. Tristan se réveillera sans séquelle.",
+            "constantesCibles": {
+                "tension": "105/65",
+                "pouls": "72",
+                "saturationO2": "96",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "14"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_shake": {
+            "id": "s_err_shake",
+            "descriptionClinique": "Le secouement a provoqué un vomissement massif. Tristan a inhalé le vomi. Arrêt respiratoire puis cardiaque.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "35.5",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_coffee": {
+            "id": "s_err_coffee",
+            "descriptionClinique": "Le café a été inhalé. Pneumopathie d'inhalation. Arrêt respiratoire.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "35.5",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_sit": {
+            "id": "s_err_sit",
+            "descriptionClinique": "Assis contre le mur, la tête de Tristan tombe en avant. La langue obstrue le pharynx. Arrêt respiratoire en quelques minutes.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "35.5",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_abandon": {
+            "id": "s_err_abandon",
+            "descriptionClinique": "Son ami, lui aussi éméché, s'endort. Tristan vomit et s'étouffe sans que personne ne le voie. Décès par inhalation de vomissements.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "35",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_back": {
+            "id": "s_err_back",
+            "descriptionClinique": "Retourné sur le dos, le vomi a coulé directement dans la trachée. Étouffement immédiat.",
+            "constantesCibles": {
+                "tension": "0/0",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "35.5",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Coma éthylique avec inhalation de vomissements — inconscient qui respire",
-    "Arrêt cardiaque",
-    "Overdose médicamenteuse",
-    "Traumatisme crânien associé (chute)"
-  ],
-  "correctDiagnostic": "Coma éthylique avec inhalation de vomissements — inconscient qui respire",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "Mettre en PLS (inconscient qui respire)",
-    "Nettoyer la bouche et surveiller la respiration",
-    "Débuter un massage cardiaque",
-    "Le secouer pour le réveiller",
-    "Couvrir et alerter le 15"
-  ],
-  "correctTreatments": [
-    "Mettre en PLS (inconscient qui respire)",
-    "Nettoyer la bouche et surveiller la respiration",
-    "Couvrir et alerter le 15"
-  ],
-  "fatalTreatments": [
-    "Débuter un massage cardiaque"
-  ],
-  "correction": "# Correction : Coma Éthylique — Inconscient qui Respire\n\n## Diagnostic\nInconscience + respiration présente (lente = 10/min) + vomissements + contexte d'excès d'alcool = **inconscient qui respire** sous coma éthylique, avec risque majeur d'**inhalation de vomissements**.\n\n## Distinction AFGSU\n- **Inconscient QUI respire** → PLS + surveillance\n- **Inconscient qui NE respire PAS** → ACR → MCE + DAE\n\nIci : respiration à 10/min (lente mais présente) → PLS\n\n## Risques vitaux\n1. **Inhalation de vomissements** : cause majeure de décès par coma éthylique\n2. **Hypothermie** : peau froide, température 36°C, alcool = vasodilatation\n3. **Dépression respiratoire** : fréquence à 10/min (normale 12-20)\n\n## Conduite à tenir (AFGSU)\n1. Vérifier la respiration (regarder le thorax, écouter, sentir)\n2. Si respire → **PLS** (protège les voies aériennes des vomissements)\n3. Nettoyer la bouche des vomissements (doigt en crochet si besoin)\n4. Couvrir (lutte hypothermie)\n5. **Surveiller la respiration en permanence** (risque d'ACR)\n6. Alerte 15\n\n## Piège classique\nNe JAMAIS :\n- Donner du café pour « dégriser » → n'empêche pas le coma\n- Secouer la victime → risque de vomir et d'inhaler\n- Laisser sur le dos → risque d'étouffement par vomissements\n- Commencer le massage → le cœur bat encore !",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg09_respiration",
-      "type": "QCM",
-      "challenge": {
-        "question": "Tristan est inconscient mais respire à 10/min. Faut-il commencer un massage cardiaque ?",
-        "options": [
-          "Oui, car 10/min c'est trop peu",
-          "Non, c'est un inconscient qui respire → mettre en PLS",
-          "Oui, par précaution",
-          "Non, il faut juste le mettre en position assise"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "La respiration est présente (même lente). On ne fait JAMAIS de massage si le cœur bat. L'indication du MCE = absence totale de respiration. Ici → PLS.",
-      "target_fields": ["correctDiagnostic"]
-    },
-    {
-      "id": "lock_urg09_position",
-      "type": "QCM",
-      "challenge": {
-        "question": "Tristan est sur le ventre avec du vomi autour de la bouche. Que faites-vous ?",
-        "options": [
-          "Le laisser sur le ventre",
-          "Le retourner sur le dos pour mieux surveiller",
-          "Le mettre en PLS (sur le côté) et nettoyer la bouche",
-          "L'asseoir contre un mur"
-        ],
-        "correct_indices": [2]
-      },
-      "feedback_error": "PLS = sur le CÔTÉ. Sur le ventre, la langue peut obstruer et les vomissements sont inhalés. Sur le dos, les vomissements coulent dans la trachée. La PLS sur le côté permet un drainage des voies aériennes.",
-      "target_fields": ["correctTreatments"]
-    }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Il est 2h du matin. Devant un bar, un jeune homme, Tristan, 20 ans, est au sol. Un ami paniqué vous dit qu'il a « trop bu ». Tristan est sur le ventre, il respire lentement mais il y a du vomi partout autour de lui. L'odeur d'alcool est forte.",
-      "constantesCibles": {
-        "tension": "100/60",
-        "pouls": "70",
-        "saturationO2": "94",
-        "temperature": "36",
-        "frequenceRespiratoire": "10"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier la respiration : regarder le thorax, écouter à côté de la bouche",
-          "tempsExecutionSec": 10,
-          "feedback": "Thorax qui se soulève, respiration audible (lente). Il respire.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Le secouer vigoureusement pour le réveiller",
-          "tempsExecutionSec": 10,
-          "feedback": "ERREUR : le secouer peut provoquer un réflexe nauséeux et des vomissements supplémentaires. Risque d'inhalation.",
-          "nextNode": "s_err_shake"
-        },
-        {
-          "label": "Lui donner du café noir pour le dégriser",
-          "tempsExecutionSec": 20,
-          "feedback": "ERREUR : le café ne dégrise pas. En plus, il est inconscient → le café va dans les poumons.",
-          "nextNode": "s_err_coffee"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Tristan respire (10/min) mais il est inconscient. Du vomi est visible sur sa bouche et son menton. Son corps est froid (36°C).",
-      "constantesCibles": {
-        "tension": "100/60",
-        "pouls": "70",
-        "saturationO2": "94",
-        "temperature": "36",
-        "frequenceRespiratoire": "10"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Le mettre en PLS : le retourner sur le côté, nettoyer la bouche, surveiller la respiration",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous retournez Tristan sur le côté (PLS), essuyez les vomissements. Les voies aériennes sont protégées.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Le mettre en position assise contre le mur",
-          "tempsExecutionSec": 20,
-          "feedback": "ERREUR : en position assise, la tête tombe en avant et la langue/les vomissements obstruent. PLS obligatoire.",
-          "nextNode": "s_err_sit"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Tristan est en PLS sur le côté droit. Les voies aériennes sont dégagées. L'ami vous regarde, paniqué.",
-      "constantesCibles": {
-        "tension": "100/60",
-        "pouls": "70",
-        "saturationO2": "94",
-        "temperature": "36",
-        "frequenceRespiratoire": "10"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Le couvrir avec une veste, surveiller la respiration, appeler le 15",
-          "tempsExecutionSec": 30,
-          "feedback": "Jacket posé, le 15 est alerté. L'opérateur vous guide et envoie une équipe.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Le laisser et dire à son ami de s'occuper de lui",
-          "tempsExecutionSec": 10,
-          "feedback": "ERREUR : sans surveillance, il peut vomir et s'étouffer en quelques minutes. La responsabilité est engagée.",
-          "nextNode": "s_err_abandon"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Tristan vomit à nouveau en PLS. Le vomi coule hors de sa bouche (grâce à la position sur le côté).",
-      "constantesCibles": {
-        "tension": "100/60",
-        "pouls": "68",
-        "saturationO2": "93",
-        "temperature": "36",
-        "frequenceRespiratoire": "10"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Nettoyer la bouche, maintenir la PLS, vérifier que la respiration continue",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous nettoyez et vérifiez. La respiration est toujours là. La PLS a sauvé Tristan de l'inhalation.",
-          "nextNode": "s5_good"
-        },
-        {
-          "label": "Le retourner sur le dos pour mieux nettoyer",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR MORTELLE : sur le dos, le vomi coule dans la trachée. On ne sort JAMAIS de la PLS.",
-          "nextNode": "s_err_back"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5_good": {
-      "id": "s5_good",
-      "descriptionClinique": "Le SMUR arrive et prend en charge Tristan. Injection de vitamines et surveillance en réanimation pour coma éthylique. Votre PLS précoce a empêché l'inhalation de vomissements qui est la première cause de mortalité dans les comas éthyliques. Tristan se réveillera sans séquelle.",
-      "constantesCibles": {
-        "tension": "105/65",
-        "pouls": "72",
-        "saturationO2": "96",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "14"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_shake": {
-      "id": "s_err_shake",
-      "descriptionClinique": "Le secouement a provoqué un vomissement massif. Tristan a inhalé le vomi. Arrêt respiratoire puis cardiaque.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_coffee": {
-      "id": "s_err_coffee",
-      "descriptionClinique": "Le café a été inhalé. Pneumopathie d'inhalation. Arrêt respiratoire.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_sit": {
-      "id": "s_err_sit",
-      "descriptionClinique": "Assis contre le mur, la tête de Tristan tombe en avant. La langue obstrue le pharynx. Arrêt respiratoire en quelques minutes.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_abandon": {
-      "id": "s_err_abandon",
-      "descriptionClinique": "Son ami, lui aussi éméché, s'endort. Tristan vomit et s'étouffe sans que personne ne le voie. Décès par inhalation de vomissements.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "35",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_back": {
-      "id": "s_err_back",
-      "descriptionClinique": "Retourné sur le dos, le vomi a coulé directement dans la trachée. Étouffement immédiat.",
-      "constantesCibles": {
-        "tension": "0/0",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  }
 }

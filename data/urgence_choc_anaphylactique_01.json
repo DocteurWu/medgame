@@ -176,7 +176,8 @@
                 "pouls": 90,
                 "saturationO2": 99,
                 "frequenceRespiratoire": 16
-            }
+            },
+            "xpReward": 75
         },
         "etat_arret_cardiaque": {
             "id": "etat_arret_cardiaque",
@@ -188,7 +189,8 @@
                 "pouls": 0,
                 "saturationO2": 0,
                 "frequenceRespiratoire": 0
-            }
+            },
+            "xpReward": 0
         }
     }
 }
