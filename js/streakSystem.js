@@ -11,7 +11,7 @@
 const streakSystem = {
     currentStreak: 0,
     bestStreak: 0,
-    multiplier: 1.0,
+    multiplier: 1.0, // visual only - no XP bonus
     lastCaseId: null,
 
     // Jalons : { streak: { label, icon, color, xpBonus } }
@@ -115,21 +115,18 @@ const streakSystem = {
      * Calculer le multiplicateur basé sur la streak
      */
     updateMultiplier() {
-        if (this.currentStreak >= 20) this.multiplier = 3.0;
-        else if (this.currentStreak >= 15) this.multiplier = 2.5;
-        else if (this.currentStreak >= 10) this.multiplier = 2.0;
-        else if (this.currentStreak >= 7) this.multiplier = 1.75;
-        else if (this.currentStreak >= 5) this.multiplier = 1.5;
-        else if (this.currentStreak >= 3) this.multiplier = 1.25;
-        else this.multiplier = 1.0;
+        // No XP multiplier - visual streak only
+        // No XP multiplier - visual streak only
+        // No XP multiplier - visual streak only
+        // No XP multiplier - visual streak only
+        // No XP multiplier - visual streak only
+        // No XP multiplier - visual streak only
+        // No XP multiplier - visual streak only
     },
 
     /**
      * Appliquer le multiplicateur à l'XP
      */
-    applyMultiplier(xp) {
-        return Math.round(xp * this.multiplier);
-    },
 
     /**
      * Obtenir la couleur de la streak actuelle
