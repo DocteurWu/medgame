@@ -201,6 +201,28 @@
                         <input type="text" id="setting-username" class="setting-input" placeholder="Ton pseudo..."
                             style="padding: 10px 14px; font-size: 0.9rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05);">
                     </div>
+
+                    <!-- Séparateur -->
+                    <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05);"></div>
+
+                    <!-- Rang -->
+                    <div class="setting-input-group" style="margin: 0;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label class="setting-label"
+                                style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);"><i
+                                    class="fas fa-graduation-cap"></i> Année d'étude</label>
+                            <span id="rank-status"
+                                style="font-size: 0.65rem; color: rgba(255,255,255,0.4); background: rgba(0,0,0,0.2); padding: 3px 6px; border-radius: 6px; font-weight: 500;">Modifiable
+                                1x/an</span>
+                        </div>
+                        <select id="setting-rank" class="setting-input"
+                            style="padding: 10px 14px; font-size: 0.9rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); color: white; width: 100%; border-radius: 8px; cursor: pointer;">
+                            <option value="DFGSM2">DFGSM2</option>
+                            <option value="DFGSM3">DFGSM3</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -248,7 +270,7 @@
                 if (session) {
                     const { data, error } = await supabase
                         .from('profiles')
-                        .select('username, is_public, username_updated_at')
+                        .select('username, is_public, username_updated_at, rank, rank_updated_at')
                         .eq('id', session.user.id)
                         .single();
 
@@ -275,6 +297,27 @@
                             usernameInput.disabled = true;
                             usernameStatus.innerHTML = `<i class="fas fa-lock"></i> Bloqué (${diffDays}j)`;
                             usernameStatus.style.color = 'rgba(255, 255, 255, 0.3)';
+                        }
+
+                        // Gestion du rang (modifiable 1x/an = 365 jours)
+                        const rankSelect = document.getElementById('setting-rank');
+                        const rankStatus = document.getElementById('rank-status');
+                        rankSelect.value = data.rank || 'DFGSM3';
+                        rankSelect.disabled = true;
+
+                        const lastRankUpdate = data.rank_updated_at ? new Date(data.rank_updated_at) : null;
+                        const yearOffset = 365 * 24 * 60 * 60 * 1000;
+
+                        if (!lastRankUpdate || (now - lastRankUpdate) > yearOffset) {
+                            rankSelect.disabled = false;
+                            rankStatus.innerHTML = '<i class="fas fa-pen"></i> Changement dispo';
+                            rankStatus.style.color = 'rgba(255, 255, 255, 0.5)';
+                        } else {
+                            const nextRankUpdate = new Date(lastRankUpdate.getTime() + yearOffset);
+                            const diffMonths = Math.ceil((nextRankUpdate - now) / (30 * 24 * 60 * 60 * 1000));
+                            rankSelect.disabled = true;
+                            rankStatus.innerHTML = `<i class="fas fa-lock"></i> Bloqué (${diffMonths} mois)`;
+                            rankStatus.style.color = 'rgba(255, 255, 255, 0.3)';
                         }
                     } else if (error) {
                         console.error("Erreur chargement profil:", error);
@@ -328,6 +371,13 @@
 
                         updateData.username = newUsername;
                         updateData.username_updated_at = new Date().toISOString();
+                    }
+
+                    // N'ajouter le rang que s'il a changé et que le select n'est pas disabled
+                    const rankSelect = document.getElementById('setting-rank');
+                    if (!rankSelect.disabled) {
+                        updateData.rank = rankSelect.value;
+                        updateData.rank_updated_at = new Date().toISOString();
                     }
 
                     const { error } = await supabase

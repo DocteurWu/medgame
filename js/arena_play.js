@@ -191,18 +191,46 @@ async function processEventState() {
 
         case 'question_active':
             if (!currentQuestion || currentQuestion.id !== currentEvent.current_question_id) {
+                // Show loading while fetching
+                root.innerHTML = `
+                    <div style="padding: 40px 0;">
+                        <i class="fas fa-circle-notch fa-spin fa-2x" style="color:#00f2fe;"></i>
+                        <p style="color: rgba(255,255,255,0.6); margin-top: 15px;">Chargement de la question...</p>
+                    </div>`;
                 await fetchCurrentQuestion();
             }
-            renderQuestion();
-            startTimer(currentQuestion ? currentQuestion.time_limit || 45 : 45);
+            if (currentQuestion) {
+                renderQuestion();
+                startTimer(currentQuestion.time_limit || 45, 'question');
+            } else {
+                root.innerHTML = `
+                    <div style="padding: 40px 0;">
+                        <i class="fas fa-exclamation-triangle fa-2x" style="color:#ff4757;"></i>
+                        <p style="color: #ff4757; margin-top: 15px; font-weight:bold;">Erreur : impossible de charger la question.</p>
+                        <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">L'hôte va relancer la question...</p>
+                    </div>`;
+            }
             break;
 
         case 'showing_answer':
             stopTimer();
             if (!currentQuestion || currentQuestion.id !== currentEvent.current_question_id) {
+                root.innerHTML = `
+                    <div style="padding: 40px 0;">
+                        <i class="fas fa-circle-notch fa-spin fa-2x" style="color:#00f2fe;"></i>
+                        <p style="color: rgba(255,255,255,0.6); margin-top: 15px;">Chargement de la correction...</p>
+                    </div>`;
                 await fetchCurrentQuestion();
             }
-            renderCorrection();
+            if (currentQuestion) {
+                renderCorrection();
+            } else {
+                root.innerHTML = `
+                    <div style="padding: 40px 0;">
+                        <i class="fas fa-exclamation-triangle fa-2x" style="color:#ff4757;"></i>
+                        <p style="color: #ff4757; margin-top: 15px; font-weight:bold;">Erreur : impossible de charger la correction.</p>
+                    </div>`;
+            }
             break;
 
         case 'podium':
@@ -213,14 +241,24 @@ async function processEventState() {
     }
 }
 
-async function fetchCurrentQuestion() {
+async function fetchCurrentQuestion(retries = 3) {
     if (!currentEvent || !currentEvent.current_question_id) return;
-    const { data } = await supabase
-        .from('arena_questions')
-        .select('*')
-        .eq('id', currentEvent.current_question_id)
-        .single();
-    if (data) currentQuestion = data;
+    for (let attempt = 0; attempt < retries; attempt++) {
+        try {
+            const { data, error } = await supabase
+                .from('arena_questions')
+                .select('*')
+                .eq('id', currentEvent.current_question_id)
+                .maybeSingle();
+            if (error) throw error;
+            if (data) { currentQuestion = data; return; }
+        } catch (err) {
+            console.error(`[Arena] fetchCurrentQuestion attempt ${attempt + 1} failed:`, err);
+            if (attempt < retries - 1) await new Promise(r => setTimeout(r, 500));
+        }
+    }
+    // All retries failed
+    console.error("[Arena] Failed to fetch question after retries.");
 }
 
 function renderQuestion() {
