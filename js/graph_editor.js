@@ -48,6 +48,8 @@ const state = {
     availableCases: []
 };
 
+let currentSearchFilter = '';
+
 // --- DOM Elements ---
 const viewport = document.getElementById('viewport');
 const canvasWrapper = document.getElementById('canvas');
@@ -78,6 +80,7 @@ async function initEditor() {
     }
 
     setupTools();
+    setupSearch();
     setupViewportNavigation();
     setupModals();
 
@@ -137,56 +140,74 @@ async function fetchCases() {
     }
 }
 
-function renderLibrary() {
+function renderLibrary(filter = '') {
     libraryList.innerHTML = '';
 
-    // Show real cases from Supabase
-    if (state.availableCases.length > 0) {
-        state.availableCases.forEach(c => {
-            // Recover displayable text from nested JSON content if title is empty
+    const lowerFilter = filter.toLowerCase().trim();
+    const filtered = lowerFilter
+        ? state.availableCases.filter(c => {
+            const title = (c.title || c.content?.interrogatoire?.motifHospitalisation || '').toLowerCase();
+            return title.includes(lowerFilter);
+        })
+        : state.availableCases;
+
+    if (filtered.length > 0) {
+        filtered.forEach(c => {
             const caseTitle = c.title || c.content?.interrogatoire?.motifHospitalisation || 'Cas sans titre';
             const caseDesc = c.content?.interrogatoire?.motifHospitalisation || '';
+            const isAdded = state.nodes.some(n => n.caseId === c.id);
             const item = createLibraryItem({
                 title: caseTitle,
                 specialty: c.specialty,
                 id: c.id,
                 desc: caseDesc,
-                chapter: c.chapter || ''
+                chapter: c.chapter || '',
+                isAdded: isAdded
             });
             libraryList.appendChild(item);
         });
     } else {
-        libraryList.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-muted);"><i class="fas fa-inbox" style="font-size:1.5rem; margin-bottom: 8px; display:block;"></i>Aucun cas dans la DB.</div>';
+        const msg = lowerFilter ? 'Aucun résultat pour cette recherche.' : 'Aucun cas dans la DB.';
+        libraryList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-muted);"><i class="fas fa-inbox" style="font-size:1.5rem; margin-bottom: 8px; display:block;"></i>${msg}</div>`;
     }
 }
 
 function createLibraryItem(data) {
     const div = document.createElement('div');
-    div.className = 'library-item';
-    div.draggable = true;
+    div.className = 'library-item' + (data.isAdded ? ' library-item-added' : '');
+    div.draggable = !data.isAdded;
 
     div.innerHTML = `
-        <h4>${data.title}</h4>
+        <h4>${data.title}${data.isAdded ? ' <span class="added-badge"><i class="fas fa-check-circle"></i> Ajouté</span>' : ''}</h4>
         <span>${data.specialty || 'Général'}</span>
     `;
 
-    // Handle standard DnD
-    div.addEventListener('dragstart', (e) => {
-        const dragData = {
-            title: data.title,
-            desc: data.desc || '',
-            theme: data.specialty || state.theme,
-            caseId: data.id
-        };
-        e.dataTransfer.setData('application/json', JSON.stringify(dragData));
-    });
+    // Handle standard DnD (only if not already added)
+    if (!data.isAdded) {
+        div.addEventListener('dragstart', (e) => {
+            const dragData = {
+                title: data.title,
+                desc: data.desc || '',
+                theme: data.specialty || state.theme,
+                caseId: data.id
+            };
+            e.dataTransfer.setData('application/json', JSON.stringify(dragData));
+        });
+    }
 
-    // Handle click as fallback to spawn at center
+    // Handle click: select existing node or add at center
     div.addEventListener('click', () => {
-        const pt = screenToCanvas(window.innerWidth / 2 + state.transform.x, window.innerHeight / 2 + state.transform.y);
-        addNode(data.title, data.desc || '', data.specialty || state.theme, pt.x, pt.y, '', data.id);
-        renderAllNodes();
-        updateAllConnections();
+        const existingNode = state.nodes.find(n => n.caseId === data.id);
+        if (existingNode) {
+            selectNode(existingNode.id);
+            centerOnNode(existingNode.id);
+        } else {
+            const pt = screenToCanvas(viewport.clientWidth / 2, viewport.clientHeight / 2);
+            addNode(data.title, data.desc || '', data.specialty || state.theme, pt.x, pt.y, '', data.id);
+            renderAllNodes();
+            updateAllConnections();
+            renderLibrary(currentSearchFilter);
+        }
     });
 
     return div;
@@ -207,6 +228,7 @@ viewport.addEventListener('drop', (e) => {
         addNode(data.title, data.desc, data.theme, pt.x, pt.y, '', data.caseId);
         renderAllNodes();
         updateAllConnections();
+        renderLibrary(currentSearchFilter);
     } catch (err) {
         console.error("Drop error:", err);
     }
@@ -530,6 +552,7 @@ function deleteNode(id) {
 
     renderAllNodes();
     updateAllConnections();
+    renderLibrary(currentSearchFilter);
 }
 
 function addConnection(fromNodeId, fromSocket, toNodeId, toSocket) {
@@ -588,6 +611,15 @@ function setupTools() {
                 if (state.selectedConnectionId) deleteConnection(state.selectedConnectionId);
             }
         }
+    });
+}
+
+function setupSearch() {
+    const searchInput = document.getElementById('search-scenarios');
+    if (!searchInput) return;
+    searchInput.addEventListener('input', () => {
+        currentSearchFilter = searchInput.value;
+        renderLibrary(currentSearchFilter);
     });
 }
 
@@ -729,6 +761,14 @@ function clearSelection() {
     state.selectedConnectionId = null;
     renderAllNodes();
     updateAllConnections();
+}
+
+function centerOnNode(id) {
+    const n = state.nodes.find(n => n.id === id);
+    if (!n) return;
+    state.transform.x = viewport.clientWidth / 2 - n.x * state.transform.scale;
+    state.transform.y = viewport.clientHeight / 2 - n.y * state.transform.scale;
+    updateCanvasTransform();
 }
 
 function startNodeDrag(e, id) {

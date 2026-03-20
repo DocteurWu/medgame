@@ -99,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             .upsert({
                                 id: data.user.id,
                                 rank: selectedRank,
-                                username: email.split('@')[0] // Pseudo par défaut
+                                username: email.split('@')[0], // Pseudo par défaut
+                                rank_updated_at: new Date().toISOString()
                             });
                     }
 

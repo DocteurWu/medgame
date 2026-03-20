@@ -182,9 +182,9 @@ function renderWaitingDashboard(root) {
                 <div style="background: rgba(10, 15, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--glass-border); margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <div>
-                            <h3 style="margin-top:0; color:white; font-family: var(--font-title); font-size: 1.5rem; margin-bottom:5px;">${currentEvent.title}</h3>
+                            <h3 style="margin-top:0; color:white; font-family: var(--font-title); font-size: 1.5rem; margin-bottom:5px;">${currentEvent.title} <button onclick="editEventTitle()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></h3>
                             <button onclick="editEventDescription()" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:rgba(255,255,255,0.8); padding:4px 8px; border-radius:4px; font-size:0.8rem; cursor:pointer; margin-bottom:10px;"><i class="fas fa-edit"></i> Modifier le programme</button>
-                            <p style="color: var(--text-muted); margin: 0;"><i class="fas fa-clock"></i> Prévu le : ${dateObj.toLocaleString('fr-FR')}</p>
+                            <p style="color: var(--text-muted); margin: 0;"><i class="fas fa-clock"></i> Prévu le : ${dateObj.toLocaleString('fr-FR')} <button onclick="editEventDate()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></p>
                             <p style="color: #00f2fe; margin: 5px 0 0 0; font-weight:bold;"><i class="fas fa-users"></i> Joueurs en attente : <span id="arena-players-count">${playersCount}</span></p>
                             <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
                                 <label style="color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px;">
@@ -205,18 +205,26 @@ function renderWaitingDashboard(root) {
             : currentQuestions.map((q, i) => {
                 const ci = Array.isArray(q.correct_indices) ? q.correct_indices : JSON.parse(q.correct_indices || '[]');
                 return `
-                                <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary-color);">
-                                    <strong style="color:white;">Q${i + 1} : ${q.question}</strong>
-                                    ${q.image_url ? `<div style="margin-top:8px;"><img src="${q.image_url}" style="max-height:80px; border-radius:6px; border:1px solid rgba(255,255,255,0.1);"></div>` : ''}
-                                    <div style="display:flex; flex-wrap: wrap; gap:5px; margin-top: 8px; font-size: 0.85rem;">
-                                        ${(Array.isArray(q.options) ? q.options : JSON.parse(q.options)).map((opt, idx) => `
-                                            <span style="padding: 2px 8px; border-radius: 4px;
-                                                ${ci.includes(idx) ? 'color:#2ecc71; background:rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.4); font-weight:bold;' : 'color:var(--text-muted); background:rgba(255,255,255,0.05);'}">
-                                                <strong>${labels[idx]}.</strong> ${opt}
-                                            </span>
-                                        `).join('')}
+                                <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary-color); display: flex; gap: 10px; align-items: flex-start;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; padding-top: 2px;">
+                                        <button onclick="moveQuestion(${i}, -1)" ${i === 0 ? 'disabled' : ''} title="Monter" style="width:28px; height:28px; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:white; cursor:pointer; font-size:0.75rem;">▲</button>
+                                        <button onclick="moveQuestion(${i}, 1)" ${i === currentQuestions.length - 1 ? 'disabled' : ''} title="Descendre" style="width:28px; height:28px; border-radius:4px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.05); color:white; cursor:pointer; font-size:0.75rem;">▼</button>
+                                        <button onclick="deleteQuestion('${q.id}')" title="Supprimer" style="width:28px; height:28px; border-radius:4px; border:1px solid rgba(255,71,87,0.3); background:rgba(255,71,87,0.1); color:#ff4757; cursor:pointer; font-size:0.75rem;">✕</button>
                                     </div>
-                                    ${q.explanation ? `<p style="margin: 8px 0 0; font-size: 0.8rem; color: rgba(0,242,254,0.7); font-style: italic;">💡 ${q.explanation}</p>` : ''}
+                                    <div style="flex:1; min-width:0;">
+                                        <strong style="color:white;">Q${i + 1} : ${q.question}</strong>
+                                        ${q.sub_question ? `<div style="margin-top:6px; padding:6px 10px; border-left:3px solid #00f2fe; background:rgba(0,242,254,0.08); border-radius:4px; color:#00f2fe; font-size:0.9rem;">${q.sub_question}</div>` : ''}
+                                        ${q.image_url ? `<div style="margin-top:8px;"><img src="${q.image_url}" style="max-height:80px; border-radius:6px; border:1px solid rgba(255,255,255,0.1);"></div>` : ''}
+                                        <div style="display:flex; flex-wrap: wrap; gap:5px; margin-top: 8px; font-size: 0.85rem;">
+                                            ${(Array.isArray(q.options) ? q.options : JSON.parse(q.options)).map((opt, idx) => `
+                                                <span style="padding: 2px 8px; border-radius: 4px;
+                                                    ${ci.includes(idx) ? 'color:#2ecc71; background:rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.4); font-weight:bold;' : 'color:var(--text-muted); background:rgba(255,255,255,0.05);'}">
+                                                    <strong>${labels[idx]}.</strong> ${opt}
+                                                </span>
+                                            `).join('')}
+                                        </div>
+                                        ${q.explanation ? `<p style="margin: 8px 0 0; font-size: 0.8rem; color: rgba(0,242,254,0.7); font-style: italic;">💡 ${q.explanation}</p>` : ''}
+                                    </div>
                                 </div>`;
             }).join('')
         }
@@ -544,6 +552,44 @@ async function cancelArenaEvent() {
     if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
     else alert(error.message);
 }
+
+// ==========================================
+// QUESTION MANAGEMENT (REORDER / DELETE)
+// ==========================================
+
+async function moveQuestion(index, direction) {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= currentQuestions.length) return;
+
+    const qA = currentQuestions[index];
+    const qB = currentQuestions[targetIndex];
+
+    const tempOrder = qA.order_num;
+    await supabase.from('arena_questions').update({ order_num: qB.order_num }).eq('id', qA.id);
+    await supabase.from('arena_questions').update({ order_num: tempOrder }).eq('id', qB.id);
+
+    currentQuestions[index] = qB;
+    currentQuestions[targetIndex] = qA;
+
+    renderEventDashboard();
+}
+
+async function deleteQuestion(questionId) {
+    if (!confirm("Supprimer cette question ?")) return;
+
+    await supabase.from('arena_questions').delete().eq('id', questionId);
+    currentQuestions = currentQuestions.filter(q => q.id !== questionId);
+
+    for (let i = 0; i < currentQuestions.length; i++) {
+        if (currentQuestions[i].order_num !== i) {
+            await supabase.from('arena_questions').update({ order_num: i }).eq('id', currentQuestions[i].id);
+            currentQuestions[i].order_num = i;
+        }
+    }
+
+    renderEventDashboard();
+}
+
 // ==========================================
 // QCM BANK (SAVE / LOAD)
 // ==========================================
@@ -630,9 +676,20 @@ async function confirmLoadBank(bankId) {
     if (!bank) return alert("QCM non trouvé.");
 
     const questions = Array.isArray(bank.questions) ? bank.questions : JSON.parse(bank.questions);
-    if (!confirm(`Charger "${bank.name}" (${questions.length} questions) ? Cela ajoutera les questions à l'événement actuel.`)) return;
 
-    // Insert all questions into the current event
+    let mode = 'add';
+    if (currentQuestions.length > 0) {
+        const choice = prompt(`Charger "${bank.name}" (${questions.length} questions)\n\nTapez :\n1 = Ajouter aux questions existantes\n2 = Remplacer toutes les questions\n\nAnnuler pour annuler.`);
+        if (!choice) return;
+        if (choice === '2') mode = 'replace';
+        else if (choice !== '1') return;
+    }
+
+    if (mode === 'replace') {
+        await supabase.from('arena_questions').delete().eq('event_id', currentEvent.id);
+        currentQuestions = [];
+    }
+
     const inserts = questions.map((q, i) => ({
         event_id: currentEvent.id,
         order_num: currentQuestions.length + i,
@@ -762,6 +819,38 @@ window.editEventDescription = async function () {
             alert("Erreur: " + error.message);
         } else {
             currentEvent.description = newDesc;
+            renderEventDashboard();
+        }
+    }
+};
+
+window.editEventTitle = async function () {
+    if (!currentEvent) return;
+    const newTitle = prompt("Modifiez le titre de l'événement :", currentEvent.title || "");
+    if (newTitle !== null && newTitle.trim()) {
+        const { error } = await supabase.from('arena_events').update({ title: newTitle.trim() }).eq('id', currentEvent.id);
+        if (error) {
+            alert("Erreur: " + error.message);
+        } else {
+            currentEvent.title = newTitle.trim();
+            renderEventDashboard();
+        }
+    }
+};
+
+window.editEventDate = async function () {
+    if (!currentEvent) return;
+    const currentDate = new Date(currentEvent.scheduled_at);
+    const localISO = new Date(currentDate.getTime() - currentDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    const newDateStr = prompt("Modifiez la date et heure de l'événement (AAAA-MM-JJTHH:MM) :", localISO);
+    if (newDateStr !== null && newDateStr.trim()) {
+        const dateUtc = new Date(newDateStr.trim()).toISOString();
+        if (isNaN(new Date(dateUtc).getTime())) return alert("Format de date invalide.");
+        const { error } = await supabase.from('arena_events').update({ scheduled_at: dateUtc }).eq('id', currentEvent.id);
+        if (error) {
+            alert("Erreur: " + error.message);
+        } else {
+            currentEvent.scheduled_at = dateUtc;
             renderEventDashboard();
         }
     }

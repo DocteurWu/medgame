@@ -335,6 +335,30 @@ h3 {
     color: var(--text-muted);
 }
 
+.library-item-added {
+    background: rgba(0, 224, 255, 0.05);
+    border-color: rgba(0, 224, 255, 0.3);
+    cursor: pointer;
+}
+
+.library-item-added:hover {
+    background: rgba(0, 224, 255, 0.1);
+}
+
+.added-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    color: var(--primary-color);
+    background: rgba(0, 224, 255, 0.1);
+    border: 1px solid rgba(0, 224, 255, 0.25);
+    border-radius: 4px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
 /* 
    ==========================================================================
    Viewport / Canvas Area
