@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(initArenaAdmin, 1000);
 });
 
+let allEvents = [];
 let currentEvent = null;
 let currentQuestions = [];
 let playersCount = 0;
@@ -27,34 +28,97 @@ async function initArenaAdmin() {
         return;
     }
 
-    await loadCurrentEvent();
+    await loadAllEvents();
     subscribeToArenaEvents();
 }
 
-async function loadCurrentEvent() {
-    renderLoading();
+async function loadAllEvents() {
+    const root = document.getElementById('arena-admin-root');
 
-    const { data: events, error } = await supabase
-        .from('arena_events')
-        .select('*')
-        .neq('status', 'finished')
-        .order('created_at', { ascending: false })
-        .limit(1);
+    // Try loading with is_draft filter
+    let events, error;
+    try {
+        const result = await supabase
+            .from('arena_events')
+            .select('*')
+            .neq('status', 'finished')
+            .order('created_at', { ascending: false });
+        events = result.data;
+        error = result.error;
+    } catch (e) { error = e; }
+
+    // Fallback: load without filter if column doesn't exist
+    if (error && error.message?.includes('is_draft')) {
+        const result = await supabase
+            .from('arena_events')
+            .select('*')
+            .neq('status', 'finished')
+            .order('created_at', { ascending: false });
+        events = result.data;
+        error = result.error;
+    }
 
     if (error) {
-        document.getElementById('arena-admin-root').innerHTML = `<div class="empty-state">Erreur: ${error.message}</div>`;
+        root.innerHTML = `<div class="empty-state">Erreur: ${error.message}</div>`;
         return;
     }
 
-    if (events && events.length > 0) {
-        currentEvent = events[0];
-        await loadQuestions(currentEvent.id);
-        await updatePlayersCount(currentEvent.id);
-        renderEventDashboard();
+    allEvents = events || [];
+    renderEventsList();
+}
+
+function renderEventsList() {
+    const root = document.getElementById('arena-admin-root');
+
+    const statusBadge = (ev) => {
+        if (ev.is_draft) return '<span style="background:rgba(155,89,182,0.2); color:#9b59b6; border:1px solid #9b59b6; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold;">BROUILLON</span>';
+        if (ev.status === 'active' || ev.status === 'starting' || ev.status === 'question_active' || ev.status === 'showing_answer') return '<span style="background:rgba(46,204,113,0.2); color:#2ecc71; border:1px solid #2ecc71; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold;">ACTIF</span>';
+        return '<span style="background:rgba(255,165,2,0.2); color:#ffa502; border:1px solid #ffa502; padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold;">EN ATTENTE</span>';
+    };
+
+    const modeLabel = (ev) => (ev.event_mode === 'timed') ? '<span style="color:#9b59b6;"><i class="fas fa-clock"></i> Intervalle</span>' : '<span style="color:#2ecc71;"><i class="fas fa-broadcast-tower"></i> Direct</span>';
+
+    let html = `
+        <button onclick="renderCreateEventForm()" style="width: 100%; padding: 15px; border-radius: 10px; border: 2px dashed rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.6); cursor: pointer; font-weight: bold; font-size: 1rem; margin-bottom: 20px; transition: all 0.2s;">
+            <i class="fas fa-plus-circle" style="color: var(--admin-primary);"></i> Créer un nouvel événement
+        </button>
+    `;
+
+    if (allEvents.length === 0) {
+        html += '<div class="empty-state">Aucun événement en cours. Créez-en un !</div>';
     } else {
-        currentEvent = null;
-        renderCreateEventForm();
+        html += '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">';
+        for (const ev of allEvents) {
+            const dateObj = new Date(ev.scheduled_at);
+            const isTimed = ev.event_mode === 'timed';
+            html += `
+                <div onclick="selectEvent('${ev.id}')" style="background: rgba(10, 15, 40, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; padding: 18px; cursor: pointer; transition: all 0.2s; hover: border-color: var(--admin-primary);" onmouseover="this.style.borderColor='var(--admin-primary)'" onmouseout="this.style.borderColor='var(--glass-border)'">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        ${statusBadge(ev)}
+                        ${modeLabel(ev)}
+                    </div>
+                    <h3 style="margin: 0 0 8px 0; color: white; font-family: var(--font-title); font-size: 1.1rem;">${ev.title}</h3>
+                    <p style="color: var(--text-muted); margin: 0 0 5px; font-size: 0.85rem;">
+                        <i class="fas fa-calendar"></i> ${dateObj.toLocaleString('fr-FR')}
+                    </p>
+                    ${isTimed && ev.ends_at ? `<p style="color: #9b59b6; margin: 0 0 5px; font-size: 0.8rem;"><i class="fas fa-hourglass-end"></i> → ${new Date(ev.ends_at).toLocaleString('fr-FR')}</p>` : ''}
+                </div>
+            `;
+        }
+        html += '</div>';
     }
+
+    root.innerHTML = html;
+}
+
+async function selectEvent(eventId) {
+    const ev = allEvents.find(e => e.id === eventId);
+    if (!ev) return;
+
+    currentEvent = ev;
+    await loadQuestions(currentEvent.id);
+    await updatePlayersCount(currentEvent.id);
+    renderEventDashboard();
 }
 
 async function loadQuestions(eventId) {
@@ -82,9 +146,30 @@ function subscribeToArenaEvents() {
 
     realTimeChannel = supabase.channel('admin_arena_channel')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'arena_events' }, payload => {
-            if (currentEvent && payload.new && payload.new.id === currentEvent.id) {
-                currentEvent = payload.new;
+            if (payload.eventType === 'DELETE') {
+                allEvents = allEvents.filter(e => e.id !== payload.old.id);
+                if (currentEvent && currentEvent.id === payload.old.id) {
+                    currentEvent = null;
+                    renderEventsList();
+                } else if (!currentEvent) {
+                    renderEventsList();
+                }
+                return;
+            }
+
+            const updated = payload.new;
+            const idx = allEvents.findIndex(e => e.id === updated.id);
+            if (idx >= 0) {
+                allEvents[idx] = updated;
+            } else {
+                allEvents.unshift(updated);
+            }
+
+            if (currentEvent && updated.id === currentEvent.id) {
+                currentEvent = updated;
                 renderEventDashboard();
+            } else if (!currentEvent) {
+                renderEventsList();
             }
         })
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'arena_players' }, payload => {
@@ -95,7 +180,7 @@ function subscribeToArenaEvents() {
             }
         })
         .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'arena_answers' }, payload => {
-            updateAnswersStats(payload.new.answer_indices);
+            if (currentEvent) updateAnswersStats(payload.new.answer_indices);
         })
         .subscribe();
 }
@@ -112,6 +197,11 @@ function renderLoading() {
 function renderCreateEventForm() {
     const root = document.getElementById('arena-admin-root');
     root.innerHTML = `
+        <div style="margin-bottom: 15px;">
+            <button onclick="renderEventsList()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </button>
+        </div>
         <div style="background: rgba(10, 15, 40, 0.6); padding: 25px; border-radius: 12px; border: 1px solid var(--glass-border);">
             <h3 style="margin-top:0; color:white; font-family: var(--font-title);"><i class="fas fa-calendar-plus"></i> Planifier un nouvel Événement</h3>
             <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 15px;">
@@ -215,15 +305,19 @@ window.setEventMode = function (mode) {
 
 function renderEventDashboard() {
     const root = document.getElementById('arena-admin-root');
-    if (!currentEvent || currentEvent.status === 'finished') {
-        currentEvent = null;
-        renderCreateEventForm();
+    if (!currentEvent) {
+        renderEventsList();
         return;
     }
-    if (currentEvent.status === 'waiting') {
+    if (currentEvent.status === 'finished') {
+        currentEvent = null;
+        renderEventsList();
+        return;
+    }
+    // Waiting, draft, timed-active, and published all use the same editable dashboard
+    if (currentEvent.status === 'waiting' || currentEvent.is_draft ||
+        (currentEvent.status === 'active' && currentEvent.event_mode === 'timed')) {
         renderWaitingDashboard(root);
-    } else if (currentEvent.status === 'active' && currentEvent.event_mode === 'timed') {
-        renderTimedActiveDashboard(root);
     } else {
         renderLiveDashboard(root);
     }
@@ -234,9 +328,16 @@ function renderWaitingDashboard(root) {
     const labels = ['A', 'B', 'C', 'D', 'E'];
     const colors = ['#ff4757', '#1e90ff', '#ffa502', '#2ed573', '#a29bfe'];
     const isTimed = currentEvent.event_mode === 'timed';
-    const modeBadge = isTimed
-        ? `<span class="badge" style="background: rgba(155,89,182,0.2); color: #9b59b6; border: 1px solid #9b59b6; white-space: nowrap;"><i class="fas fa-clock"></i> INTERVALL</span>`
-        : `<span class="badge" style="background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; white-space: nowrap;">EN ATTENTE</span>`;
+    const isDraft = currentEvent.is_draft;
+    const isActive = currentEvent.status === 'active';
+
+    const modeBadge = isActive
+        ? `<span class="badge" style="background: rgba(46,204,113,0.2); color: #2ecc71; border: 1px solid #2ecc71; white-space: nowrap;"><i class="fas fa-play"></i> ACTIF</span>`
+        : isDraft
+            ? `<span class="badge" style="background: rgba(155,89,182,0.2); color: #9b59b6; border: 1px solid #9b59b6; white-space: nowrap;"><i class="fas fa-pen"></i> BROUILLON</span>`
+            : isTimed
+                ? `<span class="badge" style="background: rgba(155,89,182,0.2); color: #9b59b6; border: 1px solid #9b59b6; white-space: nowrap;"><i class="fas fa-clock"></i> INTERVALLE</span>`
+                : `<span class="badge" style="background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; white-space: nowrap;">EN ATTENTE</span>`;
 
     let dateInfo = `<p style="color: var(--text-muted); margin: 0;"><i class="fas fa-clock"></i> ${isTimed ? 'Début' : 'Prévu le'} : ${dateObj.toLocaleString('fr-FR')} <button onclick="editEventDate()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></p>`;
 
@@ -315,19 +416,34 @@ function renderWaitingDashboard(root) {
             <!-- Colonne droite -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <div style="background: rgba(10, 15, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--glass-border);">
-                    <h4 style="margin-top:0; color:white; font-family: var(--font-title);">Contrôle</h4>
-                    ${isTimed ? `
-                    <button class="primary-btn" onclick="startArenaEvent()" style="width: 100%; background: #9b59b6; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);">
-                        <i class="fas fa-clock"></i> Activer l'événement (intervalle)
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <button onclick="renderEventsList()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+                            <i class="fas fa-arrow-left"></i> Retour
+                        </button>
+                        <h4 style="margin:0; color:white; font-family: var(--font-title);">Contrôle</h4>
+                    </div>
+                    ${isDraft ? `
+                    <button class="primary-btn" onclick="publishEvent()" style="width: 100%; background: #9b59b6; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);">
+                        <i class="fas fa-paper-plane"></i> Publier l'événement
                     </button>
-                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">Le QCM sera jouable entre les dates définies.</p>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">Rend l'événement visible et prêt à être lancé.</p>
+                    ` : isActive ? `
+                    <button class="primary-btn" onclick="finishEvent()" style="width: 100%; background: #ffa502; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem;">
+                        <i class="fas fa-flag-checkered"></i> Terminer l'événement
+                    </button>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">L'événement est en cours. Vous pouvez toujours modifier les questions.</p>
+                    ` : isTimed ? `
+                    <button class="primary-btn" onclick="startArenaEvent()" style="width: 100%; background: #9b59b6; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);">
+                        <i class="fas fa-clock"></i> Activer l'événement TOUT DE SUITE
+                    </button>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">Le QCM est jouable entre les dates définies.</p>
                     ` : `
                     <button class="primary-btn" onclick="startArenaEvent()" style="width: 100%; background: #2ecc71; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);">
                         <i class="fas fa-play"></i> Lancer l'événement
                     </button>
                     `}
                     <button onclick="cancelArenaEvent()" style="width: 100%; margin-top: 10px; background: rgba(255,71,87,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,71,87,0.3); color:#ff4757; cursor:pointer; font-weight:bold;">
-                        Annuler l'événement
+                        ${isDraft ? 'Supprimer le brouillon' : isActive ? 'Forcer l\'arrêt' : 'Annuler l\'événement'}
                     </button>
                 </div>
 
@@ -390,6 +506,11 @@ function renderTimedActiveDashboard(root) {
     const isWithinWindow = (!endsObj || now < endsObj.getTime());
 
     root.innerHTML = `
+        <div style="margin-bottom: 15px;">
+            <button onclick="renderEventsList()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </button>
+        </div>
         <div style="background: rgba(10, 15, 40, 0.8); padding: 30px; border-radius: 12px; border: 2px solid #9b59b6; text-align: center; margin-bottom: 20px;">
             <div style="display: inline-block; padding: 5px 15px; border-radius: 20px; background: rgba(155,89,182,0.15); margin-bottom: 15px; font-weight:bold; font-size: 0.9rem; color: #9b59b6;">
                 <i class="fas fa-clock"></i> MODE INTERVALLE ACTIF &nbsp;|&nbsp; <i class="fas fa-users"></i> <span id="arena-players-count">${playersCount}</span> joueurs
@@ -425,6 +546,11 @@ function renderLiveDashboard(root) {
     let statusColor = currentEvent.status === 'question_active' ? '#2ecc71' : 'var(--admin-primary)';
 
     let html = `
+        <div style="margin-bottom: 15px;">
+            <button onclick="renderEventsList()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </button>
+        </div>
         <div style="background: rgba(10, 15, 40, 0.8); padding: 30px; border-radius: 12px; border: 2px solid ${statusColor}; text-align: center; margin-bottom: 20px;">
             <div style="display: inline-block; padding: 5px 15px; border-radius: 20px; background: rgba(255,255,255,0.1); margin-bottom: 15px; font-weight:bold; font-size: 0.9rem; color: #00f2fe;">
                 EN DIRECT &nbsp;|&nbsp; <i class="fas fa-users"></i> <span id="arena-players-count">${playersCount}</span> joueurs
@@ -518,8 +644,7 @@ async function arenaCreateEvent() {
         scheduled_at: dateUtc,
         status: 'waiting',
         admin_id: session.user.id,
-        show_countdown: showCountdown,
-        event_mode: eventMode
+        show_countdown: showCountdown
     };
 
     if (eventMode === 'timed') {
@@ -530,14 +655,31 @@ async function arenaCreateEvent() {
         eventData.ends_at = endsAtUtc;
     }
 
-    const { data, error } = await supabase
-        .from('arena_events')
-        .insert([eventData])
-        .select('*');
+    // Try insert with new columns (event_mode, is_draft)
+    let data, error;
+    try {
+        const fullData = { ...eventData, event_mode: eventMode, is_draft: true };
+        const result = await supabase
+            .from('arena_events')
+            .insert([fullData])
+            .select('*');
+        data = result.data;
+        error = result.error;
+    } catch (e) { error = e; }
+
+    // Fallback: insert without new columns if they don't exist yet
+    if (error && (error.message?.includes('event_mode') || error.message?.includes('is_draft'))) {
+        const result = await supabase
+            .from('arena_events')
+            .insert([eventData])
+            .select('*');
+        data = result.data;
+        error = result.error;
+    }
 
     if (error) { alert("Erreur : " + error.message); return; }
     currentEvent = data[0];
-    subscribeToArenaEvents();
+    allEvents.unshift(currentEvent);
     renderEventDashboard();
 }
 
@@ -618,14 +760,18 @@ async function startArenaEvent() {
     if (!currentEvent) return;
     if (currentQuestions.length === 0) return alert('Ajoutez au moins une question !');
 
+    // Auto-publish if still draft
+    if (currentEvent.is_draft) {
+        await supabase.from('arena_events').update({ is_draft: false }).eq('id', currentEvent.id);
+        currentEvent.is_draft = false;
+    }
+
     const isTimed = currentEvent.event_mode === 'timed';
 
     if (isTimed) {
-        // Timed mode: set status to 'active' directly, client handles auto-play
         const { error } = await supabase.from('arena_events').update({ status: 'active' }).eq('id', currentEvent.id);
         if (error) alert(error.message);
     } else {
-        // Live mode: current behavior
         const { error } = await supabase.from('arena_events').update({ status: 'starting' }).eq('id', currentEvent.id);
         if (!error && currentQuestions.length > 0) {
             setTimeout(() => pushQuestion(currentQuestions[0].id), 3000);
@@ -672,6 +818,14 @@ async function finishEvent() {
     clearAdminTimer();
     const { error } = await supabase.from('arena_events').update({ status: 'finished' }).eq('id', currentEvent.id);
     if (error) alert(error.message);
+}
+
+async function publishEvent() {
+    if (!currentEvent || !currentEvent.is_draft) return;
+    const { error } = await supabase.from('arena_events').update({ is_draft: false }).eq('id', currentEvent.id);
+    if (error) return alert("Erreur: " + error.message);
+    currentEvent.is_draft = false;
+    renderEventDashboard();
 }
 
 async function cancelArenaEvent() {

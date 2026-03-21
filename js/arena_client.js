@@ -24,6 +24,7 @@ async function fetchActiveEvent() {
         .from('arena_events')
         .select('*')
         .neq('status', 'finished')
+        .neq('is_draft', true)
         .order('created_at', { ascending: false })
         .limit(1);
 
@@ -180,9 +181,9 @@ function subscribeToArenaEvents() {
 
     arenaChannel = supabase.channel('client_arena_channel')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'arena_events' }, payload => {
-            // New event created or updated
             if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
-                if (payload.new.status === 'finished') {
+                // Ignore draft events and finished events
+                if (payload.new.status === 'finished' || payload.new.is_draft) {
                     if (activeArenaEvent && activeArenaEvent.id === payload.new.id) {
                         activeArenaEvent = null;
                     }
