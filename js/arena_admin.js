@@ -126,16 +126,33 @@ function renderCreateEventForm() {
                 <div>
                     <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 5px;">Récompenses (XP gagnée par les gagnants en fin de partie)</label>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <input type="number" id="xp-top1" placeholder="1er" title="XP pour 1er" value="1000" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid #ffcc00; background: rgba(255, 204, 0, 0.1); color: white;">
-                        <input type="number" id="xp-top2" placeholder="2ème" title="XP pour 2ème" value="500" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid #e0e0e0; background: rgba(224, 224, 224, 0.1); color: white;">
-                        <input type="number" id="xp-top3" placeholder="3ème" title="XP pour 3ème" value="250" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid #cd7f32; background: rgba(205, 127, 50, 0.1); color: white;">
-                        <input type="number" id="xp-top4" placeholder="4ème" title="XP pour 4ème" value="100" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white;">
+                        <input type="number" id="xp-top1" placeholder="1er" title="XP pour 1er" value="300" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid #ffcc00; background: rgba(255, 204, 0, 0.1); color: white;">
+                        <input type="number" id="xp-top2" placeholder="2ème" title="XP pour 2ème" value="200" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid #e0e0e0; background: rgba(224, 224, 224, 0.1); color: white;">
+                        <input type="number" id="xp-top3" placeholder="3ème" title="XP pour 3ème" value="100" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid #cd7f32; background: rgba(205, 127, 50, 0.1); color: white;">
+                        <input type="number" id="xp-top4" placeholder="4ème" title="XP pour 4ème" value="50" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white;">
                         <input type="number" id="xp-top5" placeholder="5ème" title="XP pour 5ème" value="50" style="width: 80px; padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: white;">
                     </div>
                 </div>
                 <div>
-                    <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 5px;">Date et Heure du lancement (Heure locale)</label>
+                    <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 5px;">Mode de l'événement</label>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" id="mode-live-btn" onclick="setEventMode('live')" style="flex:1; padding: 12px; border-radius: 8px; border: 2px solid #2ecc71; background: rgba(46,204,113,0.15); color: #2ecc71; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.2s;">
+                            <i class="fas fa-broadcast-tower"></i> En direct
+                        </button>
+                        <button type="button" id="mode-timed-btn" onclick="setEventMode('timed')" style="flex:1; padding: 12px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.5); cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.2s;">
+                            <i class="fas fa-clock"></i> Intervalle de temps
+                        </button>
+                    </div>
+                    <p id="mode-desc" style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 6px 0 0;">L'admin contrôle le déroulement en temps réel.</p>
+                </div>
+                <div>
+                    <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 5px;" id="date-label">Date et Heure du lancement (Heure locale)</label>
                     <input type="datetime-local" id="arena-new-date" style="max-width: 400px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: white;">
+                </div>
+                <div id="ends-at-container" style="display: none;">
+                    <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 5px;"><i class="fas fa-hourglass-end"></i> Date et Heure de fin de l'intervalle</label>
+                    <input type="datetime-local" id="arena-new-ends-at" style="max-width: 400px; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(155, 89, 182, 0.4); background: rgba(155, 89, 182, 0.1); color: white;">
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 6px 0 0;">Le QCM sera jouable uniquement entre les deux dates ci-dessus.</p>
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px; margin-top: 5px;">
                     <label style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px;">
@@ -155,6 +172,45 @@ function renderCreateEventForm() {
     const now = new Date(Date.now() + 3600000);
     const localISO = new Date(now - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     document.getElementById('arena-new-date').value = localISO;
+
+    // Default ends_at = start + 3 hours
+    const endDate = new Date(Date.now() + 3600000 + 3 * 3600000);
+    const endsISO = new Date(endDate - endDate.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    document.getElementById('arena-new-ends-at').value = endsISO;
+}
+
+window.setEventMode = function (mode) {
+    const liveBtn = document.getElementById('mode-live-btn');
+    const timedBtn = document.getElementById('mode-timed-btn');
+    const endsContainer = document.getElementById('ends-at-container');
+    const descEl = document.getElementById('mode-desc');
+    const dateLabel = document.getElementById('date-label');
+
+    if (mode === 'live') {
+        liveBtn.style.cssText = liveBtn.style.cssText.replace(/border-color:[^;]+;/, '').replace(/background:[^;]+;/, '').replace(/color:[^;]+;/, '');
+        liveBtn.style.borderColor = '#2ecc71';
+        liveBtn.style.background = 'rgba(46,204,113,0.15)';
+        liveBtn.style.color = '#2ecc71';
+        timedBtn.style.borderColor = 'rgba(255,255,255,0.15)';
+        timedBtn.style.background = 'transparent';
+        timedBtn.style.color = 'rgba(255,255,255,0.5)';
+        endsContainer.style.display = 'none';
+        descEl.textContent = "L'admin contrôle le déroulement en temps réel.";
+        dateLabel.textContent = "Date et Heure du lancement (Heure locale)";
+    } else {
+        timedBtn.style.borderColor = '#9b59b6';
+        timedBtn.style.background = 'rgba(155,89,182,0.15)';
+        timedBtn.style.color = '#9b59b6';
+        liveBtn.style.borderColor = 'rgba(255,255,255,0.15)';
+        liveBtn.style.background = 'transparent';
+        liveBtn.style.color = 'rgba(255,255,255,0.5)';
+        endsContainer.style.display = 'block';
+        descEl.textContent = "Le QCM se joue automatiquement dans la fenêtre horaire définie.";
+        dateLabel.textContent = "Date et Heure de début de l'intervalle";
+    }
+
+    // Store mode on a data attribute for use in arenaCreateEvent
+    document.getElementById('arena-new-date').dataset.eventMode = mode;
 }
 
 function renderEventDashboard() {
@@ -166,6 +222,8 @@ function renderEventDashboard() {
     }
     if (currentEvent.status === 'waiting') {
         renderWaitingDashboard(root);
+    } else if (currentEvent.status === 'active' && currentEvent.event_mode === 'timed') {
+        renderTimedActiveDashboard(root);
     } else {
         renderLiveDashboard(root);
     }
@@ -175,6 +233,17 @@ function renderWaitingDashboard(root) {
     const dateObj = new Date(currentEvent.scheduled_at);
     const labels = ['A', 'B', 'C', 'D', 'E'];
     const colors = ['#ff4757', '#1e90ff', '#ffa502', '#2ed573', '#a29bfe'];
+    const isTimed = currentEvent.event_mode === 'timed';
+    const modeBadge = isTimed
+        ? `<span class="badge" style="background: rgba(155,89,182,0.2); color: #9b59b6; border: 1px solid #9b59b6; white-space: nowrap;"><i class="fas fa-clock"></i> INTERVALL</span>`
+        : `<span class="badge" style="background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; white-space: nowrap;">EN ATTENTE</span>`;
+
+    let dateInfo = `<p style="color: var(--text-muted); margin: 0;"><i class="fas fa-clock"></i> ${isTimed ? 'Début' : 'Prévu le'} : ${dateObj.toLocaleString('fr-FR')} <button onclick="editEventDate()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></p>`;
+
+    if (isTimed && currentEvent.ends_at) {
+        const endsObj = new Date(currentEvent.ends_at);
+        dateInfo += `<p style="color: #9b59b6; margin: 5px 0 0 0;"><i class="fas fa-hourglass-end"></i> Fin : ${endsObj.toLocaleString('fr-FR')} <button onclick="editEventEndDate()" style="background:transparent; border:1px solid rgba(155,89,182,0.3); color:rgba(155,89,182,0.8); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></p>`;
+    }
 
     root.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start;">
@@ -184,16 +253,19 @@ function renderWaitingDashboard(root) {
                         <div>
                             <h3 style="margin-top:0; color:white; font-family: var(--font-title); font-size: 1.5rem; margin-bottom:5px;">${currentEvent.title} <button onclick="editEventTitle()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></h3>
                             <button onclick="editEventDescription()" style="background:transparent; border:1px solid rgba(255,255,255,0.3); color:rgba(255,255,255,0.8); padding:4px 8px; border-radius:4px; font-size:0.8rem; cursor:pointer; margin-bottom:10px;"><i class="fas fa-edit"></i> Modifier le programme</button>
-                            <p style="color: var(--text-muted); margin: 0;"><i class="fas fa-clock"></i> Prévu le : ${dateObj.toLocaleString('fr-FR')} <button onclick="editEventDate()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer; vertical-align:middle;"><i class="fas fa-edit"></i></button></p>
+                            ${dateInfo}
                             <p style="color: #00f2fe; margin: 5px 0 0 0; font-weight:bold;"><i class="fas fa-users"></i> Joueurs en attente : <span id="arena-players-count">${playersCount}</span></p>
-                            <div style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                            <div style="margin-top: 10px; display: flex; align-items: center; gap: 12px;">
                                 <label style="color: var(--text-muted); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                                     <input type="checkbox" id="toggle-countdown" ${currentEvent.show_countdown !== false ? 'checked' : ''} onchange="toggleCountdownVisibility(this.checked)" style="width: 16px; height: 16px; accent-color: var(--admin-primary); cursor: pointer;">
                                     <i class="fas fa-eye"></i> Décompte visible pour les joueurs
                                 </label>
+                                <button onclick="toggleEventMode()" style="background:transparent; border:1px solid ${isTimed ? 'rgba(155,89,182,0.4)' : 'rgba(255,165,2,0.4)'}; color:${isTimed ? '#9b59b6' : '#ffa502'}; padding:3px 10px; border-radius:4px; font-size:0.75rem; cursor:pointer;">
+                                    <i class="fas fa-exchange-alt"></i> Basculer en ${isTimed ? 'direct' : 'intervalle'}
+                                </button>
                             </div>
                         </div>
-                        <span class="badge" style="background: rgba(255, 165, 2, 0.2); color: #ffa502; border: 1px solid #ffa502; white-space: nowrap;">EN ATTENTE</span>
+                        ${modeBadge}
                     </div>
                 </div>
 
@@ -244,9 +316,16 @@ function renderWaitingDashboard(root) {
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 <div style="background: rgba(10, 15, 40, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--glass-border);">
                     <h4 style="margin-top:0; color:white; font-family: var(--font-title);">Contrôle</h4>
+                    ${isTimed ? `
+                    <button class="primary-btn" onclick="startArenaEvent()" style="width: 100%; background: #9b59b6; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);">
+                        <i class="fas fa-clock"></i> Activer l'événement (intervalle)
+                    </button>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">Le QCM sera jouable entre les dates définies.</p>
+                    ` : `
                     <button class="primary-btn" onclick="startArenaEvent()" style="width: 100%; background: #2ecc71; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);">
                         <i class="fas fa-play"></i> Lancer l'événement
                     </button>
+                    `}
                     <button onclick="cancelArenaEvent()" style="width: 100%; margin-top: 10px; background: rgba(255,71,87,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,71,87,0.3); color:#ff4757; cursor:pointer; font-weight:bold;">
                         Annuler l'événement
                     </button>
@@ -299,6 +378,36 @@ function renderWaitingDashboard(root) {
                         Ajouter la question
                     </button>
                 </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderTimedActiveDashboard(root) {
+    const dateObj = new Date(currentEvent.scheduled_at);
+    const endsObj = currentEvent.ends_at ? new Date(currentEvent.ends_at) : null;
+    const now = Date.now();
+    const isWithinWindow = (!endsObj || now < endsObj.getTime());
+
+    root.innerHTML = `
+        <div style="background: rgba(10, 15, 40, 0.8); padding: 30px; border-radius: 12px; border: 2px solid #9b59b6; text-align: center; margin-bottom: 20px;">
+            <div style="display: inline-block; padding: 5px 15px; border-radius: 20px; background: rgba(155,89,182,0.15); margin-bottom: 15px; font-weight:bold; font-size: 0.9rem; color: #9b59b6;">
+                <i class="fas fa-clock"></i> MODE INTERVALLE ACTIF &nbsp;|&nbsp; <i class="fas fa-users"></i> <span id="arena-players-count">${playersCount}</span> joueurs
+            </div>
+            <h2 style="font-family: var(--font-title); font-size: 1.6rem; color: white; margin: 0 0 10px 0;">${currentEvent.title}</h2>
+            <p style="color: var(--text-muted); margin: 0 0 5px;">
+                <i class="fas fa-play-circle"></i> Début : ${dateObj.toLocaleString('fr-FR')}
+            </p>
+            ${endsObj ? `<p style="color: #9b59b6; margin: 0 0 20px;">
+                <i class="fas fa-hourglass-end"></i> Fin : ${endsObj.toLocaleString('fr-FR')}
+                ${isWithinWindow ? '<span style="color:#2ecc71; font-weight:bold; margin-left:10px;">(en cours)</span>' : '<span style="color:#ff4757; font-weight:bold; margin-left:10px;">(terminé)</span>'}
+            </p>` : ''}
+            <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">Le QCM se joue automatiquement. Les joueurs arrivent et jouent à leur rythme.</p>
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem;">${currentQuestions.length} questions chargées</p>
+            <div style="margin-top: 20px;">
+                <button onclick="finishEvent()" style="background: #ffa502; padding: 15px 30px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1rem;">
+                    <i class="fas fa-flag-checkered"></i> Terminer l'événement maintenant
+                </button>
             </div>
         </div>
     `;
@@ -366,7 +475,7 @@ function renderLiveDashboard(root) {
     html += `
             </div>
             <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px;">
-                <button onclick="cancelArenaEvent()" style="background:transparent; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); padding:7px 14px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Forcer l'arrêt</button>
+                <button onclick="cancelArenaEvent()" style="background:transparent; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.4); padding:7px 14px; border-radius:6px; cursor:pointer; font-size:0.8rem;">Terminer l'événement</button>
             </div>
         </div>
     `;
@@ -387,10 +496,10 @@ async function arenaCreateEvent() {
     const dateLocal = document.getElementById('arena-new-date').value;
 
     const xpRewards = [
-        parseInt(document.getElementById('xp-top1').value) || 1000,
-        parseInt(document.getElementById('xp-top2').value) || 500,
-        parseInt(document.getElementById('xp-top3').value) || 250,
-        parseInt(document.getElementById('xp-top4').value) || 100,
+        parseInt(document.getElementById('xp-top1').value) || 300,
+        parseInt(document.getElementById('xp-top2').value) || 200,
+        parseInt(document.getElementById('xp-top3').value) || 100,
+        parseInt(document.getElementById('xp-top4').value) || 50,
         parseInt(document.getElementById('xp-top5').value) || 50
     ];
 
@@ -400,18 +509,30 @@ async function arenaCreateEvent() {
     const { data: { session } } = await supabase.auth.getSession();
 
     const showCountdown = document.getElementById('arena-show-countdown')?.checked !== false;
+    const eventMode = document.getElementById('arena-new-date').dataset.eventMode || 'live';
+
+    const eventData = {
+        title,
+        description: desc || null,
+        xp_rewards: xpRewards,
+        scheduled_at: dateUtc,
+        status: 'waiting',
+        admin_id: session.user.id,
+        show_countdown: showCountdown,
+        event_mode: eventMode
+    };
+
+    if (eventMode === 'timed') {
+        const endsAtLocal = document.getElementById('arena-new-ends-at').value;
+        if (!endsAtLocal) return alert('Veuillez définir la date/heure de fin de l\'intervalle.');
+        const endsAtUtc = new Date(endsAtLocal).toISOString();
+        if (new Date(endsAtUtc) <= new Date(dateUtc)) return alert('La date de fin doit être après la date de début.');
+        eventData.ends_at = endsAtUtc;
+    }
 
     const { data, error } = await supabase
         .from('arena_events')
-        .insert([{
-            title,
-            description: desc || null,
-            xp_rewards: xpRewards,
-            scheduled_at: dateUtc,
-            status: 'waiting',
-            admin_id: session.user.id,
-            show_countdown: showCountdown
-        }])
+        .insert([eventData])
         .select('*');
 
     if (error) { alert("Erreur : " + error.message); return; }
@@ -496,12 +617,21 @@ async function addQuestion() {
 async function startArenaEvent() {
     if (!currentEvent) return;
     if (currentQuestions.length === 0) return alert('Ajoutez au moins une question !');
-    const { error } = await supabase.from('arena_events').update({ status: 'starting' }).eq('id', currentEvent.id);
-    if (!error && currentQuestions.length > 0) {
-        // Auto start first question after 3 seconds of "starting"
-        setTimeout(() => pushQuestion(currentQuestions[0].id), 3000);
-    } else if (error) {
-        alert(error.message);
+
+    const isTimed = currentEvent.event_mode === 'timed';
+
+    if (isTimed) {
+        // Timed mode: set status to 'active' directly, client handles auto-play
+        const { error } = await supabase.from('arena_events').update({ status: 'active' }).eq('id', currentEvent.id);
+        if (error) alert(error.message);
+    } else {
+        // Live mode: current behavior
+        const { error } = await supabase.from('arena_events').update({ status: 'starting' }).eq('id', currentEvent.id);
+        if (!error && currentQuestions.length > 0) {
+            setTimeout(() => pushQuestion(currentQuestions[0].id), 3000);
+        } else if (error) {
+            alert(error.message);
+        }
     }
 }
 
@@ -545,12 +675,25 @@ async function finishEvent() {
 }
 
 async function cancelArenaEvent() {
-    if (!currentEvent || !confirm("Annuler et supprimer cet événement ?")) return;
+    if (!currentEvent) return;
+    const isWaiting = currentEvent.status === 'waiting';
+    const msg = isWaiting
+        ? "Supprimer cet événement en attente ? (les questions seront perdues)"
+        : "Terminer cet événement maintenant ? (les résultats seront conservés)";
+    if (!confirm(msg)) return;
     clearAdminTimer();
-    const { error } = await supabase.from('arena_events').delete().eq('id', currentEvent.id);
 
-    if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
-    else alert(error.message);
+    if (isWaiting) {
+        // Delete entirely if still in waiting
+        const { error } = await supabase.from('arena_events').delete().eq('id', currentEvent.id);
+        if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
+        else alert(error.message);
+    } else {
+        // Just finish if active
+        const { error } = await supabase.from('arena_events').update({ status: 'finished' }).eq('id', currentEvent.id);
+        if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
+        else alert(error.message);
+    }
 }
 
 // ==========================================
@@ -863,5 +1006,46 @@ window.toggleCountdownVisibility = async function (show) {
         alert("Erreur: " + error.message);
     } else {
         currentEvent.show_countdown = show;
+    }
+};
+
+window.toggleEventMode = async function () {
+    if (!currentEvent) return;
+    const newMode = currentEvent.event_mode === 'timed' ? 'live' : 'timed';
+    const updates = { event_mode: newMode };
+
+    if (newMode === 'timed' && !currentEvent.ends_at) {
+        // Default ends_at = scheduled_at + 3 hours
+        const start = new Date(currentEvent.scheduled_at);
+        const defEnd = new Date(start.getTime() + 3 * 3600000);
+        updates.ends_at = defEnd.toISOString();
+    }
+
+    const { error } = await supabase.from('arena_events').update(updates).eq('id', currentEvent.id);
+    if (error) {
+        alert("Erreur: " + error.message);
+    } else {
+        currentEvent.event_mode = newMode;
+        if (updates.ends_at) currentEvent.ends_at = updates.ends_at;
+        renderEventDashboard();
+    }
+};
+
+window.editEventEndDate = async function () {
+    if (!currentEvent || !currentEvent.ends_at) return;
+    const currentEnd = new Date(currentEvent.ends_at);
+    const localISO = new Date(currentEnd.getTime() - currentEnd.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    const newDateStr = prompt("Modifiez la date et heure de fin (AAAA-MM-JJTHH:MM) :", localISO);
+    if (newDateStr !== null && newDateStr.trim()) {
+        const dateUtc = new Date(newDateStr.trim()).toISOString();
+        if (isNaN(new Date(dateUtc).getTime())) return alert("Format de date invalide.");
+        if (new Date(dateUtc) <= new Date(currentEvent.scheduled_at)) return alert("La date de fin doit être après la date de début.");
+        const { error } = await supabase.from('arena_events').update({ ends_at: dateUtc }).eq('id', currentEvent.id);
+        if (error) {
+            alert("Erreur: " + error.message);
+        } else {
+            currentEvent.ends_at = dateUtc;
+            renderEventDashboard();
+        }
     }
 };

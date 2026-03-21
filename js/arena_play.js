@@ -19,6 +19,14 @@ let selectedIndices = new Set();
 let timerInterval = null;
 let arenaChannel = null;
 
+// Timed mode state
+let timedQuestions = [];
+let timedCurrentIndex = 0;
+let timedEnded = false;
+let timedPlayerFinished = false;
+let timedTotalQuestions = 0;
+let endsAtCheckInterval = null;
+
 /** Scoring rule based on number of mismatches */
 function computeScore(selected, correctSet) {
     const totalExpected = correctSet.size;
@@ -119,65 +127,21 @@ function subscribeToArena(eventId) {
 async function processEventState() {
     if (!currentEvent) return;
     const root = document.getElementById('arena-play-root');
+    const isTimed = currentEvent.event_mode === 'timed';
 
     switch (currentEvent.status) {
         case 'waiting':
-            const hasStarted = new Date(currentEvent.scheduled_at).getTime() < Date.now();
-            const rewards = Array.isArray(currentEvent.xp_rewards) ? currentEvent.xp_rewards : JSON.parse(currentEvent.xp_rewards || '[1000,500,250,100,50]');
+            if (isTimed) {
+                renderTimedWaiting(root);
+            } else {
+                renderLiveWaiting(root);
+            }
+            break;
 
-            root.innerHTML = `
-                <div style="padding: 10px 0;">
-                    <span style="display:inline-block; background:rgba(255,165,2,0.15); color:#ffa502; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.85rem; margin-bottom:15px; border:1px solid rgba(255,165,2,0.3);">
-                        <i class="fas fa-hourglass-half"></i> SALLE D'ATTENTE
-                    </span>
-                    <h2 style="font-size: 2rem; margin-top:0; margin-bottom: 10px; color:white;">${currentEvent.title}</h2>
-                    
-                    ${currentEvent.description ? `
-                        <div style="background: rgba(0, 242, 254, 0.05); border-left: 3px solid #00f2fe; padding: 15px; text-align: left; margin-bottom: 25px; font-size: 0.95rem; color: rgba(255,255,255,0.9); line-height: 1.5;">
-                            <strong>Programme :</strong><br>
-                            ${currentEvent.description.replace(/\n/g, '<br>')}
-                        </div>
-                    ` : ''}
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; margin-bottom: 30px;">
-                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px;">
-                            <h4 style="color:#00f2fe; margin:0 0 10px 0; font-size: 1rem;"><i class="fas fa-scroll"></i> Règles</h4>
-                            <ul style="margin:0; padding-left: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
-                                <li><strong>5 propositions</strong> (A à E) par question.</li>
-                                <li>Plusieurs réponses correctes possibles.</li>
-                                <li><strong>0 erreur</strong> = 1 point</li>
-                                <li><strong>1 erreur</strong> = 0.5 point</li>
-                                <li><strong>2 erreurs</strong> = 0.2 point</li>
-                                <li><strong>3 erreurs ou +</strong> = 0 point</li>
-                            </ul>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px;">
-                            <h4 style="color:#ffa502; margin:0 0 10px 0; font-size: 1rem;"><i class="fas fa-gift"></i> Récompenses</h4>
-                            <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); display:flex; flex-direction:column; gap:6px;">
-                                <div><strong style="color:#ffcc00; display:inline-block; width:50px;">1er :</strong> +${rewards[0]} XP</div>
-                                <div><strong style="color:#e0e0e0; display:inline-block; width:50px;">2ème :</strong> +${rewards[1]} XP</div>
-                                <div><strong style="color:#cd7f32; display:inline-block; width:50px;">3ème :</strong> +${rewards[2]} XP</div>
-                                <div><strong style="color:white; display:inline-block; width:50px;">4ème :</strong> +${rewards[3]} XP</div>
-                                <div><strong style="color:white; display:inline-block; width:50px;">5ème :</strong> +${rewards[4]} XP</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    ${hasStarted
-                    ? `<p style="font-size: 1.2rem; margin-top: 15px; font-weight: bold; color: #2ecc71; animation: pulse-live 1.5s infinite;">L'hôte lancera la partie d'une seconde à l'autre...</p>`
-                    : currentEvent.show_countdown === false
-                        ? `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
-                               <p style="color:#ffa502; margin:0; font-size:1.1rem; font-weight:bold;"><i class="fas fa-clock"></i> L'événement va bientôt commencer</p>
-                               <p style="color:var(--text-muted); margin:8px 0 0 0; font-size:0.9rem;">Restez sur cette page, la partie démarrera automatiquement.</p>
-                           </div>`
-                        : `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
-                               <p style="color:var(--text-muted); margin:0 0 5px 0; font-size:0.9rem;">L'événement démarre dans :</p>
-                               <div id="arena-wait-timer" style="font-family: monospace; font-size: 2rem; font-weight: 800; color: white;">--:--:--</div>
-                           </div>`
-                }
-                </div>`;
-
-            if (!hasStarted && currentEvent.show_countdown !== false) startWaitingTimer(currentEvent.scheduled_at);
+        case 'active':
+            if (isTimed) {
+                await processTimedEvent(root);
+            }
             break;
 
         case 'starting':
@@ -191,7 +155,6 @@ async function processEventState() {
 
         case 'question_active':
             if (!currentQuestion || currentQuestion.id !== currentEvent.current_question_id) {
-                // Show loading while fetching
                 root.innerHTML = `
                     <div style="padding: 40px 0;">
                         <i class="fas fa-circle-notch fa-spin fa-2x" style="color:#00f2fe;"></i>
@@ -236,9 +199,518 @@ async function processEventState() {
         case 'podium':
         case 'finished':
             stopTimer();
+            cleanTimedState();
             await renderPodium();
             break;
     }
+}
+
+function renderLiveWaiting(root) {
+    const hasStarted = new Date(currentEvent.scheduled_at).getTime() < Date.now();
+    const rewards = Array.isArray(currentEvent.xp_rewards) ? currentEvent.xp_rewards : JSON.parse(currentEvent.xp_rewards || '[300,200,100,50,50]');
+
+    root.innerHTML = `
+        <div style="padding: 10px 0;">
+            <span style="display:inline-block; background:rgba(255,165,2,0.15); color:#ffa502; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.85rem; margin-bottom:15px; border:1px solid rgba(255,165,2,0.3);">
+                <i class="fas fa-hourglass-half"></i> SALLE D'ATTENTE
+            </span>
+            <h2 style="font-size: 2rem; margin-top:0; margin-bottom: 10px; color:white;">${currentEvent.title}</h2>
+            
+            ${currentEvent.description ? `
+                <div style="background: rgba(0, 242, 254, 0.05); border-left: 3px solid #00f2fe; padding: 15px; text-align: left; margin-bottom: 25px; font-size: 0.95rem; color: rgba(255,255,255,0.9); line-height: 1.5;">
+                    <strong>Programme :</strong><br>
+                    ${currentEvent.description.replace(/\n/g, '<br>')}
+                </div>
+            ` : ''}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; margin-bottom: 30px;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px;">
+                    <h4 style="color:#00f2fe; margin:0 0 10px 0; font-size: 1rem;"><i class="fas fa-scroll"></i> Règles</h4>
+                    <ul style="margin:0; padding-left: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        <li><strong>5 propositions</strong> (A à E) par question.</li>
+                        <li>Plusieurs réponses correctes possibles.</li>
+                        <li><strong>0 erreur</strong> = 1 point</li>
+                        <li><strong>1 erreur</strong> = 0.5 point</li>
+                        <li><strong>2 erreurs</strong> = 0.2 point</li>
+                        <li><strong>3 erreurs ou +</strong> = 0 point</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px;">
+                    <h4 style="color:#ffa502; margin:0 0 10px 0; font-size: 1rem;"><i class="fas fa-gift"></i> Récompenses</h4>
+                    <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); display:flex; flex-direction:column; gap:6px;">
+                        <div><strong style="color:#ffcc00; display:inline-block; width:50px;">1er :</strong> +${rewards[0]} XP</div>
+                        <div><strong style="color:#e0e0e0; display:inline-block; width:50px;">2ème :</strong> +${rewards[1]} XP</div>
+                        <div><strong style="color:#cd7f32; display:inline-block; width:50px;">3ème :</strong> +${rewards[2]} XP</div>
+                        <div><strong style="color:white; display:inline-block; width:50px;">4ème :</strong> +${rewards[3]} XP</div>
+                        <div><strong style="color:white; display:inline-block; width:50px;">5ème :</strong> +${rewards[4]} XP</div>
+                    </div>
+                </div>
+            </div>
+
+            ${hasStarted
+            ? `<p style="font-size: 1.2rem; margin-top: 15px; font-weight: bold; color: #2ecc71; animation: pulse-live 1.5s infinite;">L'hôte lancera la partie d'une seconde à l'autre...</p>`
+            : currentEvent.show_countdown === false
+                ? `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                       <p style="color:#ffa502; margin:0; font-size:1.1rem; font-weight:bold;"><i class="fas fa-clock"></i> L'événement va bientôt commencer</p>
+                       <p style="color:var(--text-muted); margin:8px 0 0 0; font-size:0.9rem;">Restez sur cette page, la partie démarrera automatiquement.</p>
+                   </div>`
+                : `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                       <p style="color:var(--text-muted); margin:0 0 5px 0; font-size:0.9rem;">L'événement démarre dans :</p>
+                       <div id="arena-wait-timer" style="font-family: monospace; font-size: 2rem; font-weight: 800; color: white;">--:--:--</div>
+                   </div>`
+        }
+        </div>`;
+
+    if (!hasStarted && currentEvent.show_countdown !== false) startWaitingTimer(currentEvent.scheduled_at);
+}
+
+function renderTimedWaiting(root) {
+    const now = Date.now();
+    const startTime = new Date(currentEvent.scheduled_at).getTime();
+    const endsTime = currentEvent.ends_at ? new Date(currentEvent.ends_at).getTime() : null;
+    const rewards = Array.isArray(currentEvent.xp_rewards) ? currentEvent.xp_rewards : JSON.parse(currentEvent.xp_rewards || '[300,200,100,50,50]');
+    const hasStarted = now >= startTime;
+    const isExpired = endsTime && now >= endsTime;
+
+    root.innerHTML = `
+        <div style="padding: 10px 0;">
+            <span style="display:inline-block; background:rgba(155,89,182,0.15); color:#9b59b6; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.85rem; margin-bottom:15px; border:1px solid rgba(155,89,182,0.3);">
+                <i class="fas fa-clock"></i> MODE INTERVALLE
+            </span>
+            <h2 style="font-size: 2rem; margin-top:0; margin-bottom: 10px; color:white;">${currentEvent.title}</h2>
+            
+            ${currentEvent.description ? `
+                <div style="background: rgba(0, 242, 254, 0.05); border-left: 3px solid #00f2fe; padding: 15px; text-align: left; margin-bottom: 25px; font-size: 0.95rem; color: rgba(255,255,255,0.9); line-height: 1.5;">
+                    <strong>Programme :</strong><br>
+                    ${currentEvent.description.replace(/\n/g, '<br>')}
+                </div>
+            ` : ''}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; margin-bottom: 30px;">
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px;">
+                    <h4 style="color:#00f2fe; margin:0 0 10px 0; font-size: 1rem;"><i class="fas fa-scroll"></i> Règles</h4>
+                    <ul style="margin:0; padding-left: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+                        <li><strong>5 propositions</strong> (A à E) par question.</li>
+                        <li>Plusieurs réponses correctes possibles.</li>
+                        <li><strong>0 erreur</strong> = 1 point</li>
+                        <li><strong>1 erreur</strong> = 0.5 point</li>
+                        <li><strong>2 erreurs</strong> = 0.2 point</li>
+                        <li><strong>3 erreurs ou +</strong> = 0 point</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px;">
+                    <h4 style="color:#ffa502; margin:0 0 10px 0; font-size: 1rem;"><i class="fas fa-gift"></i> Récompenses</h4>
+                    <div style="font-size: 0.85rem; color: rgba(255,255,255,0.7); display:flex; flex-direction:column; gap:6px;">
+                        <div><strong style="color:#ffcc00; display:inline-block; width:50px;">1er :</strong> +${rewards[0]} XP</div>
+                        <div><strong style="color:#e0e0e0; display:inline-block; width:50px;">2ème :</strong> +${rewards[1]} XP</div>
+                        <div><strong style="color:#cd7f32; display:inline-block; width:50px;">3ème :</strong> +${rewards[2]} XP</div>
+                        <div><strong style="color:white; display:inline-block; width:50px;">4ème :</strong> +${rewards[3]} XP</div>
+                        <div><strong style="color:white; display:inline-block; width:50px;">5ème :</strong> +${rewards[4]} XP</div>
+                    </div>
+                </div>
+            </div>
+
+            ${isExpired
+            ? `<div style="background:rgba(255,71,87,0.1); padding:20px; border-radius:12px; border:1px solid rgba(255,71,87,0.3);">
+                       <p style="color:#ff4757; margin:0; font-size:1.2rem; font-weight:bold;"><i class="fas fa-times-circle"></i> L'intervalle de temps est terminé.</p>
+                       <p style="color:var(--text-muted); margin:8px 0 0 0; font-size:0.9rem;">Cet événement n'est plus disponible.</p>
+                   </div>`
+            : hasStarted
+                ? (() => {
+                    // Auto-activate timed event if window is open and status is still 'waiting'
+                    if (currentEvent.status === 'waiting') {
+                        supabase.from('arena_events').update({ status: 'active' }).eq('id', currentEvent.id).then(() => {
+                            currentEvent.status = 'active';
+                            processEventState();
+                        });
+                    }
+                    return `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                               <p style="color:#9b59b6; margin:0; font-size:1.1rem; font-weight:bold;"><i class="fas fa-play-circle"></i> Le QCM est disponible !</p>
+                               <p style="color:var(--text-muted); margin:8px 0 0 0; font-size:0.9rem;">Chargement automatique...</p>
+                           </div>`;
+                })()
+                : currentEvent.show_countdown === false
+                    ? `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                               <p style="color:#9b59b6; margin:0; font-size:1.1rem; font-weight:bold;"><i class="fas fa-clock"></i> L'événement n'a pas encore commencé</p>
+                               <p style="color:var(--text-muted); margin:8px 0 0 0; font-size:0.9rem;">Restez sur cette page, le QCM sera bientôt disponible.</p>
+                           </div>`
+                    : `<div style="background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+                               <p style="color:var(--text-muted); margin:0 0 5px 0; font-size:0.9rem;">Le QCM ouvre dans :</p>
+                               <div id="arena-wait-timer" style="font-family: monospace; font-size: 2rem; font-weight: 800; color: white;">--:--:--</div>
+                           </div>`
+        }
+        </div>`;
+
+    if (!hasStarted && currentEvent.show_countdown !== false) {
+        startWaitingTimer(currentEvent.scheduled_at);
+    } else if (hasStarted && endsTime && now < endsTime) {
+        startWaitingTimer(currentEvent.ends_at);
+    }
+}
+
+async function processTimedEvent(root) {
+    // Already playing timed event
+    if (timedQuestions.length > 0 && timedCurrentIndex < timedQuestions.length) {
+        renderTimedQuestion();
+        return;
+    }
+
+    // Check if event ended (time window expired)
+    if (timedEnded) {
+        cleanTimedState();
+        await renderPodium();
+        return;
+    }
+
+    // Check if player already finished all questions early
+    if (timedPlayerFinished) {
+        cleanTimedState();
+        await renderTimedResults();
+        return;
+    }
+
+    // Check if player already completed all questions in a previous session
+    const { data: existingAnswers } = await supabase
+        .from('arena_answers')
+        .select('question_id')
+        .eq('player_id', myPlayerId);
+
+    // Load all questions for this event
+    const { data: questions, error } = await supabase
+        .from('arena_questions')
+        .select('*')
+        .eq('event_id', currentEvent.id)
+        .order('order_num', { ascending: true });
+
+    if (error || !questions || questions.length === 0) {
+        root.innerHTML = `
+            <div style="padding: 40px 0;">
+                <i class="fas fa-exclamation-triangle fa-2x" style="color:#ff4757;"></i>
+                <p style="color: #ff4757; margin-top: 15px; font-weight:bold;">Aucune question disponible.</p>
+            </div>`;
+        return;
+    }
+
+    timedQuestions = questions;
+    timedTotalQuestions = questions.length;
+
+    // Find where the player left off (if revisiting)
+    const answeredQIds = new Set((existingAnswers || []).map(a => a.question_id));
+    timedCurrentIndex = 0;
+    for (let i = 0; i < timedQuestions.length; i++) {
+        if (!answeredQIds.has(timedQuestions[i].id)) {
+            timedCurrentIndex = i;
+            break;
+        }
+        if (i === timedQuestions.length - 1) {
+            timedCurrentIndex = timedQuestions.length;
+        }
+    }
+
+    // Start ends_at checker
+    startEndsAtChecker();
+
+    if (timedCurrentIndex < timedQuestions.length) {
+        renderTimedQuestion();
+    } else {
+        timedPlayerFinished = true;
+        cleanTimedState();
+        await renderTimedResults();
+    }
+}
+
+function renderTimedQuestion() {
+    if (timedCurrentIndex >= timedQuestions.length) return;
+    const q = timedQuestions[timedCurrentIndex];
+    currentQuestion = q;
+    hasAnsweredCurrent = false;
+    selectedIndices = new Set();
+
+    const root = document.getElementById('arena-play-root');
+    const options = Array.isArray(q.options) ? q.options : JSON.parse(q.options);
+    const timeLimit = q.time_limit || 45;
+
+    root.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="background:rgba(155,89,182,0.15); color:#9b59b6; padding:4px 12px; border-radius:12px; font-size:0.8rem; font-weight:bold;">
+                <i class="fas fa-clock"></i> INTERVALLE
+            </span>
+            <span style="color:rgba(255,255,255,0.5); font-size:0.85rem;">Question ${timedCurrentIndex + 1} / ${timedQuestions.length}</span>
+        </div>
+        <h2 style="font-size:1.3rem; line-height:1.5; margin-bottom:5px;">${q.question}</h2>
+        ${q.image_url ? `<div style="text-align:center; margin-bottom:15px;"><img src="${q.image_url}" style="max-height: 200px; max-width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);"></div>` : ''}
+        ${q.sub_question ? `<div style="background: rgba(0,242,254,0.1); border-left: 3px solid #00f2fe; padding: 10px; margin-bottom: 15px; border-radius: 4px;"><h3 style="font-size:1.1rem; color: #00f2fe; margin:0;">${q.sub_question}</h3></div>` : ''}
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 5px;">Sélectionnez toutes les bonnes réponses, puis validez.</p>
+
+        <div class="timer-bar-container">
+            <div class="timer-bar" id="timer-bar" style="width:100%;"></div>
+            <div id="timer-text" style="text-align:center; font-family:monospace; font-weight:bold; color:white; margin-top:5px;"></div>
+        </div>
+
+        <div class="option-grid" id="options-grid">
+            ${options.map((opt, idx) => `
+                <div class="option-item" id="opt-${idx}" onclick="timedToggleOption(${idx})">
+                    <div class="option-label" id="lbl-${idx}">${LABELS[idx]}</div>
+                    <span class="option-text">${opt}</span>
+                </div>
+            `).join('')}
+        </div>
+
+        <button class="arena-submit-btn" id="submit-btn" onclick="timedSubmitAnswer()">
+            Valider ma réponse <i class="fas fa-paper-plane"></i>
+        </button>
+    `;
+
+    startTimer(timeLimit, 'question');
+}
+
+window.timedToggleOption = function (idx) {
+    if (hasAnsweredCurrent) return;
+    const el = document.getElementById(`opt-${idx}`);
+    if (!el) return;
+    if (selectedIndices.has(idx)) {
+        selectedIndices.delete(idx);
+        el.classList.remove('selected');
+    } else {
+        selectedIndices.add(idx);
+        el.classList.add('selected');
+    }
+};
+
+window.timedSubmitAnswer = async function (isAuto = false) {
+    if (hasAnsweredCurrent || !myPlayerId || !currentQuestion) return;
+
+    hasAnsweredCurrent = true;
+    stopTimer();
+    document.querySelectorAll('.option-item').forEach(el => { el.style.cursor = 'default'; el.onclick = null; });
+
+    const correctSet = new Set(
+        Array.isArray(currentQuestion.correct_indices)
+            ? currentQuestion.correct_indices
+            : JSON.parse(currentQuestion.correct_indices || '[]')
+    );
+    const points = computeScore(selectedIndices, correctSet);
+    const selectedArr = [...selectedIndices];
+
+    await supabase.from('arena_answers').insert([{
+        player_id: myPlayerId,
+        question_id: currentQuestion.id,
+        answer_indices: selectedArr,
+        score_awarded: points
+    }]).select();
+
+    const { data: pData } = await supabase.from('arena_players').select('score').eq('id', myPlayerId).single();
+    let totalScore = points;
+    if (pData) {
+        totalScore = (pData.score || 0) + points;
+        await supabase.from('arena_players').update({ score: totalScore }).eq('id', myPlayerId);
+    }
+
+    renderTimedCorrection(points, totalScore, isAuto);
+};
+
+function renderTimedCorrection(questionPoints, totalScore, isAuto = false) {
+    if (!currentQuestion) return;
+    const root = document.getElementById('arena-play-root');
+    const options = Array.isArray(currentQuestion.options) ? currentQuestion.options : JSON.parse(currentQuestion.options);
+    const correctSet = new Set(
+        Array.isArray(currentQuestion.correct_indices)
+            ? currentQuestion.correct_indices
+            : JSON.parse(currentQuestion.correct_indices || '[]')
+    );
+    const isLastQuestion = timedCurrentIndex >= timedQuestions.length - 1;
+
+    // Score feedback
+    const scoreClass = questionPoints === 1 ? 'score-1' : questionPoints === 0.5 ? 'score-0-5' : questionPoints === 0.2 ? 'score-0-2' : 'score-0';
+    const scoreMsg = questionPoints === 1 ? 'Parfait !' : questionPoints === 0.5 ? 'Presque !' : questionPoints === 0.2 ? 'Partiel' : 'Raté';
+    const scoreEmoji = questionPoints === 1 ? '🏆' : questionPoints === 0.5 ? '👍' : questionPoints === 0.2 ? '👀' : '❌';
+
+    root.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span style="background:rgba(155,89,182,0.15); color:#9b59b6; padding:4px 12px; border-radius:12px; font-size:0.8rem; font-weight:bold;">
+                <i class="fas fa-clock"></i> INTERVALLE
+            </span>
+            <span style="color:rgba(255,255,255,0.5); font-size:0.85rem;">Question ${timedCurrentIndex + 1} / ${timedQuestions.length}</span>
+        </div>
+
+        ${isAuto ? '<p style="color:#ffa502; font-size:0.9rem; font-weight:bold; margin-bottom:10px;">⏳ Temps écoulé !</p>' : ''}
+
+        <div class="score-chip ${scoreClass}" style="margin-bottom: 15px;">
+            ${scoreEmoji} ${scoreMsg} &nbsp; +${questionPoints} pt${questionPoints > 0.5 ? 's' : ''}
+        </div>
+
+        <h2 style="font-size:1.4rem; margin-bottom: 15px;">${currentQuestion.question}</h2>
+        ${currentQuestion.image_url ? `<div style="text-align:center; margin-bottom:15px;"><img src="${currentQuestion.image_url}" style="max-height: 200px; max-width: 100%; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); opacity: 0.5;"></div>` : ''}
+        ${currentQuestion.sub_question ? `<div style="background: rgba(0,242,254,0.05); border-left: 3px solid rgba(0,242,254,0.5); padding: 10px; margin-bottom: 15px; border-radius: 4px;"><h3 style="font-size:1.1rem; color: #00f2fe; margin:0;">${currentQuestion.sub_question}</h3></div>` : ''}
+
+        <div class="option-grid">
+            ${options.map((opt, idx) => {
+        let cls = '';
+        let icon = '';
+        if (correctSet.has(idx) && selectedIndices.has(idx)) {
+            cls = 'correct';
+            icon = '<i class="fas fa-check" style="color:#2ecc71; margin-left:auto;"></i>';
+        } else if (!correctSet.has(idx) && selectedIndices.has(idx)) {
+            cls = 'wrong';
+            icon = '<i class="fas fa-times" style="color:#ff4757; margin-left:auto;"></i>';
+        } else if (correctSet.has(idx) && !selectedIndices.has(idx)) {
+            cls = 'missed';
+            icon = '<i class="fas fa-check" style="color:#ffa502; margin-left:auto;"></i>';
+        }
+        return `
+                <div class="option-item ${cls}" style="cursor:default;">
+                    <div class="option-label">${LABELS[idx]}</div>
+                    <span class="option-text">${opt}</span>
+                    ${icon}
+                </div>`;
+    }).join('')}
+        </div>
+
+        ${currentQuestion.explanation ? `
+            <div class="correction-panel">
+                <strong><i class="fas fa-lightbulb"></i> Correction :</strong><br>
+                ${currentQuestion.explanation}
+            </div>
+        ` : ''}
+
+        <p style="color: rgba(255,255,255,0.5); margin-top: 15px; font-size: 0.9rem;">
+            Score cumulé : <strong style="color:#00f2fe;">${totalScore} / ${timedQuestions.length}</strong>
+        </p>
+
+        <button class="arena-submit-btn" onclick="${isLastQuestion ? 'showTimedResults()' : 'advanceTimedQuestion()'}" style="margin-top: 15px;">
+            ${isLastQuestion ? 'Voir mes résultats 🏆' : 'Question suivante ▶'}
+        </button>
+    `;
+}
+
+async function advanceTimedQuestion() {
+    timedCurrentIndex++;
+    renderTimedQuestion();
+}
+
+window.showTimedResults = async function () {
+    timedPlayerFinished = true;
+    cleanTimedState();
+    await renderTimedResults();
+};
+
+async function renderTimedResults() {
+    const root = document.getElementById('arena-play-root');
+
+    // Get my score
+    const { data: myPlayerData } = await supabase
+        .from('arena_players')
+        .select('score, id')
+        .eq('event_id', currentEvent.id)
+        .eq('user_id', myUserId)
+        .single();
+
+    const myScore = myPlayerData?.score || 0;
+    const maxScore = timedTotalQuestions;
+    const note20 = maxScore > 0 ? Math.round((myScore / maxScore) * 20 * 10) / 10 : 0;
+
+    // Get ranking
+    const { data: allPlayers } = await supabase
+        .from('arena_players')
+        .select('score, user_id, profiles(username)')
+        .eq('event_id', currentEvent.id)
+        .order('score', { ascending: false });
+
+    const myRank = allPlayers ? allPlayers.findIndex(p => p.user_id === myUserId) + 1 : 0;
+    const totalPlayers = allPlayers ? allPlayers.length : 0;
+
+    // XP potential
+    const rewards = Array.isArray(currentEvent.xp_rewards) ? currentEvent.xp_rewards : JSON.parse(currentEvent.xp_rewards || '[300,200,100,50,50]');
+    const potentialXp = (myRank > 0 && myRank <= 5) ? (rewards[myRank - 1] || 0) : 0;
+
+    // Medal
+    const medals = ['🥇', '🥈', '🥉'];
+    const rankDisplay = myRank > 0 ? (medals[myRank - 1] || `#${myRank}`) : '?';
+
+    root.innerHTML = `
+        <div style="padding: 20px 0;">
+            <span style="display:inline-block; background:rgba(155,89,182,0.15); color:#9b59b6; padding:5px 15px; border-radius:20px; font-weight:bold; font-size:0.85rem; margin-bottom:15px; border:1px solid rgba(155,89,182,0.3);">
+                <i class="fas fa-check-circle"></i> QCM TERMINÉ
+            </span>
+
+            <h2 style="font-size:2rem; margin: 10px 0 5px; color:white;">${currentEvent.title}</h2>
+
+            <div style="background: rgba(0,242,254,0.1); border: 1px solid rgba(0,242,254,0.3); border-radius: 16px; padding: 25px; margin: 20px 0; text-align: center;">
+                <div style="font-size: 3rem; font-weight: 900; color: white; font-family: var(--font-title);">${note20}<span style="font-size:1.5rem; color:rgba(255,255,255,0.5);">/20</span></div>
+                <div style="font-size: 1rem; color: rgba(255,255,255,0.6); margin-top: 5px;">
+                    ${myScore} / ${maxScore} points
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 5px;">${rankDisplay}</div>
+                    <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">Classement actuel</div>
+                    <div style="color: white; font-weight: bold; font-size: 1.1rem;">${myRank} / ${totalPlayers}</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 5px;">⭐</div>
+                    <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem;">XP possible</div>
+                    <div style="color: ${potentialXp > 0 ? '#ffcc00' : 'rgba(255,255,255,0.4)'}; font-weight: bold; font-size: 1.1rem;">${potentialXp > 0 ? '+' + potentialXp + ' XP' : '—'}</div>
+                </div>
+            </div>
+
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 20px; text-align: center;">
+                <i class="fas fa-info-circle"></i> L'XP sera distribuée à la fin de l'événement.
+            </p>
+
+            ${allPlayers && allPlayers.length > 1 ? `
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <h4 style="color: rgba(255,255,255,0.7); margin: 0 0 10px 0; font-size: 0.9rem;"><i class="fas fa-trophy"></i> Classement actuel</h4>
+                    <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
+                        ${allPlayers.slice(0, 10).map((p, i) => {
+        const name = p.profiles?.username || 'Anonyme';
+        const isMe = p.user_id === myUserId;
+        return `
+                                <div style="display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px;
+                                    background: ${isMe ? 'rgba(0,242,254,0.1)' : 'rgba(255,255,255,0.03)'};
+                                    border: 1px solid ${isMe ? 'rgba(0,242,254,0.3)' : 'transparent'};">
+                                    <span style="font-size:1rem; width:30px; text-align:center;">${medals[i] || `#${i + 1}`}</span>
+                                    <span style="flex:1; font-weight:${isMe ? 'bold' : '400'}; color:${isMe ? '#00f2fe' : 'white'}; font-size:0.9rem;">${name}</span>
+                                    <span style="font-weight:bold; color:#2ecc71; font-size:0.9rem;">${p.score} pts</span>
+                                </div>`;
+    }).join('')}
+                    </div>
+                </div>
+            ` : ''}
+
+            <button onclick="window.location.href='index.html'" style="background: linear-gradient(135deg, #00f2fe, #4facfe); color: #050714; padding: 13px 30px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; font-size: 1rem;">
+                Retour à l'accueil
+            </button>
+        </div>
+    `;
+}
+
+function startEndsAtChecker() {
+    if (endsAtCheckInterval) clearInterval(endsAtCheckInterval);
+    if (!currentEvent.ends_at) return;
+
+    endsAtCheckInterval = setInterval(async () => {
+        const now = Date.now();
+        const endsTime = new Date(currentEvent.ends_at).getTime();
+        if (now >= endsTime) {
+            clearInterval(endsAtCheckInterval);
+            endsAtCheckInterval = null;
+            timedEnded = true;
+            timedPlayerFinished = true;
+            stopTimer();
+            await supabase.from('arena_events').update({ status: 'finished' }).eq('id', currentEvent.id);
+            currentEvent.status = 'finished';
+            cleanTimedState();
+            await renderPodium();
+        }
+    }, 5000);
+}
+
+function cleanTimedState() {
+    if (endsAtCheckInterval) { clearInterval(endsAtCheckInterval); endsAtCheckInterval = null; }
+    timedQuestions = [];
+    timedCurrentIndex = 0;
 }
 
 async function fetchCurrentQuestion(retries = 3) {
@@ -470,7 +942,7 @@ async function renderPodium() {
     const myRank = players.findIndex(p => p.user_id === myUserId) + 1;
     let earnedXp = 0;
 
-    const rewards = Array.isArray(currentEvent.xp_rewards) ? currentEvent.xp_rewards : JSON.parse(currentEvent.xp_rewards || '[1000,500,250,100,50]');
+    const rewards = Array.isArray(currentEvent.xp_rewards) ? currentEvent.xp_rewards : JSON.parse(currentEvent.xp_rewards || '[300,200,100,50,50]');
 
     if (myRank > 0 && myRank <= 5) {
         earnedXp = rewards[myRank - 1] || 0;
@@ -551,7 +1023,11 @@ function startTimer(seconds, mode = 'question') {
             stopTimer();
             if (mode === 'question' && !hasAnsweredCurrent) {
                 // Auto-submit on timeout if not answered
-                submitAnswer(true);
+                if (timedQuestions.length > 0) {
+                    timedSubmitAnswer(true);
+                } else {
+                    submitAnswer(true);
+                }
             }
         }
     }, 1000);
