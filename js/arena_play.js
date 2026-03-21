@@ -100,7 +100,15 @@ async function loadEventStatus(eventId) {
         .eq('id', eventId)
         .single();
 
-    if (ev) { currentEvent = ev; await processEventState(); }
+    if (ev) {
+        if (ev.is_draft) {
+            alert("Cet événement n'est pas encore disponible.");
+            window.location.href = "index.html";
+            return;
+        }
+        currentEvent = ev;
+        await processEventState();
+    }
 }
 
 function subscribeToArena(eventId) {
