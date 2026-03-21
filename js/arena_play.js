@@ -387,10 +387,10 @@ async function processTimedEvent(root) {
         .select('question_id')
         .eq('player_id', myPlayerId);
 
-    // Load all questions for this event
+    // Load all questions for this event (sans correct_indices pour éviter la triche)
     const { data: questions, error } = await supabase
         .from('arena_questions')
-        .select('*')
+        .select('id, event_id, order_num, question, sub_question, image_url, options, time_limit, correction_time_limit, explanation')
         .eq('event_id', currentEvent.id)
         .order('order_num', { ascending: true });
 
@@ -731,7 +731,7 @@ async function fetchCurrentQuestion(retries = 3) {
         try {
             const { data, error } = await supabase
                 .from('arena_questions')
-                .select('*')
+                .select('id, event_id, order_num, question, sub_question, image_url, options, time_limit, correction_time_limit, explanation')
                 .eq('id', currentEvent.current_question_id)
                 .maybeSingle();
             if (error) throw error;

@@ -542,9 +542,8 @@
 
             try {
                 const { data: topPlayers, error } = await supabase
-                    .from('profiles')
+                    .from('public_leaderboard')
                     .select('username, total_xp, rank')
-                    .eq('is_public', true)
                     .order('total_xp', { ascending: false })
                     .limit(10);
 
