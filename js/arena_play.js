@@ -106,6 +106,10 @@ async function loadEventStatus(eventId) {
             window.location.href = "index.html";
             return;
         }
+        // Detect timed mode if event_mode missing but ends_at exists
+        if (!ev.event_mode && ev.ends_at) {
+            ev.event_mode = 'timed';
+        }
         currentEvent = ev;
         await processEventState();
     }
