@@ -20,28 +20,59 @@ async function initArenaClient() {
 }
 
 async function fetchActiveEvent() {
-    const { data: events, error } = await supabase
-        .from('arena_events')
-        .select('*')
-        .neq('status', 'finished')
-        .neq('is_draft', true)
-        .order('created_at', { ascending: false })
-        .limit(1);
+    // Try with is_draft filter
+    let events, error;
+    try {
+        const result = await supabase
+            .from('arena_events')
+            .select('*')
+            .neq('status', 'finished')
+            .neq('is_draft', true)
+            .order('created_at', { ascending: false })
+            .limit(1);
+        events = result.data;
+        error = result.error;
+    } catch(e) { error = e; }
 
-    if (!error && events && events.length > 0) {
+    // Fallback if is_draft column doesn't exist
+    if (error) {
+        console.warn("[Arena] Retry without is_draft filter:", error.message || error);
+        const result = await supabase
+            .from('arena_events')
+            .select('*')
+            .neq('status', 'finished')
+            .order('created_at', { ascending: false })
+            .limit(1);
+        events = result.data;
+        error = result.error;
+    }
+
+    if (error) {
+        console.error("[Arena] Error fetching event:", error);
+        activeArenaEvent = null;
+        updateBubbleUI();
+        return;
+    }
+
+    if (events && events.length > 0) {
         const ev = events[0];
-        // For timed events, only show if within the time window
+        // Detect timed mode if event_mode missing but ends_at exists
+        if (!ev.event_mode && ev.ends_at) {
+            ev.event_mode = 'timed';
+        }
+        // Skip hidden events
+        if (ev.is_draft) {
+            activeArenaEvent = null;
+            updateBubbleUI();
+            return;
+        }
+        // For timed events, skip if expired
         if (ev.event_mode === 'timed' && ev.ends_at) {
-            const now = Date.now();
-            const start = new Date(ev.scheduled_at).getTime();
-            const end = new Date(ev.ends_at).getTime();
-            if (now >= end) {
-                // Time window expired
+            if (Date.now() >= new Date(ev.ends_at).getTime()) {
                 activeArenaEvent = null;
                 updateBubbleUI();
                 return;
             }
-            // Show if before or during the window
         }
         activeArenaEvent = ev;
         updateBubbleUI();

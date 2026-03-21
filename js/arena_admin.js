@@ -45,21 +45,24 @@ async function loadAllEvents() {
             .order('created_at', { ascending: false });
         events = result.data;
         error = result.error;
-    } catch (e) { error = e; }
+    } catch(e) { error = e; }
 
-    // Fallback: load without filter if column doesn't exist
-    if (error && error.message?.includes('is_draft')) {
-        const result = await supabase
-            .from('arena_events')
-            .select('*')
-            .neq('status', 'finished')
-            .order('created_at', { ascending: false });
-        events = result.data;
-        error = result.error;
+    // Fallback if query fails
+    if (error) {
+        console.warn("[Arena Admin] Retry without potential schema issues:", error.message || error);
+        try {
+            const result = await supabase
+                .from('arena_events')
+                .select('*')
+                .neq('status', 'finished')
+                .order('created_at', { ascending: false });
+            events = result.data;
+            error = result.error;
+        } catch(e2) { error = e2; }
     }
 
     if (error) {
-        root.innerHTML = `<div class="empty-state">Erreur: ${error.message}</div>`;
+        root.innerHTML = `<div class="empty-state">Erreur: ${error.message || error}</div>`;
         return;
     }
 
@@ -426,7 +429,7 @@ function renderWaitingDashboard(root) {
                     <button class="primary-btn" onclick="publishEvent()" style="width: 100%; background: #9b59b6; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);">
                         <i class="fas fa-paper-plane"></i> Publier l'événement
                     </button>
-                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">Rend l'événement visible et prêt à être lancé.</p>
+                    <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 8px 0 0;">Rend l'événement visible aux joueurs.</p>
                     ` : isActive ? `
                     <button class="primary-btn" onclick="finishEvent()" style="width: 100%; background: #ffa502; padding: 15px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1.1rem;">
                         <i class="fas fa-flag-checkered"></i> Terminer l'événement
@@ -442,6 +445,11 @@ function renderWaitingDashboard(root) {
                         <i class="fas fa-play"></i> Lancer l'événement
                     </button>
                     `}
+                    ${!isDraft ? `
+                    <button onclick="toggleEventVisibility(true)" style="width: 100%; margin-top: 10px; background: rgba(155,89,182,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(155,89,182,0.3); color:#9b59b6; cursor:pointer; font-weight:bold;">
+                        <i class="fas fa-eye-slash"></i> Masquer l'événement
+                    </button>
+                    ` : ''}
                     <button onclick="cancelArenaEvent()" style="width: 100%; margin-top: 10px; background: rgba(255,71,87,0.1); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,71,87,0.3); color:#ff4757; cursor:pointer; font-weight:bold;">
                         ${isDraft ? 'Supprimer le brouillon' : isActive ? 'Forcer l\'arrêt' : 'Annuler l\'événement'}
                     </button>
@@ -655,29 +663,26 @@ async function arenaCreateEvent() {
         eventData.ends_at = endsAtUtc;
     }
 
-    // Try insert with new columns (event_mode, is_draft)
-    let data, error;
-    try {
-        const fullData = { ...eventData, event_mode: eventMode, is_draft: true };
-        const result = await supabase
-            .from('arena_events')
-            .insert([fullData])
-            .select('*');
-        data = result.data;
-        error = result.error;
-    } catch (e) { error = e; }
+    // Build full data with new columns
+    const fullData = { ...eventData, event_mode: eventMode, is_draft: true };
 
-    // Fallback: insert without new columns if they don't exist yet
-    if (error && (error.message?.includes('event_mode') || error.message?.includes('is_draft'))) {
-        const result = await supabase
-            .from('arena_events')
-            .insert([eventData])
-            .select('*');
-        data = result.data;
-        error = result.error;
+    // Try insert progressively falling back if columns don't exist
+    let data, error;
+    const attempts = [
+        fullData,                                                // all columns
+        { ...eventData, event_mode: eventMode },                 // without is_draft
+        { ...eventData, is_draft: true },                        // without event_mode
+        eventData                                                // base only
+    ];
+    for (const attempt of attempts) {
+        try {
+            const result = await supabase.from('arena_events').insert([attempt]).select('*');
+            if (!result.error) { data = result.data; error = null; break; }
+            error = result.error;
+        } catch(e) { error = e; }
     }
 
-    if (error) { alert("Erreur : " + error.message); return; }
+    if (error) { alert("Erreur : " + (error.message || error)); return; }
     currentEvent = data[0];
     allEvents.unshift(currentEvent);
     renderEventDashboard();
@@ -827,6 +832,18 @@ async function publishEvent() {
     currentEvent.is_draft = false;
     renderEventDashboard();
 }
+
+window.toggleEventVisibility = async function(hide) {
+    if (!currentEvent) return;
+    const msg = hide
+        ? "Masquer cet événement aux joueurs ?"
+        : "Rendre cet événement visible aux joueurs ?";
+    if (!confirm(msg)) return;
+    const { error } = await supabase.from('arena_events').update({ is_draft: hide }).eq('id', currentEvent.id);
+    if (error) return alert("Erreur: " + error.message);
+    currentEvent.is_draft = hide;
+    renderEventDashboard();
+};
 
 async function cancelArenaEvent() {
     if (!currentEvent) return;
