@@ -1,677 +1,684 @@
 {
-  "id": "urgence_demo_acr",
-  "title": "Arrêt Cardio-Respiratoire (ACR)",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Dr. Demo",
-  "patient": {
-    "nom": "Martin",
-    "prenom": "John",
-    "age": 58,
-    "sexe": "M",
-    "taille": "180 cm",
-    "poids": "80 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Arrêt Cardio-Respiratoire (ACR)",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "ND",
-        "particularites": "ND"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_demo_acr",
+    "title": "Arrêt Cardio-Respiratoire (ACR)",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Dr. Demo",
+    "patient": {
+        "nom": "Martin",
+        "prenom": "John",
+        "age": 58,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "80 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Arrêt Cardio-Respiratoire (ACR)",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "ND",
+                "particularites": "ND"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Aucun",
+            "descriptionDouleur": "Variable",
+            "asymptomesAssocies": [],
+            "remarques": "Cas de démonstration secouriste"
+        },
+        "verbatim": "..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "120/80 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "37°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "16/min"
+        },
+        "aspectGeneral": "Variable selon le cas",
+        "examenCardiovasculaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
-      "asymptomesAssocies": [],
-      "remarques": "Cas de démonstration secouriste"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [],
+    "correctDiagnostic": "",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+    "possibleTreatments": [],
+    "correctTreatments": [],
+    "fatalTreatments": [],
+    "correction": "# Correction : Arrêt Cardio-Respiratoire (ACR)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Variable selon le cas",
-    "examenCardiovasculaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "palpation": "ND"
+    "locks": [],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "percussion": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier la conscience (Appeler, secouer, stimuler)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Aucune réponse, aucun mouvement.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Pratiquer un massage cardiaque immédiat",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous n'avez pas encore vérifié s'il respire !",
+                    "nextNode": "s_err_direct"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Crier 'A l'aide !', demander un DAE",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Un témoin s'arrête. Vous lui demandez de chercher un DAE.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Sortir votre téléphone pour appeler le 15 seul",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous perdez des secondes précieuses sans libérer les voies aériennes.",
+                    "nextNode": "s_err_solo"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "LVA et vérifier la respiration (10s)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Ventre et poitrine ne bougent pas. Aucun souffle.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Mettre en PLS par précaution",
+                    "tempsExecutionSec": 30,
+                    "feedback": "ERRARE : On ne met jamais en PLS une victime qui ne respire pas !",
+                    "nextNode": "s_err_pls"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Alerter le 15, donner l'adresse précise et débuter RCP",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le 15 est en ligne. Vous commencez les compressions (30:2).",
+                    "nextNode": "s5"
+                },
+                {
+                    "label": "Chercher le DAE vous-même en laissant la victime",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La victime reste sans massage trop longtemps.",
+                    "nextNode": "s_err_abandon"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5": {
+            "id": "s5",
+            "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Allumer le DAE et suivre les instructions vocales",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le DAE analyse... 'Choc recommandé, ne touchez pas la victime'.",
+                    "nextNode": "s6"
+                },
+                {
+                    "label": "Continuer le massage sans s'occuper du DAE",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le DAE est la priorité absolue pour choquer un rythme fibrillant.",
+                    "nextNode": "s_err_nodae"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s6": {
+            "id": "s6",
+            "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Reprendre immédiatement la RCP (compressions)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous reprenez le massage comme demandé par l'appareil.",
+                    "nextNode": "s7_good"
+                },
+                {
+                    "label": "Attendre que le DAE analyse à nouveau",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il faut masser entre les analyses (2 minutes) !",
+                    "nextNode": "s_err_pause"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s7_good": {
+            "id": "s7_good",
+            "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_direct": {
+            "id": "s_err_direct",
+            "descriptionClinique": "Masser une personne qui dort ou qui a juste fait un malaise sans vérifier est une faute grave.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_solo": {
+            "id": "s_err_solo",
+            "descriptionClinique": "En situation d'urgence, déléguer la recherche du DAE est vital pour rester auprès de la victime.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_pls": {
+            "id": "s_err_pls",
+            "descriptionClinique": "Mettre un ACR en PLS garantit le décès par hypoxie cérébrale.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_abandon": {
+            "id": "s_err_abandon",
+            "descriptionClinique": "Le cerveau meurt en 4 minutes. Votre absence a été fatale.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_nodae": {
+            "id": "s_err_nodae",
+            "descriptionClinique": "Ne pas utiliser le DAE disponible réduit les chances de survie de 90% à 5%.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_pause": {
+            "id": "s_err_pause",
+            "descriptionClinique": "Le sang s'arrête de circuler dès que vous arrêtez de masser. Les organes sont lésés.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "editorData": {
+        "miniGraph": {
+            "nodes": [
+                {
+                    "id": "s1",
+                    "x": 100,
+                    "y": 100,
+                    "name": "Sécurité & Conscience",
+                    "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s2",
+                    "x": 400,
+                    "y": 100,
+                    "name": "Appel à l'aide",
+                    "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s3",
+                    "x": 700,
+                    "y": 100,
+                    "name": "LVA & Respiration",
+                    "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s4",
+                    "x": 100,
+                    "y": 300,
+                    "name": "Alerte & Massage",
+                    "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s5",
+                    "x": 400,
+                    "y": 300,
+                    "name": "Arrivée du DAE",
+                    "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s6",
+                    "x": 700,
+                    "y": 300,
+                    "name": "Choc & Reprise",
+                    "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s7_good",
+                    "x": 100,
+                    "y": 500,
+                    "name": "Succès : RCP efficace",
+                    "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s_err_direct",
+                    "x": 400,
+                    "y": 500,
+                    "name": "Échec : Procédure inversée",
+                    "descriptionClinique": "Masser une personne qui dort ou qui a juste fait un malaise sans vérifier est une faute grave.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_solo",
+                    "x": 700,
+                    "y": 500,
+                    "name": "Échec : Management témoin",
+                    "descriptionClinique": "En situation d'urgence, déléguer la recherche du DAE est vital pour rester auprès de la victime.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_pls",
+                    "x": 100,
+                    "y": 700,
+                    "name": "Échec : Erreur fatale PLS",
+                    "descriptionClinique": "Mettre un ACR en PLS garantit le décès par hypoxie cérébrale.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_abandon",
+                    "x": 400,
+                    "y": 700,
+                    "name": "Échec : Abandon de poste",
+                    "descriptionClinique": "Le cerveau meurt en 4 minutes. Votre absence a été fatale.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_nodae",
+                    "x": 700,
+                    "y": 700,
+                    "name": "Échec : Perte de chance",
+                    "descriptionClinique": "Ne pas utiliser le DAE disponible réduit les chances de survie de 90% à 5%.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_pause",
+                    "x": 100,
+                    "y": 900,
+                    "name": "Échec : Pauses trop longues",
+                    "descriptionClinique": "Le sang s'arrête de circuler dès que vous arrêtez de masser. Les organes sont lésés.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                }
+            ],
+            "connections": [
+                {
+                    "id": "conn_1_1773010006435",
+                    "fromId": "s1",
+                    "toId": "s2",
+                    "label": "Vérifier la conscience (Appeler, secouer, stimuler)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Aucune réponse, aucun mouvement."
+                },
+                {
+                    "id": "conn_2_1773010006435",
+                    "fromId": "s1",
+                    "toId": "s_err_direct",
+                    "label": "Pratiquer un massage cardiaque immédiat",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous n'avez pas encore vérifié s'il respire !"
+                },
+                {
+                    "id": "conn_3_1773010006436",
+                    "fromId": "s2",
+                    "toId": "s3",
+                    "label": "Crier 'A l'aide !', demander un DAE",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Un témoin s'arrête. Vous lui demandez de chercher un DAE."
+                },
+                {
+                    "id": "conn_4_1773010006436",
+                    "fromId": "s2",
+                    "toId": "s_err_solo",
+                    "label": "Sortir votre téléphone pour appeler le 15 seul",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous perdez des secondes précieuses sans libérer les voies aériennes."
+                },
+                {
+                    "id": "conn_5_1773010006436",
+                    "fromId": "s3",
+                    "toId": "s4",
+                    "label": "LVA et vérifier la respiration (10s)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Ventre et poitrine ne bougent pas. Aucun souffle."
+                },
+                {
+                    "id": "conn_6_1773010006436",
+                    "fromId": "s3",
+                    "toId": "s_err_pls",
+                    "label": "Mettre en PLS par précaution",
+                    "tempsExecutionSec": 30,
+                    "feedback": "ERRARE : On ne met jamais en PLS une victime qui ne respire pas !"
+                },
+                {
+                    "id": "conn_7_1773010006436",
+                    "fromId": "s4",
+                    "toId": "s5",
+                    "label": "Alerter le 15, donner l'adresse précise et débuter RCP",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le 15 est en ligne. Vous commencez les compressions (30:2)."
+                },
+                {
+                    "id": "conn_8_1773010006436",
+                    "fromId": "s4",
+                    "toId": "s_err_abandon",
+                    "label": "Chercher le DAE vous-même en laissant la victime",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La victime reste sans massage trop longtemps."
+                },
+                {
+                    "id": "conn_9_1773010006436",
+                    "fromId": "s5",
+                    "toId": "s6",
+                    "label": "Allumer le DAE et suivre les instructions vocales",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le DAE analyse... 'Choc recommandé, ne touchez pas la victime'."
+                },
+                {
+                    "id": "conn_10_1773010006436",
+                    "fromId": "s5",
+                    "toId": "s_err_nodae",
+                    "label": "Continuer le massage sans s'occuper du DAE",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le DAE est la priorité absolue pour choquer un rythme fibrillant."
+                },
+                {
+                    "id": "conn_11_1773010006436",
+                    "fromId": "s6",
+                    "toId": "s7_good",
+                    "label": "Reprendre immédiatement la RCP (compressions)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous reprenez le massage comme demandé par l'appareil."
+                },
+                {
+                    "id": "conn_12_1773010006436",
+                    "fromId": "s6",
+                    "toId": "s_err_pause",
+                    "label": "Attendre que le DAE analyse à nouveau",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il faut masser entre les analyses (2 minutes) !"
+                }
+            ]
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [],
-  "correctDiagnostic": "",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [],
-  "correctTreatments": [],
-  "fatalTreatments": [],
-  "correction": "# Correction : Arrêt Cardio-Respiratoire (ACR)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier la conscience (Appeler, secouer, stimuler)",
-          "tempsExecutionSec": 30,
-          "feedback": "Aucune réponse, aucun mouvement.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Pratiquer un massage cardiaque immédiat",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous n'avez pas encore vérifié s'il respire !",
-          "nextNode": "s_err_direct"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Crier 'A l'aide !', demander un DAE",
-          "tempsExecutionSec": 30,
-          "feedback": "Un témoin s'arrête. Vous lui demandez de chercher un DAE.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Sortir votre téléphone pour appeler le 15 seul",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous perdez des secondes précieuses sans libérer les voies aériennes.",
-          "nextNode": "s_err_solo"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "LVA et vérifier la respiration (10s)",
-          "tempsExecutionSec": 30,
-          "feedback": "Ventre et poitrine ne bougent pas. Aucun souffle.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Mettre en PLS par précaution",
-          "tempsExecutionSec": 30,
-          "feedback": "ERRARE : On ne met jamais en PLS une victime qui ne respire pas !",
-          "nextNode": "s_err_pls"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Alerter le 15, donner l'adresse précise et débuter RCP",
-          "tempsExecutionSec": 30,
-          "feedback": "Le 15 est en ligne. Vous commencez les compressions (30:2).",
-          "nextNode": "s5"
-        },
-        {
-          "label": "Chercher le DAE vous-même en laissant la victime",
-          "tempsExecutionSec": 30,
-          "feedback": "La victime reste sans massage trop longtemps.",
-          "nextNode": "s_err_abandon"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5": {
-      "id": "s5",
-      "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Allumer le DAE et suivre les instructions vocales",
-          "tempsExecutionSec": 30,
-          "feedback": "Le DAE analyse... 'Choc recommandé, ne touchez pas la victime'.",
-          "nextNode": "s6"
-        },
-        {
-          "label": "Continuer le massage sans s'occuper du DAE",
-          "tempsExecutionSec": 30,
-          "feedback": "Le DAE est la priorité absolue pour choquer un rythme fibrillant.",
-          "nextNode": "s_err_nodae"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s6": {
-      "id": "s6",
-      "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Reprendre immédiatement la RCP (compressions)",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous reprenez le massage comme demandé par l'appareil.",
-          "nextNode": "s7_good"
-        },
-        {
-          "label": "Attendre que le DAE analyse à nouveau",
-          "tempsExecutionSec": 30,
-          "feedback": "Il faut masser entre les analyses (2 minutes) !",
-          "nextNode": "s_err_pause"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s7_good": {
-      "id": "s7_good",
-      "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_direct": {
-      "id": "s_err_direct",
-      "descriptionClinique": "Masser une personne qui dort ou qui a juste fait un malaise sans vérifier est une faute grave.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_solo": {
-      "id": "s_err_solo",
-      "descriptionClinique": "En situation d'urgence, déléguer la recherche du DAE est vital pour rester auprès de la victime.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_pls": {
-      "id": "s_err_pls",
-      "descriptionClinique": "Mettre un ACR en PLS garantit le décès par hypoxie cérébrale.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_abandon": {
-      "id": "s_err_abandon",
-      "descriptionClinique": "Le cerveau meurt en 4 minutes. Votre absence a été fatale.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_nodae": {
-      "id": "s_err_nodae",
-      "descriptionClinique": "Ne pas utiliser le DAE disponible réduit les chances de survie de 90% à 5%.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_pause": {
-      "id": "s_err_pause",
-      "descriptionClinique": "Le sang s'arrête de circuler dès que vous arrêtez de masser. Les organes sont lésés.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  },
-  "editorData": {
-    "miniGraph": {
-      "nodes": [
-        {
-          "id": "s1",
-          "x": 100,
-          "y": 100,
-          "name": "Sécurité & Conscience",
-          "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s2",
-          "x": 400,
-          "y": 100,
-          "name": "Appel à l'aide",
-          "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s3",
-          "x": 700,
-          "y": 100,
-          "name": "LVA & Respiration",
-          "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s4",
-          "x": 100,
-          "y": 300,
-          "name": "Alerte & Massage",
-          "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s5",
-          "x": 400,
-          "y": 300,
-          "name": "Arrivée du DAE",
-          "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s6",
-          "x": 700,
-          "y": 300,
-          "name": "Choc & Reprise",
-          "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s7_good",
-          "x": 100,
-          "y": 500,
-          "name": "Succès : RCP efficace",
-          "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s_err_direct",
-          "x": 400,
-          "y": 500,
-          "name": "Échec : Procédure inversée",
-          "descriptionClinique": "Masser une personne qui dort ou qui a juste fait un malaise sans vérifier est une faute grave.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_solo",
-          "x": 700,
-          "y": 500,
-          "name": "Échec : Management témoin",
-          "descriptionClinique": "En situation d'urgence, déléguer la recherche du DAE est vital pour rester auprès de la victime.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_pls",
-          "x": 100,
-          "y": 700,
-          "name": "Échec : Erreur fatale PLS",
-          "descriptionClinique": "Mettre un ACR en PLS garantit le décès par hypoxie cérébrale.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_abandon",
-          "x": 400,
-          "y": 700,
-          "name": "Échec : Abandon de poste",
-          "descriptionClinique": "Le cerveau meurt en 4 minutes. Votre absence a été fatale.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_nodae",
-          "x": 700,
-          "y": 700,
-          "name": "Échec : Perte de chance",
-          "descriptionClinique": "Ne pas utiliser le DAE disponible réduit les chances de survie de 90% à 5%.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_pause",
-          "x": 100,
-          "y": 900,
-          "name": "Échec : Pauses trop longues",
-          "descriptionClinique": "Le sang s'arrête de circuler dès que vous arrêtez de masser. Les organes sont lésés.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        }
-      ],
-      "connections": [
-        {
-          "id": "conn_1_1773010006435",
-          "fromId": "s1",
-          "toId": "s2",
-          "label": "Vérifier la conscience (Appeler, secouer, stimuler)",
-          "tempsExecutionSec": 30,
-          "feedback": "Aucune réponse, aucun mouvement."
-        },
-        {
-          "id": "conn_2_1773010006435",
-          "fromId": "s1",
-          "toId": "s_err_direct",
-          "label": "Pratiquer un massage cardiaque immédiat",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous n'avez pas encore vérifié s'il respire !"
-        },
-        {
-          "id": "conn_3_1773010006436",
-          "fromId": "s2",
-          "toId": "s3",
-          "label": "Crier 'A l'aide !', demander un DAE",
-          "tempsExecutionSec": 30,
-          "feedback": "Un témoin s'arrête. Vous lui demandez de chercher un DAE."
-        },
-        {
-          "id": "conn_4_1773010006436",
-          "fromId": "s2",
-          "toId": "s_err_solo",
-          "label": "Sortir votre téléphone pour appeler le 15 seul",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous perdez des secondes précieuses sans libérer les voies aériennes."
-        },
-        {
-          "id": "conn_5_1773010006436",
-          "fromId": "s3",
-          "toId": "s4",
-          "label": "LVA et vérifier la respiration (10s)",
-          "tempsExecutionSec": 30,
-          "feedback": "Ventre et poitrine ne bougent pas. Aucun souffle."
-        },
-        {
-          "id": "conn_6_1773010006436",
-          "fromId": "s3",
-          "toId": "s_err_pls",
-          "label": "Mettre en PLS par précaution",
-          "tempsExecutionSec": 30,
-          "feedback": "ERRARE : On ne met jamais en PLS une victime qui ne respire pas !"
-        },
-        {
-          "id": "conn_7_1773010006436",
-          "fromId": "s4",
-          "toId": "s5",
-          "label": "Alerter le 15, donner l'adresse précise et débuter RCP",
-          "tempsExecutionSec": 30,
-          "feedback": "Le 15 est en ligne. Vous commencez les compressions (30:2)."
-        },
-        {
-          "id": "conn_8_1773010006436",
-          "fromId": "s4",
-          "toId": "s_err_abandon",
-          "label": "Chercher le DAE vous-même en laissant la victime",
-          "tempsExecutionSec": 30,
-          "feedback": "La victime reste sans massage trop longtemps."
-        },
-        {
-          "id": "conn_9_1773010006436",
-          "fromId": "s5",
-          "toId": "s6",
-          "label": "Allumer le DAE et suivre les instructions vocales",
-          "tempsExecutionSec": 30,
-          "feedback": "Le DAE analyse... 'Choc recommandé, ne touchez pas la victime'."
-        },
-        {
-          "id": "conn_10_1773010006436",
-          "fromId": "s5",
-          "toId": "s_err_nodae",
-          "label": "Continuer le massage sans s'occuper du DAE",
-          "tempsExecutionSec": 30,
-          "feedback": "Le DAE est la priorité absolue pour choquer un rythme fibrillant."
-        },
-        {
-          "id": "conn_11_1773010006436",
-          "fromId": "s6",
-          "toId": "s7_good",
-          "label": "Reprendre immédiatement la RCP (compressions)",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous reprenez le massage comme demandé par l'appareil."
-        },
-        {
-          "id": "conn_12_1773010006436",
-          "fromId": "s6",
-          "toId": "s_err_pause",
-          "label": "Attendre que le DAE analyse à nouveau",
-          "tempsExecutionSec": 30,
-          "feedback": "Il faut masser entre les analyses (2 minutes) !"
-        }
-      ]
-    }
-  }
 }

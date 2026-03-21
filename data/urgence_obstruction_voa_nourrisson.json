@@ -1,318 +1,334 @@
 {
-  "id": "urgence_urg_04",
-  "title": "Obstruction des Voies Aériennes chez un Nourrisson",
-  "specialty": "urgence",
-  "difficulty": 3,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Moreau",
-    "prenom": "Théo",
-    "age": 1,
-    "sexe": "M",
-    "taille": "75 cm",
-    "poids": "9 kg",
-    "groupeSanguin": "O+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Nourrisson en détresse respiratoire aiguë après un repas.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "Lait maternel + diversification alimentaire débutée",
-        "particularites": "A mangé des petits morceaux de fruit"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_urg_04",
+    "title": "Obstruction des Voies Aériennes chez un Nourrisson",
+    "specialty": "urgence",
+    "difficulty": 3,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Moreau",
+        "prenom": "Théo",
+        "age": 1,
+        "sexe": "M",
+        "taille": "75 cm",
+        "poids": "9 kg",
+        "groupeSanguin": "O+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Nourrisson en détresse respiratoire aiguë après un repas.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "Lait maternel + diversification alimentaire débutée",
+                "particularites": "A mangé des petits morceaux de fruit"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal, il y a 2 minutes",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Mise en bouche d'un morceau de fruit",
+            "descriptionDouleur": "Incapable de pleurer normalement",
+            "asymptomesAssocies": [
+                "Toux inefficace",
+                "Cyanose des lèvres",
+                "Agitation"
+            ],
+            "remarques": "La mère est paniquée"
+        },
+        "verbatim": "Mon bébé... il étouffe ! Il ne peut plus crier ! Ses lèvres sont bleues !"
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "Non mesurée",
+            "pouls": "140 bpm",
+            "temperature": "37°C",
+            "saturationO2": "82%",
+            "frequenceRespiratoire": "Tentatives inefficaces"
+        },
+        "aspectGeneral": "Nourrisson cyanosé des lèvres, yeux écarquillés, bouche ouverte. Toux faible et inefficace. Ne crie pas.",
+        "examenCardiovasculaire": {
+            "auscultation": "Tachycardie",
+            "inspection": "Cyanose des lèvres et extrémités",
+            "palpation": "Pouls fémoral rapide"
+        },
+        "examenPulmonaire": {
+            "auscultation": "Pas de murmure vésiculaire audible",
+            "inspection": "Tirage, pas d'expiration efficace",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal, il y a 2 minutes",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Mise en bouche d'un morceau de fruit",
-      "descriptionDouleur": "Incapable de pleurer normalement",
-      "asymptomesAssocies": ["Toux inefficace", "Cyanose des lèvres", "Agitation"],
-      "remarques": "La mère est paniquée"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Obstruction totale des voies aériennes par corps étranger",
+        "Obstruction partielle des voies aériennes",
+        "Laryngite aiguë (croup)",
+        "Crise de bronchiolite"
+    ],
+    "correctDiagnostic": "Obstruction totale des voies aériennes par corps étranger",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "Mon bébé... il étouffe ! Il ne peut plus crier ! Ses lèvres sont bleues !"
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "Non mesurée",
-      "pouls": "140 bpm",
-      "temperature": "37°C",
-      "saturationO2": "82%",
-      "frequenceRespiratoire": "Tentatives inefficaces"
+    "possibleTreatments": [
+        "5 claques dans le dos avec le nourrisson sur l'avant-bras, tête basse",
+        "5 compressions thoraciques avec 2 doigts",
+        "Tenter d'attraper le corps étranger au fond de la gorge",
+        "Mettre le nourrisson tête en bas et secouer",
+        "Donner de l'eau"
+    ],
+    "correctTreatments": [
+        "5 claques dans le dos avec le nourrisson sur l'avant-bras, tête basse",
+        "5 compressions thoraciques avec 2 doigts"
+    ],
+    "fatalTreatments": [
+        "Tenter d'attraper le corps étranger au fond de la gorge"
+    ],
+    "correction": "# Correction : Obstruction des Voies Aériennes du Nourrisson\n\n## Diagnostic\nNourrisson + mise en bouche d'aliment + cyanose + toux inefficace + pas de cri = **obstruction TOTALE** des voies aériennes par corps étranger.\n\n## Différence adulte vs nourrisson\nChez le nourrisson (<1 an), les techniques sont DIFFÉRENTES :\n- **Pas de Heimlich** (trop dangereux pour les organes fragiles)\n- **Pas de claques vigoureuses** (risque de lésion médullaire)\n\n## Conduite à tenir (AFGSU)\n1. Allonger le nourrisson sur l'avant-bras, **tête plus basse que le corps**, soutenir la tête/nuque\n2. Donner **5 claques dans le dos** (entre les omoplates) avec la paume de la main\n3. Retourner le nourrisson sur le dos sur l'autre avant-bras\n4. Donner **5 compressions thoraciques** avec 2 doigts au milieu du sternum\n5. Alterner 5 claques / 5 compressions jusqu'à expulsion ou perte de connaissance\n6. Si perte de connaissance : débuter RCP (30/2) et vérifier la bouche\n\n## Piège classique\n**NE JAMAIS** mettre le doigt « à l'aveugle » dans la gorge du nourrisson. Vous risquez de repousser le corps étranger plus profondément et d'aggraver l'obstruction.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Nourrisson cyanosé des lèvres, yeux écarquillés, bouche ouverte. Toux faible et inefficace. Ne crie pas.",
-    "examenCardiovasculaire": {
-      "auscultation": "Tachycardie",
-      "inspection": "Cyanose des lèvres et extrémités",
-      "palpation": "Pouls fémoral rapide"
+    "locks": [
+        {
+            "id": "lock_urg04_diagnostic",
+            "type": "QCM",
+            "challenge": {
+                "question": "Le nourrisson ne crie pas, a les lèvres bleues et a mis un aliment en bouche. Que se passe-t-il ?",
+                "options": [
+                    "Crise de bronchiolite",
+                    "Obstruction totale des voies aériennes par corps étranger",
+                    "Laryngite aiguë",
+                    "Malaise vagal"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "L'association mise en bouche + cyanose + absence de cri = obstruction totale par corps étranger. C'est une urgence vitale immédiate.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
+        },
+        {
+            "id": "lock_urg04_technique",
+            "type": "QCM",
+            "challenge": {
+                "question": "Chez un nourrisson (<1 an) en obstruction totale, quelle est la première technique à appliquer ?",
+                "options": [
+                    "La manoeuvre de Heimlich (compressions abdominales)",
+                    "5 claques dans le dos sur l'avant-bras, tête basse",
+                    "Mettre le doigt dans la bouche pour attraper le corps étranger",
+                    "Le retourner tête en bas et le secouer"
+                ],
+                "correct_indices": [
+                    1
+                ]
+            },
+            "feedback_error": "Chez le nourrisson (<1 an), on commence par 5 claques dans le dos sur l'avant-bras avec la tête plus basse que le corps. Le Heimlich est contre-indiqué chez le nourrisson.",
+            "target_fields": [
+                "correctTreatments"
+            ]
+        }
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "Pas de murmure vésiculaire audible",
-      "inspection": "Tirage, pas d'expiration efficace",
-      "percussion": "ND"
-    },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Théo, 1 an, était dans sa chaise haute en train de manger des morceaux de fruit. Sa mère vous appelle en hurlant : le bébé ne crie plus, ses lèvres deviennent bleues, il ouvre grand les yeux et la bouche mais aucun son ne sort. Il fait des efforts de toux très faibles.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "140",
+                "saturationO2": "82",
+                "temperature": "37",
+                "frequenceRespiratoire": "Irrégulière"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Prendre le bébé sur l'avant-bras, tête basse, et donner 5 claques dans le dos",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Vous allongez Théo sur votre avant-bras, tête plus basse que le corps. 5 claques sèches entre les omoplates.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Ouvrir la bouche du bébé et chercher le corps étranger avec votre doigt",
+                    "tempsExecutionSec": 15,
+                    "feedback": "ERREUR : vous ne voyez rien et repoussez le morceau de fruit plus profondément. L'obstruction s'aggrave !",
+                    "nextNode": "s_err_finger"
+                },
+                {
+                    "label": "Lui donner de l'eau pour déboucher",
+                    "tempsExecutionSec": 15,
+                    "feedback": "ERREUR GRAVE : L'eau sur un corps étranger complet va provoquer une noyade à sec et l'arrêt cardiaque.",
+                    "nextNode": "s_err_water"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Après 5 claques dans le dos, le morceau de fruit n'est toujours pas sorti. Théo devient de plus en plus cyanosé. Sa saturation chute à 75%.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "150",
+                "saturationO2": "75",
+                "temperature": "37",
+                "frequenceRespiratoire": "Quasi inexistante"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Retourner Théo sur le dos sur l'autre avant-bras et donner 5 compressions thoraciques (2 doigts)",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Vous retournez Théo. 5 compressions thoraciques au milieu du sternum avec l'index et le majeur.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Continuer les claques dans le dos indéfiniment",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Les claques seules n'ont pas fonctionné. Le changement de technique est indispensable (alterner 5 claques / 5 compressions).",
+                    "nextNode": "s3_late"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Après 5 compressions thoraciques, vous retournez Théo sur le ventre. Au 2ème cycle de claques, vous voyez un petit morceau de pomme sortir de sa bouche !",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "145",
+                "saturationO2": "80",
+                "temperature": "37",
+                "frequenceRespiratoire": "Reprend"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier que Théo respire normalement et appeler le 15",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Théo se met à pleurer ! La respiration reprend. Le 15 est appelé pour surveillance.",
+                    "nextNode": "s4_good"
+                },
+                {
+                    "label": "Donner de l'eau au bébé pour vérifier qu'il avale",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Théo est encore agité et les voies aériennes sont inflammées. Risque de re-obstruction. Attendez l'avis du 15.",
+                    "nextNode": "s4_good"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3_late": {
+            "id": "s3_late",
+            "descriptionClinique": "Théo a perdu connaissance par hypoxie prolongée.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "160",
+                "saturationO2": "60",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Débuter la RCP du nourrisson (30 compressions / 2 insufflations) et vérifier la bouche",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Pendant la RCP, vous vérifiez la bouche et voyez le morceau de fruit. Vous l'extrayez délicatement. La respiration reprend.",
+                    "nextNode": "s4_resus"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4_good": {
+            "id": "s4_good",
+            "descriptionClinique": "Le morceau de pomme est sorti. Théo pleure fort (bon signe !). Le 15 vous rassure et demande un contrôle en pédiatrie. La mère vous serre dans ses bras en pleurant. Réflexes parfaits.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "130",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "35"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 125
+        },
+        "s4_resus": {
+            "id": "s4_resus",
+            "descriptionClinique": "Grâce à votre persévérance, le corps étranger est extrait et Théo recommence à respirer. Le SAMU pédiatrique prend le relais. Pronostic neurologique incertain mais des chances de récupération grâce à la RCP rapide.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "120",
+                "saturationO2": "90",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "20"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 125
+        },
+        "s_err_finger": {
+            "id": "s_err_finger",
+            "descriptionClinique": "Votre doigt a repoussé le morceau de fruit dans la trachée. Obstruction complète. Théo fait un arrêt cardiaque hypoxique.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "36",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_water": {
+            "id": "s_err_water",
+            "descriptionClinique": "L'eau ne peut pas passer derrière le corps étranger et provoque une inhalation. Théo se noie à sec. Arrêt cardiaque.",
+            "constantesCibles": {
+                "tension": "Non mesurée",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "36",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Obstruction totale des voies aériennes par corps étranger",
-    "Obstruction partielle des voies aériennes",
-    "Laryngite aiguë (croup)",
-    "Crise de bronchiolite"
-  ],
-  "correctDiagnostic": "Obstruction totale des voies aériennes par corps étranger",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "5 claques dans le dos avec le nourrisson sur l'avant-bras, tête basse",
-    "5 compressions thoraciques avec 2 doigts",
-    "Tenter d'attraper le corps étranger au fond de la gorge",
-    "Mettre le nourrisson tête en bas et secouer",
-    "Donner de l'eau"
-  ],
-  "correctTreatments": [
-    "5 claques dans le dos avec le nourrisson sur l'avant-bras, tête basse",
-    "5 compressions thoraciques avec 2 doigts"
-  ],
-  "fatalTreatments": [
-    "Tenter d'attraper le corps étranger au fond de la gorge"
-  ],
-  "correction": "# Correction : Obstruction des Voies Aériennes du Nourrisson\n\n## Diagnostic\nNourrisson + mise en bouche d'aliment + cyanose + toux inefficace + pas de cri = **obstruction TOTALE** des voies aériennes par corps étranger.\n\n## Différence adulte vs nourrisson\nChez le nourrisson (<1 an), les techniques sont DIFFÉRENTES :\n- **Pas de Heimlich** (trop dangereux pour les organes fragiles)\n- **Pas de claques vigoureuses** (risque de lésion médullaire)\n\n## Conduite à tenir (AFGSU)\n1. Allonger le nourrisson sur l'avant-bras, **tête plus basse que le corps**, soutenir la tête/nuque\n2. Donner **5 claques dans le dos** (entre les omoplates) avec la paume de la main\n3. Retourner le nourrisson sur le dos sur l'autre avant-bras\n4. Donner **5 compressions thoraciques** avec 2 doigts au milieu du sternum\n5. Alterner 5 claques / 5 compressions jusqu'à expulsion ou perte de connaissance\n6. Si perte de connaissance : débuter RCP (30/2) et vérifier la bouche\n\n## Piège classique\n**NE JAMAIS** mettre le doigt « à l'aveugle » dans la gorge du nourrisson. Vous risquez de repousser le corps étranger plus profondément et d'aggraver l'obstruction.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg04_diagnostic",
-      "type": "QCM",
-      "challenge": {
-        "question": "Le nourrisson ne crie pas, a les lèvres bleues et a mis un aliment en bouche. Que se passe-t-il ?",
-        "options": [
-          "Crise de bronchiolite",
-          "Obstruction totale des voies aériennes par corps étranger",
-          "Laryngite aiguë",
-          "Malaise vagal"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "L'association mise en bouche + cyanose + absence de cri = obstruction totale par corps étranger. C'est une urgence vitale immédiate.",
-      "target_fields": ["correctDiagnostic"]
-    },
-    {
-      "id": "lock_urg04_technique",
-      "type": "QCM",
-      "challenge": {
-        "question": "Chez un nourrisson (<1 an) en obstruction totale, quelle est la première technique à appliquer ?",
-        "options": [
-          "La manoeuvre de Heimlich (compressions abdominales)",
-          "5 claques dans le dos sur l'avant-bras, tête basse",
-          "Mettre le doigt dans la bouche pour attraper le corps étranger",
-          "Le retourner tête en bas et le secouer"
-        ],
-        "correct_indices": [1]
-      },
-      "feedback_error": "Chez le nourrisson (<1 an), on commence par 5 claques dans le dos sur l'avant-bras avec la tête plus basse que le corps. Le Heimlich est contre-indiqué chez le nourrisson.",
-      "target_fields": ["correctTreatments"]
-    }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Théo, 1 an, était dans sa chaise haute en train de manger des morceaux de fruit. Sa mère vous appelle en hurlant : le bébé ne crie plus, ses lèvres deviennent bleues, il ouvre grand les yeux et la bouche mais aucun son ne sort. Il fait des efforts de toux très faibles.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "140",
-        "saturationO2": "82",
-        "temperature": "37",
-        "frequenceRespiratoire": "Irrégulière"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Prendre le bébé sur l'avant-bras, tête basse, et donner 5 claques dans le dos",
-          "tempsExecutionSec": 15,
-          "feedback": "Vous allongez Théo sur votre avant-bras, tête plus basse que le corps. 5 claques sèches entre les omoplates.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Ouvrir la bouche du bébé et chercher le corps étranger avec votre doigt",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR : vous ne voyez rien et repoussez le morceau de fruit plus profondément. L'obstruction s'aggrave !",
-          "nextNode": "s_err_finger"
-        },
-        {
-          "label": "Lui donner de l'eau pour déboucher",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR GRAVE : L'eau sur un corps étranger complet va provoquer une noyade à sec et l'arrêt cardiaque.",
-          "nextNode": "s_err_water"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Après 5 claques dans le dos, le morceau de fruit n'est toujours pas sorti. Théo devient de plus en plus cyanosé. Sa saturation chute à 75%.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "150",
-        "saturationO2": "75",
-        "temperature": "37",
-        "frequenceRespiratoire": "Quasi inexistante"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Retourner Théo sur le dos sur l'autre avant-bras et donner 5 compressions thoraciques (2 doigts)",
-          "tempsExecutionSec": 15,
-          "feedback": "Vous retournez Théo. 5 compressions thoraciques au milieu du sternum avec l'index et le majeur.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Continuer les claques dans le dos indéfiniment",
-          "tempsExecutionSec": 30,
-          "feedback": "Les claques seules n'ont pas fonctionné. Le changement de technique est indispensable (alterner 5 claques / 5 compressions).",
-          "nextNode": "s3_late"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Après 5 compressions thoraciques, vous retournez Théo sur le ventre. Au 2ème cycle de claques, vous voyez un petit morceau de pomme sortir de sa bouche !",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "145",
-        "saturationO2": "80",
-        "temperature": "37",
-        "frequenceRespiratoire": "Reprend"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier que Théo respire normalement et appeler le 15",
-          "tempsExecutionSec": 30,
-          "feedback": "Théo se met à pleurer ! La respiration reprend. Le 15 est appelé pour surveillance.",
-          "nextNode": "s4_good"
-        },
-        {
-          "label": "Donner de l'eau au bébé pour vérifier qu'il avale",
-          "tempsExecutionSec": 15,
-          "feedback": "Théo est encore agité et les voies aériennes sont inflammées. Risque de re-obstruction. Attendez l'avis du 15.",
-          "nextNode": "s4_good"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_late": {
-      "id": "s3_late",
-      "descriptionClinique": "Théo a perdu connaissance par hypoxie prolongée.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "160",
-        "saturationO2": "60",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Débuter la RCP du nourrisson (30 compressions / 2 insufflations) et vérifier la bouche",
-          "tempsExecutionSec": 30,
-          "feedback": "Pendant la RCP, vous vérifiez la bouche et voyez le morceau de fruit. Vous l'extrayez délicatement. La respiration reprend.",
-          "nextNode": "s4_resus"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4_good": {
-      "id": "s4_good",
-      "descriptionClinique": "Le morceau de pomme est sorti. Théo pleure fort (bon signe !). Le 15 vous rassure et demande un contrôle en pédiatrie. La mère vous serre dans ses bras en pleurant. Réflexes parfaits.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "130",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "35"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s4_resus": {
-      "id": "s4_resus",
-      "descriptionClinique": "Grâce à votre persévérance, le corps étranger est extrait et Théo recommence à respirer. Le SAMU pédiatrique prend le relais. Pronostic neurologique incertain mais des chances de récupération grâce à la RCP rapide.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "120",
-        "saturationO2": "90",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "20"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_finger": {
-      "id": "s_err_finger",
-      "descriptionClinique": "Votre doigt a repoussé le morceau de fruit dans la trachée. Obstruction complète. Théo fait un arrêt cardiaque hypoxique.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_water": {
-      "id": "s_err_water",
-      "descriptionClinique": "L'eau ne peut pas passer derrière le corps étranger et provoque une inhalation. Théo se noie à sec. Arrêt cardiaque.",
-      "constantesCibles": {
-        "tension": "Non mesurée",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "36",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  }
 }

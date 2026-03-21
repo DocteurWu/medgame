@@ -1,402 +1,425 @@
 {
-  "id": "urgence_urg_01",
-  "title": "Choc Hémorragique par Plaie Artérielle du Membre Inférieur",
-  "specialty": "urgence",
-  "difficulty": 2,
-  "redacteur": "Clawd UE10",
-  "patient": {
-    "nom": "Martin",
-    "prenom": "Lucas",
-    "age": 32,
-    "sexe": "M",
-    "taille": "178 cm",
-    "poids": "75 kg",
-    "groupeSanguin": "O+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Plaie hémorragique du membre inférieur lors d'un accident de bricolage.",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "Menuisier, activité physique régulière"
-      },
-      "tabac": {
-        "quantite": "10 cigarettes/jour",
-        "duree": "10 ans"
-      },
-      "alcool": {
-        "quantite": "Occasionnel"
-      },
-      "alimentation": {
-        "regime": "Normal",
-        "particularites": "Aucune"
-      },
-      "emploi": {
-        "profession": "Menuisier",
-        "stress": "Modéré"
-      }
+    "id": "urgence_urg_01",
+    "title": "Choc Hémorragique par Plaie Artérielle du Membre Inférieur",
+    "specialty": "urgence",
+    "difficulty": 2,
+    "redacteur": "Clawd UE10",
+    "patient": {
+        "nom": "Martin",
+        "prenom": "Lucas",
+        "age": 32,
+        "sexe": "M",
+        "taille": "178 cm",
+        "poids": "75 kg",
+        "groupeSanguin": "O+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": ["Appendicectomie à 12 ans"],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Plaie hémorragique du membre inférieur lors d'un accident de bricolage.",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "Menuisier, activité physique régulière"
+            },
+            "tabac": {
+                "quantite": "10 cigarettes/jour",
+                "duree": "10 ans"
+            },
+            "alcool": {
+                "quantite": "Occasionnel"
+            },
+            "alimentation": {
+                "regime": "Normal",
+                "particularites": "Aucune"
+            },
+            "emploi": {
+                "profession": "Menuisier",
+                "stress": "Modéré"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [
+                "Appendicectomie à 12 ans"
+            ],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Il y a 3 minutes",
+            "evolution": "Aiguë, brutale",
+            "facteursDeclenchants": "Tronçonneuse a glissé sur la cuisse gauche",
+            "descriptionDouleur": "Douleur vive à la cuisse",
+            "asymptomesAssocies": [
+                "Saignement abondant",
+                "Pâleur",
+                "Sueurs"
+            ],
+            "remarques": "Accident domestique en bricolage"
+        },
+        "verbatim": "Je... je me suis coupé... ça saigne beaucoup... je suis tout pâle..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "110/70 mmHg",
+            "pouls": "105 bpm",
+            "temperature": "36.8°C",
+            "saturationO2": "97%",
+            "frequenceRespiratoire": "22/min"
+        },
+        "aspectGeneral": "Pâleur cutanée, sueurs, agitation. Lucas est conscient mais anxieux.",
+        "examenCardiovasculaire": {
+            "auscultation": "Tachycardie, pas de souffle",
+            "inspection": "Plaie à la face antéro-interne de la cuisse gauche, sang rouge vif giclant en jets pulsatiles",
+            "palpation": "Pouls radial rapide mais perçu. Extrémités froides."
+        },
+        "examenPulmonaire": {
+            "auscultation": "Pas d'anomalie",
+            "inspection": "Polypnée superficielle",
+            "percussion": "Normal"
+        },
+        "examenAbdominal": {
+            "palpation": "Abdomen souple, non douloureux",
+            "auscultation": "Bruits normaux"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Il y a 3 minutes",
-      "evolution": "Aiguë, brutale",
-      "facteursDeclenchants": "Tronçonneuse a glissé sur la cuisse gauche",
-      "descriptionDouleur": "Douleur vive à la cuisse",
-      "asymptomesAssocies": ["Saignement abondant", "Pâleur", "Sueurs"],
-      "remarques": "Accident domestique en bricolage"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [
+        "Plaie artérielle de la cuisse avec choc hémorragique débutant",
+        "Plaie veineuse simple",
+        "Plaie musculaire sans atteinte vasculaire"
+    ],
+    "correctDiagnostic": "Plaie artérielle de la cuisse avec choc hémorragique débutant",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "Je... je me suis coupé... ça saigne beaucoup... je suis tout pâle..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "110/70 mmHg",
-      "pouls": "105 bpm",
-      "temperature": "36.8°C",
-      "saturationO2": "97%",
-      "frequenceRespiratoire": "22/min"
+    "possibleTreatments": [
+        "Compression manuelle directe",
+        "Garrot posé 3 cm au-dessus de la plaie",
+        "Pansement compressif",
+        "Allonger, surélever les jambes, couvrir",
+        "Alerte 15"
+    ],
+    "correctTreatments": [
+        "Compression manuelle directe",
+        "Garrot posé 3 cm au-dessus de la plaie",
+        "Allonger, surélever les jambes, couvrir",
+        "Alerte 15"
+    ],
+    "fatalTreatments": [
+        "Pansement compressif seul"
+    ],
+    "correction": "# Correction : Choc Hémorragique par Plaie Artérielle\n\n## Diagnostic\nLe caractère du saignement est le signe clé : **sang rouge vif en jets pulsatiles** = artère sectionnée. Associé aux signes de début de choc (tachycardie, pâleur, sueurs), le tableau est celui d'une hémorragie artérielle menaçante.\n\n## Piège classique\nLe pansement compressif **seul** est insuffisant face à une section artérielle. Le flux est trop puissant. Il faut passer au **garrot** si la compression manuelle échoue.\n\n## Conduite à tenir (AFGSU)\n1. **Comprimer immédiatement** avec la main (gants)\n2. Si saignement incontrôlable : **poser un garrot** quelques cm au-dessus (JAMAIS sur une articulation)\n3. **Noter l'heure** de pose du garrot\n4. **Allonger**, jambes surélevées, couvrir (lutte état de choc + hypothermie)\n5. **NE JAMAIS** desserrer le garrot, ne pas donner à boire\n6. **Alerte 15** avec bilan précis",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Pâleur cutanée, sueurs, agitation. Lucas est conscient mais anxieux.",
-    "examenCardiovasculaire": {
-      "auscultation": "Tachycardie, pas de souffle",
-      "inspection": "Plaie à la face antéro-interne de la cuisse gauche, sang rouge vif giclant en jets pulsatiles",
-      "palpation": "Pouls radial rapide mais perçu. Extrémités froides."
+    "locks": [
+        {
+            "id": "lock_urg01_identification",
+            "type": "QCM",
+            "challenge": {
+                "question": "Le sang est rouge vif et gicle en jets pulsatiles. De quel type d'hémorragie s'agit-il ?",
+                "options": [
+                    "Hémorragie capillaire",
+                    "Hémorragie veineuse",
+                    "Hémorragie artérielle",
+                    "Hémorragie interne"
+                ],
+                "correct_indices": [
+                    2
+                ]
+            },
+            "feedback_error": "Le sang rouge vif en jets pulsatiles est caractéristique d'une plaie artérielle. Le sang veineux est plus sombre et coule de façon continue.",
+            "target_fields": [
+                "correctDiagnostic"
+            ]
+        },
+        {
+            "id": "lock_urg01_garrot",
+            "type": "SAISIE",
+            "challenge": {
+                "question": "Vous posez un garrot. Combien de centimètres au-dessus de la plaie doit-il être positionné ? (réponse en chiffre)",
+                "answer": "3",
+                "alternatives": [
+                    "2",
+                    "4",
+                    "5",
+                    "quelques"
+                ]
+            },
+            "feedback_error": "Le garrot doit être posé quelques centimètres au-dessus de la plaie (idéalement 3-5 cm). JAMAIS sur une articulation.",
+            "target_fields": [
+                "possibleTreatments"
+            ]
+        }
+    ],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "Pas d'anomalie",
-      "inspection": "Polypnée superficielle",
-      "percussion": "Normal"
-    },
-    "examenAbdominal": {
-      "palpation": "Abdomen souple, non douloureux",
-      "auscultation": "Bruits normaux"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Lucas, 32 ans, menuisier, s'est sectionné la cuisse gauche avec une tronçonneuse. Un flot de sang rouge vif gicle en jets pulsatiles. Il est pâle, couvert de sueurs, et dit : « ça saigne beaucoup, aidez-moi ! »",
+            "constantesCibles": {
+                "tension": "110/70",
+                "pouls": "105",
+                "saturationO2": "97",
+                "temperature": "36.8",
+                "frequenceRespiratoire": "22"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Comprimer immédiatement la plaie avec les mains (gants)",
+                    "tempsExecutionSec": 15,
+                    "feedback": "Vous mettez vos gants et plaquez vos mains sur la plaie. Le saignement ralentit mais continue par les interstices.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Chercher un garrot dans la trousse",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous perdez 30 secondes précieuses. La flaque de sang s'agrandit au sol. Lucas commence à avoir des vertiges.",
+                    "nextNode": "s_err_delay"
+                },
+                {
+                    "label": "Poser un pansement compressif par-dessus la plaie",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Le pansement est traversé instantanément par le flux artériel. C'est insuffisant face à une artère sectionnée.",
+                    "nextNode": "s2_trap"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Malgré votre compression, le sang percole toujours. Lucas pâlit davantage, son pouls devient filant à 120/min. La tension baisse : 95/60. Il vous regarde avec des yeux vitreux.",
+            "constantesCibles": {
+                "tension": "95/60",
+                "pouls": "120",
+                "saturationO2": "95",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "26"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Poser un garrot quelques cm au-dessus de la plaie",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Vous serrez le garrot sur le haut de la cuisse, au-dessus de la plaie. Le saignement s'arrête net.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Doubler la compression avec un 2ème pansement compressif",
+                    "tempsExecutionSec": 25,
+                    "feedback": "Le flux artériel traverse les deux pansements. Vous perdez un temps fatal.",
+                    "nextNode": "s_err_shock"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2_trap": {
+            "id": "s2_trap",
+            "descriptionClinique": "Le pansement est imbibé en quelques secondes. Le sang artériel sous pression traverse tout. Lucas devient confus et perd l'équilibre.",
+            "constantesCibles": {
+                "tension": "95/60",
+                "pouls": "115",
+                "saturationO2": "94",
+                "temperature": "36.5",
+                "frequenceRespiratoire": "24"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Retirer le pansement et poser un garrot",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Dernière chance : vous retirez le pansement imbibé et posez le garrot. Le saignement cesse.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Appliquer un hémostatique par-dessus le pansement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le temps passe, le sang continue. Lucas s'effondre en état de choc sévère.",
+                    "nextNode": "s_err_shock"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Le garrot est en place. Le saignement a totalement cessé. Lucas est livide, tremblant, assoiffé. Sa tension est à 85/55. Vous voyez qu'il voudrait boire.",
+            "constantesCibles": {
+                "tension": "85/55",
+                "pouls": "125",
+                "saturationO2": "93",
+                "temperature": "36.2",
+                "frequenceRespiratoire": "28"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Noter l'heure de pose du garrot",
+                    "tempsExecutionSec": 10,
+                    "feedback": "Heure notée : 14h37. Information vitale transmise aux secours.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Desserrer le garrot pour vérifier si ça saigne encore",
+                    "tempsExecutionSec": 15,
+                    "feedback": "ERREUR FATALE : On ne desserre JAMAIS un garrot ! Relargage de toxines et reprise du saignement.",
+                    "nextNode": "s_err_loosen"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Garrot posé à 14h37. Lucas est allongé, prostré. Il gémit et demande de l'eau.",
+            "constantesCibles": {
+                "tension": "85/55",
+                "pouls": "125",
+                "saturationO2": "93",
+                "temperature": "36.2",
+                "frequenceRespiratoire": "28"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Lui donner un verre d'eau (il a soif)",
+                    "tempsExecutionSec": 15,
+                    "feedback": "INTERDIT : risque d'inhalation gastrique lors de l'anesthésie au bloc. Vous aggravez la situation.",
+                    "nextNode": "s_err_drink"
+                },
+                {
+                    "label": "Allonger, surélever les jambes, couvrir avec une couverture",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Parfait : position anti-choc, lutte contre l'hypothermie. Lucas cesse de trembler un peu.",
+                    "nextNode": "s5"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5": {
+            "id": "s5",
+            "descriptionClinique": "Lucas est en position anti-choc, couvert. Vous composez le 15.",
+            "constantesCibles": {
+                "tension": "85/55",
+                "pouls": "125",
+                "saturationO2": "93",
+                "temperature": "36.2",
+                "frequenceRespiratoire": "28"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Donner le bilan au 15 : garrot posé, état de choc, mécanisme",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le régulateur envoie un SMUR pour déchoquage et prépare le bloc opératoire. Bravo.",
+                    "nextNode": "s6_good"
+                },
+                {
+                    "label": "Dire juste « il saigne, envoyez quelqu'un »",
+                    "tempsExecutionSec": 20,
+                    "feedback": "Bilan insuffisant. Le SMUR n'est pas envoyé en priorité. Délai mortel.",
+                    "nextNode": "s_err_alert"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s6_good": {
+            "id": "s6_good",
+            "descriptionClinique": "Le SMUR arrive en 8 minutes. Lucas est déchoqué et transféré au bloc opératoire. L'heure de pose du garrot a permis aux chirurgiens d'évaluer le temps d'ischémie. Vous avez sauvé sa vie.",
+            "constantesCibles": {
+                "tension": "85/55",
+                "pouls": "125",
+                "saturationO2": "93",
+                "temperature": "36.2",
+                "frequenceRespiratoire": "28"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 100
+        },
+        "s_err_delay": {
+            "id": "s_err_delay",
+            "descriptionClinique": "30 secondes perdues = 500 mL de sang perdus. Lucas est en choc hémorragique irréversible. L'arrêt cardiaque survient avant l'arrivée du SAMU.",
+            "constantesCibles": {
+                "tension": "60/30",
+                "pouls": "140",
+                "saturationO2": "80",
+                "temperature": "35",
+                "frequenceRespiratoire": "30"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_shock": {
+            "id": "s_err_shock",
+            "descriptionClinique": "Le retard au garrot a été fatal. Choc hémorragique irréversible, arrêt cardiaque.",
+            "constantesCibles": {
+                "tension": "50/20",
+                "pouls": "150",
+                "saturationO2": "70",
+                "temperature": "34",
+                "frequenceRespiratoire": "32"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_loosen": {
+            "id": "s_err_loosen",
+            "descriptionClinique": "Le desserrage du garrot libère les métabolites toxiques accumulés dans le membre ischémie. Reprise massive du saignement et arrêt cardiaque par hyperkaliémie.",
+            "constantesCibles": {
+                "tension": "40/10",
+                "pouls": "0",
+                "saturationO2": "0",
+                "temperature": "34",
+                "frequenceRespiratoire": "0"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_drink": {
+            "id": "s_err_drink",
+            "descriptionClinique": "Lucas vomit et aspire le contenu gastrique. L'intubation au bloc est compliquée par une pneumopathie d'inhalation.",
+            "constantesCibles": {
+                "tension": "70/40",
+                "pouls": "130",
+                "saturationO2": "85",
+                "temperature": "35.5",
+                "frequenceRespiratoire": "30"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_alert": {
+            "id": "s_err_alert",
+            "descriptionClinique": "Alerte insuffisante = délai de prise en charge prolongé. L'équipe de garde n'est pas préparée. Lucas décède.",
+            "constantesCibles": {
+                "tension": "50/20",
+                "pouls": "145",
+                "saturationO2": "75",
+                "temperature": "34",
+                "frequenceRespiratoire": "35"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [
-    "Plaie artérielle de la cuisse avec choc hémorragique débutant",
-    "Plaie veineuse simple",
-    "Plaie musculaire sans atteinte vasculaire"
-  ],
-  "correctDiagnostic": "Plaie artérielle de la cuisse avec choc hémorragique débutant",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [
-    "Compression manuelle directe",
-    "Garrot posé 3 cm au-dessus de la plaie",
-    "Pansement compressif",
-    "Allonger, surélever les jambes, couvrir",
-    "Alerte 15"
-  ],
-  "correctTreatments": [
-    "Compression manuelle directe",
-    "Garrot posé 3 cm au-dessus de la plaie",
-    "Allonger, surélever les jambes, couvrir",
-    "Alerte 15"
-  ],
-  "fatalTreatments": [
-    "Pansement compressif seul"
-  ],
-  "correction": "# Correction : Choc Hémorragique par Plaie Artérielle\n\n## Diagnostic\nLe caractère du saignement est le signe clé : **sang rouge vif en jets pulsatiles** = artère sectionnée. Associé aux signes de début de choc (tachycardie, pâleur, sueurs), le tableau est celui d'une hémorragie artérielle menaçante.\n\n## Piège classique\nLe pansement compressif **seul** est insuffisant face à une section artérielle. Le flux est trop puissant. Il faut passer au **garrot** si la compression manuelle échoue.\n\n## Conduite à tenir (AFGSU)\n1. **Comprimer immédiatement** avec la main (gants)\n2. Si saignement incontrôlable : **poser un garrot** quelques cm au-dessus (JAMAIS sur une articulation)\n3. **Noter l'heure** de pose du garrot\n4. **Allonger**, jambes surélevées, couvrir (lutte état de choc + hypothermie)\n5. **NE JAMAIS** desserrer le garrot, ne pas donner à boire\n6. **Alerte 15** avec bilan précis",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [
-    {
-      "id": "lock_urg01_identification",
-      "type": "QCM",
-      "challenge": {
-        "question": "Le sang est rouge vif et gicle en jets pulsatiles. De quel type d'hémorragie s'agit-il ?",
-        "options": [
-          "Hémorragie capillaire",
-          "Hémorragie veineuse",
-          "Hémorragie artérielle",
-          "Hémorragie interne"
-        ],
-        "correct_indices": [2]
-      },
-      "feedback_error": "Le sang rouge vif en jets pulsatiles est caractéristique d'une plaie artérielle. Le sang veineux est plus sombre et coule de façon continue.",
-      "target_fields": ["correctDiagnostic"]
-    },
-    {
-      "id": "lock_urg01_garrot",
-      "type": "SAISIE",
-      "challenge": {
-        "question": "Vous posez un garrot. Combien de centimètres au-dessus de la plaie doit-il être positionné ? (réponse en chiffre)",
-        "answer": "3",
-        "alternatives": ["2", "4", "5", "quelques"]
-      },
-      "feedback_error": "Le garrot doit être posé quelques centimètres au-dessus de la plaie (idéalement 3-5 cm). JAMAIS sur une articulation.",
-      "target_fields": ["possibleTreatments"]
-    }
-  ],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Lucas, 32 ans, menuisier, s'est sectionné la cuisse gauche avec une tronçonneuse. Un flot de sang rouge vif gicle en jets pulsatiles. Il est pâle, couvert de sueurs, et dit : « ça saigne beaucoup, aidez-moi ! »",
-      "constantesCibles": {
-        "tension": "110/70",
-        "pouls": "105",
-        "saturationO2": "97",
-        "temperature": "36.8",
-        "frequenceRespiratoire": "22"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Comprimer immédiatement la plaie avec les mains (gants)",
-          "tempsExecutionSec": 15,
-          "feedback": "Vous mettez vos gants et plaquez vos mains sur la plaie. Le saignement ralentit mais continue par les interstices.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Chercher un garrot dans la trousse",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous perdez 30 secondes précieuses. La flaque de sang s'agrandit au sol. Lucas commence à avoir des vertiges.",
-          "nextNode": "s_err_delay"
-        },
-        {
-          "label": "Poser un pansement compressif par-dessus la plaie",
-          "tempsExecutionSec": 20,
-          "feedback": "Le pansement est traversé instantanément par le flux artériel. C'est insuffisant face à une artère sectionnée.",
-          "nextNode": "s2_trap"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Malgré votre compression, le sang percole toujours. Lucas pâlit davantage, son pouls devient filant à 120/min. La tension baisse : 95/60. Il vous regarde avec des yeux vitreux.",
-      "constantesCibles": {
-        "tension": "95/60",
-        "pouls": "120",
-        "saturationO2": "95",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "26"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Poser un garrot quelques cm au-dessus de la plaie",
-          "tempsExecutionSec": 20,
-          "feedback": "Vous serrez le garrot sur le haut de la cuisse, au-dessus de la plaie. Le saignement s'arrête net.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Doubler la compression avec un 2ème pansement compressif",
-          "tempsExecutionSec": 25,
-          "feedback": "Le flux artériel traverse les deux pansements. Vous perdez un temps fatal.",
-          "nextNode": "s_err_shock"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2_trap": {
-      "id": "s2_trap",
-      "descriptionClinique": "Le pansement est imbibé en quelques secondes. Le sang artériel sous pression traverse tout. Lucas devient confus et perd l'équilibre.",
-      "constantesCibles": {
-        "tension": "95/60",
-        "pouls": "115",
-        "saturationO2": "94",
-        "temperature": "36.5",
-        "frequenceRespiratoire": "24"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Retirer le pansement et poser un garrot",
-          "tempsExecutionSec": 20,
-          "feedback": "Dernière chance : vous retirez le pansement imbibé et posez le garrot. Le saignement cesse.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Appliquer un hémostatique par-dessus le pansement",
-          "tempsExecutionSec": 30,
-          "feedback": "Le temps passe, le sang continue. Lucas s'effondre en état de choc sévère.",
-          "nextNode": "s_err_shock"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Le garrot est en place. Le saignement a totalement cessé. Lucas est livide, tremblant, assoiffé. Sa tension est à 85/55. Vous voyez qu'il voudrait boire.",
-      "constantesCibles": {
-        "tension": "85/55",
-        "pouls": "125",
-        "saturationO2": "93",
-        "temperature": "36.2",
-        "frequenceRespiratoire": "28"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Noter l'heure de pose du garrot",
-          "tempsExecutionSec": 10,
-          "feedback": "Heure notée : 14h37. Information vitale transmise aux secours.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Desserrer le garrot pour vérifier si ça saigne encore",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR FATALE : On ne desserre JAMAIS un garrot ! Relargage de toxines et reprise du saignement.",
-          "nextNode": "s_err_loosen"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Garrot posé à 14h37. Lucas est allongé, prostré. Il gémit et demande de l'eau.",
-      "constantesCibles": {
-        "tension": "85/55",
-        "pouls": "125",
-        "saturationO2": "93",
-        "temperature": "36.2",
-        "frequenceRespiratoire": "28"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Lui donner un verre d'eau (il a soif)",
-          "tempsExecutionSec": 15,
-          "feedback": "INTERDIT : risque d'inhalation gastrique lors de l'anesthésie au bloc. Vous aggravez la situation.",
-          "nextNode": "s_err_drink"
-        },
-        {
-          "label": "Allonger, surélever les jambes, couvrir avec une couverture",
-          "tempsExecutionSec": 20,
-          "feedback": "Parfait : position anti-choc, lutte contre l'hypothermie. Lucas cesse de trembler un peu.",
-          "nextNode": "s5"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5": {
-      "id": "s5",
-      "descriptionClinique": "Lucas est en position anti-choc, couvert. Vous composez le 15.",
-      "constantesCibles": {
-        "tension": "85/55",
-        "pouls": "125",
-        "saturationO2": "93",
-        "temperature": "36.2",
-        "frequenceRespiratoire": "28"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Donner le bilan au 15 : garrot posé, état de choc, mécanisme",
-          "tempsExecutionSec": 30,
-          "feedback": "Le régulateur envoie un SMUR pour déchoquage et prépare le bloc opératoire. Bravo.",
-          "nextNode": "s6_good"
-        },
-        {
-          "label": "Dire juste « il saigne, envoyez quelqu'un »",
-          "tempsExecutionSec": 20,
-          "feedback": "Bilan insuffisant. Le SMUR n'est pas envoyé en priorité. Délai mortel.",
-          "nextNode": "s_err_alert"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s6_good": {
-      "id": "s6_good",
-      "descriptionClinique": "Le SMUR arrive en 8 minutes. Lucas est déchoqué et transféré au bloc opératoire. L'heure de pose du garrot a permis aux chirurgiens d'évaluer le temps d'ischémie. Vous avez sauvé sa vie.",
-      "constantesCibles": {
-        "tension": "85/55",
-        "pouls": "125",
-        "saturationO2": "93",
-        "temperature": "36.2",
-        "frequenceRespiratoire": "28"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_delay": {
-      "id": "s_err_delay",
-      "descriptionClinique": "30 secondes perdues = 500 mL de sang perdus. Lucas est en choc hémorragique irréversible. L'arrêt cardiaque survient avant l'arrivée du SAMU.",
-      "constantesCibles": {
-        "tension": "60/30",
-        "pouls": "140",
-        "saturationO2": "80",
-        "temperature": "35",
-        "frequenceRespiratoire": "30"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_shock": {
-      "id": "s_err_shock",
-      "descriptionClinique": "Le retard au garrot a été fatal. Choc hémorragique irréversible, arrêt cardiaque.",
-      "constantesCibles": {
-        "tension": "50/20",
-        "pouls": "150",
-        "saturationO2": "70",
-        "temperature": "34",
-        "frequenceRespiratoire": "32"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_loosen": {
-      "id": "s_err_loosen",
-      "descriptionClinique": "Le desserrage du garrot libère les métabolites toxiques accumulés dans le membre ischémie. Reprise massive du saignement et arrêt cardiaque par hyperkaliémie.",
-      "constantesCibles": {
-        "tension": "40/10",
-        "pouls": "0",
-        "saturationO2": "0",
-        "temperature": "34",
-        "frequenceRespiratoire": "0"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_drink": {
-      "id": "s_err_drink",
-      "descriptionClinique": "Lucas vomit et aspire le contenu gastrique. L'intubation au bloc est compliquée par une pneumopathie d'inhalation.",
-      "constantesCibles": {
-        "tension": "70/40",
-        "pouls": "130",
-        "saturationO2": "85",
-        "temperature": "35.5",
-        "frequenceRespiratoire": "30"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_alert": {
-      "id": "s_err_alert",
-      "descriptionClinique": "Alerte insuffisante = délai de prise en charge prolongé. L'équipe de garde n'est pas préparée. Lucas décède.",
-      "constantesCibles": {
-        "tension": "50/20",
-        "pouls": "145",
-        "saturationO2": "75",
-        "temperature": "34",
-        "frequenceRespiratoire": "35"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  }
 }

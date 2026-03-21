@@ -1,588 +1,594 @@
 {
-  "id": "urgence_demo_inconscient",
-  "title": "Inconscience et PLS",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Dr. Demo",
-  "patient": {
-    "nom": "Marc",
-    "prenom": "John",
-    "age": 42,
-    "sexe": "M",
-    "taille": "180 cm",
-    "poids": "80 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Inconscience et PLS",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "ND",
-        "particularites": "ND"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_demo_inconscient",
+    "title": "Inconscience et PLS",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Dr. Demo",
+    "patient": {
+        "nom": "Marc",
+        "prenom": "John",
+        "age": 42,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "80 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Inconscience et PLS",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "ND",
+                "particularites": "ND"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Aucun",
+            "descriptionDouleur": "Variable",
+            "asymptomesAssocies": [],
+            "remarques": "Cas de démonstration secouriste"
+        },
+        "verbatim": "..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "120/80 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "37°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "16/min"
+        },
+        "aspectGeneral": "Variable selon le cas",
+        "examenCardiovasculaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
-      "asymptomesAssocies": [],
-      "remarques": "Cas de démonstration secouriste"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [],
+    "correctDiagnostic": "",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+    "possibleTreatments": [],
+    "correctTreatments": [],
+    "fatalTreatments": [],
+    "correction": "# Correction : Inconscience et PLS\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Variable selon le cas",
-    "examenCardiovasculaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "palpation": "ND"
+    "locks": [],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "percussion": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Marc est au sol, inerte. Vous êtes le seul témoin sur ce chemin.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier la conscience et l'absence de trauma",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Inconscient. Pas de signe de chute évidente sur la tête.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Chercher ses papiers d'abord",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La priorité est vitale, pas administrative !",
+                    "nextNode": "s_err_id"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "Vous ouvrez la bouche, rien n'obstrue. Vous écoutez le souffle.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier respiration pendant 10 secondes",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il respire. Fréquence : 14/min (Normal).",
+                    "nextNode": "s3_respire"
+                },
+                {
+                    "label": "Le secouer pour qu'il se réveille",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Inutile et dangereux s'il y a un trauma caché.",
+                    "nextNode": "s_err_shake"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3_respire": {
+            "id": "s3_respire",
+            "descriptionClinique": "Victime inconsciente qui respire sur le dos.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Mettre Marc en Position Latérale de Sécurité (PLS)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Bras en équerre, jambe fléchie, basculement doucement.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Le laisser sur le dos en surveillant",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Risque majeur d'étouffement par sa propre langue ou vomissement.",
+                    "nextNode": "s_err_vomit"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Il est sur le côté, stable. Sa bouche est ouverte vers le bas.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Alerter le 15 et rester à côté",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le 15 demande de rester en ligne. 'Est-ce qu'il continue de respirer ?'",
+                    "nextNode": "s5"
+                },
+                {
+                    "label": "S'éloigner pour aller chercher de l'aide",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il pourrait s'arrêter de respirer à tout moment sans que vous le sachiez.",
+                    "nextNode": "s_err_away"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5": {
+            "id": "s5",
+            "descriptionClinique": "Marc a un mouvement de haut-le-cœur et vomit un peu de liquide.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Vérifier que le liquide s'écoule bien hors de la bouche",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le liquide sort grâce à la gravité. Marc ne s'étouffe pas.",
+                    "nextNode": "s6_good"
+                },
+                {
+                    "label": "Le remettre sur le dos pour mieux nettoyer",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Inhalation immédiate du vomi. Complication pulmonaire grave.",
+                    "nextNode": "s_err_rebound"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s6_good": {
+            "id": "s6_good",
+            "descriptionClinique": "Le SAMU arrive. La PLS a protégé ses poumons lors du vomissement. Diagnostic : Malaise vagal sévère.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_id": {
+            "id": "s_err_id",
+            "descriptionClinique": "Pendant que vous cherchiez son nom, il s'est étouffé en silence sur le dos.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_shake": {
+            "id": "s_err_shake",
+            "descriptionClinique": "Il avait une fêlure cervicale. Votre mouvement l'a rendu tétraplégique.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_vomit": {
+            "id": "s_err_vomit",
+            "descriptionClinique": "Sa langue est tombée au fond de la gorge, bloquant l'air. Arrêt cardiaque faute de PLS.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_rebound": {
+            "id": "s_err_rebound",
+            "descriptionClinique": "Le vomi a fini dans ses poumons. Il est en réanimation pour infection massive.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_away": {
+            "id": "s_err_away",
+            "descriptionClinique": "Le SAMU est arrivé, il était en arrêt depuis 5 minutes. Personne n'a vu quand il a cessé de respirer.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "editorData": {
+        "miniGraph": {
+            "nodes": [
+                {
+                    "id": "s1",
+                    "x": 100,
+                    "y": 100,
+                    "name": "Découverte Joggeur",
+                    "descriptionClinique": "Marc est au sol, inerte. Vous êtes le seul témoin sur ce chemin.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s2",
+                    "x": 400,
+                    "y": 100,
+                    "name": "Bilan Respiratoire",
+                    "descriptionClinique": "Vous ouvrez la bouche, rien n'obstrue. Vous écoutez le souffle.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s3_respire",
+                    "x": 700,
+                    "y": 100,
+                    "name": "Décision PLS",
+                    "descriptionClinique": "Victime inconsciente qui respire sur le dos.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s4",
+                    "x": 100,
+                    "y": 300,
+                    "name": "Alerte & Surveillance",
+                    "descriptionClinique": "Il est sur le côté, stable. Sa bouche est ouverte vers le bas.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s5",
+                    "x": 400,
+                    "y": 300,
+                    "name": "Incident en PLS",
+                    "descriptionClinique": "Marc a un mouvement de haut-le-cœur et vomit un peu de liquide.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s6_good",
+                    "x": 700,
+                    "y": 300,
+                    "name": "Succès : Protection assurée",
+                    "descriptionClinique": "Le SAMU arrive. La PLS a protégé ses poumons lors du vomissement. Diagnostic : Malaise vagal sévère.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s_err_id",
+                    "x": 100,
+                    "y": 500,
+                    "name": "Échec : Priorité",
+                    "descriptionClinique": "Pendant que vous cherchiez son nom, il s'est étouffé en silence sur le dos.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_shake",
+                    "x": 400,
+                    "y": 500,
+                    "name": "Échec : Lésion aggravée",
+                    "descriptionClinique": "Il avait une fêlure cervicale. Votre mouvement l'a rendu tétraplégique.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_vomit",
+                    "x": 700,
+                    "y": 500,
+                    "name": "Échec : Asphyxie mécanique",
+                    "descriptionClinique": "Sa langue est tombée au fond de la gorge, bloquant l'air. Arrêt cardiaque faute de PLS.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_rebound",
+                    "x": 100,
+                    "y": 700,
+                    "name": "Échec : Pneumopathie d'inhalation",
+                    "descriptionClinique": "Le vomi a fini dans ses poumons. Il est en réanimation pour infection massive.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_away",
+                    "x": 400,
+                    "y": 700,
+                    "name": "Échec : Surveillance",
+                    "descriptionClinique": "Le SAMU est arrivé, il était en arrêt depuis 5 minutes. Personne n'a vu quand il a cessé de respirer.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                }
+            ],
+            "connections": [
+                {
+                    "id": "conn_1_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s2",
+                    "label": "Vérifier la conscience et l'absence de trauma",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Inconscient. Pas de signe de chute évidente sur la tête."
+                },
+                {
+                    "id": "conn_2_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s_err_id",
+                    "label": "Chercher ses papiers d'abord",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La priorité est vitale, pas administrative !"
+                },
+                {
+                    "id": "conn_3_1773010006438",
+                    "fromId": "s2",
+                    "toId": "s3_respire",
+                    "label": "Vérifier respiration pendant 10 secondes",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il respire. Fréquence : 14/min (Normal)."
+                },
+                {
+                    "id": "conn_4_1773010006438",
+                    "fromId": "s2",
+                    "toId": "s_err_shake",
+                    "label": "Le secouer pour qu'il se réveille",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Inutile et dangereux s'il y a un trauma caché."
+                },
+                {
+                    "id": "conn_5_1773010006438",
+                    "fromId": "s3_respire",
+                    "toId": "s4",
+                    "label": "Mettre Marc en Position Latérale de Sécurité (PLS)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Bras en équerre, jambe fléchie, basculement doucement."
+                },
+                {
+                    "id": "conn_6_1773010006438",
+                    "fromId": "s3_respire",
+                    "toId": "s_err_vomit",
+                    "label": "Le laisser sur le dos en surveillant",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Risque majeur d'étouffement par sa propre langue ou vomissement."
+                },
+                {
+                    "id": "conn_7_1773010006438",
+                    "fromId": "s4",
+                    "toId": "s5",
+                    "label": "Alerter le 15 et rester à côté",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le 15 demande de rester en ligne. 'Est-ce qu'il continue de respirer ?'"
+                },
+                {
+                    "id": "conn_8_1773010006438",
+                    "fromId": "s4",
+                    "toId": "s_err_away",
+                    "label": "S'éloigner pour aller chercher de l'aide",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Il pourrait s'arrêter de respirer à tout moment sans que vous le sachiez."
+                },
+                {
+                    "id": "conn_9_1773010006438",
+                    "fromId": "s5",
+                    "toId": "s6_good",
+                    "label": "Vérifier que le liquide s'écoule bien hors de la bouche",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le liquide sort grâce à la gravité. Marc ne s'étouffe pas."
+                },
+                {
+                    "id": "conn_10_1773010006438",
+                    "fromId": "s5",
+                    "toId": "s_err_rebound",
+                    "label": "Le remettre sur le dos pour mieux nettoyer",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Inhalation immédiate du vomi. Complication pulmonaire grave."
+                }
+            ]
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [],
-  "correctDiagnostic": "",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [],
-  "correctTreatments": [],
-  "fatalTreatments": [],
-  "correction": "# Correction : Inconscience et PLS\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Marc est au sol, inerte. Vous êtes le seul témoin sur ce chemin.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier la conscience et l'absence de trauma",
-          "tempsExecutionSec": 30,
-          "feedback": "Inconscient. Pas de signe de chute évidente sur la tête.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Chercher ses papiers d'abord",
-          "tempsExecutionSec": 30,
-          "feedback": "La priorité est vitale, pas administrative !",
-          "nextNode": "s_err_id"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "Vous ouvrez la bouche, rien n'obstrue. Vous écoutez le souffle.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier respiration pendant 10 secondes",
-          "tempsExecutionSec": 30,
-          "feedback": "Il respire. Fréquence : 14/min (Normal).",
-          "nextNode": "s3_respire"
-        },
-        {
-          "label": "Le secouer pour qu'il se réveille",
-          "tempsExecutionSec": 30,
-          "feedback": "Inutile et dangereux s'il y a un trauma caché.",
-          "nextNode": "s_err_shake"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_respire": {
-      "id": "s3_respire",
-      "descriptionClinique": "Victime inconsciente qui respire sur le dos.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Mettre Marc en Position Latérale de Sécurité (PLS)",
-          "tempsExecutionSec": 30,
-          "feedback": "Bras en équerre, jambe fléchie, basculement doucement.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Le laisser sur le dos en surveillant",
-          "tempsExecutionSec": 30,
-          "feedback": "Risque majeur d'étouffement par sa propre langue ou vomissement.",
-          "nextNode": "s_err_vomit"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Il est sur le côté, stable. Sa bouche est ouverte vers le bas.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Alerter le 15 et rester à côté",
-          "tempsExecutionSec": 30,
-          "feedback": "Le 15 demande de rester en ligne. 'Est-ce qu'il continue de respirer ?'",
-          "nextNode": "s5"
-        },
-        {
-          "label": "S'éloigner pour aller chercher de l'aide",
-          "tempsExecutionSec": 30,
-          "feedback": "Il pourrait s'arrêter de respirer à tout moment sans que vous le sachiez.",
-          "nextNode": "s_err_away"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5": {
-      "id": "s5",
-      "descriptionClinique": "Marc a un mouvement de haut-le-cœur et vomit un peu de liquide.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Vérifier que le liquide s'écoule bien hors de la bouche",
-          "tempsExecutionSec": 30,
-          "feedback": "Le liquide sort grâce à la gravité. Marc ne s'étouffe pas.",
-          "nextNode": "s6_good"
-        },
-        {
-          "label": "Le remettre sur le dos pour mieux nettoyer",
-          "tempsExecutionSec": 30,
-          "feedback": "Inhalation immédiate du vomi. Complication pulmonaire grave.",
-          "nextNode": "s_err_rebound"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s6_good": {
-      "id": "s6_good",
-      "descriptionClinique": "Le SAMU arrive. La PLS a protégé ses poumons lors du vomissement. Diagnostic : Malaise vagal sévère.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_id": {
-      "id": "s_err_id",
-      "descriptionClinique": "Pendant que vous cherchiez son nom, il s'est étouffé en silence sur le dos.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_shake": {
-      "id": "s_err_shake",
-      "descriptionClinique": "Il avait une fêlure cervicale. Votre mouvement l'a rendu tétraplégique.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_vomit": {
-      "id": "s_err_vomit",
-      "descriptionClinique": "Sa langue est tombée au fond de la gorge, bloquant l'air. Arrêt cardiaque faute de PLS.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_rebound": {
-      "id": "s_err_rebound",
-      "descriptionClinique": "Le vomi a fini dans ses poumons. Il est en réanimation pour infection massive.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_away": {
-      "id": "s_err_away",
-      "descriptionClinique": "Le SAMU est arrivé, il était en arrêt depuis 5 minutes. Personne n'a vu quand il a cessé de respirer.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  },
-  "editorData": {
-    "miniGraph": {
-      "nodes": [
-        {
-          "id": "s1",
-          "x": 100,
-          "y": 100,
-          "name": "Découverte Joggeur",
-          "descriptionClinique": "Marc est au sol, inerte. Vous êtes le seul témoin sur ce chemin.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s2",
-          "x": 400,
-          "y": 100,
-          "name": "Bilan Respiratoire",
-          "descriptionClinique": "Vous ouvrez la bouche, rien n'obstrue. Vous écoutez le souffle.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s3_respire",
-          "x": 700,
-          "y": 100,
-          "name": "Décision PLS",
-          "descriptionClinique": "Victime inconsciente qui respire sur le dos.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s4",
-          "x": 100,
-          "y": 300,
-          "name": "Alerte & Surveillance",
-          "descriptionClinique": "Il est sur le côté, stable. Sa bouche est ouverte vers le bas.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s5",
-          "x": 400,
-          "y": 300,
-          "name": "Incident en PLS",
-          "descriptionClinique": "Marc a un mouvement de haut-le-cœur et vomit un peu de liquide.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s6_good",
-          "x": 700,
-          "y": 300,
-          "name": "Succès : Protection assurée",
-          "descriptionClinique": "Le SAMU arrive. La PLS a protégé ses poumons lors du vomissement. Diagnostic : Malaise vagal sévère.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s_err_id",
-          "x": 100,
-          "y": 500,
-          "name": "Échec : Priorité",
-          "descriptionClinique": "Pendant que vous cherchiez son nom, il s'est étouffé en silence sur le dos.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_shake",
-          "x": 400,
-          "y": 500,
-          "name": "Échec : Lésion aggravée",
-          "descriptionClinique": "Il avait une fêlure cervicale. Votre mouvement l'a rendu tétraplégique.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_vomit",
-          "x": 700,
-          "y": 500,
-          "name": "Échec : Asphyxie mécanique",
-          "descriptionClinique": "Sa langue est tombée au fond de la gorge, bloquant l'air. Arrêt cardiaque faute de PLS.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_rebound",
-          "x": 100,
-          "y": 700,
-          "name": "Échec : Pneumopathie d'inhalation",
-          "descriptionClinique": "Le vomi a fini dans ses poumons. Il est en réanimation pour infection massive.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_away",
-          "x": 400,
-          "y": 700,
-          "name": "Échec : Surveillance",
-          "descriptionClinique": "Le SAMU est arrivé, il était en arrêt depuis 5 minutes. Personne n'a vu quand il a cessé de respirer.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        }
-      ],
-      "connections": [
-        {
-          "id": "conn_1_1773010006438",
-          "fromId": "s1",
-          "toId": "s2",
-          "label": "Vérifier la conscience et l'absence de trauma",
-          "tempsExecutionSec": 30,
-          "feedback": "Inconscient. Pas de signe de chute évidente sur la tête."
-        },
-        {
-          "id": "conn_2_1773010006438",
-          "fromId": "s1",
-          "toId": "s_err_id",
-          "label": "Chercher ses papiers d'abord",
-          "tempsExecutionSec": 30,
-          "feedback": "La priorité est vitale, pas administrative !"
-        },
-        {
-          "id": "conn_3_1773010006438",
-          "fromId": "s2",
-          "toId": "s3_respire",
-          "label": "Vérifier respiration pendant 10 secondes",
-          "tempsExecutionSec": 30,
-          "feedback": "Il respire. Fréquence : 14/min (Normal)."
-        },
-        {
-          "id": "conn_4_1773010006438",
-          "fromId": "s2",
-          "toId": "s_err_shake",
-          "label": "Le secouer pour qu'il se réveille",
-          "tempsExecutionSec": 30,
-          "feedback": "Inutile et dangereux s'il y a un trauma caché."
-        },
-        {
-          "id": "conn_5_1773010006438",
-          "fromId": "s3_respire",
-          "toId": "s4",
-          "label": "Mettre Marc en Position Latérale de Sécurité (PLS)",
-          "tempsExecutionSec": 30,
-          "feedback": "Bras en équerre, jambe fléchie, basculement doucement."
-        },
-        {
-          "id": "conn_6_1773010006438",
-          "fromId": "s3_respire",
-          "toId": "s_err_vomit",
-          "label": "Le laisser sur le dos en surveillant",
-          "tempsExecutionSec": 30,
-          "feedback": "Risque majeur d'étouffement par sa propre langue ou vomissement."
-        },
-        {
-          "id": "conn_7_1773010006438",
-          "fromId": "s4",
-          "toId": "s5",
-          "label": "Alerter le 15 et rester à côté",
-          "tempsExecutionSec": 30,
-          "feedback": "Le 15 demande de rester en ligne. 'Est-ce qu'il continue de respirer ?'"
-        },
-        {
-          "id": "conn_8_1773010006438",
-          "fromId": "s4",
-          "toId": "s_err_away",
-          "label": "S'éloigner pour aller chercher de l'aide",
-          "tempsExecutionSec": 30,
-          "feedback": "Il pourrait s'arrêter de respirer à tout moment sans que vous le sachiez."
-        },
-        {
-          "id": "conn_9_1773010006438",
-          "fromId": "s5",
-          "toId": "s6_good",
-          "label": "Vérifier que le liquide s'écoule bien hors de la bouche",
-          "tempsExecutionSec": 30,
-          "feedback": "Le liquide sort grâce à la gravité. Marc ne s'étouffe pas."
-        },
-        {
-          "id": "conn_10_1773010006438",
-          "fromId": "s5",
-          "toId": "s_err_rebound",
-          "label": "Le remettre sur le dos pour mieux nettoyer",
-          "tempsExecutionSec": 30,
-          "feedback": "Inhalation immédiate du vomi. Complication pulmonaire grave."
-        }
-      ]
-    }
-  }
 }

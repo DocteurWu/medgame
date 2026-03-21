@@ -1,499 +1,504 @@
 {
-  "id": "urgence_demo_brulure",
-  "title": "Brûlure Chimique Intensive",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Dr. Demo",
-  "patient": {
-    "nom": "Lucas",
-    "prenom": "John",
-    "age": 19,
-    "sexe": "M",
-    "taille": "180 cm",
-    "poids": "80 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Brûlure Chimique Intensive",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "ND",
-        "particularites": "ND"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_demo_brulure",
+    "title": "Brûlure Chimique Intensive",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Dr. Demo",
+    "patient": {
+        "nom": "Lucas",
+        "prenom": "John",
+        "age": 19,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "80 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Brûlure Chimique Intensive",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "ND",
+                "particularites": "ND"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Aucun",
+            "descriptionDouleur": "Variable",
+            "asymptomesAssocies": [],
+            "remarques": "Cas de démonstration secouriste"
+        },
+        "verbatim": "..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "120/80 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "37°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "16/min"
+        },
+        "aspectGeneral": "Variable selon le cas",
+        "examenCardiovasculaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
-      "asymptomesAssocies": [],
-      "remarques": "Cas de démonstration secouriste"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [],
+    "correctDiagnostic": "",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+    "possibleTreatments": [],
+    "correctTreatments": [],
+    "fatalTreatments": [],
+    "correction": "# Correction : Brûlure Chimique Intensive\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Variable selon le cas",
-    "examenCardiovasculaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "palpation": "ND"
+    "locks": [],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "percussion": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Lucas vient de renverser un bidon d'acide chlorhydrique sur ses mains et ses jambes.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Rincer abondamment à l'eau courante (tempérée)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Rallongement du rinçage immédiat.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Essuyer le produit avec du papier absorbant",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'acide pénètre encore plus sous la pression de l'essuyage.",
+                    "nextNode": "s_err_paper"
+                },
+                {
+                    "label": "Chercher un produit pour neutraliser l'acide",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La réaction chimique de neutralisation produit de la chaleur et brûle encore plus.",
+                    "nextNode": "s_err_neutral"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "L'eau doit couler mais Lucas a froid au reste du corps.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Retirer les vêtements imbibés tout en rinçant",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Indispensable pour stopper l'action du produit chimique.",
+                    "nextNode": "s3"
+                },
+                {
+                    "label": "Appliquer de la pommade Biafine",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La pommade emprisonne le produit chimique dans la chair !",
+                    "nextNode": "s_err_cream"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3": {
+            "id": "s3",
+            "descriptionClinique": "Le rinçage dure depuis 10 minutes. Lucas demande d'arrêter.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Maintenir le rinçage jusqu'à l'arrivée des secours",
+                    "tempsExecutionSec": 30,
+                    "feedback": "En chimique, le rinçage doit être très long (parfois 30 min+).",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Arrêter dès que la douleur diminue un peu",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le produit continue de ronger les couches profondes sans douleur immédiate.",
+                    "nextNode": "s_err_deep"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Vous transmettez le nom du produit (Acide HCl).",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Protéger la zone rincée avec un champ propre (sans serrer)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Empêche l'infection et l'hypothermie.",
+                    "nextNode": "s5_good"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5_good": {
+            "id": "s5_good",
+            "descriptionClinique": "Le rinçage précoce et prolongé a évité la greffe de peau. Excellent réflexe.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_paper": {
+            "id": "s_err_paper",
+            "descriptionClinique": "Vous avez décapé la peau déjà fragilisée par l'acide.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_neutral": {
+            "id": "s_err_neutral",
+            "descriptionClinique": "Le mélange Acide/Base a littéralement 'cuit' les mains de Lucas.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_cream": {
+            "id": "s_err_cream",
+            "descriptionClinique": "L'acide a continué à agir sous la couche de crème grasse.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_deep": {
+            "id": "s_err_deep",
+            "descriptionClinique": "Les tendons ont été atteints car l'acide n'avait pas été totalement éliminé.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "editorData": {
+        "miniGraph": {
+            "nodes": [
+                {
+                    "id": "s1",
+                    "x": 100,
+                    "y": 100,
+                    "name": "Incident Laboratoire",
+                    "descriptionClinique": "Lucas vient de renverser un bidon d'acide chlorhydrique sur ses mains et ses jambes.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s2",
+                    "x": 400,
+                    "y": 100,
+                    "name": "Rinçage Prolongé",
+                    "descriptionClinique": "L'eau doit couler mais Lucas a froid au reste du corps.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s3",
+                    "x": 700,
+                    "y": 100,
+                    "name": "Durée du Soin",
+                    "descriptionClinique": "Le rinçage dure depuis 10 minutes. Lucas demande d'arrêter.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s4",
+                    "x": 100,
+                    "y": 300,
+                    "name": "Alerte 15 détaillée",
+                    "descriptionClinique": "Vous transmettez le nom du produit (Acide HCl).",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s5_good",
+                    "x": 400,
+                    "y": 300,
+                    "name": "Succès : Lésion limitée",
+                    "descriptionClinique": "Le rinçage précoce et prolongé a évité la greffe de peau. Excellent réflexe.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s_err_paper",
+                    "x": 700,
+                    "y": 300,
+                    "name": "Échec : Brûlure mécanique",
+                    "descriptionClinique": "Vous avez décapé la peau déjà fragilisée par l'acide.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_neutral",
+                    "x": 100,
+                    "y": 500,
+                    "name": "Échec : Choc thermique",
+                    "descriptionClinique": "Le mélange Acide/Base a littéralement 'cuit' les mains de Lucas.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_cream",
+                    "x": 400,
+                    "y": 500,
+                    "name": "Échec : Aggravation chimique",
+                    "descriptionClinique": "L'acide a continué à agir sous la couche de crème grasse.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_deep",
+                    "x": 700,
+                    "y": 500,
+                    "name": "Échec : Séquelles graves",
+                    "descriptionClinique": "Les tendons ont été atteints car l'acide n'avait pas été totalement éliminé.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                }
+            ],
+            "connections": [
+                {
+                    "id": "conn_1_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s2",
+                    "label": "Rincer abondamment à l'eau courante (tempérée)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Rallongement du rinçage immédiat."
+                },
+                {
+                    "id": "conn_2_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s_err_paper",
+                    "label": "Essuyer le produit avec du papier absorbant",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'acide pénètre encore plus sous la pression de l'essuyage."
+                },
+                {
+                    "id": "conn_3_1773010006438",
+                    "fromId": "s1",
+                    "toId": "s_err_neutral",
+                    "label": "Chercher un produit pour neutraliser l'acide",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La réaction chimique de neutralisation produit de la chaleur et brûle encore plus."
+                },
+                {
+                    "id": "conn_4_1773010006438",
+                    "fromId": "s2",
+                    "toId": "s3",
+                    "label": "Retirer les vêtements imbibés tout en rinçant",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Indispensable pour stopper l'action du produit chimique."
+                },
+                {
+                    "id": "conn_5_1773010006438",
+                    "fromId": "s2",
+                    "toId": "s_err_cream",
+                    "label": "Appliquer de la pommade Biafine",
+                    "tempsExecutionSec": 30,
+                    "feedback": "La pommade emprisonne le produit chimique dans la chair !"
+                },
+                {
+                    "id": "conn_6_1773010006438",
+                    "fromId": "s3",
+                    "toId": "s4",
+                    "label": "Maintenir le rinçage jusqu'à l'arrivée des secours",
+                    "tempsExecutionSec": 30,
+                    "feedback": "En chimique, le rinçage doit être très long (parfois 30 min+)."
+                },
+                {
+                    "id": "conn_7_1773010006438",
+                    "fromId": "s3",
+                    "toId": "s_err_deep",
+                    "label": "Arrêter dès que la douleur diminue un peu",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le produit continue de ronger les couches profondes sans douleur immédiate."
+                },
+                {
+                    "id": "conn_8_1773010006438",
+                    "fromId": "s4",
+                    "toId": "s5_good",
+                    "label": "Protéger la zone rincée avec un champ propre (sans serrer)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Empêche l'infection et l'hypothermie."
+                }
+            ]
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [],
-  "correctDiagnostic": "",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [],
-  "correctTreatments": [],
-  "fatalTreatments": [],
-  "correction": "# Correction : Brûlure Chimique Intensive\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Lucas vient de renverser un bidon d'acide chlorhydrique sur ses mains et ses jambes.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Rincer abondamment à l'eau courante (tempérée)",
-          "tempsExecutionSec": 30,
-          "feedback": "Rallongement du rinçage immédiat.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Essuyer le produit avec du papier absorbant",
-          "tempsExecutionSec": 30,
-          "feedback": "L'acide pénètre encore plus sous la pression de l'essuyage.",
-          "nextNode": "s_err_paper"
-        },
-        {
-          "label": "Chercher un produit pour neutraliser l'acide",
-          "tempsExecutionSec": 30,
-          "feedback": "La réaction chimique de neutralisation produit de la chaleur et brûle encore plus.",
-          "nextNode": "s_err_neutral"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "L'eau doit couler mais Lucas a froid au reste du corps.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Retirer les vêtements imbibés tout en rinçant",
-          "tempsExecutionSec": 30,
-          "feedback": "Indispensable pour stopper l'action du produit chimique.",
-          "nextNode": "s3"
-        },
-        {
-          "label": "Appliquer de la pommade Biafine",
-          "tempsExecutionSec": 30,
-          "feedback": "La pommade emprisonne le produit chimique dans la chair !",
-          "nextNode": "s_err_cream"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3": {
-      "id": "s3",
-      "descriptionClinique": "Le rinçage dure depuis 10 minutes. Lucas demande d'arrêter.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Maintenir le rinçage jusqu'à l'arrivée des secours",
-          "tempsExecutionSec": 30,
-          "feedback": "En chimique, le rinçage doit être très long (parfois 30 min+).",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Arrêter dès que la douleur diminue un peu",
-          "tempsExecutionSec": 30,
-          "feedback": "Le produit continue de ronger les couches profondes sans douleur immédiate.",
-          "nextNode": "s_err_deep"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Vous transmettez le nom du produit (Acide HCl).",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Protéger la zone rincée avec un champ propre (sans serrer)",
-          "tempsExecutionSec": 30,
-          "feedback": "Empêche l'infection et l'hypothermie.",
-          "nextNode": "s5_good"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5_good": {
-      "id": "s5_good",
-      "descriptionClinique": "Le rinçage précoce et prolongé a évité la greffe de peau. Excellent réflexe.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_paper": {
-      "id": "s_err_paper",
-      "descriptionClinique": "Vous avez décapé la peau déjà fragilisée par l'acide.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_neutral": {
-      "id": "s_err_neutral",
-      "descriptionClinique": "Le mélange Acide/Base a littéralement 'cuit' les mains de Lucas.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_cream": {
-      "id": "s_err_cream",
-      "descriptionClinique": "L'acide a continué à agir sous la couche de crème grasse.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_deep": {
-      "id": "s_err_deep",
-      "descriptionClinique": "Les tendons ont été atteints car l'acide n'avait pas été totalement éliminé.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  },
-  "editorData": {
-    "miniGraph": {
-      "nodes": [
-        {
-          "id": "s1",
-          "x": 100,
-          "y": 100,
-          "name": "Incident Laboratoire",
-          "descriptionClinique": "Lucas vient de renverser un bidon d'acide chlorhydrique sur ses mains et ses jambes.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s2",
-          "x": 400,
-          "y": 100,
-          "name": "Rinçage Prolongé",
-          "descriptionClinique": "L'eau doit couler mais Lucas a froid au reste du corps.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s3",
-          "x": 700,
-          "y": 100,
-          "name": "Durée du Soin",
-          "descriptionClinique": "Le rinçage dure depuis 10 minutes. Lucas demande d'arrêter.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s4",
-          "x": 100,
-          "y": 300,
-          "name": "Alerte 15 détaillée",
-          "descriptionClinique": "Vous transmettez le nom du produit (Acide HCl).",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s5_good",
-          "x": 400,
-          "y": 300,
-          "name": "Succès : Lésion limitée",
-          "descriptionClinique": "Le rinçage précoce et prolongé a évité la greffe de peau. Excellent réflexe.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s_err_paper",
-          "x": 700,
-          "y": 300,
-          "name": "Échec : Brûlure mécanique",
-          "descriptionClinique": "Vous avez décapé la peau déjà fragilisée par l'acide.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_neutral",
-          "x": 100,
-          "y": 500,
-          "name": "Échec : Choc thermique",
-          "descriptionClinique": "Le mélange Acide/Base a littéralement 'cuit' les mains de Lucas.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_cream",
-          "x": 400,
-          "y": 500,
-          "name": "Échec : Aggravation chimique",
-          "descriptionClinique": "L'acide a continué à agir sous la couche de crème grasse.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_deep",
-          "x": 700,
-          "y": 500,
-          "name": "Échec : Séquelles graves",
-          "descriptionClinique": "Les tendons ont été atteints car l'acide n'avait pas été totalement éliminé.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        }
-      ],
-      "connections": [
-        {
-          "id": "conn_1_1773010006438",
-          "fromId": "s1",
-          "toId": "s2",
-          "label": "Rincer abondamment à l'eau courante (tempérée)",
-          "tempsExecutionSec": 30,
-          "feedback": "Rallongement du rinçage immédiat."
-        },
-        {
-          "id": "conn_2_1773010006438",
-          "fromId": "s1",
-          "toId": "s_err_paper",
-          "label": "Essuyer le produit avec du papier absorbant",
-          "tempsExecutionSec": 30,
-          "feedback": "L'acide pénètre encore plus sous la pression de l'essuyage."
-        },
-        {
-          "id": "conn_3_1773010006438",
-          "fromId": "s1",
-          "toId": "s_err_neutral",
-          "label": "Chercher un produit pour neutraliser l'acide",
-          "tempsExecutionSec": 30,
-          "feedback": "La réaction chimique de neutralisation produit de la chaleur et brûle encore plus."
-        },
-        {
-          "id": "conn_4_1773010006438",
-          "fromId": "s2",
-          "toId": "s3",
-          "label": "Retirer les vêtements imbibés tout en rinçant",
-          "tempsExecutionSec": 30,
-          "feedback": "Indispensable pour stopper l'action du produit chimique."
-        },
-        {
-          "id": "conn_5_1773010006438",
-          "fromId": "s2",
-          "toId": "s_err_cream",
-          "label": "Appliquer de la pommade Biafine",
-          "tempsExecutionSec": 30,
-          "feedback": "La pommade emprisonne le produit chimique dans la chair !"
-        },
-        {
-          "id": "conn_6_1773010006438",
-          "fromId": "s3",
-          "toId": "s4",
-          "label": "Maintenir le rinçage jusqu'à l'arrivée des secours",
-          "tempsExecutionSec": 30,
-          "feedback": "En chimique, le rinçage doit être très long (parfois 30 min+)."
-        },
-        {
-          "id": "conn_7_1773010006438",
-          "fromId": "s3",
-          "toId": "s_err_deep",
-          "label": "Arrêter dès que la douleur diminue un peu",
-          "tempsExecutionSec": 30,
-          "feedback": "Le produit continue de ronger les couches profondes sans douleur immédiate."
-        },
-        {
-          "id": "conn_8_1773010006438",
-          "fromId": "s4",
-          "toId": "s5_good",
-          "label": "Protéger la zone rincée avec un champ propre (sans serrer)",
-          "tempsExecutionSec": 30,
-          "feedback": "Empêche l'infection et l'hypothermie."
-        }
-      ]
-    }
-  }
 }

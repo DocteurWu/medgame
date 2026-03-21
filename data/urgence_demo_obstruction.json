@@ -1,603 +1,608 @@
 {
-  "id": "urgence_demo_obstruction",
-  "title": "Obstruction Totale (Étouffement)",
-  "specialty": "urgence",
-  "difficulty": 1,
-  "redacteur": "Dr. Demo",
-  "patient": {
-    "nom": "Sophie",
-    "prenom": "John",
-    "age": 35,
-    "sexe": "M",
-    "taille": "180 cm",
-    "poids": "80 kg",
-    "groupeSanguin": "A+"
-  },
-  "interrogatoire": {
-    "motifHospitalisation": "Obstruction Totale (Étouffement)",
-    "modeDeVie": {
-      "activitePhysique": {
-        "description": "ND"
-      },
-      "tabac": {
-        "quantite": "ND",
-        "duree": "ND"
-      },
-      "alcool": {
-        "quantite": "ND"
-      },
-      "alimentation": {
-        "regime": "ND",
-        "particularites": "ND"
-      },
-      "emploi": {
-        "profession": "ND",
-        "stress": "ND"
-      }
+    "id": "urgence_demo_obstruction",
+    "title": "Obstruction Totale (Étouffement)",
+    "specialty": "urgence",
+    "difficulty": 1,
+    "redacteur": "Dr. Demo",
+    "patient": {
+        "nom": "Sophie",
+        "prenom": "John",
+        "age": 35,
+        "sexe": "M",
+        "taille": "180 cm",
+        "poids": "80 kg",
+        "groupeSanguin": "A+"
     },
-    "antecedents": {
-      "medicaux": [],
-      "chirurgicaux": [],
-      "familiaux": []
+    "interrogatoire": {
+        "motifHospitalisation": "Obstruction Totale (Étouffement)",
+        "modeDeVie": {
+            "activitePhysique": {
+                "description": "ND"
+            },
+            "tabac": {
+                "quantite": "ND",
+                "duree": "ND"
+            },
+            "alcool": {
+                "quantite": "ND"
+            },
+            "alimentation": {
+                "regime": "ND",
+                "particularites": "ND"
+            },
+            "emploi": {
+                "profession": "ND",
+                "stress": "ND"
+            }
+        },
+        "antecedents": {
+            "medicaux": [],
+            "chirurgicaux": [],
+            "familiaux": []
+        },
+        "traitements": [],
+        "allergies": {
+            "presence": false,
+            "liste": []
+        },
+        "histoireMaladie": {
+            "debutSymptomes": "Brutal",
+            "evolution": "Aiguë",
+            "facteursDeclenchants": "Aucun",
+            "descriptionDouleur": "Variable",
+            "asymptomesAssocies": [],
+            "remarques": "Cas de démonstration secouriste"
+        },
+        "verbatim": "..."
     },
-    "traitements": [],
-    "allergies": {
-      "presence": false,
-      "liste": []
+    "examenClinique": {
+        "constantes": {
+            "tension": "120/80 mmHg",
+            "pouls": "70 bpm",
+            "temperature": "37°C",
+            "saturationO2": "98%",
+            "frequenceRespiratoire": "16/min"
+        },
+        "aspectGeneral": "Variable selon le cas",
+        "examenCardiovasculaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "palpation": "ND"
+        },
+        "examenPulmonaire": {
+            "auscultation": "ND",
+            "inspection": "ND",
+            "percussion": "ND"
+        },
+        "examenAbdominal": {
+            "palpation": "ND",
+            "auscultation": "ND"
+        }
     },
-    "histoireMaladie": {
-      "debutSymptomes": "Brutal",
-      "evolution": "Aiguë",
-      "facteursDeclenchants": "Aucun",
-      "descriptionDouleur": "Variable",
-      "asymptomesAssocies": [],
-      "remarques": "Cas de démonstration secouriste"
+    "availableExams": [],
+    "examResults": {},
+    "possibleDiagnostics": [],
+    "correctDiagnostic": "",
+    "scoringRules": {
+        "baseScore": 100,
+        "attemptPenalty": 10
     },
-    "verbatim": "..."
-  },
-  "examenClinique": {
-    "constantes": {
-      "tension": "120/80 mmHg",
-      "pouls": "70 bpm",
-      "temperature": "37°C",
-      "saturationO2": "98%",
-      "frequenceRespiratoire": "16/min"
+    "possibleTreatments": [],
+    "correctTreatments": [],
+    "fatalTreatments": [],
+    "correction": "# Correction : Obstruction Totale (Étouffement)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
+    "correctionImage": null,
+    "feedback": {
+        "default": "Terminé."
     },
-    "aspectGeneral": "Variable selon le cas",
-    "examenCardiovasculaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "palpation": "ND"
+    "locks": [],
+    "postGameQuestions": [],
+    "gameplayConfig": {
+        "startNode": "s1"
     },
-    "examenPulmonaire": {
-      "auscultation": "ND",
-      "inspection": "ND",
-      "percussion": "ND"
+    "nodes": {
+        "s1": {
+            "id": "s1",
+            "descriptionClinique": "Sophie se lève brusquement, ne peut plus parler, porte les mains à sa gorge et devient bleue (cyanose).",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Lui demander : 'Est-ce que vous vous étouffez ?'",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Elle acquiesce de la tête, incapable de produire un son.",
+                    "nextNode": "s2"
+                },
+                {
+                    "label": "Lui taper dans le dos immédiatement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous commencez les claques sans bilan, mais c'est efficace.",
+                    "nextNode": "s3_claques"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s2": {
+            "id": "s2",
+            "descriptionClinique": "C'est une obstruction TOTALE (pas de toux, pas de bruit).",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Pratiquer 5 claques vigoureuses dans le dos",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous penchez Sophie en avant et frappez entre les omoplates.",
+                    "nextNode": "s3_claques"
+                },
+                {
+                    "label": "L'aider à boire un verre d'eau",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'eau aggrave l'obstruction par dessus le corps étranger.",
+                    "nextNode": "s_err_water"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s3_claques": {
+            "id": "s3_claques",
+            "descriptionClinique": "Après 5 claques, le corps étranger n'est toujours pas sorti. Sophie s'épuise.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Passer à la manoeuvre de Heimlich (compressions abd)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous vous placez derrière elle, poing au dessus du nombril.",
+                    "nextNode": "s4"
+                },
+                {
+                    "label": "Continuer les claques à l'infini",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'inefficacité des claques impose le changement de technique.",
+                    "nextNode": "s_err_time"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s4": {
+            "id": "s4",
+            "descriptionClinique": "Vous exercez des pressions sèches vers l'arrière et le haut.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Le corps étranger est expulsé violemment",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le morceau de viande ressort. Sophie inspire à pleins poumons.",
+                    "nextNode": "s5_victory"
+                },
+                {
+                    "label": "Sophie perd connaissance et s'effondre",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'obstruction a causé une hypoxie trop longue.",
+                    "nextNode": "s_unconscious"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s_unconscious": {
+            "id": "s_unconscious",
+            "descriptionClinique": "Elle ne réagit plus et ne respire plus.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Débuter immédiatement une RCP (massages)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le massage peut aider à mobiliser le corps étranger.",
+                    "nextNode": "s6_resus"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s5_victory": {
+            "id": "s5_victory",
+            "descriptionClinique": "Elle respire mais est très choquée. Elle a mal au ventre.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [
+                {
+                    "label": "Appeler le 15 pour avis médical obligatoire",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Essentiel car Heimlich peut causer des lésions internes.",
+                    "nextNode": "s7_good"
+                },
+                {
+                    "label": "La laisser repartir car elle respire",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Risque de rupture d'organe non détectée.",
+                    "nextNode": "s_err_injury"
+                }
+            ],
+            "isEndState": false,
+            "success": true
+        },
+        "s7_good": {
+            "id": "s7_good",
+            "descriptionClinique": "Le corps étranger est sorti. Le médecin confirme l'absence de lésion. Bravo.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s6_resus": {
+            "id": "s6_resus",
+            "descriptionClinique": "Grâce à votre prise en charge de l'inconscience, le corps étranger a bougé et elle a été réanimée par le SAMU.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": true,
+            "xpReward": 75
+        },
+        "s_err_water": {
+            "id": "s_err_water",
+            "descriptionClinique": "Verser de l'eau sur un bouchon alimentaire a provoqué un arrêt immédiat.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_time": {
+            "id": "s_err_time",
+            "descriptionClinique": "L'absence de Heimlich a conduit à une issue fatale faute d'oxygène.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        },
+        "s_err_injury": {
+            "id": "s_err_injury",
+            "descriptionClinique": "Sophie a fait une hémorragie interne 2 heures plus tard. Ne jamais négliger le suivi après Heimlich.",
+            "constantesCibles": {
+                "tension": "120/80",
+                "pouls": "70",
+                "saturationO2": "98",
+                "temperature": "37",
+                "frequenceRespiratoire": "16"
+            },
+            "actionsDisponibles": [],
+            "isEndState": true,
+            "success": false,
+            "xpReward": 0
+        }
     },
-    "examenAbdominal": {
-      "palpation": "ND",
-      "auscultation": "ND"
+    "editorData": {
+        "miniGraph": {
+            "nodes": [
+                {
+                    "id": "s1",
+                    "x": 100,
+                    "y": 100,
+                    "name": "Scène au Repas",
+                    "descriptionClinique": "Sophie se lève brusquement, ne peut plus parler, porte les mains à sa gorge et devient bleue (cyanose).",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s2",
+                    "x": 400,
+                    "y": 100,
+                    "name": "Diagnostic Différentiel",
+                    "descriptionClinique": "C'est une obstruction TOTALE (pas de toux, pas de bruit).",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s3_claques",
+                    "x": 700,
+                    "y": 100,
+                    "name": "Échec des Claques",
+                    "descriptionClinique": "Après 5 claques, le corps étranger n'est toujours pas sorti. Sophie s'épuise.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s4",
+                    "x": 100,
+                    "y": 300,
+                    "name": "Manœuvre de Heimlich",
+                    "descriptionClinique": "Vous exercez des pressions sèches vers l'arrière et le haut.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s_unconscious",
+                    "x": 400,
+                    "y": 300,
+                    "name": "Passage en ACR",
+                    "descriptionClinique": "Elle ne réagit plus et ne respire plus.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s5_victory",
+                    "x": 700,
+                    "y": 300,
+                    "name": "Post-Expulsion",
+                    "descriptionClinique": "Elle respire mais est très choquée. Elle a mal au ventre.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": false,
+                    "success": true
+                },
+                {
+                    "id": "s7_good",
+                    "x": 100,
+                    "y": 500,
+                    "name": "Succès : Sauvetage parfait",
+                    "descriptionClinique": "Le corps étranger est sorti. Le médecin confirme l'absence de lésion. Bravo.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s6_resus",
+                    "x": 400,
+                    "y": 500,
+                    "name": "Succès Partiel : Réanimation",
+                    "descriptionClinique": "Grâce à votre prise en charge de l'inconscience, le corps étranger a bougé et elle a été réanimée par le SAMU.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": true
+                },
+                {
+                    "id": "s_err_water",
+                    "x": 700,
+                    "y": 500,
+                    "name": "Échec : Noyade à sec",
+                    "descriptionClinique": "Verser de l'eau sur un bouchon alimentaire a provoqué un arrêt immédiat.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_time",
+                    "x": 100,
+                    "y": 700,
+                    "name": "Échec : Perte de conscience",
+                    "descriptionClinique": "L'absence de Heimlich a conduit à une issue fatale faute d'oxygène.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                },
+                {
+                    "id": "s_err_injury",
+                    "x": 400,
+                    "y": 700,
+                    "name": "Échec : Complication interne",
+                    "descriptionClinique": "Sophie a fait une hémorragie interne 2 heures plus tard. Ne jamais négliger le suivi après Heimlich.",
+                    "constantesCibles": {
+                        "tension": "120/80",
+                        "pouls": "70",
+                        "saturationO2": "98",
+                        "temperature": "37",
+                        "frequenceRespiratoire": "16"
+                    },
+                    "isEndState": true,
+                    "success": false
+                }
+            ],
+            "connections": [
+                {
+                    "id": "conn_1_1773010006437",
+                    "fromId": "s1",
+                    "toId": "s2",
+                    "label": "Lui demander : 'Est-ce que vous vous étouffez ?'",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Elle acquiesce de la tête, incapable de produire un son."
+                },
+                {
+                    "id": "conn_2_1773010006437",
+                    "fromId": "s1",
+                    "toId": "s3_claques",
+                    "label": "Lui taper dans le dos immédiatement",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous commencez les claques sans bilan, mais c'est efficace."
+                },
+                {
+                    "id": "conn_3_1773010006437",
+                    "fromId": "s2",
+                    "toId": "s3_claques",
+                    "label": "Pratiquer 5 claques vigoureuses dans le dos",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous penchez Sophie en avant et frappez entre les omoplates."
+                },
+                {
+                    "id": "conn_4_1773010006437",
+                    "fromId": "s2",
+                    "toId": "s_err_water",
+                    "label": "L'aider à boire un verre d'eau",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'eau aggrave l'obstruction par dessus le corps étranger."
+                },
+                {
+                    "id": "conn_5_1773010006437",
+                    "fromId": "s3_claques",
+                    "toId": "s4",
+                    "label": "Passer à la manoeuvre de Heimlich (compressions abd)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Vous vous placez derrière elle, poing au dessus du nombril."
+                },
+                {
+                    "id": "conn_6_1773010006437",
+                    "fromId": "s3_claques",
+                    "toId": "s_err_time",
+                    "label": "Continuer les claques à l'infini",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'inefficacité des claques impose le changement de technique."
+                },
+                {
+                    "id": "conn_7_1773010006437",
+                    "fromId": "s4",
+                    "toId": "s5_victory",
+                    "label": "Le corps étranger est expulsé violemment",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le morceau de viande ressort. Sophie inspire à pleins poumons."
+                },
+                {
+                    "id": "conn_8_1773010006437",
+                    "fromId": "s4",
+                    "toId": "s_unconscious",
+                    "label": "Sophie perd connaissance et s'effondre",
+                    "tempsExecutionSec": 30,
+                    "feedback": "L'obstruction a causé une hypoxie trop longue."
+                },
+                {
+                    "id": "conn_9_1773010006437",
+                    "fromId": "s_unconscious",
+                    "toId": "s6_resus",
+                    "label": "Débuter immédiatement une RCP (massages)",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Le massage peut aider à mobiliser le corps étranger."
+                },
+                {
+                    "id": "conn_10_1773010006437",
+                    "fromId": "s5_victory",
+                    "toId": "s7_good",
+                    "label": "Appeler le 15 pour avis médical obligatoire",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Essentiel car Heimlich peut causer des lésions internes."
+                },
+                {
+                    "id": "conn_11_1773010006437",
+                    "fromId": "s5_victory",
+                    "toId": "s_err_injury",
+                    "label": "La laisser repartir car elle respire",
+                    "tempsExecutionSec": 30,
+                    "feedback": "Risque de rupture d'organe non détectée."
+                }
+            ]
+        }
     }
-  },
-  "availableExams": [],
-  "examResults": {},
-  "possibleDiagnostics": [],
-  "correctDiagnostic": "",
-  "scoringRules": {
-    "baseScore": 100,
-    "attemptPenalty": 10
-  },
-  "possibleTreatments": [],
-  "correctTreatments": [],
-  "fatalTreatments": [],
-  "correction": "# Correction : Obstruction Totale (Étouffement)\nCe cas illustre la prise en charge d'urgence au niveau secouriste.",
-  "correctionImage": null,
-  "feedback": {
-    "default": "Terminé."
-  },
-  "locks": [],
-  "postGameQuestions": [],
-  "gameplayConfig": {
-    "startNode": "s1"
-  },
-  "nodes": {
-    "s1": {
-      "id": "s1",
-      "descriptionClinique": "Sophie se lève brusquement, ne peut plus parler, porte les mains à sa gorge et devient bleue (cyanose).",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Lui demander : 'Est-ce que vous vous étouffez ?'",
-          "tempsExecutionSec": 30,
-          "feedback": "Elle acquiesce de la tête, incapable de produire un son.",
-          "nextNode": "s2"
-        },
-        {
-          "label": "Lui taper dans le dos immédiatement",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous commencez les claques sans bilan, mais c'est efficace.",
-          "nextNode": "s3_claques"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s2": {
-      "id": "s2",
-      "descriptionClinique": "C'est une obstruction TOTALE (pas de toux, pas de bruit).",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Pratiquer 5 claques vigoureuses dans le dos",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous penchez Sophie en avant et frappez entre les omoplates.",
-          "nextNode": "s3_claques"
-        },
-        {
-          "label": "L'aider à boire un verre d'eau",
-          "tempsExecutionSec": 30,
-          "feedback": "L'eau aggrave l'obstruction par dessus le corps étranger.",
-          "nextNode": "s_err_water"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s3_claques": {
-      "id": "s3_claques",
-      "descriptionClinique": "Après 5 claques, le corps étranger n'est toujours pas sorti. Sophie s'épuise.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Passer à la manoeuvre de Heimlich (compressions abd)",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous vous placez derrière elle, poing au dessus du nombril.",
-          "nextNode": "s4"
-        },
-        {
-          "label": "Continuer les claques à l'infini",
-          "tempsExecutionSec": 30,
-          "feedback": "L'inefficacité des claques impose le changement de technique.",
-          "nextNode": "s_err_time"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s4": {
-      "id": "s4",
-      "descriptionClinique": "Vous exercez des pressions sèches vers l'arrière et le haut.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Le corps étranger est expulsé violemment",
-          "tempsExecutionSec": 30,
-          "feedback": "Le morceau de viande ressort. Sophie inspire à pleins poumons.",
-          "nextNode": "s5_victory"
-        },
-        {
-          "label": "Sophie perd connaissance et s'effondre",
-          "tempsExecutionSec": 30,
-          "feedback": "L'obstruction a causé une hypoxie trop longue.",
-          "nextNode": "s_unconscious"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s_unconscious": {
-      "id": "s_unconscious",
-      "descriptionClinique": "Elle ne réagit plus et ne respire plus.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Débuter immédiatement une RCP (massages)",
-          "tempsExecutionSec": 30,
-          "feedback": "Le massage peut aider à mobiliser le corps étranger.",
-          "nextNode": "s6_resus"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s5_victory": {
-      "id": "s5_victory",
-      "descriptionClinique": "Elle respire mais est très choquée. Elle a mal au ventre.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [
-        {
-          "label": "Appeler le 15 pour avis médical obligatoire",
-          "tempsExecutionSec": 30,
-          "feedback": "Essentiel car Heimlich peut causer des lésions internes.",
-          "nextNode": "s7_good"
-        },
-        {
-          "label": "La laisser repartir car elle respire",
-          "tempsExecutionSec": 30,
-          "feedback": "Risque de rupture d'organe non détectée.",
-          "nextNode": "s_err_injury"
-        }
-      ],
-      "isEndState": false,
-      "success": true
-    },
-    "s7_good": {
-      "id": "s7_good",
-      "descriptionClinique": "Le corps étranger est sorti. Le médecin confirme l'absence de lésion. Bravo.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s6_resus": {
-      "id": "s6_resus",
-      "descriptionClinique": "Grâce à votre prise en charge de l'inconscience, le corps étranger a bougé et elle a été réanimée par le SAMU.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": true
-    },
-    "s_err_water": {
-      "id": "s_err_water",
-      "descriptionClinique": "Verser de l'eau sur un bouchon alimentaire a provoqué un arrêt immédiat.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_time": {
-      "id": "s_err_time",
-      "descriptionClinique": "L'absence de Heimlich a conduit à une issue fatale faute d'oxygène.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    },
-    "s_err_injury": {
-      "id": "s_err_injury",
-      "descriptionClinique": "Sophie a fait une hémorragie interne 2 heures plus tard. Ne jamais négliger le suivi après Heimlich.",
-      "constantesCibles": {
-        "tension": "120/80",
-        "pouls": "70",
-        "saturationO2": "98",
-        "temperature": "37",
-        "frequenceRespiratoire": "16"
-      },
-      "actionsDisponibles": [],
-      "isEndState": true,
-      "success": false
-    }
-  },
-  "editorData": {
-    "miniGraph": {
-      "nodes": [
-        {
-          "id": "s1",
-          "x": 100,
-          "y": 100,
-          "name": "Scène au Repas",
-          "descriptionClinique": "Sophie se lève brusquement, ne peut plus parler, porte les mains à sa gorge et devient bleue (cyanose).",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s2",
-          "x": 400,
-          "y": 100,
-          "name": "Diagnostic Différentiel",
-          "descriptionClinique": "C'est une obstruction TOTALE (pas de toux, pas de bruit).",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s3_claques",
-          "x": 700,
-          "y": 100,
-          "name": "Échec des Claques",
-          "descriptionClinique": "Après 5 claques, le corps étranger n'est toujours pas sorti. Sophie s'épuise.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s4",
-          "x": 100,
-          "y": 300,
-          "name": "Manœuvre de Heimlich",
-          "descriptionClinique": "Vous exercez des pressions sèches vers l'arrière et le haut.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s_unconscious",
-          "x": 400,
-          "y": 300,
-          "name": "Passage en ACR",
-          "descriptionClinique": "Elle ne réagit plus et ne respire plus.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s5_victory",
-          "x": 700,
-          "y": 300,
-          "name": "Post-Expulsion",
-          "descriptionClinique": "Elle respire mais est très choquée. Elle a mal au ventre.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": false,
-          "success": true
-        },
-        {
-          "id": "s7_good",
-          "x": 100,
-          "y": 500,
-          "name": "Succès : Sauvetage parfait",
-          "descriptionClinique": "Le corps étranger est sorti. Le médecin confirme l'absence de lésion. Bravo.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s6_resus",
-          "x": 400,
-          "y": 500,
-          "name": "Succès Partiel : Réanimation",
-          "descriptionClinique": "Grâce à votre prise en charge de l'inconscience, le corps étranger a bougé et elle a été réanimée par le SAMU.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": true
-        },
-        {
-          "id": "s_err_water",
-          "x": 700,
-          "y": 500,
-          "name": "Échec : Noyade à sec",
-          "descriptionClinique": "Verser de l'eau sur un bouchon alimentaire a provoqué un arrêt immédiat.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_time",
-          "x": 100,
-          "y": 700,
-          "name": "Échec : Perte de conscience",
-          "descriptionClinique": "L'absence de Heimlich a conduit à une issue fatale faute d'oxygène.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        },
-        {
-          "id": "s_err_injury",
-          "x": 400,
-          "y": 700,
-          "name": "Échec : Complication interne",
-          "descriptionClinique": "Sophie a fait une hémorragie interne 2 heures plus tard. Ne jamais négliger le suivi après Heimlich.",
-          "constantesCibles": {
-            "tension": "120/80",
-            "pouls": "70",
-            "saturationO2": "98",
-            "temperature": "37",
-            "frequenceRespiratoire": "16"
-          },
-          "isEndState": true,
-          "success": false
-        }
-      ],
-      "connections": [
-        {
-          "id": "conn_1_1773010006437",
-          "fromId": "s1",
-          "toId": "s2",
-          "label": "Lui demander : 'Est-ce que vous vous étouffez ?'",
-          "tempsExecutionSec": 30,
-          "feedback": "Elle acquiesce de la tête, incapable de produire un son."
-        },
-        {
-          "id": "conn_2_1773010006437",
-          "fromId": "s1",
-          "toId": "s3_claques",
-          "label": "Lui taper dans le dos immédiatement",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous commencez les claques sans bilan, mais c'est efficace."
-        },
-        {
-          "id": "conn_3_1773010006437",
-          "fromId": "s2",
-          "toId": "s3_claques",
-          "label": "Pratiquer 5 claques vigoureuses dans le dos",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous penchez Sophie en avant et frappez entre les omoplates."
-        },
-        {
-          "id": "conn_4_1773010006437",
-          "fromId": "s2",
-          "toId": "s_err_water",
-          "label": "L'aider à boire un verre d'eau",
-          "tempsExecutionSec": 30,
-          "feedback": "L'eau aggrave l'obstruction par dessus le corps étranger."
-        },
-        {
-          "id": "conn_5_1773010006437",
-          "fromId": "s3_claques",
-          "toId": "s4",
-          "label": "Passer à la manoeuvre de Heimlich (compressions abd)",
-          "tempsExecutionSec": 30,
-          "feedback": "Vous vous placez derrière elle, poing au dessus du nombril."
-        },
-        {
-          "id": "conn_6_1773010006437",
-          "fromId": "s3_claques",
-          "toId": "s_err_time",
-          "label": "Continuer les claques à l'infini",
-          "tempsExecutionSec": 30,
-          "feedback": "L'inefficacité des claques impose le changement de technique."
-        },
-        {
-          "id": "conn_7_1773010006437",
-          "fromId": "s4",
-          "toId": "s5_victory",
-          "label": "Le corps étranger est expulsé violemment",
-          "tempsExecutionSec": 30,
-          "feedback": "Le morceau de viande ressort. Sophie inspire à pleins poumons."
-        },
-        {
-          "id": "conn_8_1773010006437",
-          "fromId": "s4",
-          "toId": "s_unconscious",
-          "label": "Sophie perd connaissance et s'effondre",
-          "tempsExecutionSec": 30,
-          "feedback": "L'obstruction a causé une hypoxie trop longue."
-        },
-        {
-          "id": "conn_9_1773010006437",
-          "fromId": "s_unconscious",
-          "toId": "s6_resus",
-          "label": "Débuter immédiatement une RCP (massages)",
-          "tempsExecutionSec": 30,
-          "feedback": "Le massage peut aider à mobiliser le corps étranger."
-        },
-        {
-          "id": "conn_10_1773010006437",
-          "fromId": "s5_victory",
-          "toId": "s7_good",
-          "label": "Appeler le 15 pour avis médical obligatoire",
-          "tempsExecutionSec": 30,
-          "feedback": "Essentiel car Heimlich peut causer des lésions internes."
-        },
-        {
-          "id": "conn_11_1773010006437",
-          "fromId": "s5_victory",
-          "toId": "s_err_injury",
-          "label": "La laisser repartir car elle respire",
-          "tempsExecutionSec": 30,
-          "feedback": "Risque de rupture d'organe non détectée."
-        }
-      ]
-    }
-  }
 }
