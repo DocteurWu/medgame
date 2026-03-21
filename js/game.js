@@ -965,11 +965,18 @@ onDomReady(async () => {
                             .single();
 
                         if (!profileErr && profile) {
-                            const newXp = profile.total_xp + xpEarned;
-                            await supabase
+                            const newXp = (profile.total_xp || 0) + xpEarned;
+                            const { error: updateErr } = await supabase
                                 .from('profiles')
                                 .update({ total_xp: newXp })
                                 .eq('id', user.id);
+                            if (updateErr) {
+                                console.error("Erreur mise à jour XP:", updateErr);
+                            } else {
+                                console.log(`XP mis à jour: ${(profile.total_xp || 0)} → ${newXp} (+${xpEarned})`);
+                            }
+                        } else {
+                            console.error("Erreur lecture profil:", profileErr);
                         }
 
                     } catch (err) {
