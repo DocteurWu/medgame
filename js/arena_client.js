@@ -28,7 +28,21 @@ async function fetchActiveEvent() {
         .limit(1);
 
     if (!error && events && events.length > 0) {
-        activeArenaEvent = events[0];
+        const ev = events[0];
+        // For timed events, only show if within the time window
+        if (ev.event_mode === 'timed' && ev.ends_at) {
+            const now = Date.now();
+            const start = new Date(ev.scheduled_at).getTime();
+            const end = new Date(ev.ends_at).getTime();
+            if (now >= end) {
+                // Time window expired
+                activeArenaEvent = null;
+                updateBubbleUI();
+                return;
+            }
+            // Show if before or during the window
+        }
+        activeArenaEvent = ev;
         updateBubbleUI();
     } else {
         activeArenaEvent = null;
@@ -52,9 +66,36 @@ function updateBubbleUI() {
     bubble.classList.add('visible');
     titleEl.innerText = activeArenaEvent.title || "ÉVÉNEMENT ARENA";
 
-    if (activeArenaEvent.status === 'waiting') {
+    const isTimed = activeArenaEvent.event_mode === 'timed';
+
+    if (activeArenaEvent.status === 'waiting' && isTimed) {
+        // Timed event waiting for the window to open
+        const now = Date.now();
+        const startTime = new Date(activeArenaEvent.scheduled_at).getTime();
+        if (now >= startTime) {
+            // Window is open but event not activated yet by admin
+            bubble.classList.remove('live');
+            statusEl.innerHTML = `<i class="fas fa-clock"></i> Disponible bientôt...`;
+        } else if (activeArenaEvent.show_countdown === false) {
+            bubble.classList.remove('visible', 'live');
+            if (arenaTimerInterval) clearInterval(arenaTimerInterval);
+            return;
+        } else {
+            bubble.classList.remove('live');
+            startCountdown();
+        }
+    } else if (activeArenaEvent.status === 'active' && isTimed) {
+        // Timed event is playable now
+        bubble.classList.add('live');
+        const endsTime = activeArenaEvent.ends_at ? new Date(activeArenaEvent.ends_at).getTime() : null;
+        if (endsTime) {
+            startEndsCountdown();
+        } else {
+            statusEl.innerHTML = `<i class="fas fa-clock"></i> DISPONIBLE ! REJOINDRE`;
+        }
+    } else if (activeArenaEvent.status === 'waiting') {
+        // Live event waiting
         if (activeArenaEvent.show_countdown === false) {
-            // Countdown hidden by admin — hide bubble entirely
             bubble.classList.remove('visible', 'live');
             if (arenaTimerInterval) clearInterval(arenaTimerInterval);
             return;
@@ -62,8 +103,7 @@ function updateBubbleUI() {
         bubble.classList.remove('live');
         startCountdown();
     } else {
-        // Event is Live
-        if (arenaTimerInterval) clearInterval(arenaTimerInterval);
+        // Live event is starting/active
         bubble.classList.add('live');
         statusEl.innerHTML = `<i class="fas fa-satellite-dish"></i> EN DIRECT ! REJOINDRE`;
     }
@@ -97,6 +137,38 @@ function startCountdown() {
         timeStr += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
         statusEl.innerHTML = `<i class="fas fa-hourglass-start"></i> ${timeStr}`;
+    };
+
+    updateTime();
+    arenaTimerInterval = setInterval(updateTime, 1000);
+}
+
+function startEndsCountdown() {
+    if (arenaTimerInterval) clearInterval(arenaTimerInterval);
+
+    const targetDate = new Date(activeArenaEvent.ends_at).getTime();
+
+    const updateTime = () => {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        const statusEl = document.getElementById('arena-bubble-status');
+        if (!statusEl) return;
+
+        if (distance <= 0) {
+            statusEl.innerHTML = "Terminé !";
+            clearInterval(arenaTimerInterval);
+            activeArenaEvent = null;
+            updateBubbleUI();
+            return;
+        }
+
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        let timeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        statusEl.innerHTML = `<i class="fas fa-clock"></i> Reste ${timeStr} — REJOINDRE`;
     };
 
     updateTime();
