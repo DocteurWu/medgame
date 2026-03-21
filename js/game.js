@@ -965,7 +965,7 @@ onDomReady(async () => {
                             .single();
 
                         if (!profileErr && profile) {
-                            const newXp = profile.total_xp + xpEarned;
+                            const newXp = (profile.total_xp || 0) + xpEarned;
                             await supabase
                                 .from('profiles')
                                 .update({ total_xp: newXp })
