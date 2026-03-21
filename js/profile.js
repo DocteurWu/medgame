@@ -285,12 +285,11 @@ async function loadProfileData() {
             
             // --- LOGIQUE TOP 10 STREAK (Célébrité) ---
             if (profile.is_public) {
-                // 1. Calculer le rang actuel
+                // 1. Calculer le rang actuel via la vue publique
                 const { count, error: rankError } = await supabase
-                    .from('profiles')
+                    .from('public_leaderboard')
                     .select('*', { count: 'exact', head: true })
-                    .gt('total_xp', profile.total_xp || 0)
-                    .eq('is_public', true);
+                    .gt('total_xp', profile.total_xp || 0);
                 
                 if (!rankError) {
                     currentRank = count + 1;

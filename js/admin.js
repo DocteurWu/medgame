@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const { data: usersData, error: usersErr } = await supabase
                 .from('profiles')
-                .select('*')
+                .select('id, username, total_xp, rank, role, is_public')
                 .order('total_xp', { ascending: false });
 
             const usersCount = usersData ? usersData.length : 0;
