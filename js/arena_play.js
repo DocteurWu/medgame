@@ -973,10 +973,25 @@ async function renderPodium() {
     if (myRank > 0 && myRank <= 5) {
         earnedXp = rewards[myRank - 1] || 0;
         if (earnedXp > 0 && myData) {
-            // Update my own profile XP
-            const { data: prof } = await supabase.from('profiles').select('total_xp').eq('id', myUserId).single();
-            if (prof) {
-                await supabase.from('profiles').update({ total_xp: (prof.total_xp || 0) + earnedXp }).eq('id', myUserId);
+            // Idempotence guard: check if XP was already awarded
+            const { data: myArenaRow } = await supabase
+                .from('arena_players')
+                .select('id, xp_earned')
+                .eq('event_id', currentEvent.id)
+                .eq('user_id', myUserId)
+                .single();
+
+            if (myArenaRow && (!myArenaRow.xp_earned || myArenaRow.xp_earned === 0)) {
+                // Update my own profile XP
+                const { data: prof } = await supabase.from('profiles').select('total_xp').eq('id', myUserId).single();
+                if (prof) {
+                    await supabase.from('profiles').update({ total_xp: (prof.total_xp || 0) + earnedXp }).eq('id', myUserId);
+                }
+                // Mark XP as awarded
+                await supabase.from('arena_players').update({
+                    final_rank: myRank,
+                    xp_earned: earnedXp
+                }).eq('id', myArenaRow.id);
             }
         }
     }
