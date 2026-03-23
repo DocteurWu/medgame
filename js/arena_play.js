@@ -496,11 +496,18 @@ window.timedSubmitAnswer = async function (isAuto = false) {
     stopTimer();
     document.querySelectorAll('.option-item').forEach(el => { el.style.cursor = 'default'; el.onclick = null; });
 
+    // Fetch correct_indices for scoring (not stored client-side to prevent cheating)
+    const { data: corrData } = await supabase
+        .from('arena_questions')
+        .select('correct_indices')
+        .eq('id', currentQuestion.id)
+        .single();
     const correctSet = new Set(
-        Array.isArray(currentQuestion.correct_indices)
-            ? currentQuestion.correct_indices
-            : JSON.parse(currentQuestion.correct_indices || '[]')
+        Array.isArray(corrData?.correct_indices)
+            ? corrData.correct_indices
+            : JSON.parse(corrData?.correct_indices || '[]')
     );
+    currentQuestion.correct_indices = corrData?.correct_indices || [];
     const points = computeScore(selectedIndices, correctSet);
     const selectedArr = [...selectedIndices];
 
@@ -823,11 +830,18 @@ async function submitAnswer(isAuto = false) {
     const btn = document.getElementById('submit-btn');
     if (btn) { btn.disabled = true; btn.innerHTML = isAuto ? 'Temps écoulé !' : '<i class="fas fa-circle-notch fa-spin"></i> Envoi...'; }
 
+    // Fetch correct_indices for scoring (not stored client-side to prevent cheating)
+    const { data: corrData } = await supabase
+        .from('arena_questions')
+        .select('correct_indices')
+        .eq('id', currentQuestion.id)
+        .single();
     const correctSet = new Set(
-        Array.isArray(currentQuestion.correct_indices)
-            ? currentQuestion.correct_indices
-            : JSON.parse(currentQuestion.correct_indices || '[]')
+        Array.isArray(corrData?.correct_indices)
+            ? corrData.correct_indices
+            : JSON.parse(corrData?.correct_indices || '[]')
     );
+    currentQuestion.correct_indices = corrData?.correct_indices || [];
     const points = computeScore(selectedIndices, correctSet);
     const selectedArr = [...selectedIndices];
 
