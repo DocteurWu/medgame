@@ -838,6 +838,16 @@ async function finishEvent() {
     if (players && players.length > 0) {
         for (let i = 0; i < players.length; i++) {
             const xp = rewards[i] || 0;
+
+            // Idempotence guard: skip if XP already awarded
+            const { data: arenaRow } = await supabase
+                .from('arena_players')
+                .select('xp_earned')
+                .eq('id', players[i].id)
+                .single();
+
+            if (arenaRow && arenaRow.xp_earned > 0) continue;
+
             await supabase.from('arena_players').update({
                 final_rank: i + 1,
                 xp_earned: xp
@@ -899,7 +909,48 @@ async function cancelArenaEvent() {
         if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
         else alert(error.message);
     } else {
-        // Just finish if active
+        // Just finish if active — distribute XP first
+        const { data: players } = await supabase
+            .from('arena_players')
+            .select('id, user_id, score')
+            .eq('event_id', currentEvent.id)
+            .order('score', { ascending: false });
+
+        const rewards = Array.isArray(currentEvent.xp_rewards)
+            ? currentEvent.xp_rewards
+            : JSON.parse(currentEvent.xp_rewards || '[300,200,100,50,50]');
+
+        if (players && players.length > 0) {
+            for (let i = 0; i < players.length; i++) {
+                const xp = rewards[i] || 0;
+                const { data: arenaRow } = await supabase
+                    .from('arena_players')
+                    .select('xp_earned')
+                    .eq('id', players[i].id)
+                    .single();
+
+                if (arenaRow && arenaRow.xp_earned > 0) continue;
+
+                await supabase.from('arena_players').update({
+                    final_rank: i + 1,
+                    xp_earned: xp
+                }).eq('id', players[i].id);
+
+                if (xp > 0) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('total_xp')
+                        .eq('id', players[i].user_id)
+                        .single();
+                    if (profile) {
+                        await supabase.from('profiles').update({
+                            total_xp: (profile.total_xp || 0) + xp
+                        }).eq('id', players[i].user_id);
+                    }
+                }
+            }
+        }
+
         const { error } = await supabase.from('arena_events').update({ status: 'finished' }).eq('id', currentEvent.id);
         if (!error) { currentEvent = null; currentQuestions = []; renderCreateEventForm(); }
         else alert(error.message);
