@@ -1,0 +1,393 @@
+{
+  "id": "urgence_intoxication_co_chauffage",
+  "title": "Intoxication au Monoxyde de Carbone — Appartement",
+  "specialty": "urgence",
+  "difficulty": 2,
+  "redacteur": "Clawd UE10",
+  "patient": {
+    "nom": "Moreau",
+    "prenom": "Nadia",
+    "age": 42,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "62 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Troubles de la vigilance et céphalées dans un appartement mal ventilé.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée, marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "Non-fumeuse",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Aucune"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Enseignante en primaire",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": ["Migraine occasionnelle"],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": ["Paracétamol PRN"],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Depuis environ 2 heures",
+      "evolution": "Progressive, aggravation",
+      "facteursDeclenchants": "Chaudière au gaz défectueuse signalée par le voisin, fenêtres fermées (hiver)",
+      "descriptionDouleur": "Céphalée frontale bilatérale, oppressante, 7/10",
+      "symptomesAssocies": [
+        "Nausées",
+        "Vertiges",
+        "Difficultés de concentration",
+        "Somnolence inhabituelle"
+      ],
+      "remarques": "Son fils de 10 ans et son mari présentent aussi des céphalées et nausées (3 victimes potentielles dans le logement)"
+    },
+    "verbatim": "J'ai mal à la tête depuis ce matin... je suis toute étourdie. Mon fils vomit. On ne comprend pas ce qui se passe."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/80 mmHg",
+      "pouls": "105 bpm",
+      "temperature": "37.0°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "20/min"
+    },
+    "aspectGeneral": "Patiente consciente mais somnolente, répond aux questions avec lenteur. Visage pâle, légèrement rosé (teint « cerise » discret). Pas de cyanose.",
+    "examenNeurologique": {
+      "vigilance": "Somnolente (GCS 14 — ouvre les yeux au contact, confusion légère)",
+      "motricite": "Symétrique",
+      "sensibilite": "Normale",
+      "reflexes": "Vifs, symétriques"
+    },
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, tachycardie",
+      "inspection": "Pâleur, teint rosé discret",
+      "palpation": "Pouls régulier"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmurés vésiculaires normaux bilatéralement, pas de râles",
+      "inspection": "Pas de détresse respiratoire franche",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, non douloureux",
+      "auscultation": "Normaux"
+    }
+  },
+  "availableExams": [
+    "Oxymètre de pouls (SpO2)",
+    "Gazométrie capillaire (si disponible)",
+    "CO-oxymètre (si disponible)"
+  ],
+  "examResults": {
+    "oxymetreSpO2": "98% (⚠️ valeur piégée : le CO ne modifie pas la SpO2, l'oxymètre classique est trompeur !)",
+    "gazometrie": "pH 7.35, PaO2 95 mmHg, PaCO2 38 mmHg, lactate 4.2 mmol/L (↑)",
+    "coOxymetre": "SpCO 22% (carboxyhémoglobine élevée — si disponible)"
+  },
+  "possibleDiagnostics": [
+    "Intoxication au monoxyde de carbone (CO)",
+    "Migraine avec aura",
+    "Gastro-entérite aiguë",
+    "Hypoglycémie",
+    "Méningite"
+  ],
+  "correctDiagnostic": "Intoxication au monoxyde de carbone (CO)",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Évacuer immédiatement toutes les victimes vers l'air libre et appeler le 15",
+    "Ouvrir les fenêtres pour aérer et rester dans l'appartement",
+    "Administrer de l'oxygène à haute concentration (masque haute concentration, 15 L/min)",
+    "Donner du paracétamol contre les céphalées",
+    "Allonger la patiente et la couvrir (couverture de survie)",
+    "Attendre que les symptômes passent d'eux-mêmes"
+  ],
+  "correctTreatments": [
+    "Évacuer immédiatement toutes les victimes vers l'air libre et appeler le 15",
+    "Administrer de l'oxygène à haute concentration (masque haute concentration, 15 L/min)",
+    "Allonger la patiente et la couvrir (couverture de survie)"
+  ],
+  "fatalTreatments": [
+    "Ouvrir les fenêtres pour aérer et rester dans l'appartement",
+    "Attendre que les symptômes passent d'eux-mêmes"
+  ],
+  "correction": "# Correction : Intoxication au Monoxyde de Carbone (CO)\n\n## Pourquoi ce diagnostic ?\nLe monoxyde de carbone (CO) est un gaz **incolore, inodore, non irritant** — le « tueur silencieux ».\n\n**Signes évocateurs :**\n- Céphalées frontales bilatérales + nausées + vertiges (triade)\n- **Contexte :** chaudière défectueuse, logement fermé (hiver), **3 victimes** simultanées\n- SpO2 à 98% alors que le patient est somnolent → **l'oxymètre est trompeur** (le CO se lie à l'Hb comme l'O2)\n- Lactate élevé sans hypoperfusion → hypoxie cellulaire\n\n## Piège n°1 : La SpO2 normale\nL'oxymètre de pouls classique mesure l'absorption de lumière et **ne distingue pas** HbO2 de HbCO. La SpO2 affichée est faussement rassurante. Seul le **CO-oxymètre** donne la vraie saturation et le taux de carboxyhémoglobine (HbCO).\n\n## Piège n°2 : Rester dans les lieux\nOuvrir les fenêtres **ne protège pas** si la source de CO continue d'émettre. L'évacuation est le geste prioritaire — pour soi-même ET pour les victimes.\n\n## Conduite à tenir (AFGSU)\n1. **Reconnaître** : symptômes + contexte (plusieurs victimes, logement fermé, chauffage au gaz)\n2. **Évacuer** immédiatement vers l'extérieur — ne JAMAIS rester dans les lieux\n3. **Appeler le 15** (SAMU) — préciser « suspicion intox CO, plusieurs victimes »\n4. **O2 à haute concentration** (MHC 15 L/min) dès que possible\n5. **Surveiller** la vigilance et les constantes\n6. **Signaler aux pompiers** pour intervention sur la source\n\n## Toxicité du CO\n| Taux de HbCO | Symptômes |\n|--------------|----------|\n| < 10% | Asymptomatique ou céphalées discrètes |\n| 10-20% | Céphalées, nausées, vertiges |\n| 20-30% | Troubles de la vigilance, confusion |\n| 30-40% | Coma, convulsions |\n| > 50% | Décès |\n\n## Points clés\n- **3 victimes dans un même logement** = intox CO jusqu'à preuve du contraire\n- Le CO a une affinité 250× supérieure à l'O2 pour l'hémoglobine\n- L'O2 hyperbare (caisson) est indiqué si HbCO > 25% ou troubles neurologiques\n- Intoxication possible aussi par groupe électrogène en intérieur, barbecue, véhicule au ralenti",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Terminé."
+  },
+  "locks": [
+    {
+      "id": "lock_urg_co_diagnostic",
+      "type": "QCM",
+      "challenge": {
+        "question": "Nadia a des céphalées, des nausées, une somnolence. Sa SpO2 est à 98%. Son fils et son mari ont aussi mal à la tête. La chaudière est ancienne et les fenêtres sont fermées. Quel est le diagnostic le plus probable ?",
+        "options": [
+          "Gastro-entérite virale familiale",
+          "Intoxication au monoxyde de carbone (CO)",
+          "Migraine collective déclenchée par le stress",
+          "Intoxication alimentaire"
+        ],
+        "correct_indices": [1]
+      },
+      "feedback_error": "La triade céphalées + nausées + vertiges chez PLUSIEURS personnes dans un logement fermé avec chaudière défectueuse = intox CO. La SpO2 normale est un PIÈGE classique.",
+      "target_fields": ["correctDiagnostic"]
+    },
+    {
+      "id": "lock_urg_co_piege_spO2",
+      "type": "QCM",
+      "challenge": {
+        "question": "Pourquoi la SpO2 de 98% est-elle trompeuse dans ce cas ?",
+        "options": [
+          "L'oxymètre est défectueux et doit être changé",
+          "Le CO se fixe sur l'hémoglobine comme l'O2 et l'oxymètre classique ne les distingue pas",
+          "La patiente hyperventile et compense",
+          "La SpO2 est correcte, le CO n'affecte pas la saturation"
+        ],
+        "correct_indices": [1]
+      },
+      "feedback_error": "L'oxymètre de pouls classique mesure l'absorption de lumière à 2 longueurs d'onde. Le CO rend l'hémoglobine brillante comme l'O2 — l'appareil est trompé. Seul un CO-oxymètre (4 longueurs d'onde) détecte la HbCO.",
+      "target_fields": []
+    },
+    {
+      "id": "lock_urg_co_conduite",
+      "type": "QCM",
+      "challenge": {
+        "question": "Quelle est la première action à réaliser ?",
+        "options": [
+          "Ouvrir les fenêtres et aérer l'appartement",
+          "Évacuer immédiatement toutes les victimes vers l'air libre",
+          "Donner du paracétamol contre les céphalées",
+          "Appeler le dépanneur pour la chaudière"
+        ],
+        "correct_indices": [1]
+      },
+      "feedback_error": "L'évacuation est LE geste prioritaire. Rester dans les lieux (même avec fenêtres ouvertes) expose au CO tant que la source émet. La protection des sauveteurs prime.",
+      "target_fields": ["correctTreatments"]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s1"
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Vous êtes appelé dans un appartement au 3ème étage. Nadia est assise sur le canapé, le visage pâle, les yeux à moitié fermés. Elle se plaint de maux de tête violents. Son fils de 10 ans est recroquevillé au sol, il vomit. Le mari est dans la cuisine, titubant. L'air semble normal, pas d'odeur, pas de fumée visible. La chaudière murale ronronne dans le couloir.",
+      "constantesCibles": {
+        "tension": "130/80",
+        "pouls": "105",
+        "saturationO2": "98",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "20"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Questionner sur l'environnement : chauffage, fenêtres, autres victimes",
+          "type": "examen",
+          "tempsExecutionSec": 15,
+          "feedback": "La chaudière au gaz est ancienne, les fenêtres sont fermées depuis hier soir. Le voisin du dessous a aussi des maux de tête ce matin. Le tableau devient clair : 3 victimes dans un logement fermé = intox CO.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "Prendre les constantes vitales avec l'oxymètre de pouls",
+          "type": "examen",
+          "tempsExecutionSec": 10,
+          "feedback": "SpO2 à 98% — le chiffre semble rassurant, mais cela ne colle pas avec la somnolence de la patiente. Attention au piège : l'oxymètre classique ne détecte pas le CO !",
+          "nextNode": "s1a"
+        },
+        {
+          "label": "Donner du paracétamol contre les céphalées",
+          "type": "soin",
+          "tempsExecutionSec": 5,
+          "feedback": "Le paracétamol ne traitera pas la cause. Les céphalées ne sont que le symptôme. Il faut identifier la source !",
+          "nextNode": "s1"
+        }
+      ]
+    },
+    "s1a": {
+      "id": "s1a",
+      "descriptionClinique": "L'oxymètre affiche SpO2 98%. Pourtant Nadia est de plus en plus somnolente (GCS 14). Son fils vomit à nouveau. Quelque chose ne colle pas. L'air semble normal dans l'appartement...",
+      "constantesCibles": {
+        "tension": "130/80",
+        "pouls": "105",
+        "saturationO2": "98",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "20"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Suspicion intox CO : vérifier la chaudière et l'environnement",
+          "type": "examen",
+          "tempsExecutionSec": 15,
+          "feedback": "Bonne réflexe ! La chaudière murale au gaz est ancienne, les fenêtres sont hermétiquement fermées. 3 victimes + SpO2 trompeuse = intox CO quasi certaine.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "Rechercher une cause neurologique (AVC, méningite)",
+          "type": "examen",
+          "tempsExecutionSec": 20,
+          "feedback": "L'examen neurologique est peu contributif : pas de déficit focal, pas de raideur de nuque. Un AVC ne touche pas 3 personnes d'un coup. Pensez à l'environnement !",
+          "nextNode": "s1a"
+        }
+      ]
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Suspicion d'intoxication au CO confirmée par le contexte. Nadia est somnolente. Son fils est au sol, inconscient mais respire. Le mari est debout mais confus. La source (chaudière) est toujours active dans l'appartement.",
+      "constantesCibles": {
+        "tension": "125/78",
+        "pouls": "108",
+        "saturationO2": "98",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "22"
+      },
+      "evolutionAuto": {
+        "delaySec": 60,
+        "constantes": {
+          "saturationO2": "96",
+          "pouls": "115",
+          "frequenceRespiratoire": "24"
+        },
+        "nextNode": "s3_degradation",
+        "motif": "Le CO continue de s'accumuler. Sans évacuation, l'état des victimes empire."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Évacuer immédiatement TOUTES les victimes vers l'extérieur et appeler le 15",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 20,
+          "feedback": "Excellente décision ! L'évacuation est le geste n°1. Vous sortez les 3 victimes dans la cage d'escalier puis sur le trottoir. Le 15 est alerté : « suspicion intox CO, 3 victimes, dont un enfant inconscient ».",
+          "nextNode": "s3_evacue"
+        },
+        {
+          "label": "Ouvrir les fenêtres pour aérer, puis rester avec les victimes",
+          "type": "soin",
+          "tempsExecutionSec": 10,
+          "feedback": "Ouvrir les fenêtres ne suffit PAS ! La chaudière continue d'émettre du CO. Vous vous exposez aussi. L'évacuation est le vrai geste de sécurité.",
+          "nextNode": "s3_fenetre"
+        },
+        {
+          "label": "Administrer de l'oxygène à haute concentration sur place",
+          "type": "soin",
+          "tempsExecutionSec": 15,
+          "feedback": "L'O2 est utile mais PAS DANS L'APPARTEMENT ! Vous devez d'abord sortir les victimes de la zone contaminée. On ne soigne pas dans le danger.",
+          "nextNode": "s2"
+        }
+      ]
+    },
+    "s3_evacue": {
+      "id": "s3_evacue",
+      "descriptionClinique": "Les 3 victimes sont dehors, sur le trottoir. L'air frais leur fait du bien. Nadia reprend un peu de couleur. Son fils, toujours inconscient, respire mieux. Le SAMU est en route.",
+      "constantesCibles": {
+        "tension": "125/78",
+        "pouls": "100",
+        "saturationO2": "98",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "18"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Administrer O2 à haute concentration (MHC 15 L/min) à toutes les victimes",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "feedback": "Parfait ! L'O2 haute concentration accélère l'élimination du CO (demi-vie de la HbCO : ~320 min en air ambiant → ~80 min sous O2 100%).",
+          "nextNode": "s4"
+        },
+        {
+          "label": "Mettre Nadia en PLS par précaution",
+          "type": "soin",
+          "tempsExecutionSec": 10,
+          "feedback": "Nadia est consciente, la PLS n'est pas indiquée. Réservez la PLS pour l'enfant inconscient S'IL ne respire plus.",
+          "nextNode": "s3_evacue"
+        },
+        {
+          "label": "Donner à boire pour « diluer » le poison",
+          "type": "soin",
+          "tempsExecutionSec": 5,
+          "feedback": "Le CO n'est pas un toxique ingéré, c'est un gaz inhalé. Boire ne sert à rien et risque la fausse route chez un patient somnolent.",
+          "nextNode": "s3_evacue"
+        }
+      ]
+    },
+    "s3_fenetre": {
+      "id": "s3_fenetre",
+      "descriptionClinique": "Les fenêtres sont ouvertes mais la chaudière continue de produire du CO. L'aération est insuffisante. Le fils de Nadia est maintenant inconscient. Le mari a perdu connaissance à son tour.",
+      "constantesCibles": {
+        "tension": "120/75",
+        "pouls": "115",
+        "saturationO2": "98",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Évacuer en urgence toutes les victimes vers l'extérieur maintenant !",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 20,
+          "feedback": "Vous comprenez enfin : on ne reste pas dans la zone contaminée ! L'évacuation est tardive mais toujours bénéfique. Les victimes sont sorties, le 15 est appelé.",
+          "nextNode": "s3_evacue"
+        },
+        {
+          "label": "Attendre que l'aération fasse effet",
+          "type": "soin",
+          "tempsExecutionSec": 30,
+          "feedback": "L'attente est FATALE. Le CO continue d'envahir l'appartement. L'état empire.",
+          "nextNode": "s3_degradation"
+        }
+      ]
+    },
+    "s3_degradation": {
+      "id": "s3_degradation",
+      "descriptionClinique": "DÉGRADATION : Sans évacuation rapide, l'enfant est en coma (GCS 6). Le mari est inconscient. Nadia est confuse et titube. L'intoxication s'aggrave.",
+      "constantesCibles": {
+        "tension": "110/70",
+        "pouls": "120",
+        "saturationO2": "98",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "26"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Évacuer TOUT LE MONDE dehors d'urgence et appeler le 15",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 20,
+          "feedback": "Évacuation de dernière minute. L'enfant est grave mais le SAMU pourra le prendre en charge. Retard regrettable mais mieux vaut tard que jamais.",
+          "nextNode": "s3_evacue"
+        }
+      ]
+    },
+    "s4": {
+      "id": "s4",
+      "descriptionClinique": "Sous O2 haute concentration, les victimes se stabilisent. Le SAMU arrive. L'enfant reprend conscience, pleure. Les pompiers interviennent sur la chaudière. Mission accomplie.",
+      "constantesCibles": {
+        "tension": "125/80",
+        "pouls": "92",
+        "saturationO2": "99",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "16"
+      },
+      "isEndState": true,
+      "success": true,
+      "actionsDisponibles": []
+    }
+  }
+}
