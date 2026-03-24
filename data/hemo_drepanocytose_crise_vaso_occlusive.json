@@ -1,0 +1,197 @@
+{
+  "id": "hemo_drepanocytose_crise_vaso_occlusive",
+  "redacteur": "Clawd",
+  "patient": {
+    "nom": "Konaté",
+    "prenom": "Aminata",
+    "age": 19,
+    "sexe": "F",
+    "taille": "168 cm",
+    "poids": "58 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleurs intenses aux membres inférieurs et fièvre depuis 24h",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Étudiante en L2, sédentaire en période d'examens"
+      },
+      "tabac": {
+        "quantite": "Non-fumeuse",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Très occasionnelle"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Hydratation insuffisante ces derniers jours (révisions)"
+      },
+      "emploi": {
+        "profession": "Étudiante en droit",
+        "stress": "Élevé (examens dans 1 semaine)"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Drépanocytose SS homozygote",
+          "traitement": "Acide folique 5 mg/j, pénicilline V 1 MUI/j (prophylaxie)"
+        },
+        {
+          "type": "Crises vaso-occlusives récidivantes",
+          "traitement": "2 à 3 crises/an depuis l'enfance"
+        },
+        {
+          "type": "Splénectomie fonctionnelle",
+          "traitement": "Depuis l'âge de 5 ans (ne pas vacciner contre les pneumocoques capsulés — déjà fait)"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Cholécystectomie",
+          "date": "2022 (lithiase biliaire pigmentaire)"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Frère",
+          "pathologie": "Drépanocytose SS (traité au même centre)",
+          "age": "23"
+        },
+        {
+          "lien": "Père",
+          "pathologie": "Trait AS (porteur sain)",
+          "age": "52"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Acide folique",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Pénicilline V",
+        "dose": "1 MUI",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures",
+      "evolution": "Progressive puis rapidement invalidante",
+      "facteursDeclenchants": "Fatigue, stress (examens), déshydratation probable (oubli de boire pendant les révisions), froid extérieur (sortie tardive sans veste)",
+      "symptomesAssocies": [
+        "Douleurs bilatérales aux tibias et aux poignets (type osseux, très intenses)",
+        "Fièvre à 39°C depuis le matin",
+        "Asthénie marquée",
+        "Pâleur conjonctivale connue"
+      ],
+      "remarques": "La patiente connaît bien ses crises et a essayé le paracétamol 1g x3 sans efficacité. Elle a attendu 24h avant de venir aux urgences car elle voulait finir ses révisions."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/65 mmHg",
+      "pouls": "105 bpm",
+      "temperature": "39.1°C",
+      "saturationO2": "96%",
+      "frequenceRespiratoire": "20/min"
+    },
+    "aspectGeneral": "Patiente algique, en position antalgique. Teint ictérique discret. Pâleur conjonctivale connue.",
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique fonctionnel 2/6, régulier (anémie chronique connue). Pas de galop.",
+      "inspection": "Pas d'œdème des membres inférieurs. Pas de signe de phlébite.",
+      "palpation": "Pas de pouls anormal. Douleur à la palpation des tibias bilatéralement."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmures vésiculaires normaux, symétriques, sans bruits surajoutés."
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, dépressible. Splénectomie connue (cicatrice en hémigastrectomie). Hépatomégalie à 2 travers de doigt, sensible.",
+      "inspection": "Pas de distension."
+    },
+    "examenLocomoteur": {
+      "inspection": "Pas de déformation articulaire. Gonflement discret des deux poignets.",
+      "palpation": "Douleur osseuse bilatérale aux tibias et aux radius distaux. Pas d'épanchement articulaire franc.",
+      "mobilité": "Amplitude réduite par la douleur aux poignets."
+    },
+    "examenNeurologique": {
+      "conscience": "Normale, patiente orientée et coopérative.",
+      "moteur": "Pas de déficit. RCP normaux.",
+      "sensibilite": "Douloureuses à la palpation des os longs."
+    },
+    "examenORL": {
+      "inspection": "Teint ictérique discret. Conjonctives pâles. Pas d'adénopathie cervicale."
+    }
+  },
+  "availableExams": [
+    "NFS (Numération Formule Sanguine)",
+    "Réticulocytes",
+    "Bilan inflammatoire (CRP, VS, PCT)",
+    "Bilan hépatique (bilirubine, LDH, transaminases)",
+    "Hémoglobine glyquée (HbA1c)",
+    "Électrophorèse de l'hémoglobine",
+    "Hémocultures x2",
+    "Radiographie des tibias",
+    "Radiographie des poignets",
+    "Échographie abdominale",
+    "ECG",
+    "Gaz du sang artériel"
+  ],
+  "examResults": {
+    "NFS (Numération Formule Sanguine)": "Hb : 6,8 g/dL (vs 8,5 de base — patiente drépanocytaire chroniquement anémique). GB : 15 200/mm³ (leucocytose réactionnelle). Plaquettes : 320 000/mm³. VGM : 86 fL (microcytose habituelle).",
+    "Réticulocytes": "180 000/mm³ (8%) — réponse régénérative adéquate. TAAR élevé.",
+    "Bilan inflammatoire (CRP, VS, PCT)": "CRP : 95 mg/L (très élevée). VS : 90 mm/h. PCT : 0,3 ng/mL (limite — à surveiller, signe possible de surinfection).",
+    "Bilan hépatique (bilirubine, LDH, transaminases)": "Bilirubine totale : 55 µmol/L (prédominance indirecte : 42 µmol/L). LDH : 680 UI/L (hémolyse). ASAT/ALAT : normales. Haptoglobine effondrée (< 0,1 g/L).",
+    "Hémoglobine glyquée (HbA1c)": "Non indiquée ici. Ce test est utilisé pour le suivi du diabète, pas pour le diagnostic de crise drépanocytaire.",
+    "Électrophorèse de l'hémoglobine": "Profil SS : HbS > 90%, HbF 5%, HbA2 3%. Profil attendu chez une drépanocytaire SS homozygote.",
+    "Hémocultures x2": "En attente (résultat à J2). À réaliser impérativement devant toute fièvre chez un splénectomisé fonctionnel (risque d'infection à pneumocoque capsulé).",
+    "Radiographie des tibias": "Épaississement du périoste bilatéral compatible avec une ostéite drépanocytaire (syndrome de HbSS). Pas de signe de nécrose avasculaire ni d'ostéomyélite franche sur ce cliché.",
+    "Radiographie des poignets": "Remaniements osseux chroniques (métacarpiens) compatibles avec des crises récidivantes. Pas de fracture.",
+    "Échographie abdominale": "Hépatomégalie modérée. Splénectomie confirmée. Voies biliaires non dilatées (cholécystectomie antérieure). Pas de collection ni d'abcès.",
+    "ECG": "Rythme sinusal à 105 bpm. Pas de trouble de repolarisation. QTc normal. ECG en rapport avec l'anémie chronique.",
+    "Gaz du sang artériel": "pH : 7,42, pCO2 : 36 mmHg, pO2 : 88 mmHg, HCO3- : 23 mmol/L, SatO2 : 96%. Équilibre acido-basique normal. Pas de détresse respiratoire pour l'instant (surveillance syndrome thoracique aigu)."
+  },
+  "possibleDiagnostics": [
+    "Crise vaso-occlusive drépanocytaire",
+    "Ostéomyélite aiguë",
+    "Syndrome thoracique aigu",
+    "Aplasie médullaire (parvovirus B19)",
+    "Séquestration splénique"
+  ],
+  "correctDiagnostic": "Crise vaso-occlusive drépanocytaire",
+  "feedback": {
+    "Crise vaso-occlusive drépanocytaire": "Correct ! Le tableau est typique : jeune patiente drépanocytaire connue, facteurs déclenchants identifiés (froid, stress, déshydratation), douleurs osseuses bilatérales intenses, fièvre, signes d'hémolyse (ictère, LDH↑, haptoglobine↓). L'Hb à 6,8 g/dL est dans la fourchette basse mais habituelle pour cette patiente (anémie chronique de base 8,5).",
+    "Ostéomyélite aiguë": "Possible à éliminer en differential, mais les signes bilatéraux symétriques, la CRP modérée à 95 (pas >200), et le PCT à 0,3 plaident plus pour une crise vaso-occlusive. L'ostéomyélite est souvent unilatérale et le PCT serait > 0,5. Surveillance clinique nécessaire.",
+    "Syndrome thoracique aigu": "Pas encore — la SpO2 est à 96%, l'auscultation est normale et le GSA est correct. Mais c'est une complication possible à surveiller de près chez toute drépanocytaire en crise. À réévaluer si détresse respiratoire.",
+    "Aplasie médullaire (parvovirus B19)": "Non : les réticulocytes sont à 8% (réponse régénérative), ce qui exclut une aplasie. Le parvovirus B19 provoquerait un effondrement des réticulocytes (< 10 000/mm³) et une chute rapide de l'Hb.",
+    "Séquestration splénique": "Non possible : la patiente est splénectomisée fonctionnellement depuis l'enfance. Pas de rate = pas de séquestration splénique."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Morphine IV (antalgique de palier 3)",
+    "Paracétamol IV (palier 1)",
+    "Réhydratation IV (NaCl 0,9%, 2L/24h)",
+    "Oxygénothérapie",
+    "Transfusion érythrocytaire concentrée (TEC)",
+    "Antibiothérapie probabiliste (céftriaxone IV)",
+    "Corticoïdes",
+    "AINS (ibuprofène, kétoprofène)",
+    "Échange transfusionnel"
+  ],
+  "correctTreatments": [
+    "Morphine IV (antalgique de palier 3)",
+    "Réhydratation IV (NaCl 0,9%, 2L/24h)",
+    "Antibiothérapie probabiliste (céftriaxone IV)"
+  ],
+  "correction": "# Crise vaso-occlusive drépanocytaire (CVOD)\n\n## Diagnostic\n\nLa crise vaso-occlusive est la complication aiguë la plus fréquente de la drépanocytose. Le mécanisme : la déshydratation et le froid favorisent la falciformation des hématies SS qui obstruent les microvaisseaux, provoquant une ischémie tissulaire douloureuse (typiquement osseuse).\n\n**Arguments pour une CVOD ici :**\n- Contexte : drépanocytose SS homozygote connue\n- Facteurs déclenchants identifiés : froid, stress, déshydratation\n- Douleurs osseuses bilatérales, symétriques, intenses\n- Fièvre réactionnelle\n- Signes d'hémolyse chronique : ictère discret, LDH↑, haptoglobine↓, bilirubine indirecte↑\n- Anémie à 6,8 g/dL (vs 8,5 de base) = aggravation modérée\n- Réticulocytes à 8% = réponse médullaire préservée (pas d'aplasie)\n\n## Prise en charge — Les 3 piliers\n\n1. **Antalgie** : Morphine IV en titration (palier 3). Le paracétamol seul est insuffisant. Les AINS sont déconseillés chez le drépanocytaire (risque rénal).\n2. **Réhydratation** : NaCl 0,9% IV, objectif 2 à 3L/24h. L'hydratation est LA mesure clé pour réduire la falciformation.\n3. **Antibiothérapie** : Indispensable devant toute fièvre chez un splénectomisé. Céftriaxone IV en attendant les hémocultures (risque de pneumocoque, Haemophilus, méningocoque).\n\n## Surveillance impérative\n\n- SpO2 continue (risque de syndrome thoracique aigu = complication redoutable)\n- Température toutes les 4h\n- Hb quotidienne (si < 5 g/dL ou chute rapide → transfusion)\n- Réticulocytes (si < 10 000 → aplasie → penser parvovirus B19)\n- Hémocultures (résultat à J2)\n\n## Erreurs classiques\n\n- **Sous-estimer la douleur** : les patients drépanocytaires ont une tolérance élevée à la douleur. S'ils viennent aux urgences, c'est que c'est VRAIMENT sévère.\n- **Donner des AINS** (ibuprofène, kétoprofène) : néphrotoxicité chez le drépanocytaire (néphropathie drépanocytaire). Contre-indiqué.\n- **Oublier l'antibiothérapie** devant la fièvre : le splénectomisé est immunodéprimé face aux bactéries capsulées.\n- **Confondre avec l'aplasie** : si les réticulocytes sont effondrés → penser parvovirus B19 → traitement = TEC.\n- **Oublier la transfusion** si Hb < 5 g/dL ou syndrome thoracique aigu (→ échange transfusionnel urgent)."
+}

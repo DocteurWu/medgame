@@ -33,7 +33,9 @@
     "EDN_VIH.json",
     "EDN_diabetetype1monogé.json"
   ],
-  "hématologie": [],
+  "hématologie": [
+    "hemo_drepanocytose_crise_vaso_occlusive.json"
+  ],
   "appareil-digestif": [
     "digestif_cancer_oeso_brandon.json",
     "digestif_dyspepsie_elinor.json",
