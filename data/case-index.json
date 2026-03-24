@@ -13,6 +13,7 @@
     "CARDIO_retrecissement_aortique.json",
     "CARDIO_hta_secondaire_hyperaldosteronisme.json",
     "CARDIO_angor_stable.json",
+    "CARDIO_embolie_pulmonaire.json",
     "patient_test_complet.json"
   ],
   "endocrinologie": [

@@ -1,0 +1,166 @@
+{
+  "id": "cardio_embolie_pulmonaire",
+  "redacteur": "Clawd",
+  "patient": {
+    "nom": "Moreau",
+    "prenom": "Sylvie",
+    "age": 62,
+    "sexe": "F",
+    "taille": "160 cm",
+    "poids": "78 kg",
+    "groupeSanguin": "A+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur thoracique aiguë et dyspnée brutale",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire, marche occasionnelle"
+      },
+      "tabac": {
+        "quantite": "15 paquets-année",
+        "duree": "30 ans (sevrée depuis 2 ans)"
+      },
+      "alcool": {
+        "quantite": "2 verres de vin/jour"
+      },
+      "alimentation": {
+        "regime": "Déséquilibré, riche en graisses",
+        "particularites": "Surpoids connu"
+      },
+      "emploi": {
+        "profession": "Comptable (travail sédentaire)",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Obésité modérée (IMC 30.5)",
+          "traitement": "Régime diététique"
+        },
+        {
+          "type": "Hypertension artérielle",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        "Pose de prothèse totale du genou droit il y a 6 semaines"
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Thrombose veineuse profonde",
+          "age": "55"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Ramipril",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Paracétamol",
+        "dose": "1 g",
+        "frequence": "si douleur"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Quelques heures",
+      "evolution": "Brutale, en plateau",
+      "facteursDeclenchants": "Apparition à la marche, majorée à l'inspiration profonde",
+      "symptomesAssocies": [
+        "Dyspnée de survenue brutale",
+        "Toux sèche",
+        "Anxiété importante"
+      ],
+      "remarques": "Pas de traumatisme thoracique. Chirurgie du genou droit il y a 6 semaines sans anticoagulation post-opératoire prolongée."
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/65 mmHg",
+      "pouls": "112 bpm",
+      "temperature": "37.8°C",
+      "saturationO2": "89% en air ambiant",
+      "frequenceRespiratoire": "28/min"
+    },
+    "aspectGeneral": "Patiente anxieuse, pâle, en position assise penchée en avant. Sueurs.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie régulière. B2 augmentée au foyer pulmonaire. Pas de souffle. Signe de Homans positif à droite.",
+      "inspection": "Turgescence jugulaire discrète. Pas d'oedème des membres inférieurs au repos."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmures vésiculaires diminués à la base droite avec un frottement pleural. Crépitants discrets à droite."
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, indolore. Pas d'hépatomégalie."
+    },
+    "examenNeurologique": {
+      "conscience": "Patient consciente et orientée, anxieuse"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Angioscanner thoracique",
+    "Echographie doppler des membres inférieurs",
+    "Echocardiographie transthoracique",
+    "Gaz du sang artériel",
+    "Scintigraphie pulmonaire de ventilation/perfusion"
+  ],
+  "examResults": {
+    "ECG": "Tachycardie sinusale à 112 bpm. S1Q3T3 modéré (onde S en D1, onde Q et T négative en D3). Dérivation droite. T négatives en V1-V4 en faveur d'une surcharge ventriculaire droite.",
+    "Radio thorax": "Amputation de l'artère pulmonaire droite (signe de Fleischner). Petite quantité d'épanchement pleural à droite. Pas d'infiltrat. Hile droit élargi.",
+    "Bilan sanguin": "D-Dimères à 4200 ng/mL (norme < 500). NFS : plaquettes normales. CRP : 28 mg/L. Créatinine normale. NT-proBNP : 1200 pg/mL (élevé). Troponine hs : légèrement augmentée (0.08 ng/mL).",
+    "Angioscanner thoracique": "Embolies bilatérales massives : thrombus en selle dans l'artère pulmonaire principale, extensions dans les artères lobaires droites et gauches. Index de Miller élevé. Signe du mosaïque parenchymateux. Dilatation ventriculaire droite associée.",
+    "Echographie doppler des membres inférieurs": "Thrombose veineuse profonde de la veine poplitée et fémorale superficielle droite, occlusive, sans extension iliaque.",
+    "Echocardiographie transthoracique": "Dilatation du ventricule droit (VD/CG > 1). Cinétique VD hypokinétique avec TAPSE à 14 mm. PASP estimée à 55 mmHg. Pas d'épanchement péricardique. Septum paradoxal.",
+    "Gaz du sang artériel": "pH 7.48, PaO2 58 mmHg, PaCO2 32 mmHg, HCO3- 23 mEq/L. Alcalose respiratoire avec hypoxémie et hypocapnie.",
+    "Scintigraphie pulmonaire de ventilation/perfusion": "Non réalisée — angioscanner déjà diagnostique."
+  },
+  "possibleDiagnostics": [
+    "Embolie pulmonaire massive",
+    "Pneumothorax",
+    "Infarctus du myocarde",
+    "Pneumopathie aiguë",
+    "Dissection aortique"
+  ],
+  "correctDiagnostic": "Embolie pulmonaire massive",
+  "feedback": {
+    "Embolie pulmonaire massive": "Excellent diagnostic ! L'association douleur thoracique pleurétique + dyspnée brutale + chirurgie récente sans anticoagulation prolongée + signes de surcharge VD est formelle. Score de Wells à 7 (>4 = forte probabilité). L'angioscanner confirme des embolies bilatérales massives.",
+    "Pneumothorax": "Le pneumothorax peut donner une douleur thoracique et une dyspnée, mais il n'y a pas de diminution unilatérale franche des murmures vésiculaires ni d'hyperclarté à la radio. Le contexte post-chirurgical et les D-dimères très élevés orientent vers une EP.",
+    "Infarctus du myocarde": "La troponine est légèrement augmentée mais dans un contexte de surcharge VD (pas coronarien). Les T négatives en V1-V4 sont ici liées à la surcharge VD, pas à un infarctus antérieur. L'angioscanner est formel.",
+    "Pneumopathie aiguë": "Pas d'infiltrat radiologique, pas de fièvre élevée, pas de purulence. Le contexte post-chirurgical et les D-dimères très élevés sont en faveur d'une EP.",
+    "Dissection aortique": "La dissection donne une douleur thoracique en déchirure irradiant dans le dos, avec une asymétrie des pouls. Ici, les D-dimères, la surcharge VD et l'angioscanner éliminent ce diagnostic."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 15
+  },
+  "possibleTreatments": [
+    "Héparine non fractionnée IV immédiate",
+    "Thrombolyse systémique (altéplase)",
+    "Anticoagulation orale seule (AVK)",
+    "Bas de contention seuls",
+    "Embolectomie chirurgicale",
+    "Antibiothérapie à large spectre",
+    "Oxygénothérapie par lunettes nasales"
+  ],
+  "correctTreatments": [
+    "Héparine non fractionnée IV immédiate",
+    "Thrombolyse systémique (altéplase)",
+    "Oxygénothérapie par lunettes nasales"
+  ],
+  "fatalTreatments": [
+    "Anticoagulation orale seule (AVK)",
+    "Antibiothérapie à large spectre"
+  ],
+  "correction": "# Embolie Pulmonaire massive post-chirurgicale\n\n## Rappel physiopathologique\nL'EP résulte de l'obstruction d'une artère pulmonaire par un thrombus, le plus souvent issu d'une TVP des membres inférieurs. Le contexte post-chirurgical orthopédique sans anticoagulation prolongée est un facteur de risque majeur.\n\n## Score de Wells (probabilité pré-test)\n- Clinique compatible avec TVP/EP : +3\n- Fréquence cardiaque > 100 : +1.5\n- Immobilisation/chirurgie récente : +1.5\n- Antécédents de TVP/EP : +1.5\n- Hémoptysie : +1\n- Cancer actif : +1\n- **Score total : 7/12.5 → Forte probabilité**\n\n## Stratégie diagnostique\n1. **D-dimères** : très élevés (non utiles ici car forte probabilité pré-test)\n2. **Angioscanner** : examen de référence → confirme l'EP bilatérale massive\n3. **ECG** : S1Q3T3, tachycardie sinusale, surcharge VD\n4. **Echo cœur** : dilatation VD, PASP élevée → critère de gravité\n5. **Biomarqueurs** : troponine et NT-proBNP élevés = altération myocardique secondaire\n\n## Traitement selon la gravité\n\n### EP massive (instabilité hémodynamique) ✓ Ce cas\n- **Héparine non fractionnée IV** : bolus 80 UI/kg puis 18 UI/kg/h (contrôle aPTT 1.5-2.5x)\n- **Thrombolyse systémique** : altéplase 100 mg en 2h (indiquée si instabilité hémodynamique)\n- **Oxygénothérapie** : viser SpO2 > 94%\n- **Embolectomie chirurgicale ou cathéter** : alternative si contre-indication thrombolyse\n\n### EP submassive (VD dysfonctionnel mais stable)\n- Anticoagulation curative par héparine\n- Surveillance rapprochée (± thrombolyse de sauvetage)\n\n## Erreurs classiques\n- ⚠️ Ne PAS débuter par un AVK seul : délai d'action incompatible avec l'urgence\n- ⚠️ Confondre avec un infarctus : la troponine est élevée dans l'EP par surcharge VD\n- ⚠️ Oublier de rechercher la source (écho doppler des MI)\n- ⚠️ Sous-estimer l'hypoxémie : même si la patiente « va bien », PaO2 à 58 mmHg nécessite O2"
+}
