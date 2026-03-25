@@ -106,6 +106,7 @@
     "urgence_obstruction_voa_adulte_restaurant.json",
     "urgence_inconscient_pls_bar.json",
     "urgence_trauma_membre_amputation.json",
-    "urgence_intoxication_co_chauffage.json"
+    "urgence_intoxication_co_chauffage.json",
+    "urgence_asthme_aigu_grave.json"
   ]
 }

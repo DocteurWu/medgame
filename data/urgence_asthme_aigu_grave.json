@@ -1,0 +1,501 @@
+{
+  "id": "urgence_asthme_aigu_grave",
+  "title": "Crise d'Asthme Aiguë Grave — Insuffisance Respiratoire",
+  "specialty": "urgence",
+  "difficulty": 3,
+  "redacteur": "Clawd UE10",
+  "patient": {
+    "nom": "Benali",
+    "prenom": "Yasmine",
+    "age": 22,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "55 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée sévère apparue brutalement il y a 2 heures, ne cédant pas avec le Ventoline habituel.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Étudiante, sédentaire"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Non-fumeuse"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal"
+      },
+      "emploi": {
+        "profession": "Étudiante en droit",
+        "stress": "Élevé (examens dans 3 jours)"
+      }
+    },
+    "antecedents": {
+      "medicaux": ["Asthme persistant modéré depuis l'âge de 8 ans", "Rhinite allergique"],
+      "chirurgicaux": [],
+      "familiaux": ["Mère asthmatique", "Père eczéma"]
+    },
+    "traitements": [
+      "Ventoline (salbutamol) PRN — utilise environ 2 fois/semaine",
+      "Flixotide 250 µg (fluticasone) 1 inhalation x2/jour — l'observance est mauvaise ces derniers mois",
+      "Singulair 10 mg le soir"
+    ],
+    "allergies": {
+      "presence": true,
+      "liste": ["Acariens", "Pollen de graminées", "Chats"]
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a environ 2 heures",
+      "evolution": "Aiguë, rapidement progressive",
+      "facteursDeclenchants": "Possible exposition à un chat chez une amie la veille au soir, stress examens, mauvaise observance du traitement de fond",
+      "descriptionDouleur": "Oppression thoracique intense, impossible de finir ses phrases",
+      "asymptomesAssocies": [
+        "Dyspnée majeure",
+        "Sifflements audibles à distance",
+        "Toux sèche persistante",
+        "Impossibilité de s'allonger",
+        "Agitation anxieuse"
+      ],
+      "remarques": "A déjà eu 2 hospitalisations pour asthme (à 12 et 18 ans). N'a pas consulté son pneumologue depuis 2 ans."
+    }
+  },
+  "examenClinique": {
+    "general": {
+      "conscience": "Lucide mais très anxieuse, ne peut pas finir ses phrases",
+      "coloration": "Cyanose des lèvres et des extrémités",
+      "etat": "Position assise penchée en avant, mains sur les genoux (position du cavalier)",
+      "sudation": "Sueurs profuses",
+      "parole": "Parole hachée, parle par mots isolés"
+    },
+    "respiratoire": {
+      "inspection": "Tirage sus-sternal et intercostal, mise en jeu des muscles accessoires, battement des ailes du nez",
+      "palpation": "Expansion thoracique diminuée globalement",
+      "percussion": "Son clair, hyperclarté possible",
+      "auscultation": "Sifflements expiratoires diffus bilatéraux intenses, puis « silence auscultatoire » dans le lobe inférieur droit (signe de gravité majeur)"
+    },
+    "cardiovasculaire": {
+      "rythme": "Tachycardie à 125 bpm, régulier",
+      "pouls": "Rapide, régulier",
+      "TA": "155/90 mmHg",
+      "bruits": "B1B2 normaux, pas de souffle"
+    },
+    "abdomen": {
+      "inspection": "Plat, déprimé",
+      "palpation": "Souple, non douloureux, pas de défense",
+      "percussion": "Matité hépatique normale"
+    },
+    "neurologique": {
+      "conscience": "GCS 15 (mais agitée)",
+      "pupilles": "Égales, réactives",
+      "motricité": "Normale, difficulté à se mobiliser du fait de la dyspnée"
+    }
+  },
+  "constantesCibles": {
+    "tension": "155/90",
+    "pouls": "125",
+    "saturationO2": "87",
+    "temperature": "37.1",
+    "frequenceRespiratoire": "34",
+    "glycemie": "1.10"
+  },
+  "availableExams": [
+    {
+      "id": "saturation_O2",
+      "name": "Oxymétrie de pouls (SpO2)",
+      "description": "Mesure non invasive de la saturation en oxygène",
+      "cost": 0,
+      "delay": 0
+    },
+    {
+      "id": "spirometrie",
+      "name": "Spirométrie d'urgence",
+      "description": "Mesure du VEMS et du débit de pointe (Peak Flow)",
+      "cost": 1,
+      "delay": 5
+    },
+    {
+      "id": "gaz_sang",
+      "name": "Gaz du sang artériel",
+      "description": "Analyse gazométrique artérielle (pH, pO2, pCO2, HCO3-, lactates)",
+      "cost": 2,
+      "delay": 10
+    },
+    {
+      "id": "radio_thorax",
+      "name": "Radiographie thoracique",
+      "description": "Face debout, recherche de pneumothorax ou surinfection",
+      "cost": 1,
+      "delay": 10
+    },
+    {
+      "id": "ECG",
+      "name": "ECG 12 dérivations",
+      "description": "Recherche d'anomalies rythmiques ou ischémiques",
+      "cost": 1,
+      "delay": 3
+    },
+    {
+      "id": "NFS",
+      "name": "Numération Formule Sanguine",
+      "description": "Recherche d'éosinophilie, signes d'infection",
+      "cost": 1,
+      "delay": 15
+    },
+    {
+      "id": "ionogramme",
+      "name": "Ionogramme sanguin",
+      "description": "Na+, K+, Cl-, créatinine",
+      "cost": 1,
+      "delay": 15
+    },
+    {
+      "id": "troponine",
+      "name": "Troponine ultra-sensible",
+      "description": "Éliminer un syndrome coronarien aigu",
+      "cost": 1,
+      "delay": 15
+    }
+  ],
+  "examResults": {
+    "saturation_O2": "SpO2 : 87% en air ambiant (⚠️ HYPOTHÉMIE SÉVÈRE)",
+    "spirometrie": "VEMS : 0.7 L (18% de la valeur prédite) — Débit de pointe : 80 L/min (22%) → OBSTRUCTION SÉVÈRE",
+    "gaz_sang": "pH : 7.31 (acidose respiratoire) | pO2 : 55 mmHg (hypoxémie) | pCO2 : 48 mmHg (hypercapnie débutante ⚠️) | HCO3- : 24 mEq/L | Lactates : 2.8 mmol/L",
+    "radio_thorax": "Hyperclarté pulmonaire bilatérale, diaphragme abaissé et aplati. Pas d'infiltrat, pas de pneumothorax. Image en accord avec un status asthmaticus.",
+    "ECG": "Tachycardie sinusale à 125 bpm. Pas de trouble de repolarisation. Pas de signe de surcharge droite.",
+    "NFS": "GB : 12 400/mm³ (neutrophilie modérée, stress) | Hb : 13.2 g/dL | Plaquettes : 245 000/mm³ | Éosinophiles : 8% (éosinophilie en faveur d'un mécanisme allergique)",
+    "ionogramme": "Na+ : 140 | K+ : 3.8 | Cl- : 102 | Créatinine : 68 µmol/L",
+    "troponine": "< 5 ng/L (normale). Pas de souffrance myocardique."
+  },
+  "possibleDiagnostics": [
+    "Crise d'asthme aiguë grave (status asthmaticus)",
+    "BPCO exacerbé",
+    "Pneumothorax spontané",
+    "Œdème aigu du poumon",
+    "Embolie pulmonaire",
+    "Pneumopathie infectieuse",
+    "Dyspnée d'origine cardiaque (insuffisance cardiaque)",
+    "Syndrome coronarien aigu",
+    "Hyperventilation anxieuse",
+    "Crise d'angoisse"
+  ],
+  "correctDiagnostic": "Crise d'asthme aiguë grave (status asthmaticus)",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 20,
+    "examPenalty": 5,
+    "timeBonus": 15,
+    "treatmentBonus": 30
+  },
+  "possibleTreatments": [
+    "Oxygénothérapie haute concentration (lunettes nasales 6L/min → objectif SpO2 > 92%)",
+    "Salbutamol nébulisé 5 mg en continue (Ventoline)",
+    "Ipratropium bromure 0.5 mg nébulisé (Atrovent)",
+    "Corticoides IV : Méthylprednisolone 1 mg/kg (soit 60 mg)",
+    "Sulfate de magnésium IV 2g sur 20 min (traitement d'urgence dans l'asthme grave)",
+    "Adrénaline SC 0.3 mg (0.3 mL à 1/1000) si menace vitale immédiate",
+    "Intubation orotrachéale et ventilation mécanique",
+    "Antibiotiques à large spectre (amoxicilline-acide clavulanique)",
+    "Diurétiques IV (furosémide 40 mg)",
+    "Aminophylline IV (dérivé xanthinique)",
+    "Bronsoscopie en urgence",
+    "Surveillance continue SpO2, FR, FC, TA — réévaluation toutes les 15 min"
+  ],
+  "correctTreatments": [
+    "Oxygénothérapie haute concentration (lunettes nasales 6L/min → objectif SpO2 > 92%)",
+    "Salbutamol nébulisé 5 mg en continue (Ventoline)",
+    "Ipratropium bromure 0.5 mg nébulisé (Atrovent)",
+    "Corticoides IV : Méthylprednisolone 1 mg/kg (soit 60 mg)",
+    "Sulfate de magnésium IV 2g sur 20 min (traitement d'urgence dans l'asthme grave)",
+    "Surveillance continue SpO2, FR, FC, TA — réévaluation toutes les 15 min"
+  ],
+  "fatalTreatments": [
+    {
+      "treatment": "Bronsoscopie en urgence",
+      "reason": "La fibroscopie bronchique est CONTRE-INDIQUÉE en crise d'asthme aiguë grave. Risque de bronchospasme mortel, aggravation de l'obstruction, et arrêt respiratoire. Elle ne se discute qu'en cas de suspicion de corps étranger."
+    },
+    {
+      "treatment": "Diurétiques IV (furosémide 40 mg)",
+      "reason": "Le furosémide est inutile et dangereux ici. Le diagnostic n'est pas un OAP. La déplétion volémique aggrave l'équilibre hémodynamique. C'est un piège classique : la dyspnée asthmatique peut simuler un OAP."
+    }
+  ],
+  "correction": "STATUS ASTHMATICUS — Crise d'asthme aiguë grave\n\n1. DIAGNOSTIC : Status asthmaticus (asthme aigu grave résistant au traitement bronchodilatateur habituel)\n   - Critères de gravité : impossibilité de parler par phrases, SpO2 87%, cyanose, sifflements « silence auscultatoire », tirage, FC>120, paradoxe pulsé\n   - VEMS à 18% et Peak Flow < 25% = obstruction sévère\n   - pCO2 à 48 mmHg = signe ALARMANT (fatigue musculaire respiratoire, risque d'arrêt respiratoire imminent)\n\n2. PRISE EN CHARGE IMMÉDIATE (dans l'ordre) :\n   a) O₂ haute concentration pour SpO2 > 92%\n   b) Salbutamol nébulisé en continu (5-10 mg) + Ipratropium 0.5 mg\n   c) Corticoïdes IV (méthylprednisolone 1 mg/kg) — effet en 4-6h\n   d) Sulfate de magnésium IV 2g sur 20 min — bronchodilatation complémentaire\n   e) Surveillance rapprochée, réévaluation clinique + gaz du sang à 1h\n\n3. SI PAS D'AMÉLIORATION à 1h :\n   - Adrénaline SC 0.3 mg\n   - Préparer intubation (kétamine + suxaméthonium) si pCO2 monte > 50 avec altération conscience\n   - Réanimation respiratoire en réanimation / USI\n\n4. À RETENIR :\n   - Le « silence auscultatoire » est un signe de gravité majeure, PAS de guérison\n   - La pCO2 normale ou élevée chez un asthmatique en crise = urgence absolue (normalement hypocapnique)\n   - Mauvaise observance du traitement de fond + exposition allergénique = facteurs déclenchants classiques\n   - Pas d'antibiotiques, pas de diurétiques, pas de fibroscopie",
+  "correctionImage": null,
+  "feedback": {
+    "reussite": "Excellent ! Vous avez reconnu un status asthmaticus et appliqué le protocole AFGSU/SPU correctement. La gravité était réelle : le silence auscultatoire et l'hypercapnie étaient des signes de menace vitale immédiate.",
+    "partiel": "Le diagnostic était bon mais certaines étapes de prise en charge manquaient. La chronologie O₂ → bronchodilatateur → corticoïde → MgSO₄ est cruciale dans l'asthme grave.",
+    "echec": "Attention aux pièges : la dyspnée asthmatique peut mimer un OAP ou une embolie pulmonaire. Le contexte (jeune femme, ATCD asthme, allergie, mauvaise observance) oriente vers le status asthmaticus. Le silence auscultatoire est un signe de gravité absolue."
+  },
+  "locks": {
+    "enabled": false
+  },
+  "postGameQuestions": [
+    {
+      "question": "Pourquoi la pCO2 est-elle élevée chez cette patiente alors que l'asthme devrait provoquer une hypocapnie ?",
+      "reponse": "En asthme aigu, l'hypocapnie est normale (hyperventilation). Quand la pCO2 remonte à la normale ou au-delà, c'est un signe de FATIGUE MUSCULAIRE RESPIRATOIRE : les muscles ne peuvent plus compenser. C'est un signe d'arrêt respiratoire imminent → intubation à prévoir."
+    },
+    {
+      "question": "Qu'est-ce que le « silence auscultatoire » et pourquoi est-il trompeur ?",
+      "reponse": "Le silence auscultatoire correspond à une absence quasi-totale de murmure vésiculaire et de sifflements. Il survient quand l'obstruction est si sévère que l'air ne circule plus. Le piège : penser que le patient « va mieux » parce qu'il ne siffle plus. C'est en fait le signe de gravité MAXIMUM."
+    },
+    {
+      "question": "Pourquoi les antibiotiques sont-ils inutiles ici malgré les GB à 12400 ?",
+      "reponse": "La neutrophilie est une réponse de stress (cortisol), pas un signe d'infection bactérienne. La crise d'asthme est un phénomène inflammatoire et bronchospastique, pas infectieux. Les antibiotiques ne feraient qu'ajouter des effets secondaires sans bénéfice."
+    }
+  ],
+  "gameplayConfig": {
+    "startNode": "s1",
+    "maxTimeSeconds": 900,
+    "showTimer": true
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Vous êtes aux urgences de Bichat. Une jeune femme de 22 ans est amenée par les pompiers. Elle est assise sur le brancard, penchée en avant, les mains sur les genoux. Elle siffle à distance — vous l'entendez depuis le couloir. Sa mère, paniquée, vous dit : « Elle a l'habitude de ses crises, mais là c'est la pire. Son Ventoline ne marche pas depuis 2 heures ! »",
+      "constantesCibles": {
+        "tension": "155/90",
+        "pouls": "125",
+        "saturationO2": "87",
+        "temperature": "37.1",
+        "frequenceRespiratoire": "34"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Évaluer rapidement la gravité (inspection, auscultation, SpO2, parler au patient)",
+          "type": "examen",
+          "tempsExecutionSec": 30,
+          "feedback": "Bonne approche ! Vous observez : position assise penchée en avant, cyanose des lèvres, tirage sus-sternal et intercostal, sifflements diffus — et dans le lobe inférieur droit : SILENCE AUSCULTATOIRE. SpO2 : 87%. Elle ne peut pas finir ses phrases. C'est un status asthmaticus GRAVE.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "Demander un ECG et une radio thoracique en priorité",
+          "type": "examen",
+          "tempsExecutionSec": 20,
+          "feedback": "Pas le bon réflexe en premier ! Devant une dyspnée aussi aiguë avec sifflements, il faut d'abord TRAITER (O₂ + bronchodilatateur), PUIS investiguer. L'ECG et la radio ne sont pas prioritaires face à une détresse respiratoire immédiate. Perdu un temps précieux.",
+          "nextNode": "s1_degraded"
+        },
+        {
+          "label": "Poser un diagnostic d'insuffisance cardiaque et donner du furosémide",
+          "type": "traitement",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR CLASSIQUE ! La dyspnée asthmatique peut tromper en mimant un OAP. Mais : 22 ans, ATCD asthme, sifflements, allergie → c'est un ASTHME. Le furosémide va dépléter volémiquement cette patiente pour rien. Danger !",
+          "nextNode": "s1_wrong_dx"
+        }
+      ]
+    },
+    "s1_degraded": {
+      "id": "s1_degraded",
+      "descriptionClinique": "Pendant que vous attendez les résultats, la patiente s'aggrave. Elle commence à devenir somnolente (GCS 14). Les sifflements diminuent — mauvais signe. Sa mère hurle : « Elle ne siffle plus, c'est bon non ? » Non. Le silence auscultatoire s'étend. SpO2 : 83%. Le rythme respiratoire ralentit.",
+      "constantesCibles": {
+        "tension": "160/95",
+        "pouls": "135",
+        "saturationO2": "83",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "ALERTE : Oxygène + Salbutamol nébulisé + Ipratropium immédiatement",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "feedback": "Vous rattrapez le coup. O₂ haut débit, Salbutamol + Ipratropium nébulisés. La patiente se réveille un peu. Mais vous avez perdu 5 minutes cruciales. Il faut maintenant accélérer la prise en charge.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Intuber immédiatement — le patient ne va pas bien",
+          "type": "traitement",
+          "tempsExecutionSec": 30,
+          "feedback": "TROP TÔT pour l'intubation ! Il faut d'abord tenter la NBI (bronchodilatateurs + O₂ + corticoïdes + MgSO₄). L'intubation d'un asthmatique est TRÈS risquée (bronchospasme induit par l'intubation). Réservez-la à l'échec du traitement médical.",
+          "nextNode": "s3"
+        }
+      ]
+    },
+    "s1_wrong_dx": {
+      "id": "s1_wrong_dx",
+      "descriptionClinique": "Vous injectez 40 mg de furosémide IV. Rien ne change. La patiente est toujours cyanosée, siffle toujours autant, SpO2 reste à 87%. La mère vous regarde avec inquiétude : « Elle a l'habitude que ça marche vite, là ça ne passe pas... » Attendez — reconsidérez le diagnostic. 22 ans. ATCD asthme. Allergies connues. Sifflements. Mauvaise observance du traitement de fond. Stress. Exposition aux chats...",
+      "constantesCibles": {
+        "tension": "148/88",
+        "pouls": "130",
+        "saturationO2": "87",
+        "frequenceRespiratoire": "35"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Revenir au bon diagnostic : asthme aigu grave — commencer O₂ + Salbutamol + Ipratropium",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "feedback": "Ouf, vous reprenez le bon chemin. Le furosémide a été inutile mais pas catastrophique (pas de déplétion majeure à 40 mg). O₂ + nébulisation de Salbutamol + Ipratropium lancés. Poursuivons.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Insister : le diagnostic est l'OAP, augmenter les diurétiques",
+          "type": "fatal",
+          "tempsExecutionSec": 15,
+          "feedback": "NON ! Votre patiente n'a PAS un OAP. En continuant les diurétiques, vous aggravez sa déshydratation sans traiter l'obstruction bronchique. La patiente continue de se dégrader. En médecine d'urgence, l'obstination diagnostique tue. Reconnaissez vos erreurs.",
+          "nextNode": "s1_wrong_dx"
+        }
+      ]
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Votre évaluation confirme : ASTHME AIGU GRAVE (status asthmaticus). La patiente est en détresse respiratoire sévère. Critères : cyanose, silence ausculatoire, tirage, impossibilité de parler, SpO2 87%, FC 125. Il faut agir MAINTENANT.",
+      "constantesCibles": {
+        "tension": "155/90",
+        "pouls": "125",
+        "saturationO2": "87",
+        "frequenceRespiratoire": "34"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Oxygène haute concentration (lunettes nasales 6L/min) + Salbutamol 5mg nébulisé + Ipratropium 0.5mg nébulisé",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 15,
+          "feedback": "Parfait ! Le trio de base : O₂ pour corriger l'hypoxémie, Salbutamol pour la bronchodilatation, Ipratropium pour potentialiser l'effet. La SpO2 remonte à 90%. Mais elle siffle encore beaucoup.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Salbutamol 2 bouffées classiques + Surveillance SpO2",
+          "type": "soin",
+          "tempsExecutionSec": 10,
+          "feedback": "Insuffisant ! 2 bouffées de Ventoline = protocole modéré. Ici c'est un asthme GRAVE : il faut de la nébulisation continue à haute dose (5mg), pas 2 bouffées. Vous perdez un temps précieux avec un traitement sous-dosé.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Intuber immédiatement — la patiente ne va pas bien",
+          "type": "traitement",
+          "tempsExecutionSec": 30,
+          "feedback": "TROP TÔT ! L'intubation est un dernier recours dans l'asthme grave. Il faut d'abord touter la NBI (Non Invasive : bronchodilatateurs + O₂ + corticoïdes + MgSO₄). L'intubation d'un asthmatique est un piège : risque de bronchospasme induit, barotrauma, arrêt cardiaque.",
+          "nextNode": "s3"
+        }
+      ]
+    },
+    "s3": {
+      "id": "s3",
+      "descriptionClinique": "Le Salbutamol nébulisé tourne. L'O₂ est en place. La patiente reste en position assise, toujours cyanosée, toujours en tirage. SpO2 à 90%. La nébulisation seule ne suffit pas — il faut la suite du protocole.",
+      "constantesCibles": {
+        "tension": "150/88",
+        "pouls": "128",
+        "saturationO2": "90",
+        "frequenceRespiratoire": "32"
+      },
+      "evolutionAuto": {
+        "delaySec": 120,
+        "constantes": {
+          "saturationO2": "86",
+          "pouls": "138",
+          "frequenceRespiratoire": "36"
+        },
+        "nextNode": "s3_degraded",
+        "motif": "Sans corticoïdes IV ni sulfate de magnésium, l'obstruction ne cède pas. La patiente se fatigue, les muscles respiratoires cèdent."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Méthylprednisolone 60 mg IV + Sulfate de magnésium 2g IV sur 20 min",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 15,
+          "feedback": "Excellent ! Les corticoïdes IV réduisent l'inflammation (effet en 4-6h mais le bolus est urgent). Le MgSO₄ est un bronchodilatateur complémentaire reconnu dans l'asthme grave. Bonne maîtrise du protocole.",
+          "nextNode": "s4"
+        },
+        {
+          "label": "Prescrire des antibiotiques (amoxicilline-acide clavulanique)",
+          "type": "soin",
+          "tempsExecutionSec": 10,
+          "feedback": "Inutile ! La neutrophilie est un stress-response, pas une infection. Les antibiotiques n'ont rien à faire dans un status asthmaticus. Les GB à 12 400 avec éosinophilie à 8% orientent vers l'allergie, pas l'infection.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Demander un avis pneumologique en attendant",
+          "type": "soin",
+          "tempsExecutionSec": 20,
+          "feedback": "L'avis pneumo est utile MAIS pas en priorité face à une menace vitale ! Vous devez d'abord stabiliser avec le protocole complet. Le pneumologue pourra intervenir après la phase aiguë. Chaque minute compte.",
+          "nextNode": "s3"
+        }
+      ]
+    },
+    "s3_degraded": {
+      "id": "s3_degraded",
+      "descriptionClinique": "La patiente se dégrade. Les sifflements diminuent (mauvais signe ! Silence auscultatoire étendu). Elle devient somnolente, GCS 13. SpO2 chute à 86%. Sa mère pleure. Vous n'avez pas administré les corticoïdes ni le MgSO₄ à temps.",
+      "constantesCibles": {
+        "tension": "165/100",
+        "pouls": "140",
+        "saturationO2": "86",
+        "frequenceRespiratoire": "26"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Tout donner maintenant : Méthylprednisolone IV + MgSO₄ IV + Adrénaline SC 0.3 mg",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "feedback": "Dernière chance ! L'adrénaline SC est justifiée ici car la menace vitale est immédiate. Tous les moyens sont lancés. Espérons que la patiente réponde.",
+          "nextNode": "s4"
+        },
+        {
+          "label": "Intuber — le patient est en défaillance",
+          "type": "traitement",
+          "tempsExecutionSec": 30,
+          "feedback": "Vous tentez l'intubation... Kétamine + suxaméthonium. Le tube passe mais la patiente fait un bronchospasme massif à l'intubation. La ventilation est impossible. Arrêt cardiaque. Réanimation. Issue dramatique. L'intubation d'un asthmatique est un piège mortel quand elle est faite trop tôt ou sans préparation.",
+          "nextNode": "s_fail"
+        }
+      ]
+    },
+    "s4": {
+      "id": "s4",
+      "descriptionClinique": "Après 30 minutes de traitement intensif, les résultats arrivent. La patiente commence à aller MIEUX. Les sifflements reprennent (bon signe = l'air recommence à circuler !). Le tirage diminue. SpO2 remonte à 93%. Elle peut prononcer 2-3 mots à la suite. Les gaz du sang montrent une pCO2 à 42 mmHg (stable, pas de dérive).",
+      "constantesCibles": {
+        "tension": "140/82",
+        "pouls": "115",
+        "saturationO2": "93",
+        "frequenceRespiratoire": "26"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Surveillance continue (SpO2, FR, FC, TA) + poursuite Salbutamol nébulisé + réévaluation à 1h",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 5,
+          "feedback": "Parfait ! La patiente réagit au traitement. Surveillance rapprochée, poursuite de la nébulisation, réévaluation clinique et gaz du sang à 1h. Si amélioration continue → hospitalisation en pneumologie ou UR. Si stagnation/dégradation → réanimation.",
+          "nextNode": "s5_success"
+        },
+        {
+          "label": "Sortir la patiente — elle va mieux, SpO2 à 93%",
+          "type": "fatal",
+          "tempsExecutionSec": 5,
+          "feedback": "DANGER ! SpO2 à 93% avec O₂ = hypoxémie résiduelle. La patiente a un status asthmaticus : risque de rechute dans les heures. Hospitalisation obligatoire minimum 24-48h. Pas de sortie en urgence pour un asthme grave !",
+          "nextNode": "s4"
+        }
+      ]
+    },
+    "s5_success": {
+      "id": "s5_success",
+      "descriptionClinique": "1 heure après le début du traitement. La patiente respire mieux. Elle peut parler par phrases courtes. Les sifflements restent présents mais bien moins intenses. SpO2 à 95% sous O₂. Elle vous regarde et dit : « Merci... c'était la pire crise de ma vie. » Sa mère se calme enfin.",
+      "constantesCibles": {
+        "tension": "130/78",
+        "pouls": "102",
+        "saturationO2": "95",
+        "frequenceRespiratoire": "22"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Hospitalisation en pneumologie — réévaluation du traitement de fond, éducation thérapeutique, plan d'action écrit",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "feedback": "✅ CAS RÉSOLU ! Hospitalisation justifiée. En sortie il faudra : revoir le traitement de fond (step-up), réviser le plan d'action asthme, éduquer sur l'observance, prévoir un suivi rapproché. Yasmine a eu de la chance — un status asthmaticus non traité peut tuer en moins d'une heure. Bravo !",
+          "nextNode": "s_final_success"
+        }
+      ]
+    },
+    "s_final_success": {
+      "id": "s_final_success",
+      "descriptionClinique": "🏆 CAS TERMINÉ — Status asthmaticus pris en charge avec succès. Yasmine est hospitalisée en pneumologie. La crise est en régression. Leçons retenues : 1) Toujours donner O₂ en premier 2) Nébulisation à haute dose 3) Corticoïdes IV précoces 4) MgSO₄ dans l'asthme grave 5) Le silence auscultatoire est un signe de GRAVITÉ, pas d'amélioration.",
+      "constantesCibles": {},
+      "actionsDisponibles": []
+    },
+    "s_fail": {
+      "id": "s_fail",
+      "descriptionClinique": "💀 ISSUE FATALE. L'intubation précipitée d'un asthmatique en crise a provoqué un bronchospasme massif induit. Arrêt cardiaque. Malgré 30 min de réanimation, Yasmine est décédée. Elle avait 22 ans. L'enseignement : dans l'asthme grave, on traite AVANT d'intuber. L'intubation est un dernier recours, pas un réflexe.",
+      "constantesCibles": {},
+      "actionsDisponibles": []
+    }
+  }
+}
