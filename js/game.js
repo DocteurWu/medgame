@@ -265,6 +265,17 @@ onDomReady(async () => {
         // === MOTEUR DE JEU DYNAMIQUE : Initialiser le mode urgence si gameplayConfig.startNode existe ===
         initUrgenceMode(currentCase);
 
+        // === DAILY CHALLENGE: Show badge if this is today's challenge ===
+        if (typeof dailyChallenge !== 'undefined' && dailyChallenge.isTodaysChallenge(currentCase.id)) {
+            const existingBadge = document.querySelector('.daily-game-badge');
+            if (!existingBadge) {
+                const badge = document.createElement('div');
+                badge.className = 'daily-game-badge';
+                badge.innerHTML = `🎯 DÉFI DU JOUR <span class="db-xp">+50% XP</span>`;
+                document.body.appendChild(badge);
+            }
+        }
+
         displayValue(document.getElementById('patient-nom'), currentCase.patient.nom, 'patient.nom');
         displayValue(document.getElementById('patient-prenom'), currentCase.patient.prenom, 'patient.prenom');
         displayValue(document.getElementById('patient-age'), currentCase.patient.age, 'patient.age');
@@ -1023,6 +1034,36 @@ onDomReady(async () => {
             }
         }
 
+        // === DAILY CHALLENGE: Record completion and apply bonus XP ===
+        if (typeof dailyChallenge !== 'undefined' && isCorrect && !hasFatalError) {
+            const dcResult = dailyChallenge.recordCompletion(xpEarned);
+            if (dcResult.bonusXp > 0 && !dcResult.alreadyCompleted) {
+                // Show bonus notification
+                dailyChallenge.showBonusNotification(dcResult.bonusXp, dcResult.newStreak);
+
+                // Save bonus XP to Supabase
+                if (typeof supabase !== 'undefined') {
+                    supabase.auth.getUser().then(async ({ data: { user } }) => {
+                        if (user) {
+                            try {
+                                const { data: profile } = await supabase
+                                    .from('profiles')
+                                    .select('total_xp')
+                                    .eq('id', user.id)
+                                    .single();
+                                if (profile) {
+                                    await supabase
+                                        .from('profiles')
+                                        .update({ total_xp: profile.total_xp + dcResult.bonusXp })
+                                        .eq('id', user.id);
+                                }
+                            } catch (e) { console.warn('[DailyChallenge] Bonus XP save failed:', e); }
+                        }
+                    });
+                }
+            }
+        }
+
         // === PATIENT GALLERY: Record patient outcome ===
         if (typeof patientGallery !== 'undefined') {
             const galleryResult = patientGallery.recordPatient(currentCase, {
@@ -1305,6 +1346,11 @@ onDomReady(async () => {
         // === SKILL CARDS: Initialize ===
         if (typeof skillCards !== 'undefined') {
             skillCards.init();
+        }
+
+        // === DAILY CHALLENGE: Initialize ===
+        if (typeof dailyChallenge !== 'undefined') {
+            dailyChallenge.init();
         }
 
         // === EXAM MODE: Check if requested ===

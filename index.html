@@ -105,6 +105,9 @@
                 <!-- Streak display on home -->
                 <div id="home-streak-display" style="text-align:center; padding: 10px; color: rgba(255,255,255,0.3); font-size: 0.85rem;"></div>
 
+                <!-- Défi du Jour -->
+                <div id="daily-challenge-section" style="display:none;"></div>
+
                 <!-- Boutons réservés aux utilisateurs connectés -->
                 <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;" aria-label="Ouvrir les réglages">
                     <span class="btn-content"><i class="fas fa-sliders-h" aria-hidden="true"></i> Réglages</span>
@@ -226,6 +229,8 @@
     <script src="js/audio.js"></script>
     <!-- Patient Gallery Module -->
     <script src="js/patientGallery.js"></script>
+    <!-- Daily Challenge Module -->
+    <script src="js/dailyChallenge.js"></script>
     <!-- Three.js Background Module -->
     <script src="js/three-background.js"></script>
 
@@ -586,6 +591,10 @@
                             }
                         }
                     }
+                }
+                // Daily Challenge init
+                if (typeof dailyChallenge !== 'undefined') {
+                    dailyChallenge.init();
                 }
             } catch(e) {}
         })();
