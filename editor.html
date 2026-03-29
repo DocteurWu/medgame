@@ -525,19 +525,22 @@
 
     <!-- Modal for Load Options -->
     <div id="load-options-modal" class="modal-overlay" style="display: none; z-index: 1000;">
-        <div class="modal-content" style="max-width: 450px; text-align: center; background: #111114; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 35px 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative;">
+        <div class="modal-content"
+            style="max-width: 450px; text-align: center; background: #111114; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 35px 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative;">
             <button class="close-modal-btn" id="load-options-close" title="Fermer"><i class="fas fa-times"></i></button>
-            <h3 style="margin-top:0; color: #00e5ff; font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <h3
+                style="margin-top:0; color: #00e5ff; font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px;">
                 <i class="fas fa-file-import"></i> Charger un cas
             </h3>
             <p style="font-size: 1rem; color: #a0a0b0; margin-bottom: 30px;">
                 Que souhaitez-vous faire ?
             </p>
-            
-            <button class="cyan-btn" onclick="document.getElementById('load-json').click(); document.getElementById('load-options-modal').style.display='none';">
+
+            <button class="cyan-btn"
+                onclick="document.getElementById('load-json').click(); document.getElementById('load-options-modal').style.display='none';">
                 <i class="fas fa-upload"></i> IMPORTER UN FICHIER JSON LOCAL
             </button>
-            
+
             <button class="dark-purple-btn" id="btn-open-unlocked">
                 <i class="fas fa-folder-open"></i> AMÉLIORER UN CAS RÉUSSI
             </button>
@@ -547,11 +550,14 @@
     <!-- Modal for Unlocked Cases (Improvement) -->
     <div id="unlocked-cases-modal" class="modal-overlay" style="display: none; z-index: 1000;">
         <div class="modal-content" style="max-width: 600px;">
-            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-folder-open"></i> Sélectionner un cas à améliorer</h3>
+            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-folder-open"></i> Sélectionner un cas
+                à améliorer</h3>
             <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px;">
-                Voici les cas que vous avez déjà joués et réussis. Sélectionnez-en un pour le charger dans l'éditeur et proposer des améliorations.
+                Voici les cas que vous avez déjà joués et réussis. Sélectionnez-en un pour le charger dans l'éditeur et
+                proposer des améliorations.
             </p>
-            <div id="unlocked-cases-list" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+            <div id="unlocked-cases-list"
+                style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
                 <!-- Populated by JS -->
             </div>
             <div class="modal-actions" style="margin-top:20px; text-align:right;">
@@ -579,7 +585,7 @@
         .cyan-btn {
             background: #00ffff;
             color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
             font-weight: 800;
             font-size: 0.95rem;
             text-transform: uppercase;
@@ -596,6 +602,7 @@
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
             transition: all 0.2s;
         }
+
         .cyan-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
@@ -608,7 +615,7 @@
             font-weight: 800;
             font-size: 0.95rem;
             text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             padding: 18px;
             width: 100%;
@@ -620,6 +627,7 @@
             box-shadow: 0 10px 20px rgba(160, 32, 240, 0.1), 0 0 15px rgba(160, 32, 240, 0.1);
             transition: all 0.2s;
         }
+
         .dark-purple-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(160, 32, 240, 0.3), 0 0 20px rgba(160, 32, 240, 0.2);
@@ -639,6 +647,7 @@
             opacity: 0.8;
             z-index: 10;
         }
+
         .close-modal-btn:hover {
             transform: scale(1.1);
             opacity: 1;
