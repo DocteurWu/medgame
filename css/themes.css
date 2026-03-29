@@ -339,40 +339,40 @@ body {
     box-shadow: 0 0 0 2px #f472b6, 0 10px 20px rgba(244, 114, 182, 0.2);
 }
 
-/* Hématologie - Tons Rouges Profonds */
-.theme-card[data-theme="Hematologie"] {
-    background: linear-gradient(135deg, #fee2e2 0%, #ef4444 100%);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.theme-card[data-theme="Hematologie"]:hover {
-    background: linear-gradient(135deg, #ef4444 0%, #fee2e2 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(239, 68, 68, 0.3);
-}
-
-.theme-card.selected[data-theme="Hematologie"] {
-    background: linear-gradient(135deg, #fee2e2 0%, #fff 100%);
-    border-color: #ef4444;
-    box-shadow: 0 0 0 2px #ef4444, 0 10px 20px rgba(239, 68, 68, 0.2);
-}
-
-/* Appareil digestif - Tons Verts / Émeraude */
-.theme-card[data-theme="Appareil-digestif"] {
+/* Agents infectieux - Tons Verts / Émeraude */
+.theme-card[data-theme="Agents-infectieux"] {
     background: linear-gradient(135deg, #d1fae5 0%, #10b981 100%);
     border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
-.theme-card[data-theme="Appareil-digestif"]:hover {
+.theme-card[data-theme="Agents-infectieux"]:hover {
     background: linear-gradient(135deg, #10b981 0%, #d1fae5 100%);
     transform: translateY(-5px) scale(1.02);
     box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
 }
 
-.theme-card.selected[data-theme="Appareil-digestif"] {
+.theme-card.selected[data-theme="Agents-infectieux"] {
     background: linear-gradient(135deg, #d1fae5 0%, #fff 100%);
     border-color: #10b981;
     box-shadow: 0 0 0 2px #10b981, 0 10px 20px rgba(16, 185, 129, 0.2);
+}
+
+/* Appareil digestif - Tons Marron Pastel */
+.theme-card[data-theme="Appareil-digestif"] {
+    background: linear-gradient(135deg, #f5e6d3 0%, #a67c52 100%);
+    border: 1px solid rgba(166, 124, 82, 0.3);
+}
+
+.theme-card[data-theme="Appareil-digestif"]:hover {
+    background: linear-gradient(135deg, #a67c52 0%, #f5e6d3 100%);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(166, 124, 82, 0.3);
+}
+
+.theme-card.selected[data-theme="Appareil-digestif"] {
+    background: linear-gradient(135deg, #f5e6d3 0%, #fff 100%);
+    border-color: #a67c52;
+    box-shadow: 0 0 0 2px #a67c52, 0 10px 20px rgba(166, 124, 82, 0.2);
 }
 
 /* Locomoteur - Tons Gris / Os / Beige */

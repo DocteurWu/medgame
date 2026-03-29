@@ -33,7 +33,7 @@
     "EDN_VIH.json",
     "EDN_diabetetype1monogé.json"
   ],
-  "hématologie": [],
+  "agents-infectieux": [],
   "appareil-digestif": [
     "digestif_cancer_oeso_brandon.json",
     "digestif_dyspepsie_elinor.json",
