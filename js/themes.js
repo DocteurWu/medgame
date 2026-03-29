@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStartSessionButton();
 
         const themeLower = theme.toLowerCase();
-        const mapKeys = { 'agents-infectieux': 'agents infectieux', 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
+        const mapKeys = { 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
         const searchSpec = mapKeys[themeLower] || themeLower;
 
         const motifsGraph = document.getElementById('motifs-graph');
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.allSupabaseCases) {
                 // Utilisation des données déjà chargées depuis Supabase
                 motifs = window.allSupabaseCases
-                    .filter(c => c.specialty.toLowerCase() === themeLower)
+                    .filter(c => c.specialty.toLowerCase() === searchSpec)
                     .map(c => {
                         const data = c.content;
                         return {

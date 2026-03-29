@@ -1543,6 +1543,18 @@ body::after {
 
     .game-section.mobile-active {
         display: block !important;
+        opacity: 1 !important;
+        transform: none !important;
+        visibility: visible !important;
+    }
+
+    .game-section.mobile-active .medical-card {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .main-content {
+        z-index: 3;
     }
 }
 
