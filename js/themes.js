@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateStartSessionButton();
 
         const themeLower = theme.toLowerCase();
-        const mapKeys = { 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
+        const mapKeys = { 'agents-infectieux': 'agents infectieux', 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
         const searchSpec = mapKeys[themeLower] || themeLower;
 
         const motifsGraph = document.getElementById('motifs-graph');
