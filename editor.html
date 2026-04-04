@@ -37,7 +37,9 @@
             <div class="patient-mini-card">
                 <div class="patient-avatar" id="patient-initials">?</div>
                 <div class="patient-details">
-                    <h3 id="patient-nom-sidebar" contenteditable="true">Nom Prénom</h3>
+                    <h3 id="patient-nom-sidebar" contenteditable="true">Nom</h3>
+                    <p><span id="patient-prenom-sidebar" contenteditable="true"
+                            style="opacity:0.7; font-style:italic;">Prénom</span></p>
                     <p><span id="patient-age-sidebar" contenteditable="true">72</span> ans · <span
                             id="patient-sexe-sidebar" contenteditable="true">M</span></p>
                 </div>
@@ -151,25 +153,117 @@
                                 </div>
                                 <div class="sub-section">
                                     <h4>Antécédents Médicaux</h4>
-                                    <div id="antecedents-medicaux"></div>
-                                    <button class="btn-add"
-                                        onclick="addListItem('antecedents-medicaux', {type: 'Type', traitement: 'Traitement'})"><i
-                                            class="fas fa-plus"></i> Ajouter un antécédent</button>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="antecedents-medicaux-toggle"
+                                                style="accent-color:#4facfe; width:16px; height:16px;">
+                                            <span>Antécédents présents</span>
+                                        </label>
+                                    </div>
+                                    <div id="antecedents-medicaux-container" style="display:none;">
+                                        <div id="antecedents-medicaux"></div>
+                                        <button class="btn-add"
+                                            onclick="addListItem('antecedents-medicaux', {type: 'Type', traitement: 'Traitement'})"><i
+                                                class="fas fa-plus"></i> Ajouter un antécédent</button>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Antécédents Chirurgicaux</h4>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="antecedents-chirurgicaux-toggle"
+                                                style="accent-color:#4facfe; width:16px; height:16px;">
+                                            <span>Antécédents chirurgicaux présents</span>
+                                        </label>
+                                    </div>
+                                    <div id="antecedents-chirurgicaux-container" style="display:none;">
+                                        <div id="antecedents-chirurgicaux"></div>
+                                        <button class="btn-add"
+                                            onclick="addListItem('antecedents-chirurgicaux', {intervention: 'Intervention', annee: 'Année'})"><i
+                                                class="fas fa-plus"></i> Ajouter un antécédent chirurgical</button>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Antécédents Familiaux</h4>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="antecedents-familiaux-toggle"
+                                                style="accent-color:#4facfe; width:16px; height:16px;">
+                                            <span>Antécédents familiaux présents</span>
+                                        </label>
+                                    </div>
+                                    <div id="antecedents-familiaux-container" style="display:none;">
+                                        <div id="antecedents-familiaux"></div>
+                                        <button class="btn-add"
+                                            onclick="addListItem('antecedents-familiaux', {antecedent: 'Antécédent', lien: 'Lien familial'})"><i
+                                                class="fas fa-plus"></i> Ajouter un antécédent familial</button>
+                                    </div>
+                                </div>
+                                <div class="sub-section">
+                                    <h4>Allergies</h4>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="allergies-toggle"
+                                                style="accent-color:#e74c3c; width:16px; height:16px;">
+                                            <span>Patient allergique</span>
+                                        </label>
+                                    </div>
+                                    <div id="allergies-container" style="display:none;">
+                                        <div id="allergies-liste"></div>
+                                        <button class="btn-add" id="btn-add-allergy" style="display:none;"
+                                            onclick="addListItemText('allergies-liste')"><i class="fas fa-plus"></i>
+                                            Ajouter
+                                            une allergie</button>
+                                    </div>
                                 </div>
                                 <div class="sub-section">
                                     <h4>Traitements habituels</h4>
-                                    <div id="traitements-liste"></div>
-                                    <button class="btn-add"
-                                        onclick="addListItem('traitements-liste', {nom: 'Nom', dose: 'Dose', frequence: 'Fréquence'})"><i
-                                            class="fas fa-plus"></i> Ajouter un traitement</button>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="traitements-toggle"
+                                                style="accent-color:#2ecc71; width:16px; height:16px;">
+                                            <span>Traitements en cours</span>
+                                        </label>
+                                    </div>
+                                    <div id="traitements-container" style="display:none;">
+                                        <div id="traitements-liste"></div>
+                                        <button class="btn-add"
+                                            onclick="addListItem('traitements-liste', {nom: 'Nom', dose: 'Dose', frequence: 'Fréquence'})"><i
+                                                class="fas fa-plus"></i> Ajouter un traitement</button>
+                                    </div>
                                 </div>
                                 <div class="sub-section">
                                     <h4>Mode de vie</h4>
                                     <p>Activité physique: <span id="activite-physique" contenteditable="true">...</span>
                                     </p>
-                                    <p>Tabac: <span id="tabac-quantite" contenteditable="true">...</span> / <span
-                                            id="tabac-duree" contenteditable="true">...</span></p>
-                                    <p>Alcool: <span id="alcool" contenteditable="true">...</span></p>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="tabac-toggle"
+                                                style="accent-color:#95a5a6; width:16px; height:16px;">
+                                            <span>Tabac</span>
+                                        </label>
+                                    </div>
+                                    <div id="tabac-container" style="display:none;">
+                                        <p>Quantité: <span id="tabac-quantite" contenteditable="true">...</span> /
+                                            Durée: <span id="tabac-duree" contenteditable="true">...</span></p>
+                                    </div>
+                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                                        <label
+                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
+                                            <input type="checkbox" id="alcool-toggle"
+                                                style="accent-color:#f39c12; width:16px; height:16px;">
+                                            <span>Alcool</span>
+                                        </label>
+                                    </div>
+                                    <div id="alcool-container" style="display:none;">
+                                        <p>Consommation: <span id="alcool" contenteditable="true">...</span></p>
+                                    </div>
                                     <p>Alimentation: <span id="alimentation-regime" contenteditable="true">...</span> /
                                         <span id="alimentation-particularites" contenteditable="true">...</span>
                                     </p>

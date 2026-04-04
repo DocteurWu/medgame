@@ -289,35 +289,75 @@ onDomReady(async () => {
             if (revealAllBtn) revealAllBtn.style.display = 'none';
 
             displayValue(activitePhysique, currentCase.interrogatoire.modeDeVie.activitePhysique.description, 'interrogatoire.modeDeVie.activitePhysique.description');
-            displayValue(tabac, `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}`, 'interrogatoire.modeDeVie.tabac');
-            displayValue(alcool, currentCase.interrogatoire.modeDeVie.alcool.quantite, 'interrogatoire.modeDeVie.alcool.quantite');
+
+            const tabacData = currentCase.interrogatoire.modeDeVie.tabac;
+            const tabacPresent = tabacData?.presence !== false && (tabacData?.quantite || tabacData?.duree);
+            if (tabacPresent) {
+                displayValue(tabac, `${tabacData.quantite || ''} depuis ${tabacData.duree || ''}`, 'interrogatoire.modeDeVie.tabac');
+            } else if (tabac) {
+                tabac.textContent = 'Non';
+            }
+
+            const alcoolData = currentCase.interrogatoire.modeDeVie.alcool;
+            const alcoolPresent = alcoolData?.presence !== false && alcoolData?.quantite;
+            if (alcoolPresent) {
+                displayValue(alcool, alcoolData.quantite, 'interrogatoire.modeDeVie.alcool.quantite');
+            } else if (alcool) {
+                alcool.textContent = 'Non';
+            }
+
             displayValue(alimentation, `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}`, 'interrogatoire.modeDeVie.alimentation');
             displayValue(emploi, `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}`, 'interrogatoire.modeDeVie.emploi');
+
+            const antecedents = currentCase.interrogatoire.antecedents || {};
 
             if (isFieldLocked('interrogatoire.antecedents')) {
                 const lock = getLockForField('interrogatoire.antecedents');
                 const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
                 antecedentsMedicaux.innerHTML = placeholder;
-                antecedentsChirurgicaux.innerHTML = '';
-                antecedentsFamiliaux.innerHTML = '';
+                if (antecedentsChirurgicaux) antecedentsChirurgicaux.innerHTML = '';
+                if (antecedentsFamiliaux) antecedentsFamiliaux.innerHTML = '';
             } else {
-                antecedentsMedicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>';
-                antecedentsChirurgicaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.date)})</li>`).join('') + '</ul>';
-                antecedentsFamiliaux.innerHTML = '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie)} (${escapeHtml(ant.age)} ans)</li>`).join('') + '</ul>';
+                if (antecedents.medicauxPresence !== false && antecedents.medicaux && antecedents.medicaux.length > 0) {
+                    antecedentsMedicaux.innerHTML = '<ul>' + antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>';
+                } else if (antecedentsMedicaux) {
+                    antecedentsMedicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent médical connu.</p>';
+                }
+
+                if (antecedentsChirurgicaux) {
+                    if (antecedents.chirurgicauxPresence !== false && antecedents.chirurgicaux && antecedents.chirurgicaux.length > 0) {
+                        antecedentsChirurgicaux.innerHTML = '<ul>' + antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.annee || ant.date || 'N/A')})</li>`).join('') + '</ul>';
+                    } else {
+                        antecedentsChirurgicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent chirurgical connu.</p>';
+                    }
+                }
+
+                if (antecedentsFamiliaux) {
+                    if (antecedents.familiauxPresence !== false && antecedents.familiaux && antecedents.familiaux.length > 0) {
+                        antecedentsFamiliaux.innerHTML = '<ul>' + antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie || ant.antecedent)} (${escapeHtml(ant.age || 'N/A')} ans)</li>`).join('') + '</ul>';
+                    } else {
+                        antecedentsFamiliaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent familial connu.</p>';
+                    }
+                }
             }
 
             const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
+            const traitementsPresence = currentCase.interrogatoire.traitementsPresence !== undefined
+                ? currentCase.interrogatoire.traitementsPresence
+                : (currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0);
+
+            if (traitementsContainer) traitementsContainer.style.display = traitementsPresence ? '' : 'none';
+
             if (isFieldLocked('interrogatoire.traitements')) {
                 const lock = getLockForField('interrogatoire.traitements');
                 traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
-                if (traitementsContainer) traitementsContainer.style.display = '';
-            } else {
+            } else if (traitementsPresence) {
                 const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
                 if (hasTraitements) {
                     traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
                     if (traitementsContainer) traitementsContainer.style.display = '';
                 } else {
-                    if (traitementsContainer) traitementsContainer.style.display = 'none';
+                    traitementsListe.textContent = 'Aucun traitement en cours.';
                 }
             }
 
@@ -359,11 +399,22 @@ onDomReady(async () => {
             const activitePhysiqueData = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.activitePhysique ? currentCase.interrogatoire.modeDeVie.activitePhysique.description : '';
             displayQuestionBtn(activitePhysique, 'Faites-vous du sport ?', activitePhysiqueData, 'interrogatoire.modeDeVie.activitePhysique.description');
 
-            const tabacQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.tabac ? `${currentCase.interrogatoire.modeDeVie.tabac.quantite} depuis ${currentCase.interrogatoire.modeDeVie.tabac.duree}` : '';
-            displayQuestionBtn(tabac, 'Fumez-vous ?', tabacQ, 'interrogatoire.modeDeVie.tabac');
+            const tabacData = currentCase.interrogatoire.modeDeVie?.tabac;
+            const tabacPresent = tabacData?.presence !== false && (tabacData?.quantite || tabacData?.duree);
+            if (tabacPresent) {
+                const tabacQ = `${tabacData.quantite || ''} depuis ${tabacData.duree || ''}`;
+                displayQuestionBtn(tabac, 'Fumez-vous ?', tabacQ, 'interrogatoire.modeDeVie.tabac');
+            } else if (tabac) {
+                tabac.textContent = 'Non';
+            }
 
-            const alcoolQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.alcool ? currentCase.interrogatoire.modeDeVie.alcool.quantite : '';
-            displayQuestionBtn(alcool, 'Consommez-vous de l\'alcool ?', alcoolQ, 'interrogatoire.modeDeVie.alcool.quantite');
+            const alcoolData = currentCase.interrogatoire.modeDeVie?.alcool;
+            const alcoolPresent = alcoolData?.presence !== false && alcoolData?.quantite;
+            if (alcoolPresent) {
+                displayQuestionBtn(alcool, 'Consommez-vous de l\'alcool ?', alcoolData.quantite, 'interrogatoire.modeDeVie.alcool.quantite');
+            } else if (alcool) {
+                alcool.textContent = 'Non';
+            }
 
             const alimQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.alimentation ? `${currentCase.interrogatoire.modeDeVie.alimentation.regime}, ${currentCase.interrogatoire.modeDeVie.alimentation.particularites}` : '';
             displayQuestionBtn(alimentation, 'Avez-vous un régime alimentaire particulier ?', alimQ, 'interrogatoire.modeDeVie.alimentation');
@@ -371,32 +422,57 @@ onDomReady(async () => {
             const emploiQ = currentCase.interrogatoire.modeDeVie && currentCase.interrogatoire.modeDeVie.emploi ? `${currentCase.interrogatoire.modeDeVie.emploi.profession}, stress: ${currentCase.interrogatoire.modeDeVie.emploi.stress}` : '';
             displayQuestionBtn(emploi, 'Quelle est votre profession ?', emploiQ, 'interrogatoire.modeDeVie.emploi');
 
+            const antecedents = currentCase.interrogatoire.antecedents || {};
+
             if (isFieldLocked('interrogatoire.antecedents')) {
                 const lock = getLockForField('interrogatoire.antecedents');
                 const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
                 antecedentsMedicaux.innerHTML = placeholder;
-                antecedentsChirurgicaux.innerHTML = '';
-                antecedentsFamiliaux.innerHTML = '';
+                if (antecedentsChirurgicaux) antecedentsChirurgicaux.innerHTML = '';
+                if (antecedentsFamiliaux) antecedentsFamiliaux.innerHTML = '';
             } else {
-                let valMed = (currentCase.interrogatoire.antecedents && currentCase.interrogatoire.antecedents.medicaux && currentCase.interrogatoire.antecedents.medicaux.length) ? '<ul>' + currentCase.interrogatoire.antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>' : '';
-                displayQuestionBtn(antecedentsMedicaux, 'Avez-vous des maladies chroniques ou antécédents médicaux ?', valMed, 'interrogatoire.antecedents.medicaux', true);
+                const medPresent = antecedents.medicauxPresence !== false && antecedents.medicaux && antecedents.medicaux.length > 0;
+                if (medPresent) {
+                    let valMed = '<ul>' + antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>';
+                    displayQuestionBtn(antecedentsMedicaux, 'Avez-vous des maladies chroniques ou antécédents médicaux ?', valMed, 'interrogatoire.antecedents.medicaux', true);
+                } else if (antecedentsMedicaux) {
+                    antecedentsMedicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent médical connu.</p>';
+                }
 
-                let valChir = (currentCase.interrogatoire.antecedents && currentCase.interrogatoire.antecedents.chirurgicaux && currentCase.interrogatoire.antecedents.chirurgicaux.length) ? '<ul>' + currentCase.interrogatoire.antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.date)})</li>`).join('') + '</ul>' : '';
-                displayQuestionBtn(antecedentsChirurgicaux, 'Avez-vous déjà été opéré(e) ?', valChir, 'interrogatoire.antecedents.chirurgicaux', true);
+                const chirPresent = antecedents.chirurgicauxPresence !== false && antecedents.chirurgicaux && antecedents.chirurgicaux.length > 0;
+                if (antecedentsChirurgicaux) {
+                    if (chirPresent) {
+                        let valChir = '<ul>' + antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.annee || ant.date || 'N/A')})</li>`).join('') + '</ul>';
+                        displayQuestionBtn(antecedentsChirurgicaux, 'Avez-vous déjà été opéré(e) ?', valChir, 'interrogatoire.antecedents.chirurgicaux', true);
+                    } else {
+                        antecedentsChirurgicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent chirurgical connu.</p>';
+                    }
+                }
 
-                let valFam = (currentCase.interrogatoire.antecedents && currentCase.interrogatoire.antecedents.familiaux && currentCase.interrogatoire.antecedents.familiaux.length) ? '<ul>' + currentCase.interrogatoire.antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie)} (${escapeHtml(ant.age)} ans)</li>`).join('') + '</ul>' : '';
-                displayQuestionBtn(antecedentsFamiliaux, 'Y a-t-il des maladies particulières dans votre famille ?', valFam, 'interrogatoire.antecedents.familiaux', true);
+                const famPresent = antecedents.familiauxPresence !== false && antecedents.familiaux && antecedents.familiaux.length > 0;
+                if (antecedentsFamiliaux) {
+                    if (famPresent) {
+                        let valFam = '<ul>' + antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie || ant.antecedent)} (${escapeHtml(ant.age || 'N/A')} ans)</li>`).join('') + '</ul>';
+                        displayQuestionBtn(antecedentsFamiliaux, 'Y a-t-il des maladies particulières dans votre famille ?', valFam, 'interrogatoire.antecedents.familiaux', true);
+                    } else {
+                        antecedentsFamiliaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent familial connu.</p>';
+                    }
+                }
             }
 
+            const traitementsPresence = currentCase.interrogatoire.traitementsPresence !== undefined
+                ? currentCase.interrogatoire.traitementsPresence
+                : (currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0);
+
             const traitementsContainer = traitementsListe ? traitementsListe.closest('p') : null;
-            if (traitementsContainer) traitementsContainer.style.display = '';
+            if (traitementsContainer) traitementsContainer.style.display = traitementsPresence ? '' : 'none';
 
             if (isFieldLocked('interrogatoire.traitements')) {
                 const lock = getLockForField('interrogatoire.traitements');
                 traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
-            } else {
+            } else if (traitementsPresence) {
                 const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
-                let valTrait = hasTraitements ? currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ') : '';
+                let valTrait = hasTraitements ? currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ') : 'Aucun traitement en cours.';
                 displayQuestionBtn(traitementsListe, 'Prenez-vous un traitement médical actuellement ?', valTrait, 'interrogatoire.traitements');
             }
 
@@ -934,9 +1010,12 @@ onDomReady(async () => {
             supabase.auth.getUser().then(async ({ data: { user } }) => {
                 if (user) {
                     try {
+                        const totalTime = getTimeLimit();
+                        const durationSeconds = totalTime - timerState.timeLeft;
+
                         const stats = {
                             attempts: attempts,
-                            caseAttempts: caseAttempts,  // Track how many times this case was attempted
+                            caseAttempts: caseAttempts,
                             diagnosticCorrect: diagnosticCorrect,
                             selectedTreatments: selectedTreatments,
                             hasFatalError: hasFatalError,
@@ -952,7 +1031,8 @@ onDomReady(async () => {
                                     user_id: user.id,
                                     case_id: currentCase.id,
                                     score: percentageScore,
-                                    stats: stats
+                                    stats: stats,
+                                    duration_seconds: durationSeconds
                                 }
                             ]);
                         if (sessionError) throw sessionError;
