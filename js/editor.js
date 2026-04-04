@@ -202,6 +202,75 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'game.html?preview=true';
     });
 
+    // Allergies toggle
+    const allergiesToggle = document.getElementById('allergies-toggle');
+    const allergiesContainer = document.getElementById('allergies-container');
+    const allergiesListe = document.getElementById('allergies-liste');
+    const btnAddAllergy = document.getElementById('btn-add-allergy');
+
+    if (allergiesToggle && allergiesContainer && allergiesListe && btnAddAllergy) {
+        allergiesToggle.addEventListener('change', () => {
+            const show = allergiesToggle.checked;
+            allergiesContainer.style.display = show ? 'block' : 'none';
+            allergiesListe.style.display = show ? 'block' : 'none';
+            btnAddAllergy.style.display = show ? 'inline-flex' : 'none';
+        });
+    }
+
+    // Antécédents médicaux toggle
+    const antMedToggle = document.getElementById('antecedents-medicaux-toggle');
+    const antMedContainer = document.getElementById('antecedents-medicaux-container');
+    if (antMedToggle && antMedContainer) {
+        antMedToggle.addEventListener('change', () => {
+            antMedContainer.style.display = antMedToggle.checked ? 'block' : 'none';
+        });
+    }
+
+    // Antécédents chirurgicaux toggle
+    const antChirToggle = document.getElementById('antecedents-chirurgicaux-toggle');
+    const antChirContainer = document.getElementById('antecedents-chirurgicaux-container');
+    if (antChirToggle && antChirContainer) {
+        antChirToggle.addEventListener('change', () => {
+            antChirContainer.style.display = antChirToggle.checked ? 'block' : 'none';
+        });
+    }
+
+    // Antécédents familiaux toggle
+    const antFamToggle = document.getElementById('antecedents-familiaux-toggle');
+    const antFamContainer = document.getElementById('antecedents-familiaux-container');
+    if (antFamToggle && antFamContainer) {
+        antFamToggle.addEventListener('change', () => {
+            antFamContainer.style.display = antFamToggle.checked ? 'block' : 'none';
+        });
+    }
+
+    // Traitements toggle
+    const traitToggle = document.getElementById('traitements-toggle');
+    const traitContainer = document.getElementById('traitements-container');
+    if (traitToggle && traitContainer) {
+        traitToggle.addEventListener('change', () => {
+            traitContainer.style.display = traitToggle.checked ? 'block' : 'none';
+        });
+    }
+
+    // Tabac toggle
+    const tabacToggle = document.getElementById('tabac-toggle');
+    const tabacContainer = document.getElementById('tabac-container');
+    if (tabacToggle && tabacContainer) {
+        tabacToggle.addEventListener('change', () => {
+            tabacContainer.style.display = tabacToggle.checked ? 'block' : 'none';
+        });
+    }
+
+    // Alcool toggle
+    const alcoolToggle = document.getElementById('alcool-toggle');
+    const alcoolContainer = document.getElementById('alcool-container');
+    if (alcoolToggle && alcoolContainer) {
+        alcoolToggle.addEventListener('change', () => {
+            alcoolContainer.style.display = alcoolToggle.checked ? 'block' : 'none';
+        });
+    }
+
     // Initial Empty State with realistic defaults
     // ONLY if we don't have a preview or loaded case
     const existingPreview = sessionStorage.getItem('previewCase');
@@ -402,6 +471,7 @@ function populateEditor(data) {
     // Patient
     if (data.patient) {
         setText('patient-nom-sidebar', data.patient.nom);
+        setText('patient-prenom-sidebar', data.patient.prenom);
         setText('patient-age-sidebar', data.patient.age);
         setText('patient-sexe-sidebar', data.patient.sexe);
         setText('patient-taille', data.patient.taille);
@@ -425,8 +495,61 @@ function populateEditor(data) {
         }
 
         // Complex Lists
-        renderObjectList('antecedents-medicaux', data.interrogatoire.antecedents?.medicaux, ['type', 'traitement']);
-        renderObjectList('traitements-liste', data.interrogatoire.traitements, ['nom', 'dose', 'frequence']);
+        const antMedToggle = document.getElementById('antecedents-medicaux-toggle');
+        const antMedContainer = document.getElementById('antecedents-medicaux-container');
+        const antMedData = data.interrogatoire.antecedents?.medicaux;
+        const antMedPresence = data.interrogatoire.antecedents?.medicauxPresence || (antMedData && antMedData.length > 0);
+        if (antMedToggle) antMedToggle.checked = antMedPresence;
+        if (antMedContainer) antMedContainer.style.display = antMedPresence ? 'block' : 'none';
+        if (antMedPresence) renderObjectList('antecedents-medicaux', antMedData, ['type', 'traitement']);
+
+        const antChirToggle = document.getElementById('antecedents-chirurgicaux-toggle');
+        const antChirContainer = document.getElementById('antecedents-chirurgicaux-container');
+        const antChirData = data.interrogatoire.antecedents?.chirurgicaux;
+        const antChirPresence = data.interrogatoire.antecedents?.chirurgicauxPresence || (antChirData && antChirData.length > 0);
+        if (antChirToggle) antChirToggle.checked = antChirPresence;
+        if (antChirContainer) antChirContainer.style.display = antChirPresence ? 'block' : 'none';
+        if (antChirPresence) renderObjectList('antecedents-chirurgicaux', antChirData, ['intervention', 'annee']);
+
+        const antFamToggle = document.getElementById('antecedents-familiaux-toggle');
+        const antFamContainer = document.getElementById('antecedents-familiaux-container');
+        const antFamData = data.interrogatoire.antecedents?.familiaux;
+        const antFamPresence = data.interrogatoire.antecedents?.familiauxPresence || (antFamData && antFamData.length > 0);
+        if (antFamToggle) antFamToggle.checked = antFamPresence;
+        if (antFamContainer) antFamContainer.style.display = antFamPresence ? 'block' : 'none';
+        if (antFamPresence) renderObjectList('antecedents-familiaux', antFamData, ['antecedent', 'lien']);
+
+        const traitToggle = document.getElementById('traitements-toggle');
+        const traitContainer = document.getElementById('traitements-container');
+        const traitData = data.interrogatoire.traitements;
+        const traitPresence = data.interrogatoire.traitementsPresence || (traitData && traitData.length > 0);
+        if (traitToggle) traitToggle.checked = traitPresence;
+        if (traitContainer) traitContainer.style.display = traitPresence ? 'block' : 'none';
+        if (traitPresence) renderObjectList('traitements-liste', traitData, ['nom', 'dose', 'frequence']);
+
+        // Allergies
+        const allergies = data.interrogatoire.allergies;
+        if (allergies) {
+            const allergiesToggle = document.getElementById('allergies-toggle');
+            const allergiesContainer = document.getElementById('allergies-container');
+            const allergiesListe = document.getElementById('allergies-liste');
+            const btnAddAllergy = document.getElementById('btn-add-allergy');
+            if (allergiesToggle) allergiesToggle.checked = allergies.presence === true;
+            if (allergiesContainer) allergiesContainer.style.display = allergies.presence ? 'block' : 'none';
+            if (allergiesListe) allergiesListe.style.display = allergies.presence ? 'block' : 'none';
+            if (btnAddAllergy) btnAddAllergy.style.display = allergies.presence ? 'inline-flex' : 'none';
+            if (allergies.presence && allergies.liste && allergies.liste.length > 0) {
+                renderTextList('allergies-liste', allergies.liste);
+            }
+        }
+
+        // Tabac
+        const tabacToggle = document.getElementById('tabac-toggle');
+        const tabacContainer = document.getElementById('tabac-container');
+        const tabacData = data.interrogatoire.modeDeVie?.tabac;
+        const tabacPresence = tabacData?.presence || (tabacData && (tabacData.quantite || tabacData.duree));
+        if (tabacToggle) tabacToggle.checked = !!tabacPresence;
+        if (tabacContainer) tabacContainer.style.display = tabacPresence ? 'block' : 'none';
 
         if (data.interrogatoire.histoireMaladie) {
             setText('debut-symptomes', data.interrogatoire.histoireMaladie.debutSymptomes);
@@ -513,7 +636,7 @@ function collectData() {
         redacteur: getText('redacteur'),
         patient: {
             nom: getText('patient-nom-sidebar'),
-            prenom: "", // Simplified
+            prenom: getText('patient-prenom-sidebar'),
             age: parseInt(getText('patient-age-sidebar')),
             sexe: getText('patient-sexe-sidebar'),
             taille: getText('patient-taille'),
@@ -524,18 +647,22 @@ function collectData() {
             motifHospitalisation: getText('motif-hospitalisation'),
             modeDeVie: {
                 activitePhysique: { description: getText('activite-physique') },
-                tabac: { quantite: getText('tabac-quantite'), duree: getText('tabac-duree') },
-                alcool: { quantite: getText('alcool') },
+                tabac: { presence: document.getElementById('tabac-toggle')?.checked || false, quantite: getText('tabac-quantite'), duree: getText('tabac-duree') },
+                alcool: { presence: document.getElementById('alcool-toggle')?.checked || false, quantite: getText('alcool') },
                 alimentation: { regime: getText('alimentation-regime'), particularites: getText('alimentation-particularites') },
                 emploi: { profession: getText('emploi-profession'), stress: getText('emploi-stress') }
             },
             antecedents: {
                 medicaux: collectObjectList('antecedents-medicaux', ['type', 'traitement']),
-                chirurgicaux: [], // Simplified
-                familiaux: [] // Simplified
+                medicauxPresence: document.getElementById('antecedents-medicaux-toggle')?.checked || false,
+                chirurgicaux: collectObjectList('antecedents-chirurgicaux', ['intervention', 'annee']),
+                chirurgicauxPresence: document.getElementById('antecedents-chirurgicaux-toggle')?.checked || false,
+                familiaux: collectObjectList('antecedents-familiaux', ['antecedent', 'lien']),
+                familiauxPresence: document.getElementById('antecedents-familiaux-toggle')?.checked || false
             },
             traitements: collectObjectList('traitements-liste', ['nom', 'dose', 'frequence']),
-            allergies: { presence: false, liste: [] },
+            traitementsPresence: document.getElementById('traitements-toggle')?.checked || false,
+            allergies: collectAllergies(),
             histoireMaladie: {
                 debutSymptomes: getText('debut-symptomes'),
                 evolution: getText('evolution'),
@@ -694,6 +821,19 @@ function collectTextList(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return [];
     return Array.from(container.querySelectorAll('span[data-text]')).map(s => s.dataset.text).filter(s => s);
+}
+
+function collectAllergies() {
+    const toggle = document.getElementById('allergies-toggle');
+    const container = document.getElementById('allergies-liste');
+    if (!toggle || !container) return { presence: false, liste: [] };
+    const presence = toggle.checked;
+    const liste = [];
+    container.querySelectorAll('.editable-list-item span[contenteditable]').forEach(span => {
+        const val = span.textContent.trim();
+        if (val && val !== '...') liste.push(val);
+    });
+    return { presence, liste };
 }
 
 // ---- UNIFIED DIAGNOSTIC LIST ----

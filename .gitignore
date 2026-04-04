@@ -41,3 +41,4 @@ generate_hashes.py
 integrity.json
 sql/add_timed_mode.sql
 sql_rls_policies.sql
+nul

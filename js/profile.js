@@ -417,20 +417,81 @@ function updateStats(sessions, profile) {
         ? Math.round(sessions.reduce((a, b) => a + b.score, 0) / sessions.length)
         : 0;
     
-    // Calculate average time (estimate from stats if available)
-    const avgTime = '--';
-    
+    const sessionsWithDuration = sessions?.filter(s => s.duration_seconds) || [];
+    let avgTimeText = '--';
+    if (sessionsWithDuration.length > 0) {
+        const avgSeconds = sessionsWithDuration.reduce((a, b) => a + b.duration_seconds, 0) / sessionsWithDuration.length;
+        const minutes = Math.round(avgSeconds / 60);
+        avgTimeText = `${minutes}min`;
+    }
+
     const totalXp = profile?.total_xp || 0;
-    
+
     document.getElementById('total-cases').textContent = totalCases;
     document.getElementById('accuracy').textContent = `${avgScore}%`;
-    document.getElementById('avg-time').textContent = avgTime;
+    document.getElementById('avg-time').textContent = avgTimeText;
     document.getElementById('total-xp').textContent = totalXp;
+}
+
+// Cache du mapping case_id -> spécialité
+let caseToSpecialtyMap = null;
+
+async function loadCaseIndexMap() {
+    if (caseToSpecialtyMap) return caseToSpecialtyMap;
+    try {
+        const response = await fetch('data/case-index.json');
+        const index = await response.json();
+        const map = {};
+        for (const [specialty, cases] of Object.entries(index)) {
+            cases.forEach(caseFile => {
+                map[caseFile] = specialty;
+                const caseId = caseFile.replace('.json', '');
+                map[caseId] = specialty;
+            });
+        }
+        caseToSpecialtyMap = map;
+        return map;
+    } catch (e) {
+        console.warn('Impossible de charger case-index.json:', e);
+        return {};
+    }
+}
+
+function getSpecialtyDisplayName(key) {
+    const names = {
+        'cardiologie': 'Cardiologie',
+        'endocrinologie': 'Endocrinologie',
+        'appareil-digestif': 'Appareil Digestif',
+        'uronephro': 'Uro-Néphrologie',
+        'neurosensorielle': 'Neurosensorielle',
+        'neurologie/psychiatrie': 'Neurologie / Psychiatrie',
+        'locomoteur': 'Locomoteur',
+        'urgence': 'Urgence',
+        'agents-infectieux': 'Agents Infectieux',
+        'immunologie': 'Immunologie'
+    };
+    return names[key] || key;
+}
+
+function getSpecialtyIcon(key) {
+    const icons = {
+        'cardiologie': 'fa-heart',
+        'endocrinologie': 'fa-dna',
+        'appareil-digestif': 'fa-stomach',
+        'uronephro': 'fa-kidneys',
+        'neurosensorielle': 'fa-eye',
+        'neurologie/psychiatrie': 'fa-brain',
+        'locomoteur': 'fa-bone',
+        'urgence': 'fa-truck-medical',
+        'agents-infectieux': 'fa-virus',
+        'immunologie': 'fa-shield-virus'
+    };
+    return icons[key] || 'fa-stethoscope';
 }
 
 function updateSpecialties(sessions) {
     const container = document.getElementById('specialties-list');
-    
+
     if (!sessions || sessions.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -440,45 +501,60 @@ function updateSpecialties(sessions) {
         `;
         return;
     }
-    
-    // Count cases by specialty (would need to join with cases table for accurate data)
-    // For now, show a simple placeholder
-    const specialtyIcons = {
-        'Cardiologie': 'fa-heart',
-        'Neurologie': 'fa-brain',
-        'Urgence': 'fa-ambulance',
-        'Digestif': 'fa-stomach',
-        'Locomoteur': 'fa-bone'
-    };
-    
-    const specialtyNames = Object.keys(specialtyIcons);
-    
-    // Simulate distribution based on sessions (in real app, would query cases table)
-    const total = sessions.length;
-    
-    let html = '';
-    specialtyNames.forEach((specialty, index) => {
-        const count = Math.max(1, Math.floor(Math.random() * (total / 2)));
-        const percentage = (count / total) * 100;
-        const icon = specialtyIcons[specialty];
-        
-        html += `
-            <div class="specialty-item">
-                <div class="specialty-icon">
-                    <i class="fas ${icon}"></i>
+
+    loadCaseIndexMap().then(map => {
+        const specialtyCounts = {};
+        let totalMapped = 0;
+
+        sessions.forEach(session => {
+            const caseId = session.case_id || '';
+            const specialty = map[caseId] || map[caseId + '.json'];
+            if (specialty) {
+                specialtyCounts[specialty] = (specialtyCounts[specialty] || 0) + 1;
+                totalMapped++;
+            }
+        });
+
+        if (totalMapped === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>Spécialités non disponibles pour ces cas</p>
                 </div>
-                <div class="specialty-info">
-                    <div class="specialty-name">${specialty}</div>
-                    <div class="specialty-count">${count} cas</div>
+            `;
+            return;
+        }
+
+        const sorted = Object.entries(specialtyCounts)
+            .sort((a, b) => b[1] - a[1]);
+
+        const maxCount = sorted[0][1];
+
+        let html = '';
+        sorted.forEach(([specialty, count]) => {
+            const percentage = (count / totalMapped) * 100;
+            const barWidth = (count / maxCount) * 100;
+            const icon = getSpecialtyIcon(specialty);
+            const displayName = getSpecialtyDisplayName(specialty);
+
+            html += `
+                <div class="specialty-item">
+                    <div class="specialty-icon">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <div class="specialty-info">
+                        <div class="specialty-name">${displayName}</div>
+                        <div class="specialty-count">${count} cas (${Math.round(percentage)}%)</div>
+                    </div>
+                    <div class="specialty-bar">
+                        <div class="specialty-bar-fill" style="width: ${barWidth}%"></div>
+                    </div>
                 </div>
-                <div class="specialty-bar">
-                    <div class="specialty-bar-fill" style="width: ${percentage}%"></div>
-                </div>
-            </div>
-        `;
+            `;
+        });
+
+        container.innerHTML = html;
     });
-    
-    container.innerHTML = html;
 }
 
 function updateHistory(sessions) {

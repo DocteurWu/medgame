@@ -144,7 +144,7 @@ body {
     background: rgba(255, 255, 255, 0.03);
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    padding: 12px 10px;
+    padding: 8px 6px;
     text-align: center;
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: flex;
@@ -210,6 +210,14 @@ body {
 .theme-card .emoji {
     font-size: 2rem;
     margin-bottom: 5px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.theme-card .theme-icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 5px;
+    object-fit: contain;
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
 }
 
@@ -440,6 +448,14 @@ body {
     margin-bottom: 0;
 }
 
+.theme-card[data-theme="Urgence"] .theme-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    animation: rotate-siren 1.5s infinite linear;
+    filter: drop-shadow(0 0 10px rgba(255, 71, 87, 0.8));
+    margin-bottom: 0;
+}
+
 .theme-card[data-theme="Urgence"] .urgence-text {
     display: flex;
     flex-direction: column;
@@ -501,6 +517,10 @@ body {
     }
     .theme-card[data-theme="Urgence"] .emoji {
         font-size: 2.5rem;
+    }
+    .theme-card[data-theme="Urgence"] .theme-icon {
+        width: 2.5rem;
+        height: 2.5rem;
     }
 }
 
@@ -645,6 +665,11 @@ body {
     .theme-card .emoji {
         font-size: 2.5rem;
     }
+
+    .theme-card .theme-icon {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -694,6 +719,12 @@ body {
 
     .theme-card .emoji {
         font-size: 2rem;
+        margin-bottom: 2px;
+    }
+
+    .theme-card .theme-icon {
+        width: 2.5rem;
+        height: 2.5rem;
         margin-bottom: 2px;
     }
 
