@@ -143,16 +143,127 @@ body::after {
 }
 
 .patient-avatar {
-    width: 32px;
-    height: 32px;
-    background: var(--primary-color);
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: bold;
-    box-shadow: 0 0 10px var(--primary-glow);
-    font-size: 0.8rem;
+    box-shadow: 0 0 15px rgba(0, 200, 100, 0.4);
+    transition: all 0.5s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.patient-avatar svg.avatar-face {
+    width: 100%;
+    height: 100%;
+    transition: all 0.4s ease;
+}
+
+.avatar-head {
+    fill: #e8c4a0;
+    stroke: #c9a882;
+    stroke-width: 2;
+    transition: fill 0.5s ease;
+}
+
+.avatar-eye {
+    fill: #2d3436;
+    transition: all 0.3s ease;
+}
+
+.avatar-mouth {
+    fill: none;
+    stroke: #2d3436;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: all 0.3s ease;
+}
+
+.avatar-glow {
+    fill: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* States */
+.patient-avatar[data-state="stable"] {
+    box-shadow: 0 0 15px rgba(0, 200, 100, 0.4);
+}
+
+.patient-avatar[data-state="distressed"] {
+    box-shadow: 0 0 20px rgba(255, 150, 50, 0.6);
+    animation: pulse-distress 1s ease-in-out infinite;
+}
+
+.patient-avatar[data-state="critical"] {
+    box-shadow: 0 0 25px rgba(255, 50, 50, 0.8);
+    animation: pulse-critical 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-distress {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes pulse-critical {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* Expressions */
+.patient-avatar[data-expression="neutral"] .avatar-mouth {
+    d: path("M 30 65 Q 50 75 70 65");
+}
+
+.patient-avatar[data-expression="grimace"] .avatar-mouth {
+    d: path("M 25 70 Q 50 55 75 70");
+}
+
+.patient-avatar[data-expression="grimace"] .avatar-eye {
+    ry: 3;
+}
+
+.patient-avatar[data-expression="pale"] .avatar-head {
+    fill: #d4c4b0;
+    stroke: #b5a592;
+}
+
+.patient-avatar[data-expression="sweating"] .avatar-head {
+    fill: #e8c4a0;
+}
+
+.patient-avatar[data-expression="sweating"]::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    width: 6px;
+    height: 12px;
+    background: rgba(150, 200, 255, 0.6);
+    border-radius: 50%;
+    animation: sweat-drop 1.5s ease-in-out infinite;
+}
+
+@keyframes sweat-drop {
+    0%, 100% { opacity: 0; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(8px); }
+}
+
+.patient-avatar[data-expression="cyanotic"] .avatar-head {
+    fill: #b8c4d4;
+    stroke: #8a9ab0;
+}
+
+.patient-avatar[data-expression="feverish"] .avatar-head {
+    fill: #e8b0a0;
+    stroke: #d48070;
+}
+
+.patient-avatar[data-expression="feverish"] .avatar-glow {
+    opacity: 0.3;
+    fill: rgba(255, 100, 50, 0.3);
 }
 
 .patient-details h3 {
