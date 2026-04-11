@@ -179,6 +179,8 @@ class VitalSignsMonitor {
         const spo2Label = document.getElementById('spo2-label'); const spo2Value = document.getElementById('spo2-value'); const low = this.props.spo2 <= 92;
         if (spo2Label) { spo2Label.style.color = low ? '#dc3545' : '#17a2b8'; }
         if (spo2Value) { spo2Value.style.color = low ? '#dc3545' : '#333'; }
+
+        updatePatientAvatar(this.props, window.PAIN_LEVEL || 0);
     }
 
     startAnimations() {
@@ -218,4 +220,35 @@ class VitalSignsMonitor {
     }
 
     updateProps(np) { this.props = { ...this.props, ...np }; this.updateDisplay(); this.startAnimations(); }
+}
+
+function updatePatientAvatar(vitals, painLevel = 0) {
+    const avatar = document.getElementById('patient-avatar');
+    if (!avatar) return;
+    const HR = vitals.heartRate || vitals.HR || 0;
+    const sys = vitals.systolic || vitals.sys || 120;
+    const spo2 = vitals.spo2 || vitals.SpO2 || 98;
+    const temp = vitals.temperature || vitals.temp || 37;
+    let state = 'stable';
+    let expression = 'neutral';
+    if (HR > 120 || sys < 90) {
+        state = HR > 140 || sys < 80 ? 'critical' : 'distressed';
+    }
+    if (painLevel > 7) {
+        expression = 'grimace';
+    }
+    if (spo2 < 92) {
+        expression = 'cyanotic';
+    }
+    if (temp > 38.5) {
+        expression = expression === 'neutral' ? 'feverish' : expression;
+    }
+    if (state === 'stable' && temp > 37.5) {
+        expression = 'sweating';
+    }
+    if (sys < 100) {
+        expression = 'pale';
+    }
+    avatar.setAttribute('data-state', state);
+    avatar.setAttribute('data-expression', expression);
 }
