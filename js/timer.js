@@ -19,6 +19,7 @@ const timerState = {
 window.timerState = timerState;
 
 function displayTime(seconds) {
+    const totalTime = getTimeLimit();
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     const timeStr = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
@@ -27,14 +28,19 @@ function displayTime(seconds) {
     const mobileTimer = document.getElementById('mobile-timer');
     if (mobileTimer) mobileTimer.textContent = timeStr;
     
-    // Update timer visual state (warning/critical)
+    // Update timer visual state (vert/orange/rouge adaptatif)
     const timerEls = [timerEl, mobileTimer].filter(Boolean);
+    const ratio = totalTime > 0 ? seconds / totalTime : 0;
     timerEls.forEach(el => {
-        el.classList.remove('warning', 'critical');
-        if (seconds <= 30 && seconds > 0) {
+        el.classList.remove('warning', 'critical', 'safe');
+        if (ratio <= 0.10 && seconds > 0) {
             el.classList.add('critical');
-        } else if (seconds <= 120 && seconds > 30) {
+        } else if (ratio <= 0.25) {
+            el.classList.add('critical');
+        } else if (ratio <= 0.50) {
             el.classList.add('warning');
+        } else {
+            el.classList.add('safe');
         }
     });
 }

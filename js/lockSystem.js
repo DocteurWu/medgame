@@ -241,6 +241,11 @@ function unlock(lockId) {
     lockSystem.unlockedLocks.add(lockId);
     saveLocks();
     
+    // Suivi démarche pour le scoring composite
+    if (typeof trackLockUnlocked === 'function') {
+        trackLockUnlocked(lockId);
+    }
+    
     // Dispatcher un événement pour que le 3D Lock Agent soit notifié
     document.dispatchEvent(new CustomEvent('locksystem-unlock', {
         detail: { lockId }
