@@ -957,9 +957,14 @@ body.mode-3d #scene-container {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-
-    /* ==================== 3D LOCK HUD NOTIFICATIONS ==================== */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    animation: pulse-border 2s infinite ease-in-out;
 }
+
+/* ==================== 3D LOCK HUD NOTIFICATIONS ==================== */
 
 /* Enhanced lock placeholder animation for 3D context */
 body.render-3d-full .lock-placeholder,
@@ -999,12 +1004,6 @@ body.mode-3d .lock-placeholder:hover {
         border-color: rgba(46, 204, 113, 0.3);
         box-shadow: none;
     }
-}
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    animation: pulse-border 2s infinite ease-in-out;
 }
 
 .lock-placeholder:hover {
