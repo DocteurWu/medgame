@@ -248,6 +248,10 @@ export class ThreeLockAgent {
      */
     _startAnimation() {
         if (this._animateId) return;
+        // Enregistrer la position Y de base pour le flottement
+        this.locks.forEach((lockData) => {
+            lockData._baseY = lockData.group.position.y;
+        });
         const clock = new THREE.Clock();
 
         const animate = () => {
@@ -258,9 +262,9 @@ export class ThreeLockAgent {
             const elapsed = clock.getElapsedTime();
             this.locks.forEach((lockData, lockId) => {
                 if (lockData.unlockAnimating) return;
-                // Flottement vertical
-                const float = Math.sin(elapsed * 2 + lockId.length) * 0.03;
-                lockData.group.position.y += float * 0.05;
+                // Flottement vertical — position absolue (pas d'accumulation)
+                const baseY = lockData._baseY !== undefined ? lockData._baseY : lockData.group.position.y;
+                lockData.group.position.y = baseY + Math.sin(elapsed * 2 + lockId.length) * 0.03;
 
                 // Pulsation du glow
                 const pulse = 0.08 + Math.sin(elapsed * 3 + lockId.length * 0.7) * 0.06;
@@ -398,15 +402,19 @@ export class ThreeLockAgent {
         // Retirer le group de la scène
         this.group.remove(lockData.group);
 
-        // Disposer les géométries et matériaux
+        // Disposer les géométries, matériaux et textures
         lockData.group.traverse(child => {
             if (child.geometry) child.geometry.dispose();
             if (child.material) {
                 if (Array.isArray(child.material)) {
-                    child.material.forEach(m => m.dispose());
+                    child.material.forEach(m => { m.dispose(); });
                 } else {
                     child.material.dispose();
                 }
+            }
+            // Libérer les textures canvas (icône + label)
+            if (child.material && child.material.map) {
+                child.material.map.dispose();
             }
         });
 

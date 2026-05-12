@@ -317,7 +317,7 @@ function calculateCompositeScore() {
     const correctDiagnostic = currentCase.correctDiagnostic || '';
 
     const totalTime = getTimeLimit();
-    const timeLeft = timerState.timeLeft || 0;
+    const timeLeft = (typeof timerState !== 'undefined' && timerState.timeLeft) || 0;
 
     // --- Calcul des 4 composantes ---
     const demarcheScore = calculateDemarcheScore(currentCase);
@@ -417,10 +417,11 @@ function handleTraitementClick(event) {
  */
 function calculateDetailedScore() {
     const currentCase = scoringState.currentCase;
+    if (!currentCase) return { percentageScore: 0, timeBonus: 0, hasFatalError: false, selectedFatalTreatments: [], isCorrect: false, selectedDiagnostic: '', correctDiagnostic: '' };
     const selectedTreatments = scoringState.selectedTreatments;
-    const correctTreatments = currentCase.correctTreatments;
-    const selectedDiagnostic = document.getElementById('diagnostic-select').value;
-    const correctDiagnostic = currentCase.correctDiagnostic;
+    const correctTreatments = currentCase.correctTreatments || [];
+    const selectedDiagnostic = (document.getElementById('diagnostic-select') || {}).value || '';
+    const correctDiagnostic = currentCase.correctDiagnostic || '';
 
     const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
     const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
@@ -449,8 +450,9 @@ function calculateDetailedScore() {
 
     // Time bonus
     const totalTime = getTimeLimit();
-    const timeBonus = (timerState.timeLeft > 0)
-        ? Math.round(10 * (timerState.timeLeft / totalTime))
+    const timeLeftValue = (typeof timerState !== 'undefined' && timerState.timeLeft) || 0;
+    const timeBonus = (timeLeftValue > 0)
+        ? Math.round(10 * (timeLeftValue / totalTime))
         : 0;
 
     return {
