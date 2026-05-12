@@ -957,6 +957,49 @@ body.mode-3d #scene-container {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
+
+    /* ==================== 3D LOCK HUD NOTIFICATIONS ==================== */
+}
+
+/* Enhanced lock placeholder animation for 3D context */
+body.render-3d-full .lock-placeholder,
+body.mode-3d .lock-placeholder {
+    background: rgba(255, 71, 87, 0.12);
+    border-color: rgba(255, 71, 87, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+body.render-3d-full .lock-placeholder:hover,
+body.mode-3d .lock-placeholder:hover {
+    background: rgba(255, 71, 87, 0.25);
+    border-color: rgba(255, 71, 87, 0.8);
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.3), inset 0 0 10px rgba(255, 71, 87, 0.1);
+}
+
+/* Lock unlock burst animation for 2D placeholders */
+.lock-placeholder.just-unlocked {
+    animation: lockUnlockBurst 0.8s ease forwards;
+}
+
+@keyframes lockUnlockBurst {
+    0% {
+        transform: scale(1);
+        background: rgba(46, 204, 113, 0.2);
+        border-color: rgba(46, 204, 113, 0.6);
+    }
+    50% {
+        transform: scale(1.05);
+        background: rgba(46, 204, 113, 0.4);
+        border-color: rgba(46, 204, 113, 1);
+        box-shadow: 0 0 30px rgba(46, 204, 113, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        background: rgba(46, 204, 113, 0.05);
+        border-color: rgba(46, 204, 113, 0.3);
+        box-shadow: none;
+    }
+}
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2075,4 +2118,54 @@ body.render-3d-full .immersive-mode-btn {
     color: #ffc107;
     margin-top: 6px;
     min-height: 1.2em;
+}
+
+/* ==================== 3D LOCK CADENA VISUAL FX ==================== */
+
+/* Lock notification toast (affiché quand on approche un cadenas 3D) */
+.hud-notification-lock {
+    border-left: 3px solid #ff4757 !important;
+    background: rgba(255, 71, 87, 0.15) !important;
+    animation: lockNotifSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.hud-notification-lock i {
+    color: #ff4757;
+}
+
+@keyframes lockNotifSlide {
+    from {
+        opacity: 0;
+        transform: translateX(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Section illumination glow overlay for unlocked sections */
+.section-unlocked-glow {
+    position: relative;
+}
+
+.section-unlocked-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    background: radial-gradient(ellipse at center, 
+        rgba(46, 204, 113, 0.06) 0%, 
+        transparent 70%);
+    pointer-events: none;
+    animation: sectionGlowPulse 3s ease-in-out infinite;
+}
+
+@keyframes sectionGlowPulse {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.8;
+    }
 }

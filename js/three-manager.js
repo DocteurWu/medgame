@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { ThreeScene } from './three-scene.js';
 import { ThreeHUD } from './three-hud-agent.js';
 import { ThreeTransitionAgent } from './three-transition-agent.js';
+import { initLockAgent3D } from './three-lock-agent.js';
 
 const INTERACTION_ZONES = {
     patient: { x: 2.15, y: 0, z: -1.7 },
@@ -113,6 +114,9 @@ class ThreeManager {
             // Transitions
             this.transition = new ThreeTransitionAgent(this);
 
+            // Lock Agent 3D (cadenas animés)
+            this.lockAgent = initLockAgent3D(this);
+
             this.enabled = true;
             this.bindControls();
             this.bindKeyboard();
@@ -181,6 +185,10 @@ class ThreeManager {
         }
         if (this.transition) {
             this.transition = null;
+        }
+        if (this.lockAgent) {
+            this.lockAgent.clearAll();
+            this.lockAgent = null;
         }
         this.character = null;
         this.enabled = false;
@@ -596,6 +604,10 @@ class ThreeManager {
     }
 
     showInfo(object) {
+        // D'abord, vérifier si c'est un cadenas 3D
+        if (object?.userData?.lockId && this.lockAgent) {
+            return this.lockAgent.handleLockClick(object);
+        }
         const label = object?.userData?.label || object?.name || 'Objet';
         if (this.hud) this.hud.showNotification(label, 'info');
         else if (window.showNotification) window.showNotification(label);
