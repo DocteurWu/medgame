@@ -12,6 +12,8 @@ const scoringState = {
     selectedTreatments: []
 };
 
+window.scoringState = scoringState;
+
 /**
  * Calcule le score courant basé sur les règles du cas et le nombre de tentatives.
  * @returns {number} Score calculé (minimum 0)
