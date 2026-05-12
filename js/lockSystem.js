@@ -240,6 +240,12 @@ function showLockChallenge(lockId) {
 function unlock(lockId) {
     lockSystem.unlockedLocks.add(lockId);
     saveLocks();
+    
+    // Dispatcher un événement pour que le 3D Lock Agent soit notifié
+    document.dispatchEvent(new CustomEvent('locksystem-unlock', {
+        detail: { lockId }
+    }));
+    
     if (lockSystem.onLoadCase) {
         lockSystem.onLoadCase(true);
     }
