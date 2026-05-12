@@ -69,16 +69,23 @@ function addVisualFeedback(element, type) {
 }
 
 /**
- * Mettre à jour l'état visuel du timer
+ * Mettre à jour l'état visuel du timer (vert/orange/rouge adaptatif)
  */
 function updateTimerVisualState() {
     const timerEls = document.querySelectorAll('.timer-display');
+    const totalTime = getTimeLimit();
     timerEls.forEach(el => {
-        el.classList.remove('warning', 'critical');
-        if (timerState.timeLeft <= 30) {
+        el.classList.remove('warning', 'critical', 'safe');
+        const ratio = totalTime > 0 ? timerState.timeLeft / totalTime : 0;
+        // Vert (>50%), Orange (25-50%), Rouge (<25%), Critique (<10%)
+        if (ratio <= 0.10 && timerState.timeLeft > 0) {
             el.classList.add('critical');
-        } else if (timerState.timeLeft <= 120) {
+        } else if (ratio <= 0.25) {
+            el.classList.add('critical');
+        } else if (ratio <= 0.50) {
             el.classList.add('warning');
+        } else {
+            el.classList.add('safe');
         }
     });
 }
@@ -869,70 +876,33 @@ onDomReady(async () => {
             }
         });
 
-        // Calculate percentage score
-        let percentageScore = 0;
-        const diagnosticWeight = 50; // 50% for diagnostic
-        const treatmentWeight = 50; // 50% for treatments
+        // ========================================
+        // SCORING COMPOSITE AVANCÉ
+        // Démarche 40% · Diagnostic 30% · Traitement 20% · Vitesse 10%
+        // ========================================
+        const compositeResult = calculateCompositeScore();
 
-        // Diagnostic score
-        if (selectedDiagnostic === correctDiagnostic) {
-            percentageScore += diagnosticWeight;
-        }
-
-        // --- FATAL ERROR CHECK ---
+        const percentageScore = compositeResult.compositeScore;
+        const hasFatalError = compositeResult.hasFatalError;
+        const selectedFatalTreatments = compositeResult.selectedFatalTreatments;
         const fatalTreatments = currentCase.fatalTreatments || [];
-        const selectedFatalTreatments = selectedTreatments.filter(t => fatalTreatments.includes(t));
-        const hasFatalError = selectedFatalTreatments.length > 0;
+        const timeBonus = compositeResult.vitesseScore;
+        const stars = compositeResult.stars;
 
-        // Treatment score
-        if (correctTreatments.length > 0 && !hasFatalError) {
-            const correctSelectedCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
-            const incorrectSelectedCount = selectedTreatments.filter(t => !correctTreatments.includes(t)).length;
-
-            // Award points for correct treatments, penalize for incorrect ones
-            // Max: if selected number exceeds correct 
-            const treatmentPointsPerCorrect = treatmentWeight / Math.max(correctTreatments.length, selectedTreatments.length);
-            percentageScore += correctSelectedCount * treatmentPointsPerCorrect;
-        }
-        // If fatal error: treatment portion stays at 0
-
-        percentageScore = Math.max(0, Math.min(100, Math.round(percentageScore)));
-
-        // --- TIME BONUS (up to +10%) ---
-        const totalTime = getTimeLimit();
-        const timeBonus = (timerState.timeLeft > 0)
-            ? Math.round(10 * (timerState.timeLeft / totalTime))
-            : 0;
+        // Arrêter le timer
+        if (timerState.timerInterval) clearInterval(timerState.timerInterval);
 
         // --- ANTI-FARM: Calculate XP based on attempt number ---
-        // Get attempt count for this case
         const caseAttemptsKey = `case_attempts_${currentCase.id}`;
         let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey)) || 0;
         caseAttempts++;
         localStorage.setItem(caseAttemptsKey, caseAttempts);
 
-        // Calculate XP based on attempt number
-        let xpEarned = 0;
-        let xpMessage = '';
+        const xpResult = calculateXpEarned(percentageScore, compositeResult.vitesseScore);
+        const xpEarned = xpResult.xpEarned;
+        const xpMessage = xpResult.xpMessage;
 
-        if (caseAttempts === 1) {
-            // First attempt: normal XP
-            xpEarned = percentageScore + timeBonus;
-            xpMessage = 'Première tentative - XP complet';
-        } else if (caseAttempts === 2) {
-            // Second attempt: average of both scores
-            const previousScoreKey = `case_score_${currentCase.id}`;
-            const previousScore = parseInt(localStorage.getItem(previousScoreKey)) || percentageScore;
-            const averageScore = Math.round((previousScore + percentageScore) / 2);
-            xpEarned = averageScore + timeBonus;
-            xpMessage = `Deuxième tentative - Moyenne: ${averageScore}%`;
-        } else {
-            // Third+ attempt: no XP (anti-farm)
-            xpEarned = 0;
-            xpMessage = `Tentative #${caseAttempts} - Pas d'XP`;
-        }
-
-        // Save current score for future average calculation
+        // Save current composite score
         localStorage.setItem(`case_score_${currentCase.id}`, percentageScore);
 
         // Build color-coded comparison HTML
@@ -973,57 +943,13 @@ onDomReady(async () => {
             </div>
         ` : '';
 
-        // Build time bonus display
-        const timeBonusHtml = timeBonus > 0 ? `
-            <div style="display:inline-block; background: rgba(79,172,254,0.15); border:1px solid rgba(79,172,254,0.4); border-radius:8px; padding: 4px 12px; margin-left: 10px; font-size:0.75em; color: #4facfe; vertical-align:middle;">
-                <i class="fas fa-clock"></i> +${timeBonus} XP Bonus Temps
-            </div>
-        ` : '';
-
-        // Calculate stars (0-3 based on performance)
-        function calculateStars(score, hasFatalError, timeBonus) {
-            if (hasFatalError) return 0;
-            
-            let stars = 0;
-            
-            // Score criterion (60% weight)
-            if (score >= 80) stars += 2;
-            else if (score >= 50) stars += 1;
-            
-            // Time bonus criterion (40% weight)
-            if (timeBonus > 0) stars += 1;
-            
-            return Math.min(stars, 3);
-        }
-        
-        const stars = calculateStars(percentageScore, hasFatalError, timeBonus);
-        
-        function renderStars(stars) {
-            let html = '<div class="stars-display" style="display: flex; justify-content: center; gap: 10px; margin: 15px 0;">';
-            for (let i = 1; i <= 3; i++) {
-                if (i <= stars) {
-                    html += '<i class="fas fa-star star-filled" style="font-size: 2rem; color: #ffc107; text-shadow: 0 0 15px rgba(255, 193, 7, 0.6);"></i>';
-                } else {
-                    html += '<i class="far fa-star star-empty" style="font-size: 2rem; color: rgba(255, 255, 255, 0.2);"></i>';
-                }
-            }
-            html += '</div>';
-            return html;
-        }
+        // Composite score panel + comparison HTML
+        const compositePanelHtml = renderCompositeScorePanel(compositeResult);
 
         const comparisonHtml = `
             ${fatalBanner}
             <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                <div style="text-align: center; margin-bottom: 15px;">
-                    ${renderStars(stars)}
-                    <h3 style="color: ${percentageScore >= 50 ? '#2ecc71' : '#e74c3c'}; font-size: 2em; margin: 0;">
-                        Score: ${percentageScore}% ${timeBonusHtml}
-                    </h3>
-                    <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
-                    <p style="color: ${caseAttempts > 2 ? '#e74c3c' : 'rgba(255,255,255,0.5)'}; font-size:0.75em; margin-top: 5px;">
-                        <i class="fas fa-info-circle"></i> ${escapeHtml(xpMessage)}
-                    </p>
-                </div>
+                ${compositePanelHtml}
                 <div style="margin-bottom: 10px;">
                     <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
                     <p><strong>Diagnostic:</strong> <span style="${diagnosticUserStyle}">${escapeHtml(selectedDiagnostic || 'Aucun')}</span></p>
@@ -1037,6 +963,12 @@ onDomReady(async () => {
                         <span style="background: rgba(46, 204, 113, 0.3); padding: 2px 6px; border-radius: 3px;">Vert</span> = Correct | 
                         <span style="background: rgba(255, 193, 7, 0.3); padding: 2px 6px; border-radius: 3px;">Jaune</span> = Manquant | 
                         <span style="background: rgba(231, 76, 60, 0.3); padding: 2px 6px; border-radius: 3px;">Rouge</span> = Incorrect
+                    </p>
+                </div>
+                <div style="text-align:center; margin-top:8px;">
+                    <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
+                    <p style="color: ${caseAttempts > 2 ? '#e74c3c' : 'rgba(255,255,255,0.5)'}; font-size:0.75em; margin-top: 5px;">
+                        <i class="fas fa-info-circle"></i> ${escapeHtml(xpMessage)}
                     </p>
                 </div>
             </div>
@@ -1069,8 +1001,14 @@ onDomReady(async () => {
                             diagnosticCorrect: diagnosticCorrect,
                             selectedTreatments: selectedTreatments,
                             hasFatalError: hasFatalError,
-                            timeBonus: timeBonus,
-                            xpEarned: xpEarned
+                            xpEarned: xpEarned,
+                            // --- Scoring composite avancé ---
+                            compositeScore: percentageScore,
+                            demarcheScore: compositeResult.demarcheScore,
+                            diagnosticScore: compositeResult.diagnosticScore,
+                            traitementScore: compositeResult.traitementScore,
+                            vitesseScore: compositeResult.vitesseScore,
+                            stars: stars
                         };
 
                         // 1. Enregistrer la session
@@ -1188,6 +1126,10 @@ onDomReady(async () => {
 
         setTimeout(() => {
             gameState.activeExams = selectedExams;
+            // Suivi démarche : examens complémentaires commandés
+            if (typeof trackExamsOrdered === 'function') {
+                trackExamsOrdered(selectedExams);
+            }
             renderExamResults();
             if (validateBtn) validateBtn.disabled = false;
 
@@ -1220,6 +1162,10 @@ onDomReady(async () => {
             const targetSection = document.getElementById(targetId);
             
             if (targetSection && currentSection !== targetSection) {
+                // Suivi démarche : consultation d'une section
+                if (typeof trackExamSectionViewed === 'function') {
+                    trackExamSectionViewed(targetId);
+                }
                 // Use animated transition
                 animateSectionTransition(currentSection, targetSection);
                 // Animate cards in new section
@@ -1269,6 +1215,10 @@ onDomReady(async () => {
 
         if (targetSection) {
             targetSection.classList.add('mobile-active', 'entering');
+            // Suivi démarche : consultation d'une section mobile
+            if (typeof trackExamSectionViewed === 'function') {
+                trackExamSectionViewed(targetId);
+            }
             updateSidebarActive(targetId);
             animateCards(targetSection);
             

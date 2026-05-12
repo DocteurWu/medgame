@@ -214,6 +214,11 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
     btn.style.textAlign = 'left';
 
     btn.onclick = () => {
+        // Suivi démarche pour le scoring composite
+        if (typeof trackInterrogatoire === 'function') {
+            trackInterrogatoire(path);
+        }
+
         if (typeof window.deductTime === 'function') {
             const hasTime = window.deductTime(5);
             if (!hasTime) {

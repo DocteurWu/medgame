@@ -34,6 +34,10 @@ const gameState = {
                 scoringState.currentCase = this.currentCase;
                 scoringState.selectedTreatments = [];
                 scoringState.attempts = 0;
+                // Réinitialiser le suivi de démarche clinique
+                if (typeof resetDemarche === 'function') {
+                    resetDemarche();
+                }
             }
             if (uiState) {
                 uiState.currentCase = this.currentCase;
