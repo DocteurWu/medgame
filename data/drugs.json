@@ -1,0 +1,1838 @@
+[
+  {
+    "nom": "Paracetamol",
+    "classe": "Antalgique",
+    "formes": [
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "1 g",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "doliprane",
+      "dafalgan",
+      "efferalgan",
+      "perfalgan"
+    ]
+  },
+  {
+    "nom": "Morphine",
+    "classe": "Antalgique palier 3",
+    "formes": [
+      {
+        "dosage": "1 mg/mL",
+        "voies": [
+          "IV",
+          "SC"
+        ]
+      },
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "morph",
+      "opioide"
+    ]
+  },
+  {
+    "nom": "Tramadol",
+    "classe": "Antalgique palier 2",
+    "formes": [
+      {
+        "dosage": "50 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "topalgic",
+      "contramal",
+      "zamudol"
+    ]
+  },
+  {
+    "nom": "Nefopam",
+    "classe": "Antalgique non opioide",
+    "formes": [
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "IV",
+          "IM"
+        ]
+      }
+    ],
+    "alias": [
+      "acupan"
+    ]
+  },
+  {
+    "nom": "Ibuprofene",
+    "classe": "AINS",
+    "formes": [
+      {
+        "dosage": "400 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "advil",
+      "nurofen",
+      "spedifen",
+      "brufen"
+    ]
+  },
+  {
+    "nom": "Ketoprofene",
+    "classe": "AINS",
+    "formes": [
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "IV",
+          "IM"
+        ]
+      }
+    ],
+    "alias": [
+      "profenid",
+      "bi-profenid"
+    ]
+  },
+  {
+    "nom": "Aspirine",
+    "classe": "Antiagregant",
+    "formes": [
+      {
+        "dosage": "75 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "250 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "300 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "aspir",
+      "kardegic",
+      "aspegic"
+    ]
+  },
+  {
+    "nom": "Clopidogrel",
+    "classe": "Antiagregant",
+    "formes": [
+      {
+        "dosage": "75 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "300 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "plavix"
+    ]
+  },
+  {
+    "nom": "Ticagrelor",
+    "classe": "Antiagregant",
+    "formes": [
+      {
+        "dosage": "90 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "brilique"
+    ]
+  },
+  {
+    "nom": "Heparine non fractionnee",
+    "classe": "Anticoagulant",
+    "formes": [
+      {
+        "dosage": "5000 UI/mL",
+        "voies": [
+          "IV",
+          "SC"
+        ]
+      }
+    ],
+    "alias": [
+      "hnf",
+      "calciparine"
+    ]
+  },
+  {
+    "nom": "Enoxaparine",
+    "classe": "Anticoagulant",
+    "formes": [
+      {
+        "dosage": "4000 UI",
+        "voies": [
+          "SC"
+        ]
+      },
+      {
+        "dosage": "6000 UI",
+        "voies": [
+          "SC"
+        ]
+      }
+    ],
+    "alias": [
+      "lovenox",
+      "hbpm"
+    ]
+  },
+  {
+    "nom": "Apixaban",
+    "classe": "Anticoagulant oral direct",
+    "formes": [
+      {
+        "dosage": "2,5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "eliquis",
+      "aod"
+    ]
+  },
+  {
+    "nom": "Rivaroxaban",
+    "classe": "Anticoagulant oral direct",
+    "formes": [
+      {
+        "dosage": "15 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "xarelto",
+      "aod"
+    ]
+  },
+  {
+    "nom": "Warfarine",
+    "classe": "Antivitamine K",
+    "formes": [
+      {
+        "dosage": "2 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "coumadine",
+      "avk",
+      "previscan"
+    ]
+  },
+  {
+    "nom": "Amoxicilline",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "1 g",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "clamoxyl",
+      "augmentin"
+    ]
+  },
+  {
+    "nom": "Ceftriaxone",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "1 g",
+        "voies": [
+          "IV",
+          "IM"
+        ]
+      },
+      {
+        "dosage": "2 g",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "rocephine",
+      "cephalosporine"
+    ]
+  },
+  {
+    "nom": "Gentamicine",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "160 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "gentalline",
+      "aminoside"
+    ]
+  },
+  {
+    "nom": "Ciprofloxacine",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "200 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "ciflox",
+      "quinolone"
+    ]
+  },
+  {
+    "nom": "Metronidazole",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "flagyl"
+    ]
+  },
+  {
+    "nom": "Vancomycine",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "1 g",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "vancocine",
+      "glycopeptide"
+    ]
+  },
+  {
+    "nom": "Piperacilline Tazobactam",
+    "classe": "Antibiotique",
+    "formes": [
+      {
+        "dosage": "4 g",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "tazocilline"
+    ]
+  },
+  {
+    "nom": "Salbutamol",
+    "classe": "Bronchodilatateur",
+    "formes": [
+      {
+        "dosage": "100 ug",
+        "voies": [
+          "inhale"
+        ]
+      },
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "nebulisation"
+        ]
+      }
+    ],
+    "alias": [
+      "ventoline",
+      "b2mimetique"
+    ]
+  },
+  {
+    "nom": "Ipratropium",
+    "classe": "Bronchodilatateur",
+    "formes": [
+      {
+        "dosage": "0,5 mg",
+        "voies": [
+          "nebulisation"
+        ]
+      }
+    ],
+    "alias": [
+      "atrovent"
+    ]
+  },
+  {
+    "nom": "Terbutaline",
+    "classe": "Bronchodilatateur",
+    "formes": [
+      {
+        "dosage": "0,5 mg",
+        "voies": [
+          "SC"
+        ]
+      }
+    ],
+    "alias": [
+      "bricanyl"
+    ]
+  },
+  {
+    "nom": "Prednisone",
+    "classe": "Corticoide",
+    "formes": [
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "cortancyl"
+    ]
+  },
+  {
+    "nom": "Prednisolone",
+    "classe": "Corticoide",
+    "formes": [
+      {
+        "dosage": "1 mg/kg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "solupred"
+    ]
+  },
+  {
+    "nom": "Methylprednisolone",
+    "classe": "Corticoide",
+    "formes": [
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "120 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "solumedrol",
+      "depomedrol"
+    ]
+  },
+  {
+    "nom": "Dexaméthasone",
+    "classe": "Corticoide",
+    "formes": [
+      {
+        "dosage": "4 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      },
+      {
+        "dosage": "8 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "dexamethasone",
+      "decadron"
+    ]
+  },
+  {
+    "nom": "Hydrocortisone",
+    "classe": "Corticoide",
+    "formes": [
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "IV",
+          "IM"
+        ]
+      }
+    ],
+    "alias": [
+      "hshc",
+      "hemisuccinate"
+    ]
+  },
+  {
+    "nom": "Adrenaline",
+    "classe": "Vasopresseur",
+    "formes": [
+      {
+        "dosage": "1 mg/10 mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "0,5 mg",
+        "voies": [
+          "IM"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Noradrenaline",
+    "classe": "Vasopresseur",
+    "formes": [
+      {
+        "dosage": "8 mg/50 mL",
+        "voies": [
+          "IVSE"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Dobutamine",
+    "classe": "Inotrope",
+    "formes": [
+      {
+        "dosage": "250 mg/50 mL",
+        "voies": [
+          "IVSE"
+        ]
+      }
+    ],
+    "alias": [
+      "dobutrex"
+    ]
+  },
+  {
+    "nom": "Furosemide",
+    "classe": "Diuretique",
+    "formes": [
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      },
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Spironolactone",
+    "classe": "Diuretique epargneur potassique",
+    "formes": [
+      {
+        "dosage": "25 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "50 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "aldactone"
+    ]
+  },
+  {
+    "nom": "Trinitrine",
+    "classe": "Vasodilatateur",
+    "formes": [
+      {
+        "dosage": "0,15 mg/dose",
+        "voies": [
+          "sublingual"
+        ]
+      },
+      {
+        "dosage": "1 mg/mL",
+        "voies": [
+          "IVSE"
+        ]
+      }
+    ],
+    "alias": [
+      "nitroglycerine",
+      "lenitral",
+      "natispray"
+    ]
+  },
+  {
+    "nom": "Nicardipine",
+    "classe": "Antihypertenseur",
+    "formes": [
+      {
+        "dosage": "10 mg/10 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "loxen",
+      "icalcique"
+    ]
+  },
+  {
+    "nom": "Amlodipine",
+    "classe": "Antihypertenseur",
+    "formes": [
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "amlodipina",
+      "icalcique"
+    ]
+  },
+  {
+    "nom": "Ramipril",
+    "classe": "IEC",
+    "formes": [
+      {
+        "dosage": "2,5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "triatec",
+      "iec"
+    ]
+  },
+  {
+    "nom": "Bisoprolol",
+    "classe": "Beta-bloquant",
+    "formes": [
+      {
+        "dosage": "2,5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": [
+      "cardensiel",
+      "detensiel"
+    ]
+  },
+  {
+    "nom": "Aténolol",
+    "classe": "Beta-bloquant",
+    "formes": [
+      {
+        "dosage": "50 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Propranolol",
+    "classe": "Beta-bloquant",
+    "formes": [
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Ondansetron",
+    "classe": "Antiemetique",
+    "formes": [
+      {
+        "dosage": "4 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      },
+      {
+        "dosage": "8 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Metoclopramide",
+    "classe": "Antiemetique",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "IV",
+          "IM",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Domperidone",
+    "classe": "Antiemetique",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Omeprazole",
+    "classe": "IPP",
+    "formes": [
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": [
+      "mopral",
+      "zoltum"
+    ]
+  },
+  {
+    "nom": "Pantoprazole",
+    "classe": "IPP",
+    "formes": [
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Esomeprazole",
+    "classe": "IPP",
+    "formes": [
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Diazepam",
+    "classe": "Benzodiazepine",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "IV",
+          "IR"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Midazolam",
+    "classe": "Benzodiazepine",
+    "formes": [
+      {
+        "dosage": "1 mg/mL",
+        "voies": [
+          "IV",
+          "IN"
+        ]
+      },
+      {
+        "dosage": "5 mg/mL",
+        "voies": [
+          "IM"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Clonazepam",
+    "classe": "Benzodiazepine",
+    "formes": [
+      {
+        "dosage": "1 mg/mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Lorazepam",
+    "classe": "Benzodiazepine",
+    "formes": [
+      {
+        "dosage": "1 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "2,5 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Levetiracetam",
+    "classe": "Antiepileptique",
+    "formes": [
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      },
+      {
+        "dosage": "1 g",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Phénytoine",
+    "classe": "Antiepileptique",
+    "formes": [
+      {
+        "dosage": "250 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Glucose 30%",
+    "classe": "Correction hypoglycemie",
+    "formes": [
+      {
+        "dosage": "10 g/ampoule",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Glucagon",
+    "classe": "Correction hypoglycemie severe",
+    "formes": [
+      {
+        "dosage": "1 mg",
+        "voies": [
+          "IM",
+          "SC",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Vitamine K",
+    "classe": "Antagoniste AVK",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Naloxone",
+    "classe": "Antagoniste opioide",
+    "formes": [
+      {
+        "dosage": "0,4 mg/mL",
+        "voies": [
+          "IV",
+          "IM",
+          "IN"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Flumazenil",
+    "classe": "Antagoniste benzodiazepine",
+    "formes": [
+      {
+        "dosage": "0,2 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "PPSB",
+    "classe": "Complexe prothrombinique",
+    "formes": [
+      {
+        "dosage": "500 UI",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Phytomenadione",
+    "classe": "Antagoniste AVK",
+    "formes": [
+      {
+        "dosage": "10 mg/ampoule",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Insuline rapide",
+    "classe": "Antidiabetique",
+    "formes": [
+      {
+        "dosage": "100 UI/mL",
+        "voies": [
+          "SC",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Metformine",
+    "classe": "Antidiabetique",
+    "formes": [
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "1000 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Atropine",
+    "classe": "Anticholinergique",
+    "formes": [
+      {
+        "dosage": "0,5 mg/mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "1 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Amiodarone",
+    "classe": "Anti-arythmique",
+    "formes": [
+      {
+        "dosage": "150 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "300 mg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Cordarone",
+    "classe": "Anti-arythmique",
+    "formes": [
+      {
+        "dosage": "150 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "200 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Lidocaine",
+    "classe": "Anti-arythmique",
+    "formes": [
+      {
+        "dosage": "1 mg/kg",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Digoxine",
+    "classe": "Inotrope chronotrope -",
+    "formes": [
+      {
+        "dosage": "0,25 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "NaCl 0,9%",
+    "classe": "Soluté",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "1000 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Ringer lactate",
+    "classe": "Soluté",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "1000 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Glucose 5%",
+    "classe": "Soluté",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Geloplasma",
+    "classe": "Remplissage vasculaire",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Charbon active",
+    "classe": "Adsorbant",
+    "formes": [
+      {
+        "dosage": "50 g",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Pantoprazole IVSE",
+    "classe": "IPP",
+    "formes": [
+      {
+        "dosage": "80 mg/24 h",
+        "voies": [
+          "IVSE"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Omeprazole IVSE",
+    "classe": "IPP",
+    "formes": [
+      {
+        "dosage": "80 mg/24 h",
+        "voies": [
+          "IVSE"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Acide tranexamique",
+    "classe": "Antifibrinolytique",
+    "formes": [
+      {
+        "dosage": "1 g",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Captopril",
+    "classe": "IEC",
+    "formes": [
+      {
+        "dosage": "25 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Valsartan",
+    "classe": "ARA II",
+    "formes": [
+      {
+        "dosage": "80 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Diltiazem",
+    "classe": "Inhibiteur calcique",
+    "formes": [
+      {
+        "dosage": "60 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Verapamil",
+    "classe": "Inhibiteur calcique",
+    "formes": [
+      {
+        "dosage": "120 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Nifedipine",
+    "classe": "Inhibiteur calcique",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Cefotaxime",
+    "classe": "Cephalosporine",
+    "formes": [
+      {
+        "dosage": "1 g",
+        "voies": [
+          "IV",
+          "IM"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Azithromycine",
+    "classe": "Macrolide",
+    "formes": [
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Clarithromycine",
+    "classe": "Macrolide",
+    "formes": [
+      {
+        "dosage": "500 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Cotrimoxazole",
+    "classe": "Sulfamide",
+    "formes": [
+      {
+        "dosage": "800 mg",
+        "voies": [
+          "PO",
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Linézolide",
+    "classe": "Oxazolidinone",
+    "formes": [
+      {
+        "dosage": "600 mg",
+        "voies": [
+          "IV",
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Phenoxymethylpenicilline",
+    "classe": "Penicilline",
+    "formes": [
+      {
+        "dosage": "1 M UI",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Benzylpenicilline",
+    "classe": "Penicilline",
+    "formes": [
+      {
+        "dosage": "2 M UI",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Acyclovir",
+    "classe": "Antiviral",
+    "formes": [
+      {
+        "dosage": "250 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "800 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Hydroxychloroquine",
+    "classe": "Immunomodulateur",
+    "formes": [
+      {
+        "dosage": "200 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Methotrexate",
+    "classe": "Immunomodulateur",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO",
+          "SC"
+        ]
+      },
+      {
+        "dosage": "15 mg",
+        "voies": [
+          "SC"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Allopurinol",
+    "classe": "Hypouricemiant",
+    "formes": [
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "300 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Colchicine",
+    "classe": "Anti-goutteux",
+    "formes": [
+      {
+        "dosage": "1 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Fer",
+    "classe": "Recharge martiale",
+    "formes": [
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "80 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Acide folique",
+    "classe": "Vitaminique",
+    "formes": [
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Cyanocobalamine",
+    "classe": "Vitamine B12",
+    "formes": [
+      {
+        "dosage": "1000 ug",
+        "voies": [
+          "IM"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Ergocalciferol",
+    "classe": "Vitamine D",
+    "formes": [
+      {
+        "dosage": "100 000 UI",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Levodopa",
+    "classe": "Antiparkinsonien",
+    "formes": [
+      {
+        "dosage": "100 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "200 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Donepezil",
+    "classe": "Anticholinesterasique",
+    "formes": [
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Fludrocortisone",
+    "classe": "Mineralocorticoide",
+    "formes": [
+      {
+        "dosage": "100 ug",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "L-thyroxine",
+    "classe": "Hormone thyroidienne",
+    "formes": [
+      {
+        "dosage": "25 ug",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "100 ug",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Fenofibrate",
+    "classe": "Hypolipemiant",
+    "formes": [
+      {
+        "dosage": "160 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Atorvastatine",
+    "classe": "Statine",
+    "formes": [
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "40 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Rosuvastatine",
+    "classe": "Statine",
+    "formes": [
+      {
+        "dosage": "5 mg",
+        "voies": [
+          "PO"
+        ]
+      },
+      {
+        "dosage": "10 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Simvastatine",
+    "classe": "Statine",
+    "formes": [
+      {
+        "dosage": "20 mg",
+        "voies": [
+          "PO"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Perfusion Glucose 5%",
+    "classe": "Soluté perfusion",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "1000 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Perfusion NaCl 0,9%",
+    "classe": "Soluté perfusion",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "1000 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Perfusion Ringer lactate",
+    "classe": "Soluté perfusion",
+    "formes": [
+      {
+        "dosage": "500 mL",
+        "voies": [
+          "IV"
+        ]
+      },
+      {
+        "dosage": "1000 mL",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  },
+  {
+    "nom": "Perfusion G5% + NaCl + KCl",
+    "classe": "Soluté perfusion entretien",
+    "formes": [
+      {
+        "dosage": "1000 mL/24 h",
+        "voies": [
+          "IV"
+        ]
+      }
+    ],
+    "alias": []
+  }
+]

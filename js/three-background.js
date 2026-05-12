@@ -1,8 +1,10 @@
+import * as THREE from 'three';
+
 /**
  * Three.js Background Module - MedGame
  * Module partagé pour les animations de fond 3D
  * Enhanced with mouse reactivity, ambient glow, and smooth transitions
- * 
+ *
  * Usage:
  *   ThreeBackground.init('canvas-container', { type: 'dna' });
  *   ThreeBackground.destroy();

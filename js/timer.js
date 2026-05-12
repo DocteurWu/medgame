@@ -13,8 +13,10 @@ const timerState = {
     timeLeft: 480,
     timerInterval: null,
     currentCase: null,
-    onTimeUp: null // callback: (correctionText) => void
+    onTimeUp: null
 };
+
+window.timerState = timerState;
 
 function displayTime(seconds) {
     const minutes = Math.floor(seconds / 60);

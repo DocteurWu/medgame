@@ -147,6 +147,48 @@ onDomReady(async () => {
     initLockSystem();
     lockSystem.onLoadCase = (isPartial) => loadCase(isPartial);
 
+    // Immersive Mode button handler — sole controller for 3D toggle
+    const immersiveBtn = document.getElementById('immersive-mode-btn');
+    if (immersiveBtn) {
+        immersiveBtn.addEventListener('click', () => {
+            console.log('[game.js] Immersive button clicked, threeManager=', !!window.threeManager);
+            if (!window.threeManager) {
+                console.error('[game.js] threeManager not initialized!');
+                showNotification('Mode 3D en cours de chargement...');
+                return;
+            }
+            window.threeManager.toggle3D();
+        });
+    }
+
+    // Listen for three-manager state changes to sync button appearance
+    document.addEventListener('three-manager-update', (e) => {
+        const btn = document.getElementById('immersive-mode-btn');
+        if (!btn || !e.detail) return;
+        btn.classList.toggle('active', e.detail.enabled);
+        const icon = btn.querySelector('i');
+        const text = btn.querySelector('.immersive-btn-text');
+        if (e.detail.enabled) {
+            icon.className = 'fas fa-desktop';
+            if (text) text.textContent = '2D';
+            btn.title = 'Désactiver le mode immersif 3D (Échap)';
+        } else {
+            icon.className = 'fas fa-vr-cardboard';
+            if (text) text.textContent = 'Immersif';
+            btn.title = 'Activer le mode immersif 3D (E)';
+        }
+    });
+
+    // Mobile monitor toggle
+    window.toggleMobileMonitor = function() {
+        const overlay = document.getElementById('mobile-monitor-overlay');
+        if (overlay) {
+            const isHidden = overlay.getAttribute('aria-hidden') === 'true';
+            overlay.setAttribute('aria-hidden', !isHidden);
+            overlay.style.display = isHidden ? 'block' : 'none';
+        }
+    };
+
     // UI functions moved to js/ui.js
     initUI();
     uiState.onCorrectionNext = () => {
@@ -706,6 +748,14 @@ onDomReady(async () => {
             );
         } else if (urgenceState.isUrgenceMode) {
             renderUrgenceState();
+        }
+
+        // Sync 3D scene with current case data
+        if (window.threeManager && window.threeManager.enabled) {
+            window.threeManager.loadCase(currentCase);
+        }
+        if (window.patientChat) {
+            window.patientChat.setCase(currentCase);
         }
     }
 
@@ -1610,4 +1660,36 @@ onDomReady(async () => {
             }
         });
     });
+
+    // --- 3D MODE TOGGLE (Delegated to threeManager) ---
+    async function activate3DMode() {
+        if (!window.threeManager) {
+            showNotification('Mode 3D non disponible');
+            return;
+        }
+        await window.threeManager.toggle3D();
+    }
+
+    async function deactivate3DMode() {
+        if (!window.threeManager) return;
+        await window.threeManager.toggle3D();
+    }
+
+    function toggle3DMode() {
+        if (window.threeManager?.enabled) {
+            deactivate3DMode();
+        } else {
+            activate3DMode();
+        }
+    }
+
+    // Don't create a second button — the button is already in game.html as #immersive-mode-btn
+    // Just hook up Escape key for 3D mode
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && window.threeManager?.enabled) {
+            e.preventDefault();
+            deactivate3DMode();
+        }
+    });
+
 });
