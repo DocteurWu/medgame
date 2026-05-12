@@ -187,7 +187,7 @@ export class ThreeScene {
         this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
         this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
         this.raycaster.setFromCamera(this.mouse, this.camera);
-        return this.raycaster.intersectObjects(this.interactiveObjects, false)[0] || null;
+        return this.raycaster.intersectObjects(this.interactiveObjects, true)[0] || null;
     }
 
     resize() {
@@ -210,6 +210,11 @@ export class ThreeScene {
         this._animFrameId = requestAnimationFrame(() => this.animate());
         const elapsed = performance.now() / 1000;
         idleBreathing(this.patient?.group, elapsed);
+
+        // Animation des instruments (LED pulsante, etc.)
+        if (this.instruments?.update) {
+            this.instruments.update(elapsed);
+        }
 
         const dust = this.scene.getObjectByName('DustParticles');
         if (dust) {
