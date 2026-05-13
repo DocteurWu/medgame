@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { buildFurniture, buildRoom, createMaterial } from './three-room.js';
 import { ThreePatient } from './three-patient.js';
 import { ThreeInstruments } from './three-instruments.js';
-import { PatientAnimator, DoctorAnimator, DustAnimator } from './three-animations.js';
+import { PatientAnimator, DoctorAnimator, DustAnimator, IVFluidAnimator, ECGScreenAnimator } from './three-animations.js';
 import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js';
@@ -22,6 +22,8 @@ export class ThreeScene {
         this.patientAnimator = null;
         this.doctorAnimator = null;
         this.dustAnimator = null;
+        this.ivAnimator = null;
+        this.ecgAnimator = null;
     }
 
     init() {
@@ -76,7 +78,22 @@ export class ThreeScene {
 
         // Initialiser les animateurs
         this.patientAnimator = new PatientAnimator(this.patient.group);
-        this.dustAnimator = new DustAnimator(this.scene.getObjectByName('DustParticles'));
+
+        // Animateurs d'environnement (perfusion, ECG, poussière)
+        const ivGroup = this.environmentAgent.getIVGroup();
+        if (ivGroup) {
+            this.ivAnimator = new IVFluidAnimator(ivGroup, { dropInterval: 0.8, dropSpeed: 0.3 });
+        }
+
+        const ecgScreen = this.environmentAgent.getECGScreenMesh();
+        if (ecgScreen) {
+            this.ecgAnimator = new ECGScreenAnimator(ecgScreen, { width: 256, height: 96, heartRate: 72 });
+        }
+
+        const dustParticles = this.environmentAgent.getDustParticles();
+        if (dustParticles) {
+            this.dustAnimator = new DustAnimator(dustParticles);
+        }
 
         this.collectInteractive();
 
@@ -186,6 +203,26 @@ export class ThreeScene {
             if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
         }
 
+        // Environnement interactif
+        let current = hit.object;
+        while (current) {
+            const name = current.name || '';
+            const label = current.userData?.label || '';
+            if (name === 'ECGMonitor' || label === 'Moniteur ECG') {
+                if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
+                break;
+            }
+            if (name === 'IVStand' || label === 'Perfusion') {
+                if (window.showNotification) window.showNotification('Perfusion — Soluté en cours d\'administration');
+                break;
+            }
+            if (name === 'CharriotMedical' || label === 'Charriot médical') {
+                if (window.showNotification) window.showNotification('Charriot médical — Matériel de soin');
+                break;
+            }
+            current = current.parent;
+        }
+
         this.callbacks.onObject?.(hit.object);
     }
 
@@ -230,6 +267,26 @@ export class ThreeScene {
         // Appliquer aussi les changements de couleur peau via ThreePatient
         if (this.patient) {
             this.patient.applyExpression(expression);
+        }
+    }
+
+    /**
+     * Change la fréquence cardiaque du moniteur ECG
+     * @param {number} bpm — battements par minute
+     */
+    setHeartRate(bpm) {
+        if (this.ecgAnimator) {
+            this.ecgAnimator.heartRate = bpm;
+        }
+    }
+
+    /**
+     * Change le débit de la perfusion (intervalle entre les gouttes)
+     * @param {number} interval — secondes entre gouttes (défaut 0.8)
+     */
+    setIVDropInterval(interval) {
+        if (this.ivAnimator) {
+            this.ivAnimator.dropInterval = interval;
         }
     }
 
@@ -280,6 +337,21 @@ export class ThreeScene {
         // Animation des particules de poussière
         if (this.dustAnimator) {
             this.dustAnimator.update(elapsed);
+        }
+
+        // Animation de la perfusion (gouttes)
+        if (this.ivAnimator) {
+            this.ivAnimator.update(elapsed, dt);
+        }
+
+        // Animation de l'écran ECG (ligne cardiaque)
+        if (this.ecgAnimator) {
+            this.ecgAnimator.update(elapsed);
+        }
+
+        // Animation environnementale (LED ECG, etc.)
+        if (this.environmentAgent?.updateEnvironment) {
+            this.environmentAgent.updateEnvironment(elapsed);
         }
 
         // Animation du médecin (si DoctorAnimator actif)
