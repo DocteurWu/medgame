@@ -17,46 +17,46 @@ export class ThreeLightingAgent {
      * Configure l'éclairage complet de la scène clinique
      */
     setupLighting() {
-        // Environnement — Ambient light coloré (bleu froid médecin)
-        const ambientLight = new THREE.AmbientLight(0x3a5f7a, 0.4);
-        this.scene.add(ambientLight);
+        // Environnement — Lumière hémisphérique (ciel/sol)
+        const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x8899aa, 0.8);
+        this.scene.add(hemiLight);
 
-        // Lumière principale (Key Light) — froide, directionnelle
-        const keyLight = new THREE.DirectionalLight(0xe8f0ff, 1.2);
+        // Lumière principale (Key Light) — froide, directionnelle — SEULE source d'ombre
+        const keyLight = new THREE.DirectionalLight(0xe8f0ff, 1.4);
         keyLight.position.set(3, 6, 4);
         keyLight.castShadow = true;
-        keyLight.shadow.mapSize.width = 2048;
-        keyLight.shadow.mapSize.height = 2048;
+        keyLight.shadow.mapSize.width = 1024;
+        keyLight.shadow.mapSize.height = 1024;
         keyLight.shadow.camera.near = 0.5;
         keyLight.shadow.camera.far = 20;
-        keyLight.shadow.camera.left = -5;
-        keyLight.shadow.camera.right = 5;
-        keyLight.shadow.camera.top = 5;
-        keyLight.shadow.camera.bottom = -5;
+        keyLight.shadow.camera.left = -6;
+        keyLight.shadow.camera.right = 6;
+        keyLight.shadow.camera.top = 6;
+        keyLight.shadow.camera.bottom = -6;
         keyLight.shadow.bias = -0.0005;
         this.scene.add(keyLight);
 
-        // Lumière de remplissage (Fill Light) — chaude
+        // Lumière de remplissage (Fill Light) — chaude, pas d'ombre
         const fillLight = new THREE.DirectionalLight(0xffd4a0, 0.4);
         fillLight.position.set(-2, 3, -2);
         this.scene.add(fillLight);
 
-        // Lumière d'accentuation (Rim Light) — bleue
-        const rimLight = new THREE.DirectionalLight(0x4488ff, 0.6);
+        // Lumière d'accentuation (Rim Light) — bleue, pas d'ombre
+        const rimLight = new THREE.DirectionalLight(0x4488ff, 0.5);
         rimLight.position.set(-3, 2, 5);
         this.scene.add(rimLight);
 
-        // Lumières ponctuelles (lampes de la salle)
-        this._addPointLight(0, 3.2, 0, 0xffffff, 3.0, 12);
-        this._addPointLight(-2.5, 3.4, -2, 0xaaaaff, 1.5, 8);
-        this._addPointLight(2.5, 3.4, -2, 0xaaaaff, 1.5, 8);
+        // Lumières ponctuelles (lampes de la salle) — pas d'ombre (performances)
+        this._addPointLight(0, 3.2, 0, 0xffffff, 2.5, 14);
+        this._addPointLight(-2.5, 3.3, -1, 0xc8d8ff, 1.0, 8);
+        this._addPointLight(2.5, 3.3, -1, 0xc8d8ff, 1.0, 8);
 
-        // Lumière d'appoint sous les instruments (glow)
-        const instLight = new THREE.PointLight(0x44aaff, 0.8, 4);
+        // Lumière d'appoint sous les instruments (glow bleu)
+        const instLight = new THREE.PointLight(0x44aaff, 0.6, 4);
         instLight.position.set(-0.5, 1.0, -0.8);
         this.scene.add(instLight);
 
-        // Ombres
+        // Configuration globale du renderer
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -67,12 +67,9 @@ export class ThreeLightingAgent {
     _addPointLight(x, y, z, color, intensity, distance) {
         const light = new THREE.PointLight(color, intensity, distance);
         light.position.set(x, y, z);
-        light.castShadow = true;
+        // Pas de castShadow sur les PointLights — seul le keyLight directionnel projette des ombres
+        // Cela réduit les draw calls de shadow map de 7 à 1, gain de perf majeur
         this.scene.add(light);
-
-        // Aide visuelle (optionnelle, peut être retirée)
-        const helper = new THREE.PointLightHelper(light, 0.1);
-        // this.scene.add(helper); // Décommenter pour debug
     }
 
     /**
