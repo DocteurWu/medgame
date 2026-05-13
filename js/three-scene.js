@@ -27,7 +27,7 @@ const TOOLTIP_DESCRIPTIONS = {
     'Patient - Torse': 'Torse du patient — Palpation et inspection',
     'Patient - Tête': 'Tête du patient — Examen neurologique',
     'Evier': 'Évier — Lavage des mains',
-    'Armoire': 'Armoire — Matériel de soin',
+    'Armoire': 'Armoire à pharmacie — Cliquez pour ouvrir les traitements prescriptibles',
     'Porte entree': 'Porte d\'entrée',
     'Fenetre': 'Fenêtre',
 };
@@ -347,6 +347,11 @@ export class ThreeScene {
                 if (window.showNotification) window.showNotification('Charriot médical — Matériel de soin');
                 break;
             }
+            if (name === 'Armoire' || label === 'Armoire') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                this.callbacks.onArmoire?.(hitObj);
+                break;
+            }
             // Tout objet interactif avec un label — fly-to générique
             if (current.userData?.interactive && hitPoint) {
                 this.flyCameraTo(hitPoint, hitPoint, 700);
@@ -508,6 +513,8 @@ export class ThreeScene {
             hintSpan.textContent = '🖱️ Cliquez pour utiliser';
         } else if (label.toLowerCase().includes('patient')) {
             hintSpan.textContent = '🖱️ Cliquez pour examiner';
+        } else if (label === 'Armoire') {
+            hintSpan.textContent = '🖱️ Cliquez pour ouvrir l\'armoire à pharmacie';
         } else if (label.toLowerCase().includes('ecg') || label.toLowerCase().includes('perfusion') || label.toLowerCase().includes('charriot')) {
             hintSpan.textContent = '👁️ Objet d\'ambiance — Cliquez pour info';
         } else {
