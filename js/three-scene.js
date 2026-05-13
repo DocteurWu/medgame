@@ -628,7 +628,7 @@ export class ThreeScene {
 
     /**
      * Change l'expression du patient avec une transition douce
-     * @param {string} expression — 'normal' | 'douleur' | 'grimace' | 'sourire' | 'pale' | 'anxieux' | 'etonne'
+     * @param {string} expression — 'normal' | 'douleur' | 'grimace' | 'sourire' | 'pale' | 'anxieux' | 'etonne' | 'cyanose' | 'fievre' | 'sueur'
      * @param {number} duration — durée de transition en secondes (défaut 0.8)
      */
     setPatientExpression(expression, duration = 0.8) {
@@ -638,6 +638,60 @@ export class ThreeScene {
         // Appliquer aussi les changements de couleur peau via ThreePatient
         if (this.patient) {
             this.patient.applyExpression(expression);
+        }
+    }
+
+    /**
+     * Change le motif de respiration du patient
+     * @param {string} pattern — 'normal' | 'tachypnea' | 'bradypnea' | 'dyspnea' | 'cheyneStokes' | 'agonal'
+     */
+    setRespirationPattern(pattern) {
+        if (this.patientAnimator) {
+            this.patientAnimator.setRespirationPattern(pattern);
+        }
+    }
+
+    /**
+     * Configure les constantes vitales du patient de façon cohérente
+     * Ajuste automatiquement la respiration, l'expression, le rythme ECG et la perfusion
+     * @param {Object} vitals — { respiratoryRate, heartRate, expression, spO2, dyspnea }
+     */
+    setPatientVitals(vitals = {}) {
+        // Fréquence cardiaque → ECG
+        if (vitals.heartRate !== undefined) {
+            this.setHeartRate(vitals.heartRate);
+            // LED oxymètre : pulsation plus rapide si tachycardie
+            if (this.instruments?.animatedParts) {
+                for (const part of this.instruments.animatedParts) {
+                    if (part.type === 'pulsingLED') {
+                        part.freq = vitals.heartRate / 60;
+                    }
+                }
+            }
+        }
+
+        // Motif respiratoire basé sur FR et signes
+        if (vitals.dyspnea) {
+            this.setRespirationPattern('dyspnea');
+        } else if (vitals.respiratoryRate !== undefined) {
+            if (vitals.respiratoryRate > 25) {
+                this.setRespirationPattern('tachypnea');
+            } else if (vitals.respiratoryRate < 10) {
+                this.setRespirationPattern(vitals.respiratoryRate < 6 ? 'agonal' : 'bradypnea');
+            } else {
+                this.setRespirationPattern('normal');
+            }
+        }
+
+        // Expression faciale
+        if (vitals.expression) {
+            this.setPatientExpression(vitals.expression);
+        }
+
+        // SpO2 bas → accélérer la perfusion (effet visuel d'urgence)
+        if (vitals.spO2 !== undefined && this.ivAnimator) {
+            const interval = vitals.spO2 < 90 ? 0.4 : vitals.spO2 < 95 ? 0.6 : 0.8;
+            this.ivAnimator.dropInterval = interval;
         }
     }
 

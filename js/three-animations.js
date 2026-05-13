@@ -60,14 +60,22 @@ export class PatientAnimator {
         this._headSwayPhase = Math.random() * Math.PI * 2;
         this._lastTime = 0;
 
+        // === Motifs de respiration variables ===
+        // 'normal', 'tachypnea', 'bradypnea', 'dyspnea', 'cheyneStokes', 'agonal'
+        this.respirationPattern = options.respirationPattern || 'normal';
+        this._patternTime = 0;
+
         // Cache des références (résolution paresiveuse)
         this._torso = null;
         this._head = null;
         this._eyeL = null;
         this._eyeR = null;
+        this._eyeLElement = null;  // Maille de l'œil entier (groupe ou mesh)
+        this._eyeRElement = null;
         this._mouth = null;
         this._browL = null;
         this._browR = null;
+        this._nose = null;
         this._cacheResolved = false;
     }
 
@@ -93,6 +101,12 @@ export class PatientAnimator {
                 eyes.push(child);
             } else if (name.includes('bouche') || label.includes('bouche')) {
                 this._mouth = child;
+            } else if (name.includes('sourcil') || label.includes('sourcil') || name.includes('brow') || label.includes('brow')) {
+                // Sourcils : position x négatif = gauche, positif = droit
+                if (child.position.x < 0) this._browL = child;
+                else this._browR = child;
+            } else if (name.includes('nez') || label.includes('nez') || name.includes('nose') || label.includes('nose')) {
+                this._nose = child;
             }
         });
 
@@ -102,9 +116,23 @@ export class PatientAnimator {
             this._eyeL = eyes[0];
             this._eyeR = eyes[1];
         } else if (eyes.length === 1) {
-            // Un seul œil trouvé — probablement l'œil gauche, cloner la réf
             this._eyeL = eyes[0];
             this._eyeR = eyes[0];
+        }
+
+        // Stocker les valeurs initiales pour les restaurations
+        if (this._mouth && this._mouthBaseY === undefined) {
+            this._mouthBaseY = this._mouth.position.y;
+            this._mouthBaseScaleY = this._mouth.scale.y;
+            this._mouthBaseRotZ = this._mouth.rotation.z;
+        }
+        if (this._browL && this._browLBaseRotZ === undefined) {
+            this._browLBaseRotZ = this._browL.rotation.z;
+            this._browLBasePosY = this._browL.position.y;
+        }
+        if (this._browR && this._browRBaseRotZ === undefined) {
+            this._browRBaseRotZ = this._browR.rotation.z;
+            this._browRBasePosY = this._browR.position.y;
         }
 
         this._cacheResolved = true;
@@ -131,16 +159,84 @@ export class PatientAnimator {
         if (this._baseY === undefined) {
             this._baseY = this.group.position.y;
         }
-        // Oscillation douce du corps entier
-        const breathY = Math.sin(t * this.breathRate * Math.PI * 2) * this.breathAmplitude;
+
+        let breathY, breathPhase, torsoExpand;
+
+        switch (this.respirationPattern) {
+            case 'tachypnea': {
+                // Respiration rapide et superficielle (FR > 25/min)
+                const freq = 3.5;
+                breathPhase = Math.sin(t * freq * Math.PI * 2);
+                breathY = breathPhase * 0.007;
+                torsoExpand = 1 + Math.abs(breathPhase) * 0.004;
+                break;
+            }
+            case 'bradypnea': {
+                // Respiration lente et profonde (FR < 10/min)
+                const freq = 0.5;
+                breathPhase = Math.sin(t * freq * Math.PI * 2);
+                breathY = breathPhase * 0.022;
+                torsoExpand = 1 + breathPhase * 0.016;
+                break;
+            }
+            case 'dyspnea': {
+                // Respiration difficile avec hoquets (polypnée + pauses)
+                const base = Math.sin(t * 2.5 * Math.PI * 2);
+                const gasp = Math.sin(t * 8) * 0.3;
+                breathY = (base + gasp) * 0.016;
+                torsoExpand = 1 + base * 0.012;
+                break;
+            }
+            case 'cheyneStokes': {
+                // Respiration périodique : crescendo puis decrescendo puis pause
+                const cycle = 20; // secondes par cycle
+                const phase = (t % cycle) / cycle;
+                let amplitude;
+                if (phase < 0.05) {
+                    // Pause (apnée)
+                    amplitude = 0;
+                } else {
+                    // Crescendo-decrescendo
+                    const breathPhase = (phase - 0.05) / 0.95;
+                    amplitude = Math.sin(breathPhase * Math.PI) * 0.6 + 0.4;
+                }
+                const freq = 1.8;
+                breathPhase = Math.sin(t * freq * Math.PI * 2) * amplitude;
+                breathY = breathPhase * this.breathAmplitude * 1.5;
+                torsoExpand = 1 + breathPhase * this.breathTorsoScale * 1.5;
+                break;
+            }
+            case 'agonal': {
+                // Gasps agonaux : rares, irréguliers, amplitude décroissante
+                const cycle = 6; // secondes entre gasps
+                const phase = (t % cycle) / cycle;
+                let amplitude;
+                if (phase < 0.15) {
+                    // Gasp rapide
+                    amplitude = Math.sin(phase / 0.15 * Math.PI) * 1.0;
+                } else {
+                    // Pause longue
+                    amplitude = 0;
+                }
+                breathY = amplitude * 0.025;
+                torsoExpand = 1 + Math.abs(amplitude) * 0.012;
+                break;
+            }
+            default: {
+                // Normal : respiration calme et régulière
+                breathPhase = Math.sin(t * this.breathRate * Math.PI * 2);
+                breathY = breathPhase * this.breathAmplitude;
+                torsoExpand = 1 + breathPhase * this.breathTorsoScale;
+                break;
+            }
+        }
+
         this.group.position.y = this._baseY + breathY;
 
         // Dilatation du torse (scale X/Z qui augmente à l'inspi, diminue à l'expir)
         if (this._torso) {
-            const phase = Math.sin(t * this.breathRate * Math.PI * 2);
-            const expand = 1 + phase * this.breathTorsoScale;
-            this._torso.scale.x = expand;
-            this._torso.scale.z = expand;
+            this._torso.scale.x = torsoExpand || 1;
+            this._torso.scale.z = torsoExpand || 1;
         }
     }
 
@@ -178,12 +274,23 @@ export class PatientAnimator {
         }
     }
 
-    /** Léger balancement de tête (micro-mouvement naturel) */
+    /** Léger balancement de tête (micro-mouvement naturel, plus marqué en dyspnée) */
     _animateHeadSway(t) {
         if (!this._head) return;
-        // Micro-rotation douce
-        this._head.rotation.y = Math.sin(t * 0.3 + this._headSwayPhase) * 0.03;
-        this._head.rotation.x = Math.sin(t * 0.2 + this._headSwayPhase * 1.3) * 0.015;
+        // Intensité du balancement selon le motif respiratoire
+        let swayY, swayX;
+        switch (this.respirationPattern) {
+            case 'dyspnea':
+                swayY = 0.06; swayX = 0.04; break;
+            case 'agonal':
+                swayY = 0.08; swayX = 0.05; break;
+            case 'tachypnea':
+                swayY = 0.04; swayX = 0.025; break;
+            default:
+                swayY = 0.03; swayX = 0.015; break;
+        }
+        this._head.rotation.y = Math.sin(t * 0.3 + this._headSwayPhase) * swayY;
+        this._head.rotation.x = Math.sin(t * 0.2 + this._headSwayPhase * 1.3) * swayX;
     }
 
     /**
@@ -207,11 +314,28 @@ export class PatientAnimator {
         this._head = null;
         this._eyeL = null;
         this._eyeR = null;
+        this._eyeLElement = null;
+        this._eyeRElement = null;
         this._mouth = null;
         this._browL = null;
         this._browR = null;
+        this._nose = null;
         this._baseY = undefined;
         this._mouthBaseY = undefined;
+        this._mouthBaseScaleY = undefined;
+        this._mouthBaseRotZ = undefined;
+        this._browLBaseRotZ = undefined;
+        this._browLBasePosY = undefined;
+        this._browRBaseRotZ = undefined;
+        this._browRBasePosY = undefined;
+    }
+
+    /**
+     * Change le motif de respiration du patient
+     * @param {string} pattern — 'normal' | 'tachypnea' | 'bradypnea' | 'dyspnea' | 'cheyneStokes' | 'agonal'
+     */
+    setRespirationPattern(pattern) {
+        this.respirationPattern = pattern;
     }
 
     _animateExpressionBlend(dt) {
@@ -232,19 +356,23 @@ export class PatientAnimator {
         if (!this._mouth) return;
 
         const configs = {
-            normal:    { mouthScaleY: 1,   mouthRotZ: 0,    mouthPosY: 0 },
-            douleur:   { mouthScaleY: 1.5, mouthRotZ: 0.2,  mouthPosY: -0.005 },
-            grimace:   { mouthScaleY: 0.5, mouthRotZ: 0.18,  mouthPosY: -0.008 },
-            sourire:   { mouthScaleY: 1.8, mouthRotZ: 0,    mouthPosY: 0.003 },
-            pale:      { mouthScaleY: 0.8, mouthRotZ: 0,    mouthPosY: 0 },
-            anxieux:   { mouthScaleY: 0.6, mouthRotZ: 0.1,  mouthPosY: -0.003 },
-            etonne:    { mouthScaleY: 2.0, mouthRotZ: 0,    mouthPosY: 0.005 },
+            normal:    { mouthScaleY: 1,   mouthRotZ: 0,    mouthPosY: 0,     browRotZ: 0,   browPosY: 0,  eyeScaleY: 1,  pupilScale: 1 },
+            douleur:   { mouthScaleY: 1.5, mouthRotZ: 0.2,  mouthPosY: -0.005, browRotZ: -0.15, browPosY: 0.01, eyeScaleY: 0.45, pupilScale: 1.3 },
+            grimace:   { mouthScaleY: 0.5, mouthRotZ: 0.18,  mouthPosY: -0.008, browRotZ: -0.2, browPosY: 0.015, eyeScaleY: 0.45, pupilScale: 1 },
+            sourire:   { mouthScaleY: 1.8, mouthRotZ: 0,    mouthPosY: 0.003,  browRotZ: 0.05, browPosY: -0.005, eyeScaleY: 1, pupilScale: 1 },
+            pale:      { mouthScaleY: 0.8, mouthRotZ: 0,    mouthPosY: 0,     browRotZ: 0.08, browPosY: 0.008, eyeScaleY: 0.9, pupilScale: 0.85 },
+            anxieux:   { mouthScaleY: 0.6, mouthRotZ: 0.1,  mouthPosY: -0.003, browRotZ: -0.12, browPosY: 0.012, eyeScaleY: 1.3, pupilScale: 1.4 },
+            etonne:    { mouthScaleY: 2.0, mouthRotZ: 0,    mouthPosY: 0.005,  browRotZ: 0.15, browPosY: 0.02,  eyeScaleY: 1.4, pupilScale: 1.6 },
+            cyanose:   { mouthScaleY: 0.7, mouthRotZ: 0.12, mouthPosY: -0.002, browRotZ: -0.08, browPosY: 0.008, eyeScaleY: 0.85, pupilScale: 0.9 },
+            fievre:    { mouthScaleY: 0.65, mouthRotZ: 0.08, mouthPosY: -0.004, browRotZ: -0.1, browPosY: 0.01, eyeScaleY: 0.9, pupilScale: 1.2 },
+            sueur:     { mouthScaleY: 0.75, mouthRotZ: 0.05, mouthPosY: -0.002, browRotZ: -0.06, browPosY: 0.006, eyeScaleY: 0.95, pupilScale: 1.1 },
         };
 
         const fromCfg = configs[from] || configs.normal;
         const toCfg = configs[to] || configs.normal;
 
         // Lerp entre les deux configurations
+        // Bouche
         const mouthScaleY = fromCfg.mouthScaleY + (toCfg.mouthScaleY - fromCfg.mouthScaleY) * blend;
         const mouthRotZ = fromCfg.mouthRotZ + (toCfg.mouthRotZ - fromCfg.mouthRotZ) * blend;
         const mouthPosY = fromCfg.mouthPosY + (toCfg.mouthPosY - fromCfg.mouthPosY) * blend;
@@ -257,6 +385,53 @@ export class PatientAnimator {
             this._mouthBaseY = this._mouth.position.y;
         }
         this._mouth.position.y = this._mouthBaseY + mouthPosY;
+
+        // Sourcils (fronce = rotationZ négatif, surprise = positif + montée)
+        if (this._browL) {
+            const browRotZ = fromCfg.browRotZ + (toCfg.browRotZ - fromCfg.browRotZ) * blend;
+            const browPosY = fromCfg.browPosY + (toCfg.browPosY - fromCfg.browPosY) * blend;
+            this._browL.rotation.z = (this._browLBaseRotZ || 0) + browRotZ;
+            this._browL.position.y = (this._browLBasePosY || this._browL.position.y) + browPosY;
+        }
+        if (this._browR) {
+            const browRotZ = fromCfg.browRotZ + (toCfg.browRotZ - fromCfg.browRotZ) * blend;
+            const browPosY = fromCfg.browPosY + (toCfg.browPosY - fromCfg.browPosY) * blend;
+            // Sourcil droit : rotation inverse
+            this._browR.rotation.z = (this._browRBaseRotZ || 0) - browRotZ;
+            this._browR.position.y = (this._browRBasePosY || this._browR.position.y) + browPosY;
+        }
+
+        // Yeux (ouverture/paupières — scaleY sur l'œil ou le groupe)
+        const eyeScaleY = fromCfg.eyeScaleY + (toCfg.eyeScaleY - fromCfg.eyeScaleY) * blend;
+        if (this._eyeL && !this._isBlinking) {
+            this._eyeL.scale.y = eyeScaleY;
+        }
+        if (this._eyeR && !this._isBlinking) {
+            this._eyeR.scale.y = eyeScaleY;
+        }
+
+        // Pupilles (dilatation via scale uniforme sur les iris si disponibles)
+        const pupilScale = fromCfg.pupilScale + (toCfg.pupilScale - fromCfg.pupilScale) * blend;
+        this._applyPupilScale(pupilScale);
+    }
+
+    /**
+     * Applique l'échelle des pupilles (iris) — recherche dans les groupes enfants
+     */
+    _applyPupilScale(scale) {
+        // Chercher les iris dans les groupes d'yeux (s'ils sont des groupes)
+        [this._eyeL, this._eyeR].forEach(eyeRef => {
+            if (!eyeRef) return;
+            if (eyeRef.isGroup) {
+                eyeRef.children.forEach(child => {
+                    // Les iris sont typiquement les petites sphères avec couleur iris
+                    if (child.geometry?.type === 'SphereGeometry' &&
+                        child.geometry?.parameters?.radius < 0.015) {
+                        child.scale.setScalar(scale);
+                    }
+                });
+            }
+        });
     }
 }
 

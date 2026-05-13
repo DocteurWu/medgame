@@ -92,14 +92,34 @@ export class ThreePatient {
         }
         if (expression === 'cyanotic' || expression === 'cyanose') {
             this.skinMat.color.set(0xb8c4d4);
+            this.mouth.rotation.z = 0.12;
+            this.eyeL.scale.y = 0.85;
+            this.eyeR.scale.y = 0.85;
         }
         if (expression === 'feverish' || expression === 'fievre') {
             this.skinMat.color.set(0xe8b0a0);
             this.skinMat.emissive?.set(0x331108);
             this.skinMat.emissiveIntensity = 0.15;
+            this.eyeL.scale.y = 0.9;
+            this.eyeR.scale.y = 0.9;
         }
         if (expression === 'sweating' || expression === 'sueur') {
             this.skinMat.color.set(0xe0d5c4);
+            this.skinMat.emissive?.set(0x111508);
+            this.skinMat.emissiveIntensity = 0.08;
+        }
+        if (expression === 'anxieux') {
+            this.eyeL.scale.y = 1.3;
+            this.eyeR.scale.y = 1.3;
+        }
+        if (expression === 'etonne' || expression === 'surpris') {
+            this.mouth.rotation.z = 0;
+            this.eyeL.scale.y = 1.4;
+            this.eyeR.scale.y = 1.4;
+        }
+        if (expression === 'sourire') {
+            this.mouth.rotation.z = 0;
+            this.mouth.scale.y = 1.8;
         }
     }
 }
