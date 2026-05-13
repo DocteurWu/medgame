@@ -186,6 +186,63 @@ export class ThreePatient {
         return nose;
     }
 
+    /**
+     * Ajoute les cheveux du patient (hémisphère couvrant le haut du crâne)
+     * @param {number} x — position X (centre de la tête)
+     * @param {number} y — position Y (centre de la tête)
+     * @param {number} z — position Z (centre de la tête)
+     * @returns {THREE.Mesh}
+     */
+    _addHair(x, y, z) {
+        // Hémisphère couvrant le haut et les côtés du crâne
+        const hairGeom = new THREE.SphereGeometry(0.18, 20, 12, 0, Math.PI * 2, 0, Math.PI * 0.52);
+        const hairMat = new THREE.MeshStandardMaterial({
+            color: 0x2a1a0a,
+            roughness: 0.95,
+            metalness: 0.0
+        });
+        const hair = new THREE.Mesh(hairGeom, hairMat);
+        // Léger décalage vers le haut pour un meilleur recouvrement du crâne
+        hair.position.set(x, y + 0.005, z);
+        hair.castShadow = true;
+        hair.name = 'Patient cheveux';
+        hair.userData = { label: 'Patient - Tête', interactive: true };
+        this.group.add(hair);
+        return hair;
+    }
+
+    /**
+     * Ajoute les oreilles du patient (ellipsoïdes latérales)
+     * @param {number} x — position X du centre de la tête
+     * @param {number} y — position Y du centre de la tête
+     * @param {number} z — position Z du centre de la tête
+     * @returns {{ earL: THREE.Mesh, earR: THREE.Mesh }}
+     */
+    _addEars(x, y, z) {
+        const earMat = this.skinMat.clone();
+        const earGeom = new THREE.SphereGeometry(0.025, 10, 8);
+
+        // Oreille gauche
+        const earL = new THREE.Mesh(earGeom, earMat);
+        earL.position.set(x - 0.17, y - 0.01, z - 0.02);
+        earL.scale.set(0.5, 0.65, 0.35);
+        earL.castShadow = true;
+        earL.name = 'Patient oreille gauche';
+        earL.userData = { label: 'Patient - Tête', interactive: true };
+        this.group.add(earL);
+
+        // Oreille droite
+        const earR = new THREE.Mesh(earGeom, earMat);
+        earR.position.set(x + 0.17, y - 0.01, z - 0.02);
+        earR.scale.set(0.5, 0.65, 0.35);
+        earR.castShadow = true;
+        earR.name = 'Patient oreille droite';
+        earR.userData = { label: 'Patient - Tête', interactive: true };
+        this.group.add(earR);
+
+        return { earL, earR };
+    }
+
     buildSitting(skin, cloth) {
         // Torse
         this.cube({ x: 0.42, y: 0.55, z: 0.24 }, { x: 0, y: 1.0, z: 0 }, cloth, 'Patient torse');
@@ -200,6 +257,10 @@ export class ThreePatient {
         // Sourcils (position X : négatif=gauche, positif=droit; rotation Z orientée)
         this.browL = this._addBrow(-0.06, 1.52, 0.18, 0.08, true);
         this.browR = this._addBrow(0.06, 1.52, 0.18, -0.08, false);
+
+        // Cheveux et oreilles
+        this._addHair(0, 1.43, 0.05);
+        this._addEars(0, 1.43, 0.05);
 
         // Nez
         this.nose = this._addNose(0, 1.41, 0.21);
@@ -234,6 +295,10 @@ export class ThreePatient {
         // Sourcils
         this.browL = this._addBrow(-0.06, 1.19, 0.65, 0.08, true);
         this.browR = this._addBrow(0.06, 1.19, 0.65, -0.08, false);
+
+        // Cheveux et oreilles
+        this._addHair(0, 1.0, 0.62);
+        this._addEars(0, 1.0, 0.62);
 
         // Nez
         this.nose = this._addNose(0, 1.07, 0.70);
