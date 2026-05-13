@@ -294,7 +294,11 @@ function calculateTraitementScore(selectedTreatments, correctTreatments, fatalTr
     const currentCase = scoringState.currentCase;
     const secondLine = (currentCase && currentCase.secondLineTreatments) || [];
 
-    const selectedFatalTreatments = (selectedTreatments || []).filter(t => fatalTreatments.includes(t));
+    // Inclure les traitements prescrits malgré les contre-indications (outrepassés par le joueur)
+    const overrideFatalTreatments = (window.scoringState && window.scoringState._fatalOverrideTreatments) || [];
+    const allFatal = [...fatalTreatments, ...overrideFatalTreatments];
+
+    const selectedFatalTreatments = (selectedTreatments || []).filter(t => allFatal.includes(t));
 
     // Détails pour le feedback
     const details = {

@@ -34,6 +34,8 @@ const gameState = {
                 scoringState.currentCase = this.currentCase;
                 scoringState.selectedTreatments = [];
                 scoringState.attempts = 0;
+                // Réinitialiser les overrides de contre-indications du cas précédent
+                delete scoringState._fatalOverrideTreatments;
                 // Réinitialiser le suivi de démarche clinique
                 if (typeof resetDemarche === 'function') {
                     resetDemarche();
