@@ -94,6 +94,7 @@ class ThreeManager {
                 onPatient: () => this.goToPatient(),
                 onInstrument: (instrument) => this.goToInstrument(instrument),
                 onPC: () => this.goToPC(),
+                onArmoire: () => this.openArmoire(),
                 onObject: (object) => this.showInfo(object),
                 onHover: (object, event) => this.showTooltip(object, event)
             });
@@ -289,6 +290,10 @@ class ThreeManager {
                     this.scene?.setCamera('desk');
                     this.goToPrescription();
                     break;
+                case '4':
+                    e.preventDefault();
+                    this.openArmoire();
+                    break;
             }
         };
         document.addEventListener('keydown', this._keyHandler);
@@ -303,6 +308,7 @@ class ThreeManager {
             }
         });
         if (this.hud) this.hud.removeFloatingDialog();
+        this.closeArmoire();
     }
 
     goToPatient() {
@@ -509,6 +515,192 @@ class ThreeManager {
         const panel = document.getElementById('pc-overlay');
         if (!panel) return;
         panel.style.display = 'none';
+    }
+
+    /**
+     * Ouvre l'armoire de soins 3D — affiche les traitements prescriptibles sous forme
+     * de piluliers/flacons cliquables. L'armoire est positionnée sur le mur droit (x=4.3).
+     * Synchronisé avec possibleTreatments du cas courant.
+     */
+    openArmoire() {
+        const currentCase = this.currentCase;
+        if (!currentCase) {
+            if (this.hud) this.hud.showNotification('Aucun cas chargé', 'warning');
+            return;
+        }
+        if (!currentCase.possibleTreatments || currentCase.possibleTreatments.length === 0) {
+            if (this.hud) this.hud.showNotification('Aucun traitement disponible dans l\'armoire', 'warning');
+            return;
+        }
+
+        // Fermer l'ancienne armoire si déjà ouverte
+        this.closeArmoire();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'armoire-overlay';
+        overlay.className = 'armoire-overlay';
+        overlay.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9998; background: rgba(0,0,0,0.55);
+            display: flex; align-items: center; justify-content: center;
+        `;
+
+        const panel = document.createElement('div');
+        panel.className = 'armoire-panel';
+        panel.innerHTML = `
+            <div class="armoire-header">
+                <span><i class="fas fa-cabinet-filing"></i> Armoire de Soins</span>
+                <button id="armoire-close-btn" class="armoire-close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="armoire-body">
+                <p class="armoire-subtitle">
+                    <i class="fas fa-prescription-bottle"></i> 
+                    Traitements disponibles — cliquez pour prescrire
+                </p>
+                <div class="armoire-grid" id="armoire-grid"></div>
+                <div class="armoire-selected-area">
+                    <div class="armoire-selected-header">
+                        <i class="fas fa-clipboard-list"></i> Prescription en cours
+                    </div>
+                    <div class="armoire-selected-list" id="armoire-selected-list">
+                        <span class="armoire-empty-msg">Aucun traitement sélectionné</span>
+                    </div>
+                </div>
+                <div class="armoire-actions">
+                    <button id="armoire-cancel-btn" class="armoire-btn armoire-btn-secondary">
+                        <i class="fas fa-undo"></i> Annuler
+                    </button>
+                    <button id="armoire-confirm-btn" class="armoire-btn armoire-btn-primary">
+                        <i class="fas fa-syringe"></i> Valider la prescription
+                    </button>
+                </div>
+            </div>
+        `;
+
+        overlay.appendChild(panel);
+        document.body.appendChild(overlay);
+
+        // Peupler la grille avec les traitements possibles
+        const grid = document.getElementById('armoire-grid');
+        const selectedSet = new Set();
+        const selectedListEl = document.getElementById('armoire-selected-list');
+
+        const updateSelected = () => {
+            const selected = Array.from(selectedSet);
+            if (selected.length === 0) {
+                selectedListEl.innerHTML = '<span class="armoire-empty-msg">Aucun traitement sélectionné</span>';
+            } else {
+                selectedListEl.innerHTML = selected.map(t => `
+                    <div class="armoire-selected-item">
+                        <span class="armoire-selected-name">💊 ${t}</span>
+                        <button class="armoire-remove-btn" data-traitement="${t}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `).join('');
+                // Re-binder les boutons de retrait
+                selectedListEl.querySelectorAll('.armoire-remove-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        selectedSet.delete(btn.dataset.traitement);
+                        // Retirer le .selected de la carte correspondante
+                        const card = grid.querySelector(`[data-traitement="${btn.dataset.traitement}"]`);
+                        if (card) card.classList.remove('selected');
+                        updateSelected();
+                    });
+                });
+            }
+        };
+
+        currentCase.possibleTreatments.forEach(t => {
+            const tName = (typeof t === 'string') ? t : (t.nom || String(t));
+            const card = document.createElement('div');
+            card.className = 'armoire-card';
+            card.dataset.traitement = tName;
+            card.innerHTML = `
+                <div class="armoire-card-icon">
+                    <i class="fas fa-capsules"></i>
+                </div>
+                <div class="armoire-card-name">${tName}</div>
+                <div class="armoire-card-check"><i class="fas fa-check-circle"></i></div>
+            `;
+            card.addEventListener('click', () => {
+                if (selectedSet.has(tName)) {
+                    selectedSet.delete(tName);
+                    card.classList.remove('selected');
+                } else {
+                    selectedSet.add(tName);
+                    card.classList.add('selected');
+                }
+                updateSelected();
+            });
+            grid.appendChild(card);
+        });
+
+        updateSelected();
+
+        // Bouton fermer
+        document.getElementById('armoire-close-btn').addEventListener('click', () => this.closeArmoire());
+        // Clic sur l'overlay (hors panel) = fermer
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) this.closeArmoire();
+        });
+
+        // Bouton Annuler
+        document.getElementById('armoire-cancel-btn').addEventListener('click', () => {
+            selectedSet.clear();
+            grid.querySelectorAll('.armoire-card').forEach(c => c.classList.remove('selected'));
+            updateSelected();
+        });
+
+        // Bouton Valider — synchronise avec le 2D et le scoring
+        document.getElementById('armoire-confirm-btn').addEventListener('click', () => {
+            const selected = Array.from(selectedSet);
+            // Synchroniser avec scoringState (traitements sélectionnés)
+            window.scoringState = window.scoringState || {};
+            window.scoringState.selectedTreatments = [...selected];
+
+            // Synchroniser avec les boutons 2D
+            const treatGrid2D = document.getElementById('availableTreatments');
+            if (treatGrid2D) {
+                treatGrid2D.querySelectorAll('button').forEach(btn2d => {
+                    const btnName = btn2d.dataset.traitement || btn2d.textContent?.trim();
+                    if (selected.includes(btnName)) {
+                        if (!btn2d.classList.contains('selected')) btn2d.click();
+                    } else {
+                        if (btn2d.classList.contains('selected')) btn2d.click();
+                    }
+                });
+            }
+
+            // Synchroniser aussi le PC panel si ouvert
+            const pcTreatGrid = document.getElementById('pc-treatments-grid');
+            if (pcTreatGrid) {
+                pcTreatGrid.querySelectorAll('.pc-treat-btn').forEach(btnPc => {
+                    const btnName = btnPc.dataset.traitement || btnPc.textContent?.trim();
+                    if (selected.includes(btnName)) {
+                        if (!btnPc.classList.contains('selected')) btnPc.click();
+                    } else {
+                        if (btnPc.classList.contains('selected')) btnPc.click();
+                    }
+                });
+            }
+
+            if (this.hud) {
+                this.hud.showNotification(
+                    `✅ ${selected.length} traitement(s) prescrit(s) : ${selected.join(', ')}`,
+                    'success'
+                );
+            }
+            if (this.hud && this.hud._syncProgress) this.hud._syncProgress();
+            this.closeArmoire();
+        });
+    }
+
+    closeArmoire() {
+        const overlay = document.getElementById('armoire-overlay');
+        if (overlay) overlay.remove();
     }
 
     _bindPCPanelEvents() {
