@@ -39,6 +39,10 @@ const gameState = {
                     resetDemarche();
                 }
             }
+            // Réinitialiser la timeline de feedback
+            if (typeof feedbackTimeline !== 'undefined') {
+                feedbackTimeline.reset();
+            }
             if (uiState) {
                 uiState.currentCase = this.currentCase;
             }

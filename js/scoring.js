@@ -402,10 +402,18 @@ function handleTraitementClick(event) {
         scoringState.selectedTreatments = scoringState.selectedTreatments.filter(t => t !== traitement);
         event.target.classList.remove('selected');
         event.target.setAttribute('aria-selected', 'false');
+        // Timeline feedback
+        if (typeof feedbackTimeline !== 'undefined') {
+            feedbackTimeline.log('traitement', `Traitement retiré : ${traitement}`);
+        }
     } else {
         scoringState.selectedTreatments.push(traitement);
         event.target.classList.add('selected');
         event.target.setAttribute('aria-selected', 'true');
+        // Timeline feedback
+        if (typeof feedbackTimeline !== 'undefined') {
+            feedbackTimeline.log('traitement', `Traitement ajouté : ${traitement}`);
+        }
     }
 }
 

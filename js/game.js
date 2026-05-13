@@ -154,6 +154,29 @@ onDomReady(async () => {
     initLockSystem();
     lockSystem.onLoadCase = (isPartial) => loadCase(isPartial);
 
+    // --- Timeline feedback : écoute des événements de démarche clinique ---
+    document.addEventListener('interrogatoire-asked', (e) => {
+        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.path) {
+            const shortPath = e.detail.path.split('.').pop();
+            feedbackTimeline.log('interrogatoire', `Question posée : ${shortPath}`);
+        }
+    });
+    document.addEventListener('section-viewed', (e) => {
+        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.sectionId) {
+            feedbackTimeline.log('section', `Section consultée : ${e.detail.sectionId}`);
+        }
+    });
+    document.addEventListener('exam-ordered', (e) => {
+        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.exams) {
+            feedbackTimeline.log('examen', `Examens demandés : ${e.detail.exams.join(', ')}`);
+        }
+    });
+    document.addEventListener('locksystem-unlock', (e) => {
+        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.lockId) {
+            feedbackTimeline.log('lock', `Verrou déverrouillé : ${e.detail.lockId}`);
+        }
+    });
+
     // Immersive Mode button handler — sole controller for 3D toggle
     const immersiveBtn = document.getElementById('immersive-mode-btn');
     if (immersiveBtn) {
@@ -812,6 +835,16 @@ onDomReady(async () => {
         const selectedDiagnostic = document.getElementById('diagnostic-select').value;
         const correctDiagnostic = currentCase.correctDiagnostic;
 
+        // --- Timeline feedback : enregistrement du diagnostic et traitement ---
+        if (typeof feedbackTimeline !== 'undefined') {
+            feedbackTimeline.log('diagnostic', `Diagnostic sélectionné : ${selectedDiagnostic || '(aucun)'}`);
+            if (selectedTreatments.length > 0) {
+                feedbackTimeline.log('traitement', `Traitements prescrits : ${selectedTreatments.join(', ')}`);
+            } else {
+                feedbackTimeline.log('traitement', 'Aucun traitement prescrit');
+            }
+        }
+
         const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
         const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
 
@@ -957,6 +990,12 @@ onDomReady(async () => {
         // Composite score panel + comparison HTML
         const compositePanelHtml = renderCompositeScorePanel(compositeResult);
 
+        // Build detailed feedback (timeline, strengths/weaknesses, pedagogy, comparison)
+        let detailedFeedbackHtml = '';
+        if (typeof renderDetailedFeedback === 'function') {
+            detailedFeedbackHtml = renderDetailedFeedback(compositeResult, currentCase);
+        }
+
         const comparisonHtml = `
             ${fatalBanner}
             <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
@@ -983,6 +1022,7 @@ onDomReady(async () => {
                     </p>
                 </div>
             </div>
+            ${detailedFeedbackHtml}
             <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
         `;
 
