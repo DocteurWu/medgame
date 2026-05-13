@@ -170,14 +170,15 @@ function displayValue(element, value, path) {
     if (!element) return;
 
     if (path && isFieldLocked(path)) {
-        const lock = getLockForField(path);
+        const currentCase = lockSystem.currentCase || gameState.currentCase;
+        const placeholder = renderLockPlaceholder(path, currentCase);
         element.setAttribute('data-locked', 'true');
-        element.innerHTML = `
-            <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
-                <i class="fas fa-lock"></i>
-                <span class="challenge-text">DÉFI À RELEVER</span>
-            </div>
-        `;
+        if (placeholder) {
+            element.innerHTML = placeholder;
+        } else {
+            // Fallback: field is locked but renderLockPlaceholder returned empty (shouldn't happen)
+            element.innerHTML = `<div class="lock-placeholder"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+        }
         return;
     }
 
@@ -194,14 +195,14 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
     if (!element) return;
 
     if (path && isFieldLocked(path)) {
-        const lock = getLockForField(path);
+        const currentCase = lockSystem.currentCase || gameState.currentCase;
+        const placeholder = renderLockPlaceholder(path, currentCase);
         element.setAttribute('data-locked', 'true');
-        element.innerHTML = `
-            <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
-                <i class="fas fa-lock"></i>
-                <span class="challenge-text">DÉFI À RELEVER</span>
-            </div>
-        `;
+        if (placeholder) {
+            element.innerHTML = placeholder;
+        } else {
+            element.innerHTML = `<div class="lock-placeholder"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+        }
         return;
     }
 
