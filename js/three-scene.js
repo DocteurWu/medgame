@@ -8,6 +8,30 @@ import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js';
 
+/**
+ * Dictionnaire de descriptions riches pour les objets interactifs
+ */
+const TOOLTIP_DESCRIPTIONS = {
+    'Tensiometre': 'Mesure de la tension artérielle — Placez le brassard sur le bras du patient',
+    'Oxymetre': 'Saturation en oxygène SpO2 — Clipsez sur le doigt du patient',
+    'Thermometre': 'Mesure de la température corporelle — Thermomètre électronique',
+    'Glucometre': 'Glycémie capillaire — Insérez une bandelette et prélevez une goutte de sang',
+    'Tablette prescription': 'Prescription et ordonnance — Consultez les résultats et prescribez',
+    'Ordinateur': 'Poste informatique — Dossier médical et résultats',
+    'Moniteur ECG': 'Moniteur de surveillance — Tracé ECG et constantes vitales en temps réel',
+    'Perfusion': 'Perfusion intraveineuse — Soluté en cours d\'administration',
+    'Charriot médical': 'Charriot de soins — Matériel et instruments médicaux',
+    'Affiche médicale': 'Affiche — Protocole ECMO affiché au mur',
+    'Rideau': 'Rideau de séparation',
+    'Patient': 'Patient — Examinez le patient',
+    'Patient - Torse': 'Torse du patient — Palpation et inspection',
+    'Patient - Tête': 'Tête du patient — Examen neurologique',
+    'Evier': 'Évier — Lavage des mains',
+    'Armoire': 'Armoire — Matériel de soin',
+    'Porte entree': 'Porte d\'entrée',
+    'Fenetre': 'Fenêtre',
+};
+
 export class ThreeScene {
     constructor(container, callbacks = {}) {
         this.container = container;
@@ -24,6 +48,17 @@ export class ThreeScene {
         this.dustAnimator = null;
         this.ivAnimator = null;
         this.ecgAnimator = null;
+
+        // === Système hover glow ===
+        this._hoveredObject = null;
+        this._hoveredOriginalEmissives = new Map();
+        this._hoverGlowIntensity = 0.35;
+        this._hoverGlowColor = new THREE.Color(0x66aaff);
+        this._tooltipEl = null;
+        this._tooltipVisible = false;
+
+        // === Caméra fly-to ===
+        this._cameraAnimId = null;
     }
 
     init() {
@@ -115,7 +150,76 @@ export class ThreeScene {
         this.renderer.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
         window.addEventListener('resize', () => this.resize());
 
+        // === Créer le tooltip HTML ===
+        this._createTooltip();
+
         this.animate();
+    }
+
+    /**
+     * Crée l'élément HTML du tooltip riche
+     */
+    _createTooltip() {
+        const tooltip = document.createElement('div');
+        tooltip.id = 'medgame-3d-tooltip';
+        tooltip.style.cssText = `
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            background: rgba(10, 18, 40, 0.92);
+            color: #e0e8f4;
+            border: 1px solid rgba(100, 170, 255, 0.45);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-size: 13px;
+            line-height: 1.4;
+            max-width: 260px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 12px rgba(100,170,255,0.15);
+            backdrop-filter: blur(6px);
+        `;
+        const titleEl = document.createElement('div');
+        titleEl.style.cssText = `
+            font-weight: 700;
+            font-size: 14px;
+            color: #88ccff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        `;
+        titleEl.innerHTML = '<span style="font-size:16px">🔬</span> <span id="medgame-tooltip-title"></span>';
+        const descEl = document.createElement('div');
+        descEl.id = 'medgame-tooltip-desc';
+        descEl.style.cssText = `
+            color: #b0c4de;
+            font-size: 12px;
+        `;
+        const hintEl = document.createElement('div');
+        hintEl.id = 'medgame-tooltip-hint';
+        hintEl.style.cssText = `
+            margin-top: 6px;
+            color: #66aaff;
+            font-size: 11px;
+            font-style: italic;
+        `;
+        tooltip.appendChild(titleEl);
+        tooltip.appendChild(descEl);
+        tooltip.appendChild(hintEl);
+        document.body.appendChild(tooltip);
+        this._tooltipEl = tooltip;
+    }
+
+    /**
+     * Supprime le tooltip HTML
+     */
+    _destroyTooltip() {
+        if (this._tooltipEl && this._tooltipEl.parentNode) {
+            this._tooltipEl.parentNode.removeChild(this._tooltipEl);
+        }
+        this._tooltipEl = null;
     }
 
     collectInteractive() {
@@ -181,54 +285,315 @@ export class ThreeScene {
 
     onClick(event) {
         const hit = this.pick(event);
-        if (!hit) return;
+        if (!hit) {
+            // Clic sur le vide — masquer le tooltip
+            if (this._tooltipEl) this._tooltipEl.style.opacity = '0';
+            return;
+        }
 
-        const instrument = this.instruments.getByObject(hit.object);
+        // Obtenir le point 3D de l'intersection pour le fly-to
+        const hitPoint = hit.point ? hit.point.clone() : null;
+        const hitObj = hit.object;
+
+        const instrument = this.instruments.getByObject(hitObj);
         if (instrument) {
-            this.callbacks.onInstrument?.(instrument, hit.object);
+            // Fly-to vers l'instrument cliqué
+            if (hitPoint) {
+                this.flyCameraTo(hitPoint, hitPoint, 700);
+            }
+            this.callbacks.onInstrument?.(instrument, hitObj);
             return;
         }
 
-        if ((hit.object.userData?.label || '').toLowerCase().includes('patient')) {
-            this.callbacks.onPatient?.(hit.object);
+        if ((hitObj.userData?.label || '').toLowerCase().includes('patient')) {
+            // Fly-to vers le patient
+            if (hitPoint) {
+                this.flyCameraTo(hitPoint, hitPoint, 700);
+            }
+            this.callbacks.onPatient?.(hitObj);
             return;
         }
 
-        if (hit.object.userData?.pcAction) {
-            this.callbacks.onPC?.(hit.object);
+        if (hitObj.userData?.pcAction) {
+            if (hitPoint) {
+                this.flyCameraTo(hitPoint, hitPoint, 600);
+            }
+            this.callbacks.onPC?.(hitObj);
             return;
         }
 
-        if (hit.object.name === 'MedicalPoster') {
-            if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
-        }
-
-        // Environnement interactif
-        let current = hit.object;
+        // Environnement interactif — fly-to + notification
+        let current = hitObj;
         while (current) {
             const name = current.name || '';
             const label = current.userData?.label || '';
+            if (name === 'MedicalPoster' || label === 'Affiche médicale') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 600);
+                if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
+                break;
+            }
             if (name === 'ECGMonitor' || label === 'Moniteur ECG') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
                 break;
             }
             if (name === 'IVStand' || label === 'Perfusion') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Perfusion — Soluté en cours d\'administration');
                 break;
             }
             if (name === 'CharriotMedical' || label === 'Charriot médical') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Charriot médical — Matériel de soin');
+                break;
+            }
+            // Tout objet interactif avec un label — fly-to générique
+            if (current.userData?.interactive && hitPoint) {
+                this.flyCameraTo(hitPoint, hitPoint, 700);
                 break;
             }
             current = current.parent;
         }
 
-        this.callbacks.onObject?.(hit.object);
+        this.callbacks.onObject?.(hitObj);
     }
 
     onMouseMove(event) {
         const hit = this.pick(event);
-        this.callbacks.onHover?.(hit?.object || null, event);
+        const hoveredObj = hit?.object || null;
+
+        // Gestion du hover glow
+        this._updateHoverGlow(hoveredObj);
+
+        // Mise à jour du tooltip
+        this._updateTooltip(hoveredObj, event);
+
+        // Changement du curseur
+        this.renderer.domElement.style.cursor = hoveredObj ? 'pointer' : 'default';
+
+        this.callbacks.onHover?.(hoveredObj, event);
+    }
+
+    // ===== SYSTÈME HOVER GLOW =====
+
+    /**
+     * Met à jour l'effet de surbrillance sur l'objet survolé
+     * - Sauvegarde les emissive d'origine
+     * - Applique un glow bleu progressif sur tous les meshes du groupe
+     */
+    _updateHoverGlow(hoveredObj) {
+        // Déterminer le groupe racine interactif de l'objet survolé
+        let newHoverRoot = null;
+        if (hoveredObj) {
+            newHoverRoot = this._findInteractiveRoot(hoveredObj);
+        }
+
+        // Si c'est le même objet, ne rien faire
+        if (newHoverRoot === this._hoveredObject) return;
+
+        // Restaurer les matériaux de l'ancien objet
+        this._clearHoverGlow();
+
+        // Appliquer le glow sur le nouvel objet
+        if (newHoverRoot) {
+            this._applyHoverGlow(newHoverRoot);
+        }
+
+        this._hoveredObject = newHoverRoot;
+    }
+
+    /**
+     * Trouve le groupe racine interactif d'un objet (remonte la hiérarchie)
+     */
+    _findInteractiveRoot(obj) {
+        let current = obj;
+        while (current) {
+            if (current.userData?.interactive && (current.isGroup || current.children?.length > 0)) {
+                return current;
+            }
+            // Vérifier si un parent a un instrument ou un label interactif
+            if (current.userData?.instrument) return current;
+            current = current.parent;
+        }
+        // Fallback: l'objet lui-même s'il est interactif
+        if (obj.userData?.interactive) return obj;
+        return null;
+    }
+
+    /**
+     * Applique le glow bleu sur tous les meshes du groupe
+     */
+    _applyHoverGlow(root) {
+        const targets = root.isMesh ? [root] : [];
+        root.traverse((child) => {
+            if (child.isMesh) targets.push(child);
+        });
+
+        for (const mesh of targets) {
+            if (!mesh.material) continue;
+            // Sauvegarder l'état d'origine
+            const origEmissive = mesh.material.emissive ? mesh.material.emissive.clone() : new THREE.Color(0x000000);
+            const origIntensity = mesh.material.emissiveIntensity || 0;
+            this._hoveredOriginalEmissives.set(mesh.uuid, {
+                emissive: origEmissive,
+                intensity: origIntensity,
+            });
+            // Appliquer le glow
+            mesh.material.emissive = this._hoverGlowColor.clone();
+            mesh.material.emissiveIntensity = origIntensity + this._hoverGlowIntensity;
+            mesh.material.needsUpdate = true;
+        }
+    }
+
+    /**
+     * Retire le glow et restaure les matériaux d'origine
+     */
+    _clearHoverGlow() {
+        if (!this._hoveredObject) return;
+
+        const root = this._hoveredObject;
+        const targets = root.isMesh ? [root] : [];
+        root.traverse((child) => {
+            if (child.isMesh) targets.push(child);
+        });
+
+        for (const mesh of targets) {
+            if (!mesh.material) continue;
+            const saved = this._hoveredOriginalEmissives.get(mesh.uuid);
+            if (saved) {
+                mesh.material.emissive.copy(saved.emissive);
+                mesh.material.emissiveIntensity = saved.intensity;
+            } else {
+                mesh.material.emissiveIntensity = Math.max(0, (mesh.material.emissiveIntensity || 0) - this._hoverGlowIntensity);
+            }
+            mesh.material.needsUpdate = true;
+        }
+
+        this._hoveredOriginalEmissives.clear();
+    }
+
+    // ===== TOOLTIP RICHE =====
+
+    /**
+     * Met à jour la position et le contenu du tooltip
+     */
+    _updateTooltip(hoveredObj, event) {
+        if (!this._tooltipEl) return;
+
+        if (!hoveredObj) {
+            this._tooltipEl.style.opacity = '0';
+            this._tooltipVisible = false;
+            return;
+        }
+
+        // Trouver le label de l'objet
+        const label = this._findObjectLabel(hoveredObj);
+        if (!label) {
+            this._tooltipEl.style.opacity = '0';
+            this._tooltipVisible = false;
+            return;
+        }
+
+        const description = TOOLTIP_DESCRIPTIONS[label] || '';
+
+        // Mettre à jour le contenu
+        const titleSpan = this._tooltipEl.querySelector('#medgame-tooltip-title');
+        if (titleSpan) titleSpan.textContent = label;
+        const descSpan = this._tooltipEl.querySelector('#medgame-tooltip-desc');
+        if (descSpan) descSpan.textContent = description;
+        const hintSpan = this._tooltipEl.querySelector('#medgame-tooltip-hint');
+
+        // Indice contextuel selon le type d'objet
+        if (hoveredObj.userData?.instrument) {
+            hintSpan.textContent = '🖱️ Cliquez pour utiliser';
+        } else if (label.toLowerCase().includes('patient')) {
+            hintSpan.textContent = '🖱️ Cliquez pour examiner';
+        } else if (label.toLowerCase().includes('ecg') || label.toLowerCase().includes('perfusion') || label.toLowerCase().includes('charriot')) {
+            hintSpan.textContent = '👁️ Objet d\'ambiance — Cliquez pour info';
+        } else {
+            hintSpan.textContent = '';
+        }
+
+        // Positionner le tooltip près du curseur
+        const rect = this.renderer.domElement.getBoundingClientRect();
+        let tx = event.clientX + 16;
+        let ty = event.clientY - 10;
+        // Empêcher le tooltip de sortir de la fenêtre
+        const ttWidth = 260;
+        const ttHeight = 80;
+        if (tx + ttWidth > window.innerWidth) tx = event.clientX - ttWidth - 10;
+        if (ty + ttHeight > window.innerHeight) ty = window.innerHeight - ttHeight - 10;
+        if (ty < 0) ty = 10;
+
+        this._tooltipEl.style.left = tx + 'px';
+        this._tooltipEl.style.top = ty + 'px';
+        this._tooltipEl.style.opacity = '1';
+        this._tooltipVisible = true;
+    }
+
+    /**
+     * Trouve le label d'un objet en remontant la hiérarchie
+     */
+    _findObjectLabel(obj) {
+        let current = obj;
+        while (current) {
+            if (current.userData?.label) return current.userData.label;
+            if (current.userData?.instrument?.label) return current.userData.instrument.label;
+            if (current.name) return current.name;
+            current = current.parent;
+        }
+        return null;
+    }
+
+    // ===== CAMÉRA FLY-TO =====
+
+    /**
+     * Anime la caméra en volant doucement vers une position proche d'un objet 3D
+     * @param {THREE.Vector3} targetPosition — position de l'objet visé
+     * @param {THREE.Vector3} [lookAtTarget] — point de regard (défaut: l'objet lui-même)
+     * @param {number} [duration] — durée en ms (défaut 800)
+     */
+    flyCameraTo(targetPosition, lookAtTarget, duration = 800) {
+        if (!this.camera || !this.controls) return;
+        if (!lookAtTarget) lookAtTarget = targetPosition.clone();
+
+        // Calculer une position de caméra décalée (offset pour observer l'objet)
+        const cameraOffset = new THREE.Vector3(1.2, 0.8, 1.5);
+        const endPos = targetPosition.clone().add(cameraOffset);
+        const endTarget = lookAtTarget.clone();
+
+        // S'assurer que la caméra reste à une distance raisonnable
+        const dist = endPos.distanceTo(endTarget);
+        if (dist < 1.0) {
+            endPos.add(endTarget.clone().sub(endPos).normalize().multiplyScalar(1.0 - dist));
+        }
+
+        const startPos = this.camera.position.clone();
+        const startTarget = this.controls.target.clone();
+        const startTime = performance.now();
+
+        // Annuler toute animation en cours
+        if (this._cameraAnimId) {
+            cancelAnimationFrame(this._cameraAnimId);
+            this._cameraAnimId = null;
+        }
+
+        const step = (now) => {
+            const t = Math.min(1, (now - startTime) / duration);
+            // Easing in-out cubique
+            const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+            this.camera.position.lerpVectors(startPos, endPos, e);
+            this.controls.target.lerpVectors(startTarget, endTarget, e);
+            this.controls.update();
+
+            if (t < 1) {
+                this._cameraAnimId = requestAnimationFrame(step);
+            } else {
+                this._cameraAnimId = null;
+            }
+        };
+        this._cameraAnimId = requestAnimationFrame(step);
     }
 
     pick(event) {
@@ -249,6 +614,12 @@ export class ThreeScene {
 
     cleanup() {
         cancelAnimationFrame(this._animFrameId);
+        if (this._cameraAnimId) {
+            cancelAnimationFrame(this._cameraAnimId);
+            this._cameraAnimId = null;
+        }
+        this._clearHoverGlow();
+        this._destroyTooltip();
         this.renderer.dispose();
         this.renderer.forceContextLoss();
         this.controls.dispose();
