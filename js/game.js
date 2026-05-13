@@ -879,8 +879,7 @@ onDomReady(async () => {
         scoringState.attempts++;
         const attempts = scoringState.attempts;
         const selectedTreatments = scoringState.selectedTreatments;
-        const correctTreatments = currentCase.correctTreatments;
-        const selectedDiagnostic = document.getElementById('diagnostic-select').value;
+        const selectedDiagnostic = document.getElementById('diagnostic-select').value || '';
         const correctDiagnostic = currentCase.correctDiagnostic;
 
         // --- Timeline feedback : enregistrement du diagnostic et traitement ---
@@ -893,92 +892,102 @@ onDomReady(async () => {
             }
         }
 
-        const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
-        const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
+        // ========================================
+        // SCORING COMPOSITE AVANCÉ — source unique de vérité
+        // Remplace la logique binaire obsolète par le scoring progressif
+        // Démarche 40% · Diagnostic 30% · Traitement 20% · Vitesse 10%
+        // ========================================
+        const compositeResult = calculateCompositeScore();
+        const diagScore = compositeResult.diagnosticScore;
+        const treatScore = compositeResult.traitementScore;
 
-        if (isCorrect) {
-            gameState.setScore(calculateScore());
-            feedbackDisplay.textContent = 'Diagnostic et traitement corrects !';
-            scoreDisplay.textContent = `Score final: ${gameState.score}`;
-            document.getElementById('treatment-feedback').textContent = '';
-            
-            // Immersive feedback
-            playSound('correct');
-            scoreDisplay.classList.add('score-up');
+        // --- Feedback immédiat progressif (basé sur le scoring composite) ---
+        if (diagScore >= 80) {
+            feedbackDisplay.textContent = '✅ Diagnostic correct — excellent !';
             addVisualFeedback(feedbackDisplay, 'correct');
-            showScorePopup(scoreDisplay, gameState.score, true);
-
-            // Arrêter les fireworks s'ils sont actifs (remplacé par étoiles dans le modal)
-            if (uiState.fireworksInstance) {
-                try { uiState.fireworksInstance.stop(); } catch(e) {}
-            }
-
-            // Arrêter la musique
-            const backgroundMusic = document.querySelector('audio');
-            if (backgroundMusic) backgroundMusic.pause();
-
-            // Appliquer l'impact des traitements corrects sur les constantes vitales
-            if (gameState.vitalMonitorInstance && typeof gameState.vitalMonitorInstance.applyTreatmentImpact === 'function') {
-                selectedTreatments.forEach(t => gameState.vitalMonitorInstance.applyTreatmentImpact(t));
-            }
-        } else {
-            let feedback = '';
-            if (selectedDiagnostic !== correctDiagnostic) {
-                feedback += 'Diagnostic incorrect. ';
-                feedbackDisplay.textContent = feedback;
-                addVisualFeedback(feedbackDisplay, 'incorrect');
-            }
-
-            const allTreatmentsCorrect = correctTreatments.every(t => selectedTreatments.includes(t));
-
-            if (!allTreatmentsCorrect || selectedTreatments.length !== correctTreatments.length) {
-                feedback += "Traitement incorrect ou incomplet.";
-                document.getElementById('treatment-feedback').textContent = feedback;
-            }
-
-            // Immersive feedback for incorrect
+            playSound('correct');
+        } else if (diagScore >= 60) {
+            feedbackDisplay.textContent = '🟡 Diagnostic proche — bonne direction';
+            addVisualFeedback(feedbackDisplay, 'correct');
+        } else if (diagScore >= 30) {
+            feedbackDisplay.textContent = '🟠 Diagnostic partiel — spécialité identifiée';
+            addVisualFeedback(feedbackDisplay, 'incorrect');
             playSound('incorrect');
-            scoreDisplay.classList.add('score-down');
-            showScorePopup(scoreDisplay, 0, false);
-
-            // Score remains 0 if incorrect
-            scoreDisplay.textContent = `Score final: ${gameState.score}`;
+        } else if (diagScore > 0) {
+            feedbackDisplay.textContent = '🔴 Diagnostic éloigné du résultat attendu';
+            addVisualFeedback(feedbackDisplay, 'incorrect');
+            playSound('incorrect');
+        } else {
+            feedbackDisplay.textContent = '❌ Diagnostic incorrect';
+            addVisualFeedback(feedbackDisplay, 'incorrect');
+            playSound('incorrect');
         }
 
-        // Gestion des classes CSS pour les boutons de traitement avec stagger
+        // Feedback traitement progressif
+        const treatFeedbackEl = document.getElementById('treatment-feedback');
+        if (treatFeedbackEl) {
+            if (compositeResult.hasFatalError) {
+                treatFeedbackEl.textContent = '☠️ Erreur fatale : traitement contre-indiqué prescrit ! Score traitement annulé.';
+            } else if (treatScore >= 80) {
+                treatFeedbackEl.textContent = '✅ Traitement bien ciblé.';
+            } else if (treatScore >= 40) {
+                treatFeedbackEl.textContent = '⚠️ Traitement partiellement correct.';
+            } else {
+                treatFeedbackEl.textContent = '❌ Traitement inadapté.';
+            }
+        }
+
+        // Score composite comme score final (unique source de vérité)
+        gameState.setScore(compositeResult.compositeScore);
+        scoreDisplay.textContent = `Score final: ${compositeResult.compositeScore}%`;
+        scoreDisplay.classList.add(compositeResult.compositeScore >= 40 ? 'score-up' : 'score-down');
+        showScorePopup(scoreDisplay, compositeResult.compositeScore, compositeResult.compositeScore >= 40);
+
+        // Arrêter les fireworks s'ils sont actifs
+        if (uiState.fireworksInstance) {
+            try { uiState.fireworksInstance.stop(); } catch(e) {}
+        }
+        // Arrêter la musique
+        const backgroundMusic = document.querySelector('audio');
+        if (backgroundMusic) backgroundMusic.pause();
+
+        // Appliquer l'impact des traitements corrects sur les constantes vitales
+        if (gameState.vitalMonitorInstance && typeof gameState.vitalMonitorInstance.applyTreatmentImpact === 'function') {
+            selectedTreatments.forEach(t => gameState.vitalMonitorInstance.applyTreatmentImpact(t));
+        }
+
+        // --- Gestion des classes CSS pour les boutons de traitement (stagger) ---
+        // Utilise les treatmentDetails du composite pour un codage couleur précis
+        const td = compositeResult.treatmentDetails || {};
+        const firstLineSet = new Set(td.firstLineHit || []);
+        const secondLineSet = new Set(td.secondLineHit || []);
+        const unnecessarySet = new Set(td.unnecessary || []);
+
         const treatmentButtons = document.querySelectorAll('#availableTreatments button');
         treatmentButtons.forEach((button, idx) => {
             const traitement = button.dataset.traitement;
             button.classList.remove('correct-treatment', 'incorrect-treatment');
 
-            if (correctTreatments.includes(traitement)) {
-                if (selectedTreatments.includes(traitement)) {
-                    setTimeout(() => {
-                        button.classList.add('correct-treatment');
-                        playSound('correct');
-                    }, idx * 80);
-                }
-            } else {
-                if (selectedTreatments.includes(traitement)) {
-                    setTimeout(() => {
-                        button.classList.add('incorrect-treatment');
-                        playSound('incorrect');
-                    }, idx * 80);
-                }
+            if (firstLineSet.has(traitement)) {
+                setTimeout(() => {
+                    button.classList.add('correct-treatment');
+                    if (idx === 0) playSound('correct');
+                }, idx * 80);
+            } else if (secondLineSet.has(traitement)) {
+                setTimeout(() => {
+                    button.classList.add('correct-treatment');
+                }, idx * 80);
+            } else if (unnecessarySet.has(traitement)) {
+                setTimeout(() => {
+                    button.classList.add('incorrect-treatment');
+                    if (idx === 0) playSound('incorrect');
+                }, idx * 80);
             }
         });
-
-        // ========================================
-        // SCORING COMPOSITE AVANCÉ
-        // Démarche 40% · Diagnostic 30% · Traitement 20% · Vitesse 10%
-        // ========================================
-        const compositeResult = calculateCompositeScore();
 
         const percentageScore = compositeResult.compositeScore;
         const hasFatalError = compositeResult.hasFatalError;
         const selectedFatalTreatments = compositeResult.selectedFatalTreatments;
-        const fatalTreatments = currentCase.fatalTreatments || [];
-        const timeBonus = compositeResult.vitesseScore;
         const stars = compositeResult.stars;
 
         // Arrêter le timer
@@ -998,27 +1007,33 @@ onDomReady(async () => {
         localStorage.setItem(`case_score_${currentCase.id}`, percentageScore);
 
         // Build color-coded comparison HTML
-        const diagnosticCorrect = selectedDiagnostic === correctDiagnostic;
+        const diagnosticCorrect = (diagScore >= 80);
         const diagnosticUserStyle = diagnosticCorrect
             ? 'background: rgba(46, 204, 113, 0.3); padding: 5px; border-radius: 4px;'
-            : 'background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;';
+            : diagScore >= 30
+                ? 'background: rgba(243, 156, 18, 0.3); padding: 5px; border-radius: 4px;'
+                : 'background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;';
 
-        // Build treatments list with color coding (escape treatment names to prevent XSS)
+        // Build treatments list with color coding (using composite treatmentDetails)
         let userTreatmentsHtml = '';
         if (selectedTreatments.length === 0) {
             userTreatmentsHtml = '<span style="background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;">Aucun</span>';
         } else {
             userTreatmentsHtml = selectedTreatments.map(t => {
-                const isCorrect = correctTreatments.includes(t);
-                const style = isCorrect
+                const isFirstLine = firstLineSet.has(t);
+                const isSecondLine = secondLineSet.has(t);
+                const style = isFirstLine
                     ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
-                    : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
+                    : isSecondLine
+                        ? 'background: rgba(243, 156, 18, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
+                        : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
                 return `<span style="${style}">${escapeHtml(t)}</span>`;
             }).join(' ');
         }
 
         // Build expected treatments with highlighting for what was selected
-        let expectedTreatmentsHtml = correctTreatments.map(t => {
+        const refTreatments = currentCase.correctTreatments || [];
+        let expectedTreatmentsHtml = refTreatments.map(t => {
             const wasSelected = selectedTreatments.includes(t);
             const style = wasSelected
                 ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
