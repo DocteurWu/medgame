@@ -652,6 +652,7 @@ export class ThreeInstruments {
 
     /**
      * Affiche la valeur mesurée avec effet visuel
+     * Met à jour l'écran LCD de l'instrument avec la valeur mesurée
      */
     showMeasurement(instrument, caseData) {
         if (!instrument || instrument.key === 'tablet') return null;
@@ -670,8 +671,104 @@ export class ThreeInstruments {
             if (mainMesh?.material) {
                 pulseEmissive(mainMesh, 1.5);
             }
+
+            // Mettre à jour l'écran LCD avec la valeur mesurée
+            this._updateInstrumentScreen(instrument, value);
         }
 
         return { label: instrument.title, value };
+    }
+
+    /**
+     * Met à jour la texture de l'écran LCD d'un instrument avec la valeur mesurée
+     * @param {Object} instrument — l'objet instrument { id, label, key, title }
+     * @param {string|number} value — la valeur mesurée à afficher
+     */
+    _updateInstrumentScreen(instrument, value) {
+        const group = this.meshes.get(instrument.id);
+        if (!group) return;
+
+        // Configuration par type d'instrument
+        const screenConfigs = {
+            tensiometer: { text: String(value), bgColor: '#0a1a0a', fgColor: '#00ff44', w: 128, h: 64, fontSize: 26, icon: 'heart', label: 'mmHg' },
+            oximeter: { text: String(value), bgColor: '#001a00', fgColor: '#00ff33', w: 64, h: 32, fontSize: 16, icon: 'heart', label: 'SpO2' },
+            thermometer: { text: String(value), bgColor: '#0a0a1a', fgColor: '#44ddff', w: 80, h: 32, fontSize: 16, icon: 'thermo', label: '°C' },
+            glucometer: { text: String(value), bgColor: '#0a0a10', fgColor: '#ff6633', w: 64, h: 48, fontSize: 22, icon: 'drop', label: 'g/L' },
+        };
+
+        const config = screenConfigs[instrument.id];
+        if (!config) return;
+
+        // Parcourir le groupe pour trouver l'écran (mesh avec texture CanvasTexture)
+        group.traverse((child) => {
+            if (!child.isMesh || !child.material || !child.material.map) return;
+            // Vérifier que c'est bien une texture d'écran (CanvasTexture avec les bonnes dimensions)
+            if (!(child.material.map instanceof THREE.CanvasTexture)) return;
+            const tex = child.material.map;
+            // Vérifier que les dimensions correspondent à celles de l'écran de cet instrument
+            const canvas = tex.image;
+            if (!canvas || canvas.width !== config.w || canvas.height !== config.h) return;
+
+            // Redessiner le canvas avec la nouvelle valeur
+            const ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            // Fond
+            ctx.fillStyle = config.bgColor;
+            ctx.fillRect(0, 0, config.w, config.h);
+
+            // Lignes de grille (effet LCD)
+            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+            ctx.lineWidth = 1;
+            for (let y = 0; y < config.h; y += 3) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(config.w, y);
+                ctx.stroke();
+            }
+
+            // Texte principal (valeur mesurée)
+            ctx.font = `bold ${config.fontSize}px monospace`;
+            ctx.fillStyle = config.fgColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(config.text, config.w / 2, config.h / 2);
+
+            // Icône optionnelle
+            if (config.icon === 'heart') {
+                ctx.font = `${config.fontSize * 0.6}px sans-serif`;
+                ctx.fillStyle = 'rgba(255,50,50,0.6)';
+                ctx.fillText('♥', 14, config.h / 2);
+            }
+            if (config.icon === 'drop') {
+                ctx.font = `${config.fontSize * 0.5}px sans-serif`;
+                ctx.fillStyle = 'rgba(255,100,100,0.6)';
+                ctx.fillText('●', 14, config.h / 2);
+            }
+            if (config.icon === 'thermo') {
+                ctx.font = `${config.fontSize * 0.5}px sans-serif`;
+                ctx.fillStyle = 'rgba(255,200,50,0.7)';
+                ctx.fillText('▲', 14, config.h / 2);
+            }
+
+            // Label en haut
+            if (config.label) {
+                ctx.font = `bold ${Math.round(config.fontSize * 0.35)}px sans-serif`;
+                ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                ctx.textAlign = 'left';
+                ctx.fillText(config.label, 4, 8);
+            }
+
+            // Forcer la mise à jour de la texture
+            tex.needsUpdate = true;
+            child.material.emissiveIntensity = 1.5; // Flash lumineux pour attirer l'attention
+            // Retour progressif à l'intensité normale
+            setTimeout(() => {
+                // On ne descend pas en dessous de la valeur initiale
+                if (child.material.emissiveIntensity > 0.9) {
+                    child.material.emissiveIntensity = 0.9;
+                }
+            }, 800);
+        });
     }
 }
