@@ -587,6 +587,12 @@ onDomReady(async () => {
         displayValue(frequenceRespiratoire, currentCase.examenClinique.constantes.frequenceRespiratoire, 'examenClinique.constantes.frequenceRespiratoire');
 
         mountVitalMonitorAtConstants();
+
+        // Configurer la dynamique des constantes vitales pour ce cas
+        if (gameState.vitalMonitorInstance && typeof gameState.vitalMonitorInstance.setCase === 'function') {
+            gameState.vitalMonitorInstance.setCase(currentCase);
+        }
+
         displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral, 'examenClinique.aspectGeneral');
 
         // Dynamic rendering of clinical exam sections
@@ -829,6 +835,11 @@ onDomReady(async () => {
             // Arrêter la musique
             const backgroundMusic = document.querySelector('audio');
             if (backgroundMusic) backgroundMusic.pause();
+
+            // Appliquer l'impact des traitements corrects sur les constantes vitales
+            if (gameState.vitalMonitorInstance && typeof gameState.vitalMonitorInstance.applyTreatmentImpact === 'function') {
+                selectedTreatments.forEach(t => gameState.vitalMonitorInstance.applyTreatmentImpact(t));
+            }
         } else {
             let feedback = '';
             if (selectedDiagnostic !== correctDiagnostic) {
