@@ -181,7 +181,7 @@ onDomReady(async () => {
     const immersiveBtn = document.getElementById('immersive-mode-btn');
     if (immersiveBtn) {
         immersiveBtn.addEventListener('click', () => {
-            console.log('[game.js] Immersive button clicked, threeManager=', !!window.threeManager);
+            // Bascule mode 3D/2D
             if (!window.threeManager) {
                 console.error('[game.js] threeManager not initialized!');
                 showNotification('Mode 3D en cours de chargement...');
