@@ -168,6 +168,11 @@ class ThreeManager {
     }
 
     _cleanup3D() {
+        // Retirer le listener clavier pour éviter les memory leaks
+        if (this._keyHandler) {
+            document.removeEventListener('keydown', this._keyHandler);
+            this._keyHandler = null;
+        }
         this.closePCPanel();
         const pcOverlay = document.getElementById('pc-overlay');
         if (pcOverlay) pcOverlay.remove();
@@ -249,7 +254,7 @@ class ThreeManager {
     }
 
     bindKeyboard() {
-        document.addEventListener('keydown', (e) => {
+        this._keyHandler = (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
             if (!this.enabled) return;
 
@@ -285,7 +290,8 @@ class ThreeManager {
                     this.goToPrescription();
                     break;
             }
-        });
+        };
+        document.addEventListener('keydown', this._keyHandler);
     }
 
     closeAllOverlays() {
