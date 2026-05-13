@@ -305,6 +305,8 @@ class ThreeManager {
             if (el) {
                 el.classList.remove('active');
                 el.setAttribute('aria-hidden', 'true');
+                // Synchroniser le display inline pour les modales qui l'utilisent
+                el.style.display = 'none';
             }
         });
         if (this.hud) this.hud.removeFloatingDialog();

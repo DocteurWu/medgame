@@ -28,7 +28,11 @@ export class ThreePatient {
         const position = patient.position3D || (Number(patient.age) > 80 ? 'allonge' : 'assis');
         this.skinMat = createMaterial(0xd7a87a);
         this.clothMat = createMaterial(patient.tenue === 'blouse_blanche' ? 0xf2f4f7 : 0x4f72a8);
-        this.group.position.set(position === 'allonge' ? -3.0 : 2.15, 0, position === 'allonge' ? -2.2 : -1.7);
+        // Position Y ajustée pour que le patient soit posé sur le lit/chaise
+        // Assis : fond du torse (y=0.725 local) doit toucher le siège (y=0.57 mondial)
+        // Allongé : fond du torse (y=0.81 local) doit toucher le matelas (y=0.75 mondial)
+        const seatY = position === 'allonge' ? -0.06 : -0.155;
+        this.group.position.set(position === 'allonge' ? -3.0 : 2.15, seatY, position === 'allonge' ? -2.2 : -1.7);
         this.group.rotation.y = 0;
         this.mouth = null;
         this.eyeL = null;
