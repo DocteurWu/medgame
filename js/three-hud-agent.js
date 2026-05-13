@@ -323,7 +323,134 @@ export class ThreeHUD {
     // ==================== DIALOGUE FLOTTANT PATIENT ====================
 
     /**
-     * Créer un dialogue flottant pour le patient (3D)
+     * Génère les questions suggérées contextuelles à partir des données du cas.
+     * Extrait les thématiques clés de l'interrogatoire et les transforme en
+     * questions naturelles que le joueur peut poser d'un clic.
+     * @returns {Array<{text: string, category: string, icon: string}>}
+     */
+    _generateSuggestedQuestions() {
+        const caseData = this.manager?.currentCase || window.gameState?.currentCase;
+        if (!caseData) return [];
+
+        const questions = [];
+        const patient = caseData.patient || {};
+        const prenom = patient.prenom || 'le patient';
+        const interro = caseData.interrogatoire || {};
+        const hm = interro.histoireMaladie || {};
+        const mdv = interro.modeDeVie || {};
+        const antec = interro.antecedents || {};
+        const prenomLabel = (patient.sexe && patient.sexe.toLowerCase().startsWith('f')) ? 'elle' : 'il';
+
+        // Motif d'hospitalisation — toujours pertinent en premier
+        if (interro.motifHospitalisation) {
+            questions.push({
+                text: `Qu'est-ce qui vous amène à l'hôpital ?`,
+                category: 'motif',
+                icon: 'fa-stethoscope'
+            });
+        }
+
+        // Douleur / Histoire de la maladie
+        if (hm.debutSymptomes) {
+            questions.push({
+                text: `Quand les symptômes ont-ils commencé ?`,
+                category: 'histoire',
+                icon: 'fa-clock'
+            });
+        }
+        if (hm.facteursDeclenchants) {
+            questions.push({
+                text: `Qu'est-ce qui déclenche vos symptômes ?`,
+                category: 'histoire',
+                icon: 'fa-bolt'
+            });
+        }
+        if (hm.evolution) {
+            questions.push({
+                text: `Comment vos symptômes ont-ils évolué ?`,
+                category: 'histoire',
+                icon: 'fa-chart-line'
+            });
+        }
+        if (hm.symptomesAssocies && (Array.isArray(hm.symptomesAssocies) ? hm.symptomesAssocies.length > 0 : hm.symptomesAssocies)) {
+            questions.push({
+                text: `Avez-vous d'autres symptômes associés ?`,
+                category: 'histoire',
+                icon: 'fa-list-check'
+            });
+        }
+
+        // Antécédents
+        if (antec.medicaux && antec.medicaux.length > 0) {
+            questions.push({
+                text: `Avez-vous des antécédents médicaux ?`,
+                category: 'antécédents',
+                icon: 'fa-notes-medical'
+            });
+        }
+        if (antec.familiaux && antec.familiaux.length > 0) {
+            questions.push({
+                text: `Y a-t-il des maladies dans votre famille ?`,
+                category: 'antécédents',
+                icon: 'fa-people-group'
+            });
+        }
+
+        // Traitements
+        if (interro.traitements && interro.traitements.length > 0) {
+            questions.push({
+                text: `Prenez-vous des médicaments actuellement ?`,
+                category: 'traitements',
+                icon: 'fa-pills'
+            });
+        }
+
+        // Allergies
+        if (interro.allergies && interro.allergies.presence) {
+            questions.push({
+                text: `Avez-vous des allergies ?`,
+                category: 'allergies',
+                icon: 'fa-triangle-exclamation'
+            });
+        }
+
+        // Mode de vie
+        if (mdv.tabac) {
+            questions.push({
+                text: `Fumez-vous ? Si oui, combien ?`,
+                category: 'mode de vie',
+                icon: 'fa-smoking'
+            });
+        }
+        if (mdv.alcool) {
+            questions.push({
+                text: `Consommez-vous de l'alcool ?`,
+                category: 'mode de vie',
+                icon: 'fa-wine-glass'
+            });
+        }
+        if (mdv.activitePhysique) {
+            questions.push({
+                text: `Quelle est votre activité physique ?`,
+                category: 'mode de vie',
+                icon: 'fa-person-running'
+            });
+        }
+
+        // Examen clinique — constantes
+        if (caseData.examenClinique && caseData.examenClinique.constantes) {
+            questions.push({
+                text: `Comment vous sentez-vous en ce moment ?`,
+                category: 'examen',
+                icon: 'fa-heart-pulse'
+            });
+        }
+
+        return questions;
+    }
+
+    /**
+     * Créer un dialogue flottant pour le patient (3D) avec questions suggérées contextuelles.
      */
     createFloatingDialog() {
         this.removeFloatingDialog();
@@ -333,17 +460,48 @@ export class ThreeHUD {
         }
         if (!this.hudElement) return;
 
+        const caseData = this.manager?.currentCase || window.gameState?.currentCase;
+        const patient = caseData?.patient || {};
+        const patientName = `${patient.prenom || 'Patient'} ${patient.nom || ''}`.trim();
+
+        // Générer les suggestions contextuelles
+        const suggestions = this._generateSuggestedQuestions();
+
         const dialog = document.createElement('div');
         dialog.id = 'floating-dialog';
         dialog.className = 'floating-dialog';
+
+        // En-tête avec nom du patient
+        let suggestionsHTML = '';
+        if (suggestions.length > 0) {
+            suggestionsHTML = `
+                <div class="dialog-suggestions" id="dialog-suggestions-3d">
+                    <div class="dialog-suggestions-header">
+                        <i class="fas fa-lightbulb"></i> Questions suggérées
+                    </div>
+                    <div class="dialog-suggestions-list" id="dialog-suggestions-list-3d">
+                        ${suggestions.map((s, i) => `
+                            <button class="dialog-suggestion-btn" data-suggestion-index="${i}" data-category="${s.category}">
+                                <i class="fas ${s.icon}"></i>
+                                <span>${s.text}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
         dialog.innerHTML = `
             <div class="dialog-header">
-                <span class="dialog-speaker" id="dialog-speaker">Patient</span>
+                <span class="dialog-speaker" id="dialog-speaker">
+                    <span class="dialog-speaker-icon">💬</span> ${patientName}
+                </span>
                 <button class="dialog-close" id="dialog-close-btn">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="dialog-body" id="dialog-messages-3d"></div>
+            ${suggestionsHTML}
             <div class="dialog-input-area">
                 <input type="text" id="dialog-input-3d" placeholder="Posez une question au patient..." />
                 <button id="dialog-send-btn"><i class="fas fa-paper-plane"></i></button>
@@ -356,7 +514,136 @@ export class ThreeHUD {
             closeBtn.addEventListener('click', () => this.removeFloatingDialog());
         }
 
+        // Brancher les boutons de suggestion
+        const suggestionBtns = dialog.querySelectorAll('.dialog-suggestion-btn');
+        suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.querySelector('span')?.textContent || btn.textContent;
+                this._askSuggestedQuestion(text, btn);
+            });
+        });
+
         this._observePatientChat();
+        this._showPatientBubble('👋 Bonjour docteur...');
+    }
+
+    /**
+     * Poser une question suggérée — clique le bouton, désactive-le, et envoie la question.
+     */
+    _askSuggestedQuestion(text, btnEl) {
+        const input = document.getElementById('dialog-input-3d');
+        if (input) {
+            input.value = text;
+        }
+        // Marquer visuellement le bouton comme utilisé
+        if (btnEl) {
+            btnEl.classList.add('suggestion-used');
+            btnEl.disabled = true;
+            // Animation de contraction
+            setTimeout(() => {
+                btnEl.style.maxHeight = '0';
+                btnEl.style.padding = '0';
+                btnEl.style.margin = '0';
+                btnEl.style.opacity = '0';
+                btnEl.style.overflow = 'hidden';
+            }, 400);
+        }
+        // Déclencher l'envoi
+        const sendBtn = document.getElementById('dialog-send-btn');
+        if (sendBtn) sendBtn.click();
+
+        // Marquer dans le suivi démarche
+        if (window.scoringState) {
+            if (!window.scoringState.hasAskedPatient) {
+                window.scoringState.hasAskedPatient = true;
+            }
+        }
+
+        // Vérifier s'il reste des suggestions
+        const remaining = document.querySelectorAll('#dialog-suggestions-list-3d .dialog-suggestion-btn:not(.suggestion-used)');
+        if (remaining.length === 0) {
+            const suggestionsEl = document.getElementById('dialog-suggestions-3d');
+            if (suggestionsEl) {
+                suggestionsEl.style.transition = 'max-height 0.4s ease, opacity 0.3s ease';
+                suggestionsEl.style.maxHeight = '0';
+                suggestionsEl.style.opacity = '0';
+                setTimeout(() => suggestionsEl.remove(), 500);
+            }
+        }
+    }
+
+    /**
+     * Affiche une bulle flottante contextuelle au-dessus du patient en 3D.
+     * La bulle apparaît près du HUD ou à côté du dialogue pendant quelques secondes.
+     * @param {string} text - Texte à afficher dans la bulle
+     * @param {number} duration - Durée en ms (défaut 3000)
+     */
+    _showPatientBubble(text, duration = 3000) {
+        // Supprimer l'ancienne bulle si présente
+        const oldBubble = document.getElementById('patient-bubble-3d');
+        if (oldBubble) oldBubble.remove();
+
+        const bubble = document.createElement('div');
+        bubble.id = 'patient-bubble-3d';
+        bubble.className = 'patient-bubble-3d';
+        bubble.innerHTML = `
+            <div class="patient-bubble-content">${text}</div>
+            <div class="patient-bubble-tail"></div>
+        `;
+
+        // Insérer la bulle dans le HUD 3D
+        const hud = this.hudElement || document.getElementById('three-hud');
+        if (hud) {
+            hud.appendChild(bubble);
+        } else {
+            document.body.appendChild(bubble);
+        }
+
+        // Animer l'entrée
+        requestAnimationFrame(() => {
+            bubble.classList.add('patient-bubble-visible');
+        });
+
+        // Animer la sortie et supprimer
+        setTimeout(() => {
+            bubble.classList.remove('patient-bubble-visible');
+            bubble.classList.add('patient-bubble-exit');
+            setTimeout(() => bubble.remove(), 400);
+        }, duration);
+
+        // Déclencher l'expression "parle" sur le patient 3D
+        this._triggerPatientExpression('talking');
+    }
+
+    /**
+     * Change l'expression du patient 3D de manière temporaire.
+     * @param {string} expression - 'talking', 'douleur', 'pale', 'normal', etc.
+     */
+    _triggerPatientExpression(expression) {
+        const scene = this.manager?.scene;
+        if (!scene) return;
+
+        // Chercher le groupe patient dans la scène
+        const patientGroup = scene.scene?.getObjectByName('Patient tete')?.parent;
+        if (!patientGroup) return;
+
+        // Chercher la bouche pour l'animation "parle"
+        const mouth = scene.scene?.getObjectByName('Patient bouche');
+        if (expression === 'talking' && mouth) {
+            // Animation de parole : faire osciller la bouche
+            let tick = 0;
+            const talkAnim = () => {
+                tick++;
+                mouth.scale.y = 1 + Math.sin(tick * 0.8) * 0.6;
+                if (tick < 30) {
+                    requestAnimationFrame(talkAnim);
+                } else {
+                    // Revenir à l'état normal
+                    mouth.scale.y = 1;
+                }
+            };
+            requestAnimationFrame(talkAnim);
+        }
     }
 
     _observePatientChat() {
@@ -370,11 +657,29 @@ export class ThreeHUD {
         const pushMessage = (speaker, text) => {
             const row = document.createElement('div');
             row.className = speaker === 'Vous' ? 'from-user' : 'from-patient';
-            const label = document.createElement('strong');
-            label.textContent = `${speaker} : `;
-            const body = document.createElement('span');
-            body.textContent = text;
-            row.append(label, body);
+
+            if (speaker !== 'Vous') {
+                // Message du patient — avec style bulle
+                row.innerHTML = `
+                    <div class="dialog-msg-patient">
+                        <span class="dialog-msg-avatar">🩺</span>
+                        <div class="dialog-msg-bubble">
+                            <span class="dialog-msg-text">${typeof text === 'string' ? text : text}</span>
+                        </div>
+                    </div>
+                `;
+                // Animer l'expression du patient pendant la réponse
+                this._triggerPatientExpression('talking');
+            } else {
+                // Message du joueur
+                row.innerHTML = `
+                    <div class="dialog-msg-user">
+                        <div class="dialog-msg-bubble-user">
+                            <span class="dialog-msg-text">${typeof text === 'string' ? text : text}</span>
+                        </div>
+                    </div>
+                `;
+            }
             messages3d.appendChild(row);
             messages3d.scrollTop = messages3d.scrollHeight;
         };
@@ -385,7 +690,13 @@ export class ThreeHUD {
             const origAppend = chat.append.bind(chat);
             this._origChatAppend = chat.append;
             chat.append = (speaker, text, returnTextNode) => {
-                pushMessage(speaker, typeof text === 'string' ? text : text.textContent || '');
+                const textContent = typeof text === 'string' ? text : text.textContent || '';
+                pushMessage(speaker, textContent);
+                // Afficher une bulle flottante quand le patient répond
+                if (speaker !== 'Vous' && textContent) {
+                    const shortText = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
+                    this._showPatientBubble(shortText, 4000);
+                }
                 return origAppend(speaker, text, returnTextNode);
             };
         }
@@ -445,5 +756,8 @@ export class ThreeHUD {
         }
         const existing = document.getElementById('floating-dialog');
         if (existing) existing.remove();
+        // Nettoyer aussi la bulle patient
+        const bubble = document.getElementById('patient-bubble-3d');
+        if (bubble) bubble.remove();
     }
 }
