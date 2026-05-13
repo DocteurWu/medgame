@@ -291,24 +291,29 @@ const ThreeBackground = (function() {
         window._dnaGroup = dnaGroup;
     }
     
+    // Références aux handlers souris/touch pour nettoyage
+    let handleMouseMove, handleMouseLeave, handleTouchMove;
+    
     /**
      * Initialiser l'interaction souris avec tracking fluide
      */
     function initMouseInteraction() {
-        document.addEventListener('mousemove', (event) => {
+        handleMouseMove = (event) => {
             const windowHalfX = window.innerWidth / 2;
             const windowHalfY = window.innerHeight / 2;
             targetMouseX = (event.clientX - windowHalfX) * 0.001;
             targetMouseY = (event.clientY - windowHalfY) * 0.001;
             isHovering = true;
-        });
+        };
+        document.addEventListener('mousemove', handleMouseMove);
         
-        document.addEventListener('mouseleave', () => {
+        handleMouseLeave = () => {
             isHovering = false;
-        });
+        };
+        document.addEventListener('mouseleave', handleMouseLeave);
         
         // Touch support for mobile
-        document.addEventListener('touchmove', (event) => {
+        handleTouchMove = (event) => {
             if (event.touches.length > 0) {
                 const touch = event.touches[0];
                 const windowHalfX = window.innerWidth / 2;
@@ -316,7 +321,8 @@ const ThreeBackground = (function() {
                 targetMouseX = (touch.clientX - windowHalfX) * 0.001;
                 targetMouseY = (touch.clientY - windowHalfY) * 0.001;
             }
-        }, { passive: true });
+        };
+        document.addEventListener('touchmove', handleTouchMove, { passive: true });
     }
     
     /**
@@ -400,6 +406,9 @@ const ThreeBackground = (function() {
         }
         
         window.removeEventListener('resize', handleResize);
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+        document.removeEventListener('touchmove', handleTouchMove);
         
         if (renderer) {
             renderer.dispose();
@@ -411,7 +420,9 @@ const ThreeBackground = (function() {
         renderer = null;
         dnaMesh = null;
         bgMesh = null;
-        
+        handleMouseMove = null;
+        handleMouseLeave = null;
+        handleTouchMove = null;
     }
     
     // API publique
