@@ -204,8 +204,12 @@ function calculateDemarcheScore(currentCase) {
 
 /**
  * Calcule le score de DIAGNOSTIC (0-100).
- * Score binaire : 100 si correct, 0 sinon.
- * Potentiel futur : scoring partiel pour diagnostics proches.
+ * Scoring progressif :
+ *   - 100 : diagnostic exact (match direct ou normalisé)
+ *   - 80  : alias/variante acceptable (défini dans alternativeDiagnostics du cas)
+ *   - 60  : diagnostic proche (inclusion partielle ou Levenshtein ≤ 2)
+ *   - 30  : même catégorie/specialité que le diagnostic correct
+ *   - 0   : diagnostic non pertinent
  *
  * @param {string} selectedDiagnostic — diagnostic choisi par le joueur
  * @param {string} correctDiagnostic — diagnostic correct du cas
@@ -213,57 +217,145 @@ function calculateDemarcheScore(currentCase) {
  */
 function calculateDiagnosticScore(selectedDiagnostic, correctDiagnostic) {
     if (!selectedDiagnostic || !correctDiagnostic) return 0;
-    if (selectedDiagnostic === correctDiagnostic) return 100;
 
-    // Bonus partiel pour diagnostics proches (Levenshtein)
+    // 1. Match exact (strict puis normalisé)
+    if (selectedDiagnostic === correctDiagnostic) return 100;
     const normSel = normalizeText(selectedDiagnostic);
     const normCor = normalizeText(correctDiagnostic);
     if (normSel === normCor) return 100;
 
-    // Si le diagnostic sélectionné contient le diagnostic correct ou vice versa
-    if (normSel.includes(normCor) || normCor.includes(normSel)) return 50;
+    // 2. Vérifier les alias/variantes acceptables définis dans le cas
+    const currentCase = scoringState.currentCase;
+    const alternativeDiags = (currentCase && currentCase.alternativeDiagnostics) || [];
+    if (alternativeDiags.length > 0) {
+        for (const alt of alternativeDiags) {
+            if (normalizeText(alt) === normSel) return 80;
+        }
+    }
+
+    // 3. Inclusion partielle (l'un contient l'autre)
+    if (normSel.includes(normCor) || normCor.includes(normSel)) return 60;
+
+    // 4. Distance de Levenshtein — proximité typographique
+    const dist = getLevenshteinDistance(normSel, normCor);
+    const maxLen = Math.max(normSel.length, normCor.length);
+    if (maxLen > 0) {
+        const similarity = 1 - (dist / maxLen);
+        if (similarity >= 0.75) return 60;
+        if (similarity >= 0.50) return 30;
+    }
+
+    // 5. Même catégorie/specialité (préfixe du cas, ex: "cardio_", "neuro_")
+    const caseId = (currentCase && currentCase.id) || '';
+    const caseCategories = extractCategories(caseId);
+    const selCategories = extractCategories(normSel);
+    const overlapCategories = selCategories.filter(c => caseCategories.includes(c));
+    if (overlapCategories.length > 0) return 15;
 
     return 0;
 }
 
 /**
+ * Extrait les mots-clés de catégorie d'un identifiant ou texte.
+ * Utilisé pour la détection de proximité diagnostique par spécialité.
+ * @param {string} text
+ * @returns {string[]}
+ */
+function extractCategories(text) {
+    const MEDICAL_CATEGORIES = [
+        'cardio', 'neuro', 'pneumo', 'nephro', 'néphro', 'digest',
+        'locomo', 'trauma', 'urg', 'onco', 'dermato', 'gyneco',
+        'ped', 'psy', 'endo', 'rhumato', 'ophtalmo', 'orl',
+        'angor', 'idm', 'scd', 'infarctus', 'avc', 'choc',
+        'epilep', 'convuls', 'anaphylax', 'hemorr', 'hémorr'
+    ];
+    const norm = normalizeText(text);
+    return MEDICAL_CATEGORIES.filter(cat => norm.includes(cat));
+}
+
+/**
  * Calcule le score de TRAITEMENT (0-100).
  * Évalue la sélection de traitements par rapport aux traitements corrects,
- * en pénalisant les erreurs et les traitements fatals.
+ * en pénalisant les erreurs et les traitements fatals, avec pondération
+ * par ligne thérapeutique (1ère intention = poids complet, 2ème intention = 60%).
+ *
+ * Le cas peut définir :
+ *   - correctTreatments : traitements corrects (1ère intention par défaut)
+ *   - secondLineTreatments : traitements de 2ème intention acceptables (réduisent le score)
+ *   - fatalTreatments : traitements contre-indiqués/fatals
  *
  * @param {string[]} selectedTreatments — traitements choisis par le joueur
- * @param {string[]} correctTreatments — traitements corrects attendus
+ * @param {string[]} correctTreatments — traitements corrects attendus (1ère intention)
  * @param {string[]} fatalTreatments — traitements fatals/contre-indiqués
- * @returns {{ score: number, hasFatalError: boolean, selectedFatalTreatments: string[] }}
+ * @returns {{ score: number, hasFatalError: boolean, selectedFatalTreatments: string[], details: object }}
  */
 function calculateTraitementScore(selectedTreatments, correctTreatments, fatalTreatments) {
     fatalTreatments = fatalTreatments || [];
-    const selectedFatalTreatments = (selectedTreatments || []).filter(t => fatalTreatments.includes(t));
-    const hasFatalError = selectedFatalTreatments.length > 0;
+    const currentCase = scoringState.currentCase;
+    const secondLine = (currentCase && currentCase.secondLineTreatments) || [];
 
-    if (hasFatalError) {
+    const selectedFatalTreatments = (selectedTreatments || []).filter(t => fatalTreatments.includes(t));
+
+    // Détails pour le feedback
+    const details = {
+        firstLineHit: [],
+        secondLineHit: [],
+        unnecessary: [],
+        missed: []
+    };
+
+    if (selectedFatalTreatments.length > 0) {
         // Erreur fatale = score traitement 0
-        return { score: 0, hasFatalError: true, selectedFatalTreatments };
+        details.fatal = selectedFatalTreatments;
+        return { score: 0, hasFatalError: true, selectedFatalTreatments, details };
     }
 
     if (!correctTreatments || correctTreatments.length === 0) {
-        return { score: 100, hasFatalError: false, selectedFatalTreatments: [] };
+        return { score: 100, hasFatalError: false, selectedFatalTreatments: [], details };
     }
 
     selectedTreatments = selectedTreatments || [];
-    const correctSelected = selectedTreatments.filter(t => correctTreatments.includes(t));
-    const incorrectSelected = selectedTreatments.filter(t => !correctTreatments.includes(t));
 
-    // Sensibilité : fraction des traitements corrects trouvés
-    const sensitivity = correctSelected.length / correctTreatments.length;
-    // Spécificité : pénalité pour traitements incorrects
-    const falsePositivePenalty = incorrectSelected.length * 0.15;
+    // --- 1ère intention : traitements corrects ---
+    const firstLineHit = selectedTreatments.filter(t => correctTreatments.includes(t));
+    details.firstLineHit = firstLineHit;
 
-    const rawScore = (sensitivity - falsePositivePenalty) * 100;
+    // --- 2ème intention : traitements acceptables mais moins prioritaires ---
+    const secondLineHit = selectedTreatments.filter(t => secondLine.includes(t));
+    details.secondLineHit = secondLineHit;
+
+    // --- Inutiles : ni 1ère, ni 2ème, ni fatals ---
+    const allAcceptable = [...correctTreatments, ...secondLine, ...fatalTreatments];
+    const unnecessary = selectedTreatments.filter(t => !allAcceptable.includes(t));
+    details.unnecessary = unnecessary;
+
+    // --- Manqués : traitements corrects non sélectionnés ---
+    const missed = correctTreatments.filter(t => !selectedTreatments.includes(t));
+    details.missed = missed;
+
+    // Pondération : 1ère intention = 1.0, 2ème intention = 0.6
+    const firstLineWeight = 1.0;
+    const secondLineWeight = 0.6;
+
+    // Sensibilité pondérée
+    const maxFirstLineScore = correctTreatments.length * firstLineWeight;
+    const achievedFirstLine = firstLineHit.length * firstLineWeight;
+    const achievedSecondLine = secondLineHit.length * secondLineWeight;
+    const achievedTotal = achievedFirstLine + achievedSecondLine;
+    const maxPossibleScore = maxFirstLineScore; // Le max reste basé sur la 1ère intention
+
+    const sensitivity = maxPossibleScore > 0 ? achievedTotal / maxPossibleScore : 0;
+
+    // Pénalités
+    const falsePositivePenalty = unnecessary.length * 0.10; // 10% par traitement inutile
+    const overSelectionPenalty = Math.max(0, (selectedTreatments.length - correctTreatments.length)) * 0.05; // sur-prescription
+
+    const rawScore = (sensitivity - falsePositivePenalty - overSelectionPenalty) * 100;
     return {
         score: Math.max(0, Math.min(100, Math.round(rawScore))),
         hasFatalError: false,
-        selectedFatalTreatments
+        selectedFatalTreatments,
+        details
     };
 }
 
@@ -340,8 +432,16 @@ function calculateCompositeScore() {
 
     compositeScore = Math.max(0, Math.min(100, compositeScore));
 
-    // --- Star rating 1-3 ---
-    const stars = calculateStars(compositeScore, traitementResult.hasFatalError);
+    // Constitution du breakdown AVANT calculateStars (nécessaire pour la garantie démarche)
+    const breakdown = {
+        demarche: { score: demarcheScore, weight: SCORING_WEIGHTS.demarche, contribution: Math.round(demarcheScore * SCORING_WEIGHTS.demarche * 100) / 100 },
+        diagnostic: { score: diagnosticScore, weight: SCORING_WEIGHTS.diagnostic, contribution: Math.round(diagnosticScore * SCORING_WEIGHTS.diagnostic * 100) / 100 },
+        traitement: { score: traitementResult.score, weight: SCORING_WEIGHTS.traitement, contribution: Math.round(traitementResult.score * SCORING_WEIGHTS.traitement * 100) / 100 },
+        vitesse: { score: vitesseScore, weight: SCORING_WEIGHTS.vitesse, contribution: Math.round(vitesseScore * SCORING_WEIGHTS.vitesse * 100) / 100 }
+    };
+
+    // --- Star rating 0-3 (avec garantie démarche) ---
+    const stars = calculateStars(compositeScore, traitementResult.hasFatalError, breakdown);
 
     return {
         demarcheScore,
@@ -351,35 +451,41 @@ function calculateCompositeScore() {
         compositeScore,
         hasFatalError: traitementResult.hasFatalError,
         selectedFatalTreatments: traitementResult.selectedFatalTreatments,
+        treatmentDetails: traitementResult.details || {},
         selectedDiagnostic,
         correctDiagnostic,
         stars,
-        breakdown: {
-            demarche: { score: demarcheScore, weight: SCORING_WEIGHTS.demarche, contribution: Math.round(demarcheScore * SCORING_WEIGHTS.demarche * 100) / 100 },
-            diagnostic: { score: diagnosticScore, weight: SCORING_WEIGHTS.diagnostic, contribution: Math.round(diagnosticScore * SCORING_WEIGHTS.diagnostic * 100) / 100 },
-            traitement: { score: traitementResult.score, weight: SCORING_WEIGHTS.traitement, contribution: Math.round(traitementResult.score * SCORING_WEIGHTS.traitement * 100) / 100 },
-            vitesse: { score: vitesseScore, weight: SCORING_WEIGHTS.vitesse, contribution: Math.round(vitesseScore * SCORING_WEIGHTS.vitesse * 100) / 100 }
-        }
+        breakdown
     };
 }
 
 /**
- * Calcule le nombre d'étoiles (1-3) basé sur le score composite.
- * - Erreur fatale → 0 étoile (mais on affiche quand même le résultat)
- * - Score ≥ 90 → 3 étoiles (excellence)
+ * Calcule le nombre d'étoiles (0-3) basé sur le score composite et les sous-composantes.
+ * - Erreur fatale → 0 étoile
+ * - Score ≥ 90 ET diagnostic correct → 3 étoiles (excellence)
  * - Score ≥ 70 → 2 étoiles (bonne démarche)
- * - Score ≥ 40 → 1 étoile (insuffisant mais réalisé)
+ * - Score ≥ 40 OU (démarche ≥ 60 ET diagnostic ≥ 30) → 1 étoile (partiel)
  * - Score < 40 → 0 étoile (échec)
+ *
+ * Garantie minimale : une démarche clinique ≥ 80 vaut toujours au moins 1 étoile,
+ * même si le diagnostic est faux (le processus reste valorisé).
  *
  * @param {number} compositeScore — score composite 0-100
  * @param {boolean} hasFatalError — erreur fatale commise
+ * @param {object} [breakdown] — détails des sous-scores { demarche, diagnostic, traitement, vitesse }
  * @returns {number} nombre d'étoiles 0-3
  */
-function calculateStars(compositeScore, hasFatalError) {
+function calculateStars(compositeScore, hasFatalError, breakdown) {
     if (hasFatalError) return 0;
+
+    // Étoiles par seuils de score composite
     if (compositeScore >= 90) return 3;
     if (compositeScore >= 70) return 2;
     if (compositeScore >= 40) return 1;
+
+    // Garantie démarche : une bonne démarche vaut au moins 1 étoile
+    if (breakdown && breakdown.demarche && breakdown.demarche.score >= 80) return 1;
+
     return 0;
 }
 
@@ -550,7 +656,29 @@ function renderCompositeScorePanel(result) {
         return html;
     }
 
-    const starsLabel = result.stars === 3 ? 'Excellence' : result.stars === 2 ? 'Bonne démarche' : result.stars === 1 ? 'Insuffisant' : 'Échec';
+    const starsLabel = result.stars === 3 ? 'Excellence' : result.stars === 2 ? 'Bonne démarche' : result.stars === 1 ? 'Partiel' : 'Échec';
+
+    // Traitement detail annotations
+    let traitementDetail = '';
+    if (result.treatmentDetails) {
+        const td = result.treatmentDetails;
+        const annotations = [];
+        if (td.firstLineHit && td.firstLineHit.length > 0) {
+            annotations.push(`<span style="color:#2ecc71;">✓ 1ère intention</span>`);
+        }
+        if (td.secondLineHit && td.secondLineHit.length > 0) {
+            annotations.push(`<span style="color:#f39c12;">⚠ 2ème intention</span>`);
+        }
+        if (td.unnecessary && td.unnecessary.length > 0) {
+            annotations.push(`<span style="color:#e74c3c;">✗ ${td.unnecessary.length} inutile(s)</span>`);
+        }
+        if (td.missed && td.missed.length > 0) {
+            annotations.push(`<span style="color:rgba(255,255,255,0.5);">⊘ ${td.missed.length} manquant(s)</span>`);
+        }
+        if (annotations.length > 0) {
+            traitementDetail = `<div style="font-size:0.7rem; margin-top:2px;">${annotations.join(' · ')}</div>`;
+        }
+    }
 
     return `
         <div style="text-align:center; margin-bottom:16px;">
@@ -559,11 +687,15 @@ function renderCompositeScorePanel(result) {
                 ${result.compositeScore}%
             </div>
             <div style="font-size:0.8rem; color:rgba(255,255,255,0.5);">${starsLabel}</div>
+            ${result.diagnosticScore > 0 && result.diagnosticScore < 100 ? `<div style="font-size:0.7rem; color:#f39c12; margin-top:4px;">Diagnostic proche : ${result.diagnosticScore}%</div>` : ''}
         </div>
         <div style="background:rgba(0,0,0,0.25); border-radius:10px; padding:12px 16px; margin-bottom:12px;">
             ${renderBar('🩺 Démarche clinique', b.demarche)}
             ${renderBar('🎯 Diagnostic', b.diagnostic)}
-            ${renderBar('💊 Traitement', b.traitement)}
+            <div style="position:relative;">
+                ${renderBar('💊 Traitement', b.traitement)}
+                ${traitementDetail}
+            </div>
             ${renderBar('⏱️ Vitesse', b.vitesse)}
         </div>
     `;
@@ -573,6 +705,9 @@ window.calculateCompositeScore = calculateCompositeScore;
 window.calculateDetailedScore = calculateDetailedScore;
 window.calculateXpEarned = calculateXpEarned;
 window.calculateStars = calculateStars;
+window.calculateDiagnosticScore = calculateDiagnosticScore;
+window.calculateTraitementScore = calculateTraitementScore;
+window.extractCategories = extractCategories;
 window.renderCompositeScorePanel = renderCompositeScorePanel;
 window.handleTraitementClick = handleTraitementClick;
 window.calculateScore = calculateScore;
