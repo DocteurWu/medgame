@@ -25,7 +25,7 @@ export class ThreeScene {
     }
 
     init() {
-        console.log('[ThreeScene] init called, container=', !!this.container, 'clientWidth=', this.container.clientWidth, 'clientHeight=', this.container.clientHeight);
+        // Initialisation terminée
         this.scene.background = new THREE.Color(0x8c9bab);
         this.scene.fog = new THREE.Fog(0x8c9bab, 8, 30);
 
@@ -239,8 +239,15 @@ export class ThreeScene {
      * @param {Function} onArrive — callback à l'arrivée
      */
     moveDoctorTo(target, onArrive) {
+        // Utiliser le CharacterController si disponible (gère la marche intégralement)
+        if (this.characterController) {
+            this.characterController.moveTo(target, () => {
+                if (onArrive) onArrive();
+            });
+            return;
+        }
+        // Fallback : DoctorAnimator autonome (sans CharacterController)
         if (!this.doctorAnimator) {
-            // Créer l'animateur si le médecin existe dans la scène
             const doctor = this.scene.getObjectByName('Doctor') || this.scene.children.find(
                 c => c.userData?.armR
             );
@@ -250,13 +257,6 @@ export class ThreeScene {
         }
         if (this.doctorAnimator) {
             this.doctorAnimator.startWalking();
-        }
-        // Utiliser le CharacterController si disponible
-        if (this.characterController) {
-            this.characterController.moveTo(target, () => {
-                if (this.doctorAnimator) this.doctorAnimator.stopWalking();
-                if (onArrive) onArrive();
-            });
         }
     }
 
