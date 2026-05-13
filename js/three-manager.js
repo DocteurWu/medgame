@@ -4,6 +4,7 @@ import { ThreeScene } from './three-scene.js';
 import { ThreeHUD } from './three-hud-agent.js';
 import { ThreeTransitionAgent } from './three-transition-agent.js';
 import { initLockAgent3D } from './three-lock-agent.js';
+import { initUrgenceAgent3D } from './three-urgence-agent.js';
 
 const INTERACTION_ZONES = {
     patient: { x: 2.15, y: 0, z: -1.7 },
@@ -114,6 +115,9 @@ class ThreeManager {
             // Lock Agent 3D (cadenas animés)
             this.lockAgent = initLockAgent3D(this);
 
+            // Urgence Agent 3D (overlay urgence immersif)
+            this.urgenceAgent = initUrgenceAgent3D(this);
+
             this.enabled = true;
             this.bindControls();
             this.bindKeyboard();
@@ -181,6 +185,10 @@ class ThreeManager {
         if (this.lockAgent) {
             this.lockAgent.clearAll();
             this.lockAgent = null;
+        }
+        if (this.urgenceAgent) {
+            this.urgenceAgent.deactivate();
+            this.urgenceAgent = null;
         }
         this.character = null;
         this.enabled = false;

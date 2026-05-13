@@ -2309,3 +2309,581 @@ body.render-3d-full .immersive-mode-btn {
         opacity: 0.8;
     }
 }
+
+/* ==================== MODE URGENCE 3D — OVERLAY IMMERSIF ==================== */
+
+/* Body en mode urgence 3D */
+body.urgence-3d-active {
+    overflow: hidden;
+}
+
+/* Conteneur overlay principal */
+.urgence-3d-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 55;
+    pointer-events: none;
+}
+
+/* ==================== VIGNETTE ROUGE PULSANTE ==================== */
+.urgence-vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 54;
+    pointer-events: none;
+    transition: all 1s ease;
+}
+
+.urgence-vignette-inner {
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 120px 40px rgba(255, 71, 87, 0.25);
+    animation: urgenceVignettePulse 2s ease-in-out infinite;
+}
+
+.urgence-vig-normal .urgence-vignette-inner {
+    box-shadow: inset 0 0 80px 20px rgba(255, 71, 87, 0.15);
+    animation: urgenceVignettePulse 3s ease-in-out infinite;
+}
+
+.urgence-vig-warn .urgence-vignette-inner {
+    box-shadow: inset 0 0 100px 30px rgba(255, 71, 87, 0.3);
+    animation: urgenceVignettePulse 1.8s ease-in-out infinite;
+}
+
+.urgence-vig-critical .urgence-vignette-inner {
+    box-shadow: inset 0 0 140px 50px rgba(255, 71, 87, 0.5);
+    animation: urgenceVignettePulseCritical 0.8s ease-in-out infinite;
+}
+
+@keyframes urgenceVignettePulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+@keyframes urgenceVignettePulseCritical {
+    0%, 100% { opacity: 0.7; box-shadow: inset 0 0 140px 50px rgba(255, 71, 87, 0.5); }
+    50% { opacity: 1; box-shadow: inset 0 0 180px 70px rgba(255, 71, 87, 0.7); }
+}
+
+/* ==================== TIMER ANGOISSANT ==================== */
+.urgence-timer-3d {
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(20, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 71, 87, 0.5);
+    border-radius: 14px;
+    padding: 8px 20px;
+    pointer-events: none;
+    font-family: 'Courier New', monospace;
+    animation: urgenceTimerAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes urgenceTimerAppear {
+    from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.urgence-timer-icon {
+    color: #ff4757;
+    font-size: 1.2rem;
+    animation: heartbeatIcon 1s ease-in-out infinite;
+}
+
+@keyframes heartbeatIcon {
+    0%, 100% { transform: scale(1); }
+    15% { transform: scale(1.25); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    60% { transform: scale(1); }
+}
+
+.urgence-timer-value {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: #ff4757;
+    text-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+    min-width: 70px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.urgence-timer-label {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 71, 87, 0.6);
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+}
+
+/* Timer states */
+.urgence-timer-normal {
+    border-color: rgba(255, 71, 87, 0.4);
+}
+
+.urgence-timer-normal .urgence-timer-value {
+    color: #ff6b7a;
+    text-shadow: 0 0 10px rgba(255, 71, 87, 0.4);
+}
+
+.urgence-timer-warning {
+    border-color: rgba(255, 165, 2, 0.6);
+    animation: urgenceTimerPulseWarn 1.5s ease-in-out infinite;
+}
+
+.urgence-timer-warning .urgence-timer-value {
+    color: #ffa502;
+    text-shadow: 0 0 15px rgba(255, 165, 2, 0.6);
+}
+
+.urgence-timer-warning .urgence-timer-icon {
+    color: #ffa502;
+    animation-duration: 0.7s;
+}
+
+@keyframes urgenceTimerPulseWarn {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 165, 2, 0.3); }
+    50% { box-shadow: 0 0 20px 5px rgba(255, 165, 2, 0.15); }
+}
+
+.urgence-timer-critical {
+    border-color: rgba(255, 71, 87, 0.9);
+    animation: urgenceTimerPulseCritical 0.6s ease-in-out infinite;
+    background: rgba(40, 0, 0, 0.9);
+}
+
+.urgence-timer-critical .urgence-timer-value {
+    color: #ff0033;
+    font-size: 2rem;
+    text-shadow: 0 0 25px rgba(255, 0, 51, 0.8), 0 0 50px rgba(255, 0, 51, 0.4);
+    animation: criticalTextPulse 0.5s ease-in-out infinite;
+}
+
+.urgence-timer-critical .urgence-timer-icon {
+    color: #ff0033;
+    animation-duration: 0.4s;
+    font-size: 1.5rem;
+}
+
+@keyframes urgenceTimerPulseCritical {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 51, 0.5); }
+    50% { box-shadow: 0 0 30px 10px rgba(255, 0, 51, 0.3); }
+}
+
+@keyframes criticalTextPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ==================== BANDEAU CLINIQUE DÉFILANT ==================== */
+.urgence-banner-3d {
+    position: fixed;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    z-index: 70;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255, 71, 87, 0.12);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 71, 87, 0.3);
+    border-bottom: 1px solid rgba(255, 71, 87, 0.3);
+    padding: 10px 24px;
+    pointer-events: none;
+    animation: urgenceBannerAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes urgenceBannerAppear {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.urgence-banner-3d.urgence-banner-flash {
+    animation: urgenceBannerFlash 0.5s ease-out;
+}
+
+@keyframes urgenceBannerFlash {
+    0% { background: rgba(255, 71, 87, 0.5); }
+    100% { background: rgba(255, 71, 87, 0.12); }
+}
+
+.urgence-banner-icon {
+    color: #ff4757;
+    font-size: 1.1rem;
+    animation: urgenceBannerIconPulse 2s ease-in-out infinite;
+}
+
+@keyframes urgenceBannerIconPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+}
+
+.urgence-banner-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    max-width: 600px;
+    line-height: 1.4;
+}
+
+/* ==================== CONSTANTES VITALES DYNAMIQUES ==================== */
+.urgence-vitals-3d {
+    position: fixed;
+    top: 70px;
+    right: 15px;
+    z-index: 70;
+    width: 180px;
+    background: rgba(10, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 71, 87, 0.25);
+    border-radius: 12px;
+    overflow: hidden;
+    pointer-events: none;
+    animation: urgenceVitalsAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+@keyframes urgenceVitalsAppear {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.urgence-vitals-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 71, 87, 0.1);
+    border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+    color: #ff4757;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: 'Inter', sans-serif;
+}
+
+.urgence-vitals-header i {
+    font-size: 0.75rem;
+    animation: heartbeatIcon 1.2s ease-in-out infinite;
+}
+
+.urgence-vitals-grid {
+    padding: 8px 0;
+}
+
+.urgence-vital-row {
+    display: flex;
+    align-items: center;
+    padding: 5px 12px;
+    gap: 6px;
+    transition: background 0.3s ease;
+}
+
+.urgence-vital-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+    min-width: 32px;
+    font-family: 'Inter', sans-serif;
+}
+
+.urgence-vital-value {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    flex: 1;
+    text-align: right;
+}
+
+.urgence-vital-unit {
+    font-size: 0.55rem;
+    color: rgba(255, 255, 255, 0.3);
+    min-width: 24px;
+}
+
+/* Vital level states */
+.urgence-vital-normal .urgence-vital-value {
+    color: #2ecc71;
+    text-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+}
+
+.urgence-vital-warning .urgence-vital-value {
+    color: #ffa502;
+    text-shadow: 0 0 10px rgba(255, 165, 2, 0.4);
+}
+
+.urgence-vital-warning .urgence-vital-label {
+    color: rgba(255, 165, 2, 0.6);
+}
+
+.urgence-vital-critical {
+    animation: vitalCriticalPulse 1s ease-in-out infinite;
+}
+
+.urgence-vital-critical .urgence-vital-value {
+    color: #ff0033;
+    text-shadow: 0 0 15px rgba(255, 0, 51, 0.6);
+    font-size: 1.05rem;
+}
+
+.urgence-vital-critical .urgence-vital-label {
+    color: rgba(255, 71, 87, 0.8);
+}
+
+@keyframes vitalCriticalPulse {
+    0%, 100% { background: transparent; }
+    50% { background: rgba(255, 0, 51, 0.08); }
+}
+
+/* Flash animation for vital value changes */
+.urgence-vital-flash {
+    animation: vitalFlash 0.4s ease-out;
+}
+
+@keyframes vitalFlash {
+    0% { transform: scale(1.15); filter: brightness(1.5); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* ==================== BOUTONS D'ACTION URGENCE ==================== */
+.urgence-actions-3d {
+    position: fixed;
+    right: 15px;
+    bottom: 60px;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 220px;
+    pointer-events: auto;
+    animation: urgenceActionsAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+@keyframes urgenceActionsAppear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.urgence-actions-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 71, 87, 0.7);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: 'Inter', sans-serif;
+    padding: 0 4px;
+}
+
+.urgence-action-btn-3d {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(20, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    text-align: left;
+    pointer-events: auto;
+}
+
+.urgence-action-btn-3d:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: rgba(255, 71, 87, 0.6);
+    transform: translateX(-4px);
+    box-shadow: 0 0 15px rgba(255, 71, 87, 0.2);
+}
+
+.urgence-action-btn-3d:active {
+    transform: translateX(-2px) scale(0.97);
+}
+
+.urgence-action-btn-3d.urgence-action-selected {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: rgba(0, 242, 254, 0.5);
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.urgence-action-btn-3d i {
+    color: #ff4757;
+    font-size: 0.9rem;
+    min-width: 18px;
+    text-align: center;
+}
+
+.urgence-action-label {
+    flex: 1;
+}
+
+.urgence-action-time {
+    font-size: 0.65rem;
+    color: rgba(255, 71, 87, 0.7);
+    font-family: 'Courier New', monospace;
+    background: rgba(255, 71, 87, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* ==================== FLASH OVERLAY ==================== */
+.urgence-flash-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease-in;
+}
+
+/* ==================== ÉCRAN RÉSULTAT ==================== */
+.urgence-result-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    animation: urgenceResultAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    pointer-events: auto;
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes urgenceResultAppear {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.urgence-result-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 30px currentColor);
+    animation: resultIconPulse 2s ease-in-out infinite;
+}
+
+@keyframes resultIconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.urgence-result-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 30px currentColor;
+}
+
+.urgence-result-desc {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px 24px;
+    max-width: 500px;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.urgence-result-xp {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(179, 136, 255, 0.1));
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 12px;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 1px;
+    color: #00f2fe;
+    font-size: 1.1rem;
+    animation: urgenceResultXP 1s ease-out 0.5s both;
+}
+
+@keyframes urgenceResultXP {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .urgence-timer-3d {
+        padding: 6px 14px;
+        gap: 6px;
+        top: 10px;
+    }
+
+    .urgence-timer-value {
+        font-size: 1.2rem;
+    }
+
+    .urgence-vitals-3d {
+        width: 150px;
+        top: 60px;
+        right: 10px;
+    }
+
+    .urgence-actions-3d {
+        max-width: 180px;
+        right: 10px;
+        bottom: 55px;
+    }
+
+    .urgence-action-btn-3d {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+    }
+
+    .urgence-banner-text {
+        font-size: 0.8rem;
+    }
+
+    .urgence-timer-critical .urgence-timer-value {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .urgence-vitals-3d {
+        width: 130px;
+    }
+
+    .urgence-vital-value {
+        font-size: 0.85rem;
+    }
+
+    .urgence-actions-3d {
+        max-width: 160px;
+    }
+}
