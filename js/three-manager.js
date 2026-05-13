@@ -40,7 +40,7 @@ class ThreeManager {
         }
 
         if (!force3d && window.innerWidth < 768) {
-            console.log('[three-manager] Écran < 768px, mode 2D par défaut');
+            console.info('[three-manager] Écran < 768px, mode 2D par défaut');
             this._set2DMode();
             return;
         }
@@ -74,26 +74,21 @@ class ThreeManager {
             console.info('[three-manager] Démarrage du mode 3D immersif...');
 
             let container = containerEl || document.getElementById('scene-container');
-            console.log('[three-manager] container=', !!container);
             if (!container) {
                 container = document.createElement('div');
                 container.id = 'scene-container';
                 document.body.appendChild(container);
-                console.log('[three-manager] created container');
             }
 
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                console.log('[three-manager] loading CharacterController...');
                 const ccModule = await import('./character-controller.js');
                 CharacterControllerClass = ccModule.CharacterController;
-                console.log('[three-manager] CharacterController loaded');
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
             }
 
-            console.log('[three-manager] creating ThreeScene...');
             this.scene = new ThreeScene(container, {
                 onPatient: () => this.goToPatient(),
                 onInstrument: (instrument) => this.goToInstrument(instrument),
@@ -105,6 +100,8 @@ class ThreeManager {
 
             if (CharacterControllerClass) {
                 this.character = new CharacterControllerClass(this.scene.scene);
+                // Lier le contrôleur à la scène pour que moveDoctorTo fonctionne
+                this.scene.characterController = this.character;
             }
 
             // HUD
@@ -154,19 +151,14 @@ class ThreeManager {
     }
 
     async toggle3D() {
-        console.log('[three-manager] toggle3D called, enabled=', this.enabled, '_initPromise=', !!this._initPromise);
         if (this.enabled) {
             sessionStorage.removeItem('use3D');
             await this.disable3D();
         } else {
             sessionStorage.setItem('use3D', 'true');
-            console.log('[three-manager] calling enable3D...');
             await this.enable3D(null);
-            console.log('[three-manager] enable3D returned, transition=', !!this.transition);
             if (this.transition) {
-                console.log('[three-manager] starting transition to 3D...');
                 await this.transition.transitionTo3D();
-                console.log('[three-manager] transition to 3D done');
             }
         }
     }
@@ -372,10 +364,8 @@ class ThreeManager {
     }
 
     openPCPanel() {
-        console.log('[three-manager] openPCPanel called');
         let panel = document.getElementById('pc-overlay');
         if (!panel) {
-            console.log('[three-manager] creating pc-overlay');
             panel = document.createElement('div');
             panel.id = 'pc-overlay';
             panel.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;';
@@ -423,14 +413,12 @@ class ThreeManager {
         }
         this._populatePCPanel();
         panel.style.display = 'flex';
-        console.log('[three-manager] openPCPanel: panel visible');
     }
 
     closePCPanel() {
         const panel = document.getElementById('pc-overlay');
         if (!panel) return;
         panel.style.display = 'none';
-        console.log('[three-manager] closePCPanel');
     }
 
     _bindPCPanelEvents() {
@@ -629,11 +617,10 @@ class ThreeManager {
 
 // Singleton global — disponible pour game.js via window.threeManager
 window.threeManager = new ThreeManager();
-console.log('[three-manager] Singleton created, version 2 — ES module');
 
 // Initialisation passive (ne démarre pas le 3D automatiquement)
 const init3DManager = () => {
-    console.log('[three-manager] init3DManager passive ready');
+    // Prêt pour initialisation différée
 };
 
 if (document.readyState === 'loading') {

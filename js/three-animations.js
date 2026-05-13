@@ -127,7 +127,7 @@ export class PatientAnimator {
 
     /** Respiration : léger mouvement de haut en bas + dilatation torse */
     _animateBreathing(t) {
-        // Ensure base Y is stored (accounts for patient sitting/lying)
+        // Stocker le Y initial du groupe avant toute animation (patient assis/couché)
         if (this._baseY === undefined) {
             this._baseY = this.group.position.y;
         }

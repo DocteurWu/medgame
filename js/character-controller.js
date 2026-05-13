@@ -190,7 +190,9 @@ export class CharacterController {
             const t = Math.min(1, (now - startTime) / duration);
             const e = easeInOut(t);
             this.group.position.lerpVectors(start, end, e);
-            this.group.position.y = Math.sin(t * Math.PI * 8) * 0.035;
+            // Léger rebond vertical pendant la marche (additif, ne perturbe pas l'arrivée)
+            const bounce = Math.sin(t * Math.PI * 8) * 0.035 * (1 - t);
+            this.group.position.y += bounce;
             if (t < 1) {
                 requestAnimationFrame(step);
             } else {
