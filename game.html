@@ -382,8 +382,20 @@
 
                         <div class="medical-card">
                             <h3 class="card-title">Prescription & Prise en charge</h3>
+
+                            <!-- Bouton d'ouverture de la prescription modale -->
+                            <div style="margin-bottom:12px;">
+                                <button id="btn-open-prescription" class="action-btn" style="width:100%;" type="button">
+                                    <i class="fas fa-prescription-bottle-alt"></i> Prescription médicamenteuse
+                                </button>
+                            </div>
+
+                            <!-- Liste des traitements rapidement sélectionnables (legacy) -->
                             <div id="availableTreatments" class="treatments-grid">
                             </div>
+
+                            <!-- Liste des prescriptions en cours (depuis prescriptionManager) -->
+                            <div id="prescription-list" style="margin-top:8px;"></div>
 
                             <div class="action-area">
                                 <button id="validate-traitement" class="validate-final-btn" aria-label="Valider le diagnostic et la prise en charge (raccourci: Entrée)">
@@ -423,6 +435,32 @@
                 <span>Intervention</span>
             </button>
         </nav>
+    </div>
+
+    <!-- PRESCRIPTION MODAL -->
+    <div id="prescription-modal" class="correction-overlay" role="dialog" aria-modal="true" aria-label="Prescription médicamenteuse" aria-hidden="true" style="display:none;z-index:1800;">
+        <div style="max-width:600px;width:90%;background:linear-gradient(145deg,rgba(30,40,60,0.98),rgba(20,30,50,0.95));border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.08);max-height:85vh;overflow-y:auto;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 style="margin:0;color:#4facfe;"><i class="fas fa-prescription-bottle-alt"></i> Prescription</h3>
+                <button class="close-overlay" data-close-panel="prescription-modal" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.5rem;cursor:pointer;">&times;</button>
+            </div>
+
+            <!-- Recherche -->
+            <div style="margin-bottom:16px;">
+                <input id="drug-search" type="text" placeholder="Rechercher un médicament..." style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.3);color:white;font-size:0.95rem;">
+                <div id="drug-results" style="margin-top:8px;"></div>
+            </div>
+
+            <!-- Configuration de la prescription -->
+            <div id="prescription-config" style="margin-bottom:16px;"></div>
+
+            <!-- Bouton perfusion rapide -->
+            <div style="margin-bottom:16px;">
+                <button id="add-infusion" class="secondary-btn" type="button" style="width:100%;font-size:0.9rem;">
+                    <i class="fas fa-tint"></i> Perfusion NaCl 0,9% (rapide)
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- MOBILE MONITOR OVERLAY -->
@@ -484,6 +522,7 @@
     <script src="js/urgenceMode.js"></script>
     <script src="js/caseLoader.js"></script>
     <script src="js/gameState.js"></script>
+    <script src="js/prescription.js"></script>
     <script src="js/player_map.js"></script>
 
     <!-- 3D Modules -->

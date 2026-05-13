@@ -290,6 +290,16 @@ function initUI() {
     const correctionBack = document.getElementById('correction-back');
     if (correctionBack) correctionBack.addEventListener('click', hideCorrectionModal);
 
+    // Prescription modal open button
+    const openPrescriptionBtn = document.getElementById('btn-open-prescription');
+    if (openPrescriptionBtn) {
+        openPrescriptionBtn.addEventListener('click', () => {
+            if (window.prescriptionManager && typeof window.prescriptionManager.open === 'function') {
+                window.prescriptionManager.open();
+            }
+        });
+    }
+
     const toggleReview = document.getElementById('toggle-case-review');
     if (toggleReview) toggleReview.addEventListener('click', () => {
         const panel = document.getElementById('case-review');

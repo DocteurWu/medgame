@@ -982,6 +982,91 @@ body::after {
     min-height: 20px;
 }
 
+.drug-result {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    margin: 2px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: white;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+.drug-result:hover {
+    background: rgba(79, 172, 254, 0.15);
+    border-color: rgba(79, 172, 254, 0.3);
+}
+.drug-result strong { display:block; color:#fff; }
+.drug-result span { font-size:0.75rem; color:rgba(255,255,255,0.5); }
+
+/* Prescription form */
+.prescription-form {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 8px;
+}
+.prescription-form label {
+    display:block;
+    margin: 8px 0 4px;
+    font-size:0.85rem;
+    color:rgba(255,255,255,0.7);
+}
+.prescription-form select,
+.prescription-form input {
+    width:100%;
+    padding:8px 10px;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.1);
+    background:rgba(0,0,0,0.2);
+    color:white;
+    font-size:0.9rem;
+}
+#rx-add {
+    margin-top:12px;
+    padding:8px 16px;
+    background:rgba(46,204,113,0.15);
+    border:1px solid rgba(46,204,113,0.3);
+    border-radius:8px;
+    color:#2ecc71;
+    cursor:pointer;
+    font-weight:600;
+    transition:all 0.2s;
+    width:100%;
+}
+#rx-add:hover {
+    background:rgba(46,204,113,0.25);
+}
+
+/* Prescription list item */
+.prescription-item {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:8px;
+    padding:8px 12px;
+    margin:4px 0;
+    font-size:0.85rem;
+}
+.prescription-item button {
+    background:none;
+    border:none;
+    color:#e74c3c;
+    cursor:pointer;
+    padding:4px 8px;
+    border-radius:4px;
+    transition:all 0.2s;
+}
+.prescription-item button:hover {
+    background:rgba(231,76,60,0.15);
+}
+
 /* Overlays */
 .correction-overlay,
 .image-overlay {

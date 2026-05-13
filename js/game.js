@@ -841,6 +841,10 @@ onDomReady(async () => {
         if (window.patientChat) {
             window.patientChat.setCase(currentCase);
         }
+        // Sync prescription manager with current case
+        if (window.prescriptionManager && typeof window.prescriptionManager.setCase === 'function') {
+            window.prescriptionManager.setCase(currentCase);
+        }
     }
 
     function updateExamsTabVisibility() {
