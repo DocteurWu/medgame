@@ -1244,6 +1244,24 @@ body.mode-3d .lock-placeholder:hover {
     0%, 100% { text-shadow: 0 0 10px rgba(231, 76, 60, 0.3); transform: scale(1); }
     50% { text-shadow: 0 0 25px rgba(231, 76, 60, 1); transform: scale(1.05); }
 }
+@keyframes timerDanger {
+    0%, 100% { text-shadow: 0 0 15px rgba(220, 38, 38, 0.5); transform: scale(1); }
+    50% { text-shadow: 0 0 35px rgba(220, 38, 38, 1); transform: scale(1.08); }
+}
+
+/* Timer adaptatif — barre de progression et overlay urgence */
+.timer-display.safe,
+.timer-display.warning,
+.timer-display.critical {
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+.timer-urgency-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: background-color 1s ease;
+}
 
 /* ==================== LOCK CHALLENGE ==================== */
 
@@ -1877,6 +1895,11 @@ body.render-3d-full .immersive-mode-btn {
 @keyframes timerCritical {
     0%, 100% { text-shadow: 0 0 10px rgba(231, 76, 60, 0.3); transform: scale(1); }
     50% { text-shadow: 0 0 25px rgba(231, 76, 60, 1); transform: scale(1.05); }
+}
+
+@keyframes timerDanger {
+    0%, 100% { text-shadow: 0 0 15px rgba(220, 38, 38, 0.5); transform: scale(1); }
+    50% { text-shadow: 0 0 35px rgba(220, 38, 38, 1); transform: scale(1.08); }
 }
 
 /* ==================== LOCK CHALLENGE ==================== */

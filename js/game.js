@@ -297,11 +297,19 @@ onDomReady(async () => {
     }
 
     function loadCase(isPartialRefresh = false) {
-        // Prepare time but don't start timer yet
+        // Prepare time but don't start timer yet (nurse intro first)
         if (!isPartialRefresh) {
-            timerState.timeLeft = getTimeLimit();
-            displayTime(timerState.timeLeft);
-            if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+            // Utiliser initTimer pour configurer le timer adaptatif (couleurs, overlay, barre)
+            if (typeof initTimer === 'function') {
+                initTimer(undefined, false); // false = ne pas démarrer l'intervalle
+            } else {
+                // Fallback legacy si timer.js non chargé
+                timerState.timeLeft = getTimeLimit();
+                timerState.totalTime = timerState.timeLeft;
+                timerState.lastAudioWarningAt = -1;
+                displayTime(timerState.timeLeft);
+                if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+            }
             // Reset the "Tout afficher" button for the new case
             const revealBtn = document.getElementById('btn-reveal-all');
             if (revealBtn) revealBtn.style.display = '';

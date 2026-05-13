@@ -419,6 +419,31 @@ body::after {
     font-family: monospace;
     margin-bottom: 15px;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
+
+.timer-display.warning { animation: timerWarning 1.2s ease infinite; }
+.timer-display.critical { animation: timerCritical 0.6s ease infinite; }
+
+@keyframes timerWarning {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+@keyframes timerCritical {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.04); opacity: 0.85; }
+}
+@keyframes timerDanger {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.75; }
+}
+
+.timer-urgency-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: background-color 1s ease;
 }
 
 .quit-btn {
