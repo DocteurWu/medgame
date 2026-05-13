@@ -638,6 +638,17 @@ export class IVFluidAnimator {
         this._drops = [];
         this._scene = null; // Résolu au premier update
         this._bagMat = null;
+        // Pooling : géométrie et matériau partagés pour les gouttes (évite GC churn)
+        this._dropGeom = new THREE.SphereGeometry(this.dropSize, 6, 4);
+        this._dropMat = new THREE.MeshStandardMaterial({
+            color: 0xaaddff,
+            transparent: true,
+            opacity: 0.9,
+            roughness: 0.1,
+            metalness: 0.0,
+            emissive: 0x4488aa,
+            emissiveIntensity: 0.2
+        });
         this._resolveParts();
     }
 
@@ -671,7 +682,7 @@ export class IVFluidAnimator {
 
             if (drop.position.y < drop.userData.floorY || drop.material.opacity <= 0) {
                 if (this._scene) this._scene.remove(drop);
-                drop.geometry.dispose();
+                // Ne pas disposer this._dropGeom (partagé), seulement le matériau cloné
                 drop.material.dispose();
                 this._drops.splice(i, 1);
             }
@@ -686,17 +697,9 @@ export class IVFluidAnimator {
 
     _spawnDrop() {
         if (!this.group || !this._scene) return;
-        const dropGeom = new THREE.SphereGeometry(this.dropSize, 6, 4);
-        const dropMat = new THREE.MeshStandardMaterial({
-            color: 0xaaddff,
-            transparent: true,
-            opacity: 0.9,
-            roughness: 0.1,
-            metalness: 0.0,
-            emissive: 0x4488aa,
-            emissiveIntensity: 0.2
-        });
-        const drop = new THREE.Mesh(dropGeom, dropMat);
+        // Utiliser la géométrie partagée ; cloner le matériau pour l'opacité individuelle
+        const dropMat = this._dropMat.clone();
+        const drop = new THREE.Mesh(this._dropGeom, dropMat);
 
         // Position de spawn : juste sous la chambre de goutte (chambre à y=1.28 local)
         const worldPos = new THREE.Vector3();

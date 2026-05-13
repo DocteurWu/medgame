@@ -197,6 +197,7 @@ export class ThreeInstruments {
         this.scene = scene;
         this.meshes = new Map();
         this.animatedParts = []; // Pièces animées (LED, écrans, etc.)
+        this._clickAnimations = []; // Animations de rebond au clic { group, startTime, duration, baseScale }
         this.build();
     }
 
@@ -614,7 +615,27 @@ export class ThreeInstruments {
     }
 
     /**
-     * Met à jour les animations (LED pulsante oxymètre, etc.)
+     * Déclenche une animation de rebond (bounce) sur l'instrument cliqué.
+     * L'instrument grossit brièvement puis revient à sa taille d'origine.
+     * @param {string} instrumentId — identifiant de l'instrument (ex: 'tensiometer')
+     */
+    triggerBounce(instrumentId) {
+        const group = this.meshes.get(instrumentId);
+        if (!group) return;
+        // Sauvegarder l'échelle de base (1,1,1 par défaut)
+        const baseScale = group.scale.clone();
+        this._clickAnimations.push({
+            group,
+            startTime: performance.now(),
+            duration: 400, // ms
+            baseX: baseScale.x,
+            baseY: baseScale.y,
+            baseZ: baseScale.z,
+        });
+    }
+
+    /**
+     * Met à jour les animations (LED pulsante, rebonds au clic, etc.)
      * Appeler dans la boucle d'animation avec le temps elapsed.
      */
     update(elapsed) {
@@ -624,6 +645,35 @@ export class ThreeInstruments {
                 const t = (elapsed * part.freq) % 1;
                 const beat = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;
                 part.material.emissiveIntensity = part.baseIntensity * (0.2 + beat * 0.8);
+            }
+        }
+
+        // Mise à jour des animations de rebond au clic
+        const now = performance.now();
+        for (let i = this._clickAnimations.length - 1; i >= 0; i--) {
+            const anim = this._clickAnimations[i];
+            const progress = (now - anim.startTime) / anim.duration;
+            if (progress >= 1) {
+                // Terminé : restaurer l'échelle d'origine
+                anim.group.scale.set(anim.baseX, anim.baseY, anim.baseZ);
+                this._clickAnimations.splice(i, 1);
+            } else {
+                // Courbe de rebond : scale↑ puis retour avec léger overshoot
+                // Phase 0→0.3 : grossir (up to 1.15), Phase 0.3→1.0 : revenir avec bounce
+                let s;
+                if (progress < 0.3) {
+                    const t = progress / 0.3;
+                    s = 1 + 0.15 * Math.sin(t * Math.PI / 2); // ease-out grow
+                } else {
+                    const t = (progress - 0.3) / 0.7;
+                    // Bounce de retour avec léger overshoot (élastique)
+                    s = 1.15 * (1 - t) + 1.0 * t + 0.04 * Math.sin(t * Math.PI * 2);
+                }
+                anim.group.scale.set(
+                    anim.baseX * s,
+                    anim.baseY * s,
+                    anim.baseZ * s
+                );
             }
         }
     }
