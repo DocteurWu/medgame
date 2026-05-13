@@ -791,7 +791,10 @@ export class ThreeHUD {
                     </div>
                 `;
                 // Le docteur parle → le patient écoute (expression neutre ou attentive)
-                this._applyFacialExpression('normal', 0.4);
+                // Ne PAS écraser le thinking indicator si affiché
+                if (!document.getElementById('patient-thinking-bubble')) {
+                    this._applyFacialExpression('normal', 0.4);
+                }
             }
             messages3d.appendChild(row);
             messages3d.scrollTop = messages3d.scrollHeight;
@@ -809,8 +812,7 @@ export class ThreeHUD {
                 // Afficher une bulle flottante avec émotion quand le patient répond
                 if (speaker !== 'Vous' && textContent) {
                     const shortText = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
-                    const sent = sentiment || this._analyzeSentiment(textContent);
-                    this._showPatientBubble(`${sent.emoji} ${shortText}`, 4500, sent.color);
+                    this._showPatientBubble(`${sentiment.emoji} ${shortText}`, 4500, sentiment.color);
                 }
                 return origAppend(speaker, text, returnTextNode);
             };
@@ -819,6 +821,7 @@ export class ThreeHUD {
         // Afficher l'indicateur "réflexion" pendant que l'IA répond
         const origAsk = chat?.ask?.bind(chat);
         if (origAsk) {
+            this._origChatAsk = chat.ask;
             chat.ask = (question) => {
                 // Afficher l'animation de réflexion du patient
                 this._showThinkingIndicator();
@@ -928,6 +931,11 @@ export class ThreeHUD {
         if (this._origChatAppend && window.patientChat) {
             window.patientChat.append = this._origChatAppend;
             this._origChatAppend = null;
+        }
+        // Restore original patientChat.ask if we patched it
+        if (this._origChatAsk && window.patientChat) {
+            window.patientChat.ask = this._origChatAsk;
+            this._origChatAsk = null;
         }
         const existing = document.getElementById('floating-dialog');
         if (existing) existing.remove();
