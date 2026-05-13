@@ -36,9 +36,117 @@ export function buildRoom(scene) {
     box(scene, { x: 0.55, y: 0.55, z: 0.08 }, { x: -4.88, y: 1.0, z: 1.8 }, createMaterial(0xd8e8ee), 'Evier', true);
     box(scene, { x: 1.0, y: 1.8, z: 0.6 }, { x: 4.3, y: 0.9, z: 0.9 }, createMaterial(0xd5dde6), 'Armoire', true);
 
-    // Panneaux lumineux au plafond (décoratifs — l'éclairage réel est géré par ThreeLightingAgent)
-    [[-2.5, -1], [0, -1], [2.5, -1]].forEach(([x, z]) => {
-        box(scene, { x: 0.8, y: 0.04, z: 0.32 }, { x, y: 3.42, z }, createMaterial(0xffffff, { emissive: 0xffffff, emissiveIntensity: 1.2 }), 'Panneau lumineux');
+    // === PLAFOND ===
+    // Plafond principal avec texture procédurale (carreaux d'hôpital)
+    const ceilingCanvas = document.createElement('canvas');
+    ceilingCanvas.width = 512;
+    ceilingCanvas.height = 512;
+    const cctx = ceilingCanvas.getContext('2d');
+    cctx.fillStyle = '#e8eef0';
+    cctx.fillRect(0, 0, 512, 512);
+    // Grille de carreaux décoratifs
+    const tileSize = 64;
+    for (let x = 0; x < 512; x += tileSize) {
+        for (let y = 0; y < 512; y += tileSize) {
+            // Léger dégradé par carreau
+            const brightness = 222 + Math.random() * 10;
+            cctx.fillStyle = `rgb(${brightness}, ${brightness + 4}, ${brightness + 6})`;
+            cctx.fillRect(x + 1, y + 1, tileSize - 2, tileSize - 2);
+        }
+    }
+    // Lignes de joints
+    cctx.strokeStyle = 'rgba(180, 190, 200, 0.5)';
+    cctx.lineWidth = 2;
+    for (let x = 0; x <= 512; x += tileSize) {
+        cctx.beginPath(); cctx.moveTo(x, 0); cctx.lineTo(x, 512); cctx.stroke();
+    }
+    for (let y = 0; y <= 512; y += tileSize) {
+        cctx.beginPath(); cctx.moveTo(0, y); cctx.lineTo(512, y); cctx.stroke();
+    }
+    // Trou de ventilation (grille ronde) au centre
+    cctx.strokeStyle = 'rgba(160, 170, 180, 0.6)';
+    cctx.lineWidth = 3;
+    cctx.beginPath(); cctx.arc(256, 256, 50, 0, Math.PI * 2); cctx.stroke();
+    for (let r = 15; r < 50; r += 12) {
+        cctx.beginPath(); cctx.arc(256, 256, r, 0, Math.PI * 2); cctx.stroke();
+    }
+    // Lignes radiales
+    for (let a = 0; a < 8; a++) {
+        const angle = (a / 8) * Math.PI * 2;
+        cctx.beginPath();
+        cctx.moveTo(256 + Math.cos(angle) * 12, 256 + Math.sin(angle) * 12);
+        cctx.lineTo(256 + Math.cos(angle) * 48, 256 + Math.sin(angle) * 48);
+        cctx.stroke();
+    }
+    const ceilingTex = new THREE.CanvasTexture(ceilingCanvas);
+    ceilingTex.wrapS = THREE.RepeatWrapping;
+    ceilingTex.wrapT = THREE.RepeatWrapping;
+    ceilingTex.repeat.set(2, 2);
+    const ceilingMat = new THREE.MeshStandardMaterial({
+        map: ceilingTex,
+        color: 0xe8eef0,
+        roughness: 0.85,
+        metalness: 0.02,
+        side: THREE.DoubleSide
+    });
+    const ceilingGeom = new THREE.BoxGeometry(10, 0.08, 8);
+    const ceiling = new THREE.Mesh(ceilingGeom, ceilingMat);
+    ceiling.position.set(0, 3.5, 0);
+    ceiling.receiveShadow = true;
+    ceiling.name = 'Plafond';
+    scene.add(ceiling);
+
+    // === PLINTHES (bandes décoratives murales d'hôpital) ===
+    // Plinthe basse (vert pâle/sable — soubassement hospitalier)
+    const baseboardMat = createMaterial(0x8ab098, { roughness: 0.6, metalness: 0.05 });
+    // Mur du fond
+    box(scene, { x: 10, y: 0.12, z: 0.06 }, { x: 0, y: 0.06, z: -3.96 }, baseboardMat, '');
+    // Mur gauche
+    box(scene, { x: 0.06, y: 0.12, z: 8 }, { x: -4.96, y: 0.06, z: 0 }, baseboardMat, '');
+    // Mur droit
+    box(scene, { x: 0.06, y: 0.12, z: 8 }, { x: 4.96, y: 0.06, z: 0 }, baseboardMat, '');
+
+    // Bande murale médiane (handrail / couleur accent — typique des hôpitaux)
+    const railMat = createMaterial(0x4a7a6a, { roughness: 0.35, metalness: 0.15 });
+    box(scene, { x: 10, y: 0.06, z: 0.04 }, { x: 0, y: 0.92, z: -3.96 }, railMat, '');
+    box(scene, { x: 0.04, y: 0.06, z: 8 }, { x: -4.96, y: 0.92, z: 0 }, railMat, '');
+    box(scene, { x: 0.04, y: 0.06, z: 8 }, { x: 4.96, y: 0.92, z: 0 }, railMat, '');
+
+    // Bande murale haute (moulure)
+    const crownMat = createMaterial(0xd0d8dc, { roughness: 0.7, metalness: 0.05 });
+    box(scene, { x: 10, y: 0.05, z: 0.04 }, { x: 0, y: 3.2, z: -3.96 }, crownMat, '');
+    box(scene, { x: 0.04, y: 0.05, z: 8 }, { x: -4.96, y: 3.2, z: 0 }, crownMat, '');
+    box(scene, { x: 0.04, y: 0.05, z: 8 }, { x: 4.96, y: 3.2, z: 0 }, crownMat, '');
+
+    // === NÉONS AU PLAFOND (luminaire réaliste) ===
+    const neonPositions = [
+        { x: -2.5, z: -1 },
+        { x: 0, z: -1 },
+        { x: 2.5, z: -1 },
+        { x: -2.5, z: 1.5 },
+        { x: 0, z: 1.5 },
+        { x: 2.5, z: 1.5 },
+    ];
+    neonPositions.forEach(({ x, z }) => {
+        // Caisson encastré (bordure)
+        const troughMat = new THREE.MeshStandardMaterial({ color: 0xd8d8d8, roughness: 0.9, metalness: 0.05 });
+        const trough = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.04, 0.42), troughMat);
+        trough.position.set(x, 3.44, z);
+        trough.receiveShadow = true;
+        scene.add(trough);
+
+        // Tube néon (lumineux)
+        const neonMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0xffffff,
+            emissiveIntensity: 1.2,
+            roughness: 0.05,
+            metalness: 0.0
+        });
+        const neon = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.015, 0.12), neonMat);
+        neon.position.set(x, 3.47, z);
+        neon.name = 'Panneau lumineux';
+        scene.add(neon);
     });
 }
 

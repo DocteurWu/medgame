@@ -42,6 +42,7 @@
             const modal = document.getElementById('prescription-modal');
             if (!modal) return;
             modal.classList.add('active');
+            modal.style.display = 'flex';
             modal.setAttribute('aria-hidden', 'false');
             const input = document.getElementById('drug-search');
             if (input) input.focus();
@@ -52,6 +53,7 @@
             const modal = document.getElementById('prescription-modal');
             if (!modal) return;
             modal.classList.remove('active');
+            modal.style.display = 'none';
             modal.setAttribute('aria-hidden', 'true');
         }
 

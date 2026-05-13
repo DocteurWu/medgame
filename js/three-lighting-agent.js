@@ -47,9 +47,12 @@ export class ThreeLightingAgent {
         this.scene.add(rimLight);
 
         // Lumières ponctuelles (lampes de la salle) — pas d'ombre (performances)
-        this._addPointLight(0, 3.2, 0, 0xffffff, 2.5, 14);
-        this._addPointLight(-2.5, 3.3, -1, 0xc8d8ff, 1.0, 8);
-        this._addPointLight(2.5, 3.3, -1, 0xc8d8ff, 1.0, 8);
+        // Positionnées juste sous le plafond (y=3.5) pour éclairer depuis les néons
+        this._addPointLight(0, 3.35, 0, 0xffffff, 2.5, 14);
+        this._addPointLight(-2.5, 3.35, -1, 0xc8d8ff, 1.0, 8);
+        this._addPointLight(2.5, 3.35, -1, 0xc8d8ff, 1.0, 8);
+        this._addPointLight(-2.5, 3.35, 1.5, 0xdde8ff, 0.8, 7);
+        this._addPointLight(2.5, 3.35, 1.5, 0xdde8ff, 0.8, 7);
 
         // Lumière d'appoint sous les instruments (glow bleu)
         const instLight = new THREE.PointLight(0x44aaff, 0.6, 4);
