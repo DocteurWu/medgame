@@ -461,7 +461,7 @@ export class IVFluidAnimator {
         this.dropSize = options.dropSize || 0.006;
         this._timer = 0;
         this._drops = [];
-        this._scene = ivGroup.parent;
+        this._scene = null; // Résolu au premier update
         this._bagMat = null;
         this._resolveParts();
     }
@@ -475,6 +475,11 @@ export class IVFluidAnimator {
 
     update(elapsed, dt) {
         const safeDt = Math.min(dt || 0.016, 0.05);
+
+        // Résoudre la référence scène au premier update (quand le groupe est dans la scène)
+        if (!this._scene && this.group) {
+            this._scene = this.group.parent;
+        }
 
         // Créer une nouvelle goutte à intervalle régulier
         this._timer += safeDt;
@@ -490,7 +495,7 @@ export class IVFluidAnimator {
             drop.material.opacity -= safeDt * 1.5;
 
             if (drop.position.y < drop.userData.floorY || drop.material.opacity <= 0) {
-                this._scene.remove(drop);
+                if (this._scene) this._scene.remove(drop);
                 drop.geometry.dispose();
                 drop.material.dispose();
                 this._drops.splice(i, 1);
