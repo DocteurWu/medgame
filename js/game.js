@@ -1,6 +1,38 @@
 // Y'a qql qui va lire le code ?? si oui veuillez me contacter sur discord : docteur_wu
 // Utilities (showNotification, escapeHtml, parseMarkdown, cookies, etc.) moved to js/utils.js
 
+// ==================== LOCK PLACEHOLDER HELPER ====================
+
+/**
+ * Génère le HTML d'un placeholder de verrou, en tenant compte des prérequis.
+ * Si le champ est bloqué par des prérequis, affiche un cadenas grisé et non cliquable.
+ * Si le verrou est disponible (prérequis remplis), affiche le défi cliquable normal.
+ *
+ * @param {string} fieldPath — chemin du champ verrouillé
+ * @param {object} currentCase — cas courant (pour résoudre les noms des prérequis)
+ * @returns {string} HTML du placeholder
+ */
+function renderLockPlaceholder(fieldPath, currentCase, precomputedInfo) {
+    const info = precomputedInfo || getFieldLockInfo(fieldPath);
+    if (!info.locked || !info.lock) return '';
+
+    const locks = (currentCase && currentCase.locks) || [];
+
+    if (info.blockedByPrereqs && info.missingPrereqs.length > 0) {
+        const prereqNames = getPrereqNames(info.missingPrereqs, locks);
+        const prereqsText = escapeHtml(prereqNames.join(', '));
+        return `<div class="lock-placeholder lock-placeholder-blocked" style="opacity:0.5; cursor:not-allowed;" title="Déverrouillez d'abord : ${prereqsText}">
+            <i class="fas fa-lock" style="color:#666;"></i>
+            <span class="challenge-text" style="color:#888; font-size:0.8rem;">BLOQUÉ — ${prereqsText} requis</span>
+        </div>`;
+    }
+
+    return `<div class="lock-placeholder" onclick="window.showLockChallenge('${info.lock.id}')">
+        <i class="fas fa-lock"></i>
+        <span class="challenge-text">DÉFI À RELEVER</span>
+    </div>`;
+}
+
 // ==================== IMMERSIVE HELPERS ====================
 
 /**
@@ -392,8 +424,7 @@ onDomReady(async () => {
             const antecedents = currentCase.interrogatoire.antecedents || {};
 
             if (isFieldLocked('interrogatoire.antecedents')) {
-                const lock = getLockForField('interrogatoire.antecedents');
-                const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+                const placeholder = renderLockPlaceholder('interrogatoire.antecedents', currentCase);
                 antecedentsMedicaux.innerHTML = placeholder;
                 if (antecedentsChirurgicaux) antecedentsChirurgicaux.innerHTML = '';
                 if (antecedentsFamiliaux) antecedentsFamiliaux.innerHTML = '';
@@ -427,10 +458,9 @@ onDomReady(async () => {
                 : (currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0);
 
             if (traitementsContainer) traitementsContainer.style.display = traitementsPresence ? '' : 'none';
-
             if (isFieldLocked('interrogatoire.traitements')) {
-                const lock = getLockForField('interrogatoire.traitements');
-                traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+                const placeholder = renderLockPlaceholder('interrogatoire.traitements', currentCase);
+                traitementsListe.innerHTML = placeholder;
             } else if (traitementsPresence) {
                 const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
                 if (hasTraitements) {
@@ -446,6 +476,7 @@ onDomReady(async () => {
             if (hasAllergies) {
                 allergiesListe.textContent = currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ');
                 if (allergiesContainer) allergiesContainer.style.display = '';
+
             } else {
                 if (allergiesContainer) allergiesContainer.style.display = 'none';
             }
@@ -459,6 +490,9 @@ onDomReady(async () => {
                     allergiesSubSection.style.display = '';
                 }
             }
+
+            // --- LOCK PLACEHOLDERS FOR EXAM SECTIONS (using renderLockPlaceholder) ---
+            // The antecedents lock is already handled above via renderLockPlaceholder
 
             displayValue(debutSymptomes, currentCase.interrogatoire.histoireMaladie.debutSymptomes, 'interrogatoire.histoireMaladie.debutSymptomes');
             displayValue(evolution, currentCase.interrogatoire.histoireMaladie.evolution, 'interrogatoire.histoireMaladie.evolution');
@@ -505,8 +539,7 @@ onDomReady(async () => {
             const antecedents = currentCase.interrogatoire.antecedents || {};
 
             if (isFieldLocked('interrogatoire.antecedents')) {
-                const lock = getLockForField('interrogatoire.antecedents');
-                const placeholder = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+                const placeholder = renderLockPlaceholder('interrogatoire.antecedents', currentCase);
                 antecedentsMedicaux.innerHTML = placeholder;
                 if (antecedentsChirurgicaux) antecedentsChirurgicaux.innerHTML = '';
                 if (antecedentsFamiliaux) antecedentsFamiliaux.innerHTML = '';
@@ -548,8 +581,8 @@ onDomReady(async () => {
             if (traitementsContainer) traitementsContainer.style.display = traitementsPresence ? '' : 'none';
 
             if (isFieldLocked('interrogatoire.traitements')) {
-                const lock = getLockForField('interrogatoire.traitements');
-                traitementsListe.innerHTML = `<div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')"><i class="fas fa-lock"></i><span class="challenge-text">DÉFI À RELEVER</span></div>`;
+                const placeholder = renderLockPlaceholder('interrogatoire.traitements', currentCase);
+                traitementsListe.innerHTML = placeholder;
             } else if (traitementsPresence) {
                 const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
                 let valTrait = hasTraitements ? currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ') : 'Aucun traitement en cours.';
@@ -596,13 +629,7 @@ onDomReady(async () => {
                 verbatimContainer.style.display = 'flex';
                 const path = 'interrogatoire.verbatim';
                 if (isFieldLocked(path)) {
-                    const lock = getLockForField(path);
-                    verbatimContainer.innerHTML = `
-                        <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
-                            <i class="fas fa-lock"></i>
-                            <span class="challenge-text">PAROLE BLOQUÉE : DÉFI À RELEVER</span>
-                        </div>
-                    `;
+                    verbatimContainer.innerHTML = renderLockPlaceholder(path, currentCase);
                 } else {
                     verbatimContainer.innerHTML = `<div class="verbatim-text">"${escapeHtml(currentCase.interrogatoire.verbatim)}"</div>`;
                 }
@@ -639,14 +666,13 @@ onDomReady(async () => {
                 const path = `examenClinique.${key}`;
                 if (examData) {
                     if (isFieldLocked(path)) {
-                        const lock = getLockForField(path);
+                        const info = getFieldLockInfo(path);
+                        const lockPlaceholderHtml = renderLockPlaceholder(path, currentCase, info);
+                        const iconClass = info.blockedByPrereqs ? 'fas fa-lock' : 'fas fa-lock lock-icon';
                         examDetailsGrid.innerHTML += `
                             <div class="exam-item">
-                                <h4><i class="fas fa-lock lock-icon"></i> ${key}</h4>
-                                <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')">
-                                    <i class="fas fa-puzzle-piece"></i>
-                                    <span class="challenge-text">DÉFI À RELEVER</span>
-                                </div>
+                                <h4><i class="${iconClass}"></i> ${key}</h4>
+                                ${lockPlaceholderHtml}
                             </div>
                         `;
                     } else {
@@ -686,8 +712,21 @@ onDomReady(async () => {
         examCategoriesDiv.innerHTML = '';
 
         if (isFieldLocked('examensComplementaires')) {
-            const lock = getLockForField('examensComplementaires');
-            examCategoriesDiv.innerHTML = `
+            const info = getFieldLockInfo('examensComplementaires');
+            const lock = info.lock;
+            if (info.blockedByPrereqs) {
+                // Blocked by prerequisites — show styled section lock with blocked message
+                const prereqNames = getPrereqNames(info.missingPrereqs, currentCase.locks || []);
+                const prereqsText = escapeHtml(prereqNames.join(', '));
+                examCategoriesDiv.innerHTML = `
+                <div class="lock-placeholder section-lock" style="margin: 20px 0; padding: 40px; border-radius: 15px; background: rgba(0,0,0,0.3); border: 2px dashed var(--glass-border); flex-direction: column; cursor: not-allowed; opacity: 0.6;">
+                    <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; color: #666;"></i>
+                    <h3 style="margin-bottom: 10px; color: #888;">SECTION VERROUILLÉE</h3>
+                    <p style="color: #999;">Déverrouillez d'abord : <strong>${prereqsText}</strong></p>
+                </div>
+            `;
+            } else if (lock) {
+                examCategoriesDiv.innerHTML = `
                 <div class="lock-placeholder section-lock" onclick="window.showLockChallenge('${lock.id}')" style="margin: 20px 0; padding: 40px; border-radius: 15px; background: rgba(0,0,0,0.3); border: 2px dashed var(--glass-border); flex-direction: column; cursor: pointer;">
                     <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; color: var(--secondary-color);"></i>
                     <h3 style="margin-bottom: 10px;">SECTION VERROUILLÉE</h3>
@@ -695,6 +734,7 @@ onDomReady(async () => {
                     <button class="primary-btn" style="margin-top: 20px;">RELEVER LE DÉFI</button>
                 </div>
             `;
+            }
             if (validateExamsBtn) validateExamsBtn.style.display = 'none';
         } else {
             if (validateExamsBtn) validateExamsBtn.style.display = 'block';
@@ -1128,12 +1168,11 @@ onDomReady(async () => {
             resultDiv.className = 'exam-result-item';
 
             if (isFieldLocked(path)) {
-                const lock = getLockForField(path);
+                const placeholder = renderLockPlaceholder(path, currentCase);
                 resultDiv.innerHTML = `
                         <strong>${exam}:</strong>
-                        <div class="lock-placeholder" onclick="window.showLockChallenge('${lock.id}')" style="display:inline-flex; padding:5px 15px; margin-left:10px;">
-                            <i class="fas fa-lock" style="font-size:1rem;"></i>
-                            <span class="challenge-text" style="font-size:0.8rem;">DÉFI À RELEVER</span>
+                        <div style="display:inline-flex; padding:5px 15px; margin-left:10px;">
+                            ${placeholder}
                         </div>
                     `;
             } else {

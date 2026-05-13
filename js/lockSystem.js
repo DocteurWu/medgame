@@ -1,6 +1,15 @@
 /**
  * js/lockSystem.js — Système de verrous et challenges sémiologiques
  * Phase 4 du refactoring : extrait de game.js
+ * Amélioration v2 : Gating sémiologique progressif avec prérequis entre verrous
+ *
+ * Nouveau : les verrous peuvent définir un champ optionnel `prerequisites` (tableau d'IDs).
+ * Un verrou avec prérequis ne peut être déverrouillé qu'après avoir déverrouillé tous ses prérequis.
+ * Par exemple : il faut déverrouiller l'interrogatoire avant de pouvoir prescrire.
+ *
+ * Le système expose également getFieldLockInfo() pour un affichage différencié dans l'UI :
+ * - "Verrou simple" : cadenas avec défi cliquable
+ * - "Verrou bloqué par prérequis" : cadenas grisé avec message "Déverrouillez d'abord X"
  */
 
 const lockSystem = {
@@ -19,24 +28,78 @@ function saveLocks() {
     sessionStorage.setItem('unlockedLocks', JSON.stringify([...lockSystem.unlockedLocks]));
 }
 
-function isFieldLocked(path) {
+/**
+ * Vérifie si un verrou est déverrouillable (tous ses prérequis sont satisfaits).
+ * @param {object} lock — l'objet verrou
+ * @returns {{ canUnlock: boolean, missingPrereqs: string[] }}
+ */
+function getLockStatus(lock) {
+    if (!lock || !lock.id) return { canUnlock: false, missingPrereqs: [] };
+    if (lockSystem.unlockedLocks.has(lock.id)) {
+        return { canUnlock: true, missingPrereqs: [] };
+    }
+    const prereqs = lock.prerequisites || [];
+    const missingPrereqs = prereqs.filter(pId => !lockSystem.unlockedLocks.has(pId));
+    return {
+        canUnlock: missingPrereqs.length === 0,
+        missingPrereqs
+    };
+}
+window.getLockStatus = getLockStatus;
+
+/**
+ * Récupère les noms des verrous prérequis pour un affichage user-friendly.
+ */
+function getPrereqNames(prereqIds, locks) {
+    return prereqIds.map(id => {
+        const l = (locks || []).find(lk => lk.id === id);
+        return l ? (l.label || (l.challenge && l.challenge.question) || id) : id;
+    });
+}
+window.getPrereqNames = getPrereqNames;
+
+/**
+ * Vérifie si un champ est verrouillé avec infos détaillées (prérequis, etc.).
+ * @param {string} path — chemin du champ
+ * @returns {{ locked: boolean, lock: object|null, blockedByPrereqs: boolean, missingPrereqs: string[] }}
+ */
+function getFieldLockInfo(path) {
+    const result = { locked: false, lock: null, blockedByPrereqs: false, missingPrereqs: [] };
     const currentCase = lockSystem.currentCase;
-    if (!currentCase || !currentCase.locks) return false;
-    return currentCase.locks.some(lock =>
-        !lockSystem.unlockedLocks.has(lock.id) && lock.target_fields.includes(path)
-    );
+    if (!currentCase || !currentCase.locks) return result;
+
+    for (const lock of currentCase.locks) {
+        if (!lock.target_fields.includes(path)) continue;
+        if (lockSystem.unlockedLocks.has(lock.id)) continue;
+
+        result.lock = lock;
+        const status = getLockStatus(lock);
+        if (!status.canUnlock) {
+            result.blockedByPrereqs = true;
+            result.missingPrereqs = status.missingPrereqs;
+            result.locked = true;
+        } else {
+            result.locked = true;
+        }
+        break;
+    }
+
+    return result;
+}
+window.getFieldLockInfo = getFieldLockInfo;
+
+function isFieldLocked(path) {
+    return getFieldLockInfo(path).locked;
 }
 
 function getLockForField(path) {
-    const currentCase = lockSystem.currentCase;
-    if (!currentCase || !currentCase.locks) return null;
-    return currentCase.locks.find(lock =>
-        !lockSystem.unlockedLocks.has(lock.id) && lock.target_fields.includes(path)
-    );
+    const info = getFieldLockInfo(path);
+    return info.blockedByPrereqs ? null : info.lock;
 }
 
 /**
  * Affiche la modale de défi sémiologique pour déverrouiller un champ.
+ * Vérifie les prérequis avant d'ouvrir le défi.
  * @param {string} lockId - Identifiant du verrou
  */
 function showLockChallenge(lockId) {
@@ -58,6 +121,15 @@ function showLockChallenge(lockId) {
     if (!lock) {
         console.error("Lock not found:", lockId);
         showNotification("Erreur: verrou introuvable");
+        return;
+    }
+
+    // --- Vérification des prérequis avant d'ouvrir le défi ---
+    const status = getLockStatus(lock);
+    if (!status.canUnlock) {
+        const prereqNames = getPrereqNames(status.missingPrereqs, currentCase.locks);
+        const message = `Ce verrou est verrouillé. Déverrouillez d'abord : ${prereqNames.join(', ')}`;
+        showNotification(`🔒 ${message}`);
         return;
     }
 
