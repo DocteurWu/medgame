@@ -10,6 +10,7 @@ const urgenceState = {
     currentCase: null,
     vitalMonitorInstance: null
 };
+window.urgenceState = urgenceState;
 
 function renderUrgenceState() {
     if (!urgenceState.isUrgenceMode || !urgenceState.currentUrgenceNode) return;

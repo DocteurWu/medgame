@@ -256,4 +256,5 @@ function unlock(lockId) {
     }
 }
 
+window.lockSystem = lockSystem;
 window.showLockChallenge = showLockChallenge;
