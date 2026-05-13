@@ -41,6 +41,9 @@
         open() {
             const modal = document.getElementById('prescription-modal');
             if (!modal) return;
+            // Nettoyer toute modale de contre-indication orpheline
+            const ciModal = document.getElementById('contre-indication-modal');
+            if (ciModal) ciModal.remove();
             modal.classList.add('active');
             modal.style.display = 'flex';
             modal.setAttribute('aria-hidden', 'false');

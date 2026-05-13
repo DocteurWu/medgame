@@ -698,16 +698,15 @@ export class IVFluidAnimator {
         });
         const drop = new THREE.Mesh(dropGeom, dropMat);
 
-        // Position de spawn : au niveau du tuyau sous la poche
-        // On récupère la position mondiale du groupe
+        // Position de spawn : juste sous la chambre de goutte (chambre à y=1.28 local)
         const worldPos = new THREE.Vector3();
         this.group.getWorldPosition(worldPos);
         drop.position.set(
             worldPos.x + (Math.random() - 0.5) * 0.005,
-            worldPos.y + 0.5, // juste sous la chambre de goutte
+            worldPos.y + 1.22, // Sous la chambre de goutte
             worldPos.z + (Math.random() - 0.5) * 0.005
         );
-        drop.userData.floorY = worldPos.y - 0.4; // niveau du bras du patient
+        drop.userData.floorY = worldPos.y + 0.4; // Niveau du tuyau bas
         drop.name = 'IVFluidDrop';
         this._scene.add(drop);
         this._drops.push(drop);

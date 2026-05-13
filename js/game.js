@@ -1707,7 +1707,17 @@ onDomReady(async () => {
             const btn = document.getElementById('validate-traitement');
             if (btn) btn.click();
         } else if (e.key === 'Escape') {
-            // Close any open overlay/modal
+            // Close any open overlay/modal (priority: topmost z-index first)
+            const ciModal = document.getElementById('contre-indication-modal');
+            if (ciModal) {
+                ciModal.remove();
+                return;
+            }
+            const prescriptionModal = document.getElementById('prescription-modal');
+            if (prescriptionModal && prescriptionModal.style.display === 'flex') {
+                if (window.prescriptionManager) window.prescriptionManager.close();
+                return;
+            }
             const imageOverlay = document.getElementById('image-overlay');
             if (imageOverlay && imageOverlay.style.display === 'flex') {
                 if (typeof closeImageModal === 'function') closeImageModal();

@@ -119,6 +119,7 @@ export function buildRoom(scene) {
     box(scene, { x: 0.04, y: 0.05, z: 8 }, { x: 4.96, y: 3.2, z: 0 }, crownMat, '');
 
     // === NÉONS AU PLAFOND (luminaire réaliste) ===
+    // Matériaux et géométries partagés (1 matérial = 1 draw call par matériau identique)
     const neonPositions = [
         { x: -2.5, z: -1 },
         { x: 0, z: -1 },
@@ -127,23 +128,25 @@ export function buildRoom(scene) {
         { x: 0, z: 1.5 },
         { x: 2.5, z: 1.5 },
     ];
+    const troughMat = new THREE.MeshStandardMaterial({ color: 0xd8d8d8, roughness: 0.9, metalness: 0.05 });
+    const troughGeom = new THREE.BoxGeometry(0.9, 0.04, 0.42);
+    const neonMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        emissive: 0xffffff,
+        emissiveIntensity: 1.2,
+        roughness: 0.05,
+        metalness: 0.0
+    });
+    const neonGeom = new THREE.BoxGeometry(0.75, 0.015, 0.12);
     neonPositions.forEach(({ x, z }) => {
         // Caisson encastré (bordure)
-        const troughMat = new THREE.MeshStandardMaterial({ color: 0xd8d8d8, roughness: 0.9, metalness: 0.05 });
-        const trough = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.04, 0.42), troughMat);
+        const trough = new THREE.Mesh(troughGeom, troughMat);
         trough.position.set(x, 3.44, z);
         trough.receiveShadow = true;
         scene.add(trough);
 
         // Tube néon (lumineux)
-        const neonMat = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            emissive: 0xffffff,
-            emissiveIntensity: 1.2,
-            roughness: 0.05,
-            metalness: 0.0
-        });
-        const neon = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.015, 0.12), neonMat);
+        const neon = new THREE.Mesh(neonGeom, neonMat);
         neon.position.set(x, 3.47, z);
         neon.name = 'Panneau lumineux';
         scene.add(neon);
