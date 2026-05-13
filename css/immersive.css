@@ -317,6 +317,147 @@ body.mode-3d #scene-container {
 .hud-notification-error { border-left: 3px solid #e74c3c; }
 .hud-notification-info { border-left: 3px solid #00f2fe; }
 
+/* ==================== HUD PROGRESS PANEL (2D↔3D Sync) ==================== */
+
+.hud-progress {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 240px;
+    background: rgba(10, 15, 30, 0.82);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(0, 242, 254, 0.18);
+    border-radius: 14px;
+    padding: 14px 16px;
+    z-index: 60;
+    pointer-events: auto;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.hud-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.hud-progress-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.hud-progress-title i {
+    color: #00f2fe;
+    margin-right: 5px;
+    font-size: 0.8rem;
+}
+
+.hud-score {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #00f2fe;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 12px rgba(0, 242, 254, 0.45);
+    transition: color 0.4s ease, transform 0.3s ease;
+}
+
+.hud-score.score-up {
+    animation: hudScoreUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes hudScoreUp {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.25); color: #2ecc71; text-shadow: 0 0 18px rgba(46,204,113,0.6); }
+    100% { transform: scale(1); }
+}
+
+.hud-score-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.hud-score-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00f2fe, #a020f0);
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hud-check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.3s ease;
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+
+.hud-check-item:hover {
+    background: rgba(0, 242, 254, 0.05);
+}
+
+.hud-check-icon {
+    font-size: 0.55rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.hud-check-item.done {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hud-check-item.done .hud-check-icon {
+    color: #2ecc71;
+    transform: scale(1.2);
+}
+
+.hud-check-item.done .hud-check-icon::before {
+    content: '\f058'; /* fa-check-circle */
+}
+
+.hud-check-item.partial .hud-check-icon {
+    color: #ffc107;
+}
+
+.hud-check-detail {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+    font-family: 'Courier New', monospace;
+}
+
+.hud-check-item.done .hud-check-detail {
+    color: rgba(46, 204, 113, 0.7);
+}
+
+.hud-check-item.partial .hud-check-detail {
+    color: rgba(255, 193, 7, 0.7);
+}
+
+.hud-check-item.locked-step .hud-check-icon {
+    color: #ff4757;
+}
+
 /* ==================== FLOATING DIALOGUE (3D) ==================== */
 
 .floating-dialog {

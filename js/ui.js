@@ -218,6 +218,8 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
         if (typeof trackInterrogatoire === 'function') {
             trackInterrogatoire(path);
         }
+        // Notifier le HUD 3D de la progression interrogatoire
+        document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path } }));
 
         if (typeof window.deductTime === 'function') {
             const hasTime = window.deductTime(5);

@@ -474,6 +474,8 @@ class ThreeManager {
                         });
                     }
                     if (this.hud) this.hud.showNotification(`Examen demandé : ${name}`, 'info');
+                    // Notifier le HUD 3D de la progression examens
+                    document.dispatchEvent(new CustomEvent('exam-ordered', { detail: { exam: name } }));
                 });
                 examBtns.appendChild(btn);
             });
@@ -506,6 +508,8 @@ class ThreeManager {
             const handler = () => {
                 const select2D = document.getElementById('diagnostic-select');
                 if (select2D) select2D.value = diagSelect.value;
+                // Notifier le HUD 3D de la progression diagnostic
+                if (this.hud && this.hud._syncProgress) this.hud._syncProgress();
             };
             diagSelect.removeEventListener('change', diagSelect._prevHandler);
             diagSelect._prevHandler = handler;
@@ -536,6 +540,8 @@ class ThreeManager {
                     }
                     const treatBtn2D = document.querySelector(`#availableTreatments button[data-traitement="${tName}"]`);
                     if (treatBtn2D) treatBtn2D.click();
+                    // Notifier le HUD 3D de la progression traitement
+                    if (this.hud && this.hud._syncProgress) this.hud._syncProgress();
                 });
                 treatGrid.appendChild(btn);
             });
@@ -562,6 +568,10 @@ class ThreeManager {
         if (this.hudMeasurements) this.hudMeasurements.innerHTML = '';
         if (this.scene) this.scene.loadCase(caseData);
         this._updateHUDVitals();
+        // Synchroniser immédiatement la progression démarche dans le HUD 3D
+        if (this.hud && this.hud._syncProgress) {
+            this.hud._syncProgress();
+        }
     }
 
     _updateHUDVitals() {
