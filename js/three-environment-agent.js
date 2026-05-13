@@ -132,12 +132,15 @@ export class ThreeEnvironmentAgent {
         poster.userData.interactive = true;
         this.scene.add(poster);
 
-        // Cadre
+        // Cadre (ajusté pour le poster tourné de π/2 : le Z local devient X monde)
         const frameGeom = new THREE.BoxGeometry(0.62, 0.82, 0.01);
         const frameMat = new THREE.MeshStandardMaterial({ color: 0x8a7e6e, roughness: 0.5, metalness: 0.3 });
         const frame = new THREE.Mesh(frameGeom, frameMat);
         frame.position.copy(poster.position);
-        frame.position.z -= 0.005;
+        // Poster est rotaté π/2 sur Y : le cadre doit être décalé en X (direction du mur)
+        // Le poster normal est en Z+, donc après rotation le décalage arrière est en X-
+        frame.position.x -= 0.005;
+        frame.rotation.y = Math.PI / 2;
         this.scene.add(frame);
 
         // Deuxième poster (schéma anatomique)
@@ -166,7 +169,18 @@ export class ThreeEnvironmentAgent {
         const poster2 = new THREE.Mesh(poster2Geom, poster2Mat);
         poster2.position.set(-4.85, 1.5, -0.8);
         poster2.rotation.y = Math.PI / 2;
+        poster2.name = 'AnatomicalPoster';
+        poster2.userData.label = 'Affiche médicale';
+        poster2.userData.interactive = true;
         this.scene.add(poster2);
+
+        // Cadre du deuxième poster
+        const frame2Geom = new THREE.BoxGeometry(0.52, 0.52, 0.01);
+        const frame2 = new THREE.Mesh(frame2Geom, frameMat);
+        frame2.position.copy(poster2.position);
+        frame2.position.x -= 0.005;
+        frame2.rotation.y = Math.PI / 2;
+        this.scene.add(frame2);
     }
 
     _addCurtain() {
