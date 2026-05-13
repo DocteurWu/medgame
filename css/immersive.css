@@ -2895,3 +2895,247 @@ body.urgence-3d-active {
         max-width: 160px;
     }
 }
+
+/* ==================== DIALOGUE PATIENT IMMERSIF — QUESTIONS SUGGÉRÉES ==================== */
+
+/* Zone de suggestions contextuelles */
+.dialog-suggestions {
+    max-height: 200px;
+    overflow-y: auto;
+    border-top: 1px solid rgba(0, 242, 254, 0.1);
+    background: rgba(0, 242, 254, 0.03);
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+
+.dialog-suggestions-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(0, 242, 254, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(0, 242, 254, 0.06);
+}
+
+.dialog-suggestions-header i {
+    color: #ffb347;
+    font-size: 0.75rem;
+}
+
+.dialog-suggestions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 10px 8px;
+}
+
+/* Bouton de suggestion – look pill moderne */
+.dialog-suggestion-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 7px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(0, 242, 254, 0.12);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+    max-height: 50px;
+    overflow: hidden;
+    opacity: 1;
+}
+
+.dialog-suggestion-btn i {
+    color: #00f2fe;
+    font-size: 0.85rem;
+    min-width: 16px;
+    text-align: center;
+}
+
+.dialog-suggestion-btn:hover {
+    background: rgba(0, 242, 254, 0.1);
+    border-color: rgba(0, 242, 254, 0.35);
+    transform: translateX(3px);
+    box-shadow: 0 2px 12px rgba(0, 242, 254, 0.08);
+}
+
+.dialog-suggestion-btn:active {
+    transform: translateX(1px) scale(0.98);
+    background: rgba(0, 242, 254, 0.18);
+}
+
+/* État utilisé – animation de sortie */
+.dialog-suggestion-btn.suggestion-used {
+    background: rgba(46, 204, 113, 0.15);
+    border-color: rgba(46, 204, 113, 0.4);
+    color: rgba(46, 204, 113, 0.9);
+    pointer-events: none;
+    transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease, opacity 0.3s ease;
+}
+
+.dialog-suggestion-btn.suggestion-used i {
+    color: #2ecc71;
+}
+
+/* ==================== BULLE PATIENT CONTEXTUELLE ==================== */
+
+.patient-bubble-3d {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    max-width: 280px;
+    background: rgba(10, 15, 40, 0.94);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 16px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 24px rgba(0, 242, 254, 0.1), 0 0 0 1px rgba(0, 242, 254, 0.05);
+}
+
+.patient-bubble-3d.patient-bubble-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.patient-bubble-3d.patient-bubble-exit {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.patient-bubble-content {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.92);
+    line-height: 1.45;
+    font-style: italic;
+}
+
+/* Queue de la bulle (pointe vers le bas) */
+.patient-bubble-tail {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgba(10, 15, 40, 0.94);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* ==================== MESSAGES DE DIALOGUE AMÉLIORÉS ==================== */
+
+/* Message du patient — bulle bleutée avec avatar */
+.dialog-msg-patient {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.dialog-msg-avatar {
+    font-size: 1rem;
+    min-width: 20px;
+}
+
+.dialog-msg-bubble {
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.15);
+    border-radius: 12px 12px 12px 4px;
+    padding: 8px 12px;
+    max-width: 85%;
+    animation: msgFadeIn 0.3s ease forwards;
+}
+
+.dialog-msg-bubble .dialog-msg-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Message du joueur — bulle alignée à droite */
+.dialog-msg-user {
+    display: flex;
+    justify-content: flex-end;
+    margin: 6px 0;
+}
+
+.dialog-msg-bubble-user {
+    background: rgba(179, 136, 255, 0.15);
+    border: 1px solid rgba(179, 136, 255, 0.25);
+    border-radius: 12px 12px 4px 12px;
+    padding: 8px 12px;
+    max-width: 85%;
+    animation: msgFadeIn 0.3s ease forwards;
+}
+
+.dialog-msg-bubble-user .dialog-msg-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+@keyframes msgFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Icône avatar dans l'en-tête du dialogue */
+.dialog-speaker-icon {
+    font-size: 0.9rem;
+}
+
+/* Amélioration de la zone de texte avec animation de focus */
+.dialog-input-area input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.15);
+}
+
+/* Responsive : suggestions compactes sur mobile */
+@media (max-width: 768px) {
+    .floating-dialog {
+        width: 300px !important;
+        right: 10px !important;
+        bottom: 80px !important;
+    }
+
+    .dialog-suggestions {
+        max-height: 140px;
+    }
+
+    .dialog-suggestion-btn {
+        padding: 5px 10px;
+        font-size: 0.75rem;
+    }
+
+    .patient-bubble-3d {
+        max-width: 220px;
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+
+    .dialog-msg-bubble,
+    .dialog-msg-bubble-user {
+        max-width: 90%;
+    }
+}
