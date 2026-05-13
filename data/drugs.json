@@ -22,7 +22,12 @@
       "dafalgan",
       "efferalgan",
       "perfalgan"
-    ]
+    ],
+    "contreIndications": [
+      "insuffisance hépatique sévère",
+      "allergie paracétamol"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Morphine",
@@ -45,7 +50,15 @@
     "alias": [
       "morph",
       "opioide"
-    ]
+    ],
+    "contreIndications": [
+      "insuffisance respiratoire",
+      "choc",
+      "traumatisme crânien",
+      "allergie morphine",
+      "encombrement bronchique"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Tramadol",
@@ -68,7 +81,13 @@
       "topalgic",
       "contramal",
       "zamudol"
-    ]
+    ],
+    "contreIndications": [
+      "épilepsie non contrôlée",
+      "insuffisance respiratoire",
+      "allergie tramadol"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Nefopam",
@@ -84,7 +103,14 @@
     ],
     "alias": [
       "acupan"
-    ]
+    ],
+    "contreIndications": [
+      "épilepsie",
+      "glaucome",
+      "hypertrophie prostatique",
+      "allergie nefopam"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Ibuprofene",
@@ -102,7 +128,16 @@
       "nurofen",
       "spedifen",
       "brufen"
-    ]
+    ],
+    "contreIndications": [
+      "ulcère gastrique",
+      "insuffisance rénale",
+      "grossesse 3e trimestre",
+      "allergie AINS",
+      "hémorragie digestive",
+      "insuffisance cardiaque"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Ketoprofene",
@@ -119,7 +154,16 @@
     "alias": [
       "profenid",
       "bi-profenid"
-    ]
+    ],
+    "contreIndications": [
+      "ulcère gastrique",
+      "insuffisance rénale",
+      "grossesse 3e trimestre",
+      "allergie AINS",
+      "hémorragie digestive",
+      "insuffisance cardiaque"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Aspirine",
@@ -148,7 +192,16 @@
       "aspir",
       "kardegic",
       "aspegic"
-    ]
+    ],
+    "contreIndications": [
+      "ulcère gastrique",
+      "allergie aspirine",
+      "hémorragie",
+      "grossesse 3e trimestre",
+      "dengue",
+      "grippe chez l'enfant"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Clopidogrel",
@@ -169,7 +222,13 @@
     ],
     "alias": [
       "plavix"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "insuffisance hépatique sévère",
+      "allergie clopidogrel"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Ticagrelor",
@@ -184,7 +243,14 @@
     ],
     "alias": [
       "brilique"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "insuffisance hépatique sévère",
+      "allergie ticagrelor",
+      "bradycardie"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Heparine non fractionnee",
@@ -201,7 +267,13 @@
     "alias": [
       "hnf",
       "calciparine"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "thrombopénie induite à l'héparine",
+      "hypertension sévère non contrôlée"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Enoxaparine",
@@ -223,7 +295,13 @@
     "alias": [
       "lovenox",
       "hbpm"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "thrombopénie induite à l'héparine",
+      "insuffisance rénale sévère"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Apixaban",
@@ -245,7 +323,13 @@
     "alias": [
       "eliquis",
       "aod"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "insuffisance hépatique sévère",
+      "allergie apixaban"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Rivaroxaban",
@@ -267,7 +351,13 @@
     "alias": [
       "xarelto",
       "aod"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "insuffisance hépatique sévère",
+      "allergie rivaroxaban"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Warfarine",
@@ -290,7 +380,14 @@
       "coumadine",
       "avk",
       "previscan"
-    ]
+    ],
+    "contreIndications": [
+      "hémorragie active",
+      "grossesse",
+      "insuffisance hépatique sévère",
+      "allergie warfarine"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Amoxicilline",
@@ -307,7 +404,13 @@
     "alias": [
       "clamoxyl",
       "augmentin"
-    ]
+    ],
+    "contreIndications": [
+      "allergie pénicilline",
+      "allergie amoxicilline",
+      "mononucléose infectieuse"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Ceftriaxone",
@@ -330,7 +433,13 @@
     "alias": [
       "rocephine",
       "cephalosporine"
-    ]
+    ],
+    "contreIndications": [
+      "allergie céphalosporine",
+      "allergie pénicilline sévère",
+      "ictère néonatal"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Gentamicine",
@@ -346,7 +455,14 @@
     "alias": [
       "gentalline",
       "aminoside"
-    ]
+    ],
+    "contreIndications": [
+      "insuffisance rénale",
+      "ototoxicité",
+      "allergie gentamicine",
+      "grossesse"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Ciprofloxacine",
@@ -368,7 +484,15 @@
     "alias": [
       "ciflox",
       "quinolone"
-    ]
+    ],
+    "contreIndications": [
+      "allergie fluoroquinolone",
+      "tendinite",
+      "grossesse",
+      "enfant < 15 ans",
+      "myasthénie"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Metronidazole",
@@ -384,7 +508,13 @@
     ],
     "alias": [
       "flagyl"
-    ]
+    ],
+    "contreIndications": [
+      "allergie métronidazole",
+      "consommation alcool",
+      "1er trimestre grossesse"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Vancomycine",
@@ -400,7 +530,12 @@
     "alias": [
       "vancocine",
       "glycopeptide"
-    ]
+    ],
+    "contreIndications": [
+      "allergie vancomycine",
+      "insuffisance rénale sévère"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Piperacilline Tazobactam",
@@ -415,7 +550,12 @@
     ],
     "alias": [
       "tazocilline"
-    ]
+    ],
+    "contreIndications": [
+      "allergie pénicilline",
+      "allergie céphalosporine"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Salbutamol",
@@ -437,7 +577,12 @@
     "alias": [
       "ventoline",
       "b2mimetique"
-    ]
+    ],
+    "contreIndications": [
+      "allergie salbutamol",
+      "tachycardie sévère non contrôlée"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Ipratropium",
@@ -452,7 +597,13 @@
     ],
     "alias": [
       "atrovent"
-    ]
+    ],
+    "contreIndications": [
+      "glaucome fermé",
+      "allergie ipratropium",
+      "hypertrophie prostatique"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Terbutaline",
@@ -467,7 +618,12 @@
     ],
     "alias": [
       "bricanyl"
-    ]
+    ],
+    "contreIndications": [
+      "allergie terbutaline",
+      "tachycardie sévère"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Prednisone",
@@ -482,7 +638,13 @@
     ],
     "alias": [
       "cortancyl"
-    ]
+    ],
+    "contreIndications": [
+      "infection non contrôlée",
+      "allergie corticoïde",
+      "psychiatrique sévère"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Prednisolone",
@@ -497,7 +659,13 @@
     ],
     "alias": [
       "solupred"
-    ]
+    ],
+    "contreIndications": [
+      "infection non contrôlée",
+      "allergie corticoïde",
+      "psychiatrique sévère"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Methylprednisolone",
@@ -519,7 +687,12 @@
     "alias": [
       "solumedrol",
       "depomedrol"
-    ]
+    ],
+    "contreIndications": [
+      "infection non contrôlée",
+      "allergie corticoïde"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Dexaméthasone",
@@ -542,7 +715,13 @@
     "alias": [
       "dexamethasone",
       "decadron"
-    ]
+    ],
+    "contreIndications": [
+      "infection non contrôlée",
+      "allergie corticoïde",
+      "psychiatrique sévère"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Hydrocortisone",
@@ -559,7 +738,12 @@
     "alias": [
       "hshc",
       "hemisuccinate"
-    ]
+    ],
+    "contreIndications": [
+      "infection non contrôlée",
+      "allergie corticoïde"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Adrenaline",
@@ -578,7 +762,9 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [],
+    "niveau": "1ere"
   },
   {
     "nom": "Noradrenaline",
@@ -591,7 +777,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hémorragie non contrôlée"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Dobutamine",
@@ -606,7 +796,12 @@
     ],
     "alias": [
       "dobutrex"
-    ]
+    ],
+    "contreIndications": [
+      "obstacle à l'éjection ventriculaire",
+      "allergie dobutamine"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Furosemide",
@@ -627,7 +822,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hypovolémie",
+      "insuffisance rénale anurique",
+      "hypokaliémie sévère",
+      "allergie furosémide"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Spironolactone",
@@ -648,7 +850,13 @@
     ],
     "alias": [
       "aldactone"
-    ]
+    ],
+    "contreIndications": [
+      "hyperkaliémie",
+      "insuffisance rénale sévère",
+      "allergie spironolactone"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Trinitrine",
@@ -671,7 +879,15 @@
       "nitroglycerine",
       "lenitral",
       "natispray"
-    ]
+    ],
+    "contreIndications": [
+      "hypotension sévère",
+      "choc cardiogénique",
+      "hypertrophie prostatique sévère",
+      "allergie trinitrine",
+      "prise IEC + sildenafil"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Nicardipine",
@@ -687,7 +903,13 @@
     "alias": [
       "loxen",
       "icalcique"
-    ]
+    ],
+    "contreIndications": [
+      "insuffisance hépatique sévère",
+      "hypotension",
+      "allergie nicardipine"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Amlodipine",
@@ -709,7 +931,13 @@
     "alias": [
       "amlodipina",
       "icalcique"
-    ]
+    ],
+    "contreIndications": [
+      "insuffisance hépatique sévère",
+      "choc cardiogénique",
+      "allergie amlodipine"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Ramipril",
@@ -731,7 +959,14 @@
     "alias": [
       "triatec",
       "iec"
-    ]
+    ],
+    "contreIndications": [
+      "hyperkaliémie",
+      "insuffisance rénale sévère bilatérale",
+      "grossesse",
+      "allergie IEC"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Bisoprolol",
@@ -759,7 +994,16 @@
     "alias": [
       "cardensiel",
       "detensiel"
-    ]
+    ],
+    "contreIndications": [
+      "asthme",
+      "BPCO sévère",
+      "bradycardie < 50",
+      "bloc AV",
+      "insuffisance cardiaque décompensée",
+      "allergie bisoprolol"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Aténolol",
@@ -778,7 +1022,15 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "asthme",
+      "BPCO sévère",
+      "bradycardie < 50",
+      "bloc AV",
+      "allergie aténolol"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Propranolol",
@@ -791,7 +1043,16 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "asthme",
+      "BPCO sévère",
+      "bradycardie < 50",
+      "bloc AV",
+      "insuffisance cardiaque",
+      "allergie propranolol"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Ondansetron",
@@ -812,7 +1073,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie ondansétron",
+      "allongement QT",
+      "prise apomorphine"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Metoclopramide",
@@ -827,7 +1094,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hémorragie digestive",
+      "occlusion intestinale",
+      "allergie métoclopramide",
+      "parkinsonisme"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Domperidone",
@@ -840,7 +1114,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allongement QT",
+      "hémorragie digestive",
+      "allergie dompéridone"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Omeprazole",
@@ -862,7 +1142,11 @@
     "alias": [
       "mopral",
       "zoltum"
-    ]
+    ],
+    "contreIndications": [
+      "allergie oméprazole"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Pantoprazole",
@@ -876,7 +1160,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie pantoprazole"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Esomeprazole",
@@ -890,7 +1178,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie ésoméprazole"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Diazepam",
@@ -904,7 +1196,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance respiratoire sévère",
+      "myasthénie",
+      "allergie diazépam"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Midazolam",
@@ -924,7 +1222,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance respiratoire sévère",
+      "myasthénie",
+      "allergie midazolam"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Clonazepam",
@@ -937,7 +1241,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance respiratoire sévère",
+      "myasthénie",
+      "allergie clonazépam"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Lorazepam",
@@ -957,7 +1267,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance respiratoire sévère",
+      "myasthénie",
+      "allergie lorazépam"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Levetiracetam",
@@ -978,7 +1294,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie lévétiracétam",
+      "psychiatrique sévère"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Phénytoine",
@@ -991,7 +1312,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "bloc AV",
+      "insuffisance hépatique",
+      "allergie phénytoïne"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Glucose 30%",
@@ -1004,7 +1331,9 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [],
+    "niveau": "1ere"
   },
   {
     "nom": "Glucagon",
@@ -1019,7 +1348,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "phéochromocytome",
+      "allergie glucagon"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Vitamine K",
@@ -1033,7 +1367,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie vitamine K"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Naloxone",
@@ -1048,7 +1386,9 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [],
+    "niveau": "1ere"
   },
   {
     "nom": "Flumazenil",
@@ -1061,7 +1401,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "épilepsie",
+      "dépendance benzodiazépines"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "PPSB",
@@ -1074,7 +1419,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie PPSB",
+      "thrombose active",
+      "héparine induite"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Phytomenadione",
@@ -1087,7 +1438,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie phytoménadione"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Insuline rapide",
@@ -1101,7 +1456,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hypoglycémie"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Metformine",
@@ -1120,7 +1479,15 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance rénale sévère",
+      "acidocétose",
+      "insuffisance hépatique",
+      "hypoxémie",
+      "alcoolisme chronique"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Atropine",
@@ -1139,7 +1506,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "glaucome",
+      "hypertrophie prostatique",
+      "iléus paralytique",
+      "myasthénie"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Amiodarone",
@@ -1158,7 +1532,15 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "bloc AV",
+      "bradycardie",
+      "thyrotoxicose",
+      "allergie amiodarone",
+      "grossesse"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Cordarone",
@@ -1177,7 +1559,15 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "bloc AV",
+      "bradycardie",
+      "thyrotoxicose",
+      "allergie cordarone",
+      "grossesse"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Lidocaine",
@@ -1190,7 +1580,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "bloc AV",
+      "insuffisance cardiaque sévère",
+      "allergie lidocaïne"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Digoxine",
@@ -1204,7 +1600,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "bloc AV",
+      "hypokaliémie",
+      "allergie digoxine",
+      "fibrose endomyocardique"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "NaCl 0,9%",
@@ -1223,7 +1626,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance cardiaque décompensée"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Ringer lactate",
@@ -1242,7 +1649,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hyperkaliémie",
+      "insuffisance hépatique sévère"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Glucose 5%",
@@ -1255,7 +1667,9 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Geloplasma",
@@ -1268,7 +1682,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance rénale sévère",
+      "hyperkaliémie"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Charbon active",
@@ -1281,7 +1700,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "perte de conscience",
+      "occlusion intestinale",
+      "aspiration"
+    ],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Pantoprazole IVSE",
@@ -1294,7 +1719,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie pantoprazole"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Omeprazole IVSE",
@@ -1307,7 +1736,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie oméprazole"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Acide tranexamique",
@@ -1320,7 +1753,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "thrombose veineuse",
+      "insuffisance rénale sévère",
+      "hématurie"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Captopril",
@@ -1333,7 +1772,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hyperkaliémie",
+      "grossesse",
+      "insuffisance rénale bilatérale",
+      "allergie captopril"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Valsartan",
@@ -1346,7 +1792,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "grossesse",
+      "hyperkaliémie",
+      "allergie valsartan"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Diltiazem",
@@ -1359,7 +1811,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance cardiaque",
+      "bloc AV",
+      "bradycardie",
+      "allergie diltiazem"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Verapamil",
@@ -1372,7 +1831,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance cardiaque",
+      "bloc AV",
+      "bradycardie",
+      "allergie vérapamil"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Nifedipine",
@@ -1385,7 +1851,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance cardiaque",
+      "hypotension sévère",
+      "allergie nifédipine"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Cefotaxime",
@@ -1399,7 +1871,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie céphalosporine",
+      "allergie pénicilline sévère"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Azithromycine",
@@ -1413,7 +1890,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie macrolide",
+      "allongement QT"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Clarithromycine",
@@ -1427,7 +1909,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie macrolide",
+      "insuffisance hépatique",
+      "allongement QT"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Cotrimoxazole",
@@ -1441,7 +1929,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie sulfamide",
+      "insuffisance rénale sévère",
+      "hyperkaliémie"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Linézolide",
@@ -1455,7 +1949,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie linézolide",
+      "prise IMAO",
+      "hypertension non contrôlée"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Phenoxymethylpenicilline",
@@ -1468,7 +1968,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie pénicilline"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Benzylpenicilline",
@@ -1481,7 +1985,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie pénicilline"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Acyclovir",
@@ -1500,7 +2008,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie acyclovir",
+      "insuffisance rénale (adapter dose)"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Hydroxychloroquine",
@@ -1513,7 +2026,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie hydroxychloroquine",
+      "rétinopathie",
+      "allongement QT"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Methotrexate",
@@ -1533,7 +2052,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance hépatique",
+      "insuffisance rénale",
+      "grossesse",
+      "allergie methotrexate"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Allopurinol",
@@ -1552,7 +2078,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie allopurinol",
+      "crise de goutte aiguë (ne pas initier)"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Colchicine",
@@ -1565,7 +2096,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance rénale sévère",
+      "insuffisance hépatique",
+      "grossesse",
+      "allergie colchicine"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Fer",
@@ -1584,7 +2122,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hémochromatose",
+      "hémolyse"
+    ],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Acide folique",
@@ -1597,7 +2140,9 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Cyanocobalamine",
@@ -1610,7 +2155,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "allergie cyanocobalamine"
+    ],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Ergocalciferol",
@@ -1623,7 +2172,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hypercalcémie",
+      "allergie vitamine D"
+    ],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Levodopa",
@@ -1642,7 +2196,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "psychiatrique sévère",
+      "glaucome fermé",
+      "allergie lévodopa",
+      "inhibiteur MAO"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Donepezil",
@@ -1661,7 +2222,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "asthme",
+      "bloc AV",
+      "ulcère gastrique",
+      "allergie donépézil"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Fludrocortisone",
@@ -1674,7 +2242,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "infection non contrôlée",
+      "hypertension sévère",
+      "allergie fludrocortisone"
+    ],
+    "niveau": "adjuvant"
   },
   {
     "nom": "L-thyroxine",
@@ -1693,7 +2267,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "thyrotoxicose",
+      "infarctus récent",
+      "allergie l-thyroxine"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Fenofibrate",
@@ -1706,7 +2286,13 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance rénale sévère",
+      "insuffisance hépatique",
+      "allergie fénofibrate"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Atorvastatine",
@@ -1731,7 +2317,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance hépatique",
+      "grossesse",
+      "allergie atorvastatine",
+      "myopathie"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Rosuvastatine",
@@ -1750,7 +2343,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance hépatique",
+      "grossesse",
+      "allergie rosuvastatine",
+      "myopathie"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Simvastatine",
@@ -1763,7 +2363,14 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance hépatique",
+      "grossesse",
+      "allergie simvastatine",
+      "myopathie"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Perfusion Glucose 5%",
@@ -1782,7 +2389,9 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [],
+    "niveau": "adjuvant"
   },
   {
     "nom": "Perfusion NaCl 0,9%",
@@ -1801,7 +2410,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "insuffisance cardiaque décompensée"
+    ],
+    "niveau": "1ere"
   },
   {
     "nom": "Perfusion Ringer lactate",
@@ -1820,7 +2433,12 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hyperkaliémie",
+      "insuffisance hépatique sévère"
+    ],
+    "niveau": "2eme"
   },
   {
     "nom": "Perfusion G5% + NaCl + KCl",
@@ -1833,6 +2451,11 @@
         ]
       }
     ],
-    "alias": []
+    "alias": [],
+    "contreIndications": [
+      "hyperkaliémie",
+      "insuffisance rénale"
+    ],
+    "niveau": "adjuvant"
   }
 ]
