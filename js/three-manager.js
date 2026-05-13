@@ -346,11 +346,28 @@ class ThreeManager {
                 return;
             }
             if (this.currentCase) {
-                const measurement = this.scene.instruments.showMeasurement(instrument, this.currentCase);
-                if (measurement) {
-                    this.recordMeasurement(instrument.key, measurement);
-                    if (this.hud) {
-                        this.hud.showNotification(`${measurement.label} : ${measurement.value}`, 'info');
+                // Animation: l'instrument vole vers le patient, mesure, puis revient
+                const instrGroup = this.scene.instruments?.meshes?.get(instrument.id);
+                if (instrGroup) {
+                    this._animateInstrumentToPatient(instrGroup, instrument, () => {
+                        const measurement = this.scene.instruments.showMeasurement(instrument, this.currentCase);
+                        if (measurement) {
+                            this.recordMeasurement(instrument.key, measurement);
+                            if (this.hud) {
+                                this.hud.showNotification(`${measurement.label} : ${measurement.value}`, 'info');
+                            }
+                        }
+                        // Recharger le panneau PC pour afficher la constante mesurée
+                        this._populatePCPanel();
+                    });
+                } else {
+                    // Fallback: mesurer directement
+                    const measurement = this.scene.instruments.showMeasurement(instrument, this.currentCase);
+                    if (measurement) {
+                        this.recordMeasurement(instrument.key, measurement);
+                        if (this.hud) {
+                            this.hud.showNotification(`${measurement.label} : ${measurement.value}`, 'info');
+                        }
                     }
                 }
             } else {
@@ -362,6 +379,65 @@ class ThreeManager {
         } else {
             arriveAndMeasure();
         }
+    }
+
+    /**
+     * Anime un instrument 3D vers le patient pour effectuer une mesure
+     * L'instrument vole vers le patient, fait une pause, puis revient à sa place
+     */
+    _animateInstrumentToPatient(instrGroup, instrument, callback) {
+        if (!instrGroup) { callback?.(); return; }
+
+        // Position actuelle de l'instrument
+        const startPos = instrGroup.position.clone();
+        // Position cible: vers le patient (torse)
+        const endPos = new THREE.Vector3(2.0, 1.2, -1.3);
+
+        const duration = 600; // ms vol aller
+        const pauseDuration = 400; // ms pause sur le patient
+        const returnDuration = 500; // ms vol retour
+
+        const startTime = performance.now();
+        const self = this;
+
+        // Phase 1: Vol vers le patient
+        function flyOut(now) {
+            const t = Math.min(1, (now - startTime) / duration);
+            const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            instrGroup.position.lerpVectors(startPos, endPos, ease);
+            // Léger arc vers le haut
+            instrGroup.position.y = startPos.y + (endPos.y - startPos.y) * ease + Math.sin(ease * Math.PI) * 0.3;
+            // Léger rotation pendant le vol
+            instrGroup.rotation.y = ease * Math.PI * 0.15;
+            if (t < 1) {
+                requestAnimationFrame(flyOut);
+            } else {
+                // Pause sur le patient (mesure en cours)
+                if (self.hud) {
+                    self.hud.showNotification(`⏱ Mesure en cours...`, 'info');
+                }
+                setTimeout(() => {
+                    // Phase 2: Retour à la position initiale
+                    const returnStart = performance.now();
+                    function flyBack(now) {
+                        const t2 = Math.min(1, (now - returnStart) / returnDuration);
+                        const ease2 = t2 < 0.5 ? 2 * t2 * t2 : 1 - Math.pow(-2 * t2 + 2, 3) / 2;
+                        instrGroup.position.lerpVectors(endPos, startPos, ease2);
+                        instrGroup.position.y = endPos.y + (startPos.y - endPos.y) * ease2 + Math.sin(ease2 * Math.PI) * 0.15;
+                        instrGroup.rotation.y = (1 - ease2) * Math.PI * 0.15;
+                        if (t2 < 1) {
+                            requestAnimationFrame(flyBack);
+                        } else {
+                            instrGroup.position.copy(startPos);
+                            instrGroup.rotation.y = 0;
+                            callback?.();
+                        }
+                    }
+                    requestAnimationFrame(flyBack);
+                }, pauseDuration);
+            }
+        }
+        requestAnimationFrame(flyOut);
     }
 
     goToPC() {
@@ -499,12 +575,26 @@ class ThreeManager {
         if (clinicalEl && currentCase.examenClinique) {
             const ec = currentCase.examenClinique;
             const c = ec.constantes || {};
+            const measuredKeys = Array.from(this.measured);
+            // N'afficher que les constantes qui ont été mesurées par le joueur
+            const vitalDefs = [
+                { key: 'tension', label: 'TA', value: c.tension },
+                { key: 'saturationO2', label: 'SpO\u2082', value: c.saturationO2 },
+                { key: 'temperature', label: 'T\u00b0', value: c.temperature },
+                { key: 'pouls', label: 'FC', value: c.pouls },
+                { key: 'frequenceRespiratoire', label: 'FR', value: c.frequenceRespiratoire },
+                { key: 'glycemie', label: 'Glyc\u00e9mie', value: c.glycemie || c.glycemieCapillaire }
+            ];
             let html = '<div class="pc-vitals-grid">';
-            html += `<div class="pc-vital"><span class="pc-vital-label">TA</span><span class="pc-vital-value">${c.tension || '--'}</span></div>`;
-            html += `<div class="pc-vital"><span class="pc-vital-label">FC</span><span class="pc-vital-value">${c.pouls || '--'}</span></div>`;
-            html += `<div class="pc-vital"><span class="pc-vital-label">SpO₂</span><span class="pc-vital-value">${c.saturationO2 || '--'}</span></div>`;
-            html += `<div class="pc-vital"><span class="pc-vital-label">T°</span><span class="pc-vital-value">${c.temperature || '--'}</span></div>`;
-            html += `<div class="pc-vital"><span class="pc-vital-label">FR</span><span class="pc-vital-value">${c.frequenceRespiratoire || '--'}</span></div>`;
+            for (const v of vitalDefs) {
+                if (measuredKeys.includes(v.key)) {
+                    // Constante mesurée → afficher la valeur
+                    html += `<div class="pc-vital"><span class="pc-vital-label">${v.label}</span><span class="pc-vital-value">${v.value || '--'}</span></div>`;
+                } else {
+                    // Constante non mesurée → afficher "?"
+                    html += `<div class="pc-vital pc-vital-unknown"><span class="pc-vital-label">${v.label}</span><span class="pc-vital-value" style="color:rgba(255,255,255,0.3);">?</span></div>`;
+                }
+            }
             html += '</div>';
             if (ec.aspectGeneral) html += `<p class="pc-aspect">${ec.aspectGeneral}</p>`;
             clinicalEl.innerHTML = html;

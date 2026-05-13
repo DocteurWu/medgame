@@ -9,7 +9,12 @@ const CONFIG = {
 
     // Supabase Configuration
     SUPABASE_URL: 'https://jxhzjetxquimmkpzlfyh.supabase.co',
-    SUPABASE_KEY: 'sb_publishable_Nqjp4eF3ytr3VDciqX8dvA_JhdVP0G0'
+    SUPABASE_KEY: 'sb_publishable_Nqjp4eF3ytr3VDciqX8dvA_JhdVP0G0',
+
+    // LLM Chat API — proxy local (bypass CORS)
+    LLM_API_URL: '/api/llm/chat/completions',
+    LLM_API_KEY: 'a41d4311db554326b4772fb7aeb668db.B-aEaCjngGyAtwajoK1ZQnok',
+    LLM_MODEL: 'deepseek-v4-flash'
 };
 
 // Global Supabase Client Initialization

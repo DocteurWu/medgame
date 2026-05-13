@@ -2156,6 +2156,11 @@ body.render-3d-full .immersive-mode-btn {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.pc-vital.pc-vital-unknown {
+    opacity: 0.5;
+    border-style: dashed;
+}
+
 .pc-vital-label {
     font-size: 0.65rem;
     text-transform: uppercase;
