@@ -70,10 +70,10 @@ Réponds en français, en 1 à 4 phrases.
             const endpoint = window.CONFIG?.OLLAMA_CHAT_URL || 'http://localhost:11434/api/chat';
             const model = window.CONFIG?.OLLAMA_MODEL || 'deepseek-r1:latest';
             const isOpenAI = endpoint.includes('/v1/');
+            // this.messages contient déjà le message user (ajouté dans ask())
             const messages = [
                 { role: 'system', content: this.buildSystemPrompt() },
-                ...this.messages.slice(-8),
-                { role: 'user', content: question }
+                ...this.messages.slice(-8)
             ];
             const payload = isOpenAI
                 ? { model, messages, stream: false }

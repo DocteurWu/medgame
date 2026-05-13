@@ -639,6 +639,9 @@ class ThreeManager {
     }
 }
 
+// Export de la classe pour compatibilité ES modules
+export { ThreeManager };
+
 // Singleton global — disponible pour game.js via window.threeManager
 window.threeManager = new ThreeManager();
 
