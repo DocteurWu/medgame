@@ -524,7 +524,18 @@ export class ThreeHUD {
         });
 
         this._observePatientChat();
-        this._showPatientBubble('👋 Bonjour docteur...');
+
+        // Définir l'expression initiale du patient à l'ouverture du dialogue
+        // à partir des données du cas (douleur, anxiété, etc.)
+        this._applyFacialExpression(caseData?.patient?.expression || 'normal', 0.4);
+
+        // Message d'accueil contextuel — adapté au motif d'hospitalisation
+        const motif = caseData?.interrogatoire?.motifHospitalisation || '';
+        const welcomeEmoji = motif ? '🏥' : '👋';
+        const welcomeText = motif
+            ? `${welcomeEmoji} Bonjour docteur, je suis là pour : ${motif}`
+            : '👋 Bonjour docteur...';
+        this._showPatientBubble(welcomeText, 4000);
     }
 
     /**
@@ -578,7 +589,7 @@ export class ThreeHUD {
      * @param {string} text - Texte à afficher dans la bulle
      * @param {number} duration - Durée en ms (défaut 3000)
      */
-    _showPatientBubble(text, duration = 3000) {
+    _showPatientBubble(text, duration = 3000, accentColor = null) {
         // Supprimer l'ancienne bulle si présente
         const oldBubble = document.getElementById('patient-bubble-3d');
         if (oldBubble) oldBubble.remove();
@@ -586,9 +597,14 @@ export class ThreeHUD {
         const bubble = document.createElement('div');
         bubble.id = 'patient-bubble-3d';
         bubble.className = 'patient-bubble-3d';
+        // Appliquer la couleur d'accent sentimentale si fournie
+        if (accentColor) {
+            bubble.style.borderColor = accentColor + '55';
+            bubble.style.boxShadow = `0 4px 24px ${accentColor}22, 0 0 0 1px ${accentColor}15`;
+        }
         bubble.innerHTML = `
             <div class="patient-bubble-content">${text}</div>
-            <div class="patient-bubble-tail"></div>
+            <div class="patient-bubble-tail" ${accentColor ? `style="border-top-color:${accentColor}cc"` : ''}></div>
         `;
 
         // Insérer la bulle dans le HUD 3D
@@ -612,7 +628,7 @@ export class ThreeHUD {
         }, duration);
 
         // Déclencher l'expression "parle" sur le patient 3D
-        this._triggerPatientExpression('talking');
+        this._applyFacialExpression('talking');
     }
 
     /**
@@ -646,6 +662,93 @@ export class ThreeHUD {
         }
     }
 
+    // ==================== ANALYSE DE SENTIMENT ====================
+
+    /**
+     * Analyse le sentiment d'une réponse du patient et retourne une émotion + emoji + couleur.
+     * Mots-clés français classés par catégorie émotionnelle.
+     * @param {string} text — Réponse brute du patient
+     * @returns {{ expression: string, emoji: string, color: string, category: string }}
+     */
+    _analyzeSentiment(text) {
+        const t = (text || '').toLowerCase();
+        const accents = { 'é': 'e', 'è': 'e', 'ê': 'e', 'ë': 'e', 'à': 'a', 'â': 'a', 'ù': 'u', 'û': 'u', 'ü': 'u', 'î': 'i', 'ï': 'i', 'ô': 'o', 'ç': 'c' };
+        const normalize = s => s.replace(/[éèêëàâùûüîïôç]/g, c => accents[c] || c);
+        const n = normalize(t);
+
+        // DOULEUR — priorité maximale
+        const douleurWords = ['douleur', 'mal', 'douloureux', 'souffre', 'aie', 'aïe', 'brulure', 'brulent', 'brûle', 'brûlent', 'crampes', 'poignarde', 'serre', 'oppress', 'crampe', 'lancinant', 'lancinante', 'insupportable', 'atroce', 'violente', 'fort'];
+        if (douleurWords.some(w => n.includes(w))) {
+            return { expression: 'douleur', emoji: '😣', color: '#ff6b6b', category: 'douleur' };
+        }
+
+        // ANXIÉTÉ / PEUR
+        const anxieteWords = ['inquiet', 'inquiète', 'peur', 'angoisse', 'angoissé', 'angoissée', 'anxieux', 'anxieuse', 'stress', 'stressé', 'stressée', 'nerveux', 'nerveuse', 'paniqu', 'appréhend', 'trembl', 'effrayé', 'effrayée', 'effroi', 'terreur', 'terrifié', 'angoiss'];
+        if (anxieteWords.some(w => n.includes(w))) {
+            return { expression: 'anxieux', emoji: '😰', color: '#ffa94d', category: 'anxiete' };
+        }
+
+        // SOULAGEMENT / POSITIF
+        const soulagWords = ['merci', 'soulagé', 'soulagée', 'mieux', 'content', 'contente', 'heureux', 'heureuse', 'rassuré', 'rassurée', 'genial', 'génial', 'super', 'bien', 'parfait', 'excellent', 'agreable', 'agréable', 'sourire', 'content', 'reconnaissant', 'reconnaissante', 'remerci', 'confiance'];
+        if (soulagWords.some(w => n.includes(w))) {
+            return { expression: 'sourire', emoji: '😊', color: '#51cf66', category: 'soulagement' };
+        }
+
+        // CYANOSE / DETRESSE RESPIRATOIRE
+        const cyanoWords = ['cyanose', 'cyanotique', 'bleu', 'bleuatre', 'bleuâtre', 'suffoque', 'dyspnée', 'dyspnee', 'essoufflé', 'essoufflée', 'halète', 'halete', 'respir', 'difficile'];
+        if (cyanoWords.some(w => n.includes(w))) {
+            return { expression: 'cyanose', emoji: '😶‍🌫️', color: '#748ffc', category: 'cyanose' };
+        }
+
+        // FIÈVRE
+        const fievreWords = ['fievre', 'fièvre', 'fiévreux', 'fiévreuse', 'fièvreux', 'chaud', 'brulant', 'brûlant', 'frissons', 'frisson', 'thermo', 'temperature', 'température', 'celsius', 'trop chaud', 'transpir', 'sueur', 'sueur', 'sue'];
+        if (fievreWords.some(w => n.includes(w))) {
+            return { expression: 'fievre', emoji: '🤒', color: '#ff8787', category: 'fievre' };
+        }
+
+        // SURPRISE
+        const surpriseWords = ['ah', 'oh', 'vraiment', 'surpris', 'surprise', 'etonné', 'étonné', 'etonnée', 'étonnée', 'incroyable', 'je ne savais pas', 'je ne m\'attendais', 'inattendu'];
+        if (surpriseWords.some(w => n.includes(w))) {
+            return { expression: 'etonne', emoji: '😲', color: '#fcc419', category: 'surprise' };
+        }
+
+        // TRISTESSE / ABDOMEN
+        const tristeWords = ['triste', 'desole', 'désolé', 'desolée', 'désolée', 'malheureux', 'malheureuse', 'chagrin', 'pleur', 'deprimé', 'déprimé', 'deprimee', 'déprimée', 'fatigué', 'fatiguée', 'epuisé', 'épuisé', 'epuisée', 'épuisée', 'nausees', 'nausées', 'nauséeux', 'nauséeuse', 'vomi', 'vomissement'];
+        if (tristeWords.some(w => n.includes(w))) {
+            return { expression: 'pale', emoji: '😟', color: '#adb5bd', category: 'tristesse' };
+        }
+
+        // NEUTRE — par défaut (réponses informatives courtes)
+        return { expression: 'normal', emoji: '💬', color: '#00f2fe', category: 'neutre' };
+    }
+
+    /**
+     * Applique une expression faciale au patient 3D via le PatientAnimator.
+     * Utilise setExpression() pour une transition douce, avec fallback direct.
+     * @param {string} expression — nom de l'expression ('douleur', 'anxieux', 'sourire', etc.)
+     * @param {number} duration — durée de transition en secondes (défaut 0.6)
+     */
+    _applyFacialExpression(expression, duration = 0.6) {
+        const scene = this.manager?.scene;
+        if (!scene?.patientAnimator) {
+            // Fallback : animation directe par _triggerPatientExpression
+            this._triggerPatientExpression(expression);
+            return;
+        }
+        scene.patientAnimator.setExpression(expression, duration);
+    }
+
+    /**
+     * Rétablit l'expression par défaut du patient (basée sur les données du cas).
+     */
+    _resetFacialExpression() {
+        const caseData = this.manager?.currentCase || window.gameState?.currentCase;
+        const defaultExpression = caseData?.patient?.expression || 'normal';
+        this._applyFacialExpression(defaultExpression, 1.0);
+    }
+
+    // ==================== OBSERVATION DU CHAT PATIENT ====================
+
     _observePatientChat() {
         if (this._chatObserver) {
             this._chatObserver.disconnect();
@@ -654,22 +757,30 @@ export class ThreeHUD {
         const messages3d = document.getElementById('dialog-messages-3d');
         if (!messages3d) return;
 
-        const pushMessage = (speaker, text) => {
+        const pushMessage = (speaker, text, sentiment = null) => {
             const row = document.createElement('div');
             row.className = speaker === 'Vous' ? 'from-user' : 'from-patient';
 
             if (speaker !== 'Vous') {
-                // Message du patient — avec style bulle
+                // Analyse automatique du sentiment si non fournie
+                const sent = sentiment || this._analyzeSentiment(text);
+
+                // Message du patient — avec émotion et bulle colorée
+                const emotionTag = `<span class="dialog-emotion-tag" style="background:${sent.color}22;color:${sent.color};border:1px solid ${sent.color}44;border-radius:6px;padding:1px 6px;font-size:0.75rem;margin-left:6px;vertical-align:middle;">${sent.emoji}</span>`;
                 row.innerHTML = `
                     <div class="dialog-msg-patient">
-                        <span class="dialog-msg-avatar">🩺</span>
-                        <div class="dialog-msg-bubble">
+                        <span class="dialog-msg-avatar">${sent.emoji}</span>
+                        <div class="dialog-msg-bubble" style="border-left:3px solid ${sent.color};">
                             <span class="dialog-msg-text">${typeof text === 'string' ? text : text}</span>
                         </div>
                     </div>
                 `;
                 // Animer l'expression du patient pendant la réponse
-                this._triggerPatientExpression('talking');
+                this._applyFacialExpression('talking');
+                // Puis transitionner vers l'émotion du sentiment après la réponse
+                setTimeout(() => {
+                    this._applyFacialExpression(sent.expression, 0.8);
+                }, 1500);
             } else {
                 // Message du joueur
                 row.innerHTML = `
@@ -679,6 +790,8 @@ export class ThreeHUD {
                         </div>
                     </div>
                 `;
+                // Le docteur parle → le patient écoute (expression neutre ou attentive)
+                this._applyFacialExpression('normal', 0.4);
             }
             messages3d.appendChild(row);
             messages3d.scrollTop = messages3d.scrollHeight;
@@ -691,13 +804,33 @@ export class ThreeHUD {
             this._origChatAppend = chat.append;
             chat.append = (speaker, text, returnTextNode) => {
                 const textContent = typeof text === 'string' ? text : text.textContent || '';
-                pushMessage(speaker, textContent);
-                // Afficher une bulle flottante quand le patient répond
+                const sentiment = speaker !== 'Vous' ? this._analyzeSentiment(textContent) : null;
+                pushMessage(speaker, textContent, sentiment);
+                // Afficher une bulle flottante avec émotion quand le patient répond
                 if (speaker !== 'Vous' && textContent) {
                     const shortText = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
-                    this._showPatientBubble(shortText, 4000);
+                    const sent = sentiment || this._analyzeSentiment(textContent);
+                    this._showPatientBubble(`${sent.emoji} ${shortText}`, 4500, sent.color);
                 }
                 return origAppend(speaker, text, returnTextNode);
+            };
+        }
+
+        // Afficher l'indicateur "réflexion" pendant que l'IA répond
+        const origAsk = chat?.ask?.bind(chat);
+        if (origAsk) {
+            chat.ask = (question) => {
+                // Afficher l'animation de réflexion du patient
+                this._showThinkingIndicator();
+                const result = origAsk(question);
+                // Si la réponse est une Promise, masquer l'indicateur quand elle résout
+                if (result && typeof result.then === 'function') {
+                    result.finally(() => this._hideThinkingIndicator());
+                } else {
+                    // Fallback : cacher après un délai
+                    setTimeout(() => this._hideThinkingIndicator(), 3000);
+                }
+                return result;
             };
         }
 
@@ -748,6 +881,48 @@ export class ThreeHUD {
         input?.addEventListener('keypress', this._keyHandler);
     }
 
+    // ==================== INDICATEUR DE RÉFLEXION ====================
+
+    /**
+     * Affiche un indicateur animé de "réflexion" (points de suspension animés)
+     * au-dessus du patient 3D et change l'expression vers "attentive".
+     */
+    _showThinkingIndicator() {
+        this._hideThinkingIndicator(); // Nettoyer l'ancien si présent
+
+        // Expression attentive du patient en attendant la réponse
+        this._applyFacialExpression('anxieux', 0.3); // Yeux davantage ouverts = attentif
+
+        const bubble = document.createElement('div');
+        bubble.id = 'patient-thinking-bubble';
+        bubble.className = 'patient-bubble-3d patient-bubble-visible';
+        bubble.innerHTML = `
+            <div class="patient-bubble-content">
+                <span class="thinking-dots">
+                    <span class="thinking-dot" style="animation-delay: 0s;">●</span>
+                    <span class="thinking-dot" style="animation-delay: 0.3s;">●</span>
+                    <span class="thinking-dot" style="animation-delay: 0.6s;">●</span>
+                </span>
+            </div>
+            <div class="patient-bubble-tail"></div>
+        `;
+
+        const hud = this.hudElement || document.getElementById('three-hud');
+        if (hud) {
+            hud.appendChild(bubble);
+        } else {
+            document.body.appendChild(bubble);
+        }
+    }
+
+    /**
+     * Masque l'indicateur de réflexion.
+     */
+    _hideThinkingIndicator() {
+        const thinking = document.getElementById('patient-thinking-bubble');
+        if (thinking) thinking.remove();
+    }
+
     removeFloatingDialog() {
         // Restore original patientChat.append if we patched it
         if (this._origChatAppend && window.patientChat) {
@@ -756,8 +931,11 @@ export class ThreeHUD {
         }
         const existing = document.getElementById('floating-dialog');
         if (existing) existing.remove();
-        // Nettoyer aussi la bulle patient
+        // Nettoyer aussi la bulle patient et l'indicateur de réflexion
         const bubble = document.getElementById('patient-bubble-3d');
         if (bubble) bubble.remove();
+        this._hideThinkingIndicator();
+        // Rétablir l'expression par défaut du patient
+        this._resetFacialExpression();
     }
 }

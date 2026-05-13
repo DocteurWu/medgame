@@ -3100,7 +3100,47 @@ body.urgence-3d-active {
     }
 }
 
-/* Icône avatar dans l'en-tête du dialogue */
+/* ==================== THINKING DOTS ANIMATION ==================== */
+
+.thinking-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1rem;
+    color: rgba(0, 242, 254, 0.8);
+}
+
+.thinking-dot {
+    animation: thinkingPulse 1.4s infinite ease-in-out;
+    opacity: 0.3;
+}
+
+@keyframes thinkingPulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-4px);
+    }
+}
+
+/* ==================== DIALOG EMOTION TAGS ==================== */
+
+.dialog-emotion-tag {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    font-size: 0.7rem;
+}
+
+/* Patient message bubble — left-border sentiment color */
+.dialog-msg-bubble[style*="border-left"] {
+    padding-left: 10px;
+}
+
+/* ==================== Icône avatar dans l'en-tête du dialogue ==================== */
 .dialog-speaker-icon {
     font-size: 0.9rem;
 }
