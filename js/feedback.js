@@ -215,7 +215,7 @@ function generatePedagogicalExplanation(compositeResult, currentCase) {
     } else if (treat >= 80 && correctTreatments.length > 0) {
         paragraphs.push(`<strong>Traitement ✅</strong> — Votre prescription était adaptée. ${getTreatmentExplanation(currentCase, false)}`);
     } else if (treat > 0 && correctTreatments.length > 0) {
-        const missed = correctTreatments.filter(t => !(compositeResult.selectedDiagnostic || '').includes(t) && !scoringState.selectedTreatments.includes(t));
+        const missed = correctTreatments.filter(t => !scoringState.selectedTreatments.includes(t));
         const missedLabel = missed.length > 0 ? `Il manquait : <em>${escapeHtml(missed.join(', '))}</em>.` : '';
         paragraphs.push(`<strong>Traitement ⚠️</strong> — Votre prescription était partielle. ${missedLabel} ${getTreatmentExplanation(currentCase, false)}`);
     } else if (correctTreatments.length > 0) {
@@ -364,7 +364,6 @@ function getAnonymousComparison(compositeResult, caseId) {
     const sessions = stats[caseId];
     const total = sessions.length;
     const sortedScores = sessions.map(s => s.score).sort((a, b) => b - a);
-    const rank = sortedScores.indexOf(compositeResult.compositeScore) + 1;
 
     // Calculer le rang en tenant compte des ex-aequo
     let actualRank = 1;
