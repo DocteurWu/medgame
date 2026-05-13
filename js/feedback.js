@@ -110,24 +110,40 @@ function analyzePerformance(compositeResult, currentCase) {
         }
     }
 
-    // --- Diagnostic ---
+    // --- Diagnostic --- (amélioré : scoring progressif 15/30/60/80/100)
     if (b.diagnostic.score >= 80) {
         strengths.push('Diagnostic correct — bon raisonnement clinique');
-    } else if (b.diagnostic.score >= 40) {
-        tips.push('Votre diagnostic était proche, mais pas tout à fait exact. Revoyez les signes discriminants.');
+    } else if (b.diagnostic.score >= 60) {
+        strengths.push('Diagnostic proche — bon raisonnement mais pas le terme exact');
+        tips.push('Votre diagnostic était dans la bonne direction. Revoyez les signes discriminants pour affiner.');
+    } else if (b.diagnostic.score >= 30) {
+        tips.push('Votre diagnostic était proche de la bonne catégorie, mais le terme précis était différent. Revoyez les signes discriminants.');
+    } else if (b.diagnostic.score > 0 && b.diagnostic.score < 30) {
+        weaknesses.push('Diagnostic partiel — vous avez identifié la spécialité mais pas le diagnostic précis');
+        tips.push('Concentrez-vous sur les éléments clés de l\'anamnèse et de l\'examen qui différencient les diagnostics d\'une même spécialité.');
     } else if (b.diagnostic.score === 0) {
         weaknesses.push('Diagnostic incorrect — revoir la sémiologie et les orientations diagnostiques');
         tips.push('Concentrez-vous sur les éléments clés de l\'anamnèse et de l\'examen qui orientent le diagnostic');
     }
 
-    // --- Traitement ---
+    // --- Traitement --- (amélioré : distinguer 1ère/2ème intention)
     if (compositeResult.hasFatalError) {
         weaknesses.push('ERREUR FATALE : traitement contre-indiqué prescrit');
         tips.push('Vérifiez toujours les contre-indications avant de prescrire. En clinique, une erreur peut être mortelle.');
     } else if (b.traitement.score >= 80) {
-        strengths.push('Traitement bien ciblé et complet');
+        if (compositeResult.treatmentDetails && compositeResult.treatmentDetails.firstLineHit &&
+            compositeResult.treatmentDetails.firstLineHit.length > 0) {
+            strengths.push('Traitement de 1ère intention prescrit correctement');
+        } else {
+            strengths.push('Traitement bien ciblé et complet');
+        }
     } else if (b.traitement.score >= 40) {
-        tips.push('Le traitement était partiellement correct. Révisez les protocoles de prise en charge.');
+        const td = compositeResult.treatmentDetails;
+        if (td && td.secondLineHit && td.secondLineHit.length > 0 && td.firstLineHit && td.firstLineHit.length === 0) {
+            tips.push('Vous avez prescrit un traitement de 2ème intention acceptable, mais le protocole de référence (1ère intention) serait préférable.');
+        } else {
+            tips.push('Le traitement était partiellement correct. Révisez les protocoles de prise en charge.');
+        }
     } else {
         weaknesses.push('Traitement inadapté — la prise en charge thérapeutique est à revoir');
     }
