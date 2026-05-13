@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { easeInOut } from './three-animations.js';
+import { DoctorAnimator } from './three-animations.js';
 
 export class CharacterController {
     constructor(scene) {
@@ -7,7 +8,9 @@ export class CharacterController {
         this.group = this.createDoctor();
         this.scene.add(this.group);
         this.group.position.set(0, 0, 2.6);
+        this.group.name = 'Doctor';
         this.isMoving = false;
+        this.animator = new DoctorAnimator(this.group);
     }
 
     createDoctor() {
@@ -181,6 +184,7 @@ export class CharacterController {
         const startTime = performance.now();
         this.isMoving = true;
         this.group.lookAt(end.x, this.group.position.y, end.z);
+        this.animator.startWalking();
 
         const step = (now) => {
             const t = Math.min(1, (now - startTime) / duration);
@@ -192,6 +196,7 @@ export class CharacterController {
             } else {
                 this.group.position.copy(end);
                 this.isMoving = false;
+                this.animator.stopWalking();
                 if (onArrive) onArrive();
             }
         };
