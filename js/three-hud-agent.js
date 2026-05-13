@@ -346,7 +346,8 @@ export class ThreeHUD {
             questions.push({
                 text: `Qu'est-ce qui vous amène à l'hôpital ?`,
                 category: 'motif',
-                icon: 'fa-stethoscope'
+                icon: 'fa-stethoscope',
+                fieldPath: 'interrogatoire.motifHospitalisation'
             });
         }
 
@@ -355,28 +356,32 @@ export class ThreeHUD {
             questions.push({
                 text: `Quand les symptômes ont-ils commencé ?`,
                 category: 'histoire',
-                icon: 'fa-clock'
+                icon: 'fa-clock',
+                fieldPath: 'interrogatoire.histoireMaladie.debutSymptomes'
             });
         }
         if (hm.facteursDeclenchants) {
             questions.push({
                 text: `Qu'est-ce qui déclenche vos symptômes ?`,
                 category: 'histoire',
-                icon: 'fa-bolt'
+                icon: 'fa-bolt',
+                fieldPath: 'interrogatoire.histoireMaladie.facteursDeclenchants'
             });
         }
         if (hm.evolution) {
             questions.push({
                 text: `Comment vos symptômes ont-ils évolué ?`,
                 category: 'histoire',
-                icon: 'fa-chart-line'
+                icon: 'fa-chart-line',
+                fieldPath: 'interrogatoire.histoireMaladie.evolution'
             });
         }
         if (hm.symptomesAssocies && (Array.isArray(hm.symptomesAssocies) ? hm.symptomesAssocies.length > 0 : hm.symptomesAssocies)) {
             questions.push({
                 text: `Avez-vous d'autres symptômes associés ?`,
                 category: 'histoire',
-                icon: 'fa-list-check'
+                icon: 'fa-list-check',
+                fieldPath: 'interrogatoire.histoireMaladie.symptomesAssocies'
             });
         }
 
@@ -385,14 +390,16 @@ export class ThreeHUD {
             questions.push({
                 text: `Avez-vous des antécédents médicaux ?`,
                 category: 'antécédents',
-                icon: 'fa-notes-medical'
+                icon: 'fa-notes-medical',
+                fieldPath: 'interrogatoire.antecedents.medicaux'
             });
         }
         if (antec.familiaux && antec.familiaux.length > 0) {
             questions.push({
                 text: `Y a-t-il des maladies dans votre famille ?`,
                 category: 'antécédents',
-                icon: 'fa-people-group'
+                icon: 'fa-people-group',
+                fieldPath: 'interrogatoire.antecedents.familiaux'
             });
         }
 
@@ -401,7 +408,8 @@ export class ThreeHUD {
             questions.push({
                 text: `Prenez-vous des médicaments actuellement ?`,
                 category: 'traitements',
-                icon: 'fa-pills'
+                icon: 'fa-pills',
+                fieldPath: 'interrogatoire.traitements'
             });
         }
 
@@ -410,7 +418,8 @@ export class ThreeHUD {
             questions.push({
                 text: `Avez-vous des allergies ?`,
                 category: 'allergies',
-                icon: 'fa-triangle-exclamation'
+                icon: 'fa-triangle-exclamation',
+                fieldPath: 'interrogatoire.allergies'
             });
         }
 
@@ -419,21 +428,24 @@ export class ThreeHUD {
             questions.push({
                 text: `Fumez-vous ? Si oui, combien ?`,
                 category: 'mode de vie',
-                icon: 'fa-smoking'
+                icon: 'fa-smoking',
+                fieldPath: 'interrogatoire.modeDeVie.tabac'
             });
         }
         if (mdv.alcool) {
             questions.push({
                 text: `Consommez-vous de l'alcool ?`,
                 category: 'mode de vie',
-                icon: 'fa-wine-glass'
+                icon: 'fa-wine-glass',
+                fieldPath: 'interrogatoire.modeDeVie.alcool.quantite'
             });
         }
         if (mdv.activitePhysique) {
             questions.push({
                 text: `Quelle est votre activité physique ?`,
                 category: 'mode de vie',
-                icon: 'fa-person-running'
+                icon: 'fa-person-running',
+                fieldPath: 'interrogatoire.modeDeVie.activitePhysique.description'
             });
         }
 
@@ -442,7 +454,8 @@ export class ThreeHUD {
             questions.push({
                 text: `Comment vous sentez-vous en ce moment ?`,
                 category: 'examen',
-                icon: 'fa-heart-pulse'
+                icon: 'fa-heart-pulse',
+                fieldPath: 'interrogatoire.histoireMaladie.symptomesActuels'
             });
         }
 
@@ -481,7 +494,7 @@ export class ThreeHUD {
                     </div>
                     <div class="dialog-suggestions-list" id="dialog-suggestions-list-3d">
                         ${suggestions.map((s, i) => `
-                            <button class="dialog-suggestion-btn" data-suggestion-index="${i}" data-category="${s.category}">
+                            <button class="dialog-suggestion-btn" data-suggestion-index="${i}" data-category="${s.category}" data-field-path="${s.fieldPath || ''}">
                                 <i class="fas ${s.icon}"></i>
                                 <span>${s.text}</span>
                             </button>
@@ -519,7 +532,8 @@ export class ThreeHUD {
         suggestionBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const text = btn.querySelector('span')?.textContent || btn.textContent;
-                this._askSuggestedQuestion(text, btn);
+                const fieldPath = btn.dataset.fieldPath || '';
+                this._askSuggestedQuestion(text, btn, fieldPath);
             });
         });
 
@@ -541,7 +555,7 @@ export class ThreeHUD {
     /**
      * Poser une question suggérée — clique le bouton, désactive-le, et envoie la question.
      */
-    _askSuggestedQuestion(text, btnEl) {
+    _askSuggestedQuestion(text, btnEl, fieldPath = '') {
         const input = document.getElementById('dialog-input-3d');
         if (input) {
             input.value = text;
@@ -562,6 +576,14 @@ export class ThreeHUD {
         // Déclencher l'envoi
         const sendBtn = document.getElementById('dialog-send-btn');
         if (sendBtn) sendBtn.click();
+
+        // Suivi démarche pour le scoring composite
+        if (fieldPath) {
+            if (typeof trackInterrogatoire === 'function') {
+                trackInterrogatoire(fieldPath);
+            }
+            document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path: fieldPath } }));
+        }
 
         // Marquer dans le suivi démarche
         if (window.scoringState) {

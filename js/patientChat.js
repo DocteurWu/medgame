@@ -48,11 +48,12 @@
             const p = c.patient || {};
             const questions = [];
 
-            // Questions de base toujours disponibles
-            questions.push({
-                q: 'Qu\'est-ce qui vous amène ?',
-                a: i.motifHospitalisation || 'Je ne me sens pas bien docteur, c\'est pour ça qu\'on m\'a amené.'
-            });
+        // Questions de base toujours disponibles
+        questions.push({
+            q: 'Qu\'est-ce qui vous amène ?',
+            a: i.motifHospitalisation || 'Je ne me sens pas bien docteur, c\'est pour ça qu\'on m\'a amené.',
+            fieldPath: 'interrogatoire.motifHospitalisation'
+        });
 
             if (i.histoireMaladie) {
                 if (i.histoireMaladie.debutSymptomes) {
@@ -60,7 +61,8 @@
                         q: 'Depuis quand avez-vous ces symptômes ?',
                         a: i.histoireMaladie.descriptionDouleur
                             ? `Ça a commencé ${i.histoireMaladie.debutSymptomes.toLowerCase()}. ${i.histoireMaladie.descriptionDouleur}.`
-                            : `Ça a commencé ${i.histoireMaladie.debutSymptomes.toLowerCase()}.`
+                            : `Ça a commencé ${i.histoireMaladie.debutSymptomes.toLowerCase()}.`,
+                        fieldPath: 'interrogatoire.histoireMaladie.debutSymptomes'
                     });
                 }
                 if (i.histoireMaladie.symptomesAssocies) {
@@ -69,13 +71,15 @@
                         : i.histoireMaladie.symptomesAssocies;
                     questions.push({
                         q: 'Avez-vous d\'autres symptômes ?',
-                        a: `Oui docteur, j'ai aussi ${symps?.toLowerCase() || 'des choses qui me gênent'}.`
+                        a: `Oui docteur, j'ai aussi ${symps?.toLowerCase() || 'des choses qui me gênent'}.`,
+                        fieldPath: 'interrogatoire.histoireMaladie.symptomesAssocies'
                     });
                 }
                 if (i.histoireMaladie.descriptionDouleur) {
                     questions.push({
                         q: 'Où avez-vous mal ?',
-                        a: i.histoireMaladie.descriptionDouleur
+                        a: i.histoireMaladie.descriptionDouleur,
+                        fieldPath: 'interrogatoire.histoireMaladie.descriptionDouleur'
                     });
                 }
             }
@@ -85,13 +89,15 @@
                 if (atcd.medicaux && atcd.medicaux.length > 0) {
                     questions.push({
                         q: 'Avez-vous des antécédents médicaux ?',
-                        a: `Oui, ${Array.isArray(atcd.medicaux) ? atcd.medicaux.join(', ') : atcd.medicaux}.`
+                        a: `Oui, ${Array.isArray(atcd.medicaux) ? atcd.medicaux.join(', ') : atcd.medicaux}.`,
+                        fieldPath: 'interrogatoire.antecedents.medicaux'
                     });
                 }
                 if (atcd.chirurgicaux && atcd.chirurgicaux.length > 0) {
                     questions.push({
                         q: 'Avez-vous été opéré ?',
-                        a: `Oui, ${Array.isArray(atcd.chirurgicaux) ? atcd.chirurgicaux.join(', ') : atcd.chirurgicaux}.`
+                        a: `Oui, ${Array.isArray(atcd.chirurgicaux) ? atcd.chirurgicaux.join(', ') : atcd.chirurgicaux}.`,
+                        fieldPath: 'interrogatoire.antecedents.chirurgicaux'
                     });
                 }
             }
@@ -105,7 +111,8 @@
                             return liste.map(a => a.allergene ? `Je suis allergique à ${a.allergene}` : 'Je ne sais pas trop').join('. ');
                         }
                         return 'Oui, j\'ai des allergies.';
-                    })()
+                    })(),
+                    fieldPath: 'interrogatoire.allergies'
                 });
             }
 
@@ -114,7 +121,8 @@
                     q: 'Prenez-vous des médicaments ?',
                     a: Array.isArray(i.traitements)
                         ? `Oui, je prends ${i.traitements.join(', ')}.`
-                        : `Oui, ${i.traitements}.`
+                        : `Oui, ${i.traitements}.`,
+                    fieldPath: 'interrogatoire.traitements'
                 });
             }
 
@@ -122,13 +130,22 @@
                 if (i.modeDeVie.tabac) {
                     questions.push({
                         q: 'Fumez-vous ?',
-                        a: `${i.modeDeVie.tabac.quantite || 'Je préfère ne pas en parler.'}`
+                        a: `${i.modeDeVie.tabac.quantite || 'Je préfère ne pas en parler.'}`,
+                        fieldPath: 'interrogatoire.modeDeVie.tabac'
                     });
                 }
                 if (i.modeDeVie.alcool) {
                     questions.push({
                         q: 'Consommez-vous de l\'alcool ?',
-                        a: `${i.modeDeVie.alcool.quantite || 'Occasionnellement.'}`
+                        a: `${i.modeDeVie.alcool.quantite || 'Occasionnellement.'}`,
+                        fieldPath: 'interrogatoire.modeDeVie.alcool.quantite'
+                    });
+                }
+                if (i.modeDeVie.activitePhysique) {
+                    questions.push({
+                        q: 'Quelle est votre activité physique ?',
+                        a: i.modeDeVie.activitePhysique?.description || 'Je ne fais pas beaucoup de sport.',
+                        fieldPath: 'interrogatoire.modeDeVie.activitePhysique.description'
                     });
                 }
             }
@@ -136,7 +153,8 @@
             // Question examen physique
             questions.push({
                 q: 'Comment vous sentez-vous en ce moment ?',
-                a: c.examenClinique?.aspectGeneral || 'Ça va... enfin, c\'est pour ça que je suis là.'
+                a: c.examenClinique?.aspectGeneral || 'Ça va... enfin, c\'est pour ça que je suis là.',
+                fieldPath: 'interrogatoire.histoireMaladie.symptomesActuels'
             });
 
             return questions;
@@ -204,7 +222,7 @@
                     btn.style.borderColor = 'rgba(255,255,255,0.15)';
                 });
                 btn.addEventListener('click', () => {
-                    this.askSuggested(item.q, item.a);
+                    this.askSuggested(item.q, item.a, item.fieldPath);
                     // Fermer le dropdown après clic
                     this.suggestedOpen = false;
                     list.style.display = 'none';
@@ -217,11 +235,19 @@
             container.appendChild(list);
         }
 
-        askSuggested(question, prebuiltAnswer) {
+        askSuggested(question, prebuiltAnswer, fieldPath) {
             if (!question.trim()) return;
             this.append('Vous', question);
             this.messages.push({ role: 'user', content: question });
             if (window.scoringState) window.scoringState.hasAskedPatient = true;
+
+            // Suivi démarche pour le scoring composite — tracer le fieldPath
+            if (fieldPath) {
+                if (typeof trackInterrogatoire === 'function') {
+                    trackInterrogatoire(fieldPath);
+                }
+                document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path: fieldPath } }));
+            }
 
             // Réponse pré-construite : pas d'appel LLM
             this.append('Patient', prebuiltAnswer);
@@ -272,6 +298,13 @@ RÈGLES :
             for (const s of suggestions) {
                 const normalizedS = s.q.toLowerCase().replace(/[?!.,;:'"]/g, '').trim();
                 if (normalizedQ === normalizedS) {
+                    // Suivi démarche pour le scoring composite
+                    if (s.fieldPath) {
+                        if (typeof trackInterrogatoire === 'function') {
+                            trackInterrogatoire(s.fieldPath);
+                        }
+                        document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path: s.fieldPath } }));
+                    }
                     return s.a;
                 }
             }
