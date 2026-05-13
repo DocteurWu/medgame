@@ -86,9 +86,41 @@
                 </div>
                 <div class="hud-nav">
                     <button class="hud-nav-btn" id="hud-btn-chat" title="Discuter avec le patient (P)"><i class="fas fa-comments"></i></button>
-                    <button class="hud-nav-btn" id="hud-btn-pc" title="Dossier médical (PC)"><i class="fas fa-laptop"></i></button>
+                    <button class="hud-nav-btn" id="hud-btn-pc" title="Dossier médical (R)"><i class="fas fa-laptop"></i></button>
                 </div>
                 <div class="hud-timer" id="hud-timer">--:--</div>
+            </div>
+            <!-- Panneau de progression démarche 2D↔3D -->
+            <div id="hud-progress" class="hud-progress">
+                <div class="hud-progress-header">
+                    <span class="hud-progress-title"><i class="fas fa-clipboard-check"></i> Démarche</span>
+                    <span class="hud-score" id="hud-score">0%</span>
+                </div>
+                <div class="hud-score-bar">
+                    <div class="hud-score-fill" id="hud-score-fill"></div>
+                </div>
+                <ul class="hud-checklist" id="hud-checklist">
+                    <li id="hud-check-interrogatoire" class="hud-check-item">
+                        <i class="fas fa-circle hud-check-icon"></i>
+                        <span>Interrogatoire</span>
+                        <span class="hud-check-detail" id="hud-detail-interrogatoire">—</span>
+                    </li>
+                    <li id="hud-check-examen" class="hud-check-item">
+                        <i class="fas fa-circle hud-check-icon"></i>
+                        <span>Examen clinique</span>
+                        <span class="hud-check-detail" id="hud-detail-examen">—</span>
+                    </li>
+                    <li id="hud-check-examens" class="hud-check-item">
+                        <i class="fas fa-circle hud-check-icon"></i>
+                        <span>Examens compl.</span>
+                        <span class="hud-check-detail" id="hud-detail-examens">—</span>
+                    </li>
+                    <li id="hud-check-locks" class="hud-check-item">
+                        <i class="fas fa-circle hud-check-icon"></i>
+                        <span>Défis sémiologiques</span>
+                        <span class="hud-check-detail" id="hud-detail-locks">—</span>
+                    </li>
+                </ul>
             </div>
             <div id="three-tooltip" class="three-tooltip"></div>
         </div>

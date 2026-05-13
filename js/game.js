@@ -1141,6 +1141,8 @@ onDomReady(async () => {
             if (typeof trackExamsOrdered === 'function') {
                 trackExamsOrdered(selectedExams);
             }
+            // Notifier le HUD 3D de la progression
+            document.dispatchEvent(new CustomEvent('exam-ordered', { detail: { exams: selectedExams } }));
             renderExamResults();
             if (validateBtn) validateBtn.disabled = false;
 
@@ -1177,6 +1179,8 @@ onDomReady(async () => {
                 if (typeof trackExamSectionViewed === 'function') {
                     trackExamSectionViewed(targetId);
                 }
+                // Notifier le HUD 3D de la progression
+                document.dispatchEvent(new CustomEvent('section-viewed', { detail: { sectionId: targetId } }));
                 // Use animated transition
                 animateSectionTransition(currentSection, targetSection);
                 // Animate cards in new section
@@ -1230,6 +1234,8 @@ onDomReady(async () => {
             if (typeof trackExamSectionViewed === 'function') {
                 trackExamSectionViewed(targetId);
             }
+            // Notifier le HUD 3D de la progression
+            document.dispatchEvent(new CustomEvent('section-viewed', { detail: { sectionId: targetId } }));
             updateSidebarActive(targetId);
             animateCards(targetSection);
             
