@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { buildFurniture, buildRoom, createMaterial } from './three-room.js';
 import { ThreePatient } from './three-patient.js';
 import { ThreeInstruments } from './three-instruments.js';
-import { idleBreathing } from './three-animations.js';
+import { PatientAnimator, DoctorAnimator, DustAnimator } from './three-animations.js';
 import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js';
@@ -19,6 +19,9 @@ export class ThreeScene {
         this.assetAgent = new ThreeAssetAgent(this);
         this.lightingAgent = null;
         this.environmentAgent = null;
+        this.patientAnimator = null;
+        this.doctorAnimator = null;
+        this.dustAnimator = null;
     }
 
     init() {
@@ -71,6 +74,10 @@ export class ThreeScene {
         this.patient = new ThreePatient(this.scene);
         this.instruments = new ThreeInstruments(this.scene);
 
+        // Initialiser les animateurs
+        this.patientAnimator = new PatientAnimator(this.patient.group);
+        this.dustAnimator = new DustAnimator(this.scene.getObjectByName('DustParticles'));
+
         this.collectInteractive();
 
         // Custom click detection to avoid OrbitControls interference
@@ -103,6 +110,11 @@ export class ThreeScene {
 
     loadCase(caseData) {
         this.patient.loadCase(caseData);
+        // Recréer l'animateur car le groupe patient est reconstruit
+        this.patientAnimator = new PatientAnimator(this.patient.group, {
+            breathRate: caseData?.patient?.breathRate || 1.2,
+            expression: caseData?.patient?.expression || 'normal'
+        });
         this.collectInteractive();
     }
 
@@ -206,20 +218,73 @@ export class ThreeScene {
         if (this.lightingAgent) this.lightingAgent.dispose();
     }
 
+    /**
+     * Change l'expression du patient avec une transition douce
+     * @param {string} expression — 'normal' | 'douleur' | 'grimace' | 'sourire' | 'pale' | 'anxieux' | 'etonne'
+     * @param {number} duration — durée de transition en secondes (défaut 0.8)
+     */
+    setPatientExpression(expression, duration = 0.8) {
+        if (this.patientAnimator) {
+            this.patientAnimator.setExpression(expression, duration);
+        }
+        // Appliquer aussi les changements de couleur peau via ThreePatient
+        if (this.patient) {
+            this.patient.applyExpression(expression);
+        }
+    }
+
+    /**
+     * Active l'animation de marche du médecin vers une position cible
+     * @param {Object} target — { x, y, z }
+     * @param {Function} onArrive — callback à l'arrivée
+     */
+    moveDoctorTo(target, onArrive) {
+        if (!this.doctorAnimator) {
+            // Créer l'animateur si le médecin existe dans la scène
+            const doctor = this.scene.getObjectByName('Doctor') || this.scene.children.find(
+                c => c.userData?.armR
+            );
+            if (doctor) {
+                this.doctorAnimator = new DoctorAnimator(doctor);
+            }
+        }
+        if (this.doctorAnimator) {
+            this.doctorAnimator.startWalking();
+        }
+        // Utiliser le CharacterController si disponible
+        if (this.characterController) {
+            this.characterController.moveTo(target, () => {
+                if (this.doctorAnimator) this.doctorAnimator.stopWalking();
+                if (onArrive) onArrive();
+            });
+        }
+    }
+
     animate() {
         this._animFrameId = requestAnimationFrame(() => this.animate());
-        const elapsed = performance.now() / 1000;
-        idleBreathing(this.patient?.group, elapsed);
+        const now = performance.now();
+        const elapsed = now / 1000;
+        const dt = this._lastAnimTime ? (now - this._lastAnimTime) / 1000 : 0.016;
+        this._lastAnimTime = now;
+
+        // Animation du patient (respiration, clignements, expression)
+        if (this.patientAnimator) {
+            this.patientAnimator.update(elapsed, dt);
+        }
 
         // Animation des instruments (LED pulsante, etc.)
         if (this.instruments?.update) {
             this.instruments.update(elapsed);
         }
 
-        const dust = this.scene.getObjectByName('DustParticles');
-        if (dust) {
-            dust.rotation.y += 0.0002;
-            dust.rotation.x += 0.0001;
+        // Animation des particules de poussière
+        if (this.dustAnimator) {
+            this.dustAnimator.update(elapsed);
+        }
+
+        // Animation du médecin (si DoctorAnimator actif)
+        if (this.doctorAnimator) {
+            this.doctorAnimator.update(elapsed, dt);
         }
 
         if (this.lightingAgent && this.lightingAgent.render()) {
