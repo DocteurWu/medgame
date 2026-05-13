@@ -36,13 +36,8 @@ export function buildRoom(scene) {
     box(scene, { x: 0.55, y: 0.55, z: 0.08 }, { x: -4.88, y: 1.0, z: 1.8 }, createMaterial(0xd8e8ee), 'Evier', true);
     box(scene, { x: 1.0, y: 1.8, z: 0.6 }, { x: 4.3, y: 0.9, z: 0.9 }, createMaterial(0xd5dde6), 'Armoire', true);
 
-    const ambient = new THREE.HemisphereLight(0xffffff, 0x8098aa, 1.8);
-    scene.add(ambient);
+    // Panneaux lumineux au plafond (décoratifs — l'éclairage réel est géré par ThreeLightingAgent)
     [[-2.5, -1], [0, -1], [2.5, -1]].forEach(([x, z]) => {
-        const light = new THREE.PointLight(0xffffff, 3.5, 16);
-        light.position.set(x, 3.25, z);
-        light.castShadow = true;
-        scene.add(light);
         box(scene, { x: 0.8, y: 0.04, z: 0.32 }, { x, y: 3.42, z }, createMaterial(0xffffff, { emissive: 0xffffff, emissiveIntensity: 1.2 }), 'Panneau lumineux');
     });
 }
