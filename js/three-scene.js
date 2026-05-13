@@ -64,7 +64,7 @@ export class ThreeScene {
     init() {
         // Initialisation terminée
         this.scene.background = new THREE.Color(0x8c9bab);
-        this.scene.fog = new THREE.Fog(0x8c9bab, 10, 25);
+        this.scene.fog = new THREE.Fog(0x8c9bab, 8, 18);
 
         this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
         this.scene._camera = this.camera;
@@ -241,7 +241,7 @@ export class ThreeScene {
 
     setCamera(mode, animate = true) {
         const presets = {
-            room: { pos: [0, 2.8, 6.5], target: [0, 1.2, -0.8] },
+            room: { pos: [0, 2.8, 3.0], target: [0, 1.2, -0.8] },
             patient: { pos: [2.7, 2.1, 0.7], target: [2.1, 1.15, -1.65] },
             desk: { pos: [-0.9, 2.25, 1.05], target: [-0.65, 0.9, -0.85] }
         };

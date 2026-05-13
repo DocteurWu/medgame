@@ -36,6 +36,30 @@ export function buildRoom(scene) {
     box(scene, { x: 0.55, y: 0.55, z: 0.08 }, { x: -4.88, y: 1.0, z: 1.8 }, createMaterial(0xd8e8ee), 'Evier', true);
     box(scene, { x: 1.0, y: 1.8, z: 0.6 }, { x: 4.3, y: 0.9, z: 0.9 }, createMaterial(0xd5dde6), 'Armoire', true);
 
+    // === MUR AVANT (avec ouverture de porte) ===
+    // La porte est centrée en x=3.0, largeur 1.7, hauteur 2.55 (y de 0 à 2.545)
+    // => Gauche de la porte : x de -5 à 2.15
+    const doorLeft = 3.0 - 1.7 / 2; // 2.15
+    const doorRight = 3.0 + 1.7 / 2; // 3.85
+    const doorTop = 1.27 + 2.55 / 2; // 2.545
+    // Section gauche du mur avant (porte à gauche = grand panneau)
+    box(scene, { x: doorLeft - (-5), y: 3.5, z: 0.1 }, { x: (-5 + doorLeft) / 2, y: 1.75, z: 4 }, wall, 'Mur avant gauche');
+    // Section droite du mur avant (petit panneau entre porte et mur droit)
+    box(scene, { x: 5 - doorRight, y: 3.5, z: 0.1 }, { x: (doorRight + 5) / 2, y: 1.75, z: 4 }, wall, 'Mur avant droit');
+    // Linteau (au-dessus de la porte)
+    box(scene, { x: doorRight - doorLeft, y: 3.5 - doorTop, z: 0.1 }, { x: (doorLeft + doorRight) / 2, y: doorTop + (3.5 - doorTop) / 2, z: 4 }, wall, 'Mur avant linteau');
+
+    // Cadre de porte (4 montants : gauche, droite, haut, seuil)
+    const doorFrameMat = createMaterial(0xc8baa0, { roughness: 0.5, metalness: 0.1 });
+    // Montant gauche
+    box(scene, { x: 0.04, y: doorTop, z: 0.12 }, { x: doorLeft, y: doorTop / 2, z: 3.96 }, doorFrameMat, '');
+    // Montant droit
+    box(scene, { x: 0.04, y: doorTop, z: 0.12 }, { x: doorRight, y: doorTop / 2, z: 3.96 }, doorFrameMat, '');
+    // Linteau cadre (horizontal au-dessus)
+    box(scene, { x: doorRight - doorLeft + 0.08, y: 0.06, z: 0.12 }, { x: 3.0, y: doorTop + 0.03, z: 3.96 }, doorFrameMat, '');
+    // Seuil (bas)
+    box(scene, { x: doorRight - doorLeft + 0.08, y: 0.04, z: 0.14 }, { x: 3.0, y: 0.02, z: 3.96 }, doorFrameMat, '');
+
     // === PLAFOND ===
     // Plafond principal avec texture procédurale (carreaux d'hôpital)
     const ceilingCanvas = document.createElement('canvas');
@@ -114,6 +138,23 @@ export function buildRoom(scene) {
 
     // Bande murale haute (moulure)
     const crownMat = createMaterial(0xd0d8dc, { roughness: 0.7, metalness: 0.05 });
+
+    // === MUR AVANT — plinthes, mains courantes et moulures ===
+    // (on réutilise doorLeft/doorRight calculés ci-dessus)
+    // Plinthe section gauche
+    box(scene, { x: doorLeft - (-5), y: 0.12, z: 0.06 }, { x: (-5 + doorLeft) / 2, y: 0.06, z: 3.96 }, baseboardMat, '');
+    // Plinthe section droite
+    box(scene, { x: 5 - doorRight, y: 0.12, z: 0.06 }, { x: (doorRight + 5) / 2, y: 0.06, z: 3.96 }, baseboardMat, '');
+    // Main courante section gauche
+    box(scene, { x: doorLeft - (-5), y: 0.06, z: 0.04 }, { x: (-5 + doorLeft) / 2, y: 0.92, z: 3.96 }, railMat, '');
+    // Main courante section droite
+    box(scene, { x: 5 - doorRight, y: 0.06, z: 0.04 }, { x: (doorRight + 5) / 2, y: 0.92, z: 3.96 }, railMat, '');
+    // Moulure haute section gauche
+    box(scene, { x: doorLeft - (-5), y: 0.05, z: 0.04 }, { x: (-5 + doorLeft) / 2, y: 3.2, z: 3.96 }, crownMat, '');
+    // Moulure haute section droite
+    box(scene, { x: 5 - doorRight, y: 0.05, z: 0.04 }, { x: (doorRight + 5) / 2, y: 3.2, z: 3.96 }, crownMat, '');
+
+    // Moulures autres murs
     box(scene, { x: 10, y: 0.05, z: 0.04 }, { x: 0, y: 3.2, z: -3.96 }, crownMat, '');
     box(scene, { x: 0.04, y: 0.05, z: 8 }, { x: -4.96, y: 3.2, z: 0 }, crownMat, '');
     box(scene, { x: 0.04, y: 0.05, z: 8 }, { x: 4.96, y: 3.2, z: 0 }, crownMat, '');
