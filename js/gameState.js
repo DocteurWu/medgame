@@ -51,9 +51,15 @@ const gameState = {
                 if (this.currentCase && this.currentCase.gameplayConfig && this.currentCase.gameplayConfig.startNode) {
                     urgenceState.isUrgenceMode = true;
                     urgenceState.currentUrgenceNode = this.currentCase.nodes[this.currentCase.gameplayConfig.startNode];
+                    // Dispatcher l'événement pour l'agent urgence 3D
+                    document.dispatchEvent(new CustomEvent('urgence-mode-activated', {
+                        detail: { node: urgenceState.currentUrgenceNode, caseData: this.currentCase }
+                    }));
                 } else {
                     urgenceState.isUrgenceMode = false;
                     urgenceState.currentUrgenceNode = null;
+                    // Dispatcher la désactivation
+                    document.dispatchEvent(new CustomEvent('urgence-mode-deactivated'));
                 }
             }
             

@@ -16,6 +16,11 @@ function renderUrgenceState() {
     const currentUrgenceNode = urgenceState.currentUrgenceNode;
     const currentCase = urgenceState.currentCase;
 
+    // Dispatcher l'événement pour l'agent urgence 3D
+    document.dispatchEvent(new CustomEvent('urgence-state-render', {
+        detail: { node: currentUrgenceNode, caseData: currentCase }
+    }));
+
     const banner = document.getElementById('urgence-description-banner');
     if (banner) {
         banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${currentUrgenceNode.descriptionClinique}`;
@@ -197,5 +202,11 @@ function transitionUrgenceState(nextNodeId) {
         return;
     }
     urgenceState.currentUrgenceNode = currentCase.nodes[nextNodeId];
+
+    // Dispatcher l'événement de transition pour l'agent urgence 3D
+    document.dispatchEvent(new CustomEvent('urgence-state-transition', {
+        detail: { newNode: currentCase.nodes[nextNodeId] }
+    }));
+
     renderUrgenceState();
 }
