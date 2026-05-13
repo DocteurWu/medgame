@@ -390,14 +390,16 @@ class ThreeManager {
     /**
      * Anime un instrument 3D vers le patient pour effectuer une mesure
      * L'instrument vole vers le patient, fait une pause, puis revient à sa place
+     * La position cible est calculée dynamiquement selon la position du patient (assis/allongé)
      */
     _animateInstrumentToPatient(instrGroup, instrument, callback) {
         if (!instrGroup) { callback?.(); return; }
 
         // Position actuelle de l'instrument
         const startPos = instrGroup.position.clone();
-        // Position cible: vers le patient (torse)
-        const endPos = new THREE.Vector3(2.0, 1.2, -1.3);
+
+        // Calculer dynamiquement la position du torse du patient
+        const endPos = this._getPatientTorsoPosition();
 
         const duration = 600; // ms vol aller
         const pauseDuration = 400; // ms pause sur le patient
@@ -444,6 +446,43 @@ class ThreeManager {
             }
         }
         requestAnimationFrame(flyOut);
+    }
+
+    /**
+     * Calcule la position du torse du patient dans le repère monde
+     * Fonctionne pour le patient assis ET allongé
+     * @returns {THREE.Vector3}
+     */
+    _getPatientTorsoPosition() {
+        // Par défaut, position assise (fauteuil)
+        let pos = new THREE.Vector3(2.0, 1.2, -1.3);
+
+        if (this.scene?.patient?.group) {
+            const patientGroup = this.scene.patient.group;
+            // Obtenir la position mondiale du patient
+            const worldPos = new THREE.Vector3();
+            patientGroup.getWorldPosition(worldPos);
+
+            // Chercher le mesh du torse dans le groupe patient
+            let torsoMesh = null;
+            patientGroup.traverse((child) => {
+                if (child.isMesh && child.name && child.name.toLowerCase().includes('torse')) {
+                    torsoMesh = child;
+                }
+            });
+
+            if (torsoMesh) {
+                // Position mondiale du torse
+                torsoMesh.getWorldPosition(pos);
+            } else {
+                // Fallback : position du groupe + offset vertical
+                pos.copy(worldPos);
+                // Le torse est environ 1.0 unité au-dessus de la base du groupe
+                pos.y += 1.0;
+            }
+        }
+
+        return pos;
     }
 
     goToPC() {
