@@ -70,10 +70,13 @@ export function buildRoom(scene) {
     cctx.fillRect(0, 0, 512, 512);
     // Grille de carreaux décoratifs
     const tileSize = 64;
+    // PRNG simple pour un rendu déterministe (pas de flicker au rechargement)
+    let _rngSeed = 42;
+    const _rng = () => { _rngSeed = (_rngSeed * 16807 + 0) % 2147483647; return (_rngSeed - 1) / 2147483646; };
     for (let x = 0; x < 512; x += tileSize) {
         for (let y = 0; y < 512; y += tileSize) {
             // Léger dégradé par carreau
-            const brightness = 222 + Math.random() * 10;
+            const brightness = 222 + _rng() * 10;
             cctx.fillStyle = `rgb(${brightness}, ${brightness + 4}, ${brightness + 6})`;
             cctx.fillRect(x + 1, y + 1, tileSize - 2, tileSize - 2);
         }

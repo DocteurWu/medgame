@@ -57,6 +57,14 @@ export class ThreeScene {
         this._tooltipEl = null;
         this._tooltipVisible = false;
 
+        // === Système hover lift (soulèvement au survol) ===
+        this._hoverLiftTarget = null;      // Groupe actuellement soulevé
+        this._hoverLiftPrevTarget = null;   // Précédent groupe soulevé (pour anim de descente)
+        this._hoverLiftBaseY = 0;          // Position Y d'origine du groupe
+        this._hoverLiftPrevBaseY = 0;      // Position Y d'origine du groupe précédent
+        this._hoverLiftAmount = 0.012;     // Hauteur de soulèvement (en unités 3D)
+        this._hoverLiftCurrent = 0;         // Valeur interpolée actuelle
+
         // === Caméra fly-to ===
         this._cameraAnimId = null;
     }
@@ -297,6 +305,9 @@ export class ThreeScene {
 
         const instrument = this.instruments.getByObject(hitObj);
         if (instrument) {
+            // Animation de rebond sur l'instrument cliqué
+            this.instruments.triggerBounce(instrument.id);
+
             // Fly-to vers l'instrument cliqué
             if (hitPoint) {
                 this.flyCameraTo(hitPoint, hitPoint, 700);
@@ -404,6 +415,20 @@ export class ThreeScene {
             this._applyHoverGlow(newHoverRoot);
         }
 
+        // === Gestion du hover lift (soulèvement) ===
+        // Si on change de cible, on conserve la précédente pour la descente douce
+        if (this._hoverLiftTarget && this._hoverLiftTarget !== newHoverRoot) {
+            this._hoverLiftPrevTarget = this._hoverLiftTarget;
+            this._hoverLiftPrevBaseY = this._hoverLiftBaseY;
+        }
+        // Démarrer le lift sur le nouvel objet
+        if (newHoverRoot) {
+            this._hoverLiftTarget = newHoverRoot;
+            this._hoverLiftBaseY = newHoverRoot.position.y;
+        } else {
+            this._hoverLiftTarget = null;
+        }
+
         this._hoveredObject = newHoverRoot;
     }
 
@@ -475,6 +500,43 @@ export class ThreeScene {
         }
 
         this._hoveredOriginalEmissives.clear();
+    }
+
+    // ===== HOVER LIFT (soulèvement au survol) =====
+
+    /**
+     * Interpolation douce du soulèvement vertical au survol
+     * Montée rapide, descente douce. Gère aussi la redescente de l'ancien objet.
+     */
+    _updateHoverLift(dt) {
+        // Descente douce de l'ancien objet (s'il y en a un)
+        if (this._hoverLiftPrevTarget) {
+            this._hoverLiftPrevBaseY += dt * 0; // baseY ne change pas
+            const prevLift = this._hoverLiftPrevTarget.position.y - this._hoverLiftPrevBaseY;
+            if (prevLift > 0.0005) {
+                // Redescendre progressivement
+                const newLift = prevLift * Math.max(0, 1 - dt * 8);
+                this._hoverLiftPrevTarget.position.y = this._hoverLiftPrevBaseY + newLift;
+            } else {
+                // Fini, remettre à la position exacte
+                this._hoverLiftPrevTarget.position.y = this._hoverLiftPrevBaseY;
+                this._hoverLiftPrevTarget = null;
+            }
+        }
+
+        // Cas où plus rien n'est survolé — ne rien faire de plus
+        if (!this._hoverLiftTarget) {
+            this._hoverLiftCurrent = Math.max(0, this._hoverLiftCurrent - dt * 0.5);
+            return;
+        }
+
+        // Interpolation vers la hauteur cible
+        const target = this._hoverLiftAmount;
+        const speed = this._hoverLiftCurrent < target ? 12 : 6;
+        this._hoverLiftCurrent += (target - this._hoverLiftCurrent) * Math.min(1, dt * speed);
+
+        // Appliquer le déplacement vertical
+        this._hoverLiftTarget.position.y = this._hoverLiftBaseY + this._hoverLiftCurrent;
     }
 
     // ===== TOOLTIP RICHE =====
@@ -626,6 +688,8 @@ export class ThreeScene {
             this._cameraAnimId = null;
         }
         this._clearHoverGlow();
+        this._hoverLiftTarget = null;
+        this._hoverLiftPrevTarget = null;
         this._destroyTooltip();
         this.renderer.dispose();
         this.renderer.forceContextLoss();
@@ -790,6 +854,9 @@ export class ThreeScene {
         if (this.doctorAnimator) {
             this.doctorAnimator.update(elapsed, dt);
         }
+
+        // === Animation hover lift (interpolation douce) ===
+        this._updateHoverLift(dt);
 
         if (this.lightingAgent && this.lightingAgent.render()) {
             // Composer handled rendering (bloom, etc.)
