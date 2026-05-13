@@ -196,7 +196,7 @@ function renderExamSection(key, data) {
 // ==================== TIMER CONFIG ====================
 
 function getTimeLimit() {
-    // Timer adaptatif : urgence = 5min (300s), classique = 8min (480s)
+    // Timer adaptatif : urgence = 5min (300s), classique = 12min (720s)
     // Peut être surchargé par le cas (gameplayConfig.timeLimit)
     if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) {
         return 300; // 5 minutes pour les cas d'urgence
@@ -204,7 +204,7 @@ function getTimeLimit() {
     if (typeof gameState !== 'undefined' && gameState.currentCase && gameState.currentCase.gameplayConfig && gameState.currentCase.gameplayConfig.timeLimit) {
         return gameState.currentCase.gameplayConfig.timeLimit;
     }
-    return 480; // 8 minutes par défaut
+    return 720; // 12 minutes par défaut (mode classique)
 }
 
 // ==================== SAFE DOM UTILITIES ====================
