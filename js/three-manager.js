@@ -169,6 +169,12 @@ class ThreeManager {
     }
 
     _cleanup3D() {
+        // Arrêter la boucle d'animation vitals
+        if (this._vitalsAnimFrame) {
+            cancelAnimationFrame(this._vitalsAnimFrame);
+            this._vitalsAnimFrame = null;
+        }
+        this._urgencyPulseActive = false;
         // Retirer le listener clavier pour éviter les memory leaks
         if (this._keyHandler) {
             document.removeEventListener('keydown', this._keyHandler);
