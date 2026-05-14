@@ -142,5 +142,19 @@
     "Orchidopéxie bilatérale",
     "Antalgiques IV"
   ],
-  "correction": "# Torsion du cordon spermatique\n\nLe patient présente une douleur testiculaire brutale, intense, avec nausées et vomissements. L'échographie Doppler montre une absence de flux artériel dans le testicule droit, ce qui confirme la torsion.\n\n## Bonnes pratiques\n\n- Toute douleur testiculaire aiguë est une torsion jusqu'à preuve du contraire\n- Faire un Doppler testiculaire en urgence si doute diagnostique\n- Intervention rapide : détorsion et orchidopéxie bilatérale\n- Informer sur la perte potentielle de fertilité si retard diagnostique\n\n## Erreurs à éviter\n\n- Retarder la prise en charge pour des examens inutiles\n- Confondre avec une orchi-épididymite (douleur plus progressive)\n- Ne pas fixer le testicule controlatéral"
+  "correction": "# Torsion du cordon spermatique\n\nLe patient présente une douleur testiculaire brutale, intense, avec nausées et vomissements. L'échographie Doppler montre une absence de flux artériel dans le testicule droit, ce qui confirme la torsion.\n\n## Bonnes pratiques\n\n- Toute douleur testiculaire aiguë est une torsion jusqu'à preuve du contraire\n- Faire un Doppler testiculaire en urgence si doute diagnostique\n- Intervention rapide : détorsion et orchidopéxie bilatérale\n- Informer sur la perte potentielle de fertilité si retard diagnostique\n\n## Erreurs à éviter\n\n- Retarder la prise en charge pour des examens inutiles\n- Confondre avec une orchi-épididymite (douleur plus progressive)\n- Ne pas fixer le testicule controlatéral",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

@@ -7,6 +7,7 @@ import { PatientAnimator, DoctorAnimator, DustAnimator, IVFluidAnimator, ECGScre
 import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js';
+import { medicalAudio } from './three-audio.js';
 
 /**
  * Dictionnaire de descriptions riches pour les objets interactifs
@@ -245,6 +246,38 @@ export class ThreeScene {
             expression: caseData?.patient?.expression || 'normal'
         });
         this.collectInteractive();
+
+        // Démarrer le bip ECG synchronisé à la FC du cas
+        medicalAudio.init();
+        medicalAudio.resume();
+        const hr = this._parseHeartRate(caseData);
+        if (hr > 0) {
+            medicalAudio.startECGBeep(hr);
+        }
+
+        // Démarrer l'alarme si cas critique
+        const isUrgent = this._isUrgentCase(caseData);
+        if (isUrgent) {
+            medicalAudio.startAlarm('critical');
+        }
+    }
+
+    /** Parse la FC depuis les données du cas */
+    _parseHeartRate(caseData) {
+        const vitals = caseData?.examenClinique?.constantes;
+        if (!vitals) return 72;
+        const str = vitals.pouls || vitals.heartRate || '72';
+        const m = String(str).match(/[\d]+/);
+        return m ? parseInt(m[0]) : 72;
+    }
+
+    /** Détermine si le cas est critique */
+    _isUrgentCase(caseData) {
+        const vitals = caseData?.examenClinique?.constantes;
+        if (!vitals) return false;
+        const hr = this._parseHeartRate(caseData);
+        const spo2 = parseInt(String(vitals.saturationO2 || '100').match(/[\d]+/)?.[0] || '100');
+        return hr > 120 || spo2 < 90 || (caseData.difficulty || 1) >= 3;
     }
 
     setCamera(mode, animate = true) {
@@ -307,6 +340,8 @@ export class ThreeScene {
         if (instrument) {
             // Animation de rebond sur l'instrument cliqué
             this.instruments.triggerBounce(instrument.id);
+            // Son de mesure
+            medicalAudio.playMeasureSound();
 
             // Fly-to vers l'instrument cliqué
             if (hitPoint) {
@@ -687,6 +722,8 @@ export class ThreeScene {
             cancelAnimationFrame(this._cameraAnimId);
             this._cameraAnimId = null;
         }
+        // Arrêter tous les sons
+        medicalAudio.destroy();
         this._clearHoverGlow();
         this._hoverLiftTarget = null;
         this._hoverLiftPrevTarget = null;
@@ -728,9 +765,11 @@ export class ThreeScene {
      * @param {Object} vitals — { respiratoryRate, heartRate, expression, spO2, dyspnea }
      */
     setPatientVitals(vitals = {}) {
-        // Fréquence cardiaque → ECG
+        // Fréquence cardiaque → ECG + son
         if (vitals.heartRate !== undefined) {
             this.setHeartRate(vitals.heartRate);
+            // Mettre à jour le bip ECG audio
+            medicalAudio.updateHeartRate(vitals.heartRate);
             // LED oxymètre : pulsation plus rapide si tachycardie
             if (this.instruments?.animatedParts) {
                 for (const part of this.instruments.animatedParts) {

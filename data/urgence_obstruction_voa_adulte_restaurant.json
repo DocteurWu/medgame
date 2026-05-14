@@ -36,11 +36,17 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Insuffisance veineuse des membres inférieurs"],
-      "chirurgicaux": ["Cholécystectomie"],
+      "medicaux": [
+        "Insuffisance veineuse des membres inférieurs"
+      ],
+      "chirurgicaux": [
+        "Cholécystectomie"
+      ],
       "familiaux": []
     },
-    "traitements": ["Daflon"],
+    "traitements": [
+      "Daflon"
+    ],
     "allergies": {
       "presence": false,
       "liste": []
@@ -50,7 +56,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Morceau de viande mal mastiqué",
       "descriptionDouleur": "Impossibilité de parler",
-      "asymptomesAssocies": ["Toux absente", "Cyanose du visage", "Signe d'étouffement (mains à la gorge)"],
+      "asymptomesAssocies": [
+        "Toux absente",
+        "Cyanose du visage",
+        "Signe d'étouffement (mains à la gorge)"
+      ],
       "remarques": "Table voisine alertée par le bruit"
     },
     "verbatim": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge)."
@@ -124,10 +134,14 @@
           "Une obstruction TOTALE des voies aériennes",
           "Une crise d'angoisse"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'absence de toux et de parole, associée à la cyanose et au geste universel, définit l'obstruction TOTALE. L'obstruction partielle permet encore de tousser.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg08_sequence",
@@ -140,10 +154,14 @@
           "5 compressions abdominales (manœuvre de Heimlich)",
           "Attendre que ça passe"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'AFGSU préconise d'alterner 5 claques / 5 compressions abdominales. Si les claques échouent, on passe au Heimlich. Ne JAMAIS rester sur une technique inefficace.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -336,5 +354,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

@@ -50,7 +50,11 @@
       "evolution": "Dégradation de la conscience",
       "facteursDeclenchants": "Excès d'alcool lors d'une soirée étudiante, à jeun",
       "descriptionDouleur": "Inconscient, ne répond pas",
-      "asymptomesAssocies": ["Haleine éthylique", "Vomissements", "Inconscience"],
+      "asymptomesAssocies": [
+        "Haleine éthylique",
+        "Vomissements",
+        "Inconscience"
+      ],
       "remarques": "Un ami l'a trouvé au sol. Ils étaient plusieurs à boire."
     },
     "verbatim": "L'ami : « Il a trop bu... on l'a retrouvé par terre... il respire mais il ne se réveille pas... y'a du vomi... »"
@@ -124,10 +128,14 @@
           "Oui, par précaution",
           "Non, il faut juste le mettre en position assise"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "La respiration est présente (même lente). On ne fait JAMAIS de massage si le cœur bat. L'indication du MCE = absence totale de respiration. Ici → PLS.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg09_position",
@@ -140,10 +148,14 @@
           "Le mettre en PLS (sur le côté) et nettoyer la bouche",
           "L'asseoir contre un mur"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "PLS = sur le CÔTÉ. Sur le ventre, la langue peut obstruer et les vomissements sont inhalés. Sur le dos, les vomissements coulent dans la trachée. La PLS sur le côté permet un drainage des voies aériennes.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -349,5 +361,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

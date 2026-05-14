@@ -164,5 +164,19 @@
     "Hydratation orale contrôlée",
     "Adaptation du traitement antidiabétique"
   ],
-  "correction": "# Polyurie par diurèse osmotique chez diabétique déséquilibré\n\nLa polyurie est ici liée à la glycosurie massive provoquée par l’hyperglycémie. L’eau suit le glucose dans les urines, entraînant une diurèse osmotique. L'HbA1c très élevée, la glycosurie +++ et les volumes urinaires journaliers > 4 L sont typiques.\n\n## Bonnes pratiques\n\n- Toujours vérifier la glycémie et la glycosurie face à une polyurie\n- Réaliser un calendrier mictionnel pour mesurer les volumes\n- Rééquilibrer le diabète en urgence relative\n- Vérifier l'absence de cétonurie (risque d'acidocétose)\n\n## Erreurs à éviter\n\n- Confondre avec un diabète insipide (osmolarité urinaire ici élevée)\n- Prescrire des diurétiques\n- Négliger la neuropathie diabétique associée"
+  "correction": "# Polyurie par diurèse osmotique chez diabétique déséquilibré\n\nLa polyurie est ici liée à la glycosurie massive provoquée par l’hyperglycémie. L’eau suit le glucose dans les urines, entraînant une diurèse osmotique. L'HbA1c très élevée, la glycosurie +++ et les volumes urinaires journaliers > 4 L sont typiques.\n\n## Bonnes pratiques\n\n- Toujours vérifier la glycémie et la glycosurie face à une polyurie\n- Réaliser un calendrier mictionnel pour mesurer les volumes\n- Rééquilibrer le diabète en urgence relative\n- Vérifier l'absence de cétonurie (risque d'acidocétose)\n\n## Erreurs à éviter\n\n- Confondre avec un diabète insipide (osmolarité urinaire ici élevée)\n- Prescrire des diurétiques\n- Négliger la neuropathie diabétique associée",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

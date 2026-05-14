@@ -143,5 +143,19 @@
   "correctTreatments": [
     "Insulinothérapie"
   ],
-  "correction": "# Diabète de type 1\n\nTableau clinique évocateur: hyperglycémie, cétonurie, acidose, anticorps anti‑GAD positifs.\n\n## Bonnes pratiques\n\n- Confirmer le diagnostic (anticorps, HbA1c, gaz du sang)\n- Initier l’insulinothérapie sans délai\n- Corriger les troubles hydro‑électrolytiques et éduquer le patient\n\n## Erreurs à éviter\n\n- Retarder l’insuline chez un sujet jeune avec cétose\n- Confondre avec DT2 en présence d’amaigrissement et auto‑immunité"
+  "correction": "# Diabète de type 1\n\nTableau clinique évocateur: hyperglycémie, cétonurie, acidose, anticorps anti‑GAD positifs.\n\n## Bonnes pratiques\n\n- Confirmer le diagnostic (anticorps, HbA1c, gaz du sang)\n- Initier l’insulinothérapie sans délai\n- Corriger les troubles hydro‑électrolytiques et éduquer le patient\n\n## Erreurs à éviter\n\n- Retarder l’insuline chez un sujet jeune avec cétose\n- Confondre avec DT2 en présence d’amaigrissement et auto‑immunité",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

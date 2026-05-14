@@ -9,7 +9,7 @@
 1. Animations personnages (respiration, expressions, mouvements, déplacement fluide)
 2. Instruments interactifs détaillés (tensiomètre, oxymètre, thermomètre, glucomètre, tablette)
 3. Environnement immersif (perfusion, moniteur ECG, lit détaillé, charriot, particules)
-4. Système d'interactionamélioré (hover glow, tooltips riches, caméra fluide)
+4. Système d'interaction amélioré (hover glow, tooltips riches, caméra fluide)
 
 ### Atelier 2: Jouabilité & Fun par Cas
 **Fichiers principaux:** `three-manager.js`, `three-hud-agent.js`, `three-transition-agent.js`, `patientChat.js`, `nurse.js`, `lockSystem.js`, `urgenceMode.js`
@@ -43,3 +43,37 @@
 - 60fps visé
 - Tout en français
 - Chaque amélioration doit marcher indépendamment
+
+## Priorités d'Amélioration (v4)
+
+### P0 — Cas Cliniques (le plus gros manque)
+- 89 cas mais 72% sans locks, 100% sans vitalsDynamics, 89% sans alternativeDiagnostics
+- Ajouter `vitalsDynamics` à TOUS les cas (aggravation réaliste par pathologie)
+- Ajouter `locks` sémiologiques aux 64 cas qui n'en ont pas
+- Ajouter `alternativeDiagnostics` et `fatalTreatments` partout
+- Ajouter `secondLineTreatments` et `relevantExams`
+- Corriger les corrections trop courtes (< 100 chars)
+
+### P1 — Progression & Difficulté
+- Difficulté adaptative (facile/moyen/difficile par cas)
+- Mode Examen (timer strict) vs Mode Apprentissage (pas de timer)
+- Système de niveaux et XP visible
+- Streak bonus (bonus pour les jours consécutifs)
+
+### P2 — Immersion & Feedback
+- Feedback pédagogique enrichi (pourquoi le diagnostic est correct/incorrect)
+- Résumé post-cas avec chronologie des actions
+- Comparaison anonyme avec les autres joueurs
+- Sons et haptiques (bip ECG, alarme urgence)
+
+### P3 — 3D & Visuels
+- Patient plus réaliste (proportions, peau, expressions)
+- Instruments détaillés (modèles procéduraux améliorés)
+- Effets visuels (bloom, particules, ombres douces)
+- Animations fluides (transitions, camera)
+
+### P4 — Features Nouvelles
+- Tutoriel interactif pour nouveaux joueurs
+- Achievements/badges (premier diagnostic, 3 étoiles, streak 7j)
+- Cas aléatoires (générateur procédural)
+- Mode Arena multijoueur (déjà présent mais à enrichir)

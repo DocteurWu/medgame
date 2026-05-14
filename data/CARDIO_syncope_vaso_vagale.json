@@ -132,5 +132,37 @@
     "Reconnaissance des prodromes",
     "Manœuvres de contre-pression"
   ],
-  "correction": "# Syncope vasovagale\n\nProdromes + déclenchement en station debout prolongée sont typiques.\n\n## Bonnes pratiques\n\n- Rassurer\n- Hydratation\n- Manœuvres de contre-pression (contracter jambes ou bras)\n\n## Erreurs à éviter\n\n- Examens inutiles si tableau typique"
+  "correction": "# Syncope vasovagale\n\nProdromes + déclenchement en station debout prolongée sont typiques.\n\n## Bonnes pratiques\n\n- Rassurer\n- Hydratation\n- Manœuvres de contre-pression (contracter jambes ou bras)\n\n## Erreurs à éviter\n\n- Examens inutiles si tableau typique",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.12,
+    "urgencyMultiplier": 3.0,
+    "aggravationTargets": {
+      "heartRate": 45,
+      "systolic": 75,
+      "diastolic": 45,
+      "spo2": 88,
+      "temperature": 37.0,
+      "respiratoryRate": 10
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "alternativeDiagnostics": [
+    "Lipothymie",
+    "Malaise vagal"
+  ],
+  "fatalTreatments": [
+    "Fludrocortisone à forte dose",
+    "Midodrine en 1ère intention"
+  ],
+  "secondLineTreatments": [
+    "Midodrine",
+    "Fludrocortisone"
+  ],
+  "relevantExams": [
+    "ECG",
+    "Tilt-test",
+    "Bilan sanguin",
+    "Holter ECG"
+  ]
 }

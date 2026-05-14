@@ -166,5 +166,38 @@
     "Statine",
     "Reconditionnement à la marche"
   ],
-  "correction": "# AOMI\n\nChez un patient qui présente des facteurs de risque cardiovasculaire, une douleur au mollet qui survient à la marche et disparaît au repos, on doit évoquer en priorité une AOMI. \n\n## Bonnes pratiques\n\n- Il convient d'évaluer en priorité la sévérité de l'atteinte, en précisant le périmètre de marche et en réalisant les examens complémentaires appropriés : échographie doppler et IPS en première intention. \n- Eliminer les diagnostics différentiels : atteinte neurologique, une réduction du périmètre de marche pour des douleurs rhumatologiques comme de l'arthrose…\n- Prendre en charge les facteurs de risque cardio-vasculaire, notamment arrêt du tabac, et rechercher un diabète associé. \n\n## Erreurs à éviter\n\n- Négliger l'interrogatoire, en ne précisant pas l'historique de la douleur, le périmètre de marche, les facteurs de risque cardiovasculaire et les antécédents médicaux pertinents. \n- Une atteinte sévère peut rester asymptomatique pendant longtemps. De même, le tableau peut se présenter comme une douleur persistante dans les formes avancées."
+  "correction": "# AOMI\n\nChez un patient qui présente des facteurs de risque cardiovasculaire, une douleur au mollet qui survient à la marche et disparaît au repos, on doit évoquer en priorité une AOMI. \n\n## Bonnes pratiques\n\n- Il convient d'évaluer en priorité la sévérité de l'atteinte, en précisant le périmètre de marche et en réalisant les examens complémentaires appropriés : échographie doppler et IPS en première intention. \n- Eliminer les diagnostics différentiels : atteinte neurologique, une réduction du périmètre de marche pour des douleurs rhumatologiques comme de l'arthrose…\n- Prendre en charge les facteurs de risque cardio-vasculaire, notamment arrêt du tabac, et rechercher un diabète associé. \n\n## Erreurs à éviter\n\n- Négliger l'interrogatoire, en ne précisant pas l'historique de la douleur, le périmètre de marche, les facteurs de risque cardiovasculaire et les antécédents médicaux pertinents. \n- Une atteinte sévère peut rester asymptomatique pendant longtemps. De même, le tableau peut se présenter comme une douleur persistante dans les formes avancées.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "Artérite des membres inférieurs",
+    "Claudication artérielle"
+  ],
+  "fatalTreatments": [
+    "Anticoagulants à dose pleine",
+    "Thrombolyse",
+    "Chirurgie urgente"
+  ],
+  "secondLineTreatments": [
+    "Cilostazol",
+    "Naftidrofuryl"
+  ],
+  "relevantExams": [
+    "Écho-Doppler artériel",
+    "IPS (Index de Pression Systolique)",
+    "Bilan lipidique",
+    "ECG"
+  ]
 }

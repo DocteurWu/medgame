@@ -156,5 +156,19 @@
     "Optimisation du traitement antihypertenseur",
     "Hygiène de vie : sommeil, activité physique, réduction stress"
   ],
-  "correction": "# Dysfonction érectile mixte\n\nLe patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement des facteurs cardiovasculaires\n- Évaluer la part psychogène via questionnaires et interrogatoire\n- IPPDE5 en 1re intention en cas d’absence de contre-indication\n- Prise en charge du stress et du sommeil\n\n## Erreurs à éviter\n\n- Mettre d’emblée un traitement hormonal sans hypogonadisme avéré\n- Oublier la dimension psychogène dans les DE post-traumatiques\n- Ignorer les facteurs cardio-vasculaires débutants"
+  "correction": "# Dysfonction érectile mixte\n\nLe patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement des facteurs cardiovasculaires\n- Évaluer la part psychogène via questionnaires et interrogatoire\n- IPPDE5 en 1re intention en cas d’absence de contre-indication\n- Prise en charge du stress et du sommeil\n\n## Erreurs à éviter\n\n- Mettre d’emblée un traitement hormonal sans hypogonadisme avéré\n- Oublier la dimension psychogène dans les DE post-traumatiques\n- Ignorer les facteurs cardio-vasculaires débutants",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

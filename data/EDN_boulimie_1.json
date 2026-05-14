@@ -131,5 +131,19 @@
     "Gestion du stress",
     "Soutien psychologique"
   ],
-  "correction": "# Troubles du comportement alimentaire non spécifiés (TCANS)\n\nCrises, culpabilité, fluctuations du comportement sans critères complets de boulimie.\n\n## Bonnes pratiques\n\n- Thérapies psycho‑comportementales\n- Gestion du stress et soutien psychosocial\n- Surveillance somatique (électrolytes, comorbidités)\n\n## Erreurs à éviter\n\n- Étiqueter boulimie stricte sans fréquence minimale\n- Minimiser les risques psychiques et somatiques"
+  "correction": "# Troubles du comportement alimentaire non spécifiés (TCANS)\n\nCrises, culpabilité, fluctuations du comportement sans critères complets de boulimie.\n\n## Bonnes pratiques\n\n- Thérapies psycho‑comportementales\n- Gestion du stress et soutien psychosocial\n- Surveillance somatique (électrolytes, comorbidités)\n\n## Erreurs à éviter\n\n- Étiqueter boulimie stricte sans fréquence minimale\n- Minimiser les risques psychiques et somatiques",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

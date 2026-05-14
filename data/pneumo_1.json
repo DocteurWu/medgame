@@ -163,5 +163,19 @@
     "Diurétiques",
     "Inhibiteurs de l'enzyme de conversion (IEC)"
   ],
-  "correction": "# Insuffisance cardiaque\n\nDyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.\n\n## Bonnes pratiques\n\n- Diurétiques pour décongestion, IEC pour le remodelage\n- Évaluer la FE et rechercher cause ischémique si indiqué\n- Éducation, suivi du poids, adaptation thérapeutique\n\n## Erreurs à éviter\n\n- Confondre avec pneumonie sans arguments infectieux\n- Ignorer l’optimisation du traitement de fond"
+  "correction": "# Insuffisance cardiaque\n\nDyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.\n\n## Bonnes pratiques\n\n- Diurétiques pour décongestion, IEC pour le remodelage\n- Évaluer la FE et rechercher cause ischémique si indiqué\n- Éducation, suivi du poids, adaptation thérapeutique\n\n## Erreurs à éviter\n\n- Confondre avec pneumonie sans arguments infectieux\n- Ignorer l’optimisation du traitement de fond",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

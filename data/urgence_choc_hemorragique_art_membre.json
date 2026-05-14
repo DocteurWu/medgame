@@ -37,7 +37,9 @@
     },
     "antecedents": {
       "medicaux": [],
-      "chirurgicaux": ["Appendicectomie à 12 ans"],
+      "chirurgicaux": [
+        "Appendicectomie à 12 ans"
+      ],
       "familiaux": []
     },
     "traitements": [],
@@ -50,7 +52,11 @@
       "evolution": "Aiguë, brutale",
       "facteursDeclenchants": "Tronçonneuse a glissé sur la cuisse gauche",
       "descriptionDouleur": "Douleur vive à la cuisse",
-      "asymptomesAssocies": ["Saignement abondant", "Pâleur", "Sueurs"],
+      "asymptomesAssocies": [
+        "Saignement abondant",
+        "Pâleur",
+        "Sueurs"
+      ],
       "remarques": "Accident domestique en bricolage"
     },
     "verbatim": "Je... je me suis coupé... ça saigne beaucoup... je suis tout pâle..."
@@ -124,10 +130,14 @@
           "Hémorragie artérielle",
           "Hémorragie interne"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "Le sang rouge vif en jets pulsatiles est caractéristique d'une plaie artérielle. Le sang veineux est plus sombre et coule de façon continue.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg01_garrot",
@@ -135,10 +145,17 @@
       "challenge": {
         "question": "Vous posez un garrot. Combien de centimètres au-dessus de la plaie doit-il être positionné ? (réponse en chiffre)",
         "answer": "3",
-        "alternatives": ["2", "4", "5", "quelques"]
+        "alternatives": [
+          "2",
+          "4",
+          "5",
+          "quelques"
+        ]
       },
       "feedback_error": "Le garrot doit être posé quelques centimètres au-dessus de la plaie (idéalement 3-5 cm). JAMAIS sur une articulation.",
-      "target_fields": ["possibleTreatments"]
+      "target_fields": [
+        "possibleTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -398,5 +415,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

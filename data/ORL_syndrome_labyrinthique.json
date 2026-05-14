@@ -149,5 +149,19 @@
     "Corticothérapie courte",
     "Consultation ORL spécialisée"
   ],
-  "correction": "# Labyrinthite aiguë sur otite moyenne — suspicion de syndrome de Cogan\n\nLa patiente présente un syndrome vestibulaire périphérique aigu (nystagmus inhibé par la fixation, Romberg positif, hyporéflexie calorique), une hypoacousie neurosensorielle droite et une otite moyenne aiguë. Le tableau est compatible avec une labyrinthite, pouvant être la première manifestation d’un syndrome de Cogan.\n\n## Points clés\n\n- Vertiges intenses + hypoacousie = atteinte audio-vestibulaire\n- Otoscope inflammatoire = étiologie otitique probable\n- Tests vestibulaires périphériques anormaux\n- IRM utile pour éliminer une atteinte centrale\n\n## Prise en charge\n\n- Antibiothérapie rapide\n- Corticoïdes si déficit cochléaire\n- Suivi ORL rapproché pour surveiller l'évolution auditive\n- Repos et traitement symptomatique"
+  "correction": "# Labyrinthite aiguë sur otite moyenne — suspicion de syndrome de Cogan\n\nLa patiente présente un syndrome vestibulaire périphérique aigu (nystagmus inhibé par la fixation, Romberg positif, hyporéflexie calorique), une hypoacousie neurosensorielle droite et une otite moyenne aiguë. Le tableau est compatible avec une labyrinthite, pouvant être la première manifestation d’un syndrome de Cogan.\n\n## Points clés\n\n- Vertiges intenses + hypoacousie = atteinte audio-vestibulaire\n- Otoscope inflammatoire = étiologie otitique probable\n- Tests vestibulaires périphériques anormaux\n- IRM utile pour éliminer une atteinte centrale\n\n## Prise en charge\n\n- Antibiothérapie rapide\n- Corticoïdes si déficit cochléaire\n- Suivi ORL rapproché pour surveiller l'évolution auditive\n- Repos et traitement symptomatique",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

@@ -50,7 +50,11 @@
       "evolution": "En amélioration apparente",
       "facteursDeclenchants": "Chute de vélo à ~25 km/h, casque non porté",
       "descriptionDouleur": "Céphalées intenses",
-      "asymptomesAssocies": ["Perte de connaissance de quelques secondes", "Vomissements (1 épisode)", "Amnésie partielle de l'accident"],
+      "asymptomesAssocies": [
+        "Perte de connaissance de quelques secondes",
+        "Vomissements (1 épisode)",
+        "Amnésie partielle de l'accident"
+      ],
       "remarques": "Le témoin dit qu'il est resté inconscient environ 30 secondes"
     },
     "verbatim": "J'ai mal à la tête... qu'est-ce qui s'est passé ? Je ne me souviens pas de la chute..."
@@ -125,10 +129,14 @@
           "Signes d'un simple malaise vagal",
           "Signes d'intoxication alcoolique"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "PCI (Perte de Connaissance Initiale) + vomissements + amnésie = signes de gravité du TC. Ces 3 signes ensemble imposent un avis médical en urgence.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg_tc_position",
@@ -141,10 +149,14 @@
           "Le mettre en PLS",
           "Le faire marcher pour vérifier qu'il est bien"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Un traumatisé crânien doit rester allongé avec l'axe tête-cou-tronc maintenu. Le risque est une lésion médullaire associée. L'asseoir est une erreur grave.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -295,5 +307,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

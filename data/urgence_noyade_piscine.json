@@ -50,7 +50,12 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Crampes en nageant, débutant en natation, vient de manger",
       "descriptionDouleur": "Inconscient, pas de plainte",
-      "asymptomesAssocies": ["Toux persistante", "Difficulté respiratoire", "Pâleur", "Tremblements"],
+      "asymptomesAssocies": [
+        "Toux persistante",
+        "Difficulté respiratoire",
+        "Pâleur",
+        "Tremblements"
+      ],
       "remarques": "Retiré de l'eau par un sauveteur après ~1 minute d'immersion"
     },
     "verbatim": "Il a coulé tout à coup, il toussait en sortant de l'eau puis s'est éteint..."
@@ -123,10 +128,14 @@
           "Oui, car il a les lèvres bleues",
           "Il faut commencer le massage par précaution"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'ACR = pas de conscience + PAS de respiration. Maxime respire encore → c'est un inconscient qui respire → PLS. Le massage cardiaque est INUTILE et DANGEREUX si le cœur bat.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg06_position",
@@ -139,10 +148,14 @@
           "Tête en bas pour vider les poumons",
           "Position latérale de sécurité (PLS)"
         ],
-        "correct_indices": [3]
+        "correct_indices": [
+          3
+        ]
       },
       "feedback_error": "PLS = position latérale de sécurité. Elle permet de protéger les voies aériennes (langue, vomissements) tout en maintenant la respiration. Aucune des autres positions n'est adaptée.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -335,5 +348,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

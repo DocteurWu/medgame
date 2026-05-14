@@ -158,5 +158,19 @@
   "correctTreatments": [
     "Sulfonylurées"
   ],
-  "correction": "# Diabète monogénique (MODY)\n\nDébut jeune, IMC normal, antécédents familiaux multiples, anticorps négatifs, mutation HNF1A.\n\n## Bonnes pratiques\n\n- Confirmer génétiquement (MODY)\n- Privilégier sulfonylurées chez MODY 3\n- Éducation thérapeutique et suivi glycémique\n\n## Erreurs à éviter\n\n- Classer à tort en DT1 et initier insuline d’emblée sans indication\n- Ignorer le dépistage familial"
+  "correction": "# Diabète monogénique (MODY)\n\nDébut jeune, IMC normal, antécédents familiaux multiples, anticorps négatifs, mutation HNF1A.\n\n## Bonnes pratiques\n\n- Confirmer génétiquement (MODY)\n- Privilégier sulfonylurées chez MODY 3\n- Éducation thérapeutique et suivi glycémique\n\n## Erreurs à éviter\n\n- Classer à tort en DT1 et initier insuline d’emblée sans indication\n- Ignorer le dépistage familial",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

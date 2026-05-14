@@ -4,6 +4,7 @@ import { pulseEmissive } from './three-animations.js';
 
 const INSTRUMENTS = [
     { id: 'tensiometer', label: 'Tensiometre', x: -1.55, z: -0.78, key: 'tension', title: 'TA' },
+    { id: 'stethoscope', label: 'Stethoscope', x: -1.30, z: -0.78, key: 'stethoscope', title: 'Auscultation' },
     { id: 'oximeter', label: 'Oxymetre', x: -1.05, z: -0.78, key: 'saturationO2', title: 'SpO2' },
     { id: 'thermometer', label: 'Thermometre', x: -0.55, z: -0.78, key: 'temperature', title: 'T' },
     { id: 'glucometer', label: 'Glucometre', x: -0.05, z: -0.78, key: 'glycemie', title: 'Glycemie' },
@@ -229,6 +230,7 @@ export class ThreeInstruments {
     _buildInstrument(item) {
         switch (item.id) {
             case 'tensiometer': return this._buildTensiometer(item);
+            case 'stethoscope': return this._buildStethoscope(item);
             case 'oximeter': return this._buildOximeter(item);
             case 'thermometer': return this._buildThermometer(item);
             case 'glucometer': return this._buildGlucometer(item);
@@ -237,7 +239,126 @@ export class ThreeInstruments {
         }
     }
 
-    // ===== TENSiomÈTRE =====
+    // ===== STÉTHOSCOPE =====
+    _buildStethoscope(item) {
+        const group = new THREE.Group();
+        group.position.set(item.x, 0.87, item.z);
+
+        // Pavillon (cloche) — cône tronqué
+        const bellMat = createMaterial(0xc0c0c0, { roughness: 0.15, metalness: 0.85 });
+        const bell = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.02, 0.035, 0.03, 16),
+            bellMat
+        );
+        bell.position.set(0, 0.015, 0);
+        bell.castShadow = true;
+        bell.name = item.label;
+        bell.userData = { instrument: item, interactive: true, label: item.label };
+        group.add(bell);
+
+        // Bord du pavillon (anneau)
+        const rimMat = createMaterial(0x888888, { roughness: 0.2, metalness: 0.9 });
+        const rim = new THREE.Mesh(
+            new THREE.TorusGeometry(0.035, 0.003, 8, 16),
+            rimMat
+        );
+        rim.rotation.x = Math.PI / 2;
+        rim.position.y = 0.0;
+        group.add(rim);
+
+        // Membrane (disque semi-transparent dans le pavillon)
+        const membraneMat = new THREE.MeshStandardMaterial({
+            color: 0xe0e0e0,
+            roughness: 0.05,
+            metalness: 0.6,
+            transparent: true,
+            opacity: 0.5
+        });
+        const membrane = new THREE.Mesh(
+            new THREE.CircleGeometry(0.02, 16),
+            membraneMat
+        );
+        membrane.rotation.x = -Math.PI / 2;
+        membrane.position.y = 0.0;
+        group.add(membrane);
+
+        // Tube principal (courbe du pavillon aux embouts)
+        const tubeCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(0, 0.03, 0),
+            new THREE.Vector3(0, 0.06, -0.01),
+            new THREE.Vector3(-0.02, 0.09, -0.02),
+            new THREE.Vector3(-0.03, 0.11, -0.01),
+            new THREE.Vector3(-0.025, 0.14, 0.01),
+            new THREE.Vector3(-0.01, 0.16, 0.04),
+            new THREE.Vector3(0.0, 0.17, 0.06),
+        ]);
+        const tubeMat = new THREE.MeshStandardMaterial({
+            color: 0x333333,
+            roughness: 0.6,
+            metalness: 0.2
+        });
+        const tube1 = new THREE.Mesh(
+            new THREE.TubeGeometry(tubeCurve, 20, 0.004, 8, false),
+            tubeMat
+        );
+        tube1.castShadow = true;
+        group.add(tube1);
+
+        // Bifurcation Y des tubes auriculaires
+        const leftEarCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(0.0, 0.17, 0.06),
+            new THREE.Vector3(-0.03, 0.19, 0.05),
+            new THREE.Vector3(-0.05, 0.21, 0.02),
+            new THREE.Vector3(-0.06, 0.23, -0.01),
+        ]);
+        const leftEarTube = new THREE.Mesh(
+            new THREE.TubeGeometry(leftEarCurve, 12, 0.003, 8, false),
+            tubeMat
+        );
+        group.add(leftEarTube);
+
+        const rightEarCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(0.0, 0.17, 0.06),
+            new THREE.Vector3(0.03, 0.19, 0.05),
+            new THREE.Vector3(0.05, 0.21, 0.02),
+            new THREE.Vector3(0.06, 0.23, -0.01),
+        ]);
+        const rightEarTube = new THREE.Mesh(
+            new THREE.TubeGeometry(rightEarCurve, 12, 0.003, 8, false),
+            tubeMat
+        );
+        group.add(rightEarTube);
+
+        // Embouts auriculaires (olives)
+        const oliveMat = createMaterial(0x222222, { roughness: 0.4, metalness: 0.1 });
+        const leftOlive = new THREE.Mesh(
+            new THREE.SphereGeometry(0.006, 8, 6),
+            oliveMat
+        );
+        leftOlive.position.set(-0.06, 0.23, -0.01);
+        group.add(leftOlive);
+
+        const rightOlive = new THREE.Mesh(
+            new THREE.SphereGeometry(0.006, 8, 6),
+            oliveMat
+        );
+        rightOlive.position.set(0.06, 0.23, -0.01);
+        group.add(rightOlive);
+
+        // Connecteur Y (jonction)
+        const yConnectorMat = createMaterial(0x888888, { roughness: 0.2, metalness: 0.8 });
+        const yConnector = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.005, 0.005, 0.01, 8),
+            yConnectorMat
+        );
+        yConnector.position.set(0, 0.17, 0.06);
+        group.add(yConnector);
+
+        this._tagGroup(group, item);
+        this.scene.add(group);
+        return group;
+    }
+
     _buildTensiometer(item) {
         const group = new THREE.Group();
         group.position.set(item.x, 0.87, item.z);
@@ -707,6 +828,34 @@ export class ThreeInstruments {
     showMeasurement(instrument, caseData) {
         if (!instrument || instrument.key === 'tablet') return null;
         const constants = caseData?.examenClinique?.constantes || {};
+
+        // Le stéthoscope ne mesure pas une constante mais fournit l'auscultation
+        if (instrument.key === 'stethoscope') {
+            const examinations = caseData?.examenClinique || {};
+            // Chercher des données d'auscultation dans les examens
+            let auscultResult = '--';
+            for (const key of Object.keys(examinations)) {
+                const section = examinations[key];
+                if (section && typeof section === 'object' && section.auscultation) {
+                    auscultResult = section.auscultation;
+                    break;
+                }
+            }
+            // Si pas trouvé dans les examens, donner le pouls
+            if (auscultResult === '--' && constants.pouls) {
+                auscultResult = `Pouls: ${constants.pouls}`;
+            }
+            // Pousser le son de mesure et l'animation
+            const group = this.meshes.get(instrument.id);
+            if (group) {
+                const mainMesh = group.children?.find(c => c.userData?.instrument) || group.children?.[0];
+                if (mainMesh?.material) {
+                    pulseEmissive(mainMesh, 1.5);
+                }
+            }
+            return { label: 'Auscultation', value: auscultResult };
+        }
+
         const aliases = {
             glycemie: constants.glycemie || constants.glycemieCaps || constants.glycemieCapillaire,
             saturationO2: constants.saturationO2 || constants.spo2 || constants.SpO2

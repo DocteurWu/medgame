@@ -36,11 +36,15 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Diabète type 2 équilibré"],
+      "medicaux": [
+        "Diabète type 2 équilibré"
+      ],
       "chirurgicaux": [],
       "familiaux": []
     },
-    "traitements": ["Metformine 500mg x2/j"],
+    "traitements": [
+      "Metformine 500mg x2/j"
+    ],
     "allergies": {
       "presence": false,
       "liste": []
@@ -50,7 +54,11 @@
       "evolution": "Aiguë, brutal",
       "facteursDeclenchants": "Cisaille industrielle — glissement de la main",
       "descriptionDouleur": "Douleur vive à l'index droit",
-      "asymptomesAssocies": ["Section du doigt", "Saignement modéré à abondant", "Choc"],
+      "asymptomesAssocies": [
+        "Section du doigt",
+        "Saignement modéré à abondant",
+        "Choc"
+      ],
       "remarques": "Accident du travail. Le doigt sectionné est au sol."
     },
     "verbatim": "Aaargh ! Mon doigt ! Regardez... il est coupé ! J'ai tellement mal !"
@@ -125,10 +133,14 @@
           "Le mettre dans de l'alcool à 90°",
           "Le laisser à température ambiante jusqu'au SAMU"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Rinçage + linge humide + sac étanche + glace (sans contact direct). La glace directe congèle et détruit les tissus. L'alcool les dessèche. La température ambiante les nécrose.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     },
     {
       "id": "lock_urg10_piege",
@@ -141,10 +153,14 @@
           "Parce que la glace est trop froide pour les nerfs",
           "Parce qu'il faut le garder à température corporelle"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Le contact direct avec la glace provoque une congélation des tissus (cristaux de glace dans les cellules). Les tissus détruits ne peuvent plus être réimplantés. C'est le piège #1 du cours AFGSU sur les amputations.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -363,5 +379,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

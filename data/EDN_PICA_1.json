@@ -130,5 +130,19 @@
     "Supplémentation en fer",
     "Surveillance parentale"
   ],
-  "correction": "# PICA\n\nIngestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.\n\n## Bonnes pratiques\n\n- Thérapies comportementales et aménagements environnementaux\n- Corriger les carences (fer)\n- Surveillance parentale et prévention des complications\n\n## Erreurs à éviter\n\n- Minimiser les risques digestifs/toxiques\n- Ignorer le dépistage et la correction des carences"
+  "correction": "# PICA\n\nIngestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.\n\n## Bonnes pratiques\n\n- Thérapies comportementales et aménagements environnementaux\n- Corriger les carences (fer)\n- Surveillance parentale et prévention des complications\n\n## Erreurs à éviter\n\n- Minimiser les risques digestifs/toxiques\n- Ignorer le dépistage et la correction des carences",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

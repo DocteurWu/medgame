@@ -176,5 +176,38 @@
       ]
     }
   ],
-  "postGameQuestions": []
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.1,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 140,
+      "systolic": 85,
+      "diastolic": 55,
+      "spo2": 86,
+      "temperature": 37.2,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3,
+  "alternativeDiagnostics": [
+    "Insuffisance cardiaque gauche",
+    "Oedème aigu du poumon"
+  ],
+  "fatalTreatments": [
+    "AINS",
+    "Bêtabloquants IV",
+    "Corticoides"
+  ],
+  "secondLineTreatments": [
+    "Ivabradine",
+    "Spironolactone"
+  ],
+  "relevantExams": [
+    "BNP/NT-proBNP",
+    "ECG",
+    "Echographie cardiaque",
+    "Bilan sanguin ionogramme"
+  ]
 }

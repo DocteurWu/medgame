@@ -145,5 +145,19 @@
     "Antalgiques",
     "Repos et port de suspensoir"
   ],
-  "correction": "# Orchi-épididymite\n\nLe patient présente une douleur scrotale d'installation progressive, avec fièvre, brûlures urinaires et signes biologiques d'infection. L'échographie scrotale retrouve un épididyme hypervascularisé, typique d'une épididymite.\n\n## Bonnes pratiques\n\n- Faire un Doppler en cas de doute pour éliminer une torsion\n- Rechercher systématiquement une IST chez un homme jeune\n- Mettre en place une antibiothérapie adaptée (C3G + doxycycline si IST suspectée)\n- Repos, glaçage et suspensoir\n\n## Erreurs à éviter\n\n- Confondre avec une torsion (douleur plus brutale)\n- Arrêter l'antibiothérapie trop tôt\n- Négliger l'orientation vers un dépistage IST"
+  "correction": "# Orchi-épididymite\n\nLe patient présente une douleur scrotale d'installation progressive, avec fièvre, brûlures urinaires et signes biologiques d'infection. L'échographie scrotale retrouve un épididyme hypervascularisé, typique d'une épididymite.\n\n## Bonnes pratiques\n\n- Faire un Doppler en cas de doute pour éliminer une torsion\n- Rechercher systématiquement une IST chez un homme jeune\n- Mettre en place une antibiothérapie adaptée (C3G + doxycycline si IST suspectée)\n- Repos, glaçage et suspensoir\n\n## Erreurs à éviter\n\n- Confondre avec une torsion (douleur plus brutale)\n- Arrêter l'antibiothérapie trop tôt\n- Négliger l'orientation vers un dépistage IST",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

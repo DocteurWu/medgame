@@ -157,5 +157,19 @@
     "Drainage par sonde JJ",
     "Arrêt des AINS"
   ],
-  "correction": "# Insuffisance rénale aiguë obstructive\n\nLe patient présente une oligurie, des douleurs lombaires, une hématurie, une créatinine élevée et une dilatation pyélocalicielle en imagerie. Le scanner met en évidence un calcul obstructif de l’uretère.\n\n## Bonnes pratiques\n\n- Rechercher une cause obstructive devant toute IRA avec douleurs lombaires\n- Faire une échographie rénale en première intention\n- Lever l'obstacle rapidement : sonde vésicale si globe, drainage JJ ou néphrostomie\n- Arrêter les médicaments néphrotoxiques (AINS !)\n\n## Erreurs à éviter\n\n- Hydrater excessivement un patient avec globe vésical\n- Confondre IRA obstructive avec IRA fonctionnelle\n- Tarder la dérivation des urines"
+  "correction": "# Insuffisance rénale aiguë obstructive\n\nLe patient présente une oligurie, des douleurs lombaires, une hématurie, une créatinine élevée et une dilatation pyélocalicielle en imagerie. Le scanner met en évidence un calcul obstructif de l’uretère.\n\n## Bonnes pratiques\n\n- Rechercher une cause obstructive devant toute IRA avec douleurs lombaires\n- Faire une échographie rénale en première intention\n- Lever l'obstacle rapidement : sonde vésicale si globe, drainage JJ ou néphrostomie\n- Arrêter les médicaments néphrotoxiques (AINS !)\n\n## Erreurs à éviter\n\n- Hydrater excessivement un patient avec globe vésical\n- Confondre IRA obstructive avec IRA fonctionnelle\n- Tarder la dérivation des urines",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

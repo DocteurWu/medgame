@@ -50,7 +50,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Mise en bouche d'un morceau de fruit",
       "descriptionDouleur": "Incapable de pleurer normalement",
-      "asymptomesAssocies": ["Toux inefficace", "Cyanose des lèvres", "Agitation"],
+      "asymptomesAssocies": [
+        "Toux inefficace",
+        "Cyanose des lèvres",
+        "Agitation"
+      ],
       "remarques": "La mère est paniquée"
     },
     "verbatim": "Mon bébé... il étouffe ! Il ne peut plus crier ! Ses lèvres sont bleues !"
@@ -123,10 +127,14 @@
           "Laryngite aiguë",
           "Malaise vagal"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'association mise en bouche + cyanose + absence de cri = obstruction totale par corps étranger. C'est une urgence vitale immédiate.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg04_technique",
@@ -139,10 +147,14 @@
           "Mettre le doigt dans la bouche pour attraper le corps étranger",
           "Le retourner tête en bas et le secouer"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Chez le nourrisson (<1 an), on commence par 5 claques dans le dos sur l'avant-bras avec la tête plus basse que le corps. Le Heimlich est contre-indiqué chez le nourrisson.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -314,5 +326,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

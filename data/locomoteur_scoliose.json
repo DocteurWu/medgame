@@ -13,25 +13,45 @@
   "interrogatoire": {
     "motifHospitalisation": "Asymétrie du dos et suspicion de scoliose",
     "modeDeVie": {
-      "activitePhysique": { "description": "Danse 2 fois/semaine" },
-      "tabac": { "quantite": "0", "duree": "0" },
-      "alcool": { "quantite": "0" },
-      "alimentation": { "regime": "Équilibré", "particularites": "Aucune" },
-      "emploi": { "profession": "Collégienne", "stress": "Modéré (scolaire)" }
+      "activitePhysique": {
+        "description": "Danse 2 fois/semaine"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Collégienne",
+        "stress": "Modéré (scolaire)"
+      }
     },
     "antecedents": {
       "medicaux": [],
       "chirurgicaux": [],
-      "familiaux": ["Mère ayant eu une scoliose adolescente"]
+      "familiaux": [
+        "Mère ayant eu une scoliose adolescente"
+      ]
     },
     "traitements": [],
-    "allergies": { "presence": false, "liste": [] },
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
     "histoireMaladie": {
       "debutSymptomes": "Découverte récente par la mère",
       "evolution": "Aggravation progressive sur 6 mois",
       "facteursDeclenchants": "Croissance rapide",
       "descriptionDouleur": "Absence de douleur",
-      "symptomesAssocies": ["Asymétrie des épaules"],
+      "symptomesAssocies": [
+        "Asymétrie des épaules"
+      ],
       "remarques": "Pas de déficit neurologique"
     },
     "verbatim": "Ma maman trouve que j’ai le dos de travers."
@@ -60,7 +80,9 @@
       "auscultation": "Normale"
     }
   },
-  "availableExams": ["Radiographie du rachis"],
+  "availableExams": [
+    "Radiographie du rachis"
+  ],
   "examResults": {
     "Radiographie du rachis": "Scoliose thoracique droite, angle de Cobb à 25°"
   },
@@ -75,10 +97,28 @@
     "Corset orthopédique",
     "Chirurgie"
   ],
-  "correctTreatments": ["Corset orthopédique"],
+  "correctTreatments": [
+    "Corset orthopédique"
+  ],
   "correction": "# Scoliose idiopathique\n\n## Points Importants\n- Déformation tridimensionnelle du rachis\n- Angle de Cobb > 10°\n- Risque évolutif en période de croissance\n- Traitement par corset si > 20° chez l’adolescente en croissance",
   "correctionImage": null,
-  "feedback": { "default": "Réfléchir à l’âge et à l’angle de Cobb." },
+  "feedback": {
+    "default": "Réfléchir à l’âge et à l’angle de Cobb."
+  },
   "locks": [],
-  "postGameQuestions": []
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

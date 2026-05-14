@@ -62,7 +62,7 @@
     "histoireMaladie": {
       "debutSymptomes": "6 mois",
       "evolution": "Stable",
-      "facteursDeclenchants": "Effort modéré (montée d’escaliers)",
+      "facteursDeclenchants": "Effort modéré (montée d'escaliers)",
       "symptomesAssocies": [
         "Dyspnée légère à l'effort"
       ],
@@ -107,8 +107,8 @@
     "Echographie": "Fonction systolique normale, pas d'anomalie segmentaire au repos",
     "glycemie": "1.0 g/L",
     "Bilan sanguin": "Troponine normale",
-    "Test d'effort": "Angor déclenché à l’effort modéré, sous-décalage ST V5-V6",
-    "Holter ECG": "Pas d’arythmie",
+    "Test d'effort": "Angor déclenché à l'effort modéré, sous-décalage ST V5-V6",
+    "Holter ECG": "Pas d'arythmie",
     "Angiographie coronarienne": "Sténose 70% de l'artère circonflexe",
     "IRM cardiaque": "Non indiqué",
     "Scintigraphie myocardique": "Ischémie sous-maximale latérale gauche"
@@ -139,5 +139,93 @@
     "Bêta-bloquant",
     "Trinitrine sublinguale (dérivé nitré)"
   ],
-  "correction": "# Angor stable\n\nDouleur thoracique à l'effort, disparaissant à l'arrêt, trinitro-sensible et stable depuis 6 mois.\n\n## Bonnes pratiques\n\n- Confirmer l’ischémie par test d’effort ou scintigraphie myocardique\n- Coronarographie si sténose significative ou angor limitant\n- Traitement médical : bêta-bloquant trinitrine sublinguale (dérivé nitré)\n\n## Erreurs à éviter\n\n- Ignorer les facteurs de risque cardiovasculaire\n- Ne pas évaluer l’intensité de l’ischémie à l’effort"
+  "alternativeDiagnostics": [
+    "Angor instable",
+    "Syndrome coronarien aigu"
+  ],
+  "fatalTreatments": [
+    "Adrénaline",
+    "Inhibiteur calcique"
+  ],
+  "secondLineTreatments": [
+    "Nicorandil",
+    "Ivabradine"
+  ],
+  "relevantExams": [
+    "ECG",
+    "Test d'effort",
+    "Angiographie coronarienne",
+    "Scintigraphie myocardique",
+    "Bilan sanguin"
+  ],
+  "difficulty": 2,
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.05,
+    "urgencyMultiplier": 1.5,
+    "aggravationTargets": {
+      "heartRate": 95,
+      "systolic": 145,
+      "spo2": 96,
+      "temperature": 37.0,
+      "respiratoryRate": 22
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "locks": [
+    {
+      "id": "lock_CARDIO_angor_01",
+      "type": "QCM",
+      "label": "Signes d'angor",
+      "target_fields": ["examResults.ECG"],
+      "challenge": {
+        "question": "Quel est le signe fonctionnel principal de l'angor stable ?",
+        "options": [
+          "Douleur thoracique constrictive déclenchée par l'effort et cédant au repos",
+          "Dyspnée paroxystique nocturne",
+          "Palpitations irrégulières permanentes",
+          "Céphalées pulsatiles frontales"
+        ],
+        "correct_indices": [0]
+      },
+      "prerequisites": [],
+      "feedback_error": "L'angor stable se caracterise par une douleur thoracique retrosternale constrictive, declenchee par l'effort et calmée par le repos ou la trinitrine. Pensez aux caracteristiques semiologiques typiques de la douleur angineuse."
+    },
+    {
+      "id": "lock_CARDIO_angor_02",
+      "type": "QCM",
+      "label": "Terrain cardiovasculaire",
+      "target_fields": ["possibleDiagnostics"],
+      "challenge": {
+        "question": "Parmi ces facteurs de risque, lequel est le plus fortement associé à la cardiopathie ischémique ?",
+        "options": [
+          "Diabète de type 2",
+          "Asthme",
+          "Hypothyroïdie",
+          "Migraine"
+        ],
+        "correct_indices": [0]
+      },
+      "prerequisites": [],
+      "feedback_error": "Le diabete de type 2 est un facteur de risque cardiovasculaire majeur, au meme titre que le tabac, l'HTA, la dyslipidemie et l'age. Il favorise l'atherosclerose coronarienne."
+    },
+    {
+      "id": "lock_CARDIO_angor_03",
+      "type": "QCM",
+      "label": "Examen clé",
+      "target_fields": ["examResults.Test d'effort"],
+      "challenge": {
+        "question": "Quel examen est l'examen de première intention pour confirmer le diagnostic d'angor stable ?",
+        "options": [
+          "Test d'effort avec ECG",
+          "Angiographie coronarienne d'emblée",
+          "Holter ECG 24h",
+          "IRM cardiaque"
+        ],
+        "correct_indices": [0]
+      },
+      "prerequisites": [],
+      "feedback_error": "Le test d'effort est l'examen de premiere intention pour objectiver une ischemie myocardique d'effort. La coronarographie est reservee aux formes severes ou si test d'effort non contributif."
+    }
+  ],
+  "correction": "# Angor stable\n\n## Diagnostic\n\nPatiente de 58 ans, diabetique de type 2, presentant une douleur thoracique retrosternale constrictive declenchee par l'effort (montee d'escaliers) et cedant au repos depuis 6 mois d'evolution stable. La douleur est sensible a la trinitrine sublinguale. Le test d'effort objective un sous-decalage du segment ST en V5-V6 lors de l'effort, et la coronarographie revele une stenose significative a 70% de l'artere circonflexe. Le diagnostic d'angor stable est confirme.\n\n## Elements cles\n\n- Douleur angineuse typique : retrosternale, constrictive, declenchee par l'effort, cedant au repos ou a la trinitrine\n- Duree breve (quelques minutes), evolution stable depuis 6 mois\n- Facteurs de risque : diabete de type 2, heredite coronarienne (pere infarcus a 65 ans)\n- ECG de repos normal : n'elimine pas le diagnostic\n- Test d'effort positif avec sous-decalage ST ischemique\n- Troponine normale : pas de necrose myocardique, differencie de l'infarctus\n\n## Raisonnement diagnostique\n\nDevant une douleur thoracique d'effort chez une patiente diabetique, les diagnostics differentiels sont le syndrome coronarien aigu (SCA), l'embolie pulmonaire, le reflux gastro-oesophagien, ou une pericardite. L'absence de syndrome de menace (douleur prolongee, troponine elevee, instabilite hemodynamique) et la stabilite des symptomes depuis 6 mois orientent vers un angor stable plutot qu'un SCA. Le test d'effort apporte la preuve fonctionnelle de l'ischemie, et la coronarographie confirme le substrat anatomique.\n\n## Pieges\n\n- Ne pas se fier a un ECG de repos normal : 50% des angors stables ont un ECG de repos normal\n- Ne pas confondre avec un SCA : la duree de la douleur et la stabilite sont des elements cles\n- Ne pas oublier l'evaluation du risque thromboembolique (score CHA2DS2-VASc en cas de FA associee)\n- La mise sous betabloquant necessite de respecter les contre-indications (asthme, bradycardie, bloc AV)\n\n## Traitement\n\nLe traitement de fond repose sur les betabloquants (attenuent la reponse cardiaque a l'effort) associes a un antiagregant plaquettaire (aspirine). La trinitrine sublinguale est le traitement de la crise. Les inhibiteurs calciques et la statine sont indiques en fonction du profil metabolique. Le reconditionnement a l'effort et le controle strict des facteurs de risque (HbA1c, LDL-cholesterol, PA) sont essentiels. En cas de stenose significative (>70%), une revascularisation par angioplastie peut etre discutee."
 }

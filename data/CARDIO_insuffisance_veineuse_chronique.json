@@ -126,5 +126,37 @@
   "correctTreatments": [
     "Bas de contention"
   ],
-  "correction": "# Insuffisance veineuse chronique\n\nLe diagnostic d'une insuffisance veineuse chronique est surtout clinique : sensation de jambes lourdes, varices, ± dermite ocre, ulcère veineux… Il faut compléter le bilan par la réalisation d'une échographie doppler pour éliminer une thrombose veineuse profonde. L'échographie permet également de diriger la prise en charge en fonction de la sévérité. Chez cette patiente, on proposera des bas de contentions adaptés, marcher quotidiennement et une réévaluation des symptômes ultérieurement. Pas de prise en charge médicamenteuse. \n\n## Bonnes pratiques\n\n- Rechercher des facteurs de risque à l'interrogatoire : sexe féminin, station debout ou assise prolongée, sédentarité, antécédents familiaux et personnels… \n- Le traitement repose sur le port d'une compression adaptée et sur des mesures hygiéno-diététiques. \n- Toute dermite ocre doit alerter sur le risque d'ulcère veineux à moyen terme. Il convient de surveiller attentivement les jambes des patients et de retirer les bas de contention à chaque consultation. \n\n## Erreurs à éviter\n\n- Le port de bas de contention est contre-indiqué chez les patients présentant une artériopathie oblitérante sévère. Ainsi, chez un patient ayant des facteurs de risques cardio-vasculaires, il faut éliminer le risque d'AOMI.\n- Initier des diurétiques face aux oedèmes.\n- Négliger la recherche d'une cause ischémique en cas de suspicion."
+  "correction": "# Insuffisance veineuse chronique\n\nLe diagnostic d'une insuffisance veineuse chronique est surtout clinique : sensation de jambes lourdes, varices, ± dermite ocre, ulcère veineux… Il faut compléter le bilan par la réalisation d'une échographie doppler pour éliminer une thrombose veineuse profonde. L'échographie permet également de diriger la prise en charge en fonction de la sévérité. Chez cette patiente, on proposera des bas de contentions adaptés, marcher quotidiennement et une réévaluation des symptômes ultérieurement. Pas de prise en charge médicamenteuse. \n\n## Bonnes pratiques\n\n- Rechercher des facteurs de risque à l'interrogatoire : sexe féminin, station debout ou assise prolongée, sédentarité, antécédents familiaux et personnels… \n- Le traitement repose sur le port d'une compression adaptée et sur des mesures hygiéno-diététiques. \n- Toute dermite ocre doit alerter sur le risque d'ulcère veineux à moyen terme. Il convient de surveiller attentivement les jambes des patients et de retirer les bas de contention à chaque consultation. \n\n## Erreurs à éviter\n\n- Le port de bas de contention est contre-indiqué chez les patients présentant une artériopathie oblitérante sévère. Ainsi, chez un patient ayant des facteurs de risques cardio-vasculaires, il faut éliminer le risque d'AOMI.\n- Initier des diurétiques face aux oedèmes.\n- Négliger la recherche d'une cause ischémique en cas de suspicion.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.1,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 140,
+      "systolic": 85,
+      "diastolic": 55,
+      "spo2": 86,
+      "temperature": 37.2,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "alternativeDiagnostics": [
+    "Varices essentielles",
+    "Insuffisance veineuse superficielle"
+  ],
+  "fatalTreatments": [
+    "Héparine à dose curative",
+    "Thrombolyse",
+    "Chirurgie urgente"
+  ],
+  "secondLineTreatments": [
+    "Mousse sclérosante",
+    "Chirurgie de stripping"
+  ],
+  "relevantExams": [
+    "Écho-Doppler veineux",
+    "IPS",
+    "Bilan de coagulation"
+  ]
 }

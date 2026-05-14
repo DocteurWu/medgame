@@ -231,5 +231,19 @@
     "Règles hygiéno-diététiques (régime + activité physique)",
     "Statines (augmentation de dose)"
   ],
-  "correction": "# Diabète de type 2\n\nPortrait typique : âge > 45 ans, obésité abdominale (IMC 36.2), syndrome métabolique complet, antécédents familiaux de DT2, diabète gestationnel, anticorps anti-GAD négatifs.\n\n## Critères diagnostiques\n\n- Glycémie à jeun ≥ 1.26 g/L (2 fois) OU\n- HbA1c ≥ 6.5% OU\n- Glycémie ≥ 2 g/L à n'importe quel moment avec symptômes\n\n## Prise en charge\n\n- Règles hygiéno-diététiques en première intention (alimentation équilibrée, activité physique 150 min/semaine)\n- Metformine en 1ère ligne si objectif HbA1c non atteint\n- Traitement des comorbidités (statines pour dyslipidémie, contrôle HTA)\n- Dépistage et prévention des complications (fond d'œil, microalbuminurie, examen des pieds)\n\n## Erreurs à éviter\n\n- Confondre avec DT1 en l'absence de cétose et d'anticorps\n- Oublier le bilan des complications et le suivi régulier (HbA1c tous les 3 mois)\n- Négliger l'éducation thérapeutique du patient"
+  "correction": "# Diabète de type 2\n\nPortrait typique : âge > 45 ans, obésité abdominale (IMC 36.2), syndrome métabolique complet, antécédents familiaux de DT2, diabète gestationnel, anticorps anti-GAD négatifs.\n\n## Critères diagnostiques\n\n- Glycémie à jeun ≥ 1.26 g/L (2 fois) OU\n- HbA1c ≥ 6.5% OU\n- Glycémie ≥ 2 g/L à n'importe quel moment avec symptômes\n\n## Prise en charge\n\n- Règles hygiéno-diététiques en première intention (alimentation équilibrée, activité physique 150 min/semaine)\n- Metformine en 1ère ligne si objectif HbA1c non atteint\n- Traitement des comorbidités (statines pour dyslipidémie, contrôle HTA)\n- Dépistage et prévention des complications (fond d'œil, microalbuminurie, examen des pieds)\n\n## Erreurs à éviter\n\n- Confondre avec DT1 en l'absence de cétose et d'anticorps\n- Oublier le bilan des complications et le suivi régulier (HbA1c tous les 3 mois)\n- Négliger l'éducation thérapeutique du patient",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }
