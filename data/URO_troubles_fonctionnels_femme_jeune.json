@@ -136,5 +136,19 @@
     "Mesures comportementales",
     "Traitement anticholinergique"
   ],
-  "correction": "# Troubles urinaires fonctionnels : IUE + HAV\n\nLa patiente présente des fuites urinaires typiquement déclenchées par l'effort (rire, sport, port de charges) associées à une pollakiurie avec urgenturie modérée, sans infection. Le bilan urodynamique confirme une diminution de la pression urétrale et une hyperactivité détrusorienne légère. Le pad-test montre une perte faible à modérée et le calendrier mictionnel confirme une pollakiurie diurne sans polyurie.\n\n## Bonnes pratiques\n\n- Dépister une IUE chez toute femme jeune sportive avec fuites à l'effort\n- Rechercher un HAV associé en cas de pollakiurie\n- Réaliser un calendrier mictionnel et un pad-test pour quantifier l'IUE\n- Proposer en première intention une rééducation périnéale\n- Limiter caféine et organiser un calendrier mictionnel\n\n## Erreurs à éviter\n\n- Traiter à tort comme une infection (ECBU normal)\n- Proposer trop tôt une chirurgie chez une femme jeune nullipare\n- Négliger l'évaluation du tonus périnéal"
+  "correction": "# Troubles urinaires fonctionnels : IUE + HAV\n\nLa patiente présente des fuites urinaires typiquement déclenchées par l'effort (rire, sport, port de charges) associées à une pollakiurie avec urgenturie modérée, sans infection. Le bilan urodynamique confirme une diminution de la pression urétrale et une hyperactivité détrusorienne légère. Le pad-test montre une perte faible à modérée et le calendrier mictionnel confirme une pollakiurie diurne sans polyurie.\n\n## Bonnes pratiques\n\n- Dépister une IUE chez toute femme jeune sportive avec fuites à l'effort\n- Rechercher un HAV associé en cas de pollakiurie\n- Réaliser un calendrier mictionnel et un pad-test pour quantifier l'IUE\n- Proposer en première intention une rééducation périnéale\n- Limiter caféine et organiser un calendrier mictionnel\n\n## Erreurs à éviter\n\n- Traiter à tort comme une infection (ECBU normal)\n- Proposer trop tôt une chirurgie chez une femme jeune nullipare\n- Négliger l'évaluation du tonus périnéal",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

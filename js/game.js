@@ -947,6 +947,15 @@ onDomReady(async () => {
         scoreDisplay.classList.add(compositeResult.compositeScore >= 40 ? 'score-up' : 'score-down');
         showScorePopup(scoreDisplay, compositeResult.compositeScore, compositeResult.compositeScore >= 40);
 
+        // Son de feedback : succès ou erreur
+        if (window.medicalAudio) {
+            if (compositeResult.compositeScore >= 40) {
+                window.medicalAudio.playSuccessSound();
+            } else {
+                window.medicalAudio.playErrorSound();
+            }
+        }
+
         // Arrêter les fireworks s'ils sont actifs
         if (uiState.fireworksInstance) {
             try { uiState.fireworksInstance.stop(); } catch(e) {}

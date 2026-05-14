@@ -36,9 +36,13 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Malaise à l'effort signalé il y a 6 mois, non investigué"],
+      "medicaux": [
+        "Malaise à l'effort signalé il y a 6 mois, non investigué"
+      ],
       "chirurgicaux": [],
-      "familiaux": ["Père décédé à 45 ans (cause inconnue)"]
+      "familiaux": [
+        "Père décédé à 45 ans (cause inconnue)"
+      ]
     },
     "traitements": [],
     "allergies": {
@@ -50,7 +54,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Effort intense lors d'un match de handball",
       "descriptionDouleur": "Aucune plainte — elle ne répond pas",
-      "asymptomesAssocies": ["Inconscience", "Absence de mouvement", "Pâleur"],
+      "asymptomesAssocies": [
+        "Inconscience",
+        "Absence de mouvement",
+        "Pâleur"
+      ],
       "remarques": "Effondrée en plein terrain"
     },
     "verbatim": "Elle ne répond pas ! Elle ne respire plus !"
@@ -123,10 +131,14 @@
           "Arrêt cardio-respiratoire",
           "Crise d'épilepsie"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'absence totale de conscience, respiration ET pouls carotidien définit l'arrêt cardio-respiratoire. C'est une urgence vitale absolue.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg03_rythme",
@@ -134,10 +146,17 @@
       "challenge": {
         "question": "À quel rythme (compressions par minute) devez-vous pratiquer le massage cardiaque chez l'adulte ?",
         "answer": "100",
-        "alternatives": ["120", "80", "60", "100-120"]
+        "alternatives": [
+          "120",
+          "80",
+          "60",
+          "100-120"
+        ]
       },
       "feedback_error": "Le rythme optimal est de 100 à 120 compressions par minute. Facilité mémo-technique : le rythme de 'Stayin' Alive' des Bee Gees.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -350,5 +369,31 @@
       "isEndState": true,
       "success": false
     }
-  }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "alternativeDiagnostics": [
+    "Arrêt cardiaque récupéré",
+    "Fibrillation ventriculaire"
+  ],
+  "secondLineTreatments": [
+    "Amiodarone 300mg IV",
+    "Bicarbonate molaire"
+  ],
+  "relevantExams": [
+    "ECG 12 dérivations",
+    "Bilan sanguin",
+    "Echographie cardiaque au lit"
+  ]
 }

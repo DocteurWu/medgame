@@ -143,5 +143,19 @@
     "Traitement du/ de la partenaire",
     "Arrêt des rapports pendant le traitement"
   ],
-  "correction": "# Urétrite à Chlamydia\n\nTableau d’infection sexuellement transmissible à Chlamydia trachomatis : pollakiurie, brûlures, BU inflammatoire, ECBU stérile et PCR positive.\n\n## Points clés\n\n- Le couple « BU inflammatoire + ECBU stérile » évoque une IST\n- Chlamydia donne des symptômes mictionnels souvent trompeurs\n- Toujours traiter le partenaire et recommander l’abstinence temporaire\n\n## Erreurs à éviter\n\n- Donner un antibiotique de cystite classique (ex : fosfomycine) — inefficace\n- Oublier le dépistage du partenaire\n- Ne pas rechercher d'autres IST en parallèle"
+  "correction": "# Urétrite à Chlamydia\n\nTableau d’infection sexuellement transmissible à Chlamydia trachomatis : pollakiurie, brûlures, BU inflammatoire, ECBU stérile et PCR positive.\n\n## Points clés\n\n- Le couple « BU inflammatoire + ECBU stérile » évoque une IST\n- Chlamydia donne des symptômes mictionnels souvent trompeurs\n- Toujours traiter le partenaire et recommander l’abstinence temporaire\n\n## Erreurs à éviter\n\n- Donner un antibiotique de cystite classique (ex : fosfomycine) — inefficace\n- Oublier le dépistage du partenaire\n- Ne pas rechercher d'autres IST en parallèle",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

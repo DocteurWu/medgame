@@ -128,5 +128,19 @@
     "Thérapie comportementale",
     "Suivi psychologique"
   ],
-  "correction": "# Mérycisme\n\nRégurgitations volontaires post‑prandiales avec remastication, sans lésion organique.\n\n## Bonnes pratiques\n\n- Thérapies comportementales ciblées\n- Évaluation et suivi psychologique\n- Éducation nutritionnelle\n\n## Erreurs à éviter\n\n- Confondre avec reflux/obstacle digestif sans preuve\n- Ignorer la composante comportementale"
+  "correction": "# Mérycisme\n\nRégurgitations volontaires post‑prandiales avec remastication, sans lésion organique.\n\n## Bonnes pratiques\n\n- Thérapies comportementales ciblées\n- Évaluation et suivi psychologique\n- Éducation nutritionnelle\n\n## Erreurs à éviter\n\n- Confondre avec reflux/obstacle digestif sans preuve\n- Ignorer la composante comportementale",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

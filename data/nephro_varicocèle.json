@@ -143,5 +143,19 @@
     "Antalgiques",
     "Embolisation veineuse"
   ],
-  "correction": "# Varicocèle\n\nLe patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).\n\n## Bonnes pratiques\n\n- Évaluer l’impact sur la douleur, la fertilité et la qualité de vie\n- Proposer Doppler systématique pour la classification\n- Embolisation ou ligature veineuse si douleur persistante ou infertilité\n- Conseiller port de suspensoir, éviter efforts prolongés\n\n## Erreurs à éviter\n\n- Confondre avec une hydrocèle ou hernie inguinale\n- Sous-estimer les symptômes gênants\n- Négliger un spermogramme si désir de fertilité"
+  "correction": "# Varicocèle\n\nLe patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).\n\n## Bonnes pratiques\n\n- Évaluer l’impact sur la douleur, la fertilité et la qualité de vie\n- Proposer Doppler systématique pour la classification\n- Embolisation ou ligature veineuse si douleur persistante ou infertilité\n- Conseiller port de suspensoir, éviter efforts prolongés\n\n## Erreurs à éviter\n\n- Confondre avec une hydrocèle ou hernie inguinale\n- Sous-estimer les symptômes gênants\n- Négliger un spermogramme si désir de fertilité",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

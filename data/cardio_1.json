@@ -148,5 +148,19 @@
     "Diurétiques",
     "Inhibiteurs de l'enzyme de conversion (IEC)"
   ],
-  "correction": "# Insuffisance cardiaque\n\nDyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.\n\n## Bonnes pratiques\n\n- Évaluer la fraction d’éjection à l’échographie\n- Initier diurétiques et IEC en première intention\n- Surveiller le poids, la diurèse et l’ionogramme\n\n## Erreurs à éviter\n\n- Oublier l’adaptation des doses selon la fonction rénale\n- Négliger la recherche d’une cause ischémique en cas de suspicion"
+  "correction": "# Insuffisance cardiaque\n\nDyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.\n\n## Bonnes pratiques\n\n- Évaluer la fraction d’éjection à l’échographie\n- Initier diurétiques et IEC en première intention\n- Surveiller le poids, la diurèse et l’ionogramme\n\n## Erreurs à éviter\n\n- Oublier l’adaptation des doses selon la fonction rénale\n- Négliger la recherche d’une cause ischémique en cas de suspicion",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

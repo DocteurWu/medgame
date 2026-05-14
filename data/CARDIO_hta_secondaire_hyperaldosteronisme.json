@@ -131,5 +131,38 @@
   "correctTreatments": [
     "Chirurgie surrénalienne"
   ],
-  "correction": "# HTA secondaire : hyperaldostéronisme primaire\n\nHTA sévère, hypokaliémie, aldostérone élevée et rénine basse orientent vers un adénome surrénalien (syndrome de Conn).\n\n## Bonnes pratiques\n\n- Confirmation par dosage aldostérone/rénine\n- Scanner surrénalien pour localisation\n- Chirurgie (surrénalectomie) si unilatérale\n- Suivi tensionnel post-opératoire\n\n## Erreurs à éviter\n\n- Ne pas vérifier hypokaliémie\n- Confondre avec HTA essentielle et débuter traitement sans imagerie"
+  "correction": "# HTA secondaire : hyperaldostéronisme primaire\n\nHTA sévère, hypokaliémie, aldostérone élevée et rénine basse orientent vers un adénome surrénalien (syndrome de Conn).\n\n## Bonnes pratiques\n\n- Confirmation par dosage aldostérone/rénine\n- Scanner surrénalien pour localisation\n- Chirurgie (surrénalectomie) si unilatérale\n- Suivi tensionnel post-opératoire\n\n## Erreurs à éviter\n\n- Ne pas vérifier hypokaliémie\n- Confondre avec HTA essentielle et débuter traitement sans imagerie",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.05,
+    "urgencyMultiplier": 1.8,
+    "aggravationTargets": {
+      "heartRate": 100,
+      "systolic": 190,
+      "diastolic": 110,
+      "spo2": 96,
+      "temperature": 37.0,
+      "respiratoryRate": 20
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "HTA essentielle",
+    "Syndrome de Conn"
+  ],
+  "fatalTreatments": [
+    "AINS",
+    "Corticoides",
+    "IEC seuls sans surveillance"
+  ],
+  "secondLineTreatments": [
+    "Amiloride",
+    "Spironolactone à dose élevée"
+  ],
+  "relevantExams": [
+    "Ionogramme sanguin et urinaire",
+    "Aldostéronémie/Rénine",
+    "Scanner surrénalien",
+    "ECG"
+  ]
 }

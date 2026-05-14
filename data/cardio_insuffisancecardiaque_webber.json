@@ -159,5 +159,19 @@
       ]
     }
   ],
-  "postGameQuestions": []
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.1,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 140,
+      "systolic": 85,
+      "diastolic": 55,
+      "spo2": 86,
+      "temperature": 37.2,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3
 }

@@ -179,5 +179,19 @@
       },
       "feedback_error": "1)&nbsp;sensibilité profonde&nbsp;<br>2)&nbsp;sensibilité algique véhiculée par les faisceaux spino-thalamiques, indemne dans les atteintes cordonales postérieures<br>3)&nbsp;sensibilité profonde<br>4)&nbsp;peut se rencontrer dans les atteintes cordonales postérieures cervicales, signe inconstant<br>5)&nbsp;sensibilité profonde<br>"
     }
-  ]
+  ],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

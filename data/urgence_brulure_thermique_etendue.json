@@ -36,15 +36,22 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Asthme modéré"],
+      "medicaux": [
+        "Asthme modéré"
+      ],
       "chirurgicaux": [],
       "familiaux": []
     },
-    "traitements": ["Ventoline si besoin"],
+    "traitements": [
+      "Ventoline si besoin"
+    ],
     "allergies": {
       "presence": true,
       "liste": [
-        {"allergene": "Pénicilline", "reaction": "Urticaire"}
+        {
+          "allergene": "Pénicilline",
+          "reaction": "Urticaire"
+        }
       ]
     },
     "histoireMaladie": {
@@ -52,7 +59,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Casserole d'eau bouillante renversée sur le torse et les bras",
       "descriptionDouleur": "Douleur vive, brûlante, à la face antérieure du tronc et aux deux bras",
-      "asymptomesAssocies": ["Cloques", "Rougeur intense", "Douleur vive"],
+      "asymptomesAssocies": [
+        "Cloques",
+        "Rougeur intense",
+        "Douleur vive"
+      ],
       "remarques": "Accident de cuisine"
     },
     "verbatim": "Aïe ! Ça brûle terriblement ! Regardez mes bras, c'est tout rouge et ça fait des bulles..."
@@ -127,10 +138,14 @@
           "36%",
           "50%"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "Tronc antérieur (18%) + bras droit (9%) + bras gauche (9%) = 36%. La règle des 9 de Lund-Browder permet d'estimer rapidement la surface brûlée.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg02_traitement",
@@ -143,10 +158,14 @@
           "Les couvrir de désinfectant coloré",
           "Appliquer du beurre dessus"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "Les phlyctènes forment un pansement naturel stérile. Les percer expose au risque d'infection. C'est un piège classique du cours AFGSU.",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -338,5 +357,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

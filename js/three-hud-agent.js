@@ -244,28 +244,126 @@ export class ThreeHUD {
         const constants = c.examenClinique?.constantes || {};
         const measured = mgr.measured || new Set();
 
+        // Utiliser les constantes dynamiques du VitalSignsMonitor si disponible
+        const vitals = window.vitalSigns?.props || constants;
+
         const map = {
-            'hud-hr': { key: 'pouls', shown: measured.has('pouls') },
-            'hud-bp': { key: 'tension', shown: measured.has('tension') },
-            'hud-spo2': { key: 'saturationO2', shown: measured.has('saturationO2') },
-            'hud-temp': { key: 'temperature', shown: measured.has('temperature') },
-            'hud-fr': { key: 'frequenceRespiratoire', shown: measured.has('frequenceRespiratoire') },
-            'hud-gly': { key: 'glycemie', shown: measured.has('glycemie') }
+            'hud-hr': { key: 'pouls', shown: measured.has('pouls'), thresholds: { normal: [60, 100], warning: [50, 120], critical: [40, 140] } },
+            'hud-bp': { key: 'tension', shown: measured.has('tension'), thresholds: null },
+            'hud-spo2': { key: 'saturationO2', shown: measured.has('saturationO2'), thresholds: { normal: [95, 100], warning: [92, 100], critical: [0, 85] } },
+            'hud-temp': { key: 'temperature', shown: measured.has('temperature'), thresholds: { normal: [36.0, 37.5], warning: [35.5, 38.5], critical: [0, 35] } },
+            'hud-fr': { key: 'frequenceRespiratoire', shown: measured.has('frequenceRespiratoire'), thresholds: { normal: [12, 20], warning: [10, 25], critical: [0, 8] } },
+            'hud-gly': { key: 'glycemie', shown: measured.has('glycemie'), thresholds: null }
+        };
+
+        // Seuils TA spéciaux (systolique/diastolique)
+        const bpThresholds = {
+            systolic: { normal: [90, 140], warning: [85, 160], critical: [0, 70] },
+            diastolic: { normal: [60, 90], warning: [55, 100], critical: [0, 45] }
         };
 
         Object.entries(map).forEach(([id, cfg]) => {
             const el = document.getElementById(id);
             if (!el) return;
-            el.textContent = cfg.shown ? (constants[cfg.key] || '--') : '--';
+            const item = el.closest('.hud-vital-item');
+            const rawValue = cfg.shown ? (vitals[cfg.key] || constants[cfg.key] || '--') : '--';
+            el.textContent = rawValue;
+
+            // Coloration dynamique selon la gravité
+            if (!cfg.shown || rawValue === '--') {
+                el.style.color = 'rgba(255,255,255,0.3)';
+                if (item) { item.classList.remove('warning', 'critical'); }
+                return;
+            }
+
+            if (!cfg.thresholds) {
+                // TA : coloration basée sur la valeur systolique
+                if (id === 'hud-bp' && typeof rawValue === 'string') {
+                    const m = rawValue.match(/(\d+)/);
+                    if (m) {
+                        const sys = parseInt(m[1]);
+                        if (sys < 70 || sys > 180) {
+                            el.style.color = '#ff4757';
+                            el.style.textShadow = '0 0 10px rgba(255,71,87,0.5)';
+                            el.style.animation = 'hudPulse 1s ease-in-out infinite';
+                            if (item) item.classList.add('critical');
+                        } else if (sys < 85 || sys > 160) {
+                            el.style.color = '#ffc107';
+                            el.style.textShadow = '0 0 10px rgba(255,193,7,0.5)';
+                            el.style.animation = '';
+                            if (item) { item.classList.remove('critical'); item.classList.add('warning'); }
+                        } else {
+                            el.style.color = '#fff';
+                            el.style.textShadow = '0 0 10px rgba(0,242,254,0.5)';
+                            el.style.animation = '';
+                            if (item) { item.classList.remove('warning', 'critical'); }
+                        }
+                    }
+                }
+                return;
+            }
+
+            // Pour les constantes numériques, extraire la valeur
+            const num = typeof rawValue === 'number' ? rawValue : parseFloat(String(rawValue).replace(',', '.'));
+            if (isNaN(num)) {
+                el.style.color = '#fff';
+                el.style.textShadow = '0 0 10px rgba(0,242,254,0.5)';
+                el.style.animation = '';
+                return;
+            }
+
+            // Déterminer le niveau de gravité
+            const t = cfg.thresholds;
+            let level = 'normal';
+            // SpO2 inversé (dessous = plus grave)
+            if (id === 'hud-spo2') {
+                if (num <= t.critical[0]) level = 'critical';
+                else if (num < t.warning[0]) level = 'warning';
+                else level = 'normal';
+            }
+            // Température (les 2 extrêmes sont graves)
+            else if (id === 'hud-temp') {
+                if (num <= t.critical[0] || num >= t.critical[1]) level = 'critical';
+                else if (num < t.warning[0] || num > t.warning[1]) level = 'warning';
+                else level = 'normal';
+            }
+            // FC et FR
+            else {
+                if (num <= t.critical[0] || num >= t.critical[1]) level = 'critical';
+                else if (num < t.warning[0] || num > t.warning[1]) level = 'warning';
+            }
+
+            // Appliquer la couleur
+            if (level === 'critical') {
+                el.style.color = '#ff4757';
+                el.style.textShadow = '0 0 10px rgba(255,71,87,0.5)';
+                el.style.animation = 'hudPulse 1s ease-in-out infinite';
+                if (item) { item.classList.remove('warning'); item.classList.add('critical'); }
+            } else if (level === 'warning') {
+                el.style.color = '#ffc107';
+                el.style.textShadow = '0 0 10px rgba(255,193,7,0.5)';
+                el.style.animation = '';
+                if (item) { item.classList.remove('critical'); item.classList.add('warning'); }
+            } else {
+                el.style.color = '#ffffff';
+                el.style.textShadow = '0 0 10px rgba(0,242,254,0.5)';
+                el.style.animation = '';
+                if (item) { item.classList.remove('warning', 'critical'); }
+            }
         });
     }
 
-    /**
+    /** 
      * Force une valeur vitale spécifique à s'afficher (après mesure instrument)
+     * Met aussi à jour la coloration selon la gravité clinique.
      */
     setVital(id, value) {
         const el = document.getElementById(id);
-        if (el) el.textContent = value;
+        if (el) {
+            el.textContent = value;
+            // Déclencher la mise à jour des couleurs
+            this._updateVitals();
+        }
     }
 
     // ==================== PROMPTS & NOTIFICATIONS ====================

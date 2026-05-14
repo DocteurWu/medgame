@@ -36,11 +36,19 @@
       }
     },
     "antecedents": {
-      "medicaux": ["Hypertension artérielle traitée", "Diabète type 2"],
+      "medicaux": [
+        "Hypertension artérielle traitée",
+        "Diabète type 2"
+      ],
       "chirurgicaux": [],
-      "familiaux": ["Père : infarctus à 50 ans"]
+      "familiaux": [
+        "Père : infarctus à 50 ans"
+      ]
     },
-    "traitements": ["Amlodipine 5mg/j", "Metformine 1000mg x2/j"],
+    "traitements": [
+      "Amlodipine 5mg/j",
+      "Metformine 1000mg x2/j"
+    ],
     "allergies": {
       "presence": false,
       "liste": []
@@ -50,7 +58,11 @@
       "evolution": "Aiguë",
       "facteursDeclenchants": "Sortie de route dans un fossé, ceinture non bouclée",
       "descriptionDouleur": "Douleur cervicale vive, douleur thoracique antérieure",
-      "asymptomesAssocies": ["Impossibilité de bouger les jambes", "Gêne respiratoire", "Sueurs"],
+      "asymptomesAssocies": [
+        "Impossibilité de bouger les jambes",
+        "Gêne respiratoire",
+        "Sueurs"
+      ],
       "remarques": "Témoin : impact frontal, pare-brise fissuré"
     },
     "verbatim": "Je ne sens plus mes jambes... j'ai mal au cou... j'ai du mal à respirer..."
@@ -125,10 +137,14 @@
           "Une lésion médullaire cervicale avec paralysie",
           "Une compression des nerfs au niveau des cuisses"
         ],
-        "correct_indices": [2]
+        "correct_indices": [
+          2
+        ]
       },
       "feedback_error": "L'impossibilité de sentir les jambes après un traumatisme cervical = déficit moteur/sensitif des membres inférieurs = lésion médullaire cervicale. C'est un signe neurologique de gravité majeure.",
-      "target_fields": ["correctDiagnostic"]
+      "target_fields": [
+        "correctDiagnostic"
+      ]
     },
     {
       "id": "lock_urg07_extrication",
@@ -141,10 +157,14 @@
           "Par le pare-brise cassé",
           "En le soulevant par les épaules"
         ],
-        "correct_indices": [1]
+        "correct_indices": [
+          1
+        ]
       },
       "feedback_error": "L'extraction d'urgence se fait en maintenant l'axe tête-cou-tronc. Si le véhicule brûle et qu'on doit sortir la victime, on le fait par la portière avec maintien de l'axe, jamais par les pieds (flexion cervicale catastrophique).",
-      "target_fields": ["correctTreatments"]
+      "target_fields": [
+        "correctTreatments"
+      ]
     }
   ],
   "postGameQuestions": [],
@@ -330,5 +350,18 @@
       "isEndState": true,
       "success": false
     }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
   }
 }

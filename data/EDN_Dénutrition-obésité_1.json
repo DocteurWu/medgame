@@ -155,5 +155,19 @@
     "Renutrition progressive",
     "Supplémentation vitaminique"
   ],
-  "correction": "# Dénutrition chez patient obèse\n\nPerte de poids significative et réduction des apports > 50% malgré obésité persistante.\n\n## Bonnes pratiques\n\n- Renutrition progressive avec objectifs réalistes\n- Supplémentation si carences (albumine basse, vitamines)\n- Suivi pluridisciplinaire et réévaluation des comorbidités\n\n## Erreurs à éviter\n\n- Confondre avec simple régime ou cancer sans preuves\n- Renutrition trop rapide sans surveillance"
+  "correction": "# Dénutrition chez patient obèse\n\nPerte de poids significative et réduction des apports > 50% malgré obésité persistante.\n\n## Bonnes pratiques\n\n- Renutrition progressive avec objectifs réalistes\n- Supplémentation si carences (albumine basse, vitamines)\n- Suivi pluridisciplinaire et réévaluation des comorbidités\n\n## Erreurs à éviter\n\n- Confondre avec simple régime ou cancer sans preuves\n- Renutrition trop rapide sans surveillance",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

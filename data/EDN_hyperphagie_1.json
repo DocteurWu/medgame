@@ -131,5 +131,19 @@
     "Soutien nutritionnel",
     "Activité physique adaptée"
   ],
-  "correction": "# Hyperphagie boulimique\n\nCrises récurrentes avec perte de contrôle, culpabilité et prise de poids.\n\n## Bonnes pratiques\n\n- Thérapie cognitivo‑comportementale\n- Soutien nutritionnel et structure des repas\n- Prise en charge des comorbidités anxiodépressives\n\n## Erreurs à éviter\n\n- Stigmatisation et injonctions non thérapeutiques\n- Ignorer la comorbidité somatique (métabolique)"
+  "correction": "# Hyperphagie boulimique\n\nCrises récurrentes avec perte de contrôle, culpabilité et prise de poids.\n\n## Bonnes pratiques\n\n- Thérapie cognitivo‑comportementale\n- Soutien nutritionnel et structure des repas\n- Prise en charge des comorbidités anxiodépressives\n\n## Erreurs à éviter\n\n- Stigmatisation et injonctions non thérapeutiques\n- Ignorer la comorbidité somatique (métabolique)",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

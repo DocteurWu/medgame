@@ -155,5 +155,38 @@
     "Implantation d'un pacemaker",
     "Hospitalisation en cardiologie"
   ],
-  "correction": "# Syncope cardiaque\n\nSurvenue brutale, sans prodrome, contexte de cardiopathie + anomalies ECG = très évocateur.\n\n## Bonnes pratiques\n\n- Hospitalisation en cardiologie\n- Monitoring\n- Pacemaker si trouble de conduction confirmé\n\n## Erreurs à éviter\n\n- Rassurer à tort : syncope cardiaque = potentiellement grave"
+  "correction": "# Syncope cardiaque\n\nSurvenue brutale, sans prodrome, contexte de cardiopathie + anomalies ECG = très évocateur.\n\n## Bonnes pratiques\n\n- Hospitalisation en cardiologie\n- Monitoring\n- Pacemaker si trouble de conduction confirmé\n\n## Erreurs à éviter\n\n- Rassurer à tort : syncope cardiaque = potentiellement grave",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.12,
+    "urgencyMultiplier": 3.0,
+    "aggravationTargets": {
+      "heartRate": 45,
+      "systolic": 75,
+      "diastolic": 45,
+      "spo2": 88,
+      "temperature": 37.0,
+      "respiratoryRate": 10
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3,
+  "alternativeDiagnostics": [
+    "Syncopes à répétition",
+    "Mort subite evitée"
+  ],
+  "fatalTreatments": [
+    "Bêtabloquants non cardiosélectifs",
+    "Antidépresseurs tricycliques",
+    "Médicaments allongeant QT"
+  ],
+  "secondLineTreatments": [
+    "Défibrillateur implantable",
+    "Pacemaker"
+  ],
+  "relevantExams": [
+    "ECG 12 dérivations",
+    "Holter ECG 24h",
+    "Echographie cardiaque",
+    "Bilan sanguin ionogramme"
+  ]
 }

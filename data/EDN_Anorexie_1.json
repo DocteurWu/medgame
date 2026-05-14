@@ -149,5 +149,19 @@
     "Psychothérapie (TCC)",
     "Suivi psychiatrique"
   ],
-  "correction": "# Anorexie mentale\n\nCas atypique : homme adulte. L'anorexie touche aussi les hommes (10-15% des cas), souvent sous-diagnostiquée.\n\n## Critères DSM-5\n\n- Restriction des apports énergétiques conduisant à un poids insuffisant\n- Peur intense de prendre du poids\n- Altération de la perception du poids ou de la forme corporelle\n\n## Signes de gravité à rechercher\n\n- IMC < 15 kg/m²\n- Bradycardie < 40 bpm\n- Hypokaliémie < 3 mmol/L\n- Hypoglycémie symptomatique\n- Allongement du QTc\n\n## Prise en charge\n\n- Équipe pluridisciplinaire : nutritionniste, psychiatre, psychologue\n- Contrat de soins et objectifs pondéraux réalistes\n- TCC recommandée chez l'adulte\n- Renutrition prudente (risque de syndrome de renutrition)\n\n## Erreurs à éviter\n\n- Sous-estimer car patient masculin ou IMC normal\n- Renutrition trop rapide sans surveillance électrolytique\n- Négliger le suivi cardiaque (ECG)"
+  "correction": "# Anorexie mentale\n\nCas atypique : homme adulte. L'anorexie touche aussi les hommes (10-15% des cas), souvent sous-diagnostiquée.\n\n## Critères DSM-5\n\n- Restriction des apports énergétiques conduisant à un poids insuffisant\n- Peur intense de prendre du poids\n- Altération de la perception du poids ou de la forme corporelle\n\n## Signes de gravité à rechercher\n\n- IMC < 15 kg/m²\n- Bradycardie < 40 bpm\n- Hypokaliémie < 3 mmol/L\n- Hypoglycémie symptomatique\n- Allongement du QTc\n\n## Prise en charge\n\n- Équipe pluridisciplinaire : nutritionniste, psychiatre, psychologue\n- Contrat de soins et objectifs pondéraux réalistes\n- TCC recommandée chez l'adulte\n- Renutrition prudente (risque de syndrome de renutrition)\n\n## Erreurs à éviter\n\n- Sous-estimer car patient masculin ou IMC normal\n- Renutrition trop rapide sans surveillance électrolytique\n- Négliger le suivi cardiaque (ECG)",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

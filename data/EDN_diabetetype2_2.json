@@ -161,5 +161,19 @@
     "Metformine",
     "Statines"
   ],
-  "correction": "# Diabète de type 2\n\nSurpoids abdominal, hyperglycémie, HbA1c élevée, anticorps négatifs: compatible DT2.\n\n## Bonnes pratiques\n\n- Mesures hygiéno‑diététiques structurées\n- Metformine si non contre‑indiquée\n- Prise en charge du risque cardio‑métabolique (statines, HTA)\n\n## Erreurs à éviter\n\n- Classer DT1 sans éléments (anticorps, cétose)\n- Négliger le suivi (HbA1c, complications micro/macrovasculaires)"
+  "correction": "# Diabète de type 2\n\nSurpoids abdominal, hyperglycémie, HbA1c élevée, anticorps négatifs: compatible DT2.\n\n## Bonnes pratiques\n\n- Mesures hygiéno‑diététiques structurées\n- Metformine si non contre‑indiquée\n- Prise en charge du risque cardio‑métabolique (statines, HTA)\n\n## Erreurs à éviter\n\n- Classer DT1 sans éléments (anticorps, cétose)\n- Négliger le suivi (HbA1c, complications micro/macrovasculaires)",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

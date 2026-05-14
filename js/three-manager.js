@@ -909,6 +909,205 @@ class ThreeManager {
         if (this.hud && this.hud._syncProgress) {
             this.hud._syncProgress();
         }
+        // Connecter les constantes vitales aux animations du patient 3D
+        this._connectVitalsToPatient(caseData);
+    }
+
+    /**
+     * Connecte les constantes vitales du cas aux animations du patient 3D.
+     * - Respiration adaptée (tachypnée, bradypnée, dyspnée, Cheyne-Stokes, agonal)
+     * - Expressions faciales dynamiques (douleur, pâleur, cyanose, fièvre, anxiété)
+     * - Couleur de peau réactive (pâleur, cyanose, rougeur fiévreuse)
+     * - Éclairage d'ambiance (mode urgence = teinte rouge)
+     */
+    _connectVitalsToPatient(caseData) {
+        if (!caseData) return;
+
+        const patient = this.scene?.patient;
+        const animator = this.scene?.patientAnimator;
+
+        // Déterminer le motif respiratoire selon les constantes et la pathologie
+        const vitals = caseData.examenClinique?.constantes || {};
+        const hr = this._parseNum(vitals.pouls) || 78;
+        const spo2 = this._parseNum(vitals.saturationO2) || 97;
+        const temp = this._parseNum(vitals.temperature) || 37.0;
+        const fr = this._parseNum(vitals.frequenceRespiratoire) || 16;
+        const specialty = (caseData.id || caseData.specialty || '').toLowerCase();
+        const title = (caseData.title || caseData.patient?.complaint || '').toLowerCase();
+
+        // Motif respiratoire
+        let respirationPattern = 'normal';
+        if (fr >= 28 || hr > 140 || spo2 < 85) {
+            respirationPattern = 'agonal';
+        } else if (fr >= 22 || (hr > 120 && spo2 < 92)) {
+            respirationPattern = 'dyspnea';
+        } else if (fr >= 20) {
+            respirationPattern = 'tachypnea';
+        } else if (fr <= 8) {
+            respirationPattern = 'bradypnea';
+        } else if (specialty.includes('urgence') || specialty.includes('choc') || title.includes('arret') || title.includes('cardiaque')) {
+            respirationPattern = 'cheyneStokes';
+        }
+
+        if (animator) {
+            animator.setRespirationPattern(respirationPattern);
+            // Adapter la vitesse de respiration au rythme cardiaque
+            animator.breathRate = Math.max(0.6, Math.min(4.0, hr / 60));
+        }
+
+        // Expression faciale
+        let expression = 'normal';
+        if (spo2 < 85) expression = 'cyanose';
+        else if (spo2 < 92) expression = 'anxieux';
+        else if (temp >= 38.5) expression = 'fievre';
+        else if (hr > 120 || title.includes('douleur')) expression = 'douleur';
+        else if (spo2 > 94 && hr < 100 && temp < 37.5) expression = 'normal';
+
+        // Changer l'expression sur le patient
+        if (patient && patient.applyExpression) {
+            patient.applyExpression(expression);
+        }
+        if (animator) {
+            animator.setExpression(expression);
+        }
+
+        // Éclairage dynamique pour les cas d'urgence
+        this._applyUrgencyLighting(caseData, hr, spo2);
+
+        // Lancer la mise à jour continue des constantes vitales 3D
+        this._startVitalsAnimationLoop();
+    }
+
+    /**
+     * Parse un nombre depuis une chaîne vitale ("78 bpm" -> 78)
+     */
+    _parseNum(str) {
+        if (typeof str === 'number') return str;
+        const m = (str || '').match(/[\d]+(?:[.,]\d+)?/);
+        return m ? parseFloat(m[0].replace(',', '.')) : null;
+    }
+
+    /**
+     * Applique un éclairage d'urgence si les constantes sont critiques
+     */
+    _applyUrgencyLighting(caseData, hr, spo2) {
+        const scene3d = this.scene?.scene;
+        if (!scene3d) return;
+
+        // Supprimer l'ancienne lumière d'urgence si elle existe
+        const existingUrgLight = scene3d.getObjectByName('urgenceLight');
+        if (existingUrgLight) scene3d.remove(existingUrgLight);
+
+        const isUrgent = hr > 120 || spo2 < 90 || (caseData.difficulty || 1) >= 3;
+
+        if (isUrgent) {
+            // Lumière rouge pulsante pour les cas critiques
+            const urgLight = new THREE.PointLight(0xff3333, 0.8, 12);
+            urgLight.position.set(0, 2.5, 0);
+            urgLight.name = 'urgenceLight';
+            scene3d.add(urgLight);
+
+            // Teinte rouge de la scène (fog)
+            if (this.scene) {
+                this.scene._urgencyFogColor = new THREE.Color(0x4a2233);
+                this.scene._normalFogColor = this.scene.scene.fog?.color?.clone() || new THREE.Color(0x8c9bab);
+            }
+
+            // Animer la pulsation rouge
+            this._urgencyPulseActive = true;
+            this._urgencyPulseTime = 0;
+        } else {
+            this._urgencyPulseActive = false;
+        }
+    }
+
+    /**
+     * Boucle d'animation continue des constantes vitales sur le patient 3D.
+     * Synchronise la respiration, l'expression et la couleur de peau avec les constantes réelles.
+     */
+    _startVitalsAnimationLoop() {
+        // Nettoyer l'ancienne boucle
+        if (this._vitalsAnimFrame) cancelAnimationFrame(this._vitalsAnimFrame);
+
+        const animate = () => {
+            if (!this.enabled) return;
+
+            const vitals = window.vitalSigns;
+            if (vitals && vitals.props && this.scene?.patient) {
+                const hr = vitals.props.heartRate || 78;
+                const spo2 = vitals.props.spo2 || 97;
+                const temp = vitals.props.temperature || 37.0;
+                const sysBP = vitals.props.systolic || 120;
+                const fr = vitals.props.respiratoryRate || 16;
+
+                // Couleur de peau dynamique
+                const patient = this.scene.patient;
+                if (patient.skinMat) {
+                    let skinColor = new THREE.Color(0xd7a87a); // Base normale
+                    if (spo2 < 85) {
+                        // Cyanose sévère : teinte bleutée
+                        skinColor.lerp(new THREE.Color(0x8fa8b8), Math.min(1, (85 - spo2) / 15));
+                    } else if (spo2 < 92) {
+                        // Cyanose légère
+                        skinColor.lerp(new THREE.Color(0xc8b8a0), Math.min(1, (92 - spo2) / 7));
+                    }
+                    if (temp >= 38.5) {
+                        // Fièvre : teinte rouge
+                        const feverIntensity = Math.min(1, (temp - 38.5) / 2);
+                        skinColor.lerp(new THREE.Color(0xe8a090), feverIntensity);
+                    } else if (sysBP < 90) {
+                        // Pâleur hypotensive
+                        skinColor.lerp(new THREE.Color(0xd4c4b0), Math.min(1, (90 - sysBP) / 20));
+                    }
+                    patient.skinMat.color.lerp(skinColor, 0.02);
+
+                    // Émission en cas de détresse
+                    if (spo2 < 90 || hr > 130) {
+                        patient.skinMat.emissive.set(0x220808);
+                        patient.skinMat.emissiveIntensity = 0.1 + Math.sin(Date.now() * 0.003) * 0.05;
+                    } else {
+                        patient.skinMat.emissive.set(0x000000);
+                        patient.skinMat.emissiveIntensity = 0;
+                    }
+                }
+
+                // Mettre à jour l'expression faciale en continu
+                const animator = this.scene.patientAnimator;
+                if (animator) {
+                    // Adaptation en temps réel du rythme respiratoire
+                    let pattern = 'normal';
+                    if (fr >= 28 || hr > 140) pattern = 'agonal';
+                    else if (fr >= 22 || (hr > 120 && spo2 < 92)) pattern = 'dyspnea';
+                    else if (fr >= 20) pattern = 'tachypnea';
+                    else if (fr <= 8) pattern = 'bradypnea';
+
+                    if (animator.respirationPattern !== pattern) {
+                        animator.setRespirationPattern(pattern);
+                    }
+                }
+            }
+
+            // Pulsation d'urgence (lumière rouge)
+            if (this._urgencyPulseActive && this.scene?.scene) {
+                this._urgencyPulseTime = (this._urgencyPulseTime || 0) + 0.016;
+                const urgLight = this.scene.scene.getObjectByName('urgenceLight');
+                if (urgLight) {
+                    urgLight.intensity = 0.4 + Math.sin(this._urgencyPulseTime * 2.5) * 0.4;
+                }
+                // Teinter le fog progressivement
+                const fog = this.scene.scene.fog;
+                if (fog && this.scene._urgencyFogColor && this.scene._normalFogColor) {
+                    const pulse = Math.sin(this._urgencyPulseTime * 1.5) * 0.15 + 0.15;
+                    fog.color.lerpColors(this.scene._normalFogColor, this.scene._urgencyFogColor, pulse);
+                }
+            } else if (this.scene?.scene?.fog && this.scene._normalFogColor) {
+                // Restaurer le fog normal progressivement
+                this.scene.scene.fog.color.lerp(this.scene._normalFogColor, 0.03);
+            }
+
+            this._vitalsAnimFrame = requestAnimationFrame(animate);
+        };
+        animate();
     }
 
     _updateHUDVitals() {

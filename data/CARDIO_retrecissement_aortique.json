@@ -150,5 +150,37 @@
   "correctTreatments": [
     "Remplacement valvulaire aortique"
   ],
-  "correction": "# Rétrécissement aortique serré\n\nDyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.\n\n## Bonnes pratiques\n\n- Confirmer par échocardiographie-Doppler (gradient, surface, HVG)\n- Surveiller la fonction ventriculaire gauche\n- Planifier remplacement valvulaire (chirurgie ou TAVI)\n\n## Erreurs à éviter\n\n- Omettre l'évaluation du gradient et de la surface valvulaire\n- Ne pas corriger les facteurs de risque cardiovasculaires associés"
+  "correction": "# Rétrécissement aortique serré\n\nDyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.\n\n## Bonnes pratiques\n\n- Confirmer par échocardiographie-Doppler (gradient, surface, HVG)\n- Surveiller la fonction ventriculaire gauche\n- Planifier remplacement valvulaire (chirurgie ou TAVI)\n\n## Erreurs à éviter\n\n- Omettre l'évaluation du gradient et de la surface valvulaire\n- Ne pas corriger les facteurs de risque cardiovasculaires associés",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.08,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 55,
+      "systolic": 105,
+      "diastolic": 65,
+      "spo2": 92,
+      "temperature": 37.0,
+      "respiratoryRate": 24
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3,
+  "alternativeDiagnostics": [
+    "Rétrécissement aortique dégénératif",
+    "Sténose aortique"
+  ],
+  "fatalTreatments": [
+    "Vasodilatateurs",
+    "Bêtabloquants en cas de décompensation",
+    "Digitaliques"
+  ],
+  "secondLineTreatments": [
+    "Remplacement valvulaire percutané (TAVI)"
+  ],
+  "relevantExams": [
+    "ECG",
+    "Echographie cardiaque",
+    "Bilan sanguin",
+    "Coronarographie"
+  ]
 }

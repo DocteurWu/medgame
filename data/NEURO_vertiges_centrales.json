@@ -152,5 +152,19 @@
     "Hospitalisation en neuro",
     "Kinésithérapie vestibulaire et cérébelleuse"
   ],
-  "correction": "# Syndrome cérébelleux post-traumatique\n\nLes vertiges d'origine centrale se traduisent par une instabilité majeure, un Romberg central, une marche ébrieuse et des troubles de la coordination. Le contexte de chute avec perte de connaissance oriente vers un traumatisme crânien compliqué d’une contusion cérébelleuse.\n\n## Points clés\n\n- Instabilité ébrieuse = cérébelleux\n- Romberg oscillant dans toutes les directions\n- Dysmétrie aux tests index-index et talon-genou\n- IRM indispensable\n\n## Prise en charge\n\n- Hospitalisation et surveillance\n- Rééducation cérébelleuse\n- Repos neurologique strict"
+  "correction": "# Syndrome cérébelleux post-traumatique\n\nLes vertiges d'origine centrale se traduisent par une instabilité majeure, un Romberg central, une marche ébrieuse et des troubles de la coordination. Le contexte de chute avec perte de connaissance oriente vers un traumatisme crânien compliqué d’une contusion cérébelleuse.\n\n## Points clés\n\n- Instabilité ébrieuse = cérébelleux\n- Romberg oscillant dans toutes les directions\n- Dysmétrie aux tests index-index et talon-genou\n- IRM indispensable\n\n## Prise en charge\n\n- Hospitalisation et surveillance\n- Rééducation cérébelleuse\n- Repos neurologique strict",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

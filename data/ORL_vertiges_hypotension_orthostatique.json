@@ -148,5 +148,19 @@
     "Augmentation apport en sel",
     "Éducation au lever progressif"
   ],
-  "correction": "# Hypotension orthostatique\n\nLes vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.\n\n## Points clés\n\n- Vertiges non systématisés = origine centrale ou cardiovasculaire\n- Orthostatisme positif = diagnostic confirmé\n- Contexte de déshydratation et fortes dépenses physiques chez un pompier\n\n## Prise en charge\n\n- Réhydratation\n- Mesures physiques simples\n- Réévaluation si persistance"
+  "correction": "# Hypotension orthostatique\n\nLes vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.\n\n## Points clés\n\n- Vertiges non systématisés = origine centrale ou cardiovasculaire\n- Orthostatisme positif = diagnostic confirmé\n- Contexte de déshydratation et fortes dépenses physiques chez un pompier\n\n## Prise en charge\n\n- Réhydratation\n- Mesures physiques simples\n- Réévaluation si persistance",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

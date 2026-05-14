@@ -146,5 +146,19 @@
     "Drainage par sonde JJ",
     "Néphrostomie"
   ],
-  "correction": "# Pyélonéphrite obstructive\n\nLe patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile\n- Réaliser un scanner injecté en urgence\n- Initier une antibiothérapie IV à large spectre dès l'admission\n- Lever l'obstacle rapidement : sonde JJ ou néphrostomie\n\n## Erreurs à éviter\n\n- Traiter comme une pyélonéphrite simple sans imagerie\n- Retarder le drainage en présence de sepsis\n- Oublier de surveiller la fonction rénale"
+  "correction": "# Pyélonéphrite obstructive\n\nLe patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile\n- Réaliser un scanner injecté en urgence\n- Initier une antibiothérapie IV à large spectre dès l'admission\n- Lever l'obstacle rapidement : sonde JJ ou néphrostomie\n\n## Erreurs à éviter\n\n- Traiter comme une pyélonéphrite simple sans imagerie\n- Retarder le drainage en présence de sepsis\n- Oublier de surveiller la fonction rénale",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

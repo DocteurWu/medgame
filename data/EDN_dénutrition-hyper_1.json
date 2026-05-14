@@ -152,5 +152,19 @@
     "Antibiothérapie",
     "Supplémentation vitaminique"
   ],
-  "correction": "# Dénutrition hypercatabolique\n\nPerte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.\n\n## Bonnes pratiques\n\n- Renutrition prudente et progressive\n- Traitement de la cause (antibiothérapie)\n- Supplémentation micro‑nutritionnelle, surveillance clinique et biologique\n\n## Erreurs à éviter\n\n- Renutrition trop rapide (risque de syndrome de renutrition inappropriée)\n- Oublier de traiter l’infection et de surveiller électrolytes"
+  "correction": "# Dénutrition hypercatabolique\n\nPerte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.\n\n## Bonnes pratiques\n\n- Renutrition prudente et progressive\n- Traitement de la cause (antibiothérapie)\n- Supplémentation micro‑nutritionnelle, surveillance clinique et biologique\n\n## Erreurs à éviter\n\n- Renutrition trop rapide (risque de syndrome de renutrition inappropriée)\n- Oublier de traiter l’infection et de surveiller électrolytes",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }

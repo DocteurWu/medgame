@@ -134,5 +134,19 @@
     "Thérapie familiale",
     "Thérapie cognitivo-comportementale"
   ],
-  "correction": "# Anorexie mentale (adolescent)\n\nPerte de poids, aménorrhée, préoccupations corporelles, bradycardie.\n\n## Bonnes pratiques\n\n- Prise en charge multidisciplinaire incluant thérapie familiale\n- Renutrition progressive et surveillance cardiaque/biologique\n- Limiter l’exposition nocive aux réseaux sociaux\n\n## Erreurs à éviter\n\n- Objectifs de poids non sécurisés\n- Renutrition trop rapide ou non accompagnée"
+  "correction": "# Anorexie mentale (adolescent)\n\nPerte de poids, aménorrhée, préoccupations corporelles, bradycardie.\n\n## Bonnes pratiques\n\n- Prise en charge multidisciplinaire incluant thérapie familiale\n- Renutrition progressive et surveillance cardiaque/biologique\n- Limiter l’exposition nocive aux réseaux sociaux\n\n## Erreurs à éviter\n\n- Objectifs de poids non sécurisés\n- Renutrition trop rapide ou non accompagnée",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38.0,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2
 }
