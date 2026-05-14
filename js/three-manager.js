@@ -930,7 +930,9 @@ class ThreeManager {
             tension: 'tension',
             saturationO2: 'saturationO2',
             temperature: 'temperature',
-            glycemie: 'glycemie'
+            glycemie: 'glycemie',
+            pouls: 'pouls',
+            frequenceRespiratoire: 'frequenceRespiratoire'
         };
         const el = document.getElementById(map[key]);
         if (el && measurement.value !== '--') el.textContent = measurement.value;
