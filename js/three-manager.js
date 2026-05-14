@@ -899,7 +899,19 @@ class ThreeManager {
     openPatientDialog() {
         if (!this.hud) return;
         this.hud.createFloatingDialog();
-        window.patientChat?.open();
+        // Ouvrir le chat 2D pour la logique de réponse, mais cacher le panneau 2D visuel
+        // car le dialogue 3D flottant le remplace
+        const chat = window.patientChat;
+        if (chat) {
+            chat.setCase(chat.caseData || this.currentCase);
+            // Ne PAS afficher le panneau 2D, on utilise le dialogue flottant 3D
+            const panel2D = document.getElementById('dialogue-panel');
+            if (panel2D) {
+                // Laisser le panneau 2D caché en mode 3D — les messages sont relayés par le patch
+                panel2D.classList.remove('active');
+                panel2D.setAttribute('aria-hidden', 'true');
+            }
+        }
     }
 
     get currentCase() {

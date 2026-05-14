@@ -879,16 +879,29 @@ export class ThreeHUD {
         const messages3d = document.getElementById('dialog-messages-3d');
         if (!messages3d) return;
 
+        // Guard contre les doublons : chaque message 3D reçoit un ID unique basé sur horodatage
+        let _msgCounter = 0;
+        const makeMsgId = () => `msg3d-${Date.now()}-${++_msgCounter}`;
+
         const pushMessage = (speaker, text, sentiment = null) => {
+            // Antidoublon : vérifier si un message identique vient d'être ajouté (dans les 100ms)
+            const lastChild = messages3d.lastElementChild;
+            if (lastChild) {
+                const lastText = lastChild.querySelector('.dialog-msg-text')?.textContent?.trim();
+                if (lastText === (typeof text === 'string' ? text.trim() : '')) {
+                    return; // Doublon détecté, ignorer
+                }
+            }
+
             const row = document.createElement('div');
             row.className = speaker === 'Vous' ? 'from-user' : 'from-patient';
+            row.dataset.msgId = makeMsgId();
 
             if (speaker !== 'Vous') {
                 // Analyse automatique du sentiment si non fournie
                 const sent = sentiment || this._analyzeSentiment(text);
 
                 // Message du patient — avec émotion et bulle colorée
-                const emotionTag = `<span class="dialog-emotion-tag" style="background:${sent.color}22;color:${sent.color};border:1px solid ${sent.color}44;border-radius:6px;padding:1px 6px;font-size:0.75rem;margin-left:6px;vertical-align:middle;">${sent.emoji}</span>`;
                 row.innerHTML = `
                     <div class="dialog-msg-patient">
                         <span class="dialog-msg-avatar">${sent.emoji}</span>
@@ -922,7 +935,9 @@ export class ThreeHUD {
             messages3d.scrollTop = messages3d.scrollHeight;
         };
 
-        // Patch patientChat.append to also write to 3D dialog
+        // Patch patientChat.append pour écrire UNIQUEMENT dans le dialogue 3D enrichi.
+        // L'original écrit dans le 2D, le patch écrit dans le 3D avec analyse de sentiment.
+        // On NE remplace PAS les messages 3D par les clones 2D (plus de MutationObserver destructif).
         const chat = window.patientChat;
         if (chat && chat.append) {
             const origAppend = chat.append.bind(chat);
@@ -930,12 +945,14 @@ export class ThreeHUD {
             chat.append = (speaker, text, returnTextNode) => {
                 const textContent = typeof text === 'string' ? text : text.textContent || '';
                 const sentiment = speaker !== 'Vous' ? this._analyzeSentiment(textContent) : null;
+                // Afficher dans le dialogue 3D enrichi
                 pushMessage(speaker, textContent, sentiment);
                 // Afficher une bulle flottante avec émotion quand le patient répond
                 if (speaker !== 'Vous' && textContent) {
                     const shortText = textContent.length > 80 ? textContent.substring(0, 77) + '...' : textContent;
                     this._showPatientBubble(`${sentiment.emoji} ${shortText}`, 4500, sentiment.color);
                 }
+                // Laisser l'original écrire dans le conteneur 2D classique
                 return origAppend(speaker, text, returnTextNode);
             };
         }
@@ -959,14 +976,34 @@ export class ThreeHUD {
             };
         }
 
-        const observer = new MutationObserver(() => {
+        // MutationObserver SYNCHRONE : on écoute le conteneur 2D pour récupérer
+        // les messages qui arrivent par d'autres chemins (boutons suggérés du 2D, etc.)
+        // MAIS on ne fait qu'ajouter les messages manquants, jamais tout remplacer.
+        const observer = new MutationObserver((mutations) => {
             const classicMessages = document.querySelectorAll('#dialogue-messages .dialogue-message');
-            if (classicMessages.length > 0) {
-                messages3d.innerHTML = '';
-                classicMessages.forEach(m => {
-                    const clone = m.cloneNode(true);
-                    messages3d.appendChild(clone);
-                });
+            if (classicMessages.length === 0) return;
+
+            // Construire l'ensemble des textes déjà affichés en 3D
+            const existingTexts = new Set();
+            messages3d.querySelectorAll('.dialog-msg-text').forEach(el => {
+                existingTexts.add(el.textContent.trim());
+            });
+
+            // Pour chaque message 2D, vérifier s'il manque dans le 3D
+            let addedAny = false;
+            classicMessages.forEach(m => {
+                const text = m.textContent?.trim();
+                if (text && !existingTexts.has(text)) {
+                    // Déterminer le type (user vs patient)
+                    const isFromUser = m.classList.contains('from-user');
+                    const speaker = isFromUser ? 'Vous' : 'Patient';
+                    pushMessage(speaker, text, null);
+                    existingTexts.add(text);
+                    addedAny = true;
+                }
+            });
+
+            if (addedAny) {
                 messages3d.scrollTop = messages3d.scrollHeight;
             }
         });
