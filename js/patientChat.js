@@ -258,20 +258,57 @@
             const c = this.caseData || {};
             const patient = c.patient || {};
             const interrogatoire = c.interrogatoire || {};
-            return `Tu es ${patient.prenom || ''} ${patient.nom || ''}, un patient de ${patient.age || '?'} ans, sexe ${patient.sexe || '?'}.
+            const examClinique = c.examenClinique || {};
+            const specialty = (c.specialty || c.id || '').toUpperCase();
+            const difficulty = c.difficulty || 1;
+
+            // Index de gravité basé sur les constantes
+            const constantes = examClinique.constantes || {};
+            const spo2 = this._parseVitalNum(constantes.saturationO2);
+            const fc = this._parseVitalNum(constantes.pouls);
+            const temp = this._parseVitalNum(constantes.temperature);
+            let severityHint = '';
+            if (spo2 !== null && spo2 < 90) severityHint = 'Vous êtes en détresse respiratoire, vous parlez avec difficulté et essoufflement. Réponses très courtes.';
+            else if (fc !== null && fc > 120) severityHint = 'Votre cœur bat très vite, vous êtes angoissé(e). Réponses courtes et nerveuses.';
+            else if (temp !== null && temp >= 38.5) severityHint = 'Vous avez de la fièvre, vous vous sentez mal. Réponses un peu décousues.';
+
+            // Personnalité en fonction du cas
+            const age = patient.age || 50;
+            let personalityHint = '';
+            if (age < 30) personalityHint = 'Vous êtes jeune, un peu inquiet mais essayez de rester calme. Vous utilisez un langage familier.';
+            else if (age > 75) personalityHint = 'Vous êtes âgé(e), vous parlez lentement avec des hésitations. Vous mélangez parfois les mots medicaux.';
+
+            return `Tu es ${patient.prenom || ''} ${patient.nom || ''}, un patient de ${patient.age || '?'} ans, sexe ${patient.sexe || '?'}. Tu es un VRAI PATIENT, pas un médecin.
 Motif d'hospitalisation : ${interrogatoire.motifHospitalisation || 'Non précisé'}
 Histoire de la maladie : ${JSON.stringify(interrogatoire.histoireMaladie || {})}
 Antécédents : ${JSON.stringify(interrogatoire.antecedents || {})}
 Mode de vie : ${JSON.stringify(interrogatoire.modeDeVie || {})}
 Traitements : ${JSON.stringify(interrogatoire.traitements || [])}
 Allergies : ${JSON.stringify(interrogatoire.allergies || {})}
+Examen clinique (ce que le patient ressent) : ${examClinique.aspectGeneral || 'Non précisé'}
+Constantes vitales : FC=${constantes.pouls || 'N/A'}, TA=${constantes.tension || 'N/A'}, SpO2=${constantes.saturationO2 || 'N/A'}, T°=${constantes.temperature || 'N/A'}
 
-RÈGLES :
-- Tu es un PATIENT, pas un médecin. Tu ne fais JAMAIS de diagnostic.
-- Réponds naturellement, comme un vrai patient, en 1 à 3 phrases.
-- Ne révèle pas tout d'un coup. Le médecin doit poser les bonnes questions.
-- Si tu ne sais pas, dis "Je ne sais pas docteur".
+${severityHint}
+${personalityHint}
+
+RÈGLES STRICTES :
+- Tu es un PATIENT, pas un médecin. Tu ne fais JAMAIS de diagnostic ni de suggestion thérapeutique.
+- Réponds naturellement, comme un vrai patient, en 1 à 3 phrases max.
+- Ne révèle pas tout d'un coup. Le médecin doit poser les BONNES questions pour obtenir les infos.
+- Si le médecin pose une question que tu ne comprends pas, dis-le naturellement ("Euh... c'est-à-dire ?").
+- Si tu ne sais pas quelque chose, dis "Je ne sais pas docteur" ou "Je ne suis pas sûr(e)".
+- Si le médecin est froid ou direct, tu peux montrer de l'anxiété.
+- Adapte ton langage à ton âge et ton état de santé.
 - Réponds TOUJOURS en français.`.trim();
+        }
+
+        /**
+         * Parse un nombre depuis une valeur vitale (pour enrichir le prompt système)
+         */
+        _parseVitalNum(str) {
+            if (typeof str === 'number') return str;
+            const m = (str || '').match(/[\d]+(?:[.,]\d+)?/);
+            return m ? parseFloat(m[0].replace(',', '.')) : null;
         }
 
         async ask(question) {
@@ -353,14 +390,87 @@ RÈGLES :
             const c = this.caseData || {};
             const q = question.toLowerCase();
             const i = c.interrogatoire || {};
+            const exam = c.examenClinique || {};
+            const hm = i.histoireMaladie || {};
 
-            if (q.includes('douleur') || q.includes('mal')) return i.histoireMaladie?.descriptionDouleur || 'J\'ai mal, mais j\'ai du mal à préciser docteur.';
-            if (q.includes('antécédent') || q.includes('antecedent') || q.includes('opéré')) return this.stringifyPatient(i.antecedents) || 'Je n\'ai pas d\'antécédent particulier.';
-            if (q.includes('traitement') || q.includes('médicament') || q.includes('medicament')) return this.stringifyPatient(i.traitements) || 'Je ne prends pas de traitement habituel.';
-            if (q.includes('allerg')) return this.stringifyPatient(i.allergies) || 'Pas d\'allergie connue.';
-            if (q.includes('depuis') || q.includes('commenc') || q.includes('début')) return i.histoireMaladie?.debutSymptomes || 'Ça a commencé récemment.';
-            if (q.includes('sentez') || q.includes('se sent')) return c.examenClinique?.aspectGeneral || 'Ça va... enfin, c\'est pour ça que je suis là.';
-            return i.motifHospitalisation || 'Je ne sais pas docteur, c\'est pour ça que je suis là.';
+            // Questions sur la douleur
+            if (q.includes('douleur') || q.includes('mal ') || q.includes('aie') || q.includes('souffrir') || q.includes('ça fait mal')) {
+                const desc = hm.descriptionDouleur;
+                if (desc) {
+                    const debut = hm.debutSymptomes ? ` Ça a commencé ${hm.debutSymptomes.toLowerCase()}.` : '';
+                    return `${desc}.${debut}`;
+                }
+                return hm.debutSymptomes ? `Ça fait mal, ça a commencé ${hm.debutSymptomes.toLowerCase()}.` : 'J\'ai mal, docteur.';
+            }
+
+            // Questions sur le début / l'évolution
+            if (q.includes('depuis') || q.includes('commenc') || q.includes('début') || q.includes('quand')) {
+                return hm.debutSymptomes
+                    ? `Ça a commencé ${hm.debutSymptomes.toLowerCase()}. ${hm.evolution ? `Et depuis, ${hm.evolution.toLowerCase()}.` : ''}`
+                    : 'Je ne sais plus trop... récemment, je dirais.';
+            }
+
+            // Questions sur les antécédents
+            if (q.includes('antécédent') || q.includes('antecedent') || q.includes('opéré') || q.includes('maladie avant') || q.includes('déjà été')) {
+                const parts = [];
+                if (i.antecedents?.medicaux?.length) parts.push(`Oui, ${Array.isArray(i.antecedents.medicaux) ? i.antecedents.medicaux.join(', ') : i.antecedents.medicaux}.`);
+                if (i.antecedents?.chirurgicaux?.length) parts.push(`J'ai été opéré(e) : ${Array.isArray(i.antecedents.chirurgicaux) ? i.antecedents.chirurgicaux.join(', ') : i.antecedents.chirurgicaux}.`);
+                if (i.antecedents?.familiaux?.length) parts.push(`Dans ma famille, il y a ${Array.isArray(i.antecedents.familiaux) ? i.antecedents.familiaux.join(', ') : i.antecedents.familiaux}.`);
+                return parts.length > 0 ? parts.join(' ') : 'Non, rien de particulier docteur.';
+            }
+
+            // Questions sur les traitements
+            if (q.includes('traitement') || q.includes('médicament') || q.includes('medicament') || q.includes('prends') || q.includes('pilule')) {
+                return i.traitements?.length
+                    ? `Oui, je prends ${Array.isArray(i.traitements) ? i.traitements.join(', ') : i.traitements}. ${i.traitements.length > 2 ? 'Tous les jours, oui.' : ''}`
+                    : 'Non docteur, je ne prends rien habituellement.';
+            }
+
+            // Questions sur les allergies
+            if (q.includes('allerg') || q.includes('allergie')) {
+                if (i.allergies?.presence) {
+                    const liste = i.allergies.liste;
+                    if (Array.isArray(liste) && liste.length > 0) {
+                        const noms = liste.map(a => typeof a === 'string' ? a : (a.allergene || 'quelque chose')).join(', ');
+                        return `Oui, je suis allergique à ${noms}. Il faut faire attention.`;
+                    }
+                    return 'Oui, j\'ai des allergies.';
+                }
+                return 'Non, pas d\'allergie que je sache docteur.';
+            }
+
+            // Questions sur les symptômes associés
+            if (q.includes('autre symptôme') || q.includes('autres symptômes') || q.includes('aut chose') || q.includes('d\'autres symptômes') || q.includes('symptomes asso')) {
+                return hm.symptomesAssocies
+                    ? `Oui, j'ai aussi ${Array.isArray(hm.symptomesAssocies) ? hm.symptomesAssocies.join(', ').toLowerCase() : hm.symptomesAssocies.toLowerCase()}.`
+                    : 'Non, juste ce que je vous ai dit.';
+            }
+
+            // Questions sur le mode de vie
+            if (q.includes('tabac') || q.includes('fume') || q.includes('cigarette')) {
+                return i.modeDeVie?.tabac ? `Oui, ${i.modeDeVie.tabac.quantite || i.modeDeVie.tabac}.` : 'Non, je ne fume pas docteur.';
+            }
+            if (q.includes('alcool') || q.includes('boit') || q.includes('consommez')) {
+                return i.modeDeVie?.alcool ? `${i.modeDeVie.alcool.quantite || 'Occasionnellement, oui.'}` : 'Non, pas du tout docteur.';
+            }
+            if (q.includes('activité') || q.includes('sport') || q.includes('exercice') || q.includes('physique')) {
+                return i.modeDeVie?.activitePhysique?.description || 'Je ne fais pas beaucoup de sport, non.';
+            }
+
+            // Questions sur l'état actuel
+            if (q.includes('sentez') || q.includes('se sent') || q.includes('comment allez') || q.includes('comment vous sentez')) {
+                return exam.aspectGeneral || 'Ça va... enfin, c\'est pour ça que je suis là docteur.';
+            }
+
+            // Questions sur les facteurs déclenchants
+            if (q.includes('déclench') || q.includes('quand ça') || q.includes('factor')) {
+                return hm.facteursDeclenchants
+                    ? `Ça se déclenche quand ${hm.facteursDeclenchants.toLowerCase()}.`
+                    : 'Je ne sais pas trop ce qui le déclenche...';
+            }
+
+            // Fallback générique sur le motif
+            return i.motifHospitalisation ? `Je suis ici parce que ${i.motifHospitalisation.toLowerCase()}.` : 'Je ne sais pas trop comment vous expliquer, docteur...';
         }
 
         stringifyPatient(value) {
