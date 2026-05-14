@@ -245,10 +245,12 @@ export class ThreeHUD {
         const measured = mgr.measured || new Set();
 
         const map = {
-            'hud-hr': { key: 'pouls', shown: measured.has('saturationO2') },
+            'hud-hr': { key: 'pouls', shown: measured.has('pouls') },
             'hud-bp': { key: 'tension', shown: measured.has('tension') },
             'hud-spo2': { key: 'saturationO2', shown: measured.has('saturationO2') },
-            'hud-temp': { key: 'temperature', shown: measured.has('temperature') }
+            'hud-temp': { key: 'temperature', shown: measured.has('temperature') },
+            'hud-fr': { key: 'frequenceRespiratoire', shown: measured.has('frequenceRespiratoire') },
+            'hud-gly': { key: 'glycemie', shown: measured.has('glycemie') }
         };
 
         Object.entries(map).forEach(([id, cfg]) => {
@@ -889,10 +891,15 @@ export class ThreeHUD {
         const sendMessage = () => {
             const val = input?.value?.trim();
             if (!val) return;
-            pushMessage('Vous', val);
             input.value = '';
             if (chat) {
+                // chat.ask() appelle chat.append('Vous', question) en interne,
+                // qui est monkey-patché pour aussi afficher dans le dialogue 3D.
+                // On ne doit PAS appeler pushMessage('Vous', val) ici sinon doublon.
                 chat.ask(val);
+            } else {
+                // Pas de chat 2D disponible → afficher uniquement dans le dialogue 3D
+                pushMessage('Vous', val);
             }
         };
 

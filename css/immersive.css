@@ -126,8 +126,9 @@ body.mode-3d #scene-container {
 
 .hud-vitals {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .hud-vital-item {
