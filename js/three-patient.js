@@ -285,6 +285,7 @@ export class ThreePatient {
 
     buildLying(skin, cloth) {
         this.group.rotation.y = -Math.PI / 2;
+        // Torse allongé (axe Z = longueur du corps, +Z = tête)
         this.cube({ x: 0.48, y: 0.28, z: 0.95 }, { x: 0, y: 0.95, z: 0 }, cloth, 'Patient torse');
         this.sphere(0.17, { x: 0, y: 1.0, z: 0.62 }, skin, 'Patient tete');
 
@@ -305,6 +306,25 @@ export class ThreePatient {
 
         // Bouche
         this.mouth = this.cube({ x: 0.09, y: 0.014, z: 0.014 }, { x: 0, y: 1.04, z: 0.72 }, createMaterial(0x8b2020), 'Patient bouche');
+
+        // Jambes allongées (le long de l'axe Z négatif = vers les pieds)
+        const legMat = createMaterial(0x30364a);
+        this.cube({ x: 0.14, y: 0.13, z: 0.55 }, { x: -0.12, y: 0.83, z: -0.73 }, legMat, 'Patient jambe');
+        this.cube({ x: 0.14, y: 0.13, z: 0.55 }, { x: 0.12, y: 0.83, z: -0.73 }, legMat, 'Patient jambe');
+
+        // Bras allongés le long du corps
+        const armMat = createMaterial(0x30364a);
+        this.cube({ x: 0.10, y: 0.10, z: 0.40 }, { x: -0.30, y: 0.86, z: -0.10 }, armMat, 'Patient bras');
+        this.cube({ x: 0.10, y: 0.10, z: 0.40 }, { x: 0.30, y: 0.86, z: -0.10 }, armMat, 'Patient bras');
+
+        // Mains (peau)
+        const handMat = skin.clone();
+        this.sphere(0.04, { x: -0.30, y: 0.86, z: -0.32 }, handMat, '');
+        this.sphere(0.04, { x: 0.30, y: 0.86, z: -0.32 }, handMat, '');
+
+        // Couverture/drap sur les jambes et bas du torse
+        const blanketMat = createMaterial(0xe8e0d0, { roughness: 0.95, metalness: 0.0 });
+        this.cube({ x: 0.65, y: 0.03, z: 0.90 }, { x: 0, y: 0.93, z: -0.60 }, blanketMat, '');
     }
 
     applyExpression(expression) {
