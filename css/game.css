@@ -685,18 +685,6 @@ body::after {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .section-header {
     font-family: var(--font-title);
     font-size: 1.4rem;

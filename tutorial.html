@@ -15,6 +15,14 @@
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="css/device-check.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+        }
+    }
+    </script>
     <style>
         /* Premium Static Design Overrides */
         body {
@@ -424,10 +432,11 @@
                 <span class="version-text">VERSION 3.0 • SIMULATION ÉDUCATIVE</span>
             </div>
 
+        </div>
     </div>
 
     <!-- Three.js Background Module -->
-    <script src="js/three-background.js"></script>
+    <script type="module" src="js/three-background.js"></script>
 
     <script>
         // Transition

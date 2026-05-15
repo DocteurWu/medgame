@@ -242,10 +242,14 @@ function showLockChallenge(lockId) {
                 unlock(lockId);
                 modalOverlay.remove();
             };
-            gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
+            if (typeof gsap !== 'undefined') {
+                gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
+            }
         } else {
             document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
-            gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
+            if (typeof gsap !== 'undefined') {
+                gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
+            }
         }
     }
 
@@ -301,10 +305,14 @@ function showLockChallenge(lockId) {
                 unlock(lockId);
                 modalOverlay.remove();
             };
-            gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
+            if (typeof gsap !== 'undefined') {
+                gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
+            }
         } else {
             document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
-            gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
+            if (typeof gsap !== 'undefined') {
+                gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
+            }
         }
     }
 }

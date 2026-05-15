@@ -127,7 +127,7 @@ function renderUrgenceState() {
                 }
             } else {
                 try {
-                    const failSound = new Audio('assets/sounds/flatline.mp3');
+                    const failSound = new Audio('assets/sounds/Wrong Buzzer.mp3');
                     failSound.play().catch(() => {});
                 } catch(e) {}
             }
