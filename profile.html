@@ -21,7 +21,15 @@
     
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="js/three-background.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="js/three-background.js"></script>
     
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

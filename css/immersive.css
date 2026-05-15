@@ -465,81 +465,230 @@ body.mode-3d #scene-container {
     position: absolute;
     bottom: 120px;
     right: 20px;
-    width: 350px;
+    width: 380px;
+    max-height: 500px;
     background: rgba(10, 15, 30, 0.92);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 242, 254, 0.25);
-    border-radius: 14px;
+    border-radius: 18px;
     overflow: hidden;
     z-index: 60;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
     pointer-events: auto;
-    animation: dialogSlideIn 0.3s ease forwards;
+    display: flex;
+    flex-direction: column;
+    animation: dialogSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes dialogSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .dialog-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 14px 18px;
     background: rgba(0, 242, 254, 0.08);
-    border-bottom: 1px solid rgba(0, 242, 254, 0.1);
+    border-bottom: 1px solid rgba(0, 242, 254, 0.15);
 }
 
 .dialog-speaker {
     font-weight: 700;
     color: var(--primary-color);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .dialog-close {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.4);
     cursor: pointer;
-    padding: 4px;
-    font-size: 1rem;
-    transition: color 0.2s;
+    padding: 6px;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dialog-close:hover {
     color: #ff4757;
+    transform: rotate(90deg);
 }
 
 .dialog-body {
-    padding: 12px 16px;
-    max-height: 200px;
+    padding: 18px;
+    flex: 1;
     overflow-y: auto;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 280px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 254, 0.2) transparent;
 }
 
-.dialog-body .from-patient {
-    color: #8be9fd;
-    margin: 4px 0;
+.dialog-body::-webkit-scrollbar {
+    width: 4px;
 }
 
-.dialog-body .from-user {
+.dialog-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.2);
+    border-radius: 4px;
+}
+
+/* Message Styles */
+.from-patient, .from-user {
+    display: flex;
+    margin-bottom: 4px;
+    animation: msgIn 0.3s ease-out forwards;
+}
+
+.from-user {
+    justify-content: flex-end;
+}
+
+.dialog-msg-patient {
+    display: flex;
+    gap: 10px;
+    max-width: 90%;
+}
+
+.dialog-msg-user {
+    max-width: 85%;
+}
+
+.dialog-msg-avatar {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-msg-bubble {
+    background: rgba(139, 233, 253, 0.08);
+    padding: 10px 14px;
+    border-radius: 4px 16px 16px 16px;
+    border-left: 3px solid #8be9fd;
+    line-height: 1.45;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.dialog-msg-bubble-user {
+    background: rgba(0, 242, 254, 0.12);
+    padding: 10px 14px;
+    border-radius: 16px 16px 4px 16px;
+    border-right: 3px solid var(--primary-color);
+    color: #fff;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Streaming Cursor */
+.cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background: var(--primary-color);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 0.8s step-end infinite;
+}
+
+@keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Suggestions Area */
+.dialog-suggestions {
+    background: rgba(0, 242, 254, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 12px 16px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.dialog-suggestions-header {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dialog-suggestions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dialog-suggestion-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.dialog-suggestion-btn i {
+    font-size: 0.75rem;
     color: var(--primary-color);
-    margin: 4px 0;
-    text-align: right;
+    opacity: 0.7;
 }
 
+.dialog-suggestion-btn:hover {
+    background: rgba(0, 242, 254, 0.12);
+    border-color: rgba(0, 242, 254, 0.3);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.dialog-suggestion-btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.dialog-suggestion-btn.suggestion-used {
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+/* Input Area */
 .dialog-input-area {
     display: flex;
-    gap: 0;
-    padding: 10px;
+    padding: 12px;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.2);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -547,30 +696,107 @@ body.mode-3d #scene-container {
     flex: 1;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-    padding: 10px 12px;
-    border-radius: 8px 0 0 8px;
-    font-size: 0.85rem;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
     outline: none;
+    transition: all 0.3s;
 }
 
 .dialog-input-area input:focus {
+    background: rgba(255, 255, 255, 0.08);
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 242, 254, 0.1);
 }
 
-.dialog-input-area button {
+.dialog-input-area input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#dialog-send-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: var(--primary-color);
     color: #000;
     border: none;
-    padding: 10px 16px;
-    border-radius: 0 8px 8px 0;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 0.85rem;
-    transition: background 0.2s;
+    font-size: 1rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
 }
 
-.dialog-input-area button:hover {
+#dialog-send-btn:hover:not(:disabled) {
     background: #00d4e8;
+    transform: scale(1.05);
+}
+
+#dialog-send-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+}
+
+/* Thinking Indicator Bubble */
+.patient-bubble-3d {
+    position: absolute;
+    bottom: 40%;
+    left: 45%;
+    z-index: 100;
+    pointer-events: none;
+    display: none;
+}
+
+.patient-bubble-visible {
+    display: block !important;
+}
+
+.patient-bubble-content {
+    background: rgba(10, 15, 30, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    padding: 10px 16px;
+    border-radius: 14px;
+    color: white;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    animation: bubblePop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.patient-bubble-tail {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid rgba(0, 242, 254, 0.3);
+    margin-left: 20px;
+}
+
+@keyframes bubblePop {
+    from { opacity: 0; transform: scale(0.5) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.thinking-dots {
+    display: flex;
+    gap: 4px;
+    padding: 4px 0;
+}
+
+.thinking-dot {
+    font-size: 0.6rem;
+    color: var(--primary-color);
+    animation: thinkingDot 1.4s infinite;
+}
+
+@keyframes thinkingDot {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
 }
 
 /* ==================== SECTION TRANSITIONS ==================== */
@@ -1428,575 +1654,6 @@ body.render-3d-full .immersive-mode-btn {
         opacity: 0;
         transform: translateY(-20px) scale(0.98);
         filter: blur(4px);
-    }
-}
-
-/* ==================== MEDICAL CARD ENHANCEMENTS ==================== */
-
-/* Card entrance with stagger - handled by game.js */
-.medical-card {
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* Card shimmer effect on hover */
-.medical-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(0, 242, 254, 0.03),
-        transparent
-    );
-    transition: left 0.8s ease;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.medical-card:hover::after {
-    left: 100%;
-}
-
-/* ==================== ANSWER BUTTON ANIMATIONS ==================== */
-
-/* Question buttons enhanced */
-.btn-question {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.btn-question::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-    pointer-events: none;
-}
-
-.btn-question:hover:not(:disabled)::before {
-    width: 300px;
-    height: 300px;
-}
-
-.btn-question:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 242, 254, 0.2),
-                0 0 0 1px rgba(0, 242, 254, 0.3);
-}
-
-.btn-question:active:not(:disabled) {
-    transform: translateY(-1px) scale(0.98);
-    transition-duration: 0.1s;
-}
-
-/* ==================== ANSWER REVEAL ANIMATIONS ==================== */
-
-.answer-fade-in {
-    animation: answerReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes answerReveal {
-    from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.95);
-        filter: blur(4px);
-    }
-    50% {
-        filter: blur(0);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
-
-/* ==================== TREATMENT BUTTON FEEDBACK ==================== */
-
-.treatments-grid button {
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    position: relative;
-    overflow: hidden;
-}
-
-.treatments-grid button::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--ripple-x, 50%) var(--ripple-y, 50%),
-        rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s;
-    pointer-events: none;
-}
-
-.treatments-grid button:active::after {
-    opacity: 1;
-    transition: opacity 0.1s;
-}
-
-.treatments-grid button:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
-}
-
-.treatments-grid button:active {
-    transform: translateY(0) scale(0.97);
-}
-
-.treatments-grid button.selected {
-    animation: selectPulse 0.4s ease;
-}
-
-@keyframes selectPulse {
-    0% { transform: scale(1); }
-    30% { transform: scale(1.08); }
-    60% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-}
-
-/* Correct treatment feedback */
-.treatments-grid button.correct-treatment {
-    animation: correctPulse 0.6s ease;
-    box-shadow: 0 0 20px rgba(46, 204, 113, 0.5),
-                0 0 40px rgba(46, 204, 113, 0.2);
-}
-
-@keyframes correctPulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6); }
-    30% { transform: scale(1.05); }
-    60% { transform: scale(0.98); }
-    100% { transform: scale(1); box-shadow: 0 0 20px rgba(46, 204, 113, 0.5); }
-}
-
-/* Incorrect treatment feedback */
-.treatments-grid button.incorrect-treatment {
-    animation: incorrectShake 0.5s ease;
-    box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
-}
-
-@keyframes incorrectShake {
-    0%, 100% { transform: translateX(0); }
-    15% { transform: translateX(-6px) rotate(-1deg); }
-    30% { transform: translateX(5px) rotate(1deg); }
-    45% { transform: translateX(-4px) rotate(-0.5deg); }
-    60% { transform: translateX(3px) rotate(0.5deg); }
-    75% { transform: translateX(-2px); }
-}
-
-/* ==================== SCORE ANIMATION ==================== */
-
-.score-display {
-    transition: all 0.3s ease;
-}
-
-.score-display.score-up {
-    animation: scoreUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.score-display.score-down {
-    animation: scoreDown 0.5s ease;
-}
-
-@keyframes scoreUp {
-    0% { transform: scale(1); color: inherit; }
-    30% { transform: scale(1.3); color: #2ecc71; text-shadow: 0 0 20px rgba(46, 204, 113, 0.6); }
-    60% { transform: scale(1.1); }
-    100% { transform: scale(1); color: #2ecc71; }
-}
-
-@keyframes scoreDown {
-    0% { transform: scale(1); }
-    20% { transform: scale(1.1) translateX(-5px); color: #e74c3c; }
-    40% { transform: scale(0.95) translateX(5px); }
-    60% { transform: scale(1.05) translateX(-3px); }
-    80% { transform: scale(0.98); }
-    100% { transform: scale(1); color: #e74c3c; }
-}
-
-/* Floating score popup */
-.score-popup {
-    position: absolute;
-    font-weight: 800;
-    font-size: 1.5rem;
-    pointer-events: none;
-    z-index: 100;
-    animation: scoreFloat 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.score-popup.positive {
-    color: #2ecc71;
-    text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
-}
-
-.score-popup.negative {
-    color: #e74c3c;
-    text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
-}
-
-@keyframes scoreFloat {
-    0% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(-30px) scale(1.2);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-60px) scale(0.8);
-    }
-}
-
-/* ==================== CORRECT / INCORRECT FEEDBACK ==================== */
-
-/* Visual feedback ring for correct answer */
-.feedback-correct {
-    animation: feedbackCorrectRing 0.8s ease forwards;
-}
-
-@keyframes feedbackCorrectRing {
-    0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6); }
-    50% { box-shadow: 0 0 0 15px rgba(46, 204, 113, 0); }
-    100% { box-shadow: 0 0 20px rgba(46, 204, 113, 0.3); border-color: #2ecc71; }
-}
-
-/* Visual feedback for incorrect */
-.feedback-incorrect {
-    animation: feedbackIncorrectShake 0.5s ease;
-}
-
-@keyframes feedbackIncorrectShake {
-    0%, 100% { transform: translateX(0); box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
-    15% { transform: translateX(-8px); box-shadow: 0 0 15px rgba(231, 76, 60, 0.4); }
-    30% { transform: translateX(6px); }
-    45% { transform: translateX(-4px); }
-    60% { transform: translateX(3px); }
-    75% { transform: translateX(-1px); }
-}
-
-/* ==================== LOADING / SPINNER ==================== */
-
-.loading {
-    position: relative;
-    padding: 20px;
-    text-align: center;
-    color: var(--primary-color);
-}
-
-.loading::before {
-    content: '';
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border: 3px solid rgba(0, 242, 254, 0.2);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: immersiveSpinner 0.8s linear infinite;
-    margin-bottom: 10px;
-}
-
-@keyframes immersiveSpinner {
-    to { transform: rotate(360deg); }
-}
-
-/* Exam results loading animation */
-.exam-results-container .loading {
-    animation: loadingPulse 1.5s ease-in-out infinite;
-}
-
-@keyframes loadingPulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 1; }
-}
-
-/* ==================== EXAM BUTTON ENHANCEMENTS ==================== */
-
-.exam-btn {
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    position: relative;
-}
-
-.exam-btn:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 4px 15px rgba(179, 136, 255, 0.2);
-}
-
-.exam-btn.selected {
-    animation: examSelectBounce 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes examSelectBounce {
-    0% { transform: scale(1); }
-    40% { transform: scale(1.1); }
-    70% { transform: scale(0.95); }
-    100% { transform: scale(1); }
-}
-
-/* ==================== VALIDATE BUTTONS ==================== */
-
-.action-btn,
-.validate-final-btn {
-    position: relative;
-    overflow: hidden;
-}
-
-.action-btn::before,
-.validate-final-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
-    transition: left 0.5s ease;
-}
-
-.action-btn:hover::before,
-.validate-final-btn:hover::before {
-    left: 100%;
-}
-
-/* Button click ripple */
-.action-btn:active,
-.validate-final-btn:active {
-    transform: translateY(-1px) scale(0.98);
-}
-
-/* ==================== CORRECTION MODAL ENHANCEMENTS ==================== */
-
-.correction-overlay {
-    animation: overlayFadeIn 0.4s ease forwards;
-}
-
-@keyframes overlayFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.correction-modal {
-    animation: modalSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-        filter: blur(4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-    }
-}
-
-/* Stars animation */
-.star-filled {
-    animation: starPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-}
-
-.star-filled:nth-child(1) { animation-delay: 0.2s; }
-.star-filled:nth-child(2) { animation-delay: 0.4s; }
-.star-filled:nth-child(3) { animation-delay: 0.6s; }
-
-@keyframes starPop {
-    from {
-        transform: scale(0) rotate(-180deg);
-        opacity: 0;
-    }
-    60% {
-        transform: scale(1.3) rotate(10deg);
-    }
-    to {
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-    }
-}
-
-/* ==================== SIDEBAR NAV ENHANCEMENTS ==================== */
-
-.nav-item {
-    position: relative;
-    overflow: hidden;
-}
-
-.nav-item::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 3px;
-    height: 0;
-    background: var(--primary-color);
-    transform: translateY(-50%);
-    transition: height 0.3s ease;
-    border-radius: 0 2px 2px 0;
-}
-
-.nav-item:hover::before {
-    height: 60%;
-}
-
-.nav-item.active::before {
-    height: 70%;
-    box-shadow: 0 0 10px var(--primary-glow);
-}
-
-/* ==================== VERBATIM CONTAINER ==================== */
-
-.verbatim-container {
-    transition: all 0.4s ease;
-}
-
-.verbatim-container:hover {
-    background: rgba(160, 32, 240, 0.08);
-    transform: translateX(4px);
-}
-
-/* ==================== TIMER PULSE ==================== */
-
-.timer-display {
-    transition: all 0.3s ease;
-}
-
-.timer-display.warning {
-    animation: timerWarning 1s ease infinite;
-    color: #ffc107 !important;
-}
-
-.timer-display.critical {
-    animation: timerCritical 0.5s ease infinite;
-    color: #e74c3c !important;
-}
-
-/* ==================== LOCK CHALLENGE ==================== */
-
-.lock-placeholder {
-    transition: all 0.3s ease;
-}
-
-.lock-placeholder:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
-}
-
-/* ==================== URGENCE SECTION ==================== */
-
-#section-intervention-rapide {
-    transition: all 0.4s ease;
-}
-
-#urgence-description-banner {
-    animation: urgencyPulse 2s ease-in-out infinite;
-}
-
-@keyframes urgencyPulse {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 20px 5px rgba(255, 71, 87, 0.1);
-    }
-}
-
-/* ==================== NOTIFICATION ENHANCEMENT ==================== */
-
-.notification {
-    animation: notifSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@keyframes notifSlideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -20px);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
-}
-
-/* ==================== QUIZ MODAL ==================== */
-
-.lock-challenge-overlay {
-    animation: overlayFadeIn 0.3s ease forwards;
-}
-
-.lock-modal {
-    animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.lock-modal .mcq-option {
-    transition: all 0.25s ease;
-}
-
-.lock-modal .mcq-option:hover {
-    transform: translateX(5px);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-/* ==================== RESPONSIVE ADJUSTMENTS ==================== */
-
-@media (max-width: 768px) {
-    .medical-card:hover {
-        transform: none;
-    }
-
-    .medical-card:hover::after {
-        display: none;
-    }
-
-    .btn-question:hover:not(:disabled) {
-        transform: none;
-        box-shadow: none;
-    }
-
-    .treatments-grid button:hover {
-        transform: none;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Reduce animation intensity on small screens */
-    .game-section.entering {
-        animation-duration: 0.3s;
-    }
-
-    .correction-modal {
-        animation-duration: 0.3s;
-    }
-}
-
-/* ==================== REDUCED MOTION ==================== */
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
     }
 }
 
@@ -3479,3 +3136,4 @@ body.urgence-3d-active {
         text-align: center;
     }
 }
+`n/* ==================== 3D FLOATING TEXT ==================== */`n.hud-floating-text {`n    pointer-events: none;`n    user-select: none;`n    will-change: transform, opacity;`n}`n`n@keyframes floatingTextAnim {`n    0% {`n        opacity: 0;`n        transform: translate(-50%, 0) scale(0.5);`n    }`n    20% {`n        opacity: 1;`n        transform: translate(-50%, -20px) scale(1.1);`n    }`n    100% {`n        opacity: 0;`n        transform: translate(-50%, -80px) scale(1);`n    }`n}

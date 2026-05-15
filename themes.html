@@ -31,6 +31,14 @@
 
     <!-- Three.js pour la 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 
 <body>
@@ -152,7 +160,7 @@
     </div>
 
     <!-- Three.js Background Module -->
-    <script src="js/three-background.js"></script>
+    <script type="module" src="js/three-background.js"></script>
 
     <script src="js/themes.js?v=20251220-1645"></script>
     <script src="js/player_map.js"></script>

@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             } else {
                 // Fallback fetch local
-                motifs = await Promise.all(caseFiles.map(async (file) => {
+                motifs = await Promise.all(casesData[searchSpec].map(async (file) => {
                     const response = await fetch(`data/${file}`);
                     if (!response.ok) return null;
                     const data = await response.json();

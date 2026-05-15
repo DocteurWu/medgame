@@ -34,11 +34,10 @@ logs
 AGENTS.md
 SUPABASE_GUIDE.md
 Supabase Snippet Medical Case Records.csv
-SUPABASE_GUIDE.md
-SUPABASE_GUIDE.md
 SUPABASE_ARENA.sql
 generate_hashes.py
 integrity.json
 sql/add_timed_mode.sql
 sql_rls_policies.sql
 nul
+out.txt
