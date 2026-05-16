@@ -31,10 +31,20 @@ export function buildRoom(scene) {
     box(scene, { x: 0.1, y: 3.5, z: 8 }, { x: -5, y: 1.75, z: 0 }, wall, 'Mur gauche');
     box(scene, { x: 0.1, y: 3.5, z: 8 }, { x: 5, y: 1.75, z: 0 }, wall, 'Mur droit');
     box(scene, { x: 1.7, y: 2.55, z: 0.08 }, { x: 3.0, y: 1.27, z: 3.82 }, createMaterial(0xd8d0c0), 'Porte entree', true);
-    box(scene, { x: 1.2, y: 0.75, z: 0.08 }, { x: -4.94, y: 1.75, z: -2.0 }, createMaterial(0x9ec6d8, { emissive: 0x224455, emissiveIntensity: 0.15 }), 'Fenetre');
-    box(scene, { x: 0.55, y: 0.38, z: 0.08 }, { x: 4.7, y: 2.15, z: -3.88 }, createMaterial(0x03150a, { emissive: 0x00aa44, emissiveIntensity: 0.25 }), 'Moniteur mural', true);
-    box(scene, { x: 0.55, y: 0.55, z: 0.08 }, { x: -4.88, y: 1.0, z: 1.8 }, createMaterial(0xd8e8ee), 'Evier', true);
-    box(scene, { x: 1.0, y: 1.8, z: 0.6 }, { x: 4.3, y: 0.9, z: 0.9 }, createMaterial(0xd5dde6), 'Armoire', true);
+    
+    // Fenêtre encastrée dans le mur gauche
+    box(scene, { x: 0.1, y: 1.5, z: 2.4 }, { x: -4.95, y: 1.8, z: -1.0 }, createMaterial(0x9ec6d8, { emissive: 0x224455, emissiveIntensity: 0.15 }), 'Fenetre');
+    
+    // Moniteur mural sur le mur du fond à droite
+    box(scene, { x: 0.8, y: 0.5, z: 0.08 }, { x: 4.5, y: 2.0, z: -3.9 }, createMaterial(0x03150a, { emissive: 0x00aa44, emissiveIntensity: 0.25 }), 'Moniteur mural', true);
+    
+    // Évier encastré/attaché au mur gauche
+    box(scene, { x: 0.6, y: 0.88, z: 1.2 }, { x: -4.7, y: 0.44, z: 1.8 }, createMaterial(0xd8e8ee), 'Meuble Evier', true);
+    box(scene, { x: 0.4, y: 0.05, z: 0.8 }, { x: -4.7, y: 0.88, z: 1.8 }, createMaterial(0xeeeeee), 'Evier basin', true);
+    box(scene, { x: 0.08, y: 0.2, z: 0.08 }, { x: -4.85, y: 1.0, z: 1.8 }, createMaterial(0x888888, { metalness: 0.8, roughness: 0.2 }), 'Robinet');
+
+    // Armoire contre le mur droit
+    box(scene, { x: 1.0, y: 2.0, z: 0.8 }, { x: 4.5, y: 1.0, z: 1.0 }, createMaterial(0xd5dde6), 'Armoire', true);
 
     // === MUR AVANT (avec ouverture de porte) ===
     // La porte est centrée en x=3.0, largeur 1.7, hauteur 2.55 (y de 0 à 2.545)
@@ -198,16 +208,32 @@ export function buildRoom(scene) {
 }
 
 export function buildFurniture(scene) {
-    box(scene, { x: 2.4, y: 0.09, z: 1.05 }, { x: -0.8, y: 0.82, z: -0.9 }, createMaterial(0xd7c2a0), 'Bureau');
-    box(scene, { x: 1.9, y: 0.14, z: 0.72 }, { x: -3.0, y: 0.68, z: -2.2 }, createMaterial(0xd8e0e8), 'Lit patient');
-    box(scene, { x: 0.72, y: 0.1, z: 0.62 }, { x: 2.15, y: 0.52, z: -1.7 }, createMaterial(0x7f986c), 'Fauteuil patient');
+    // Bureau réaliste (Plateau + Pieds)
+    box(scene, { x: 2.4, y: 0.05, z: 1.0 }, { x: -0.8, y: 0.8, z: -0.9 }, createMaterial(0xd7c2a0), 'Bureau');
+    box(scene, { x: 0.1, y: 0.8, z: 0.9 }, { x: -1.9, y: 0.4, z: -0.9 }, createMaterial(0x555555), 'Pied bureau G');
+    box(scene, { x: 0.1, y: 0.8, z: 0.9 }, { x: 0.3, y: 0.4, z: -0.9 }, createMaterial(0x555555), 'Pied bureau D');
 
-    // PC sur le bureau — écran + pied + clavier
-    const pcScreen = box(scene, { x: 0.55, y: 0.38, z: 0.03 }, { x: -1.5, y: 1.2, z: -1.35 }, createMaterial(0x101820, { emissive: 0x003366, emissiveIntensity: 0.35 }), 'Ordinateur', true);
+    // PC sur le bureau — écran + pied + base + clavier + souris
+    const pcScreen = box(scene, { x: 0.6, y: 0.4, z: 0.05 }, { x: -1.5, y: 1.05, z: -1.2 }, createMaterial(0x101820, { emissive: 0x003366, emissiveIntensity: 0.35 }), 'Ordinateur', true);
     pcScreen.userData.label = 'Ordinateur';
     pcScreen.userData.pcAction = 'open';
-    box(scene, { x: 0.05, y: 0.35, z: 0.05 }, { x: -1.5, y: 0.95, z: -1.32 }, createMaterial(0x222222), 'Pied ecran');
-    box(scene, { x: 0.4, y: 0.02, z: 0.15 }, { x: -1.5, y: 0.87, z: -1.2 }, createMaterial(0x222222), 'Clavier');
-    box(scene, { x: 0.08, y: 0.03, z: 0.08 }, { x: -0.9, y: 0.87, z: -0.95 }, createMaterial(0x222222), 'Souris');
+    box(scene, { x: 0.1, y: 0.2, z: 0.1 }, { x: -1.5, y: 0.9, z: -1.25 }, createMaterial(0x222222), 'Pied ecran');
+    box(scene, { x: 0.3, y: 0.02, z: 0.2 }, { x: -1.5, y: 0.835, z: -1.25 }, createMaterial(0x222222), 'Base ecran');
+    box(scene, { x: 0.5, y: 0.02, z: 0.15 }, { x: -1.5, y: 0.835, z: -0.8 }, createMaterial(0x222222), 'Clavier');
+    box(scene, { x: 0.08, y: 0.03, z: 0.12 }, { x: -1.1, y: 0.84, z: -0.8 }, createMaterial(0x222222), 'Souris');
+
+    // Lit patient réaliste (Sommier + Matelas + Têtes de lit)
+    box(scene, { x: 1.0, y: 0.5, z: 2.2 }, { x: -3.5, y: 0.25, z: -2.6 }, createMaterial(0xaab5c8), 'Base Lit');
+    box(scene, { x: 0.9, y: 0.15, z: 2.1 }, { x: -3.5, y: 0.575, z: -2.6 }, createMaterial(0xd8e0e8), 'Matelas');
+    box(scene, { x: 1.0, y: 0.8, z: 0.1 }, { x: -3.5, y: 0.4, z: -3.65 }, createMaterial(0x7c8c9e), 'Tete Lit');
+    box(scene, { x: 1.0, y: 0.6, z: 0.1 }, { x: -3.5, y: 0.3, z: -1.55 }, createMaterial(0x7c8c9e), 'Pied Lit');
+
+    // Fauteuil patient réaliste (Base, assise, dossier, accoudoirs)
+    const chairColor = createMaterial(0x7f986c);
+    box(scene, { x: 0.7, y: 0.5, z: 0.7 }, { x: 2.15, y: 0.25, z: -1.7 }, createMaterial(0x333333), 'Base fauteuil');
+    box(scene, { x: 0.8, y: 0.1, z: 0.8 }, { x: 2.15, y: 0.5, z: -1.7 }, chairColor, 'Assise fauteuil');
+    box(scene, { x: 0.8, y: 0.9, z: 0.1 }, { x: 2.15, y: 1.0, z: -2.05 }, chairColor, 'Dossier fauteuil');
+    box(scene, { x: 0.1, y: 0.3, z: 0.8 }, { x: 1.7, y: 0.7, z: -1.7 }, chairColor, 'Accoudoir G');
+    box(scene, { x: 0.1, y: 0.3, z: 0.8 }, { x: 2.6, y: 0.7, z: -1.7 }, chairColor, 'Accoudoir D');
 }
 

@@ -124,6 +124,40 @@
                     </li>
                 </ul>
             </div>
+            <div id="hud-context-card" class="hud-context-card" aria-live="polite">
+                <span class="hud-context-kbd">Clic</span>
+                <div>
+                    <strong id="hud-context-title">Explorez la salle</strong>
+                    <span id="hud-context-detail">Survolez un objet pour voir l'action disponible.</span>
+                </div>
+            </div>
+            <div id="hud-quick-actions" class="hud-quick-actions" aria-label="Actions rapides 3D">
+                <button class="hud-action-chip" data-action="patient" title="Aller au patient (P)">
+                    <i class="fas fa-user-injured"></i><span>Patient</span><kbd>P</kbd>
+                </button>
+                <button class="hud-action-chip" data-action="vitals" title="Effectuer les mesures rapides (V)">
+                    <i class="fas fa-heart-pulse"></i><span>Mesures</span><kbd>V</kbd>
+                </button>
+                <button class="hud-action-chip" data-action="pc" title="Ouvrir le dossier médical (R)">
+                    <i class="fas fa-laptop-medical"></i><span>Dossier</span><kbd>R</kbd>
+                </button>
+                <button class="hud-action-chip" data-action="armoire" title="Ouvrir l'armoire de soins (T)">
+                    <i class="fas fa-pills"></i><span>Traitements</span><kbd>T</kbd>
+                </button>
+                <button class="hud-action-chip" data-action="evier" title="Se laver les mains (H)" id="hud-btn-hygiene" style="position:relative;">
+                    <i class="fas fa-hands-wash"></i><span>Hygiène</span><kbd>H</kbd>
+                    <span id="hud-hygiene-indicator" style="
+                        position: absolute;
+                        top: 4px; right: 4px;
+                        width: 8px; height: 8px;
+                        border-radius: 50%;
+                        background: #ff4757;
+                        box-shadow: 0 0 6px rgba(255,71,87,0.8);
+                        transition: all 0.4s;
+                    "></span>
+                </button>
+            </div>
+            <div id="hud-crosshair" class="hud-crosshair" aria-hidden="true"></div>
             <div id="three-tooltip" class="three-tooltip"></div>
         </div>
     </div>

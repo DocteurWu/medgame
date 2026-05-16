@@ -318,6 +318,174 @@ body.mode-3d #scene-container {
 .hud-notification-error { border-left: 3px solid #e74c3c; }
 .hud-notification-info { border-left: 3px solid #00f2fe; }
 
+/* ==================== 3D PLAYABILITY LAYER ==================== */
+
+.hud-crosshair {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 34px;
+    height: 34px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 50%;
+    z-index: 58;
+    pointer-events: none;
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.12), inset 0 0 14px rgba(0, 242, 254, 0.08);
+}
+
+.hud-crosshair::before,
+.hud-crosshair::after {
+    content: "";
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.hud-crosshair::before {
+    left: 50%;
+    top: 8px;
+    width: 1px;
+    height: 18px;
+    transform: translateX(-50%);
+}
+
+.hud-crosshair::after {
+    left: 8px;
+    top: 50%;
+    width: 18px;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.hud-crosshair.is-targeting {
+    border-color: rgba(46, 204, 113, 0.7);
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.35), inset 0 0 14px rgba(46, 204, 113, 0.16);
+}
+
+.hud-context-card {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    max-width: min(520px, calc(100vw - 40px));
+    padding: 11px 14px;
+    background: rgba(9, 14, 28, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.82);
+    z-index: 60;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.hud-context-card.is-targeting {
+    background: rgba(9, 20, 24, 0.82);
+    border-color: rgba(46, 204, 113, 0.34);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32), 0 0 18px rgba(46, 204, 113, 0.12);
+}
+
+.hud-context-card strong,
+.hud-context-card span {
+    display: block;
+}
+
+.hud-context-card strong {
+    color: #fff;
+    font-size: 0.88rem;
+    margin-bottom: 2px;
+}
+
+#hud-context-detail {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.76rem;
+}
+
+.hud-context-kbd,
+.hud-action-chip kbd {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.72);
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.hud-context-kbd {
+    padding: 8px 9px;
+    color: #00f2fe;
+    border-color: rgba(0, 242, 254, 0.35);
+}
+
+.hud-quick-actions {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 61;
+    pointer-events: auto;
+}
+
+.hud-action-chip {
+    min-width: 168px;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 10px;
+    background: rgba(10, 15, 30, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.78);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: left;
+    transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.hud-action-chip i {
+    color: #00f2fe;
+    text-align: center;
+}
+
+.hud-action-chip kbd {
+    display: none;
+}
+
+.hud-action-chip:hover,
+.hud-action-chip:focus-visible {
+    background: rgba(0, 242, 254, 0.12);
+    border-color: rgba(0, 242, 254, 0.45);
+    color: #fff;
+    transform: translateX(-2px);
+    outline: none;
+}
+
+.hud-action-chip:active {
+    transform: translateX(-2px) scale(0.98);
+}
+
+.hud-action-chip.is-busy {
+    border-color: rgba(46, 204, 113, 0.6);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.16);
+}
+
+.hud-action-chip.is-busy i {
+    color: #2ecc71;
+    animation: hudPulse 0.8s ease-in-out infinite;
+}
+
 /* ==================== HUD PROGRESS PANEL (2D↔3D Sync) ==================== */
 
 .hud-progress {
@@ -1565,6 +1733,53 @@ body.render-3d-full .immersive-mode-btn {
 /* ==================== RESPONSIVE ADJUSTMENTS ==================== */
 
 @media (max-width: 768px) {
+    #hud-3d {
+        top: 10px;
+        width: calc(100vw - 20px);
+        min-width: 0;
+        padding: 8px 10px;
+        gap: 8px;
+        overflow-x: auto;
+    }
+
+    .hud-vitals {
+        flex-wrap: nowrap;
+    }
+
+    .hud-progress {
+        left: 10px;
+        bottom: 92px;
+        width: min(230px, calc(100vw - 20px));
+    }
+
+    .hud-quick-actions {
+        left: 10px;
+        right: 10px;
+        bottom: 12px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .hud-action-chip {
+        min-width: 0;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 8px 5px;
+        font-size: 0.68rem;
+    }
+
+    .hud-action-chip span,
+    .hud-action-chip kbd {
+        display: none;
+    }
+
+    .hud-context-card {
+        bottom: 62px;
+        min-width: 0;
+        width: calc(100vw - 20px);
+    }
+
     .medical-card:hover { transform: none; }
     .medical-card:hover::after { display: none; }
     .btn-question:hover:not(:disabled) { transform: none; box-shadow: none; }
