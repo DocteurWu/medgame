@@ -5,11 +5,13 @@ import { ThreeHUD } from './three-hud-agent.js';
 import { ThreeTransitionAgent } from './three-transition-agent.js';
 import { initLockAgent3D } from './three-lock-agent.js';
 import { initUrgenceAgent3D } from './three-urgence-agent.js';
+import { ThreeClinicalAgent } from './three-clinical-agent.js';
 
 const INTERACTION_ZONES = {
     patient: { x: 2.15, y: 0, z: -1.7 },
     desk: { x: -0.5, y: 0, z: 0.55 },
-    door: { x: 0, y: 0, z: 3.5 }
+    door: { x: 0, y: 0, z: 3.5 },
+    evier: { x: -3.8, y: 0, z: 1.8 }
 };
 
 const ROOM_BOUNDS = { minX: -4.8, maxX: 4.8, minZ: -3.8, maxZ: 3.8 };
@@ -18,6 +20,7 @@ class ThreeManager {
     constructor() {
         this.enabled = false;
         this.isImmersive3D = false;
+        this.hasWashedHands = false;
         this.measured = new Set();
         this.tooltip = null;
         this.hudMeasurements = null;
@@ -91,10 +94,12 @@ class ThreeManager {
             }
 
             this.scene = new ThreeScene(container, {
-                onPatient: () => this.goToPatient(),
+                onPatient: (hitObj) => this.goToPatient(hitObj),
                 onInstrument: (instrument) => this.goToInstrument(instrument),
                 onPC: () => this.goToPC(),
                 onArmoire: () => this.openArmoire(),
+                onEvier: () => this.washHands(),
+                onMasqueO2: () => this.applyOxygenMask(),
                 onObject: (object) => this.showInfo(object),
                 onHover: (object, event) => this.showTooltip(object, event)
             });
@@ -118,6 +123,9 @@ class ThreeManager {
 
             // Urgence Agent 3D (overlay urgence immersif)
             this.urgenceAgent = initUrgenceAgent3D(this);
+
+            // Clinical Agent 3D (examen clinique interactif)
+            this.clinicalAgent = new ThreeClinicalAgent(this);
 
             this.enabled = true;
             this.bindControls();
@@ -300,9 +308,35 @@ class ThreeManager {
                     e.preventDefault();
                     this.openArmoire();
                     break;
+                case 'h':
+                    e.preventDefault();
+                    this.washHands();
+                    break;
             }
         };
         document.addEventListener('keydown', this._keyHandler);
+
+        // Bouton chip HUD pour le lavabo
+        document.addEventListener('click', (e) => {
+            const chip = e.target.closest('[data-action]');
+            if (!chip) return;
+            if (chip.dataset.action === 'evier') {
+                this.washHands();
+            }
+        });
+
+        // Mettre à jour l'indicateur d'hygiène quand on se lave
+        document.addEventListener('hygiene-validated', () => {
+            const indicator = document.getElementById('hud-hygiene-indicator');
+            if (indicator) {
+                indicator.style.background = '#00cc88';
+                indicator.style.boxShadow = '0 0 6px rgba(0,204,136,0.8)';
+            }
+            const btn = document.getElementById('hud-btn-hygiene');
+            if (btn) {
+                btn.style.borderColor = 'rgba(0,204,136,0.5)';
+            }
+        });
     }
 
     closeAllOverlays() {
@@ -319,20 +353,53 @@ class ThreeManager {
         this.closeArmoire();
     }
 
-    goToPatient() {
+    goToPatient(hitObj) {
         if (!this.scene) return;
-        const arriveAndChat = () => {
+        
+        // Au lieu d'ouvrir le chat directement, on ouvre le menu d'examen général
+        const arriveAndExamine = () => {
             this.scene.setCamera('patient');
-            this.openPatientDialog();
-            if (this.hud) {
-                this.hud.showPrompt('Appuyez sur Entrée pour poser une question au patient');
+            
+            if (!this.hasWashedHands && this.hud) {
+                this.hud.showNotification('⚠️ Risque infectieux : Vous n\'avez pas lavé vos mains !', 'warning');
+                if (window.scoringState && typeof window.scoringState.addPenalty === 'function') {
+                    // Placeholder pour la pénalité
+                }
             }
-            window.scoringState && (window.scoringState.hasAskedPatient = true);
+            
+            if (this.clinicalAgent) {
+                let zone = 'general';
+                if (hitObj) {
+                    const label = (hitObj.userData?.label || hitObj.name || '').toLowerCase();
+                    if (label.includes('torse') || label.includes('poitrine')) {
+                        zone = 'torse';
+                    } else if (label.includes('abdomen') || label.includes('ventre')) {
+                        zone = 'abdomen';
+                    } else if (label.includes('bras') || label.includes('jambe') || label.includes('membre')) {
+                        zone = 'membre';
+                    }
+                }
+                this.clinicalAgent.openExaminationMenu(zone);
+            }
         };
+        
+        let targetZone = INTERACTION_ZONES.patient;
+        if (this.scene.patient && this.scene.patient.group) {
+             const px = this.scene.patient.group.position.x;
+             const pz = this.scene.patient.group.position.z;
+             if (px < 0) {
+                 // Lit
+                 targetZone = { x: px + 1.2, y: 0, z: pz + 0.5 };
+             } else {
+                 // Chaise
+                 targetZone = { x: px - 0.2, y: 0, z: pz + 1.2 };
+             }
+        }
+
         if (this.character) {
-            this.character.moveTo(INTERACTION_ZONES.patient, arriveAndChat);
+            this.character.moveTo(targetZone, arriveAndExamine);
         } else {
-            arriveAndChat();
+            arriveAndExamine();
         }
     }
 
@@ -491,6 +558,119 @@ class ThreeManager {
         }
 
         return pos;
+    }
+
+    washHands() {
+        if (!this.scene) return;
+
+        // Empêcher de relaver les mains si déjà fait (mais on peut toujours)
+        const wasAlreadyWashed = this.hasWashedHands;
+
+        const arrive = () => {
+            // Animation de lavage (délai simulé)
+            this.hud?.showNotification('🚿 Lavage en cours...', 'info');
+
+            setTimeout(() => {
+                this.hasWashedHands = true;
+
+                if (wasAlreadyWashed) {
+                    this.hud?.showNotification('✅ Mains re-désinfectées (SHA).', 'success');
+                } else {
+                    this.hud?.showNotification('✅ Hygiène des mains validée — Vous pouvez examiner le patient.', 'success');
+                    // Émettre un événement de suivi
+                    document.dispatchEvent(new CustomEvent('hygiene-validated'));
+                }
+
+                // Flash visuel sur le lavabo
+                this._flashObject('Meuble Evier', '#00ff88');
+
+                // Son de mesure comme placeholder pour l'eau
+                if (window.medicalAudio?.playMeasureSound) {
+                    window.medicalAudio.playMeasureSound();
+                }
+            }, 1200);
+        };
+
+        if (this.character) {
+            this.character.moveTo(INTERACTION_ZONES.evier, arrive);
+        } else {
+            arrive();
+        }
+    }
+
+    /** Flash visuel d'un objet de la scène par nom */
+    _flashObject(objectName, color = '#ffffff') {
+        if (!this.scene?.scene) return;
+        this.scene.scene.traverse(obj => {
+            if (obj.name === objectName && obj.material) {
+                const origEmissive = obj.material.emissive?.clone();
+                const origIntensity = obj.material.emissiveIntensity;
+                obj.material.emissive?.set(color);
+                obj.material.emissiveIntensity = 1.5;
+                setTimeout(() => {
+                    if (origEmissive) obj.material.emissive.copy(origEmissive);
+                    obj.material.emissiveIntensity = origIntensity ?? 0;
+                }, 600);
+            }
+        });
+    }
+
+    applyOxygenMask() {
+        if (!this.scene) return;
+
+        // Zone du charriot : à gauche du lit (position approximative)
+        const charriotZone = { x: -1.5, y: 0, z: -1.5 };
+
+        const arriveAndApply = () => {
+            this.scene.setCamera('patient');
+
+            // Récupérer la SpO2 actuelle
+            const vProps = window.vitalSigns?.props;
+            const currentSpo2 = vProps ? (parseFloat(String(vProps.saturationO2 || '97').replace('%','')) || 97) : 97;
+
+            if (currentSpo2 >= 95) {
+                this.hud?.showNotification('ℹ️ SpO₂ normale — Oxygène non indiqué pour l\'instant.', 'info');
+                return;
+            }
+
+            this.hud?.showNotification('🫁 Oxygénothérapie en cours...', 'info');
+
+            // Stabilisation progressive avec VitalSignsMonitor
+            setTimeout(() => {
+                if (window.vitalSigns?.props) {
+                    // Forcer la stabilisation vers 98%
+                    window.vitalSigns.props.saturationO2 = '98%';
+                    // Désactiver la tendance aggravante pour la SpO2
+                    if (window.vitalSigns._aggravationActive !== undefined) {
+                        window.vitalSigns._o2Applied = true;
+                    }
+                } else if (window.gameState?.currentCase?.examenClinique) {
+                    window.gameState.currentCase.examenClinique.constantes.saturationO2 = '98%';
+                }
+
+                // Mise à jour HUD vitals
+                this.hud?._updateVitals?.();
+
+                // Flash du masque
+                this._flashObject('MasqueO2', '#44ccff');
+
+                this.hud?.showNotification('✅ SpO₂ en cours de remontée → 98%.', 'success');
+
+                // Tracking
+                if (window.scoringState) {
+                    if (!window.scoringState.treatmentsApplied) window.scoringState.treatmentsApplied = new Set();
+                    window.scoringState.treatmentsApplied.add('Oxygénothérapie');
+                }
+
+                window.medicalAudio?.playMeasureSound?.();
+            }, 1500);
+        };
+
+        if (this.character) {
+            this.character.moveTo(charriotZone, arriveAndApply);
+        } else {
+            arriveAndApply();
+        }
     }
 
     goToPC() {
@@ -920,6 +1100,26 @@ class ThreeManager {
 
     loadCase(caseData) {
         this.measured.clear();
+        this.hasWashedHands = false;
+        
+        // Mettre à jour visuellement le bouton d'hygiène s'il existe
+        const hygieneBtn = document.getElementById('hud-btn-hygiene');
+        if (hygieneBtn) hygieneBtn.style.borderColor = 'rgba(255,255,255,0.1)';
+        const hygieneIndicator = document.getElementById('hud-hygiene-indicator');
+        if (hygieneIndicator) {
+            hygieneIndicator.style.background = '#ff4757';
+            hygieneIndicator.style.boxShadow = '0 0 6px rgba(255,71,87,0.8)';
+        }
+
+        if (this.clinicalAgent) {
+            this.clinicalAgent.examinedActions.clear();
+            if (this.clinicalAgent._progressPanel) {
+                this.clinicalAgent._progressPanel.remove();
+                this.clinicalAgent._progressPanel = null;
+                this.clinicalAgent._initProgressPanel();
+            }
+        }
+
         if (this.hudMeasurements) this.hudMeasurements.innerHTML = '';
         if (this.scene) this.scene.loadCase(caseData);
         this._updateHUDVitals();

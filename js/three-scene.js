@@ -28,6 +28,9 @@ const TOOLTIP_DESCRIPTIONS = {
     'Patient - Torse': 'Torse du patient — Palpation et inspection',
     'Patient - Tête': 'Tête du patient — Examen neurologique',
     'Evier': 'Évier — Lavage des mains',
+    'Meuble Evier': 'Évier — Lavez vos mains avant d\'examiner le patient',
+    'Masque à Oxygène': 'Masque O₂ — Appliquez si SpO₂ < 92%',
+    'Patient - Abdomen': 'Abdomen du patient — Palpation et percussion',
     'Armoire': 'Armoire à pharmacie — Cliquez pour ouvrir les traitements prescriptibles',
     'Porte entree': 'Porte d\'entrée',
     'Fenetre': 'Fenêtre',
@@ -383,9 +386,19 @@ export class ThreeScene {
                 if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
                 break;
             }
+            if (name === 'Meuble Evier' || name === 'Evier basin' || label === 'Évier — Lavage des mains') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                this.callbacks.onEvier?.(hitObj);
+                break;
+            }
             if (name === 'IVStand' || label === 'Perfusion') {
                 if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Perfusion — Soluté en cours d\'administration');
+                break;
+            }
+            if (name === 'MasqueO2' || label === 'Masque à Oxygène') {
+                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                this.callbacks.onMasqueO2?.(hitObj);
                 break;
             }
             if (name === 'CharriotMedical' || label === 'Charriot médical') {

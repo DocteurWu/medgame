@@ -221,7 +221,7 @@ export class ThreeEnvironmentAgent {
 
     _addIVStand() {
         const ivGroup = new THREE.Group();
-        ivGroup.position.set(-3.4, 0, -1.5);
+        ivGroup.position.set(-2.5, 0, -3.0); // Placé à droite de la tête de lit
         ivGroup.name = 'IVStand';
         ivGroup.userData.label = 'Perfusion';
         ivGroup.userData.interactive = true;
@@ -355,7 +355,7 @@ export class ThreeEnvironmentAgent {
 
     _addECGMonitor() {
         const ecgGroup = new THREE.Group();
-        ecgGroup.position.set(-2.8, 0, -3.2);
+        ecgGroup.position.set(-2.8, 0, -3.2); // Reste à côté de la tête de lit
         ecgGroup.name = 'ECGMonitor';
         ecgGroup.userData.label = 'Moniteur ECG';
         ecgGroup.userData.interactive = true;
@@ -496,7 +496,7 @@ export class ThreeEnvironmentAgent {
 
     _addCharriot() {
         const chart = new THREE.Group();
-        chart.position.set(0.9, 0, -0.5);
+        chart.position.set(-2.0, 0, -1.0); // Placé près du pied du lit
         chart.name = 'CharriotMedical';
         chart.userData.label = 'Charriot médical';
         chart.userData.interactive = true;
@@ -598,9 +598,20 @@ export class ThreeEnvironmentAgent {
         // Compresses (petit paquet)
         const compressMat = new THREE.MeshStandardMaterial({ color: 0xf0f0e8, roughness: 0.9 });
         const compress = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.02, 0.05), compressMat);
-        compress.position.set(0, 0.86, -0.06);
-        compress.castShadow = true;
+        compress.position.set(-0.02, 0.86, -0.05);
+        compress.rotation.y = 0.2;
         chart.add(compress);
+
+        // Masque O2 (sur le plateau inférieur)
+        const maskMat = new THREE.MeshStandardMaterial({ color: 0x44ccff, transparent: true, opacity: 0.6, roughness: 0.2 });
+        const maskGeom = new THREE.CylinderGeometry(0.03, 0.04, 0.05, 8);
+        const mask = new THREE.Mesh(maskGeom, maskMat);
+        mask.position.set(0.05, 0.38, 0);
+        mask.rotation.x = Math.PI / 2;
+        mask.castShadow = true;
+        mask.name = 'MasqueO2';
+        mask.userData = { label: 'Masque à Oxygène', interactive: true };
+        chart.add(mask);
 
         this.scene.add(chart);
 
@@ -608,7 +619,10 @@ export class ThreeEnvironmentAgent {
         chart.traverse((child) => {
             if (child.isMesh) {
                 child.userData.interactive = true;
-                child.userData.label = 'Charriot médical';
+                // Ne pas écraser le nom/label du masque O2
+                if (child.name !== 'MasqueO2') {
+                    child.userData.label = 'Charriot médical';
+                }
             }
         });
     }

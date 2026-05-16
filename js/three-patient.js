@@ -29,11 +29,11 @@ export class ThreePatient {
         this.skinMat = createMaterial(0xd7a87a);
         this.clothMat = createMaterial(patient.tenue === 'blouse_blanche' ? 0xf2f4f7 : 0x4f72a8);
         // Position Y ajustée pour que le patient soit posé sur le lit/chaise
-        // Assis : fond du torse (y=0.725 local) doit toucher le siège (y=0.57 mondial)
-        // Allongé : fond du torse (y=0.81 local) doit toucher le matelas (y=0.75 mondial)
-        const seatY = position === 'allonge' ? -0.06 : -0.155;
-        this.group.position.set(position === 'allonge' ? -3.0 : 2.15, seatY, position === 'allonge' ? -2.2 : -1.7);
-        this.group.rotation.y = 0;
+        // Assis : fond du torse (y=0.725 local) doit toucher le siège (y=0.55 mondial)
+        // Allongé : fond du torse (y=0.81 local) doit toucher le matelas (y=0.65 mondial)
+        const seatY = position === 'allonge' ? -0.16 : -0.175;
+        this.group.position.set(position === 'allonge' ? -3.5 : 2.15, seatY, position === 'allonge' ? -2.6 : -1.7);
+        this.group.rotation.y = position === 'allonge' ? Math.PI : 0;
         this.mouth = null;
         this.eyeL = null;
         this.eyeR = null;
@@ -52,7 +52,12 @@ export class ThreePatient {
         mesh.receiveShadow = true;
         if (name) {
             mesh.name = name;
-            mesh.userData.label = 'Patient';
+            // Le label encode la zone pour la détection contextuelle
+            const nameLower = name.toLowerCase();
+            if (nameLower.includes('torse') || nameLower.includes('poitrine')) mesh.userData.label = 'Patient - Torse';
+            else if (nameLower.includes('abdomen') || nameLower.includes('ventre')) mesh.userData.label = 'Patient - Abdomen';
+            else if (nameLower.includes('tete') || nameLower.includes('tête')) mesh.userData.label = 'Patient - Tête';
+            else mesh.userData.label = 'Patient';
             mesh.userData.interactive = true;
         }
         this.group.add(mesh);
@@ -284,7 +289,6 @@ export class ThreePatient {
     }
 
     buildLying(skin, cloth) {
-        this.group.rotation.y = -Math.PI / 2;
         // Torse allongé (axe Z = longueur du corps, +Z = tête)
         this.cube({ x: 0.48, y: 0.28, z: 0.95 }, { x: 0, y: 0.95, z: 0 }, cloth, 'Patient torse');
         this.sphere(0.17, { x: 0, y: 1.0, z: 0.62 }, skin, 'Patient tete');

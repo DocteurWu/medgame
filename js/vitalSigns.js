@@ -240,6 +240,22 @@ class VitalSignsMonitor {
         this.startAnimations();
     }
 
+    /**
+     * Force la stabilisation d'une constante spécifique (ex: oxygénothérapie)
+     * @param {string} vitalKey - Clé de la constante (ex: 'saturationO2', 'spo2')
+     * @param {number} value - Valeur cible
+     */
+    stabilize(vitalKey, value) {
+        let key = vitalKey;
+        if (key === 'saturationO2') key = 'spo2';
+        
+        if (this.props[key] !== undefined) {
+            this.props[key] = value;
+            this.updateDisplay();
+            this.startAnimations();
+        }
+    }
+
     // ==================== TICK DE PROGRESSION TEMPORELLE (1s) ====================
 
     _dynamicsTick() {

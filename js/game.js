@@ -140,6 +140,32 @@ function onDomReady(fn) {
     }
 }
 
+async function waitForThreeManagerReady(timeout = 3500) {
+    const startedAt = performance.now();
+    while (!window.threeManager && performance.now() - startedAt < timeout) {
+        await new Promise(resolve => setTimeout(resolve, 80));
+    }
+    return window.threeManager || null;
+}
+
+async function toggleImmersive3DFromButton() {
+    const manager = await waitForThreeManagerReady();
+    if (!manager) {
+        console.error('[game.js] threeManager not initialized!');
+        if (typeof showNotification === 'function') showNotification('Mode 3D en cours de chargement...');
+        return;
+    }
+    await manager.toggle3D();
+}
+
+document.addEventListener('click', (event) => {
+    const button = event.target?.closest?.('#immersive-mode-btn');
+    if (!button) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    toggleImmersive3DFromButton();
+}, true);
+
 onDomReady(async () => {
     const motifHospitalisation = document.getElementById('motif-hospitalisation');
     const activitePhysique = document.getElementById('activite-physique');
@@ -212,14 +238,15 @@ onDomReady(async () => {
     // Immersive Mode button handler — sole controller for 3D toggle
     const immersiveBtn = document.getElementById('immersive-mode-btn');
     if (immersiveBtn) {
-        immersiveBtn.addEventListener('click', () => {
+        immersiveBtn.addEventListener('click', async () => {
             // Bascule mode 3D/2D
-            if (!window.threeManager) {
+            const manager = await waitForThreeManagerReady();
+            if (!manager) {
                 console.error('[game.js] threeManager not initialized!');
                 showNotification('Mode 3D en cours de chargement...');
                 return;
             }
-            window.threeManager.toggle3D();
+            manager.toggle3D();
         });
     }
 
@@ -1755,11 +1782,12 @@ onDomReady(async () => {
 
     // --- 3D MODE TOGGLE (Delegated to threeManager) ---
     async function activate3DMode() {
-        if (!window.threeManager) {
+        const manager = await waitForThreeManagerReady();
+        if (!manager) {
             showNotification('Mode 3D non disponible');
             return;
         }
-        await window.threeManager.toggle3D();
+        await manager.toggle3D();
     }
 
     async function deactivate3DMode() {
@@ -1778,6 +1806,13 @@ onDomReady(async () => {
     // Don't create a second button — the button is already in game.html as #immersive-mode-btn
     // Just hook up Escape key for 3D mode
     document.addEventListener('keydown', (e) => {
+        const tag = e.target?.tagName;
+        if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+        if (e.key.toLowerCase() === 'e' && !window.threeManager?.enabled) {
+            e.preventDefault();
+            toggle3DMode();
+            return;
+        }
         if (e.key === 'Escape' && window.threeManager?.enabled) {
             e.preventDefault();
             deactivate3DMode();

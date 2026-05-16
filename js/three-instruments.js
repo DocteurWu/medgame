@@ -3,12 +3,12 @@ import { box, createMaterial } from './three-room.js';
 import { pulseEmissive } from './three-animations.js';
 
 const INSTRUMENTS = [
-    { id: 'tensiometer', label: 'Tensiometre', x: -1.55, z: -0.78, key: 'tension', title: 'TA' },
-    { id: 'stethoscope', label: 'Stethoscope', x: -1.30, z: -0.78, key: 'stethoscope', title: 'Auscultation' },
-    { id: 'oximeter', label: 'Oxymetre', x: -1.05, z: -0.78, key: 'saturationO2', title: 'SpO2' },
-    { id: 'thermometer', label: 'Thermometre', x: -0.55, z: -0.78, key: 'temperature', title: 'T' },
-    { id: 'glucometer', label: 'Glucometre', x: -0.05, z: -0.78, key: 'glycemie', title: 'Glycemie' },
-    { id: 'tablet', label: 'Tablette prescription', x: 0.45, z: -0.78, key: 'tablet', title: 'Rx' }
+    { id: 'tensiometer', label: 'Tensiometre', x: -1.0, z: -0.7, key: 'tension', title: 'TA' },
+    { id: 'stethoscope', label: 'Stethoscope', x: -0.75, z: -0.7, key: 'stethoscope', title: 'Auscultation' },
+    { id: 'oximeter', label: 'Oxymetre', x: -0.5, z: -0.7, key: 'saturationO2', title: 'SpO2' },
+    { id: 'thermometer', label: 'Thermometre', x: -0.25, z: -0.7, key: 'temperature', title: 'T' },
+    { id: 'glucometer', label: 'Glucometre', x: 0.0, z: -0.7, key: 'glycemie', title: 'Glycemie' },
+    { id: 'tablet', label: 'Tablette prescription', x: 0.25, z: -0.7, key: 'tablet', title: 'Rx' }
 ];
 
 /**
@@ -242,7 +242,7 @@ export class ThreeInstruments {
     // ===== STÉTHOSCOPE =====
     _buildStethoscope(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.87, item.z);
+        group.position.set(item.x, 0.825, item.z);
 
         // Pavillon (cloche) — cône tronqué
         const bellMat = createMaterial(0xc0c0c0, { roughness: 0.15, metalness: 0.85 });
@@ -361,7 +361,7 @@ export class ThreeInstruments {
 
     _buildTensiometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.87, item.z);
+        group.position.set(item.x, 0.825, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0xf0f0f0, { roughness: 0.3, metalness: 0.2 });
@@ -447,7 +447,7 @@ export class ThreeInstruments {
     // ===== OXymÈTRE =====
     _buildOximeter(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.87, item.z);
+        group.position.set(item.x, 0.825, item.z);
 
         // Boîtier clip (forme en pince)
         const shellMat = createMaterial(0x2a2a2a, { roughness: 0.3, metalness: 0.4 });
@@ -544,7 +544,7 @@ export class ThreeInstruments {
     // ===== THERMOMÈTRE =====
     _buildThermometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.87, item.z);
+        group.position.set(item.x, 0.825, item.z);
 
         // Bâtonnet principal (corps du thermomètre)
         const stickMat = createMaterial(0xf8f8f8, { roughness: 0.2, metalness: 0.3 });
@@ -601,7 +601,7 @@ export class ThreeInstruments {
     // ===== GLUCOMÈTRE =====
     _buildGlucometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.87, item.z);
+        group.position.set(item.x, 0.825, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0x1a1a3a, { roughness: 0.25, metalness: 0.15 });
@@ -669,7 +669,7 @@ export class ThreeInstruments {
     // ===== TABLETTE =====
     _buildTablet(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.87, item.z);
+        group.position.set(item.x, 0.825, item.z);
 
         // Cadre (bordure noire)
         const frameMat = createMaterial(0x111111, { roughness: 0.2, metalness: 0.5 });
