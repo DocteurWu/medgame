@@ -121,43 +121,100 @@ async function loadCasesData() {
             }
         }
 
-        // 1. SUPABASE FETCH (If applicable)
-        if (typeof supabase !== 'undefined') {
-            const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-            if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
+        // 1. HYBRID FETCH (Supabase and Local cases)
+        const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
+        if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
+            const dbIds = selectedCaseFiles.filter(f => !f.endsWith('.json'));
+            const localFiles = selectedCaseFiles.filter(f => f.endsWith('.json'));
+
+            let dbCases = [];
+            if (dbIds.length > 0 && typeof supabase !== 'undefined') {
                 try {
                     const { data, error } = await supabase
                         .from('cases')
                         .select('*')
-                        .in('id', selectedCaseFiles);
+                        .in('id', dbIds);
 
-                    if (!error && data && data.length > 0) {
-                        const processed = data.map(c => {
+                    if (!error && data) {
+                        dbCases = data.map(c => {
                             const content = c.content;
                             if (!content.id) content.id = c.id;
                             return content;
                         });
-                        localStorage.removeItem('selectedCaseFiles');
-                        return processed;
                     }
                 } catch (err) {
-                    console.warn("Supabase fetch failed, falling back to local files", err);
+                    console.warn("Supabase fetch failed during multi-load", err);
                 }
+            }
+
+            // Pour tout ID de base non trouvé (ex. s'il s'agit d'un repli ou erreur réseau), on tente de le charger localement
+            const loadedDbIds = dbCases.map(c => c.id);
+            const missingDbIds = dbIds.filter(id => !loadedDbIds.includes(id));
+            const allLocalFilesToLoad = [...localFiles, ...missingDbIds.map(id => id.endsWith('.json') ? id : `${id}.json`)];
+
+            let localCases = [];
+            if (allLocalFilesToLoad.length > 0) {
+                try {
+                    const results = await Promise.allSettled(allLocalFilesToLoad.map(lazyLoadCase));
+                    localCases = results
+                        .filter(r => r.status === 'fulfilled' && r.value !== null)
+                        .map(r => r.value);
+                } catch (err) {
+                    console.warn("Local files load failed", err);
+                }
+            }
+
+            // Reconstituer l'array final dans l'ordre d'origine
+            const mergedCases = [];
+            selectedCaseFiles.forEach(fileOrId => {
+                const normalizedId = fileOrId.replace('.json', '');
+                // Chercher d'abord dans les cas Supabase
+                const dbCase = dbCases.find(c => c.id === normalizedId || c.id === fileOrId);
+                if (dbCase) {
+                    mergedCases.push(dbCase);
+                } else {
+                    // Chercher dans les cas locaux
+                    const localCase = localCases.find(c => {
+                        const cId = c.id || '';
+                        return cId.toLowerCase() === normalizedId.toLowerCase() || cId.toLowerCase() === fileOrId.toLowerCase();
+                    });
+                    if (localCase) {
+                        mergedCases.push(localCase);
+                    }
+                }
+            });
+
+            if (mergedCases.length > 0) {
+                localStorage.removeItem('selectedCaseFiles');
+                return mergedCases;
             }
         }
 
-        // Fallback local: multiple cases (with cache)
-        const selectedCaseFilesLocal = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-        if (selectedCaseFilesLocal && Array.isArray(selectedCaseFilesLocal) && selectedCaseFilesLocal.length > 0) {
-            const results = await Promise.all(selectedCaseFilesLocal.map(lazyLoadCase));
-            localStorage.removeItem('selectedCaseFiles');
-            return results;
-        }
-
-        // Single case (with cache)
+        // 2. Single case (with cache)
         const selectedCaseFile = localStorage.getItem('selectedCaseFile');
         if (selectedCaseFile) {
-            const caseData = await lazyLoadCase(selectedCaseFile);
+            // Si Supabase est dispo et que c'est un ID sans extension, tenter Supabase d'abord
+            if (typeof supabase !== 'undefined' && !selectedCaseFile.endsWith('.json')) {
+                try {
+                    const { data, error } = await supabase
+                        .from('cases')
+                        .select('*')
+                        .eq('id', selectedCaseFile)
+                        .single();
+
+                    if (!error && data) {
+                        const content = data.content;
+                        if (!content.id) content.id = data.id;
+                        localStorage.removeItem('selectedCaseFile');
+                        return [content];
+                    }
+                } catch (err) {
+                    console.warn("Supabase single fetch failed", err);
+                }
+            }
+
+            // Fallback local
+            const caseData = await lazyLoadCase(selectedCaseFile.endsWith('.json') ? selectedCaseFile : `${selectedCaseFile}.json`);
             localStorage.removeItem('selectedCaseFile');
             return [caseData];
         }

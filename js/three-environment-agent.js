@@ -64,7 +64,7 @@ export class ThreeEnvironmentAgent {
             // Rendre la fenêtre semi-transparente avec un léger glow
             windowMesh.material.transparent = true;
             windowMesh.material.opacity = 0.6;
-            windowMesh.material.emissiveIntensity = 0.1;
+            windowMesh.material.emissiveIntensity = 0.15;
 
             // Ajouter un voile lumineux
             const veilGeom = new THREE.PlaneGeometry(0.6, 0.6);
@@ -78,6 +78,31 @@ export class ThreeEnvironmentAgent {
             veil.position.copy(windowMesh.position);
             veil.position.z += 0.01;
             this.scene.add(veil);
+
+            // --- Faisceau de Lumière Volumétrique (Effet cinématique de soleil) ---
+            const shaftGeom = new THREE.CylinderGeometry(0.35, 1.6, 6.2, 32, 1, true);
+            // Décaler le pivot vers la base supérieure pour une rotation depuis la fenêtre
+            shaftGeom.translate(0, -3.1, 0);
+            
+            const shaftMat = new THREE.MeshBasicMaterial({
+                color: 0xffedd5, // Doré chaud cinématique
+                transparent: true,
+                opacity: 0.075,
+                side: THREE.DoubleSide,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+            
+            const shaft = new THREE.Mesh(shaftGeom, shaftMat);
+            shaft.name = 'VolumetricSunlightRay';
+            shaft.position.copy(windowMesh.position);
+            shaft.position.x += 0.05;
+            
+            // Rotation diagonale plongeante vers le lit du patient
+            shaft.rotation.z = -1.15; // Plongeant
+            shaft.rotation.y = 0.22;  // Tourné vers le centre
+            
+            this.scene.add(shaft);
         }
     }
 
@@ -635,18 +660,32 @@ export class ThreeEnvironmentAgent {
         const dustPositions = new Float32Array(dustCount * 3);
 
         for (let i = 0; i < dustCount; i++) {
-            dustPositions[i * 3] = (Math.random() - 0.5) * 8;
-            dustPositions[i * 3 + 1] = Math.random() * 3 + 0.5;
-            dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 6;
+            if (i < 100) {
+                // Moitié des poussières concentrées et illuminées le long du faisceau de la fenêtre
+                const t = Math.random(); // Paramètre le long du rayon
+                const rx = -4.9 + 5.5 * t;
+                const ry = 1.8 - 1.8 * t;
+                const rz = -1.0 + (Math.random() - 0.5) * 1.8;
+                
+                // Jitter radial
+                dustPositions[i * 3] = rx + (Math.random() - 0.5) * 0.6;
+                dustPositions[i * 3 + 1] = ry + (Math.random() - 0.5) * 0.6;
+                dustPositions[i * 3 + 2] = rz + (Math.random() - 0.5) * 0.6;
+            } else {
+                // L'autre moitié dispersée dans toute la salle
+                dustPositions[i * 3] = (Math.random() - 0.5) * 8;
+                dustPositions[i * 3 + 1] = Math.random() * 3 + 0.5;
+                dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 6;
+            }
         }
 
         dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
 
         const dustMat = new THREE.PointsMaterial({
-            color: 0xffffff,
-            size: 0.02,
+            color: 0xffedd5, // Assorti au soleil doré chaud !
+            size: 0.022,
             transparent: true,
-            opacity: 0.15,
+            opacity: 0.25, // Un peu plus visible pour sublimer l'effet volumétrique
             sizeAttenuation: true,
             depthWrite: false,
             blending: THREE.AdditiveBlending

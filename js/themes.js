@@ -30,6 +30,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Charge l'index des cas (depuis Supabase si disponible, sinon fallback local)
     async function initCases() {
+        // 1. Charge d'abord l'index local par défaut
+        try {
+            const response = await fetch('data/case-index.json');
+            if (response.ok) {
+                casesData = await response.json();
+            } else {
+                console.error('Erreur lors du chargement initial de case-index.json');
+                casesData = {};
+            }
+        } catch (err) {
+            console.error('Erreur de chargement local de case-index.json :', err);
+            casesData = {};
+        }
+
+        // 2. Si Supabase est présent, charge et fusionne les cas distants de façon non destructive
         if (typeof supabase !== 'undefined') {
             try {
                 const { data, error } = await supabase
@@ -43,26 +58,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     .filter(c => !c.status || c.status === 'published')
                     .sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 
-                // On reconstruit un objet casesData pour la compatibilité avec le reste du code
-                casesData = {};
+                // Fusionner les cas distants dans casesData
                 published.forEach(c => {
                     const spec = (c.specialty || 'autre').toLowerCase();
                     if (!casesData[spec]) casesData[spec] = [];
-                    casesData[spec].push(c.id);
+
+                    const dbId = c.id;
+                    // Éviter d'ajouter un doublon si le cas local existe déjà (par ex. "cardio_1" et "cardio_1.json")
+                    const hasLocalDuplicate = casesData[spec].some(localFile => {
+                        const localId = localFile.replace('.json', '');
+                        return localId.toLowerCase() === dbId.toLowerCase();
+                    });
+
+                    if (!hasLocalDuplicate && !casesData[spec].includes(dbId)) {
+                        casesData[spec].push(dbId);
+                    }
                 });
+
                 // On garde une map globale id -> content pour éviter les fetchs répétitifs
                 window.allSupabaseCases = published;
-
-                return;
             } catch (err) {
-                console.error('Erreur Supabase, fallback sur local :', err);
+                console.error('Erreur Supabase lors de la fusion, maintien du local index :', err);
             }
         }
-
-        // Fallback local
-        const response = await fetch('data/case-index.json');
-        if (!response.ok) throw new Error('Erreur lors du chargement de case-index.json');
-        casesData = await response.json();
     }
 
     // Store the promise so showMotifsForTheme can await it
@@ -156,39 +174,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             let motifs = [];
+            const caseList = casesData[searchSpec] || [];
 
-            if (window.allSupabaseCases) {
-                // Utilisation des données déjà chargées depuis Supabase
-                motifs = window.allSupabaseCases
-                    .filter(c => c.specialty.toLowerCase() === searchSpec)
-                    .map(c => {
-                        const data = c.content;
+            motifs = await Promise.all(caseList.map(async (fileOrId) => {
+                // 1. Vérifier si c'est un cas de Supabase préchargé
+                const dbCase = window.allSupabaseCases ? window.allSupabaseCases.find(c => c.id === fileOrId) : null;
+                if (dbCase) {
+                    const data = dbCase.content;
+                    return {
+                        id: data.id,
+                        file: dbCase.id,
+                        motif: data.interrogatoire?.motifHospitalisation || "Sans motif",
+                        patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
+                        redacteur: data.redacteur || '',
+                        isPlayed: playedCases.includes(data.id),
+                        isSupabase: true
+                    };
+                } else {
+                    // 2. Sinon, c'est un cas local (nom de fichier avec ou sans .json)
+                    const filename = fileOrId.endsWith('.json') ? fileOrId : `${fileOrId}.json`;
+                    try {
+                        let response = await fetch(`data/${filename}`);
+                        if (!response.ok && fileOrId !== filename) {
+                            response = await fetch(`data/${fileOrId}`);
+                        }
+                        if (!response.ok) return null;
+
+                        const data = await response.json();
                         return {
                             id: data.id,
-                            file: c.id, // On utilise l'ID Supabase comme "file" pour game.js
+                            file: fileOrId,
                             motif: data.interrogatoire?.motifHospitalisation || "Sans motif",
                             patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
                             redacteur: data.redacteur || '',
-                            isPlayed: playedCases.includes(data.id),
-                            isSupabase: true
+                            isPlayed: playedCases.includes(data.id)
                         };
-                    });
-            } else {
-                // Fallback fetch local
-                motifs = await Promise.all(casesData[searchSpec].map(async (file) => {
-                    const response = await fetch(`data/${file}`);
-                    if (!response.ok) return null;
-                    const data = await response.json();
-                    return {
-                        id: data.id,
-                        file: file,
-                        motif: data.interrogatoire.motifHospitalisation,
-                        patient: `${data.patient.prenom} ${data.patient.nom}`,
-                        redacteur: data.redacteur || '',
-                        isPlayed: playedCases.includes(data.id)
-                    };
-                }));
-            }
+                    } catch (err) {
+                        console.error(`Erreur de chargement local pour le cas ${fileOrId} :`, err);
+                        return null;
+                    }
+                }
+            }));
 
             // Filtrer les cas qui n'ont pas pu être chargés
             currentThemeMotifs = motifs.filter(m => m !== null);

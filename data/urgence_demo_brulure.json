@@ -104,6 +104,7 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Lucas vient de renverser un bidon d'acide chlorhydrique sur ses mains et ses jambes.",
+      "patientVisuel": { "position": "assis", "expression": "brulure", "respiration": "tachypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -137,6 +138,7 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "L'eau doit couler mais Lucas a froid au reste du corps.",
+      "patientVisuel": { "position": "assis", "expression": "brulure", "respiration": "tachypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -164,6 +166,7 @@
     "s3": {
       "id": "s3",
       "descriptionClinique": "Le rinçage dure depuis 10 minutes. Lucas demande d'arrêter.",
+      "patientVisuel": { "position": "assis", "expression": "douleur", "couleurPeau": "pale", "respiration": "tachypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -212,6 +215,7 @@
     "s5_good": {
       "id": "s5_good",
       "descriptionClinique": "Le rinçage précoce et prolongé a évité la greffe de peau. Excellent réflexe.",
+      "patientVisuel": { "position": "assis", "expression": "anxieux", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -240,6 +244,7 @@
     "s_err_neutral": {
       "id": "s_err_neutral",
       "descriptionClinique": "Le mélange Acide/Base a littéralement 'cuit' les mains de Lucas.",
+      "patientVisuel": { "position": "allonge", "expression": "brulure", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",

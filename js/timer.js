@@ -107,51 +107,7 @@ function getTimerVisualState(ratio) {
  * @param {string} color — couleur CSS
  */
 function updateTimerProgressBar(ratio, color) {
-    const parentIds = ['timer', 'mobile-timer'];
-    parentIds.forEach(parentId => {
-        const parent = document.getElementById(parentId);
-        if (!parent) return;
-
-        let bar = parent.querySelector(`.${TIMER_CONFIG.PROGRESS_BAR_ID}`);
-        if (!bar) {
-            // Insérer la barre après l'élément timer
-            bar = document.createElement('div');
-            bar.className = TIMER_CONFIG.PROGRESS_BAR_ID;
-            bar.style.cssText = `
-                height: 3px;
-                border-radius: 2px;
-                margin-top: 4px;
-                transition: width 1s linear, background-color 0.5s ease;
-                box-shadow: 0 0 6px currentColor;
-            `;
-            parent.parentNode.insertBefore(bar, parent.nextSibling);
-        }
-        const percent = Math.max(0, Math.min(100, ratio * 100));
-        bar.style.width = `${percent}%`;
-        bar.style.backgroundColor = color;
-        bar.style.color = color;
-        bar.style.boxShadow = `0 0 8px ${color}`;
-    });
-
-    // Pour le container mobile-timer, ajouter aussi la barre
-    const mobileContainer = document.getElementById('mobile-timer-container');
-    if (mobileContainer) {
-        let mobileBar = mobileContainer.querySelector(`.${TIMER_CONFIG.PROGRESS_BAR_ID}-mobile`);
-        if (!mobileBar) {
-            mobileBar = document.createElement('div');
-            mobileBar.className = `${TIMER_CONFIG.PROGRESS_BAR_ID}-mobile`;
-            mobileBar.style.cssText = `
-                height: 3px;
-                border-radius: 2px;
-                margin-top: 2px;
-                transition: width 1s linear, background-color 0.5s ease;
-            `;
-            mobileContainer.appendChild(mobileBar);
-        }
-        const percent = Math.max(0, Math.min(100, ratio * 100));
-        mobileBar.style.width = `${percent}%`;
-        mobileBar.style.backgroundColor = color;
-    }
+    // Désactivé : suppression complète de la barre de progression verte sous le timer
 }
 
 // ==================== AFFICHAGE PRINCIPAL ====================

@@ -11,11 +11,13 @@ const CONFIG = {
     SUPABASE_URL: 'https://jxhzjetxquimmkpzlfyh.supabase.co',
     SUPABASE_KEY: 'sb_publishable_Nqjp4eF3ytr3VDciqX8dvA_JhdVP0G0',
 
-    // LLM Chat API — proxy local (bypass CORS)
-    LLM_API_URL: '/api/llm/chat/completions',
-    LLM_API_KEY: 'a41d4311db554326b4772fb7aeb668db.B-aEaCjngGyAtwajoK1ZQnok',
-    LLM_MODEL: 'deepseek-v4-flash'
+    // LLM Chat API — OpenRouter
+    LLM_API_URL: 'https://openrouter.ai/api/v1/chat/completions',
+    LLM_API_KEY: window.__ENV__?.LLM_API_KEY || '',
+    LLM_MODEL: 'openrouter/owl-alpha'
 };
+window.CONFIG = CONFIG;
+
 
 // Global Supabase Client Initialization
 // We use a self-executing function to avoid polluting global scope while setting up the client

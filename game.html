@@ -71,6 +71,7 @@
     </div>
 
     <div id="three-overlay" class="three-overlay" style="display:none;">
+        <div class="hud-cinematic-vignette" aria-hidden="true"></div>
         <div id="three-hud" class="three-hud">
             <div id="hud-3d">
                 <div class="hud-vitals" id="hud-vitals">
@@ -81,14 +82,19 @@
                     <div class="hud-vital-item"><span class="hud-label">FR</span> <span class="hud-value" id="hud-fr">--</span></div>
                     <div class="hud-vital-item"><span class="hud-label">Gly</span> <span class="hud-value" id="hud-gly">--</span></div>
                 </div>
+                <div class="hud-telemetry-container" title="Moniteur Physiologique Clinique">
+                    <canvas id="hud-telemetry-canvas" width="280" height="42"></canvas>
+                </div>
                 <div class="hud-actions">
                     <button data-camera="room" class="hud-btn" title="Vue salle (1)"><i class="fas fa-eye"></i></button>
                     <button data-camera="patient" class="hud-btn" title="Vue patient (2)"><i class="fas fa-user"></i></button>
                     <button data-camera="desk" class="hud-btn" title="Vue bureau (3)"><i class="fas fa-desktop"></i></button>
+                    <button data-camera="fps" class="hud-btn" title="Mode FPS Immersif (F)"><i class="fas fa-walking"></i></button>
                 </div>
                 <div class="hud-nav">
                     <button class="hud-nav-btn" id="hud-btn-chat" title="Discuter avec le patient (P)"><i class="fas fa-comments"></i></button>
                     <button class="hud-nav-btn" id="hud-btn-pc" title="Dossier médical (R)"><i class="fas fa-laptop"></i></button>
+                    <button class="hud-nav-btn" id="hud-btn-sound" title="Son du Scope (Bip ECG)"><i class="fas fa-volume-up"></i></button>
                 </div>
                 <div class="hud-timer" id="hud-timer">--:--</div>
             </div>
@@ -560,6 +566,7 @@
     <script src="js/gameState.js"></script>
     <script src="js/prescription.js"></script>
     <script src="js/player_map.js"></script>
+    <script src="js/clinicalAgentAI.js"></script>
 
     <!-- 3D Modules -->
     <script type="module" src="js/three-animations.js"></script>
@@ -586,6 +593,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="js/game.js?v=20251220-1645"></script>
     <script src="js/device-check.js"></script>
+
+    <!-- 3D HUD Fully Restored (Immersif) -->
 </body>
 
 </html>

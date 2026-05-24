@@ -4,6 +4,8 @@
  * et synchronise en temps réel la progression démarche / score depuis le 2D.
  */
 
+import { LLMPatient } from './llm-patient.js';
+
 export class ThreeHUD {
     constructor(threeManager) {
         this.manager = threeManager;
@@ -14,6 +16,24 @@ export class ThreeHUD {
         this.isVisible = false;
         this._syncInterval = null;
         this._lastScore = -1;
+        this.llmPatient = null;
+
+        // --- Système de Scope Télémétrie ---
+        this.telemetryCanvas = null;
+        this.telemetryCtx = null;
+        this.telemetryAnimId = null;
+        this.telemetryX = 0;
+        this.prevX = 0;
+        this.prevEcgY = 12;
+        this.prevSpo2Y = 30;
+        this.prevPhi = 0;
+        this.sweepSpeed = 1.6; // Pixels par frame
+
+        // --- Système Audio Bip ECG ---
+        this.isSoundMuted = sessionStorage.getItem('hud_scope_muted') === 'true';
+        this.soundVolume = parseFloat(sessionStorage.getItem('hud_scope_volume') || '0.15');
+        this.audioCtx = null;
+        this._hudKeyHandler = null;
     }
 
     /**
@@ -24,6 +44,7 @@ export class ThreeHUD {
         this.isVisible = true;
         this._updateVitals();
         this._startProgressSync();
+        this.startTelemetry();
     }
 
     /**
@@ -33,6 +54,278 @@ export class ThreeHUD {
         if (this.container) this.container.style.display = 'none';
         this.isVisible = false;
         this._stopProgressSync();
+        this.stopTelemetry();
+    }
+
+    /**
+     * Démarrer le dessin de la télémétrie et lier les contrôles de volume
+     */
+    startTelemetry() {
+        this.telemetryCanvas = document.getElementById('hud-telemetry-canvas');
+        if (!this.telemetryCanvas) return;
+        this.telemetryCtx = this.telemetryCanvas.getContext('2d', { alpha: true });
+        
+        // Initialiser la couleur de fond transparente du scope
+        this.telemetryCtx.clearRect(0, 0, this.telemetryCanvas.width, this.telemetryCanvas.height);
+        this.telemetryX = 0;
+        this.prevX = 0;
+
+        // Lier le bouton de son du scope
+        const soundBtn = document.getElementById('hud-btn-sound');
+        if (soundBtn) {
+            soundBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.isSoundMuted = !this.isSoundMuted;
+                sessionStorage.setItem('hud_scope_muted', this.isSoundMuted ? 'true' : 'false');
+                this._updateSoundButtonUI();
+                
+                // Activer l'AudioContext s'il était suspendu (sécurité navigateur)
+                if (!this.isSoundMuted && this.audioCtx && this.audioCtx.state === 'suspended') {
+                    this.audioCtx.resume();
+                }
+            };
+            this._updateSoundButtonUI();
+        }
+
+        // Raccourci clavier local (M pour Mute/Unmute)
+        this._hudKeyHandler = (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+            if (!this.isVisible) return;
+            if (e.key.toLowerCase() === 'm') {
+                e.preventDefault();
+                this.isSoundMuted = !this.isSoundMuted;
+                sessionStorage.setItem('hud_scope_muted', this.isSoundMuted ? 'true' : 'false');
+                this._updateSoundButtonUI();
+                if (!this.isSoundMuted && this.audioCtx && this.audioCtx.state === 'suspended') {
+                    this.audioCtx.resume();
+                }
+            }
+        };
+        document.addEventListener('keydown', this._hudKeyHandler);
+
+        // Lancer la boucle d'animation des tracés
+        const tick = () => {
+            if (!this.isVisible) return;
+            this._drawTelemetryFrame();
+            this.telemetryAnimId = requestAnimationFrame(tick);
+        };
+        this.telemetryAnimId = requestAnimationFrame(tick);
+    }
+
+    /**
+     * Arrête le scope et libère les écouteurs pour économiser les ressources
+     */
+    stopTelemetry() {
+        if (this.telemetryAnimId) {
+            cancelAnimationFrame(this.telemetryAnimId);
+            this.telemetryAnimId = null;
+        }
+        if (this._hudKeyHandler) {
+            document.removeEventListener('keydown', this._hudKeyHandler);
+            this._hudKeyHandler = null;
+        }
+    }
+
+    /**
+     * Met à jour visuellement le bouton de contrôle du son
+     */
+    _updateSoundButtonUI() {
+        const soundBtn = document.getElementById('hud-btn-sound');
+        if (!soundBtn) return;
+        if (this.isSoundMuted) {
+            soundBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            soundBtn.style.color = '#ff4757';
+            soundBtn.title = "Scope muet (Appuyez sur M pour réactiver)";
+            soundBtn.classList.add('muted');
+        } else {
+            soundBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            soundBtn.style.color = '#00ff66';
+            soundBtn.title = "Bip Scope actif (Appuyez sur M pour couper)";
+            soundBtn.classList.remove('muted');
+        }
+    }
+
+    /**
+     * Génère un BIP sonore ECG réaliste via le Web Audio API
+     * La tonalité varie en fonction du niveau de saturation en oxygène (SpO2)
+     */
+    _beepECG(spo2) {
+        if (this.isSoundMuted) return;
+
+        try {
+            // Lazy-init de l'AudioContext pour respecter les politiques des navigateurs
+            if (!this.audioCtx) {
+                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (this.audioCtx.state === 'suspended') {
+                this.audioCtx.resume();
+            }
+
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+
+            // Physique médicale : plus la saturation (SpO2) baisse, plus la note baisse !
+            // SpO2 à 99% -> ~740 Hz (aigu). SpO2 à 80% -> ~520 Hz (plus grave/alarmant).
+            const pitch = 400 + Math.max(0, Math.min(100, spo2 - 70)) * 12;
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(pitch, this.audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.0001, this.audioCtx.currentTime);
+            // Attack rapide
+            gain.gain.linearRampToValueAtTime(this.soundVolume, this.audioCtx.currentTime + 0.015);
+            // Decay
+            gain.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + 0.08);
+
+            osc.start();
+            osc.stop(this.audioCtx.currentTime + 0.095);
+        } catch (e) {
+            console.warn('[HUD Telemetry] Échec AudioContext Beep:', e);
+        }
+    }
+
+    /**
+     * Calcule et dessine un segment des courbes ECG et SpO2 (CRT Sweep-Erase)
+     */
+    _drawTelemetryFrame() {
+        const ctx = this.telemetryCtx;
+        const canvas = this.telemetryCanvas;
+        if (!ctx || !canvas) return;
+
+        const w = canvas.width;
+        const h = canvas.height;
+
+        // Récupérer les constantes vitales courantes du patient
+        const hrStr = document.getElementById('hud-hr')?.textContent || '--';
+        const spo2Str = document.getElementById('hud-spo2')?.textContent || '--';
+        const hr = (hrStr !== '--' && hrStr !== '') ? parseInt(hrStr) : 72;
+        const spo2 = (spo2Str !== '--' && spo2Str !== '') ? parseInt(spo2Str) : 98;
+
+        const hrMeasured = this.manager.measured.has('pouls');
+        const spo2Measured = this.manager.measured.has('saturationO2');
+
+        // Avancer le curseur de balayage CRT
+        const x = this.telemetryX;
+        let nextX = x + this.sweepSpeed;
+        if (nextX >= w) {
+            nextX = 0;
+        }
+
+        // Effacer une bande de balayage juste DEVANT le curseur
+        ctx.clearRect(nextX, 0, 16, h);
+
+        const time = performance.now() / 1000;
+        const period = 60 / hr;
+        const phi = (time % period) / period;
+
+        // --- 1. Calcul et tracé ECG (Haut du scope, Y=12) ---
+        let ecgY = 12;
+        if (hrMeasured) {
+            let v_ecg = 0;
+            if (phi < 0.08) {
+                // Onde P (petite bosse positive)
+                v_ecg = Math.sin((phi / 0.08) * Math.PI) * 2.2;
+            } else if (phi < 0.12) {
+                v_ecg = 0;
+            } else if (phi < 0.14) {
+                // Onde Q (petit creux négatif)
+                v_ecg = ((phi - 0.12) / 0.02) * -1.8;
+            } else if (phi < 0.175) {
+                // Onde R (grand pic positif)
+                const rRatio = (phi - 0.14) / 0.035;
+                v_ecg = -1.8 + rRatio * 16.5;
+            } else if (phi < 0.205) {
+                // Onde S (creux négatif prononcé)
+                const sRatio = (phi - 0.175) / 0.03;
+                v_ecg = 14.7 - sRatio * 19.2;
+            } else if (phi < 0.23) {
+                // Retour à la ligne isoélectrique
+                const retRatio = (phi - 0.205) / 0.025;
+                v_ecg = -4.5 + retRatio * 4.5;
+            } else if (phi < 0.36) {
+                // Onde T (bosse positive moyenne)
+                if (phi > 0.26) {
+                    v_ecg = Math.sin(((phi - 0.26) / 0.10) * Math.PI) * 3.8;
+                }
+            }
+            
+            // Si le patient est tachycarde ou en hypoxie, ajouter un léger tremblement / bruit musculaire
+            if (hr > 115 || spo2 < 88) {
+                v_ecg += (Math.random() - 0.5) * 0.7;
+            }
+            ecgY = 12 - v_ecg;
+        }
+
+        // --- 2. Calcul et tracé SpO2 Pleth (Bas du scope, Y=30) ---
+        let spo2Y = 30;
+        if (spo2Measured) {
+            let v_spo2 = 0;
+            // Onde plethysmographique : retardée de 0.09s par rapport au QRS électrique
+            const phi_spo2 = (phi + 0.90) % 1.0;
+            if (phi_spo2 < 0.28) {
+                // Montée systolique rapide
+                v_spo2 = Math.sin((phi_spo2 / 0.28) * Math.PI / 2) * 8.2;
+            } else if (phi_spo2 < 0.38) {
+                // Encoche dicrote (dicrotic notch)
+                const notchRatio = (phi_spo2 - 0.28) / 0.10;
+                v_spo2 = 8.2 - notchRatio * 2.2 + Math.sin(notchRatio * Math.PI) * 1.0;
+            } else if (phi_spo2 < 0.75) {
+                // Descente diastolique
+                const diastRatio = (phi_spo2 - 0.38) / 0.37;
+                v_spo2 = 6.0 * Math.cos(diastRatio * Math.PI / 2);
+            }
+            
+            // Modulation d'amplitude si la saturation est basse (onde amortie)
+            if (spo2 < 90) {
+                v_spo2 *= (spo2 / 100);
+            }
+
+            spo2Y = 30 - v_spo2;
+        }
+
+        // --- 3. Déclenchement du BIP ECG ---
+        // Le bip se déclenche juste au début du complexe R (phase = 0.14)
+        if (hrMeasured && this.prevPhi < 0.14 && phi >= 0.14) {
+            this._beepECG(spo2);
+        }
+
+        // --- 4. Rendu graphique ---
+        // Ne tracer que si on ne vient pas de faire un retour chariot (wrap)
+        if (x < nextX && this.prevX < x) {
+            // Dessin ECG (Néon Vert)
+            ctx.beginPath();
+            ctx.strokeStyle = '#00ff66';
+            ctx.lineWidth = 1.4;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = '#00ff66';
+            ctx.shadowBlur = 3;
+            ctx.moveTo(this.prevX, this.prevEcgY);
+            ctx.lineTo(x, ecgY);
+            ctx.stroke();
+
+            // Dessin SpO2 (Néon Cyan)
+            ctx.beginPath();
+            ctx.strokeStyle = '#00f2fe';
+            ctx.lineWidth = 1.3;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = '#00f2fe';
+            ctx.shadowBlur = 3;
+            ctx.moveTo(this.prevX, this.prevSpo2Y);
+            ctx.lineTo(x, spo2Y);
+            ctx.stroke();
+        }
+
+        // Sauvegarder les états pour le prochain frame
+        this.prevX = x;
+        this.prevEcgY = ecgY;
+        this.prevSpo2Y = spo2Y;
+        this.prevPhi = phi;
+        this.telemetryX = nextX;
     }
 
     // ==================== SYNCHRONISATION PROGRESSION 2D ↔ 3D ====================
@@ -574,6 +867,9 @@ export class ThreeHUD {
         if (!this.hudElement) return;
 
         const caseData = this.manager?.currentCase || window.gameState?.currentCase;
+        if (caseData && (!this.llmPatient || this.llmPatient.caseData !== caseData)) {
+            this.llmPatient = new LLMPatient(caseData);
+        }
         const patient = caseData?.patient || {};
         const patientName = `${patient.prenom || 'Patient'} ${patient.nom || ''}`.trim();
 
@@ -957,24 +1253,126 @@ export class ThreeHUD {
             };
         }
 
-        // Afficher l'indicateur "réflexion" pendant que l'IA répond
+        // Afficher l'indicateur "réflexion" pendant que l'IA répond (avec streaming SSE via LLMPatient)
         const origAsk = chat?.ask?.bind(chat);
         if (origAsk) {
             this._origChatAsk = chat.ask;
-            chat.ask = (question) => {
-                // Afficher l'animation de réflexion du patient
+            chat.ask = async (question) => {
+                if (!question.trim()) return;
+
+                // 1. Ajouter le message du joueur dans le dialogue 2D/state classique
+                chat.append('Vous', question);
+                chat.messages.push({ role: 'user', content: question });
+                if (window.scoringState) window.scoringState.hasAskedPatient = true;
+
+                // 2. Afficher l'indicateur de réflexion
                 this._showThinkingIndicator();
-                const result = origAsk(question);
-                // Si la réponse est une Promise, masquer l'indicateur quand elle résout
-                if (result && typeof result.then === 'function') {
-                    result.finally(() => this._hideThinkingIndicator());
-                } else {
-                    // Fallback : cacher après un délai
-                    setTimeout(() => this._hideThinkingIndicator(), 3000);
+
+                try {
+                    let streamingBubbleRow = null;
+                    let textSpan = null;
+                    let avatarSpan = null;
+                    let currentFullText = '';
+
+                    // Lancer la requête LLM streaming
+                    await this.llmPatient.ask(
+                        question,
+                        // Callback pour chaque token reçu
+                        (token) => {
+                            // Masquer l'indicateur de réflexion dès que l'IA commence à répondre
+                            this._hideThinkingIndicator();
+
+                            if (!streamingBubbleRow) {
+                                // Créer le conteneur du message patient
+                                streamingBubbleRow = document.createElement('div');
+                                streamingBubbleRow.className = 'from-patient';
+                                streamingBubbleRow.dataset.msgId = makeMsgId();
+
+                                const sent = this._analyzeSentiment('');
+                                streamingBubbleRow.innerHTML = `
+                                    <div class="dialog-msg-patient">
+                                        <span class="dialog-msg-avatar">${sent.emoji}</span>
+                                        <div class="dialog-msg-bubble" style="border-left: 3px solid ${sent.color};">
+                                            <span class="dialog-msg-text"></span>
+                                        </div>
+                                    </div>
+                                `;
+                                messages3d.appendChild(streamingBubbleRow);
+                                textSpan = streamingBubbleRow.querySelector('.dialog-msg-text');
+                                avatarSpan = streamingBubbleRow.querySelector('.dialog-msg-avatar');
+
+                                // Lancer l'animation de parole du patient 3D
+                                this._applyFacialExpression('talking');
+                            }
+
+                            // Ajouter le token au texte courant
+                            currentFullText += token;
+                            if (textSpan) {
+                                textSpan.textContent = currentFullText;
+                            }
+
+                            // Analyser dynamiquement le sentiment en cours de frappe pour adapter l'avatar et la couleur
+                            const sent = this._analyzeSentiment(currentFullText);
+                            if (avatarSpan) {
+                                avatarSpan.textContent = sent.emoji;
+                            }
+                            const bubble = streamingBubbleRow.querySelector('.dialog-msg-bubble');
+                            if (bubble) {
+                                bubble.style.borderLeft = `3px solid ${sent.color}`;
+                            }
+
+                            // Défiler automatiquement vers le bas
+                            messages3d.scrollTop = messages3d.scrollHeight;
+                        },
+                        // Callback lorsque la réponse est complète
+                        (finalResponse) => {
+                            this._hideThinkingIndicator();
+
+                            // Obtenir le sentiment final
+                            const sent = this._analyzeSentiment(finalResponse);
+
+                            if (!streamingBubbleRow) {
+                                // Fallback si aucun token n'a été reçu avant la complétion (ex: appel immédiat)
+                                pushMessage('Patient', finalResponse, sent);
+                            } else {
+                                // Mettre à jour l'expression faciale finale du patient 3D après une courte transition
+                                setTimeout(() => {
+                                    this._applyFacialExpression(sent.expression, 0.8);
+                                }, 500);
+
+                                // Afficher la bulle flottante 3D avec émotion
+                                const shortText = finalResponse.length > 80 ? finalResponse.substring(0, 77) + '...' : finalResponse;
+                                this._showPatientBubble(`${sent.emoji} ${shortText}`, 4500, sent.color);
+                            }
+
+                            // Synchroniser le message final avec le conteneur 2D classique pour garder la cohérence du gameplay
+                            const root2d = document.getElementById('dialogue-messages');
+                            if (root2d) {
+                                const row = document.createElement('div');
+                                row.className = 'dialogue-message from-patient';
+                                const label = document.createElement('strong');
+                                label.textContent = 'Patient : ';
+                                const body = document.createElement('span');
+                                body.textContent = finalResponse;
+                                row.append(label, body);
+                                root2d.appendChild(row);
+                                root2d.scrollTop = root2d.scrollHeight;
+                            }
+                            chat.messages.push({ role: 'assistant', content: finalResponse });
+                        },
+                        // Callback en cas d'erreur (Ollama absent, réseau coupé, etc.)
+                        (errorMsg) => {
+                            this._hideThinkingIndicator();
+                            console.warn('[3D Chat] Erreur de flux LLM, fallback local automatique déjà géré par LLMPatient.');
+                        }
+                    );
+                } catch (err) {
+                    this._hideThinkingIndicator();
+                    console.error('[3D Chat] Erreur critique dans la gestion du chat:', err);
                 }
-                return result;
             };
         }
+
 
         // MutationObserver SYNCHRONE : on écoute le conteneur 2D pour récupérer
         // les messages qui arrivent par d'autres chemins (boutons suggérés du 2D, etc.)

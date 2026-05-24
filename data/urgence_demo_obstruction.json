@@ -104,6 +104,7 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Sophie se lève brusquement, ne peut plus parler, porte les mains à sa gorge et devient bleue (cyanose).",
+      "patientVisuel": { "position": "assis", "expression": "cyanose", "couleurPeau": "bleu", "respiration": "dyspnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -131,6 +132,7 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "C'est une obstruction TOTALE (pas de toux, pas de bruit).",
+      "patientVisuel": { "position": "assis", "expression": "cyanose", "couleurPeau": "bleu", "respiration": "dyspnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -158,6 +160,7 @@
     "s3_claques": {
       "id": "s3_claques",
       "descriptionClinique": "Après 5 claques, le corps étranger n'est toujours pas sorti. Sophie s'épuise.",
+      "patientVisuel": { "position": "assis", "expression": "cyanose", "couleurPeau": "bleu", "respiration": "dyspnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -185,6 +188,7 @@
     "s4": {
       "id": "s4",
       "descriptionClinique": "Vous exercez des pressions sèches vers l'arrière et le haut.",
+      "patientVisuel": { "position": "assis", "expression": "douleur", "couleurPeau": "bleu", "respiration": "dyspnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -212,6 +216,7 @@
     "s_unconscious": {
       "id": "s_unconscious",
       "descriptionClinique": "Elle ne réagit plus et ne respire plus.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -233,6 +238,7 @@
     "s5_victory": {
       "id": "s5_victory",
       "descriptionClinique": "Elle respire mais est très choquée. Elle a mal au ventre.",
+      "patientVisuel": { "position": "assis", "expression": "douleur", "couleurPeau": "pale", "respiration": "tachypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -260,6 +266,7 @@
     "s7_good": {
       "id": "s7_good",
       "descriptionClinique": "Le corps étranger est sorti. Le médecin confirme l'absence de lésion. Bravo.",
+      "patientVisuel": { "position": "assis", "expression": "normal", "couleurPeau": "normal", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -274,6 +281,7 @@
     "s6_resus": {
       "id": "s6_resus",
       "descriptionClinique": "Grâce à votre prise en charge de l'inconscience, le corps étranger a bougé et elle a été réanimée par le SAMU.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -288,6 +296,7 @@
     "s_err_water": {
       "id": "s_err_water",
       "descriptionClinique": "Verser de l'eau sur un bouchon alimentaire a provoqué un arrêt immédiat.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -302,6 +311,7 @@
     "s_err_time": {
       "id": "s_err_time",
       "descriptionClinique": "L'absence de Heimlich a conduit à une issue fatale faute d'oxygène.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -316,6 +326,7 @@
     "s_err_injury": {
       "id": "s_err_injury",
       "descriptionClinique": "Sophie a fait une hémorragie interne 2 heures plus tard. Ne jamais négliger le suivi après Heimlich.",
+      "patientVisuel": { "position": "allonge", "expression": "choc", "couleurPeau": "pale", "respiration": "tachypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",

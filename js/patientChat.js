@@ -359,7 +359,9 @@ RÈGLES STRICTES :
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {})
+                        ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {}),
+                        'HTTP-Referer': window.location.origin || 'http://localhost',
+                        'X-Title': 'MedGame'
                     },
                     body: JSON.stringify({ model, messages, stream: false, max_tokens: 200, temperature: 0.85 }),
                     signal: controller.signal

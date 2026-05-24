@@ -8,6 +8,7 @@ import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js';
 import { medicalAudio } from './three-audio.js';
+import { ThreeFPSController } from './three-fps-controller.js';
 
 /**
  * Dictionnaire de descriptions riches pour les objets interactifs
@@ -52,6 +53,7 @@ export class ThreeScene {
         this.dustAnimator = null;
         this.ivAnimator = null;
         this.ecgAnimator = null;
+        this.fpsController = null;
 
         // === Système hover glow ===
         this._hoveredObject = null;
@@ -144,6 +146,9 @@ export class ThreeScene {
 
         this.collectInteractive();
 
+        // Initialisation des Hotspots Cliniques Holographiques
+        this._initHotspots();
+
         // Custom click detection to avoid OrbitControls interference
         this._ptrDown = null;
         this.renderer.domElement.addEventListener('pointerdown', (e) => {
@@ -162,10 +167,92 @@ export class ThreeScene {
         this.renderer.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
         window.addEventListener('resize', () => this.resize());
 
+        // === Initialiser le contrôleur FPS ===
+        this.fpsController = new ThreeFPSController(this.camera, this.renderer.domElement, {
+            onDeactivate: () => {
+                this.controls.enabled = true;
+                document.body.classList.remove('mode-fps'); // Nettoyage de l'UI
+                const crosshairEl = document.getElementById('hud-crosshair');
+                if (crosshairEl) {
+                    crosshairEl.classList.remove('is-targeting');
+                }
+                const activeBtn = document.querySelector(`#hud-3d [data-camera="${this.currentCameraMode || 'room'}"]`);
+                if (activeBtn) {
+                    document.querySelectorAll('#hud-3d [data-camera]').forEach(b => b.classList.remove('active'));
+                    activeBtn.classList.add('active');
+                }
+                
+                if (this._skipDeactivateCameraReset) {
+                    this._skipDeactivateCameraReset = false;
+                    // Mettre à jour OrbitControls target pour regarder vers l'avant à partir de la position actuelle
+                    const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion);
+                    this.controls.target.copy(this.camera.position).add(dir.multiplyScalar(2.0));
+                    this.controls.update();
+                } else {
+                    this.setCamera('room', true);
+                }
+            }
+        });
+
+        // Raccourci touche F pour le mode FPS
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'KeyF' && !e.repeat) {
+                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+                if (this.fpsController && this.fpsController.enabled) {
+                    this.fpsController.deactivate();
+                } else {
+                    this.setCamera('fps');
+                }
+            }
+        });
+
         // === Créer le tooltip HTML ===
         this._createTooltip();
 
         this.animate();
+    }
+
+    /**
+     * Crée et positionne les anneaux holographiques 3D sur le patient (Tête, Torse, Abdomen, Membres)
+     */
+    _initHotspots() {
+        this.hotspotsGroup = new THREE.Group();
+        this.hotspotsGroup.name = "ClinicalHotspots";
+        this.scene.add(this.hotspotsGroup);
+
+        const hotspotsData = [
+            { id: 'tête', pos: [2.15, 1.18, -1.82], color: 0xa020f0, label: 'Patient - Tête' },
+            { id: 'torse', pos: [2.15, 1.14, -1.55], color: 0x00f2fe, label: 'Patient - Torse' },
+            { id: 'abdomen', pos: [2.15, 1.10, -1.30], color: 0xff9f43, label: 'Patient - Abdomen' },
+            { id: 'membre', pos: [2.15, 1.05, -0.9], color: 0x2ecc71, label: 'Patient - Membre' }
+        ];
+
+        hotspotsData.forEach(data => {
+            // Ring geometry pour un effet holographique haut de gamme
+            const geom = new THREE.RingGeometry(0.065, 0.08, 32);
+            const mat = new THREE.MeshBasicMaterial({
+                color: data.color,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.8,
+                depthWrite: false
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            // Coucher l'anneau à plat sur le lit
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.position.set(...data.pos);
+            mesh.userData = {
+                interactive: true,
+                isHotspot: true,
+                hotspotId: data.id,
+                label: data.label
+            };
+            this.hotspotsGroup.add(mesh);
+            this.interactiveObjects.push(mesh);
+        });
+
+        // Visibles uniquement en vue "patient" (épuré !)
+        this.hotspotsGroup.visible = false;
     }
 
     /**
@@ -243,6 +330,7 @@ export class ThreeScene {
 
     loadCase(caseData) {
         this.patient.loadCase(caseData);
+        this.updateHotspotsPosition();
         // Recréer l'animateur car le groupe patient est reconstruit
         this.patientAnimator = new PatientAnimator(this.patient.group, {
             breathRate: caseData?.patient?.breathRate || 1.2,
@@ -283,10 +371,76 @@ export class ThreeScene {
         return hr > 120 || spo2 < 90 || (caseData.difficulty || 1) >= 3;
     }
 
+    updateHotspotsPosition() {
+        if (this.hotspotsGroup) {
+            const isLying = (this.patient && this.patient.group && this.patient.group.position.x < 0);
+            this.hotspotsGroup.children.forEach(mesh => {
+                const id = mesh.userData.hotspotId;
+                if (id === 'tête') {
+                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 1.02 : 1.18, isLying ? -1.98 : -1.82);
+                } else if (id === 'torse') {
+                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 0.96 : 1.14, isLying ? -2.6 : -1.55);
+                } else if (id === 'abdomen') {
+                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 0.96 : 1.10, isLying ? -2.9 : -1.30);
+                } else if (id === 'membre') {
+                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 0.84 : 1.05, isLying ? -3.33 : -0.9);
+                }
+            });
+        }
+    }
+
     setCamera(mode, animate = true) {
+        if (mode === 'fps') {
+            if (this.fpsController) {
+                if (this.fpsController.enabled) return;
+
+                this.currentCameraMode = 'fps';
+                if (this.hotspotsGroup) {
+                    this.hotspotsGroup.visible = false;
+                }
+                
+                this.controls.enabled = false;
+                document.body.classList.add('mode-fps'); // Masquer le HUD superflus pour une immersion 100% propre
+                
+                // Mettre à jour l'état actif des boutons
+                document.querySelectorAll('#hud-3d [data-camera]').forEach(b => b.classList.remove('active'));
+                const fpsBtn = document.querySelector('#hud-3d [data-camera="fps"]');
+                if (fpsBtn) fpsBtn.classList.add('active');
+
+                const isLying = (this.patient && this.patient.group && this.patient.group.position.x < 0);
+                const startPos = isLying 
+                    ? new THREE.Vector3(-1.6, 1.6, -2.5) // Position sûre à côté du lit, hors collision du bureau
+                    : new THREE.Vector3(2.5, 1.6, 0.5);
+                const startLook = isLying 
+                    ? new THREE.Vector3(-3.5, 1.1, -2.6) 
+                    : new THREE.Vector3(2.1, 1.15, -1.65);
+                    
+                this.fpsController.activate(startPos, startLook);
+                
+                if (window.showNotification) {
+                    window.showNotification('Mode FPS activé. Touches ZQSD pour marcher, Souris pour regarder. [Échap] pour quitter.', 'info');
+                }
+            }
+            return;
+        } else {
+            if (this.fpsController && this.fpsController.enabled) {
+                this.fpsController.deactivate();
+            }
+            this.controls.enabled = true;
+            document.body.classList.remove('mode-fps'); // Restaurer le HUD normal
+        }
+
+        this.currentCameraMode = mode;
+        if (this.hotspotsGroup) {
+            this.hotspotsGroup.visible = (mode === 'patient');
+        }
+
+        const isLying = (this.patient && this.patient.group && this.patient.group.position.x < 0);
         const presets = {
             room: { pos: [0, 2.8, 3.0], target: [0, 1.2, -0.8] },
-            patient: { pos: [2.7, 2.1, 0.7], target: [2.1, 1.15, -1.65] },
+            patient: isLying 
+                ? { pos: [-2.1, 2.2, -1.1], target: [-3.5, 1.1, -2.6] }
+                : { pos: [2.7, 2.1, 0.7], target: [2.1, 1.15, -1.65] },
             desk: { pos: [-0.9, 2.25, 1.05], target: [-0.65, 0.9, -0.85] }
         };
         const p = presets[mode] || presets.room;
@@ -304,15 +458,23 @@ export class ThreeScene {
         } else {
             const startPos = this.camera.position.clone();
             const startTarget = this.controls.target.clone();
-            const duration = 600;
+            const duration = 650;
             const startTime = performance.now();
 
             const step = (now) => {
                 const t = Math.min(1, (now - startTime) / duration);
-                const ease = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                // Cubic Bezier Ease In-Out
+                const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                
                 this.camera.position.lerpVectors(startPos, targetPos, ease);
+                
+                // Effet cinématique de grue : courbe parabolique verticale
+                const heightArc = Math.sin(ease * Math.PI) * 0.28;
+                this.camera.position.y += heightArc;
+
                 this.controls.target.lerpVectors(startTarget, targetLook, ease);
                 this.controls.update();
+                
                 if (t < 1) {
                     this._cameraAnimId = requestAnimationFrame(step);
                 } else {
@@ -328,16 +490,51 @@ export class ThreeScene {
     }
 
     onClick(event) {
+        // Masquer le tooltip dès qu'on clique sur un objet pour interagir
+        if (this._tooltipEl) this._tooltipEl.style.opacity = '0';
+
+        const isFPS = !!(this.fpsController && this.fpsController.enabled);
+
         const hit = this.pick(event);
         if (!hit) {
-            // Clic sur le vide — masquer le tooltip
-            if (this._tooltipEl) this._tooltipEl.style.opacity = '0';
             return;
         }
 
         // Obtenir le point 3D de l'intersection pour le fly-to
         const hitPoint = hit.point ? hit.point.clone() : null;
         const hitObj = hit.object;
+
+        if (isFPS) {
+            this._skipDeactivateCameraReset = true;
+            
+            // Adapter le mode caméra cible pour l'UI
+            const label = (this._findObjectLabel(hitObj) || '').toLowerCase();
+            if (hitObj.userData?.isHotspot || label.includes('patient')) {
+                this.currentCameraMode = 'patient';
+            } else if (hitObj.userData?.pcAction || label.includes('ordinateur') || label.includes('poste informatique') || label.includes('desk')) {
+                this.currentCameraMode = 'desk';
+            } else {
+                this.currentCameraMode = 'room';
+            }
+            
+            this.fpsController.deactivate();
+        }
+
+        // --- Clic sur un Hotspot Clinique 3D d'examen ---
+        if (hitObj.userData?.isHotspot) {
+            const id = hitObj.userData.hotspotId;
+            medicalAudio.playMeasureSound();
+            if (this.manager && this.manager.clinicalAgent) {
+                this.manager.clinicalAgent.openExaminationMenu(id);
+                if (id === 'tête') {
+                    this.manager.openPatientDialog();
+                }
+            } else {
+                // Fallback via callback existant
+                this.callbacks.onPatient?.(hitObj);
+            }
+            return;
+        }
 
         const instrument = this.instruments.getByObject(hitObj);
         if (instrument) {
@@ -347,7 +544,7 @@ export class ThreeScene {
             medicalAudio.playMeasureSound();
 
             // Fly-to vers l'instrument cliqué
-            if (hitPoint) {
+            if (hitPoint && !isFPS) {
                 this.flyCameraTo(hitPoint, hitPoint, 700);
             }
             this.callbacks.onInstrument?.(instrument, hitObj);
@@ -356,7 +553,7 @@ export class ThreeScene {
 
         if ((hitObj.userData?.label || '').toLowerCase().includes('patient')) {
             // Fly-to vers le patient
-            if (hitPoint) {
+            if (hitPoint && !isFPS) {
                 this.flyCameraTo(hitPoint, hitPoint, 700);
             }
             this.callbacks.onPatient?.(hitObj);
@@ -364,7 +561,7 @@ export class ThreeScene {
         }
 
         if (hitObj.userData?.pcAction) {
-            if (hitPoint) {
+            if (hitPoint && !isFPS) {
                 this.flyCameraTo(hitPoint, hitPoint, 600);
             }
             this.callbacks.onPC?.(hitObj);
@@ -377,43 +574,45 @@ export class ThreeScene {
             const name = current.name || '';
             const label = current.userData?.label || '';
             if (name === 'MedicalPoster' || label === 'Affiche médicale') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 600);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 600);
                 if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
                 break;
             }
             if (name === 'ECGMonitor' || label === 'Moniteur ECG') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
                 break;
             }
             if (name === 'Meuble Evier' || name === 'Evier basin' || label === 'Évier — Lavage des mains') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 this.callbacks.onEvier?.(hitObj);
                 break;
             }
             if (name === 'IVStand' || label === 'Perfusion') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Perfusion — Soluté en cours d\'administration');
                 break;
             }
             if (name === 'MasqueO2' || label === 'Masque à Oxygène') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 this.callbacks.onMasqueO2?.(hitObj);
                 break;
             }
             if (name === 'CharriotMedical' || label === 'Charriot médical') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Charriot médical — Matériel de soin');
                 break;
             }
             if (name === 'Armoire' || label === 'Armoire') {
-                if (hitPoint) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 this.callbacks.onArmoire?.(hitObj);
                 break;
             }
             // Tout objet interactif avec un label — fly-to générique
             if (current.userData?.interactive && hitPoint) {
-                this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (!isFPS) {
+                    this.flyCameraTo(hitPoint, hitPoint, 700);
+                }
                 break;
             }
             current = current.parent;
@@ -423,17 +622,33 @@ export class ThreeScene {
     }
 
     onMouseMove(event) {
+        if (this.fpsController && this.fpsController.enabled) return;
+
         const hit = this.pick(event);
         const hoveredObj = hit?.object || null;
 
-        // Gestion du hover glow
-        this._updateHoverGlow(hoveredObj);
+        // Détection si un overlay/modal 2D ou 3D est visible à l'écran
+        const pcOverlay = document.getElementById('pc-overlay');
+        const armoireOverlay = document.getElementById('armoire-overlay');
+        const examMenu = document.getElementById('clinical-exam-menu');
+        const prescriptionModal = document.getElementById('prescription-modal');
+        const correctionOverlay = document.getElementById('correction-overlay');
+
+        const isOverlayVisible = 
+            (pcOverlay && pcOverlay.style.display !== 'none') ||
+            armoireOverlay ||
+            examMenu ||
+            (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
+            (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true');
+
+        // Gestion du hover glow (désactivé si overlay visible pour éviter des glitchs visuels)
+        this._updateHoverGlow(isOverlayVisible ? null : hoveredObj);
 
         // Mise à jour du tooltip
         this._updateTooltip(hoveredObj, event);
 
         // Changement du curseur
-        this.renderer.domElement.style.cursor = hoveredObj ? 'pointer' : 'default';
+        this.renderer.domElement.style.cursor = (hoveredObj && !isOverlayVisible) ? 'pointer' : 'default';
 
         this.callbacks.onHover?.(hoveredObj, event);
     }
@@ -595,7 +810,23 @@ export class ThreeScene {
     _updateTooltip(hoveredObj, event) {
         if (!this._tooltipEl) return;
 
-        if (!hoveredObj) {
+        // Détecter si un overlay/modal est ouvert à l'écran (Dossier médical, armoire, QCM, etc.)
+        const pcOverlay = document.getElementById('pc-overlay');
+        const armoireOverlay = document.getElementById('armoire-overlay');
+        const examMenu = document.getElementById('clinical-exam-menu');
+        const prescriptionModal = document.getElementById('prescription-modal');
+        const correctionOverlay = document.getElementById('correction-overlay');
+
+        const isOverlayVisible = 
+            (pcOverlay && pcOverlay.style.display !== 'none') ||
+            armoireOverlay ||
+            examMenu ||
+            (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
+            (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true');
+
+        const isFPS = !!(this.fpsController && this.fpsController.enabled);
+
+        if (!hoveredObj || isOverlayVisible) {
             this._tooltipEl.style.opacity = '0';
             this._tooltipVisible = false;
             return;
@@ -620,25 +851,37 @@ export class ThreeScene {
 
         // Indice contextuel selon le type d'objet
         if (hoveredObj.userData?.instrument) {
-            hintSpan.textContent = '🖱️ Cliquez pour utiliser';
+            hintSpan.textContent = '🖱️ Cliquer pour utiliser';
         } else if (label.toLowerCase().includes('patient')) {
-            hintSpan.textContent = '🖱️ Cliquez pour examiner';
+            hintSpan.textContent = '🖱️ Cliquer pour examiner';
         } else if (label === 'Armoire') {
-            hintSpan.textContent = '🖱️ Cliquez pour ouvrir l\'armoire à pharmacie';
+            hintSpan.textContent = '🖱️ Cliquer pour ouvrir l\'armoire à pharmacie';
         } else if (label.toLowerCase().includes('ecg') || label.toLowerCase().includes('perfusion') || label.toLowerCase().includes('charriot')) {
-            hintSpan.textContent = '👁️ Objet d\'ambiance — Cliquez pour info';
+            hintSpan.textContent = '👁️ Objet d\'ambiance — Cliquer pour info';
         } else {
             hintSpan.textContent = '';
         }
 
-        // Positionner le tooltip près du curseur
-        const rect = this.renderer.domElement.getBoundingClientRect();
-        let tx = event.clientX + 16;
-        let ty = event.clientY - 10;
+        // Positionner le tooltip près du curseur ou au centre en mode FPS
+        let tx, ty;
+        if (isFPS) {
+            tx = window.innerWidth / 2 + 20;
+            ty = window.innerHeight / 2 - 20;
+        } else {
+            if (!event) {
+                this._tooltipEl.style.opacity = '0';
+                this._tooltipVisible = false;
+                return;
+            }
+            const rect = this.renderer.domElement.getBoundingClientRect();
+            tx = event.clientX + 16;
+            ty = event.clientY - 10;
+        }
+
         // Empêcher le tooltip de sortir de la fenêtre
         const ttWidth = 260;
         const ttHeight = 80;
-        if (tx + ttWidth > window.innerWidth) tx = event.clientX - ttWidth - 10;
+        if (tx + ttWidth > window.innerWidth) tx = window.innerWidth - ttWidth - 10;
         if (ty + ttHeight > window.innerHeight) ty = window.innerHeight - ttHeight - 10;
         if (ty < 0) ty = 10;
 
@@ -714,9 +957,14 @@ export class ThreeScene {
     }
 
     pick(event) {
-        const rect = this.renderer.domElement.getBoundingClientRect();
-        this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        if (this.fpsController && this.fpsController.enabled) {
+            this.mouse.set(0, 0);
+        } else {
+            if (!event) return null;
+            const rect = this.renderer.domElement.getBoundingClientRect();
+            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        }
         this.raycaster.setFromCamera(this.mouse, this.camera);
         return this.raycaster.intersectObjects(this.interactiveObjects, true)[0] || null;
     }
@@ -907,8 +1155,65 @@ export class ThreeScene {
             this.doctorAnimator.update(elapsed, dt);
         }
 
+        // Mettre à jour le contrôleur FPS s'il est actif et gérer le raycasting/gaze interactif
+        if (this.fpsController && this.fpsController.enabled) {
+            this.fpsController.update(dt);
+
+            // Raycast gaze interactif au centre de l'écran (0,0)
+            const hit = this.pick(null);
+            const hoveredObj = hit?.object || null;
+
+            // Détection si un overlay/modal 2D ou 3D est visible à l'écran
+            const pcOverlay = document.getElementById('pc-overlay');
+            const armoireOverlay = document.getElementById('armoire-overlay');
+            const examMenu = document.getElementById('clinical-exam-menu');
+            const prescriptionModal = document.getElementById('prescription-modal');
+            const correctionOverlay = document.getElementById('correction-overlay');
+
+            const isOverlayVisible = 
+                (pcOverlay && pcOverlay.style.display !== 'none') ||
+                armoireOverlay ||
+                examMenu ||
+                (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
+                (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true');
+
+            // Mettre à jour l'effet de hover glow
+            this._updateHoverGlow(isOverlayVisible ? null : hoveredObj);
+
+            // Mettre à jour le tooltip
+            this._updateTooltip(hoveredObj, null);
+
+            // Mettre à jour la classe du crosshair
+            const crosshairEl = document.getElementById('hud-crosshair');
+            if (crosshairEl) {
+                if (hoveredObj && !isOverlayVisible) {
+                    crosshairEl.classList.add('is-targeting');
+                } else {
+                    crosshairEl.classList.remove('is-targeting');
+                }
+            }
+        }
+
+        // --- Animation des Hotspots 3D d'examen ---
+        if (this.hotspotsGroup && this.hotspotsGroup.visible) {
+            this.hotspotsGroup.children.forEach(mesh => {
+                const pulse = Math.sin(elapsed * 4.5);
+                const scale = 1.0 + pulse * 0.15;
+                mesh.scale.set(scale, scale, 1.0);
+                mesh.material.opacity = 0.55 + pulse * 0.25;
+            });
+        }
+
         // === Animation hover lift (interpolation douce) ===
         this._updateHoverLift(dt);
+
+        // --- Respiration de caméra stable et organique (Camera Bobbing - désactivée en mode FPS) ---
+        if (this.camera && this.controls && !this._cameraAnimId && !this._ptrDown && (!this.fpsController || !this.fpsController.enabled)) {
+            const bobX = Math.sin(elapsed * 0.8) * 0.0025;
+            const bobY = Math.cos(elapsed * 0.6) * 0.0018;
+            this.camera.position.x += bobX;
+            this.camera.position.y += bobY;
+        }
 
         if (this.lightingAgent && this.lightingAgent.render()) {
             // Composer handled rendering (bloom, etc.)
@@ -916,6 +1221,9 @@ export class ThreeScene {
             this.renderer.render(this.scene, this.camera);
         }
 
-        this.controls.update();
+        // update controls uniquement si on n'est pas en mode FPS
+        if (!this.fpsController || !this.fpsController.enabled) {
+            this.controls.update();
+        }
     }
 }

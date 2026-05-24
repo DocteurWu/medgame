@@ -88,6 +88,9 @@ export class PatientAnimator {
         }
 
         const eyes = [];
+        this._arms = [];
+        this._sweatMat = null;
+        
         this.group.traverse((child) => {
             if (!child.isMesh && !child.isGroup) return;
             const name = (child.name || '').toLowerCase();
@@ -97,6 +100,12 @@ export class PatientAnimator {
                 this._torso = child;
             } else if (name.includes('tete') || name.includes('tête') || label.includes('tete') || label.includes('tête')) {
                 this._head = child;
+            } else if (name.includes('bras') || label.includes('bras')) {
+                this._arms.push(child);
+            } else if (name === 'patientsueur') {
+                if (child.children && child.children.length > 0 && child.children[0].material) {
+                    this._sweatMat = child.children[0].material;
+                }
             } else if (name.includes('oeil') || label.includes('oeil') || name.includes('oei')) {
                 eyes.push(child);
             } else if (name.includes('bouche') || label.includes('bouche')) {
@@ -133,6 +142,15 @@ export class PatientAnimator {
         if (this._browR && this._browRBaseRotZ === undefined) {
             this._browRBaseRotZ = this._browR.rotation.z;
             this._browRBasePosY = this._browR.position.y;
+        }
+
+        if (this._torso && this._torsoBaseY === undefined) {
+            this._torsoBaseY = this._torso.position.y;
+            this._torsoBaseRotX = this._torso.rotation.x;
+            this._torsoBaseRotY = this._torso.rotation.y;
+        }
+        if (this._arms && this._armsBaseY === undefined) {
+            this._armsBaseY = this._arms.map(arm => ({ arm, y: arm.position.y }));
         }
 
         this._cacheResolved = true;
@@ -238,6 +256,51 @@ export class PatientAnimator {
             this._torso.scale.x = torsoExpand || 1;
             this._torso.scale.z = torsoExpand || 1;
         }
+
+        // Tirage respiratoire / élévation des épaules (torse + bras) en cas de détresse
+        let torsoLift = 0;
+        let armLift = 0;
+        let shoulderTilt = 0;
+        
+        if (this.respirationPattern === 'dyspnea') {
+            const base = Math.sin(t * 2.5 * Math.PI * 2);
+            const gasp = Math.sin(t * 8) * 0.3;
+            const liftFactor = Math.max(0, base + gasp);
+            torsoLift = liftFactor * 0.016;
+            armLift = liftFactor * 0.024;
+            shoulderTilt = liftFactor * 0.025;
+        } else if (this.respirationPattern === 'agonal') {
+            const cycle = 6;
+            const phase = (t % cycle) / cycle;
+            let liftFactor = 0;
+            if (phase < 0.15) {
+                liftFactor = Math.sin(phase / 0.15 * Math.PI) * 1.0;
+            }
+            torsoLift = liftFactor * 0.022;
+            armLift = liftFactor * 0.034;
+            shoulderTilt = liftFactor * 0.035;
+        }
+        
+        if (this._torso && this._torsoBaseY !== undefined) {
+            this._torso.position.y = this._torsoBaseY + torsoLift;
+            
+            const isLying = (Math.abs(this.group.rotation.y) > 0.1);
+            if (!isLying) {
+                this._torso.rotation.x = (this._torsoBaseRotX || 0) + shoulderTilt;
+            } else {
+                this._torso.rotation.y = (this._torsoBaseRotY || 0) - shoulderTilt * 0.5;
+            }
+        } else if (this._torso) {
+            this._torso.position.y = this._torsoBaseY || this._torso.position.y;
+            this._torso.rotation.x = this._torsoBaseRotX || this._torso.rotation.x;
+            this._torso.rotation.y = this._torsoBaseRotY || this._torso.rotation.y;
+        }
+        
+        if (this._arms && this._armsBaseY !== undefined) {
+            this._armsBaseY.forEach(armData => {
+                armData.arm.position.y = armData.y + armLift;
+            });
+        }
     }
 
     /** Clignement des yeux : fermeture rapide puis ouverture */
@@ -328,6 +391,12 @@ export class PatientAnimator {
         this._browLBasePosY = undefined;
         this._browRBaseRotZ = undefined;
         this._browRBasePosY = undefined;
+        this._arms = null;
+        this._sweatMat = null;
+        this._torsoBaseY = undefined;
+        this._torsoBaseRotX = undefined;
+        this._torsoBaseRotY = undefined;
+        this._armsBaseY = undefined;
     }
 
     /**
@@ -356,16 +425,16 @@ export class PatientAnimator {
         if (!this._mouth) return;
 
         const configs = {
-            normal:    { mouthScaleY: 1,   mouthRotZ: 0,    mouthPosY: 0,     browRotZ: 0,   browPosY: 0,  eyeScaleY: 1,  pupilScale: 1 },
-            douleur:   { mouthScaleY: 1.5, mouthRotZ: 0.2,  mouthPosY: -0.005, browRotZ: -0.15, browPosY: 0.01, eyeScaleY: 0.45, pupilScale: 1.3 },
-            grimace:   { mouthScaleY: 0.5, mouthRotZ: 0.18,  mouthPosY: -0.008, browRotZ: -0.2, browPosY: 0.015, eyeScaleY: 0.45, pupilScale: 1 },
-            sourire:   { mouthScaleY: 1.8, mouthRotZ: 0,    mouthPosY: 0.003,  browRotZ: 0.05, browPosY: -0.005, eyeScaleY: 1, pupilScale: 1 },
-            pale:      { mouthScaleY: 0.8, mouthRotZ: 0,    mouthPosY: 0,     browRotZ: 0.08, browPosY: 0.008, eyeScaleY: 0.9, pupilScale: 0.85 },
-            anxieux:   { mouthScaleY: 0.6, mouthRotZ: 0.1,  mouthPosY: -0.003, browRotZ: -0.12, browPosY: 0.012, eyeScaleY: 1.3, pupilScale: 1.4 },
-            etonne:    { mouthScaleY: 2.0, mouthRotZ: 0,    mouthPosY: 0.005,  browRotZ: 0.15, browPosY: 0.02,  eyeScaleY: 1.4, pupilScale: 1.6 },
-            cyanose:   { mouthScaleY: 0.7, mouthRotZ: 0.12, mouthPosY: -0.002, browRotZ: -0.08, browPosY: 0.008, eyeScaleY: 0.85, pupilScale: 0.9 },
-            fievre:    { mouthScaleY: 0.65, mouthRotZ: 0.08, mouthPosY: -0.004, browRotZ: -0.1, browPosY: 0.01, eyeScaleY: 0.9, pupilScale: 1.2 },
-            sueur:     { mouthScaleY: 0.75, mouthRotZ: 0.05, mouthPosY: -0.002, browRotZ: -0.06, browPosY: 0.006, eyeScaleY: 0.95, pupilScale: 1.1 },
+            normal:    { mouthScaleY: 1,   mouthRotZ: 0,    mouthPosY: 0,     browRotZ: 0,   browPosY: 0,  eyeScaleY: 1,  pupilScale: 1, sweatOpacity: 0 },
+            douleur:   { mouthScaleY: 1.5, mouthRotZ: 0.2,  mouthPosY: -0.005, browRotZ: -0.15, browPosY: 0.01, eyeScaleY: 0.45, pupilScale: 1.3, sweatOpacity: 0.4 },
+            grimace:   { mouthScaleY: 0.5, mouthRotZ: 0.18,  mouthPosY: -0.008, browRotZ: -0.2, browPosY: 0.015, eyeScaleY: 0.45, pupilScale: 1, sweatOpacity: 0.4 },
+            sourire:   { mouthScaleY: 1.8, mouthRotZ: 0,    mouthPosY: 0.003,  browRotZ: 0.05, browPosY: -0.005, eyeScaleY: 1, pupilScale: 1, sweatOpacity: 0 },
+            pale:      { mouthScaleY: 0.8, mouthRotZ: 0,    mouthPosY: 0,     browRotZ: 0.08, browPosY: 0.008, eyeScaleY: 0.9, pupilScale: 0.85, sweatOpacity: 0.2 },
+            anxieux:   { mouthScaleY: 0.6, mouthRotZ: 0.1,  mouthPosY: -0.003, browRotZ: -0.12, browPosY: 0.012, eyeScaleY: 1.3, pupilScale: 1.4, sweatOpacity: 0.3 },
+            etonne:    { mouthScaleY: 2.0, mouthRotZ: 0,    mouthPosY: 0.005,  browRotZ: 0.15, browPosY: 0.02,  eyeScaleY: 1.4, pupilScale: 1.6, sweatOpacity: 0 },
+            cyanose:   { mouthScaleY: 0.7, mouthRotZ: 0.12, mouthPosY: -0.002, browRotZ: -0.08, browPosY: 0.008, eyeScaleY: 0.85, pupilScale: 0.9, sweatOpacity: 0.2 },
+            fievre:    { mouthScaleY: 0.65, mouthRotZ: 0.08, mouthPosY: -0.004, browRotZ: -0.1, browPosY: 0.01, eyeScaleY: 0.9, pupilScale: 1.2, sweatOpacity: 0.7 },
+            sueur:     { mouthScaleY: 0.75, mouthRotZ: 0.05, mouthPosY: -0.002, browRotZ: -0.06, browPosY: 0.006, eyeScaleY: 0.95, pupilScale: 1.1, sweatOpacity: 0.8 },
         };
 
         const fromCfg = configs[from] || configs.normal;
@@ -413,6 +482,14 @@ export class PatientAnimator {
         // Pupilles (dilatation via scale uniforme sur les iris si disponibles)
         const pupilScale = fromCfg.pupilScale + (toCfg.pupilScale - fromCfg.pupilScale) * blend;
         this._applyPupilScale(pupilScale);
+
+        // Sueur (opacité progressive + scintillement)
+        const sweatOpacity = (fromCfg.sweatOpacity ?? 0) + ((toCfg.sweatOpacity ?? 0) - (fromCfg.sweatOpacity ?? 0)) * blend;
+        if (this._sweatMat) {
+            // Effet brillant glistening avec une oscillation
+            const glisten = Math.sin((performance.now() / 1000) * 3.5) * 0.05 + 0.95;
+            this._sweatMat.opacity = sweatOpacity * glisten;
+        }
     }
 
     /**

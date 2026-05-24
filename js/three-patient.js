@@ -19,13 +19,18 @@ export class ThreePatient {
         this.browL = null;
         this.browR = null;
         this.nose = null;
-        this.loadCase({ patient: { position3D: 'assis', tenue: 'bleu', expression: 'normal' } });
+        this.sweatGroup = null;
+        this.sweatMat = null;
+        this._bloodGroup = null;
+        this._currentPosition = 'allonge';
+        this.loadCase({ patient: { position3D: 'allonge', tenue: 'bleu', expression: 'normal' } });
     }
 
     loadCase(caseData) {
         this.group.clear();
         const patient = caseData?.patient || {};
-        const position = patient.position3D || (Number(patient.age) > 80 ? 'allonge' : 'assis');
+        const position = patient.position3D || 'allonge';
+        this._currentPosition = position;
         this.skinMat = createMaterial(0xd7a87a);
         this.clothMat = createMaterial(patient.tenue === 'blouse_blanche' ? 0xf2f4f7 : 0x4f72a8);
         // Position Y ajustée pour que le patient soit posé sur le lit/chaise
@@ -40,9 +45,85 @@ export class ThreePatient {
         this.browL = null;
         this.browR = null;
         this.nose = null;
+        this.sweatGroup = null;
+        this.sweatMat = null;
+        this._bloodGroup = null;
         if (position === 'allonge') this.buildLying(this.skinMat, this.clothMat);
         else this.buildSitting(this.skinMat, this.clothMat);
+        this._buildSweatDrops(position);
+        this._buildBloodSplotches(position);
         this.applyExpression(patient.expression || 'normal');
+    }
+
+    /**
+     * Met à jour l'apparence du patient pour un nœud d'urgence donné.
+     * Gère les changements de position (debout→allongé), d'expression et de couleur peau
+     * sans reconstruire la scène entière.
+     * @param {Object} visuel — { position, expression, couleurPeau }
+     * @param {Object} [animator] — PatientAnimator optionnel pour synchro respiration
+     */
+    applyUrgenceVisuel(visuel, animator) {
+        if (!visuel) return;
+        const newPosition = visuel.position || this._currentPosition;
+
+        // Si la position a changé, reconstruire le modèle
+        if (newPosition !== this._currentPosition) {
+            this._currentPosition = newPosition;
+            this.group.clear();
+            this.mouth = null;
+            this.eyeL = null;
+            this.eyeR = null;
+            this.browL = null;
+            this.browR = null;
+            this.nose = null;
+            this.sweatGroup = null;
+            this.sweatMat = null;
+            this._bloodGroup = null;
+
+            const seatY = newPosition === 'allonge' ? -0.16 : -0.175;
+            this.group.position.set(
+                newPosition === 'allonge' ? -3.5 : 2.15,
+                seatY,
+                newPosition === 'allonge' ? -2.6 : -1.7
+            );
+            this.group.rotation.y = newPosition === 'allonge' ? Math.PI : 0;
+
+            if (newPosition === 'allonge') this.buildLying(this.skinMat, this.clothMat);
+            else this.buildSitting(this.skinMat, this.clothMat);
+            this._buildSweatDrops(newPosition);
+            this._buildBloodSplotches(newPosition);
+
+            // Réinitialiser l'animateur si fourni
+            if (animator && animator.reset) {
+                animator.reset();
+                animator.group = this.group;
+            }
+        }
+
+        // Appliquer l'expression et la couleur peau
+        const expr = visuel.expression || 'normal';
+        this.applyExpression(expr);
+
+        // Couleur peau manuelle (override)
+        if (visuel.couleurPeau && this.skinMat) {
+            const colors = {
+                rouge:      0xc44040,
+                bleu:       0x6b8bad,
+                cyanose:    0xa0b4c8,
+                pale:       0xd4c4b0,
+                gris:       0x888888,
+                normal:     0xd7a87a,
+            };
+            const c = colors[visuel.couleurPeau];
+            if (c !== undefined) this.skinMat.color.set(c);
+        }
+
+        // Visibilité du sang
+        if (this._bloodGroup) {
+            const showBlood = expr === 'hemorragie' || expr === 'brulure' ||
+                              visuel.expression === 'hemorragie' || visuel.sang === true;
+            this._bloodGroup.visible = showBlood;
+        }
     }
 
     cube(size, pos, mat, name) {
@@ -357,6 +438,12 @@ export class ThreePatient {
             this.skinMat.emissiveIntensity = 0;
         }
 
+        // Sang caché par défaut
+        if (this._bloodGroup) this._bloodGroup.visible = false;
+
+        // Sueur cachée par défaut (le PatientAnimator la gérera dynamiquement si besoin)
+        if (this.sweatMat) this.sweatMat.opacity = 0;
+
         if (expression === 'douleur' || expression === 'grimace') {
             this.mouth.rotation.z = 0.18;
             this.mouth.scale.y = 0.5;
@@ -369,7 +456,8 @@ export class ThreePatient {
             if (this.skinMat) this.skinMat.color.set(0xd4c4b0);
         }
         if (expression === 'cyanotic' || expression === 'cyanose') {
-            if (this.skinMat) this.skinMat.color.set(0xb8c4d4);
+            // Peau bleutée / tête bleue
+            if (this.skinMat) this.skinMat.color.set(0x8fa8be);
             this.mouth.rotation.z = 0.12;
             if (this.eyeL) this.eyeL.scale.y = 0.85;
             if (this.eyeR) this.eyeR.scale.y = 0.85;
@@ -393,6 +481,8 @@ export class ThreePatient {
                 this.skinMat.emissive.set(0x111508);
                 this.skinMat.emissiveIntensity = 0.08;
             }
+            // Afficher immédiatement les gouttes de sueur (max brillance)
+            if (this.sweatMat) this.sweatMat.opacity = 0.75;
         }
         if (expression === 'anxieux') {
             if (this.eyeL) this.eyeL.scale.y = 1.3;
@@ -414,6 +504,209 @@ export class ThreePatient {
             if (this.browL) this.browL.rotation.z = 0.05;
             if (this.browR) this.browR.rotation.z = -0.05;
         }
+        // === NOUVELLES EXPRESSIONS URGENCE ===
+        if (expression === 'hemorragie' || expression === 'saignement') {
+            // Peau pâle/livide avec sang visible
+            if (this.skinMat) this.skinMat.color.set(0xc8b8a8);
+            this.mouth.rotation.z = 0.22;
+            this.mouth.scale.y = 0.4;
+            if (this.eyeL) this.eyeL.scale.y = 0.35;
+            if (this.eyeR) this.eyeR.scale.y = 0.35;
+            if (this.browL) this.browL.rotation.z = -0.18;
+            if (this.browR) this.browR.rotation.z = 0.18;
+            if (this._bloodGroup) this._bloodGroup.visible = true;
+        }
+        if (expression === 'inconscient' || expression === 'pls') {
+            // Yeux fermés, corps inerte
+            if (this.skinMat) this.skinMat.color.set(0xc0b0a0);
+            this.mouth.rotation.z = 0.05;
+            this.mouth.scale.y = 0.6;
+            if (this.eyeL) this.eyeL.scale.y = 0.05;  // yeux fermés
+            if (this.eyeR) this.eyeR.scale.y = 0.05;
+            if (this.browL) this.browL.rotation.z = -0.05;
+            if (this.browR) this.browR.rotation.z = 0.05;
+        }
+        if (expression === 'arret_cardiaque' || expression === 'acr') {
+            // Peau grise, yeux fermés, bouche entrouverte
+            if (this.skinMat) {
+                this.skinMat.color.set(0x909090);
+                this.skinMat.emissive.set(0x000000);
+            }
+            this.mouth.scale.y = 1.5;
+            this.mouth.rotation.z = 0;
+            if (this.eyeL) this.eyeL.scale.y = 0.02;
+            if (this.eyeR) this.eyeR.scale.y = 0.02;
+            if (this.browL) this.browL.rotation.z = 0.0;
+            if (this.browR) this.browR.rotation.z = 0.0;
+        }
+        if (expression === 'choc' || expression === 'choc_hemorragique') {
+            // Choc : peau très pâle, sueur, confusion
+            if (this.skinMat) {
+                this.skinMat.color.set(0xd8cec0);
+                this.skinMat.emissive.set(0x080808);
+                this.skinMat.emissiveIntensity = 0.05;
+            }
+            this.mouth.rotation.z = 0.1;
+            this.mouth.scale.y = 0.7;
+            if (this.eyeL) this.eyeL.scale.y = 0.7;
+            if (this.eyeR) this.eyeR.scale.y = 0.7;
+            if (this.browL) this.browL.rotation.z = -0.1;
+            if (this.browR) this.browR.rotation.z = 0.1;
+        }
+        if (expression === 'brulure') {
+            // Peau rougeâtre/noirâtre brûlée
+            if (this.skinMat) {
+                this.skinMat.color.set(0x8b4030);
+                this.skinMat.emissive.set(0x3a1005);
+                this.skinMat.emissiveIntensity = 0.3;
+            }
+            this.mouth.rotation.z = 0.25;
+            this.mouth.scale.y = 0.3;
+            if (this.eyeL) this.eyeL.scale.y = 0.5;
+            if (this.eyeR) this.eyeR.scale.y = 0.5;
+            if (this.browL) this.browL.rotation.z = -0.2;
+            if (this.browR) this.browR.rotation.z = 0.2;
+            if (this._bloodGroup) this._bloodGroup.visible = true;
+        }
+        if (expression === 'convulsion') {
+            // Convulsion : yeux révulsés, mâchoires serrées
+            if (this.skinMat) {
+                this.skinMat.color.set(0xd0c8b8);
+            }
+            this.mouth.rotation.z = 0.3;
+            this.mouth.scale.y = 0.2;
+            if (this.eyeL) this.eyeL.scale.y = 0.8;
+            if (this.eyeR) this.eyeR.scale.y = 0.8;
+            if (this.browL) this.browL.rotation.z = -0.25;
+            if (this.browR) this.browR.rotation.z = 0.25;
+        }
+    }
+
+    /**
+     * Génère des taches de sang procédurales sur le bas du corps et les membres.
+     * Visible uniquement pour les expressions hémorragie/brûlure.
+     */
+    _buildBloodSplotches(positionMode) {
+        if (this._bloodGroup) {
+            this.group.remove(this._bloodGroup);
+        }
+        this._bloodGroup = new THREE.Group();
+        this._bloodGroup.name = 'PatientSang';
+        this._bloodGroup.visible = false;
+
+        const bloodMat = new THREE.MeshStandardMaterial({
+            color: 0x8b0000,
+            roughness: 0.95,
+            metalness: 0.0,
+            transparent: true,
+            opacity: 0.88
+        });
+
+        // Taches elliptiques de sang sur les membres/torse
+        const splotchData = positionMode === 'allonge' ? [
+            // Sur la jambe gauche (cuisse)
+            { x: -0.12, y: 0.82, z: -0.55, rx: 0, ry: 0, rz: 0, sx: 0.10, sy: 0.02, sz: 0.15 },
+            // Flaque au sol (à côté du lit)
+            { x: -0.28, y: 0.66, z: -0.70, rx: Math.PI/2, ry: 0, rz: 0, sx: 0.12, sy: 0.01, sz: 0.10 },
+            // Bras
+            { x: -0.30, y: 0.86, z: -0.05, rx: 0, ry: 0, rz: 0.2, sx: 0.06, sy: 0.02, sz: 0.09 },
+        ] : [
+            // Sur la jambe gauche
+            { x: -0.15, y: 0.55, z: 0.05, rx: 0.1, ry: 0, rz: 0, sx: 0.08, sy: 0.02, sz: 0.10 },
+            // Flaque au sol
+            { x: -0.15, y: 0.50, z: 0.10, rx: Math.PI/2, ry: 0, rz: 0, sx: 0.10, sy: 0.01, sz: 0.08 },
+            // Torse / bas abdomen
+            { x: 0.0, y: 0.85, z: 0.10, rx: 0, ry: 0, rz: 0.1, sx: 0.07, sy: 0.02, sz: 0.06 },
+        ];
+
+        splotchData.forEach(d => {
+            const geom = new THREE.SphereGeometry(1, 10, 8);
+            const mesh = new THREE.Mesh(geom, bloodMat);
+            mesh.position.set(d.x, d.y, d.z);
+            mesh.rotation.set(d.rx, d.ry, d.rz);
+            mesh.scale.set(d.sx, d.sy, d.sz);
+            mesh.castShadow = false;
+            mesh.receiveShadow = true;
+            this._bloodGroup.add(mesh);
+        });
+
+        this.group.add(this._bloodGroup);
+    }
+
+    /**
+     * Génère procéduralement des gouttelettes de sueur sur le front et les joues du patient.
+     * Le matériau commence invisible (opacity = 0) et sera modulé en continu.
+     */
+    _buildSweatDrops(positionMode) {
+        if (this.sweatGroup) {
+            this.group.remove(this.sweatGroup);
+        }
+        
+        this.sweatGroup = new THREE.Group();
+        this.sweatGroup.name = 'PatientSueur';
+        
+        // Matériau de sueur brillant, translucide et très lisse
+        this.sweatMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.02,
+            metalness: 0.1,
+            transparent: true,
+            opacity: 0.0, // Invisible par défaut, animé par PatientAnimator
+            depthWrite: false
+        });
+        
+        const dropGeom = new THREE.SphereGeometry(0.004, 6, 6);
+        
+        // Coordonnées locales des gouttes selon la posture
+        let positions = [];
+        if (positionMode === 'allonge') {
+            // Allongé : tête à x=0, y=1.0, z=0.62. Visage vers +Y/+Z
+            positions = [
+                // Front
+                { x: -0.04, y: 1.18, z: 0.64 },
+                { x: 0.04, y: 1.18, z: 0.64 },
+                { x: -0.02, y: 1.19, z: 0.62 },
+                { x: 0.02, y: 1.19, z: 0.62 },
+                { x: -0.06, y: 1.17, z: 0.65 },
+                { x: 0.06, y: 1.17, z: 0.65 },
+                // Tempes / Joues
+                { x: -0.09, y: 1.13, z: 0.67 },
+                { x: 0.09, y: 1.13, z: 0.67 },
+                { x: -0.08, y: 1.09, z: 0.70 },
+                { x: 0.08, y: 1.09, z: 0.70 },
+                { x: -0.05, y: 1.06, z: 0.73 },
+                { x: 0.05, y: 1.06, z: 0.73 }
+            ];
+        } else {
+            // Assis : tête à x=0, y=1.43, z=0.05. Visage vers +Z
+            positions = [
+                // Front
+                { x: -0.04, y: 1.54, z: 0.17 },
+                { x: 0.04, y: 1.54, z: 0.17 },
+                { x: -0.02, y: 1.56, z: 0.15 },
+                { x: 0.02, y: 1.56, z: 0.15 },
+                { x: -0.06, y: 1.53, z: 0.18 },
+                { x: 0.06, y: 1.53, z: 0.18 },
+                // Tempes / Joues
+                { x: -0.09, y: 1.48, z: 0.20 },
+                { x: 0.09, y: 1.48, z: 0.20 },
+                { x: -0.08, y: 1.43, z: 0.22 },
+                { x: 0.08, y: 1.43, z: 0.22 },
+                { x: -0.05, y: 1.39, z: 0.23 },
+                { x: 0.05, y: 1.39, z: 0.23 }
+            ];
+        }
+        
+        positions.forEach(pos => {
+            const drop = new THREE.Mesh(dropGeom, this.sweatMat);
+            drop.position.set(pos.x, pos.y, pos.z);
+            // Légère variation de taille
+            const scale = 0.8 + Math.random() * 0.5;
+            drop.scale.set(scale, scale * 1.6, scale); // Gouttes étirées verticalement
+            this.sweatGroup.add(drop);
+        });
+        
+        this.group.add(this.sweatGroup);
     }
 }
 

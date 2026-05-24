@@ -1,0 +1,559 @@
+{
+  "id": "urgence_choc_septique_pediatrique",
+  "title": "Choc Septique Pédiatrique et Purpura Fulminans",
+  "specialty": "urgence",
+  "difficulty": 3,
+  "redacteur": "L'équipe Médicale MedGame",
+  "patient": {
+    "nom": "Tremblay",
+    "prenom": "Léo",
+    "age": 3,
+    "sexe": "M",
+    "taille": "95 cm",
+    "poids": "15 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Léthargie progressive, abattement extrême et forte fièvre depuis la veille chez un enfant de 3 ans.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Enfant habituellement très tonique, actif et joueur. Il fréquente la crèche."
+      },
+      "tabac": {
+        "quantite": "Non-fumeur (tabagisme passif nié)",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Aucune"
+      },
+      "alimentation": {
+        "regime": "Normal pour l'âge",
+        "particularites": "Refus complet de s'alimenter ou de s'hydrater depuis 12 heures."
+      },
+      "emploi": {
+        "profession": "Sans (enfant)",
+        "stress": "Néant"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Vaccinations",
+          "traitement": "Calendrier vaccinal déclaré à jour par les parents. Léo a reçu le vaccin obligatoire contre le méningocoque de sérogroupe C, mais n'est pas vacciné contre le méningocoque B ni contre les séroupes ACWY (ce qui laisse suspecter une infection par un de ces sérogroupes)."
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Aucun antécédent chirurgical",
+          "date": ""
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père et Mère",
+          "pathologie": "En bonne santé. Aucun antécédent de déficit immunitaire ou d'asplénie dans la famille."
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Aucun traitement en cours",
+        "dose": "",
+        "frequence": ""
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Fièvre aiguë apparue brutalement il y a 24 heures, s'étant rapidement élevée à 39.5°C, accompagnée d'un abattement inhabituel.",
+      "evolution": "Aggravation rapide et dramatique depuis ce matin. Léo est devenu apathique, geignant, refusant de se lever, puis s'est enfoncé dans une somnolence progressive.",
+      "facteursDeclenchants": "Infection bactérienne invasive suspectée cliniquement.",
+      "descriptionDouleur": "Enfant geignant en permanence, particulièrement lors de la mobilisation. Il se plaint de douleurs diffuses (courbatures) et de maux de tête.",
+      "symptomesAssocies": [
+        "Fièvre élevée (39.5°C)",
+        "Léthargie et somnolence progressive",
+        "Extrémités glacées avec marbrures violacées",
+        "Apparition très récente de petites taches rouges violacées cutanées sur les cuisses"
+      ],
+      "remarques": "Les parents sont extrêmement angoissés face à la léthargie de leur enfant et à l'extension rapide des taches cutanées."
+    },
+    "verbatim": "Docteur... Léo est tout mou depuis ce matin, il ne répond presque plus et brûle de fièvre... Regardez ces taches violettes sur ses jambes, elles sont apparues il y a moins d'une heure !"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "75/40 mmHg",
+      "pouls": "168 bpm",
+      "temperature": "39.5°C",
+      "saturationO2": "92%",
+      "frequenceRespiratoire": "48/min"
+    },
+    "aspectGeneral": "Enfant somnolent, léthargique, extrêmement pâle et cerné. Il gémit faiblement lors des mobilisations. Présence de marbrures cutanées diffuses et marquées sur les membres inférieurs, s'étendant jusqu'aux genoux. Temps de recoloration cutanée (TRC) très prolongé, mesuré à 4 secondes. Extrémités (mains, pieds) glacées et cyanosées.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie sévère et régulière à 168 bpm. Bruits du cœur rapides et assourdis. Pas de souffle cardiaque audible.",
+      "inspection": "Vasoconstriction périphérique majeure. Extrémités cyanosées. Présence de 3 petites macules purpuriques (pétéchies) sur les membres inférieurs, dont l'une, centimétrique, présente un centre nécrotique violacé sombre, signant un Purpura Fulminans.",
+      "palpation": "Pouls radiaux et pédieux extrêmement filants et difficiles à palper. Pouls fémoraux rapides mais bien perçus. Le TRC est de 4 secondes au niveau cutané central (sternum) et périphérique."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique bilatéralement. Pas de râles crépitants ni de sibilants surajoutés.",
+      "inspection": "Polypnée superficielle à 48/min avec discret tirage sous-costal témoignant d'une lutte respiratoire compensatrice."
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, pas de défense, pas de contracture. Foie palpable à 1 cm du rebord costal (flèche hépatique à 6 cm, ce qui est normal pour l'âge)."
+    },
+    "examenNeurologique": {
+      "conscience": "Léthargie sévère (Score de Glasgow pédiatrique estimé à 11 : Yeux = 3, Verbal = 3, Moteur = 5). L'enfant réagit faiblement aux stimulations verbales et se recroqueville à la stimulation douloureuse. Pupilles symétriques, intermédiaires et réactives. Pas de déficit neurologique focalisé. Pas de signe de localisation. La raideur de nuque est difficile à évaluer de manière fiable en raison de l'apathie majeure."
+    }
+  },
+  "availableExams": [
+    "Hémoculture en urgence",
+    "NFS, CRP, Procalcitonine, Lactates sanguins",
+    "Bilan de coagulation complet (TP, TCA, Fibrinogène, D-Dimères)",
+    "Ponction lombaire immédiate",
+    "Glycémie capillaire (Hémoglucotest)",
+    "Gazométrie artérielle"
+  ],
+  "examResults": {
+    "Hémoculture en urgence": "Prélèvement effectué. En cours d'incubation (résultats non disponibles dans l'immédiat ; l'attente des résultats ne doit sous aucun prétexte retarder l'administration de l'antibiothérapie).",
+    "NFS, CRP, Procalcitonine, Lactates sanguins": "Hyperleucocytose majeure à 22 000/mm³ avec 85% de polynucléaires neutrophiles. CRP élevée à 150 mg/L. Procalcitonine à 45 ng/mL (valeur extrêmement élevée signant une infection bactérienne invasive systémique). Lactates sanguins mesurés à 4.2 mmol/L (témoignant d'une hypoperfusion tissulaire systémique majeure et d'un métabolisme anaérobie).",
+    "Bilan de coagulation complet (TP, TCA, Fibrinogène, D-Dimères)": "Taux de Prothrombine (TP) effondré à 45%. TCA allongé à 1.8 fois le témoin. Fibrinogène abaissé à 1.2 g/L. D-Dimères très élevés. Ce profil biologique confirme une coagulation intravasculaire disséminée (CIVD) sévère débutante.",
+    "Ponction lombaire immédiate": "FORMELLEMENT CONTRE-INDIQUÉE dans ce contexte d'instabilité hémodynamique et de suspicion de purpura fulminans extensif. Sa réalisation immédiate expose l'enfant à un risque majeur d'engagement cérébral fatal lors du retrait du LCR, en plus de retarder criminellement l'antibiothérapie d'urgence.",
+    "Glycémie capillaire (Hémoglucotest)": "0.95 g/L (normoglycémie, élimine une hypoglycémie comme cause exclusive de la somnolence).",
+    "Gazométrie artérielle": "pH = 7.28 (acidose métabolique), HCO3- = 16 mmol/L, PaCO2 = 32 mmHg (hyperventilation alvéolaire compensatrice), PaO2 = 68 mmHg en air ambiant (hypoxémie modérée)."
+  },
+  "possibleDiagnostics": [
+    "Choc septique avec Purpura fulminans sur méningococcémie suspectée",
+    "Choc cardiogénique sur myocardite virale aiguë",
+    "Choc hypovolémique sur déshydratation gastro-entéritique",
+    "Méningite virale simple sans défaillance circulatoire"
+  ],
+  "correctDiagnostic": "Choc septique avec Purpura fulminans sur méningococcémie suspectée",
+  "feedback": {
+    "Choc septique avec Purpura fulminans sur méningococcémie suspectée": "Diagnostic correct ! L'association fièvre élevée, léthargie majeure, signes cliniques francs d'insuffisance circulatoire aiguë (tachycardie sévère, marbrures, TRC prolongé à 4s, extrémités froides) et d'éléments purpuriques cutanés d'apparition rapide avec nécrose centrale signe le Purpura Fulminans méningococcique. C'est l'urgence médicale pédiatrique absolue par excellence.",
+    "default": "Diagnostic incorrect. Cet enfant présente un état de choc d'allure infectieuse (fièvre élevée, tachycardie, polypnée, TRC à 4s) associé à l'apparition fulminante d'un purpura nécrotique, ce qui constitue la définition classique du purpura fulminans méningococcique."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Oxygénothérapie au masque à haute concentration (10-15 L/min)",
+    "Poser une aiguille intra-osseuse (VIO) après échec rapide d'une voie veineuse périphérique (VVP)",
+    "Remplissage vasculaire rapide par cristalloïdes (Ringer Lactate) 20 ml/kg (300 ml) en 15-20 minutes",
+    "Antibiothérapie immédiate : Céfotaxime 50 mg/kg (750 mg) en IV direct ou intra-osseux",
+    "Antibiothérapie synergique : Gentamicine 5 mg/kg (75 mg) en perfusion courte",
+    "Pratiquer immédiatement une ponction lombaire avant tout traitement",
+    "Attendre les résultats de l'hémoculture pour débuter l'antibiothérapie",
+    "Administrer du Propranolol (bêtabloquant) pour ralentir la tachycardie",
+    "Restreindre les apports hydriques pour éviter l'œdème cérébral"
+  ],
+  "correctTreatments": [
+    "Oxygénothérapie au masque à haute concentration (10-15 L/min)",
+    "Poser une aiguille intra-osseuse (VIO) après échec rapide d'une voie veineuse périphérique (VVP)",
+    "Remplissage vasculaire rapide par cristalloïdes (Ringer Lactate) 20 ml/kg (300 ml) en 15-20 minutes",
+    "Antibiothérapie immédiate : Céfotaxime 50 mg/kg (750 mg) en IV direct ou intra-osseux",
+    "Antibiothérapie synergique : Gentamicine 5 mg/kg (75 mg) en perfusion courte"
+  ],
+  "fatalTreatments": [
+    "Pratiquer immédiatement une ponction lombaire avant tout traitement",
+    "Attendre les résultats de l'hémoculture pour débuter l'antibiothérapie",
+    "Administrer du Propranolol (bêtabloquant) pour ralentir la tachycardie",
+    "Restreindre les apports hydriques pour éviter l'œdème cérébral"
+  ],
+  "secondLineTreatments": [
+    "Perfusion continue de Noradrénaline ou d'Adrénaline en cas de choc septique réfractaire aux remplissages",
+    "Hydrocortisone IV en cas de choc septique résistant aux catécholamines (suspicion d'insuffisance surrénalienne)",
+    "Transfusion de plasma frais congelé (PFC) et de plaquettes en cas de syndrome hémorragique actif avec CIVD biologique"
+  ],
+  "relevantExams": [
+    "Hémoculture en urgence",
+    "NFS, CRP, Procalcitonine, Lactates sanguins",
+    "Bilan de coagulation complet (TP, TCA, Fibrinogène, D-Dimères)"
+  ],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.08,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 190,
+      "systolic": 55,
+      "diastolic": 25,
+      "spo2": 82,
+      "temperature": 39.8,
+      "respiratoryRate": 52
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3,
+  "alternativeDiagnostics": [
+    "Purpura fulminans",
+    "Méningococcémie",
+    "Infection invasive à méningocoque",
+    "Choc septique pédiatrique",
+    "Sepsis sévère pédiatrique"
+  ],
+  "locks": [
+    {
+      "id": "lock_vitals_pediatric",
+      "type": "QCM",
+      "challenge": {
+        "question": "Chez cet enfant de 3 ans pesant 15 kg, quelle est la formule recommandée pour estimer la pression artérielle systolique (PAS) minimale acceptable (seuil de collapsus) ?",
+        "options": [
+          "70 + (2 x âge) = 76 mmHg de PAS minimale",
+          "90 + (2 x âge) = 96 mmHg de PAS minimale",
+          "40 + (1.5 x âge) = 44.5 mmHg de PAS minimale",
+          "80 + (2 x âge) = 86 mmHg de PAS minimale"
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "La formule pédiatrique classique de référence pour estimer la borne inférieure normale de la pression artérielle systolique (PAS) de 1 à 10 ans est : 70 + (2 x âge) mmHg. Pour Léo (3 ans), le seuil d'hypotension systolique (collapsus) est de 76 mmHg. Sa PAS mesurée initialement à 75 mmHg témoigne d'un état de choc déjà décompensé exigeant une action immédiate.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_antibiotics_delay",
+      "type": "QCM",
+      "challenge": {
+        "question": "Pourquoi l'antibiothérapie d'une suspicion de purpura fulminans méningococcique doit-elle être débutée en urgence absolue sans attendre aucun résultat ?",
+        "options": [
+          "Chaque heure de retard dans l'antibiothérapie réduit la survie de 7.6% en cas de choc septique.",
+          "Pour éviter que les cultures bactériennes ne se positivent, ce qui complexifierait le codage de l'hospitalisation.",
+          "Parce que le céfotaxime possède des vertus vasoconstrictrices directes permettant de corriger l'hypotension.",
+          "Uniquement pour devancer le transfert de l'enfant dans un autre établissement hospitalier."
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "L'étude princeps de Kumar et al. a démontré qu'en présence d'un choc septique, chaque heure de retard dans l'administration d'une antibiothérapie adaptée est corrélée à une baisse de 7.6% de la survie globale. Le purpura fulminans est une urgence infectieuse foudroyante où les minutes perdues conduisent à des nécroses cutanées massives, à des amputations ou au décès.",
+      "target_fields": [
+        "possibleTreatments"
+      ]
+    },
+    {
+      "id": "lock_fluid_resuscitation",
+      "type": "QCM",
+      "challenge": {
+        "question": "Quel est le volume et le débit du premier remplissage vasculaire recommandé chez un enfant en choc septique selon les directives de la Surviving Sepsis Campaign pédiatrique ?",
+        "options": [
+          "Un bolus de Ringer Lactate ou NaCl 0.9% de 10 à 20 ml/kg (soit 150 à 300 ml pour 15 kg) sur 10 à 20 minutes.",
+          "Une perfusion lente de soluté glucosé à 5% à hauteur de 50 ml/kg à passer sur 12 heures.",
+          "Un bolus d'albumine humaine hypertonique à 20% à hauteur de 50 ml/kg en moins de 2 minutes.",
+          "Aucun remplissage vasculaire n'est indiqué en raison d'un risque majeur d'œdème cérébral immédiat."
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "Les directives de réanimation du sepsis pédiatrique recommandent des bolus de cristalloïdes isotoniques (comme le Ringer Lactate ou le NaCl 0.9%) à hauteur de 10 à 20 ml/kg (titré), administrés rapidement en 10 à 20 minutes. Ce bolus peut être renouvelé (jusqu'à 40-60 ml/kg au total dans la première heure) tant qu'il n'y a pas de signe de surcharge cardiorespiratoire (crépitants, hépatomégalie).",
+      "target_fields": [
+        "correctTreatments"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s_initial"
+  },
+  "nodes": {
+    "s_initial": {
+      "id": "s_initial",
+      "descriptionClinique": "Léo, 3 ans, 15 kg, est amené par ses parents. Il est somnolent, pâle, brûlant de fièvre (39.5°C). Sa respiration est rapide (48/min) et superficielle. Son pouls est à 168 bpm. Ses extrémités sont glacées et vous observez des marbrures diffuses sur ses cuisses. Le TRC est mesuré à 4 secondes. En le déshabillant, vous découvrez 3 pétéchies sur ses jambes, dont une centimétrique avec un centre violacé nécrotique.",
+      "constantesCibles": {
+        "tension": "75/40",
+        "pouls": "168",
+        "saturationO2": "92",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "48"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 45,
+        "nextNode": "s_degradation_delai",
+        "motif": "Le choc septique progresse rapidement. En l'absence d'apport immédiat d'oxygène et d'un accès vasculaire, le patient sombre dans le coma par effondrement de la perfusion tissulaire."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Oxygène haut débit (masque HC 10-15 L/min) + Tenter de poser une voie veineuse périphérique (VVP) en urgence",
+          "tempsExecutionSec": 20,
+          "feedback": "Très bien ! Vous posez le masque à oxygène. La SpO2 remonte rapidement à 99%. Cependant, en raison du choc et de la vasoconstriction périphérique intense, les veines sont collabées. Après 45 secondes de recherche active, la tentative de pose de la VVP échoue. Le temps presse !",
+          "nextNode": "s_echec_vvp"
+        },
+        {
+          "label": "Pratiquer immédiatement une ponction lombaire (PL) diagnostique",
+          "tempsExecutionSec": 30,
+          "feedback": "ERREUR CLINIQUE GRAVE : La ponction lombaire est formellement contre-indiquée chez un patient en état de choc instable (risque majeur de collapsus respiratoire et d'engagement cérébral fatal lors du prélèvement de LCR). De plus, vous retardez criminellement le traitement antibiotique salvateur. L'état de Léo s'effondre !",
+          "nextNode": "s_degradation_pl"
+        },
+        {
+          "label": "Prescrire des examens biologiques complets et attendre les résultats de l'hémoculture",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR CLINIQUE COMMANDEE : Attendre des résultats biologiques ou bactériologiques avant d'agir face à une suspicion forte de purpura fulminans est une faute majeure. Chaque heure de retard réduit le taux de survie de 7.6%. Le choc septique s'aggrave rapidement !",
+          "nextNode": "s_degradation_attente"
+        },
+        {
+          "label": "Lui administrer du Paracétamol sirop par voie orale pour soulager la fièvre",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR D'ADMINISTRATION : L'enfant est léthargique ; toute administration orale est strictement proscrite en raison d'un risque majeur de fausse route et d'inhalation bronchique. De plus, le paracétamol n'a aucun effet sur l'infection invasive. Léo s'asphyxie et décompense !",
+          "nextNode": "s_degradation_po"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_echec_vvp": {
+      "id": "s_echec_vvp",
+      "descriptionClinique": "Léo est sous oxygène haute concentration (SpO2 99%), mais la perfusion périphérique reste catastrophique (TRC à 4 secondes, extrémités glacées, pouls à 172 bpm). La pose de la voie veineuse périphérique a échoué. L'enfant gémit faiblement, sa conscience s'altère encore.",
+      "constantesCibles": {
+        "tension": "72/38",
+        "pouls": "172",
+        "saturationO2": "99",
+        "temperature": "39.4",
+        "frequenceRespiratoire": "46"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 30,
+        "nextNode": "s_degradation_severe",
+        "motif": "L'absence d'accès vasculaire rapide empêche tout remplissage et toute antibiothérapie. L'enfant décompense rapidement."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Poser immédiatement une aiguille intra-osseuse (VIO) au niveau du tibia proximal",
+          "tempsExecutionSec": 15,
+          "feedback": "EXCELLENT RÉFLEXE ! En pédiatrie, devant un choc circulatoire, après 90 secondes de tentatives infructueuses de VVP, l'aiguille intra-osseuse (VIO) est la voie de secours de référence. Elle est posée en 30 secondes au niveau de la face antéro-interne du tibia proximal. Vous disposez d'un accès stable !",
+          "nextNode": "s_vio_posee"
+        },
+        {
+          "label": "S'acharner à chercher une autre VVP (3ème tentative sur la veine jugulaire externe ou fémorale)",
+          "tempsExecutionSec": 25,
+          "feedback": "ERREUR : S'acharner à chercher une VVP sur un lit vasculaire effondré et marbré fait perdre des minutes précieuses. L'état hémodynamique s'effondre sous le seuil critique de perfusion systémique. Léo fait un arrêt cardiaque !",
+          "nextNode": "s_degradation_severe"
+        },
+        {
+          "label": "Appeler l'anesthésiste-réanimateur pédiatrique de garde et attendre qu'il vienne poser une voie centrale",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR D'ATTENTE : Attendre passivement un spécialiste pour poser une voie centrale en situation de détresse circulatoire pédiatrique extrême est une perte de chance majeure. Le choc évolue vers le collapsus irréversible avant son arrivée.",
+          "nextNode": "s_degradation_severe"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_vio_posee": {
+      "id": "s_vio_posee",
+      "descriptionClinique": "La voie intra-osseuse est parfaitement fonctionnelle. Léo est inerte et gémit lors de l'injection de sérum. Le TRC reste à 4 secondes. Les marbrures s'étendent. Sa pression artérielle systolique est descendue à 70 mmHg. Vous devez administrer le traitement de réanimation hémodynamique et étiologique.",
+      "constantesCibles": {
+        "tension": "70/36",
+        "pouls": "175",
+        "saturationO2": "99",
+        "temperature": "39.3",
+        "frequenceRespiratoire": "44"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 30,
+        "nextNode": "s_degradation_severe",
+        "motif": "La non-correction de l'hypovolémie et l'absence d'antibiotiques mènent à une défaillance multiviscérale irréversible."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Lancer un remplissage de Ringer Lactate 20 ml/kg (300 ml) en 15 min + Injecter Céfotaxime 50 mg/kg (750 mg) et Gentamicine 5 mg/kg (75 mg) via la VIO",
+          "tempsExecutionSec": 15,
+          "feedback": "PRISE EN CHARGE PARFAITE ! C'est le double traitement salvateur : le remplissage rapide de cristalloïdes restaure le volume circulant et combat la fuite capillaire, tandis que le duo d'antibiotiques (synergie C3G + aminoside) cible immédiatement le méningocoque sans délai. Le remplissage et les drogues infusent !",
+          "nextNode": "s_stabilisation_etape1"
+        },
+        {
+          "label": "Pratiquer d'abord la ponction lombaire par précaution et retarder les antibiotiques",
+          "tempsExecutionSec": 25,
+          "feedback": "ERREUR MAJEURE : La ponction lombaire reste formellement contre-indiquée et retarder l'antibiothérapie dans un purpura fulminans est une faute grave. L'enfant fait un collapsus cardiovasculaire mortel sous vos yeux pendant la tentative de ponction.",
+          "nextNode": "s_degradation_severe"
+        },
+        {
+          "label": "Administrer l'antibiothérapie immédiatement mais ne pas faire de remplissage par crainte d'un œdème cérébral",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR : Bien que l'antibiothérapie soit fondamentale, le choc septique s'accompagne d'une hypovolémie absolue et relative majeure liée à une fuite capillaire systémique. Sans remplissage vasculaire (10-20 ml/kg), la tension artérielle chute irrémédiablement. Léo s'effondre.",
+          "nextNode": "s_degradation_no_remplissage"
+        },
+        {
+          "label": "Perfuser un bolus massif de Ringer Lactate de 500 ml (33 ml/kg) en 5 min et injecter 1 mg d'Adrénaline IV direct",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR CLINIQUE / DE SURCHARGE : Un bolus initial de remplissage chez l'enfant doit être titré (10 à 20 ml/kg maximum, soit 300 ml ici). De plus, l'adrénaline en bolus IV direct non titrée est formellement proscrite (risque d'hypertension maligne, d'hémorragie cérébrale, d'œdème aigu du poumon et d'asystolie).",
+          "nextNode": "s_degradation_surcharge"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_stabilisation_etape1": {
+      "id": "s_stabilisation_etape1",
+      "descriptionClinique": "Le premier bolus de 300 ml de Ringer Lactate s'est terminé en 15 minutes. Les antibiotiques ont été entièrement administrés. À la réévaluation : Léo est légèrement plus réactif, mais reste apathique et somnolent. Sa PAS est remontée à 80 mmHg, son pouls est à 160 bpm, mais le TRC reste allongé à 3.5 secondes et des marbrures prédisposent aux genoux.",
+      "constantesCibles": {
+        "tension": "80/45",
+        "pouls": "160",
+        "saturationO2": "99",
+        "temperature": "38.9",
+        "frequenceRespiratoire": "40"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 40,
+        "nextNode": "s_degradation_severe",
+        "motif": "La persistance des signes cliniques de choc non traitée par une réexpansion volémique complémentaire conduit à une rechute hémodynamique sèche."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Réévaluer et lancer un second remplissage de Ringer Lactate 20 ml/kg (300 ml) en 15 min + Surveiller la tolérance (crépitants, foie)",
+          "tempsExecutionSec": 15,
+          "feedback": "TRÈS BONNE ATTITUDE CLINIQUE ! Face à la persistance de signes d'hypoperfusion (TRC allongé, marbrures), il est recommandé de répéter les bolus de 20 ml/kg de cristalloïdes isotoniques (jusqu'à 40-60 ml/kg au total), tout en recherchant des signes de surcharge cardiaque (râles crépitants pulmonaires, hépatomégalie rapide). L'expansion se poursuit !",
+          "nextNode": "s_stabilisation_reussie"
+        },
+        {
+          "label": "Débuter immédiatement une perfusion de catécholamines (Noradrénaline) sans effectuer de nouveau remplissage",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR TACTIQUE : Les amines vasopressives ne doivent jamais être introduites avant d'avoir optimisé la volémie circulante par un remplissage approprié (au moins 40 ml/kg en l'absence de surcharge), sous peine de majorer la vasoconstriction périphérique et l'ischémie tissulaire sur un lit vasculaire vide.",
+          "nextNode": "s_degradation_severe"
+        },
+        {
+          "label": "Considérer que l'enfant est maintenant hors de danger et arrêter la surveillance active",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR DE SURVEILLANCE : L'enfant est toujours en état de choc périphérique (TRC allongé, marbrures). Interrompre la réanimation ou relâcher la surveillance à ce stade expose à un effondrement hémodynamique secondaire foudroyant. Léo rechute.",
+          "nextNode": "s_degradation_severe"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_stabilisation_reussie": {
+      "id": "s_stabilisation_reussie",
+      "descriptionClinique": "Le second bolus de 300 ml de Ringer Lactate (totalisant 40 ml/kg) est passé. L'auscultation pulmonaire est parfaitement libre (pas de crépitants de surcharge), le foie n'a pas augmenté de taille. Léo ouvre spontanément les yeux et se met à pleurer (excellent signe de perfusion cérébrale !). Les marbrures ont disparu et le TRC s'est normalisé à 2 secondes. La tension artérielle s'est stabilisée à 94/56 mmHg, le pouls est à 132 bpm et la FR est à 30/min. Le SMUR pédiatrique pénètre dans la salle de déchocage.",
+      "constantesCibles": {
+        "tension": "94/56",
+        "pouls": "132",
+        "saturationO2": "99",
+        "temperature": "38.5",
+        "frequenceRespiratoire": "30"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 30,
+        "nextNode": "s_victoire",
+        "motif": "Le SMUR pédiatrique prend le relais médical de manière sécurisée."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Réaliser des transmissions médicales précises au SMUR (volumes perfusés, doses d'antibiotiques injectées via la VIO) + Préparer le transfert en réanimation pédiatrique",
+          "tempsExecutionSec": 15,
+          "feedback": "FÉLICITATIONS, DOCTEUR ! Vos transmissions claires, structurées et votre rapidité de prise en charge ont permis de sauver la vie de cet enfant de 3 ans. Grâce à vos décisions cliniques conformes aux standards internationaux, l'infection invasive a été jugulée et l'état de choc corrigé in extremis.",
+          "nextNode": "s_victoire"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_degradation_delai": {
+      "id": "s_degradation_delai",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Le retard accumulé dans la prise en charge initiale a été fatal. En l'absence d'oxygénothérapie rapide et de perfusion vasculaire immédiate, le choc septique s'est aggravé de façon foudroyante vers le collapsus cardiorespiratoire puis l'asystolie. Le décès de Léo est prononcé après 30 minutes de manoeuvres de réanimation inefficaces.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": 0,
+        "saturationO2": 0,
+        "temperature": "38.2",
+        "frequenceRespiratoire": 0
+      }
+    },
+    "s_degradation_pl": {
+      "id": "s_degradation_pl",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "La ponction lombaire réalisée chez un enfant en choc hémodynamique décompensé a provoqué un engagement cérébral immédiat lors du prélèvement de liquide céphalo-rachidien. Cet accident, cumulé au retard intolérable apporté à l'antibiothérapie d'urgence, a entraîné un arrêt cardiaque immédiat. L'enfant n'a pas pu être réanimé.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": 0,
+        "saturationO2": 0,
+        "temperature": "38.5",
+        "frequenceRespiratoire": 0
+      }
+    },
+    "s_degradation_attente": {
+      "id": "s_degradation_attente",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "L'attente injustifiée de bilans biologiques ou d'hémocultures a différé l'antibiothérapie de près de deux heures. Cette inertie a permis à la méningococcémie d'évoluer vers une coagulation intravasculaire disséminée (CIVD) fulminante, caractérisée par une extension rapide des plaques purpuriques nécrotiques et une défaillance multiviscérale réfractaire. Léo succombe au choc infectieux.",
+      "constantesCibles": {
+        "tension": "35/18",
+        "pouls": 190,
+        "saturationO2": 50,
+        "temperature": "39.6",
+        "frequenceRespiratoire": 52
+      }
+    },
+    "s_degradation_po": {
+      "id": "s_degradation_po",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "L'administration de paracétamol par voie orale chez un enfant somnolent a provoqué une fausse route massive immédiate. Léo a inhalé le liquide, entraînant une asphyxie aiguë par bronchospasme et arrêt respiratoire direct. Les tentatives de réanimation et d'aspiration trachéale s'avèrent vaines.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": 0,
+        "saturationO2": 0,
+        "temperature": "38.9",
+        "frequenceRespiratoire": 0
+      }
+    },
+    "s_degradation_severe": {
+      "id": "s_degradation_severe",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "L'échec de la pose d'une voie veineuse périphérique combiné au refus ou au retard d'implantation d'une aiguille intra-osseuse a privé le patient de sa seule chance de survie (remplissage et antibiotiques rapides). Sa pression artérielle systolique s'est effondrée sous le seuil critique pédiatrique (76 mmHg) pour atteindre 50 mmHg, conduisant à une asystolie réfractaire par désamorçage de la pompe cardiaque.",
+      "constantesCibles": {
+        "tension": "30/10",
+        "pouls": 0,
+        "saturationO2": 0,
+        "temperature": "37.5",
+        "frequenceRespiratoire": 0
+      }
+    },
+    "s_degradation_no_remplissage": {
+      "id": "s_degradation_no_remplissage",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "L'administration exclusive d'antibiotiques sans correction de l'hypovolémie a été dramatiquement insuffisante. En raison de la fuite capillaire majeure induite par le choc septique, le volume vasculaire circulatoire s'est épuisé. La pression artérielle est tombée à 40/18 mmHg, provoquant une ischémie multiviscérale irréversible et le décès de l'enfant.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": 0,
+        "saturationO2": 0,
+        "temperature": "38.0",
+        "frequenceRespiratoire": 0
+      }
+    },
+    "s_degradation_surcharge": {
+      "id": "s_degradation_surcharge",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "L'administration d'un volume de remplissage excessif (33 ml/kg) en bolus ultra-rapide combinée à l'injection d'adrénaline en IV direct non titrée a provoqué une défaillance myocardique aiguë par surcharge ventriculaire gauche massive. Un œdème aigu du poumon fulminant s'est installé avec issue de mousse rosée aux lèvres, complété par une fibrillation ventriculaire mortelle.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": 0,
+        "saturationO2": 0,
+        "temperature": "38.1",
+        "frequenceRespiratoire": 0
+      }
+    },
+    "s_victoire": {
+      "id": "s_victoire",
+      "isEndState": true,
+      "success": true,
+      "xpReward": 150,
+      "descriptionClinique": "Victoire éclatante, docteur ! Votre sang-froid, votre rapidité de décision clinique et votre parfaite maîtrise des recommandations de réanimation pédiatrique ont sauvé Léo, 3 ans. Grâce à l'oxygénothérapie immédiate, à la pose rapide de la voie intra-osseuse face à l'échec de la VVP, au remplissage vasculaire titré (40 ml/kg) et à la double antibiothérapie d'urgence absolue par Céfotaxime + Gentamicine, l'infection invasive à méningocoque a été stabilisée et le choc corrigé avant le stade de défaillance d'organe irréversible. Vous avez incarné l'excellence clinique avec méthode, précision scientifique et rigueur absolue !",
+      "constantesCibles": {
+        "tension": "96/58",
+        "pouls": "124",
+        "saturationO2": "99",
+        "temperature": "38.2",
+        "frequenceRespiratoire": "28"
+      }
+    }
+  },
+  "correction": "# Fiche Technique : Choc Septique Pédiatrique & Purpura Fulminans\n\n## 1. Physiopathologie et Spécificités Pédiatriques\n\n### Choc pédiatrique : Un piège clinique\nLe choc septique de l'enfant présente des particularités fondamentales par rapport à celui de l'adulte :\n- **L'hypotension est un signe TARDIF de gravité extrême** chez l'enfant. Grâce à une vasoconstriction réflexe intense et à une augmentation de la fréquence cardiaque, l'enfant maintient longtemps sa pression artérielle systolique (choc compensé). \n- Lorsque la tension chute enfin (choc décompensé), la réserve physiologique est épuisée et le risque d'arrêt cardiaque est imminent.\n- La formule classique d'estimation de la **Pression Artérielle Systolique minimale** (seuil de collapsus) entre 1 et 10 ans est : \n  $$\\text{PAS minimale} = 70 + (2 \\times \\text{\\^a}ge)\\text{ mmHg}$$\n  Pour Léo (3 ans), ce seuil s'établit à **76 mmHg**. À 75 mmHg, il était déjà en collapsus circulatoire.\n- **Choc froid vs Choc chaud** : Plus de 80% des chocs septiques pédiatriques communautaires se manifestent sous forme de **choc froid** (vasoconstriction majeure, extrémités glacées, TRC $\\ge 3$ secondes, marbrures, pouls périphérique filant), contrairement à l'adulte qui présente plus fréquemment un choc chaud (vasodilatation, extrémités chaudes, TRC rapide).\n\n### Le Purpura Fulminans\nC'est la forme clinique la plus foudroyante d'infection invasive à méningocoque (*Neisseria meningitidis*). Il associe :\n1. **Un état de choc septique** avec fuite capillaire systémique majeure (capillary leak syndrome) responsable d'une hypovolémie absolue et relative.\n2. **Des thromboses vasculaires cutanées** par une Coagulation Intravasculaire Disséminée (CIVD) massive avec consommation des facteurs de coagulation et des plaquettes, entraînant des lésions purpuriques nécrotiques extensives d'évolution ultra-rapide.\n\n---\n\n## 2. Les 4 Piliers du Traitement d'Urgence Extrême\n\n### A. Oxygénothérapie\n- Administration immédiate d'**Oxygène à haut débit** (masque à haute concentration à 10-15 L/min) pour maximiser le transport d'oxygène tissulaire et compenser la dette en oxygène systémique.\n\n### B. Accès Vasculaire Immédiat : Règle des 90 secondes\n- Tenter la pose de deux voies veineuses périphériques (VVP) de gros calibre. \n- **IMPORTANT** : En cas d'échec de pose de la VVP après **90 secondes** ou 2 tentatives chez un enfant en état de choc, il faut immédiatement abandonner et poser une **aiguille intra-osseuse (VIO)** (tibia proximal). C'est un geste simple, rapide (< 30 secondes), permettant d'injecter solutés de remplissage, antibiotiques et catécholamines avec une pharmacocinétique équivalente à une voie centrale.\n\n### C. Remplissage Vasculaire Énergique et Titré\n- Administration rapide de bolus de **cristalloïdes isotoniques** (Ringer Lactate ou NaCl 0.9%) à hauteur de **10 à 20 ml/kg** sur 10 à 20 minutes (soit 150 ml à 300 ml pour 15 kg).\n- À répéter jusqu'à obtention d'une stabilité hémodynamique (normalisation du TRC, régression des marbrures, baisse de la FC, normalisation de la PAS) ou apparition de signes de surcharge ventriculaire droite ou gauche.\n- **Signes de surcharge à rechercher activement** après chaque bolus : apparition de râles crépitants pulmonaires à l'auscultation (rare chez l'enfant), survenue d'une hépatomégalie de surcharge (palpation du foie), rythme de galop.\n- Arrêter le remplissage et envisager l'introduction de catécholamines si les signes de choc persistent après 40-60 ml/kg au total.\n\n### D. Antibiothérapie d'Urgence Absolue\n- **Règle d'or** : L'antibiothérapie précoce est le facteur pronostique majeur. Chaque heure de retard dans le sepsis sévère est corrélée à une baisse de survie de 7.6% (Kumar et al.). Elle doit être administrée dans la première heure (et idéalement dans les 30 minutes) par voie IV ou intra-osseuse.\n- Dans le purpura fulminans, **l'antibiothérapie prime sur tout geste diagnostique non immédiat**.\n- **Protocole recommandé** (synergie bactéricide rapide) :\n  1. **Céfotaxime** (C3G) : **50 mg/kg** (soit 750 mg IVD/IO chez un enfant de 15 kg).\n  2. **Gentamicine** (Aminoside) : **5 mg/kg** (soit 75 mg en perfusion courte de 30 min chez un enfant de 15 kg).\n\n---\n\n## 3. Bons Réflexes (Do's) et Erreurs à Éviter (Don'ts)\n\n### 🟢 Bons Réflexes (Do's)\n- **Oxygéner** immédiatement à haut débit.\n- **Passer à la voie intra-osseuse** sans hésiter en cas d'échec de VVP en 90 secondes chez l'enfant en choc.\n- **Injecter les antibiotiques immédiatement** dès la suspicion de purpura fulminans, sans aucun retard.\n- **Titrer le remplissage** selon le poids (10-20 ml/kg) et surveiller la tolérance (pouls, TRC, auscultation, taille du foie) après chaque bolus.\n- **Calculer rigoureusement les posologies** en fonction du poids réel ou estimé (15 kg).\n\n### 🔴 Erreurs à Éviter (Don'ts)\n- **Faire une ponction lombaire d'emblée** : Formellement contre-indiquée chez un enfant instable hémodynamiquement ou présentant des signes de purpura fulminans extensif. Risque de décès par engagement cérébral immédiat.\n- **Attendre les résultats bactériologiques** (hémoculture, examens de laboratoire) avant d'injecter l'antibiothérapie.\n- **Utiliser la voie orale** chez un enfant somnolent ou léthargique (risque d'inhalation massive et de décès par asphyxie).\n- **Administrer des bêtabloquants** pour traiter la tachycardie. La tachycardie est le mécanisme de compensation cardiaque vital chez l'enfant en choc ; la bloquer provoque l'arrêt cardiaque immédiat par chute du débit cardiaque.\n- **Réaliser un remplissage de volume excessif d'emblée** (ex: 500 ml en une fois pour 15 kg, soit > 30 ml/kg) ou injecter de l'adrénaline en bolus IV direct non titré (risque d'OAP et d'asystolie)."
+}

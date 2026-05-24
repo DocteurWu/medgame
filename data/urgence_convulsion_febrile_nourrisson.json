@@ -1,0 +1,595 @@
+{
+  "id": "urgence_convulsion_febrile_nourrisson",
+  "title": "Convulsion Fébrile du Nourrisson (Crise Prolongée)",
+  "specialty": "urgence",
+  "difficulty": 2,
+  "redacteur": "L'équipe Médicale MedGame",
+  "patient": {
+    "nom": "Martin",
+    "prenom": "Léo",
+    "age": 1,
+    "sexe": "M",
+    "taille": "80 cm",
+    "poids": "12 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Nourrisson de 18 mois amené par ses parents aux urgences en train de convulser avec une forte fièvre.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Développement psychomoteur normal pour son âge."
+      },
+      "tabac": {
+        "quantite": "Non-fumeur (pas de tabagisme passif rapporté par les parents)",
+        "duree": "Non-fumeur"
+      },
+      "alcool": {
+        "quantite": "Aucune"
+      },
+      "alimentation": {
+        "regime": "Diversifié, adapté à l'âge",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Nourrisson (garde en crèche)",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Antécédent de convulsion fébrile simple dans la petite enfance",
+          "age": "32 ans"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 6 minutes",
+      "evolution": "Brutale",
+      "facteursDeclenchants": "Fièvre élevée (non mesurée initialement) sur rhinopharyngite débutée il y a 24 heures",
+      "descriptionDouleur": "Non évaluable (nourrisson inconscient en cours de crise)",
+      "symptomesAssocies": [
+        "Mouvements tonico-cloniques généralisés des 4 membres",
+        "Révulsion oculaire",
+        "Hypersialorrhée avec encombrement pharyngé",
+        "Cyanose péri-buccale"
+      ],
+      "remarques": "La crise dure depuis 6 minutes sans interruption spontanée. Pas de traumatisme crânien."
+    },
+    "verbatim": "Aidez-le ! Ses bras et ses jambes tremblent, ses yeux se sont retournés et il est bouillant !"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "95/60 mmHg",
+      "pouls": "145 bpm",
+      "temperature": "39.5°C",
+      "saturationO2": "91%",
+      "frequenceRespiratoire": "28/min"
+    },
+    "aspectGeneral": "Nourrisson de 18 mois, 12 kg, en train de convulser avec des mouvements tonico-cloniques généralisés des quatre membres. Encombrement des voies aériennes supérieures avec hypersialorrhée et respiration bruyante, discrète cyanose péri-buccale.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie régulière à 145 bpm, absence de bruit de galop ou de souffle cardiaque.",
+      "inspection": "Extrémités chaudes, temps de recoloration cutanée (TRC) < 2 secondes, pas de marbrures.",
+      "palpation": "Pouls fémoraux bien perçus et symétriques."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Encombrement des voies aériennes supérieures avec bruits de glaires transmis, murmure vésiculaire bilatéral audible sans foyer de crépitants net."
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, non distendu, pas de masse ni d'organomégalie palpable."
+    },
+    "examenNeurologique": {
+      "conscience": "Score de GCS à 3 en cours de crise, hypotonie axiale avec hypertonie des quatre membres animés de secousses rythmiques, pupilles symétriques réactives en mydriase intermédiaire."
+    }
+  },
+  "availableExams": [
+    "GLYCEMIE_CAPILLAIRE",
+    "PONCTION_LOMBAIRE",
+    "NFS_CRP_HEMOCULTURE",
+    "TDM_CEREBRALE",
+    "IONOGRAMME_SANGUIN"
+  ],
+  "examResults": {
+    "GLYCEMIE_CAPILLAIRE": "Glycémie capillaire = 0.95 g/L. Pas d'hypoglycémie pédiatrique (seuil strict chez l'enfant < 0.60 g/L).",
+    "PONCTION_LOMBAIRE": "Non indiquée en extrême urgence en cours de crise convulsive. À discuter uniquement après arrêt de la crise et stabilisation clinique si suspicion d'infection du système nerveux central (raideur de nuque, fontanelle bombante, trouble de conscience prolongé persistant, purpura).",
+    "NFS_CRP_HEMOCULTURE": "Examen biologique non indiqué en extrême urgence pendant la crise. Ne doit jamais retarder l'administration de l'anticonvulsivant de première ligne.",
+    "TDM_CEREBRALE": "Non indiqué en première intention chez un nourrisson présentant une première convulsion fébrile simple ou complexe, en l'absence de signes de focalisation neurologique stables ou de notion de traumatisme crânien récent.",
+    "IONOGRAMME_SANGUIN": "Non indiqué en urgence immédiate. Normal."
+  },
+  "possibleDiagnostics": [
+    "Convulsion fébrile simple",
+    "Convulsion fébrile complexe / prolongée (> 5 min)",
+    "Méningite bactérienne aiguë",
+    "Hypoglycémie pédiatrique sévère",
+    "État de mal épileptique non fébrile"
+  ],
+  "correctDiagnostic": "Convulsion fébrile complexe / prolongée (> 5 min)",
+  "feedback": {
+    "Convulsion fébrile complexe / prolongée (> 5 min)": "Excellent diagnostic ! La crise dure depuis plus de 5 minutes chez un nourrisson fébrile, ce qui la classe dans les convulsions fébriles complexes ou prolongées, nécessitant une prise en charge pharmacologique immédiate.",
+    "default": "Diagnostic incorrect. Une crise convulsive avec fièvre qui dure depuis plus de 5 minutes chez un nourrisson est une urgence thérapeutique classée comme convulsion fébrile complexe ou prolongée."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Dégager les voies aériennes, mettre en PLS et administrer de l'oxygène au masque haute concentration",
+    "Midazolam en intra-buccal (Buccolam) 6 mg (0.5 mg/kg)",
+    "Diazépam en intra-rectal (Valium) 6 mg (0.5 mg/kg)",
+    "Clonazépam (Rivotril) IV 0.6 mg (0.05 mg/kg) si persistance de la crise après 5 min du premier traitement",
+    "Perfalgan (Paracétamol) IV 180 mg (15 mg/kg) en perfusion lente + refroidissement physique (déshabiller l'enfant)",
+    "Donner un bain glacé ou envelopper l'enfant de linges glacés pour baisser rapidement sa température",
+    "Mettre une cuillère ou un abaisse-langue dans la bouche de l'enfant pour éviter qu'il n'avale sa langue",
+    "Administrer du Diazépam IV direct 10 mg (dose adulte)"
+  ],
+  "correctTreatments": [
+    "Dégager les voies aériennes, mettre en PLS et administrer de l'oxygène au masque haute concentration",
+    "Midazolam en intra-buccal (Buccolam) 6 mg (0.5 mg/kg)",
+    "Diazépam en intra-rectal (Valium) 6 mg (0.5 mg/kg)",
+    "Perfalgan (Paracétamol) IV 180 mg (15 mg/kg) en perfusion lente + refroidissement physique (déshabiller l'enfant)"
+  ],
+  "fatalTreatments": [
+    "Donner un bain glacé ou envelopper l'enfant de linges glacés pour baisser rapidement sa température",
+    "Mettre une cuillère ou un abaisse-langue dans la bouche de l'enfant pour éviter qu'il n'avale sa langue",
+    "Administrer du Diazépam IV direct 10 mg (dose adulte)"
+  ],
+  "secondLineTreatments": [
+    "Clonazépam (Rivotril) IV 0.6 mg (0.05 mg/kg) si persistance de la crise après 5 min du premier traitement"
+  ],
+  "relevantExams": [
+    "GLYCEMIE_CAPILLAIRE"
+  ],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 2.0,
+    "aggravationTargets": {
+      "heartRate": 170,
+      "systolic": 80,
+      "diastolic": 50,
+      "spo2": 80,
+      "temperature": 40.2,
+      "respiratoryRate": 34
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "alternativeDiagnostics": [
+    "Convulsion fébrile complexe",
+    "Crise convulsive fébrile prolongée",
+    "Convulsion fébrile prolongée"
+  ],
+  "locks": [
+    {
+      "id": "lock_conv_diag",
+      "type": "QCM",
+      "challenge": {
+        "question": "Léo présente des secousses tonico-cloniques généralisées sous fièvre de 39,5°C depuis plus de 6 minutes. Comment classer cliniquement cette crise ?",
+        "options": [
+          "Convulsion fébrile simple",
+          "Convulsion fébrile complexe / prolongée (durée > 5 minutes)",
+          "Crise convulsive apyrétique",
+          "État de mal épileptique réfractaire d'emblée"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Une crise convulsive fébrile est considérée comme complexe ou prolongée dès que sa durée dépasse 5 minutes, ou si elle présente des signes de focalisation, ou si elle récidive dans les 24h. Le traitement anticonvulsivant doit être administré sans délai à partir de 5 minutes.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_conv_trait",
+      "type": "QCM",
+      "challenge": {
+        "question": "Quel anticonvulsivant de première ligne doit être administré en urgence pour arrêter cette crise convulsante prolongée en l'absence de voie veineuse ?",
+        "options": [
+          "Clonazépam (Rivotril) IV 0.05 mg/kg d'emblée",
+          "Diazépam (Valium) IV direct 10 mg (dose adulte)",
+          "Midazolam intra-buccal (Buccolam) 0.5 mg/kg ou Diazépam intra-rectal (Valium) 0.5 mg/kg",
+          "Phénobarbital (Gardénal) IM immédiat"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "En première intention et sans accès veineux, les recommandations pédiatriques imposent le Midazolam intra-buccal (0.5 mg/kg) ou le Diazépam intra-rectal (0.5 mg/kg). Le Clonazépam IV est un traitement de seconde ligne, et la dose adulte IV directe de 10 mg de Diazépam provoquerait un arrêt respiratoire immédiat chez un nourrisson de 12 kg.",
+      "target_fields": [
+        "correctTreatments"
+      ]
+    }
+  ],
+  "gameplayConfig": {
+    "startNode": "s1"
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Vous êtes aux urgences pédiatriques. Les parents amènent en panique Léo, 18 mois, 12 kg, bouillant et agité de violentes secousses saccadées rythmiques des 4 membres depuis environ 6 minutes. Ses yeux sont révulsés. Il présente une respiration bruyante, une hypersialorrhée encombrent ses voies aériennes et une discrète cyanose péri-buccale. La température est à 39,5°C et sa saturation à 91%. Que faites-vous en extrême urgence ?",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "145",
+        "saturationO2": "91",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Libérer les voies aériennes, mettre Léo en PLS (Position Latérale de Sécurité) et administrer de l'oxygène au masque à haute concentration",
+          "tempsExecutionSec": 10,
+          "nextNode": "s2",
+          "feedback": "Excellent réflexe initial ! Les voies aériennes sont libérées des sécrétions salivaires, la position sur le côté prévient l'inhalation bronchique, et l'oxygène à haut débit corrige l'hypoxie liée aux mouvements convulsifs."
+        },
+        {
+          "label": "Donner immédiatement un bain glacé ou envelopper Léo dans des linges glacés pour casser la fièvre en urgence",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_err_bain_glace",
+          "feedback": "ERREUR CLINIQUE MAJEURE ! Le refroidissement rapide par bain ou draps glacés provoque une vasoconstriction cutanée extrême (vasospasme), un choc thermique majeur et un risque élevé d'arrêt cardiorespiratoire. C'est formellement contre-indiqué !"
+        },
+        {
+          "label": "Insérer immédiatement un abaisse-langue ou vos doigts dans la bouche de Léo pour éviter qu'il n'avale sa langue",
+          "tempsExecutionSec": 10,
+          "nextNode": "s_err_bouche_objet",
+          "feedback": "ERREUR CLINIQUE CRUCIALE ! Il est physiologiquement impossible d'avaler sa langue. Introduire un objet ou vos doigts dans la bouche d'un patient en crise convulsive entraîne un risque élevé de laryngospasme réflexe, de traumatisme dentaire chez l'enfant et de morsure sévère pour vous !"
+        },
+        {
+          "label": "Tenter de poser une voie veineuse périphérique d'emblée pour lui injecter un traitement antipyrétique",
+          "tempsExecutionSec": 20,
+          "nextNode": "s_err_vvp_delay",
+          "feedback": "Décision inadaptée. Poser une voie veineuse chez un nourrisson de 12 kg en pleine crise convulsive tonico-clonique est extrêmement difficile et retarde dangereusement la sécurisation immédiate des voies respiratoires de l'enfant."
+        }
+      ]
+    },
+    "s_err_vvp_delay": {
+      "id": "s_err_vvp_delay",
+      "descriptionClinique": "La tentative de pose de voie veineuse échoue en raison des mouvements convulsifs de Léo. Les voies aériennes de l'enfant s'encombrent de plus en plus d'hypersialorrhée. Il n'est pas en PLS et commence à présenter un tirage intercostal avec des lèvres bleues (cyanose péri-buccale). La saturation chute à 87%. Que faites-vous ?",
+      "constantesCibles": {
+        "tension": "90/55",
+        "pouls": "152",
+        "saturationO2": "87",
+        "temperature": "39.6",
+        "frequenceRespiratoire": "30"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Mettre Léo en PLS, dégager ses voies aériennes et poser de l'oxygène au masque haute concentration",
+          "tempsExecutionSec": 10,
+          "nextNode": "s2",
+          "feedback": "Très bon rattrapage ! La PLS permet de sécuriser ses voies aériennes et de drainer les sécrétions, et l'oxygène limite l'aggravation de l'hypoxie."
+        },
+        {
+          "label": "S'acharner à tenter de poser la voie veineuse pour injecter le paracétamol au plus vite",
+          "tempsExecutionSec": 25,
+          "nextNode": "s_err_asphyxie",
+          "feedback": "ERREUR MAJEURE ! L'absence de sécurisation des voies respiratoires et de PLS conduit à l'inhalation massive de ses sécrétions."
+        }
+      ]
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Léo est maintenant correctement sécurisé en PLS sous oxygène. Les bruits respiratoires s'améliorent et la saturation remonte légèrement à 93%. Cependant, la convulsion tonico-clonique persiste depuis maintenant 7 minutes. Avant d'administrer les anticonvulsivants, quelle démarche diagnostique et d'exclusion métabolique obligatoire devez-vous réaliser en priorité absolue ?",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "145",
+        "saturationO2": "93",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "26"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 45,
+        "nextNode": "s_depletion_o2",
+        "motif": "La crise prolongée persiste. En l'absence de traitement anticonvulsivant, l'hypoventilation alvéolaire s'aggrave et la saturation rechute."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Réaliser une glycémie capillaire (BM test) pour exclure une hypoglycémie pédiatrique",
+          "tempsExecutionSec": 5,
+          "nextNode": "s3",
+          "feedback": "Parfait ! La glycémie capillaire est de 0.95 g/L. Cela exclut formellement une hypoglycémie pédiatrique (seuil < 0.60 g/L), qui aurait nécessité une correction glucosée immédiate."
+        },
+        {
+          "label": "Administrer directement le traitement anticonvulsivant sans tester la glycémie capillaire",
+          "tempsExecutionSec": 10,
+          "nextNode": "s3_sans_glycemie",
+          "feedback": "Décision tolérable pour stopper la crise, mais c'est une faute de prise en charge clinique. Une hypoglycémie non diagnostiquée et prolongée chez un nourrisson convulsant peut provoquer des lésions cérébrales irréversibles. Le traitement est tout de même administré."
+        },
+        {
+          "label": "Administrer du Diazépam (Valium) IV direct 10 mg (dose adulte) sur une aiguille épicrânienne",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_err_overdose",
+          "feedback": "ERREUR MORTELLE ! Injecter 10 mg de Diazépam en IV direct chez un nourrisson de 12 kg représente un surdosage massif immédiat, causant un arrêt respiratoire central."
+        }
+      ]
+    },
+    "s3": {
+      "id": "s3",
+      "descriptionClinique": "La glycémie capillaire est normale (0.95 g/L). Léo convulse toujours activement. La crise dure depuis plus de 7 minutes sans signe d'arrêt spontané. Il y a un risque de souffrance neurologique et d'aggravation hypoxique (saturation à 91%). Quel traitement anticonvulsivant de première ligne administrez-vous ?",
+      "constantesCibles": {
+        "tension": "90/55",
+        "pouls": "150",
+        "saturationO2": "91",
+        "temperature": "39.6",
+        "frequenceRespiratoire": "28"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 35,
+        "nextNode": "s_depletion_o2",
+        "motif": "La crise prolongée non traitée s'aggrave vers l'hypoxie sévère."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Administrer du Midazolam en intra-buccal (Buccolam) 6 mg (0.5 mg/kg) par la muqueuse jugale",
+          "tempsExecutionSec": 15,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Excellent choix ! Le Midazolam en intra-buccal (Buccolam) est simple, rapide à administrer et très efficace. La dose de 6 mg (0.5 mg/kg pour 12 kg) est parfaitement calculée."
+        },
+        {
+          "label": "Administrer du Diazépam en intra-rectal (Valium) 6 mg (0.5 mg/kg) à l'aide de la canule rectale",
+          "tempsExecutionSec": 20,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Très bon choix historique ! La voie intra-rectale permet une absorption rapide et évite d'avoir à poser une voie veineuse difficile en cours de crise. La dose de 6 mg (0.5 mg/kg pour 12 kg) est parfaitement adaptée."
+        },
+        {
+          "label": "Tenter d'injecter du Clonazépam (Rivotril) IV d'emblée à 0.05 mg/kg (0.6 mg)",
+          "tempsExecutionSec": 30,
+          "nextNode": "s3_retard_rivotril",
+          "feedback": "Choix inapproprié. Le Clonazépam IV est un traitement de seconde ligne qui nécessite un accès veineux. Tenter de poser une VVP chez ce nourrisson convulsant prend un temps excessif et retarde l'administration du traitement."
+        },
+        {
+          "label": "Attendre encore 5 minutes de voir si la crise s'arrête d'elle-même",
+          "tempsExecutionSec": 40,
+          "nextNode": "s_depletion_o2",
+          "feedback": "ERREUR ! Une crise convulsive fébrile qui dépasse 5 minutes ne s'arrêtera probablement pas seule de sitôt et doit être traitée activement pour éviter des lésions hypoxiques."
+        }
+      ]
+    },
+    "s3_sans_glycemie": {
+      "id": "s3_sans_glycemie",
+      "descriptionClinique": "Léo a reçu son traitement anticonvulsivant de première ligne (Midazolam 6 mg) par voie intra-buccale. Les secousses tonico-cloniques commencent à diminuer d'intensité. Néanmoins, il reste profondément somnolent et sa glycémie capillaire n'a toujours pas été mesurée. Que faites-vous ?",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "140",
+        "saturationO2": "92",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Réaliser immédiatement la glycémie capillaire (BM test) en urgence",
+          "tempsExecutionSec": 5,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Très bon rattrapage ! La glycémie est mesurée à 0.95 g/L (normale). L'absence d'hypoglycémie est confirmée. Les secousses s'arrêtent complètement."
+        },
+        {
+          "label": "Ignorer la glycémie et administrer directement le traitement antipyrétique",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_err_hypoglycemie_ignoree",
+          "feedback": "ERREUR CLINIQUE ! Vous négligez l'évaluation de la glycémie. Si le nourrisson était en hypoglycémie sévère (fréquente lors du jeûne sous infection), vous risquez de le laisser s'enfoncer dans un coma glycopénique destructeur."
+        }
+      ]
+    },
+    "s3_retard_rivotril": {
+      "id": "s3_retard_rivotril",
+      "descriptionClinique": "Vous perdez plus de 3 minutes à tenter de poser une voie veineuse périphérique chez Léo en crise. Ses secousses saccadées empêchent de stabiliser l'aiguille. L'enfant commence à s'épuiser. Sa respiration ralentit et sa saturation en oxygène chute dangereusement à 84% sous l'effet de l'hypoxie prolongée. Que faites-vous ?",
+      "constantesCibles": {
+        "tension": "80/50",
+        "pouls": "160",
+        "saturationO2": "84",
+        "temperature": "39.8",
+        "frequenceRespiratoire": "32"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 25,
+        "nextNode": "s_depletion_o2",
+        "motif": "La saturation continue de chuter vers un seuil critique d'asphyxie en raison de l'épuisement respiratoire."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Abandonner la pose de la voie veineuse et administrer du Midazolam intra-buccal (Buccolam) 6 mg en urgence",
+          "tempsExecutionSec": 10,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Excellent rattrapage de justesse ! L'administration par voie intra-buccale est immédiate et la crise commence enfin à céder."
+        },
+        {
+          "label": "Abandonner la pose de la voie veineuse et administrer du Diazépam intra-rectal (Valium) 6 mg en urgence",
+          "tempsExecutionSec": 10,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Excellent rattrapage de justesse ! L'administration par voie intra-rectale est immédiate et la crise commence enfin à céder."
+        },
+        {
+          "label": "S'acharner à poser la VVP pour administrer le Rivotril IV coûte que coûte",
+          "tempsExecutionSec": 20,
+          "nextNode": "s_depletion_o2",
+          "feedback": "ERREUR GRAVE ! Vous perdez encore du temps alors que l'enfant est en hypoxie sévère. L'arrêt respiratoire est imminent."
+        }
+      ]
+    },
+    "s_depletion_o2": {
+      "id": "s_depletion_o2",
+      "descriptionClinique": "Léo est en hypoxie sévère. Sa saturation s'effondre à 78%. Il présente un tirage respiratoire majeur, un encombrement pharyngé massif et des lèvres cyanosées. La crise dure depuis plus de 10 minutes. C'est un état de mal épileptique fébrile imminent. Que décidez-vous en extrême urgence ?",
+      "constantesCibles": {
+        "tension": "75/40",
+        "pouls": "165",
+        "saturationO2": "78",
+        "temperature": "39.9",
+        "frequenceRespiratoire": "35"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 15,
+        "nextNode": "s_err_arret",
+        "motif": "Asphyxie aiguë prolongée conduisant à un arrêt cardiorespiratoire en asystolie."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Administrer en urgence vitale du Midazolam intra-buccal (Buccolam) 6 mg",
+          "tempsExecutionSec": 10,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Sauvetage in extremis ! Le Midazolam est absorbé, la crise cède enfin après 2 minutes et la respiration reprend progressivement."
+        },
+        {
+          "label": "Administrer en urgence vitale du Diazépam intra-rectal (Valium) 6 mg",
+          "tempsExecutionSec": 10,
+          "nextNode": "s4_stop_crise",
+          "feedback": "Sauvetage in extremis ! Le Diazépam est absorbé, la crise cède enfin après 2 minutes et la respiration reprend progressivement."
+        },
+        {
+          "label": "Tenter d'intuber Léo immédiatement pour sécuriser la respiration",
+          "tempsExecutionSec": 25,
+          "nextNode": "s_err_arret",
+          "feedback": "ERREUR CLINIQUE ! Tenter d'intuber un nourrisson convulsant avec un trismus serré sans sédation adaptée est impossible et aggrave immédiatement l'hypoxie, provoquant un arrêt cardiaque réflexe."
+        }
+      ]
+    },
+    "s4_stop_crise": {
+      "id": "s4_stop_crise",
+      "descriptionClinique": "Les secousses cloniques de Léo ont enfin cédé sous l'effet de la benzodiazépine ! L'enfant est maintenant en phase post-critique : il est très somnolent, hypotonique mais réagit faiblement aux stimulations douloureuses. Sa saturation remonte à 96% sous oxygène. Toutefois, sa température corporelle reste extrêmement élevée à 39,5°C. Les parents sont affolés par cette fièvre. Que faites-vous ?",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "120",
+        "saturationO2": "96",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "20"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Poser une VVP (maintenant aisée chez un enfant calme), administrer du Perfalgan (Paracétamol) IV 180 mg (15 mg/kg) en perfusion lente sur 15 minutes, et déshabiller Léo",
+          "tempsExecutionSec": 30,
+          "nextNode": "s_guerison",
+          "feedback": "Parfait ! Le paracétamol IV (15 mg/kg) en perfusion lente est le traitement de choix en urgence. Le déshabiller dans une pièce aérée permet un refroidissement doux et sans danger."
+        },
+        {
+          "label": "Lui administrer le Paracétamol IV et l'envelopper immédiatement de linges imbibés d'eau glacée pour faire chuter la fièvre rapidement",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_err_bain_glace",
+          "feedback": "ERREUR GRAVE ! Même après l'arrêt de la crise, l'enveloppement glacé provoque une vasoconstriction brutale, un choc thermique et un risque élevé d'arrêt cardiaque réflexe."
+        },
+        {
+          "label": "Plonger immédiatement le nourrisson dans un bain d'eau glacée",
+          "tempsExecutionSec": 20,
+          "nextNode": "s_err_bain_glace",
+          "feedback": "ERREUR GRAVE ! Plonger un nourrisson brûlant dans de l'eau glacée provoque un vasospasme cutané immédiat et un arrêt cardiaque par choc thermique."
+        },
+        {
+          "label": "Lui ouvrir de force la bouche pour lui administrer une dose de paracétamol en sirop per os",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_err_fausse_route",
+          "feedback": "ERREUR CLINIQUE ! Un enfant en phase post-critique est somnolent avec des réflexes de déglutition abolis. Forcer l'administration per os provoque une fausse route pulmonaire massive."
+        }
+      ]
+    },
+    "s_guerison": {
+      "id": "s_guerison",
+      "isEndState": true,
+      "success": true,
+      "xpReward": 100,
+      "descriptionClinique": "Victoire ! Grâce à votre réactivité et vos choix thérapeutiques parfaits, la crise convulsive a été stoppée et la fièvre a été contrôlée en toute sécurité. Léo se réveille doucement, il est calme et apyrétique (37,3°C), stable sur le plan cardio-respiratoire (FC 108, FR 20, SpO2 98%). Le bilan biologique confirme la glycémie normale et l'origine de la fièvre est attribuée à une rhinopharyngite simple sans gravité. Il est gardé en surveillance simple.",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "108",
+        "saturationO2": "98",
+        "temperature": "37.3",
+        "frequenceRespiratoire": "20"
+      }
+    },
+    "s_err_bain_glace": {
+      "id": "s_err_bain_glace",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. Le refroidissement brutal (bain ou enveloppement glacé) a provoqué un vasospasme cutané massif et un choc thermique violent. L'afflux rapide de sang froid vers le cœur a induit un trouble du rythme ventriculaire suivi d'un arrêt cardiorespiratoire. Les manœuvres de réanimation pédiatrique ont débuté, mais le pronostic neurologique et vital de Léo est extrêmement sombre.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "38.0",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_err_bouche_objet": {
+      "id": "s_err_bouche_objet",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. L'introduction d'un objet (ou de vos doigts) dans la bouche de Léo en crise a déclenché un laryngospasme réflexe violent et une obstruction mécanique totale de sa trachée. L'enfant présente une asphyxie aiguë immédiate suivie d'un arrêt cardiaque hypoxique irréversible malgré l'arrêt des secousses.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_err_asphyxie": {
+      "id": "s_err_asphyxie",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. S'acharner à poser une voie veineuse sans libérer les voies aériennes ni mettre Léo en PLS a conduit à l'inhalation massive de ses sécrétions salivaires abondantes et glaireuses. L'enfant fait un syndrome de détresse respiratoire aiguë par inhalation bronchique massive (syndrome de Mendelson) conduisant à un arrêt respiratoire anoxique irréversible.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "39.7",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_err_overdose": {
+      "id": "s_err_overdose",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. L'injection intraveineuse directe de 10 mg de Diazépam (dose de Valium adulte) chez ce nourrisson de 12 kg a provoqué une intoxication aiguë massive aux benzodiazépines. Il s'ensuit un arrêt respiratoire immédiat d'origine centrale et un effondrement hémodynamique complet, entraînant un arrêt cardiorespiratoire asystolique.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_err_hypoglycemie_ignoree": {
+      "id": "s_err_hypoglycemie_ignoree",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. Bien que la crise convulsive ait cessé sous l'effet du Midazolam, l'absence de vérification de la glycémie capillaire a masqué une hypoglycémie pédiatrique sévère sous-jacente due au jeûne. L'absence de correction glucosée prolongée a entraîné une neuro-glycopénie critique, conduisant à un œdème cérébral destructeur et à un coma profond irréversible avec lésions neurologiques majeures définitives.",
+      "constantesCibles": {
+        "tension": "80/40",
+        "pouls": "80",
+        "saturationO2": "90",
+        "temperature": "39.2",
+        "frequenceRespiratoire": "12"
+      }
+    },
+    "s_err_fausse_route": {
+      "id": "s_err_fausse_route",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. Forcer un nourrisson somnolent en phase post-critique à avaler un antipyrétique en sirop per os a provoqué une fausse route pulmonaire massive. Le liquide a inondé son arbre bronchique, entraînant un laryngospasme réflexe violent et une asphyxie aiguë menant à l'arrêt cardiorespiratoire.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "39.5",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_err_arret": {
+      "id": "s_err_arret",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Échec critique. Le retard majeur causé par vos manœuvres inadaptées ou l'attente passive a prolongé la crise convulsive au-delà de 12 minutes sous une hypoxie sévère (saturation < 75%). L'anoxie cérébrale prolongée associée à une acidose métabolique sévère a conduit à un arrêt cardiorespiratoire en asystolie.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "39.9",
+        "frequenceRespiratoire": "0"
+      }
+    }
+  },
+  "correction": "# Correction : Convulsions Fébriles du Nourrisson\n\n## Diagnostic\nIl s'agit d'une **convulsion fébrile complexe (ou prolongée)** en raison de sa durée qui a dépassé **5 minutes** (6 minutes initialement, se prolongeant en l'absence de traitement).\n\nUne convulsion fébrile est dite **complexe** si elle présente au moins un des critères suivants :\n* **Durée prolongée** (> 15 minutes, ou > 5 minutes nécessitant un traitement anticonvulsivant pour l'interrompre).\n* **Caractère focalisé** des secousses (crise partielle).\n* **Récidive** de la crise dans les 24 heures.\n* **Déficit neurologique post-critique** (ex: paralysie transitoire de Todd).\n* **Âge atypique** (< 6 mois ou > 5 ans).\n\n---\n\n## Conduite à Tenir Clinique (AFGSU & Pédiatrie)\n\n### 1. Sécurisation immédiate (Gestes de survie)\n* **Libération des Voies Aériennes (LVA)** : desserrer les vêtements, libérer le cou, aspirer les sécrétions salivaires et glaireuses.\n* **Position Latérale de Sécurité (PLS)** : protège des fausses routes par inhalation de salive ou de vomissements (très fréquents lors de la crise ou de la phase post-critique).\n* **Oxygénothérapie** : systématique au masque à haute concentration dès que possible pour limiter l'hypoxie tissulaire et cérébrale.\n\n### 2. Éliminer une Hypoglycémie Pédiatrique\n* Le **BM test (glycémie capillaire)** est un examen **systématique et obligatoire** chez tout enfant qui convulse.\n* Chez le nourrisson, le seuil d'hypoglycémie est strict : **< 0,60 g/L** (ou < 3,3 mmol/L). Une hypoglycémie non corrigée sous-jacente provoque rapidement des lésions cérébrales irréversibles par neuroglycopénie.\n\n### 3. Traitement Anticonvulsivant de 1ère ligne (si crise > 5 minutes)\n* **Midazolam en intra-buccal (Buccolam)** : **0,5 mg/kg** (soit 6 mg pour un enfant de 12 kg) déposés dans la muqueuse jugale. C'est la voie privilégiée aujourd'hui car rapide, sûre et facile d'accès sans voie veineuse.\n* **Diazépam en intra-rectal (Valium rectal)** : **0,5 mg/kg** (soit 6 mg) à l'aide d'une canule. Excellente alternative historique, simple d'emploi.\n\n### 4. Traitement antipyrétique de la fièvre\n* **Paracétamol (Perfalgan) IV** : **15 mg/kg** (soit 180 mg pour Léo) en perfusion intraveineuse lente sur 15 minutes. N'est administré qu'une fois la convulsion arrêtée.\n* **Moyens physiques doux** : Déshabiller l'enfant (le laisser en couche) et aérer la pièce (température ambiante recommandée à 19-20°C).\n\n---\n\n## 🟢 Bons réflexes (Do's)\n* **Priorité à la PLS** : Mettre l'enfant sur le côté dès le début de la crise pour libérer la filière pharyngée.\n* **Chronométrer précisément** la durée de la convulsion pour guider l'injection d'anticonvulsivants (obligatoire dès 5 minutes).\n* **Glycémie capillaire systématique** : À réaliser dans les premières minutes pour exclure une hypoglycémie pédiatrique.\n* **Utiliser les voies non-invasives d'urgence** : Privilégier la voie intra-buccale (Midazolam) ou intra-rectale (Diazépam) d'emblée, sans perdre de temps à poser une voie veineuse difficile chez un nourrisson convulsant.\n* **Refroidissement physique doux** : Déshabiller l'enfant et le laisser en couche.\n\n---\n\n## 🔴 Erreurs à éviter (Don'ts)\n* **Bains glacés ou enveloppements glacés** : **FORMELLEMENT PROSCRITS**. Ils provoquent une vasoconstriction cutanée brutale (vasospasme), un choc thermique et un risque majeur d'arrêt cardiaque.\n* **Objets dans la bouche** : Ne **JAMAIS** rien introduire dans la bouche (cuillère, doigt, abaisse-langue) sous prétexte d'éviter qu'il « n'avale sa langue » (physiologiquement impossible). Risque majeur de laryngospasme réflexe, d'obstruction complète ou de traumatisme buccal.\n* **Sédatifs adultes non adaptés** : Administrer des doses de benzodiazépines non diluées ou calculées à l'emporte-pièce (ex: 10 mg de Diazépam IV direct) provoque une apnée centrale et un arrêt respiratoire immédiat.\n* **Administrer un sirop per os chez un enfant somnolent** : Risque majeur de fausse route et d'asphyxie.\n* **Retarder le traitement pour poser une VVP** : Ne pas s'acharner sur une voie veineuse chez un enfant en crise tonico-clonique. La première ligne d'urgence est non-veineuse."
+}

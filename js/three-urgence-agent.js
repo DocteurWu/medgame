@@ -50,6 +50,9 @@ export class ThreeUrgenceAgent {
         this._createActions();
         this._startVitalsSync();
 
+        // Mettre à jour le visuel patient dès l'activation
+        this._updatePatientVisuel(urgNode);
+
         // Flash d'entrée dramatique
         this._flashScreen('#ff4757', 800);
 
@@ -101,6 +104,9 @@ export class ThreeUrgenceAgent {
 
         // Mettre à jour les constantes cibles
         this._updateVitalTargets(newNode);
+
+        // Mettre à jour le visuel 3D du patient
+        this._updatePatientVisuel(newNode);
 
         // Si état final (succès/échec), afficher le résultat
         if (newNode.isEndState) {
@@ -218,6 +224,92 @@ export class ThreeUrgenceAgent {
     }
 
     // ==================== MISE À JOUR DYNAMIQUE ====================
+
+    /**
+     * Met à jour le visuel 3D du patient en fonction du nœud d'urgence.
+     * Lit `patientVisuel` du nœud s'il existe, sinon infère depuis les constantes et la description.
+     * @param {Object} node — nœud d'urgence
+     */
+    _updatePatientVisuel(node) {
+        if (!node) return;
+
+        // Récupérer la scène 3D via le manager
+        const scene3D = this.manager?.scene;
+        if (!scene3D || !scene3D.patient) return;
+
+        // Récupérer le visuel du nœud (explicite ou inféré)
+        const visuel = node.patientVisuel || this._inferPatientVisuel(node);
+
+        // Appliquer via applyUrgenceVisuel
+        const animator = scene3D.patientAnimator;
+        scene3D.patient.applyUrgenceVisuel(visuel, animator);
+
+        // Si l'animateur a été réinitialisé (changement de position), le réattacher
+        if (animator && animator.group !== scene3D.patient.group) {
+            animator.group = scene3D.patient.group;
+            animator._cacheResolved = false;
+        }
+
+        // Adapter le pattern respiratoire
+        if (animator && visuel.respiration) {
+            animator.setRespirationPattern(visuel.respiration);
+        }
+
+        // Recalibrer les hotspots si position a changé
+        if (visuel.position && typeof scene3D.updateHotspotsPosition === 'function') {
+            scene3D.updateHotspotsPosition();
+        }
+
+        console.info('[UrgenceAgent] Patient visuel mis à jour:', visuel);
+    }
+
+    /**
+     * Infère les propriétés visuelles du patient depuis les constantes et la description clinique.
+     * Utilisé quand `patientVisuel` n'est pas explicitement défini dans le nœud.
+     * @param {Object} node
+     * @returns {Object} visuel inféré
+     */
+    _inferPatientVisuel(node) {
+        const desc = (node.descriptionClinique || '').toLowerCase();
+        const cibles = node.constantesCibles || {};
+        const spo2 = parseInt(cibles.saturationO2) || 98;
+        const pouls = parseInt(cibles.pouls) || 72;
+
+        let expression = 'douleur';
+        let position = null;  // null = garder la position courante
+        let respiration = null;
+
+        // Détection par mots-clés dans la description
+        if (desc.includes('inconscient') || desc.includes('ne réagit') || desc.includes('perd connaissance')) {
+            expression = 'inconscient';
+            position = 'allonge';
+            respiration = 'agonal';
+        } else if (desc.includes('arret') || desc.includes('arrêt') || desc.includes('acr') || desc.includes('ne respire plus')) {
+            expression = 'acr';
+            position = 'allonge';
+            respiration = 'agonal';
+        } else if (desc.includes('saign') || desc.includes('hémorrag') || desc.includes('gicle') || desc.includes('sang')) {
+            expression = 'hemorragie';
+            respiration = 'tachypnea';
+        } else if (desc.includes('brûl') || desc.includes('brulure') || desc.includes('flamme')) {
+            expression = 'brulure';
+        } else if (desc.includes('bleu') || desc.includes('cyanose') || spo2 < 85) {
+            expression = 'cyanose';
+            respiration = 'dyspnea';
+        } else if (desc.includes('étouffe') || desc.includes('obstruction') || desc.includes('gorge')) {
+            expression = 'cyanose';
+            respiration = 'dyspnea';
+        } else if (desc.includes('choc') || desc.includes('livide') || desc.includes('pâli')) {
+            expression = 'choc';
+        } else if (desc.includes('convuls') || desc.includes('crise')) {
+            expression = 'convulsion';
+            respiration = 'dyspnea';
+        } else if (spo2 < 90 || pouls > 140) {
+            expression = 'cyanose';
+        }
+
+        return { expression, position, respiration };
+    }
 
     _updateBanner(newNode) {
         const textEl = this._bannerEl?.querySelector('.urgence-banner-text');

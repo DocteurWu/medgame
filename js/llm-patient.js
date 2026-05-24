@@ -52,7 +52,7 @@ export class LLMPatient {
         const alertes = [];
         if (spo2 !== null && spo2 < 88)  alertes.push('détresse respiratoire grave, parole très difficile, phrases ultra-courtes, essoufflement audible');
         else if (spo2 !== null && spo2 < 94) alertes.push('gêne respiratoire, parles en courtes phrases, tu souffles entre les mots');
-        if (fc  !== null && fc  > 130)   alertes.push('cœur qui s'emballe, tu es paniqué(e) et agité(e)');
+        if (fc  !== null && fc  > 130)   alertes.push('cœur qui s\'emballe, tu es paniqué(e) et agité(e)');
         else if (fc !== null && fc > 100) alertes.push('légèrement tachycarde, tu te sens anxieux/anxieuse');
         if (pa  !== null && pa  < 90)    alertes.push('hypotension, tu te sens très faible et étourdi(e), parole lente');
         if (temp !== null && temp >= 39)  alertes.push('forte fièvre, tu trembles, tu as du mal à te concentrer, tu mélanges parfois les mots');
@@ -197,7 +197,9 @@ ${tonalite}
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...(this.apiKey ? { 'Authorization': `Bearer ${this.apiKey}` } : {})
+                ...(this.apiKey ? { 'Authorization': `Bearer ${this.apiKey}` } : {}),
+                'HTTP-Referer': window.location.origin || 'http://localhost',
+                'X-Title': 'MedGame'
             },
             body: JSON.stringify({
                 model: this.model,
