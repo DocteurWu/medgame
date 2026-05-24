@@ -17,6 +17,7 @@ yarn-error.log*
 
 # Environment variables (Crucial for Supabase/API keys)
 .env
+js/env.js
 .env.local
 .env.development.local
 .env.test.local
