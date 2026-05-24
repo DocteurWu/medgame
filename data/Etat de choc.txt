@@ -1,0 +1,350 @@
+OURS 1 : ETATS DE CHOC 
+Enseignant : Patrick PLAISANCE , Fédération des Urgences, Hôpital Lariboisière 
+patrick.plaisance@aphp.fr 
+Introduction – définition : 
+L’état de choc est une urgence médicale ou chirurgicale qui impose un diagnostic et un traitement 
+le plus précoces possible. Sa définition est souvent réduite à une chute de tension artérielle. En 
+fait, cette définition est plus complexe. 
+. 
+Une chute brutale de la tension artérielle est nommée collapsus. Ce dernier entraîne une 
+diminution de la perfusion des organes qui, si elle se prolonge, peut amener à l’état de choc. En 
+effet, la baisse de perfusion des organes induit une baisse des apports en l’oxygène au niveau 
+cellulaire. Si ces apports deviennent inférieurs aux besoins, il se crée alors un état de choc. Ainsi, 
+l’hypoperfusion tissulaire prolongée va entraîner une ischémie cellulaire qui définit l’état de choc 
+(asynchronisme entre apports en oxygène qui deviennent inférieurs aux besoins en oxygène. 
+Mais il est des cas où la pression artérielle systolique est maintenue à un niveau presque normal 
+(autorégulation) avec, malgré tout, des apports en oxygène insuffisants. 
+. 
+Le collapsus est donc une chute brutale de pression artérielle et a une définition 
+hémodynamique. L’état de choc est une ischémie cellulaire résultant d’une baisse de perfusion 
+d’organes sans ou avec collapsus. Sa définition est donc métabolique et non obligatoirement 
+uniquement hémodynamique. 
+Les différentes phases d’un état de choc : 
+Il existe 3 phases d’évolution d’un état de choc. 
+1/ Le choc compensé : c’est le tout début d’un état choc où il existe une hypoperfusion tissulaire 
+mais où les mécanismes d’adaptation de l’organisme permettent d’équilibrer cette 
+hypoperfusion. C’est dans cette première phase que les signes cliniques de choc peuvent 
+apparaître sans obligatoirement de chute de la pression artérielle. 
+2/ Le choc décompensé : dans cette 2e phase, l’adaptation seule de l’organisme n’est pas 
+suffisante. L’hypoperfusion peut entraîner alors une chute de la pression artérielle et le patient 
+évoluera vers le décès s’il n’y a pas de compensation par un traitement approprié. 
+3/ Le choc irréversible : cette 3e phase arrive beaucoup plus dans l’expérimentation animale que 
+chez les patients. Elle exprime un déséquilibre profond avec une ischémie cellulaire très 
+importante qui, malgré le traitement, évoluera systématiquement vers le décès. 
+3 
+Les mécanismes compensateurs : 
+Quel que soit le type de choc, les mécanismes compensateurs de l’organisme sont les mêmes. 
+Dans tous les cas, il existe une hypovolémie centrale qui se traduit par l’activation d’un certain 
+nombre de récepteurs qui vont tous entraîner une activation sympathique centrale. 
+1/ Les baroréflexes haute pression : 
+Ils sont situés au niveau artériel, principalement au niveau proximal aortique intra-thoracique et 
+vont stimuler les centres vasomoteurs cérébraux à partir de la baisse de pression ressentie et due 
+à l’hypovolémie centrale. 
+2/ Les baroréflexes basse pression : 
+Ils sont situés au niveau veineux central, notamment au niveau de l’artère pulmonaire. Ils sont, 
+eux aussi, activés lors d’une baisse de pression et vont entraîner une activation des mêmes 
+centres vasomoteurs. 
+3/ Les volorécepteurs de l’oreillette droite : 
+Ces récepteurs sont situés au niveau de la paroi auriculaire droite et sont stimulés par la baisse 
+de volémie. Il en résulte alors une stimulation des centres vasomoteurs. 
+4/ Les chémorécepteurs : 
+L’hypoxémie, les variations de capnie, vont également entraîner leur stimulation et l’activité des 
+centres vasomoteurs. 
+Tous ces mécanismes entraînent un phénomène commun qui est la stimulation du système 
+sympathique central. Les phénomènes descendants secondaires seront l’activation du système 
+neuro-humoral sympathique périphérique avec l’activation cortico-surrénalienne de 
+catécholamines telles que la noradrénaline et l’adrénaline. Leur sécrétion intravasculaire va 
+induire une vasoconstriction périphérique et une stimulation cardiaque chronotrope et inotrope 
+positive (augmentation de la contractilité myocardique). Le tout a pour but de maintenir le plus 
+longtemps possible un niveau de pression artérielle normale pour maintenir la meilleure pression 
+de perfusion possible des organes. 
+Relation pression – débit : 
+L’hyper-activation sympathique secondaire aux mécanismes compensateurs sus-décrits n’a pas 
+un impact homogène sur tout le territoire vasculaire. En effet, il existe 2 types d’organes : les 
+organes autorégulés et les organes non autorégulés. Lors d’un état de choc, l’élément primordial 
+pour l’organisme est de préserver l’oxygénation des organes vitaux qui sont le cœur, le cerveau, 
+le foie, les reins. La Figure 1 montre la relation entre la pression de perfusion des organes et le 
+débit sanguin régional qui passe à leur niveau. 
+1/ Dans les organes non vitaux tels que le tissu cutané, les muscles, le mésentère, on voit que, 
+dès que la pression de perfusion commence à chuter, le débit chute également très vite et très 
+4 
+précocement. C’est la raison pour laquelle, dans un état de choc, le territoire cutané est froid du 
+fait d’une vasoconstriction très importante et donc d’un débit sanguin très faible. 
+2/ Dans les organes vitaux, il est constaté que, pour une même chute de pression artérielle, le 
+débit va rester maintenu pendant beaucoup plus longtemps que dans les organes non vitaux. En 
+effet, il y a peu de modifications du débit sanguin dans ces organes entre 40 et 100 mmHg de 
+pression ce qui veut dire que l’oxygénation est maintenue. Le débit sanguin ne se fera que lorsque 
+la pression sera vraiment très faible. 
+Cette différence importante entre les organes vitaux et non vitaux tient donc simplement du fait 
+que le débit sanguin va être redistribué à partir des organes non vitaux par une grande 
+vasoconstriction chassant ainsi le sang vers les organes vitaux. Ces derniers sont donc beaucoup 
+plus longtemps protégés de l’ischémie. Ainsi, l’action des catécholamines intrinsèques est 
+différente en fonction des territoires. 
+Diagnostic clinique d’un état de choc : 
+Nous avons vu que l’état de choc pouvait être compensé ou non compensé. Quand il est non 
+compensé, le diagnostic est alors simple car il est constaté une baisse de la pression artérielle 
+systolique soit inférieure à 90 mmHg chez le patient habituellement normotendu, soit définie par 
+une baisse de plus de 40 mmHg par rapport à la pression artérielle systolique habituelle d’un 
+patient hypertendu. Ainsi, un patient qui habituellement à une pression artérielle à 140 mmHg 
+de systole sera hypotendu dès 100 mmHg et non 90. 
+Le diagnostic peut être plus difficile lors d’un choc compensé puisque que la pression artérielle 
+peut être maintenue. 
+Dans tous les cas, l’examen clinique complet du patient totalement dévêtu va être fondamental 
+à la fois pour le diagnostic mais également pour déterminer la gravité de l’état de choc. 
+5 
+Chez le patient en détresse, il faut analyser les 3 grandes fonctions vitales : l’état circulatoire, 
+l’état respiratoire et l’état neurologique. 
+1/ l’état circulatoire : 
+a) La réaction catécholaminergique entraîne une tachycardie, une pâleur et une froideur des 
+extrémités. La pâleur peut être remplacée par de la cyanose (extrémités bleues au niveau des 
+ongles, des lèvres, des lobes d’oreille). En fonction de l’état d’avancement du choc, la pression 
+artérielle systolique pourra être proche de la normale ou, au contraire, abaissée. Il est 
+également constaté une oligurie suspectée en demandant au patient si ses urines sont 
+foncées (urines concentrées) et si son volume d’urine est inférieur à l’habituel. Du fait d’une 
+diminution importante de débit en périphérie, le temps de recoloration cutanée peut-être 
+augmenté (supérieur à 3 secondes). Enfin, le manque d’oxygénation des organes et l’ischémie 
+tissulaire entraînée, peuvent être visualisés par des marbrures (cf. Photo 1) que l’on verra 
+tout d’abord au niveau des coudes et des genoux. Ces marbrures peuvent ensuite diffuser sur 
+la totalité des membres, le thorax, l’abdomen. 
+Photo 1 : Marbrures au niveau des membres inférieurs 
+b) Dans le contexte circulatoire, trois éléments fondamentaux et simples sont à analyser : la 
+fréquence cardiaque, la pression artérielle systolique, la pression artérielle différentielle. - 
+Nous avons déjà décrit les deux premiers. La tachycardie est systématique, résultat de 
+l’hypersécrétion catécholaminergique. La pression artérielle systolique normale ou 
+basse. L’élément majeur est que les deux sont liées par la formule : PA = Qc x RAS (PA : 
+pression artérielle ; Qc : débit cardiaque ; RAS : résistances artérielles systémiques) c’est- 
+à-dire : PA = VES x FC x RAS (VES : volume d’éjection systolique ; FC : fréquence 
+cardiaque). L’organisme en état de choc lutte pour préserver ses organes vitaux de 
+l’ischémie. Ainsi, la pression de perfusion est fondamentale à maintenir. Donc, toute 
+6 
+baisse de Qc (par baisse de VES) et/ou de RAS va entraîner une augmentation de FC 
+réactionnelle pour maintenir la pression. C’est la raison pour laquelle la pression 
+artérielle systolique n’est pas un bon indicateur au départ car elle peut être normale. La 
+Figure 2 le témoigne. On voit que la pression artérielle reste stable alors que le débit 
+cardiaque commence à chuter dans l’exemple d’un choc hémorragique et que ce n’est 
+que quand la perte sanguine va être d’au moins 20% que l’on verra cette chute 
+tensionnelle. Dans ce cadre, les RAS (extrémités froides) et la FC augmentent pour limiter 
+cette chute de pression. 
+Figure 2 : Relation pression-débit lors d’un choc hémorragique - 
+La pression artérielle différentielle est un autre paramètre important. C’est la différence 
+entre la pression artérielle systolique et la pression artérielle diastolique. Sa normale est 
+environ de 40 mmHg. Nous verrons que sa mesure simple nous permet de distinguer les 
+différents types d’état de choc que nous verrons plus loin. Afin de mieux le comprendre, 
+nous allons décrire les principaux déterminants de la pression artérielle. 
+b) Les déterminants de la pression artérielle : -  
+Déterminants de la pression artérielle systolique : 
+La pression artérielle systolique dépend de plusieurs paramètres. 
+. Le volume d’éjection systolique du ventricule gauche. En effet, plus ce volume est élevé, 
+plus la pression artérielle lors de l’éjection du ventricule gauche va être importante. Ce 
+volume peut dépendre de la précharge (volume de sang arrivant au cœur par le retour 
+veineux) et/ou de la contractilité. Plus la précharge est grande, plus la contractilité est forte, 
+plus le volume éjecté par le ventricule gauche sera important et plus la pression artérielle 
+pendant la systole sera élevée (et inversement). 
+. L’impédance aortique. Elle correspond globalement à la façon dont l’aorte se laisse 
+distendre lors de l’éjection du ventricule gauche. Plus l’impédance est élevée, plus l’aorte est 
+rigide et plus, pour un volume d’éjection donné, la pression artérielle systolique sera grande 
+(exemple : l’athérome recouvrant la paroi vasculaire de l’aorte chez le patient 
+7 
+hypertendu qui a donc des antécédents d’hypertension artérielle de type systolique). 
+. La pression artérielle diastolique. Plus celle-ci est élevée, plus la pression artérielle 
+systolique sera élevée, et inversement. - 
+Déterminants de la pression artérielle diastolique : 
+. Les résistances artérielles systémiques : plus elles sont élevées, plus la pression artérielle 
+diastolique sera élevée. 
+. La fréquence cardiaque : plus celle-ci est élevée, plus la pression artérielle diastolique 
+sera élevée. 
+2/ L’état respiratoire : 
+L’organisme va compenser la baisse d’oxygénation par une augmentation de la fréquence 
+respiratoire tout d’abord par une polypnée (respiration ample et rapide) puis, avec l’épuisement 
+du patient, par une tachypnée (volume courant normal voire bas du fait de la fatigue progressive, 
+et fréquence respiratoire élevée). La fréquence respiratoire est donc à mesurée de façon 
+systématique sur une minute. 
+3/ L’état neurologique : 
+L’hypoxémie cérébrale va se traduire par un état d’obnubilation, d’agitation, de vertige, de 
+lipothymie voire de convulsions et de coma. Ainsi, la première cause d’agitation dans un état de 
+choc est l’hypoxémie et/ou l’hypercapnie. 
+4/ Les signes généraux associés : 
+En plus de l’atteinte des 3 grandes fonctions, il faudra rechercher une soif, une hypo ou 
+hyperthermie. 
+5/ Eléments rapportés : 
+En plus des éléments cliniques purs, l’examen pourra analyser : 
+. 
+La baisse d’oxygénation qui sera mesurée par l’oxymétrie de pouls (saturomètre) dont la 
+normale est de 97-98% et qui inquiètera si elle passe en-dessous de 95% à l’air ambiant chez un 
+patient aux poumons antérieurement sains. 
+. Le taux d’hémoglobinémie capillaire 
+. L’électrocardiogramme pouvant retrouver la tachycardie, d’éventuels troubles rythmiques, des 
+signes électriques d’ischémie notamment chez les patients aux antécédents cardio-vasculaires. 
+8 
+Au total, devant un état de choc, il y a 2 phases. La première est de faire le diagnostic de l’état de 
+choc (pression artérielle systolique normale ou abaissée, tachycardie, augmentation de 
+fréquence respiratoire, troubles de conscience éventuels, chaleur des extrémités, éventuelles 
+marbrures, temps de recoloration cutanée, soif, pâleur ou cyanose). La 2e phase est de trouver 
+la cause du choc. 
+Diagnostic étiologique de l’état de choc : 
+Il y a 4 grandes catégories de chocs. 
+1/ Le choc hémorragique/hypovolémique : 
+a) Contexte : 
+. Le diagnostic peut être simple devant une hémorragie extériorisée (hémorragie digestive 
+haute ou basse, hémoptysie, plaie vasculaire). 
+. Traumatisme (tout état de choc dans ce contexte est fortement suspect d’hémorragie). 
+b) Antécédents – traitement : 
+. D’ulcère gastroduodénal, de cancer digestif, pulmonaire… 
+. Traitement antiagrégant, anticoagulant pouvant entraîner un saignement plus important. 
+c) Signes cliniques : 
+. Pâleur, extrémités froides, temps de recoloration cutanée supérieure à 3 secondes 
+. Hémoglobine capillaire (normale au début du fait d’une perte de sang total ou basse dans 
+un 2e temps) 
+. 
+Pression artérielle différentielle pincée (c’est-à-dire < 40 mmHg). En effet, lors d’un 
+saignement ou d’une hypovolémie, le retour veineux va diminuer, le volume d’éjection 
+systolique va donc diminuer également et la pression artérielle systolique va baisser. Pour 
+préserver l’organisme, il va s’en suivre une tachycardie et une augmentation des résistances 
+artérielles systémiques. Ainsi, la pression artérielle diastolique va être préservée et baissera 
+moins que la systole. La différentielle entre la systole et la diastole va donc diminuer, se 
+pincer. 
+2/ Le choc cardiogénique : 
+a) Contexte : 
+. Douleur thoracique, dyspnée de repos ou d’effort. 
+b) Antécédents – traitement : 
+. Insuffisance cardiaque chronique, infarctus myocardique, facteurs de risque cardio
+9 
+vasculaire 
+. Traitement spécifique exprimé par le patient ou vu sur une ordonnance 
+c) Signes cliniques : 
+. 
+Signes d’insuffisance cardiaque gauche aiguë : grésillement laryngé, râles crépitants, 
+diminution de la saturation pulsée en oxygène à l’oxymètre de pouls, galop gauche à 
+l’auscultation cardiaque. 
+. Signes d’insuffisance cardiaque droite aiguë : turgescence jugulaire, reflux hépato-jugulaire, 
+hépatomégalie douloureuse, signe de Harzer. Pour rappel, l’œdème des membres inférieurs 
+n’est pas un signe d’insuffisance cardiaque droite aiguë mais chronique. 
+. Pression artérielle différentielle pincée. Dans ce cadre, le volume d’éjection systolique du 
+ventricule gauche est diminué par la baisse de contractilité de celui-ci entraînant donc une 
+baisse de pression artérielle systolique. Dans le même cas que le choc hypovolémique, la 
+pression artérielle diastolique va être maintenue (tachycardie, augmentation des résistances 
+artérielles systémiques). 
+3/ Le choc anaphylactique : 
+a) Contexte : 
+. Administration de médicaments allergisants : antibiotiques, aspirine, anti-inflammatoires 
+non stéroïdiens, morphine, produit de contraste radiologique 
+. Ingestion d’aliments : œufs, poissons, crustacés, fraises, cacahuètes… 
+. Autres : vaccin, sérum, froid, exercice… 
+b) Antécédents – traitement : 
+. Asthme, œdème de Quincke, sinusite, patient atopique. 
+c) Signes cliniques : 
+. Dyspnée inspiratoire (œdème laryngé, des voies aériennes supérieures) et/ou expiratoire 
+(œdème des voies aériennes inférieures) 
+. Rhinorrhée, voix rauque (dysphonie), dysphagie, œdème du visage 
+. Erythrose cutanée, peau chaude, prurit généralisé 
+. Pression artérielle différentielle élargie. Dans ce cas, la réaction antigène – anticorps va 
+entraîner la sécrétion d’un certain nombre d’éléments vasodilatateurs entraînant donc une 
+baisse des résistances artérielles systémiques et une baisse de la pression artérielle 
+diastolique. La baisse de cette dernière entraîne la baisse équivalente de la systole. 
+10 
+4/ Le choc septique : 
+Contexte : 
+. Point d’appel infectieux retrouvé (peau, pneumopathie, urine, thrombophlébite, 
+endocardite, etc.). 
+a) Antécédents – traitement : 
+. Peu d’éléments forts dans ce cadre. 
+b) Signes cliniques : 
+. Fièvre 
+. Marbrures, cyanose, 
+. Douleur localisée, lésion purulente pouvant correspondre à un point d’appel clinique 
+. Pression artérielle différentielle élargie. On est dans le même contexte que dans le choc 
+anaphylactique. La différence est que c’est la lutte contre l’infection qui entraîne la sécrétion 
+d’endotoxines qui vont entraîner une baisse des résistances artérielles systémiques. 
+. Un paramètre important dans le contexte septique est le Quick SOFA (Sequential Organ 
+Failure Assessment) ou qSOFA. C’est un dérivé du score SOFA qui intègre seulement 3 
+paramètres : la fréquence respiratoire supérieure ou égale à 22/min, une altération de 
+conscience, une pression artérielle systolique inférieure ou égale à 100 mmHg. Si, dans le 
+contexte d’un sepsis, c’est-à-dire d’une dysfonction d’organe secondaire à une réponse 
+inappropriée envers une infection, le qSOFA est supérieur ou égal à 2, le pronostic du patient 
+est engagé. 
+La définition du choc septique correspond donc à un état d’infection (sepsis) associé à 3 autres 
+critères qui sont la difficulté de monter la pression artérielle avec simplement des solutés de 
+remplissage vasculaire, la mise sous médicaments vasopresseurs et un bilan biologique avec des 
+lactates supérieurs à 2 mmoles/L. 
+Traitement de l’état de choc : 
+1/ Traitement du choc hémorragique : 
+a) Traitement symptomatique : 
+. Oxygénothérapie 
+. Allonger le patient s’il n’y a pas de difficulté respiratoire et surélever les jambes 
+. Laisser le patient à jeun au cas où il faille l’opérer 
+. Poser 2 voies veineuses périphériques de gros calibre 
+. Administrer des solutés de remplissage qui sont des cristalloïdes (sérum physiologique) à 
+gros débit 
+. Administrer des culots globulaires dès que possible (O négatif puis Rhésus compatible) 
+11 
+. Si l’administration des solutés à débit rapide est insuffisante pour récupérer une pression 
+artérielle moyenne d’au moins 65 mmHg, l’ajout de médicaments vasopresseurs est 
+indispensable. Dans ce cadre, le meilleur vasopresseur est une catécholamine, la 
+noradrénaline, médicament ayant une action exclusivement alpha donc vasoconstrictrice. 
+b) Traitement étiologique : 
+. Mettre un pansement compressif si indiqué (plaie extériorisée), voire un garrot en dernier 
+recours 
+. Suturer, faire un méchage, mettre un clamp sur un vaisseau 
+. Programmer une intervention chirurgicale pour traiter une hémorragie interne 
+Le but est de maintenir une pression artérielle systolique au moins égale à 80 mmHg s’il n’y a pas 
+de traumatisme crânien, ou une pression artérielle moyenne au moins égale à 80 mmHg s’il y a 
+un traumatisme crânien associé. La distinction entre les 2 vient du fait que, pour maintenir la 
+pression de perfusion cérébrale, il faut au moins 80 mmHg de pression artérielle moyenne pour 
+ne pas créer de lésions cérébrales ischémiques importantes. 
+2/ Traitement du choc cardiogénique : 
+a) Traitement symptomatique : 
+. Si c’est une insuffisance cardiaque aiguë prédominant sur le cœur gauche : - - - 
+Oxygénothérapie pour avoir une saturation pulsée en oxygène supérieure à 90 % 
+Si cela ne suffit pas, une oxygénation plus intense peut être faite par une technique 
+permettant d’insuffler, à haut débit, beaucoup d’oxygène au niveau nasal avec une 
+machine (oxygénothérapie nasale à haut débit). L’oxygène administré est humidifié et 
+réchauffé. En dernier recours, une autre technique de ventilation non invasive appelée 
+« ventilation spontanée avec pression expiratoire positive » (communément appelée par 
+sa consonance anglaise CPAP : Continuous Positive Airway Pressure) permet 
+d’augmenter encore plus le débit d’oxygène par l’intermédiaire d’un masque sanglé sur 
+le visage du patient pour éviter les fuites et d’administrer une pression toujours positive 
+à l’inspiration comme à l’expiration dans les voies aériennes du patient. Cette technique 
+permet d’ouvrir les alvéoles en permanence du fait de la pression générée (recrutement 
+alvéolaire) et ainsi d’administrer en permanence de l’oxygène au patient. 
+Le médicament qui permet d’augmenter la contractilité du cœur gauche est une 
+catécholamine nommée Dobutamine qui agit sur les récepteurs Beta 1 (inotropisme 
+positif). Elle s’administre de façon continue grâce à une seringue électrique. Son débit 
+est variable en fonction de la gravité du choc cardiogénique. 
+. Si c’est une insuffisance cardiaque aiguë prédominant sur le cœur droit : 
+12 
+- 
+Remplissage par administration de sérum physiologique - 
+Administration d’adrénaline ou de noradrénaline qui ont toutes les 2 une action alpha 
+vasoconstrictrice pour augmenter la pression de perfusion du cœur. 
+b) Traitement étiologique : 
+. Dans tous les cas, on pourra traiter des troubles du rythme avec des anti-arythmiques ou 
+des troubles de conduction avec une sonde d’entraînement électro-systolique. 
+3/ Traitement du choc anaphylactique : 
+a) Traitement symptomatique : 
+. Oxygénothérapie 
+. Remplissage par du sérum physiologique (10 à 20 mL/Kg en 15 minutes) 
+. Adrénaline à la seringue électrique : elle a l’avantage d’avoir un effet à la fois alpha donc 
+vasoconstricteur mais également Beta 2 bronchodilatateur. 
+. Administration d’un antihistaminique 
+. En cas de bronchospasme, une nébulisation de bronchodilatateur sera utile ainsi que 
+l’administration de corticoïdes. 
+b) Traitement étiologique : 
+. C’est l’éviction du facteur causal (arrêt d’un médicament allergisant en cours) 
+4/ Traitement du choc septique : 
+a) Traitement symptomatique : 
+. Oxygénothérapie 
+. Médicaments vasopresseurs. Dans ce cas, c’est la noradrénaline qui est administrée en 
+première intention du fait de ses effets exclusifs alpha 1 donc vasoconstricteurs. On pourra 
+ajouter de la Dobutamine si l’infection a atteint le cœur avec une insuffisance cardiaque 
+associée. 
+b) Traitement étiologique : 
+. Antibiothérapie adaptée à l’agent infectant 
+. Éventuelle intervention chirurgicale 
+13 
+Surveillance d’un patient en état de choc 
+. État de conscience 
+. Fréquence cardiaque, pression artérielle 
+. Fréquence respiratoire, saturation pulsée en oxygène 
+. Évolution de l’état clinique du patient 
+. Quantité de soluté macromoléculaire administrée 
+. Débit des médicaments catécholaminergiques à la seringue électrique

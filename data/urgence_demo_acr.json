@@ -104,6 +104,7 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -131,6 +132,7 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -158,6 +160,7 @@
     "s3": {
       "id": "s3",
       "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -185,6 +188,7 @@
     "s4": {
       "id": "s4",
       "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -212,6 +216,7 @@
     "s5": {
       "id": "s5",
       "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -239,6 +244,7 @@
     "s6": {
       "id": "s6",
       "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "pale", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -266,6 +272,7 @@
     "s7_good": {
       "id": "s7_good",
       "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",

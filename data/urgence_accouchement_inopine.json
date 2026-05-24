@@ -1,0 +1,530 @@
+{
+  "id": "urgence_accouchement_inopine",
+  "title": "Accouchement Inopiné à Domicile",
+  "specialty": "urgence",
+  "difficulty": 3,
+  "redacteur": "L'équipe Médicale MedGame",
+  "patient": {
+    "nom": "Bernard",
+    "prenom": "Émilie",
+    "age": 29,
+    "sexe": "F",
+    "taille": "163 cm",
+    "poids": "75 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Accouchement inopiné à domicile chez une patiente à terme de 39 SA avec contractions toutes les 2-3 minutes.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée (marches quotidiennes légères durant la grossesse)"
+      },
+      "tabac": {
+        "quantite": "Non-fumeuse",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Aucune consommation pendant la grossesse"
+      },
+      "alimentation": {
+        "regime": "Normal et équilibré",
+        "particularites": "Supplémentation en fer et acide folique"
+      },
+      "emploi": {
+        "profession": "Secrétaire médicale",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Grossesse monogémellaire spontanée bien suivie",
+          "traitement": "Vitamines de grossesse"
+        },
+        {
+          "type": "Pas de diabète gestationnel ni d'hypertension gravidique",
+          "traitement": "Aucun"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Aucun antécédent chirurgical",
+          "date": ""
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Hypertension artérielle essentielle",
+          "age": "58"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Acide folique",
+        "dose": "0.4 mg",
+        "frequence": "1/jour"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Contractions utérines douloureuses débutées il y a 6 heures, s'étant fortement rapprochées et intensifiées depuis 1 heure.",
+      "evolution": "Brutale et rapide",
+      "facteursDeclenchants": "Terme de la grossesse (39 SA)",
+      "descriptionDouleur": "Contractions utérines intenses et très régulières de 60 secondes toutes les 2-3 minutes, accompagnées d'une envie irrésistible de pousser.",
+      "symptomesAssocies": [
+        "Perte de liquide amniotique clair à domicile",
+        "Sensation de poussée rectale imminente",
+        "Anxiété aiguë due à l'isolement"
+      ],
+      "remarques": "La patiente est seule à domicile, le travail progresse de manière extrêmement rapide (travail dit 'précipité')."
+    },
+    "verbatim": "Docteur ! Le bébé arrive ! J'ai une envie irrésistible de pousser, je ne peux pas me retenir... s'il vous plaît aidez-moi !"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "82 bpm",
+      "temperature": "37.0°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patiente très anxieuse, agitée lors des contractions, mais coopérante. Elle est en position demi-assise sur son canapé, retenant difficilement ses efforts de poussée.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, aucun souffle audible. Pouls radial bien frappé, synchrone.",
+      "inspection": "Pas de pâleur cutanéo-muqueuse initiale, pas de sueurs froides, temps de recoloration cutanée < 2 secondes.",
+      "palpation": "Extrémités chaudes, pouls périphériques bien perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique et normal dans les deux champs pulmonaires, pas de râles."
+    },
+    "examenAbdominal": {
+      "palpation": "Hauteur utérine mesurée à 32 cm. Utérus se contractant fermement toutes les 2 minutes avec un relâchement complet de l'utérus entre les contractions (absence de contracture permanente)."
+    },
+    "examenNeurologique": {
+      "conscience": "Score GCS 15 (parfaitement consciente et orientée). Pupilles isocores et réactives."
+    },
+    "examenObstetrical": {
+      "inspection": "À l'inspection de la vulve, la présentation céphalique (cheveux du bébé) est bien visible et affleure l'anneau vulvaire lors de la contraction avec poussée (couronnement). Écoulement continu de liquide amniotique clair, non méconial, non teinté.",
+      "toucherVaginal": "Toucher vaginal réalisé sous asepsie stricte : col effacé, dilatation complète à 10 cm, membranes rompues. Présentation céphalique en occipito-pubien (occiput en avant), engagée et descendue dans la partie basse du bassin (détroit inférieur)."
+    }
+  },
+  "availableExams": [
+    "Toucher vaginal",
+    "Monitoring cardiotocographique (RCF)",
+    "Échographie obstétricale au lit"
+  ],
+  "examResults": {
+    "Toucher vaginal": "Dilatation complète à 10 cm. Présentation céphalique en occipito-pubienne (tête bien engagée au détroit inférieur, prête à franchir la vulve). Pas de procidence du cordon.",
+    "Monitoring cardiotocographique (RCF)": "Rythme Cardiaque Fœtal (RCF) de base à 140 bpm, régulier, présentant des accélérations, pas de décélération (tracé normal de catégorie 1 rassurant). Contractions utérines régulières et intenses toutes les 2 minutes.",
+    "Échographie obstétricale au lit": "Présentation céphalique. Activité cardiaque fœtale présente et régulière. Placenta inséré normalement au fond de l'utérus (absence de placenta prævia ou d'anomalie d'insertion). Pas de décollement placentaire visible."
+  },
+  "possibleDiagnostics": [
+    "Accouchement inopiné à domicile en phase d'expulsion (dilatation complète à 10 cm)",
+    "Hémorragie de la délivrance sur atonie utérine",
+    "Menace d'accouchement prématuré à 32 SA",
+    "Hématome rétro-placentaire aigu"
+  ],
+  "correctDiagnostic": "Accouchement inopiné à domicile en phase d'expulsion (dilatation complète à 10 cm)",
+  "feedback": {
+    "Accouchement inopiné à domicile en phase d'expulsion (dilatation complète à 10 cm)": "Diagnostic exact ! La patiente est à terme (39 SA), présente une dilatation complète (10 cm) et la tête fœtale est engagée. L'accouchement est imminent et doit être réalisé sur place, car le transport est impossible et dangereux.",
+    "default": "Diagnostic incorrect. Pensez au terme de la grossesse et à l'examen clinique (dilatation complète, tête fœtale visible à la vulve)."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Installation de la patiente et accompagnement de l'expulsion (contrôle de la déflexion de la tête, dégagement des épaules)",
+    "Séchage du nouveau-né et évaluation (Apgar), puis clampage et section du cordon après 1-2 min",
+    "Administration systématique de Syntocinon (Oxytocine) 5 à 10 UI IVD/IM immédiatement après la naissance de l'enfant (3ème stade)",
+    "Traction forte sur le cordon ombilical pour accélérer la délivrance du placenta",
+    "Expression utérine violente ou manœuvre de Kristeller"
+  ],
+  "correctTreatments": [
+    "Installation de la patiente et accompagnement de l'expulsion (contrôle de la déflexion de la tête, dégagement des épaules)",
+    "Séchage du nouveau-né et évaluation (Apgar), puis clampage et section du cordon après 1-2 min",
+    "Administration systématique de Syntocinon (Oxytocine) 5 à 10 UI IVD/IM immédiatement après la naissance de l'enfant (3ème stade)"
+  ],
+  "fatalTreatments": [
+    "Traction forte sur le cordon ombilical pour accélérer la délivrance du placenta",
+    "Expression utérine violente ou manœuvre de Kristeller"
+  ],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.12,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 130,
+      "systolic": 75,
+      "diastolic": 45,
+      "spo2": 92,
+      "temperature": 36.2,
+      "respiratoryRate": 28
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3,
+  "alternativeDiagnostics": [
+    "Accouchement inopiné à domicile",
+    "Travail en phase active - Dilatation complète"
+  ],
+  "secondLineTreatments": [
+    "Massage utérin continu et sondage urinaire de vidange si atonie",
+    "Perfusion d'Oxytocine 20 UI dans 500 mL de sérum physiologique si saignement persistant"
+  ],
+  "relevantExams": [
+    "Toucher vaginal",
+    "Monitoring cardiotocographique (RCF)"
+  ],
+  "locks": [
+    {
+      "id": "lock_dilatation_complete",
+      "type": "QCM",
+      "challenge": {
+        "question": "Le toucher vaginal montre un col dilaté à 10 cm avec affleurement de la tête fœtale. Comment qualifie-t-on cette phase du travail et quelle est la conduite à tenir ?",
+        "options": [
+          "Dilatation complète, l'accouchement est imminent. Il faut installer la patiente et l'accompagner dans l'expulsion.",
+          "Phase de latence, le travail débute. Il faut demander à la patiente de marcher pour accélérer le travail.",
+          "Dystocie dynamique. Il faut administrer des utérotoniques en urgence avant toute poussée.",
+          "Dilatation incomplète. Il faut repousser la tête fœtale pour éviter les déchirures."
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "À 10 cm, la dilatation est COMPLÈTE. C'est le début de la phase d'expulsion. La tête fœtale est engagée. Il faut immédiatement préparer l'accouchement sur place, car le transport est impossible et dangereux.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_syntocinon_preventif",
+      "type": "QCM",
+      "challenge": {
+        "question": "Quel est le traitement médicamenteux systématique recommandé au 3ème stade de l'accouchement (immédiatement après la sortie du bébé) et dans quel but ?",
+        "options": [
+          "Oxytocine (Syntocinon) 5 à 10 UI IVD ou IM, pour prévenir l'hémorragie de la délivrance.",
+          "Sulprostone (Nalador) en bolus IV direct, pour accélérer la délivrance.",
+          "Méthergin IV, pour calmer la douleur des contractions post-accouchement.",
+          "Antibioprophylaxie par Amoxicilline 2g IV, pour prévenir l'endométrite."
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "L'administration systématique d'Oxytocine (Syntocinon) 5 à 10 UI par voie IV lente ou IM immédiatement après la naissance de l'enfant est la mesure clé de la délivrance dirigée pour prévenir l'hémorragie de la délivrance.",
+      "target_fields": [
+        "correctTreatments"
+      ]
+    }
+  ],
+  "gameplayConfig": {
+    "startNode": "s_initial"
+  },
+  "nodes": {
+    "s_initial": {
+      "id": "s_initial",
+      "descriptionClinique": "Émilie Bernard, 29 ans, 39 SA, est seule chez elle. Elle a des contractions très intenses toutes les 2 minutes. Elle crie qu'elle sent le bébé descendre et ressent un besoin irrésistible de pousser. La poche des eaux vient de se rompre, libérant un liquide clair. À l'inspection de la vulve, vous voyez les cheveux du bébé apparaître lors de la poussée.",
+      "constantesCibles": {
+        "tension": "120/80",
+        "pouls": "82",
+        "saturationO2": "99",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "16"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Installer confortablement la patiente (demi-assise ou décubitus dorsal, cuisses fléchies et écartées) et préparer le matériel propre pour l'expulsion",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_installation_faite",
+          "feedback": "Parfait ! La patiente est correctement installée sur des draps propres, le détroit inférieur est bien dégagé pour permettre le passage du bébé. Vous êtes prêt pour l'expulsion."
+        },
+        {
+          "label": "Réaliser un toucher vaginal immédiat sans installer la patiente ni prendre de précautions d'hygiène",
+          "tempsExecutionSec": 20,
+          "nextNode": "s_toucher_seul",
+          "feedback": "Le toucher vaginal confirme la dilatation complète (10 cm) et la tête engagée, mais la patiente pousse dans une position inconfortable et sur une surface non protégée. Vous perdez du temps."
+        },
+        {
+          "label": "Lui demander de serrer fort les cuisses et d'attendre l'arrivée du SAMU",
+          "tempsExecutionSec": 30,
+          "nextNode": "s_degradation_compression",
+          "feedback": "ERREUR CLINIQUE GRAVE : Essayer de retarder mécaniquement l'accouchement alors que la dilatation est complète comprime la tête fœtale et le cordon ombilical, provoquant une hypoxie fœtale aiguë immédiate et d'importantes déchirures périnéales."
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_toucher_seul": {
+      "id": "s_toucher_seul",
+      "descriptionClinique": "La dilatation est complète à 10 cm, la tête fœtale (occiput) affleure la vulve lors des poussées. Émilie crie qu'elle ne peut plus se retenir de pousser.",
+      "constantesCibles": {
+        "tension": "122/82",
+        "pouls": "88",
+        "saturationO2": "99",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "18"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Installer confortablement la patiente (cuisses fléchies et écartées) et se préparer immédiatement à l'expulsion",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_installation_faite",
+          "feedback": "Très bien. Vous installez la patiente in extremis. La tête fœtale commence à franchir la vulve."
+        },
+        {
+          "label": "Tenter de repousser la tête du bébé avec la main pour retarder l'expulsion",
+          "tempsExecutionSec": 25,
+          "nextNode": "s_degradation_foetale",
+          "feedback": "ERREUR COMMANDE CATASTROPHIQUE : Repousser la tête fœtale est un geste extrêmement dangereux qui provoque une souffrance fœtale aiguë par compression funiculaire (cordon) ou crânienne et expose à une rupture utérine dramatique."
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_installation_faite": {
+      "id": "s_installation_faite",
+      "descriptionClinique": "Émilie est installée sur son canapé. À chaque contraction, elle pousse de toutes ses forces. La tête fœtale franchit progressivement l'anneau vulvaire (le couronnement). Le périnée est extrêmement tendu.",
+      "constantesCibles": {
+        "tension": "125/85",
+        "pouls": "92",
+        "saturationO2": "99",
+        "temperature": "37.1",
+        "frequenceRespiratoire": "20"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Accompagner l'expulsion : freiner doucement la tête pour contrôler sa déflexion, puis dégager l'épaule antérieure vers le bas, puis postérieure vers le haut",
+          "tempsExecutionSec": 30,
+          "nextNode": "s_naissance_bebe",
+          "feedback": "EXCELLENT GESTE ! Le contrôle de la déflexion préserve l'intégrité du périnée d'Émilie (pas de déchirure sévère). Le dégagement successif des épaules se fait sans encombre et de manière fluide. Le corps suit instantanément."
+        },
+        {
+          "label": "Tirer vigoureusement sur la tête fœtale dès qu'elle apparaît pour accélérer la sortie du corps",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_lesion_plexus",
+          "feedback": "ERREUR CLINIQUE GRAVE : Une traction forte et désaxée sur la tête fœtale expose à une élongation du plexus brachial fœtal (paralysie d'Erb) et à des déchirures périnéales complètes (3ème et 4ème degré) chez la mère."
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_naissance_bebe": {
+      "id": "s_naissance_bebe",
+      "descriptionClinique": "Le bébé est né ! C'est un garçon vigoureux qui pousse un cri franc immédiat. Il est rose et tonique. Émilie sourit à travers ses larmes, mais elle est fatiguée. Le bébé est encore relié à sa mère par le cordon ombilical.",
+      "constantesCibles": {
+        "tension": "118/78",
+        "pouls": "84",
+        "saturationO2": "99",
+        "temperature": "36.9",
+        "frequenceRespiratoire": "18"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Sécher immédiatement le bébé dans un linge propre, l'évaluer (Apgar 10/10), le poser en peau à peau contre sa mère, puis clamper et sectionner le cordon après 1-2 min (après arrêt des battements)",
+          "tempsExecutionSec": 45,
+          "nextNode": "s_cordon_traite",
+          "feedback": "PARFAIT. Le séchage immédiat empêche l'hypothermie du nouveau-né. Le clampage tardif du cordon améliore les réserves en fer du bébé. Le peau à peau rassure la mère et l'enfant et favorise la sécrétion d'ocytocine endogène."
+        },
+        {
+          "label": "Laisser le bébé humide sur les draps et s'occuper uniquement de la mère",
+          "tempsExecutionSec": 30,
+          "nextNode": "s_hypothermie_bebe",
+          "feedback": "ERREUR : Un nouveau-né laissé mouillé à l'air ambiant perd très rapidement sa chaleur par évaporation, ce qui provoque une hypothermie sévère, une acidose métabolique et une détresse respiratoire secondaire."
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_cordon_traite": {
+      "id": "s_cordon_traite",
+      "descriptionClinique": "Le cordon est clampé et coupé. Le bébé est bien au chaud en peau à peau. Nous entrons dans la phase de la délivrance (3ème stade). L'utérus d'Émilie commence à se relâcher temporairement. C'est le moment le plus à risque pour la mère.",
+      "constantesCibles": {
+        "tension": "115/75",
+        "pouls": "86",
+        "saturationO2": "98",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "16"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Administrer systématiquement 5 à 10 UI d'Oxytocine (Syntocinon) en IV direct lent ou en IM, puis attendre patiemment les signes de décollement placentaire sans tirer sur le cordon",
+          "tempsExecutionSec": 20,
+          "nextNode": "s_delivrance_reussie",
+          "feedback": "EXCELLENT RÉFLEXE ! C'est la délivrance dirigée systématique. L'oxytocine stimule la contraction utérine post-partum (ligatures vivantes de Pinard), prévenant efficacement l'atonie et l'hémorragie de la délivrance."
+        },
+        {
+          "label": "Tirer fermement et continuellement sur le cordon ombilical pour extraire le placenta plus rapidement",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_choc_hemorragique_cataclysmique",
+          "feedback": "ERREUR COMMANDE CATASTROPHIQUE (FATALE) : La traction sur le cordon sur un placenta non décollé provoque un arrachement placentaire partiel cataclysmique ou une inversion utérine aiguë (l'utérus se retourne comme un gant). Hémorragie massive immédiate !"
+        },
+        {
+          "label": "Pratiquer une expression utérine vigoureuse et répétée sur le fond de l'utérus (manœuvre de Kristeller)",
+          "tempsExecutionSec": 20,
+          "nextNode": "s_rupture_utérine",
+          "feedback": "ERREUR GRAVE (FATALE) : La manœuvre d'expression utérine vigoureuse est interdite et dangereuse. Elle peut causer une rupture utérine, un hématome sous-capsulaire ou des lésions viscérales sévères."
+        },
+        {
+          "label": "Ne rien faire et attendre passivement la délivrance spontanée sans utérotoniques",
+          "tempsExecutionSec": 45,
+          "nextNode": "s_atonie_degradation_temporelle",
+          "feedback": "ATTITUDE PASSIVE DANGEREUSE : En l'absence de Syntocinon prophylactique, l'utérus d'Émilie peine à se rétracter. Une atonie utérine progressive s'installe, entraînant un saignement silencieux mais continu."
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_atonie_degradation_temporelle": {
+      "id": "s_atonie_degradation_temporelle",
+      "descriptionClinique": "10 minutes après la naissance, le placenta n'est toujours pas délivré. Un saignement vaginal rouge vif, continu et de plus en plus abondant apparaît. À la palpation, l'utérus est très mou, flasque, remontant bien au-dessus de l'ombilic (pas de globe de sécurité). Émilie est pâle, grelotte, et dit se sentir très faible. Sa tension chute à 85/55 mmHg (pincée) et son pouls grimpe à 120 bpm.",
+      "constantesCibles": {
+        "tension": "85/55",
+        "pouls": "120",
+        "saturationO2": "94",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter immédiatement 10 UI d'Oxytocine (Syntocinon) en IVD ou IM, pratiquer un massage utérin vigoureux continu et vider la vessie par sondage urinaire",
+          "tempsExecutionSec": 25,
+          "nextNode": "s_delivrance_reussie",
+          "feedback": "SAUVETAGE PARFAIT ! L'oxytocine et le massage utérin forcent la rétraction de l'utérus. Le sondage urinaire évacue une vessie pleine qui faisait obstacle mécanique à cette rétraction. L'utérus se contracte enfin, le placenta est expulsé et le saignement s'arrête !"
+        },
+        {
+          "label": "Tirer de toutes ses forces sur le cordon ombilical pour forcer la sortie du placenta",
+          "tempsExecutionSec": 15,
+          "nextNode": "s_choc_hemorragique_cataclysmique",
+          "feedback": "ERREUR COMMANDE CATASTROPHIQUE (FATALE) : Sur un utérus atone, tirer sur le cordon arrache les insertions placentaires. Le saignement devient torrentiel, l'utérus s'inverse. La patiente s'effondre en choc cardiorespiratoire."
+        },
+        {
+          "label": "Attendre passivement l'arrivée du SAMU sans effectuer de geste de réanimation ou d'utérotoniques",
+          "tempsExecutionSec": 60,
+          "nextNode": "s_deces_hemorragique",
+          "feedback": "INERTIE CRIMINELLE : Sans traitement utérotonique immédiat, l'atonie utérine provoque un choc hémorragique massif réfractaire. Les pertes de sang dépassent 1.5 L."
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_delivrance_reussie": {
+      "id": "s_delivrance_reussie",
+      "descriptionClinique": "Le placenta et les membranes sont expulsés spontanément et de manière complète (vérifié intact). Sous l'action du Syntocinon, l'utérus se contracte fermement pour former un globe de sécurité utérin dur sous l'ombilic. Le saignement vaginal redevient minime (lochies normales). Émilie se réchauffe, ses constantes se stabilisent. Les secours du SAMU frappent à la porte. La mère et l'enfant sont sains et saufs !",
+      "constantesCibles": {
+        "tension": "118/75",
+        "pouls": "84",
+        "saturationO2": "99",
+        "temperature": "36.7",
+        "frequenceRespiratoire": "16"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": true,
+      "xpReward": 100
+    },
+    "s_choc_hemorragique_cataclysmique": {
+      "id": "s_choc_hemorragique_cataclysmique",
+      "descriptionClinique": "La traction sur le cordon a provoqué un arrachement du placenta ou une inversion utérine complète. Une hémorragie massive et cataclysmique survient. Émilie s'effondre dans un coma profond. Son pouls est impalpable, sa tension est non mesurable. Malgré l'arrivée du SAMU quelques minutes plus tard, l'arrêt cardiaque par désamorçage hypovolémique est irréversible. Décès maternel.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35.0",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_rupture_utérine": {
+      "id": "s_rupture_utérine",
+      "descriptionClinique": "L'expression utérine violente a provoqué une rupture utérine complète avec hémorragie intra-abdominale massive foudroyante. La patiente présente une douleur abdominale déchirante et s'effondre en état de choc hémorragique réfractaire sévère. Le décès maternel et fœtal est inévitable sur place.",
+      "constantesCibles": {
+        "tension": "30/15",
+        "pouls": "150",
+        "saturationO2": "50",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "35"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_deces_hemorragique": {
+      "id": "s_deces_hemorragique",
+      "descriptionClinique": "L'atonie utérine non traitée a conduit à une perte sanguine supérieure à 1,5 L. En l'absence d'oxytocine et de massage utérin, le choc hémorragique devient métaboliquement irréversible. Émilie fait un arrêt cardiorespiratoire hypovolémique sous vos yeux avant l'arrivée des secours.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "34.5",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_degradation_foetale": {
+      "id": "s_degradation_foetale",
+      "descriptionClinique": "Le fait de repousser la tête ou d'entraver l'accouchement a provoqué une anoxie cérébrale fœtale sévère par compression funiculaire complète. Le bébé naît en état de mort apparente avec un score d'Apgar à 1. Les manœuvres de réanimation néonatale intensive débutent mais les séquelles neurologiques seront gravissimes et définitives. Échec clinique dramatique.",
+      "constantesCibles": {
+        "tension": "110/70",
+        "pouls": "110",
+        "saturationO2": "97",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_degradation_compression": {
+      "id": "s_degradation_compression",
+      "descriptionClinique": "La patiente a été forcée de serrer les cuisses alors que le bébé était engagé. La compression prolongée du cordon ombilical a provoqué une asphyxie intra-partum sévère. Le bébé naît en détresse cardiorespiratoire majeure (Apgar 3) et la mère présente des déchirures périnéales complètes s'étendant jusqu'au sphincter anal (périnée complet).",
+      "constantesCibles": {
+        "tension": "112/72",
+        "pouls": "108",
+        "saturationO2": "96",
+        "temperature": "36.9",
+        "frequenceRespiratoire": "22"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_hypothermie_bebe": {
+      "id": "s_hypothermie_bebe",
+      "descriptionClinique": "Le nouveau-né est resté humide à l'air ambiant. Sa température corporelle s'effondre à 34.2°C (hypothermie modérée à sévère), déclenchant un épuisement des réserves en glucose, une hypoglycémie profonde et une détresse respiratoire néonatale (syndrome de mauvaise adaptation extra-utérine). Le bébé doit être transféré en réanimation néonatale sous rampe chauffante.",
+      "constantesCibles": {
+        "tension": "114/74",
+        "pouls": "95",
+        "saturationO2": "98",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "20"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    },
+    "s_lesion_plexus": {
+      "id": "s_lesion_plexus",
+      "descriptionClinique": "La traction vigoureuse et brutale sur la tête fœtale pour extraire le corps a provoqué un étirement excessif des racines nerveuses C5-C6. Le bébé naît avec une paralysie du plexus brachial droit (bras ballant en rotation interne). La mère présente une déchirure périnéale du 3ème degré compliquée d'un saignement actif abondant.",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "105",
+        "saturationO2": "97",
+        "temperature": "37.0",
+        "frequenceRespiratoire": "22"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false
+    }
+  },
+  "correction": "# Correction : Accouchement Inopiné à Domicile et Délivrance Dirigée\n\n## 1. Contexte Physiopathologique & Prise en Charge\nL'accouchement inopiné à domicile (en dehors de toute structure médicale) est une urgence courante. La priorité absolue est de maintenir son calme, de rassurer la patiente et de respecter la physiologie de la naissance.\n\n### Les trois phases cliniques clés :\n- **Phase d'expulsion (2ème stade)** : La dilatation est complète à 10 cm, la tête fœtale est engagée. Il faut accompagner la descente sans forcer ni retenir la tête, pour préserver le périnée maternel et éviter les traumatismes crâniens ou du plexus brachial chez l'enfant.\n- **Séchage immédiat du nouveau-né** : C'est le premier geste de réanimation néonatale systématique. Le nouveau-né mouillé perd sa chaleur extrêmement vite par évaporation. L'hypothermie fœtale provoque une détresse respiratoire sévère, une acidose métabolique et une hypoglycémie.\n- **Délivrance (3ème stade)** : Expulsion du placenta. C'est la phase la plus dangereuse pour la mère. Le risque majeur est l'**Hémorragie du Post-Partum (HPP)** par **atonie utérine** (l'utérus ne se contracte pas, laissant le lit placentaire saigner massivement).\n\n---\n\n## 2. Bons Réflexes (Do's)\n- **Installation adaptée** : Installer la patiente sur le dos ou demi-assise, cuisses fléchies et écartées pour maximiser l'ouverture du détroit inférieur.\n- **Contrôle de la déflexion** : Poser une main douce sur le crâne fœtal lors de sa sortie pour freiner une déflexion trop brutale, protégeant ainsi le périnée.\n- **Dégagement des épaules méthodique** : Attendre la rotation spontanée de la tête, puis guider doucement la tête vers le bas pour dégager l'épaule antérieure sous la symphyse pubienne, puis vers le haut pour dégager l'épaule postérieure.\n- **Séchage vigoureux** : Sécher le bébé immédiatement avec un linge propre et chaud, puis l'installer en peau à peau sur le ventre maternel.\n- **Clampage tardif du cordon** : Clamper et sectionner le cordon après 1 à 2 minutes de vie, une fois que les pulsations du cordon ont cessé.\n- **Délivrance dirigée systématique** : Administrer **5 à 10 UI de Syntocinon (Oxytocine) par voie IV lente ou IM** immédiatement après la sortie du bébé (avant la délivrance placentaire). C'est la recommandation internationale majeure de première intention pour prévenir l'atonie utérine.\n- **Surveillance de la délivrance** : Attendre le décollement spontané du placenta (signes : allongement du cordon à la vulve, utérus qui remonte et se durcit, absence de transmission du pouls maternel au cordon).\n\n---\n\n## 3. Erreurs à Éviter (Don'ts)\n- **Traction forte sur le cordon ombilical** : **ERREUR VITALE CATASTROPHIQUE**. Risque d'arrachement placentaire partiel provoquant une hémorragie interne cataclysmique immédiate, ou d'inversion utérine aiguë (l'utérus se retourne comme un gant, provoquant un choc neurogénique et hémorragique foudroyant).\n- **Expression utérine violente (manœuvre de Kristeller)** : **INTERDITE et DANGEREUSE**. Risque de rupture utérine, d'hématome sous-capsulaire splénique ou hépatique maternel.\n- **Repousser la tête du bébé** ou forcer la mère à serrer les cuisses pour attendre les secours : Provoque une anoxie fœtale immédiate par compression prolongée du cordon et des lésions périnéales majeures.\n- **Laisser le nouveau-né humide** : Conduit rapidement à une détresse respiratoire néonatale par hypothermie sévère.\n- **Inertie thérapeutique post-partum** : Attendre passivement la délivrance sans administrer d'ocytocine prophylactique expose la mère à une atonie utérine silencieuse et progressive avec choc hémorragique secondaire.\n\n---\n\n## 4. Dynamique des Signes Vitaux lors du Choc Hémorragique\nSi l'oxytocine n'est pas administrée rapidement après l'expulsion, l'utérus reste flasque (atonie), entraînant un saignement continu massif :\n- **Chute de la tension artérielle (hypotension)** avec **pincement de la différentielle** (PAS et PAD rapprochées, ex : 75/45 mmHg) due à la vasoconstriction sympathique réflexe périphérique.\n- **Tachycardie compensatrice rapide** (le pouls grimpe > 120 bpm) pour tenter de maintenir le débit cardiaque face à la perte de volume sanguin.\n- **Pâleur, marbrures, froideur des extrémités et soif intense** traduisant la redistribution du sang vers les organes nobles (cœur, cerveau).\n- **L'administration d'Oxytocine (Syntocinon)** et le massage utérin vigoureux sont les clés pour obtenir le **globe de sécurité utérin** dur et tonique qui stoppe le saignement."
+}

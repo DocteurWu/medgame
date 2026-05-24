@@ -51,6 +51,9 @@ class VitalSignsMonitor {
         this.baseValues = { ...props };
         this.calculateVariationRanges();
 
+        // Fix de synchronisation globale
+        window.vitalSigns = this;
+
         // --- Dynamique temporelle ---
         this.elapsedSeconds = 0;           // secondes écoulées depuis début du cas
         this.dynamicsTickInterval = null;  // intervalle 1s pour la progression

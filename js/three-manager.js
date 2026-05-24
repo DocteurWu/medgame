@@ -103,6 +103,7 @@ class ThreeManager {
                 onObject: (object) => this.showInfo(object),
                 onHover: (object, event) => this.showTooltip(object, event)
             });
+            this.scene.manager = this;
             this.scene.init();
 
             if (CharacterControllerClass) {
@@ -217,7 +218,7 @@ class ThreeManager {
 
     _set2DMode() {
         document.body.classList.add('render-2d');
-        document.body.classList.remove('render-3d', 'render-3d-full');
+        document.body.classList.remove('render-3d', 'render-3d-full', 'mode-fps');
         document.body.classList.remove('mode-3d');
         this.enabled = false;
         const appContainer = document.querySelector('.app-container');
@@ -227,8 +228,16 @@ class ThreeManager {
     bindControls() {
         document.querySelectorAll('#hud-3d [data-camera]').forEach((button) => {
             button.addEventListener('click', () => {
-                if (this.scene) this.scene.setCamera(button.dataset.camera);
-                if (this.hud) this.hud.showNotification(`Vue ${button.dataset.camera}`);
+                const mode = button.dataset.camera;
+                if (this.scene) this.scene.setCamera(mode);
+                if (this.hud) {
+                    let label = mode;
+                    if (mode === 'room') label = 'Salle';
+                    else if (mode === 'patient') label = 'Patient';
+                    else if (mode === 'desk') label = 'Bureau';
+                    else if (mode === 'fps') label = 'Immersif FPS';
+                    this.hud.showNotification(`Mode : ${label}`);
+                }
             });
         });
 
@@ -1260,24 +1269,33 @@ class ThreeManager {
 
                 // Couleur de peau dynamique
                 const patient = this.scene.patient;
+                const animator = this.scene.patientAnimator;
+
                 if (patient.skinMat) {
                     let skinColor = new THREE.Color(0xd7a87a); // Base normale
                     if (spo2 < 85) {
-                        // Cyanose sévère : teinte bleutée
                         skinColor.lerp(new THREE.Color(0x8fa8b8), Math.min(1, (85 - spo2) / 15));
-                    } else if (spo2 < 92) {
-                        // Cyanose légère
-                        skinColor.lerp(new THREE.Color(0xc8b8a0), Math.min(1, (92 - spo2) / 7));
+                    } else if (spo2 < 94) {
+                        // Cyanose progressive à partir de 94% SpO2
+                        skinColor.lerp(new THREE.Color(0xc2c8d4), Math.min(1, (94 - spo2) / 9));
                     }
                     if (temp >= 38.5) {
-                        // Fièvre : teinte rouge
                         const feverIntensity = Math.min(1, (temp - 38.5) / 2);
                         skinColor.lerp(new THREE.Color(0xe8a090), feverIntensity);
                     } else if (sysBP < 90) {
-                        // Pâleur hypotensive
                         skinColor.lerp(new THREE.Color(0xd4c4b0), Math.min(1, (90 - sysBP) / 20));
                     }
                     patient.skinMat.color.lerp(skinColor, 0.02);
+
+                    // Peau luisante en cas de sueur/fièvre/douleur
+                    const isSweating = (temp >= 38.5 || hr > 110 || animator?.currentExpression === 'sweating' || animator?.currentExpression === 'sueur');
+                    if (isSweating) {
+                        patient.skinMat.roughness = THREE.MathUtils.lerp(patient.skinMat.roughness, 0.18, 0.02);
+                        patient.skinMat.metalness = THREE.MathUtils.lerp(patient.skinMat.metalness, 0.2, 0.02);
+                    } else {
+                        patient.skinMat.roughness = THREE.MathUtils.lerp(patient.skinMat.roughness, 0.72, 0.02);
+                        patient.skinMat.metalness = THREE.MathUtils.lerp(patient.skinMat.metalness, 0.05, 0.02);
+                    }
 
                     // Émission en cas de détresse
                     if (spo2 < 90 || hr > 130) {
@@ -1289,8 +1307,19 @@ class ThreeManager {
                     }
                 }
 
+                // Cyanose progressive spécifique des lèvres (bouche)
+                const mouth = patient.mouth;
+                if (mouth && mouth.material) {
+                    let lipColor = new THREE.Color(0x8b2020); // Rouge à lèvres normal
+                    if (spo2 < 95) {
+                        // Transition progressive vers un violet/bleu clinique
+                        const cyanoseFactor = Math.min(1, (95 - spo2) / 20);
+                        lipColor.lerp(new THREE.Color(0x2d3a6b), cyanoseFactor);
+                    }
+                    mouth.material.color.lerp(lipColor, 0.02);
+                }
+
                 // Mettre à jour l'expression faciale en continu
-                const animator = this.scene.patientAnimator;
                 if (animator) {
                     // Adaptation en temps réel du rythme respiratoire
                     let pattern = 'normal';

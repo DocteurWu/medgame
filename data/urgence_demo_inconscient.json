@@ -104,6 +104,7 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Marc est au sol, inerte. Vous êtes le seul témoin sur ce chemin.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -131,6 +132,7 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "Vous ouvrez la bouche, rien n'obstrue. Vous écoutez le souffle.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -158,6 +160,7 @@
     "s3_respire": {
       "id": "s3_respire",
       "descriptionClinique": "Victime inconsciente qui respire sur le dos.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "bradypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -185,6 +188,7 @@
     "s4": {
       "id": "s4",
       "descriptionClinique": "Il est sur le côté, stable. Sa bouche est ouverte vers le bas.",
+      "patientVisuel": { "position": "allonge", "expression": "pls", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -239,6 +243,7 @@
     "s6_good": {
       "id": "s6_good",
       "descriptionClinique": "Le SAMU arrive. La PLS a protégé ses poumons lors du vomissement. Diagnostic : Malaise vagal sévère.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -253,6 +258,7 @@
     "s_err_id": {
       "id": "s_err_id",
       "descriptionClinique": "Pendant que vous cherchiez son nom, il s'est étouffé en silence sur le dos.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -267,6 +273,7 @@
     "s_err_shake": {
       "id": "s_err_shake",
       "descriptionClinique": "Il avait une fêlure cervicale. Votre mouvement l'a rendu tétraplégique.",
+      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "bradypnea" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -281,6 +288,7 @@
     "s_err_vomit": {
       "id": "s_err_vomit",
       "descriptionClinique": "Sa langue est tombée au fond de la gorge, bloquant l'air. Arrêt cardiaque faute de PLS.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -309,6 +317,7 @@
     "s_err_away": {
       "id": "s_err_away",
       "descriptionClinique": "Le SAMU est arrivé, il était en arrêt depuis 5 minutes. Personne n'a vu quand il a cessé de respirer.",
+      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",

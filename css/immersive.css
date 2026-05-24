@@ -362,6 +362,76 @@ body.mode-3d #scene-container {
     box-shadow: 0 0 18px rgba(46, 204, 113, 0.35), inset 0 0 14px rgba(46, 204, 113, 0.16);
 }
 
+/* HUD Top Bar - Premium Glassmorphism */
+#hud-3d {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(8, 16, 32, 0.8), rgba(4, 8, 16, 0.85));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    border-radius: 16px;
+    padding: 8px 18px;
+    z-index: 60;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Real-Time Telemetry Scope */
+.hud-telemetry-container {
+    width: 280px;
+    height: 42px;
+    background: rgba(0, 15, 5, 0.55);
+    border: 1px solid rgba(0, 255, 100, 0.18);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;
+    box-shadow: inset 0 0 12px rgba(0, 255, 100, 0.12);
+    position: relative;
+}
+
+.hud-telemetry-container::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 3px, 6px 100%;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+#hud-telemetry-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Cinematic Vignette Overlay */
+.hud-cinematic-vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 6; /* Just above scene-container but below HUD */
+    pointer-events: none;
+    background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+body.render-3d-full .hud-cinematic-vignette,
+body.mode-3d .hud-cinematic-vignette {
+    opacity: 1;
+}
+
 .hud-context-card {
     position: absolute;
     left: 50%;
@@ -3351,4 +3421,40 @@ body.urgence-3d-active {
         text-align: center;
     }
 }
-`n/* ==================== 3D FLOATING TEXT ==================== */`n.hud-floating-text {`n    pointer-events: none;`n    user-select: none;`n    will-change: transform, opacity;`n}`n`n@keyframes floatingTextAnim {`n    0% {`n        opacity: 0;`n        transform: translate(-50%, 0) scale(0.5);`n    }`n    20% {`n        opacity: 1;`n        transform: translate(-50%, -20px) scale(1.1);`n    }`n    100% {`n        opacity: 0;`n        transform: translate(-50%, -80px) scale(1);`n    }`n}
+/* ==================== 3D FLOATING TEXT ==================== */
+.hud-floating-text {
+    pointer-events: none;
+    user-select: none;
+    will-change: transform, opacity;
+}
+
+@keyframes floatingTextAnim {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -20px) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -80px) scale(1);
+    }
+}
+
+/* Nettoyage permanent du HUD en mode 3D immersif (wow effect et propreté visuelle) */
+body.render-3d-full .hud-telemetry-container,
+body.render-3d-full .hud-nav,
+body.render-3d-full #hud-progress,
+body.render-3d-full #clinical-progress-panel,
+body.render-3d-full #hud-context-card,
+body.render-3d-full #hud-quick-actions,
+body.mode-3d .hud-telemetry-container,
+body.mode-3d .hud-nav,
+body.mode-3d #hud-progress,
+body.mode-3d #clinical-progress-panel,
+body.mode-3d #hud-context-card,
+body.mode-3d #hud-quick-actions {
+    display: none !important;
+}

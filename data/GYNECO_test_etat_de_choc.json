@@ -1,0 +1,446 @@
+{
+  "id": "GYNECO_test_etat_de_choc",
+  "title": "Hémorragie Post-Partum et État de Choc Hémorragique",
+  "specialty": "gynecologie",
+  "difficulty": 3,
+  "redacteur": "Antigravity AI (Carmack-Style)",
+  "patient": {
+    "nom": "Martin",
+    "prenom": "Sophie",
+    "age": 28,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "62 kg",
+    "groupeSanguin": "O-"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Hémorragie vaginale massive survenue 10 minutes après un accouchement par voie basse.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Active, professeur de yoga"
+      },
+      "tabac": {
+        "quantite": "Non-fumeuse",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Aucune consommation"
+      },
+      "alimentation": {
+        "regime": "Normal, équilibré",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Enseignante",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Grossesse normale sans particularité",
+        "Pas de troubles de la coagulation connus"
+      ],
+      "chirurgicaux": [
+        "Aucun antécédent chirurgical"
+      ],
+      "familiaux": [
+        "Pas de maladie hémorragique familiale"
+      ]
+    },
+    "traitements": [
+      "Vitamines de grossesse"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 10 minutes, immédiatement après la délivrance.",
+      "evolution": "Hémorragie active, brutale et très abondante.",
+      "facteursDeclenchants": "Accouchement par voie basse d'un nouveau-né de 3.8 kg.",
+      "descriptionDouleur": "Pesanteur pelvienne, gêne respiratoire globale, sensation de soif intense.",
+      "symptomesAssocies": [
+        "Sensation de malaise imminent",
+        "Froideur des mains et des pieds",
+        "Frissons",
+        "Agitation liée à l'anxiété et à l'hypoxémie"
+      ],
+      "remarques": "Patiente extrêmement assoiffée, réclamant de l'eau, frissonnante."
+    },
+    "verbatim": "Docteur... j'ai si soif... et j'ai si froid... je me sens partir... mon bébé va bien ?"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "85/65 mmHg",
+      "pouls": "120 bpm",
+      "temperature": "36.4°C",
+      "saturationO2": "91%",
+      "frequenceRespiratoire": "26/min"
+    },
+    "aspectGeneral": "Patiente livide, couverte de sueurs froides, très agitée. Extrémités froides, genoux discrètement marbrés. Temps de recoloration cutanée (TRC) mesuré à 4 secondes.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie régulière à 120 bpm, aucun souffle. Bruits du cœur bien perçus.",
+      "inspection": "Hémorragie active par la vulve. Sang rouge et noir s'écoulant continuellement, quantité de pertes estimée à plus de 800 mL.",
+      "palpation": "Utérus mou, atone, remontant bien au-dessus de l'ombilic (absence de globe de sécurité). Pouls radial rapide et filant. Froideur cutanée périphérique importante."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de râles. Respiration ample et rapide (polypnée).",
+      "inspection": "Tachypnée superficielle compensatrice.",
+      "percussion": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple en dehors de la région pelvienne où l'on palpe un utérus flasque et atone qui ne se rétracte pas."
+    }
+  },
+  "availableExams": [
+    "Gaz du sang artériel + Lactates",
+    "Nouveau bilan d'hémoglobine (Hémocue)",
+    "Bilan de coagulation complet (TP, TCA, Fibrigène)",
+    "Échographie pelvienne au lit du patient"
+  ],
+  "examResults": {
+    "Gaz du sang artériel + Lactates": "pH = 7.32 (acidose métabolique), Lactates = 3.2 mmol/L (hypoperfusion tissulaire confirmée), PaO2 = 65 mmHg en air ambiant.",
+    "Nouveau bilan d'hémoglobine (Hémocue)": "Hémoglobine capillaire = 8.5 g/dL (en baisse rapide par rapport aux 12.5 g/dL initiaux).",
+    "Bilan de coagulation complet (TP, TCA, Fibrigène)": "TP = 65% (légère baisse), Fibrinogène = 1.8 g/L (seuil d'alerte pour coagulopathie de consommation).",
+    "Échographie pelvienne au lit du patient": "Pas de rétention placentaire visible. Cavité utérine dilatée contenant des caillots sanguins (atonie pure)."
+  },
+  "possibleDiagnostics": [
+    "Hémorragie du post-partum immédiat sur atonie utérine compliquée d'un état de choc hémorragique",
+    "Choc septique d'origine gynécologique (endométrite aiguë)",
+    "Embolie amniotique brutale",
+    "Inversion utérine aiguë"
+  ],
+  "correctDiagnostic": "Hémorragie du post-partum immédiat sur atonie utérine compliquée d'un état de choc hémorragique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Appeler immédiatement l'obstétricien et l'anesthésiste en renfort",
+    "Oxygénothérapie au masque à haute concentration (15 L/min)",
+    "Poser 2 voies veineuses de gros calibre + Remplissage rapide par NaCl 0.9%",
+    "Pratiquer un massage utérin continu et réaliser un sondage urinaire de vidange",
+    "Perfusion lente d'Oxytocine (Syntocinon) 10 UI IV",
+    "Mise en place d'une seringue électrique de Sulprostone (Nalador) + Injection d'Acide Tranexamique (Exacyl) 1g IV",
+    "Commander 4 culots globulaires O négatifs en extrême urgence",
+    "Donner à boire de grands verres d'eau fraîche pour calmer la soif",
+    "Injection intraveineuse lente de Propranolol (bêtabloquant)"
+  ],
+  "correctTreatments": [
+    "Appeler immédiatement l'obstétricien et l'anesthésiste en renfort",
+    "Oxygénothérapie au masque à haute concentration (15 L/min)",
+    "Poser 2 voies veineuses de gros calibre + Remplissage rapide par NaCl 0.9%",
+    "Pratiquer un massage utérin continu et réaliser un sondage urinaire de vidange",
+    "Perfusion lente d'Oxytocine (Syntocinon) 10 UI IV",
+    "Mise en place d'une seringue électrique de Sulprostone (Nalador) + Injection d'Acide Tranexamique (Exacyl) 1g IV",
+    "Commander 4 culots globulaires O négatifs en extrême urgence"
+  ],
+  "fatalTreatments": [
+    "Donner à boire de grands verres d'eau fraîche pour calmer la soif",
+    "Injection intraveineuse lente de Propranolol (bêtabloquant)"
+  ],
+  "correction": "# Correction : Hémorragie Post-Partum et Choc Hémorragique\n\n## Physiopathologie et Diagnostic\nDans ce cas, l'hémorragie immédiate après l'accouchement est due à une **atonie utérine** (utérus mou, flasque, remontant au-dessus de l'ombilic, absence de globe de sécurité). La perte de sang massive (> 800 mL) a provoqué un **état de choc hypovolémique/hémorragique** décompensé.\n\n### Signes cliniques clés d'hypoperfusion (décrits dans le cours) :\n1. **Tachycardie compensatrice** à 120 bpm, sous l'action des catécholamines endogènes.\n2. **Pression différentielle pincée** (85/65 mmHg, soit une différentielle de 20 mmHg, inférieure à la normale de 40 mmHg) due à la vasoconstriction systémique qui maintient la diastolique.\n3. **Signes de redistribution sanguine** : extrémités froides, marbrures cutanées aux genoux (redistribution vers les organes vitaux au détriment des territoires cutanés non vitaux).\n4. **TRC prolongé** (> 3 secondes, ici 4 secondes) témoignant du bas débit périphérique.\n5. **Agitation et soif intense** : l'agitation traduit l'hypoxémie cérébrale débutante, la soif est un signal d'hypovolémie majeure.\n\n## Pièges Classiques à Éviter\n- **Donner à boire (eau PO)** : Absolument interdit ! En raison du risque d'inhalation pulmonaire (syndrome de Mendelson) lors de l'anesthésie générale indispensable pour la révision utérine.\n- **Bêtabloquants (Propranolol)** : Mortel ! Supprime la tachycardie compensatrice, entraînant un effondrement immédiat du débit cardiaque et un arrêt cardiaque.\n- **Retarder les traitements médicaux** : L'atonie utérine exige des utérotoniques immédiats (Syntocinon en 1ère intention, Nalador en 2ème intention) associés aux mesures de réanimation standard.\n\n## Protocole de Prise en Charge :\n1. **Alerte** : Appeler immédiatement l'obstétricien, l'anesthésiste et renforcer l'équipe gynécologique.\n2. **Réanimation** : Masque à oxygène HC à 15 L/min + 2 VVP de gros calibre (14G ou 16G) + remplissage rapide par cristalloïdes (sérum physiologique) + commande de culots globulaires.\n3. **Geste locaux** : Massage utérin vigoureux continu + sondage urinaire (la vidange vésicale favorise la rétraction utérine).\n4. **Utérotoniques** : Perfuser de l'Oxytocine (Syntocinon). Si échec après 30 min, poser du Sulprostone (Nalador) à la seringue électrique associé à de l'Acide Tranexamique (Exacyl).",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Le cas est terminé. La patiente est saine et sauve."
+  },
+  "locks": [
+    {
+      "id": "lock_differencielle_choc",
+      "type": "QCM",
+      "challenge": {
+        "question": "La tension de la patiente est de 85/65 mmHg. Quelle est sa pression artérielle différentielle, et comment l'interprétez-vous cliniquement lors d'un choc hémorragique ?",
+        "options": [
+          "20 mmHg, elle est pincée, ce qui traduit une vasoconstriction réflexe intense par hyper-activation sympathique périphérique.",
+          "150 mmHg, elle est élargie, ce qui traduit un effondrement des résistances artérielles systémiques.",
+          "40 mmHg, elle est normale, ce qui exclut tout état de choc circulatoire.",
+          "20 mmHg, elle est élargie, ce qui est caractéristique d'un choc septique chaud."
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "La pression différentielle est la différence entre systole et diastole (85 - 65 = 20 mmHg). Inférieure à 40 mmHg, elle est dite PINCÉE, témoignant d'une vasoconstriction compensatrice (résistances artérielles élevées) typique du choc hypovolémique.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_sondage_massage",
+      "type": "QCM",
+      "challenge": {
+        "question": "Pourquoi la vidange vésicale par sondage urinaire est-elle indispensable lors d'une atonie utérine post-partum ?",
+        "options": [
+          "Pour mesurer la diurèse horaire uniquement, sans impact sur l'utérus.",
+          "Parce qu'une vessie pleine fait obstacle mécanique à la rétraction utérine et empêche l'utérus de se contracter.",
+          "Pour injecter des produits utérotoniques directement dans la vessie.",
+          "Pour réduire la température corporelle de la patiente."
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Une vessie pleine s'oppose mécaniquement à la bonne rétraction de l'utérus. La vider immédiatement par sondage favorise la reprise des contractions utérines et l'efficacité du massage.",
+      "target_fields": [
+        "possibleTreatments"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s_initial"
+  },
+  "nodes": {
+    "s_initial": {
+      "id": "s_initial",
+      "descriptionClinique": "Madame Sophie Martin, 28 ans, vient d'accoucher. La sage-femme vous appelle en panique : elle saigne énormément. À votre arrivée, vous notez des pertes de sang rouge vif abondantes (> 800 mL). L'utérus est très mou, atone, remontant bien au-dessus de l'ombilic. La patiente est livide, grelottante, très agitée et crie : « Docteur, j'ai si soif... j'ai si froid... donnez-moi à boire s'il vous plaît ! »",
+      "constantesCibles": {
+        "tension": "85/65",
+        "pouls": "120",
+        "saturationO2": "91",
+        "temperature": "36.4",
+        "frequenceRespiratoire": "26"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Oxygénothérapie au masque HC (15 L/min) + Poser 2 VVP de gros calibre et débuter un remplissage rapide par NaCl 0.9%",
+          "tempsExecutionSec": 15,
+          "feedback": "Excellent réflexe de réanimation ! L'oxygène remonte la saturation à 98% et stabilise la patiente. Le remplissage soutient le retour veineux, mais sans action sur l'atonie, l'hémorragie se poursuit activement.",
+          "nextNode": "s_reanimation_complete"
+        },
+        {
+          "label": "Pratiquer un massage utérin vigoureux et poser une sonde urinaire pour vider la vessie",
+          "tempsExecutionSec": 20,
+          "feedback": "Geste local correct : la vidange vésicale évacue 300 mL d'urine, ce qui lève l'obstacle mécanique à la rétraction. L'utérus se durcit légèrement mais se relâche vite. Cependant, vous n'avez pas pris en charge l'hypovolémie, la patiente devient plus somnolente.",
+          "nextNode": "s_massage_seul"
+        },
+        {
+          "label": "Lui donner de grands verres d'eau à boire pour calmer sa soif intense",
+          "tempsExecutionSec": 10,
+          "feedback": "ERREUR CLINIQUE GRAVE : La patiente est en état de choc hémorragique et aura besoin d'une révision utérine sous anesthésie générale imminente. Lui donner à boire provoque un risque majeur de vomissement et d'inhalation pulmonaire (syndrome de Mendelson) !",
+          "nextNode": "s_degradation_inhalation"
+        },
+        {
+          "label": "Administrer du Propranolol (bêtabloquant) en IV lente pour ralentir le cœur",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR COMMANDE CATASTROPHIQUE : La tachycardie est le seul mécanisme compensateur maintenant le débit cardiaque face à la baisse de volume. Bloquer le cœur provoque un effondrement tensionnel foudroyant et un arrêt cardiaque instantané !",
+          "nextNode": "s_arret_cardiaque"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_reanimation_complete": {
+      "id": "s_reanimation_complete",
+      "descriptionClinique": "La saturation est remontée à 98% sous oxygène. Les 2 VVP sont en place, le NaCl 0.9% coule à grand débit. La tension diastolique remonte légèrement (90/70 mmHg) mais l'atonie persiste et le saignement vulvaire est toujours très actif. Sophie est anxieuse mais plus cohérente. L'utérus reste très mou, montant à l'ombilic.",
+      "constantesCibles": {
+        "tension": "90/70",
+        "pouls": "115",
+        "saturationO2": "98",
+        "temperature": "36.3",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Appeler l'obstétricien et l'anesthésiste en renfort immédiat",
+          "tempsExecutionSec": 10,
+          "feedback": "Vous déclenchez l'alerte rouge. L'obstétricien et l'anesthésiste confirment qu'ils arrivent d'ici 5 minutes. Mais le sang continue de couler, il faut un traitement utérotonique immédiat !",
+          "nextNode": "s_renfort_seul"
+        },
+        {
+          "label": "Injecter 10 UI d'Oxytocine (Syntocinon) IV lente + Pratiquer le massage utérin vigoureux et le sondage urinaire",
+          "tempsExecutionSec": 20,
+          "feedback": "Parfait ! L'Oxytocine est le traitement utérotonique de première intention. Le massage utérin stimule les récepteurs à ocytocine et le sondage libère l'utérus. L'utérus se contracte un instant, mais l'atonie résiste et le saignement reprend.",
+          "nextNode": "s_syntocinon_done"
+        },
+        {
+          "label": "Administrer une antibiothérapie IV à large spectre",
+          "tempsExecutionSec": 15,
+          "feedback": "Inutile pour l'instant ! Il s'agit d'un choc hémorragique aigu, pas d'un choc septique. Vous perdez un temps précieux pendant que l'hémorragie s'aggrave.",
+          "nextNode": "s_massage_seul"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_massage_seul": {
+      "id": "s_massage_seul",
+      "descriptionClinique": "Vous avez retardé la réanimation volémique ou les utérotoniques. Les pertes sanguines dépassent maintenant 1.2 Litres. Sophie Martin s'obnubile, ses yeux deviennent vitreux, elle ne répond plus aux questions simples. Son pouls est extrêmement filant (135 bpm) et sa tension s'effondre à 70/50 mmHg. Ses genoux et ses coudes sont couverts de marbrures sombres.",
+      "constantesCibles": {
+        "tension": "70/50",
+        "pouls": "135",
+        "saturationO2": "87",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "30"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Poser le masque à O2 haute concentration + Poser 2 VVP + Remplissage rapide + Syntocinon 10 UI IV lente",
+          "tempsExecutionSec": 20,
+          "feedback": "Manœuvre de sauvetage de dernière seconde ! Le remplissage massif et l'oxygène stabilisent in extremis la patiente. Le saignement reste cependant menaçant.",
+          "nextNode": "s_syntocinon_done"
+        },
+        {
+          "label": "Administrer du Nalador en IM direct sans VVP",
+          "tempsExecutionSec": 25,
+          "feedback": "Erreur de voie d'administration : le Nalador (Sulprostone) doit impérativement être administré en perfusion intraveineuse continue à la seringue électrique, jamais en IM direct dans ce contexte. La patiente sombre dans le coma.",
+          "nextNode": "s_degradation_severe"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_renfort_seul": {
+      "id": "s_renfort_seul",
+      "descriptionClinique": "Les secours sont alertés mais l'utérus reste flasque. Sans utérotonique, Sophie perd de grandes nappes de sang. Sa tension baisse à 75/55 mmHg, le pouls grimpe à 130 bpm. Les marbrures s'étendent sur ses jambes. Elle murmure faiblement : « J'ai froid... tellement froid... »",
+      "constantesCibles": {
+        "tension": "75/55",
+        "pouls": "130",
+        "saturationO2": "95",
+        "temperature": "36.0",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter 10 UI d'Oxytocine (Syntocinon) IV lente + Pratiquer le massage utérin et le sondage urinaire",
+          "tempsExecutionSec": 20,
+          "feedback": "Mise en route tardive de l'utérotonique de première intention. L'utérus se contracte brièvement puis se détend. Le saignement persiste mais ralentit légèrement. Il faut passer au traitement de seconde intention.",
+          "nextNode": "s_syntocinon_done"
+        },
+        {
+          "label": "Surélever uniquement ses jambes et attendre l'obstétricien",
+          "tempsExecutionSec": 30,
+          "feedback": "L'attente passive sans traitement médical de l'atonie est criminelle dans ce contexte. La patiente fait un arrêt cardio-respiratoire hypovolémique avant l'arrivée du médecin.",
+          "nextNode": "s_arret_cardiaque"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_syntocinon_done": {
+      "id": "s_syntocinon_done",
+      "descriptionClinique": "L'Oxytocine (Syntocinon) a été administrée, mais l'atonie utérine est réfractaire : l'utérus reste flasque et mou. Les pertes de sang continuent et Sophie est de plus en plus faible. Sa tension est retombée à 82/60 mmHg (pincée) et son pouls est à 125 bpm. Ses extrémités sont glacées, le TRC est à 4.5 secondes. Il faut réagir vite avec le traitement de deuxième intention.",
+      "constantesCibles": {
+        "tension": "82/60",
+        "pouls": "125",
+        "saturationO2": "97",
+        "temperature": "36.1",
+        "frequenceRespiratoire": "26"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Préparer une seringue électrique de Sulprostone (Nalador) à débit continu + Injecter 1g IV d'Acide Tranexamique (Exacyl)",
+          "tempsExecutionSec": 15,
+          "feedback": "EXCELLENT. C'est le protocole exact de l'HPP réfractaire à l'Oxytocine. Le Nalador est un puissant analogue des prostaglandines (utérotonique majeur) et l'Exacyl (acide tranexamique) combat la fibrinolyse. L'utérus commence enfin à se durcir fermement ! Le saignement diminue de façon significative.",
+          "nextNode": "s_nalador_done"
+        },
+        {
+          "label": "Administrer une deuxième dose de 20 UI de Syntocinon en bolus IV direct",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR DE DOSAGE / EFFET INDÉSIRABLE : Un bolus rapide de Syntocinon à forte dose provoque une vasodilatation coronarienne et périphérique massive, ce qui aggrave l'hypotension de façon dramatique dans ce contexte de choc hypovolémique. Sophie s'effondre cliniquement.",
+          "nextNode": "s_degradation_severe"
+        },
+        {
+          "label": "Attendre l'arrivée des médecins sans introduire de nouvelle thérapeutique",
+          "tempsExecutionSec": 30,
+          "feedback": "L'inertie thérapeutique face à un saignement actif persistant conduit à l'épuisement des facteurs de coagulation et au choc irréversible.",
+          "nextNode": "s_degradation_severe"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_nalador_done": {
+      "id": "s_nalador_done",
+      "descriptionClinique": "Le Nalador infuse à la seringue électrique et l'Exacyl a été injecté. L'utérus se contracte enfin fortement, formant un globe de sécurité palpable sous l'ombilic. Le saignement s'atténue nettement (simple suintement vaginal). Les constantes se stabilisent légèrement : TA = 88/64 mmHg, pouls = 110 bpm. L'obstétricien et l'anesthésiste entrent enfin dans la salle avec le chariot d'urgence.",
+      "constantesCibles": {
+        "tension": "88/64",
+        "pouls": "110",
+        "saturationO2": "97",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "22"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Faire des transmissions complètes (heures des drogues, pertes estimées à 1.5L) + Commander 4 CG O- en extrême urgence",
+          "tempsExecutionSec": 15,
+          "feedback": "Parfait ! Vos transmissions précises permettent à l'anesthésiste de prendre le relais efficacement. L'obstétricien effectue immédiatement une révision utérine sous anesthésie générale au lit de la patiente pour s'assurer de la vacuité utérine. Sophie est sauvée !",
+          "nextNode": "s_victoire"
+        },
+        {
+          "label": "Laisser l'équipe s'installer et sortir de la pièce sans leur parler",
+          "tempsExecutionSec": 20,
+          "feedback": "Le manque de transmissions formelles fait perdre un temps précieux à l'équipe. L'anesthésiste ne connaît pas les doses de prostaglandines déjà perfusées, provoquant un surdosage accidentel et un spasme coronarien. Sophie se dégrade.",
+          "nextNode": "s_degradation_severe"
+        }
+      ],
+      "isEndState": false,
+      "success": true
+    },
+    "s_victoire": {
+      "id": "s_victoire",
+      "isEndState": true,
+      "success": true,
+      "descriptionClinique": "Félicitations, docteur ! Grâce à votre réactivité et au respect parfait des étapes cliniques (O2, 2 grosses VVP, Syntocinon, Massage + Sondage, puis Nalador + Exacyl et appel des secours), le saignement a été jugulé. La patiente a reçu 2 culots globulaires O- et sa tension s'est stabilisée à 115/75 mmHg. Elle est transférée en soins intensifs de gynécologie-obstétrique pour surveillance active. Vous avez fait preuve de l'esprit de John Carmack : calme, méthode et rigueur absolue !",
+      "constantesCibles": {
+        "tension": "115/75",
+        "pouls": "85",
+        "saturationO2": "99",
+        "temperature": "36.6",
+        "frequenceRespiratoire": "16"
+      }
+    },
+    "s_degradation_severe": {
+      "id": "s_degradation_severe",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "L'insuffisance circulatoire prolongée a provoqué une ischémie tissulaire diffuse majeure avec coagulopathie de consommation (CIVD) sévère et coma hypoxique. Malgré l'arrivée tardive des renforts, le choc est devenu métaboliquement irréversible (acidose extrême avec lactates > 8 mmol/L). Sophie Martin succombe d'un arrêt cardiaque réfractaire au remplissage et aux vasopresseurs.",
+      "constantesCibles": {
+        "tension": "40/20",
+        "pouls": "150",
+        "saturationO2": "65",
+        "temperature": "35.0",
+        "frequenceRespiratoire": "35"
+      }
+    },
+    "s_degradation_inhalation": {
+      "id": "s_degradation_inhalation",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "La patiente a inhalé massivement l'eau bue lorsque sa conscience s'est troublée, déclenchant un spasme bronchique violent et une hypoxémie sévère (syndrome de Mendelson). L'intubation en urgence par l'anesthésiste s'avère impossible en raison du spasme et de l'œdème. Le tracé ECG s'aplatit rapidement. Le décès est prononcé par asphyxie aiguë et choc cardiogénique secondaire.",
+      "constantesCibles": {
+        "tension": "30/10",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_arret_cardiaque": {
+      "id": "s_arret_cardiaque",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Arrêt cardiorespiratoire brutal par désamorçage de la pompe cardiaque (choc hypovolémique foudroyant). Le tracé ECG affiche un rythme d'asystolie (plat) associé à des beeps d'alarme continus. Le massage cardiaque externe et les injections répétées d'adrénaline ne permettent pas de récupérer un rythme sinusal. La patiente décède en salle de naissance sous vos yeux.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "34.5",
+        "frequenceRespiratoire": "0"
+      }
+    }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 140,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 85,
+      "temperature": 36.0,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  }
+}

@@ -1,0 +1,422 @@
+{
+  "id": "urgence_overdose_opiaces",
+  "title": "Overdose aux Opioïdes et Syndrome Toxique Opioïde",
+  "specialty": "urgence",
+  "difficulty": 2,
+  "redacteur": "L'équipe Médicale MedGame",
+  "patient": {
+    "nom": "Moreau",
+    "prenom": "Julien",
+    "age": 28,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "O+"
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Patient de 28 ans retrouvé inconscient sur la voie publique, suspect d'overdose.",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Inconnue"
+      },
+      "tabac": {
+        "quantite": "10 PA",
+        "duree": "5 ans"
+      },
+      "alcool": {
+        "quantite": "Consommation occasionnelle"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Sans emploi stable",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Trouble de l'usage de substances (opioïdes)",
+          "traitement": "Aucun traitement de substitution (méthadone/buprénorphine) en cours"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Début aigu, patient retrouvé inanimé dans une ruelle par un passant",
+      "evolution": "Brutale",
+      "facteursDeclenchants": "Suspicion d'injection intraveineuse d'opioïde (héroïne ou analogue du fentanyl)",
+      "descriptionDouleur": "Patient comateux, non évaluable",
+      "symptomesAssocies": [
+        "Bradypnée sévère",
+        "Cyanose des extrémités",
+        "Pupilles pinpoint",
+        "Hypothermie"
+      ],
+      "remarques": "Traces d'injections intraveineuses fraîches et anciennes au niveau des plis des coudes bilatéraux. Une seringue vide a été retrouvée à proximité."
+    },
+    "verbatim": "Le passant (appelant le 15) : « Bonjour, il y a un jeune homme allongé par terre, il ne bouge plus du tout. Ses lèvres sont bleues et il respire à peine... J'ai vu une seringue pas loin. Aidez-le s'il vous plaît ! »"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/60 mmHg",
+      "pouls": "52 bpm",
+      "temperature": "35.8°C",
+      "saturationO2": "82%",
+      "frequenceRespiratoire": "6/min"
+    },
+    "aspectGeneral": "Patient comateux, aréactif aux stimulations verbales et nociceptives. Cyanose des lèvres et des extrémités, sueurs froides profuses, hypothermie.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, bradycardie relative à 52 bpm, pas de souffle audible.",
+      "inspection": "Marbrures modérées des membres inférieurs, cyanose périphérique marquée.",
+      "palpation": "Pouls radiaux filants mais présents de manière symétrique. Temps de recoloration cutanée allongé (3,5 secondes)."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire fortement diminué de manière bilatérale et symétrique, sans râles surajoutés initiaux.",
+      "inspection": "Bradypnée majeure (Fréquence Respiratoire = 6/min) avec mouvements thoraciques superficiels, tirage intercostal léger."
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, dépressible, pas de masse palpable."
+    },
+    "examenNeurologique": {
+      "conscience": "Coma profond calme (Score de Glasgow GCS = 6 : Y1 V1 M4). Pupilles en myosis serré bilatéral, symétrique, réactif à la lumière (pinpoint). Pas de déficit focalisé évident."
+    }
+  },
+  "availableExams": [
+    "Glycémie capillaire (BM test)",
+    "Toxiques urinaires",
+    "Gaz du sang artériel"
+  ],
+  "examResults": {
+    "Glycémie capillaire (BM test)": "Glycémie capillaire : 5.4 mmol/L (0.97 g/L). Élimine un coma hypoglycémique.",
+    "Toxiques urinaires": "Recherche de toxiques urinaires : OPIACÉS POSITIFS. Benzodiazépines, Cocaïne, Amphétamines, Cannabis, Barbituriques : NÉGATIFS.",
+    "Gaz du sang artériel": "Gaz du sang artériel sous air : pH = 7.21, PaCO2 = 68 mmHg, PaO2 = 58 mmHg, HCO3- = 25 mmol/L, SaO2 = 82%. Acidose respiratoire hypercapnique et hypoxémique sévère (hypoventilation alvéolaire pure)."
+  },
+  "possibleDiagnostics": [
+    "Coma éthylique avec inhalation",
+    "Overdose aux opioïdes (syndrome toxique opioïde)",
+    "Coma hypoglycémique sévère",
+    "Intoxication pure aux benzodiazépines"
+  ],
+  "correctDiagnostic": "Overdose aux opioïdes (syndrome toxique opioïde)",
+  "feedback": {
+    "Overdose aux opioïdes (syndrome toxique opioïde)": "Diagnostic correct ! La triade caractéristique (coma, myosis pinpoint serré et dépression respiratoire sévère) avec traces de ponctions veineuses confirme le diagnostic.",
+    "default": "Diagnostic incorrect. Repensez à la triade sémiologique classique : coma profond aréactif, pupilles en myosis serré (pinpoint) et bradypnée majeure (FR = 6/min) chez ce jeune homme avec traces d'injections intraveineuses."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Libération des voies aériennes, PLS et oxygène haut débit",
+    "Administration de Naloxone (Narcan) IVD 0.4 mg",
+    "Administration de Flumazénil IVD 0.2 mg",
+    "Donner à boire de l'eau sucrée"
+  ],
+  "correctTreatments": [
+    "Libération des voies aériennes, PLS et oxygène haut débit",
+    "Administration de Naloxone (Narcan) IVD 0.4 mg"
+  ],
+  "fatalTreatments": [
+    "Administration de Flumazénil IVD 0.2 mg",
+    "Donner à boire de l'eau sucrée"
+  ],
+  "secondLineTreatments": [
+    "Répéter l'administration de Naloxone si nécessaire toutes les 2-3 minutes",
+    "Surveillance hospitalière prolongée (au moins 6 heures après la dernière dose de Naloxone)"
+  ],
+  "relevantExams": [
+    "Glycémie capillaire (BM test)",
+    "Gaz du sang artériel",
+    "Toxiques urinaires"
+  ],
+  "correction": "# Correction : Overdose aux Opioïdes (Toxidrome Opioïde)\n\n## Synthèse clinique\nLe patient présente la triade classique et typique du **toxidrome opioïde** (overdose d'héroïne, fentanyl, oxycodone, morphine, etc.) :\n1. **Coma profond** (Glasgow initial à 6).\n2. **Myosis bilatéral serré (dit en « tête d'épingle » ou pinpoint)**.\n3. **Dépression respiratoire sévère** (Fréquence Respiratoire à 6/min, acidose respiratoire hypercapnique et hypoxémie majeure aux gaz du sang).\n\nD'autres signes cliniques complètent le tableau : cyanose des extrémités (conséquence de l'hypoxie), sueurs froides, hypothermie et traces d'injections intraveineuses évoquant l'usage d'héroïne ou d'autres substances par voie intraveineuse.\n\n## Prise en charge immédiate\n1. **Sécuriser les voies aériennes** : Libération des Voies Aériennes (LVA) et mise en Position Latérale de Sécurité (PLS) pour éviter toute inhalation de vomissements chez ce patient comateux.\n2. **Oxygénothérapie à haut débit** (masque à haute concentration à 15 L/min) pour lutter contre l'hypoxie tissulaire majeure.\n3. **Éliminer les diagnostics différentiels simples** : Glycémie capillaire indispensable en urgence pour éliminer un coma hypoglycémique (BM test normal ici).\n4. **Antidote spécifique** : Administration de **Naloxone (Narcan)** par voie intraveineuse directe (IVD) ou intramusculaire (IM) à la dose initiale de 0,4 mg. L'objectif est de restaurer une ventilation spontanée efficace (FR > 12/min) et de lever le coma, tout en évitant un syndrome de sevrage aigu trop brutal (titration progressive si nécessaire).\n\n## ⚠️ Pièges majeurs & Contre-indications (Fatal)\n- **Flumazénil (Anexate)** : C'est l'antidote des benzodiazépines. Il est formellement **contre-indiqué** en cas de suspicion d'overdose d'opiaciés ou poly-intoxication. S'il y a eu co-ingestion de stimulants (ex. cocaïne, héroïne, etc.), le Flumazénil abaisse le seuil épileptogène et peut déclencher des **crises convulsives généralisées mortelles**, surtout dans un contexte d'hypoxie cérébrale préexistante.\n- **Faire boire un patient comateux** : Le risque d'inhalation bronchique (syndrome de Mendelson) est majeur et létal chez tout patient avec un score de Glasgow inférieur à 8.\n- **Retarder l'antidote pour des examens ou une intubation invasive** : Bien que les gaz du sang et les toxiques soient utiles pour confirmer et quantifier l'atteinte, l'administration de Naloxone ne doit pas être retardée par leur réalisation, car elle permet souvent d'éviter une intubation trachéale lourde.\n\n## Bons réflexes (Do's)\n- **LVA, PLS et Oxygène 100% (15 L/min)** dès la constatation du coma et de la bradypnée.\n- **Réaliser un BM test (glycémie capillaire)** systématique devant tout trouble de la conscience.\n- **Administrer la Naloxone (Narcan) 0.4 mg IVD/IM** rapidement et répéter la dose après 2 à 3 minutes si la ventilation spontanée reste inefficace.\n- **Surveiller le patient en milieu hospitalier pendant au moins 6 heures** : La demi-vie de la Naloxone (environ 30 à 80 minutes) est souvent plus courte que celle de l'opioïde ingéré. Il existe un risque majeur de **re-sédation** et de retour en détresse respiratoire une fois l'effet de l'antidote estompé.\n\n## Erreurs à éviter (Don'ts)\n- **Ne pas injecter de Flumazénil** (risque de convulsions fatales).\n- **Ne jamais donner de liquide ou d'aliments** par la bouche à un patient inconscient.\n- **Ne pas intuber d'emblée** un patient en overdose d'opiacés sans avoir tenté une titration de Naloxone au ballon/masque, sauf en cas d'arrêt cardiorespiratoire ou d'échec de la Naloxone.\n- **Ne pas laisser le patient repartir seul** après son réveil clinique immédiat sans surveillance prolongée d'au moins 6 heures.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.0,
+    "aggravationTargets": {
+      "heartRate": 40,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 50,
+      "temperature": 35.0,
+      "respiratoryRate": 0
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "alternativeDiagnostics": [
+    "Intoxication aiguë aux opiacés",
+    "Surdosage aux opioïdes",
+    "Toxidrome opioïde"
+  ],
+  "locks": [
+    {
+      "id": "lock_overdose_diagnostic",
+      "type": "QCM",
+      "challenge": {
+        "question": "Devant un patient inconscient présentant un myosis bilatéral serré (pinpoint) et une fréquence respiratoire à 6/min, quel syndrome toxique évoquez-vous d'emblée ?",
+        "options": [
+          "Le syndrome anticholinergique (overdose d'atropiniques)",
+          "Le syndrome opioïde (overdose d'opiacés)",
+          "Le syndrome sérotoninergique",
+          "Le syndrome adrénergique (overdose de cocaïne)"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "La triade myosis pinpoint, coma et dépression respiratoire est la signature pathognomonique du toxidrome (syndrome toxique) opioïde.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_overdose_traitement",
+      "type": "QCM",
+      "challenge": {
+        "question": "Pourquoi l'administration de Flumazénil est-elle contre-indiquée et potentiellement fatale chez ce patient ?",
+        "options": [
+          "Elle aggrave directement la bradycardie en stimulant les récepteurs cardiaques",
+          "Elle peut déclencher des crises convulsives généralisées graves par levée de l'effet protecteur anti-épileptique en cas de co-ingestion de stimulants (cocaïne)",
+          "Elle empêche la Naloxone d'agir sur les récepteurs mu",
+          "Elle provoque un bronchospasme immédiat irréversible"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Le Flumazénil est l'antidote des benzodiazépines. Chez un consommateur chronique ou en cas de co-ingestion d'héroïne/cocaïne, antagoniser brusquement le GABA peut lever le seuil épileptogène et déclencher des convulsions sévères, particulièrement destructrices et fatales en hypoxie.",
+      "target_fields": [
+        "correctTreatments"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s1"
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Il est 18h. Julien Moreau, 28 ans, est allongé inanimé dans une ruelle. Un passant l'a trouvé ainsi. Le patient est comateux (Glasgow 6). Vous observez des pupilles en myosis pinpoint serré, une cyanose des lèvres, des sueurs froides et des traces d'injections intraveineuses aux plis des coudes. Sa respiration est extrêmement lente et inefficace (6/min).",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "52",
+        "saturationO2": "82",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "6"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 45,
+        "nextNode": "s_degradation_respi",
+        "motif": "La dépression respiratoire non traitée s'aggrave. L'hypoxie cérébrale et cardiaque augmente rapidement !"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Libérer les voies aériennes, mettre en PLS et poser l'Oxygène à haut débit (15L/min, masque HC)",
+          "tempsExecutionSec": 15,
+          "feedback": "Bonne décision ! La PLS protège ses voies aériennes d'une inhalation de vomi, et l'oxygène haut débit combat son hypoxie critique. Sa saturation s'améliore mais sa commande respiratoire reste inhibée.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "Lui verser de l'eau sucrée dans la bouche pour exclure une hypoglycémie",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR FATALE : Le patient est en coma profond (Glasgow 6) sans réflexe de déglutition. L'eau coule directement dans sa trachée, provoquant une asphyxie immédiate !",
+          "nextNode": "s_err_boisson"
+        },
+        {
+          "label": "Injecter immédiatement du Flumazénil 0.2 mg IVD par suspicion d'intoxication aux benzodiazépines",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR FATALE : Le Flumazénil chez un patient suspect d'overdose d'héroïne/cocaïne peut déclencher des crises convulsives généralisées réfractaires, fatales en hypoxie !",
+          "nextNode": "s_err_flumazenil"
+        }
+      ]
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Julien est maintenant en PLS sous oxygène à haut débit. Sa saturation est remontée de 82% à 90% sous oxygène, mais sa fréquence respiratoire reste à 6/min et il demeure totalement inconscient. Vous devez infirmer ou confirmer vos suspicions.",
+      "constantesCibles": {
+        "tension": "105/65",
+        "pouls": "55",
+        "saturationO2": "90",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "6"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 30,
+        "nextNode": "s_degradation_respi",
+        "motif": "L'oxygène masque le signal d'hypoxie mais ne résout pas la cause. Sans antidote, le patient finit par sombrer dans l'arrêt ventilatoire complet."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Réaliser une glycémie capillaire (BM test) et demander un bilan d'urgence (gaz du sang et toxiques)",
+          "tempsExecutionSec": 20,
+          "feedback": "Excellent ! La glycémie est à 5,4 mmol/L (élimine l'hypoglycémie). Les gaz du sang montrent une acidose respiratoire hypercapnique sévère (pH 7.21, PaCO2 68, PaO2 58) et les toxiques urinaires confirment la présence massive d'opiacés. Le diagnostic d'overdose d'opioïdes est certain.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Injecter du Flumazénil 0.2 mg IVD pour voir s'il réagit",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR FATALE : Le Flumazénil lève brutalement le seuil épileptogène. Le patient convulse immédiatement en état d'anoxie.",
+          "nextNode": "s_err_flumazenil"
+        },
+        {
+          "label": "Attendre l'arrivée du SAMU sans autre geste",
+          "tempsExecutionSec": 10,
+          "feedback": "Vous perdez un temps précieux. La dépression respiratoire s'accentue.",
+          "nextNode": "s_degradation_respi"
+        }
+      ]
+    },
+    "s3": {
+      "id": "s3",
+      "descriptionClinique": "La glycémie capillaire est normale (5.4 mmol/L). Les gaz du sang confirment une acidose respiratoire pure sévère due à la bradypnée. Le myosis serré bilatéral confirme l'intoxication aux opiacés. Sa fréquence respiratoire baisse encore à 5/min. Que faites-vous ?",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "50",
+        "saturationO2": "84",
+        "temperature": "35.8",
+        "frequenceRespiratoire": "5"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 20,
+        "nextNode": "s_degradation_respi",
+        "motif": "La commande ventilatoire cérébrale s'arrête. Le patient cesse totalement de respirer."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter de la Naloxone (Narcan) 0.4 mg par voie intraveineuse directe (ou intramusculaire)",
+          "tempsExecutionSec": 15,
+          "feedback": "Action salvatrice ! La Naloxone déplace les opioïdes des récepteurs mu. Le patient se remet à respirer spontanément et reprend conscience.",
+          "nextNode": "s_guerison"
+        },
+        {
+          "label": "Tenter une intubation oro-trachéale immédiate sans administrer d'antidote",
+          "tempsExecutionSec": 45,
+          "feedback": "ERREUR : L'intubation chez un patient comateux non à jeun sans séquence rapide est très risquée. Sans Naloxone préalable, le geste prend du temps, le patient hypoventile et inhale.",
+          "nextNode": "s_err_intubation_retard"
+        },
+        {
+          "label": "Injecter du Flumazénil 0.2 mg IVD par acquis de conscience",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR FATALE : Provoque une crise convulsive majeure hypertonique en hypoxie.",
+          "nextNode": "s_err_flumazenil"
+        }
+      ]
+    },
+    "s_degradation_respi": {
+      "id": "s_degradation_respi",
+      "descriptionClinique": "URGENCE ABSOLUE. Julien est cyanosé, sa fréquence respiratoire n'est plus que de 4/min, sa SpO2 s'effondre à 75% malgré l'oxygène à haut débit. Le pouls devient filant, instable (45 bpm). Il va faire un arrêt cardiaque dans quelques secondes !",
+      "constantesCibles": {
+        "tension": "90/50",
+        "pouls": "45",
+        "saturationO2": "75",
+        "temperature": "35.6",
+        "frequenceRespiratoire": "4"
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 15,
+        "nextNode": "s_arret_cardiaque",
+        "motif": "Arrêt respiratoire complet suivi d'un arrêt cardio-respiratoire par anoxie myocardique."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter immédiatement de la Naloxone (Narcan) 0.4 mg IVD / IM",
+          "tempsExecutionSec": 10,
+          "feedback": "Injection in extremis ! L'effet de l'antidote est spectaculaire. La commande ventilatoire est restaurée juste à temps.",
+          "nextNode": "s_guerison"
+        },
+        {
+          "label": "Commencer le massage cardiaque externe immédiatement",
+          "tempsExecutionSec": 15,
+          "feedback": "Le cœur bat encore (45 bpm), bien que très faiblement. Faire un massage sur un cœur palpitant n'est pas indiqué et retarde l'antidote indispensable.",
+          "nextNode": "s_arret_cardiaque"
+        },
+        {
+          "label": "Injecter du Flumazénil 0.2 mg IVD",
+          "tempsExecutionSec": 10,
+          "feedback": "ERREUR FATALE : Le choc et l'anoxie combinés à la crise convulsive induite entraînent un arrêt cardiorespiratoire immédiat.",
+          "nextNode": "s_err_flumazenil"
+        }
+      ]
+    },
+    "s_guerison": {
+      "id": "s_guerison",
+      "isEndState": true,
+      "success": true,
+      "xpReward": 50,
+      "descriptionClinique": "Le patient se réveille progressivement, sa Fréquence Respiratoire remonte à 14/min et sa SpO2 se stabilise à 98%. Le myosis serré disparaît. Le SAMU le transfère aux urgences pour surveillance prolongée d'au moins 6 heures (risque de re-sédation par élimination de l'antidote). Le patient est tiré d'affaire grâce à votre réactivité !",
+      "constantesCibles": {
+        "tension": "120/75",
+        "pouls": "78",
+        "saturationO2": "98",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "14"
+      }
+    },
+    "s_arret_cardiaque": {
+      "id": "s_arret_cardiaque",
+      "isEndState": true,
+      "success": false,
+      "xpReward": 0,
+      "descriptionClinique": "Le patient est en arrêt cardio-respiratoire (asystolie sur l'ECG). Les manœuvres de réanimation (massage cardiaque, intubation, adrénaline) sont débutées tardivement sous une hypoxie cérébrale dramatique. L'issue est fatale.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "50",
+        "temperature": "35.2",
+        "frequenceRespiratoire": "0"
+      }
+    },
+    "s_err_boisson": {
+      "id": "s_err_boisson",
+      "isEndState": true,
+      "success": false,
+      "xpReward": 0,
+      "descriptionClinique": "L'inhalation massive d'eau sucrée chez un patient sans réflexes laryngés a provoqué un syndrome de détresse respiratoire aiguë immédiat (syndrome de Mendelson) et une asphyxie fatale.",
+      "constantesCibles": {
+        "tension": "90/50",
+        "pouls": "48",
+        "saturationO2": "55",
+        "temperature": "35.6",
+        "frequenceRespiratoire": "3"
+      }
+    },
+    "s_err_flumazenil": {
+      "id": "s_err_flumazenil",
+      "isEndState": true,
+      "success": false,
+      "xpReward": 0,
+      "descriptionClinique": "La crise convulsive généralisée déclenchée sous anoxie myocardique et cérébrale sévère a provoqué un arrêt cardio-respiratoire immédiat. Le Flumazénil était formellement contre-indiqué !",
+      "constantesCibles": {
+        "tension": "130/80",
+        "pouls": "120",
+        "saturationO2": "62",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "4"
+      }
+    },
+    "s_err_intubation_retard": {
+      "id": "s_err_intubation_retard",
+      "isEndState": true,
+      "success": false,
+      "xpReward": 0,
+      "descriptionClinique": "Tenter une intubation invasive immédiate a retardé la ventilation et a provoqué une inhalation massive de contenu gastrique lors du laryngospasme. Arrêt respiratoire.",
+      "constantesCibles": {
+        "tension": "80/40",
+        "pouls": "40",
+        "saturationO2": "68",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "0"
+      }
+    }
+  }
+}

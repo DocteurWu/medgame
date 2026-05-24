@@ -84,7 +84,12 @@
     "locomoteur_epaule_tendinopathie_coiffe.json",
     "locomoteur_racHialgie.json"
   ],
+  "gynecologie": [
+    "GYNECO_test_etat_de_choc.json",
+    "urgence_accouchement_inopine.json"
+  ],
   "urgence": [
+    "urgence_accouchement_inopine.json",
     "urgence_choc_anaphylactique_01.json",
     "urgence_demo_acr.json",
     "urgence_demo_hemorragie.json",
@@ -101,6 +106,10 @@
     "urgence_trauma_cranien_grave.json",
     "urgence_obstruction_voa_adulte_restaurant.json",
     "urgence_inconscient_pls_bar.json",
-    "urgence_trauma_membre_amputation.json"
+    "urgence_trauma_membre_amputation.json",
+    "urgence_choc_septique_pediatrique.json",
+    "urgence_asthme_aigu_grave.json",
+    "urgence_overdose_opiaces.json",
+    "urgence_convulsion_febrile_nourrisson.json"
   ]
 }
