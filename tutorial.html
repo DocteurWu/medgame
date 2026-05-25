@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Tutoriel - MedGame</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,8 +15,8 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/device-check.css">
+    <link rel="stylesheet" href="css/index.css?v=2">
+    <link rel="stylesheet" href="css/device-check.css?v=2">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script type="importmap">
     {
@@ -363,8 +366,8 @@
 
 <body>
     <div id="canvas-container"></div>
-    <script src="js/env.js"></script>
-    <script src="js/config.js"></script>
+    <script src="js/env.js?v=2"></script>
+    <script src="js/config.js?v=2"></script>
 
     <div class="scene-overlay">
         <div class="glass-card" id="tutorial-card">
@@ -437,7 +440,7 @@
     </div>
 
     <!-- Three.js Background Module -->
-    <script type="module" src="js/three-background.js"></script>
+    <script type="module" src="js/three-background.js?v=2"></script>
 
     <script>
         // Transition
@@ -446,7 +449,7 @@
             setTimeout(() => window.location.href = url, 500);
         }
     </script>
-    <script src="js/device-check.js"></script>
+    <script src="js/device-check.js?v=2"></script>
 </body>
 
 </html>

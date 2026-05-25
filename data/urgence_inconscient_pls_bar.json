@@ -194,7 +194,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s2": {
       "id": "s2",
@@ -221,7 +227,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "pale",
+        "respiration": "bradypnea"
+      }
     },
     "s3": {
       "id": "s3",
@@ -248,7 +260,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
     },
     "s4": {
       "id": "s4",
@@ -275,7 +293,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
     },
     "s5_good": {
       "id": "s5_good",
@@ -289,7 +313,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_shake": {
       "id": "s_err_shake",
@@ -303,7 +333,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_coffee": {
       "id": "s_err_coffee",
@@ -317,7 +353,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_sit": {
       "id": "s_err_sit",
@@ -331,7 +373,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_abandon": {
       "id": "s_err_abandon",
@@ -345,7 +393,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_back": {
       "id": "s_err_back",
@@ -359,7 +413,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     }
   },
   "vitalsDynamics": {

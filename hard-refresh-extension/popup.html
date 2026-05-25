@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Super Hard Refresh</title>
+    <style>
+        body {
+            width: 280px;
+            margin: 0;
+            padding: 16px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #090e1a 0%, #05070c 100%);
+            color: #e0e8f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .header {
+            font-size: 16px;
+            font-weight: 700;
+            color: #88ccff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 0 10px rgba(136, 204, 255, 0.3);
+        }
+
+        .description {
+            font-size: 11px;
+            color: #a0aec0;
+            text-align: center;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .btn-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .glow-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 242, 254, 0.3);
+            animation: rotate 15s linear infinite;
+        }
+
+        .refresh-btn {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 242, 254, 0.5);
+            background: radial-gradient(circle, rgba(10, 25, 50, 0.8) 0%, rgba(5, 10, 25, 0.95) 100%);
+            color: #00f2fe;
+            font-size: 26px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2), inset 0 0 12px rgba(0, 242, 254, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+            padding: 0;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.45), inset 0 0 16px rgba(0, 242, 254, 0.2);
+            border-color: #00f2fe;
+            color: #ffffff;
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.96);
+        }
+
+        .btn-label {
+            font-size: 9px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #88ccff;
+        }
+
+        .status {
+            font-size: 12px;
+            font-weight: 500;
+            color: #a0aec0;
+            height: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .status.success {
+            color: #2ecc71;
+            text-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+        }
+
+        .status.loading {
+            color: #00f2fe;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span>⚡</span> Super Hard Refresh
+    </div>
+    <div class="description">
+        Vide instantanément le cache de l'onglet actif et force un rechargement complet sans aucun cache.
+    </div>
+    
+    <div class="btn-container">
+        <div class="glow-ring"></div>
+        <button id="refresh-btn" class="refresh-btn" title="Lancer le hard refresh">
+            <span>🔄</span>
+            <span class="btn-label">FORCER</span>
+        </button>
+    </div>
+
+    <div id="status" class="status">Prêt</div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

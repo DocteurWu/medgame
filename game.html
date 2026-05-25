@@ -8,16 +8,17 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Surrogate-Control" content="no-store">
     <title>Cas Clinique - MedGame</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/game.css">
-    <link rel="stylesheet" href="css/immersive.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/game.css?v=2">
+    <link rel="stylesheet" href="css/immersive.css?v=2">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="stylesheet" href="css/nurse.css">
-    <link rel="stylesheet" href="css/device-check.css">
+    <link rel="stylesheet" href="css/nurse.css?v=2">
+    <link rel="stylesheet" href="css/device-check.css?v=2">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,7 +35,7 @@
     <script type="importmap">
     {
         "imports": {
-            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js?medgame3d=20260524",
             "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
         }
     }
@@ -49,9 +50,9 @@
         Votre navigateur ne prend pas en charge la music
     </audio>
 
-    <script src="js/env.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="js/env.js?v=2"></script>
+    <script src="js/config.js?v=2"></script>
+    <script src="js/auth.js?v=2"></script>
     <script>
         // Vérifier l'authentification
         document.addEventListener('DOMContentLoaded', async () => {
@@ -165,6 +166,7 @@
                 </button>
             </div>
             <div id="hud-crosshair" class="hud-crosshair" aria-hidden="true"></div>
+
             <div id="three-tooltip" class="three-tooltip"></div>
         </div>
     </div>
@@ -552,48 +554,49 @@
     <!-- Hidden Next Case Button for JS compatibility if needed, though we have one in correction modal -->
     <button id="next-case" style="display:none;">Cas Suivant</button>
 
-    <script src="js/audio.js"></script>
-    <script src="js/nurse.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/timer.js"></script>
-    <script src="js/vitalSigns.js"></script>
-    <script src="js/lockSystem.js"></script>
-    <script src="js/scoring.js"></script>
-    <script src="js/feedback.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/patientChat.js"></script>
-    <script src="js/urgenceMode.js"></script>
-    <script src="js/caseLoader.js"></script>
-    <script src="js/gameState.js"></script>
-    <script src="js/prescription.js"></script>
-    <script src="js/player_map.js"></script>
-    <script src="js/clinicalAgentAI.js"></script>
+    <script src="js/audio.js?v=2"></script>
+    <script src="js/nurse.js?v=2"></script>
+    <script src="js/utils.js?v=2"></script>
+    <script src="js/timer.js?v=2"></script>
+    <script src="js/vitalSigns.js?v=2"></script>
+    <script src="js/lockSystem.js?v=2"></script>
+    <script src="js/scoring.js?v=2"></script>
+    <script src="js/feedback.js?v=2"></script>
+    <script src="js/ui.js?v=2"></script>
+    <script src="js/patientChat.js?v=2"></script>
+    <script src="js/urgenceMode.js?v=2"></script>
+    <script src="js/caseLoader.js?v=2"></script>
+    <script src="js/gameState.js?v=2"></script>
+    <script src="js/prescription.js?v=2"></script>
+    <script src="js/player_map.js?v=2"></script>
+    <script src="js/clinicalAgentAI.js?v=2"></script>
 
     <!-- 3D Modules -->
-    <script type="module" src="js/three-animations.js"></script>
-    <script type="module" src="js/three-room.js"></script>
-    <script type="module" src="js/three-instruments.js"></script>
-    <script type="module" src="js/three-patient.js"></script>
-    <script type="module" src="js/three-doctor.js"></script>
-    <script type="module" src="js/three-background.js"></script>
+    <script type="module" src="js/three-cache-control.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-animations.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-room.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-instruments.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-patient.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-doctor.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-background.js?v=20260524-nostore"></script>
 
     <!-- 3D Agent Modules -->
-    <script type="module" src="js/three-asset-agent.js"></script>
-    <script type="module" src="js/three-lighting-agent.js"></script>
-    <script type="module" src="js/three-environment-agent.js"></script>
-    <script type="module" src="js/three-scene.js"></script>
-    <script type="module" src="js/character-controller.js"></script>
-    <script type="module" src="js/three-tablet.js"></script>
-    <script type="module" src="js/three-hud-agent.js"></script>
-    <script type="module" src="js/three-transition-agent.js"></script>
-    <script type="module" src="js/three-lock-agent.js"></script>
-    <script type="module" src="js/three-manager.js"></script>
+    <script type="module" src="js/three-asset-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-lighting-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-environment-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-scene.js?v=20260524-nostore"></script>
+    <script type="module" src="js/character-controller.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-tablet.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-hud-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-transition-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-lock-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-manager.js?v=20260524-nostore"></script>
 
     <!-- 3D Manager is loaded as ES module above (line 461) -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="js/game.js?v=20251220-1645"></script>
-    <script src="js/device-check.js"></script>
+    <script src="js/device-check.js?v=2"></script>
 
     <!-- 3D HUD Fully Restored (Immersif) -->
 </body>

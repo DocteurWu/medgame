@@ -58,8 +58,8 @@ export class ThreeScene {
         // === Système hover glow ===
         this._hoveredObject = null;
         this._hoveredOriginalEmissives = new Map();
-        this._hoverGlowIntensity = 0.35;
-        this._hoverGlowColor = new THREE.Color(0x66aaff);
+        this._hoverGlowIntensity = 0.12;
+        this._hoverGlowColor = new THREE.Color(0x1a3a6c);
         this._tooltipEl = null;
         this._tooltipVisible = false;
 
@@ -172,6 +172,12 @@ export class ThreeScene {
             onDeactivate: () => {
                 this.controls.enabled = true;
                 document.body.classList.remove('mode-fps'); // Nettoyage de l'UI
+                
+                // Réafficher le modèle 3D du médecin en sortant du mode FPS
+                if (this.characterController && this.characterController.group) {
+                    this.characterController.group.visible = true;
+                }
+
                 const crosshairEl = document.getElementById('hud-crosshair');
                 if (crosshairEl) {
                     crosshairEl.classList.remove('is-targeting');
@@ -399,6 +405,11 @@ export class ThreeScene {
                     this.hotspotsGroup.visible = false;
                 }
                 
+                // Masquer le modèle 3D du médecin en mode FPS pour l'immersion
+                if (this.characterController && this.characterController.group) {
+                    this.characterController.group.visible = false;
+                }
+                
                 this.controls.enabled = false;
                 document.body.classList.add('mode-fps'); // Masquer le HUD superflus pour une immersion 100% propre
                 
@@ -428,6 +439,11 @@ export class ThreeScene {
             }
             this.controls.enabled = true;
             document.body.classList.remove('mode-fps'); // Restaurer le HUD normal
+            
+            // Réafficher le modèle 3D du médecin
+            if (this.characterController && this.characterController.group) {
+                this.characterController.group.visible = true;
+            }
         }
 
         this.currentCameraMode = mode;

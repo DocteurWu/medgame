@@ -75,7 +75,7 @@
   "nodes": {
     "etat_initial": {
       "id": "etat_initial",
-      "descriptionClinique": "Le patient est agité, couvert d'urticaire. Il respire avec un sifflement (wheezing) audibible à distance. Sueurs profuses.",
+      "descriptionClinique": "Le patient est agité, couvert d'urticaire. Il respire avec un sifflement (wheezing) audible à distance. Sueurs profuses.",
       "constantesCibles": {
         "tension": "90/50",
         "pouls": 115,
@@ -89,27 +89,40 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Mettre sous Oxygène (Masque Haute Concentration)",
-          "type": "soin",
-          "tempsExecutionSec": 5,
-          "nextNode": "etat_initial_O2",
-          "feedback": "L'oxygène est posé, la saturation s'améliore légèrement mais la cause n'est pas traitée."
-        },
-        {
-          "label": "Injection Adrénaline 0.5mg IM",
+          "label": "Injecter de l'Adrénaline 0.5 mg en Intramusculaire (IM) immédiatement",
           "type": "traitement_cle",
           "tempsExecutionSec": 10,
           "nextNode": "etat_guerison",
-          "feedback": "Vous injectez l'adrénaline en intramusculaire. Le patient respire mieux presque immédiatement."
+          "feedback": "Décision parfaite et prioritaire ! L'adrénaline en intramusculaire (face antéro-latérale de la cuisse) est le traitement de première intention absolue du choc anaphylactique. Elle restaure rapidement la tension artérielle et lève le bronchospasme."
         },
         {
-          "label": "Donner Antihistaminique PO",
+          "label": "Mettre sous Oxygène (Masque Haute Concentration à 15 L/min)",
+          "type": "soin",
+          "tempsExecutionSec": 5,
+          "nextNode": "etat_initial_O2",
+          "feedback": "Bonne action symptomatique pour corriger l'hypoxie, mais cela ne traite pas la cause sous-jacente du choc et de la vasodilatation. L'adrénaline reste le geste prioritaire indispensable."
+        },
+        {
+          "label": "Administrer des Corticoïdes (Méthylprednisolone 120 mg IVD) et Antihistaminiques PO",
           "type": "erreur",
           "tempsExecutionSec": 15,
           "nextNode": "etat_degradation1",
-          "feedback": "Le patient a du mal à avaler, l'effet sera trop lent pour une urgence vitale. Vous perdez un temps précieux !"
+          "feedback": "C'est une perte de temps inacceptable en première intention ! Les corticoïdes et antihistaminiques n'agissent qu'en quelques heures et ne préviennent ni le bronchospasme aigu ni le collapsus cardio-vasculaire immédiat. Le patient continue de se dégrader."
+        },
+        {
+          "label": "Injecter du Propranolol (bêtabloquant) 1 mg IVD pour ralentir la tachycardie",
+          "type": "erreur_grave",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Erreur critique létale ! Les bêtabloquants sont strictement contre-indiqués : ils bloquent les récepteurs adrénergiques, empêchant toute réponse à l'adrénaline endogène ou exogène, et précipitent un arrêt cardiorespiratoire réfractaire sur bronchospasme et choc irréversibles."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "etat_initial_O2": {
       "id": "etat_initial_O2",
@@ -127,13 +140,40 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Injection Adrénaline 0.5mg IM",
+          "label": "Injecter de l'Adrénaline 0.5 mg en Intramusculaire (IM)",
           "type": "traitement_cle",
           "tempsExecutionSec": 10,
           "nextNode": "etat_guerison",
-          "feedback": "L'adrénaline remonte la tension et lève le bronchospasme ! Bonne décision."
+          "feedback": "Excellent ! L'adrénaline IM remonte la tension artérielle, réduit l'œdème des voies aériennes et lève le bronchospasme. C'est l'action salvatrice."
+        },
+        {
+          "label": "Poser une VVP et initier un Remplissage Vasculaire (NaCl 0.9% 500 mL rapide)",
+          "type": "soin",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_degradation1",
+          "feedback": "Le remplissage par cristalloïdes compense temporairement la perte de volume intravasculaire, mais ne résout pas la vasodilatation majeure ni le bronchospasme. Sans adrénaline, l'état se dégrade."
+        },
+        {
+          "label": "Injecter de l'Hydrocortisone 200 mg IVD",
+          "type": "erreur",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_degradation1",
+          "feedback": "Action inefficace dans l'immédiat. Les corticoïdes agissent tardivement (après 4 à 6 heures). L'absence d'adrénaline conduit à une aggravation rapide de l'insuffisance circulatoire."
+        },
+        {
+          "label": "Injecter de l'Adrénaline 1 mg en bolus intraveineux direct (IVD)",
+          "type": "erreur_grave",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Erreur dramatique ! L'adrénaline IV directe en bolus non dilué chez un patient ayant une activité cardiaque est extrêmement dangereuse et formellement proscrite (risque d'arythmie ventriculaire létale, d'ischémie myocardique ou d'hémorragie cérébrale). Le patient fait une fibrillation ventriculaire !"
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "etat_degradation1": {
       "id": "etat_degradation1",
@@ -151,20 +191,40 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Injection Adrénaline 0.5mg IM",
+          "label": "Injecter immédiatement de l'Adrénaline 0.5 mg en IM",
           "type": "traitement_cle",
           "tempsExecutionSec": 5,
           "nextNode": "etat_guerison",
-          "feedback": "Injection réalisée en urgence absolue ! Cela a pris plus de temps pour agir mais le patient sort de collapsus."
+          "feedback": "Sauvetage in extremis ! L'adrénaline intramusculaire est absorbée rapidement, lève le bronchospasme et l'œdème laryngé juste avant l'arrêt complet."
         },
         {
-          "label": "Intubation Oro-trachéale",
-          "type": "geste_urgence",
-          "tempsExecutionSec": 15,
+          "label": "Assister la ventilation au ballon auto-remplisseur (Ambu) avec O2 100%",
+          "type": "soin",
+          "tempsExecutionSec": 10,
           "nextNode": "etat_arret_cardiaque",
-          "feedback": "Échec de l'intubation à cause de l'œdème majeur. Le patient s'épuise. Il fallait faire de l'adrénaline d'abord."
+          "feedback": "L'insuffisance respiratoire et circulatoire est trop sévère et l'obstacle mécanique (œdème) empêche la ventilation efficace au masque. Sans adrénaline immédiate pour lever l'obstruction, l'arrêt cardiaque survient."
+        },
+        {
+          "label": "Tenter une Intubation Oro-Trachéale immédiate",
+          "type": "erreur",
+          "tempsExecutionSec": 20,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Échec catastrophique. L'œdème de Quincke rend les voies aériennes totalement invisibles et inaccessibles. Cette tentative infructueuse fait perdre le peu d'oxygène restant et précipite l'asphyxie et l'arrêt."
+        },
+        {
+          "label": "Injecter du Propofol (200 mg IVD) pour sédater le patient",
+          "type": "erreur_grave",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Folie clinique ! Injecter un puissant vasodilatateur et dépresseur cardiaque comme le Propofol sur un patient en état de choc anaphylactique profond (TA 60/30) provoque instantanément un collapsus cardiovasculaire irréversible."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "etat_guerison": {
       "id": "etat_guerison",
@@ -176,6 +236,12 @@
         "pouls": 90,
         "saturationO2": 99,
         "frequenceRespiratoire": 16
+      },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
       }
     },
     "etat_arret_cardiaque": {
@@ -188,6 +254,12 @@
         "pouls": 0,
         "saturationO2": 0,
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     }
   },

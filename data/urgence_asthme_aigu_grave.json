@@ -179,7 +179,7 @@
   ],
   "vitalsDynamics": {
     "trendOverMinutes": 0.25,
-    "urgencyMultiplier": 3.0,
+    "urgencyMultiplier": 3,
     "aggravationTargets": {
       "heartRate": 140,
       "systolic": 85,
@@ -269,20 +269,32 @@
           "nextNode": "s2_traite"
         },
         {
+          "label": "Installer assis à 90°, administrer de l'Oxygène (masque à 15 L/min), poser une voie veineuse pour hydratation et injecter du Solumedrol 120 mg IV seul en attendant une évaluation par un médecin senior",
+          "tempsExecutionSec": 60,
+          "feedback": "Action très insuffisante ! Bien que l'installation et l'O2 soient corrects, retarder la nébulisation de bronchodilatateurs (Salbutamol/Ipratropium) est une erreur majeure car les corticoïdes mettent plusieurs heures à agir. Le bronchospasme persiste et le patient va rapidement s'épuiser.",
+          "nextNode": "s2_traite"
+        },
+        {
+          "label": "Demander immédiatement une radiographie pulmonaire au lit et un bilan biologique complet avec gaz du sang artériel avant de commencer tout traitement médicamenteux",
+          "tempsExecutionSec": 120,
+          "feedback": "Erreur de priorité ! Réaliser des examens complémentaires chez un patient en détresse respiratoire aiguë extrême avant de débuter les nébulisations thérapeutiques fait perdre un temps précieux et retarde la levée salvatrice du bronchospasme.",
+          "nextNode": "s2_traite"
+        },
+        {
           "label": "Injecter du Diazépam (Valium) 10 mg IV pour calmer son anxiété majeure et le forcer à s'allonger pour récupérer",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR FATALE ! L'anxiété est le témoin direct de l'hypoxémie et de la lutte. Le diazépam supprime sa commande respiratoire. En plus, le forcer à s'allonger aggrave le travail respiratoire. Le patient s'effondre en apnée !",
           "nextNode": "s_err_sedation"
-        },
-        {
-          "label": "Injecter un bêta-bloquant (Propranolol) IV pour ralentir sa tachycardie sinusale à 110 bpm",
-          "tempsExecutionSec": 20,
-          "feedback": "ERREUR FATALE ! Les bêta-bloquants provoquent une bronchoconstriction majeure immédiate en bloquant les récepteurs bêta-2 bronchiques. Le bronchospasme devient total, le patient étouffe et fait un arrêt cardio-respiratoire.",
-          "nextNode": "s_err_betabloquant"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s2_traite": {
       "id": "s2_traite",
@@ -296,20 +308,38 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Réaliser un Gaz du Sang Artériel (GDS) et une Radiographie du Thorax de face en urgence",
-          "tempsExecutionSec": 30,
-          "feedback": "Parfait. Les gaz du sang permettent de surveiller l'adéquation de la ventilation (PaCO2) et de vérifier l'absence d'hypercapnie résiduelle. La radiographie thoracique élimine une complication mécanique (pneumothorax ou pneumomédiastin favorisé par l'hyperpression alvéolaire).",
+          "label": "Réaliser un Gaz du Sang Artériel (GDS), une Radiographie du Thorax de face au lit en urgence, et débuter une perfusion de Sulfate de Magnésium (2g IV sur 20 min) devant la sévérité initiale",
+          "tempsExecutionSec": 45,
+          "feedback": "Parfait ! Les examens permettent de surveiller l'évolution (PaCO2) et d'éliminer un pneumothorax sous tension. L'injection de Sulfate de Magnésium IV est recommandée en deuxième intention dans l'asthme aigu grave pour son effet bronchodilatateur additif puissant.",
           "nextNode": "s3_exams"
         },
         {
-          "label": "L'envoyer immédiatement au scanner thoracique AP pour éliminer une embolie pulmonaire",
+          "label": "Réaliser uniquement le Gaz du Sang Artériel (GDS) et la Radiographie du Thorax de face au lit sans ajouter de traitement de deuxième ligne",
+          "tempsExecutionSec": 30,
+          "feedback": "Utile mais partiel. Réaliser les examens est indispensable, mais se priver du Sulfate de Magnésium IV chez ce patient qui a présenté des signes de gravité extrêmes constitue une perte de chance thérapeutique pour lever définitivement le bronchospasme.",
+          "nextNode": "s3_exams"
+        },
+        {
+          "label": "Pratiquer un bilan biologique complet avec troponines, D-Dimères, ionogramme et ECG complets, et attendre tous les résultats avant d'envisager la suite de la prise en charge",
           "tempsExecutionSec": 150,
-          "feedback": "Inadapté et dangereux. Déplacer un patient aussi instable hors des urgences pour un scanner non justifié l'expose à une dégradation majeure sans surveillance. La clinique évoque clairement une crise d'asthme grave déclenchée par un allergène.",
+          "feedback": "Perte de temps modérée. Si l'ECG est utile face à la tachycardie sinusale, doser les D-Dimères et les troponines n'est pas prioritaire et retarde inutilement la surveillance clinique continue du bronchospasme.",
+          "nextNode": "s3_exams"
+        },
+        {
+          "label": "L'envoyer immédiatement au scanner thoracique AP (angioscanner) non monitoré pour éliminer formellement une embolie pulmonaire",
+          "tempsExecutionSec": 150,
+          "feedback": "Erreur critique ! Transporter un patient instable en détresse respiratoire sans scope ni surveillance vers un scanner hors du service des urgences conduit à un arrêt respiratoire irréversible.",
           "nextNode": "s_err_scanner"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "anxieux",
+        "couleurPeau": "normal",
+        "respiration": "tachypnea"
+      }
     },
     "s3_exams": {
       "id": "s3_exams",
@@ -323,14 +353,38 @@
       },
       "actionsDisponibles": [
         {
-          "label": "Organiser son transfert en unité de surveillance continue pour monitoring pendant 24h et poursuivre les nébulisations toutes les 4 heures",
+          "label": "Organiser son transfert en unité de surveillance continue (USC) pour monitoring scopique pendant 24h, poursuivre la corticothérapie et planifier des nébulisations régulières toutes les 4 heures",
           "tempsExecutionSec": 20,
-          "feedback": "Excellente décision. Tout patient ayant présenté un asthme aigu grave (AAG) doit être hospitalisé au moins 24 heures pour surveillance en raison d'un risque élevé de récidive précoce de bronchospasme.",
+          "feedback": "Excellente décision. Tout patient ayant présenté un asthme aigu grave (AAG) doit être hospitalisé au moins 24 heures pour surveillance continue scopique en raison d'un risque élevé de récidive précoce de bronchospasme.",
           "nextNode": "s_succes"
+        },
+        {
+          "label": "Garder le patient aux urgences en simple surveillance visuelle sans monitoring scopique et programmer une nébulisation uniquement à la demande s'il recommence à siffler",
+          "tempsExecutionSec": 40,
+          "feedback": "Choix partiel et risqué. Bien que le patient soit amélioré à l'instant T, l'absence de scope et de nébulisations systématiques programmées expose à une récidive brutale de bronchospasme qui pourrait passer inaperçue.",
+          "nextNode": "s_succes"
+        },
+        {
+          "label": "Prescrire une sortie immédiate à domicile avec une ordonnance de Ventoline à la demande et lui conseiller de consulter son médecin traitant sous 48 heures",
+          "tempsExecutionSec": 30,
+          "feedback": "Erreur modérée ! Un asthme aigu grave nécessite impérativement une hospitalisation d'au moins 24 heures. Laisser repartir le patient à domicile si précocement l'expose à une récidive sévère et potentiellement fatale hors milieu hospitalier.",
+          "nextNode": "s_succes"
+        },
+        {
+          "label": "Prescrire un bêta-bloquant oral (Propranolol) pour calmer sa tachycardie résiduelle et l'autoriser à rentrer chez lui immédiatement",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR CRITIQUE ! Administrer un bêta-bloquant à un asthmatique en post-crise est criminel. Cela va bloquer instantanément les récepteurs adrénergiques bêta-2 pulmonaires, provoquant un bronchospasme hermétique foudroyant et mortel.",
+          "nextNode": "s_err_betabloquant"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s_succes": {
       "id": "s_succes",
@@ -344,7 +398,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_sedation": {
       "id": "s_err_sedation",
@@ -358,7 +418,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_betabloquant": {
       "id": "s_err_betabloquant",
@@ -372,7 +438,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_scanner": {
       "id": "s_err_scanner",
@@ -386,7 +458,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     }
   },
   "correction": "# Asthme Aigu Grave (AAG)\n\n## Diagnostic\nL'asthme aigu grave est un bronchospasme sévère mettant en jeu le pronostic vital à très court terme. Il est caractérisé cliniquement par :\n- Une polypnée > 30/min, un tirage musculaire accessoire (intercostal, sus-claviculaire).\n- L'**orthopnée** : nécessité absolue pour le patient de rester assis bien droit à 90°.\n- Une **impossibilité de parler** (dyspnée parlante, phrases impossibles à terminer).\n- Une SpO2 basse (< 90%) et des sueurs.\n\n## 🚨 Signes d'épuisement respiratoire clinique (Gravité Extrême)\n1. **Le Silence Auscultatoire (Poumon Silencieux)** : Contrairement aux sibilants bruyants (qui prouvent qu'un flux d'air passe encore), le silence indique un bronchospasme complet et hermétique. Plus aucun gaz n'est échangé. C'est l'étape avant l'arrêt ventilatoire complet.\n2. **La Respiration Abdominale Paradoxale** : Témoigne de la fatigue complète du diaphragme. À l'inspiration, l'abdomen rentre au lieu de sortir. C'est l'étape ultime avant l'arrêt respiratoire.\n3. **La Bradypnée Progressive** : La fréquence respiratoire qui diminue après une phase de polypnée intense n'est pas un signe d'amélioration, mais de faillite de la commande centrale respiratoire (épuisement).\n4. **Normo/Hypercapnie aux GDS** : Dans une détresse respiratoire aiguë avec polypnée, la PaCO2 doit être basse (hypocapnie par hyperventilation). Une PaCO2 normale (40 mmHg) ou élevée aux GDS montre que le patient n'arrive plus à ventiler son espace mort, signant un épuisement majeur imminent.\n\n## ❌ Les Pièges Absolus / Erreurs à éviter (Don'ts / Fatals)\n- **L'administration de sédatifs (Benzodiazépines, Morphine)** : C'est le piège numéro 1. L'agitation et l'anxiété du patient sont des signaux physiologiques de lutte contre l'hypoxie. Les sédatifs suppriment la commande ventilatoire centrale, entraînant instantanément l'apnée et l'arrêt cardiaque.\n- **Les Bêta-bloquants** : Même cardiosélectifs, ils provoquent un bronchospasme majeur immédiat en bloquant les récepteurs pulmonaires bêta-2 (effet inverse des bronchodilatateurs). Ils sont formellement contre-indiqués chez tout patient asthmatique.\n- **Forcer le patient à s'allonger** : La position couchée augmente la pression abdominale sur le diaphragme épuisé et supprime l'aide des muscles inspiratoires accessoires. Elle précipite l'asphyxie.\n\n## 🟢 Bons réflexes / Prise en charge immédiate (Do's)\n1. **Position assise** stricte (60-90°).\n2. **Oxygénothérapie à haut débit** (masque haute concentration, objectif SpO2 > 93-95%).\n3. **Nébulisation en urgence** : Bêta-2 mimétiques à forte dose (Salbutamol 5 mg) associés à un anticholinergique (Ipratropium 0.5 mg) nébulisés sous un débit d'oxygène de 6 à 8 L/min.\n4. **Corticothérapie systémique précoce** : Methylprednisolone (Solumedrol) 1 à 2 mg/kg IV (ou Solupred PO si déglutition possible et pas de signes d'épuisement critique, mais la voie IV est privilégiée dans l'AAG pour garantir l'absorption)."

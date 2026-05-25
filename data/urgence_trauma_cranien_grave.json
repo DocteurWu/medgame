@@ -195,7 +195,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "pale",
+        "respiration": "bradypnea"
+      }
     },
     "s2": {
       "id": "s2",
@@ -222,7 +228,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s3": {
       "id": "s3",
@@ -249,7 +261,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s4_good": {
       "id": "s4_good",
@@ -263,7 +281,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_sit": {
       "id": "s_err_sit",
@@ -277,7 +301,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_minimize": {
       "id": "s_err_minimize",
@@ -291,7 +321,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s_err_sleep": {
       "id": "s_err_sleep",
@@ -305,7 +341,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     }
   },
   "vitalsDynamics": {

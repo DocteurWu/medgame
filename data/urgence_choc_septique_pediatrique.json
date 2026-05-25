@@ -184,7 +184,6 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 3,
   "alternativeDiagnostics": [
     "Purpura fulminans",
     "Méningococcémie",
@@ -282,26 +281,33 @@
           "nextNode": "s_echec_vvp"
         },
         {
-          "label": "Pratiquer immédiatement une ponction lombaire (PL) diagnostique",
+          "label": "Injecter immédiatement du Paracétamol sirop par voie orale pour calmer la fièvre de 39.5°C",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR CLINIQUE GRAVE : L'enfant est léthargique (Glasgow à 11) ; toute administration orale est formellement proscrite en raison d'un risque majeur de fausse route et d'inhalation bronchique. De plus, le paracétamol n'a aucun effet sur la cause de l'infection systémique. Léo s'asphyxie et décompense !",
+          "nextNode": "s_degradation_po"
+        },
+        {
+          "label": "Pratiquer immédiatement une ponction lombaire (PL) diagnostique au lit du patient",
           "tempsExecutionSec": 30,
-          "feedback": "ERREUR CLINIQUE GRAVE : La ponction lombaire est formellement contre-indiquée chez un patient en état de choc instable (risque majeur de collapsus respiratoire et d'engagement cérébral fatal lors du prélèvement de LCR). De plus, vous retardez criminellement le traitement antibiotique salvateur. L'état de Léo s'effondre !",
+          "feedback": "ERREUR CLINIQUE GRAVE : La ponction lombaire est formellement contre-indiquée chez un patient en état de choc instable (risque majeur d'engagement cérébral fatal lors du retrait du LCR). De plus, vous retardez de façon inacceptable le traitement antibiotique salvateur. L'état de Léo s'effondre !",
           "nextNode": "s_degradation_pl"
         },
         {
           "label": "Prescrire des examens biologiques complets et attendre les résultats de l'hémoculture",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR CLINIQUE COMMANDEE : Attendre des résultats biologiques ou bactériologiques avant d'agir face à une suspicion forte de purpura fulminans est une faute majeure. Chaque heure de retard réduit le taux de survie de 7.6%. Le choc septique s'aggrave rapidement !",
+          "feedback": "ERREUR CLINIQUE : Attendre des résultats biologiques ou bactériologiques avant d'agir face à une suspicion forte de purpura fulminans est une faute majeure. Chaque heure de retard réduit le taux de survie de 7.6%. Le choc septique s'aggrave rapidement !",
           "nextNode": "s_degradation_attente"
-        },
-        {
-          "label": "Lui administrer du Paracétamol sirop par voie orale pour soulager la fièvre",
-          "tempsExecutionSec": 15,
-          "feedback": "ERREUR D'ADMINISTRATION : L'enfant est léthargique ; toute administration orale est strictement proscrite en raison d'un risque majeur de fausse route et d'inhalation bronchique. De plus, le paracétamol n'a aucun effet sur l'infection invasive. Léo s'asphyxie et décompense !",
-          "nextNode": "s_degradation_po"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_echec_vvp": {
       "id": "s_echec_vvp",
@@ -326,6 +332,12 @@
           "nextNode": "s_vio_posee"
         },
         {
+          "label": "Injecter du Céfotaxime 50 mg/kg (750 mg) par voie intramusculaire (IM) immédiate en préparant l'arrivée d'une VIO",
+          "tempsExecutionSec": 20,
+          "feedback": "ACTION PARTIELLE : Injecter le Céfotaxime par voie IM est recommandé en cas d'absence d'accès vasculaire immédiat pour ne pas retarder l'antibiothérapie. Cependant, cela ne résout pas la défaillance hémodynamique liée au choc. Il faut poser la VIO en urgence absolue pour le remplissage vasculaire !",
+          "nextNode": "s_vio_posee"
+        },
+        {
           "label": "S'acharner à chercher une autre VVP (3ème tentative sur la veine jugulaire externe ou fémorale)",
           "tempsExecutionSec": 25,
           "feedback": "ERREUR : S'acharner à chercher une VVP sur un lit vasculaire effondré et marbré fait perdre des minutes précieuses. L'état hémodynamique s'effondre sous le seuil critique de perfusion systémique. Léo fait un arrêt cardiaque !",
@@ -339,7 +351,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
     },
     "s_vio_posee": {
       "id": "s_vio_posee",
@@ -364,30 +382,36 @@
           "nextNode": "s_stabilisation_etape1"
         },
         {
-          "label": "Pratiquer d'abord la ponction lombaire par précaution et retarder les antibiotiques",
-          "tempsExecutionSec": 25,
-          "feedback": "ERREUR MAJEURE : La ponction lombaire reste formellement contre-indiquée et retarder l'antibiothérapie dans un purpura fulminans est une faute grave. L'enfant fait un collapsus cardiovasculaire mortel sous vos yeux pendant la tentative de ponction.",
-          "nextNode": "s_degradation_severe"
-        },
-        {
-          "label": "Administrer l'antibiothérapie immédiatement mais ne pas faire de remplissage par crainte d'un œdème cérébral",
+          "label": "Administrer l'antibiothérapie Céfotaxime 50 mg/kg (750 mg) et Gentamicine 5 mg/kg (75 mg) via la VIO seule, et différer le remplissage par crainte d'un œdème cérébral",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR : Bien que l'antibiothérapie soit fondamentale, le choc septique s'accompagne d'une hypovolémie absolue et relative majeure liée à une fuite capillaire systémique. Sans remplissage vasculaire (10-20 ml/kg), la tension artérielle chute irrémédiablement. Léo s'effondre.",
+          "feedback": "ERREUR CLINIQUE / ACTION PARTIELLE : Bien que l'antibiothérapie rapide soit fondamentale, le choc septique s'accompagne d'une hypovolémie absolue et relative majeure liée à une fuite capillaire systémique. Sans remplissage vasculaire immédiat (10-20 ml/kg), la tension artérielle chute irrémédiablement vers un collapsus réfractaire.",
           "nextNode": "s_degradation_no_remplissage"
         },
         {
-          "label": "Perfuser un bolus massif de Ringer Lactate de 500 ml (33 ml/kg) en 5 min et injecter 1 mg d'Adrénaline IV direct",
+          "label": "Pratiquer une ponction lombaire diagnostique rapide au lit du patient avant d'injecter quoi que ce soit par la VIO",
+          "tempsExecutionSec": 25,
+          "feedback": "ERREUR CLINIQUE GRAVE : La ponction lombaire reste formellement contre-indiquée et retarder l'antibiothérapie dans un purpura fulminans est une faute grave. L'enfant fait un collapsus cardiovasculaire mortel sous vos yeux pendant la tentative de ponction.",
+          "nextNode": "s_degradation_severe"
+        },
+        {
+          "label": "Perfuser un bolus massif de Ringer Lactate de 500 ml (33 ml/kg) en 5 min et injecter 1 mg d'Adrénaline IV direct via la VIO",
           "tempsExecutionSec": 20,
-          "feedback": "ERREUR CLINIQUE / DE SURCHARGE : Un bolus initial de remplissage chez l'enfant doit être titré (10 à 20 ml/kg maximum, soit 300 ml ici). De plus, l'adrénaline en bolus IV direct non titrée est formellement proscrite (risque d'hypertension maligne, d'hémorragie cérébrale, d'œdème aigu du poumon et d'asystolie).",
+          "feedback": "ERREUR CLINIQUE / DE SURCHARGE : Un bolus initial de remplissage chez l'enfant doit être titré (10 à 20 ml/kg maximum, soit 300 ml ici). De plus, l'adrénaline en bolus IV direct non titrée est formellement proscrite (risque d'hypertension maligne, d'œdème aigu du poumon et de fibrillation ventriculaire).",
           "nextNode": "s_degradation_surcharge"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
     },
     "s_stabilisation_etape1": {
       "id": "s_stabilisation_etape1",
-      "descriptionClinique": "Le premier bolus de 300 ml de Ringer Lactate s'est terminé en 15 minutes. Les antibiotiques ont été entièrement administrés. À la réévaluation : Léo est légèrement plus réactif, mais reste apathique et somnolent. Sa PAS est remontée à 80 mmHg, son pouls est à 160 bpm, mais le TRC reste allongé à 3.5 secondes et des marbrures prédisposent aux genoux.",
+      "descriptionClinique": "Le premier bolus de 300 ml de Ringer Lactate s'est terminé en 15 minutes. Les antibiotiques ont été entièrement administrés. À la réévaluation : Léo est légèrement plus réactif, mais reste apathique et somnolent. Sa PAS is remontée à 80 mmHg, son pouls est à 160 bpm, mais le TRC reste allongé à 3.5 secondes et des marbrures prédisposent aux genoux.",
       "constantesCibles": {
         "tension": "80/45",
         "pouls": "160",
@@ -408,20 +432,32 @@
           "nextNode": "s_stabilisation_reussie"
         },
         {
+          "label": "Prescrire une perfusion de Ringer Lactate d'entretien lente à 60 ml/h et surveiller l'évolution",
+          "tempsExecutionSec": 15,
+          "feedback": "ACTION PARTIELLE / INSUFFISANTE : Mettre une perfusion d'entretien à débit standard est totalement insuffisant pour corriger un choc septique persistant avec TRC à 3.5s et marbrures cutanées. Sans réexpansion volémique rapide par un second bolus de 20 ml/kg, le choc s'aggrave rapidement.",
+          "nextNode": "s_degradation_severe"
+        },
+        {
           "label": "Débuter immédiatement une perfusion de catécholamines (Noradrénaline) sans effectuer de nouveau remplissage",
           "tempsExecutionSec": 20,
           "feedback": "ERREUR TACTIQUE : Les amines vasopressives ne doivent jamais être introduites avant d'avoir optimisé la volémie circulante par un remplissage approprié (au moins 40 ml/kg en l'absence de surcharge), sous peine de majorer la vasoconstriction périphérique et l'ischémie tissulaire sur un lit vasculaire vide.",
           "nextNode": "s_degradation_severe"
         },
         {
-          "label": "Considérer que l'enfant est maintenant hors de danger et arrêter la surveillance active",
+          "label": "Considérer que l'enfant est maintenant hors de danger, arrêter la surveillance active et le laisser se reposer",
           "tempsExecutionSec": 15,
-          "feedback": "ERREUR DE SURVEILLANCE : L'enfant est toujours en état de choc périphérique (TRC allongé, marbrures). Interrompre la réanimation ou relâcher la surveillance à ce stade expose à un effondrement hémodynamique secondaire foudroyant. Léo rechute.",
+          "feedback": "ERREUR DE SURVEILLANCE CRITIQUE : L'enfant est toujours en état de choc périphérique (TRC allongé, marbrures). Interrompre la réanimation ou relâcher la surveillance à ce stade expose à un effondrement hémodynamique secondaire foudroyant. Léo rechute rapidement.",
           "nextNode": "s_degradation_severe"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
     },
     "s_stabilisation_reussie": {
       "id": "s_stabilisation_reussie",
@@ -444,10 +480,34 @@
           "tempsExecutionSec": 15,
           "feedback": "FÉLICITATIONS, DOCTEUR ! Vos transmissions claires, structurées et votre rapidité de prise en charge ont permis de sauver la vie de cet enfant de 3 ans. Grâce à vos décisions cliniques conformes aux standards internationaux, l'infection invasive a été jugulée et l'état de choc corrigé in extremis.",
           "nextNode": "s_victoire"
+        },
+        {
+          "label": "Transmettre oralement les grandes lignes au SMUR sans rédiger de compte-rendu écrit détaillé",
+          "tempsExecutionSec": 15,
+          "feedback": "ACTION INCOMPLÈTE : Les transmissions orales sont indispensables mais insuffisantes en réanimation. Une traçabilité écrite rigoureuse des volumes de cristalloïdes et des horaires précis d'administration des antibiotiques est capitale pour la continuité des soins du SMUR. Le transfert a tout de même lieu mais de façon imparfaite.",
+          "nextNode": "s_victoire"
+        },
+        {
+          "label": "Insister pour réaliser immédiatement une ponction lombaire avant que le SMUR ne reparte avec l'enfant",
+          "tempsExecutionSec": 25,
+          "feedback": "ERREUR DE STRATÉGIE : Le patient vient à peine d'être stabilisé après un choc septique sévère. La ponction lombaire reste une procédure non prioritaire qui risquerait de le déstabiliser à nouveau et de retarder son transfert en unité de réanimation pédiatrique. Le SMUR refuse fermement votre proposition.",
+          "nextNode": "s_victoire"
+        },
+        {
+          "label": "Retirer l'aiguille intra-osseuse (VIO) sous prétexte que l'enfant est stabilisé pour éviter le risque d'infection osseuse",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR CLINIQUE GRAVE : Retirer le seul accès vasculaire sécurisé chez un patient qui vient de faire un choc septique sévère avant son transfert médicalisé par le SMUR est une faute critique. Le patient se déstabilise brusquement sans accès disponible !",
+          "nextNode": "s_degradation_severe"
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
     },
     "s_degradation_delai": {
       "id": "s_degradation_delai",
@@ -460,6 +520,12 @@
         "saturationO2": 0,
         "temperature": "38.2",
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_degradation_pl": {
@@ -473,6 +539,12 @@
         "saturationO2": 0,
         "temperature": "38.5",
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_degradation_attente": {
@@ -486,6 +558,12 @@
         "saturationO2": 50,
         "temperature": "39.6",
         "frequenceRespiratoire": 52
+      },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
       }
     },
     "s_degradation_po": {
@@ -499,6 +577,12 @@
         "saturationO2": 0,
         "temperature": "38.9",
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_degradation_severe": {
@@ -512,6 +596,12 @@
         "saturationO2": 0,
         "temperature": "37.5",
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_degradation_no_remplissage": {
@@ -525,6 +615,12 @@
         "saturationO2": 0,
         "temperature": "38.0",
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_degradation_surcharge": {
@@ -538,6 +634,12 @@
         "saturationO2": 0,
         "temperature": "38.1",
         "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_victoire": {
@@ -552,6 +654,13 @@
         "saturationO2": "99",
         "temperature": "38.2",
         "frequenceRespiratoire": "28"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
       }
     }
   },

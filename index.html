@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="description" content="MedGame - Simulation médicale clinique interactive pour étudiants en médecine">
     <title>MedGame - Simulation Médicale</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
@@ -18,9 +21,9 @@
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/index.css?v=1.2">
-    <link rel="stylesheet" href="css/device-check.css">
-    <link rel="stylesheet" href="css/arena.css">
-    <link rel="stylesheet" href="css/immersive.css">
+    <link rel="stylesheet" href="css/device-check.css?v=2">
+    <link rel="stylesheet" href="css/arena.css?v=2">
+    <link rel="stylesheet" href="css/immersive.css?v=2">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -46,8 +49,8 @@
     <a href="#main-card" class="skip-link" style="position:absolute;top:-100px;left:0;background:#00f2fe;color:#000;padding:12px 24px;z-index:99999;font-weight:700;text-decoration:none;border-radius:0 0 8px 0;">Aller au contenu principal</a>
 
     <div id="canvas-container" aria-hidden="true"></div>
-    <script src="js/env.js"></script>
-    <script src="js/config.js"></script>
+    <script src="js/env.js?v=2"></script>
+    <script src="js/config.js?v=2"></script>
 
     <!-- Badge utilisateur connecté (coin haut droit) -->
     <div id="user-badge-top"
@@ -242,9 +245,9 @@
     </div>
 
     <!-- Audio Module -->
-    <script src="js/audio.js"></script>
+    <script src="js/audio.js?v=2"></script>
     <!-- Three.js Background Module -->
-    <script type="module" src="js/three-background.js"></script>
+    <script type="module" src="js/three-background.js?v=2"></script>
 
     <!-- Game Logic -->
     <script>
@@ -451,8 +454,8 @@
             card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
     </script>
-    <script src="js/auth.js"></script>
-    <script src="js/arena_client.js"></script>
+    <script src="js/auth.js?v=2"></script>
+    <script src="js/arena_client.js?v=2"></script>
     <script>
         // Check session to update Auth UI on index
         document.addEventListener('DOMContentLoaded', async () => {
@@ -594,7 +597,7 @@
 
         document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
     </script>
-    <script src="js/device-check.js"></script>
+    <script src="js/device-check.js?v=2"></script>
 </body>
 
 </html>

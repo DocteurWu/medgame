@@ -104,7 +104,12 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Jean est assis, très pâle, transpire abondamment. Il dit avoir 'un poids énorme' sur le cœur.",
-      "patientVisuel": { "position": "assis", "expression": "sueur", "couleurPeau": "pale", "respiration": "tachypnea" },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "sueur",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -132,7 +137,12 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "La douleur est apparue au repos il y a 20 min. Elle va dans la mâchoire.",
-      "patientVisuel": { "position": "assis", "expression": "douleur", "couleurPeau": "pale", "respiration": "tachypnea" },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "douleur",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -160,7 +170,12 @@
     "s3_appel": {
       "id": "s3_appel",
       "descriptionClinique": "Le médecin du 15 vous demande s'il a déjà fait un infarctus.",
-      "patientVisuel": { "position": "assis", "expression": "anxieux", "couleurPeau": "pale", "respiration": "tachypnea" },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "anxieux",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -188,7 +203,12 @@
     "s4": {
       "id": "s4",
       "descriptionClinique": "Jean devient brusquement très essoufflé et commence à tousser (OAP suspecte).",
-      "patientVisuel": { "position": "assis", "expression": "cyanose", "couleurPeau": "bleu", "respiration": "dyspnea" },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -232,12 +252,23 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s6_victory": {
       "id": "s6_victory",
       "descriptionClinique": "Jean est dirigé vers la coronarographie en urgence. Il s'en sort sans séquelles !",
-      "patientVisuel": { "position": "assis", "expression": "normal", "couleurPeau": "normal", "respiration": "normal" },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -261,12 +292,23 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_wait": {
       "id": "s_err_wait",
       "descriptionClinique": "L'infarctus a foudroyé son cœur avant l'appel tardif.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -290,12 +332,23 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_suffocation": {
       "id": "s_err_suffocation",
       "descriptionClinique": "L'allongement a provoqué un arrêt respiratoire immédiat par défaillance cardiaque.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",

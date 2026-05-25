@@ -295,9 +295,26 @@ class ClinicalAgentAI {
         if (responseJson.scoringChange && window.scoringState) {
             const sc = responseJson.scoringChange;
             if (sc.treatmentName) {
+                // Résoudre intelligemment le nom libre vers le nom canonique du cas pour le scoring exact
+                let canonicalName = sc.treatmentName;
+                const allCaseTreatments = [
+                    ...(caseData.correctTreatments || []),
+                    ...(caseData.secondLineTreatments || []),
+                    ...(caseData.fatalTreatments || []),
+                    ...(caseData.possibleTreatments || [])
+                ];
+                const match = allCaseTreatments.find(t => 
+                    t.toLowerCase().trim() === sc.treatmentName.toLowerCase().trim() ||
+                    t.toLowerCase().trim().includes(sc.treatmentName.toLowerCase().trim()) ||
+                    sc.treatmentName.toLowerCase().trim().includes(t.toLowerCase().trim())
+                );
+                if (match) {
+                    canonicalName = match;
+                }
+
                 // Ajouter à la liste des prescriptions pour calcul final
-                if (!window.scoringState.selectedTreatments.includes(sc.treatmentName)) {
-                    window.scoringState.selectedTreatments.push(sc.treatmentName);
+                if (!window.scoringState.selectedTreatments.includes(canonicalName)) {
+                    window.scoringState.selectedTreatments.push(canonicalName);
                 }
 
                 // Enregistrer dans la chronologie de correction
@@ -305,7 +322,7 @@ class ClinicalAgentAI {
                     const typeEvent = sc.type === 'fatal' ? 'lock' : 'traitement';
                     window.feedbackTimeline.log(
                         typeEvent,
-                        `Prescription libre : ${sc.treatmentName} (${sc.type})`,
+                        `Prescription libre : ${canonicalName} (${sc.type})`,
                         { scoringType: sc.type, text: actionText }
                     );
                 }
@@ -562,6 +579,23 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             res.spawnAsset = "couverture";
             res.scoringChange = { type: "secondLine", treatmentName: "Réchauffement" };
             res.soundToPlay = "correct";
+        }
+        // --- 9. Morphine / Antalgique ---
+        else if (q.includes("morphin")) {
+            const isCorrect = correctTreatments.some(t => t.toLowerCase().includes("morphin"));
+            const isFatal = fatalTreatments.some(t => t.toLowerCase().includes("morphin"));
+            
+            res.clinicalResponse = "Vous administrez 5mg de Morphine en injection IV lente pour calmer la douleur intense.";
+            res.patientVerbatim = "Ah... la douleur s'en va... Ça fait un bien fou docteur, merci.";
+            res.vitalChanges.heartRate = Math.max(60, parseInt(vitals.heartRate || '90') - 10);
+            res.vitalChanges.respiratoryRate = Math.max(10, parseInt(vitals.respiratoryRate || '18') - 2);
+            res.expressionChange = "normal";
+            res.spawnAsset = "seringue";
+            res.scoringChange = {
+                type: isFatal ? "fatal" : (isCorrect ? "firstLine" : "secondLine"),
+                treatmentName: isFatal ? fatalTreatments.find(t => t.toLowerCase().includes("morphin")) : (correctTreatments.find(t => t.toLowerCase().includes("morphin")) || "Morphine")
+            };
+            res.soundToPlay = isFatal ? "incorrect" : "correct";
         }
 
         return res;

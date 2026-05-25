@@ -194,7 +194,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s2": {
       "id": "s2",
@@ -221,7 +228,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s2_trap": {
       "id": "s2_trap",
@@ -248,7 +262,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s3": {
       "id": "s3",
@@ -275,7 +296,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s4": {
       "id": "s4",
@@ -302,7 +330,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s5": {
       "id": "s5",
@@ -329,7 +363,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
     },
     "s6_good": {
       "id": "s6_good",
@@ -343,7 +383,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_delay": {
       "id": "s_err_delay",
@@ -357,7 +403,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_shock": {
       "id": "s_err_shock",
@@ -371,7 +423,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_loosen": {
       "id": "s_err_loosen",
@@ -385,7 +443,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_drink": {
       "id": "s_err_drink",
@@ -399,7 +463,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s_err_alert": {
       "id": "s_err_alert",
@@ -413,7 +483,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     }
   },
   "vitalsDynamics": {

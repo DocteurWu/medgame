@@ -5,6 +5,8 @@ import { createMaterial } from './three-room.js';
  * three-patient.js — Modèle patient procédural avec visage détaillé
  * Yeux (groupe avec sclérotique/iris/pupille), sourcils, nez compatibles
  * avec PatientAnimator (expressions dynamiques, clignements, dilatation pupilles).
+ * 
+ * Version améliorée : géométries organiques, matériaux PBR, anatomie réaliste.
  */
 export class ThreePatient {
     constructor(scene) {
@@ -31,11 +33,25 @@ export class ThreePatient {
         const patient = caseData?.patient || {};
         const position = patient.position3D || 'allonge';
         this._currentPosition = position;
-        this.skinMat = createMaterial(0xd7a87a);
-        this.clothMat = createMaterial(patient.tenue === 'blouse_blanche' ? 0xf2f4f7 : 0x4f72a8);
+
+        // Matériaux PBR améliorés pour la peau
+        this.skinMat = new THREE.MeshStandardMaterial({
+            color: 0xd7a87a,
+            roughness: 0.65,
+            metalness: 0.02,
+            emissive: 0x1a0800,
+            emissiveIntensity: 0.04,
+        });
+
+        // Matériau tissu amélioré
+        const clothColor = patient.tenue === 'blouse_blanche' ? 0xf2f4f7 : 0x4f72a8;
+        this.clothMat = new THREE.MeshStandardMaterial({
+            color: clothColor,
+            roughness: 0.85,
+            metalness: 0.0,
+        });
+
         // Position Y ajustée pour que le patient soit posé sur le lit/chaise
-        // Assis : fond du torse (y=0.725 local) doit toucher le siège (y=0.55 mondial)
-        // Allongé : fond du torse (y=0.81 local) doit toucher le matelas (y=0.65 mondial)
         const seatY = position === 'allonge' ? -0.16 : -0.175;
         this.group.position.set(position === 'allonge' ? -3.5 : 2.15, seatY, position === 'allonge' ? -2.6 : -1.7);
         this.group.rotation.y = position === 'allonge' ? Math.PI : 0;
@@ -57,16 +73,11 @@ export class ThreePatient {
 
     /**
      * Met à jour l'apparence du patient pour un nœud d'urgence donné.
-     * Gère les changements de position (debout→allongé), d'expression et de couleur peau
-     * sans reconstruire la scène entière.
-     * @param {Object} visuel — { position, expression, couleurPeau }
-     * @param {Object} [animator] — PatientAnimator optionnel pour synchro respiration
      */
     applyUrgenceVisuel(visuel, animator) {
         if (!visuel) return;
         const newPosition = visuel.position || this._currentPosition;
 
-        // Si la position a changé, reconstruire le modèle
         if (newPosition !== this._currentPosition) {
             this._currentPosition = newPosition;
             this.group.clear();
@@ -93,18 +104,15 @@ export class ThreePatient {
             this._buildSweatDrops(newPosition);
             this._buildBloodSplotches(newPosition);
 
-            // Réinitialiser l'animateur si fourni
             if (animator && animator.reset) {
                 animator.reset();
                 animator.group = this.group;
             }
         }
 
-        // Appliquer l'expression et la couleur peau
         const expr = visuel.expression || 'normal';
         this.applyExpression(expr);
 
-        // Couleur peau manuelle (override)
         if (visuel.couleurPeau && this.skinMat) {
             const colors = {
                 rouge:      0xc44040,
@@ -118,13 +126,16 @@ export class ThreePatient {
             if (c !== undefined) this.skinMat.color.set(c);
         }
 
-        // Visibilité du sang
         if (this._bloodGroup) {
             const showBlood = expr === 'hemorragie' || expr === 'brulure' ||
                               visuel.expression === 'hemorragie' || visuel.sang === true;
             this._bloodGroup.visible = showBlood;
         }
     }
+
+    // =========================================================================
+    //  PRIMITIVES AMÉLIORÉES
+    // =========================================================================
 
     cube(size, pos, mat, name) {
         const mesh = new THREE.Mesh(new THREE.BoxGeometry(size.x, size.y, size.z), mat);
@@ -133,7 +144,6 @@ export class ThreePatient {
         mesh.receiveShadow = true;
         if (name) {
             mesh.name = name;
-            // Le label encode la zone pour la détection contextuelle
             const nameLower = name.toLowerCase();
             if (nameLower.includes('torse') || nameLower.includes('poitrine')) mesh.userData.label = 'Patient - Torse';
             else if (nameLower.includes('abdomen') || nameLower.includes('ventre')) mesh.userData.label = 'Patient - Abdomen';
@@ -160,14 +170,51 @@ export class ThreePatient {
     }
 
     /**
-     * Crée un œil détaillé (groupe avec sclérotique blanche, iris, pupille)
-     * Compatible avec PatientAnimator : le groupe porte le nom 'Patient oeil'
-     * pour le clignement (scaleY), et l'iris enfant pour la dilatation pupillaire.
-     * @param {number} x — position X locale au groupe patient
-     * @param {number} y — position Y
-     * @param {number} z — position Z (profondeur, vers la caméra)
-     * @param {boolean} isLeft — œil gauche ou droit (influe le nommage)
-     * @returns {THREE.Group} le groupe œil
+     * Capsule (cylindre avec bouts arrondis) — parfait pour bras/jambes/cou
+     */
+    _capsule(radius, length, pos, mat, name, rot) {
+        // CapsuleGeometry(radius, length, capSegments, radialSegments)
+        const geom = new THREE.CapsuleGeometry(radius, length, 6, 14);
+        const mesh = new THREE.Mesh(geom, mat);
+        mesh.position.set(pos.x, pos.y, pos.z);
+        if (rot) mesh.rotation.set(rot.x || 0, rot.y || 0, rot.z || 0);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        if (name) {
+            mesh.name = name;
+            mesh.userData.label = 'Patient';
+            mesh.userData.interactive = true;
+        }
+        this.group.add(mesh);
+        return mesh;
+    }
+
+    /**
+     * Cylindre lisse — pour des sections de membres
+     */
+    _cylinder(rTop, rBot, height, pos, mat, name, rot) {
+        const geom = new THREE.CylinderGeometry(rTop, rBot, height, 14);
+        const mesh = new THREE.Mesh(geom, mat);
+        mesh.position.set(pos.x, pos.y, pos.z);
+        if (rot) mesh.rotation.set(rot.x || 0, rot.y || 0, rot.z || 0);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        if (name) {
+            mesh.name = name;
+            mesh.userData.label = 'Patient';
+            mesh.userData.interactive = true;
+        }
+        this.group.add(mesh);
+        return mesh;
+    }
+
+    // =========================================================================
+    //  VISAGE DÉTAILLÉ
+    // =========================================================================
+
+    /**
+     * Crée un œil ultra-détaillé (groupe avec sclérotique, iris texturé, pupille,
+     * reflet spéculaire, paupières supérieure et inférieure).
      */
     _addDetailedEye(x, y, z, isLeft) {
         const eyeGroup = new THREE.Group();
@@ -175,250 +222,715 @@ export class ThreePatient {
         eyeGroup.name = 'Patient oeil';
         eyeGroup.userData = { label: 'Patient', interactive: true };
 
-        // Sclérotique (blanc de l'œil)
+        // Sclérotique (blanc légèrement chaud)
         const whiteMat = new THREE.MeshStandardMaterial({
-            color: 0xf8f8f8, roughness: 0.15, metalness: 0.0
+            color: 0xf5f0ec, roughness: 0.12, metalness: 0.0
         });
         const white = new THREE.Mesh(
-            new THREE.SphereGeometry(0.028, 16, 12),
+            new THREE.SphereGeometry(0.028, 20, 14),
             whiteMat
         );
-        white.scale.set(1.3, 1.0, 0.45);
+        white.scale.set(1.35, 1.0, 0.48);
         eyeGroup.add(white);
 
-        // Iris (couleur foncée réaliste)
+        // Cornée (dôme transparent brillant devant l'iris)
+        const corneaMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff, roughness: 0.0, metalness: 0.1,
+            transparent: true, opacity: 0.25
+        });
+        const cornea = new THREE.Mesh(
+            new THREE.SphereGeometry(0.018, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.5),
+            corneaMat
+        );
+        cornea.position.z = 0.018;
+        cornea.rotation.x = Math.PI / 2;
+        eyeGroup.add(cornea);
+
+        // Iris (dégradé simulé avec couleur riche)
         const irisMat = new THREE.MeshStandardMaterial({
-            color: 0x3a6b4a, roughness: 0.1, metalness: 0.35
+            color: 0x3a6b4a, roughness: 0.08, metalness: 0.4,
+            emissive: 0x0a1a0a, emissiveIntensity: 0.15
         });
         const iris = new THREE.Mesh(
-            new THREE.SphereGeometry(0.014, 14, 10),
+            new THREE.SphereGeometry(0.014, 16, 12),
             irisMat
         );
-        iris.position.z = 0.02;
+        iris.position.z = 0.020;
+        iris.scale.set(1, 1, 0.4);
         iris.name = 'PatientIris';
         eyeGroup.add(iris);
 
-        // Pupille (noire)
+        // Anneau limbique (contour sombre de l'iris)
+        const limbMat = new THREE.MeshStandardMaterial({
+            color: 0x1a2a1a, roughness: 0.2, metalness: 0.3
+        });
+        const limb = new THREE.Mesh(
+            new THREE.RingGeometry(0.012, 0.015, 18),
+            limbMat
+        );
+        limb.position.z = 0.023;
+        eyeGroup.add(limb);
+
+        // Pupille (noire profonde)
         const pupilMat = new THREE.MeshStandardMaterial({
             color: 0x000000, roughness: 0.0, metalness: 0.0
         });
         const pupil = new THREE.Mesh(
-            new THREE.SphereGeometry(0.007, 10, 8),
+            new THREE.SphereGeometry(0.007, 12, 8),
             pupilMat
         );
-        pupil.position.z = 0.024;
+        pupil.position.z = 0.025;
+        pupil.scale.set(1, 1, 0.3);
         pupil.name = 'PatientPupille';
         eyeGroup.add(pupil);
 
-        // Paupière supérieure (mesh discret, couleur peau)
+        // Reflet spéculaire (petit point blanc)
+        const specMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff, roughness: 0.0, metalness: 0.0,
+            emissive: 0xffffff, emissiveIntensity: 0.8
+        });
+        const spec = new THREE.Mesh(
+            new THREE.SphereGeometry(0.003, 6, 6),
+            specMat
+        );
+        spec.position.set(0.005, 0.005, 0.028);
+        eyeGroup.add(spec);
+
+        // Paupière supérieure
         const lidMat = new THREE.MeshStandardMaterial({
-            color: 0xd4a070, roughness: 0.7, metalness: 0.0
+            color: 0xc9956a, roughness: 0.7, metalness: 0.0
         });
         const upperLid = new THREE.Mesh(
-            new THREE.SphereGeometry(0.03, 16, 8, 0, Math.PI * 2, 0, Math.PI * 0.35),
+            new THREE.SphereGeometry(0.032, 18, 8, 0, Math.PI * 2, 0, Math.PI * 0.38),
             lidMat
         );
-        upperLid.scale.set(1.3, 1.0, 0.5);
+        upperLid.scale.set(1.35, 1.0, 0.52);
         upperLid.position.y = 0.012;
-        upperLid.position.z = -0.002;
+        upperLid.position.z = -0.001;
         upperLid.name = 'PatientPaupiere';
         eyeGroup.add(upperLid);
+
+        // Paupière inférieure (subtile)
+        const lowerLid = new THREE.Mesh(
+            new THREE.SphereGeometry(0.031, 16, 6, 0, Math.PI * 2, Math.PI * 0.7, Math.PI * 0.3),
+            lidMat
+        );
+        lowerLid.scale.set(1.3, 1.0, 0.48);
+        lowerLid.position.y = -0.010;
+        lowerLid.position.z = -0.002;
+        eyeGroup.add(lowerLid);
+
+        // Ligne des cils (fine bande sombre au-dessus)
+        const lashMat = new THREE.MeshStandardMaterial({
+            color: 0x1a1008, roughness: 0.9, metalness: 0.0
+        });
+        const lash = new THREE.Mesh(
+            new THREE.BoxGeometry(0.07, 0.004, 0.006),
+            lashMat
+        );
+        lash.position.set(0, 0.024, 0.012);
+        eyeGroup.add(lash);
 
         this.group.add(eyeGroup);
         return eyeGroup;
     }
 
     /**
-     * Crée un sourcil procédural
-     * @param {number} x — position X
-     * @param {number} y — position Y
-     * @param {number} z — position Z
-     * @param {number} rotZ — rotation initiale en Z (négatif pour froncement)
-     * @param {boolean} isLeft — sourcil gauche ou droit
-     * @returns {THREE.Mesh}
+     * Sourcil avec forme anatomique (plusieurs segments pour courbe naturelle)
      */
     _addBrow(x, y, z, rotZ, isLeft) {
-        const browGeom = new THREE.BoxGeometry(0.065, 0.008, 0.008);
+        const browGroup = new THREE.Group();
+        browGroup.position.set(x, y, z);
+        browGroup.rotation.z = rotZ;
+        browGroup.name = isLeft ? 'Patient sourcil gauche' : 'Patient sourcil droit';
+        browGroup.userData = { label: 'Patient', interactive: true };
+
         const browMat = new THREE.MeshStandardMaterial({
-            color: 0x4a3728, roughness: 0.85, metalness: 0.0
+            color: 0x3a2718, roughness: 0.9, metalness: 0.0
         });
-        const brow = new THREE.Mesh(browGeom, browMat);
-        brow.position.set(x, y, z);
-        brow.rotation.z = rotZ;
-        brow.castShadow = true;
-        brow.name = isLeft ? 'Patient sourcil gauche' : 'Patient sourcil droit';
-        brow.userData = { label: 'Patient', interactive: true };
-        this.group.add(brow);
-        return brow;
+
+        // Segment principal (plus épais au centre)
+        const main = new THREE.Mesh(
+            new THREE.BoxGeometry(0.06, 0.009, 0.012),
+            browMat
+        );
+        main.castShadow = true;
+        browGroup.add(main);
+
+        // Queue du sourcil (plus fine, côté extérieur)
+        const tail = new THREE.Mesh(
+            new THREE.BoxGeometry(0.025, 0.006, 0.010),
+            browMat
+        );
+        tail.position.x = isLeft ? 0.035 : -0.035;
+        tail.position.y = 0.003;
+        tail.rotation.z = isLeft ? -0.2 : 0.2;
+        browGroup.add(tail);
+
+        // Tête du sourcil (côté nez, plus épaisse)
+        const head = new THREE.Mesh(
+            new THREE.BoxGeometry(0.018, 0.010, 0.011),
+            browMat
+        );
+        head.position.x = isLeft ? -0.032 : 0.032;
+        head.position.y = -0.002;
+        browGroup.add(head);
+
+        this.group.add(browGroup);
+
+        // On retourne le groupe pour que l'animateur puisse le manipuler
+        // L'animateur accède à .position.y et .rotation.z — le groupe supporte les deux
+        return browGroup;
     }
 
     /**
-     * Crée le nez procédural
-     * @param {number} x
-     * @param {number} y
-     * @param {number} z
-     * @returns {THREE.Mesh}
+     * Nez anatomique avec arête, pointe et ailes
      */
     _addNose(x, y, z) {
+        const noseGroup = new THREE.Group();
+        noseGroup.position.set(x, y, z);
+        noseGroup.name = 'Patient nez';
+        noseGroup.userData = { label: 'Patient', interactive: true };
+
         const noseMat = this.skinMat.clone();
-        const noseGeom = new THREE.ConeGeometry(0.02, 0.04, 6);
-        const nose = new THREE.Mesh(noseGeom, noseMat);
-        nose.position.set(x, y, z);
-        nose.rotation.x = Math.PI / 2;
-        nose.castShadow = true;
-        nose.name = 'Patient nez';
-        nose.userData = { label: 'Patient', interactive: true };
-        this.group.add(nose);
-        return nose;
+
+        // Arête du nez (partie supérieure)
+        const bridge = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.012, 0.015, 0.05, 8),
+            noseMat
+        );
+        bridge.position.set(0, 0.015, 0.005);
+        bridge.rotation.x = 0.15;
+        bridge.castShadow = true;
+        noseGroup.add(bridge);
+
+        // Pointe du nez (bulbe)
+        const tip = new THREE.Mesh(
+            new THREE.SphereGeometry(0.018, 12, 10),
+            noseMat
+        );
+        tip.position.set(0, -0.01, 0.01);
+        tip.scale.set(1, 0.8, 1.1);
+        tip.castShadow = true;
+        noseGroup.add(tip);
+
+        // Aile gauche
+        const wingL = new THREE.Mesh(
+            new THREE.SphereGeometry(0.010, 8, 6),
+            noseMat
+        );
+        wingL.position.set(-0.014, -0.015, 0.005);
+        wingL.scale.set(0.8, 0.6, 0.9);
+        noseGroup.add(wingL);
+
+        // Aile droite
+        const wingR = new THREE.Mesh(
+            new THREE.SphereGeometry(0.010, 8, 6),
+            noseMat
+        );
+        wingR.position.set(0.014, -0.015, 0.005);
+        wingR.scale.set(0.8, 0.6, 0.9);
+        noseGroup.add(wingR);
+
+        this.group.add(noseGroup);
+
+        // Retourner le groupe comme mesh-compatible pour l'animateur
+        return noseGroup;
     }
 
     /**
-     * Ajoute les cheveux du patient (hémisphère couvrant le haut du crâne)
-     * @param {number} x — position X (centre de la tête)
-     * @param {number} y — position Y (centre de la tête)
-     * @param {number} z — position Z (centre de la tête)
-     * @returns {THREE.Mesh}
+     * Bouche avec lèvres supérieure et inférieure
+     */
+    _addMouth(x, y, z) {
+        const mouthGroup = new THREE.Group();
+        mouthGroup.position.set(x, y, z);
+        mouthGroup.name = 'Patient bouche';
+        mouthGroup.userData = { label: 'Patient', interactive: true };
+
+        const lipMat = new THREE.MeshStandardMaterial({
+            color: 0xa04040, roughness: 0.45, metalness: 0.05,
+            emissive: 0x200808, emissiveIntensity: 0.08
+        });
+
+        // Lèvre supérieure (forme en arc de cupidon)
+        const upperLip = new THREE.Mesh(
+            new THREE.TorusGeometry(0.03, 0.006, 6, 14, Math.PI),
+            lipMat
+        );
+        upperLip.rotation.x = Math.PI;
+        upperLip.rotation.z = Math.PI;
+        upperLip.position.y = 0.003;
+        upperLip.scale.set(1.4, 1, 0.5);
+        mouthGroup.add(upperLip);
+
+        // Lèvre inférieure
+        const lowerLip = new THREE.Mesh(
+            new THREE.TorusGeometry(0.028, 0.007, 6, 14, Math.PI),
+            lipMat
+        );
+        lowerLip.position.y = -0.003;
+        lowerLip.scale.set(1.3, 1, 0.5);
+        mouthGroup.add(lowerLip);
+
+        // Fente buccale (ligne sombre entre les lèvres)
+        const slitMat = new THREE.MeshStandardMaterial({
+            color: 0x3a1010, roughness: 0.9, metalness: 0.0
+        });
+        const slit = new THREE.Mesh(
+            new THREE.BoxGeometry(0.07, 0.002, 0.008),
+            slitMat
+        );
+        slit.position.z = 0.003;
+        mouthGroup.add(slit);
+
+        this.group.add(mouthGroup);
+        return mouthGroup;
+    }
+
+    /**
+     * Cheveux réalistes avec volume et texture simulée
      */
     _addHair(x, y, z) {
-        // Hémisphère couvrant le haut et les côtés du crâne
-        const hairGeom = new THREE.SphereGeometry(0.18, 20, 12, 0, Math.PI * 2, 0, Math.PI * 0.52);
+        const hairGroup = new THREE.Group();
+        hairGroup.position.set(x, y, z);
+        hairGroup.name = 'Patient cheveux';
+        hairGroup.userData = { label: 'Patient - Tête', interactive: true };
+
         const hairMat = new THREE.MeshStandardMaterial({
             color: 0x2a1a0a,
-            roughness: 0.95,
-            metalness: 0.0
+            roughness: 0.92,
+            metalness: 0.05,
         });
-        const hair = new THREE.Mesh(hairGeom, hairMat);
-        // Léger décalage vers le haut pour un meilleur recouvrement du crâne
-        hair.position.set(x, y + 0.005, z);
-        hair.castShadow = true;
-        hair.name = 'Patient cheveux';
-        hair.userData = { label: 'Patient - Tête', interactive: true };
-        this.group.add(hair);
-        return hair;
+
+        // Calotte principale (hémisphère couvrant le crâne)
+        const cap = new THREE.Mesh(
+            new THREE.SphereGeometry(0.185, 22, 14, 0, Math.PI * 2, 0, Math.PI * 0.50),
+            hairMat
+        );
+        cap.position.y = 0.008;
+        cap.castShadow = true;
+        hairGroup.add(cap);
+
+        // Volume arrière (occipital)
+        const back = new THREE.Mesh(
+            new THREE.SphereGeometry(0.16, 16, 10, 0, Math.PI * 2, Math.PI * 0.25, Math.PI * 0.4),
+            hairMat
+        );
+        back.position.set(0, -0.02, -0.04);
+        back.scale.set(1.05, 1.1, 1.1);
+        back.castShadow = true;
+        hairGroup.add(back);
+
+        // Mèche latérale gauche
+        const sideL = new THREE.Mesh(
+            new THREE.SphereGeometry(0.08, 10, 8, 0, Math.PI, 0, Math.PI * 0.6),
+            hairMat
+        );
+        sideL.position.set(-0.14, -0.01, -0.02);
+        sideL.rotation.z = 0.3;
+        sideL.scale.set(0.5, 0.9, 0.8);
+        hairGroup.add(sideL);
+
+        // Mèche latérale droite
+        const sideR = sideL.clone();
+        sideR.position.x = 0.14;
+        sideR.rotation.z = -0.3;
+        hairGroup.add(sideR);
+
+        this.group.add(hairGroup);
+        return hairGroup;
     }
 
     /**
-     * Ajoute les oreilles du patient (ellipsoïdes latérales)
-     * @param {number} x — position X du centre de la tête
-     * @param {number} y — position Y du centre de la tête
-     * @param {number} z — position Z du centre de la tête
-     * @returns {{ earL: THREE.Mesh, earR: THREE.Mesh }}
+     * Oreilles anatomiques avec pavillon et lobe
      */
     _addEars(x, y, z) {
         const earMat = this.skinMat.clone();
-        const earGeom = new THREE.SphereGeometry(0.025, 10, 8);
 
         // Oreille gauche
-        const earL = new THREE.Mesh(earGeom, earMat);
-        earL.position.set(x - 0.17, y - 0.01, z - 0.02);
-        earL.scale.set(0.5, 0.65, 0.35);
-        earL.castShadow = true;
-        earL.name = 'Patient oreille gauche';
-        earL.userData = { label: 'Patient - Tête', interactive: true };
-        this.group.add(earL);
+        const earGroupL = new THREE.Group();
+        earGroupL.position.set(x - 0.17, y - 0.01, z - 0.02);
+        earGroupL.name = 'Patient oreille gauche';
+        earGroupL.userData = { label: 'Patient - Tête', interactive: true };
 
-        // Oreille droite
-        const earR = new THREE.Mesh(earGeom, earMat);
-        earR.position.set(x + 0.17, y - 0.01, z - 0.02);
-        earR.scale.set(0.5, 0.65, 0.35);
-        earR.castShadow = true;
-        earR.name = 'Patient oreille droite';
-        earR.userData = { label: 'Patient - Tête', interactive: true };
-        this.group.add(earR);
+        const pavL = new THREE.Mesh(
+            new THREE.SphereGeometry(0.028, 10, 8),
+            earMat
+        );
+        pavL.scale.set(0.4, 0.7, 0.35);
+        pavL.castShadow = true;
+        earGroupL.add(pavL);
 
-        return { earL, earR };
+        // Lobe
+        const lobeL = new THREE.Mesh(
+            new THREE.SphereGeometry(0.012, 8, 6),
+            earMat
+        );
+        lobeL.position.set(0, -0.02, 0.005);
+        lobeL.scale.set(0.7, 0.8, 0.5);
+        earGroupL.add(lobeL);
+
+        // Conque (creux intérieur)
+        const conqMatL = new THREE.MeshStandardMaterial({
+            color: 0xb8855a, roughness: 0.75, metalness: 0.0
+        });
+        const conqL = new THREE.Mesh(
+            new THREE.SphereGeometry(0.015, 8, 6),
+            conqMatL
+        );
+        conqL.position.set(0.005, 0, 0.005);
+        conqL.scale.set(0.3, 0.5, 0.3);
+        earGroupL.add(conqL);
+
+        this.group.add(earGroupL);
+
+        // Oreille droite (miroir)
+        const earGroupR = new THREE.Group();
+        earGroupR.position.set(x + 0.17, y - 0.01, z - 0.02);
+        earGroupR.name = 'Patient oreille droite';
+        earGroupR.userData = { label: 'Patient - Tête', interactive: true };
+
+        const pavR = new THREE.Mesh(
+            new THREE.SphereGeometry(0.028, 10, 8),
+            earMat
+        );
+        pavR.scale.set(0.4, 0.7, 0.35);
+        pavR.castShadow = true;
+        earGroupR.add(pavR);
+
+        const lobeR = new THREE.Mesh(
+            new THREE.SphereGeometry(0.012, 8, 6),
+            earMat
+        );
+        lobeR.position.set(0, -0.02, 0.005);
+        lobeR.scale.set(0.7, 0.8, 0.5);
+        earGroupR.add(lobeR);
+
+        const conqR = new THREE.Mesh(
+            new THREE.SphereGeometry(0.015, 8, 6),
+            conqMatL
+        );
+        conqR.position.set(-0.005, 0, 0.005);
+        conqR.scale.set(0.3, 0.5, 0.3);
+        earGroupR.add(conqR);
+
+        this.group.add(earGroupR);
+
+        return { earL: earGroupL, earR: earGroupR };
     }
+
+    // =========================================================================
+    //  CONSTRUCTION : ASSIS
+    // =========================================================================
 
     buildSitting(skin, cloth) {
-        // Torse
-        this.cube({ x: 0.42, y: 0.55, z: 0.24 }, { x: 0, y: 1.0, z: 0 }, cloth, 'Patient torse');
+        // === COU ===
+        this._cylinder(0.055, 0.06, 0.10, { x: 0, y: 1.30, z: 0.03 }, skin, 'Patient cou');
 
-        // Tête
-        this.sphere(0.17, { x: 0, y: 1.43, z: 0.05 }, skin, 'Patient tete');
+        // === TORSE (forme trapézoïdale avec épaules plus larges) ===
+        // Partie haute (poitrine/épaules) — plus large
+        this.cube({ x: 0.46, y: 0.30, z: 0.24 }, { x: 0, y: 1.10, z: 0 }, cloth, 'Patient torse');
+        // Partie basse (abdomen) — légèrement plus étroite
+        this.cube({ x: 0.40, y: 0.28, z: 0.22 }, { x: 0, y: 0.82, z: 0 }, cloth, 'Patient abdomen');
 
-        // Yeux détaillés (groupes avec iris+pupille)
+        // Épaules arrondies
+        this.sphere(0.08, { x: -0.22, y: 1.20, z: 0.01 }, cloth, '');
+        this.sphere(0.08, { x: 0.22, y: 1.20, z: 0.01 }, cloth, '');
+
+        // Col du vêtement
+        const collarMat = cloth.clone();
+        collarMat.color.offsetHSL(0, 0, -0.05);
+        this._cylinder(0.08, 0.09, 0.04, { x: 0, y: 1.26, z: 0.03 }, collarMat, '');
+
+        // === TÊTE (ovoïde, pas sphère parfaite) ===
+        const headGroup = new THREE.Group();
+        headGroup.position.set(0, 1.43, 0.05);
+        headGroup.name = 'Patient tete';
+        headGroup.userData = { label: 'Patient - Tête', interactive: true };
+
+        const headMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(0.17, 28, 22),
+            skin
+        );
+        // Ovale : plus haut que large, légèrement aplati en profondeur
+        headMesh.scale.set(0.92, 1.05, 0.95);
+        headMesh.castShadow = true;
+        headMesh.receiveShadow = true;
+        headGroup.add(headMesh);
+
+        // Mâchoire (donne une forme au bas du visage)
+        const jaw = new THREE.Mesh(
+            new THREE.SphereGeometry(0.12, 16, 10, 0, Math.PI * 2, Math.PI * 0.45, Math.PI * 0.35),
+            skin
+        );
+        jaw.position.y = -0.06;
+        jaw.scale.set(1.0, 0.9, 0.9);
+        jaw.castShadow = true;
+        headGroup.add(jaw);
+
+        // Menton
+        const chin = new THREE.Mesh(
+            new THREE.SphereGeometry(0.04, 10, 8),
+            skin
+        );
+        chin.position.set(0, -0.14, 0.06);
+        chin.scale.set(1, 0.7, 0.8);
+        headGroup.add(chin);
+
+        this.group.add(headGroup);
+
+        // === VISAGE ===
         this.eyeL = this._addDetailedEye(-0.06, 1.47, 0.19, true);
         this.eyeR = this._addDetailedEye(0.06, 1.47, 0.19, false);
-
-        // Sourcils (position X : négatif=gauche, positif=droit; rotation Z orientée)
         this.browL = this._addBrow(-0.06, 1.52, 0.18, 0.08, true);
         this.browR = this._addBrow(0.06, 1.52, 0.18, -0.08, false);
-
-        // Cheveux et oreilles
         this._addHair(0, 1.43, 0.05);
         this._addEars(0, 1.43, 0.05);
-
-        // Nez
         this.nose = this._addNose(0, 1.41, 0.21);
+        this.mouth = this._addMouth(0, 1.36, 0.19);
 
-        // Bouche
-        this.mouth = this.cube({ x: 0.09, y: 0.014, z: 0.014 }, { x: 0, y: 1.36, z: 0.19 }, createMaterial(0x8b2020), 'Patient bouche');
+        // === JAMBES (capsules organiques) ===
+        const pantMat = createMaterial(0x2a2e40);
+        pantMat.roughness = 0.82;
 
-        // Jambes
-        this.cube({ x: 0.11, y: 0.48, z: 0.1 }, { x: -0.15, y: 0.45, z: 0.05 }, createMaterial(0x30364a), 'Patient jambe');
-        this.cube({ x: 0.11, y: 0.48, z: 0.1 }, { x: 0.15, y: 0.45, z: 0.05 }, createMaterial(0x30364a), 'Patient jambe');
+        // Cuisses
+        this._capsule(0.075, 0.22, { x: -0.11, y: 0.56, z: 0.05 }, pantMat, 'Patient jambe');
+        this._capsule(0.075, 0.22, { x: 0.11, y: 0.56, z: 0.05 }, pantMat, 'Patient jambe');
 
-        // Bras (ajout pour réalisme)
-        const armMat = createMaterial(0x30364a);
-        this.cube({ x: 0.09, y: 0.36, z: 0.09 }, { x: -0.26, y: 0.85, z: 0.05 }, armMat, 'Patient bras');
-        this.cube({ x: 0.09, y: 0.36, z: 0.09 }, { x: 0.26, y: 0.85, z: 0.05 }, armMat, 'Patient bras');
+        // Mollets
+        this._capsule(0.058, 0.24, { x: -0.11, y: 0.24, z: 0.08 }, pantMat, '');
+        this._capsule(0.058, 0.24, { x: 0.11, y: 0.24, z: 0.08 }, pantMat, '');
 
-        // Mains (peau)
-        const handMat = skin.clone();
-        this.sphere(0.04, { x: -0.26, y: 0.64, z: 0.08 }, handMat, '');
-        this.sphere(0.04, { x: 0.26, y: 0.64, z: 0.08 }, handMat, '');
+        // Genoux (sphères de jonction)
+        this.sphere(0.062, { x: -0.11, y: 0.40, z: 0.06 }, pantMat, '');
+        this.sphere(0.062, { x: 0.11, y: 0.40, z: 0.06 }, pantMat, '');
+
+        // === PIEDS / CHAUSSURES ===
+        const shoeMat = createMaterial(0x1a1a1a);
+        shoeMat.roughness = 0.7;
+        this.cube({ x: 0.07, y: 0.04, z: 0.13 }, { x: -0.11, y: 0.07, z: 0.12 }, shoeMat, '');
+        this.cube({ x: 0.07, y: 0.04, z: 0.13 }, { x: 0.11, y: 0.07, z: 0.12 }, shoeMat, '');
+
+        // === BRAS (capsules) ===
+        // Haut des bras (manches)
+        this._capsule(0.055, 0.16, { x: -0.27, y: 1.02, z: 0.04 }, cloth, 'Patient bras');
+        this._capsule(0.055, 0.16, { x: 0.27, y: 1.02, z: 0.04 }, cloth, 'Patient bras');
+
+        // Avant-bras (manches courtes → peau visible)
+        this._capsule(0.042, 0.16, { x: -0.27, y: 0.78, z: 0.06 }, skin, '');
+        this._capsule(0.042, 0.16, { x: 0.27, y: 0.78, z: 0.06 }, skin, '');
+
+        // Coudes
+        this.sphere(0.048, { x: -0.27, y: 0.89, z: 0.05 }, cloth, '');
+        this.sphere(0.048, { x: 0.27, y: 0.89, z: 0.05 }, cloth, '');
+
+        // Poignets
+        this.sphere(0.035, { x: -0.27, y: 0.67, z: 0.07 }, skin, '');
+        this.sphere(0.035, { x: 0.27, y: 0.67, z: 0.07 }, skin, '');
+
+        // === MAINS (forme simplifiée mais anatomique) ===
+        this._buildHand(-0.27, 0.63, 0.08, skin, false);
+        this._buildHand(0.27, 0.63, 0.08, skin, true);
     }
+
+    // =========================================================================
+    //  CONSTRUCTION : ALLONGÉ
+    // =========================================================================
 
     buildLying(skin, cloth) {
-        // Torse allongé (axe Z = longueur du corps, +Z = tête)
-        this.cube({ x: 0.48, y: 0.28, z: 0.95 }, { x: 0, y: 0.95, z: 0 }, cloth, 'Patient torse');
-        this.sphere(0.17, { x: 0, y: 1.0, z: 0.62 }, skin, 'Patient tete');
+        // === COU ===
+        this._capsule(0.05, 0.06, { x: 0, y: 0.96, z: 0.48 }, skin, 'Patient cou', { x: Math.PI / 2, y: 0, z: 0 });
 
-        // Yeux détaillés (allongé : position ajustée)
+        // === TORSE allongé ===
+        // Poitrine
+        this.cube({ x: 0.48, y: 0.26, z: 0.45 }, { x: 0, y: 0.95, z: 0.18 }, cloth, 'Patient torse');
+        // Abdomen
+        this.cube({ x: 0.44, y: 0.24, z: 0.38 }, { x: 0, y: 0.94, z: -0.22 }, cloth, 'Patient abdomen');
+
+        // Épaules arrondies
+        this.sphere(0.08, { x: -0.22, y: 0.97, z: 0.36 }, cloth, '');
+        this.sphere(0.08, { x: 0.22, y: 0.97, z: 0.36 }, cloth, '');
+
+        // === TÊTE ===
+        const headGroup = new THREE.Group();
+        headGroup.position.set(0, 1.0, 0.62);
+        headGroup.name = 'Patient tete';
+        headGroup.userData = { label: 'Patient - Tête', interactive: true };
+
+        const headMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(0.17, 28, 22),
+            skin
+        );
+        headMesh.scale.set(0.92, 1.05, 0.95);
+        headMesh.castShadow = true;
+        headMesh.receiveShadow = true;
+        headGroup.add(headMesh);
+
+        // Mâchoire
+        const jaw = new THREE.Mesh(
+            new THREE.SphereGeometry(0.12, 16, 10, 0, Math.PI * 2, Math.PI * 0.45, Math.PI * 0.35),
+            skin
+        );
+        jaw.position.y = -0.06;
+        jaw.scale.set(1.0, 0.9, 0.9);
+        jaw.castShadow = true;
+        headGroup.add(jaw);
+
+        // Menton
+        const chin = new THREE.Mesh(
+            new THREE.SphereGeometry(0.04, 10, 8),
+            skin
+        );
+        chin.position.set(0, -0.14, 0.06);
+        chin.scale.set(1, 0.7, 0.8);
+        headGroup.add(chin);
+
+        this.group.add(headGroup);
+
+        // === VISAGE ===
         this.eyeL = this._addDetailedEye(-0.06, 1.14, 0.66, true);
         this.eyeR = this._addDetailedEye(0.06, 1.14, 0.66, false);
-
-        // Sourcils
         this.browL = this._addBrow(-0.06, 1.19, 0.65, 0.08, true);
         this.browR = this._addBrow(0.06, 1.19, 0.65, -0.08, false);
-
-        // Cheveux et oreilles
         this._addHair(0, 1.0, 0.62);
         this._addEars(0, 1.0, 0.62);
-
-        // Nez
         this.nose = this._addNose(0, 1.07, 0.70);
+        this.mouth = this._addMouth(0, 1.04, 0.72);
 
-        // Bouche
-        this.mouth = this.cube({ x: 0.09, y: 0.014, z: 0.014 }, { x: 0, y: 1.04, z: 0.72 }, createMaterial(0x8b2020), 'Patient bouche');
+        // === JAMBES allongées (capsules horizontales le long de Z) ===
+        const pantMat = createMaterial(0x2a2e40);
+        pantMat.roughness = 0.82;
 
-        // Jambes allongées (le long de l'axe Z négatif = vers les pieds)
-        const legMat = createMaterial(0x30364a);
-        this.cube({ x: 0.14, y: 0.13, z: 0.55 }, { x: -0.12, y: 0.83, z: -0.73 }, legMat, 'Patient jambe');
-        this.cube({ x: 0.14, y: 0.13, z: 0.55 }, { x: 0.12, y: 0.83, z: -0.73 }, legMat, 'Patient jambe');
+        // Cuisses
+        this._capsule(0.075, 0.28, { x: -0.12, y: 0.83, z: -0.48 }, pantMat, 'Patient jambe', { x: Math.PI / 2, y: 0, z: 0 });
+        this._capsule(0.075, 0.28, { x: 0.12, y: 0.83, z: -0.48 }, pantMat, 'Patient jambe', { x: Math.PI / 2, y: 0, z: 0 });
 
-        // Bras allongés le long du corps
-        const armMat = createMaterial(0x30364a);
-        this.cube({ x: 0.10, y: 0.10, z: 0.40 }, { x: -0.30, y: 0.86, z: -0.10 }, armMat, 'Patient bras');
-        this.cube({ x: 0.10, y: 0.10, z: 0.40 }, { x: 0.30, y: 0.86, z: -0.10 }, armMat, 'Patient bras');
+        // Mollets
+        this._capsule(0.058, 0.28, { x: -0.12, y: 0.83, z: -0.88 }, pantMat, '', { x: Math.PI / 2, y: 0, z: 0 });
+        this._capsule(0.058, 0.28, { x: 0.12, y: 0.83, z: -0.88 }, pantMat, '', { x: Math.PI / 2, y: 0, z: 0 });
 
-        // Mains (peau)
-        const handMat = skin.clone();
-        this.sphere(0.04, { x: -0.30, y: 0.86, z: -0.32 }, handMat, '');
-        this.sphere(0.04, { x: 0.30, y: 0.86, z: -0.32 }, handMat, '');
+        // Genoux
+        this.sphere(0.062, { x: -0.12, y: 0.83, z: -0.68 }, pantMat, '');
+        this.sphere(0.062, { x: 0.12, y: 0.83, z: -0.68 }, pantMat, '');
 
-        // Couverture/drap sur les jambes et bas du torse
-        const blanketMat = createMaterial(0xe8e0d0, { roughness: 0.95, metalness: 0.0 });
-        this.cube({ x: 0.65, y: 0.03, z: 0.90 }, { x: 0, y: 0.93, z: -0.60 }, blanketMat, '');
+        // Pieds
+        const shoeMat = createMaterial(0x1a1a1a);
+        shoeMat.roughness = 0.7;
+        this.cube({ x: 0.07, y: 0.07, z: 0.10 }, { x: -0.12, y: 0.83, z: -1.08 }, shoeMat, '');
+        this.cube({ x: 0.07, y: 0.07, z: 0.10 }, { x: 0.12, y: 0.83, z: -1.08 }, shoeMat, '');
+
+        // === BRAS le long du corps ===
+        // Haut des bras
+        this._capsule(0.052, 0.20, { x: -0.30, y: 0.87, z: 0.05 }, cloth, 'Patient bras', { x: Math.PI / 2, y: 0, z: 0 });
+        this._capsule(0.052, 0.20, { x: 0.30, y: 0.87, z: 0.05 }, cloth, 'Patient bras', { x: Math.PI / 2, y: 0, z: 0 });
+
+        // Avant-bras
+        this._capsule(0.040, 0.20, { x: -0.30, y: 0.87, z: -0.22 }, skin, '', { x: Math.PI / 2, y: 0, z: 0 });
+        this._capsule(0.040, 0.20, { x: 0.30, y: 0.87, z: -0.22 }, skin, '', { x: Math.PI / 2, y: 0, z: 0 });
+
+        // Coudes
+        this.sphere(0.046, { x: -0.30, y: 0.87, z: -0.08 }, cloth, '');
+        this.sphere(0.046, { x: 0.30, y: 0.87, z: -0.08 }, cloth, '');
+
+        // Poignets
+        this.sphere(0.033, { x: -0.30, y: 0.87, z: -0.34 }, skin, '');
+        this.sphere(0.033, { x: 0.30, y: 0.87, z: -0.34 }, skin, '');
+
+        // === MAINS ===
+        this._buildHand(-0.30, 0.87, -0.38, skin, false, true);
+        this._buildHand(0.30, 0.87, -0.38, skin, true, true);
+
+        // === COUVERTURE / DRAP ===
+        const blanketMat = new THREE.MeshStandardMaterial({
+            color: 0xe8e0d0,
+            roughness: 0.92,
+            metalness: 0.0,
+        });
+        // Drap principal
+        const blanket = new THREE.Mesh(
+            new THREE.BoxGeometry(0.65, 0.04, 0.90),
+            blanketMat
+        );
+        blanket.position.set(0, 0.92, -0.60);
+        blanket.receiveShadow = true;
+        blanket.castShadow = false;
+        this.group.add(blanket);
+
+        // Pli du drap (repli sur le dessus)
+        const fold = new THREE.Mesh(
+            new THREE.BoxGeometry(0.63, 0.05, 0.08),
+            blanketMat
+        );
+        fold.position.set(0, 0.94, -0.14);
+        fold.castShadow = true;
+        this.group.add(fold);
     }
+
+    /**
+     * Main anatomique simplifiée (paume + doigts)
+     */
+    _buildHand(x, y, z, skin, isRight, isLying) {
+        const handGroup = new THREE.Group();
+        handGroup.position.set(x, y, z);
+
+        // Paume
+        const palm = new THREE.Mesh(
+            new THREE.BoxGeometry(0.04, 0.02, 0.05),
+            skin
+        );
+        palm.castShadow = true;
+        handGroup.add(palm);
+
+        // Doigts (4 petits cylindres)
+        const fingerMat = skin;
+        for (let i = 0; i < 4; i++) {
+            const finger = new THREE.Mesh(
+                new THREE.CapsuleGeometry(0.006, 0.025, 3, 6),
+                fingerMat
+            );
+            const xOff = -0.014 + i * 0.009;
+            if (isLying) {
+                finger.position.set(xOff, 0, 0.035);
+                finger.rotation.x = Math.PI / 2;
+            } else {
+                finger.position.set(xOff, -0.025, 0.01);
+            }
+            finger.castShadow = true;
+            handGroup.add(finger);
+        }
+
+        // Pouce
+        const thumb = new THREE.Mesh(
+            new THREE.CapsuleGeometry(0.007, 0.02, 3, 6),
+            skin
+        );
+        if (isLying) {
+            thumb.position.set(isRight ? 0.025 : -0.025, 0, 0.015);
+            thumb.rotation.x = Math.PI / 2;
+            thumb.rotation.z = isRight ? 0.4 : -0.4;
+        } else {
+            thumb.position.set(isRight ? 0.025 : -0.025, -0.01, 0.01);
+            thumb.rotation.z = isRight ? 0.6 : -0.6;
+        }
+        thumb.castShadow = true;
+        handGroup.add(thumb);
+
+        this.group.add(handGroup);
+        return handGroup;
+    }
+
+    // =========================================================================
+    //  EXPRESSIONS (LOGIQUE INTACTE)
+    // =========================================================================
 
     applyExpression(expression) {
         if (!this.mouth) return;
 
-        // Restaurer les valeurs par défaut
         this.mouth.rotation.z = 0;
         this.mouth.scale.y = 1;
-        this.mouth.position.y = this.mouth.position.y; // garder la position actuelle
+        this.mouth.position.y = this.mouth.position.y;
+
+        this.group.rotation.z = 0;
 
         if (this.eyeL) this.eyeL.scale.y = 1;
         if (this.eyeR) this.eyeR.scale.y = 1;
@@ -431,17 +943,13 @@ export class ThreePatient {
             this.browR.position.y = this.browR.position.y;
         }
 
-        // Couleur de peau par défaut
         if (this.skinMat) {
             this.skinMat.color.set(0xd7a87a);
-            if (this.skinMat.emissive) this.skinMat.emissive.set(0x000000);
-            this.skinMat.emissiveIntensity = 0;
+            if (this.skinMat.emissive) this.skinMat.emissive.set(0x1a0800);
+            this.skinMat.emissiveIntensity = 0.04;
         }
 
-        // Sang caché par défaut
         if (this._bloodGroup) this._bloodGroup.visible = false;
-
-        // Sueur cachée par défaut (le PatientAnimator la gérera dynamiquement si besoin)
         if (this.sweatMat) this.sweatMat.opacity = 0;
 
         if (expression === 'douleur' || expression === 'grimace') {
@@ -456,7 +964,6 @@ export class ThreePatient {
             if (this.skinMat) this.skinMat.color.set(0xd4c4b0);
         }
         if (expression === 'cyanotic' || expression === 'cyanose') {
-            // Peau bleutée / tête bleue
             if (this.skinMat) this.skinMat.color.set(0x8fa8be);
             this.mouth.rotation.z = 0.12;
             if (this.eyeL) this.eyeL.scale.y = 0.85;
@@ -481,7 +988,6 @@ export class ThreePatient {
                 this.skinMat.emissive.set(0x111508);
                 this.skinMat.emissiveIntensity = 0.08;
             }
-            // Afficher immédiatement les gouttes de sueur (max brillance)
             if (this.sweatMat) this.sweatMat.opacity = 0.75;
         }
         if (expression === 'anxieux') {
@@ -504,9 +1010,7 @@ export class ThreePatient {
             if (this.browL) this.browL.rotation.z = 0.05;
             if (this.browR) this.browR.rotation.z = -0.05;
         }
-        // === NOUVELLES EXPRESSIONS URGENCE ===
         if (expression === 'hemorragie' || expression === 'saignement') {
-            // Peau pâle/livide avec sang visible
             if (this.skinMat) this.skinMat.color.set(0xc8b8a8);
             this.mouth.rotation.z = 0.22;
             this.mouth.scale.y = 0.4;
@@ -517,17 +1021,19 @@ export class ThreePatient {
             if (this._bloodGroup) this._bloodGroup.visible = true;
         }
         if (expression === 'inconscient' || expression === 'pls') {
-            // Yeux fermés, corps inerte
             if (this.skinMat) this.skinMat.color.set(0xc0b0a0);
             this.mouth.rotation.z = 0.05;
             this.mouth.scale.y = 0.6;
-            if (this.eyeL) this.eyeL.scale.y = 0.05;  // yeux fermés
+            if (this.eyeL) this.eyeL.scale.y = 0.05;
             if (this.eyeR) this.eyeR.scale.y = 0.05;
             if (this.browL) this.browL.rotation.z = -0.05;
             if (this.browR) this.browR.rotation.z = 0.05;
+            
+            if (expression === 'pls' && this._currentPosition === 'allonge') {
+                this.group.rotation.z = Math.PI / 4;
+            }
         }
         if (expression === 'arret_cardiaque' || expression === 'acr') {
-            // Peau grise, yeux fermés, bouche entrouverte
             if (this.skinMat) {
                 this.skinMat.color.set(0x909090);
                 this.skinMat.emissive.set(0x000000);
@@ -540,7 +1046,6 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = 0.0;
         }
         if (expression === 'choc' || expression === 'choc_hemorragique') {
-            // Choc : peau très pâle, sueur, confusion
             if (this.skinMat) {
                 this.skinMat.color.set(0xd8cec0);
                 this.skinMat.emissive.set(0x080808);
@@ -554,7 +1059,6 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = 0.1;
         }
         if (expression === 'brulure') {
-            // Peau rougeâtre/noirâtre brûlée
             if (this.skinMat) {
                 this.skinMat.color.set(0x8b4030);
                 this.skinMat.emissive.set(0x3a1005);
@@ -569,7 +1073,6 @@ export class ThreePatient {
             if (this._bloodGroup) this._bloodGroup.visible = true;
         }
         if (expression === 'convulsion') {
-            // Convulsion : yeux révulsés, mâchoires serrées
             if (this.skinMat) {
                 this.skinMat.color.set(0xd0c8b8);
             }
@@ -582,10 +1085,10 @@ export class ThreePatient {
         }
     }
 
-    /**
-     * Génère des taches de sang procédurales sur le bas du corps et les membres.
-     * Visible uniquement pour les expressions hémorragie/brûlure.
-     */
+    // =========================================================================
+    //  EFFETS SPÉCIAUX (LOGIQUE INTACTE)
+    // =========================================================================
+
     _buildBloodSplotches(positionMode) {
         if (this._bloodGroup) {
             this.group.remove(this._bloodGroup);
@@ -596,26 +1099,21 @@ export class ThreePatient {
 
         const bloodMat = new THREE.MeshStandardMaterial({
             color: 0x8b0000,
-            roughness: 0.95,
-            metalness: 0.0,
+            roughness: 0.6,
+            metalness: 0.15,
             transparent: true,
-            opacity: 0.88
+            opacity: 0.88,
+            emissive: 0x200000,
+            emissiveIntensity: 0.1
         });
 
-        // Taches elliptiques de sang sur les membres/torse
         const splotchData = positionMode === 'allonge' ? [
-            // Sur la jambe gauche (cuisse)
             { x: -0.12, y: 0.82, z: -0.55, rx: 0, ry: 0, rz: 0, sx: 0.10, sy: 0.02, sz: 0.15 },
-            // Flaque au sol (à côté du lit)
             { x: -0.28, y: 0.66, z: -0.70, rx: Math.PI/2, ry: 0, rz: 0, sx: 0.12, sy: 0.01, sz: 0.10 },
-            // Bras
             { x: -0.30, y: 0.86, z: -0.05, rx: 0, ry: 0, rz: 0.2, sx: 0.06, sy: 0.02, sz: 0.09 },
         ] : [
-            // Sur la jambe gauche
             { x: -0.15, y: 0.55, z: 0.05, rx: 0.1, ry: 0, rz: 0, sx: 0.08, sy: 0.02, sz: 0.10 },
-            // Flaque au sol
             { x: -0.15, y: 0.50, z: 0.10, rx: Math.PI/2, ry: 0, rz: 0, sx: 0.10, sy: 0.01, sz: 0.08 },
-            // Torse / bas abdomen
             { x: 0.0, y: 0.85, z: 0.10, rx: 0, ry: 0, rz: 0.1, sx: 0.07, sy: 0.02, sz: 0.06 },
         ];
 
@@ -633,10 +1131,6 @@ export class ThreePatient {
         this.group.add(this._bloodGroup);
     }
 
-    /**
-     * Génère procéduralement des gouttelettes de sueur sur le front et les joues du patient.
-     * Le matériau commence invisible (opacity = 0) et sera modulé en continu.
-     */
     _buildSweatDrops(positionMode) {
         if (this.sweatGroup) {
             this.group.remove(this.sweatGroup);
@@ -645,31 +1139,26 @@ export class ThreePatient {
         this.sweatGroup = new THREE.Group();
         this.sweatGroup.name = 'PatientSueur';
         
-        // Matériau de sueur brillant, translucide et très lisse
         this.sweatMat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.02,
             metalness: 0.1,
             transparent: true,
-            opacity: 0.0, // Invisible par défaut, animé par PatientAnimator
+            opacity: 0.0,
             depthWrite: false
         });
         
         const dropGeom = new THREE.SphereGeometry(0.004, 6, 6);
         
-        // Coordonnées locales des gouttes selon la posture
         let positions = [];
         if (positionMode === 'allonge') {
-            // Allongé : tête à x=0, y=1.0, z=0.62. Visage vers +Y/+Z
             positions = [
-                // Front
                 { x: -0.04, y: 1.18, z: 0.64 },
                 { x: 0.04, y: 1.18, z: 0.64 },
                 { x: -0.02, y: 1.19, z: 0.62 },
                 { x: 0.02, y: 1.19, z: 0.62 },
                 { x: -0.06, y: 1.17, z: 0.65 },
                 { x: 0.06, y: 1.17, z: 0.65 },
-                // Tempes / Joues
                 { x: -0.09, y: 1.13, z: 0.67 },
                 { x: 0.09, y: 1.13, z: 0.67 },
                 { x: -0.08, y: 1.09, z: 0.70 },
@@ -678,16 +1167,13 @@ export class ThreePatient {
                 { x: 0.05, y: 1.06, z: 0.73 }
             ];
         } else {
-            // Assis : tête à x=0, y=1.43, z=0.05. Visage vers +Z
             positions = [
-                // Front
                 { x: -0.04, y: 1.54, z: 0.17 },
                 { x: 0.04, y: 1.54, z: 0.17 },
                 { x: -0.02, y: 1.56, z: 0.15 },
                 { x: 0.02, y: 1.56, z: 0.15 },
                 { x: -0.06, y: 1.53, z: 0.18 },
                 { x: 0.06, y: 1.53, z: 0.18 },
-                // Tempes / Joues
                 { x: -0.09, y: 1.48, z: 0.20 },
                 { x: 0.09, y: 1.48, z: 0.20 },
                 { x: -0.08, y: 1.43, z: 0.22 },
@@ -700,13 +1186,11 @@ export class ThreePatient {
         positions.forEach(pos => {
             const drop = new THREE.Mesh(dropGeom, this.sweatMat);
             drop.position.set(pos.x, pos.y, pos.z);
-            // Légère variation de taille
             const scale = 0.8 + Math.random() * 0.5;
-            drop.scale.set(scale, scale * 1.6, scale); // Gouttes étirées verticalement
+            drop.scale.set(scale, scale * 1.6, scale);
             this.sweatGroup.add(drop);
         });
         
         this.group.add(this.sweatGroup);
     }
 }
-

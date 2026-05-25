@@ -167,7 +167,6 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 3,
   "alternativeDiagnostics": [
     "Accouchement inopiné à domicile",
     "Travail en phase active - Dilatation complète"
@@ -257,7 +256,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_toucher_seul": {
       "id": "s_toucher_seul",
@@ -284,7 +289,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_installation_faite": {
       "id": "s_installation_faite",
@@ -311,7 +322,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_naissance_bebe": {
       "id": "s_naissance_bebe",
@@ -338,7 +355,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_cordon_traite": {
       "id": "s_cordon_traite",
@@ -377,7 +400,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_atonie_degradation_temporelle": {
       "id": "s_atonie_degradation_temporelle",
@@ -410,7 +439,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_delivrance_reussie": {
       "id": "s_delivrance_reussie",
@@ -425,7 +461,14 @@
       "actionsDisponibles": [],
       "isEndState": true,
       "success": true,
-      "xpReward": 100
+      "xpReward": 100,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_choc_hemorragique_cataclysmique": {
       "id": "s_choc_hemorragique_cataclysmique",
@@ -439,7 +482,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_rupture_utérine": {
       "id": "s_rupture_utérine",
@@ -453,7 +502,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea",
+        "sang": true
+      }
     },
     "s_deces_hemorragique": {
       "id": "s_deces_hemorragique",
@@ -467,7 +523,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_degradation_foetale": {
       "id": "s_degradation_foetale",
@@ -481,7 +543,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_degradation_compression": {
       "id": "s_degradation_compression",
@@ -495,7 +563,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "douleur",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_hypothermie_bebe": {
       "id": "s_hypothermie_bebe",
@@ -509,7 +583,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_lesion_plexus": {
       "id": "s_lesion_plexus",
@@ -523,7 +603,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     }
   },
   "correction": "# Correction : Accouchement Inopiné à Domicile et Délivrance Dirigée\n\n## 1. Contexte Physiopathologique & Prise en Charge\nL'accouchement inopiné à domicile (en dehors de toute structure médicale) est une urgence courante. La priorité absolue est de maintenir son calme, de rassurer la patiente et de respecter la physiologie de la naissance.\n\n### Les trois phases cliniques clés :\n- **Phase d'expulsion (2ème stade)** : La dilatation est complète à 10 cm, la tête fœtale est engagée. Il faut accompagner la descente sans forcer ni retenir la tête, pour préserver le périnée maternel et éviter les traumatismes crâniens ou du plexus brachial chez l'enfant.\n- **Séchage immédiat du nouveau-né** : C'est le premier geste de réanimation néonatale systématique. Le nouveau-né mouillé perd sa chaleur extrêmement vite par évaporation. L'hypothermie fœtale provoque une détresse respiratoire sévère, une acidose métabolique et une hypoglycémie.\n- **Délivrance (3ème stade)** : Expulsion du placenta. C'est la phase la plus dangereuse pour la mère. Le risque majeur est l'**Hémorragie du Post-Partum (HPP)** par **atonie utérine** (l'utérus ne se contracte pas, laissant le lit placentaire saigner massivement).\n\n---\n\n## 2. Bons Réflexes (Do's)\n- **Installation adaptée** : Installer la patiente sur le dos ou demi-assise, cuisses fléchies et écartées pour maximiser l'ouverture du détroit inférieur.\n- **Contrôle de la déflexion** : Poser une main douce sur le crâne fœtal lors de sa sortie pour freiner une déflexion trop brutale, protégeant ainsi le périnée.\n- **Dégagement des épaules méthodique** : Attendre la rotation spontanée de la tête, puis guider doucement la tête vers le bas pour dégager l'épaule antérieure sous la symphyse pubienne, puis vers le haut pour dégager l'épaule postérieure.\n- **Séchage vigoureux** : Sécher le bébé immédiatement avec un linge propre et chaud, puis l'installer en peau à peau sur le ventre maternel.\n- **Clampage tardif du cordon** : Clamper et sectionner le cordon après 1 à 2 minutes de vie, une fois que les pulsations du cordon ont cessé.\n- **Délivrance dirigée systématique** : Administrer **5 à 10 UI de Syntocinon (Oxytocine) par voie IV lente ou IM** immédiatement après la sortie du bébé (avant la délivrance placentaire). C'est la recommandation internationale majeure de première intention pour prévenir l'atonie utérine.\n- **Surveillance de la délivrance** : Attendre le décollement spontané du placenta (signes : allongement du cordon à la vulve, utérus qui remonte et se durcit, absence de transmission du pouls maternel au cordon).\n\n---\n\n## 3. Erreurs à Éviter (Don'ts)\n- **Traction forte sur le cordon ombilical** : **ERREUR VITALE CATASTROPHIQUE**. Risque d'arrachement placentaire partiel provoquant une hémorragie interne cataclysmique immédiate, ou d'inversion utérine aiguë (l'utérus se retourne comme un gant, provoquant un choc neurogénique et hémorragique foudroyant).\n- **Expression utérine violente (manœuvre de Kristeller)** : **INTERDITE et DANGEREUSE**. Risque de rupture utérine, d'hématome sous-capsulaire splénique ou hépatique maternel.\n- **Repousser la tête du bébé** ou forcer la mère à serrer les cuisses pour attendre les secours : Provoque une anoxie fœtale immédiate par compression prolongée du cordon et des lésions périnéales majeures.\n- **Laisser le nouveau-né humide** : Conduit rapidement à une détresse respiratoire néonatale par hypothermie sévère.\n- **Inertie thérapeutique post-partum** : Attendre passivement la délivrance sans administrer d'ocytocine prophylactique expose la mère à une atonie utérine silencieuse et progressive avec choc hémorragique secondaire.\n\n---\n\n## 4. Dynamique des Signes Vitaux lors du Choc Hémorragique\nSi l'oxytocine n'est pas administrée rapidement après l'expulsion, l'utérus reste flasque (atonie), entraînant un saignement continu massif :\n- **Chute de la tension artérielle (hypotension)** avec **pincement de la différentielle** (PAS et PAD rapprochées, ex : 75/45 mmHg) due à la vasoconstriction sympathique réflexe périphérique.\n- **Tachycardie compensatrice rapide** (le pouls grimpe > 120 bpm) pour tenter de maintenir le débit cardiaque face à la perte de volume sanguin.\n- **Pâleur, marbrures, froideur des extrémités et soif intense** traduisant la redistribution du sang vers les organes nobles (cœur, cerveau).\n- **L'administration d'Oxytocine (Syntocinon)** et le massage utérin vigoureux sont les clés pour obtenir le **globe de sécurité utérin** dur et tonique qui stoppe le saignement."

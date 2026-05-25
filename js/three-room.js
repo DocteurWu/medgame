@@ -26,7 +26,30 @@ export function box(scene, size, position, material, name, interactive = false) 
 
 export function buildRoom(scene) {
     const wall = createMaterial(0xe5efef);
-    box(scene, { x: 10, y: 0.05, z: 8 }, { x: 0, y: 0, z: 0 }, createMaterial(0xbfd2c7), 'Sol');
+    const floorCanvas = document.createElement('canvas');
+    floorCanvas.width = 512;
+    floorCanvas.height = 512;
+    const fctx = floorCanvas.getContext('2d');
+    fctx.fillStyle = '#bed2c8';
+    fctx.fillRect(0, 0, 512, 512);
+    fctx.strokeStyle = 'rgba(120, 145, 135, 0.28)';
+    fctx.lineWidth = 2;
+    for (let i = 0; i <= 512; i += 64) {
+        fctx.beginPath(); fctx.moveTo(i, 0); fctx.lineTo(i, 512); fctx.stroke();
+        fctx.beginPath(); fctx.moveTo(0, i); fctx.lineTo(512, i); fctx.stroke();
+    }
+    fctx.fillStyle = 'rgba(255,255,255,0.18)';
+    for (let y = 0; y < 512; y += 64) {
+        for (let x = 0; x < 512; x += 64) {
+            if ((x + y) % 128 === 0) fctx.fillRect(x + 3, y + 3, 58, 58);
+        }
+    }
+    const floorTex = new THREE.CanvasTexture(floorCanvas);
+    floorTex.wrapS = THREE.RepeatWrapping;
+    floorTex.wrapT = THREE.RepeatWrapping;
+    floorTex.repeat.set(3, 3);
+    const floorMat = new THREE.MeshStandardMaterial({ map: floorTex, color: 0xffffff, roughness: 0.82, metalness: 0.02 });
+    box(scene, { x: 10, y: 0.05, z: 8 }, { x: 0, y: 0, z: 0 }, floorMat, 'Sol');
     box(scene, { x: 10, y: 3.5, z: 0.1 }, { x: 0, y: 1.75, z: -4 }, wall, 'Mur du fond');
     box(scene, { x: 0.1, y: 3.5, z: 8 }, { x: -5, y: 1.75, z: 0 }, wall, 'Mur gauche');
     box(scene, { x: 0.1, y: 3.5, z: 8 }, { x: 5, y: 1.75, z: 0 }, wall, 'Mur droit');
@@ -34,6 +57,8 @@ export function buildRoom(scene) {
     
     // Fenêtre encastrée dans le mur gauche
     box(scene, { x: 0.1, y: 1.5, z: 2.4 }, { x: -4.95, y: 1.8, z: -1.0 }, createMaterial(0x9ec6d8, { emissive: 0x224455, emissiveIntensity: 0.15 }), 'Fenetre');
+    box(scene, { x: 0.12, y: 1.65, z: 0.05 }, { x: -4.9, y: 1.8, z: -1.0 }, createMaterial(0xf4f6f6, { roughness: 0.45 }), 'Montant fenetre');
+    box(scene, { x: 0.12, y: 0.05, z: 2.55 }, { x: -4.9, y: 1.8, z: -1.0 }, createMaterial(0xf4f6f6, { roughness: 0.45 }), 'Traverse fenetre');
     
     // Moniteur mural sur le mur du fond à droite
     box(scene, { x: 0.8, y: 0.5, z: 0.08 }, { x: 4.5, y: 2.0, z: -3.9 }, createMaterial(0x03150a, { emissive: 0x00aa44, emissiveIntensity: 0.25 }), 'Moniteur mural', true);
@@ -227,6 +252,10 @@ export function buildFurniture(scene) {
     box(scene, { x: 0.9, y: 0.15, z: 2.1 }, { x: -3.5, y: 0.575, z: -2.6 }, createMaterial(0xd8e0e8), 'Matelas');
     box(scene, { x: 1.0, y: 0.8, z: 0.1 }, { x: -3.5, y: 0.4, z: -3.65 }, createMaterial(0x7c8c9e), 'Tete Lit');
     box(scene, { x: 1.0, y: 0.6, z: 0.1 }, { x: -3.5, y: 0.3, z: -1.55 }, createMaterial(0x7c8c9e), 'Pied Lit');
+    const bedRailMat = createMaterial(0xd6dde7, { metalness: 0.45, roughness: 0.28 });
+    box(scene, { x: 0.06, y: 0.18, z: 1.35 }, { x: -3.02, y: 0.86, z: -2.72 }, bedRailMat, 'Barriere lit');
+    box(scene, { x: 0.06, y: 0.18, z: 1.35 }, { x: -3.98, y: 0.86, z: -2.72 }, bedRailMat, 'Barriere lit');
+    box(scene, { x: 0.22, y: 0.055, z: 0.22 }, { x: -3.5, y: 0.68, z: -3.35 }, createMaterial(0xf5f1e8), 'Oreiller');
 
     // Fauteuil patient réaliste (Base, assise, dossier, accoudoirs)
     const chairColor = createMaterial(0x7f986c);

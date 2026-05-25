@@ -204,7 +204,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s2": {
       "id": "s2",
@@ -231,7 +238,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s3": {
       "id": "s3",
@@ -258,7 +272,14 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s4": {
       "id": "s4",
@@ -285,7 +306,13 @@
         }
       ],
       "isEndState": false,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s5_good": {
       "id": "s5_good",
@@ -299,7 +326,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": true
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_err_blisters": {
       "id": "s_err_blisters",
@@ -313,7 +347,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_butter": {
       "id": "s_err_butter",
@@ -327,7 +367,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_err_clothes": {
       "id": "s_err_clothes",
@@ -341,7 +388,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_err_alert": {
       "id": "s_err_alert",
@@ -355,7 +409,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "brulure",
+        "couleurPeau": "rouge",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     }
   },
   "vitalsDynamics": {
