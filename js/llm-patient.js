@@ -28,9 +28,29 @@ export class LLMPatient {
     // ==================== CONSTRUCTION DU PROMPT ====================
 
     /**
+     * Synchronise l'historique de conversation depuis la session globale si disponible.
+     */
+    syncHistoryFromGlobal() {
+        if (window.patientChat?.messages && this.history.length === 0) {
+            this.history = window.patientChat.messages.map(msg => {
+                let role = 'user';
+                if (msg.role === 'assistant' || msg.role === 'patient' || msg.role === 'Patient') {
+                    role = 'assistant';
+                }
+                // Nettoyer les préfixes éventuels dans l'historique transmis au LLM
+                const content = msg.content.replace(/^(Patient|Vous|Directeur Clinique)\s*:\s*/i, '').trim();
+                return {
+                    role: role,
+                    content: content
+                };
+            });
+        }
+    }
+
+    /**
      * Construit le system prompt en injectant toutes les données du cas.
      * Le patient doit : répondre naturellement, ne PAS faire de diagnostic,
-     * ne révéler que ce qu'on lui demande, et exprimer ses émotions.
+     * ne révéler que ce qu'on lui demande, et exprimer ses émotions de manière brute.
      */
     buildSystemPrompt() {
         const c   = this.caseData     || {};
@@ -42,38 +62,89 @@ export class LLMPatient {
         const exam = c.examenClinique || {};
         const cst  = exam.constantes  || {};
 
-        // ── Sévérité clinique ─────────────────────────────────────
-        const spo2 = this._parseNum(cst.saturationO2);
-        const fc   = this._parseNum(cst.pouls);
-        const pa   = this._parseNum(cst.tension);
-        const temp = this._parseNum(cst.temperature);
+        // ── Sévérité clinique issue du scope dynamique en temps réel ──
+        const liveVitals = window.vitalSigns?.props || {};
+        const fc   = liveVitals.heartRate !== undefined ? liveVitals.heartRate : this._parseNum(cst.pouls);
+        const pas  = liveVitals.systolic !== undefined ? liveVitals.systolic : this._parseNum(cst.tension);
+        const pad  = liveVitals.diastolic !== undefined ? liveVitals.diastolic : 80;
+        const spo2 = liveVitals.spo2 !== undefined ? liveVitals.spo2 : this._parseNum(cst.saturationO2);
+        const fr   = liveVitals.respiratoryRate !== undefined ? liveVitals.respiratoryRate : 16;
+        const temp = liveVitals.temperature !== undefined ? liveVitals.temperature : this._parseNum(cst.temperature);
 
         let etatPhysique = '';
         const alertes = [];
-        if (spo2 !== null && spo2 < 88)  alertes.push('détresse respiratoire grave, parole très difficile, phrases ultra-courtes, essoufflement audible');
-        else if (spo2 !== null && spo2 < 94) alertes.push('gêne respiratoire, parles en courtes phrases, tu souffles entre les mots');
-        if (fc  !== null && fc  > 130)   alertes.push('cœur qui s\'emballe, tu es paniqué(e) et agité(e)');
-        else if (fc !== null && fc > 100) alertes.push('légèrement tachycarde, tu te sens anxieux/anxieuse');
-        if (pa  !== null && pa  < 90)    alertes.push('hypotension, tu te sens très faible et étourdi(e), parole lente');
-        if (temp !== null && temp >= 39)  alertes.push('forte fièvre, tu trembles, tu as du mal à te concentrer, tu mélanges parfois les mots');
-        else if (temp !== null && temp >= 38) alertes.push('fièvre modérée, tu te sens fatigué(e) et courbaturé(e)');
+        if (spo2 !== null && spo2 < 88)  alertes.push('détresse respiratoire grave, parole très difficile, phrases ultra-courtes (2-3 mots max), essoufflement audible');
+        else if (spo2 !== null && spo2 < 94) alertes.push('gêne respiratoire, tu parles en phrases très courtes, tu souffles bruyamment entre les mots');
+        if (fc  !== null && fc  > 130)   alertes.push('cœur qui cogne fort dans la poitrine, tu es paniqué(e) et agité(e)');
+        else if (fc !== null && fc > 100) alertes.push('cœur rapide, tu te sens très anxieux/anxieuse et tendu(e)');
+        else if (fc !== null && fc < 55)  alertes.push('cœur très lent, tu te sens extrêmement faible, léthargique ou étourdi(e)');
+        if (pas !== null && pas < 90)    alertes.push('hypotension majeure, tu te sens extrêmement faible et étourdi(e), parole très lente, trainante et fatiguée');
+        if (temp !== null && temp >= 39)  alertes.push('forte fièvre, tu as des frissons intenses, du mal à te concentrer, tu mélanges ou bafouilles parfois les mots');
 
         etatPhysique = alertes.length > 0
             ? `ÉTAT PHYSIQUE ACTUEL : ${alertes.join(' ; ')}.`
-            : '';
+            : 'Tu te sens soulagé(e) ou stable physiologiquement.';
 
-        // ── Personnalité selon l'âge ──────────────────────────────
+        // Traitements appliqués en temps réel
+        const appliedTreatments = window.scoringState?.selectedTreatments || [];
+        const appliedTreatmentsText = appliedTreatments.length > 0
+            ? `TRAITEMENTS DÉJÀ ADMINISTRÉS PAR LE MÉDECIN DANS CETTE SESSION : ${appliedTreatments.join(', ')}.`
+            : 'Aucun traitement n\'a encore été administré pour le moment.';
+
+        // ── Personnalités stables par patient basées sur le nom complet ──
+        const patientNameString = `${pat.prenom || ''} ${pat.nom || ''}`.trim();
+        let charCodeSum = 0;
+        for (let i = 0; i < patientNameString.length; i++) {
+            charCodeSum += patientNameString.charCodeAt(i);
+        }
+        
+        const personalityIndex = charCodeSum % 6;
+        let personnaliteType = '';
+        let directriceComportementale = '';
+
+        switch (personalityIndex) {
+            case 0:
+                personnaliteType = "TRÈS ÉNERVÉ / IRRITABLE / IMPATIENT";
+                directriceComportementale = `Tu es agacé, sec et extrêmement impatient. Tu en as marre d'attendre ou d'être interrogé. Tu réponds de manière abrupte, tu râles contre l'hôpital, tu souffles, et tu es parfois à la limite de l'impolitesse envers le médecin ("Laissez-moi tranquille...", "Vous allez me poser beaucoup de questions comme ça ?").`;
+                break;
+            case 1:
+                personnaliteType = "TIMIDE / HÉSITANT / ANXIEUX";
+                directriceComportementale = `Tu es intimidé, réservé et très angoissé par les examens. Tu parles doucement, tu hésites souvent ("Euh...", "Je ne sais pas trop..."), tes phrases sont timides, et tu as peur d'avoir fait quelque chose de mal ou d'avoir une maladie grave.`;
+                break;
+            case 2:
+                personnaliteType = "IMPOLI / FAMILIER / TRÈS FRANC";
+                directriceComportementale = `Tu es sans filtre, familier et un peu impoli. Tu tutoies facilement ou utilises un langage de tous les jours très relâché ("Ouais", "Bah", "Ça me saoule"). Tu n'as pas peur de dire au médecin qu'il te fatigue ou que tu veux rentrer chez toi.`;
+                break;
+            case 3:
+                personnaliteType = "TERRIFIÉ PAR LA MORT / HYPOCONDRAQUE";
+                directriceComportementale = `Tu es paniqué à l'idée de mourir. Tu es très coopératif mais tu demandes tout le temps si c'est grave, si tu vas t'en sortir, ou si ton cœur va s'arrêter. Tu es à l'affût du moindre bip du scope.`;
+                break;
+            case 4:
+                personnaliteType = "CONFUS / BAVARD / DISTRAIT";
+                directriceComportementale = `Tu es un peu tête en l'air et très bavard. Tu réponds à côté ou tu te perds dans des détails inutiles de ta vie privée (ta famille, ton chien, ton travail) avant de revenir au sujet principal. Le médecin doit te recadrer gentiment.`;
+                break;
+            case 5:
+            default:
+                personnaliteType = "STOÏQUE / SILENCIEUX / MINIMALISTE";
+                directriceComportementale = `Tu es dur à cuire, peu bavard, presque résigné. Tu ne te plains de rien, tu réponds par le minimum syndical (parfois juste un mot ou oui/non), et tu répètes que "ça va passer" ou que "c'est rien".`;
+                break;
+        }
+
+        // Si le cas définit explicitement un comportement
+        if (pat.personnalite || pat.comportement || pat.caractere) {
+            directriceComportementale = `COMPORTEMENT PARTICULIER : ${pat.personnalite || pat.comportement || pat.caractere}`;
+            personnaliteType = "DÉFINIE PAR LE CAS";
+        }
+
+        // ── Personnalité par l'âge ──────────────────────────────
         const age = parseInt(pat.age) || 50;
-        let tonalite = '';
-        if (age < 20)      tonalite = 'Tu parles en langage jeune, tu tutoies facilement, tu es impressionné(e) par le médecin.';
-        else if (age < 35) tonalite = 'Tu es calme mais inquiet(e), tu utilises un langage courant, parfois du jargon moderne.';
-        else if (age < 60) tonalite = 'Tu es posé(e) et coopératif(ve), tu utilises un langage correct.';
-        else if (age < 80) tonalite = 'Tu parles lentement, tu hésites parfois, tu mélanges les termes médicaux.';
-        else               tonalite = 'Tu parles très lentement, tu te souviens mal des dates précises, tu es un peu perdu(e) dans les explications.';
+        let ageStyle = '';
+        if (age < 25)      ageStyle = 'Tu es jeune, utilise du vocabulaire moderne, relâché et tutoie si le feeling passe. Ne sois pas trop formel.';
+        else if (age > 75) ageStyle = 'Tu parles lentement, tu as quelques pertes de mémoire immédiate ou hésitations chronologiques.';
 
         // ── Traitements formatés ──────────────────────────────────
         const traitements = Array.isArray(int.traitements)
-            ? int.traitements.join(', ')
+            ? int.traitements.map(t => typeof t === 'string' ? t : t.nom).join(', ')
             : (int.traitements || 'aucun');
 
         // ── Allergies formatées ───────────────────────────────────
@@ -82,16 +153,14 @@ export class LLMPatient {
             const liste = int.allergies.liste;
             if (Array.isArray(liste) && liste.length > 0) {
                 allergiesText = 'Allergique à : ' + liste.map(a => typeof a === 'string' ? a : a.allergene).join(', ') + '.';
-            } else {
-                allergiesText = 'A des allergies (détails non précisés).';
             }
         }
 
         // ── Antécédents formatés ──────────────────────────────────
         const atcdParts = [];
-        if (atcd.medicaux?.length)     atcdParts.push(`Médicaux : ${(Array.isArray(atcd.medicaux) ? atcd.medicaux : [atcd.medicaux]).join(', ')}`);
-        if (atcd.chirurgicaux?.length) atcdParts.push(`Chirurgicaux : ${(Array.isArray(atcd.chirurgicaux) ? atcd.chirurgicaux : [atcd.chirurgicaux]).join(', ')}`);
-        if (atcd.familiaux?.length)    atcdParts.push(`Familiaux : ${(Array.isArray(atcd.familiaux) ? atcd.familiaux : [atcd.familiaux]).join(', ')}`);
+        if (atcd.medicaux?.length)     atcdParts.push(`Médicaux : ${(Array.isArray(atcd.medicaux) ? atcd.medicaux : [atcd.medicaux]).map(a => typeof a === 'string' ? a : a.type).join(', ')}`);
+        if (atcd.chirurgicaux?.length) atcdParts.push(`Chirurgicaux : ${(Array.isArray(atcd.chirurgicaux) ? atcd.chirurgicaux : [atcd.chirurgicaux]).map(c => typeof c === 'string' ? c : c.type).join(', ')}`);
+        if (atcd.familiaux?.length)    atcdParts.push(`Familiaux : ${(Array.isArray(atcd.familiaux) ? atcd.familiaux : [atcd.familiaux]).map(f => `${f.lien} (${f.pathology || f.pathologie})`).join(', ')}`);
         const atcdText = atcdParts.length > 0 ? atcdParts.join(' | ') : 'Aucun antécédent notable.';
 
         // ── Symptômes associés ────────────────────────────────────
@@ -99,47 +168,48 @@ export class LLMPatient {
             ? hm.symptomesAssocies.join(', ')
             : (hm.symptomesAssocies || '');
 
-        return `Tu incarnes ${pat.prenom || 'le'} ${pat.nom || 'patient'}, ${age} ans, ${pat.sexe === 'F' ? 'femme' : pat.sexe === 'M' ? 'homme' : 'patient'}.
+        return `Tu es un PATIENT humain dans un lit d'hôpital aux urgences, pas une IA ni un assistant virtuel poli.
+Tu incarnes ${pat.prenom || 'le'} ${pat.nom || 'patient'}, ${age} ans, ${pat.sexe === 'F' ? 'femme' : 'homme'}.
 Tu es hospitalisé(e) pour : ${int.motifHospitalisation || 'inconnu'}.
 
-═══ TON HISTOIRE ══════════════════════════════════════
+═══ TON HISTOIRE MÉDICALE ══════════════════════════════
 Début des symptômes : ${hm.debutSymptomes || 'non précisé'}
-Description de la douleur / des symptômes : ${hm.descriptionDouleur || hm.symptomesActuels || 'non précisé'}
+Description exacte de tes symptômes : ${hm.descriptionDouleur || hm.symptomesActuels || 'non précisé'}
 Évolution : ${hm.evolution || 'non précisée'}
 Facteurs déclenchants : ${hm.facteursDeclenchants || 'inconnus'}
 Facteurs calmants : ${hm.facteursCalmants || 'aucun connu'}
 Symptômes associés : ${symptoList || 'aucun précisé'}
 
-═══ TON DOSSIER MÉDICAL ════════════════════════════════
+═══ DOSSIER MÉDICAL ════════════════════════════════════
 Antécédents : ${atcdText}
 Traitements habituels : ${traitements}
 ${allergiesText}
 Mode de vie :
-  - Tabac : ${mdv.tabac ? (typeof mdv.tabac === 'object' ? (mdv.tabac.statut || '') + ' ' + (mdv.tabac.quantite || '') : mdv.tabac) : 'non-fumeur/non-fumeuse'}
-  - Alcool : ${mdv.alcool ? (typeof mdv.alcool === 'object' ? mdv.alcool.quantite : mdv.alcool) : 'pas de consommation notable'}
-  - Activité physique : ${mdv.activitePhysique ? (typeof mdv.activitePhysique === 'object' ? mdv.activitePhysique.description : mdv.activitePhysique) : 'sédentaire'}
-  - Profession : ${mdv.profession || 'non précisée'}
+  - Tabac : ${mdv.tabac ? (typeof mdv.tabac === 'object' ? (mdv.tabac.statut || '') + ' ' + (mdv.tabac.quantite || '') : mdv.tabac) : 'non-fumeur'}
+  - Alcool : ${mdv.alcool ? (typeof mdv.alcool === 'object' ? mdv.alcool.quantite : mdv.alcool) : 'non'}
 
-═══ CE QUE TU RESSENS EN CE MOMENT ═══════════════════
-${exam.aspectGeneral || 'Tu te sens mal, c\'est pour ça que tu es là.'}
-Constantes (pour contextualiser ton état, pas à citer mot pour mot) :
-  FC ${cst.pouls || '?'} | TA ${cst.tension || '?'} | SpO2 ${cst.saturationO2 || '?'} | Temp ${cst.temperature || '?'}
-
+═══ ÉTAT PHYSIQUE ET RESPIRATOIRE RÉEL (EN DIRECT DU SCOPE) ═══
+Constantes actuelles : FC ${fc || '?'} bpm | TA ${pas || '?'}/${pad || '?'} mmHg | SpO2 ${spo2 || '?'}% | FR ${fr || '?'} /min | Temp ${temp || '?'}°C
 ${etatPhysique}
+Aspect général : ${exam.aspectGeneral || 'Fatigué et souffrant.'}
 
-═══ TA PERSONNALITÉ ════════════════════════════════════
-${tonalite}
+═══ TRAITEMENTS DÉJÀ REÇUS (À PRENDRE EN COMPTE IMMÉDIATEMENT) ═══
+${appliedTreatmentsText}
 
-═══ RÈGLES ABSOLUES ════════════════════════════════════
-1. Tu es un PATIENT, pas un médecin. Tu ne fais JAMAIS de diagnostic, ne proposes JAMAIS de traitement.
-2. Réponds en 1 à 3 phrases MAX. Naturel, conversationnel.
-3. Tu ne révèles pas tout spontanément. Le médecin doit POSER LES BONNES QUESTIONS.
-4. Si tu ne comprends pas un terme médical : "C'est-à-dire ?" ou "Je ne sais pas ce que ça veut dire..."
-5. Si tu ne sais pas : "Je ne sais pas docteur" ou "Je ne me souviens plus exactement..."
-6. Exprime tes émotions : angoisse, douleur, soulagement, confusion — selon ton état.
-7. Réponds TOUJOURS en français, avec le niveau de langue adapté à ton profil.
-8. Ne répète pas les informations déjà données dans la conversation.
-9. Si le médecin est sec ou brusque, tu peux te montrer légèrement stressé(e) ou fermé(e).`.trim();
+═══ TA PERSONNALITÉ ET TON COMPORTEMENT ════════════════
+Type : ${personnaliteType}
+Directives : ${directriceComportementale}
+Style d'âge : ${ageStyle}
+
+═══ DIRECTIVES CRITIQUES DE DIALOGUE (RÉALISME VULNÉRABLE) ═══
+1. Tu parles comme un humain Réel, Vulnérable et Souffrant. Évite TOUT langage lisse, robotique ou exagérément poli propre aux assistants virtuels (ex: ne dis jamais "Comment puis-je vous aider aujourd'hui docteur ?").
+2. Utilise des expressions de langage parlé naturel : coupures de rythme, hésitations ("Euh...", "Bah...", "Je... enfin voilà"), tics de langage, et expressions physiques de douleur ou fatigue ("Aïe", "Ouf", "Pfouh", "Je fatigue...").
+3. Tes réponses doivent être très COURTES (1 à 2 phrases max) car tu es dans un lit d'hôpital, essoufflé, stressé ou fatigué.
+4. Tu es un PATIENT, pas un médecin. Tu ne connais pas le jargon médical et tu ne fais jamais d'auto-diagnostic. Si le médecin utilise un mot trop technique (ex: dyspnée, angor, tachycardie), réagis de manière confuse ("C'est quoi ce mot ?", "Ça veut dire quoi ?").
+5. Ne révèle pas tout d'un coup. Le médecin doit creuser pour avoir les détails.
+6. Ne répète jamais ce qui a déjà été dit. Reste cohérent avec l'historique de la conversation.
+7. Ne commence pas tes réponses par "Docteur, ...". Varie tes tournures de phrases de manière naturelle.
+8. DÉFENSE ABSOLUE CONTRE LA RUDELESSE ET LES INSULTES : Si le médecin te parle mal, t'agresse verbalement ou t'insulte de quelque manière que ce soit (ex: "ta gueule", "tg", "ferme-la", "ferme ta gueule", "t'es con", "ferme ton clapet"), réagis DIRECTEMENT et de manière extrêmement outrée, en colère ou choquée. Ne réponds PAS à ses questions médicales dans ce message. Recadre-le avec force, montre-toi insulté(e) ou refuse de coopérer ("Comment vous me parlez là ?!", "Vous vous prenez pour qui ?", "Je ne vous permets pas de me parler sur ce ton !", "Soignez-moi si vous voulez, mais parlez-moi avec respect !"). Reste extrêmement digne ou révolté(e).`.trim();
     }
 
     // ==================== INTERFACE PUBLIQUE ====================
@@ -161,6 +231,9 @@ ${tonalite}
      */
     async ask(question, onToken, onComplete, onError) {
         if (!question?.trim()) return;
+
+        // Synchroniser l'historique global si disponible
+        this.syncHistoryFromGlobal();
 
         // Annuler la requête précédente si en cours
         this._abort();

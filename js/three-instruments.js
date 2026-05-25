@@ -3,12 +3,12 @@ import { box, createMaterial } from './three-room.js';
 import { pulseEmissive } from './three-animations.js';
 
 const INSTRUMENTS = [
-    { id: 'tensiometer', label: 'Tensiometre', x: -1.0, z: -0.7, key: 'tension', title: 'TA' },
-    { id: 'stethoscope', label: 'Stethoscope', x: -0.75, z: -0.7, key: 'stethoscope', title: 'Auscultation' },
+    { id: 'tensiometer', label: 'Tensiometre', x: -0.9, z: -0.7, key: 'tension', title: 'TA' },
+    { id: 'stethoscope', label: 'Stethoscope', x: -0.7, z: -0.7, key: 'stethoscope', title: 'Auscultation' },
     { id: 'oximeter', label: 'Oxymetre', x: -0.5, z: -0.7, key: 'saturationO2', title: 'SpO2' },
-    { id: 'thermometer', label: 'Thermometre', x: -0.25, z: -0.7, key: 'temperature', title: 'T' },
-    { id: 'glucometer', label: 'Glucometre', x: 0.0, z: -0.7, key: 'glycemie', title: 'Glycemie' },
-    { id: 'tablet', label: 'Tablette prescription', x: 0.25, z: -0.7, key: 'tablet', title: 'Rx' }
+    { id: 'thermometer', label: 'Thermometre', x: -0.3, z: -0.7, key: 'temperature', title: 'T' },
+    { id: 'glucometer', label: 'Glucometre', x: -0.1, z: -0.7, key: 'glycemie', title: 'Glycemie' },
+    { id: 'tablet', label: 'Tablette prescription', x: 0.12, z: -0.7, key: 'tablet', title: 'Rx' }
 ];
 
 /**

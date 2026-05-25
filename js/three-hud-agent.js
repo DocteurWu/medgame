@@ -885,8 +885,9 @@ export class ThreeHUD {
         if (suggestions.length > 0) {
             suggestionsHTML = `
                 <div class="dialog-suggestions" id="dialog-suggestions-3d">
-                    <div class="dialog-suggestions-header">
+                    <div class="dialog-suggestions-header" id="dialog-suggestions-toggle-3d" style="cursor: pointer; display: flex; align-items: center; width: 100%;">
                         <i class="fas fa-lightbulb"></i> Questions suggérées
+                        <i class="fas fa-chevron-down" id="dialog-suggestions-chevron-3d" style="margin-left: auto; font-size: 0.7rem; transition: transform 0.3s ease;"></i>
                     </div>
                     <div class="dialog-suggestions-list" id="dialog-suggestions-list-3d">
                         ${suggestions.map((s, i) => `
@@ -909,11 +910,15 @@ export class ThreeHUD {
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="dialog-body" id="dialog-messages-3d"></div>
-            ${suggestionsHTML}
-            <div class="dialog-input-area">
-                <input type="text" id="dialog-input-3d" placeholder="Posez une question au patient..." />
-                <button id="dialog-send-btn"><i class="fas fa-paper-plane"></i></button>
+            <div class="dialog-layout-wrapper">
+                ${suggestionsHTML}
+                <div class="dialog-chat-main">
+                    <div class="dialog-body" id="dialog-messages-3d"></div>
+                    <div class="dialog-input-area">
+                        <input type="text" id="dialog-input-3d" placeholder="Posez une question au patient..." />
+                        <button id="dialog-send-btn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
             </div>
         `;
         this.hudElement.appendChild(dialog);
@@ -921,6 +926,22 @@ export class ThreeHUD {
         const closeBtn = document.getElementById('dialog-close-btn');
         if (closeBtn) {
             closeBtn.addEventListener('click', () => this.removeFloatingDialog());
+        }
+
+        // Toggle pour replier/déplier les suggestions latéralement
+        const suggestionsToggle = dialog.querySelector('#dialog-suggestions-toggle-3d');
+        const suggestionsList = dialog.querySelector('#dialog-suggestions-list-3d');
+        const suggestionsChevron = dialog.querySelector('#dialog-suggestions-chevron-3d');
+        const suggestionsPanel = dialog.querySelector('.dialog-suggestions');
+        if (suggestionsToggle && suggestionsList && suggestionsPanel) {
+            suggestionsToggle.addEventListener('click', () => {
+                const isCollapsed = suggestionsList.style.display === 'none';
+                suggestionsList.style.display = isCollapsed ? 'flex' : 'none';
+                suggestionsPanel.style.width = isCollapsed ? '250px' : '40px';
+                if (suggestionsChevron) {
+                    suggestionsChevron.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(-90deg)';
+                }
+            });
         }
 
         // Brancher les boutons de suggestion
@@ -1231,6 +1252,15 @@ export class ThreeHUD {
             messages3d.scrollTop = messages3d.scrollHeight;
         };
 
+        // Re-charger l'historique existant s'il y en a pour un affichage cohérent
+        if (window.patientChat?.messages && window.patientChat.messages.length > 0) {
+            window.patientChat.messages.forEach(msg => {
+                const speaker = (msg.role === 'user' || msg.role === 'Vous' || msg.role === 'user') ? 'Vous' : 'Patient';
+                const text = msg.content.replace(/^(Patient|Vous|Directeur Clinique)\s*:\s*/i, '').trim();
+                pushMessage(speaker, text, null);
+            });
+        }
+
         // Patch patientChat.append pour écrire UNIQUEMENT dans le dialogue 3D enrichi.
         // L'original écrit dans le 2D, le patch écrit dans le 3D avec analyse de sentiment.
         // On NE remplace PAS les messages 3D par les clones 2D (plus de MutationObserver destructif).
@@ -1259,6 +1289,12 @@ export class ThreeHUD {
             this._origChatAsk = chat.ask;
             chat.ask = async (question) => {
                 if (!question.trim()) return;
+
+                // Intercepter les actions cliniques libres du joueur en mode 3D
+                if (window.clinicalAgentAI && window.clinicalAgentAI.isClinicalAction(question)) {
+                    await window.clinicalAgentAI.processClinicalAction3D(question, this);
+                    return;
+                }
 
                 // 1. Ajouter le message du joueur dans le dialogue 2D/state classique
                 chat.append('Vous', question);
@@ -1374,6 +1410,15 @@ export class ThreeHUD {
         }
 
 
+        // Helper de normalisation pour comparer rigoureusement sans préfixe ni guillemet
+        const normalizeText = (t) => {
+            if (typeof t !== 'string') return '';
+            return t.replace(/^(Patient|Vous|Directeur Clinique)\s*:\s*/i, '')
+                    .replace(/^[«“"'`\s]+|[»”"'`\s]+$/g, '')
+                    .trim()
+                    .toLowerCase();
+        };
+
         // MutationObserver SYNCHRONE : on écoute le conteneur 2D pour récupérer
         // les messages qui arrivent par d'autres chemins (boutons suggérés du 2D, etc.)
         // MAIS on ne fait qu'ajouter les messages manquants, jamais tout remplacer.
@@ -1384,19 +1429,22 @@ export class ThreeHUD {
             // Construire l'ensemble des textes déjà affichés en 3D
             const existingTexts = new Set();
             messages3d.querySelectorAll('.dialog-msg-text').forEach(el => {
-                existingTexts.add(el.textContent.trim());
+                existingTexts.add(normalizeText(el.textContent));
             });
 
             // Pour chaque message 2D, vérifier s'il manque dans le 3D
             let addedAny = false;
             classicMessages.forEach(m => {
-                const text = m.textContent?.trim();
-                if (text && !existingTexts.has(text)) {
+                const span = m.querySelector('span');
+                const rawText = span ? span.textContent : m.textContent;
+                const norm = normalizeText(rawText);
+                if (norm && !existingTexts.has(norm)) {
                     // Déterminer le type (user vs patient)
                     const isFromUser = m.classList.contains('from-user');
                     const speaker = isFromUser ? 'Vous' : 'Patient';
-                    pushMessage(speaker, text, null);
-                    existingTexts.add(text);
+                    const cleanText = span ? span.textContent.trim() : rawText.replace(/^(Patient|Vous)\s*:\s*/i, '').trim();
+                    pushMessage(speaker, cleanText, null);
+                    existingTexts.add(norm);
                     addedAny = true;
                 }
             });

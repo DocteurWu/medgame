@@ -150,7 +150,7 @@ export class ThreeEnvironmentAgent {
         });
 
         const poster = new THREE.Mesh(posterGeom, posterMat);
-        poster.position.set(-4.85, 1.5, 0.5);
+        poster.position.set(-4.85, 1.5, 1.2);
         poster.rotation.y = Math.PI / 2;
         poster.name = 'MedicalPoster';
         poster.userData.label = 'Affiche médicale';
@@ -192,7 +192,7 @@ export class ThreeEnvironmentAgent {
         const poster2Tex = new THREE.CanvasTexture(canvas2);
         const poster2Mat = new THREE.MeshStandardMaterial({ map: poster2Tex, roughness: 0.8 });
         const poster2 = new THREE.Mesh(poster2Geom, poster2Mat);
-        poster2.position.set(-4.85, 1.5, -0.8);
+        poster2.position.set(-4.85, 1.5, 2.2);
         poster2.rotation.y = Math.PI / 2;
         poster2.name = 'AnatomicalPoster';
         poster2.userData.label = 'Affiche médicale';
@@ -521,7 +521,7 @@ export class ThreeEnvironmentAgent {
 
     _addCharriot() {
         const chart = new THREE.Group();
-        chart.position.set(-2.0, 0, -1.0); // Placé près du pied du lit
+        chart.position.set(-2.35, 0, -0.9); // Placé près du pied du lit dans l'espace vide
         chart.name = 'CharriotMedical';
         chart.userData.label = 'Charriot médical';
         chart.userData.interactive = true;

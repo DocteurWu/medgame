@@ -104,7 +104,13 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Julien s'est coupé la cuisse. Un sang rouge vif gicle en jets pulsatiles (hémorragie artérielle).",
-      "patientVisuel": { "position": "assis", "expression": "hemorragie", "couleurPeau": "normal", "respiration": "tachypnea", "sang": true },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "hemorragie",
+        "couleurPeau": "normal",
+        "respiration": "tachypnea",
+        "sang": true
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -132,7 +138,13 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "Le sang continue de couler malgré votre main. Julien pâlit et devient confus.",
-      "patientVisuel": { "position": "assis", "expression": "hemorragie", "couleurPeau": "pale", "respiration": "tachypnea", "sang": true },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -160,7 +172,13 @@
     "s3_failed_comp": {
       "id": "s3_failed_comp",
       "descriptionClinique": "La compression simple échoue. Julien a soif et son pouls est filant.",
-      "patientVisuel": { "position": "assis", "expression": "choc", "couleurPeau": "pale", "respiration": "tachypnea", "sang": true },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -188,7 +206,12 @@
     "s4": {
       "id": "s4",
       "descriptionClinique": "Le saignement s'arrête enfin totalement. Julien est livide.",
-      "patientVisuel": { "position": "assis", "expression": "choc", "couleurPeau": "pale", "respiration": "tachypnea" },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -216,7 +239,12 @@
     "s5": {
       "id": "s5",
       "descriptionClinique": "Le garrot est en place. Julien respire vite (25/min).",
-      "patientVisuel": { "position": "allonge", "expression": "choc", "couleurPeau": "pale", "respiration": "tachypnea" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -244,7 +272,12 @@
     "s6": {
       "id": "s6",
       "descriptionClinique": "Vous faites l'alerte précise au 15.",
-      "patientVisuel": { "position": "allonge", "expression": "choc", "couleurPeau": "pale", "respiration": "tachypnea" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -266,7 +299,12 @@
     "s7_good": {
       "id": "s7_good",
       "descriptionClinique": "Grâce au garrot précoce, Julien arrive vivant au bloc opératoire. Votre sang-froid a fait la différence.",
-      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -281,7 +319,13 @@
     "s_err_lost": {
       "id": "s_err_lost",
       "descriptionClinique": "Une section fémorale peut tuer en 2 minutes. Chercher du matériel sans comprimer est fatal.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal", "sang": true },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal",
+        "sang": true
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -296,7 +340,13 @@
     "s_err_shock": {
       "id": "s_err_shock",
       "descriptionClinique": "Le sang perdu ne se remplace pas sur place. Le retard du garrot a causé l'arrêt cardiaque.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal", "sang": true },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal",
+        "sang": true
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -320,7 +370,14 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
     },
     "s_err_drink": {
       "id": "s_err_drink",
@@ -334,7 +391,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     }
   },
   "editorData": {

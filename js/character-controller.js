@@ -15,7 +15,13 @@ export class CharacterController {
 
     createDoctor() {
         const group = new THREE.Group();
-        const mat = (color) => new THREE.MeshStandardMaterial({ color, roughness: 0.75 });
+        const mat = (color, opts = {}) => new THREE.MeshStandardMaterial({
+            color,
+            roughness: opts.roughness ?? 0.75,
+            metalness: opts.metalness ?? 0.04,
+            emissive: opts.emissive ?? 0x000000,
+            emissiveIntensity: opts.emissiveIntensity ?? 0
+        });
 
         // Corps (torse)
         const bodyGeom = new THREE.CapsuleGeometry(0.18, 0.4, 8, 16);
@@ -23,6 +29,20 @@ export class CharacterController {
         body.position.y = 0.85;
         body.castShadow = true;
         group.add(body);
+
+        const coatFront = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.018), mat(0xf8fbff, { roughness: 0.55 }));
+        coatFront.position.set(0, 0.86, 0.16);
+        coatFront.castShadow = true;
+        group.add(coatFront);
+
+        const badge = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.045, 0.01), mat(0x2c8bbf, { emissive: 0x0a2f44, emissiveIntensity: 0.12, roughness: 0.35 }));
+        badge.position.set(0.075, 0.99, 0.176);
+        badge.name = 'Badge medecin';
+        group.add(badge);
+
+        const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.055, 0.012), mat(0xdde8f6));
+        pocket.position.set(-0.07, 0.76, 0.176);
+        group.add(pocket);
 
         // Tête
         const headGeom = new THREE.SphereGeometry(0.13, 16, 12);
@@ -81,6 +101,18 @@ export class CharacterController {
         armR.position.x = 0.22;
         group.add(armR);
 
+        const clipboard = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.018), mat(0x31445d, { roughness: 0.5 }));
+        clipboard.position.set(-0.29, 0.76, 0.11);
+        clipboard.rotation.z = -0.18;
+        clipboard.name = 'Dossier patient medecin';
+        clipboard.userData = { label: 'Dossier patient', interactive: true };
+        group.add(clipboard);
+
+        const page = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.17, 0.006), mat(0xfaf6ea, { roughness: 0.8 }));
+        page.position.set(-0.29, 0.76, 0.125);
+        page.rotation.z = -0.18;
+        group.add(page);
+
         // Mains
         const handGeom = new THREE.SphereGeometry(0.035, 8, 6);
         const handMat = mat(0xd7a87a);
@@ -97,6 +129,12 @@ export class CharacterController {
         this._addStethoscope(group);
 
         group.userData.armR = armR;
+        group.traverse((obj) => {
+            if (obj.isMesh) {
+                obj.castShadow = true;
+                obj.receiveShadow = true;
+            }
+        });
         return group;
     }
 

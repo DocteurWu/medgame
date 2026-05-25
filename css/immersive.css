@@ -703,15 +703,16 @@ body.mode-3d .hud-cinematic-vignette {
     position: absolute;
     bottom: 120px;
     right: 20px;
-    width: 380px;
-    max-height: 500px;
-    background: rgba(10, 15, 30, 0.92);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 242, 254, 0.25);
+    width: 680px;
+    height: 480px;
+    max-height: 80vh;
+    background: rgba(10, 15, 30, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(0, 242, 254, 0.3);
     border-radius: 18px;
     overflow: hidden;
     z-index: 60;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
     pointer-events: auto;
     display: flex;
     flex-direction: column;
@@ -856,47 +857,7 @@ body.mode-3d .hud-cinematic-vignette {
     50% { opacity: 0; }
 }
 
-/* Suggestions Area */
-.dialog-suggestions {
-    background: rgba(0, 242, 254, 0.03);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 12px 16px;
-    max-height: 180px;
-    overflow-y: auto;
-}
-
-.dialog-suggestions-header {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.dialog-suggestions-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.dialog-suggestion-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 0.78rem;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-}
+/* Suggestions Area styles removed to prevent conflict with split layout */
 
 .dialog-suggestion-btn i {
     font-size: 0.75rem;
@@ -2844,28 +2805,55 @@ body.urgence-3d-active {
     }
 }
 
-/* ==================== DIALOGUE PATIENT IMMERSIF — QUESTIONS SUGGÉRÉES ==================== */
+/* Flex split wrapper for side-by-side view */
+.dialog-layout-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+}
 
-/* Zone de suggestions contextuelles */
+.dialog-chat-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* Zone de suggestions contextuelles (Side-Panel de gauche) */
 .dialog-suggestions {
-    max-height: 200px;
-    overflow-y: auto;
-    border-top: 1px solid rgba(0, 242, 254, 0.1);
-    background: rgba(0, 242, 254, 0.03);
-    transition: max-height 0.4s ease, opacity 0.3s ease;
+    width: 250px;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(0, 242, 254, 0.15);
+    background: rgba(0, 242, 254, 0.02);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
 }
 
 .dialog-suggestions-header {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 14px;
+    padding: 10px 12px;
     font-size: 0.72rem;
     font-weight: 600;
-    color: rgba(0, 242, 254, 0.6);
+    color: rgba(0, 242, 254, 0.7);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(0, 242, 254, 0.06);
+    border-bottom: 1px solid rgba(0, 242, 254, 0.08);
+    user-select: none;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.dialog-suggestions-header:hover {
+    background: rgba(0, 242, 254, 0.05);
 }
 
 .dialog-suggestions-header i {
@@ -2876,56 +2864,76 @@ body.urgence-3d-active {
 .dialog-suggestions-list {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    padding: 6px 10px 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    gap: 8px;
+    padding: 10px;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 242, 254, 0.3) rgba(0, 0, 0, 0.05);
 }
 
-/* Bouton de suggestion – look pill moderne */
+.dialog-suggestions-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dialog-suggestions-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dialog-suggestions-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.3);
+    border-radius: 4px;
+}
+
+/* Bouton de suggestion – look pill moderne vertical bloc */
 .dialog-suggestion-btn {
     display: flex;
     align-items: center;
     gap: 8px;
     width: 100%;
-    padding: 7px 12px;
+    padding: 8px 12px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(0, 242, 254, 0.12);
-    border-radius: 10px;
+    border-radius: 12px;
     color: rgba(255, 255, 255, 0.85);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
+    white-space: normal;
     text-align: left;
-    max-height: 50px;
-    overflow: hidden;
+    max-height: none;
+    flex-shrink: 0;
     opacity: 1;
 }
 
 .dialog-suggestion-btn i {
     color: #00f2fe;
-    font-size: 0.85rem;
-    min-width: 16px;
+    font-size: 0.8rem;
+    min-width: 14px;
     text-align: center;
 }
 
 .dialog-suggestion-btn:hover {
-    background: rgba(0, 242, 254, 0.1);
-    border-color: rgba(0, 242, 254, 0.35);
+    background: rgba(0, 242, 254, 0.12);
+    border-color: rgba(0, 242, 254, 0.4);
     transform: translateX(3px);
-    box-shadow: 0 2px 12px rgba(0, 242, 254, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 242, 254, 0.15);
 }
 
 .dialog-suggestion-btn:active {
-    transform: translateX(1px) scale(0.98);
-    background: rgba(0, 242, 254, 0.18);
+    transform: scale(0.97);
+    background: rgba(0, 242, 254, 0.22);
 }
 
 /* État utilisé – animation de sortie */
 .dialog-suggestion-btn.suggestion-used {
-    background: rgba(46, 204, 113, 0.15);
-    border-color: rgba(46, 204, 113, 0.4);
-    color: rgba(46, 204, 113, 0.9);
+    background: rgba(46, 204, 113, 0.1);
+    border-color: rgba(46, 204, 113, 0.3);
+    color: rgba(255, 255, 255, 0.4);
     pointer-events: none;
-    transition: max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease, opacity 0.3s ease;
+    opacity: 0.5;
+    transform: scale(0.95);
 }
 
 .dialog-suggestion-btn.suggestion-used i {

@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Super Hard Refresh",
+  "version": "1.0",
+  "description": "Purge le cache de l'origine de l'onglet actif et force un rechargement complet.",
+  "permissions": ["browsingData", "activeTab"],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

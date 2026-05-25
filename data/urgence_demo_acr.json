@@ -104,7 +104,12 @@
     "s1": {
       "id": "s1",
       "descriptionClinique": "Un homme s'effondre au sol dans un centre commercial. La zone semble sûre.",
-      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -132,7 +137,12 @@
     "s2": {
       "id": "s2",
       "descriptionClinique": "La victime est inconsciente. Vous êtes entouré de quelques passants.",
-      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -160,7 +170,12 @@
     "s3": {
       "id": "s3",
       "descriptionClinique": "Le témoin cherche le DAE. Vous êtes au sol avec la victime.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -188,7 +203,12 @@
     "s4": {
       "id": "s4",
       "descriptionClinique": "La victime est en arrêt. Le DAE n'est pas encore là.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -216,7 +236,12 @@
     "s5": {
       "id": "s5",
       "descriptionClinique": "Après 2 cycles de RCP, le témoin revient avec un DAE.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "gris", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -244,7 +269,12 @@
     "s6": {
       "id": "s6",
       "descriptionClinique": "Le choc est délivré. La victime a un sursaut mais ne bouge pas plus.",
-      "patientVisuel": { "position": "allonge", "expression": "acr", "couleurPeau": "pale", "respiration": "agonal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "pale",
+        "respiration": "agonal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -272,7 +302,12 @@
     "s7_good": {
       "id": "s7_good",
       "descriptionClinique": "Les pompiers arrivent. Grâce à votre massage précoce et au choc, le cœur repart au premier Scope. Bravo !",
-      "patientVisuel": { "position": "allonge", "expression": "inconscient", "couleurPeau": "pale", "respiration": "normal" },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      },
       "constantesCibles": {
         "tension": "120/80",
         "pouls": "70",
@@ -296,7 +331,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "douleur",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_solo": {
       "id": "s_err_solo",
@@ -310,7 +351,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_pls": {
       "id": "s_err_pls",
@@ -324,7 +371,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s_err_abandon": {
       "id": "s_err_abandon",
@@ -338,7 +391,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_nodae": {
       "id": "s_err_nodae",
@@ -352,7 +411,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
     },
     "s_err_pause": {
       "id": "s_err_pause",
@@ -366,7 +431,13 @@
       },
       "actionsDisponibles": [],
       "isEndState": true,
-      "success": false
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     }
   },
   "editorData": {

@@ -87,7 +87,7 @@ class ThreeManager {
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                const ccModule = await import('./character-controller.js');
+                const ccModule = await import('./character-controller.js?v=20260525');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
@@ -106,7 +106,9 @@ class ThreeManager {
             this.scene.manager = this;
             this.scene.init();
 
-            if (CharacterControllerClass) {
+            if (this.scene.characterController) {
+                this.character = this.scene.characterController;
+            } else if (CharacterControllerClass) {
                 this.character = new CharacterControllerClass(this.scene.scene);
                 // Lier le contrôleur à la scène pour que moveDoctorTo fonctionne
                 this.scene.characterController = this.character;

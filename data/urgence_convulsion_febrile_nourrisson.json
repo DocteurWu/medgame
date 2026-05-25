@@ -149,7 +149,7 @@
   ],
   "vitalsDynamics": {
     "trendOverMinutes": 0.15,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 170,
       "systolic": 80,
@@ -246,7 +246,13 @@
           "nextNode": "s_err_vvp_delay",
           "feedback": "Décision inadaptée. Poser une voie veineuse chez un nourrisson de 12 kg en pleine crise convulsive tonico-clonique est extrêmement difficile et retarde dangereusement la sécurisation immédiate des voies respiratoires de l'enfant."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s_err_vvp_delay": {
       "id": "s_err_vvp_delay",
@@ -271,7 +277,13 @@
           "nextNode": "s_err_asphyxie",
           "feedback": "ERREUR MAJEURE ! L'absence de sécurisation des voies respiratoires et de PLS conduit à l'inhalation massive de ses sécrétions."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
     },
     "s2": {
       "id": "s2",
@@ -307,7 +319,13 @@
           "nextNode": "s_err_overdose",
           "feedback": "ERREUR MORTELLE ! Injecter 10 mg de Diazépam en IV direct chez un nourrisson de 12 kg représente un surdosage massif immédiat, causant un arrêt respiratoire central."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
     },
     "s3": {
       "id": "s3",
@@ -349,7 +367,13 @@
           "nextNode": "s_depletion_o2",
           "feedback": "ERREUR ! Une crise convulsive fébrile qui dépasse 5 minutes ne s'arrêtera probablement pas seule de sitôt et doit être traitée activement pour éviter des lésions hypoxiques."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
     },
     "s3_sans_glycemie": {
       "id": "s3_sans_glycemie",
@@ -374,7 +398,13 @@
           "nextNode": "s_err_hypoglycemie_ignoree",
           "feedback": "ERREUR CLINIQUE ! Vous négligez l'évaluation de la glycémie. Si le nourrisson était en hypoglycémie sévère (fréquente lors du jeûne sous infection), vous risquez de le laisser s'enfoncer dans un coma glycopénique destructeur."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "convulsion",
+        "couleurPeau": "normal",
+        "respiration": "dyspnea"
+      }
     },
     "s3_retard_rivotril": {
       "id": "s3_retard_rivotril",
@@ -410,7 +440,13 @@
           "nextNode": "s_depletion_o2",
           "feedback": "ERREUR GRAVE ! Vous perdez encore du temps alors que l'enfant est en hypoxie sévère. L'arrêt respiratoire est imminent."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s_depletion_o2": {
       "id": "s_depletion_o2",
@@ -446,7 +482,13 @@
           "nextNode": "s_err_arret",
           "feedback": "ERREUR CLINIQUE ! Tenter d'intuber un nourrisson convulsant avec un trismus serré sans sédation adaptée est impossible et aggrave immédiatement l'hypoxie, provoquant un arrêt cardiaque réflexe."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
     },
     "s4_stop_crise": {
       "id": "s4_stop_crise",
@@ -483,7 +525,13 @@
           "nextNode": "s_err_fausse_route",
           "feedback": "ERREUR CLINIQUE ! Un enfant en phase post-critique est somnolent avec des réflexes de déglutition abolis. Forcer l'administration per os provoque une fausse route pulmonaire massive."
         }
-      ]
+      ],
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "convulsion",
+        "couleurPeau": "normal",
+        "respiration": "dyspnea"
+      }
     },
     "s_guerison": {
       "id": "s_guerison",
@@ -497,6 +545,12 @@
         "saturationO2": "98",
         "temperature": "37.3",
         "frequenceRespiratoire": "20"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "convulsion",
+        "couleurPeau": "normal",
+        "respiration": "dyspnea"
       }
     },
     "s_err_bain_glace": {
@@ -510,6 +564,12 @@
         "saturationO2": "0",
         "temperature": "38.0",
         "frequenceRespiratoire": "0"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_err_bouche_objet": {
@@ -523,6 +583,12 @@
         "saturationO2": "0",
         "temperature": "39.5",
         "frequenceRespiratoire": "0"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_err_asphyxie": {
@@ -536,6 +602,12 @@
         "saturationO2": "0",
         "temperature": "39.7",
         "frequenceRespiratoire": "0"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_err_overdose": {
@@ -549,6 +621,12 @@
         "saturationO2": "0",
         "temperature": "39.5",
         "frequenceRespiratoire": "0"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_err_hypoglycemie_ignoree": {
@@ -562,6 +640,12 @@
         "saturationO2": "90",
         "temperature": "39.2",
         "frequenceRespiratoire": "12"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
       }
     },
     "s_err_fausse_route": {
@@ -575,6 +659,12 @@
         "saturationO2": "0",
         "temperature": "39.5",
         "frequenceRespiratoire": "0"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     },
     "s_err_arret": {
@@ -588,6 +678,12 @@
         "saturationO2": "0",
         "temperature": "39.9",
         "frequenceRespiratoire": "0"
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
       }
     }
   },
