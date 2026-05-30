@@ -154,7 +154,8 @@ export class ThreeClinicalAgent {
             subtitle = 'Choisissez votre action';
             actions = [
                 { label: 'Interroger le patient', icon: 'fas fa-comments', id: 'interroger', done: false },
-                { label: 'Inspection Générale', icon: 'fas fa-eye', id: 'inspection', done: this.examinedActions.has('inspection') }
+                { label: 'Inspection Générale', icon: 'fas fa-eye', id: 'inspection', done: this.examinedActions.has('inspection') },
+                { label: 'Brancher le scope multiparamétrique', icon: 'fas fa-heartbeat', id: 'brancher_scope', done: this.examinedActions.has('brancher_scope') }
             ];
         }
 
@@ -332,6 +333,21 @@ export class ThreeClinicalAgent {
                     window.scoringState && (window.scoringState.hasAskedPatient = true);
                 }
                 return;
+            }
+            case 'brancher_scope': {
+                title = 'Scope Multiparamétrique';
+                icon = 'fas fa-heartbeat';
+                resultText = 'Scope multiparamétrique branché avec succès : Électrodes ECG en place, capteur de SpO₂ connecté au doigt et brassard à tension installé.';
+                severity = 'normal';
+                
+                if (this.manager) {
+                    this.manager.isScopeConnected = true;
+                    if (this.manager.hud) {
+                        this.manager.hud.showNotification('🔌 Scope connecté : ECG et constantes affichés en continu.', 'success');
+                        this.manager.hud._updateVitals();
+                    }
+                }
+                break;
             }
         }
 

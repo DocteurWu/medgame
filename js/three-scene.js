@@ -37,6 +37,8 @@ const TOOLTIP_DESCRIPTIONS = {
     'Fenetre': 'Fenêtre',
 };
 
+const FPS_INTERACTION_DISTANCE = 2.4;
+
 export class ThreeScene {
     constructor(container, callbacks = {}) {
         this.container = container;
@@ -169,6 +171,7 @@ export class ThreeScene {
 
         // === Initialiser le contrôleur FPS ===
         this.fpsController = new ThreeFPSController(this.camera, this.renderer.domElement, {
+            onInteract: () => this.interactFromFPS(),
             onDeactivate: () => {
                 this.controls.enabled = true;
                 document.body.classList.remove('mode-fps'); // Nettoyage de l'UI
@@ -429,7 +432,7 @@ export class ThreeScene {
                 this.fpsController.activate(startPos, startLook);
                 
                 if (window.showNotification) {
-                    window.showNotification('Mode FPS activé. Touches ZQSD pour marcher, Souris pour regarder. [Échap] pour quitter.', 'info');
+                    window.showNotification('Mode FPS activé. ZQSD pour marcher, souris pour regarder, clic gauche pour interagir, Échap pour quitter.', 'info');
                 }
             }
             return;
@@ -635,6 +638,11 @@ export class ThreeScene {
         }
 
         this.callbacks.onObject?.(hitObj);
+    }
+
+    interactFromFPS() {
+        if (!this.fpsController || !this.fpsController.enabled) return;
+        this.onClick(null);
     }
 
     onMouseMove(event) {
@@ -982,7 +990,11 @@ export class ThreeScene {
             this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
         }
         this.raycaster.setFromCamera(this.mouse, this.camera);
-        return this.raycaster.intersectObjects(this.interactiveObjects, true)[0] || null;
+        const hit = this.raycaster.intersectObjects(this.interactiveObjects, true)[0] || null;
+        if (this.fpsController && this.fpsController.enabled && hit && hit.distance > FPS_INTERACTION_DISTANCE) {
+            return null;
+        }
+        return hit;
     }
 
     resize() {

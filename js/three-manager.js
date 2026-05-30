@@ -28,6 +28,7 @@ class ThreeManager {
         this.character = null;
         this.hud = null;
         this.transition = null;
+        this.isScopeConnected = false;
         this._initPromise = null;
     }
 
@@ -231,7 +232,13 @@ class ThreeManager {
         document.querySelectorAll('#hud-3d [data-camera]').forEach((button) => {
             button.addEventListener('click', () => {
                 const mode = button.dataset.camera;
-                if (this.scene) this.scene.setCamera(mode);
+                if (mode === 'patient') {
+                    this.goToPatient();
+                } else if (mode === 'desk') {
+                    this.goToPC();
+                } else {
+                    if (this.scene) this.scene.setCamera(mode);
+                }
                 if (this.hud) {
                     let label = mode;
                     if (mode === 'room') label = 'Salle';
@@ -246,16 +253,14 @@ class ThreeManager {
         const chatBtn = document.getElementById('hud-btn-chat');
         if (chatBtn) {
             chatBtn.addEventListener('click', () => {
-                this.scene?.setCamera('patient');
-                this.openPatientDialog();
+                this.goToPatient();
             });
         }
 
         const pcBtn = document.getElementById('hud-btn-pc');
         if (pcBtn) {
             pcBtn.addEventListener('click', () => {
-                this.scene?.setCamera('desk');
-                this.openPCPanel();
+                this.goToPC();
             });
         }
 
@@ -294,8 +299,7 @@ class ThreeManager {
                     break;
                 case 'r':
                     e.preventDefault();
-                    this.scene?.setCamera('desk');
-                    this.openPCPanel();
+                    this.goToPC();
                     break;
                 case 'enter':
                     if (!document.getElementById('floating-dialog')) {
@@ -307,12 +311,10 @@ class ThreeManager {
                     break;
                 case '2':
                     e.preventDefault();
-                    this.scene?.setCamera('patient');
                     this.goToPatient();
                     break;
                 case '3':
                     e.preventDefault();
-                    this.scene?.setCamera('desk');
                     this.goToPrescription();
                     break;
                 case '4':
@@ -323,16 +325,37 @@ class ThreeManager {
                     e.preventDefault();
                     this.washHands();
                     break;
+                case 'v':
+                    e.preventDefault();
+                    if (typeof window.toggleMobileMonitor === 'function') {
+                        window.toggleMobileMonitor();
+                    } else {
+                        this.goToPC();
+                    }
+                    break;
             }
         };
         document.addEventListener('keydown', this._keyHandler);
 
-        // Bouton chip HUD pour le lavabo
+        // Boutons chip HUD pour les actions immersives
         document.addEventListener('click', (e) => {
             const chip = e.target.closest('[data-action]');
             if (!chip) return;
-            if (chip.dataset.action === 'evier') {
+            const action = chip.dataset.action;
+            if (action === 'evier') {
                 this.washHands();
+            } else if (action === 'patient') {
+                this.goToPatient();
+            } else if (action === 'pc') {
+                this.goToPC();
+            } else if (action === 'armoire') {
+                this.openArmoire();
+            } else if (action === 'vitals') {
+                if (typeof window.toggleMobileMonitor === 'function') {
+                    window.toggleMobileMonitor();
+                } else {
+                    this.goToPC();
+                }
             }
         });
 
@@ -1112,6 +1135,7 @@ class ThreeManager {
     loadCase(caseData) {
         this.measured.clear();
         this.hasWashedHands = false;
+        this.isScopeConnected = false;
         
         // Mettre à jour visuellement le bouton d'hygiène s'il existe
         const hygieneBtn = document.getElementById('hud-btn-hygiene');

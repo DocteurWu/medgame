@@ -147,37 +147,110 @@ class ClinicalAgentAI {
     }
 
     /**
+     * Détermine la profession de santé appropriée réalisant l'action demandée
+     */
+    getProfessionalRole(actionText) {
+        const q = actionText.toLowerCase().trim();
+        
+        // Radiologue (Examens d'imagerie)
+        if (q.includes("radio") || q.includes("rayons x") || q.includes("scanner") || q.includes("ct scan") || q.includes("irm") || q.includes("échographie") || q.includes("echo ") || q.includes("radiographie")) {
+            return "Radiologue";
+        }
+        
+        // Biologiste (Prises de sang, analyses de labo, gaz du sang)
+        if (q.includes("sang") || q.includes("bilan") || q.includes("prise de sang") || q.includes("gaz du sang") || q.includes("gds") || q.includes("biologie") || q.includes("troponine") || q.includes("d-dimère") || q.includes("ddimere") || q.includes("ionogramme") || q.includes("glycémie") || q.includes("lactate") || q.includes("hémoculture") || q.includes("nfs") || q.includes("analyse")) {
+            return "Biologiste";
+        }
+        
+        // Cardiologue / Médecin Réanimateur (Auscultation, ECG, Choc, DSA, Massage, Electrodes, Scope)
+        if (q.includes("ecg") || q.includes("électrocardio") || q.includes("auscult") || q.includes("stétho") || q.includes("choquer") || q.includes("défib") || q.includes("cpr") || q.includes("massage") || q.includes("dsa") || q.includes("ventiler") || q.includes("intub") || q.includes("pouls") || q.includes("tension") || q.includes("palper") || q.includes("palpe") || q.includes("examen physique") || q.includes("cardiaque")) {
+            return "Médecin Réanimateur";
+        }
+        
+        // Infirmier / Infirmière (Perfusion, Injection, Médicaments couramment administrés par IDE, Masque O2, Couverture)
+        if (q.includes("inject") || q.includes("perfuse") || q.includes("perfusion") || q.includes("pos") || q.includes("donne") || q.includes("administre") || q.includes("oxyg") || q.includes("masque") || q.includes("o2") || q.includes("couverture") || q.includes("chaud") || q.includes("isotherm") || q.includes("seringue") || q.includes("morphine") || q.includes("aspirine") || q.includes("trinitrine") || q.includes("adrénaline") || q.includes("insuline") || q.includes("remplissage") || q.includes("nacl") || q.includes("doliprane") || q.includes("potassium")) {
+            return "Infirmier / Infirmière";
+        }
+        
+        // Par défaut
+        return "Directeur Clinique";
+    }
+
+    /**
      * Identifie si un message est une action clinique (prescription, geste, examen physique)
+     * Heuristique ultra-large pour intercepter absolument toutes les interventions libres du médecin.
      */
     isClinicalAction(question) {
         const q = question.toLowerCase().trim();
 
-        // Mots-clés d'actions médicales en français
-        const actionKeywords = [
-            "prescrire", "prescris", "donner", "donne", "injecter", "injecte", "poser", "pose",
-            "ausculter", "ausculte", "palper", "palpe", "masser", "massage", "cpr", "défibrillateur",
-            "defibrillateur", "choc", "choquer", "perfusion", "perfuser", "remplissage", "nacl", "o2",
-            "oxygène", "oxygene", "ventiler", "intuber", "intubation", "couverture", "aspirine",
-            "trinitrine", "adrénaline", "adrenaline", "morphine", "atropine", "insuline", "dobutamine",
-            "lasilix", "furosémide", "amiodarone", "cordarone", "héparine", "heparine", "lovenox",
-            "plavix", "clopidogrel", "brilique", "valium", "diazépam", "perfer", "gluconate", "insuline",
-            "ventoline", "salbutamol", "aérosol", "aerosol", "dsa", "moniteur", "scope", "électrodes",
-            "electrodes"
+        // 1. Détection structurelle par préfixe direct d'ordre, d'intention médicale ou d'examen
+        const actionPrefixes = [
+            "prescription", "prescrire", "prescris", "ordonne", "ordonner", 
+            "injecter", "injecte", "poser", "pose", "donner", "donne", 
+            "faire", "fait", "mettre", "mis", "administrer", "administre", 
+            "perfuser", "perfusion", "ausculter", "ausculte", "palper", "palpe",
+            "installer", "installe", "brancher", "branche", "appliquer", "applique",
+            "choquer", "choc", "massé", "masser", "radio", "scanner", "prise de sang",
+            "bilan", "ecg", "gds", "gaz du sang", "échographie", "analyse", "examen"
         ];
+        if (actionPrefixes.some(prefix => q.startsWith(prefix))) {
+            return true;
+        }
 
-        return actionKeywords.some(keyword => q.includes(keyword));
+        // 2. Détection par présence de verbes ou d'actions cliniques au cœur de la phrase
+        const clinicalVerbs = [
+            "inject", "perfuse", "prescri", "ordonn", "auscult", "palp", 
+            "mass", "choc", "choqu", "ventil", "intub", "examin", "radiographi", "analys"
+        ];
+        if (clinicalVerbs.some(verb => q.includes(verb))) {
+            return true;
+        }
+
+        // 3. Détection par présence de racines de médicaments, d'électrolytes, de dispositifs médicaux ou d'examens
+        const medicalRoots = [
+            // Électrolytes & solutés
+            "potassium", "kcl", "calcium", "magnésium", "magnesium", "bicarbonate", 
+            "nacl", "glucose", "soluté", "solute", "serum", "sérum", "ringer", "lactate", 
+            "macromol", "g30", "g10", "perfusion",
+            
+            // Médicaments courants (suffixes -ine, -ol, -ide, -one, -ane, -ate)
+            "morphine", "adrénaline", "adrenaline", "noradrénaline", "noradrenaline", 
+            "atropine", "insuline", "dobutamine", "dopamine", "lasilix", "furosémide", 
+            "furosemide", "amiodarone", "cordarone", "héparine", "heparine", "lovenox", 
+            "plavix", "clopidogrel", "brilique", "valium", "diazépam", "diazepam", 
+            "ventoline", "salbutamol", "aérosol", "aerosol", "trinitrine", 
+            "nitroglycérine", "nitroglycerine", "aspirine", "cardégic", "cardegic",
+            "paracétamol", "paracetamol", "doliprane", "spasfon", "insuline",
+            
+            // Matériel clinique
+            "défibrillateur", "defibrillateur", "dsa", "moniteur", "scope", "électrodes", 
+            "electrodes", "oxymètre", "oxymetre", "tensiomètre", "tensiometre", "thermomètre", 
+            "thermometre", "stéthoscope", "stethoscope", "couverture", "masque", "lunettes", 
+            "intubation", "intubé", "intube",
+            
+            // Examens cliniques et complémentaires
+            "radio", "radiographie", "radiologique", "scanner", "ct-scan", "irm", "échographie", 
+            "echo ", "prise de sang", "bilan biologique", "gaz du sang", "gds", "ecg", "électrocardiogramme"
+        ];
+        if (medicalRoots.some(root => q.includes(root))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Traite l'action clinique libre au sein de l'environnement 3D
      */
-    async processClinicalAction3D(actionText, hudInstance) {
-        console.info(`[ClinicalAgentAI] Traitement de l'action libre : "${actionText}"`);
+    async processClinicalAction3D(actionText, hudInstance, options = {}) {
+        console.info(`[ClinicalAgentAI] Traitement de l'action libre : "${actionText}" (options: ${JSON.stringify(options)})`);
         
         // 1. Ajouter le message du joueur dans le dialogue
         const chat = window.patientChat;
         chat.append('Vous', actionText);
         chat.messages.push({ role: 'user', content: actionText });
+
+        const role = this.getProfessionalRole(actionText);
 
         // 2. Afficher la carte d'action glassmorphism en attente
         const messages3d = document.getElementById('dialog-messages-3d');
@@ -189,7 +262,7 @@ class ClinicalAgentAI {
                 <div class="dialog-msg-assistant">
                     <span class="dialog-msg-avatar">🩺</span>
                     <div class="dialog-msg-bubble clinical-action-card">
-                        <strong>Directeur Clinique :</strong>
+                        <strong class="clinical-role-title">${role} :</strong><br>
                         <span class="dialog-msg-text"><em>Analyse et préparation de l'intervention en cours...</em></span>
                     </div>
                 </div>
@@ -223,8 +296,18 @@ class ClinicalAgentAI {
         if (loadingCard) {
             loadingCard.classList.remove('clinical-action-loading');
             const textSpan = loadingCard.querySelector('.dialog-msg-text');
+            const titleStrong = loadingCard.querySelector('.clinical-role-title');
+            
+            const finalRole = responseJson?.profession || role;
+            if (titleStrong) {
+                titleStrong.textContent = `${finalRole} :`;
+            }
             if (textSpan && responseJson) {
-                textSpan.innerHTML = `<strong>Directeur Clinique :</strong><br>${responseJson.clinicalResponse}`;
+                let cleanResponse = responseJson.clinicalResponse;
+                const prefixRegex = new RegExp(`^(${finalRole}|Directeur Clinique|Radiologue|Infirmier|Infirmière|Biologiste|Médecin Réanimateur|Cardiologue|Intervention)\\s*:\\s*`, 'i');
+                cleanResponse = cleanResponse.replace(prefixRegex, '').trim();
+                
+                textSpan.innerHTML = cleanResponse;
             }
         }
 
@@ -250,8 +333,8 @@ class ClinicalAgentAI {
             window.threeManager.scene.patientAnimator.setRespirationPattern(responseJson.respiratoryPattern);
         }
 
-        // D. Verbatim du patient (parole réactive)
-        if (responseJson.patientVerbatim?.trim()) {
+        // D. Verbatim du patient (parole réactive) — désactivé si l'on souhaite que le LLM réponde lui-même à la place
+        if (!options.skipVerbatim && responseJson.patientVerbatim?.trim()) {
             setTimeout(() => {
                 if (messages3d) {
                     const row = document.createElement('div');
@@ -331,16 +414,21 @@ class ClinicalAgentAI {
 
         // G. Synchronisation complète vers le log de dialogue 2D
         const root2d = document.getElementById('dialogue-messages');
+        const finalRoleForLog = responseJson?.profession || role;
+        let cleanResponseForLog = responseJson?.clinicalResponse || '';
+        const prefixRegexForLog = new RegExp(`^(${finalRoleForLog}|Directeur Clinique|Radiologue|Infirmier|Infirmière|Biologiste|Médecin Réanimateur|Cardiologue|Intervention)\\s*:\\s*`, 'i');
+        cleanResponseForLog = cleanResponseForLog.replace(prefixRegexForLog, '').trim();
+
         if (root2d) {
             const card2d = document.createElement('div');
             card2d.className = 'dialogue-message clinical-action-card-2d';
-            card2d.innerHTML = `🩺 <strong>Intervention :</strong> ${responseJson.clinicalResponse}`;
+            card2d.innerHTML = `🩺 <strong>${finalRoleForLog} :</strong> ${cleanResponseForLog}`;
             root2d.appendChild(card2d);
             root2d.scrollTop = root2d.scrollHeight;
         }
 
         // Ajouter à l'historique assistant
-        chat.messages.push({ role: 'assistant', content: `Intervention Clinique : ${responseJson.clinicalResponse}` });
+        chat.messages.push({ role: 'assistant', content: `${finalRoleForLog} : ${cleanResponseForLog}` });
     }
 
     /**
@@ -356,6 +444,13 @@ class ClinicalAgentAI {
         const correctDiagnostic = caseData.correctDiagnostic || '';
         const patient = caseData.patient || { nom: 'Inconnu', age: '50', sexe: 'M' };
 
+        const allergies = caseData.interrogatoire?.allergies || { presence: false, liste: [] };
+        let allergiesText = 'Aucune allergie connue.';
+        if (allergies.presence && allergies.liste?.length > 0) {
+            allergiesText = 'Allergies du patient (DANGER DE MORT / CHOC ANAPHYLACTIQUE ULTRA-GRAVE SI APPLIQUÉ DANS L\'ACTION) : ' + 
+                allergies.liste.map(a => typeof a === 'string' ? a : a.allergene).join(', ');
+        }
+
         const systemPrompt = `Tu es le "Directeur Clinique / Game Master" (Maître du Jeu) d'une simulation médicale d'urgences réelles en 3D.
 Le joueur est le médecin réanimateur. Il vient de saisir l'action clinique libre suivante : "${action}"
 
@@ -364,6 +459,25 @@ Actuellement, le patient présente le cas clinique suivant :
 - Diagnostic correct attendu : ${correctDiagnostic}
 - Traitements de référence attendus : ${correctTreatments.join(', ')}
 - Traitements contre-indiqués / fatals : ${fatalTreatments.join(', ')}
+- Allergies connues du patient : ${allergiesText}
+
+═══ DIRECTIVE ABSOLUE SUR LES ALLERGIES ════════════════
+Si l'action du joueur consiste à administrer, perfuser ou injecter un allergène connu du patient (ex: Poisson, Pénicilline, etc. selon la liste ci-dessus), le patient doit IMMÉDIATEMENT faire un CHOC ANAPHYLACTIQUE FOUDROYANT.
+Dans ce cas précis, tu dois obligatoirement renvoyer :
+- vitalChanges: heartRate > 140 bpm, systolic < 60 mmHg, diastolic < 35 mmHg, spo2 < 75%
+- expressionChange: "cyanose"
+- respiratoryPattern: "agonal"
+- soundToPlay: "alarm"
+- scoringChange: { "type": "fatal", "treatmentName": "Allergène administré" }
+- clinicalResponse: "Description narrative dramatique en français du choc anaphylactique fulgurant provoqué par l'allergène injecté !"
+- profession: "Infirmier / Infirmière"
+
+═══ DIRECTIVE SUR LES EXAMENS DIAGNOSTIQUES (REQUIS) ════════════════
+Si le joueur demande un examen diagnostique (par exemple : une radiographie/radio, un ECG/électrocardiogramme, une prise de sang/bilan biologique/analyses, un scanner/CT-scan, des gaz du sang/GDS, une échographie, etc.) :
+1. Tu dois OBLIGATOIREMENT générer de toutes pièces un résultat clinique d'examen ultra-réaliste, complet, technique et adapté au diagnostic du patient (${correctDiagnostic}) et à son état actuel. Ne donne pas de réponse générique comme "Vous effectuez l'examen...".
+2. Si le cas clinique définit déjà ce résultat dans ses données d'examens (ex: ${JSON.stringify(caseData.examResults || {})}), tu dois t'en inspirer très fortement ou le reprendre pour rester parfaitement cohérent avec le scénario.
+3. Rentre dans les détails techniques et médicaux réels (ex: sibilants expiratoires, foyer d'infiltrat alvéolaire, aplatissement des coupoles, sus-décalage convexe du segment ST en V2-V4, onde S1Q3T3, pH, PaO2, PaCO2, hyperkaliémie, etc.).
+4. La clé 'profession' doit être définie sur le spécialiste qui réalise/interprète l'examen (ex: 'Radiologue' pour une radio/scanner/échographie, 'Biologiste' pour un bilan biologique/sang/GDS, 'Médecin Réanimateur' ou 'Cardiologue' pour un ECG ou une auscultation).
 
 Les constantes vitales courantes du patient mesurées au scope sont :
 - Fréquence Cardiaque (FC) : ${vitals.heartRate || vitals.pouls || '75'} bpm
@@ -376,8 +490,9 @@ Analyse l'action du joueur médicalement de façon réaliste et décide de ses c
 Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou après, pas de balises markdown) contenant EXACTEMENT les clés suivantes :
 {
   "isAction": true,
-  "clinicalResponse": "Description narrative élégante en français (1 à 3 phrases) des conséquences cliniques (ex: 'Vous connectez la perfusion de Trinitrine. La tension commence à baisser progressivement.')",
-  "patientVerbatim": "Paroles en français du patient s'il est conscient, ou chaine vide s'il est inconscient ou trop essoufflé.",
+  "profession": "Infirmier / Infirmière", // Rôle du soignant effectuant l'action ou interprétant l'examen. Choix parmi : 'Infirmier / Infirmière' (médicaments, perfusion, masque O2, blanket), 'Radiologue' (radio, scanner, écho), 'Biologiste' (bilan sanguin, GDS), 'Médecin Réanimateur' (auscultation, ECG, massage, DSA, intubation), 'Directeur Clinique' (défaut).
+  "clinicalResponse": "Description narrative élégante en français (1 à 3 sentences) des conséquences cliniques ou du résultat d'examen détaillé.",
+  "patientVerbatim": "Paroles en français du patient s'il est conscient, ou chaine vide s'il est inconscient, trop essoufflé, ou s'il s'agit d'un rapport technique écrit d'examen.",
   "vitalChanges": {
     "heartRate": 85,
     "systolic": 120,
@@ -390,7 +505,7 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
   "respiratoryPattern": "normal", // Parmi : 'normal', 'tachypnea', 'bradypnea', 'dyspnea', 'agonal', 'cheyneStokes'
   "scoringChange": {
     "type": "firstLine", // Parmi : 'firstLine' (de référence), 'secondLine' (acceptable), 'unnecessary' (inutile), 'fatal' (erreur médicale dangereuse)
-    "treatmentName": "Trinitrine IV" // Nom canonique du traitement (strictement un élément parmi les traitements de référence ou fatals s'il correspond, ou nom simple)
+    "treatmentName": "Trinitrine IV" // Nom canonique du traitement (strictement un élément parmi les traitements de référence ou fatals s'il correspond, ou nom simple de l'action/examen)
   },
   "spawnAsset": "perfusion", // Clé de l'asset 3D à spawner si applicable. Parmi : 'defibrillateur', 'electrodes', 'oxygen_mask', 'perfusion', 'seringue', 'couverture', null
   "soundToPlay": "correct" // Parmi : 'correct', 'incorrect', 'alarm', null
@@ -438,6 +553,7 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
         const q = action.toLowerCase().trim();
         const correctTreatments = caseData.correctTreatments || [];
         const fatalTreatments = caseData.fatalTreatments || [];
+        const role = this.getProfessionalRole(action);
 
         // Structure par défaut
         const res = {
@@ -449,8 +565,160 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             respiratoryPattern: "normal",
             scoringChange: { type: "unnecessary", treatmentName: null },
             spawnAsset: null,
-            soundToPlay: "correct"
+            soundToPlay: "correct",
+            profession: role
         };
+
+        // --- 0. Détection des allergies (choc anaphylactique mortel) ---
+        const allergies = caseData.interrogatoire?.allergies || { presence: false, liste: [] };
+        if (allergies.presence && allergies.liste?.length > 0) {
+            const allergenes = allergies.liste.map(a => (typeof a === 'string' ? a : a.allergene).toLowerCase().trim());
+            const hasAllergicReaction = allergenes.some(allergen => q.includes(allergen));
+            
+            if (hasAllergicReaction) {
+                res.clinicalResponse = "⚠️ CHOC ANAPHYLACTIQUE ULTRA-GRAVE : L'administration de cette substance provoque une réaction allergique systémique foudroyante ! La gorge gonfle instantanément, la saturation s'effondre et la tension s'écroule. Le patient sombre sous l'alarme critique du scope.";
+                res.patientVerbatim = "Je... j'arrive plus... à respirer... ma gorge... se serre... tout s'éteint...";
+                res.vitalChanges.systolic = 50;
+                res.vitalChanges.diastolic = 25;
+                res.vitalChanges.heartRate = 145;
+                res.vitalChanges.spo2 = 65;
+                res.vitalChanges.respiratoryRate = 6;
+                res.expressionChange = "cyanose";
+                res.respiratoryPattern = "agonal";
+                res.scoringChange = { type: "fatal", treatmentName: "Allergène administré" };
+                res.soundToPlay = "alarm";
+                res.profession = "Infirmier / Infirmière";
+                return res;
+            }
+        }
+
+        // --- 0b. Détection des examens complémentaires (radio, ECG, prise de sang, scanner, gaz du sang) ---
+        const examResults = caseData.examResults || {};
+        let foundPredefinedResult = null;
+        let matchedExamKey = null;
+
+        // Liste des correspondances de mots-clés pour les examens prédéfinis
+        const examMappings = {
+            "radio": ["radio", "thorax", "poumon", "x-ray", "cliché", "face"],
+            "ecg": ["ecg", "cardio", "tracé", "rythme"],
+            "sang": ["sang", "bilan", "nfs", "ionogramme", "troponine", "crp", "biolog", "analyse"],
+            "gds": ["gds", "gaz", "artériel", "capnie", "acidose"],
+            "scanner": ["scanner", "ct", "tass", "angioscan"]
+        };
+
+        for (const [examName, examText] of Object.entries(examResults)) {
+            const keyLower = examName.toLowerCase();
+            // Si la saisie de l'utilisateur contient des mots-clés qui matchent l'examen prédéfini
+            if (q.includes(keyLower) || keyLower.includes(q)) {
+                foundPredefinedResult = examText;
+                matchedExamKey = examName;
+                break;
+            }
+
+            // Fallback sur le mapping sémantique
+            for (const [type, keywords] of Object.entries(examMappings)) {
+                if (q.includes(type)) {
+                    if (keywords.some(kw => keyLower.includes(kw))) {
+                        foundPredefinedResult = examText;
+                        matchedExamKey = examName;
+                        break;
+                    }
+                }
+            }
+            if (foundPredefinedResult) break;
+        }
+
+        if (!foundPredefinedResult) {
+            const diag = (caseData.correctDiagnostic || "").toLowerCase();
+            
+            // --- RADIOGRAPHIE / SCANNER ---
+            if (q.includes("radio") || q.includes("radiographie") || q.includes("scanner") || q.includes("ct")) {
+                const isScanner = q.includes("scanner") || q.includes("ct");
+                const examTitle = isScanner ? "Scanner" : "Radiographie";
+                
+                if (diag.includes("asthme")) {
+                    foundPredefinedResult = `${examTitle} thoracique : Distension thoracique bilatérale marquée avec hyperclarté des deux champs pulmonaires, aplatissement des coupoles diaphragmatiques et élargissement des espaces intercostaux. Pas de foyer de pneumopathie infiltrant ni d'épanchement pleural.`;
+                } else if (diag.includes("pneumothorax")) {
+                    foundPredefinedResult = `${examTitle} thoracique : Hyperclarté avasculaire franche du sommet avec refoulement du médiastin vers le côté opposé et collapsus pulmonaire complet, confirmant un pneumothorax compressif.`;
+                } else if (diag.includes("choc") && diag.includes("septique")) {
+                    foundPredefinedResult = `${examTitle} : Distension des anses digestives, foyer de pneumopathie basale droite avec infiltrat alvéolaire franc compatible avec un foyer infectieux pulmonaire primitif.`;
+                } else if (diag.includes("noyade")) {
+                    foundPredefinedResult = `${examTitle} thoracique : Inondation alvéolaire bilatérale diffuse prédominant aux bases, aspect de poumon humide de surcharge typique de noyade.`;
+                } else if (diag.includes("embolie")) {
+                    foundPredefinedResult = isScanner 
+                        ? `Angioscanner thoracique : Défaut d'opacification bilatéral franc des artères pulmonaires lobaires inférieures droites et gauches, signant une embolie pulmonaire bilatérale massive.`
+                        : `Radiographie thoracique : Silhouette cardiaque normale, surélévation d'une coupole diaphragmatique mais pas d'anomalie parenchymateuse majeure évidente (cliché faussement rassurant classique).`;
+                } else if (diag.includes("insuffisance cardiaque") || diag.includes("oap") || diag.includes("oedème") || diag.includes("oedeme")) {
+                    foundPredefinedResult = `${examTitle} thoracique : Cardiomégalie franche (index cardio-thoracique > 0.60), surcharge vasculaire hilaire bilatérale en 'ailes de papillon', lignes B de Kerley aux bases pulmonaires et discret épanchement pleural bilatéral compatible avec un OAP.`;
+                } else {
+                    foundPredefinedResult = `${examTitle} standard : Pas d'anomalie parenchymateuse pulmonaire évidente, silhouette cardiaque de taille normale, coupoles diaphragmatiques libres. Aspect dans les limites de la normale pour ce geste.`;
+                }
+            }
+            
+            // --- ECG (ÉLECTROCARDIOGRAMME) ---
+            else if (q.includes("ecg") || q.includes("électrocardio")) {
+                if (diag.includes("infarctus") || diag.includes("angor") || diag.includes("coronar")) {
+                    foundPredefinedResult = `Électrocardiogramme (12 dérivations) : Tachycardie sinusale à 95 bpm, axe normal. Sus-décalage franc et convexe du segment ST (onde de Pardee) de plus de 2 mm dans les dérivations antérieures (V2, V3, V4) avec image en miroir (sous-décalage ST) en DII, DIII, aVF, confirmant un syndrome coronarien SCA ST+ (IDM antérieur).`;
+                } else if (diag.includes("insuffisance cardiaque")) {
+                    foundPredefinedResult = `Électrocardiogramme (12 dérivations) : Rythme sinusal régulier à 90 bpm. Signes d'hypertrophie ventriculaire gauche (indice de Sokolow à 42 mm) et ondes T négatives asymétriques en V5-V6.`;
+                } else if (diag.includes("arrêt") || diag.includes("acr") || diag.includes("sportive")) {
+                    foundPredefinedResult = `Électrocardiogramme / Tracé du scope : Rythme chaotique de fibrillation ventriculaire (FV) à grandes mailles, asymétrique et extrêmement instable, nécessitant un choc électrique immédiat.`;
+                } else if (diag.includes("embolie")) {
+                    foundPredefinedResult = `Électrocardiogramme (12 dérivations) : Tachycardie sinusale à 115 bpm. Aspect S1Q3T3 caractéristique d'une surcharge ventriculaire droite aiguë (onde S profonde en DI, onde Q pathologique en DIII et onde T négative en DIII) avec bloc de branche droit incomplet.`;
+                } else if (diag.includes("choc") || diag.includes("anaphylactique") || diag.includes("asthme")) {
+                    foundPredefinedResult = `Électrocardiogramme (12 dérivations) : Tachycardie sinusale régulière et sinusoïdale rapide à 125 bpm. Pas de trouble de la conduction ni de repolarisation active. Surcharge atriale droite possible.`;
+                } else {
+                    foundPredefinedResult = `Électrocardiogramme (12 dérivations) : Tachycardie sinusale de lutte à 102 bpm. Espace PR et QRS normaux, pas de décalage du segment ST ni d'inversion de l'onde T. Tracé d'effort non contributif pour une ischémie aiguë.`;
+                }
+            }
+            
+            // --- GAZ DU SANG (GDS) ---
+            else if (q.includes("gds") || q.includes("gaz du sang")) {
+                if (diag.includes("asthme")) {
+                    foundPredefinedResult = `Gaz du sang artériel (en air ambiant) : pH = 7.35, PaO2 = 56 mmHg (hypoxémie sévère), PaCO2 = 44 mmHg (normocapnie anormalement élevée traduisant un épuisement diaphragmatique critique imminent), HCO3- = 24 mmol/L, SaO2 = 88%.`;
+                } else if (diag.includes("choc") && diag.includes("septique")) {
+                    foundPredefinedResult = `Gaz du sang artériel : Acidose métabolique sévère avec pH = 7.21, PaO2 = 70 mmHg sous O2, PaCO2 = 32 mmHg (hypocapnie compensatrice), HCO3- = 15 mmol/L, hyperlactatémie majeure à 5.8 mmol/L signant l'hypoperfusion tissulaire périphérique.`;
+                } else if (diag.includes("noyade")) {
+                    foundPredefinedResult = `Gaz du sang artériel : Acidose mixte sévère (respiratoire et métabolique) avec pH = 7.15, PaO2 = 45 mmHg (hypoxémie réfractaire majeure), PaCO2 = 58 mmHg (hypercapnie par shunt alvéolaire), lactates à 4.2 mmol/L, SaO2 = 72%.`;
+                } else if (diag.includes("overdose")) {
+                    foundPredefinedResult = `Gaz du sang artériel : Acidose respiratoire aiguë sévère par hypoventilation alvéolaire majeure avec pH = 7.22, PaO2 = 50 mmHg, PaCO2 = 68 mmHg (hypercapnie sévère par hypopnée), HCO3- = 25 mmol/L, SaO2 = 78%.`;
+                } else {
+                    foundPredefinedResult = `Gaz du sang artériel (sous oxygène) : pH = 7.41, PaO2 = 92 mmHg, PaCO2 = 36 mmHg (discrète hypocapnie d'hyperventilation), HCO3- = 23 mmol/L, Lactates = 1.1 mmol/L (normaux).`;
+                }
+            }
+            
+            // --- BILAN SANGUIN / PRISE DE SANG / BIOLOGIE ---
+            else if (q.includes("sang") || q.includes("bilan") || q.includes("biolog") || q.includes("prise")) {
+                if (diag.includes("infarctus") || diag.includes("SCA")) {
+                    foundPredefinedResult = `Bilan biologique d'urgence : Troponine I ultra-sensible élevée à 850 ng/L (N < 14 ng/L) signant une nécrose myocardique aiguë. Créatinine = 88 µmol/L. NFS : Leucocytes = 12 500/mm3. Ionogramme : K+ = 4.1 mmol/L, Na+ = 139 mmol/L.`;
+                } else if (diag.includes("choc") && diag.includes("septique")) {
+                    foundPredefinedResult = `Bilan biologique d'urgence : Hyperleucocytose majeure à 22 400/mm3 avec polynucléaires neutrophiles à 18 500/mm3. CRP élevée à 180 mg/L. Procalcitonine (PCT) = 12.5 µg/L (fortement positive). Insuffisance rénale fonctionnelle avec Urée = 18 mmol/L et Créatinine = 165 µmol/L. Lactates = 4.8 mmol/L.`;
+                } else if (diag.includes("insuffisance rénale") || diag.includes("ira") || diag.includes("néphro")) {
+                    foundPredefinedResult = `Bilan biologique d'urgence : Insuffisance rénale aiguë majeure avec Urée = 28 mmol/L, Créatinine = 450 µmol/L. Ionogramme : hyperkaliémie critique avec K+ = 6.2 mmol/L (menace cardiaque), Na+ = 136 mmol/L, Bicarbonates = 16 mmol/L.`;
+                } else if (diag.includes("diabète") || diag.includes("acidocétose")) {
+                    foundPredefinedResult = `Bilan biologique d'urgence : Hyperglycémie majeure à 28.5 mmol/L (5.1 g/L), acidose métabolique avec Bicarbonates = 12 mmol/L, pH = 7.18, hyperkaliémie de transfert à 5.3 mmol/L. Présence massive de corps cétoniques dans le sang (cétonémie = 4.8 mmol/L).`;
+                } else {
+                    foundPredefinedResult = `Bilan biologique standard : NFS dans les limites de la normale (Leucocytes = 8 500/mm3, Hémoglobine = 13.8 g/dL, Plaquettes = 240 000/mm3). CRP < 5 mg/L. Fonction rénale normale (Créatinine = 72 µmol/L). Ionogramme équilibré (K+ = 3.9 mmol/L, Na+ = 140 mmol/L).`;
+                }
+            }
+        }
+
+        if (foundPredefinedResult) {
+            res.clinicalResponse = foundPredefinedResult;
+            res.patientVerbatim = "";
+            res.soundToPlay = "correct";
+            res.scoringChange = { type: "unnecessary", treatmentName: matchedExamKey || "Examen diagnostique" };
+            res.vitalChanges = { ...vitals };
+            res.profession = role;
+            return res;
+        }s.vitalChanges.respiratoryRate = 6;
+                res.expressionChange = "cyanose";
+                res.respiratoryPattern = "agonal";
+                res.scoringChange = { type: "fatal", treatmentName: "Allergène administré" };
+                res.soundToPlay = "alarm";
+                return res;
+            }
+        }
 
         // --- 1. Masque à oxygène / O2 ---
         if (q.includes("oxyg") || q.includes("o2") || q.includes("masque")) {
@@ -594,6 +862,20 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             res.scoringChange = {
                 type: isFatal ? "fatal" : (isCorrect ? "firstLine" : "secondLine"),
                 treatmentName: isFatal ? fatalTreatments.find(t => t.toLowerCase().includes("morphin")) : (correctTreatments.find(t => t.toLowerCase().includes("morphin")) || "Morphine")
+            };
+            res.soundToPlay = isFatal ? "incorrect" : "correct";
+        }
+        // --- 10. Potassium / Re-équilibrage Électrolytique ---
+        else if (q.includes("potassium") || q.includes("kcl")) {
+            const isCorrect = correctTreatments.some(t => t.toLowerCase().includes("potassium") || t.toLowerCase().includes("kcl"));
+            const isFatal = fatalTreatments.some(t => t.toLowerCase().includes("potassium") || t.toLowerCase().includes("kcl"));
+            
+            res.clinicalResponse = "Vous posez une perfusion de Chlorure de Potassium (KCl) en intraveineux pour corriger le trouble électrolytique.";
+            res.patientVerbatim = "D'accord docteur, mettez la perfusion... Si ça peut aider mon cœur à fonctionner correctement.";
+            res.spawnAsset = "perfusion";
+            res.scoringChange = {
+                type: isFatal ? "fatal" : (isCorrect ? "firstLine" : "secondLine"),
+                treatmentName: isFatal ? fatalTreatments.find(t => t.toLowerCase().includes("potassium") || t.toLowerCase().includes("kcl")) : (correctTreatments.find(t => t.toLowerCase().includes("potassium") || t.toLowerCase().includes("kcl")) || "Potassium IV")
             };
             res.soundToPlay = isFatal ? "incorrect" : "correct";
         }
