@@ -30,7 +30,7 @@ export class ThreeHUD {
         this.sweepSpeed = 1.6; // Pixels par frame
 
         // --- Système Audio Bip ECG ---
-        this.isSoundMuted = sessionStorage.getItem('hud_scope_muted') === 'true';
+        this.isSoundMuted = sessionStorage.getItem('hud_scope_muted') !== 'false';
         this.soundVolume = parseFloat(sessionStorage.getItem('hud_scope_volume') || '0.15');
         this.audioCtx = null;
         this._hudKeyHandler = null;
@@ -206,8 +206,8 @@ export class ThreeHUD {
         const hr = (hrStr !== '--' && hrStr !== '') ? parseInt(hrStr) : 72;
         const spo2 = (spo2Str !== '--' && spo2Str !== '') ? parseInt(spo2Str) : 98;
 
-        const hrMeasured = this.manager.measured.has('pouls');
-        const spo2Measured = this.manager.measured.has('saturationO2');
+        const hrMeasured = this.manager.measured.has('pouls') || this.manager.isScopeConnected;
+        const spo2Measured = this.manager.measured.has('saturationO2') || this.manager.isScopeConnected;
 
         // Avancer le curseur de balayage CRT
         const x = this.telemetryX;
@@ -538,15 +538,16 @@ export class ThreeHUD {
         const measured = mgr.measured || new Set();
 
         // Utiliser les constantes dynamiques du VitalSignsMonitor si disponible
-        const vitals = window.vitalSigns?.props || constants;
+        const hasProps = window.vitalSigns && window.vitalSigns.props;
+        const vitals = hasProps ? window.vitalSigns.props : constants;
 
         const map = {
-            'hud-hr': { key: 'pouls', shown: measured.has('pouls'), thresholds: { normal: [60, 100], warning: [50, 120], critical: [40, 140] } },
-            'hud-bp': { key: 'tension', shown: measured.has('tension'), thresholds: null },
-            'hud-spo2': { key: 'saturationO2', shown: measured.has('saturationO2'), thresholds: { normal: [95, 100], warning: [92, 100], critical: [0, 85] } },
-            'hud-temp': { key: 'temperature', shown: measured.has('temperature'), thresholds: { normal: [36.0, 37.5], warning: [35.5, 38.5], critical: [0, 35] } },
-            'hud-fr': { key: 'frequenceRespiratoire', shown: measured.has('frequenceRespiratoire'), thresholds: { normal: [12, 20], warning: [10, 25], critical: [0, 8] } },
-            'hud-gly': { key: 'glycemie', shown: measured.has('glycemie'), thresholds: null }
+            'hud-hr': { key: 'pouls', shown: measured.has('pouls') || mgr.isScopeConnected, thresholds: { normal: [60, 100], warning: [50, 120], critical: [40, 140] } },
+            'hud-bp': { key: 'tension', shown: measured.has('tension') || mgr.isScopeConnected, thresholds: null },
+            'hud-spo2': { key: 'saturationO2', shown: measured.has('saturationO2') || mgr.isScopeConnected, thresholds: { normal: [95, 100], warning: [92, 100], critical: [0, 85] } },
+            'hud-temp': { key: 'temperature', shown: measured.has('temperature') || mgr.isScopeConnected, thresholds: { normal: [36.0, 37.5], warning: [35.5, 38.5], critical: [0, 35] } },
+            'hud-fr': { key: 'frequenceRespiratoire', shown: measured.has('frequenceRespiratoire') || mgr.isScopeConnected, thresholds: { normal: [12, 20], warning: [10, 25], critical: [0, 8] } },
+            'hud-gly': { key: 'glycemie', shown: measured.has('glycemie') || mgr.isScopeConnected, thresholds: null }
         };
 
         // Seuils TA spéciaux (systolique/diastolique)
@@ -559,7 +560,27 @@ export class ThreeHUD {
             const el = document.getElementById(id);
             if (!el) return;
             const item = el.closest('.hud-vital-item');
-            const rawValue = cfg.shown ? (vitals[cfg.key] || constants[cfg.key] || '--') : '--';
+            
+            let rawValue = '--';
+            if (cfg.shown) {
+                if (hasProps) {
+                    if (cfg.key === 'pouls' && vitals.heartRate !== undefined) {
+                        rawValue = `${Math.round(vitals.heartRate)} bpm`;
+                    } else if (cfg.key === 'tension' && vitals.systolic !== undefined && vitals.diastolic !== undefined) {
+                        rawValue = `${Math.round(vitals.systolic)}/${Math.round(vitals.diastolic)} mmHg`;
+                    } else if (cfg.key === 'saturationO2' && vitals.spo2 !== undefined) {
+                        rawValue = `${Math.round(vitals.spo2)}%`;
+                    } else if (cfg.key === 'frequenceRespiratoire' && vitals.respiratoryRate !== undefined) {
+                        rawValue = `${Math.round(vitals.respiratoryRate)}/min`;
+                    } else if (cfg.key === 'temperature' && vitals.temperature !== undefined) {
+                        rawValue = `${vitals.temperature.toFixed(1)}°C`;
+                    } else {
+                        rawValue = vitals[cfg.key] || constants[cfg.key] || '--';
+                    }
+                } else {
+                    rawValue = constants[cfg.key] || '--';
+                }
+            }
             el.textContent = rawValue;
 
             // Coloration dynamique selon la gravité
@@ -1256,7 +1277,7 @@ export class ThreeHUD {
         if (window.patientChat?.messages && window.patientChat.messages.length > 0) {
             window.patientChat.messages.forEach(msg => {
                 const speaker = (msg.role === 'user' || msg.role === 'Vous' || msg.role === 'user') ? 'Vous' : 'Patient';
-                const text = msg.content.replace(/^(Patient|Vous|Directeur Clinique)\s*:\s*/i, '').trim();
+                const text = msg.content.replace(/^(Patient|Vous|Directeur Clinique|Radiologue|Infirmier|Infirmière|Biologiste|Médecin Réanimateur|Cardiologue|Intervention)\s*:\s*/i, '').trim();
                 pushMessage(speaker, text, null);
             });
         }
@@ -1290,15 +1311,18 @@ export class ThreeHUD {
             chat.ask = async (question) => {
                 if (!question.trim()) return;
 
-                // Intercepter les actions cliniques libres du joueur en mode 3D
-                if (window.clinicalAgentAI && window.clinicalAgentAI.isClinicalAction(question)) {
-                    await window.clinicalAgentAI.processClinicalAction3D(question, this);
-                    return;
+                const isAction = window.clinicalAgentAI && window.clinicalAgentAI.isClinicalAction(question);
+                
+                if (isAction) {
+                    // 1. Exécuter d'abord les conséquences cliniques (constantes, score, perf, etc.)
+                    // On indique à processClinicalAction3D de NE PAS générer son propre verbatim patient
+                    await window.clinicalAgentAI.processClinicalAction3D(question, this, { skipVerbatim: true });
+                } else {
+                    // Sinon on l'append manuellement (processClinicalAction3D va déjà l'append pour les actions)
+                    chat.append('Vous', question);
+                    chat.messages.push({ role: 'user', content: question });
                 }
-
-                // 1. Ajouter le message du joueur dans le dialogue 2D/state classique
-                chat.append('Vous', question);
-                chat.messages.push({ role: 'user', content: question });
+                
                 if (window.scoringState) window.scoringState.hasAskedPatient = true;
 
                 // 2. Afficher l'indicateur de réflexion
@@ -1413,7 +1437,7 @@ export class ThreeHUD {
         // Helper de normalisation pour comparer rigoureusement sans préfixe ni guillemet
         const normalizeText = (t) => {
             if (typeof t !== 'string') return '';
-            return t.replace(/^(Patient|Vous|Directeur Clinique)\s*:\s*/i, '')
+            return t.replace(/^(Patient|Vous|Directeur Clinique|Radiologue|Infirmier|Infirmière|Biologiste|Médecin Réanimateur|Cardiologue|Intervention)\s*:\s*/i, '')
                     .replace(/^[«“"'`\s]+|[»”"'`\s]+$/g, '')
                     .trim()
                     .toLowerCase();

@@ -38,7 +38,7 @@ export class LLMPatient {
                     role = 'assistant';
                 }
                 // Nettoyer les préfixes éventuels dans l'historique transmis au LLM
-                const content = msg.content.replace(/^(Patient|Vous|Directeur Clinique)\s*:\s*/i, '').trim();
+                const content = msg.content.replace(/^(Patient|Vous|Directeur Clinique|Radiologue|Infirmier|Infirmière|Biologiste|Médecin Réanimateur|Cardiologue|Intervention)\s*:\s*/i, '').trim();
                 return {
                     role: role,
                     content: content

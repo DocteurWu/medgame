@@ -35,6 +35,7 @@ export class ThreeFPSController {
         this.onDeactivateCallback = options.onDeactivate || null;
 
         this._onMouseMove = this.onMouseMove.bind(this);
+        this._onMouseDown = this.onMouseDown.bind(this);
         this._onKeyDown = this.onKeyDown.bind(this);
         this._onKeyUp = this.onKeyUp.bind(this);
         this._onPointerLockChange = this.onPointerLockChange.bind(this);
@@ -68,6 +69,7 @@ export class ThreeFPSController {
         }
 
         document.addEventListener('mousemove', this._onMouseMove, false);
+        document.addEventListener('mousedown', this._onMouseDown, false);
         document.addEventListener('keydown', this._onKeyDown, false);
         document.addEventListener('keyup', this._onKeyUp, false);
         document.addEventListener('pointerlockchange', this._onPointerLockChange, false);
@@ -84,6 +86,7 @@ export class ThreeFPSController {
         this.enabled = false;
 
         document.removeEventListener('mousemove', this._onMouseMove, false);
+        document.removeEventListener('mousedown', this._onMouseDown, false);
         document.removeEventListener('keydown', this._onKeyDown, false);
         document.removeEventListener('keyup', this._onKeyUp, false);
         document.removeEventListener('pointerlockchange', this._onPointerLockChange, false);
@@ -110,6 +113,12 @@ export class ThreeFPSController {
         this.euler.x -= (event.movementY || 0) * this.mouseSensitivity;
         this.euler.x = Math.max(-Math.PI / 2.1, Math.min(Math.PI / 2.1, this.euler.x));
         this.camera.quaternion.setFromEuler(this.euler);
+    }
+
+    onMouseDown(event) {
+        if (!this.enabled || event.button !== 0) return;
+        event.preventDefault();
+        if (this.interactCallback) this.interactCallback();
     }
 
     onKeyDown(event) {

@@ -2234,6 +2234,11 @@ body.urgence-3d-active {
     overflow: hidden;
 }
 
+/* Masquer complètement la barre supérieure du HUD standard (#hud-3d) en mode urgence pour un rendu immersif et épuré */
+body.urgence-3d-active #hud-3d {
+    display: none !important;
+}
+
 /* Conteneur overlay principal */
 .urgence-3d-overlay {
     position: fixed;
@@ -2289,10 +2294,9 @@ body.urgence-3d-active {
 /* ==================== TIMER ANGOISSANT ==================== */
 .urgence-timer-3d {
     position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 70;
+    bottom: 125px;
+    left: 20px;
+    z-index: 80;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -2307,8 +2311,8 @@ body.urgence-3d-active {
 }
 
 @keyframes urgenceTimerAppear {
-    from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .urgence-timer-icon {
@@ -2590,9 +2594,28 @@ body.urgence-3d-active {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-width: 220px;
+    width: 320px;
+    max-width: 340px;
+    max-height: 52vh;
+    overflow-y: auto;
+    padding-right: 4px;
     pointer-events: auto;
     animation: urgenceActionsAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+
+/* Custom scrollbar for actions panel to look futuristic and clean */
+.urgence-actions-3d::-webkit-scrollbar {
+    width: 4px;
+}
+.urgence-actions-3d::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+.urgence-actions-3d::-webkit-scrollbar-thumb {
+    background: rgba(255, 71, 87, 0.3);
+    border-radius: 4px;
+}
+.urgence-actions-3d::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 71, 87, 0.6);
 }
 
 @keyframes urgenceActionsAppear {
@@ -2622,11 +2645,12 @@ body.urgence-3d-active {
     border: 1px solid rgba(255, 71, 87, 0.3);
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.85);
-    padding: 10px 14px;
+    padding: 8px 12px;
     cursor: pointer;
     font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 600;
+    line-height: 1.35;
     transition: all 0.25s ease;
     text-align: left;
     pointer-events: auto;
@@ -2758,7 +2782,9 @@ body.urgence-3d-active {
     .urgence-timer-3d {
         padding: 6px 14px;
         gap: 6px;
-        top: 10px;
+        bottom: 145px;
+        left: 10px;
+        top: auto;
     }
 
     .urgence-timer-value {
@@ -2772,9 +2798,11 @@ body.urgence-3d-active {
     }
 
     .urgence-actions-3d {
-        max-width: 180px;
+        width: 260px;
+        max-width: 280px;
         right: 10px;
         bottom: 55px;
+        max-height: 45vh;
     }
 
     .urgence-action-btn-3d {

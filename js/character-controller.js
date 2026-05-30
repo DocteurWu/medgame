@@ -17,112 +17,161 @@ export class CharacterController {
         const group = new THREE.Group();
         const mat = (color, opts = {}) => new THREE.MeshStandardMaterial({
             color,
-            roughness: opts.roughness ?? 0.75,
-            metalness: opts.metalness ?? 0.04,
+            roughness: opts.roughness ?? 0.85,
+            metalness: opts.metalness ?? 0.05,
+            flatShading: true,
             emissive: opts.emissive ?? 0x000000,
             emissiveIntensity: opts.emissiveIntensity ?? 0
         });
 
-        // Corps (torse)
-        const bodyGeom = new THREE.CapsuleGeometry(0.18, 0.4, 8, 16);
+        // Corps (torse 6 faces, flat-shaded)
+        const bodyGeom = new THREE.CylinderGeometry(0.18, 0.12, 0.45, 6);
         const body = new THREE.Mesh(bodyGeom, mat(0xe8f0ff));
         body.position.y = 0.85;
+        body.rotation.y = Math.PI / 6; // Rotation pour orienter une face plate vers l'avant
         body.castShadow = true;
         group.add(body);
 
-        const coatFront = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.34, 0.018), mat(0xf8fbff, { roughness: 0.55 }));
-        coatFront.position.set(0, 0.86, 0.16);
+        // Blouse Médicale - Devant (effet 3D veston ouvert)
+        const coatFront = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.35, 0.04), mat(0xf8fbff, { roughness: 0.6 }));
+        coatFront.position.set(0, 0.84, 0.075);
         coatFront.castShadow = true;
         group.add(coatFront);
 
-        const badge = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.045, 0.01), mat(0x2c8bbf, { emissive: 0x0a2f44, emissiveIntensity: 0.12, roughness: 0.35 }));
-        badge.position.set(0.075, 0.99, 0.176);
+        // Revers de col (gauche/droit) pour donner du volume au col de la blouse
+        const lapelL = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.22, 0.02), mat(0xf0f4fa));
+        lapelL.position.set(-0.07, 0.88, 0.095);
+        lapelL.rotation.y = 0.15;
+        lapelL.rotation.z = -0.15;
+        group.add(lapelL);
+
+        const lapelR = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.22, 0.02), mat(0xf0f4fa));
+        lapelR.position.set(0.07, 0.88, 0.095);
+        lapelR.rotation.y = -0.15;
+        lapelR.rotation.z = 0.15;
+        group.add(lapelR);
+
+        // Badge médical
+        const badge = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.04, 0.01), mat(0x2c8bbf, { emissive: 0x0a2f44, emissiveIntensity: 0.1, roughness: 0.3 }));
+        badge.position.set(0.075, 0.95, 0.10);
         badge.name = 'Badge medecin';
         group.add(badge);
 
-        const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.055, 0.012), mat(0xdde8f6));
-        pocket.position.set(-0.07, 0.76, 0.176);
+        // Poche poitrine
+        const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.05, 0.01), mat(0xdde8f6));
+        pocket.position.set(-0.06, 0.76, 0.10);
         group.add(pocket);
 
-        // Tête
-        const headGeom = new THREE.SphereGeometry(0.13, 16, 12);
+        // Tête (Sphere low-poly 8 segments pour effet facetté)
+        const headGeom = new THREE.SphereGeometry(0.125, 8, 6);
         const head = new THREE.Mesh(headGeom, mat(0xd7a87a));
-        head.position.y = 1.36;
+        head.position.y = 1.34;
         head.castShadow = true;
         group.add(head);
 
-        // Cheveux
-        const hairGeom = new THREE.SphereGeometry(0.14, 16, 12, 0, Math.PI * 2, 0, 0.6);
-        const hairMat = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.9, metalness: 0.0 });
-        const hair = new THREE.Mesh(hairGeom, hairMat);
-        hair.position.y = 1.42;
-        hair.scale.y = 0.8;
-        group.add(hair);
+        // Cheveux Stylisés (polygones multiples sculptés)
+        const hairMat = mat(0x242426, { roughness: 0.9 });
+        const hairGroup = new THREE.Group();
+        hairGroup.position.set(0, 1.34, 0);
 
-        // Visage
+        // Calotte principale
+        const cap = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.65), hairMat);
+        cap.position.y = 0.02;
+        hairGroup.add(cap);
+
+        // Touffes de cheveux facettées
+        const tuftGeom = new THREE.SphereGeometry(0.045, 6, 5);
+
+        // Touffe avant (houppette)
+        const tuft1 = new THREE.Mesh(tuftGeom, hairMat);
+        tuft1.position.set(0, 0.09, 0.08);
+        tuft1.scale.set(1.4, 0.8, 1);
+        hairGroup.add(tuft1);
+
+        // Touffes latérales
+        const tuft2 = new THREE.Mesh(tuftGeom, hairMat);
+        tuft2.position.set(-0.08, 0.04, 0.04);
+        hairGroup.add(tuft2);
+
+        const tuft3 = tuft2.clone();
+        tuft3.position.x = 0.08;
+        hairGroup.add(tuft3);
+
+        // Touffe arrière
+        const tuft4 = new THREE.Mesh(tuftGeom, hairMat);
+        tuft4.position.set(0, -0.02, -0.09);
+        tuft4.scale.set(1.2, 1, 1);
+        hairGroup.add(tuft4);
+
+        group.add(hairGroup);
+
+        // Visage (Face & Lunettes de designer)
         this._addDoctorFace(group);
 
-        // Jambes
-        const legGeom = new THREE.CylinderGeometry(0.05, 0.04, 0.5, 8);
-        const legMat = mat(0x242a35);
+        // Jambes (cylindres 6 faces, flat-shaded)
+        const legGeom = new THREE.CylinderGeometry(0.045, 0.035, 0.5, 6);
+        const legMat = mat(0x20242e);
 
         const legL = new THREE.Mesh(legGeom, legMat);
-        legL.position.set(-0.07, 0.3, 0);
+        legL.position.set(-0.065, 0.3, 0);
+        legL.rotation.y = Math.PI / 6;
         legL.castShadow = true;
         group.add(legL);
 
         const legR = legL.clone();
-        legR.position.x = 0.07;
+        legR.position.x = 0.065;
         group.add(legR);
 
-        // Chaussures
-        const shoeGeom = new THREE.BoxGeometry(0.09, 0.04, 0.14);
-        const shoeMat = new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.8, metalness: 0.0 });
+        // Chaussures (low-poly wedges)
+        const shoeMat = mat(0x111116, { roughness: 0.8 });
+        const shoeGeom = new THREE.BoxGeometry(0.07, 0.04, 0.13);
 
         const shoeL = new THREE.Mesh(shoeGeom, shoeMat);
-        shoeL.position.set(-0.07, 0.03, 0);
+        shoeL.position.set(-0.065, 0.03, 0.03);
         shoeL.castShadow = true;
         group.add(shoeL);
 
         const shoeR = shoeL.clone();
-        shoeR.position.x = 0.07;
+        shoeR.position.x = 0.065;
         group.add(shoeR);
 
-        // Bras
-        const armGeom = new THREE.CapsuleGeometry(0.035, 0.35, 8, 8);
-        const armMat = mat(0xe8f0ff);
+        // Bras (manches 6 faces, flat-shaded)
+        const armGeom = new THREE.CylinderGeometry(0.038, 0.032, 0.35, 6);
+        const armMat = mat(0xf2f5fa);
 
         const armL = new THREE.Mesh(armGeom, armMat);
-        armL.position.set(-0.22, 0.92, 0);
+        armL.position.set(-0.21, 0.92, 0);
+        armL.rotation.y = Math.PI / 6;
         armL.castShadow = true;
         group.add(armL);
 
         const armR = armL.clone();
-        armR.position.x = 0.22;
+        armR.position.x = 0.21;
         group.add(armR);
 
-        const clipboard = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.22, 0.018), mat(0x31445d, { roughness: 0.5 }));
-        clipboard.position.set(-0.29, 0.76, 0.11);
+        // Dossier patient en main gauche
+        const clipboard = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.21, 0.015), mat(0x31445d, { roughness: 0.5 }));
+        clipboard.position.set(-0.28, 0.76, 0.11);
         clipboard.rotation.z = -0.18;
         clipboard.name = 'Dossier patient medecin';
         clipboard.userData = { label: 'Dossier patient', interactive: true };
         group.add(clipboard);
 
-        const page = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.17, 0.006), mat(0xfaf6ea, { roughness: 0.8 }));
-        page.position.set(-0.29, 0.76, 0.125);
+        const page = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.17, 0.005), mat(0xfaf6ea, { roughness: 0.8 }));
+        page.position.set(-0.28, 0.76, 0.12);
         page.rotation.z = -0.18;
         group.add(page);
 
-        // Mains
-        const handGeom = new THREE.SphereGeometry(0.035, 8, 6);
+        // Mains (Sphere low-poly 6 faces pour maintenir le resolve de l'animateur)
+        const handGeom = new THREE.SphereGeometry(0.032, 6, 4);
         const handMat = mat(0xd7a87a);
 
         const handL = new THREE.Mesh(handGeom, handMat);
-        handL.position.set(-0.22, 0.74, 0);
+        handL.position.set(-0.21, 0.73, 0.01);
         group.add(handL);
 
         const handR = handL.clone();
-        handR.position.x = 0.22;
+        handR.position.x = 0.21;
         group.add(handR);
 
         // Stéthoscope
@@ -137,64 +186,6 @@ export class CharacterController {
         });
         return group;
     }
-
-    _addDoctorFace(group) {
-        const skinMat = new THREE.MeshStandardMaterial({ color: 0xd7a87a, roughness: 0.5, metalness: 0.3 });
-
-        // Yeux
-        const eyeWhiteMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1 });
-        const irisMat = new THREE.MeshStandardMaterial({ color: 0x2d5a27, roughness: 0.05, metalness: 0.5 });
-        const pupilMat = new THREE.MeshStandardMaterial({ color: 0x000000 });
-
-        [-1, 1].forEach(side => {
-            const eyeGroup = new THREE.Group();
-            const white = new THREE.Mesh(new THREE.SphereGeometry(0.015, 8, 6), eyeWhiteMat.clone());
-            white.scale.set(1.4, 0.8, 0.4);
-            const iris = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), irisMat);
-            iris.position.z = 0.012;
-            const pupil = new THREE.Mesh(new THREE.SphereGeometry(0.004, 6, 6), pupilMat);
-            pupil.position.z = 0.016;
-            eyeGroup.add(white, iris, pupil);
-            eyeGroup.position.set(side * 0.042, 0.04, 0.115);
-            group.add(eyeGroup);
-        });
-
-        // Lunettes
-        const glassMat = new THREE.MeshStandardMaterial({ color: 0x88aacc, roughness: 0.1, metalness: 0.3, transparent: true, opacity: 0.4 });
-        const frameMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.5, metalness: 0.5 });
-
-        [-1, 1].forEach(side => {
-            const lens = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.025, 0.005), glassMat);
-            lens.position.set(side * 0.038, 0.035, 0.1);
-            group.add(lens);
-
-            const arm = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.008, 0.06), frameMat);
-            arm.position.set(side * 0.055, 0.025, 0.05);
-            arm.rotation.z = side * 0.15;
-            group.add(arm);
-        });
-
-        const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.008, 0.015), frameMat);
-        bridge.position.set(0, 0.04, 0.1);
-        group.add(bridge);
-
-        // Nez
-        const nose = new THREE.Mesh(new THREE.ConeGeometry(0.018, 0.04, 4), skinMat);
-        nose.rotation.x = Math.PI / 2;
-        nose.position.set(0, -0.01, 0.13);
-        group.add(nose);
-
-        // Bouche
-        const mouth = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.006, 0.006), new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.8 }));
-        mouth.position.set(0, -0.035, 0.13);
-        group.add(mouth);
-    }
-
-    _addStethoscope(group) {
-        const stethMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.6, roughness: 0.2 });
-
-        const tubeCurve = new THREE.CatmullRomCurve3([
-            new THREE.Vector3(0.18, 1.05, -0.1),
             new THREE.Vector3(0.15, 0.95, -0.05),
             new THREE.Vector3(0.1, 0.85, 0),
             new THREE.Vector3(0.08, 0.8, -0.02),
