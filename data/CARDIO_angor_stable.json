@@ -166,7 +166,7 @@
       "heartRate": 95,
       "systolic": 145,
       "spo2": 96,
-      "temperature": 37.0,
+      "temperature": 37,
       "respiratoryRate": 22
     },
     "stabilizeOnCorrectTreatment": true
@@ -176,7 +176,9 @@
       "id": "lock_CARDIO_angor_01",
       "type": "QCM",
       "label": "Signes d'angor",
-      "target_fields": ["examResults.ECG"],
+      "target_fields": [
+        "examResults.ECG"
+      ],
       "challenge": {
         "question": "Quel est le signe fonctionnel principal de l'angor stable ?",
         "options": [
@@ -185,7 +187,9 @@
           "Palpitations irrégulières permanentes",
           "Céphalées pulsatiles frontales"
         ],
-        "correct_indices": [0]
+        "correct_indices": [
+          0
+        ]
       },
       "prerequisites": [],
       "feedback_error": "L'angor stable se caracterise par une douleur thoracique retrosternale constrictive, declenchee par l'effort et calmée par le repos ou la trinitrine. Pensez aux caracteristiques semiologiques typiques de la douleur angineuse."
@@ -194,7 +198,9 @@
       "id": "lock_CARDIO_angor_02",
       "type": "QCM",
       "label": "Terrain cardiovasculaire",
-      "target_fields": ["possibleDiagnostics"],
+      "target_fields": [
+        "possibleDiagnostics"
+      ],
       "challenge": {
         "question": "Parmi ces facteurs de risque, lequel est le plus fortement associé à la cardiopathie ischémique ?",
         "options": [
@@ -203,7 +209,9 @@
           "Hypothyroïdie",
           "Migraine"
         ],
-        "correct_indices": [0]
+        "correct_indices": [
+          0
+        ]
       },
       "prerequisites": [],
       "feedback_error": "Le diabete de type 2 est un facteur de risque cardiovasculaire majeur, au meme titre que le tabac, l'HTA, la dyslipidemie et l'age. Il favorise l'atherosclerose coronarienne."
@@ -212,7 +220,9 @@
       "id": "lock_CARDIO_angor_03",
       "type": "QCM",
       "label": "Examen clé",
-      "target_fields": ["examResults.Test d'effort"],
+      "target_fields": [
+        "examResults.Test d'effort"
+      ],
       "challenge": {
         "question": "Quel examen est l'examen de première intention pour confirmer le diagnostic d'angor stable ?",
         "options": [
@@ -221,11 +231,250 @@
           "Holter ECG 24h",
           "IRM cardiaque"
         ],
-        "correct_indices": [0]
+        "correct_indices": [
+          0
+        ]
       },
       "prerequisites": [],
       "feedback_error": "Le test d'effort est l'examen de premiere intention pour objectiver une ischemie myocardique d'effort. La coronarographie est reservee aux formes severes ou si test d'effort non contributif."
     }
   ],
-  "correction": "# Angor stable\n\n## Diagnostic\n\nPatiente de 58 ans, diabetique de type 2, presentant une douleur thoracique retrosternale constrictive declenchee par l'effort (montee d'escaliers) et cedant au repos depuis 6 mois d'evolution stable. La douleur est sensible a la trinitrine sublinguale. Le test d'effort objective un sous-decalage du segment ST en V5-V6 lors de l'effort, et la coronarographie revele une stenose significative a 70% de l'artere circonflexe. Le diagnostic d'angor stable est confirme.\n\n## Elements cles\n\n- Douleur angineuse typique : retrosternale, constrictive, declenchee par l'effort, cedant au repos ou a la trinitrine\n- Duree breve (quelques minutes), evolution stable depuis 6 mois\n- Facteurs de risque : diabete de type 2, heredite coronarienne (pere infarcus a 65 ans)\n- ECG de repos normal : n'elimine pas le diagnostic\n- Test d'effort positif avec sous-decalage ST ischemique\n- Troponine normale : pas de necrose myocardique, differencie de l'infarctus\n\n## Raisonnement diagnostique\n\nDevant une douleur thoracique d'effort chez une patiente diabetique, les diagnostics differentiels sont le syndrome coronarien aigu (SCA), l'embolie pulmonaire, le reflux gastro-oesophagien, ou une pericardite. L'absence de syndrome de menace (douleur prolongee, troponine elevee, instabilite hemodynamique) et la stabilite des symptomes depuis 6 mois orientent vers un angor stable plutot qu'un SCA. Le test d'effort apporte la preuve fonctionnelle de l'ischemie, et la coronarographie confirme le substrat anatomique.\n\n## Pieges\n\n- Ne pas se fier a un ECG de repos normal : 50% des angors stables ont un ECG de repos normal\n- Ne pas confondre avec un SCA : la duree de la douleur et la stabilite sont des elements cles\n- Ne pas oublier l'evaluation du risque thromboembolique (score CHA2DS2-VASc en cas de FA associee)\n- La mise sous betabloquant necessite de respecter les contre-indications (asthme, bradycardie, bloc AV)\n\n## Traitement\n\nLe traitement de fond repose sur les betabloquants (attenuent la reponse cardiaque a l'effort) associes a un antiagregant plaquettaire (aspirine). La trinitrine sublinguale est le traitement de la crise. Les inhibiteurs calciques et la statine sont indiques en fonction du profil metabolique. Le reconditionnement a l'effort et le controle strict des facteurs de risque (HbA1c, LDL-cholesterol, PA) sont essentiels. En cas de stenose significative (>70%), une revascularisation par angioplastie peut etre discutee."
+  "correction": "# Angor stable\n\n## Diagnostic\n\nPatiente de 58 ans, diabetique de type 2, presentant une douleur thoracique retrosternale constrictive declenchee par l'effort (montee d'escaliers) et cedant au repos depuis 6 mois d'evolution stable. La douleur est sensible a la trinitrine sublinguale. Le test d'effort objective un sous-decalage du segment ST en V5-V6 lors de l'effort, et la coronarographie revele une stenose significative a 70% de l'artere circonflexe. Le diagnostic d'angor stable est confirme.\n\n## Elements cles\n\n- Douleur angineuse typique : retrosternale, constrictive, declenchee par l'effort, cedant au repos ou a la trinitrine\n- Duree breve (quelques minutes), evolution stable depuis 6 mois\n- Facteurs de risque : diabete de type 2, heredite coronarienne (pere infarcus a 65 ans)\n- ECG de repos normal : n'elimine pas le diagnostic\n- Test d'effort positif avec sous-decalage ST ischemique\n- Troponine normale : pas de necrose myocardique, differencie de l'infarctus\n\n## Raisonnement diagnostique\n\nDevant une douleur thoracique d'effort chez une patiente diabetique, les diagnostics differentiels sont le syndrome coronarien aigu (SCA), l'embolie pulmonaire, le reflux gastro-oesophagien, ou une pericardite. L'absence de syndrome de menace (douleur prolongee, troponine elevee, instabilite hemodynamique) et la stabilite des symptomes depuis 6 mois orientent vers un angor stable plutot qu'un SCA. Le test d'effort apporte la preuve fonctionnelle de l'ischemie, et la coronarographie confirme le substrat anatomique.\n\n## Pieges\n\n- Ne pas se fier a un ECG de repos normal : 50% des angors stables ont un ECG de repos normal\n- Ne pas confondre avec un SCA : la duree de la douleur et la stabilite sont des elements cles\n- Ne pas oublier l'evaluation du risque thromboembolique (score CHA2DS2-VASc en cas de FA associee)\n- La mise sous betabloquant necessite de respecter les contre-indications (asthme, bradycardie, bloc AV)\n\n## Traitement\n\nLe traitement de fond repose sur les betabloquants (attenuent la reponse cardiaque a l'effort) associes a un antiagregant plaquettaire (aspirine). La trinitrine sublinguale est le traitement de la crise. Les inhibiteurs calciques et la statine sont indiques en fonction du profil metabolique. Le reconditionnement a l'effort et le controle strict des facteurs de risque (HbA1c, LDL-cholesterol, PA) sont essentiels. En cas de stenose significative (>70%), une revascularisation par angioplastie peut etre discutee.",
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Kitty Bennet, 58 ans, femme, se présente pour une douleur thoracique à l'effort évoluant depuis 6 mois.",
+      "consignesAttendues": [
+        "Réaliser un entretien centré sur la douleur thoracique et les facteurs de risque cardiovasculaire",
+        "Effectuer un examen clinique cardiovasculaire complet",
+        "Proposer une stratégie diagnostique adaptée (ECG, bilan biologique, épreuve d'effort ou imagerie)",
+        "Énoncer le diagnostic d'angor stable et justifier la prise en charge thérapeutique initiale",
+        "Éduquer le patient sur les signes d'alerte nécessitant un appel au 15"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'adrénaline",
+        "Ne pas prescrire d'inhibiteur calcique comme traitement de première intention",
+        "Ne pas ignorer les facteurs de risque cardiovasculaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Oxymètre de pouls",
+        "ECG 12 dérivations",
+        "Trinitrine sublinguale"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en cardiologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur thoracique (siège, type, irradiation, intensité, durée, facteurs déclenchants et calmants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où",
+          "type de douleur",
+          "irradiation",
+          "intensité",
+          "durée",
+          "effort",
+          "trinitrine",
+          "repos"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (diabète, HTA, dyslipidémie, tabac, hérédité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète",
+          "cholestérol",
+          "tabac",
+          "famille",
+          "père",
+          "hypertension",
+          "antécédents familiaux"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés (dyspnée, palpitations, syncope, œdème)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "essoufflement",
+          "palpitations",
+          "syncope",
+          "évanouissement",
+          "jambes gonflées"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Fait l'inventaire des traitements en cours et des allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "metformine",
+          "allergie"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure les constantes vitales (TA, FC, SpO2, FR, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "fréquence respiratoire",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (auscultation cardiaque, pouls périphériques, recherche de signes d'insuffisance cardiaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "souffle",
+          "pouls",
+          "turgescence jugulaire",
+          "œdème",
+          "frottement péricardique"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise une auscultation pulmonaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "crépitants",
+          "sibilants",
+          "murmure vésiculaire"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique pertinente (ECG, bilan biologique, épreuve d'effort)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "troponine",
+          "épreuve d'effort",
+          "coronarographie",
+          "échocardiographie"
+        ]
+      },
+      {
+        "id": "diagnostic_angor",
+        "label": "Énonce le diagnostic d'angor stable",
+        "weight": 1,
+        "triggerKeywords": [
+          "angor stable",
+          "angine de poitrine",
+          "ischémie myocardique"
+        ]
+      },
+      {
+        "id": "traitement_initial",
+        "label": "Propose un traitement adapté (bêta-bloquant, trinitrine sublinguale, statine, aspirine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bêta-bloquant",
+          "trinitrine",
+          "nitré",
+          "statine",
+          "aspirine",
+          "IEC"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur les signes d'alerte et les conduites à tenir",
+        "weight": 1,
+        "triggerKeywords": [
+          "signes d'alerte",
+          "appeler le 15",
+          "douleur prolongée",
+          "SAMU",
+          "urgence"
+        ]
+      },
+      {
+        "id": "prevention_facteurs_risque",
+        "label": "Propose une prise en charge des facteurs de risque (diabète, hygiène de vie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "contrôle glycémique",
+          "activité physique",
+          "régime",
+          "arrêt tabac",
+          "suivi régulier"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux, répond précisément aux questions",
+      "phraseOuverture": "Bonjour docteur, j'ai mal au thoracique quand je monte les escaliers, ça fait plusieurs mois maintenant.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, je vous ai déjà dit ce que j'avais !",
+        "silence": "Euh... je ne sais pas trop quoi dire, c'est vous le médecin...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là."
+      }
+    }
+  }
 }

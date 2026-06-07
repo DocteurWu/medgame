@@ -519,6 +519,9 @@ export function initLockAgent3D(threeManager) {
     // Hook le click 3D pour intercepter les clics sur les cadenas
     const origOnClick = threeManager.scene.onClick.bind(threeManager.scene);
     threeManager.scene.onClick = function(event) {
+        // Garde-fou : la scène peut être détruite (disable3D -> scene = null)
+        // alors que le listener pointerup du canvas est encore actif.
+        if (!threeManager.scene) return;
         const hit = threeManager.scene.pick(event);
         if (hit && hit.object?.userData?.lockId) {
             return lockAgent.handleLockClick(hit.object);

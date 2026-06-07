@@ -397,10 +397,118 @@ function getAnonymousComparison(compositeResult, caseId) {
 
 window.getAnonymousComparison = getAnonymousComparison;
 
+// ==================== GRILLE DE NOTATION DÉTAILLÉE ====================
+
+/**
+ * Génère une grille de notation détaillée et transparente pour le joueur.
+ * Affiche les 4 axes de notation, leur poids, le score obtenu,
+ * et la contribution au score final. Explicite la formule de vitesse.
+ *
+ * @param {object} compositeResult — résultat de calculateCompositeScore()
+ * @param {object} currentCase — cas clinique courant
+ * @returns {string} HTML de la grille de notation
+ */
+function renderScoringGrid(compositeResult, currentCase) {
+    const b = compositeResult.breakdown;
+
+    const totalTime = (typeof getTimeLimit === 'function') ? getTimeLimit() : 720;
+    const timeLeft = (typeof timerState !== 'undefined' && timerState.timeLeft) || 0;
+    const timeUsed = totalTime - timeLeft;
+    const timeUsedMin = Math.floor(timeUsed / 60);
+    const timeUsedSec = timeUsed % 60;
+
+    function barColor(score) {
+        if (score >= 80) return '#2ecc71';
+        if (score >= 50) return '#f39c12';
+        return '#e74c3c';
+    }
+
+    function renderAxisRow(icon, label, weight, score, contribution, details) {
+        const color = barColor(score);
+        return `
+            <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+                <span style="font-size:1.3rem; min-width:32px; text-align:center;">${icon}</span>
+                <div style="flex:1;">
+                    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
+                        <span style="font-weight:700; font-size:0.9rem; color:rgba(255,255,255,0.9);">${label} <span style="font-size:0.75rem; color:rgba(255,255,255,0.45); font-weight:400;">(${Math.round(weight * 100)}% du score)</span></span>
+                        <span style="font-weight:800; font-size:1.05rem; color:${color};">${score}%</span>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.08); border-radius:6px; height:8px; overflow:hidden; margin-bottom:3px;">
+                        <div style="background:${color}; height:100%; width:${score}%; border-radius:6px; transition:width 0.8s ease;"></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:rgba(255,255,255,0.5);">
+                        <span>Contribution : <strong style="color:${color};">${contribution.toFixed(1)} pts</strong></span>
+                        ${details ? `<span style="color:rgba(255,255,255,0.4);">${details}</span>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Détails spécifiques par axe
+    const dem = scoringState.demarche;
+    const interroCount = dem.interrogatoireAsked ? dem.interrogatoireAsked.size : 0;
+    const interroFields = (typeof getInterrogatoireFieldCount === 'function') ? getInterrogatoireFieldCount(currentCase) : 0;
+    const interroDetails = interroFields > 0 ? `Interrogatoire ${interroCount}/${interroFields}` : '';
+
+    const diagDetails = compositeResult.diagnosticScore === 100 ? 'Diagnostic exact'
+        : compositeResult.diagnosticScore === 80 ? 'Alias/variante accepté'
+        : compositeResult.diagnosticScore === 60 ? 'Diagnostic proche'
+        : compositeResult.diagnosticScore === 30 ? 'Même spécialité'
+        : compositeResult.diagnosticScore > 0 ? 'Partiellement correct'
+        : 'Non identifié';
+
+    const td = compositeResult.treatmentDetails || {};
+    const firstLineCount = (td.firstLineHit || []).length;
+    const secondLineCount = (td.secondLineHit || []).length;
+    const treatDetails = compositeResult.hasFatalError ? 'Erreur fatale'
+        : firstLineCount > 0 ? `${firstLineCount} 1ère intention`
+        : secondLineCount > 0 ? `${secondLineCount} 2ème intention`
+        : compositeResult.traitementScore >= 80 ? 'Traitement complet'
+        : compositeResult.traitementScore > 0 ? 'Partiel'
+        : 'Non identifié';
+
+    const vitesseDetails = `${timeUsedMin}min ${timeUsedSec.toString().padStart(2, '0')}s / ${Math.floor(totalTime / 60)}min`;
+
+    const totalContribution = b.demarche.contribution + b.diagnostic.contribution + b.traitement.contribution + b.vitesse.contribution;
+
+    return `
+        <div style="background:linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15)); border-radius:12px; padding:16px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.08);">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                <span style="font-size:1.2rem;">📋</span>
+                <span style="font-weight:700; font-size:1rem; color:rgba(255,255,255,0.9);">Grille de notation</span>
+                <span style="font-size:0.7rem; color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.08); padding:2px 8px; border-radius:10px;">Score final = ${totalContribution.toFixed(1)} / 100</span>
+            </div>
+
+            ${renderAxisRow('🩺', 'Démarche clinique', SCORING_WEIGHTS.demarche, b.demarche.score, b.demarche.contribution, interroDetails)}
+            ${renderAxisRow('🎯', 'Diagnostic', SCORING_WEIGHTS.diagnostic, b.diagnostic.score, b.diagnostic.contribution, diagDetails)}
+            ${renderAxisRow('💊', 'Traitement', SCORING_WEIGHTS.traitement, b.traitement.score, b.traitement.contribution, treatDetails)}
+            ${renderAxisRow('⏱️', 'Vitesse', SCORING_WEIGHTS.vitesse, b.vitesse.score, b.vitesse.contribution, vitesseDetails)}
+
+            <!-- Formule vitesse -->
+            <div style="margin-top:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border-radius:8px; font-size:0.78rem; color:rgba(255,255,255,0.55); line-height:1.5;">
+                <strong style="color:rgba(255,255,255,0.75);">⏱️ Comment est calculée la vitesse ?</strong><br>
+                <code style="background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; font-size:0.75rem;">
+                    score_vitesse = round(temps_restant / temps_total × 100)
+                </code><br>
+                Pour obtenir le maximum (+10 pts), validez le plus tôt possible.<br>
+                <span style="color:rgba(255,255,255,0.4);">
+                    ${b.vitesse.score === 100 ? '✅ Temps maximum conservé — score vitesse parfait !'
+                        : b.vitesse.score >= 70 ? 'Bon rythme — peu de points perdus.'
+                        : b.vitesse.score >= 40 ? 'Temps moyen — validez plus tôt pour gagner des points.'
+                        : '⚡ Temps très long — la rapidité compte en clinique.'}
+                </span>
+            </div>
+        </div>
+    `;
+}
+
+window.renderScoringGrid = renderScoringGrid;
+
 // ==================== RENDER FEEDBACK COMPLET ====================
 
 /**
- * Génère le feedback complet post-cas : timeline + analyse + pédagogie + comparaison.
+ * Génère le feedback complet post-cas : grille + timeline + analyse + pédagogie + comparaison.
  * À appeler après calculateCompositeScore() et avant/après renderCompositeScorePanel().
  *
  * @param {object} compositeResult — résultat de calculateCompositeScore()
@@ -408,16 +516,19 @@ window.getAnonymousComparison = getAnonymousComparison;
  * @returns {string} HTML complet du feedback détaillé
  */
 function renderDetailedFeedback(compositeResult, currentCase) {
-    // 1. Analyse points forts/faibles
+    // 1. Grille de notation détaillée
+    const scoringGridHtml = renderScoringGrid(compositeResult, currentCase);
+
+    // 2. Analyse points forts/faibles
     const analysis = analyzePerformance(compositeResult, currentCase);
 
-    // 2. Explication pédagogique
+    // 3. Explication pédagogique
     const pedagogical = generatePedagogicalExplanation(compositeResult, currentCase);
 
-    // 3. Comparaison anonyme
+    // 4. Comparaison anonyme
     const comparison = getAnonymousComparison(compositeResult, currentCase.id || 'unknown');
 
-    // 4. Timeline
+    // 5. Timeline
     const timelineHtml = renderTimeline();
 
     // --- Rendu ---
@@ -475,6 +586,9 @@ function renderDetailedFeedback(compositeResult, currentCase) {
     return `
         <!-- FEEDBACK DÉTAILLÉ POST-CAS -->
         <div class="detailed-feedback" style="margin-top:16px;">
+            <!-- Grille de notation détaillée -->
+            ${scoringGridHtml}
+
             <!-- Timeline -->
             <div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px;">
                 ${timelineHtml}

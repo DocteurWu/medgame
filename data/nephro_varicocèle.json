@@ -146,16 +146,232 @@
   "correction": "# Varicocèle\n\nLe patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).\n\n## Bonnes pratiques\n\n- Évaluer l’impact sur la douleur, la fertilité et la qualité de vie\n- Proposer Doppler systématique pour la classification\n- Embolisation ou ligature veineuse si douleur persistante ou infertilité\n- Conseiller port de suspensoir, éviter efforts prolongés\n\n## Erreurs à éviter\n\n- Confondre avec une hydrocèle ou hernie inguinale\n- Sous-estimer les symptômes gênants\n- Négliger un spermogramme si désir de fertilité",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de chirurgie urologique.",
+      "contexte": "Maxime Delcourt, 27 ans, homme, se présente pour une douleur scrotale gauche chronique évoluant depuis plusieurs mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la symptomatologie scrotale et les facteurs de risque",
+        "Effectuer un examen clinique ciblé de la région inguino-scrotale",
+        "Proposer un diagnostic différentiel et argumenter le diagnostic le plus probable",
+        "Expliquer au patient la prise en charge thérapeutique adaptée",
+        "Évoquer les options thérapeutiques en cas d'échec du traitement médical"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'examen invasif",
+        "Ne pas prescrire d'antibiotique sans argumentation",
+        "Ne pas ignorer la plainte du patient"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Gants d'examen",
+        "Lampe d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet",
+        "label": "Réalise un interrogatoire complet orienté sur la symptomatologie scrotale",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "scrotale",
+          "depuis quand",
+          "évolution"
+        ]
+      },
+      {
+        "id": "facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants et aggravants",
+        "weight": 1,
+        "triggerKeywords": [
+          "position debout",
+          "effort",
+          "fin de journée",
+          "allongé"
+        ]
+      },
+      {
+        "id": "antecedents_familiaux",
+        "label": "Explore les antécédents familiaux notamment de varicocèle",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "frère",
+          "père",
+          "antécédents"
+        ]
+      },
+      {
+        "id": "mode_de_vie",
+        "label": "Interroge sur l'activité physique et les habitudes de vie",
+        "weight": 1,
+        "triggerKeywords": [
+          "sport",
+          "musculation",
+          "course",
+          "activité physique"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général approprié",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "état général",
+          "abdomen",
+          "auscultation"
+        ]
+      },
+      {
+        "id": "examen_scrotal",
+        "label": "Effectue un examen scrotal complet (palpation, manœuvre de Valsalva)",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpation",
+          "testicule",
+          "scrotum",
+          "valsalva",
+          "varicocèle"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "hydrocèle",
+          "hernie",
+          "épididymite",
+          "torsion",
+          "diagnostic différentiel"
+        ]
+      },
+      {
+        "id": "diagnostic_pertinent",
+        "label": "Retient le diagnostic de varicocèle comme hypothèse principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "varicocèle",
+          "dilatation veineuse",
+          "plexus pampiniforme"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose une stratégie thérapeutique adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "contention",
+          "antalgique",
+          "embolisation",
+          "chirurgie",
+          "prise en charge"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Explique clairement la pathologie et les options au patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "comprendre",
+          "options",
+          "traitement"
+        ]
+      },
+      {
+        "id": "contraception_fertilite",
+        "label": "Évoque l'impact potentiel sur la fertilité",
+        "weight": 1,
+        "triggerKeywords": [
+          "fertilité",
+          "sperme",
+          "conception",
+          "procréation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement gêné par le motif de consultation mais ouvert au dialogue. Il s'inquiète discrètement pour sa fertilité.",
+      "phraseOuverture": "Bonjour docteur, j'ai des douleurs au niveau des testicules à gauche depuis quelques mois. C'est surtout une pesanteur qui augmente dans la journée.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "antecedents.chirurgicaux",
+        "modeDeVie.activitePhysique",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool"
+      ],
+      "infosCachees": [
+        "Inquiétude concernant la fertilité"
+      ],
+      "reactions": {
+        "brutal": "Euh... c'est un peu brutal comme questionnement...",
+        "silence": "...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire..."
+      }
+    }
+  }
 }

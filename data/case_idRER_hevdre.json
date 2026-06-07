@@ -110,16 +110,255 @@
   },
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Monsieur Test, 72 ans, se présente en consultation pour un bilan de santé annuel avec des symptômes non spécifiques rapportés.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes actuels et les facteurs de risque cardiovasculaire",
+        "Effectuer un examen clinique cardiovasculaire et pulmonaire complet",
+        "Évaluer les habitudes de vie (tabac, alcool, activité physique, alimentation)",
+        "Proposer une stratégie de prévention et d'éducation thérapeutique adaptée au profil du patient",
+        "Synthèse orale des conclusions au patient avec plan de prise en charge"
+      ],
+      "consignesInterdites": [
+        "Prescrire un traitement sans avoir réalisé l'interrogatoire complet",
+        "Ignorer les facteurs de risque cardiovasculaire",
+        "Utiliser du jargon médical sans explication"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Éducation/prévention",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Cabinet de consultation de médecine générale",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Balance et toise",
+        "ECG 12 dérivations",
+        "Spiromètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "rôle"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation et les symptômes actuels en détail",
+        "weight": 1,
+        "triggerKeywords": [
+          "motif",
+          "symptômes",
+          "douleur",
+          "depuis quand",
+          "évolution"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents médicaux, chirurgicaux et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "opération",
+          "famille",
+          "père",
+          "mère"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore les habitudes de vie : tabac, alcool, alimentation, activité physique",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "alimentation",
+          "régime"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Recherche les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "allergie",
+          "ordonnance"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes vitales (TA, FC, SpO2, FR, Température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "fréquence respiratoire",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (inspection, palpation, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cœur",
+          "auscultation",
+          "souffle",
+          "pouls périphériques",
+          "OMI"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire complet (inspection, percussion, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poumons",
+          "auscultation",
+          "murmure vésiculaire",
+          "bruit surajouté"
+        ]
+      },
+      {
+        "id": "examen_abdominal",
+        "label": "Réalise un examen abdominal (palpation, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "abdomen",
+          "palpation",
+          "bruits hydro-aériques",
+          "masse"
+        ]
+      },
+      {
+        "id": "strategie_prevention",
+        "label": "Propose des mesures de prévention adaptées au profil du patient (sevrage tabagique, activité physique, alimentation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "conseils",
+          "sevrage",
+          "activité physique",
+          "alimentation équilibrée"
+        ]
+      },
+      {
+        "id": "education_therapeutique",
+        "label": "Éduque le patient sur ses facteurs de risque et les mesures hygiéno-diététiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "éducation",
+          "expliquer",
+          "comprendre",
+          "risques",
+          "habitudes"
+        ]
+      },
+      {
+        "id": "synthese_pec",
+        "label": "Réalise une synthèse orale et propose un plan de prise en charge clair",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "plan",
+          "prise en charge",
+          "suivi",
+          "prochain rendez-vous"
+        ]
+      },
+      {
+        "id": "communication_cloture",
+        "label": "Vérifie la compréhension du patient et propose un suivi adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "avez-vous des questions",
+          "compris",
+          "suivi",
+          "rendez-vous"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux, volontaire pour un bilan de santé complet. Il répond volontiers aux questions mais a besoin d'être rassuré.",
+      "phraseOuverture": "Bonjour docteur, je suis venu pour un bilan de santé, je me sens globalement bien mais je voulais vérifier que tout va bien à mon âge.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "symptomesActuels",
+        "habitudesAlcool"
+      ],
+      "infosSiDemandees": [
+        "antecedentsMedicaux",
+        "antecedentsChirurgicaux",
+        "antecedentsFamiliaux",
+        "consommationTabac",
+        "activitePhysique",
+        "alimentation",
+        "traitementsEnCours",
+        "allergies"
+      ],
+      "infosCachees": [
+        "Antécédent familial de cardiopathie ischémique (père décédé à 68 ans d'un IDM)"
+      ],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, je suis venu pour un simple bilan !",
+        "silence": "Euh... je ne sais pas trop quoi répondre à ça...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

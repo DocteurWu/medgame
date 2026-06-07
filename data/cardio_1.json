@@ -151,16 +151,270 @@
   "correction": "# Insuffisance cardiaque\n\nDyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.\n\n## Bonnes pratiques\n\n- Évaluer la fraction d’éjection à l’échographie\n- Initier diurétiques et IEC en première intention\n- Surveiller le poids, la diurèse et l’ionogramme\n\n## Erreurs à éviter\n\n- Oublier l’adaptation des doses selon la fonction rénale\n- Négliger la recherche d’une cause ischémique en cas de suspicion",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Monsieur Jean Dupont, 65 ans, homme, se présente pour une dyspnée d'effort et des œdèmes des membres inférieurs évoluant depuis 2 semaines.",
+      "consignesAttendues": [
+        "Réaliser un entretien clinique complet orienté vers la dyspnée et les œdèmes",
+        "Effectuer un examen clinique cardiovasculaire et pulmonaire ciblé",
+        "Proposer un diagnostic étiologique pertinent",
+        "Élaborer une stratégie diagnostique initiale adaptée",
+        "Initier une prise en charge thérapeutique appropriée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de bêtabloquants sans avoir évalué la fonction cardiaque",
+        "Ne pas réaliser d'examen invasif sans justification",
+        "Ne pas annoncer un diagnostic définitif sans examens complémentaires"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service de cardiologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Électrocardiographe",
+        "Radiographie thoracique",
+        "Échocardiographie"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "rôle"
+        ]
+      },
+      {
+        "id": "interrogatoire_dyspnee",
+        "label": "Explore la dyspnée : date d'apparition, circonstances, évolution, sévérité (NYHA)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "effort",
+          "NYHA",
+          "essoufflement",
+          "depuis quand"
+        ]
+      },
+      {
+        "id": "interrogatoire_oedemes",
+        "label": "Explore les œdèmes : localisation, signe du godet, prise de poids",
+        "weight": 1,
+        "triggerKeywords": [
+          "œdèmes",
+          "jambes",
+          "chevilles",
+          "godet",
+          "poids"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_associes",
+        "label": "Recherche les symptômes associés : orthopnée, DPN, douleurs thoraciques, palpitations",
+        "weight": 1,
+        "triggerKeywords": [
+          "orthopnée",
+          "DPN",
+          "nocturne",
+          "douleur thoracique",
+          "palpitations"
+        ]
+      },
+      {
+        "id": "antecedents_cardiovasculaires",
+        "label": "Explore les antécédents cardiovasculaires personnels et familiaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "HTA",
+          "infarctus",
+          "cardiaque",
+          "famille"
+        ]
+      },
+      {
+        "id": "facteurs_risque",
+        "label": "Évalue les facteurs de risque cardiovasculaire (tabac, sédentarité, alimentation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "alimentation",
+          "cholestérol"
+        ]
+      },
+      {
+        "id": "traitements_en_cours",
+        "label": "Recherche les traitements en cours et l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "IEC",
+          "amlodipine",
+          "observance"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet : auscultation cardiaque, pouls, TA, JVP",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "cœur",
+          "souffle",
+          "pouls",
+          "jugulaires"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire : auscultation à la recherche de râles crépitants",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "râles",
+          "crépitants",
+          "poumons"
+        ]
+      },
+      {
+        "id": "examen_oedemes",
+        "label": "Examine les œdèmes : localisation, godet, symétrie",
+        "weight": 1,
+        "triggerKeywords": [
+          "œdèmes",
+          "godet",
+          "membres inférieurs",
+          "pression"
+        ]
+      },
+      {
+        "id": "diagnostic_orientation",
+        "label": "Propose le diagnostic d'insuffisance cardiaque comme hypothèse principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "IC",
+          "diagnostic",
+          "hypothèse"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique adaptée : ECG, radiographie thoracique, BNP/NT-proBNP, échocardiographie",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "radio thorax",
+          "BNP",
+          "échocardiographie",
+          "biologie"
+        ]
+      },
+      {
+        "id": "prise_en_charge_initiale",
+        "label": "Initie une prise en charge thérapeutique : diurétiques, IEC, conseils hygiéno-diététiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "diurétique",
+          "IEC",
+          "régime sans sel",
+          "surveillance",
+          "traitement"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur sa maladie, les signes d'alerte et l'importance de l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "éducation",
+          "signes d'alerte",
+          "poids quotidien",
+          "observance",
+          "conseils"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Réalise une synthèse structurée de la situation clinique",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "donc",
+          "synthèse",
+          "conclusion"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient inquiet mais coopératif, retraité, compréhensif",
+      "phraseOuverture": "Bonjour docteur, je suis essoufflé depuis deux semaines et mes jambes gonflent de plus en plus.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis déjà assez stressé comme ça.",
+        "silence": "Vous pouvez me poser d'autres questions si vous voulez savoir plus.",
+        "jargon": "Pouvez-vous m'expliquer ce que ça veut dire ? Je ne comprends pas bien les termes médicaux."
+      }
+    }
+  }
 }

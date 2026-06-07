@@ -106,9 +106,8 @@ function calculateDemarcheScore(currentCase) {
     let maxPoints = 0;
 
     // --- 1. Interrogatoire (poids 40 pts sur 100 de démarche) ---
-    // On détermine le nombre total de champs interrogatoire disponibles en mode immersif
+    // On détermine le nombre total de champs interrogatoire disponibles
     const interro = currentCase.interrogatoire || {};
-    const mode = currentCase.modeDeJeu || 'classique';
 
     // Champs attendus en mode immersif (ceux qui ont des boutons question)
     const interrogatoireFields = [];
@@ -141,7 +140,7 @@ function calculateDemarcheScore(currentCase) {
     if (hm.remarques) interrogatoireFields.push('interrogatoire.histoireMaladie.remarques');
 
     // En mode classique, tous les champs sont dévoilés automatiquement => bonus partiel
-    if (mode === 'classique' || sessionStorage.getItem('immersionMode') !== 'immersif') {
+    if (sessionStorage.getItem('immersionMode') !== 'immersif') {
         // Mode classique : le joueur a accès sans effort, mais on vérifie s'il a consulté
         // On attribue 60% du score car les données sont déjà visibles
         const viewedRatio = dem.examSectionsViewed.has('section-examen-clinique') ? 1 : 0;
@@ -150,7 +149,7 @@ function calculateDemarcheScore(currentCase) {
         points += viewedRatio * 16;
         maxPoints += 16;
     } else {
-        // Mode immersif : le joueur doit poser des questions
+        // Mode immersif (ECOS) : le joueur doit poser des questions
         const totalInterroFields = Math.max(interrogatoireFields.length, 1);
         const askedCount = interrogatoireFields.filter(f => dem.interrogatoireAsked.has(f)).length;
         const interroRatio = askedCount / totalInterroFields;

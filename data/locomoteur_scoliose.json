@@ -109,16 +109,248 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Camille L., 14 ans, de sexe féminin, se présente avec sa mère pour une asymétrie du dos récemment découverte, avec suspicion de scoliose.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet de l'adolescente et de sa mère",
+        "Effectuer un examen clinique du rachis et un examen neurologique",
+        "Réaliser le test d'Adams (flexion antérieure du tronc)",
+        "Proposer une stratégie diagnostique adaptée (radiographie rachis face/profil)",
+        "Expliquer le diagnostic suspecté et la prise en charge à l'adolescente et sa mère",
+        "Aborder le retentissement psychosocial et l'activité physique"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire un corset orthopédique sans avoir proposé d'imagerie",
+        "Ne pas réaliser d'examen invasif",
+        "Ne pas minimiser les inquiétudes de la mère"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Mètre ruban",
+        "Fil à plomb",
+        "Scoliomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Table d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe la patiente et sa mère",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "installer"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : date de découverte, évolution, douleur, gène fonctionnelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "douleur",
+          "évolution",
+          "découvert"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux (scoliose maternelle, autres ATCD)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "mère",
+          "sœur",
+          "père"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : activité physique, scolarité, retentissement psychologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "sport",
+          "danse",
+          "école",
+          "moral",
+          "complexé"
+        ]
+      },
+      {
+        "id": "examen_general",
+        "label": "Réalise un examen général : constantes, état général, stature, maturation pubertaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "taille",
+          "poids",
+          "stade pubertaire",
+          "Tanner"
+        ]
+      },
+      {
+        "id": "inspection_rachis",
+        "label": "Inspecte le rachis de face et de profil : asymétrie des épaules, gibbosité, pli lombaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "épaules",
+          "gibbosité",
+          "asymétrie",
+          "face",
+          "profil"
+        ]
+      },
+      {
+        "id": "test_adams",
+        "label": "Réalise le test de flexion antérieure (test d'Adams) et recherche une gibbosité",
+        "weight": 1,
+        "triggerKeywords": [
+          "penchée en avant",
+          "Adams",
+          "flexion",
+          "gibbosité",
+          "dos rond"
+        ]
+      },
+      {
+        "id": "scoliometre",
+        "label": "Utilise le scoliomètre pour mesurer l'angle de tronc (ATR)",
+        "weight": 1,
+        "triggerKeywords": [
+          "scoliomètre",
+          "angle",
+          "degrés",
+          "ATR"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique des membres inférieurs (force, réflexes, sensibilité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "neurologique",
+          "force",
+          "réflexes",
+          "sensibilité",
+          "marche"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Propose une radiographie du rachis entier de face et de profil (EOS si disponible)",
+        "weight": 1,
+        "triggerKeywords": [
+          "radiographie",
+          "rachis",
+          "face",
+          "profil",
+          "EOS",
+          "Cobb"
+        ]
+      },
+      {
+        "id": "mesures_reeducation",
+        "label": "Propose une prise en charge par kinésithérapie (rééducation posturale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "kinésithérapie",
+          "rééducation",
+          "posture",
+          "exercices"
+        ]
+      },
+      {
+        "id": "information_patient",
+        "label": "Explique le diagnostic suspecté, la prise en charge et le suivi à l'adolescente et sa mère",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "scoliose",
+          "surveillance",
+          "corset",
+          "suivi"
+        ]
+      },
+      {
+        "id": "conclusion_orientation",
+        "label": "Conclut la consultation en orientant vers un spécialiste si besoin et planifie le suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "spécialiste",
+          "orthopédiste",
+          "suivi",
+          "prochain rendez-vous"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente et sa mère terminer sans les interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente et de sa mère",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté à une adolescente de 14 ans (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance envers l'adolescente et sa mère",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Adolescente calme, un peu complexée par son dos. Mère inquiète car elle-même a eu une scoliose à l'adolescence.",
+      "phraseOuverture": "Bonjour docteur, c'est moi qui ai remarqué que le dos de Camille n'était pas droit. Ça fait quelques mois et ça semble s'aggraver.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.activitePhysique"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Camille baisse les yeux et se renfrogne. La mère demande si c'est grave.",
+        "silence": "Camille attend que sa mère parle à sa place.",
+        "jargon": "Camille fronce les sourcils et dit : 'Je comprends pas ce que vous dites.'"
+      }
+    }
+  }
 }

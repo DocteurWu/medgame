@@ -139,16 +139,292 @@
   "correction": "# Troubles urinaires fonctionnels : IUE + HAV\n\nLa patiente présente des fuites urinaires typiquement déclenchées par l'effort (rire, sport, port de charges) associées à une pollakiurie avec urgenturie modérée, sans infection. Le bilan urodynamique confirme une diminution de la pression urétrale et une hyperactivité détrusorienne légère. Le pad-test montre une perte faible à modérée et le calendrier mictionnel confirme une pollakiurie diurne sans polyurie.\n\n## Bonnes pratiques\n\n- Dépister une IUE chez toute femme jeune sportive avec fuites à l'effort\n- Rechercher un HAV associé en cas de pollakiurie\n- Réaliser un calendrier mictionnel et un pad-test pour quantifier l'IUE\n- Proposer en première intention une rééducation périnéale\n- Limiter caféine et organiser un calendrier mictionnel\n\n## Erreurs à éviter\n\n- Traiter à tort comme une infection (ECBU normal)\n- Proposer trop tôt une chirurgie chez une femme jeune nullipare\n- Négliger l'évaluation du tonus périnéal",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de consultation d'urologie.",
+      "contexte": "Cristina Yang, 29 ans, femme, se présente pour des fuites urinaires à l'effort et des envies fréquentes d'uriner évoluant depuis 2 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les troubles mictionnels",
+        "Effectuer un examen clinique ciblé incluant un examen urogynécologique",
+        "Proposer un bilan diagnostique pertinent (BU, ECBU, calendrier mictionnel, bilan urodynamique)",
+        "Évoquer les diagnostics d'incontinence urinaire d'effort et d'hyperactivité vésicale",
+        "Proposer une prise en charge thérapeutique adaptée (rééducation périnéale, mesures hygiéno-diététiques, traitement médical si indiqué)",
+        "Expliquer la démarche diagnostique et thérapeutique à la patiente de manière compréhensible"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire un traitement anticholinergique sans avoir évoqué la rééducation périnéale en première intention",
+        "Ne pas ignorer le contexte psychologique (stress professionnel, antécédent récent de GEU)",
+        "Ne pas réaliser de toucher rectal sans explication préalable"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Cabinet de consultation d'urologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Gants d'examen",
+        "Bandelette urinaire",
+        "Feuille de calendrier mictionnel",
+        "Questionnaire de symptômes urinaires (ICIQ-SF)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie la patiente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_symptomes",
+        "label": "Explore précisément les symptômes : type de fuites (effort/urgenturie), fréquence, sévérité, retentissement",
+        "weight": 1,
+        "triggerKeywords": [
+          "fuites",
+          "effort",
+          "urgences",
+          "pollakiurie",
+          "fréquence",
+          "retentissement"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants et aggravants (toux, sport, port de charges, caféine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "toux",
+          "sport",
+          "café",
+          "effort physique",
+          "port de charges",
+          "aggravation"
+        ]
+      },
+      {
+        "id": "interrogatoire_associes",
+        "label": "Recherche les symptômes associés (brûlures mictionnelles, hématurie, douleurs pelviennes, signes neurologiques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "brûlures",
+          "douleurs",
+          "hématurie",
+          "fièvre",
+          "neurologique",
+          "pelvien"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents chirurgicaux (salpingectomie), gynécologiques et familiaux (mère incontinente)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "chirurgie",
+          "grossesse",
+          "mère",
+          "familial",
+          "salpingectomie"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "value": 1,
+        "label": "Explore le mode de vie : activité physique, consommation de caféine, profession stressante",
+        "weight": 1,
+        "triggerKeywords": [
+          "sport",
+          "café",
+          "travail",
+          "stress",
+          "activité physique",
+          "boissons"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général (constantes, examen abdominal, examen neurologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "abdomen",
+          "neurologique",
+          "palpation",
+          "tension"
+        ]
+      },
+      {
+        "id": "examen_urologique_specifique",
+        "label": "Réalise un test de touche et évalue le tonus du plancher pelvien",
+        "weight": 1,
+        "triggerKeywords": [
+          "test de toux",
+          "tonus pelvien",
+          "plancher pelvien",
+          "examen gynécologique",
+          "prolapsus"
+        ]
+      },
+      {
+        "id": "bilan_diagnostique_pertinent",
+        "label": "Propose un bilan diagnostique pertinent : BU/ECBU, calendrier mictionnel, bilan urodynamique si nécessaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "bandelette",
+          "ECBU",
+          "calendrier mictionnel",
+          "urodynamique",
+          "bilan",
+          "infection urinaire"
+        ]
+      },
+      {
+        "id": "diagnostic_dual",
+        "label": "Évoque le diagnostic d'incontinence urinaire d'effort associée à une hyperactivité vésicale",
+        "weight": 1,
+        "triggerKeywords": [
+          "incontinence d'effort",
+          "hyperactivité vésicale",
+          "urgenturie",
+          "mixte",
+          "diagnostic"
+        ]
+      },
+      {
+        "id": "strategie_pec_reeducation",
+        "label": "Propose la rééducation périnéale en première intention",
+        "weight": 1,
+        "triggerKeywords": [
+          "rééducation",
+          "périnéale",
+          "kinésithérapie",
+          "plancher pelvien",
+          "première intention"
+        ]
+      },
+      {
+        "id": "strategie_pec_hygieno_dietetique",
+        "label": "Propose des mesures hygiéno-diététiques (réduction caféine, gestion des apports hydriques, entraînement vésical)",
+        "weight": 1,
+        "triggerKeywords": [
+          "caféine",
+          "hydrique",
+          "entraînement vésical",
+          "mesures comportementales",
+          "hygiéno-diététique"
+        ]
+      },
+      {
+        "id": "strategie_pec_medicale",
+        "label": "Évoque un traitement anticholinergique ou b3-agoniste en seconde intention si échec de la rééducation",
+        "weight": 1,
+        "triggerKeywords": [
+          "anticholinergique",
+          "b3-agoniste",
+          "traitement médical",
+          "seconde intention",
+          "médicament"
+        ]
+      },
+      {
+        "id": "explication_claire_pec",
+        "label": "Explique clairement la prise en charge à la patiente en langage adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "explique",
+          "comprenez",
+          "vais vous expliquer",
+          "thérapie",
+          "prise en charge"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi avec réévaluation à 3 mois",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "réévaluation",
+          "contrôle",
+          "3 mois"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la gêne exprimée",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Femme jeune, professionnelle de santé (interne en chirurgie), plutôt directe et factuelle, légèrement gênée par le sujet intime mais coopérative. Montre de l'inquiétude quant au retentissement sur sa vie professionnelle et sportive.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des fuites urinaires depuis quelques semaines, surtout quand je fais du sport ou quand je tousse. Ça commence à me gêner beaucoup, surtout au travail.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "modeDeVie.emploi",
+        "histoireMaladie.symptomesAssocies",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosCachees": [
+        "Impact psychologique de la GEU récente",
+        "Crainte d'une pathologie grave"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous pouvez y aller doucement s'il vous plaît, c'est un peu délicat comme sujet...",
+        "silence": "Vous avez d'autres questions ? Je veux être sûre de bien comprendre ce que j'ai.",
+        "jargon": "Pardon, qu'est-ce que vous entendez par là ? Pouvez-vous me l'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

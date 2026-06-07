@@ -415,5 +415,287 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences pédiatriques.",
+      "contexte": "Maxime Leroy, 15 ans, de sexe masculin, est amené par le SAMU après avoir été retiré inconscient d'une piscine municipale. Il a coulé après avoir ressenti des crampes et a été immergé environ 1 minute avant d'être repêché par un sauveteur. Il est inconscient mais respire.",
+      "consignesAttendues": [
+        "Évaluer la sécurité de la scène et se protéger (gants)",
+        "Évaluer l'état de conscience du patient (score de Glasgow, réponse à la stimulation)",
+        "Mettre le patient en Position Latérale de Sécurité (PLS) car il est inconscient et respire",
+        "Demander l'administration d'oxygène à haut débit (masque haute concentration)",
+        "Retirer les vêtements mouillés et couvrir le patient (hypothermie 35,5°C)",
+        "Poser une voie veineuse périphérique",
+        "Demander un monitoring continu (SpO2, FC, TA, scope)",
+        "Demander une gazométrie artérielle",
+        "Demander une radiographie thoracique",
+        "Demander un bilan biologique (NFS, ionogramme, créatinine, CRP, bilan de coagulation)",
+        "Réchauffer le patient (réchauffeur de solutés, couvertures)",
+        "Contacter le SAMU/15 pour transfert en réanimation pédiatrique si dégradation",
+        "Ne JAMAIS tenter d'évacuer l'eau des poumons par des coups dans le dos ou des compressions abdominales"
+      ],
+      "consignesInterdites": [
+        "Ne pas tenter d'évacuer l'eau des poumons en frappant le patient dans le dos",
+        "Ne pas tenter la manœuvre de Heimlich pour « vider l'eau »",
+        "Ne pas laisser le patient en décubitus dorsal",
+        "Ne pas réchauffer trop rapidement (pas de contact direct avec source de chaleur)",
+        "Ne pas administrer de sédatifs ou de morphine sans avis spécialisé",
+        "Ne pas se mettre en danger (retirer le patient de l'eau soi-même sans équipement)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Gants à usage unique",
+        "Masque haute concentration avec réservoir d'oxygène",
+        "Kit de perfusion (cathéters, tubulures, sérum physiologique)",
+        "Monitoring multiparamétrique (scope, SpO2, TA non invasive)",
+        "Couvertures et couverture de survie",
+        "Réchauffeur de solutés",
+        "Chariot d'urgence (aspiration, matériel d'intubation, médicaments d'urgence)",
+        "Radiographie thoracique portable",
+        "Kit de prélèvements sanguins (gazométrie, NFS, ionogramme, bilan de coagulation)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securite_scene",
+        "label": "Évalue la sécurité de la scène et se protège (gants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "sécurité",
+          "protection",
+          "précautions standard"
+        ]
+      },
+      {
+        "id": "evaluation_conscience",
+        "label": "Évalue l'état de conscience (score de Glasgow ou réponse verbale/douloureuse)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Glasgow",
+          "conscience",
+          "stimulation",
+          "réponse",
+          "inconscient",
+          "AVPU"
+        ]
+      },
+      {
+        "id": "evaluation_ventilation",
+        "label": "Évalue la respiration (fréquence, amplitude, bruits respiratoires, SpO2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "respiration",
+          "SpO2",
+          "saturation",
+          "auscultation",
+          "râles",
+          "fréquence respiratoire"
+        ]
+      },
+      {
+        "id": "evaluation_circulation",
+        "label": "Évalue la circulation (pouls, temps de recoloration, pression artérielle, marbrures)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "tension",
+          "pression artérielle",
+          "FC",
+          "recoloration",
+          "marbrures",
+          "cyanose"
+        ]
+      },
+      {
+        "id": "pls",
+        "label": "Place le patient en Position Latérale de Sécurité (inconscient qui respire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "PLS",
+          "position latérale de sécurité",
+          "position latérale",
+          "décubitus latéral"
+        ]
+      },
+      {
+        "id": "oxygene_haut_debit",
+        "label": "Demande l'administration d'oxygène à haut débit (masque haute concentration)",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "O2",
+          "masque haute concentration",
+          "haut débit",
+          "SpO2",
+          "hypoxie"
+        ]
+      },
+      {
+        "id": "retrait_vetements_rechauffement",
+        "label": "Retire les vêtements mouillés et couvre le patient (lutte contre l'hypothermie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vêtements mouillés",
+          "couvrir",
+          "couverture",
+          "réchauffer",
+          "hypothermie",
+          "couverture de survie"
+        ]
+      },
+      {
+        "id": "voie_veineuse",
+        "label": "Pose ou demande la pose d'une voie veineuse périphérique",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "cathéter",
+          "VVP",
+          "voie d'abord"
+        ]
+      },
+      {
+        "id": "monitoring",
+        "label": "Demande un monitoring continu (scope, SpO2, TA, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "monitoring",
+          "scope",
+          "SpO2",
+          "surveillance",
+          "scope",
+          "monitorage"
+        ]
+      },
+      {
+        "id": "examens_complementaires",
+        "label": "Demande les examens complémentaires adaptés (gazométrie, radiographie thoracique, bilan biologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gazométrie",
+          "radio thorax",
+          "radiographie",
+          "NFS",
+          "ionogramme",
+          "bilan",
+          "examens",
+          "biologie"
+        ]
+      },
+      {
+        "id": "rechauffement_actif",
+        "label": "Met en place un réchauffement actif adapté (réchauffeur de solutés, couvertures chaudes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "réchauffeur",
+          "solutés tièdes",
+          "réchauffement",
+          "température",
+          "35.5"
+        ]
+      },
+      {
+        "id": "ne_pas_evacuer_eau",
+        "label": "Ne tente PAS d'évacuer l'eau des poumons (pas de coups dans le dos, pas de Heimlich)",
+        "weight": 1,
+        "triggerKeywords": []
+      },
+      {
+        "id": "appel_samu_transfert",
+        "label": "Contacte le SAMU/15 pour organisation du transfert en réanimation pédiatrique",
+        "weight": 1,
+        "triggerKeywords": [
+          "SAMU",
+          "15",
+          "transfert",
+          "réanimation",
+          "SMUR",
+          "avis spécialisé"
+        ]
+      },
+      {
+        "id": "surveillance_evolution",
+        "label": "Surveille l'évolution et se prépare à un arrêt cardio-respiratoire",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveiller",
+          "évolution",
+          "ACR",
+          "arrêt",
+          "chariot d'urgence",
+          "réanimation"
+        ]
+      },
+      {
+        "id": "transmission_equipe",
+        "label": "Transmet clairement la situation à l'équipe soignante (SBAR ou transmission structurée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transmission",
+          "SBAR",
+          "passation",
+          "collègue",
+          "infirmière",
+          "senior"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_equipe",
+        "label": "Commande clairement et calmement à l'équipe soignante (infirmier, aide-soignant)",
+        "max": 1
+      },
+      {
+        "id": "communication_samour",
+        "label": "Communique de manière structurée avec le SAMU (situation, antécédents, actions réalisées)",
+        "max": 1
+      },
+      {
+        "id": "calme_urgence",
+        "label": "Garde son calme et adopte un ton adapté malgré l'urgence de la situation",
+        "max": 1
+      },
+      {
+        "id": "information_proches",
+        "label": "S'informe auprès des proches/sauveteur sur les circonstances de la noyade",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient de 15 ans, inconscient, ne répond pas aux stimuli verbaux. Respire avec difficulté. Pâle, cyanosé, tremblant. Écume rosée aux lèvres. Les parents sont présents, très angoissés.",
+      "phraseOuverture": "[Le patient est inconscient — c'est le sauveteur ou un proche qui parle] « Il a coulé ! On l'a sorti de l'eau, il ne répond plus ! »",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "traitements",
+        "allergies",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation"
+      ],
+      "infosCachees": [
+        "Le patient a mangé un repas copieux juste avant de nager",
+        "Il s'agit d'un nageur débutant",
+        "Durée d'immersion estimée : environ 1 minute"
+      ],
+      "reactions": {
+        "brutal": "[Le parent crie] « Mais faites quelque chose ! Il ne bouge plus ! Pourquoi vous ne faites rien ?! »",
+        "silence": "[Le parent est en état de choc, ne parle plus, pleure silencieusement]",
+        "jargon": "[Si le candidat utilise du jargon sans expliquer] Le parent répond : « Je comprends pas ce que vous dites, parlez français ! »"
+      }
+    }
   }
 }

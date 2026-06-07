@@ -140,7 +140,7 @@
       "systolic": 190,
       "diastolic": 110,
       "spo2": 96,
-      "temperature": 37.0,
+      "temperature": 37,
       "respiratoryRate": 20
     },
     "stabilizeOnCorrectTreatment": true
@@ -164,5 +164,280 @@
     "Aldostéronémie/Rénine",
     "Scanner surrénalien",
     "ECG"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Monsieur George Wickham, 42 ans, se présente pour une hypertension artérielle sévère (165/105 mmHg) détectée lors d'un bilan pré-opératoire, avec hypokaliémie récurrente et crampes musculaires.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers la recherche d'une HTA secondaire",
+        "Effectuer un examen clinique cardiovasculaire et général adapté",
+        "Proposer un bilan biologique orienté (ionogramme, aldostérone, rénine)",
+        "Évoquer le diagnostic d'hyperaldostéronisme primaire",
+        "Expliquer au patient la démarche diagnostique et la nécessité d'examens complémentaires"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'AINS",
+        "Ne pas prescrire de corticoïdes",
+        "Ne pas initier un IEC seul sans surveillance biologique",
+        "Ne pas conclure à une HTA essentielle sans avoir éliminé une cause secondaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Résultats biologiques (ionogramme : hypokaliémie à 3,0 mmol/L, alcalose métabolique)",
+        "ECG (signes d'hypokaliémie : onde U, sous-décalage ST)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en cardiologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_hta_secondaire",
+        "label": "Recherche les signes évocateurs d'HTA secondaire (crampes, fatigue, nycturie, céphalées, sueurs, palpitations)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crampes",
+          "fatigue",
+          "nycturie",
+          "céphalées",
+          "sueurs",
+          "palpitations",
+          "faiblesse musculaire"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Explore les facteurs de risque cardiovasculaire (tabac, alcool, sédentarité, stress, antécédents familiaux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "stress",
+          "antécédents familiaux",
+          "père",
+          "mère"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Recherche les traitements en cours et les traitements antihypertenseurs déjà essayés",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicant",
+          "antihypertenseur",
+          "IEC",
+          "ARA2",
+          "diurétique",
+          "calcique"
+        ]
+      },
+      {
+        "id": "interrogatoire_regime_sel",
+        "label": "Évalue les apports en sel et les habitudes alimentaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "sel",
+          "alimentation",
+          "régime",
+          "charcuterie",
+          "plats préparés"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet incluant TA aux 2 bras, auscultation cardiaque, pulmonaire, abdominale (souffle rénal), pouls périphériques",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "auscultation",
+          "pouls fémoraux",
+          "souffle abdominal",
+          "2 bras"
+        ]
+      },
+      {
+        "id": "interpretation_biologie",
+        "label": "Interprète l'hypokaliémie et l'alcalose métabolique comme indices d'hyperaldostéronisme",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypokaliémie",
+          "alcalose",
+          "kaliémie",
+          "3,0",
+          "aldostérone",
+          "rénine"
+        ]
+      },
+      {
+        "id": "demande_aldosterone_renine",
+        "label": "Demande le dosage de l'aldostérone et de la rénine (rapport aldostérone/rénine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aldostérone",
+          "rénine",
+          "rapport",
+          "ARR",
+          "dosage hormonal"
+        ]
+      },
+      {
+        "id": "diagnostic_hyperaldosteronisme",
+        "label": "Évoque le diagnostic d'hyperaldostéronisme primaire (syndrome de Conn)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hyperaldostéronisme",
+          "Conn",
+          "surrénale",
+          "adénome",
+          "HTA secondaire"
+        ]
+      },
+      {
+        "id": "bilan_imagerie",
+        "label": "Propose une imagerie surrénalienne (scanner ou IRM surrénalien)",
+        "weight": 1,
+        "triggerKeywords": [
+          "scanner surrénalien",
+          "IRM surrénalien",
+          "imagerie",
+          "adénome",
+          "surrénale"
+        ]
+      },
+      {
+        "id": "strategie_pec_chirurgicale",
+        "label": "Évoque la possibilité d'une chirurgie surrénalienne (surrénalectomie) en cas d'adénome unilatéral",
+        "weight": 1,
+        "triggerKeywords": [
+          "chirurgie",
+          "surrénalectomie",
+          "traitement chirurgical",
+          "adénome"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Explique au patient la nécessité de corriger l'hypokaliémie et de surveiller la TA",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "patient",
+          "comprendre",
+          "surveillance",
+          "potassium"
+        ]
+      },
+      {
+        "id": "eviter_traitements_dangereux",
+        "label": "Ne prescrit pas d'AINS, de corticoïdes ni d'IEC seul sans surveillance",
+        "weight": 1,
+        "triggerKeywords": [
+          "AINS",
+          "corticoïde",
+          "IEC seul",
+          "ibuprofène",
+          "prednisone"
+        ]
+      },
+      {
+        "id": "orientation_specialiste",
+        "label": "Oriente le patient vers un spécialiste (endocrinologue ou hypertensiologue) pour bilan spécialisé",
+        "weight": 1,
+        "triggerKeywords": [
+          "endocrinologue",
+          "spécialiste",
+          "hypertensiologue",
+          "orientation",
+          "avis spécialisé"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Résume la situation : HTA sévère + hypokaliémie = suspicion d'hyperaldostéronisme primaire, bilan à compléter",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "donc",
+          "hypothèse",
+          "bilan",
+          "prochaine étape"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient anxieux, informaticien stressé, inquiet de ne pas pouvoir être opéré à cause de sa tension. Il a entendu parler de l'hypertension mais ne comprend pas pourquoi elle ne se traite pas facilement.",
+      "phraseOuverture": "Bonjour docteur, on m'a trouvé une tension trop haute lors de mon bilan pré-op, et mon médecin m'a envoyé ici en urgence. Je ne comprends pas, je ne me sens pas si mal que ça…",
+      "infosVolontaires": [
+        "motifConsultation",
+        "HTA sévère 165/105",
+        "crampes musculaires",
+        "fatigue",
+        "hypokaliémie connue"
+      ],
+      "infosSiDemandees": [
+        "antecedentsMedicaux",
+        "antecedentsChirurgicaux",
+        "antecedentsFamiliaux",
+        "traitementEnCours",
+        "consommationTabac",
+        "consommationAlcool",
+        "apportsSel",
+        "symptomesAssocies"
+      ],
+      "infosCachees": [
+        "Prise occasionnelle d'automédication (antalgiques)"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je n'ai pas fini de répondre !",
+        "silence": "… (silence prolongé, regard interrogateur)",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par aldostérone…"
+      }
+    }
+  }
 }

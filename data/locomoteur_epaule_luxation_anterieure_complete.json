@@ -115,16 +115,277 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences médico-chirurgicales.",
+      "contexte": "Martin Moreau, 24 ans, homme, se présente aux urgences pour une douleur aiguë de l'épaule droite avec impossibilité totale de mobiliser le bras, survenue lors d'un plaquage au rugby.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Effectuer un examen clinique de l'épaule et du membre supérieur droit",
+        "Identifier les signes cliniques évocateurs de luxation antérieure de l'épaule",
+        "Demander les examens complémentaires appropriés",
+        "Proposer une prise en charge thérapeutique adaptée en urgence",
+        "Expliquer au patient la démarche diagnostique et thérapeutique"
+      ],
+      "consignesInterdites": [
+        "Ne pas réduire la luxation sans imagerie préalable",
+        "Ne pas mobiliser brutalement le membre supérieur lésé",
+        "Ne pas ignorer l'évaluation vasculo-nerveuse du membre supérieur"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Gants d'examen",
+        "Échelle visuelle analogique de douleur",
+        "Goniomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie le patient et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "identité",
+          "prénom"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Précise le motif de consultation et les circonstances de survenue du traumatisme",
+        "weight": 1,
+        "triggerKeywords": [
+          "que s'est-il passé",
+          "circonstances",
+          "plaquage",
+          "abduction",
+          "rotation externe"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (EVA, type, irradiation, intensité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "EVA",
+          "échelle",
+          "douleur",
+          "irradiation",
+          "intensité"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche des antécédents (luxation antérieure, chirurgie de l'épaule, terrain)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "luxation antérieure",
+          "chirurgie",
+          "première fois"
+        ]
+      },
+      {
+        "id": "examen_inspection",
+        "label": "Inspecte l'épaule : déformation en carré, signe de l'épaulette, comblement du sillon delto-pectoral",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "déformation",
+          "épaulette",
+          "sillon delto-pectoral",
+          "carré"
+        ]
+      },
+      {
+        "id": "examen_palpation",
+        "label": "Palpe l'épaule : douleur antérieure, tête humérale palpable en avant de la glène",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpation",
+          "douleur antérieure",
+          "tête humérale",
+          "glène"
+        ]
+      },
+      {
+        "id": "examen_neurovasculaire",
+        "label": "Évalue le statut vasculo-nerveux du membre supérieur (pouls radial, sensibilité, motricité distale, syndrome de l'aile du scapulaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls radial",
+          "sensibilité",
+          "motricité",
+          "nerf axillaire",
+          "aileron scapulaire",
+          "circulation"
+        ]
+      },
+      {
+        "id": "examen_mobilisation",
+        "label": "Évalue la mobilité passive avec prudence et ne force pas la mobilisation active",
+        "weight": 1,
+        "triggerKeywords": [
+          "mobilisation passive",
+          "douleur",
+          "ne pas forcer",
+          "prudence"
+        ]
+      },
+      {
+        "id": "examen_complet_membre",
+        "label": "Examine le reste du membre supérieur (coude, poignet, main) pour éliminer une lésion associée",
+        "weight": 1,
+        "triggerKeywords": [
+          "coude",
+          "poignet",
+          "main",
+          "lésion associée",
+          "fracture"
+        ]
+      },
+      {
+        "id": "demande_imagerie",
+        "label": "Demande une radiographie de l'épaule (face + profil) avant toute manœuvre de réduction",
+        "weight": 1,
+        "triggerKeywords": [
+          "radiographie",
+          "face",
+          "profil",
+          "avant réduction",
+          "imagerie"
+        ]
+      },
+      {
+        "id": "diagnostic_luxation_anterieure",
+        "label": "Pose le diagnostic de luxation antérieure de l'épaule droite",
+        "weight": 1,
+        "triggerKeywords": [
+          "luxation antérieure",
+          "gléno-humérale",
+          "diagnostic"
+        ]
+      },
+      {
+        "id": "strategie_pec_urgence",
+        "label": "Propose une prise en charge adaptée : antalgie, réduction orthopédique sous sédation/analgésie, contrôle radiographique post-réduction",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgie",
+          "réduction",
+          "sédation",
+          "post-réduction",
+          "contrôle radio"
+        ]
+      },
+      {
+        "id": "strategie_pec_secondaire",
+        "label": "Précise la prise en charge secondaire : immobilisation, rééducation, suivi spécialisé",
+        "weight": 1,
+        "triggerKeywords": [
+          "immobilisation",
+          "rééducation",
+          "suivi",
+          "orthopédie",
+          "kinésithérapie"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique clairement au patient le diagnostic, la prise en charge et le pronostic",
+        "weight": 1,
+        "triggerKeywords": [
+          "explique",
+          "diagnostic",
+          "réduction",
+          "pronostic",
+          "récidive"
+        ]
+      },
+      {
+        "id": "recherche_complications",
+        "label": "Recherche et mentionne les complications possibles (récidive, lésion de Bankart, fracture associée, lésion vasculaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "récidive",
+          "Bankart",
+          "fracture",
+          "Hill-Sachs",
+          "complication"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, sportif, anxieux mais coopérant. Il a très mal et a peur de la gravité. Il est pressé de savoir s'il pourra rejouer au rugby.",
+      "phraseOuverture": "Bonjour docteur, je me suis fait un plaquage au rugby il y a une heure, j'ai très mal à l'épaule droite et je n'arrive plus du tout à bouger mon bras.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.descriptionDouleur"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.activitePhysique",
+        "allergies",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Aïe ! Vous me faites mal ! Faites attention à mon bras !",
+        "silence": "Vous pouvez me dire ce que vous pensez que j'ai ? J'ai vraiment peur que ce soit grave...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

@@ -134,16 +134,277 @@
   "correction": "# Troubles du comportement alimentaire non spécifiés (TCANS)\n\nCrises, culpabilité, fluctuations du comportement sans critères complets de boulimie.\n\n## Bonnes pratiques\n\n- Thérapies psycho‑comportementales\n- Gestion du stress et soutien psychosocial\n- Surveillance somatique (électrolytes, comorbidités)\n\n## Erreurs à éviter\n\n- Étiqueter boulimie stricte sans fréquence minimale\n- Minimiser les risques psychiques et somatiques",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de psychiatrie.",
+      "contexte": "Chloé MARTIN, 19 ans, femme, se présente pour des préoccupations concernant des crises de boulimie.",
+      "consignesAttendues": [
+        "Réaliser un entretien clinique centré sur les troubles du comportement alimentaire",
+        "Évaluer la fréquence, les circonstances déclenchantes et les comportements compensatoires associés aux crises",
+        "Rechercher des symptômes anxio-dépressifs associés",
+        "Évaluer le retentissement psychosocial et le risque suicidaire",
+        "Proposer une prise en charge adaptée et orienter la patiente"
+      ],
+      "consignesInterdites": [
+        "Ne pas poser un diagnostic fermé sans avoir exploré l'ensemble des critères diagnostiques",
+        "Ne pas banaliser les symptômes ni minimiser la souffrance de la patiente",
+        "Ne pas prescrire de traitement médicamenteux sans avoir proposé un accompagnement psychothérapeutique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Balance",
+        "Mètre ruban",
+        "Feuille d'évaluation EDE-Q (Eating Disorder Examination Questionnaire)",
+        "Fiche d'orientation vers psychologue/psychiatre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je suis médecin"
+        ]
+      },
+      {
+        "id": "exploration_crises_boulimie",
+        "label": "Explore la fréquence, la durée et l'intensité des crises de boulimie",
+        "weight": 1,
+        "triggerKeywords": [
+          "crise",
+          "boulimie",
+          "fréquence",
+          "combien de fois",
+          "quantité",
+          "nourriture"
+        ]
+      },
+      {
+        "id": "recherche_comportements_compensatoires",
+        "label": "Recherche les comportements compensatoires (vomissements, laxatifs, jeûne, exercice excessif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vomissement",
+          "laxatif",
+          "jeûne",
+          "exercice",
+          "compensation",
+          "purgatif"
+        ]
+      },
+      {
+        "id": "evaluation_image_corporelle",
+        "label": "Évalue l'image corporelle et la préoccupation pondérale",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "image corporelle",
+          "corpulence",
+          "maigrir",
+          "grossir",
+          "apparence"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_declenchants",
+        "label": "Identifie les facteurs déclenchants (stress, émotions, contexte social)",
+        "weight": 1,
+        "triggerKeywords": [
+          "stress",
+          "émotion",
+          "déclencheur",
+          "situation",
+          "contexte",
+          "examen"
+        ]
+      },
+      {
+        "id": "evaluation_retentissement_psychologique",
+        "label": "Évalue le retentissement psychologique (culpabilité, honte, isolement, anxiété, dépression)",
+        "weight": 1,
+        "triggerKeywords": [
+          "culpabilité",
+          "honte",
+          "tristesse",
+          "anxiété",
+          "dépression",
+          "isolement",
+          "moral"
+        ]
+      },
+      {
+        "id": "recherche_antecedents_familiaux",
+        "label": "Recherche les antécédents familiaux de troubles du comportement alimentaire ou de surpoids",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "mère",
+          "père",
+          "antécédents familiaux",
+          "surpoids familial"
+        ]
+      },
+      {
+        "id": "evaluation_mode_vie",
+        "label": "Évalue le mode de vie (activité physique, alimentation, consommation d'alcool)",
+        "weight": 1,
+        "triggerKeywords": [
+          "activité physique",
+          "sport",
+          "alimentation",
+          "alcool",
+          "tabac",
+          "mode de vie"
+        ]
+      },
+      {
+        "id": "recherche_idees_suicidaires",
+        "label": "Recherche des idées suicidaires ou des antécédents de tentative de suicide",
+        "weight": 1,
+        "triggerKeywords": [
+          "suicide",
+          "idées noires",
+          "envie de mourir",
+          "tentative",
+          "automutilation"
+        ]
+      },
+      {
+        "id": "examen_clinique_oriente",
+        "label": "Réalise un examen clinique orienté (poids, taille, IMC, signes de malnutrition ou de purge)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "IMC",
+          "examen clinique",
+          "signes",
+          "Russell"
+        ]
+      },
+      {
+        "id": "orientation_prise_en_charge",
+        "label": "Propose une prise en charge adaptée (orientation vers psychologue/psychiatre, thérapie cognitivo-comportementale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "orientation",
+          "psychologue",
+          "psychiatre",
+          "thérapie",
+          "TCC",
+          "prise en charge",
+          "suivi"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic_possible",
+        "label": "Évoque le diagnostic de trouble du comportement alimentaire non spécifié (TCANS) de manière empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "TCANS",
+          "trouble alimentaire",
+          "boulimie",
+          "trouble du comportement alimentaire"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Propose des conseils d'éducation et de prévention (alimentation équilibrée, gestion du stress)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conseil",
+          "éducation",
+          "prévention",
+          "alimentation équilibrée",
+          "gestion stress",
+          "hygiène vie"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi régulier et un numéro d'urgence si besoin",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "prochain rendez-vous",
+          "urgence",
+          "numéro",
+          "appeler",
+          "réévaluation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la souffrance exprimée",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune femme de 19 ans, étudiante, anxieuse, préoccupée par son poids et son image corporelle. Elle exprime de la culpabilité et de la honte concernant ses crises de boulimie. Elle est coopérative mais émotive.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des crises de boulimie et ça me fait peur. Je mange beaucoup trop quand je suis stressée et après je me sens horrible.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation"
+      ],
+      "infosCachees": [
+        "Présence de vomissements provoqués 2 à 3 fois par semaine",
+        "Idées suicidaires passagères sans plan précis",
+        "Antécédent de tentative de restriction alimentaire sévère il y a 1 an"
+      ],
+      "reactions": {
+        "brutal": "Je ne suis pas folle ! C'est juste que je mange trop parfois...",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire par 'comportement compensatoire'..."
+      }
+    }
+  }
 }

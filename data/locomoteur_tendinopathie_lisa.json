@@ -141,16 +141,216 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de rhumatologie.",
+      "contexte": "BERNDLE Lisa, 45 ans, femme, se présente en consultation pour une douleur de la hanche gauche évoluant depuis 4 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la douleur de hanche gauche",
+        "Effectuer un examen clinique locomoteur ciblé de la hanche gauche",
+        "Proposer un diagnostic et argumenter",
+        "Proposer une prise en charge thérapeutique initiale adaptée",
+        "Expliquer le diagnostic et la prise en charge au patient de manière compréhensible"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'imagerie en première intention sans justification clinique",
+        "Ne pas proposer un traitement chirurgical d'emblée"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Mètre ruban"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (localisation, intensité, type, irradiations, chronologie, facteurs aggravants/soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où",
+          "depuis quand",
+          "type de douleur",
+          "intensité",
+          "irradiation",
+          "aggrave",
+          "soulage"
+        ]
+      },
+      {
+        "id": "interrogatoire_terrain",
+        "label": "Recherche les antécédents personnels, familiaux et le mode de vie",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "tabac",
+          "alcool",
+          "activité physique",
+          "traitement"
+        ]
+      },
+      {
+        "id": "examen_locomoteur_hanche",
+        "label": "Réalise un examen locomoteur complet de la hanche gauche (inspection, palpation, mobilité, manœuvres spécifiques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpation grand trochanter",
+          "rotation interne",
+          "abduction contrariée",
+          "inspection",
+          "mobilité hanche"
+        ]
+      },
+      {
+        "id": "examen_marche",
+        "label": "Évalue la marche et recherche une boiterie",
+        "weight": 1,
+        "triggerKeywords": [
+          "marche",
+          "boiterie",
+          "appui monopodal"
+        ]
+      },
+      {
+        "id": "diagnostic_tendinopathie",
+        "label": "Propose le diagnostic de tendinopathie du moyen fessier gauche",
+        "weight": 1,
+        "triggerKeywords": [
+          "tendinopathie",
+          "moyen fessier",
+          "syndrome douloureux du grand trochanter"
+        ]
+      },
+      {
+        "id": "argumentation_diagnostic",
+        "label": "Argumente le diagnostic en s'appuyant sur les éléments cliniques (topographie, manœuvres, absence de signes inflammatoires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpation trochanter",
+          "abduction contrariée",
+          "pas de réveil nocturne",
+          "pas de dérouillage"
+        ]
+      },
+      {
+        "id": "pec_kinesitherapie",
+        "label": "Propose la kinésithérapie comme traitement de première intention",
+        "weight": 1,
+        "triggerKeywords": [
+          "kinésithérapie",
+          "rééducation",
+          "étirements",
+          "renforcement"
+        ]
+      },
+      {
+        "id": "pec_antalgique",
+        "label": "Propose un traitement antalgique adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "paracétamol",
+          "AINS"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique le diagnostic et la prise en charge au patient de manière claire et compréhensible",
+        "weight": 1,
+        "triggerKeywords": [
+          "tendinopathie",
+          "explication",
+          "kinésithérapie",
+          "évolution"
+        ]
+      },
+      {
+        "id": "conseils_prevention",
+        "label": "Donne des conseils d'activité physique adaptée et de prévention",
+        "weight": 1,
+        "triggerKeywords": [
+          "activité physique",
+          "éviter",
+          "adapter",
+          "prévention"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux par rapport à la douleur chronique et l'impact sur ses activités quotidiennes",
+      "phraseOuverture": "Bonjour docteur, j'ai mal à la hanche gauche depuis quelques mois et ça commence à vraiment me gêner dans ma vie de tous les jours.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.activitePhysique",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je comprends que vous soyez pressé, mais j'aimerais bien comprendre ce que j'ai exactement...",
+        "silence": "Vous pouvez prendre votre temps pour réfléchir à ma question.",
+        "jargon": "Je ne comprends pas très bien ce terme, vous pouvez me l'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

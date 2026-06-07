@@ -497,5 +497,302 @@
         "respiration": "agonal"
       }
     }
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des Urgences.",
+      "contexte": "Julien Moreau, 28 ans, de sexe masculin, est amené par les secours après avoir été retrouvé inconscient sur la voie publique.",
+      "consignesAttendues": [
+        "Prendre en charge le patient en urgence vitale",
+        "Réaliser un examen clinique complet et ciblé",
+        "Identifier le syndrome toxique opioïde",
+        "Administrer le traitement antidotique adapté (Naloxone)",
+        "Assurer la libération des voies aériennes et l'oxygénation",
+        "Demander les examens complémentaires pertinents",
+        "Communiquer avec l'équipe soignante et le régulateur SAMU"
+      ],
+      "consignesInterdites": [
+        "Administrer du Flumazénil",
+        "Donner à boire au patient",
+        "Laisser le patient sans surveillance",
+        "Omettre la surveillance rapprochée après administration de Naloxone"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stréquence pertinente de PEC",
+      "lieu": "Service d'urgence — Box de déchocage / SAU",
+      "materielDisponible": [
+        "Matériel de libération des voies aériennes (canule de Guedel, aspiration)",
+        "Bouteille d'oxygène avec masque haute concentration",
+        "Naloxone (Narcan) ampoules 0,4 mg IVD",
+        "Kit de perfusion avec sérum physiologique",
+        "Moniteur multiparamétrique (SpO2, FC, PA, FR)",
+        "Glucomètre capillaire",
+        "Électrocardioscope",
+        "Chariot d'urgence"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securite_initiale",
+        "label": "Évalue la sécurité de la scène et se protège (gants, aiguilles à proximité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "sécurité",
+          "seringue",
+          "aiguille",
+          "protection"
+        ]
+      },
+      {
+        "id": "evaluation_conscience",
+        "label": "Évalue le niveau de conscience (score de Glasgow) et la réactivité du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "glasgow",
+          "conscience",
+          "réactif",
+          "stimulation",
+          "nociceptive",
+          "score"
+        ]
+      },
+      {
+        "id": "liberation_va",
+        "label": "Libère les voies aériennes (basculance de tête, canule de Guedel, aspiration si besoin) et place en PLS",
+        "weight": 1,
+        "triggerKeywords": [
+          "voies aériennes",
+          "canule",
+          "guedel",
+          "aspiration",
+          "PLS",
+          "position latérale",
+          "libération"
+        ]
+      },
+      {
+        "id": "oxygenation",
+        "label": "Administre de l'oxygène à haut débit (masque haute concentration 15 L/min)",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "haut débit",
+          "15 litres",
+          "saturation",
+          "SpO2"
+        ]
+      },
+      {
+        "id": "evaluation_respiratoire",
+        "label": "Évalue la fréquence respiratoire, l'amplitude thoracique et ausculte les poumons",
+        "weight": 1,
+        "triggerKeywords": [
+          "fréquence respiratoire",
+          "auscultation",
+          "poumons",
+          "bradypnée",
+          "murmure vésiculaire",
+          "respiration"
+        ]
+      },
+      {
+        "id": "evaluation_circulatoire",
+        "label": "Évalue la fréquence cardiaque, la pression artérielle, le temps de recoloration cutanée et la perfusion périphérique",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "tension",
+          "pression artérielle",
+          "FC",
+          "bradycardie",
+          "recoloration",
+          "perfusion"
+        ]
+      },
+      {
+        "id": "examen_pupilles",
+        "label": "Examine les pupilles (taille, symétrie, réactivité) et identifie le myosis serré (pinpoint)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pupilles",
+          "myosis",
+          "pinpoint",
+          "taille",
+          "réactif",
+          "lumière",
+          "serré"
+        ]
+      },
+      {
+        "id": "recherche_signes_injection",
+        "label": "Recherche des traces d'injection intraveineuse (inspection des plis des coudes, avant-bras)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traces d'injection",
+          "pli du coude",
+          "veine",
+          "injection",
+          "puncture",
+          "marques"
+        ]
+      },
+      {
+        "id": "glycemie_capillaire",
+        "label": "Réalise une glycémie capillaire pour éliminer une hypoglycémie",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "glucomètre",
+          "capillaire",
+          "sucre",
+          "hypoglycémie",
+          "glucose"
+        ]
+      },
+      {
+        "id": "pose_voie_veineuse",
+        "label": "Pose une voie veineuse périphérique de bon calibre (18G ou 16G)",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "cathéter",
+          "sérum physiologique",
+          "pose",
+          "abord veineux"
+        ]
+      },
+      {
+        "id": "administration_naloxone",
+        "label": "Administre la Naloxone (Narcan) 0,4 mg IVD en bolus et annonce la dose et la voie",
+        "weight": 1,
+        "triggerKeywords": [
+          "naloxone",
+          "narcan",
+          "0,4 mg",
+          "IVD",
+          "antidote",
+          "bolus",
+          "intraveineux"
+        ]
+      },
+      {
+        "id": "surveillance_post_naloxone",
+        "label": "Surveille le patient après administration de Naloxone (réapparition des symptômes, durée d'action, sevrage)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "réapparition",
+          "sevrage",
+          "durée d'action",
+          "re-sédation",
+          "réévaluation"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque le diagnostic différentiel (coma éthylique, benzodiazépines, hypoglycémie) et argumente en faveur de l'overdose aux opioïdes",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic différentiel",
+          "éthylique",
+          "benzodiazépines",
+          "opioïdes",
+          "syndrome toxique",
+          "triade"
+        ]
+      },
+      {
+        "id": "bilan_paraclinique",
+        "label": "Demande les examens complémentaires pertinents (ECG, ionogramme, créatinine, toxicologie urinaire, gazométrie si disponible)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "ionogramme",
+          "toxicologie",
+          "urinaire",
+          "bilan",
+          "examens complémentaires"
+        ]
+      },
+      {
+        "id": "orientation_patient",
+        "label": "Propose une orientation adaptée (USI / réanimation si coma persistant, USIC, ou surveillance en court séjour)",
+        "weight": 1,
+        "triggerKeywords": [
+          "USI",
+          "réanimation",
+          "surveillance",
+          "transfert",
+          "orientation",
+          "hospitalisation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_equipe",
+        "label": "Communique clairement avec l'équipe soignante (IDE, médecin senior) en utilisant un langage structuré (SBAR ou équivalent)",
+        "max": 1
+      },
+      {
+        "id": "annonce_situation",
+        "label": "Annonce la situation au médecin régulateur SAMU ou au senior de garde de manière concise et structurée",
+        "max": 1
+      },
+      {
+        "id": "empathie_bienveillance",
+        "label": "Fait preuve de bienveillance et de non-jugement envers le patient toxicomane",
+        "max": 1
+      },
+      {
+        "id": "information_proches",
+        "label": "Informe les proches (si présents) de manière adaptée sur l'état du patient et la prise en charge",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté et professionnel sans jargon excessif lors des transmissions",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient comateux, aréactif aux stimulations verbales, réagit partiellement aux stimulations nociceptives. Après administration de Naloxone, le patient se réveille progressivement, est confus, agité, parfois agressif verbalement, et peut présenter des signes de sevrage (tachycardie, sueurs, mydriase, agitation).",
+      "phraseOuverture": "Le patient est inconscient, ne répond pas aux ordres simples. Les secours l'ont retrouvé inanimé dans une ruelle avec une seringue à proximité.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "examenClinique.constantes",
+        "examenClinique.aspectGeneral",
+        "examenClinique.examenNeurologique.conscience",
+        "examenClinique.examenNeurologique.pupilles",
+        "examenClinique.examenPulmonaire.auscultation",
+        "examenClinique.examenCardiovasculaire.auscultation"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "allergies",
+        "traitements",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.remarques"
+      ],
+      "infosCachees": [
+        "antecedents.chirurgicaux",
+        "modeDeVie.activitePhysique"
+      ],
+      "reactions": {
+        "brutal": "Le patient standardisé ne réagit pas brutalement — il est comateux. Après Naloxone, il peut devenir agité et agressif verbalement, nécessitant une contention douce et une verbalisation apaisante.",
+        "silence": "Le patient ne répond pas aux questions tant qu'il est comateux. Après réveil sous Naloxone, il répond de manière laconique, confuse, parfois hostile.",
+        "jargon": "Si l'étudiant utilise du jargon sans explication, le patient standardisé (une fois réveillé) demande : « Qu'est-ce que vous voulez dire ? Je comprends pas. »"
+      }
+    }
   }
 }

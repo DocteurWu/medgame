@@ -167,16 +167,313 @@
   "correction": "# Polyurie par diurèse osmotique chez diabétique déséquilibré\n\nLa polyurie est ici liée à la glycosurie massive provoquée par l’hyperglycémie. L’eau suit le glucose dans les urines, entraînant une diurèse osmotique. L'HbA1c très élevée, la glycosurie +++ et les volumes urinaires journaliers > 4 L sont typiques.\n\n## Bonnes pratiques\n\n- Toujours vérifier la glycémie et la glycosurie face à une polyurie\n- Réaliser un calendrier mictionnel pour mesurer les volumes\n- Rééquilibrer le diabète en urgence relative\n- Vérifier l'absence de cétonurie (risque d'acidocétose)\n\n## Erreurs à éviter\n\n- Confondre avec un diabète insipide (osmolarité urinaire ici élevée)\n- Prescrire des diurétiques\n- Négliger la neuropathie diabétique associée",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine interne.",
+      "contexte": "Monsieur Richard Weber, 58 ans, homme, se présente pour une polyurie et une nycturie importantes depuis plusieurs semaines.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la polyurie et le contexte diabétique",
+        "Effectuer un examen clinique adapté",
+        "Proposer un bilan diagnostique pertinent",
+        "Identifier la cause de la polyurie et annoncer le diagnostic",
+        "Proposer une stratégie de prise en charge thérapeutique adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir posé le diagnostic",
+        "Ne pas ignorer le contexte de diabète déséquilibré"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Glucomètre",
+        "Bandelettes urinaires",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "docteur"
+        ]
+      },
+      {
+        "id": "interrogatoire_polyurie",
+        "label": "Explore les caractéristiques de la polyurie (quantité, horaire, nycturie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "combien de litres",
+          "jour et nuit",
+          "nycturie",
+          "volume urinaire",
+          "fréquence mictionnelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_polydipsie",
+        "label": "Recherche une polydipsie associée et en évalue l'intensité",
+        "weight": 1,
+        "triggerKeywords": [
+          "soif",
+          "polydipsie",
+          "boire",
+          "quantité d'eau",
+          "bouche sèche"
+        ]
+      },
+      {
+        "id": "interrogatoire_diabete",
+        "label": "Évalue le contrôle glycémique récent et l'observance du traitement antidiabétique",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "hémoglobine glyquée",
+          "insuline",
+          "metformine",
+          "traitement",
+          "observance",
+          "glycémies capillaires"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recueille les antécédents médicaux, chirurgicaux et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "diabète",
+          "famille",
+          "chirurgie",
+          "neuropathie"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (alimentation, activité physique, tabac, alcool)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "régime",
+          "sucre",
+          "activité physique",
+          "tabac",
+          "alcool",
+          "stress"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général incluant l'évaluation de l'état d'hydratation",
+        "weight": 1,
+        "triggerKeywords": [
+          "muqueuses",
+          "pli cutané",
+          "hydratation",
+          "poids",
+          "IMC",
+          "aspect général"
+        ]
+      },
+      {
+        "id": "examen_clinique_neuro",
+        "label": "Évalue la sensibilité des membres inférieurs (recherche de neuropathie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sensibilité",
+          "pieds",
+          "monofilament",
+          "neuropathie",
+          "hypoesthésie"
+        ]
+      },
+      {
+        "id": "bilan_glycemique",
+        "label": "Réalise ou demande une glycémie capillaire et/ou un dosage de l'HbA1c",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie capillaire",
+          "HbA1c",
+          "hémoglobine glyquée",
+          "glycémie"
+        ]
+      },
+      {
+        "id": "bilan_urinaire",
+        "label": "Réalise ou demande une bandelette urinaire (glycosurie, densité urinaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bandelette urinaire",
+          "glycosurie",
+          "diurèse osmotique",
+          "osmolalité urinaire",
+          "densité urinaire"
+        ]
+      },
+      {
+        "id": "diagnostic_diurese_osmotique",
+        "label": "Pose le diagnostic de polyurie par diurèse osmotique secondaire à l'hyperglycémie",
+        "weight": 1,
+        "triggerKeywords": [
+          "diurèse osmotique",
+          "hyperglycémie",
+          "glycosurie",
+          "diabète déséquilibré",
+          "osmotique"
+        ]
+      },
+      {
+        "id": "elimination_autres_causes",
+        "label": "Élimine les autres diagnostics différentiels (diabète insipide, polyurie psychogène, infection urinaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète insipide",
+          "infection urinaire",
+          "psychogène",
+          "diagnostic différentiel"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de façon claire et adaptée au patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "vos reins",
+          "sucre dans le sang",
+          "glycémie trop élevée",
+          "expliquer",
+          "votre diabète est déséquilibré"
+        ]
+      },
+      {
+        "id": "strategie_pec_insuline",
+        "label": "Propose une adaptation du traitement antidiabétique (rééquilibrage insulinique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuline",
+          "adaptation",
+          "rééquilibrage",
+          "traitement",
+          "augmentation dose",
+          "schéma insulinique"
+        ]
+      },
+      {
+        "id": "strategie_pec_hydratation",
+        "label": "Recommande une hydratation orale contrôlée",
+        "weight": 1,
+        "triggerKeywords": [
+          "hydratation",
+          "boire",
+          "eau",
+          "hydratation orale",
+          "compensation"
+        ]
+      },
+      {
+        "id": "strategie_pec_education",
+        "label": "Propose une éducation thérapeutique (régime, autosurveillance glycémique, observance)",
+        "weight": 1,
+        "triggerKeywords": [
+          "éducation",
+          "régime",
+          "autosurveillance",
+          "observance",
+          "diététique",
+          "suivi glycémique"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi avec consultation de contrôle et bilan biologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "contrôle",
+          "HbA1c",
+          "rendez-vous",
+          "endocrinologue",
+          "diabétologue"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la fatigue et au stress du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient fatigué, légèrement anxieux, chef de service hospitalier habitué au milieu médical mais inquiet de la dégradation de son état de santé. Il minimise parfois ses symptômes par fierté professionnelle.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'urine énormément, jour et nuit, et je n'en peux plus. Je suis fatigué en permanence.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.duree"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "traitements.actuels",
+        "modeDeVie.alimentation",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "glycemiesRecentes",
+        "observanceTraitement"
+      ],
+      "infosCachees": [
+        "apportsSucresEleves",
+        "stressProfessionnelEleve",
+        "mauvaiseObservancePartielle"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je n'ai pas fini de vous expliquer...",
+        "silence": "... (silence) ... Je ne savez pas trop quoi dire d'autre, c'est surtout la fatigue qui me gêne.",
+        "jargon": "Pardon, qu'est-ce que vous entendez par là ? Pouvez-vous me l'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

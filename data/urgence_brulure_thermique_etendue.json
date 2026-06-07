@@ -431,5 +431,294 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Nadia Petit, 28 ans, femme, se présente aux urgences pour des brûlures par projection d'eau bouillante sur le torse et les deux bras, survenues il y a 20 minutes lors d'un accident domestique en cuisine.",
+      "consignesAttendues": [
+        "Accueillir la patiente et se présenter",
+        "Réaliser un interrogatoire complet orienté brûlure (mécanisme, délai, surface, profondeur, signes associés, antécédents, allergies, traitement en cours)",
+        "Réaliser un examen clinique adapté incluant l'évaluation de la surface brûlée (règle des 9), la recherche de critères de gravité (localisation, profondeur, terrain) et l'évaluation hémodynamique et respiratoire",
+        "Identifier les critères de gravité justifiant une prise en charge spécialisée (brûlure >10% SCT chez l'adulte, 2ème degré profondes, localisation à risque)",
+        "Initier les premiers gestes de prise en charge (refroidissement, couverture, analgésie, voie veineuse si nécessaire)",
+        "Annoncer le diagnostic et la stratégie thérapeutique à la patiente de manière empathique",
+        "Organiser le transfert vers un centre spécialisé en brûlologie (appel au 15/centre 15)"
+      ],
+      "consignesInterdites": [
+        "Percer les cloques",
+        "Appliquer du dentifrice, du beurre, de l'huile ou toute substance non médicale sur les brûlures",
+        "Retirer les vêtements adhérents à la peau brûlée",
+        "Laisser la patiente sans prise en charge antalgique",
+        "Oublier de rechercher des critères de gravité (voies aériées, face, mains, périnée, terrain)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Thermomètre",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope",
+        "Otoscope",
+        "Abaque de calcul de surface corporelle brûlée (Lund et Browder ou règle des 9 de Wallace)",
+        "Sérum physiologique / eau tiède (15-25°C)",
+        "Champs stériles / draps propres",
+        "Matériel de perfusion (cathérier, tubulure, NaCl 0,9%)",
+        "Morphine injectable",
+        "Masque à oxygène",
+        "Téléphone pour appel centre 15"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie la patiente et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "madame",
+          "comment allez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_mecanisme",
+        "label": "Précise le mécanisme de la brûlure (agent, température, durée d'exposition, circonstances)",
+        "weight": 1,
+        "triggerKeywords": [
+          "comment c'est passé",
+          "eau bouillante",
+          "projection",
+          "durée",
+          "cuisine",
+          "accident"
+        ]
+      },
+      {
+        "id": "interrogatoire_delai",
+        "label": "Précise le délai entre l'accident et la prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "il y a combien de temps",
+          "quand",
+          "20 minutes",
+          "délai"
+        ]
+      },
+      {
+        "id": "interrogatoire_terrain",
+        "label": "Recherche les antécédents pertinents (asthme, allergies, traitements en cours)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "allergie",
+          "pénicilline",
+          "asthme",
+          "traitement",
+          "ventoline"
+        ]
+      },
+      {
+        "id": "evaluation_douleur",
+        "label": "Évalue la douleur (EVA/NRS) et initie une antalgie adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "EVA",
+          "NRS",
+          "échelle",
+          "morphine",
+          "antalgie",
+          "combien sur 10"
+        ]
+      },
+      {
+        "id": "examen_surface_brulee",
+        "label": "Évalue la surface corporelle brûlée (règle des 9 de Wallace ou Lund et Browder) et estime environ 18%",
+        "weight": 1,
+        "triggerKeywords": [
+          "surface",
+          "pourcentage",
+          "règle des 9",
+          "Lund",
+          "Browder",
+          "18%",
+          "étendue"
+        ]
+      },
+      {
+        "id": "examen_profondeur",
+        "label": "Évalue la profondeur de la brûlure (érythème, phlyctènes, aspect blanc/indolore) et identifie un 2ème degré superficiel",
+        "weight": 1,
+        "triggerKeywords": [
+          "profondeur",
+          "cloques",
+          "phlyctènes",
+          "2ème degré",
+          "superficiel",
+          "blanc",
+          "indolore"
+        ]
+      },
+      {
+        "id": "recherche_criteres_gravite",
+        "label": "Recherche les critères de gravité : localisation à risque (face, mains, périnée, articulations), atteinte des voies aériennes, terrain (asthme), surface >10%",
+        "weight": 1,
+        "triggerKeywords": [
+          "critères de gravité",
+          "voies aériennes",
+          "face",
+          "mains",
+          "périnée",
+          "inhalation",
+          "terrain",
+          "asthme"
+        ]
+      },
+      {
+        "id": "examen_hemodynamique",
+        "label": "Réalise un bilan hémodynamique (TA, FC, FR, SpO2, température) et détecte une tachycarde modérée",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "fréquence",
+          "saturation",
+          "constantes",
+          "95 bpm",
+          "125/80"
+        ]
+      },
+      {
+        "id": "premiers_gestes",
+        "label": "Initie les premiers gestes : refroidissement à l'eau tiède (15-25°C) >10 min, couverture par drap propre, pose d'une voie veineuse",
+        "weight": 1,
+        "triggerKeywords": [
+          "refroidir",
+          "eau tiède",
+          "15-25°C",
+          "pansement",
+          "drap propre",
+          "voie veineuse",
+          "perfusion"
+        ]
+      },
+      {
+        "id": "diagnostic",
+        "label": "Pose le diagnostic de brûlures du 2ème degré superficiel sur environ 18% de la surface corporelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "2ème degré",
+          "superficiel",
+          "18%",
+          "diagnostic",
+          "brûlure"
+        ]
+      },
+      {
+        "id": "strategie_pec",
+        "label": "Élabore une stratégie de prise en charge adaptée : analgésie, réhydratation, prophylaxie antitétanique, avis spécialisé",
+        "weight": 1,
+        "triggerKeywords": [
+          "prise en charge",
+          "réhydratation",
+          "tétanos",
+          "prophylaxie",
+          "spécialiste",
+          "brûlologie"
+        ]
+      },
+      {
+        "id": "annonce_transfert",
+        "label": "Annonce à la patiente la nécessité d'un transfert vers un centre spécialisé en brûlologie et organise le transfert (appel centre 15)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transfert",
+          "centre spécialisé",
+          "brûlologie",
+          "centre 15",
+          "SMUR",
+          "avis spécialisé"
+        ]
+      },
+      {
+        "id": "empathie_attitude",
+        "label": "Fait preuve d'empathie, rassure la patiente et adopte une attitude professionnelle et bienveillante tout au long de la consultation",
+        "weight": 1,
+        "triggerKeywords": [
+          "rassurer",
+          "inquiétude",
+          "comprendre",
+          "empathie",
+          "bienveillance"
+        ]
+      },
+      {
+        "id": "hygiene_securite",
+        "label": "Respecte les règles d'hygiène (lavage des mains, gants) et de sécurité",
+        "weight": 1,
+        "triggerKeywords": [
+          "hygiène",
+          "gants",
+          "lavage des mains",
+          "SHA"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et l'anxiété de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Femme de 28 ans, enseignante, consciente mais anxieuse et en douleur. Elle est coopérative mais apeurée par la gravité apparente de ses brûlures. Elle répond aux questions de façon concise et peut se montrer émotive si elle se sent incomprise ou si la douleur n'est pas prise en compte.",
+      "phraseOuverture": "Docteur, aidez-moi, je me suis renversé de l'eau bouillante dessus, j'ai très mal !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.descriptionDouleur"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "allergies",
+        "traitements",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Mais enfin docteur, j'ai mal ! Vous ne pouvez pas me toucher comme ça !",
+        "silence": "...",
+        "jargon": "Qu'est-ce que vous voulez dire par phlyctènes ? Je ne comprends pas, expliquez-moi."
+      }
+    }
   }
 }

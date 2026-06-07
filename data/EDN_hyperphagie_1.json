@@ -134,16 +134,289 @@
   "correction": "# Hyperphagie boulimique\n\nCrises récurrentes avec perte de contrôle, culpabilité et prise de poids.\n\n## Bonnes pratiques\n\n- Thérapie cognitivo‑comportementale\n- Soutien nutritionnel et structure des repas\n- Prise en charge des comorbidités anxiodépressives\n\n## Erreurs à éviter\n\n- Stigmatisation et injonctions non thérapeutiques\n- Ignorer la comorbidité somatique (métabolique)",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de psychiatrie.",
+      "contexte": "Lucas DUPONT, 22 ans, homme, se présente pour une prise de poids et des crises de boulimie.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers les troubles du comportement alimentaire",
+        "Évaluer les crises de boulimie (fréquence, quantité, contexte déclenchant, comportements compensatoires)",
+        "Rechercher des symptômes dépressifs et anxieux associés",
+        "Évaluer le retentissement psychosocial (isolement, honte, culpabilité)",
+        "Réaliser un examen clinique adapté avec calcul de l'IMC",
+        "Proposer une stratégie diagnostique et une prise en charge thérapeutique initiale",
+        "Adopter une attitude bienveillante et non jugeante"
+      ],
+      "consignesInterdites": [
+        "Ne pas culpabiliser le patient sur ses habitudes alimentaires",
+        "Ne pas poser un diagnostic sans avoir exploré les critères diagnostiques complets",
+        "Ne pas prescrire de traitement médicamenteux sans avoir proposé une prise en charge psychothérapeutique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Balance et toise",
+        "Tensiomètre",
+        "Stéthoscope",
+        "ECG",
+        "Feuille de prescription",
+        "Feuille de demande d'examens biologiques"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je suis médecin"
+        ]
+      },
+      {
+        "id": "exploration_crises_boulimie",
+        "label": "Explore les caractéristiques des crises de boulimie (fréquence, durée, quantité, perte de contrôle)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crise",
+          "boulimie",
+          "quantité",
+          "fréquence",
+          "combien de fois",
+          "perte de contrôle",
+          "manger beaucoup"
+        ]
+      },
+      {
+        "id": "recherche_comportements_compensatoires",
+        "label": "Recherche l'absence de comportements compensatoires inappropriés (vomissements, laxatifs, jeûne, exercice excessif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vomissement",
+          "laxatif",
+          "jeûne",
+          "purge",
+          "compensation",
+          "faire du sport après"
+        ]
+      },
+      {
+        "id": "evaluation_contexte_declenchant",
+        "label": "Évalue les facteurs déclenchants des crises (stress, ennui, émotions négatives)",
+        "weight": 1,
+        "triggerKeywords": [
+          "stress",
+          "ennui",
+          "émotion",
+          "déclenche",
+          "quand cela arrive",
+          "situation"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_depressifs",
+        "label": "Recherche des symptômes dépressifs associés (tristesse, anhédonie, troubles du sommeil, idées noires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "triste",
+          "humeur",
+          "sommeil",
+          "fatigue",
+          "envie de rien",
+          "idées noires",
+          "suicide",
+          "déprimé"
+        ]
+      },
+      {
+        "id": "evaluation_retentissement_psychosocial",
+        "label": "Évalue le retentissement psychosocial (isolement, honte, culpabilité, vie sociale, professionnelle)",
+        "weight": 1,
+        "triggerKeywords": [
+          "honte",
+          "culpabilité",
+          "isolement",
+          "social",
+          "travail",
+          "impact",
+          "vie quotidienne"
+        ]
+      },
+      {
+        "id": "exploration_antecedents_familiaux",
+        "label": "Explore les antécédents familiaux (obésité, diabète, troubles psychiatriques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "père",
+          "mère",
+          "antécédents familiaux",
+          "obésité",
+          "diabète"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet incluant le calcul de l'IMC",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "IMC",
+          "examen",
+          "auscultation",
+          "tension"
+        ]
+      },
+      {
+        "id": "demande_examen_biologique",
+        "label": "Demande un bilan biologique initial adapté (glycémie, bilan lipidique, TSH, ionogramme, NFS)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "prise de sang",
+          "glycémie",
+          "cholestérol",
+          "TSH",
+          "biologie",
+          "examens"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic d'hyperphagie boulimique de manière empathique et claire",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "hyperphagie",
+          "trouble alimentaire",
+          "ce que vous avez",
+          "explication"
+        ]
+      },
+      {
+        "id": "proposition_pec_therapeutique",
+        "label": "Propose une prise en charge thérapeutique adaptée (TCC, soutien nutritionnel, activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "thérapie",
+          "TCC",
+          "psychologue",
+          "nutrition",
+          "activité physique",
+          "prise en charge",
+          "traitement"
+        ]
+      },
+      {
+        "id": "orientation_specialiste",
+        "label": "Oriente vers un spécialiste (psychiatre, nutritionniste) pour suivi spécialisé",
+        "weight": 1,
+        "triggerKeywords": [
+          "psychiatre",
+          "nutritionniste",
+          "spécialiste",
+          "orientation",
+          "suivi",
+          "consultation spécialisée"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur sa pathologie et l'importance du suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "comprendre",
+          "pathologie",
+          "éducation",
+          "information",
+          "conseils"
+        ]
+      },
+      {
+        "id": "planification_suivi",
+        "label": "Planifie un suivi régulier et fixe un prochain rendez-vous",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "prochain rendez-vous",
+          "consultation de suivi",
+          "revoir",
+          "contrôle"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, attitude non jugeante",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux, gêné par sa situation, tendance à minimiser les symptômes. Peu loquace au début mais se livre progressivement si mis en confiance. Exprime de la honte et de la culpabilité.",
+      "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai pris beaucoup de poids ces derniers temps et je n'arrive pas à contrôler ce que je mange...",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [
+        "Idées suicidaires (à rechercher systématiquement)",
+        "Antécédents de dépression antérieure"
+      ],
+      "reactions": {
+        "brutal": "Le patient se ferme, baisse les yeux et répond par monosyllabes. Il peut dire : 'Je ne vois pas pourquoi vous me posez cette question...'",
+        "silence": "Le patient met quelques secondes à répondre, semble chercher ses mots. Il peut dire : 'C'est difficile à expliquer...'",
+        "jargon": "Le patient semble perdu et demande : 'Qu'est-ce que vous voulez dire par là ?' ou 'Je ne comprends pas le terme...'"
+      }
+    }
+  }
 }

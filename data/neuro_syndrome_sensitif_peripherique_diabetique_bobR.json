@@ -112,16 +112,284 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "Monsieur Bob Rop, 64 ans, homme, se présente pour des paresthésies distales progressives des membres inférieures avec instabilité à la marche.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes neurologiques et les facteurs de risque métaboliques",
+        "Effectuer un examen neurologique ciblé des membres inférieurs (sensibilité, réflexes, coordination, équilibre)",
+        "Évoquer le diagnostic de polyneuropathie diabétique devant le tableau clinique",
+        "Proposer un plan de prise en charge adapté incluant l'équilibrage glycémique et le traitement des douleurs neuropathiques",
+        "Expliquer au patient la nature de sa pathologie et les mesures préventives"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'examen invasif",
+        "Ne pas prescrire de traitement sans avoir évoqué le diagnostic",
+        "Ne pas interrompre le patient de manière abrupte"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service de neurologie",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Diapason 128 Hz",
+        "Monofilament de Semmes-Weinstein",
+        "Aiguille neurolesthésique",
+        "Ophtalmoscope",
+        "Tensiomètre",
+        "Stéthoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je suis médecin"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet",
+        "label": "Réalise un interrogatoire complet orienté sur les symptômes neurologiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "paresthésies",
+          "fourmillements",
+          "brûlures",
+          "marche",
+          "équilibre",
+          "nuit"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_risque",
+        "label": "Recherche les facteurs de risque métaboliques et toxiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète",
+          "glycémie",
+          "alcool",
+          "tabac",
+          "traitement",
+          "régime"
+        ]
+      },
+      {
+        "id": "examen_sensibilite_superficielle",
+        "label": "Examine la sensibilité superficielle (tactile, thermo-algésique) des membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "sensibilité",
+          "toucher",
+          "chaud",
+          "froid",
+          "piqûre",
+          "monofilament"
+        ]
+      },
+      {
+        "id": "examen_sensibilite_profonde",
+        "label": "Examine la sensibilité profonde (proprioception, diapason) aux membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "diapason",
+          "vibration",
+          "position",
+          "proprioception",
+          "malléoles"
+        ]
+      },
+      {
+        "id": "examen_reflexes_osteotendineux",
+        "label": "Teste les réflexes ostéo-tendineux achilléens et rotuliens",
+        "weight": 1,
+        "triggerKeywords": [
+          "réflexes",
+          "marteau",
+          "achilléen",
+          "rotulien",
+          "réflexe"
+        ]
+      },
+      {
+        "id": "examen_motricite",
+        "label": "Évalue la force musculaire des membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "force",
+          "musculaire",
+          "motricité",
+          "pousser",
+          "résistance"
+        ]
+      },
+      {
+        "id": "examen_equilibre_romberg",
+        "label": "Réalise le test de Romberg et évalue l'équilibre",
+        "weight": 1,
+        "triggerKeywords": [
+          "Romberg",
+          "équilibre",
+          "yeux fermés",
+          "debout",
+          "stabilité"
+        ]
+      },
+      {
+        "id": "examen_marche",
+        "label": "Observe la marche du patient (talon-orteil, ataxie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "marche",
+          "démarche",
+          "talon",
+          "orteil",
+          "pas"
+        ]
+      },
+      {
+        "id": "orientation_diagnostique",
+        "label": "Évoque le diagnostic de polyneuropathie diabétique",
+        "weight": 1,
+        "triggerKeywords": [
+          "polyneuropathie",
+          "diabétique",
+          "neuropathie",
+          "périphérique",
+          "métabolique"
+        ]
+      },
+      {
+        "id": "bilan_paraclinique",
+        "label": "Propose un bilan paraclinique adapté (glycémie, HbA1c, EMG)",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "HbA1c",
+          "EMG",
+          "électromyogramme",
+          "bilan"
+        ]
+      },
+      {
+        "id": "traitement_etiologique",
+        "label": "Propose un traitement étiologique (équilibrage glycémique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "équilibre glycémique",
+          "HbA1c",
+          "régime",
+          "antidiabétique",
+          "insuline"
+        ]
+      },
+      {
+        "id": "traitement_symptomatique",
+        "label": "Propose un traitement antalgique neuropathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "neuropathique",
+          "gabapentine",
+          "prégabaline",
+          "duloxétine",
+          "amitriptyline"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur sa pathologie et les mesures préventives",
+        "weight": 1,
+        "triggerKeywords": [
+          "explication",
+          "comprendre",
+          "maladie",
+          "prévention",
+          "pieds",
+          "surveillance"
+        ]
+      },
+      {
+        "id": "conseils_hygiene_vie",
+        "label": "Donne des conseils d'hygiène de vie (sevrage tabagique, alimentation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "alimentation",
+          "activité physique",
+          "sevrage"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face aux douleurs du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux face à ses symptômes, inquiet pour sa capacité à continuer à conduire. Il minimise ses habitudes alimentaires et ne mentionne pas spontanément son diabète.",
+      "phraseOuverture": "Bonjour docteur, j'ai des fourmillements dans les pieds depuis quelques mois et je commence à avoir du mal à marcher, surtout le soir.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements"
+      ],
+      "infosCachees": [
+        "Le patient est diabétique de type 2 depuis 8 ans, mal équilibré (HbA1c à 9%), sous metformine 1g x 2/jour qu'il prend de manière irrégulière"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je n'ai pas fini de vous expliquer...",
+        "silence": "Vous pouvez continuer, je vous écoute...",
+        "jargon": "Pouvez-vous m'expliquer ce que vous entendez par là ? Je ne comprends pas très bien."
+      }
+    }
+  }
 }

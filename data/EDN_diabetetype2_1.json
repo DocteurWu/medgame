@@ -234,16 +234,296 @@
   "correction": "# Diabète de type 2\n\nPortrait typique : âge > 45 ans, obésité abdominale (IMC 36.2), syndrome métabolique complet, antécédents familiaux de DT2, diabète gestationnel, anticorps anti-GAD négatifs.\n\n## Critères diagnostiques\n\n- Glycémie à jeun ≥ 1.26 g/L (2 fois) OU\n- HbA1c ≥ 6.5% OU\n- Glycémie ≥ 2 g/L à n'importe quel moment avec symptômes\n\n## Prise en charge\n\n- Règles hygiéno-diététiques en première intention (alimentation équilibrée, activité physique 150 min/semaine)\n- Metformine en 1ère ligne si objectif HbA1c non atteint\n- Traitement des comorbidités (statines pour dyslipidémie, contrôle HTA)\n- Dépistage et prévention des complications (fond d'œil, microalbuminurie, examen des pieds)\n\n## Erreurs à éviter\n\n- Confondre avec DT1 en l'absence de cétose et d'anticorps\n- Oublier le bilan des complications et le suivi régulier (HbA1c tous les 3 mois)\n- Négliger l'éducation thérapeutique du patient",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Madame Marie DUPONT, 52 ans, se présente pour un bilan de santé motivé par une fatigue persistante et une suspicion de diabète de type 2.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes cardinaux du diabète et les facteurs de risque cardiovasculaire",
+        "Effectuer un examen clinique ciblé comprenant la mesure des constantes, le calcul de l'IMC, le tour de taille, l'examen des pieds (monofilament), la recherche d'acanthosis nigricans et l'examen du fond d'œil ou orientation vers un ophtalmologue",
+        "Proposer une stratégie diagnostique adaptée (glycémie à jeun, HbA1c, bilan lipidique, créatininémie, microalbuminurie)",
+        "Annoncer le diagnostic de diabète de type 2 si confirmé et proposer une prise en charge thérapeutique initiale incluant règles hygiéno-diététiques et traitement médicamenteux",
+        "Éduquer la patiente sur sa maladie, ses complications et l'importance du suivi"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'insuline en première intention",
+        "Ne pas ignorer les antécédents familiaux de diabète et de maladie cardiovasculaire",
+        "Ne pas omettre le dépistage des complications du diabète (rétinopathie, néphropathie, neuropathie, pied diabétique)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Éducation/prévention",
+      "lieu": "Cabinet de consultation de médecine générale",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Thermomètre",
+        "Saturomètre",
+        "Pèse-personne",
+        "Mètre ruban",
+        "Monofilament de Semmes-Weinstein 10g",
+        "Otoscope",
+        "Stylo lumineux",
+        "Résultats biologiques (glycémie à jeun, HbA1c, bilan lipidique, créatininémie, microalbuminurie)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe la patiente confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment allez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_cardinaux",
+        "label": "Recherche les symptômes cardinaux du diabète (polyurie, polydipsie, polyphagie, amaigrissement, asthénie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "uriner",
+          "soif",
+          "faim",
+          "poids",
+          "fatigue",
+          "polyurie",
+          "polydipsie"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Explore les facteurs de risque de diabète de type 2 (âge, antécédents familiaux, obésité, sédentarité, diabète gestationnel, macrosomie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "mère",
+          "père",
+          "diabète",
+          "grossesse",
+          "poids",
+          "activité physique",
+          "alimentation"
+        ]
+      },
+      {
+        "id": "interrogatoire_complications",
+        "label": "Recherche des symptômes évocateurs de complications (vision floue, paresthésies, douleurs thoracées, claudication intermittente)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vision",
+          "yeux",
+          "pieds",
+          "fourmillements",
+          "douleur",
+          "thoracique",
+          "jambes"
+        ]
+      },
+      {
+        "id": "interrogatoire_atcd_traitement",
+        "label": "Précise les antécédents médicaux (HTA, dyslipidémie) et les traitements en cours (captopril, atorvastatine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "tension",
+          "cholestérol",
+          "captopril",
+          "atorvastatine"
+        ]
+      },
+      {
+        "id": "constantes_imc_tour_taille",
+        "label": "Mesure les constantes (TA, FC, poids, taille), calcule l'IMC et mesure le tour de taille",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "poids",
+          "taille",
+          "IMC",
+          "tour de taille"
+        ]
+      },
+      {
+        "id": "examen_dermatologique",
+        "label": "Recherche un acanthosis nigricans (cou, aisselles)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cou",
+          "peau",
+          "noir",
+          "acanthosis"
+        ]
+      },
+      {
+        "id": "examen_pieds_monofilament",
+        "label": "Réalise un examen des pieds avec test au monofilament pour dépister une neuropathie distale",
+        "weight": 1,
+        "triggerKeywords": [
+          "pieds",
+          "monofilament",
+          "sensibilité",
+          "neuropathie"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique_bilan",
+        "label": "Demande un bilan biologique adapté : glycémie à jeun, HbA1c, bilan lipidique complet, créatininémie, DFG, microalbuminurie, ECBU",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "HbA1c",
+          "bilan lipidique",
+          "créatinine",
+          "microalbuminurie",
+          "prise de sang"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de diabète de type 2 de manière claire, empathique et en vérifiant la compréhension de la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète",
+          "diagnostic",
+          "type 2",
+          "glycémie élevée",
+          "HbA1c"
+        ]
+      },
+      {
+        "id": "strategie_pec_hygieno_dietetique",
+        "label": "Propose des règles hygiéno-diététiques personnalisées (alimentation équilibrée, activité physique régulière, perte de poids)",
+        "weight": 1,
+        "triggerKeywords": [
+          "régime",
+          "alimentation",
+          "activité physique",
+          "perte de poids",
+          "sucre",
+          "légumes"
+        ]
+      },
+      {
+        "id": "strategie_pec_metformine",
+        "label": "Initie un traitement par metformine en expliquant les modalités, effets secondaires et bénéfices attendus",
+        "weight": 1,
+        "triggerKeywords": [
+          "metformine",
+          "traitement",
+          "médicament",
+          "comprimé",
+          "effets secondaires"
+        ]
+      },
+      {
+        "id": "strategie_pec_hta_lipides",
+        "label": "Évalue et optimise la prise en charge de l'HTA et de la dyslipidémie (objectif TA < 130/80, intensification statine si besoin)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "objectif",
+          "statine",
+          "atorvastatine",
+          "cholestérol",
+          "LDL"
+        ]
+      },
+      {
+        "id": "education_suivi_complications",
+        "label": "Éduque la patiente sur le suivi (HbA1c trimestrielle, fond d'œil annuel, examen des pieds, recherche de microalbuminurie) et les signes d'alerte",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "fond d'œil",
+          "pieds",
+          "HbA1c",
+          "complications",
+          "rétinopathie",
+          "néphropathie"
+        ]
+      },
+      {
+        "id": "synthese_plan_pec",
+        "label": "Résume le plan de prise en charge complet et fixe un rendez-vous de suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "plan",
+          "prochain rendez-vous",
+          "suivi",
+          "bilan"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté, explique les termes médicaux (HbA1c, neuropathie, etc.)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce du diagnostic",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Madame DUPONT est une femme de 52 ans, employée de bureau, plutôt coopérative mais légèrement anxieuse à l'idée d'un diagnostic de diabète. Elle minimise initialement ses symptômes et a besoin d'être rassurée. Elle pose des questions sur les conséquences de la maladie et sur les changements à apporter dans sa vie quotidienne.",
+      "phraseOuverture": "Bonjour docteur, je suis venue parce que je suis fatiguée depuis des mois, et mon médecin m'a dit qu'il fallait vérifier si je n'avais pas du diabète. Ma mère en a, alors je me demande si c'est ça...",
+      "infosVolontaires": [
+        "Motif de consultation : fatigue persistante depuis plusieurs mois, suspicion de diabète",
+        "Symptômes actuels : fatigue chronique, réveils nocturnes pour uriner, soif accrue, vision floue intermittente, fourmillements aux pieds",
+        "Prise de poids de 10 kg sur 5 ans"
+      ],
+      "infosSiDemandees": [
+        "Antécédents médicaux : HTA traitée par captopril, dyslipidémie traitée par atorvastatine",
+        "Antécédents familiaux : mère et tante atteintes de diabète de type 2, père décédé d'un infarctus",
+        "Antécédents gynéco-obstétricaux : 2 grossesses, diabète gestationnel lors de la 2e, macrosomie (4.1 kg)",
+        "Mode de vie : sédentaire, alimentation déséquilibrée (sucreries, grignotages), non-fumeuse, alcool modéré",
+        "Traitements en cours : captopril 25 mg 2x/j, atorvastatine 20 mg le soir"
+      ],
+      "infosCachees": [
+        "Acanthosis nigricans au niveau du cou (à trouver à l'examen)",
+        "Diminution de la sensibilité au monofilament aux pieds (à trouver à l'examen)",
+        "Bord inférieur du foie palpable sous le rebord costal (à trouver à l'examen)"
+      ],
+      "reactions": {
+        "brutal": "Madame DUPONT se ferme, coupe la communication et répond de manière laconique. Elle peut dire : 'Je ne vois pas pourquoi vous me posez toutes ces questions, c'est juste de la fatigue...'",
+        "silence": "Madame DUPONT attend que l'interne reprenne la parole. Elle ne complète pas spontanément ses réponses et peut sembler perdue.",
+        "jargon": "Madame DUPONT fronce les sourcils et demande : 'C'est quoi ça, HbA1c ? Vous pouvez m'expliquer en termes simples s'il vous plaît ?'"
+      }
+    }
+  }
 }

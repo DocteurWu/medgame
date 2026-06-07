@@ -127,16 +127,281 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "DAMMANN Robert, 25 ans, homme, se présente en consultation pour une douleur lombaire apparue brutalement le week-end dernier lors d'un déménagement, associée à une douleur du membre inférieur droit.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la douleur lombaire et la radiculalgie",
+        "Rechercher des signes d'alerte (red flags) : syndrome de la queue de cheval, déficit neurologique, fièvre, amaigrissement, antécédent de cancer",
+        "Réaliser un examen clinique du rachis lombaire et un examen neurologique du membre inférieur droit (Lasègue, Leri, testing moteur L5, sensibilité L5, réflexes achilléen et rotulien)",
+        "Proposer un diagnostic étiologique argumenté",
+        "Expliquer le diagnostic au patient et proposer une prise en charge adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'imagerie en première intention sans argumentation clinique",
+        "Ne pas ignorer l'examen neurologique du membre inférieur"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Diapason",
+        "Mètre ruban",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur lombaire (mode d'apparition, EVA, type, irradiation, facteurs aggravants/calmants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "EVA",
+          "échelle",
+          "début",
+          "apparition",
+          "irradiation",
+          "facteurs",
+          "aggravant",
+          "calmant",
+          "repos"
+        ]
+      },
+      {
+        "id": "recherche_red_flags",
+        "label": "Recherche systématiquement les signes d'alerte : déficit neurologique, troubles sphinctériens, fièvre, amaigrissement, antécédent de cancer, traumatisme majeur, corticothérapie au long cours",
+        "weight": 1,
+        "triggerKeywords": [
+          "sphincter",
+          "urinaire",
+          "anesthésie",
+          "selle",
+          "fièvre",
+          "amaigrissement",
+          "cancer",
+          "perte de poids",
+          "corticoïde",
+          "traumatisme",
+          "déficit",
+          "paralysie"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : activité physique, profession, stress, consommation tabac/alcool",
+        "weight": 1,
+        "triggerKeywords": [
+          "profession",
+          "activité physique",
+          "sport",
+          "tabac",
+          "alcool",
+          "stress",
+          "travail"
+        ]
+      },
+      {
+        "id": "examen_rachis",
+        "label": "Réalise l'examen du rachis lombaire : inspection (attitude vicieuse, raideur), palpation des épineuses, mobilité (antéflexion, rétroflexion, latéroflexion)",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "palpation",
+          "épineuse",
+          "mobilité",
+          "antéflexion",
+          "rétroflexion",
+          "latéroflexion",
+          "raideur"
+        ]
+      },
+      {
+        "id": "signe_lasegue",
+        "label": "Réalise le test de Lasègue (élévation du membre inférieur tendu) du côté droit",
+        "weight": 1,
+        "triggerKeywords": [
+          "Lasègue",
+          "élévation",
+          "jambe tendue",
+          "Lasègue"
+        ]
+      },
+      {
+        "id": "examen_neuro_mi",
+        "label": "Réalise un examen neurologique du membre inférieur droit : testing moteur (flexion dorsale du pied/gros orteil L5), sensibilité (face antéro-externe du genou, dos du pied), réflexes (achilléen, rotulien)",
+        "weight": 1,
+        "triggerKeywords": [
+          "moteur",
+          "sensibilité",
+          "réflexe",
+          "achilléen",
+          "rotulien",
+          "flexion dorsale",
+          "gros orteil",
+          "testing",
+          "force musculaire"
+        ]
+      },
+      {
+        "id": "diagnostic_argumente",
+        "label": "Propose le diagnostic de lombo-radiculalgie L5 droite en argumentant par les éléments cliniques (topographie de la douleur, signe de Lasègie, territoire L5)",
+        "weight": 1,
+        "triggerKeywords": [
+          "lombo-radiculalgie",
+          "sciatique",
+          "L5",
+          "radiculalgie",
+          "hernie discale",
+          "nerf",
+          "racine"
+        ]
+      },
+      {
+        "id": "exclusion_urgence",
+        "label": "Écarte un syndrome de la queue de cheval et un déficit neurologique sévère nécessitant une prise en charge en urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "queue de cheval",
+          "urgence",
+          "déficit sévère",
+          "chirurgie",
+          "pas d'indication chirurgicale"
+        ]
+      },
+      {
+        "id": "pec_medicale",
+        "label": "Propose une prise en charge médicale adaptée : antalgiques (palier adapté), maintien de l'activité physique, éducation du patient, réévaluation à 4-6 semaines",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "paracétamol",
+          "AINS",
+          "repos",
+          "activité",
+          "kinésithérapie",
+          "éducation",
+          "réévaluation",
+          "consultation de contrôle"
+        ]
+      },
+      {
+        "id": "indication_imagerie",
+        "label": "Explique que l'imagerie n'est pas indiquée en première intention en l'absence de signe d'alerte, et précise les circonstances où elle serait nécessaire (persistance au-delà de 4-6 semaines, aggravation, déficit neurologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "imagerie",
+          "radio",
+          "scanner",
+          "IRM",
+          "pas nécessaire",
+          "première intention",
+          "signes d'alerte",
+          "persistance"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur la bénignité habituelle de l'évolution, les mesures de prévention (port de charges, ergonomie) et les signes d'alerte nécessitant une reconsultation rapide",
+        "weight": 1,
+        "triggerKeywords": [
+          "évolution",
+          "bénin",
+          "prévention",
+          "ergonomie",
+          "port de charges",
+          "reconsultation",
+          "signes d'alerte",
+          "conseils"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux en raison de l'intensité de la douleur et de l'inquiétude liée à l'irradiation dans le membre inférieur. Il est sportif et s'inquiète de ne plus pouvoir reprendre la course à pied.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal au bas du dos depuis samedir dernier, et ça descend jusque dans la jambe droite, c'est comme des décharges électriques, ça m'inquiète un peu.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "modeDeVie.activitePhysique",
+        "allergies",
+        "traitements"
+      ],
+      "infosCachees": [
+        "Pas de troubles sphinctériens",
+        "Pas de fièvre ni amaigrissement",
+        "Pas d'antécédent de cancer",
+        "Pas de déficit moteur franc"
+      ],
+      "reactions": {
+        "brutal": "Le patient se montre surpris et légèrement méfiant si l'interne ne se présente pas ou ne lui explique pas l'examen.",
+        "silence": "Le patient attend les consignes de l'interne et ne prend pas l'initiative de la consultation.",
+        "jargon": "Le patient demande des explications si l'interne utilise des termes médicaux non expliqués (ex : 'radiculalgie', 'Lasègue', 'territoire L5')."
+      }
+    }
+  }
 }

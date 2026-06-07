@@ -173,6 +173,55 @@ const MedGameAudio = (function () {
             const now = audioCtx.currentTime;
             createOscillator(600, 'sine', now, 0.06, 0.12);
             createOscillator(800, 'sine', now + 0.04, 0.06, 0.1);
+        },
+
+        /**
+         * ECOS — Gong de début de station (style medgame ECOS officiel).
+         * Fréquence A3 (220 Hz) grave qui résonne ~1.2s, suivi d'un accord
+         * majeur pour donner un signal "top départ" solennel.
+         */
+        ecosGongStart() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Fréquences graves qui s'atténuent
+            createOscillator(110, 'sine', now, 1.2, 0.30);          // A2
+            createOscillator(220, 'sine', now, 0.9, 0.20);          // A3
+            createOscillator(165, 'sine', now + 0.05, 0.9, 0.18);   // E3
+            // Accord de résolution
+            createOscillator(440, 'sine', now + 0.4, 0.5, 0.20);    // A4
+            createOscillator(554.37, 'sine', now + 0.5, 0.4, 0.18); // C#5
+            createOscillator(659.25, 'sine', now + 0.6, 0.4, 0.16); // E5
+        },
+
+        /**
+         * ECOS — Cloche d'avertissement à 1 minute restante.
+         * Deux notes claires (cloches) séparées de 250ms.
+         */
+        ecosBell() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            // Première cloche
+            createOscillator(880, 'sine', now, 0.18, 0.25);
+            createOscillator(1760, 'sine', now, 0.12, 0.10);
+            // Deuxième cloche
+            createOscillator(880, 'sine', now + 0.25, 0.18, 0.25);
+            createOscillator(1760, 'sine', now + 0.25, 0.12, 0.10);
+        },
+
+        /**
+         * ECOS — Gong de fin de station.
+         * Triple cloche descendante pour signaler la fin.
+         */
+        ecosGongEnd() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            createOscillator(523.25, 'sine', now, 0.25, 0.22);
+            createOscillator(523.25, 'sine', now + 0.4, 0.25, 0.22);
+            createOscillator(392, 'sine', now + 0.8, 0.6, 0.28);    // G4 (résolution)
+            createOscillator(329.63, 'sine', now + 0.9, 0.7, 0.20); // E4
         }
     };
 

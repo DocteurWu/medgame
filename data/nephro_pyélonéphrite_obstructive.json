@@ -149,16 +149,259 @@
   "correction": "# Pyélonéphrite obstructive\n\nLe patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile\n- Réaliser un scanner injecté en urgence\n- Initier une antibiothérapie IV à large spectre dès l'admission\n- Lever l'obstacle rapidement : sonde JJ ou néphrostomie\n\n## Erreurs à éviter\n\n- Traiter comme une pyélonéphrite simple sans imagerie\n- Retarder le drainage en présence de sepsis\n- Oublier de surveiller la fonction rénale",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de néphrologie.",
+      "contexte": "Lucas Ribaucourt, 32 ans, homme, se présente aux urgences pour fièvre et douleur lombaire droite intense.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Effectuer un examen clinique ciblé",
+        "Identifier les signes de gravité et le diagnostic de pyélonéphrite obstructive",
+        "Proposer une stratégie diagnostique et thérapeutique adaptée",
+        "Expliquer au patient la prise en charge proposée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'anti-inflammatoires non stéroïdiens",
+        "Ne pas retarder l'antibiothérapie intraveineuse",
+        "Ne pas ignorer les signes de sepsis"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Urgence vitale",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Thermomètre",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Marteau à réflexes",
+        "Résultats biologiques (NFS, CRP, créatinine, ECBU)",
+        "Résultats d'imagerie (échographie rénale, scanner abdomino-pelvien)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je vais m'occuper de vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : fièvre et douleur lombaire droite",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "fièvre",
+          "lombaire",
+          "depuis quand",
+          "intensité"
+        ]
+      },
+      {
+        "id": "interrogatoire_histoire",
+        "label": "Réalise un interrogatoire complet de la maladie actuelle (mode d'apparition, évolution, facteurs aggravants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "comment ça a commencé",
+          "évolution",
+          "aggravé",
+          "soulagé",
+          "frissons",
+          "nausées"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels (lithiase rénale) et familiaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "calcul",
+          "lithiase",
+          "famille",
+          "mère"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (tabac, hydratation, activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "boissons",
+          "eau",
+          "activité physique",
+          "profession"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Prend et interprète les constantes (tachycardie, fièvre, hypotension)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "saturation",
+          "constantes"
+        ]
+      },
+      {
+        "id": "examen_clinique_cible",
+        "label": "Réalise un examen clinique ciblé : palpation lombaire, recherche de douleur à la percussion de l'angle costo-vertébral",
+        "weight": 1,
+        "triggerKeywords": [
+          "angle costo-vertébral",
+          "fosse iliaque",
+          "percussion",
+          "palpation",
+          "abdomen"
+        ]
+      },
+      {
+        "id": "identification_urgence",
+        "label": "Identifie les signes de gravité : sepsis (tachycardie, hypotension, fièvre élevée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sepsis",
+          "choc",
+          "gravité",
+          "hypotension",
+          "tachycardie",
+          "urgent"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Demande les examens appropriés : NFS, CRP, créatinine, ECBU, imagerie (échographie/scanner)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "NFS",
+          "CRP",
+          "créatinine",
+          "ECBU",
+          "échographie",
+          "scanner",
+          "imagerie"
+        ]
+      },
+      {
+        "id": "diagnostic_pertinent",
+        "label": "Pose le diagnostic de pyélonéphrite obstructive",
+        "weight": 1,
+        "triggerKeywords": [
+          "pyélonéphrite",
+          "obstructive",
+          "obstruction",
+          "calcul",
+          "infection"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose une prise en charge adaptée : antibiothérapie IV, réanimation liquidienne, drainage urinaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "antibiothérapie",
+          "IV",
+          "perfusion",
+          "drainage",
+          "sonde JJ",
+          "néphrostomie",
+          "réanimation"
+        ]
+      },
+      {
+        "id": "information_patient",
+        "label": "Explique au patient le diagnostic et la prise en charge de manière claire",
+        "weight": 1,
+        "triggerKeywords": [
+          "je vais vous expliquer",
+          "infection",
+          "traitement",
+          "drainage",
+          "hospitalisation"
+        ]
+      },
+      {
+        "id": "surveillance",
+        "label": "Planifie la surveillance clinique et biologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "contrôle",
+          "réévaluation",
+          "température",
+          "bilan"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient anxieux en raison de la douleur intense, coopératif mais visiblement souffrant. Il connaît ses antécédents de lithiase et craint une récidive.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal au dos à droite et j'ai beaucoup de fièvre. Je crois que c'est encore un calcul...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alimentation"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, ça fait mal ! Vous n'avez pas besoin d'appuyer aussi fort !",
+        "silence": "Vous pouvez me poser des questions, je répondrai.",
+        "jargon": "Qu'est-ce que vous entendez par 'sepsis' ? Je ne comprends pas ce terme."
+      }
+    }
+  }
 }

@@ -126,16 +126,268 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Karim D., 45 ans, homme, se présente pour une douleur du bas du dos irradiant dans la jambe droite.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté rachialgie",
+        "Effectuer un examen neurologique du membre inférieur droit (Lasègue, force, réflexes, sensibilité)",
+        "Identifier le territoire L5 et les signes de gravité",
+        "Proposer une prise en charge initiale adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'imagerie en urgence sans argument de gravité",
+        "Ne pas utiliser de jargon non expliqué"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Diapason",
+        "Tensiomètre",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation de manière structurée (OPQRST)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "comment est apparue",
+          "où",
+          "intensité",
+          "irradiation"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs",
+        "label": "Recherche les facteurs déclenchants et aggravants",
+        "weight": 1,
+        "triggerKeywords": [
+          "toux",
+          "effort",
+          "port de charge",
+          "aggravé",
+          "déclenché"
+        ]
+      },
+      {
+        "id": "interrogatoire_territoire",
+        "label": "Précise le territoire douloureux (face postéro-latérale jambe, pied)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où exactement",
+          "jusqu'où",
+          "pied",
+          "jambe",
+          "trajet"
+        ]
+      },
+      {
+        "id": "interrogatoire_neuro",
+        "label": "Recherche des symptômes neurologiques associés (paresthésies, déficit)",
+        "weight": 1,
+        "triggerKeywords": [
+          "fourmillement",
+          "engourdissement",
+          "paresthésie",
+          "faiblesse",
+          "paralysie"
+        ]
+      },
+      {
+        "id": "interrogatoire_redflags",
+        "label": "Recherche les signes de gravité (déficit moteur, troubles sphinctériens, fièvre, amaigrissement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "selles",
+          "urines",
+          "fièvre",
+          "amaigrissement",
+          "déficit",
+          "sphincter",
+          "chute"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents personnels et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "opération",
+          "maladie",
+          "famille"
+        ]
+      },
+      {
+        "id": "interrogatoire_modevie",
+        "label": "Explore le mode de vie (profession, tabac, activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "profession",
+          "tabac",
+          "alcool",
+          "sport",
+          "activité physique"
+        ]
+      },
+      {
+        "id": "examen_lasegue",
+        "label": "Réalise le test de Lasègue (élévation jambe tendue)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Lasègue",
+          "jambe tendue",
+          "élévation",
+          "test"
+        ]
+      },
+      {
+        "id": "examen_reflexes",
+        "label": "Teste les réflexes ostéo-tendineux (rotulien, achilléen)",
+        "weight": 1,
+        "triggerKeywords": [
+          "réflexe",
+          "rotulien",
+          "achilléen",
+          "marteau"
+        ]
+      },
+      {
+        "id": "examen_force",
+        "label": "Évalue la force musculaire du membre inférieur droit",
+        "weight": 1,
+        "triggerKeywords": [
+          "force",
+          "pousser",
+          "résister",
+          "jambe",
+          "cheville"
+        ]
+      },
+      {
+        "id": "examen_sensibilite",
+        "label": "Teste la sensibilité du dos du pied droit (territoire L5)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sensibilité",
+          "toucher",
+          "dos du pied",
+          "diapason"
+        ]
+      },
+      {
+        "id": "diagnostic_sciatique_L5",
+        "label": "Conclut à une sciatique L5 commune",
+        "weight": 1,
+        "triggerKeywords": [
+          "sciatique",
+          "L5",
+          "radiculalgie",
+          "nerf sciatique"
+        ]
+      },
+      {
+        "id": "pec_initiale",
+        "label": "Propose une prise en charge adaptée (repos, AINS, antalgiques, kinésithérapie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "repos",
+          "AINS",
+          "antalgique",
+          "ibuprofène",
+          "paracétamol",
+          "kinésithérapie"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Donne des conseils d'éducation thérapeutique (éviter le port de charge, activité progressive)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conseil",
+          "éviter",
+          "port de charge",
+          "activité",
+          "prévention"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif mais algique, légèrement anxieux concernant la douleur et l'impact sur son travail.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal au bas du dos et ça descend dans la jambe droite, ça fait 10 jours que je souffre.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et semble méfiant.",
+        "silence": "Le patient remplit le silence en donnant spontanément plus de détails sur ses symptômes.",
+        "jargon": "Le patient semble perdu et demande : 'C'est quoi ça ?' ou 'Je comprends pas, vous pouvez expliquer ?'"
+      }
+    }
+  }
 }

@@ -155,16 +155,306 @@
   "correction": "# Syndrome cérébelleux post-traumatique\n\nLes vertiges d'origine centrale se traduisent par une instabilité majeure, un Romberg central, une marche ébrieuse et des troubles de la coordination. Le contexte de chute avec perte de connaissance oriente vers un traumatisme crânien compliqué d’une contusion cérébelleuse.\n\n## Points clés\n\n- Instabilité ébrieuse = cérébelleux\n- Romberg oscillant dans toutes les directions\n- Dysmétrie aux tests index-index et talon-genou\n- IRM indispensable\n\n## Prise en charge\n\n- Hospitalisation et surveillance\n- Rééducation cérébelleuse\n- Repos neurologique strict",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "George O'Malley, 29 ans, homme, se présente aux urgences pour des vertiges intenses et une instabilité majeure à la marche survenus 24 heures après une chute dans les escaliers avec brève perte de connaissance.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les vertiges et le traumatisme",
+        "Effectuer un examen neurologique ciblé incluant l'examen de la marche, la coordination et les paires crâniennes",
+        "Différencier un vertige périphérique d'un vertige central",
+        "Identifier les signes de gravité et le syndrome cérébelleux",
+        "Proposer une stratégie diagnostique adaptée (imagerie, bilan complémentaire)",
+        "Explorer les antécédents, le mode de vie et le contexte professionnel du patient"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'examen ORL complet (pas de manœuvre de Dix-Hallpike comme objectif principal)",
+        "Ne pas prescrire de traitement symptomatique sans avoir évoqué le diagnostic central"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Ophtalmoscope",
+        "Otoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Abaque de Snellen",
+        "Aiguille pour la sensibilité",
+        "Lampe à fente (si disponible)",
+        "Espace pour tester la marche et le Romberg"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment vous appelez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_vertiges",
+        "label": "Interroge le patient sur les caractéristiques des vertiges (type, durée, mode d'apparition, facteurs déclenchants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vertige",
+          "tête qui tourne",
+          "sensation",
+          "depuis quand",
+          "apparition",
+          "mouvement tête"
+        ]
+      },
+      {
+        "id": "interrogatoire_circonstances_trauma",
+        "label": "Explore les circonstances de la chute, la perte de connaissance et le délai d'apparition des symptômes",
+        "weight": 1,
+        "triggerKeywords": [
+          "chute",
+          "escalier",
+          "perte connaissance",
+          "traumatisme",
+          "après la chute",
+          "24 heures"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés : céphalées, nausées, troubles visuels, troubles de la coordination",
+        "weight": 1,
+        "triggerKeywords": [
+          "mal à la tête",
+          "nausée",
+          "vision",
+          "marcher",
+          "équilibre",
+          "vomissement",
+          "céphalées"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents_modevie",
+        "label": "Explore les antécédents personnels, familiaux, le mode de vie et le contexte professionnel (interne, stress, garde)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "père",
+          "médicaments",
+          "tabac",
+          "alcool",
+          "travail",
+          "stress"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes vitales (TA, FC, T°, SpO2, FR)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "saturation",
+          "constantes"
+        ]
+      },
+      {
+        "id": "examen_paires_craniennes_nystagmus",
+        "label": "Examine les paires crâniennes avec recherche d'un nystagmus (vertical, horizontal, rotatoire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "nystagmus",
+          "mouvements yeux",
+          "paires crâniennes",
+          "regard",
+          "oculomoteur",
+          "III",
+          "IV",
+          "VI"
+        ]
+      },
+      {
+        "id": "examen_coordination_cerebelleuse",
+        "label": "Réalise les tests de coordination : doigt-nez, talon-genou, dysmétrie, dyschronométrie",
+        "weight": 1,
+        "triggerKeywords": [
+          "doigt-nez",
+          "talon-genou",
+          "coordination",
+          "cervelet",
+          "dysmétrie",
+          "index"
+        ]
+      },
+      {
+        "id": "examen_romberg_fukuda",
+        "label": "Réalise le test de Romberg et le test de Fukuba/Fukuda pour différencier atteinte centrale vs périphérique",
+        "weight": 1,
+        "triggerKeywords": [
+          "Romberg",
+          "yeux fermés",
+          "Fukuda",
+          "piétiner",
+          "déviation",
+          "debout yeux fermés"
+        ]
+      },
+      {
+        "id": "examen_marche_detaille",
+        "label": "Évalue la marche spontanée, la marche en tandem, la marche talons-pointes et la station unipodale",
+        "weight": 1,
+        "triggerKeywords": [
+          "marcher",
+          "tandem",
+          "talon",
+          "pointe",
+          "unipodale",
+          "base large",
+          "fauchage"
+        ]
+      },
+      {
+        "id": "examen_force_tonus_reflexes",
+        "label": "Évalue la force musculaire, le tonus et les réflexes ostéo-tendineux aux 4 membres",
+        "weight": 1,
+        "triggerKeywords": [
+          "force",
+          "tonus",
+          "réflexes",
+          "marteau",
+          "motricité",
+          "paralysie"
+        ]
+      },
+      {
+        "id": "differenciation_central_peripherique",
+        "label": "Différencie clairement un vertige central d'un vertige périphérique en fonction des signes cliniques",
+        "weight": 1,
+        "triggerKeywords": [
+          "central",
+          "périphérique",
+          "cérébelleux",
+          "vestibulaire",
+          "nystagmus vertical",
+          "Romberg positif"
+        ]
+      },
+      {
+        "id": "hypothese_diagnostique_cerebelleuse",
+        "label": "Évoque le diagnostic de syndrome cérébelleux post-traumatique comme hypothèse principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "cérébelleux",
+          "post-traumatique",
+          "AVC cérébelleux",
+          "syndrome cérébelleux",
+          "atteinte centrale"
+        ]
+      },
+      {
+        "id": "strategie_imagerie_urgence",
+        "label": "Propose une stratégie diagnostique adaptée incluant une imagerie cérébrale en urgence (IRM cérébelleuse ou scanner)",
+        "weight": 1,
+        "triggerKeywords": [
+          "IRM",
+          "scanner",
+          "imagerie",
+          "neuro-imagerie",
+          "urgence",
+          "hospitalisation"
+        ]
+      },
+      {
+        "id": "syntese_prise_en_charge",
+        "label": "Propose une prise en charge initiale adaptée : surveillance neurologique, avis neurochirurgical, kinésithérapie",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "hospitalisation",
+          "kinésithérapie",
+          "neurologue",
+          "PEC",
+          "traitement"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer ses phrases sans l'interrompre, montre de l'attention",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Commence par des questions ouvertes avant de poser des questions fermées ou orientées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule les propos du patient pour vérifier sa compréhension et montrer qu'il est entendu",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie_bienveillance",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient et à sa situation professionnelle",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, interne en chirurgie, anxieux mais coopératif. Il s'inquiète pour sa carrière et minimise initialement ses symptômes par fierté professionnelle. Il répond précisément aux questions mais peut se montrer impatient si l'examen est trop long.",
+      "phraseOuverture": "Bonjour docteur, je suis tombé dans les escaliers hier pendant ma garde. J'ai perdu connaissance quelques secondes et depuis j'ai des vertiges terribles, je n'arrive plus à marcher droit.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "allergies",
+        "traitements"
+      ],
+      "infosCachees": [
+        "Le patient n'a pas de traitement en cours",
+        "Pas d'antécédents médicaux significatifs",
+        "Le père a une HTA diagnostiquée à 50 ans"
+      ],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et manifeste son irritation : 'Je suis médecin aussi, je sais ce que je ressens.'",
+        "silence": "Le patient remplit le silence en donnant spontanément plus de détails sur ses symptômes et son anxiété.",
+        "jargon": "Le patient corrige l'examinateur avec une pointe d'arrogance : 'Je suis interne en chirurgie, je connais ces termes. Pouvez-vous être plus précis ?'"
+      }
+    }
+  }
 }

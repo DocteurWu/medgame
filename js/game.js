@@ -260,11 +260,11 @@ onDomReady(async () => {
         if (e.detail.enabled) {
             icon.className = 'fas fa-desktop';
             if (text) text.textContent = '2D';
-            btn.title = 'Désactiver le mode immersif 3D (Échap)';
+            btn.title = 'Désactiver la vue 3D (Échap)';
         } else {
             icon.className = 'fas fa-vr-cardboard';
-            if (text) text.textContent = 'Immersif';
-            btn.title = 'Activer le mode immersif 3D (E)';
+            if (text) text.textContent = 'Vue 3D';
+            btn.title = 'Activer la vue 3D (E)';
         }
     });
 
@@ -871,6 +871,21 @@ onDomReady(async () => {
         // Sync prescription manager with current case
         if (window.prescriptionManager && typeof window.prescriptionManager.setCase === 'function') {
             window.prescriptionManager.setCase(currentCase);
+        }
+
+        // ===== MODE ECOS =====
+        // Si l'utilisateur a activé le mode immersif (= mode ECOS) dans les
+        // paramètres, on démarre le flow ECOS complet : vignette A4 → station
+        // 8 min → annonce → debrief avec grille.
+        // On n'active pas ECOS pour les cas d'urgence (qui ont leur propre flow).
+        if (sessionStorage.getItem('immersionMode') === 'immersif' &&
+            window.EcosMode &&
+            !window.EcosMode.isActive() &&
+            !(typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode)) {
+            // Petit délai pour laisser la page charger
+            setTimeout(() => {
+                window.EcosMode.start(currentCase);
+            }, 350);
         }
     }
 

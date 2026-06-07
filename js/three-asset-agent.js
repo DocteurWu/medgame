@@ -20,7 +20,7 @@ export class ThreeAssetAgent {
      */
     createRealisticPatient(options = {}) {
         const group = new THREE.Group();
-        const pos = options.position || { x: 2.15, y: 0, z: -1.7 };
+        const pos = options.position || { x: 1.2, y: 0, z: -3.5 };
         const lying = options.isLying !== undefined ? options.isLying : false;
         const skinTone = options.skinTone || 0xd4a574;
         const clothColor = options.clothing || 0x4a6fa5;

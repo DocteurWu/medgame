@@ -664,5 +664,290 @@
       }
     }
   },
-  "correction": "# Fiche Technique : Choc Septique Pédiatrique & Purpura Fulminans\n\n## 1. Physiopathologie et Spécificités Pédiatriques\n\n### Choc pédiatrique : Un piège clinique\nLe choc septique de l'enfant présente des particularités fondamentales par rapport à celui de l'adulte :\n- **L'hypotension est un signe TARDIF de gravité extrême** chez l'enfant. Grâce à une vasoconstriction réflexe intense et à une augmentation de la fréquence cardiaque, l'enfant maintient longtemps sa pression artérielle systolique (choc compensé). \n- Lorsque la tension chute enfin (choc décompensé), la réserve physiologique est épuisée et le risque d'arrêt cardiaque est imminent.\n- La formule classique d'estimation de la **Pression Artérielle Systolique minimale** (seuil de collapsus) entre 1 et 10 ans est : \n  $$\\text{PAS minimale} = 70 + (2 \\times \\text{\\^a}ge)\\text{ mmHg}$$\n  Pour Léo (3 ans), ce seuil s'établit à **76 mmHg**. À 75 mmHg, il était déjà en collapsus circulatoire.\n- **Choc froid vs Choc chaud** : Plus de 80% des chocs septiques pédiatriques communautaires se manifestent sous forme de **choc froid** (vasoconstriction majeure, extrémités glacées, TRC $\\ge 3$ secondes, marbrures, pouls périphérique filant), contrairement à l'adulte qui présente plus fréquemment un choc chaud (vasodilatation, extrémités chaudes, TRC rapide).\n\n### Le Purpura Fulminans\nC'est la forme clinique la plus foudroyante d'infection invasive à méningocoque (*Neisseria meningitidis*). Il associe :\n1. **Un état de choc septique** avec fuite capillaire systémique majeure (capillary leak syndrome) responsable d'une hypovolémie absolue et relative.\n2. **Des thromboses vasculaires cutanées** par une Coagulation Intravasculaire Disséminée (CIVD) massive avec consommation des facteurs de coagulation et des plaquettes, entraînant des lésions purpuriques nécrotiques extensives d'évolution ultra-rapide.\n\n---\n\n## 2. Les 4 Piliers du Traitement d'Urgence Extrême\n\n### A. Oxygénothérapie\n- Administration immédiate d'**Oxygène à haut débit** (masque à haute concentration à 10-15 L/min) pour maximiser le transport d'oxygène tissulaire et compenser la dette en oxygène systémique.\n\n### B. Accès Vasculaire Immédiat : Règle des 90 secondes\n- Tenter la pose de deux voies veineuses périphériques (VVP) de gros calibre. \n- **IMPORTANT** : En cas d'échec de pose de la VVP après **90 secondes** ou 2 tentatives chez un enfant en état de choc, il faut immédiatement abandonner et poser une **aiguille intra-osseuse (VIO)** (tibia proximal). C'est un geste simple, rapide (< 30 secondes), permettant d'injecter solutés de remplissage, antibiotiques et catécholamines avec une pharmacocinétique équivalente à une voie centrale.\n\n### C. Remplissage Vasculaire Énergique et Titré\n- Administration rapide de bolus de **cristalloïdes isotoniques** (Ringer Lactate ou NaCl 0.9%) à hauteur de **10 à 20 ml/kg** sur 10 à 20 minutes (soit 150 ml à 300 ml pour 15 kg).\n- À répéter jusqu'à obtention d'une stabilité hémodynamique (normalisation du TRC, régression des marbrures, baisse de la FC, normalisation de la PAS) ou apparition de signes de surcharge ventriculaire droite ou gauche.\n- **Signes de surcharge à rechercher activement** après chaque bolus : apparition de râles crépitants pulmonaires à l'auscultation (rare chez l'enfant), survenue d'une hépatomégalie de surcharge (palpation du foie), rythme de galop.\n- Arrêter le remplissage et envisager l'introduction de catécholamines si les signes de choc persistent après 40-60 ml/kg au total.\n\n### D. Antibiothérapie d'Urgence Absolue\n- **Règle d'or** : L'antibiothérapie précoce est le facteur pronostique majeur. Chaque heure de retard dans le sepsis sévère est corrélée à une baisse de survie de 7.6% (Kumar et al.). Elle doit être administrée dans la première heure (et idéalement dans les 30 minutes) par voie IV ou intra-osseuse.\n- Dans le purpura fulminans, **l'antibiothérapie prime sur tout geste diagnostique non immédiat**.\n- **Protocole recommandé** (synergie bactéricide rapide) :\n  1. **Céfotaxime** (C3G) : **50 mg/kg** (soit 750 mg IVD/IO chez un enfant de 15 kg).\n  2. **Gentamicine** (Aminoside) : **5 mg/kg** (soit 75 mg en perfusion courte de 30 min chez un enfant de 15 kg).\n\n---\n\n## 3. Bons Réflexes (Do's) et Erreurs à Éviter (Don'ts)\n\n### 🟢 Bons Réflexes (Do's)\n- **Oxygéner** immédiatement à haut débit.\n- **Passer à la voie intra-osseuse** sans hésiter en cas d'échec de VVP en 90 secondes chez l'enfant en choc.\n- **Injecter les antibiotiques immédiatement** dès la suspicion de purpura fulminans, sans aucun retard.\n- **Titrer le remplissage** selon le poids (10-20 ml/kg) et surveiller la tolérance (pouls, TRC, auscultation, taille du foie) après chaque bolus.\n- **Calculer rigoureusement les posologies** en fonction du poids réel ou estimé (15 kg).\n\n### 🔴 Erreurs à Éviter (Don'ts)\n- **Faire une ponction lombaire d'emblée** : Formellement contre-indiquée chez un enfant instable hémodynamiquement ou présentant des signes de purpura fulminans extensif. Risque de décès par engagement cérébral immédiat.\n- **Attendre les résultats bactériologiques** (hémoculture, examens de laboratoire) avant d'injecter l'antibiothérapie.\n- **Utiliser la voie orale** chez un enfant somnolent ou léthargique (risque d'inhalation massive et de décès par asphyxie).\n- **Administrer des bêtabloquants** pour traiter la tachycardie. La tachycardie est le mécanisme de compensation cardiaque vital chez l'enfant en choc ; la bloquer provoque l'arrêt cardiaque immédiat par chute du débit cardiaque.\n- **Réaliser un remplissage de volume excessif d'emblée** (ex: 500 ml en une fois pour 15 kg, soit > 30 ml/kg) ou injecter de l'adrénaline en bolus IV direct non titré (risque d'OAP et d'asystolie)."
+  "correction": "# Fiche Technique : Choc Septique Pédiatrique & Purpura Fulminans\n\n## 1. Physiopathologie et Spécificités Pédiatriques\n\n### Choc pédiatrique : Un piège clinique\nLe choc septique de l'enfant présente des particularités fondamentales par rapport à celui de l'adulte :\n- **L'hypotension est un signe TARDIF de gravité extrême** chez l'enfant. Grâce à une vasoconstriction réflexe intense et à une augmentation de la fréquence cardiaque, l'enfant maintient longtemps sa pression artérielle systolique (choc compensé). \n- Lorsque la tension chute enfin (choc décompensé), la réserve physiologique est épuisée et le risque d'arrêt cardiaque est imminent.\n- La formule classique d'estimation de la **Pression Artérielle Systolique minimale** (seuil de collapsus) entre 1 et 10 ans est : \n  $$\\text{PAS minimale} = 70 + (2 \\times \\text{\\^a}ge)\\text{ mmHg}$$\n  Pour Léo (3 ans), ce seuil s'établit à **76 mmHg**. À 75 mmHg, il était déjà en collapsus circulatoire.\n- **Choc froid vs Choc chaud** : Plus de 80% des chocs septiques pédiatriques communautaires se manifestent sous forme de **choc froid** (vasoconstriction majeure, extrémités glacées, TRC $\\ge 3$ secondes, marbrures, pouls périphérique filant), contrairement à l'adulte qui présente plus fréquemment un choc chaud (vasodilatation, extrémités chaudes, TRC rapide).\n\n### Le Purpura Fulminans\nC'est la forme clinique la plus foudroyante d'infection invasive à méningocoque (*Neisseria meningitidis*). Il associe :\n1. **Un état de choc septique** avec fuite capillaire systémique majeure (capillary leak syndrome) responsable d'une hypovolémie absolue et relative.\n2. **Des thromboses vasculaires cutanées** par une Coagulation Intravasculaire Disséminée (CIVD) massive avec consommation des facteurs de coagulation et des plaquettes, entraînant des lésions purpuriques nécrotiques extensives d'évolution ultra-rapide.\n\n---\n\n## 2. Les 4 Piliers du Traitement d'Urgence Extrême\n\n### A. Oxygénothérapie\n- Administration immédiate d'**Oxygène à haut débit** (masque à haute concentration à 10-15 L/min) pour maximiser le transport d'oxygène tissulaire et compenser la dette en oxygène systémique.\n\n### B. Accès Vasculaire Immédiat : Règle des 90 secondes\n- Tenter la pose de deux voies veineuses périphériques (VVP) de gros calibre. \n- **IMPORTANT** : En cas d'échec de pose de la VVP après **90 secondes** ou 2 tentatives chez un enfant en état de choc, il faut immédiatement abandonner et poser une **aiguille intra-osseuse (VIO)** (tibia proximal). C'est un geste simple, rapide (< 30 secondes), permettant d'injecter solutés de remplissage, antibiotiques et catécholamines avec une pharmacocinétique équivalente à une voie centrale.\n\n### C. Remplissage Vasculaire Énergique et Titré\n- Administration rapide de bolus de **cristalloïdes isotoniques** (Ringer Lactate ou NaCl 0.9%) à hauteur de **10 à 20 ml/kg** sur 10 à 20 minutes (soit 150 ml à 300 ml pour 15 kg).\n- À répéter jusqu'à obtention d'une stabilité hémodynamique (normalisation du TRC, régression des marbrures, baisse de la FC, normalisation de la PAS) ou apparition de signes de surcharge ventriculaire droite ou gauche.\n- **Signes de surcharge à rechercher activement** après chaque bolus : apparition de râles crépitants pulmonaires à l'auscultation (rare chez l'enfant), survenue d'une hépatomégalie de surcharge (palpation du foie), rythme de galop.\n- Arrêter le remplissage et envisager l'introduction de catécholamines si les signes de choc persistent après 40-60 ml/kg au total.\n\n### D. Antibiothérapie d'Urgence Absolue\n- **Règle d'or** : L'antibiothérapie précoce est le facteur pronostique majeur. Chaque heure de retard dans le sepsis sévère est corrélée à une baisse de survie de 7.6% (Kumar et al.). Elle doit être administrée dans la première heure (et idéalement dans les 30 minutes) par voie IV ou intra-osseuse.\n- Dans le purpura fulminans, **l'antibiothérapie prime sur tout geste diagnostique non immédiat**.\n- **Protocole recommandé** (synergie bactéricide rapide) :\n  1. **Céfotaxime** (C3G) : **50 mg/kg** (soit 750 mg IVD/IO chez un enfant de 15 kg).\n  2. **Gentamicine** (Aminoside) : **5 mg/kg** (soit 75 mg en perfusion courte de 30 min chez un enfant de 15 kg).\n\n---\n\n## 3. Bons Réflexes (Do's) et Erreurs à Éviter (Don'ts)\n\n### 🟢 Bons Réflexes (Do's)\n- **Oxygéner** immédiatement à haut débit.\n- **Passer à la voie intra-osseuse** sans hésiter en cas d'échec de VVP en 90 secondes chez l'enfant en choc.\n- **Injecter les antibiotiques immédiatement** dès la suspicion de purpura fulminans, sans aucun retard.\n- **Titrer le remplissage** selon le poids (10-20 ml/kg) et surveiller la tolérance (pouls, TRC, auscultation, taille du foie) après chaque bolus.\n- **Calculer rigoureusement les posologies** en fonction du poids réel ou estimé (15 kg).\n\n### 🔴 Erreurs à Éviter (Don'ts)\n- **Faire une ponction lombaire d'emblée** : Formellement contre-indiquée chez un enfant instable hémodynamiquement ou présentant des signes de purpura fulminans extensif. Risque de décès par engagement cérébral immédiat.\n- **Attendre les résultats bactériologiques** (hémoculture, examens de laboratoire) avant d'injecter l'antibiothérapie.\n- **Utiliser la voie orale** chez un enfant somnolent ou léthargique (risque d'inhalation massive et de décès par asphyxie).\n- **Administrer des bêtabloquants** pour traiter la tachycardie. La tachycardie est le mécanisme de compensation cardiaque vital chez l'enfant en choc ; la bloquer provoque l'arrêt cardiaque immédiat par chute du débit cardiaque.\n- **Réaliser un remplissage de volume excessif d'emblée** (ex: 500 ml en une fois pour 15 kg, soit > 30 ml/kg) ou injecter de l'adrénaline en bolus IV direct non titré (risque d'OAP et d'asystolie).",
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences pédiatriques.",
+      "contexte": "Léo Tremblay, 3 ans, de sexe masculin, est amené par ses parents pour léthargie progressive, abattement extrême et forte fièvre depuis la veille. Les parents signalent l'apparition de taches rouges violacées sur les cuisses de l'enfant depuis ce matin.",
+      "consignesAttendues": [
+        "Accueillir les parents et l'enfant, se présenter et expliquer son rôle",
+        "Réaliser un interrogatoire rapide des parents ciblé sur le contexte d'urgence",
+        "Effectuer un examen clinique complet et rapide adapté à un enfant de 3 ans en état de choc",
+        "Identifier les signes de choc septique et de purpura fulminans",
+        "Initier immédiatement la prise en charge d'urgence : oxygénothérapie, voie d'abord, remplissage, antibiothérapie",
+        "Expliquer la gravité de la situation aux parents avec empathie et clarté",
+        "Demander le transfert en réanimation pédiatrique"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser de ponction lombaire avant stabilisation",
+        "Ne pas attendre les résultats biologiques ou d'hémoculture pour débuter l'antibiothérapie",
+        "Ne pas administrer de bêtabloquant pour la tachycardie",
+        "Ne pas restreindre les apports hydriques de manière inappropriée",
+        "Ne pas laisser l'enfant sans surveillance ni monitoring"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgences pédiatriques",
+      "materielDisponible": [
+        "Oxymètre de pouls",
+        "Tensiomètre pédiatrique",
+        "Thermomètre",
+        "Matériel de perfusion (cathéters périphériques, tubulures, cristalloïdes)",
+        "Kit d'intra-osseuse (aiguille intra-osseuse type EZ-IO)",
+        "Masque à haute concentration d'oxygène",
+        "Médicaments d'urgence (Céfotaxime, Gentamicine, Ringer Lactate)",
+        "Matériel de réanimation pédiatrique (ballon auto-remplisseur, laryngoscope)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente auprès des parents, identifie l'enfant et son âge, explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "enfant",
+          "trois ans"
+        ]
+      },
+      {
+        "id": "evaluation_rapide_ABCDE",
+        "label": "Réalise une évaluation rapide ABCDE (Airway, Breathing, Circulation, Disability, Exposure) adaptée au contexte d'urgence pédiatrique",
+        "weight": 1,
+        "triggerKeywords": [
+          "voies aériennes",
+          "respiration",
+          "circulation",
+          "conscience",
+          "exposition",
+          "ABCDE"
+        ]
+      },
+      {
+        "id": "releve_constantes",
+        "label": "Relevé et interprétation correcte des constantes vitales (TA 75/40, FC 168, SpO2 92%, FR 48, T°C 39,5) en identifiant l'hypotension, la tachycardie, la polypnée et l'hypoxie",
+        "weight": 1,
+        "triggerKeywords": [
+          "75/40",
+          "168",
+          "92%",
+          "48",
+          "39.5",
+          "hypotension",
+          "tachycardie",
+          "polypnée",
+          "hypoxie"
+        ]
+      },
+      {
+        "id": "identification_choc_septique",
+        "label": "Identifie le choc septique : extrémités glacées, marbrures, TRC prolongé (4 sec), tachycardie, hypotension, fièvre élevée, léthargie",
+        "weight": 1,
+        "triggerKeywords": [
+          "choc septique",
+          "marbrures",
+          "TRC",
+          "recoloration",
+          "extrémités glacées",
+          "cyanose",
+          "purpura"
+        ]
+      },
+      {
+        "id": "identification_purpura_fulminans",
+        "label": "Identifie le purpura fulminans : macules purpuriques, pétéchies, lésion nécrotique centimétrique sur les membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "purpura fulminans",
+          "pétéchies",
+          "nécrotique",
+          "taches violacées",
+          "macules",
+          "purpura"
+        ]
+      },
+      {
+        "id": "oxygénothérapie",
+        "label": "Initie l'oxygénothérapie au masque à haute concentration (10-15 L/min) en raison de la SpO2 à 92%",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "haute concentration",
+          "10 litres",
+          "15 litres",
+          "SpO2",
+          "oxygénothérapie"
+        ]
+      },
+      {
+        "id": "voie_acces_vasculaire",
+        "label": "Pose d'une voie veineuse périphérique et, en cas d'échec rapide, mise en place d'une voie intra-osseuse (VIO)",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "périphérique",
+          "intra-osseuse",
+          "VIO",
+          "aiguille",
+          "accès vasculaire",
+          "cathéter"
+        ]
+      },
+      {
+        "id": "remplissage_vasculaire",
+        "label": "Réalise un remplissage vasculaire rapide par cristalloïdes (Ringer Lactate) à 20 ml/kg (300 ml) en 15-20 minutes",
+        "weight": 1,
+        "triggerKeywords": [
+          "remplissage",
+          "Ringer Lactate",
+          "cristalloïde",
+          "20 ml/kg",
+          "300 ml",
+          "bolus",
+          "perfusion rapide"
+        ]
+      },
+      {
+        "id": "antibiothérapie_immediate",
+        "label": "Administre immédiatement la Céfotaxime 50 mg/kg (750 mg) en IV direct ou intra-osseux sans attendre les résultats microbiologiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "céfotaxime",
+          "50 mg/kg",
+          "750 mg",
+          "antibiotique",
+          "IV direct",
+          "antibiothérapie",
+          "immédiat"
+        ]
+      },
+      {
+        "id": "antibiothérapie_synergique",
+        "label": "Ajoute la Gentamicine 5 mg/kg (75 mg) en perfusion courte comme antibiothérapie synergique",
+        "weight": 1,
+        "triggerKeywords": [
+          "gentamicine",
+          "5 mg/kg",
+          "75 mg",
+          "synergie",
+          "perfusion courte"
+        ]
+      },
+      {
+        "id": "ne_fait_pas_PL",
+        "label": "Ne pratique PAS de ponction lombaire avant stabilisation hémodynamique",
+        "weight": 1,
+        "triggerKeywords": [
+          "pas de ponction lombaire",
+          "pas de PL",
+          "stabiliser d'abord",
+          "après stabilisation"
+        ]
+      },
+      {
+        "id": "ne_fait_pas_attendre_hémocultures",
+        "label": "Ne PAS attendre les résultats d'hémoculture pour débuter l'antibiothérapie",
+        "weight": 1,
+        "triggerKeywords": [
+          "ne pas attendre",
+          "hémoculture",
+          "immédiatement",
+          "sans délai",
+          "urgent"
+        ]
+      },
+      {
+        "id": "ne_pas_betabloquant",
+        "label": "N'administre PAS de bêtabloquant (Propranolol) pour la tachycardie",
+        "weight": 1,
+        "triggerKeywords": [
+          "pas de bêtabloquant",
+          "pas de propranolol",
+          "tachycardie compensatoire",
+          "ne pas ralentir"
+        ]
+      },
+      {
+        "id": "ne_pas_restrindre_hydratation",
+        "label": "Ne restreint PAS les apports hydriques de manière inappropriée",
+        "weight": 1,
+        "triggerKeywords": [
+          "pas de restriction hydrique",
+          "remplissage nécessaire",
+          "pas d'œdème cérébral",
+          "apports suffisants"
+        ]
+      },
+      {
+        "id": "annonce_gravite_transfert",
+        "label": "Annonce la gravité de la situation aux parents et demande le transfert en réanimation pédiatrique",
+        "weight": 1,
+        "triggerKeywords": [
+          "réanimation",
+          "transfert",
+          "grave",
+          "pédiatrique",
+          "USI",
+          "soins intensifs"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse les parents s'exprimer et terminer leurs explications sans les interrompre brutalement",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes aux parents avant de recourir aux questions fermées (ex : « Que s'est-il passé ? » avant « A-t-il des allergies ? »)",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule les informations données par les parents pour vérifier sa compréhension (ex : « Vous me dites que les taches sont apparues ce matin ? »)",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté aux parents, évite le jargon médical non expliqué ou les explique clairement",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'angoisse des parents, les rassure tout en étant honnête sur la gravité",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Les parents de Léo (représentés par le patient standardisé jouant le rôle du père ou de la mère) sont extrêmement angoissés, inquiets, et très impliqués. Ils répondent aux questions de manière parfois désordonnée, insistent sur la rapidité de l'aggravation et l'apparition des taches cutanées. Ils posent des questions sur le pronostic et la gravité.",
+      "phraseOuverture": "Docteur, c'est notre fils Léo, il a 3 ans. Hier il a commencé à avoir très mal à la tête et de la fièvre, et ce matin il ne répondait presque plus… Et regardez, il a des taches rouges qui apparaissent sur les cuisses, ça s'étend très vite ! On a vraiment peur !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.symptomesAssocies",
+        "histoireMaladie.remarques"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.alimentation",
+        "allergies",
+        "traitements",
+        "modeDeVie.activitePhysique"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le parent se braque : « Mais enfin docteur, il faut faire quelque chose ! Regardez-le, il ne répond plus ! Pourquoi vous ne faites rien ?! »",
+        "silence": "Le parent reste silencieux un instant, visiblement submergé par l'angoisse, puis murmure : « Il va s'en sortir, n'est-ce pas ? Dites-moi qu'il va s'en sortir… »",
+        "jargon": "Le parent semble perdu : « Pardon ? C'est quoi un purpura ? Vous pouvez expliquer avec des mots simples s'il vous plaît ? »"
+      }
+    }
+  }
 }

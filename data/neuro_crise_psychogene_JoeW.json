@@ -147,16 +147,281 @@
   ],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "Joe Wilson, 29 ans, femme, se présente aux urgences pour des épisodes répétés de mouvements anormaux avec impression de perte de contrôle.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers la distinction entre crise épileptique et crise psychogène non épileptique",
+        "Effectuer un examen neurologique complet",
+        "Proposer une stratégie diagnostique adaptée",
+        "Expliquer au patient le diagnostic retenu avec empathie et sans stigmatisation",
+        "Orienter le patient vers une prise en charge adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas utiliser le terme « c'est dans votre tête » ou toute formulation stigmatisante",
+        "Ne pas prescrire un traitement antiépileptique sans argument diagnostique",
+        "Ne pas minimiser les symptômes du patient"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Otoscope",
+        "Marteau à réflexes",
+        "Abaisse-langue",
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Stylo lumineux",
+        "ECG",
+        "Résultats biologie standard (NFS, ionogramme, glycémie, CRP)",
+        "Résultats EEG (rapport disponible sur demande)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_semiologie_crise",
+        "label": "Précise les caractéristiques sémiologiques des épisodes (durée, fréquence, circonstances de survenue)",
+        "weight": 1,
+        "triggerKeywords": [
+          "combien de temps",
+          "à quelle fréquence",
+          "quand cela arrive",
+          "combien de fois",
+          "durée"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants (stress émotionnel, conflit, contexte psychosocial)",
+        "weight": 1,
+        "triggerKeywords": [
+          "stress",
+          "émotion",
+          "conflit",
+          "fatigue",
+          "déclenche",
+          "facteur",
+          "contexte"
+        ]
+      },
+      {
+        "id": "interrogatoire_elements_differentiels",
+        "label": "Recherche les éléments différenciants (morsure de langue, incontinence, phase post-critique, mouvements stéréotypés vs non stéréotypés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "morsure",
+          "langue",
+          "incontinence",
+          "après la crise",
+          "confusion",
+          "sommeil",
+          "post-critique"
+        ]
+      },
+      {
+        "id": "interrogatoire_retentissement_psycho",
+        "label": "Évalue le retentissement psychologique et recherche des antécédents psychiatriques ou traumatiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "anxiété",
+          "dépression",
+          "trauma",
+          "psychiatre",
+          "psychologue",
+          "impact",
+          "retentissement",
+          "moral"
+        ]
+      },
+      {
+        "id": "examen_neurologique_complet",
+        "label": "Réalise un examen neurologique complet (conscience, paires crâniennes, motricité, sensibilité, réflexes, coordination, signe de Babinski)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pupilles",
+          "mouvements",
+          "force",
+          "réflexes",
+          "sensibilité",
+          "équilibre",
+          "coordination",
+          "babinski"
+        ]
+      },
+      {
+        "id": "examen_general_constantes",
+        "label": "Vérifie les constantes vitales et l'aspect général",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "saturation",
+          "constantes"
+        ]
+      },
+      {
+        "id": "strategie_EEG",
+        "label": "Demande un EEG (idéalement vidéo-EEG) pour différencier crise épileptique et crise psychogène non épileptique",
+        "weight": 1,
+        "triggerKeywords": [
+          "EEG",
+          "électroencéphalogramme",
+          "vidéo-EEG",
+          "enregistrement"
+        ]
+      },
+      {
+        "id": "strategie_bilan_paraclinique",
+        "label": "Propose un bilan paraclinique adapté (biologie standard, imagerie cérébrale si doute)",
+        "weight": 1,
+        "triggerKeywords": [
+          "IRM",
+          "scanner",
+          "biologie",
+          "bilan",
+          "imagerie"
+        ]
+      },
+      {
+        "id": "diagnostic_crise_psychogene",
+        "label": "Retient le diagnostic de crise psychogène non épileptique en argumentant (mouvements non stéréotypés, absence de morsure de langue, absence d'incontinence, absence de phase post-critique, facteur déclenchant émotionnel)",
+        "weight": 1,
+        "triggerKeywords": [
+          "psychogène",
+          "non épileptique",
+          "fonctionnel",
+          "PNES",
+          "psychologique"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic_empathique",
+        "label": "Annonce le diagnostic de manière empathique, sans stigmatisation, en expliquant que les symptômes sont réels et pris au sérieux",
+        "weight": 1,
+        "triggerKeywords": [
+          "symptômes réels",
+          "pas imaginaire",
+          "pris au sérieux",
+          "comprendre",
+          "expliquer"
+        ]
+      },
+      {
+        "id": "orientation_psychiatrique",
+        "label": "Propose une orientation vers une prise en charge psychiatrique et/ou psychothérapeutique",
+        "weight": 1,
+        "triggerKeywords": [
+          "psychiatre",
+          "psychologue",
+          "psychothérapie",
+          "TCC",
+          "prise en charge",
+          "orientation"
+        ]
+      },
+      {
+        "id": "pas_traitement_antiepileptique",
+        "label": "Ne prescrit pas de traitement antiépileptique sans confirmation du diagnostic d'épilepsie",
+        "weight": 1,
+        "triggerKeywords": [
+          "antiépileptique",
+          "traitement",
+          "ne pas prescrire"
+        ]
+      },
+      {
+        "id": "conclusion_plan",
+        "label": "Résume la prise en charge proposée et s'assure de la compréhension du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "plan",
+          "compris",
+          "question",
+          "prochaines étapes"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce diagnostique",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patiente anxieuse, légèrement sur la défensive, qui a l'impression que les médecins ne la prennent pas au sérieux. Elle est fatiguée par la répétition des épisodes et l'incertitude diagnostique. Elle peut devenir émotive si elle se sent jugée ou si le médecin minimise ses symptômes.",
+      "phraseOuverture": "Bonjour docteur, je reviens parce que j'ai encore eu un de ces épisodes… Mon corps fait des choses que je ne contrôle plus, et j'ai vraiment peur que ce soit de l'épilepsie.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi.stress",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies",
+        "histoireMaladie.remarques"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Mais enfin docteur, vous ne pouvez pas me dire que c'est dans ma tête ! Mon corps tremble vraiment, je ne contrôle plus mes bras, c'est terrifiant !",
+        "silence": "… (silence prolongé, regard fuyant, puis) Vous ne me croyez pas, c'est ça ?",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire… Pouvez-vous m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

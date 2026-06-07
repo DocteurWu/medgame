@@ -145,16 +145,261 @@
   "correction": "# Torsion du cordon spermatique\n\nLe patient présente une douleur testiculaire brutale, intense, avec nausées et vomissements. L'échographie Doppler montre une absence de flux artériel dans le testicule droit, ce qui confirme la torsion.\n\n## Bonnes pratiques\n\n- Toute douleur testiculaire aiguë est une torsion jusqu'à preuve du contraire\n- Faire un Doppler testiculaire en urgence si doute diagnostique\n- Intervention rapide : détorsion et orchidopéxie bilatérale\n- Informer sur la perte potentielle de fertilité si retard diagnostique\n\n## Erreurs à éviter\n\n- Retarder la prise en charge pour des examens inutiles\n- Confondre avec une orchi-épididymite (douleur plus progressive)\n- Ne pas fixer le testicule controlatéral",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de chirurgie urologique.",
+      "contexte": "Patrick Létoiledemer, 21 ans, homme, se présente aux urgences pour une douleur testiculaire aiguë unilatérale droite.",
+      "consignesAttendues": [
+        "Réalisez l'interrogatoire complet du patient",
+        "Réalisez l'examen clinique ciblé",
+        "Évoquez les diagnostics différentiels",
+        "Proposez la prise en charge adaptée en urgence",
+        "Expliquez au patient la conduite à tenir"
+      ],
+      "consignesInterdites": [
+        "Ne pas retarder la prise en charge chirurgicale",
+        "Ne pas prescrire d'antibiotiques sans avoir écarté la torsion"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Gants d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (date d'apparition, mode d'installation, intensité, irradiation, facteurs aggravants/soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "depuis quand",
+          "intensité",
+          "irradiation",
+          "EVA"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés (nausées, vomissements, fièvre, brûlures mictionnelles, écoulement urétral)",
+        "weight": 1,
+        "triggerKeywords": [
+          "nausées",
+          "vomissements",
+          "fièvre",
+          "brûlures",
+          "urines"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux pertinents (torsion antérieure, cryptorchidie, chirurgie inguinale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "chirurgie",
+          "famille",
+          "père"
+        ]
+      },
+      {
+        "id": "examen_general",
+        "label": "Évalue l'état général du patient (signes de gravité, retentissement hémodynamique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "état général",
+          "constantes",
+          "tension",
+          "pouls"
+        ]
+      },
+      {
+        "id": "examen_testiculaire",
+        "label": "Réalise l'examen testiculaire bilatéral (position du testicule, horizontalisation, réflexe crémastérien, signe de Prehn)",
+        "weight": 1,
+        "triggerKeywords": [
+          "testicule",
+          "examen",
+          "réflexe crémastérien",
+          "Prehn",
+          "position"
+        ]
+      },
+      {
+        "id": "examen_inguinal",
+        "label": "Examine la région inguinale et le cordon spermatique",
+        "weight": 1,
+        "triggerKeywords": [
+          "aine",
+          "inguinal",
+          "cordon",
+          "hernie"
+        ]
+      },
+      {
+        "id": "diagnostic_torsion",
+        "label": "Évoque le diagnostic de torsion du cordon spermatique",
+        "weight": 1,
+        "triggerKeywords": [
+          "torsion",
+          "cordon spermatique",
+          "urgence"
+        ]
+      },
+      {
+        "id": "diagnostics_differentiels",
+        "label": "Évoque les diagnostics différentiels (orchi-épididymite, traumatisme, colique néphrétique, hernie étranglée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "épididymite",
+          "traumatisme",
+          "colique néphrétique",
+          "hernie"
+        ]
+      },
+      {
+        "id": "prise_en_charge_urgence",
+        "label": "Propose une prise en charge chirurgicale en urgence (détorsion + orchidopéxie bilatérale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "chirurgie",
+          "urgence",
+          "opérer",
+          "détorsion",
+          "orchidopéxie"
+        ]
+      },
+      {
+        "id": "delai_pec",
+        "label": "Mentionne l'importance du délai de prise en charge (< 6 heures pour la viabilité testiculaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "6 heures",
+          "délai",
+          "viabilité",
+          "ischémie",
+          "nécrose"
+        ]
+      },
+      {
+        "id": "antalgie",
+        "label": "Prescrit une antalgie adaptée en attendant la chirurgie",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "morphine",
+          "paracétamol",
+          "douleur"
+        ]
+      },
+      {
+        "id": "information_patient",
+        "label": "Informe le patient sur le diagnostic, l'urgence chirurgicale et le pronostic",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "informer",
+          "patient",
+          "comprendre"
+        ]
+      },
+      {
+        "id": "bilan_preoperatoire",
+        "label": "Prescrit le bilan pré-opératoire (NFS, groupe, coagulation, ECBU)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "pré-opératoire",
+          "NFS",
+          "groupe",
+          "ECBU"
+        ]
+      },
+      {
+        "id": "avis_urologique",
+        "label": "Contacte l'urologue en urgence pour la prise en charge chirurgicale",
+        "weight": 1,
+        "triggerKeywords": [
+          "urologue",
+          "spécialiste",
+          "avis",
+          "consultation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune homme sportif, anxieux par la douleur intense et l'inquiétude pour sa fertilité. Il répond aux questions mais est gêné par la douleur.",
+      "phraseOuverture": "Docteur, j'ai une douleur terrible au testicule droit, ça fait 3 heures, j'ai même vomi...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Aïe ! Faites attention, ça fait très mal !",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire, expliquez-moi avec des mots simples s'il vous plaît."
+      }
+    }
+  }
 }

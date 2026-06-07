@@ -3,12 +3,12 @@ import { box, createMaterial } from './three-room.js';
 import { pulseEmissive } from './three-animations.js';
 
 const INSTRUMENTS = [
-    { id: 'tensiometer', label: 'Tensiometre', x: -0.9, z: -0.7, key: 'tension', title: 'TA' },
-    { id: 'stethoscope', label: 'Stethoscope', x: -0.7, z: -0.7, key: 'stethoscope', title: 'Auscultation' },
-    { id: 'oximeter', label: 'Oxymetre', x: -0.5, z: -0.7, key: 'saturationO2', title: 'SpO2' },
-    { id: 'thermometer', label: 'Thermometre', x: -0.3, z: -0.7, key: 'temperature', title: 'T' },
-    { id: 'glucometer', label: 'Glucometre', x: -0.1, z: -0.7, key: 'glycemie', title: 'Glycemie' },
-    { id: 'tablet', label: 'Tablette prescription', x: 0.12, z: -0.7, key: 'tablet', title: 'Rx' }
+    { id: 'tensiometer', label: 'Tensiometre', x: -3.3, z: -0.4, key: 'tension', title: 'TA' },
+    { id: 'stethoscope', label: 'Stethoscope', x: -3.1, z: -0.4, key: 'stethoscope', title: 'Auscultation' },
+    { id: 'oximeter', label: 'Oxymetre', x: -2.9, z: -0.4, key: 'saturationO2', title: 'SpO2' },
+    { id: 'thermometer', label: 'Thermometre', x: -2.7, z: -0.4, key: 'temperature', title: 'T' },
+    { id: 'glucometer', label: 'Glucometre', x: -2.5, z: -0.4, key: 'glycemie', title: 'Glycemie' },
+    { id: 'tablet', label: 'Tablette prescription', x: -2.3, z: -0.4, key: 'tablet', title: 'Rx' }
 ];
 
 /**
@@ -242,7 +242,7 @@ export class ThreeInstruments {
     // ===== STÉTHOSCOPE =====
     _buildStethoscope(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.825, item.z);
+        group.position.set(item.x, 1.425, item.z);
 
         // Pavillon (cloche) — cône tronqué
         const bellMat = createMaterial(0xc0c0c0, { roughness: 0.15, metalness: 0.85 });
@@ -361,7 +361,7 @@ export class ThreeInstruments {
 
     _buildTensiometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.825, item.z);
+        group.position.set(item.x, 1.425, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0xf0f0f0, { roughness: 0.3, metalness: 0.2 });
@@ -447,7 +447,7 @@ export class ThreeInstruments {
     // ===== OXymÈTRE =====
     _buildOximeter(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.825, item.z);
+        group.position.set(item.x, 1.425, item.z);
 
         // Boîtier clip (forme en pince)
         const shellMat = createMaterial(0x2a2a2a, { roughness: 0.3, metalness: 0.4 });
@@ -544,7 +544,7 @@ export class ThreeInstruments {
     // ===== THERMOMÈTRE =====
     _buildThermometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.825, item.z);
+        group.position.set(item.x, 1.425, item.z);
 
         // Bâtonnet principal (corps du thermomètre)
         const stickMat = createMaterial(0xf8f8f8, { roughness: 0.2, metalness: 0.3 });
@@ -601,7 +601,7 @@ export class ThreeInstruments {
     // ===== GLUCOMÈTRE =====
     _buildGlucometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.825, item.z);
+        group.position.set(item.x, 1.425, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0x1a1a3a, { roughness: 0.25, metalness: 0.15 });
@@ -669,7 +669,7 @@ export class ThreeInstruments {
     // ===== TABLETTE =====
     _buildTablet(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.905, item.z);
+        group.position.set(item.x, 1.49, item.z);
 
         // Cadre (bordure noire)
         const frameMat = createMaterial(0x111111, { roughness: 0.2, metalness: 0.5 });
@@ -730,7 +730,7 @@ export class ThreeInstruments {
             emissive: item.id === 'tablet' ? 0x003366 : 0x000000,
             emissiveIntensity: item.id === 'tablet' ? 0.25 : 0
         });
-        const mesh = box(this.scene, { x: 0.26, y: 0.08, z: 0.18 }, { x: item.x, y: 0.91, z: item.z }, mat, item.label, true);
+        const mesh = box(this.scene, { x: 0.26, y: 0.08, z: 0.18 }, { x: item.x, y: 1.49, z: item.z }, mat, item.label, true);
         mesh.userData.instrument = item;
         return mesh;
     }

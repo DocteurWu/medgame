@@ -559,5 +559,251 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "John Lucas, 19 ans, homme, se présente aux urgences pour une brûlure chimique survenue brutalement lors d'une manipulation de produit chimique en milieu professionnel.",
+      "consignesAttendues": [
+        "Réalisez l'interrogatoire du patient en explorant le mécanisme de la brûlure, le produit en cause, le délai de prise en charge et les premiers gestes réalisés.",
+        "Pratiquez un examen clinique ciblé de la brûlure (localisation, étendue, profondeur, surface corporelle atteinte) et un examen général.",
+        "Évaluez la douleur du patient à l'aide d'une échelle adaptée.",
+        "Réalisez les premiers gestes de prise en charge d'urgence : rinçage abondant et prolongé de la brûlure.",
+        "Élaborez une stratégie diagnostique et thérapeutique pertinente pour ce type de brûlure chimique.",
+        "Communiquez avec empathie et clarté avec le patient tout au long de la consultation."
+      ],
+      "consignesInterdites": [
+        "Ne pas retarder le rinçage de la brûlure chimique pour compléter l'interrogatoire.",
+        "Ne pas prescrire de traitement local avant rinçage abondant.",
+        "Ne pas sous-estimer la douleur du patient."
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Eau courante / douche de décontamination",
+        "Échelle visuelle analogique (EVA) de la douleur",
+        "Règle de Wallace (règle des 9%)",
+        "Gants non stériles",
+        "Sérum physiologique",
+        "Champ stérile",
+        "Matériel de pansement",
+        "Fiche d'évaluation de la brûlure"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment allez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_mecanisme",
+        "label": "Explore le mécanisme de la brûlure : produit chimique en cause, mode de contact, durée d'exposition",
+        "weight": 1,
+        "triggerKeywords": [
+          "produit",
+          "acide",
+          "base",
+          "solvant",
+          "combien de temps",
+          "comment c'est arrivé"
+        ]
+      },
+      {
+        "id": "interrogatoire_delai_premiers_gestes",
+        "label": "Précise le délai entre l'accident et l'arrivée aux urgences et les premiers gestes réalisés (rinçage, retrait des vêtements)",
+        "weight": 1,
+        "triggerKeywords": [
+          "quand",
+          "il y a combien de temps",
+          "avez-vous rincé",
+          "premiers gestes",
+          "déshabillé"
+        ]
+      },
+      {
+        "id": "evaluation_douleur",
+        "label": "Évalue la douleur à l'aide d'une échelle adaptée (EVA ou EN) et la documente",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "EVA",
+          "échelle",
+          "combien sur 10",
+          "fait mal"
+        ]
+      },
+      {
+        "id": "examen_localisation_etendue",
+        "label": "Examine la brûlure : précise la localisation, estime la surface corporelle atteinte (règle de Wallace / paume de la main)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où est la brûlure",
+          "surface",
+          "pourcentage",
+          "règle des 9",
+          "paume"
+        ]
+      },
+      {
+        "id": "examen_profondeur",
+        "label": "Évalue la profondeur de la brûlure (érythème, phlyctènes, aspect blanc/indolore) et distingue 1er, 2ème ou 3ème degré",
+        "weight": 1,
+        "triggerKeywords": [
+          "profondeur",
+          "cloque",
+          "phlyctène",
+          "blanc",
+          "insensible",
+          "degré"
+        ]
+      },
+      {
+        "id": "examen_general_constantes",
+        "label": "Réalise un examen général incluant les constantes (TA, FC, FR, SpO2, Temp) et l'aspect général du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "saturation",
+          "température",
+          "état général"
+        ]
+      },
+      {
+        "id": "geste_urgence_rincage",
+        "label": "Réalise ou prescrit immédiatement un rinçage abondant et prolongé (≥ 20 min) à l'eau tiède du secteur atteint",
+        "weight": 1,
+        "triggerKeywords": [
+          "rincer",
+          "eau",
+          "douche",
+          "décontamination",
+          "abondant",
+          "20 minutes"
+        ]
+      },
+      {
+        "id": "retrait_vetements_contamines",
+        "label": "Retrait des vêtements et bijoux contaminés avant ou pendant le rinçage",
+        "weight": 1,
+        "triggerKeywords": [
+          "vêtements",
+          "retirer",
+          "bijoux",
+          "déshabiller",
+          "contaminé"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique pertinente : identification du produit (fiche toxicologique), bilan selon gravité (NFS, ionogramme, créatinine si étendue)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "prise de sang",
+          "fiche toxicologique",
+          "identifier le produit",
+          "analyses"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Élabore une prise en charge thérapeutique adaptée : antalgie, pansement, prophylaxie tétanique, avis spécialisé si critères de gravité",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "pansement",
+          "tétanos",
+          "brûlologue",
+          "transfert",
+          "centre de brûlés"
+        ]
+      },
+      {
+        "id": "criteres_gravite",
+        "label": "Identifie les critères de gravité d'une brûlure chimique (surface > 10%, localisation spéciale, 3ème degré, produit caustique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "critères de gravité",
+          "centre spécialisé",
+          "référer",
+          "grave",
+          "localisation"
+        ]
+      },
+      {
+        "id": "syntheses_transmission",
+        "label": "Réalise une synthèse orale structurée de la situation (mécanisme, examen, gestes réalisés, plan de prise en charge)",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "pour conclure",
+          "le patient présente",
+          "plan",
+          "je propose"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, anxieux mais coopératif. Il a mal et est inquiet pour les séquelles. Il répond aux questions de façon concise mais se montre volontaire.",
+      "phraseOuverture": "Bonjour docteur, je me suis brûlé avec un produit chimique au travail, j'ai très mal.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "allergies.liste",
+        "traitements"
+      ],
+      "infosCachees": [
+        "Le patient ne mentionne pas spontanément que le produit était un acide fort (acide sulfurique) — il faut le lui demander spécifiquement.",
+        "Le patient a rincé à l'eau sur les lieux pendant environ 5 minutes avant de venir aux urgences."
+      ],
+      "reactions": {
+        "brutal": "Le patient se crispe et répond de façon plus brève si l'interne est trop directif ou ne le laisse pas s'exprimer.",
+        "silence": "Le patient comble le silence en donnant spontanément plus de détails sur l'accident.",
+        "jargon": "Le patient demande des explications si l'interne utilise des termes médicaux non expliqués (ex : « phlyctène », « EVA », « règle de Wallace »)."
+      }
+    }
   }
 }

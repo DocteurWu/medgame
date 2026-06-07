@@ -118,16 +118,259 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de rhumatologie.",
+      "contexte": "Madame Marie Leroy, 60 ans, se présente en consultation pour une raideur progressive et douloureuse de l'épaule gauche.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les douleurs de l'épaule",
+        "Effectuer un examen clinique de l'épaule",
+        "Proposer un diagnostic et une prise en charge adaptée",
+        "Expliquer le diagnostic et le plan de soins à la patiente"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement immunosuppresseur ou biologique",
+        "Ne pas proposer de chirurgie en première intention"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Mètre ruban",
+        "Goniomètre",
+        "Table d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "médecin"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (localisation, intensité, type, irradiations)",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "où",
+          "depuis quand",
+          "intensité",
+          "type de douleur"
+        ]
+      },
+      {
+        "id": "interrogatoire_raideur",
+        "label": "Évalue la raideur (horaire, évolution, retentissement fonctionnel)",
+        "weight": 1,
+        "triggerKeywords": [
+          "raideur",
+          "matin",
+          "évolution",
+          "mouvements",
+          "difficulté"
+        ]
+      },
+      {
+        "id": "interrogatoire_nocturne",
+        "label": "Recherche des douleurs nocturnes et leur retentissement sur le sommeil",
+        "weight": 1,
+        "triggerKeywords": [
+          "nuit",
+          "nocturne",
+          "sommeil",
+          "réveil"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents (diabète, thyroïde, traumatisme)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "diabète",
+          "thyroïde",
+          "chirurgie",
+          "maladie"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitement",
+        "label": "Recherche les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "allergie"
+        ]
+      },
+      {
+        "id": "examen_observation",
+        "label": "Observe l'épaule (œdème, amyotrophie, attitude vicieuse)",
+        "weight": 1,
+        "triggerKeywords": [
+          "regardez",
+          "observer",
+          "visuellement"
+        ]
+      },
+      {
+        "id": "examen_mobilite_active",
+        "label": "Évalue la mobilité active de l'épaule (flexion, abduction, rotations)",
+        "weight": 1,
+        "triggerKeywords": [
+          "levez le bras",
+          "bougez",
+          "active",
+          "mouvement"
+        ]
+      },
+      {
+        "id": "examen_mobilite_passive",
+        "label": "Évalue la mobilité passive et compare avec la mobilité active",
+        "weight": 1,
+        "triggerKeywords": [
+          "passive",
+          "je bouge",
+          "moi",
+          "comparaison"
+        ]
+      },
+      {
+        "id": "examen_rotateur",
+        "label": "Réalise des manœuvres de la coiffe des rotateurs (Jobe, Neer, Hawkins)",
+        "weight": 1,
+        "triggerKeywords": [
+          "jobe",
+          "neer",
+          "hawkins",
+          "coiffe",
+          "rotateurs"
+        ]
+      },
+      {
+        "id": "diagnostic_capsulite",
+        "label": "Évoque le diagnostic de capsulite rétractile",
+        "weight": 1,
+        "triggerKeywords": [
+          "capsulite",
+          "rétractile",
+          "frozen shoulder",
+          "rétraction"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque un diagnostic différentiel (tendinopathie de la coiffe)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tendinopathie",
+          "coiffe",
+          "différentiel",
+          "autre diagnostic"
+        ]
+      },
+      {
+        "id": "pec_reeducation",
+        "label": "Propose la rééducation comme traitement principal",
+        "weight": 1,
+        "triggerKeywords": [
+          "rééducation",
+          "kinésithérapie",
+          "kiné",
+          "physiothérapie"
+        ]
+      },
+      {
+        "id": "pec_antalgiques",
+        "label": "Propose un traitement antalgique adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "paracétamol",
+          "anti-inflammatoire",
+          "douleur"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique clairement le diagnostic et le pronostic à la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquez",
+          "diagnostic",
+          "pronostic",
+          "évolution",
+          "comprendre"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux face à la douleur et l'incapacité fonctionnelle",
+      "phraseOuverture": "Bonjour docteur, j'ai de plus en plus de mal à bouger mon épaule gauche, ça fait plusieurs semaines et ça ne s'arrange pas.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Aïe ! Vous me faites mal !",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire, pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

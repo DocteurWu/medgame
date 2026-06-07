@@ -613,5 +613,294 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Monsieur John Jean, 65 ans, se présente aux urgences pour une douleur thoracique suspecte d'apparition brutale.",
+      "consignesAttendues": [
+        "Réalisez un interrogatoire complet orienté sur la douleur thoracique",
+        "Effectuez un examen clinique cardiovasculaire et pulmonaire adapté",
+        "Évaluez la gravité et identifiez les signes de détresse vitale",
+        "Proposez une stratégie diagnostique initiale pertinente (ECG, biologie, imagerie)",
+        "Communiquez avec le patient de manière empathique et rassurante"
+      ],
+      "consignesInterdites": [
+        "Ne prescrivez pas de traitement avant d'avoir posé un diagnostic de travail",
+        "Ne quittez pas le patient sans surveillance si une urgence vitale est suspectée",
+        "N'utilisez pas de jargon médical sans l'expliquer au patient"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope",
+        "ECG 12 dérivations",
+        "Thermomètre",
+        "Matériel de prélèvement veineux",
+        "Kit d'urgence (scope, aspirateur, chariot d'urgence)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie le patient et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "identité",
+          "installer",
+          "confort"
+        ]
+      },
+      {
+        "id": "evaluation_urgence_initiale",
+        "label": "Évalue immédiatement les critères de gravité (détresse vitale, douleur intense, signes de choc)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gravité",
+          "détresse",
+          "état hémodynamique",
+          "urgence vitale",
+          "ABCD"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur thoracique selon les critères OMS (siège, irradiation, type, intensité, durée, facteurs aggravants/soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "siège",
+          "irradiation",
+          "type",
+          "intensité",
+          "EVA",
+          "durée",
+          "facteurs",
+          "oppressante",
+          "en étau"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (tabac, HTA, diabète, dyslipidémie, obésité, sédentarité, antécédents familiaux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "hypertension",
+          "diabète",
+          "cholestérol",
+          "antécédents familiaux",
+          "facteurs de risque",
+          "mode de vie"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels cardiovasculaires et chirurgicaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "cardiaque",
+          "infarctus",
+          "angine",
+          "chirurgie cardiaque",
+          "traitement habituel"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés (dyspnée, sueurs, nausées, palpitations, syncope, malaise)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "sueurs",
+          "nausées",
+          "palpitations",
+          "syncope",
+          "malaise",
+          "essoufflement"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes vitales (TA, FC, FR, SpO2, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "saturation",
+          "fréquence respiratoire",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (inspection, palpation, auscultation cardiaque et des pouls périphériques, recherche de signes d'insuffisance cardiaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation cardiaque",
+          "pouls",
+          "turgescence jugulaire",
+          "œdèmes",
+          "frolement",
+          "bruit de galop"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire complet (inspection, palpation, percussion, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "crépitants",
+          "wheezing",
+          "diminution du murmure vésiculaire",
+          "dyspnée"
+        ]
+      },
+      {
+        "id": "examen_abdominal",
+        "label": "Réalise un examen abdominal orienté (palpation, recherche de douleur épigastrique, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpation abdominale",
+          "épigastrique",
+          "abdomen",
+          "douleur abdominale"
+        ]
+      },
+      {
+        "id": "realisation_ECG",
+        "label": "Prescrit/réalise un ECG 12 dérivations en urgence et en interprète les éléments clés (ST+, ST-, ondes Q, arythmies)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "ST",
+          "onde Q",
+          "coronarien",
+          "12 dérivations"
+        ]
+      },
+      {
+        "id": "strategie_biologique",
+        "label": "Prescrit un bilan biologique adapté (troponine, BNP/NT-proBNP, NFS, créatinine, ionogramme, bilan de coagulation, D-dimères si indiqué)",
+        "weight": 1,
+        "triggerKeywords": [
+          "troponine",
+          "BNP",
+          "D-dimères",
+          "NFS",
+          "créatinine",
+          "bilan biologique",
+          "prélèvement"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Propose une imagerie adaptée (radiographie thoracique, angioscanner coronaire ou aortique selon le contexte)",
+        "weight": 1,
+        "triggerKeywords": [
+          "radio thoracique",
+          "scanner",
+          "angioscanner",
+          "coroscanner",
+          "imagerie",
+          "radiographie"
+        ]
+      },
+      {
+        "id": "PEC_initiale_urgence",
+        "label": "Initie une prise en charge adaptée en urgence (voie veineuse, oxygénothérapie si besoin, traitement antalgique, antiagrégant si suspicion SCA, surveillance)",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "oxygène",
+          "antalgique",
+          "aspirine",
+          "traitement",
+          "surveillance",
+          "scope"
+        ]
+      },
+      {
+        "id": "synthese_communication",
+        "label": "Synthétise les éléments cliniques, communique le diagnostic de travail au patient et explique la suite de la prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "expliquer",
+          "prise en charge",
+          "résultats",
+          "résumer",
+          "synthèse"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer ses phrases sans l'interrompre et montre de l'attention (hochement de tête, relance)",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Commence par des questions ouvertes avant de cibler avec des questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule les dires du patient pour vérifier sa compréhension et valide les informations clés",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire accessible au patient, évite le jargon médical ou l'explique lorsqu'il est utilisé",
+        "max": 1
+      },
+      {
+        "id": "empathie_bienveillance",
+        "label": "Fait preuve d'empathie, de bienveillance et rassure le patient tout au long de la consultation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux mais coopératif, légèrement essoufflé, se tenant le thorax. Il répond aux questions de façon concise mais se montre inquiet pour son état de santé.",
+      "phraseOuverture": "Docteur, j'ai une douleur très forte dans la poitrine, ça m'a pris d'un coup et ça ne passe pas… J'ai très peur.",
+      "infosVolontaires": [
+        "Motif : douleur thoracique brutale",
+        "La douleur est apparue il y a environ 2 heures, de façon brutale, sans effort particulier",
+        "La douleur est en étau, rétrosternale, avec irradiation vers le bras gauche",
+        "Il présente des sueurs et une sensation de malaise"
+      ],
+      "infosSiDemandees": [
+        "Antécédents médicaux : hypertension artérielle traitée depuis 10 ans",
+        "Antécédents chirurgicaux : aucun",
+        "Antécédents familiaux : père décédé d'un infarctus du myocarde à 58 ans",
+        "Tabac : fumeur à 1 paquet/jour depuis 30 ans (30 paquets-années)",
+        "Traitement habituel : Amlodipine 5 mg le matin",
+        "Allergies : aucune connue",
+        "Alcool : consommation modérée (2 verres de vin/jour)",
+        "Diabète : non connu",
+        "Dyslipidémie : non connue"
+      ],
+      "infosCachees": [
+        "Le patient a pris de l'aspirine 250 mg en automédication avant de venir aux urgences",
+        "Il a ressenti un bref épisode de nausée au début de la douleur"
+      ],
+      "reactions": {
+        "brutal": "Le patient se crispe, porte la main à sa poitrine et marque une pause dans sa respiration. Il dit : 'Ça fait vraiment très mal…'",
+        "silence": "Le patient attend la question suivante, regarde l'interne avec anxiété. Il peut dire : 'C'est grave, docteur ?'",
+        "jargon": "Le patient fronce les sourcils et dit : 'Je ne comprends pas, vous pouvez m'expliquer avec des mots simples ?'",
+        "empathie": "Le patient se détend visiblement, baisse les épaules et dit : 'Merci docteur, ça me rassure que vous preniez ça au sérieux.'",
+        "annonce_gravite": "Le patient pâlit, ses yeux s'écarquillent. Il dit : 'Un infarctus ? Mais je suis trop jeune pour ça… Qu'est-ce que je risque ?'"
+      }
+    }
   }
 }

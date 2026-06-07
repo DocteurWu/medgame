@@ -133,16 +133,287 @@
   "correction": "IDM ST+ nécessite une prise en charge en urgence.",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Mme Gating, 45 ans, se présente aux urgences pour une douleur thoracique apparue il y a 1 heure.",
+      "consignesAttendues": [
+        "Réalisez l'interrogatoire et l'examen clinique de cette patiente",
+        "Évoquez les diagnostics différentiels et argumentez votre démarche",
+        "Proposez une stratégie diagnostique et thérapeutique adaptée",
+        "Communiquez avec empathie et clarté avec la patiente"
+      ],
+      "consignesInterdites": [
+        "Ne prescrivez pas de traitement sans avoir réalisé un ECG",
+        "Ne minimisez pas la douleur thoracique sans bilan initial"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "ECG 12 dérivations",
+        "Scope (SpO2, FC, PA)",
+        "Matériel de prélèvement sanguin",
+        "Matériel de perfusion",
+        "Aspirine 250 mg disponible au chariot"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie la patiente et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "identité",
+          "installer"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur thoracique (SIQVDO : Siège, Intensité, Qualité, Vécu, Déclenchement, Old/ancienneté)",
+        "weight": 1,
+        "triggerKeywords": [
+          "siège",
+          "intensité",
+          "qualité",
+          "déclenchement",
+          "irradiation",
+          "oppression"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés (sueurs, dyspnée, nausées, malaise, palpitations)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sueur",
+          "dyspnée",
+          "nausée",
+          "malaise",
+          "palpitation",
+          "syncope"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (tabac, HTA, diabète, dyslipidémie, hérédité, stress)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "hypertension",
+          "diabète",
+          "cholestérol",
+          "hérédité",
+          "stress",
+          "contraception"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents médicaux, chirurgicaux, familiaux et les traitements en cours",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédent",
+          "asthme",
+          "traitement",
+          "ventaline",
+          "chirurgie",
+          "familiaux"
+        ]
+      },
+      {
+        "id": "examen_clinique_constantes",
+        "label": "Mesure et interprète les constantes (PA, FC, SpO2, FR, Température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "fréquence respiratoire",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardio",
+        "label": "Réalise un examen cardiovasculaire complet (auscultation cardiaque, pouls périphériques, signes d'insuffisance cardiaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "bruits du cœur",
+          "galop",
+          "pouls",
+          "turgescence jugulaire",
+          "œdème"
+        ]
+      },
+      {
+        "id": "examen_clinique_pulmonaire",
+        "label": "Réalise une auscultation pulmonaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "crépitants",
+          "wheezing",
+          "MV"
+        ]
+      },
+      {
+        "id": "realisation_ecg",
+        "label": "Réalise ou demande un ECG 12 dérivations en urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "12 dérivations",
+          "ST",
+          "sus-décalage"
+        ]
+      },
+      {
+        "id": "prescription_bilan_bio",
+        "label": "Prescrit un bilan biologique adapté (troponine, NFS, ionogramme, créatinine, bilan de coagulation, gazométrie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "troponine",
+          "NFS",
+          "ionogramme",
+          "créatinine",
+          "coagulation",
+          "gaz"
+        ]
+      },
+      {
+        "id": "diagnostic_idm",
+        "label": "Évoque le diagnostic d'IDM / SCA comme hypothèse principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "IDM",
+          "infarctus",
+          "SCA",
+          "syndrome coronarien",
+          "coronarographie"
+        ]
+      },
+      {
+        "id": "traitement_urgence",
+        "label": "Initie le traitement d'urgence adapté (aspirine, anticoagulant, anti-ischémique, oxygénothérapie si hypoxie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aspirine",
+          "héparine",
+          "bêta-bloquant",
+          "oxygène",
+          "morphine",
+          "trinitrine"
+        ]
+      },
+      {
+        "id": "orientation_coronarographie",
+        "label": "Demande un avis cardiologique en urgence pour coronarographie",
+        "weight": 1,
+        "triggerKeywords": [
+          "coronarographie",
+          "cardiologue",
+          "avis spécialisé",
+          "USIC",
+          "USINV"
+        ]
+      },
+      {
+        "id": "surveillance_reeducation",
+        "label": "Installe la patiente sous scope et en position adaptée, prévoit la surveillance",
+        "weight": 1,
+        "triggerKeywords": [
+          "scope",
+          "surveillance",
+          "repos",
+          "position",
+          "voie veineuse"
+        ]
+      },
+      {
+        "id": "annonce_reassurance",
+        "label": "Explique à la patiente la démarche diagnostique et thérapeutique, la rassure",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "rassurer",
+          "ce qu'on va faire",
+          "diagnostic",
+          "traitement"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'angoisse de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Femme de 45 ans, ingénieure, plutôt coopérative mais visiblement angoissée par la douleur thoracique. Répond aux questions de façon concise mais peut se montrer inquiète et poser des questions sur la gravité de son état.",
+      "phraseOuverture": "Docteur, j'ai une douleur dans la poitrine depuis une heure, ça ne passe pas et je transpire beaucoup… J'ai peur que ce soit le cœur.",
+      "infosVolontaires": [
+        "douleur thoracique brutale",
+        "apparue au repos il y a 1 heure",
+        "sueurs associées",
+        "légère dyspnée d'effort",
+        "angoisse importante"
+      ],
+      "infosSiDemandees": [
+        "antécédent d'asthme sous Ventaline",
+        "pas de tabac",
+        "pas d'alcool",
+        "pas d'antécédents chirurgicaux",
+        "pas d'antécédents familiaux cardiovasculaires connus",
+        "pas de contraception orale",
+        "stress professionnel modéré",
+        "pas d'allergie connue"
+      ],
+      "infosCachees": [
+        "prise récente de cocaïne (si interrogé spécifiquement sur substances récréatives)"
+      ],
+      "reactions": {
+        "brutal": "La patiente se ferme, répond par monosyllabes et manifeste son mécontentement : 'Vous ne m'écoutez pas, j'ai vraiment mal et vous me posez des questions bêtes.'",
+        "silence": "La patiente attend la question suivante en regardant l'interne avec anxiété, peut dire : 'C'est grave, docteur ?'",
+        "jargon": "La patiente demande des explications : 'Je ne comprends pas ce que vous dites, vous pouvez m'expliquer avec des mots simples ?'"
+      }
+    }
+  }
 }

@@ -133,16 +133,308 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "DAMMERT Elinor, 48 ans, femme, se présente pour des épisodes amnésiques récurrents.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les épisodes amnésiques",
+        "Pratiquer un examen neurologique complet",
+        "Proposer un diagnostic étiologique",
+        "Expliquer le diagnostic retenu à la patiente",
+        "Proposer une stratégie diagnostique et thérapeutique adaptée",
+        "Aborder les conséquences sur la vie quotidienne (conduite automobile, activité professionnelle)"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire un antiépileptique généralisé en première intention",
+        "Ne pas réaliser d'ECG ou d'IRM pendant la consultation",
+        "Ne pas minimiser les symptômes de la patiente"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation de neurologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Marteau à réflexes",
+        "Lampe à fente / otoscope",
+        "Abaque de Snellen",
+        "Diapason 128 Hz",
+        "Abaisse-langue",
+        "Tensiomètre",
+        "Oxymètre de pouls"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en neurologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_episode",
+        "label": "Interroge précisément les caractéristiques des épisodes (fréquence, durée, circonstances, prodromes, signes associés, récupération)",
+        "weight": 1,
+        "triggerKeywords": [
+          "combien de fois",
+          "combien de temps",
+          "ça dure",
+          "qu'est-ce que vous ressentez",
+          "avant l'épisode",
+          "après l'épisode",
+          "fréquence"
+        ]
+      },
+      {
+        "id": "interrogatoire_semeiologie",
+        "label": "Explore les signes sémiologiques clés : déjà-vu, anxiété, tachycardie, fixité du regard, mâchonnement, amnésie post-critique",
+        "weight": 1,
+        "triggerKeywords": [
+          "déjà-vu",
+          "déjà vu",
+          "anxiété",
+          "cœur qui bat",
+          "regard fixe",
+          "mâchonnement",
+          "amnésie",
+          "vous souvenez pas",
+          "perte de mémoire"
+        ]
+      },
+      {
+        "id": "interrogatoire_differential",
+        "label": "Recherche des éléments de diagnostic différentiel (malaise vagale, trouble panique, épilepsie généralisée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vertige",
+          "sueurs",
+          "pâleur",
+          "peur de mourir",
+          "hyperventilation",
+          "convulsion",
+          "chute",
+          "morsure langue",
+          "perte urine"
+        ]
+      },
+      {
+        "id": "interrogatoire_consequences",
+        "label": "Évalue l'impact sur la vie quotidienne (conduite automobile, autonomie, retentissement psychologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conduire",
+          "voiture",
+          "conduite",
+          "travail",
+          "quotidien",
+          "angoisse",
+          "peur",
+          "retentissement"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux pertinents (HTA, traitements, ATCD neurologiques familiaux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "traitement",
+          "famille",
+          "mère",
+          "père",
+          "frère",
+          "sœur",
+          "ramipril",
+          "hypertension"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique complet (motricité, sensibilité, coordination, réflexes, paires crâniennes, examen des fonctions supérieures)",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen neurologique",
+          "motricité",
+          "réflexes",
+          "coordination",
+          "mémoire",
+          "langage",
+          "paires crâniennes",
+          "sensibilité"
+        ]
+      },
+      {
+        "id": "examen_general",
+        "label": "Réalise un examen clinique général (constantes, cardiopulmonaire, abdominal)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "auscultation",
+          "palpation",
+          "constantes",
+          "examen clinique"
+        ]
+      },
+      {
+        "id": "diagnostic_etiologique",
+        "label": "Propose le diagnostic d'épilepsie temporale en justifiant par les arguments sémiologiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "épilepsie temporale",
+          "épilepsie partielle",
+          "épilepsie focale",
+          "lobe temporal",
+          "aura",
+          "crise focale"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique pertinente (EEG, IRM cérébrale, bilan biologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "EEG",
+          "électroencéphalogramme",
+          "IRM",
+          "imagerie",
+          "bilan biologique",
+          "bilan sanguin",
+          "scanner"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose un traitement antiépileptique focal adapté (carbamazépine ou lévétiracétam) avec explication des modalités",
+        "weight": 1,
+        "triggerKeywords": [
+          "carbamazépine",
+          "lévétiracétam",
+          "lamotrigine",
+          "antiépileptique",
+          "traitement",
+          "posologie",
+          "surveillance"
+        ]
+      },
+      {
+        "id": "education_conseils",
+        "label": "Éduque la patiente sur la conduite à tenir en cas de crise, les mesures de sécurité, et l'interdiction temporaire de conduire",
+        "weight": 1,
+        "triggerKeywords": [
+          "conduite automobile",
+          "conduire",
+          "sécurité",
+          "crise",
+          "que faire",
+          "interdiction",
+          "précaution"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière claire, empathique et vérifie la compréhension de la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "épilepsie",
+          "je vais vous expliquer",
+          "vous comprenez",
+          "avez-vous des questions"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Réalise une synthèse structurée du cas en fin de consultation",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "pour résumer",
+          "en conclusion",
+          "au final",
+          "le point"
+        ]
+      },
+      {
+        "id": "conclusion_prise_en_charge",
+        "label": "Conclut par un plan de prise en charge global (traitement, suivi, examens complémentaires, orientation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prise en charge",
+          "suivi",
+          "prochain rendez-vous",
+          "consultation",
+          "plan",
+          "ordonnance"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Femme de 48 ans, légèrement anxieuse par rapport à ses symptômes, coopérative mais préoccupée par l'impact sur sa vie quotidienne. Elle a peur d'avoir une maladie grave.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des trous de mémoire bizarres qui reviennent depuis quelques mois. Ça m'inquiète beaucoup.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je ne comprends pas tout...",
+        "silence": "...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Pouvez-vous m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

@@ -196,8 +196,14 @@ function renderExamSection(key, data) {
 // ==================== TIMER CONFIG ====================
 
 function getTimeLimit() {
-    // Timer adaptatif : urgence = 5min (300s), classique = 12min (720s)
-    // Peut être surchargé par le cas (gameplayConfig.timeLimit)
+    // Timer adaptatif : urgence = 5min (300s), classique = 12min (720s), ECOS = 8min (480s)
+    // Peut être surchargé par le cas (gameplayConfig.timeLimit) ou par sessionStorage (mode ECOS strict)
+    if (sessionStorage.getItem('immersionMode') === 'immersif' || (typeof TIMER_CONFIG !== 'undefined' && TIMER_CONFIG.CURRENT_MODE === 'ecos')) {
+        if (typeof gameState !== 'undefined' && gameState.currentCase && gameState.currentCase.gameplayConfig && gameState.currentCase.gameplayConfig.timeLimit) {
+            return gameState.currentCase.gameplayConfig.timeLimit;
+        }
+        return 480; // 8 min pour le mode ECOS (format officiel CNG)
+    }
     if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) {
         return 300; // 5 minutes pour les cas d'urgence
     }

@@ -161,16 +161,289 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de gastro-entérologie.",
+      "contexte": "Monsieur DELAFORD Brandon, 62 ans, homme, se présente pour une dysphagie progressive avec amaigrissement important.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la dysphagie et les signes d'alerte",
+        "Rechercher les facteurs de risque de néoplasie œsophagienne (tabac, alcool, antécédents familiaux)",
+        "Réaliser un examen clinique ciblé (état général, auscultation pulmonaire, palpation abdominale, recherche d'adénopathies)",
+        "Proposer une stratégie diagnostique pertinente face à une dysphagie avec amaigrissement chez un patient à risque",
+        "Expliquer au patient la démarche diagnostique et les examens à réaliser"
+      ],
+      "consignesInterdites": [
+        "Poser un diagnostic définitif sans avoir proposé les examens complémentaires",
+        "Minimiser les symptômes ou rassurer le patient de manière inappropriée",
+        "Prescrire un traitement symptomatique (IPP) sans avoir évoqué la nécessité d'explorer"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation de gastro-entérologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Balance et toise",
+        "Otoscope (non pertinent pour ce cas)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "asseyez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_dysphagie",
+        "label": "Explore précisément la dysphagie : date d'apparition, mode d'installation (progressif), topographie (haut/bas), type (solides puis liquides = mécanique), signes associés",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "solides",
+          "liquides",
+          "progressif",
+          "blocage",
+          "rétrosternal",
+          "haut",
+          "bas"
+        ]
+      },
+      {
+        "id": "interrogatoire_amaigrissement",
+        "label": "Quantifie l'amaigrissement (9 kg en 2 mois), recherche une anorexie associée, évalue l'impact sur l'état général",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "amaigrissement",
+          "combien",
+          "kilos",
+          "appétit",
+          "anorexie"
+        ]
+      },
+      {
+        "id": "recherche_signes_alerte",
+        "label": "Recherche les signes d'alerte : dysphagie progressive, amaigrissement, âge > 50 ans, recherche d'odynophagie, hématémèse, voix rauque, toux lors de la déglutition",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "sang",
+          "vomissement",
+          "voix",
+          "toux",
+          "dysphonie",
+          "hématémèse"
+        ]
+      },
+      {
+        "id": "facteurs_risk_tabac",
+        "label": "Quantifie la consommation tabagique (40 PA, 20 ans) et identifie le tabac comme facteur de risque majeur de cancer de l'œsophage",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "fumeur",
+          "cigarette",
+          "paquets",
+          "années",
+          "sevrage"
+        ]
+      },
+      {
+        "id": "facteurs_risk_alcool",
+        "label": "Évalue la consommation d'alcool (synergie tabac-alcool pour le risque de cancer épidermoïde de l'œsophage)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alcool",
+          "boisson",
+          "verre",
+          "quotidien",
+          "occasionnel"
+        ]
+      },
+      {
+        "id": "antecedents_familiaux",
+        "label": "Recherche les antécédents familiaux de cancer digestif (cancer de l'œsophage, estomac)",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "parents",
+          "frère",
+          "sœur",
+          "cancer",
+          "digestif",
+          "père",
+          "mère"
+        ]
+      },
+      {
+        "id": "antecedents_personnels",
+        "label": "Recherche les antécédents personnels (RGO chronique, endoscopies antérieures, maladie de Barrett, radiothérapie médiastinale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "opération",
+          "endoscopie",
+          "fibroscopie",
+          "reflux"
+        ]
+      },
+      {
+        "id": "examen_etat_general",
+        "label": "Évalue l'état général : IMC, signes de dénutrition, performance status, recherche d'altération de l'état général",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "imc",
+          "état général",
+          "fatigue",
+          "dénutrition"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique ciblé : auscultation pulmonaire, palpation abdominale (hépatomégalie, ascite), recherche d'adénopathies sus-claviculaires (Virchow), palpation thyroïdienne",
+        "weight": 1,
+        "triggerKeywords": [
+          "ausculte",
+          "palpation",
+          "abdomen",
+          "ganglion",
+          "sus-claviculaire",
+          "examen clinique"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une endoscopie œso-gastro-duodénale (FOGD) avec biopsies comme examen de première intention face à une dysphagie avec amaigrissement chez un patient à risque",
+        "weight": 1,
+        "triggerKeywords": [
+          "endoscopie",
+          "fibroscopie",
+          "ogd",
+          "biopsie",
+          "explorer",
+          "examen",
+          "scanner",
+          "tdm"
+        ]
+      },
+      {
+        "id": "bilan_complementaire",
+        "label": "Évoque le bilan d'extension si cancer confirmé (TDM thoraco-abdomino-pelvien, écho-endoscopie, TEP-scanner) et le bilan pré-thérapeutique",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "extension",
+          "scanner",
+          "tdm",
+          "tep",
+          "écho-endoscopie",
+          "stade"
+        ]
+      },
+      {
+        "id": "annonce_demarche",
+        "label": "Explique clairement au patient la suspicion de pathologie organique grave, la nécessité d'explorer rapidement et la démarche diagnostique proposée",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "grave",
+          "cancer",
+          "suspicion",
+          "nécessaire",
+          "rapidement",
+          "endoscopie"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Résume les éléments clés du cas : homme de 62 ans, tabagisme 40 PA, dysphagie progressive solides→liquides, amaigrissement 9 kg, suspicion de cancer de l'œsophage, indication d'endoscopie en urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "en résumé",
+          "donc",
+          "suspicion",
+          "cancer",
+          "œsophage",
+          "endoscopie"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient sur ses symptômes",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué), adapte son discours au patient",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient et la gravité potentielle du diagnostic",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient ancien militaire, plutôt stoïque mais inquiet. Il minimise initialement ses symptômes par fierté mais se montre coopératif quand on insiste. Il a besoin de clarté et de franchise.",
+      "phraseOuverture": "Docteur, j'ai du mal à avaler depuis quelques mois et ça empire. J'ai perdu beaucoup de poids aussi.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.evolution",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je suis colonel à la retraite, docteur, je n'ai pas peur. Dites-moi simplement ce que j'ai.",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

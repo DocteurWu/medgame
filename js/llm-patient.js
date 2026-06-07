@@ -7,6 +7,9 @@
  *   - Gérer le streaming SSE token-par-token pour l'effet de frappe
  *   - Maintenir l'historique de conversation (context window)
  *   - Fournir un fallback local robuste si l'API est indisponible
+ *
+ * Exposé en `window.LLMPatient` pour permettre aux modules non-ESM
+ * (ecosMode.js, patientChat.js) de l'utiliser sans import.
  */
 
 export class LLMPatient {
@@ -29,8 +32,11 @@ export class LLMPatient {
 
     /**
      * Synchronise l'historique de conversation depuis la session globale si disponible.
+     * En mode ECOS (window.ECOS_MODE === true), on n'utilise pas la sync legacy
+     * car on a notre propre historique propre.
      */
     syncHistoryFromGlobal() {
+        if (window.ECOS_BYPASS_HISTORY_SYNC) return;
         if (window.patientChat?.messages && this.history.length === 0) {
             this.history = window.patientChat.messages.map(msg => {
                 let role = 'user';
@@ -91,46 +97,75 @@ export class LLMPatient {
             ? `TRAITEMENTS DÉJÀ ADMINISTRÉS PAR LE MÉDECIN DANS CETTE SESSION : ${appliedTreatments.join(', ')}.`
             : 'Aucun traitement n\'a encore été administré pour le moment.';
 
-        // ── Personnalités stables par patient basées sur le nom complet ──
-        const patientNameString = `${pat.prenom || ''} ${pat.nom || ''}`.trim();
-        let charCodeSum = 0;
-        for (let i = 0; i < patientNameString.length; i++) {
-            charCodeSum += patientNameString.charCodeAt(i);
-        }
-        
-        const personalityIndex = charCodeSum % 6;
+        // ── Personnalité : patientStandardise (ECOS) ou fallback aléatoire ──
+        const ecosData = c.ecos?.patientStandardise;
+        const isEcosMode = !!(ecosData && window.EcosMode?.isActive?.());
+
         let personnaliteType = '';
         let directriceComportementale = '';
 
-        switch (personalityIndex) {
-            case 0:
-                personnaliteType = "TRÈS ÉNERVÉ / IRRITABLE / IMPATIENT";
-                directriceComportementale = `Tu es agacé, sec et extrêmement impatient. Tu en as marre d'attendre ou d'être interrogé. Tu réponds de manière abrupte, tu râles contre l'hôpital, tu souffles, et tu es parfois à la limite de l'impolitesse envers le médecin ("Laissez-moi tranquille...", "Vous allez me poser beaucoup de questions comme ça ?").`;
-                break;
-            case 1:
-                personnaliteType = "TIMIDE / HÉSITANT / ANXIEUX";
-                directriceComportementale = `Tu es intimidé, réservé et très angoissé par les examens. Tu parles doucement, tu hésites souvent ("Euh...", "Je ne sais pas trop..."), tes phrases sont timides, et tu as peur d'avoir fait quelque chose de mal ou d'avoir une maladie grave.`;
-                break;
-            case 2:
-                personnaliteType = "IMPOLI / FAMILIER / TRÈS FRANC";
-                directriceComportementale = `Tu es sans filtre, familier et un peu impoli. Tu tutoies facilement ou utilises un langage de tous les jours très relâché ("Ouais", "Bah", "Ça me saoule"). Tu n'as pas peur de dire au médecin qu'il te fatigue ou que tu veux rentrer chez toi.`;
-                break;
-            case 3:
-                personnaliteType = "TERRIFIÉ PAR LA MORT / HYPOCONDRAQUE";
-                directriceComportementale = `Tu es paniqué à l'idée de mourir. Tu es très coopératif mais tu demandes tout le temps si c'est grave, si tu vas t'en sortir, ou si ton cœur va s'arrêter. Tu es à l'affût du moindre bip du scope.`;
-                break;
-            case 4:
-                personnaliteType = "CONFUS / BAVARD / DISTRAIT";
-                directriceComportementale = `Tu es un peu tête en l'air et très bavard. Tu réponds à côté ou tu te perds dans des détails inutiles de ta vie privée (ta famille, ton chien, ton travail) avant de revenir au sujet principal. Le médecin doit te recadrer gentiment.`;
-                break;
-            case 5:
-            default:
-                personnaliteType = "STOÏQUE / SILENCIEUX / MINIMALISTE";
-                directriceComportementale = `Tu es dur à cuire, peu bavard, presque résigné. Tu ne te plains de rien, tu réponds par le minimum syndical (parfois juste un mot ou oui/non), et tu répètes que "ça va passer" ou que "c'est rien".`;
-                break;
+        if (isEcosMode && ecosData.personnalite) {
+            personnaliteType = `ECOS — ${ecosData.personnalite}`;
+            directriceComportementale = `Tu incarnes fidèlement cette personnalité : ${ecosData.personnalite}. `;
+
+            // Règles de divulgation d'informations (ECOS)
+            if (ecosData.infosVolontaires?.length) {
+                directriceComportementale += `Tu donnes VOLONTAIREMENT ces informations sans qu'on te les demande : ${ecosData.infosVolontaires.join(', ')}. `;
+            }
+            if (ecosData.infosSiDemandees?.length) {
+                directriceComportementale += `Tu DONNES ces informations SEULEMENT si le médecin te le demande explicitement : ${ecosData.infosSiDemandees.join(', ')}. `;
+            }
+            if (ecosData.infosCachees?.length) {
+                directriceComportementale +=`Tu NE DONNES PAS ces informations, même si on te le demande, sauf si le médecin insiste lourdement : ${ecosData.infosCachees.join(', ')}. `;
+            }
+
+            // Réactions aux situations extrêmes
+            if (ecosData.reactions) {
+                const r = ecosData.reactions;
+                if (r.brutal) directriceComportementale += `Si le médecin est brutal ou irrespectueux : ${r.brutal} `;
+                if (r.silence) directriceComportementale += `Si le médecin reste silencieux trop longtemps : ${r.silence} `;
+                if (r.jargon) directriceComportementale += `Si le médecin utilise du jargon médical non expliqué : ${r.jargon} `;
+            }
+        } else {
+            // Fallback : personnalités aléatoires basées sur le nom
+            const patientNameString = `${pat.prenom || ''} ${pat.nom || ''}`.trim();
+            let charCodeSum = 0;
+            for (let i = 0; i < patientNameString.length; i++) {
+                charCodeSum += patientNameString.charCodeAt(i);
+            }
+
+            const personalityIndex = charCodeSum % 6;
+
+            switch (personalityIndex) {
+                case 0:
+                    personnaliteType = "TRÈS ÉNERVÉ / IRRITABLE / IMPATIENT";
+                    directriceComportementale = `Tu es agacé, sec et extrêmement impatient. Tu en as marre d'attendre ou d'être interrogé. Tu réponds de manière abrupte, tu râles contre l'hôpital, tu souffles, et tu es parfois à la limite de l'impolitesse envers le médecin ("Laissez-moi tranquille...", "Vous allez me poser beaucoup de questions comme ça ?").`;
+                    break;
+                case 1:
+                    personnaliteType = "TIMIDE / HÉSITANT / ANXIEUX";
+                    directriceComportementale = `Tu es intimidé, réservé et très angoissé par les examens. Tu parles doucement, tu hésites souvent ("Euh...", "Je ne sais pas trop..."), tes phrases sont timides, et tu as peur d'avoir fait quelque chose de mal ou d'avoir une maladie grave.`;
+                    break;
+                case 2:
+                    personnaliteType = "IMPOLI / FAMILIER / TRÈS FRANC";
+                    directriceComportementale = `Tu es sans filtre, familier et un peu impoli. Tu tutoies facilement ou utilises un langage de tous les jours très relâché ("Ouais", "Bah", "Ça me saoule"). Tu n'as pas peur de dire au médecin qu'il te fatigue ou que tu veux rentrer chez toi.`;
+                    break;
+                case 3:
+                    personnaliteType = "TERRIFIÉ PAR LA MORT / HYPOCONDRAQUE";
+                    directriceComportementale = `Tu es paniqué à l'idée de mourir. Tu es très coopératif mais tu demandes tout le temps si c'est grave, si tu vas t'en sortir, ou si ton cœur va s'arrêter. Tu es à l'affût du moindre bip du scope.`;
+                    break;
+                case 4:
+                    personnaliteType = "CONFUS / BAVARD / DISTRAIT";
+                    directriceComportementale = `Tu es un peu tête en l'air et très bavard. Tu réponds à côté ou tu te perds dans des détails inutiles de ta vie privée (ta famille, ton chien, ton travail) avant de revenir au sujet principal. Le médecin doit te recadrer gentiment.`;
+                    break;
+                case 5:
+                default:
+                    personnaliteType = "STOÏQUE / SILENCIEUX / MINIMALISTE";
+                    directriceComportementale = `Tu es dur à cuire, peu bavard, presque résigné. Tu ne te plains de rien, tu réponds par le minimum syndical (parfois juste un mot ou oui/non), et tu répètes que "ça va passer" ou que "c'est rien".`;
+                    break;
+            }
         }
 
-        // Si le cas définit explicitement un comportement
+        // Si le cas définit explicitement un comportement (toujours prioritaire)
         if (pat.personnalite || pat.comportement || pat.caractere) {
             directriceComportementale = `COMPORTEMENT PARTICULIER : ${pat.personnalite || pat.comportement || pat.caractere}`;
             personnaliteType = "DÉFINIE PAR LE CAS";
@@ -456,4 +491,11 @@ Style d'âge : ${ageStyle}
         const m = String(str || '').match(/[\d]+(?:[.,]\d+)?/);
         return m ? parseFloat(m[0].replace(',', '.')) : null;
     }
+}
+
+// ==================== EXPORT GLOBAL ====================
+// Pour permettre aux modules non-ESM (ecosMode.js, patientChat.js legacy)
+// d'instancier la classe sans import dynamique.
+if (typeof window !== 'undefined') {
+    window.LLMPatient = LLMPatient;
 }

@@ -211,5 +211,293 @@
     "Echographie cardiaque",
     "Bilan sanguin",
     "Radiographie thoracique"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "BURKE Preston, 52 ans, homme, se présente pour une dyspnée d'effort évoluant depuis 1 mois avec aggravation progressive.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la dyspnée et les facteurs de risque cardiovasculaire",
+        "Réaliser un examen clinique cardiovasculaire et pulmonaire complet",
+        "Proposer un diagnostic étiologique pertinent",
+        "Proposer une stratégie diagnostique adaptée (examens complémentaires)",
+        "Proposer une prise en charge thérapeutique initiale adaptée",
+        "Expliquer au patient les mesures hygiéno-diététiques et l'importance de l'observance thérapeutique"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'AINS",
+        "Ne pas introduire de bêtabloquant en phase aiguë sans avis spécialisé",
+        "Ne pas prescrire de vérapamil",
+        "Ne pas interrompre brutalement le patient lors de l'interrogatoire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service de cardiologie",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "ECG 12 dérivations",
+        "Résultats biologiques (BNP, ionogramme, créatinine, NFS)",
+        "Radiographie thoracique",
+        "Échocardiographie transthoracique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en cardiologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_dyspnee",
+        "label": "Caractérise la dyspnée (ancienneté, NYHA, facteurs déclenchants, signes fonctionnels associés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "dyspnée",
+          "effort",
+          "NYHA",
+          "essoufflement",
+          "position allongée",
+          "orthopnée",
+          "dyspnée paroxystique nocturne"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (HTA, diabète, dyslipidémie, tabac, sédentarité, hérédité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypertension",
+          "diabète",
+          "cholestérol",
+          "tabac",
+          "hérédité",
+          "antécédents familiaux",
+          "alimentation",
+          "sel"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Fait l'inventaire des traitements en cours et vérifie l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "ramipril",
+          "IEC",
+          "observance",
+          "prise",
+          "médicaments"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (alimentation hypersodée, activité physique, stress professionnel)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "sel",
+          "activité physique",
+          "stress",
+          "profession",
+          "travail"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (auscultation cardiaque, pouls, TA, recherche de signes d'insuffisance cardiaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "bruits du cœur",
+          "tension",
+          "pouls",
+          "turgescence jugulaire",
+          "reflux hépatojugulaire",
+          "œdèmes",
+          "OMI"
+        ]
+      },
+      {
+        "id": "examen_clinique_pulmonaire",
+        "label": "Réalise un examen pulmonaire complet (auscultation, recherche de crépitants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "crépitants",
+          "râles",
+          "murmure vésiculaire",
+          "signes de lutte"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Évalue l'état général et les constantes (SpO2, FR, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "saturation",
+          "fréquence respiratoire",
+          "température",
+          "état général"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique pertinente (BNP/NT-proBNP, ECG, radiographie thoracique, échocardiographie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "BNP",
+          "NT-proBNP",
+          "ECG",
+          "électrocardiogramme",
+          "radio thorax",
+          "radiographie thoracique",
+          "échocardiographie",
+          "échographie cardiaque"
+        ]
+      },
+      {
+        "id": "diagnostic_etiologique",
+        "label": "Évoque le diagnostic d'insuffisance cardiaque et propose une étiologie",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "IC",
+          "dysfonction systolique",
+          "fraction d'éjection",
+          "cardiopathie hypertensive"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose une prise en charge thérapeutique adaptée (optimisation IEC, diurétique, bêtabloqueur si stabilisé, restriction sodée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "IEC",
+          "diurétique",
+          "furosémide",
+          "restriction sodée",
+          "régime sans sel",
+          "bêtabloqueur",
+          "observance"
+        ]
+      },
+      {
+        "id": "education_hygieno_dietetique",
+        "label": "Explique les mesures hygiéno-diététiques (restriction sodée, surveillance du poids, activité physique adaptée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "régime",
+          "sel",
+          "sodé",
+          "poids",
+          "pesée",
+          "activité physique",
+          "éducation"
+        ]
+      },
+      {
+        "id": "education_observance",
+        "label": "Explique l'importance de l'observance thérapeutique et du suivi régulier",
+        "weight": 1,
+        "triggerKeywords": [
+          "observance",
+          "suivi",
+          "consultation",
+          "traitement à vie",
+          "ne pas arrêter"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Réalise une synthèse structurée du cas devant l'examinateur",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "en synthèse",
+          "au total",
+          "diagnostic",
+          "prise en charge"
+        ]
+      },
+      {
+        "id": "conduite_tenue",
+        "label": "Respecte les règles d'hygiène (lavage des mains, asepsie) et de tenue professionnelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "lavage des mains",
+          "gel hydroalcoolique",
+          "blouse",
+          "identité"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux en raison de ses symptômes. Professionnel de santé (chirurgien cardiaque), il comprend le vocabulaire médical mais attend des explications claires sur sa propre pathologie. Il minimise parfois ses symptômes par fierté professionnelle.",
+      "phraseOuverture": "Bonjour docteur, je suis chirurgien cardiaque et je viens parce que je suis essoufflé depuis quelques semaines, surtout à l'effort. C'est gênant dans mon travail.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "modeDeVie.profession"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [
+        "Le patient ne mentionne pas spontanément qu'il a parfois des épisodes de dyspnée nocturne (orthopnée) — à rechercher spécifiquement",
+        "Le patient ne mentionne pas spontanément qu'il a pris du poids récemment (prise de 3 kg en 1 mois) — à rechercher"
+      ],
+      "reactions": {
+        "brutal": "Attendez, laissez-moi finir de vous expliquer s'il vous plaît.",
+        "silence": "Vous n'avez pas de questions ? Je peux continuer ?",
+        "jargon": "Je suis médecin, je comprends le vocabulaire, mais expliquez-moi quand même ce que ça signifie pour moi."
+      }
+    }
+  }
 }

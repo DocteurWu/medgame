@@ -169,13 +169,13 @@
   "correction": "# AOMI\n\nChez un patient qui présente des facteurs de risque cardiovasculaire, une douleur au mollet qui survient à la marche et disparaît au repos, on doit évoquer en priorité une AOMI. \n\n## Bonnes pratiques\n\n- Il convient d'évaluer en priorité la sévérité de l'atteinte, en précisant le périmètre de marche et en réalisant les examens complémentaires appropriés : échographie doppler et IPS en première intention. \n- Eliminer les diagnostics différentiels : atteinte neurologique, une réduction du périmètre de marche pour des douleurs rhumatologiques comme de l'arthrose…\n- Prendre en charge les facteurs de risque cardio-vasculaire, notamment arrêt du tabac, et rechercher un diabète associé. \n\n## Erreurs à éviter\n\n- Négliger l'interrogatoire, en ne précisant pas l'historique de la douleur, le périmètre de marche, les facteurs de risque cardiovasculaire et les antécédents médicaux pertinents. \n- Une atteinte sévère peut rester asymptomatique pendant longtemps. De même, le tableau peut se présenter comme une douleur persistante dans les formes avancées.",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
@@ -199,5 +199,265 @@
     "IPS (Index de Pression Systolique)",
     "Bilan lipidique",
     "ECG"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine vasculaire.",
+      "contexte": "Martin Lambert, 72 ans, homme, se présente pour une douleur au mollet droit survenue à la marche depuis 3 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers une claudication intermittente",
+        "Effectuer un examen clinique cardiovasculaire des membres inférieurs",
+        "Proposer un diagnostic étiologique",
+        "Prescrire les examens complémentaires appropriés",
+        "Initier une prise en charge thérapeutique adaptée",
+        "Aborder les facteurs de risque cardiovasculaire et les mesures de prévention"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'anticoagulants à dose pleine",
+        "Ne pas proposer de thrombolyse",
+        "Ne pas proposer de chirurgie urgente"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Doppler continu",
+        "Sphygmomanomètre pour IPS",
+        "Thermomètre",
+        "Otoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "docteur"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (siège, type, irradiations, facteurs déclenchants, soulagement au repos)",
+        "weight": 1,
+        "triggerKeywords": [
+          "mollet",
+          "crampe",
+          "marche",
+          "repos",
+          "200 mètres",
+          "périmètre de marche"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (tabac, HTA, dyslipidémie, diabète, sédentarité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "40 paquets-années",
+          "hypertension",
+          "dyslipidémie",
+          "sédentaire",
+          "alcool"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents personnels et familiaux cardiovasculaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "père",
+          "avc",
+          "cholécystectomie",
+          "traitement",
+          "ramipril",
+          "atorvastatine",
+          "aspirine"
+        ]
+      },
+      {
+        "id": "interrogatoire_retentissement",
+        "label": "Évalue le retentissement fonctionnel et l'évolution des symptômes",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "réduction périmètre",
+          "évolution",
+          "3 mois",
+          "progressif"
+        ]
+      },
+      {
+        "id": "examen_pouls_distaux",
+        "label": "Palpe les pouls périphériques des membres inférieurs (fémoral, poplité, tibial postérieur, pédieux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls fémoral",
+          "pouls poplité",
+          "pouls pédieux",
+          "pouls tibial",
+          "palpation"
+        ]
+      },
+      {
+        "id": "examen_trophicite",
+        "label": "Évalue l'aspect trophique des pieds (couleur, température, temps de recoloration)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pâle",
+          "froid",
+          "recoloration",
+          "trophicité",
+          "peau",
+          "ongles"
+        ]
+      },
+      {
+        "id": "examen_auscultation_vasculaire",
+        "label": "Ausculte les trajets artériels à la recherche de souffles (fémoral, aorte, carotides)",
+        "weight": 1,
+        "triggerKeywords": [
+          "souffle",
+          "auscultation",
+          "fémoral",
+          "carotide",
+          "aorte"
+        ]
+      },
+      {
+        "id": "mesure_ips",
+        "label": "Mesure l'index de pression systolique (IPS) aux membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "ips",
+          "index pression",
+          "doppler",
+          "pression systolique",
+          "cheville"
+        ]
+      },
+      {
+        "id": "diagnostic_aomi",
+        "label": "Pose le diagnostic d'artériopathie oblitérante des membres inférieurs (AOMI)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aomi",
+          "artériopathie",
+          "claudication intermittente",
+          "ischémie chronique"
+        ]
+      },
+      {
+        "id": "bilan_complementaire",
+        "label": "Prescrit un bilan complémentaire approprié (bilan lipidique, glycémie, ECG, écho-doppler artériel)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan lipidique",
+          "glycémie",
+          "ecg",
+          "écho-doppler",
+          "angioscanner",
+          "créatinine"
+        ]
+      },
+      {
+        "id": "pec_medicale",
+        "label": "Propose une prise en charge médicale adaptée (traitement de fond, sevrage tabagique, reconditionnement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aspirine",
+          "statine",
+          "iec",
+          "sevrage tabagique",
+          "reconditionnement marche",
+          "rééducation"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Éduque le patient sur les facteurs de risque et les mesures de prévention cardiovasculaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "arrêt tabac",
+          "alimentation",
+          "activité physique",
+          "prévention",
+          "éducation"
+        ]
+      },
+      {
+        "id": "surveillance",
+        "label": "Planifie une surveillance régulière et explique les signes d'alerte",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "consultation",
+          "signes d'alerte",
+          "douleur repos",
+          "nécrose",
+          "suivi"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement inquiet, ancien ouvrier retraité, compréhension correcte mais demande des explications simples.",
+      "phraseOuverture": "Bonjour docteur, j'ai mal au mollet droit quand je marche, ça fait quelques mois maintenant et c'est de plus en plus gênant.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je n'ai pas fini de vous expliquer...",
+        "silence": "Vous n'avez pas d'autres questions ? Je ne sais pas trop quoi dire de plus...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Vous pouvez m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

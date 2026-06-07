@@ -144,16 +144,232 @@
   "correction": "# Cholestéatome compliqué\n\nLe cholestéatome est une lésion épidermique invasive du rocher entraînant otorrhée fétide, douleurs, hypoacousie et vertiges lorsque l’oreille interne est atteinte.\n\n## Points clés\n\n- Perforation marginale + squames blanches = très évocateur.\n- Vertiges périphériques expliqués par l’extension au labyrinthe.\n- TDM des rochers indispensable.\n\n## Prise en charge\n\n- Nettoyage + antibiotiques locaux en première intention.\n- Traitement définitif : exérèse chirurgicale.\n- Surveillance audiométrique prolongée.",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de ORL.",
+      "contexte": "Joe Wilson, 38 ans, homme, se présente pour des vertiges rotatoires intenses et une otorrhée chronique droite.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté ORL et vestibulaire",
+        "Effectuer un examen clinique ORL et vestibulaire complet",
+        "Identifier les signes de cholestéatome à l'otoscopie",
+        "Proposer une stratégie diagnostique et thérapeutique adaptée",
+        "Expliquer au patient la nécessité d'une prise en charge chirurgicale"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir examiné le patient",
+        "Ne pas ignorer les signes d'alerte (vertiges + otorrhée chronique)",
+        "Ne pas réaliser de manœuvre thérapeutique sans explication préalable"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation ORL",
+      "materielDisponible": [
+        "Otoscope",
+        "Spéculums auriculaires de différentes tailles",
+        "Gants",
+        "Abaisse-langue",
+        "Tuning fork 512 Hz",
+        "Lampe frontale"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "docteur"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_orl",
+        "label": "Réalise un interrogatoire orienté ORL (caractère des vertiges, ancienneté, facteurs déclenchants, symptômes associés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "comment sont vos vertiges",
+          "oreille",
+          "audition",
+          "acouphènes"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents ORL (otites chroniques, chirurgie otologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "otites",
+          "antécédents",
+          "opéré",
+          "oreille"
+        ]
+      },
+      {
+        "id": "otoscopie_technique",
+        "label": "Réalise une otoscopie bilatérale avec manipulation correcte du spéculum",
+        "weight": 1,
+        "triggerKeywords": [
+          "otoscope",
+          "regarder",
+          "oreille",
+          "tympan"
+        ]
+      },
+      {
+        "id": "identification_cholesteatome",
+        "label": "Identifie les signes de cholestéatome (perforation marginale, squames blanches, bourgeon inflammatoire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cholestéatome",
+          "perforation",
+          "squames",
+          "blanc",
+          "marginale"
+        ]
+      },
+      {
+        "id": "examen_audiometrique_clinique",
+        "label": "Réalise un examen audiométrique clinique (tuning fork 512 Hz - Weber et Rinne)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tuning fork",
+          "Weber",
+          "Rinne",
+          "diapason",
+          "audition"
+        ]
+      },
+      {
+        "id": "examen_vestibulaire",
+        "label": "Réalise un examen vestibulaire (Head Impulse Test, Romberg, Unterberger, recherche de nystagmus)",
+        "weight": 1,
+        "triggerKeywords": [
+          "nystagmus",
+          "Romberg",
+          "head impulse",
+          "Unterberger",
+          "vestibulaire"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique de base (conscience, motricité, coordination)",
+        "weight": 1,
+        "triggerKeywords": [
+          "neurologique",
+          "coordination",
+          "motricité",
+          "conscience"
+        ]
+      },
+      {
+        "id": "diagnostic_cholesteatome",
+        "label": "Pose le diagnostic de cholestéatome compliqué",
+        "weight": 1,
+        "triggerKeywords": [
+          "cholestéatome",
+          "diagnostic",
+          "compliqué"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose une stratégie thérapeutique adaptée (antibiothérapie locale, chirurgie d'exérèse, hospitalisation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "chirurgie",
+          "opérer",
+          "hospitalisation",
+          "antibiotiques",
+          "traitement"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique clairement au patient la pathologie et la nécessité du traitement chirurgical",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "comprenez",
+          "chirurgie",
+          "opération",
+          "risques"
+        ]
+      },
+      {
+        "id": "conseils_prevention",
+        "label": "Donne des conseils de prévention (protection auriculaire, suivi ORL régulier)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "protection",
+          "suivi",
+          "conseils",
+          "oreille"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux mais coopératif, gêné par les vertiges et inquiet pour son audition",
+      "phraseOuverture": "Bonjour docteur, j'ai des vertiges terribles depuis quelques jours et mon oreille droite coule depuis des mois...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, ça fait mal ! Vous pouvez y aller doucement ?",
+        "silence": "... (silence prolongé, regard interrogateur)",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire..."
+      }
+    }
+  }
 }

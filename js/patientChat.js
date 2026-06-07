@@ -5,6 +5,8 @@
             this.messages = [];
             this.panel = null;
             this.suggestedOpen = false;
+            /** @type {import('./llm-patient.js').LLMPatient|null} */
+            this._llm = null;
         }
 
         setCase(caseData) {
@@ -13,6 +15,16 @@
             this.panel = document.getElementById('dialogue-panel');
             const messagesEl = document.getElementById('dialogue-messages');
             if (messagesEl) messagesEl.innerHTML = '';
+
+            // Instancier le moteur LLM unifié (si disponible)
+            this._llm = null;
+            if (window.LLMPatient) {
+                try {
+                    this._llm = new window.LLMPatient(caseData);
+                } catch (e) {
+                    console.warn('[PatientChat] LLMPatient init failed, using fallback:', e);
+                }
+            }
         }
 
         open() {
@@ -254,137 +266,66 @@
             this.messages.push({ role: 'assistant', content: prebuiltAnswer });
         }
 
-        buildSystemPrompt() {
-            const c = this.caseData || {};
-            const patient = c.patient || {};
-            const interrogatoire = c.interrogatoire || {};
-            const examClinique = c.examenClinique || {};
-            const specialty = (c.specialty || c.id || '').toUpperCase();
-            const difficulty = c.difficulty || 1;
-
-            // Index de gravité basé sur les constantes
-            const constantes = examClinique.constantes || {};
-            const spo2 = this._parseVitalNum(constantes.saturationO2);
-            const fc = this._parseVitalNum(constantes.pouls);
-            const temp = this._parseVitalNum(constantes.temperature);
-            let severityHint = '';
-            if (spo2 !== null && spo2 < 90) severityHint = 'Vous êtes en détresse respiratoire, vous parlez avec difficulté et essoufflement. Réponses très courtes.';
-            else if (fc !== null && fc > 120) severityHint = 'Votre cœur bat très vite, vous êtes angoissé(e). Réponses courtes et nerveuses.';
-            else if (temp !== null && temp >= 38.5) severityHint = 'Vous avez de la fièvre, vous vous sentez mal. Réponses un peu décousues.';
-
-            // Personnalité en fonction du cas
-            const age = patient.age || 50;
-            let personalityHint = '';
-            if (age < 30) personalityHint = 'Vous êtes jeune, un peu inquiet mais essayez de rester calme. Vous utilisez un langage familier.';
-            else if (age > 75) personalityHint = 'Vous êtes âgé(e), vous parlez lentement avec des hésitations. Vous mélangez parfois les mots medicaux.';
-
-            return `Tu es ${patient.prenom || ''} ${patient.nom || ''}, un patient de ${patient.age || '?'} ans, sexe ${patient.sexe || '?'}. Tu es un VRAI PATIENT, pas un médecin.
-Motif d'hospitalisation : ${interrogatoire.motifHospitalisation || 'Non précisé'}
-Histoire de la maladie : ${JSON.stringify(interrogatoire.histoireMaladie || {})}
-Antécédents : ${JSON.stringify(interrogatoire.antecedents || {})}
-Mode de vie : ${JSON.stringify(interrogatoire.modeDeVie || {})}
-Traitements : ${JSON.stringify(interrogatoire.traitements || [])}
-Allergies : ${JSON.stringify(interrogatoire.allergies || {})}
-Examen clinique (ce que le patient ressent) : ${examClinique.aspectGeneral || 'Non précisé'}
-Constantes vitales : FC=${constantes.pouls || 'N/A'}, TA=${constantes.tension || 'N/A'}, SpO2=${constantes.saturationO2 || 'N/A'}, T°=${constantes.temperature || 'N/A'}
-
-${severityHint}
-${personalityHint}
-
-RÈGLES STRICTES :
-- Tu es un PATIENT, pas un médecin. Tu ne fais JAMAIS de diagnostic ni de suggestion thérapeutique.
-- Réponds naturellement, comme un vrai patient, en 1 à 3 phrases max.
-- Ne révèle pas tout d'un coup. Le médecin doit poser les BONNES questions pour obtenir les infos.
-- Si le médecin pose une question que tu ne comprends pas, dis-le naturellement ("Euh... c'est-à-dire ?").
-- Si tu ne sais pas quelque chose, dis "Je ne sais pas docteur" ou "Je ne suis pas sûr(e)".
-- Si le médecin est froid ou direct, tu peux montrer de l'anxiété.
-- Adapte ton langage à ton âge et ton état de santé.
-- Réponds TOUJOURS en français.`.trim();
-        }
-
-        /**
-         * Parse un nombre depuis une valeur vitale (pour enrichir le prompt système)
-         */
-        _parseVitalNum(str) {
-            if (typeof str === 'number') return str;
-            const m = (str || '').match(/[\d]+(?:[.,]\d+)?/);
-            return m ? parseFloat(m[0].replace(',', '.')) : null;
-        }
-
         async ask(question) {
             if (!question.trim()) return;
             this.append('Vous', question);
             this.messages.push({ role: 'user', content: question });
             if (window.scoringState) window.scoringState.hasAskedPatient = true;
 
-            const loading = this.append('Patient', '...', true);
-            const answer = await this.fetchAnswer(question);
-            loading.textContent = answer;
-            loading.classList.add('answer-fade-in');
-            this.messages.push({ role: 'assistant', content: answer });
-        }
-
-        async fetchAnswer(question) {
-            const endpoint = window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions';
-            const model = window.CONFIG?.LLM_MODEL || 'openrouter/owl-alpha';
-            const apiKey = window.CONFIG?.LLM_API_KEY || '';
-
-            // D'abord vérifier si une question suggérée correspond (match exact uniquement)
+            // D'abord vérifier si une question suggérée correspond (match exact)
             const suggestions = this._getSuggestedQuestions();
             const normalizedQ = question.toLowerCase().replace(/[?!.,;:'"]/g, '').trim();
             for (const s of suggestions) {
                 const normalizedS = s.q.toLowerCase().replace(/[?!.,;:'"]/g, '').trim();
                 if (normalizedQ === normalizedS) {
-                    // Suivi démarche pour le scoring composite
                     if (s.fieldPath) {
                         if (typeof trackInterrogatoire === 'function') {
                             trackInterrogatoire(s.fieldPath);
                         }
                         document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path: s.fieldPath } }));
                     }
-                    return s.a;
+                    this.append('Patient', s.a);
+                    this.messages.push({ role: 'assistant', content: s.a });
+                    return;
                 }
             }
 
-            // Sinon, appeler le LLM
-            const messages = [
-                { role: 'system', content: this.buildSystemPrompt() },
-                ...this.messages.slice(-10)
-            ];
+            const loading = this.append('Patient', '...', true);
 
-            try {
-                const controller = new AbortController();
-                const timer = setTimeout(() => controller.abort(), 20000);
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {}),
-                        'HTTP-Referer': window.location.origin || 'http://localhost',
-                        'X-Title': 'MedGame'
-                    },
-                    body: JSON.stringify({ model, messages, stream: false, max_tokens: 200, temperature: 0.85 }),
-                    signal: controller.signal
-                });
-                clearTimeout(timer);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+            // Utiliser le moteur LLM unifié si disponible
+            if (this._llm) {
+                try {
+                    await new Promise((resolve, reject) => {
+                        this._llm.ask(
+                            question,
+                            (token) => {
+                                loading.textContent += token;
+                                const root = document.getElementById('dialogue-messages');
+                                if (root) root.scrollTop = root.scrollHeight;
+                            },
+                            (fullText) => {
+                                loading.textContent = fullText;
+                                loading.classList.add('answer-fade-in');
+                                this.messages.push({ role: 'assistant', content: fullText });
+                                this._llm.history = this.messages.map(m => ({
+                                    role: m.role === 'assistant' ? 'assistant' : 'user',
+                                    content: m.content
+                                }));
+                                resolve();
+                            },
+                            (err) => reject(new Error(err))
+                        );
+                    });
+                } catch (err) {
+                    console.warn('[PatientChat] LLMPatient error, falling back:', err);
+                    loading.textContent = this.fallback(question);
+                    loading.classList.add('answer-fade-in');
+                    this.messages.push({ role: 'assistant', content: loading.textContent });
                 }
-
-                const data = await response.json();
-                let content = data.choices?.[0]?.message?.content || data.message?.content || '';
-                content = content.trim();
-
-                // Si le contenu est vide mais qu'il y a du reasoning, le fallback
-                if (!content) {
-                    throw new Error('Réponse vide du modèle');
-                }
-
-                return content;
-            } catch (err) {
-                console.warn('[PatientChat] LLM indisponible, fallback local:', err.message);
-                return this.fallback(question);
+            } else {
+                loading.textContent = this.fallback(question);
+                loading.classList.add('answer-fade-in');
+                this.messages.push({ role: 'assistant', content: loading.textContent });
             }
         }
 

@@ -148,16 +148,281 @@
   "correction": "# Orchi-épididymite\n\nLe patient présente une douleur scrotale d'installation progressive, avec fièvre, brûlures urinaires et signes biologiques d'infection. L'échographie scrotale retrouve un épididyme hypervascularisé, typique d'une épididymite.\n\n## Bonnes pratiques\n\n- Faire un Doppler en cas de doute pour éliminer une torsion\n- Rechercher systématiquement une IST chez un homme jeune\n- Mettre en place une antibiothérapie adaptée (C3G + doxycycline si IST suspectée)\n- Repos, glaçage et suspensoir\n\n## Erreurs à éviter\n\n- Confondre avec une torsion (douleur plus brutale)\n- Arrêter l'antibiothérapie trop tôt\n- Négliger l'orientation vers un dépistage IST",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de chirurgie urologique.",
+      "contexte": "Adrien Bruneval, 24 ans, homme, se présente aux urgences pour une douleur scrotale progressive évoluant depuis 48 heures.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la douleur scrotale et les symptômes urinaires",
+        "Réaliser un examen clinique ciblé incluant l'examen des bourses et de la région inguino-scrotale",
+        "Évoquer les diagnostics différentiels (torsion du cordon spermatique, colique néphrétique, hernie inguinale étranglée)",
+        "Proposer un bilan complémentaire adapté (ECBU, échographie scrotale, bilan biologique)",
+        "Initier une prise en charge thérapeutique adaptée (antibiothérapie, antalgie, mesures associées)",
+        "Expliquer le diagnostic retenu et la prise en charge au patient"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser l'examen clinique sur le patient standardisé (le comédien ne peut pas simuler l'examen génital)",
+        "Ne pas prescrire de traitement sans avoir évoqué les diagnostics différentiels"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Feuille de prescription",
+        "Feuille de bilan biologique et d'imagerie",
+        "Gants d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur scrotale (mode d'apparition, localisation, irradiation, intensité, facteurs aggravants/soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "depuis quand",
+          "ça irradie",
+          "EVA",
+          "échelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_urinaires",
+        "label": "Recherche des signes fonctionnels urinaires associés (brûlures mictionnelles, pollakiurie, urgences mictionnelles)",
+        "weight": 1,
+        "triggerKeywords": [
+          "brûlures",
+          "miction",
+          "uriner",
+          "pollakiurie",
+          "dysurie"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque_ist",
+        "label": "Recherche les facteurs de risque d'IST (rapport sexuel non protégé, partenaires multiples)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rapport",
+          "protégé",
+          "préservatif",
+          "partenaire",
+          "IST"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents_urinaires",
+        "label": "Recherche des antécédents d'infections urinaires et de chirurgie urologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "infection urinaire",
+          "opération",
+          "chirurgie"
+        ]
+      },
+      {
+        "id": "examen_clinique_constantes",
+        "label": "Prend et interprète les constantes (fièvre, TA, FC, FR, SpO2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "température",
+          "tension",
+          "pouls",
+          "constantes",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "examen_clinique_bourses",
+        "label": "Décrit la technique d'examen des bourses (inspection, palpation, signe de Prehn, transillumination) et les signes attendus",
+        "weight": 1,
+        "triggerKeywords": [
+          "bourses",
+          "testicule",
+          "épididyme",
+          "Prehn",
+          "transillumination",
+          "examen"
+        ]
+      },
+      {
+        "id": "examen_clinique_abdominal",
+        "label": "Réalise un examen abdominal recherchant une sensibilité iliaque et une défense",
+        "weight": 1,
+        "triggerKeywords": [
+          "abdomen",
+          "fosse iliaque",
+          "palpation",
+          "sensibilité"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels pertinents (torsion du cordon spermatique, colique néphrétique, hernie inguinale étranglée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "torsion",
+          "colique néphrétique",
+          "hernie",
+          "diagnostic différentiel"
+        ]
+      },
+      {
+        "id": "bilan_complementaire",
+        "label": "Prescrit un bilan adapté (ECBU, bilan biologique avec CRP/PCT, échographie scrotale et des voies urinaires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECBU",
+          "échographie",
+          "bilan",
+          "CRP",
+          "prélèvement"
+        ]
+      },
+      {
+        "id": "strategie_pec_antibiotique",
+        "label": "Initie une antibiothérapie probabiliste adaptée à une orchi-épididymite (fluoroquinolones ou céphalosporine de 3e génération + aminoside)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antibiotique",
+          "antibiothérapie",
+          "ofloxacine",
+          "ciprofloxacine",
+          "ceftriaxone"
+        ]
+      },
+      {
+        "id": "strategie_pec_antalgie",
+        "label": "Prescrit une antalgie adaptée (palier 1 à 3 selon l'intensité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "paracétamol",
+          "anti-inflammatoire",
+          "AINS",
+          "antalgie"
+        ]
+      },
+      {
+        "id": "strategie_pec_mesures_associees",
+        "label": "Recommande les mesures associées (repos, surélévation scrotale/suspensoir, gl local)",
+        "weight": 1,
+        "triggerKeywords": [
+          "repos",
+          "suspensoir",
+          "glace",
+          "surélévation",
+          "mesures"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic d'orchi-épididymite au patient de manière claire et adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "orchi-épididymite",
+          "inflammation",
+          "diagnostic",
+          "infection"
+        ]
+      },
+      {
+        "id": "education_ist",
+        "label": "Aborde la prévention des IST et la nécessité du traitement du/des partenaire(s)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "préservatif",
+          "partenaire",
+          "IST",
+          "traitement partenaire"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et la gêne du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, légèrement anxieux du fait de la douleur et de la localisation des symptômes. Il est coopérant mais gêné de parler de sa vie sexuelle. Il répond volontiers aux questions médicales mais peut être évasif sur les questions intimes si elles ne sont pas posées avec tact.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal à la bourse droite depuis deux jours, ça ne passe pas et j'ai de la fièvre.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "examenClinique.constantes.temperature",
+        "examenClinique.aspectGeneral"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies",
+        "allergies",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, pourquoi vous me posez ça ? C'est pas mes habitudes qu'il faut regarder !",
+        "silence": "... (silence gêné) Bah... j'ai mal, c'est tout ce que je sais.",
+        "jargon": "Pardon, je comprends pas ce que vous dites. Vous pouvez m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

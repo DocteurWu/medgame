@@ -164,16 +164,278 @@
   "correction": "# Diabète de type 2\n\nSurpoids abdominal, hyperglycémie, HbA1c élevée, anticorps négatifs: compatible DT2.\n\n## Bonnes pratiques\n\n- Mesures hygiéno‑diététiques structurées\n- Metformine si non contre‑indiquée\n- Prise en charge du risque cardio‑métabolique (statines, HTA)\n\n## Erreurs à éviter\n\n- Classer DT1 sans éléments (anticorps, cétose)\n- Négliger le suivi (HbA1c, complications micro/macrovasculaires)",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Philippe MOREAU, 52 ans, homme, se présente pour une fatigue persistante et des épisodes de vision floue occasionnelle.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes actuels, les antécédents personnels et familiaux, le mode de vie et les traitements en cours",
+        "Réaliser un examen clinique ciblé incluant la mesure des constantes, l'évaluation du statut pondéral (IMC, tour de taille) et un examen des fonds d'œil ou orientation vers cet examen",
+        "Proposer un bilan biologique initial adapté incluant au minimum une glycémie à jeun et une HbA1c",
+        "Évoquer le diagnostic de diabète de type 2 et/ou syndrome métabolique",
+        "Proposer une prise en charge thérapeutique initiale incluant des mesures hygiéno-diététiques et un traitement médicamenteux si indiqué",
+        "Expliquer au patient la démarche diagnostique et les prochaines étapes de prise en charge"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'insuline en première intention sans justification",
+        "Ne pas ignorer les facteurs de risque cardiovasculaire associés (HTA, obésité abdominale)",
+        "Ne pas conclure au diagnostic sans proposer de bilan biologique confirmant"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Éducation/prévention",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Balance et mètre ruban",
+        "Otoscope/ophthalmoscope",
+        "Thermomètre",
+        "Feuille de prescription",
+        "Carnet de santé du patient"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "asseyez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes",
+        "label": "Explore les symptômes actuels : fatigue, vision floue, polydipsie, polyurie, durée d'évolution",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "vision floue",
+          "soif",
+          "uriner",
+          "depuis quand",
+          "combien de temps"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels (HTA, dyslipidémie) et familiaux (diabète type 2 chez la mère, le grand-père)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "mère",
+          "diabète familial",
+          "hypertension"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_de_vie",
+        "label": "Évalue le mode de vie : sédentarité, alimentation riche en sucres et graisses, consommation d'alcool, poids de naissance",
+        "weight": 1,
+        "triggerKeywords": [
+          "activité physique",
+          "alimentation",
+          "alcool",
+          "poids de naissance",
+          "travail",
+          "sédentaire"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Renseigne les traitements en cours (Lisinopril) et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "lisinopril",
+          "allergie"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes : TA, FC, poids, taille, IMC, tour de taille",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "poids",
+          "taille",
+          "IMC",
+          "tour de taille",
+          "108 cm"
+        ]
+      },
+      {
+        "id": "examen_clinique_cible",
+        "label": "Réalise un examen clinique orienté : auscultation cardio-pulmonaire, examen abdominal, examen des pieds, recherche de signes de complications",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "abdomen",
+          "pieds",
+          "neurologique",
+          "peau"
+        ]
+      },
+      {
+        "id": "bilan_biologique",
+        "label": "Prescrit un bilan biologique adapté : glycémie à jeun, HbA1c, bilan lipidique, créatininémie, NFS",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "HbA1c",
+          "bilan lipidique",
+          "créatinine",
+          "prise de sang",
+          "bilan biologique"
+        ]
+      },
+      {
+        "id": "diagnostic_evoque",
+        "label": "Évoque le diagnostic de diabète de type 2 en argumentant avec les facteurs de risque et les symptômes",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète type 2",
+          "diabète de type 2",
+          "syndrome métabolique",
+          "hyperglycémie"
+        ]
+      },
+      {
+        "id": "strategie_pec_hygieno_dietetique",
+        "label": "Propose des mesures hygiéno-diététiques : activité physique régulière, régime équilibré, perte de poids",
+        "weight": 1,
+        "triggerKeywords": [
+          "activité physique",
+          "régime",
+          "alimentation équilibrée",
+          "perte de poids",
+          "mesures diététiques"
+        ]
+      },
+      {
+        "id": "strategie_pec_medicamenteuse",
+        "label": "Propose un traitement médicamenteux adapté : metformine en première intention, optimisation du traitement antihypertenseur, discussion des statines",
+        "weight": 1,
+        "triggerKeywords": [
+          "metformine",
+          "traitement oral",
+          "statines",
+          "antihypertenseur",
+          "PEC médicamenteuse"
+        ]
+      },
+      {
+        "id": "education_suivi",
+        "label": "Explique au patient la nécessité d'un suivi régulier, l'autoglycémie, le dépistage des complications et les signes d'alerte",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "autosurveillance",
+          "glycémie",
+          "complications",
+          "rétinopathie",
+          "néphropathie",
+          "pied diabétique"
+        ]
+      },
+      {
+        "id": "annonce_claire",
+        "label": "Annonce clairement les résultats attendus, le diagnostic suspecté et la prise en charge proposée au patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "résultats",
+          "diagnostic",
+          "prise en charge",
+          "je vais vous expliquer",
+          "ce que je vous propose"
+        ]
+      },
+      {
+        "id": "planification_rdv",
+        "label": "Planifie les prochaines étapes : rendez-vous de résultats, consultation de suivi, orientation si besoin (ophtalmologue, diététicien)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rendez-vous",
+          "prochaine consultation",
+          "ophtalmologue",
+          "diététicien",
+          "suivi"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'annonce d'un diagnostic chronique",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient plutôt concis, un peu inquiet par ses symptômes visuels, coopératif mais peu informé sur le diabète. Il minimise sa sédentarité et ses habitudes alimentaires.",
+      "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques temps et j'ai parfois la vision floue, surtout en fin de journée.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "traitements",
+        "allergies",
+        "histoireMaladie.poidsNaissance"
+      ],
+      "infosCachees": [
+        "Le patient n'a jamais eu de bilan glycémique récent",
+        "Il n'a jamais consulté pour ces symptômes auparavant"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous me dites que je suis diabétique ? Mais je me sens pas si mal que ça…",
+        "silence": "… (silence) … Oui, je vous écoute, continuez.",
+        "jargon": "Pardon, je comprends pas très bien ce que vous dites. Vous pouvez m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

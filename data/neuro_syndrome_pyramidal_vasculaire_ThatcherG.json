@@ -135,16 +135,300 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences neurologiques.",
+      "contexte": "Monsieur Thatcher Grey, 72 ans, se présente aux urgences pour une installation brutale d'une difficulté à mobiliser le côté droit du corps avec trouble de la marche, survenue au repos il y a environ 2 heures.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient orienté vers la pathologie neurologique aiguë",
+        "Effectuer un examen neurologique ciblé incluant l'évaluation de la motricité, des paires crâniennes, de la sensibilité et des réflexes",
+        "Mesurer les constantes vitales et les communiquer",
+        "Identifier les facteurs de risque cardiovasculaire du patient",
+        "Formuler un diagnostic évocateur d'accident vasculaire cérébral ischémique",
+        "Proposer une stratégie diagnostique initiale adaptée (imagerie en urgence)",
+        "Initier une prise en charge thérapeutique adaptée en urgence",
+        "Expliquer au patient et/ou à l'entourage la démarche diagnostique et thérapeutique"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser de geste invasif",
+        "Ne pas prescrire de thrombolyse sans avoir évoqué la nécessité d'une imagerie en urgence",
+        "Ne pas ignorer l'hypertension artérielle à l'admission"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Marteau à réflexes",
+        "Abaisse-langue",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Moniteur de constantes",
+        "NIHSS (échelle d'AVC)",
+        "Dossier patient avec résultats biologiques et imagerie disponibles sur demande"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment vous appelez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Précise le motif de consultation et la chronologie des symptômes (heure de début, mode d'installation brutal)",
+        "weight": 1,
+        "triggerKeywords": [
+          "qu'est-ce qui vous amène",
+          "depuis quand",
+          "ça a commencé quand",
+          "brutalement",
+          "heure de début"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés : déficit moteur, trouble de la parole, chute, perte de connaissance, céphalées, vomissements",
+        "weight": 1,
+        "triggerKeywords": [
+          "difficulté à parler",
+          "tombé",
+          "perdu connaissance",
+          "mal à la tête",
+          "vomi",
+          "faiblesse",
+          "engourdissement"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire : tabagisme, hypertension, diabète, dyslipidémie, fibrillation auriculaire, ATCD familiaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "hypertension",
+          "diabète",
+          "cholestérol",
+          "cœur",
+          "antécédents",
+          "famille",
+          "traitement habituel"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Renseigne sur les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "allergie",
+          "prenez-vous des médicaments"
+        ]
+      },
+      {
+        "id": "constantes_vitales",
+        "label": "Mesure et note les constantes vitales (TA, FC, SpO2, FR, Température) et identifie l'hypertension artérielle",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pression artérielle",
+          "pouls",
+          "saturation",
+          "température",
+          "170/95"
+        ]
+      },
+      {
+        "id": "examen_neurologique_conscience",
+        "label": "Évalue l'état de conscience (score de Glasgow) et les fonctions supérieures",
+        "weight": 1,
+        "triggerKeywords": [
+          "Glasgow",
+          "conscient",
+          "orienté",
+          "confusion",
+          "compréhension"
+        ]
+      },
+      {
+        "id": "examen_paires_craniennes",
+        "label": "Examine les paires crâniennes et identifie la paralysie faciale centrale droite",
+        "weight": 1,
+        "triggerKeywords": [
+          "visage",
+          "paires crâniennes",
+          "facial",
+          "sourire",
+          "front",
+          "paralysie faciale",
+          "asymétrie faciale"
+        ]
+      },
+      {
+        "id": "examen_motricite_force",
+        "label": "Évalue la motricité des 4 membres, côte la force musculaire (0-5) et identifie l'hémiparésie droite à 3/5",
+        "weight": 1,
+        "triggerKeywords": [
+          "levez les bras",
+          "serrez ma main",
+          "poussez",
+          "force",
+          "3/5",
+          "hémiparésie",
+          "droit"
+        ]
+      },
+      {
+        "id": "examen_reflexes_pyramidal",
+        "label": "Teste les réflexes ostéo-tendineux, identifie l'hyperréflexie à droite et le signe de Babinski positif",
+        "weight": 1,
+        "triggerKeywords": [
+          "réflexes",
+          "marteau",
+          "Babinski",
+          "clonus",
+          "spasticité",
+          "signe pyramidal"
+        ]
+      },
+      {
+        "id": "examen_sensibilite",
+        "label": "Évalue la sensibilité (tact, douleur, proprioception) des 4 membres",
+        "weight": 1,
+        "triggerKeywords": [
+          "sensibilité",
+          "toucher",
+          "sentez",
+          "piqûre",
+          "position"
+        ]
+      },
+      {
+        "id": "synthese_diagnostique",
+        "label": "Formule le diagnostic d'AVC ischémique avec syndrome pyramidal droit secondaire à une lésion capsulo-lenticulaire gauche",
+        "weight": 1,
+        "triggerKeywords": [
+          "AVC",
+          "accident vasculaire cérébral",
+          "ischémique",
+          "syndrome pyramidal",
+          "capsule",
+          "lenticulaire",
+          "gauche"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Demande en urgence une imagerie cérébrale (scanner ou IRM) pour confirmer le diagnostic et éliminer une hémorragie",
+        "weight": 1,
+        "triggerKeywords": [
+          "scanner cérébral",
+          "IRM",
+          "imagerie",
+          "urgence",
+          "neuro-imagerie"
+        ]
+      },
+      {
+        "id": "strategie_pec_initiale",
+        "label": "Propose une prise en charge initiale adaptée : antiagrégant plaquettaire, contrôle des facteurs de risque, rééducation, hospitalisation en unité neurovasculaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "aspirine",
+          "antiagrégant",
+          "rééducation",
+          "kinésithérapeprise facteurs de risque",
+          "UNV",
+          "unité neurovasculaire",
+          "hospitalisation"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique au patient de manière claire et adaptée le diagnostic suspecté, les examens à réaliser et la prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "je vais vous expliquer",
+          "AVC",
+          "examens",
+          "prise en charge",
+          "neurologue"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer ses phrases sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant de recourir aux questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué ou le définit clairement",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de bienveillance et de rassurance face à l'inquiétude du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopérant, légèrement anxieux mais conscient et orienté. Il s'exprime avec une légère dysarthrie. Il est inquiet pour sa santé et pose des questions sur la gravité de son état.",
+      "phraseOuverture": "Docteur, je n'arrive plus à bouger mon côté droit, c'est arrivé d'un coup, et j'ai du mal à marcher…",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se montre surpris et légèrement agacé si l'interne le brusque ou ne lui laisse pas le temps de répondre. Il peut répondre de manière laconique.",
+        "silence": "Le patient attend que l'interne le guide. En l'absence de questions, il ne fournit pas spontanément d'informations supplémentaires.",
+        "jargon": "Le patient demande des explications si l'interne utilise des termes médicaux incompréhensibles : 'Qu'est-ce que ça veut dire, un syndrome pyramidal ?' ou 'C'est quoi une hémiparésie ?'"
+      }
+    }
+  }
 }

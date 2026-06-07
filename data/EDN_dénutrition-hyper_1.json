@@ -155,16 +155,297 @@
   "correction": "# Dénutrition hypercatabolique\n\nPerte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.\n\n## Bonnes pratiques\n\n- Renutrition prudente et progressive\n- Traitement de la cause (antibiothérapie)\n- Supplémentation micro‑nutritionnelle, surveillance clinique et biologique\n\n## Erreurs à éviter\n\n- Renutrition trop rapide (risque de syndrome de renutrition inappropriée)\n- Oublier de traiter l’infection et de surveiller électrolytes",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de pédiatrie.",
+      "contexte": "Kwame TOGO, 6 ans, de sexe masculin, est amené par sa mère aux urgences pédiatriques pour fatigue extrême et perte de poids rapide évoluant depuis quelques semaines.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire de la mère et de l'enfant adapté à l'âge",
+        "Effectuer un examen clinique pédiatrique complet",
+        "Identifier les signes de dénutrition sévère et les critères de gravité",
+        "Proposer une stratégie diagnostique pertinente (bilan biologique, imagerie si nécessaire)",
+        "Élaborer une stratégie de prise en charge initiale adaptée (renutrition, traitement étiologique, surveillance)",
+        "Expliquer le diagnostic et le plan de soins à la mère avec empathie et clarté"
+      ],
+      "consignesInterdites": [
+        "Ne pas administrer de bolus glucosé sans avoir vérifié la glycémie",
+        "Ne pas initier une renutrition agressive sans surveillance",
+        "Ne pas ignorer le contexte de ressources limitées dans la prise en charge"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence pédiatrique",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre pédiatrique",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Balance pédiatrique",
+        "Mètre ruban (périmètre brachial)",
+        "Otoscope",
+        "Abaque de poids/taille (courbes OMS)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe un climat de confiance avec la mère et l'enfant",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "rôle"
+        ]
+      },
+      {
+        "id": "interrogatoire_contexte",
+        "label": "Explore le contexte de vie (ressources limitées, accès à l'alimentation, conditions socio-économiques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "contexte",
+          "ressources",
+          "alimentation",
+          "conditions de vie",
+          "famille"
+        ]
+      },
+      {
+        "id": "interrogatoire_nutritionnel",
+        "label": "Réalise un interrogatoire nutritionnel détaillé (apports alimentaires, durée, régime, particularités)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "repas",
+          "apports",
+          "régime",
+          "quantité",
+          "fréquence"
+        ]
+      },
+      {
+        "id": "interrogatoire_etiologique",
+        "label": "Recherche les facteurs déclenchants et symptômes associés (fièvre, diarrhée, infection respiratoire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "fièvre",
+          "diarrhée",
+          "infection",
+          "respiratoire",
+          "début",
+          "évolution"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents médicaux, chirurgicaux et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "hospitalisation",
+          "famille",
+          "grand-mère"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Évalue l'aspect général (cachexie, hypotrophie, graisse sous-cutanée, léthargie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aspect général",
+          "cachexie",
+          "hypotrophie",
+          "maigreur",
+          "état général"
+        ]
+      },
+      {
+        "id": "examen_clinique_anthropometrique",
+        "label": "Réalise les mesures anthropométriques (poids, taille, périmètre brachial, IMC) et les compare aux courbes OMS",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "périmètre brachial",
+          "IMC",
+          "courbes",
+          "OMS",
+          "z-score"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Effectue un examen clinique complet (cardio-pulmonaire, abdominal, neurologique, cutané)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "palpation",
+          "examen pulmonaire",
+          "abdominal",
+          "neurologique",
+          "cutané"
+        ]
+      },
+      {
+        "id": "evaluation_gravite",
+        "label": "Identifie les critères de gravité (tachycardie, hypotension, léthargie, signes de déshydratation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gravité",
+          "tachycardie",
+          "hypotension",
+          "léthargie",
+          "critères",
+          "urgence"
+        ]
+      },
+      {
+        "id": "bilan_biologique",
+        "label": "Prescrit un bilan biologique adapté (ionogramme, glycémie, CRP, albumine, préalbumine, NFS, hémocultures)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "biologie",
+          "ionogramme",
+          "glycémie",
+          "CRP",
+          "albumine",
+          "NFS",
+          "hémocultures"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels pertinents (tuberculose, maladie cœliaque, septicémie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic différentiel",
+          "tuberculose",
+          "cœliaque",
+          "septicémie",
+          "infection"
+        ]
+      },
+      {
+        "id": "strategie_renutrition",
+        "label": "Propose une stratégie de renutrition progressive adaptée (F-75/F-100, voie orale/entérale, surveillance)",
+        "weight": 1,
+        "triggerKeywords": [
+          "renutrition",
+          "progressive",
+          "F-75",
+          "F-100",
+          "plumpy nut",
+          "voie orale",
+          "surveillance"
+        ]
+      },
+      {
+        "id": "traitement_etiologique",
+        "label": "Initie un traitement étiologique (antibiothérapie si infection, supplémentation vitaminique et minérale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antibiothérapie",
+          "supplémentation",
+          "vitamines",
+          "minéraux",
+          "traitement",
+          "infection"
+        ]
+      },
+      {
+        "id": "surveillance_therapeutique",
+        "label": "Planifie la surveillance thérapeutique (poids quotidien, glycémie, ionogramme, signes de refeeding)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "poids",
+          "glycémie",
+          "ionogramme",
+          "refeeding",
+          "complications"
+        ]
+      },
+      {
+        "id": "annonce_pec",
+        "label": "Annonce le diagnostic et explique le plan de prise en charge à la mère de manière claire et empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "prise en charge",
+          "explication",
+          "plan",
+          "comprendre",
+          "questions"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la mère terminer sans l'interrompre, montre de l'attention",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le contexte",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la mère sur les informations données",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué) et adapte son discours au niveau de compréhension de la mère",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance envers l'enfant et sa mère, tient compte du contexte difficile",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Mère inquiète mais coopérative, légèrement sur la défensive face aux questions sur le contexte socio-économique. Elle est fatiguée et stressée par l'état de son enfant.",
+      "phraseOuverture": "Bonjour docteur, je vous amène mon fils Kwame, il a 6 ans. Il est très fatigué depuis quelques semaines, il a beaucoup maigri et je m'inquiète beaucoup.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "allergies",
+        "traitements"
+      ],
+      "infosCachees": [
+        "antecedents.familiaux.grand-malnutrition"
+      ],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez toutes ces questions, occupez-vous de mon fils !",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous dites, pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

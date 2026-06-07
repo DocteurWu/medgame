@@ -422,5 +422,222 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale en stage aux urgences.",
+      "contexte": "Vous êtes appelé(e) en urgence dans la salle de restaurant où Henri Rousseau, 68 ans, est en train de s'étouffer brutalement au cours d'un repas. Un convive de la table voisine a alerté le personnel.",
+      "consignesAttendues": [
+        "Identifier rapidement le tableau d'obstruction totale des voies aériennes",
+        "Réaliser les gestes de désobstruction adaptés (claques dans le dos puis manœuvre de Heimlich)",
+        "Évaluer la nécessité de débuter une RCP en cas de perte de connaissance",
+        "Sécuriser la scène et alerter les secours si nécessaire",
+        "Expliquer les gestes réalisés au patient ou à l'entourage"
+      ],
+      "consignesInterdites": [
+        "Ne pas donner à boire au patient",
+        "Ne pas introduire les doigts dans la bouche à l'aveugle",
+        "Ne pas abandonner le patient sans surveillance"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Communication interpro",
+      "lieu": "Restaurant — Intervention extra-hospitalière",
+      "materielDisponible": [
+        "Aucun matériel médical disponible sur place",
+        "Téléphone pour appeler le 15/112",
+        "Éventuellement un DEA dans l'établissement (à vérifier)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securisation_scene",
+        "label": "Sécurise la scène et éloigne les curieux pour travailler dans de bonnes conditions",
+        "weight": 1,
+        "triggerKeywords": [
+          "curieux",
+          "écartez-vous",
+          "placez-vous",
+          "sécurité"
+        ]
+      },
+      {
+        "id": "identification_signes",
+        "label": "Identifie rapidement les signes d'obstruction totale (impossibilité de parler, de tousser, signe universel d'étouffement, cyanose)",
+        "weight": 1,
+        "triggerKeywords": [
+          "obstruction totale",
+          "voies aériennes",
+          "corps étranger",
+          "signe universel",
+          "mains à la gorge"
+        ]
+      },
+      {
+        "id": "alerte_secours",
+        "label": "Alerte ou fait alerter les secours (15/112) en précisant la situation d'obstruction des voies aériennes",
+        "weight": 1,
+        "triggerKeywords": [
+          "15",
+          "112",
+          "SAMU",
+          "secours",
+          "alerte"
+        ]
+      },
+      {
+        "id": "claques_dos",
+        "label": "Réalise 5 claques vigoureuses entre les omoplates (patient penché en avant)",
+        "weight": 1,
+        "triggerKeywords": [
+          "claques",
+          "omoplates",
+          "dos",
+          "penché en avant"
+        ]
+      },
+      {
+        "id": "heimlich",
+        "label": "En cas d'échec des claques, réalise la manœuvre de Heimlich (compressions abdominales) — positionnement correct des mains, mouvement vers le haut et l'intérieur",
+        "weight": 1,
+        "triggerKeywords": [
+          "Heimlich",
+          "compressions abdominales",
+          "point de compression",
+          "sous le sternum",
+          "xiphoïde"
+        ]
+      },
+      {
+        "id": "alternance_claques_heimlich",
+        "label": "Alterne les séquences de 5 claques dans le dos et 5 compressions abdominales tant que l'obstruction persiste",
+        "weight": 1,
+        "triggerKeywords": [
+          "alternance",
+          "5 claques",
+          "5 compressions",
+          "cycle"
+        ]
+      },
+      {
+        "id": "surveillance_conscience",
+        "label": "Surveille en permanence l'état de conscience du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "répond",
+          "perte de connaissance",
+          "inconscient"
+        ]
+      },
+      {
+        "id": "initiation_rcp",
+        "label": "Si perte de connaissance : allonge le patient au sol et initie une RCP (30 compressions / 2 insufflations) en vérifiant la bouche avant chaque insufflation",
+        "weight": 1,
+        "triggerKeywords": [
+          "RCP",
+          "compressions thoraciques",
+          "massage cardiaque",
+          "30/2",
+          "insufflation"
+        ]
+      },
+      {
+        "id": "verification_bouche",
+        "label": "Avant chaque insufflation en RCP, ouvre la bouche et retire tout corps étranger visible (sans exploration digitale à l'aveugle)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bouche",
+          "corps étranger visible",
+          "retire",
+          "à l'aveugle"
+        ]
+      },
+      {
+        "id": "position_laterale_securite",
+        "label": "Si le patient reprend une respiration spontanée après désobstruction, le place en position latérale de sécurité",
+        "weight": 1,
+        "triggerKeywords": [
+          "PLS",
+          "position latérale",
+          "sécurité",
+          "respiration"
+        ]
+      },
+      {
+        "id": "surveillance_post_gestes",
+        "label": "Surveille le patient après désobstruction (respiration, conscience, coloration) en attendant les secours",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "après",
+          "respiration",
+          "conscience",
+          "attente secours"
+        ]
+      },
+      {
+        "id": "explication_entourage",
+        "label": "Explique calmement à l'entourage ou au personnel du restaurant ce qui s'est passé et ce qui a été fait",
+        "weight": 1,
+        "triggerKeywords": [
+          "explique",
+          "entourage",
+          "ce qui s'est passé",
+          "gestes réalisés"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "calme_autorite",
+        "label": "Garde son calme et adopte une attitude d'autorité bienveillante pour gérer la situation de stress",
+        "max": 1
+      },
+      {
+        "id": "instructions_claires",
+        "label": "Donne des instructions claires et concises à l'entourage (appeler le 15, écarter les curieux, aider si besoin)",
+        "max": 1
+      },
+      {
+        "id": "communication_non_verbale",
+        "label": "Utilise la communication non verbale adaptée (contact visuel, gestes rassurants) avec le patient qui ne peut pas parler",
+        "max": 1
+      },
+      {
+        "id": "transmission_structuree",
+        "label": "Réalise une transmission structurée aux secours à leur arrivée (SBAR ou équivalent)",
+        "max": 1
+      },
+      {
+        "id": "empathie_post_crise",
+        "label": "Fait preuve d'empathie envers le patient une fois la situation stabilisée",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient âgé, initialement coopérant mais rapidement en détresse respiratoire majeure. Incapable de parler, de tousser. Agité puis prostré en cas de dégradation. Après désobstruction : soulagé, angoissé, reconnaissant.",
+      "phraseOuverture": "*Le patient est assis à table, visage cyanosé, mains serrées autour de la gorge, yeux écarquillés, incapable de parler ou de tousser. Il émet des bruits respiratoires striduleux ou aucun bruit.*",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "modeDeVie.alimentation",
+        "traitements"
+      ],
+      "infosCachees": [
+        "Le patient portait un dentier qu'il avait retiré pour manger (facteur de risque de mauvaise mastication)"
+      ],
+      "reactions": {
+        "brutal": "Le patient ne réagit pas verbalement, gesticule, se penche en avant instinctivement.",
+        "silence": "Le patient reste silencieux, regard paniqué, fixe l'examinateur en cherchant de l'aide.",
+        "jargon": "Le patient ne comprend pas les termes techniques et montre de l'incompréhension par ses expressions faciales."
+      }
+    }
   }
 }

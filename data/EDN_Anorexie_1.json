@@ -152,16 +152,273 @@
   "correction": "# Anorexie mentale\n\nCas atypique : homme adulte. L'anorexie touche aussi les hommes (10-15% des cas), souvent sous-diagnostiquée.\n\n## Critères DSM-5\n\n- Restriction des apports énergétiques conduisant à un poids insuffisant\n- Peur intense de prendre du poids\n- Altération de la perception du poids ou de la forme corporelle\n\n## Signes de gravité à rechercher\n\n- IMC < 15 kg/m²\n- Bradycardie < 40 bpm\n- Hypokaliémie < 3 mmol/L\n- Hypoglycémie symptomatique\n- Allongement du QTc\n\n## Prise en charge\n\n- Équipe pluridisciplinaire : nutritionniste, psychiatre, psychologue\n- Contrat de soins et objectifs pondéraux réalistes\n- TCC recommandée chez l'adulte\n- Renutrition prudente (risque de syndrome de renutrition)\n\n## Erreurs à éviter\n\n- Sous-estimer car patient masculin ou IMC normal\n- Renutrition trop rapide sans surveillance électrolytique\n- Négliger le suivi cardiaque (ECG)",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de psychiatrie.",
+      "contexte": "Théo LEGRAND, 26 ans, homme, se présente pour une baisse d'énergie et des troubles digestifs.",
+      "consignesAttendues": [
+        "Réaliser un entretien clinique structuré explorant les habitudes alimentaires, l'image corporelle et le rapport au corps",
+        "Évaluer les signes de dénutrition et les complications somatiques",
+        "Proposer une prise en charge adaptée incluant un suivi psychiatrique et nutritionnel"
+      ],
+      "consignesInterdites": [
+        "Ne pas se limiter à l'exploration des seuls symptômes digestifs sans aborder le comportement alimentaire",
+        "Ne pas banaliser la bradycardie et l'hypotension comme des signes bénins"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Pèse-personne",
+        "Mètre ruban",
+        "ECG portable"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "exploration_histoire_alimentaire",
+        "label": "Explore en détail les habitudes alimentaires (restriction, comptage calorique, évitement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "repas",
+          "calories",
+          "régime",
+          "restriction"
+        ]
+      },
+      {
+        "id": "evaluation_image_corporelle",
+        "label": "Évalue la perception de l'image corporelle et la peur de prendre du poids",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "corps",
+          "image",
+          "grossir",
+          "maigrir"
+        ]
+      },
+      {
+        "id": "recherche_comportements_purgatifs",
+        "label": "Recherche des comportements compensatoires (vomissements, laxatifs, exercice excessif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vomissement",
+          "laxatif",
+          "exercice",
+          "compensation",
+          "purgatif"
+        ]
+      },
+      {
+        "id": "evaluation_retentissement_psychologique",
+        "label": "Évalue l'impact psychologique (anxiété, isolement social, humeur dépressive)",
+        "weight": 1,
+        "triggerKeywords": [
+          "anxiété",
+          "humeur",
+          "dépression",
+          "social",
+          "isolement"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet incluant la recherche de signes de dénutrition",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen",
+          "clinique",
+          "signes",
+          "dénutrition",
+          "lanugo"
+        ]
+      },
+      {
+        "id": "interpretation_constantes",
+        "label": "Interprète correctement les constantes (bradycardie, hypotension, hypothermie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bradycardie",
+          "hypotension",
+          "pouls",
+          "tension",
+          "température"
+        ]
+      },
+      {
+        "id": "prescription_bilan_biologique",
+        "label": "Prescrit un bilan biologique adapté (ionogramme, NFS, TSH, albuminémie, préalbumine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "biologie",
+          "ionogramme",
+          "NFS",
+          "TSH",
+          "albumine"
+        ]
+      },
+      {
+        "id": "prescription_ecg",
+        "label": "Prescrit un ECG pour évaluer la bradycardie et rechercher des troubles du rythme",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "rythmique",
+          "QTc"
+        ]
+      },
+      {
+        "id": "diagnostic_anorexie",
+        "label": "Pose le diagnostic d'anorexie mentale avec restriction",
+        "weight": 1,
+        "triggerKeywords": [
+          "anorexie",
+          "diagnostic",
+          "TCA",
+          "trouble alimentaire"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière empathique et non jugeante",
+        "weight": 1,
+        "triggerKeywords": [
+          "anorexie",
+          "diagnostic",
+          "expliquer",
+          "comprendre"
+        ]
+      },
+      {
+        "id": "proposition_pec_globale",
+        "label": "Propose une prise en charge globale (nutritionnelle, psychothérapeutique, psychiatrique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prise en charge",
+          "nutrition",
+          "psychothérapie",
+          "TCC",
+          "psychiatrique"
+        ]
+      },
+      {
+        "id": "evaluation_urgence_somatique",
+        "label": "Évalue la gravité somatique et la nécessité d'une hospitalisation",
+        "weight": 1,
+        "triggerKeywords": [
+          "hospitalisation",
+          "gravité",
+          "urgence",
+          "IMC",
+          "bradycardie"
+        ]
+      },
+      {
+        "id": "orientation_specialiste",
+        "label": "Oriente vers un spécialiste des TCA (psychiatre, nutritionniste)",
+        "weight": 1,
+        "triggerKeywords": [
+          "orientation",
+          "spécialiste",
+          "psychiatre",
+          "nutritionniste",
+          "TCA"
+        ]
+      },
+      {
+        "id": "conseils_nutritionnels",
+        "label": "Donne des conseils nutritionnels adaptés (réalimentation progressive, éviter les carences)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conseils",
+          "nutrition",
+          "réalimentation",
+          "progressif",
+          "carence"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux, perfectionniste, ayant du mal à exprimer ses émotions. Il minimise ses symptômes et justifie ses restrictions alimentaires par un souhait de 'mieux manger'. Il est méfiant face aux questions sur son poids et son image corporelle.",
+      "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques mois et j'ai des problèmes digestifs. Mon médecin m'a envoyé vous voir.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [
+        "Comptage calorique strict",
+        "Pesée multiple quotidienne",
+        "Exercice physique compulsif",
+        "Peur intense de prendre du poids",
+        "Distorsion de l'image corporelle"
+      ],
+      "reactions": {
+        "brutal": "Je ne vois pas en quoi c'est votre affaire ce que je mange. Je fais attention à ma santé, c'est tout.",
+        "silence": "... (silence prolongé) Je ne sais pas trop quoi répondre...",
+        "jargon": "Pardon ? Je ne comprends pas ce que vous voulez dire par là."
+      }
+    }
+  }
 }

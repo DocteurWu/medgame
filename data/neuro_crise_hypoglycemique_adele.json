@@ -141,16 +141,262 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Madame Adele Webber, 68 ans, se présente aux urgences pour une crise convulsive survenue à domicile, secondaire à une hypoglycémie sévère chez une patiente diabétique de type 2 insulinorequise.",
+      "consignesAttendues": [
+        "Accueillir la patiente et se présenter",
+        "Réaliser un interrogatoire complet orienté sur l'épisode de crise convulsive et le contexte diabétique",
+        "Effectuer un examen clinique complet incluant un examen neurologique détaillé",
+        "Identifier l'hypoglycémie comme étiologie de la crise convulsive",
+        "Initier la prise en charge adaptée (apport glucosé)",
+        "Expliquer le diagnostic et la conduite à tenir à la patiente",
+        "Proposer un plan de prévention des récidives hypoglycémiques"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'EEG en urgence sans avoir corrigé la glycémie",
+        "Ne pas administrer un traitement antiépileptique sans avoir éliminé une cause métabolique",
+        "Ne pas laisser la patiente seule sans surveillance glycémique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Glucomètre",
+        "Solution de glucose IV (G30%, G10%)",
+        "Kit de prélèvement veineux",
+        "Matériel de surveillance (scope, TA, SpO2)",
+        "Abaisse-langue",
+        "Otoscope",
+        "Marteau à réflexes",
+        "Stéthoscope",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "médecin"
+        ]
+      },
+      {
+        "id": "evaluation_urgence_initiale",
+        "label": "Évalue rapidement l'état de conscience et les fonctions vitales (ABC)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "voies aériennes",
+          "respiration",
+          "circulation",
+          "Glasgow"
+        ]
+      },
+      {
+        "id": "mesure_glycemie_capillaire",
+        "label": "Réalise immédiatement une glycémie capillaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "glucomètre",
+          "sucre",
+          "glucose capillaire"
+        ]
+      },
+      {
+        "id": "interrogatoire_crise",
+        "label": "Interroge la patiente/entourage sur les circonstances de la crise (horaire, durée, signes associés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crise",
+          "convulsion",
+          "malaise",
+          "perte de connaissance",
+          "tremblements",
+          "sueurs"
+        ]
+      },
+      {
+        "id": "recherche_facteur_declenchant",
+        "label": "Recherche le facteur déclenchant : injection d'insuline sans prise alimentaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuline",
+          "repas",
+          "injection",
+          "alimentation",
+          "sauté",
+          "facteur déclenchant"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet (cardio-pulmonaire, abdominal, neurologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen",
+          "auscultation",
+          "palpation",
+          "neurologique",
+          "pupilles",
+          "motricité",
+          "réflexes"
+        ]
+      },
+      {
+        "id": "examen_neurologique_detaille",
+        "label": "Effectue un examen neurologique détaillé (Glasgow, paires crânienne, motricité, sensibilité, réflexes, coordination)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Glasgow",
+          "paires crânienne",
+          "motricité",
+          "sensibilité",
+          "réflexes",
+          "Babinski",
+          "coordination"
+        ]
+      },
+      {
+        "id": "administration_glucose_iv",
+        "label": "Administre du glucose par voie intraveineuse (G30% ou G10%)",
+        "weight": 1,
+        "triggerKeywords": [
+          "glucose",
+          "sucre IV",
+          "perfusion",
+          "G30",
+          "G10",
+          "resucrage"
+        ]
+      },
+      {
+        "id": "surveillance_glycemique_post",
+        "label": "Surveille la glycémie après correction et vérifie l'amélioration clinique",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie contrôle",
+          "surveillance",
+          "amélioration",
+          "recontrôle"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels (épilepsie, AVC, autre cause métabolique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic différentiel",
+          "épilepsie",
+          "AVC",
+          "cause",
+          "étiologie"
+        ]
+      },
+      {
+        "id": "explication_diagnostic",
+        "label": "Explique le diagnostic de crise convulsive secondaire à l'hypoglycémie à la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypoglycémie",
+          "explication",
+          "diagnostic",
+          "cause",
+          "insuline"
+        ]
+      },
+      {
+        "id": "plan_prevention_rechute",
+        "label": "Propose un plan de prévention des récidives (éducation, adaptation posologique, règles hygiéno-diététiques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "éducation",
+          "adaptation",
+          "repas",
+          "surveillance glycémique",
+          "règles"
+        ]
+      },
+      {
+        "id": "transmission_equipe",
+        "label": "Transmet les informations à l'équipe soignante (observation, résultats, conduite à tenir)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transmission",
+          "équipe",
+          "observation",
+          "résultats",
+          "PEC"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieuse, légèrement confuse en début de prise en charge, s'améliore rapidement après correction glycémique. Coopérative une fois rassurée.",
+      "phraseOuverture": "Docteur, j'ai fait une crise terrible à la maison, je ne comprends pas ce qui m'est arrivé...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "traitements",
+        "modeDeVie.alimentation"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis malade !",
+        "silence": "Vous pouvez me poser des questions, je vous écoute...",
+        "jargon": "Pouvez-vous m'expliquer ce que vous voulez dire ? Je ne comprends pas ces termes médicaux."
+      }
+    }
+  }
 }

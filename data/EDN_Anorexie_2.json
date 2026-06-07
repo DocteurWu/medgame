@@ -137,16 +137,288 @@
   "correction": "# Anorexie mentale (adolescent)\n\nPerte de poids, aménorrhée, préoccupations corporelles, bradycardie.\n\n## Bonnes pratiques\n\n- Prise en charge multidisciplinaire incluant thérapie familiale\n- Renutrition progressive et surveillance cardiaque/biologique\n- Limiter l’exposition nocive aux réseaux sociaux\n\n## Erreurs à éviter\n\n- Objectifs de poids non sécurisés\n- Renutrition trop rapide ou non accompagnée",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de psychiatrie de l'enfant et de l'adolescent.",
+      "contexte": "Alice Hanouna, 14 ans, de sexe féminin, se présente accompagnée de sa mère pour une perte de poids importante et une inquiétude concernant l'image corporelle.",
+      "consignesAttendues": [
+        "Réaliser un entretien avec l'adolescente et sa mère pour explorer les troubles du comportement alimentaire",
+        "Évaluer la sévérité de la dénutrition et les complications somatiques",
+        "Rechercher des comorbidités psychiatriques (anxiété, dépression, idées suicidaires)",
+        "Évaluer le retentissement familial et scolaire",
+        "Proposer une stratégie de prise en charge adaptée incluant le volet somatique, psychiatrique et familial",
+        "Évaluer le risque vital et la nécessité d'une hospitalisation"
+      ],
+      "consignesInterdites": [
+        "Ne pas se limiter à un simple interrogatoire alimentaire sans évaluer le risque vital",
+        "Ne pas culpabiliser la patiente ou la famille",
+        "Ne pas prescrire de traitement médicamenteux sans avoir évalué le risque suicidaire",
+        "Ne pas ignorer les signes de gravité somatique (bradycardie, hypotension)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Consultation de psychiatrie de l'enfant et de l'adolescent",
+      "materielDisponible": [
+        "Balance et toise",
+        "Tensiomètre",
+        "Stéthoscope",
+        "ECG",
+        "Carnet alimentaire",
+        "Échelles d'évaluation (EAT-26, EDI, HDRS, Y-BOCS)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "rôle"
+        ]
+      },
+      {
+        "id": "explore_motif_consultation",
+        "label": "Explore le motif de consultation avec des questions ouvertes",
+        "weight": 1,
+        "triggerKeywords": [
+          "perte de poids",
+          "depuis quand",
+          "comment",
+          "pourquoi",
+          "inquiétude"
+        ]
+      },
+      {
+        "id": "interroge_histoire_tca",
+        "label": "Interroge sur l'histoire des troubles du comportement alimentaire (restriction, vomissements, laxatifs, exercice excessif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "restriction",
+          "vomissement",
+          "laxatif",
+          "exercice",
+          "calories",
+          "poids",
+          "image corporelle"
+        ]
+      },
+      {
+        "id": "evalue_amenorrhee",
+        "label": "Recherche une aménorrhée et interroge sur le cycle menstruel",
+        "weight": 1,
+        "triggerKeywords": [
+          "règles",
+          "aménorrhée",
+          "cycle",
+          "menstruel"
+        ]
+      },
+      {
+        "id": "evale_risque_suicidaire",
+        "label": "Évalue le risque suicidaire et les idées noires",
+        "weight": 1,
+        "triggerKeywords": [
+          "suicide",
+          "idées noires",
+          "envie de mourir",
+          "désespoir",
+          "souffrance"
+        ]
+      },
+      {
+        "id": "evalue_comorbidites_psy",
+        "label": "Recherche des comorbidités psychiatriques (anxiété, dépression, TOC)",
+        "weight": 1,
+        "triggerKeywords": [
+          "anxiété",
+          "dépression",
+          "tristesse",
+          "obsession",
+          "compulsion",
+          "angoisse"
+        ]
+      },
+      {
+        "id": "examen_somatique_complet",
+        "label": "Réalise un examen somatique complet incluant poids, taille, IMC, constantes",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "IMC",
+          "tension",
+          "pouls",
+          "bradycardie",
+          "examen clinique"
+        ]
+      },
+      {
+        "id": "identifie_signes_gravite",
+        "label": "Identifie les signes de gravité somatique (bradycardie, hypotension, dénutrition sévère)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bradycardie",
+          "hypotension",
+          "gravité",
+          "hospitalisation",
+          "risque vital"
+        ]
+      },
+      {
+        "id": "evalue_retentissement_familial",
+        "label": "Évalue le retentissement familial et la dynamique familiale",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "mère",
+          "père",
+          "fratrie",
+          "conflit",
+          "soutien"
+        ]
+      },
+      {
+        "id": "evalue_retentissement_scolaire",
+        "label": "Évalue le retentissement scolaire et social",
+        "weight": 1,
+        "triggerKeywords": [
+          "école",
+          "collège",
+          "notes",
+          "isolement",
+          "amis",
+          "réseaux sociaux"
+        ]
+      },
+      {
+        "id": "propose_pec_adaptee",
+        "label": "Propose une prise en charge adaptée (nutritionnelle, psychothérapique, familiale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prise en charge",
+          "nutrition",
+          "thérapie",
+          "familial",
+          "TCC",
+          "hospitalisation"
+        ]
+      },
+      {
+        "id": "oriente_vers_specialiste",
+        "label": "Oriente vers une équipe spécialisée en TCA",
+        "weight": 1,
+        "triggerKeywords": [
+          "spécialiste",
+          "équipe",
+          "référent",
+          "orientation",
+          "suivi"
+        ]
+      },
+      {
+        "id": "conseille_surveillance",
+        "label": "Conseille une surveillance régulière et un suivi rapproché",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "suivi",
+          "consultation",
+          "régulier",
+          "contrôle"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière empathique et adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "anorexie",
+          "trouble",
+          "comportement alimentaire",
+          "maladie"
+        ]
+      },
+      {
+        "id": "rassure_patiente_famille",
+        "label": "Rassure la patiente et la famille sur la prise en charge et le pronostic",
+        "weight": 1,
+        "triggerKeywords": [
+          "rassurer",
+          "pronostic",
+          "guérison",
+          "espoir",
+          "soutien"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Adolescente réservée, anxieuse, préoccupée par son apparence. Elle minimise ses symptômes et hésite à parler ouvertement de ses habitudes alimentaires. Elle se sent mal à l'aise en public et évite les situations sociales.",
+      "phraseOuverture": "Bonjour docteur, je suis venue parce que ma mère s'inquiète pour moi. Elle dit que je maigris trop, mais je me sens bien.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.famiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.reseauxSociaux"
+      ],
+      "infosCachees": [
+        "Idées suicidaires (à révéler uniquement si questionné directement et avec empathie)",
+        "Vomissements provoqués (à révéler uniquement si climat de confiance établi)"
+      ],
+      "reactions": {
+        "brutal": "Je ne veux plus en parler. Vous ne comprenez pas.",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous expliquer autrement ?"
+      }
+    }
+  }
 }

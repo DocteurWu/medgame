@@ -130,16 +130,258 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service de rhumatologie.",
+      "contexte": "CZENTOVIC Mirko, 50 ans, homme, se présente pour une douleur du pied droit apparue brutalement il y a 3 jours.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers une douleur de la première articulation métatarso-phalangienne du pied droit",
+        "Effectuer un examen clinique ciblé du pied droit et un examen général",
+        "Proposer un diagnostic étiologique parmi les hypothèses proposées",
+        "Expliquer au patient le diagnostic retenu et la prise en charge initiale"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir posé un diagnostic",
+        "Ne pas réaliser d'examen complémentaire avant d'avoir terminé l'examen clinique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Otoscope",
+        "Marteau à réflexes",
+        "Goniomètre",
+        "Gants d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente",
+        "label": "Réalise un interrogatoire orienté complet (mode d'apparition, caractères de la douleur, facteurs déclenchants, signes associés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "apparu",
+          "EVA",
+          "intensité",
+          "nuit",
+          "matin",
+          "marcher"
+        ]
+      },
+      {
+        "id": "recherche_antecedents",
+        "label": "Recherche les antécédents personnels, familiaux et le mode de vie (tabac, alcool, alimentation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "tabac",
+          "alcool",
+          "alimentation",
+          "famille"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général (constantes, examen cardiovasculaire, pulmonaire, abdominal)",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "température",
+          "auscultation",
+          "palpation"
+        ]
+      },
+      {
+        "id": "examen_articulaire_MTP1",
+        "label": "Examine spécifiquement la MTP1 du pied droit (inspection, palpation, mobilisation active et passive)",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "palpation",
+          "mobilisation",
+          "rouge",
+          "gonflé",
+          "chaud",
+          "MTP1"
+        ]
+      },
+      {
+        "id": "recherche_signes_inflammatoires",
+        "label": "Recherche les signes inflammatoires locaux (rougeur, chaleur, gonfleur, douleur)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rougeur",
+          "chaleur",
+          "gonflement",
+          "inflammation",
+          "signes inflammatoires"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_risque",
+        "label": "Recherche les facteurs de risque d'arthrite (alimentation riche en purines, alcool, antécédents familiaux de goutte)",
+        "weight": 1,
+        "triggerKeywords": [
+          "purines",
+          "goutte",
+          "alimentation",
+          "viande",
+          "charcuterie",
+          "bière"
+        ]
+      },
+      {
+        "id": "diagnostic_etiologique",
+        "label": "Propose le diagnostic d'arthrite aiguë de la MTP1",
+        "weight": 1,
+        "triggerKeywords": [
+          "arthrite",
+          "aiguë",
+          "MTP1",
+          "goutte",
+          "podagre"
+        ]
+      },
+      {
+        "id": "examens_complementaires",
+        "label": "Propose des examens complémentaires adaptés (biologie inflammatoire, uricémie, radiographie du pied)",
+        "weight": 1,
+        "triggerKeywords": [
+          "biologie",
+          "CRP",
+          "VS",
+          "uricémie",
+          "radiographie",
+          "échographie"
+        ]
+      },
+      {
+        "id": "explication_diagnostic",
+        "label": "Explique clairement le diagnostic au patient en termes simples",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "diagnostic",
+          "arthrite",
+          "inflammation",
+          "articulation"
+        ]
+      },
+      {
+        "id": "prise_en_charge_initiale",
+        "label": "Propose une prise en charge initiale adaptée (repos, glaçage, AINS ou colchicine selon contexte)",
+        "weight": 1,
+        "triggerKeywords": [
+          "repos",
+          "glace",
+          "AINS",
+          "colchicine",
+          "traitement",
+          "antalgique"
+        ]
+      },
+      {
+        "id": "conseils_prevention",
+        "label": "Donne des conseils de prévention (hydratation, alimentation pauvre en purines, suivi)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hydratation",
+          "eau",
+          "alimentation",
+          "prévention",
+          "suivi"
+        ]
+      },
+      {
+        "id": "conclusion_consultation",
+        "label": "Conclut la consultation de manière structurée (résumé, plan de suivi, disponibilité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "suivi",
+          "consultation",
+          "disponible",
+          "questions"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient calme, coopératif, légèrement anxieux à cause de la douleur. Il répond précisément aux questions et décrit bien ses symptômes.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal au pied droit depuis trois jours, surtout la nuit et le matin au réveil. J'ai du mal à marcher.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se montre surpris et légèrement agacé si l'interne est brusque ou ne l'écoute pas.",
+        "silence": "Le patient attend poliment la prochaine question sans s'impatienter.",
+        "jargon": "Le patient demande des explications si l'interne utilise des termes médicaux complexes."
+      }
+    }
+  }
 }

@@ -467,5 +467,290 @@
       }
     }
   },
-  "correction": "# Asthme Aigu Grave (AAG)\n\n## Diagnostic\nL'asthme aigu grave est un bronchospasme sévère mettant en jeu le pronostic vital à très court terme. Il est caractérisé cliniquement par :\n- Une polypnée > 30/min, un tirage musculaire accessoire (intercostal, sus-claviculaire).\n- L'**orthopnée** : nécessité absolue pour le patient de rester assis bien droit à 90°.\n- Une **impossibilité de parler** (dyspnée parlante, phrases impossibles à terminer).\n- Une SpO2 basse (< 90%) et des sueurs.\n\n## 🚨 Signes d'épuisement respiratoire clinique (Gravité Extrême)\n1. **Le Silence Auscultatoire (Poumon Silencieux)** : Contrairement aux sibilants bruyants (qui prouvent qu'un flux d'air passe encore), le silence indique un bronchospasme complet et hermétique. Plus aucun gaz n'est échangé. C'est l'étape avant l'arrêt ventilatoire complet.\n2. **La Respiration Abdominale Paradoxale** : Témoigne de la fatigue complète du diaphragme. À l'inspiration, l'abdomen rentre au lieu de sortir. C'est l'étape ultime avant l'arrêt respiratoire.\n3. **La Bradypnée Progressive** : La fréquence respiratoire qui diminue après une phase de polypnée intense n'est pas un signe d'amélioration, mais de faillite de la commande centrale respiratoire (épuisement).\n4. **Normo/Hypercapnie aux GDS** : Dans une détresse respiratoire aiguë avec polypnée, la PaCO2 doit être basse (hypocapnie par hyperventilation). Une PaCO2 normale (40 mmHg) ou élevée aux GDS montre que le patient n'arrive plus à ventiler son espace mort, signant un épuisement majeur imminent.\n\n## ❌ Les Pièges Absolus / Erreurs à éviter (Don'ts / Fatals)\n- **L'administration de sédatifs (Benzodiazépines, Morphine)** : C'est le piège numéro 1. L'agitation et l'anxiété du patient sont des signaux physiologiques de lutte contre l'hypoxie. Les sédatifs suppriment la commande ventilatoire centrale, entraînant instantanément l'apnée et l'arrêt cardiaque.\n- **Les Bêta-bloquants** : Même cardiosélectifs, ils provoquent un bronchospasme majeur immédiat en bloquant les récepteurs pulmonaires bêta-2 (effet inverse des bronchodilatateurs). Ils sont formellement contre-indiqués chez tout patient asthmatique.\n- **Forcer le patient à s'allonger** : La position couchée augmente la pression abdominale sur le diaphragme épuisé et supprime l'aide des muscles inspiratoires accessoires. Elle précipite l'asphyxie.\n\n## 🟢 Bons réflexes / Prise en charge immédiate (Do's)\n1. **Position assise** stricte (60-90°).\n2. **Oxygénothérapie à haut débit** (masque haute concentration, objectif SpO2 > 93-95%).\n3. **Nébulisation en urgence** : Bêta-2 mimétiques à forte dose (Salbutamol 5 mg) associés à un anticholinergique (Ipratropium 0.5 mg) nébulisés sous un débit d'oxygène de 6 à 8 L/min.\n4. **Corticothérapie systémique précoce** : Methylprednisolone (Solumedrol) 1 à 2 mg/kg IV (ou Solupred PO si déglutition possible et pas de signes d'épuisement critique, mais la voie IV est privilégiée dans l'AAG pour garantir l'absorption)."
+  "correction": "# Asthme Aigu Grave (AAG)\n\n## Diagnostic\nL'asthme aigu grave est un bronchospasme sévère mettant en jeu le pronostic vital à très court terme. Il est caractérisé cliniquement par :\n- Une polypnée > 30/min, un tirage musculaire accessoire (intercostal, sus-claviculaire).\n- L'**orthopnée** : nécessité absolue pour le patient de rester assis bien droit à 90°.\n- Une **impossibilité de parler** (dyspnée parlante, phrases impossibles à terminer).\n- Une SpO2 basse (< 90%) et des sueurs.\n\n## 🚨 Signes d'épuisement respiratoire clinique (Gravité Extrême)\n1. **Le Silence Auscultatoire (Poumon Silencieux)** : Contrairement aux sibilants bruyants (qui prouvent qu'un flux d'air passe encore), le silence indique un bronchospasme complet et hermétique. Plus aucun gaz n'est échangé. C'est l'étape avant l'arrêt ventilatoire complet.\n2. **La Respiration Abdominale Paradoxale** : Témoigne de la fatigue complète du diaphragme. À l'inspiration, l'abdomen rentre au lieu de sortir. C'est l'étape ultime avant l'arrêt respiratoire.\n3. **La Bradypnée Progressive** : La fréquence respiratoire qui diminue après une phase de polypnée intense n'est pas un signe d'amélioration, mais de faillite de la commande centrale respiratoire (épuisement).\n4. **Normo/Hypercapnie aux GDS** : Dans une détresse respiratoire aiguë avec polypnée, la PaCO2 doit être basse (hypocapnie par hyperventilation). Une PaCO2 normale (40 mmHg) ou élevée aux GDS montre que le patient n'arrive plus à ventiler son espace mort, signant un épuisement majeur imminent.\n\n## ❌ Les Pièges Absolus / Erreurs à éviter (Don'ts / Fatals)\n- **L'administration de sédatifs (Benzodiazépines, Morphine)** : C'est le piège numéro 1. L'agitation et l'anxiété du patient sont des signaux physiologiques de lutte contre l'hypoxie. Les sédatifs suppriment la commande ventilatoire centrale, entraînant instantanément l'apnée et l'arrêt cardiaque.\n- **Les Bêta-bloquants** : Même cardiosélectifs, ils provoquent un bronchospasme majeur immédiat en bloquant les récepteurs pulmonaires bêta-2 (effet inverse des bronchodilatateurs). Ils sont formellement contre-indiqués chez tout patient asthmatique.\n- **Forcer le patient à s'allonger** : La position couchée augmente la pression abdominale sur le diaphragme épuisé et supprime l'aide des muscles inspiratoires accessoires. Elle précipite l'asphyxie.\n\n## 🟢 Bons réflexes / Prise en charge immédiate (Do's)\n1. **Position assise** stricte (60-90°).\n2. **Oxygénothérapie à haut débit** (masque haute concentration, objectif SpO2 > 93-95%).\n3. **Nébulisation en urgence** : Bêta-2 mimétiques à forte dose (Salbutamol 5 mg) associés à un anticholinergique (Ipratropium 0.5 mg) nébulisés sous un débit d'oxygène de 6 à 8 L/min.\n4. **Corticothérapie systémique précoce** : Methylprednisolone (Solumedrol) 1 à 2 mg/kg IV (ou Solupred PO si déglutition possible et pas de signes d'épuisement critique, mais la voie IV est privilégiée dans l'AAG pour garantir l'absorption).",
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au Service des Urgences.",
+      "contexte": "Maxime Gauthier, 24 ans, homme, se présente pour une détresse respiratoire aiguë majeure survenue immédiatement après exposition à un chat (allergène connu), avec inefficacité totale de sa Ventoline inhalée (6 bouffées sans soulagement).",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire ciblé du patient en tenant compte de la dyspnée sévère (questions brèves, fermées, adaptées à l'urgence vitale)",
+        "Réaliser un examen clinique complet orienté (constantes, examen pulmonaire, recherche de signes de gravité et de détresse respiratoire)",
+        "Identifier les signes de gravité de l'asthme aigu grave (silent chest, épuisement, SpO2 < 92%, FR > 30, tachycardie, impossibilité de parler)",
+        "Énoncer le diagnostic d'asthme aigu grave avec signes d'épuisement",
+        "Initier immédiatement la prise en charge thérapeutique adaptée (position, oxygénothérapie haut débit, nébulisation β2-mimétique + anticholinergique, corticothérapie systémique IV)",
+        "Expliquer la prise en charge au patient de façon rassurante et adaptée",
+        "Ne PAS administrer de sédatifs, de bêta-bloquants, ni positionner le patient allongé",
+        "Demander un avis spécialisé / envisager le transfert en réanimation si nécessaire"
+      ],
+      "consignesInterdites": [
+        "Administrer des sédatifs (morphine, benzodiazépines IV) pour calmer l'anxiété",
+        "Administrer des bêta-bloquants IV pour la tachycardie sinusale",
+        "Positionner le patient en décubitus dorsal strict",
+        "Réaliser un interrogatoire long et détaillé inadapté à l'urgence vitale",
+        "Retarder la prise en charge thérapeutique pour compléter l'examen",
+        "Demander un scanner thoracique en première intention"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence — Box de déchocage / SAU",
+      "materielDisponible": [
+        "Oxymètre de pouls",
+        "Tensiomètre",
+        "Thermomètre",
+        "Stéthoscope",
+        "Masque à haute concentration (O2 haut débit)",
+        "Nébuliseur",
+        "Voie veineuse périphérique (cathéter, tubulure, sérum physiologique)",
+        "Médicaments d'urgence : Salbutamol 5mg nébulisation, Bromure d'Ipratropium 0.5mg, Méthylprednisolone (Solumedrol) IV",
+        "Scope de surveillance (FC, SpO2, PA)",
+        "Chariot d'urgence à proximité"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_identification",
+        "label": "Se présente, identifie le patient et installe le patient en position assise à 60-90°",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "position assise",
+          "redresser",
+          "position semi-assise"
+        ]
+      },
+      {
+        "id": "interrogatoire_cible_urgence",
+        "label": "Réalise un interrogatoire ciblé et adapté à l'urgence (questions brèves, fermées) : motif, allergène déclenchant, inefficacité du traitement de secours, antécédents d'asthme, traitements en cours",
+        "weight": 1,
+        "triggerKeywords": [
+          "chat",
+          "ventoline",
+          "asthme",
+          "allergie",
+          "Seretide",
+          "traitement",
+          "antécédents"
+        ]
+      },
+      {
+        "id": "constantes_completes",
+        "label": "Mesure et note l'ensemble des constantes : PA, FC, FR, SpO2, Température",
+        "weight": 1,
+        "triggerKeywords": [
+          "saturation",
+          "SpO2",
+          "88%",
+          "fréquence respiratoire",
+          "32",
+          "pouls",
+          "110",
+          "tension",
+          "140/90"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire_oriente",
+        "label": "Réalise un examen pulmonaire complet : inspection (tirage, orthopnée, sueurs), auscultation (silence auscultatoire, sibilants), identification du silent chest",
+        "weight": 1,
+        "triggerKeywords": [
+          "silence auscultatoire",
+          "silent chest",
+          "sibilants",
+          "tirage",
+          "orthopnée",
+          "auscultation"
+        ]
+      },
+      {
+        "id": "recherche_signes_gravite",
+        "label": "Identifie et verbalise les signes de gravité de l'asthme aigu grave : SpO2 < 92%, FR > 30/min, FC > 110, silent chest, impossibilité de parler, épuisement, sueurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "gravité",
+          "signes de gravité",
+          "épuisement",
+          "détresse respiratoire",
+          "SpO2 basse",
+          "silent chest"
+        ]
+      },
+      {
+        "id": "diagnostic_asma_aigu_grave",
+        "label": "Énonce le diagnostic d'asthme aigu grave (avec signes d'épuisement) en urgence vitale",
+        "weight": 1,
+        "triggerKeywords": [
+          "asthme aigu grave",
+          "asthme aigu sévère",
+          "crise d'asthme sévère",
+          "bronchospasme"
+        ]
+      },
+      {
+        "id": "position_oxygene",
+        "label": "Maintient le patient en position assise et administre une oxygénothérapie haut débit (masque haute concentration, 10-15 L/min) pour corriger l'hypoxie",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "haut débit",
+          "O2",
+          "saturation",
+          "position assise"
+        ]
+      },
+      {
+        "id": "nebulisation_bronchodilatateurs",
+        "label": "Prescrit et initie la nébulisation de Salbutamol 5mg + Bromure d'Ipratropium 0.5mg en urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "nébulisation",
+          "salbutamol",
+          "ipratropium",
+          "ventoline",
+          "atrovent",
+          "bronchodilatateur"
+        ]
+      },
+      {
+        "id": "corticotherapie_systemique",
+        "label": "Prescrit une corticothérapie systémique IV (Méthylprednisolone / Solumedrol) en urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "corticoïdes",
+          "solumedrol",
+          "méthylprednisolone",
+          "corticothérapie",
+          "IV",
+          "voie veineuse"
+        ]
+      },
+      {
+        "id": "voie_veineuse",
+        "label": "Pose une voie veineuse périphérique et assure un remplissage adapté si nécessaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "cathéter",
+          "VVP",
+          "abord veineux"
+        ]
+      },
+      {
+        "id": "surveillance_reevaluation",
+        "label": "Met en place une surveillance rapprochée (scope, SpO2, FR, FC) et prévoit une réévaluation à 20-30 minutes",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "scope",
+          "réévaluation",
+          "monitoring",
+          "SpO2"
+        ]
+      },
+      {
+        "id": "ne_pas_seder",
+        "label": "Ne prescrit PAS de sédatifs (morphine, benzodiazépines) — reconnaît la contre-indication formelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "pas de morphine",
+          "pas de sédatif",
+          "contre-indication",
+          "ne pas séder"
+        ]
+      },
+      {
+        "id": "ne_pas_beta_bloquant",
+        "label": "Ne prescrit PAS de bêta-bloquants pour la tachycardie sinusale — reconnaît la contre-indication",
+        "weight": 1,
+        "triggerKeywords": [
+          "pas de bêta-bloquant",
+          "contre-indication",
+          "tachycardie sinusale",
+          "ne pas donner"
+        ]
+      },
+      {
+        "id": "avis_specialise_rea",
+        "label": "Demande un avis spécialisé (réanimation / pneumologie) en cas de non-amélioration ou d'aggravation",
+        "weight": 1,
+        "triggerKeywords": [
+          "réanimation",
+          "avis spécialisé",
+          "transfert",
+          "USI",
+          "référent senior"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique la prise en charge au patient de façon claire, rassurante et adaptée à son état de détresse",
+        "weight": 1,
+        "triggerKeywords": [
+          "je vais vous expliquer",
+          "on va vous soigner",
+          "rassurer",
+          "prise en charge",
+          "ne vous inquiétez pas"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient s'exprimer, ne l'interrompt pas inutilement, adapte le rythme de l'interrogatoire à la dyspnée",
+        "max": 1
+      },
+      {
+        "id": "questions_adaptees_urgence",
+        "label": "Pose des questions brèves, fermées et ciblées adaptées au contexte d'urgence vitale (ne pas imposer un interrogatoire long)",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie les informations clés (allergène, traitement, inefficacité de la Ventoline)",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire simple et compréhensible, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie_bienveillance",
+        "label": "Fait preuve d'empathie, de calme et de bienveillance face à un patient en détresse respiratoire avec anxiété majeure",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, conscient, extrêmement anxieux et agité par la sensation d'asphyxie. Il est en détresse respiratoire majeure : orthopnée stricte, tirage, sueurs, impossible de faire des phrases complètes (ne répond que par mots isolés ou hochements de tête). Il est coopérant mais paniqué. Il répond aux questions brèves par oui/non ou par des mots uniques.",
+      "phraseOuverture": "*Haletant, penché en avant, mains sur les genoux* « Je... je peux plus... respirer... le chat... Ventoline... marche pas... je vais mourir... »",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.symptomesAssocies",
+        "allergies.liste[0]",
+        "traitements[1]"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux[0]",
+        "antecedents.medicaux[1]",
+        "antecedents.familiaux",
+        "traitements[0]",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "antecedents.chirurgicaux"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "*Tousse, s'agite davantage* « Mais... répondez-moi... je peux pas respirer là ! » (le patient montre une aggravation de son anxiété et de sa détresse)",
+        "silence": "*Regarde l'interne avec des yeux écarquillés, halète intensément* (le patient attend une action immédiate, le silence est mal vécu en contexte de détresse respiratoire)",
+        "jargon": "*Confus, secoue la tête* « Je comprends pas... les mots... dites-moi en mots simples... »"
+      }
+    }
+  }
 }
