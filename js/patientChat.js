@@ -325,8 +325,8 @@ RÈGLES STRICTES :
         }
 
         async fetchAnswer(question) {
-            const endpoint = window.CONFIG?.LLM_API_URL || 'http://localhost:11434/v1/chat/completions';
-            const model = window.CONFIG?.LLM_MODEL || 'deepseek-v4-flash';
+            const endpoint = window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions';
+            const model = window.CONFIG?.LLM_MODEL || 'openrouter/owl-alpha';
             const apiKey = window.CONFIG?.LLM_API_KEY || '';
 
             // D'abord vérifier si une question suggérée correspond (match exact uniquement)

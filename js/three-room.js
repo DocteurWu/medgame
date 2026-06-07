@@ -60,9 +60,6 @@ export function buildRoom(scene) {
     box(scene, { x: 0.12, y: 1.65, z: 0.05 }, { x: -4.9, y: 1.8, z: -1.0 }, createMaterial(0xf4f6f6, { roughness: 0.45 }), 'Montant fenetre');
     box(scene, { x: 0.12, y: 0.05, z: 2.55 }, { x: -4.9, y: 1.8, z: -1.0 }, createMaterial(0xf4f6f6, { roughness: 0.45 }), 'Traverse fenetre');
     
-    // Moniteur mural sur le mur du fond à droite
-    box(scene, { x: 0.8, y: 0.5, z: 0.08 }, { x: 4.5, y: 2.0, z: -3.9 }, createMaterial(0x03150a, { emissive: 0x00aa44, emissiveIntensity: 0.25 }), 'Moniteur mural', true);
-    
     // Évier encastré/attaché au mur gauche
     box(scene, { x: 0.6, y: 0.88, z: 1.2 }, { x: -4.7, y: 0.44, z: 1.8 }, createMaterial(0xd8e8ee), 'Meuble Evier', true);
     box(scene, { x: 0.4, y: 0.05, z: 0.8 }, { x: -4.7, y: 0.88, z: 1.8 }, createMaterial(0xeeeeee), 'Evier basin', true);
