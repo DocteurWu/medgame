@@ -684,5 +684,288 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "John Julien, 24 ans, homme, se présente au service des urgences pour une hémorragie massive secondaire à une section artérielle survenue brutalement.",
+      "consignesAttendues": [
+        "Prenez en charge ce patient en urgence",
+        "Réalisez un interrogatoire ciblé et un examen clinique adapté",
+        "Mettez en œuvre les gestes d'urgence nécessaires pour contrôler l'hémorragie",
+        "Évaluez la gravité de l'état du patient",
+        "Communiquez de façon appropriée avec le patient et l'équipe soignante"
+      ],
+      "consignesInterdites": [
+        "Ne quittez pas le patient sans avoir contrôlé l'hémorragie",
+        "Ne retardez pas la prise en charge hémostatique pour réaliser un interrogatoire exhaustif"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Gants à usage unique",
+        "Pansements compressifs",
+        "Garrot",
+        "Trousse de perfusion (cathéters, tubulure, sérum physiologique)",
+        "Matériel de monitoring (tensiomètre, oxymètre de pouls, scope)",
+        "Matériel d'intubation d'urgence",
+        "Produits d'analgésie"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne au patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne",
+          "médecin"
+        ]
+      },
+      {
+        "id": "protection_personnelle",
+        "label": "Réalise une hygiène des mains et/ou porte des gants avant tout contact avec le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "hygiène",
+          "SHA",
+          "désinfection"
+        ]
+      },
+      {
+        "id": "evaluation_scene_securite",
+        "label": "Évalue la sécurité de la scène et identifie le contexte de l'accident",
+        "weight": 1,
+        "triggerKeywords": [
+          "sécurité",
+          "contexte",
+          "circonstances",
+          "comment c'est passé",
+          "accident"
+        ]
+      },
+      {
+        "id": "interrogatoire_cible_urgence",
+        "label": "Réalise un interrogatoire ciblé et rapide adapté à l'urgence (circonstances, localisation, heure de survenue, mécanisme)",
+        "weight": 1,
+        "triggerKeywords": [
+          "quand",
+          "comment",
+          "où",
+          "localisation",
+          "heure",
+          "circonstances",
+          "mécanisme",
+          "artère"
+        ]
+      },
+      {
+        "id": "recherche_antecedents_rapide",
+        "label": "Recherche rapidement les antécédents pertinents (troubles de la coagulation, traitements anticoagulants, allergies)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "traitement",
+          "anticoagulant",
+          "allergie",
+          "maladie",
+          "saigne",
+          "coagulation"
+        ]
+      },
+      {
+        "id": "examen_clinique_hemorragie",
+        "label": "Identifie et localise la source de l'hémorragie artérielle (sang rouge vif, jet pulsatile)",
+        "weight": 1,
+        "triggerKeywords": [
+          "regarde",
+          "voit",
+          "localise",
+          "artérielle",
+          "jet",
+          "rouge vif",
+          "source",
+          "plaie"
+        ]
+      },
+      {
+        "id": "compression_directe",
+        "label": "Réalise une compression directe efficace sur la zone hémorragique avec un pansement compressif",
+        "weight": 1,
+        "triggerKeywords": [
+          "compression",
+          "comprime",
+          "pansement",
+          "appuie",
+          "pression directe",
+          "garrot"
+        ]
+      },
+      {
+        "id": "pose_garrot_si_necessaire",
+        "label": "Pose un garrot si la compression directe est insuffisante ou impossible, en notant l'heure de pose",
+        "weight": 1,
+        "triggerKeywords": [
+          "garrot",
+          "heure",
+          "note l'heure",
+          "Tourniquet"
+        ]
+      },
+      {
+        "id": "evaluation_retentissement_hemodynamique",
+        "label": "Évalue le retentissement hémodynamique (pouls, tension, fréquence respiratoire, conscience, marbrures, temps de recoloration)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "tension",
+          "TA",
+          "conscience",
+          "marbrures",
+          "pâleur",
+          "tachycardie",
+          "choc",
+          "recoloration"
+        ]
+      },
+      {
+        "id": "mise_en_place_voie_veineuse",
+        "label": "Met en place une voie veineuse périphérique de bon calibre (≥16G) pour remplissage",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "cathéter",
+          "remplissage",
+          "KVO",
+          "16G",
+          "18G",
+          "sérum physiologique"
+        ]
+      },
+      {
+        "id": "remplissage_vasculaire",
+        "label": "Initie un remplissage vasculaire adapté (cristalloïdes) en fonction de l'état hémodynamique",
+        "weight": 1,
+        "triggerKeywords": [
+          "remplissage",
+          "cristalloïdes",
+          "sérum physiologique",
+          "Ringer",
+          "perfusion rapide",
+          "bolus"
+        ]
+      },
+      {
+        "id": "appel_aide_interprofessionnel",
+        "label": "Appelle à l'aide (chirurgien, anesthésiste-réanimateur, IDE) de manière structurée",
+        "weight": 1,
+        "triggerKeywords": [
+          "appelle",
+          "aide",
+          "chirurgien",
+          "réanimateur",
+          "IDE",
+          "renfort",
+          "SAMU",
+          "équipe"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Met en place une surveillance continue des paramètres vitaux et de l'efficacité des mesures hémostatiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "scope",
+          "monitoring",
+          "réévalue",
+          "contrôle",
+          "constantes"
+        ]
+      },
+      {
+        "id": "gestion_douleur",
+        "label": "Évalue et prend en charge la douleur du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "EVA",
+          "échelle",
+          "antalgique",
+          "morphine",
+          "paracétamol",
+          "soulager"
+        ]
+      },
+      {
+        "id": "transmission_structuree",
+        "label": "Réalise une transmission structurée à l'équipe relève ou au spécialiste (type SBAR ou équivalent)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transmission",
+          "SBAR",
+          "situation",
+          "contexte",
+          "antécédents",
+          "recommandation",
+          "passation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient s'exprimer et ne l'interrompt pas de façon inappropriée",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées lors de l'interrogatoire",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient sur les informations clés",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de calme et de bienveillance malgré l'urgence de la situation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, anxieux mais coopérant. Il est conscient, légèrement pâle, visiblement inquiet par l'importance du saignement. Il répond aux questions de façon concise mais peut se montrer agité par la douleur et la peur.",
+      "phraseOuverture": "Au secours ! Je saigne beaucoup, je me suis coupé, ça ne s'arrête pas !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se crispe, gémit de douleur et peut reculer si la manipulation de la plaie est douloureuse. Il dit : « Aïe ! Faites attention, ça fait très mal ! »",
+        "silence": "Le patient attend les instructions et regarde sa plaie avec inquiétude. Il peut demander : « C'est grave, docteur ? Je vais perdre beaucoup de sang ? »",
+        "jargon": "Le patient ne comprend pas les termes médicaux complexes et demande des explications : « Qu'est-ce que vous voulez dire ? Je ne comprends pas. »"
+      }
+    }
   }
 }

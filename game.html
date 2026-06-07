@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/style.css?v=2">
     <link rel="stylesheet" href="css/game.css?v=2">
     <link rel="stylesheet" href="css/immersive.css?v=2">
+    <link rel="stylesheet" href="css/ecos.css?v=2">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -92,6 +93,7 @@
                     <button data-camera="patient" class="hud-btn" title="Vue patient (2)"><i class="fas fa-user"></i></button>
                     <button data-camera="desk" class="hud-btn" title="Vue bureau (3)"><i class="fas fa-desktop"></i></button>
                     <button data-camera="fps" class="hud-btn" title="Mode FPS Immersif (F)"><i class="fas fa-walking"></i></button>
+                    <button id="hud-btn-theme" class="hud-btn" title="Changer de mode d'éclairage (Jour/Nuit)"><i class="fas fa-sun"></i></button>
                 </div>
                 <div class="hud-nav">
                     <button class="hud-nav-btn" id="hud-btn-chat" title="Discuter avec le patient (P)"><i class="fas fa-comments"></i></button>
@@ -264,10 +266,10 @@
                     <div id="mobile-timer" class="timer-display">00:00</div>
                 </div>
 
-                <!-- Mode Immersif Button -->
-                <button id="immersive-mode-btn" class="immersive-mode-btn" aria-label="Activer le mode immersif 3D" title="Mode Immersif (E)">
+                <!-- Bouton Vue 3D (anciennement "Mode Immersif 3D") -->
+                <button id="immersive-mode-btn" class="immersive-mode-btn" aria-label="Activer la vue 3D Three.js" title="Vue 3D (E) — différent du mode ECOS dans les paramètres">
                     <i class="fas fa-vr-cardboard"></i>
-                    <span class="immersive-btn-text">Immersif</span>
+                    <span class="immersive-btn-text">Vue 3D</span>
                 </button>
             </header>
 
@@ -561,7 +563,7 @@
     <script src="js/vitalSigns.js?v=2"></script>
     <script src="js/lockSystem.js?v=2"></script>
     <script src="js/scoring.js?v=2"></script>
-    <script src="js/feedback.js?v=2"></script>
+    <script src="js/feedback.js?v=3"></script>
     <script src="js/ui.js?v=2"></script>
     <script src="js/patientChat.js?v=2"></script>
     <script src="js/urgenceMode.js?v=2"></script>
@@ -570,6 +572,10 @@
     <script src="js/prescription.js?v=2"></script>
     <script src="js/player_map.js?v=2"></script>
     <script src="js/clinicalAgentAI.js?v=2"></script>
+    <script src="js/ecosMode.js?v=2"></script>
+
+    <!-- LLMPatient (ES module) — doit être chargé en module pour qu'il enregistre window.LLMPatient -->
+    <script type="module" src="js/llm-patient.js?v=2"></script>
 
     <!-- 3D Modules -->
     <script type="module" src="js/three-cache-control.js?v=20260524-nostore"></script>

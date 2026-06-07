@@ -438,9 +438,310 @@
       "systolic": 70,
       "diastolic": 40,
       "spo2": 85,
-      "temperature": 36.0,
+      "temperature": 36,
       "respiratoryRate": 30
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de gynécologie-obstétrique.",
+      "contexte": "Sophie Martin, 28 ans, femme, se présente pour une hémorragie vaginale massive survenue 10 minutes après un accouchement par voie basse d'un nouveau-né de 3,8 kg.",
+      "consignesAttendues": [
+        "Évaluer l'état hémodynamique de la patiente dès l'entrée dans la salle",
+        "Identifier les signes de choc hémorragique",
+        "Mettre en œuvre les premières mesures de prise en charge de l'hémorragie du post-partum immédiat",
+        "Appeler l'obstétricien et l'anesthésiste en renfort",
+        "Réaliser un massage utérin et initier le traitement médical adapté",
+        "Poser deux voine veineuses de gros calibre et initier le remplissage vasculaire",
+        "Administrer de l'oxygène au masque à haute concentration",
+        "Commander des culots globulaires en urgence",
+        "Réaliser un sondage urinaire de vidange",
+        "Expliquer la situation à la patiente de manière rassurante et adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas donner à boire à la patiente",
+        "Ne pas administrer de bêtabloquant",
+        "Ne pas quitter la patiente seule",
+        "Ne pas retarder l'appel au senior",
+        "Ne pas réaliser d'examen gynécologique invasif sans avis spécialisé"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Salle de naissance / Maternité",
+      "materielDisponible": [
+        "Matériel de monitoring (scope, tensiomètre, saturomètre)",
+        "Matériel de perfusion (cathéters de gros calibre 16G/18G, tubulures, NaCl 0.9%)",
+        "Oxygénothérapie (masque haute concentration, débitmètre)",
+        "Sonde urinaire de vidange",
+        "Médicaments d'urgence (Oxytocine, Sulprostone, Acide Tranexamique)",
+        "Matériel de massage utérin (gants stériles)",
+        "Set de transfusion (culots globulaires O négatif en urgence)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne à la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je vais m'occuper de vous"
+        ]
+      },
+      {
+        "id": "evaluation_urgence",
+        "label": "Reconnaît immédiatement les signes de choc hémorragique (tachycardie, hypotension, pâleur, sueurs, marbrures, TRC > 3 sec)",
+        "weight": 1,
+        "triggerKeywords": [
+          "choc",
+          "hémorragique",
+          "tachycardie",
+          "hypotension",
+          "état de choc",
+          "signes de gravité"
+        ]
+      },
+      {
+        "id": "appel_renfort",
+        "label": "Appelle immédiatement l'obstétricien et l'anesthésiste-réanimateur en renfort",
+        "weight": 1,
+        "triggerKeywords": [
+          "appeler",
+          "obstétricien",
+          "anesthésiste",
+          "renfort",
+          "aide",
+          "senior",
+          "réanimation"
+        ]
+      },
+      {
+        "id": "oxygenotherapie",
+        "label": "Administre de l'oxygène au masque à haute concentration (15 L/min)",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "15 litres",
+          "haute concentration",
+          "O2",
+          "oxygénothérapie"
+        ]
+      },
+      {
+        "id": "voies_veineuses",
+        "label": "Pose deux voies veineuses périphériques de gros calibre (16G ou 18G)",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "gros calibre",
+          "16G",
+          "18G",
+          "deux voies",
+          "cathéter",
+          "perfusion"
+        ]
+      },
+      {
+        "id": "remplissage",
+        "label": "Initie un remplissage vasculaire rapide par NaCl 0.9% (1 à 2 litres en bolus)",
+        "weight": 1,
+        "triggerKeywords": [
+          "remplissage",
+          "NaCl",
+          "sérum physiologique",
+          "bolus",
+          "1 litre",
+          "2 litres",
+          "remplissage vasculaire"
+        ]
+      },
+      {
+        "id": "massage_uterin",
+        "label": "Réalise un massage utérin continu pour stimuler la contraction utérine",
+        "weight": 1,
+        "triggerKeywords": [
+          "massage utérin",
+          "massage de l'utérus",
+          "pression",
+          "fond utérin",
+          "rétracter",
+          "contraction utérine"
+        ]
+      },
+      {
+        "id": "sondage_urinaire",
+        "label": "Réalise un sondage urinaire de vidange pour surveiller la diurèse et vider la vessie",
+        "weight": 1,
+        "triggerKeywords": [
+          "sonde urinaire",
+          "sondage",
+          "vidange",
+          "vessie",
+          "diurèse",
+          "cathéter urinaire"
+        ]
+      },
+      {
+        "id": "oxytocine",
+        "label": "Administre de l'Oxytocine (Syntocinon) 10 UI en perfusion IV lente",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxytocine",
+          "syntocinon",
+          "10 UI",
+          "perfusion",
+          "IV",
+          "intraveineuse"
+        ]
+      },
+      {
+        "id": "acide_tranexamique",
+        "label": "Injecte de l'Acide Tranexamique (Exacyl) 1g IV en bolus lent",
+        "weight": 1,
+        "triggerKeywords": [
+          "acide tranexamique",
+          "exacyl",
+          "1g",
+          "antifibrinolytique",
+          "IV",
+          "bolus"
+        ]
+      },
+      {
+        "id": "sulprostone",
+        "label": "Initie une perfusion de Sulprostone (Nalador) en seringue électrique en cas d'échec de l'oxytocine",
+        "weight": 1,
+        "triggerKeywords": [
+          "sulprostone",
+          "nalador",
+          "seringue électrique",
+          "prostaglandine",
+          "seconde ligne"
+        ]
+      },
+      {
+        "id": "transfusion_urgence",
+        "label": "Commande 4 culots globulaires O négatif en extrême urgence et demande un bilan d'hémostase (NFS, TP, TCA, fibrinogène, groupe, RAI)",
+        "weight": 1,
+        "triggerKeywords": [
+          "culots",
+          "globulaires",
+          "transfusion",
+          "O négatif",
+          "4 culots",
+          "NFS",
+          "fibrinogène",
+          "groupe sanguin",
+          "RAI"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Met en place une surveillance continue des constantes (PA, FC, SpO2, FR, diurèse, conscience)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "constantes",
+          "scope",
+          "monitoring",
+          "tension",
+          "pouls",
+          "saturation",
+          "diurèse"
+        ]
+      },
+      {
+        "id": "examen_source_hemorragie",
+        "label": "Inspecte la source de l'hémorragie (vulve, vagin, utérus) et évalue la quantité de pertes (> 500 mL = HPP)",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "vulve",
+          "vagin",
+          "pertes",
+          "sang",
+          "quantité",
+          "800 mL",
+          "hémorragie",
+          "atone",
+          "utérus mou"
+        ]
+      },
+      {
+        "id": "communication_patient",
+        "label": "Explique la situation à la patiente de manière rassurante, simple et adaptée, en la tenant informée des gestes réalisés",
+        "weight": 1,
+        "triggerKeywords": [
+          "rassurer",
+          "expliquer",
+          "situation",
+          "ce qui se passe",
+          "on s'occupe de vous",
+          "ne vous inquiétez pas"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente s'exprimer et verbaliser ses symptômes sans l'interrompre brutalement",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension des informations données par la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté, compréhensible par la patiente, en évitant le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de bienveillance et de calme face à une patiente agitée et anxieuse en situation d'urgence vitale",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Sophie Martin est une jeune femme de 28 ans, enseignante, habituellement calme et sereine. Dans ce contexte d'urgence vitale, elle est extrêmement agitée, anxieuse, frissonnante et assoiffée. Elle réclame de l'eau, pose des questions répétitives sur son état et celui de son bébé. Sa voix est faible et entrecoupée par la gêne respiratoire. Elle alterne entre des phases d'agitation et de prostration.",
+      "phraseOuverture": "Docteur, il y a beaucoup de sang, je me sens très mal, j'ai très soif, est-ce que ça va aller ?",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "antecedents.chirurgicaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "traitements",
+        "allergies",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosCachees": [
+        "Le poids du nouveau-né (3,8 kg) — facteur de risque d'atonie utérine",
+        "L'absence de globe de sécurité utérin — signe d'atone"
+      ],
+      "reactions": {
+        "brutal": "Sophie se raidit, pleure et dit : « Vous me faites peur, parlez-moi calmement ! »",
+        "silence": "Sophie comble le silence en posant des questions anxieuses : « Pourquoi vous ne dites rien ? C'est grave ? Mon bébé va bien ? »",
+        "jargon": "Sophie fronce les sourcils et dit : « Je ne comprends pas ce que vous dites, expliquez-moi avec des mots simples s'il vous plaît. »"
+      }
+    }
   }
 }

@@ -127,16 +127,300 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine interne.",
+      "contexte": "Sami A., 24 ans, homme, se présente pour des douleurs lombaires évoluant depuis 6 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers une rachialgie inflammatoire",
+        "Rechercher les critères d'imputabilité inflammatoire (réveils nocturnes, raideur matinale, amélioration à l'effort)",
+        "Rechercher les antécédents familiaux de spondyloarthrite et les symptômes associés (uvéite, psoriasis, MICI, enthésites)",
+        "Réaliser un examen clinique du rachis et des articulations sacro-iliaques",
+        "Proposer une stratégie diagnostique adaptée (imagerie, biologie, HLA-B27)",
+        "Expliquer au patient la démarche diagnostique et les hypothèses retenues"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'AINS sans avoir posé le cadre diagnostique",
+        "Ne pas conclure à une lombalgie commune sans avoir éliminé une origine inflammatoire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation de médecine interne",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Mètre ruban",
+        "Marteau à réflexes",
+        "Fiche de recueil des critères ASAS"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne de médecine"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur lombaire (localisation, irradiations, intensité, ancienneté)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où",
+          "depuis quand",
+          "intensité",
+          "irradiation",
+          "EVA",
+          "échelle"
+        ]
+      },
+      {
+        "id": "criteres_inflammatoires",
+        "label": "Recherche les 5 critères d'imputabilité inflammatoire (début avant 40 ans, début insidieux, amélioration à l'effort, douleur nocturne, raideur matinale >30 min)",
+        "weight": 1,
+        "triggerKeywords": [
+          "raideur matinale",
+          "matin",
+          "durée raideur",
+          "réveils nocturnes",
+          "nuit",
+          "amélioration exercice",
+          "effort",
+          "âge début",
+          "progressif"
+        ]
+      },
+      {
+        "id": "symptomes_associes",
+        "label": "Recherche les symptômes extra-articulaires associés (uvéite, psoriasis, MICI, enthésites, dactylite)",
+        "weight": 1,
+        "triggerKeywords": [
+          "yeux",
+          "uvéite",
+          "rougeur oculaire",
+          "peau",
+          "psoriasis",
+          "diarrhée",
+          "sang selles",
+          "MICI",
+          "talon",
+          "enthèse",
+          "dactylite",
+          "gonflement doigt"
+        ]
+      },
+      {
+        "id": "antecedents_familiaux",
+        "label": "Recherche les antécédents familiaux de spondyloarthrite, psoriasis, uvéite ou MICI",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "parents",
+          "père",
+          "mère",
+          "frère",
+          "sœur",
+          "spondylarthrite",
+          "rhumatisme",
+          "psoriasis familial"
+        ]
+      },
+      {
+        "id": "antecedents_personnels",
+        "label": "Recherche les antécédents personnels pertinents (urétrite, conjonctivite, infections récurrentes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "infection",
+          "urétrite",
+          "conjonctivite",
+          "réactionnel",
+          "antécédents médicaux"
+        ]
+      },
+      {
+        "id": "mode_vie_activite",
+        "label": "Explore le mode de vie (activité physique, profession, retentissement fonctionnel)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sport",
+          "activité physique",
+          "études",
+          "travail",
+          "retentissement",
+          "arrêt travail",
+          "handicap"
+        ]
+      },
+      {
+        "id": "examen_rachis",
+        "label": "Réalise un examen du rachis lombaire (mobilisation, Schöber, points paravertébraux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Schöber",
+          "flexion",
+          "extension",
+          "inclinaison",
+          "palpation rachis",
+          "points paravertébraux",
+          "mobilité"
+        ]
+      },
+      {
+        "id": "examen_sacro_iliaque",
+        "label": "Réalise les manœuvres d'exploration des sacro-iliaques (Patrick/FABER, compression, Gaenslen)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Patrick",
+          "FABER",
+          "compression bassin",
+          "Gaenslen",
+          "sacro-iliaque",
+          "test sacro-iliaque"
+        ]
+      },
+      {
+        "id": "examen_peripherique",
+        "label": "Recherche une atteinte périphérique (enthésites, arthrite, dactylite)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tendon d'Achille",
+          "enthèse",
+          "talon",
+          "articulations",
+          "gonflement",
+          "dactylite",
+          "doigt saucisse"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Propose une stratégie d'imagerie adaptée (radiographies sacro-iliaques puis IRM si besoin)",
+        "weight": 1,
+        "triggerKeywords": [
+          "radio",
+          "radiographie",
+          "sacro-iliaque",
+          "IRM",
+          "imagerie",
+          "scanner"
+        ]
+      },
+      {
+        "id": "strategie_biologie",
+        "label": "Propose un bilan biologique adapté (VS, CRP, HLA-B27)",
+        "weight": 1,
+        "triggerKeywords": [
+          "VS",
+          "CRP",
+          "inflammation",
+          "HLA-B27",
+          "bilan biologique",
+          "prise de sang"
+        ]
+      },
+      {
+        "id": "synthese_diagnostique",
+        "label": "Formule l'hypothèse diagnostique de spondyloarthrite axiale débutante",
+        "weight": 1,
+        "triggerKeywords": [
+          "spondylarthrite",
+          "spondyloarthrite",
+          "axiale",
+          "rhumatisme inflammatoire",
+          "sacro-iliite"
+        ]
+      },
+      {
+        "id": "annonce_demarche",
+        "label": "Explique au patient la démarche diagnostique et les prochaines étapes",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "résultats",
+          "examens",
+          "prochaines étapes",
+          "prise en charge",
+          "suivi"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Informe le patient sur l'importance de l'activité physique et du suivi rhumatologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "activité physique",
+          "kinésithérapie",
+          "suivi",
+          "rhumatologue",
+          "éducation",
+          "conseils"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la chronicité des douleurs",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux face à la chronicité de ses douleurs. Il s'inquiète de ne pas avoir de diagnostic après 6 mois de symptômes.",
+      "phraseOuverture": "Bonjour docteur, j'ai mal au bas du dos depuis 6 mois et ça ne passe pas malgré le paracétamol. Mon médecin m'a envoyé ici pour qu'on cherche ce que j'ai.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, je ne comprends pas pourquoi vous me posez toutes ces questions sur ma famille, c'est mon dos qui me fait mal !",
+        "silence": "Euh... je ne vois pas trop ce que vous voulez dire. Pouvez-vous reformuler ?",
+        "jargon": "Pardon, c'est quoi une enthésite ? Et HLA-B27, c'est quoi exactement ?"
+      }
+    }
+  }
 }

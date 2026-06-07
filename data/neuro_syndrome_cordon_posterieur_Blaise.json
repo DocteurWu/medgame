@@ -182,16 +182,289 @@
   ],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "ZABINI Blaise, 27 ans, homme, se présente pour des troubles sensitifs d'apparition récente touchant les deux membres inférieurs et le bas-ventre.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les troubles sensitifs et les symptômes associés",
+        "Effectuer un examen neurologique complet ciblé sur la sensibilité, les réflexes et l'équilibre",
+        "Proposer un diagnostic syndromique parmi les diagnostics différentiels proposés",
+        "Proposer une stratégie diagnostique adaptée (examens complémentaires)",
+        "Expliquer au patient la démarche diagnostique et répondre à ses questions"
+      ],
+      "consignesInterdites": [
+        "Ne pas annoncer le diagnostic au patient",
+        "Ne pas prescrire de traitement",
+        "Ne pas réaliser d'examen invasif"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service de neurologie — consultation",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Diapason 128 Hz",
+        "Aiguille stérile",
+        "Abaisse-langue",
+        "Otoscope",
+        "Ophtalmoscope",
+        "Stylo fin (test de la pointe)",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne de neurologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : début, mode d'apparition, évolution des troubles sensitifs",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "comment cela a commencé",
+          "évolution",
+          "fourmillements",
+          "sensation"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés : troubles de l'équilibre, troubles urinaires, douleurs, déficit moteur",
+        "weight": 1,
+        "triggerKeywords": [
+          "équilibre",
+          "urinaire",
+          "dysurie",
+          "marche",
+          "faiblesse",
+          "douleur",
+          "vessie"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels, familiaux, traitements en cours et allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "traitement",
+          "allergie",
+          "famille",
+          "maladie",
+          "opération"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : tabac, alcool, activité physique, profession",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "profession",
+          "études"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes vitales (TA, FC, T°, SpO2, FR)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "saturation",
+          "constantes"
+        ]
+      },
+      {
+        "id": "examen_sensibilite_superficielle",
+        "label": "Teste la sensibilité superficielle (tact, douleur, température) des membres inférieurs et du tronc avec topographie",
+        "weight": 1,
+        "triggerKeywords": [
+          "aiguille",
+          "tact",
+          "douleur",
+          "température",
+          "sensibilité",
+          "hypoesthésie",
+          "ombilic"
+        ]
+      },
+      {
+        "id": "examen_sensibilite_profonde",
+        "label": "Teste la sensibilité profonde (proprioception, diapason) des membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "diapason",
+          "proprioception",
+          "vibration",
+          "position",
+          "sensibilité profonde"
+        ]
+      },
+      {
+        "id": "examen_motricite",
+        "label": "Évalue la motricité des membres inférieurs (force musculaire, pas de déficit moteur)",
+        "weight": 1,
+        "triggerKeywords": [
+          "force",
+          "motricité",
+          "pousser",
+          "lever",
+          "jambe",
+          "muscle"
+        ]
+      },
+      {
+        "id": "examen_reflexes",
+        "label": "Teste les réflexes ostéo-tendineux des membres inférieurs et recherche un signe de Babinski",
+        "weight": 1,
+        "triggerKeywords": [
+          "réflexe",
+          "marteau",
+          "rotulien",
+          "achille",
+          "Babinski",
+          "signe"
+        ]
+      },
+      {
+        "id": "examen_romberg",
+        "label": "Réalise le test de Romberg et l'interprète",
+        "weight": 1,
+        "triggerKeywords": [
+          "Romberg",
+          "yeux fermés",
+          "équilibre",
+          "debout"
+        ]
+      },
+      {
+        "id": "examen_coordination",
+        "label": "Teste la coordination (talon-genou, doigt-nez si pertinent)",
+        "weight": 1,
+        "triggerKeywords": [
+          "talon-genou",
+          "coordination",
+          "doigt-nez"
+        ]
+      },
+      {
+        "id": "diagnostic_syndromique",
+        "label": "Propose le diagnostic de syndrome du cordon postérieur en justifiant par les signes cliniques",
+        "weight": 1,
+        "triggerKeywords": [
+          "cordon postérieur",
+          "syndrome",
+          "postérieur",
+          "colonnes postérieures",
+          "proprioception"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Propose une IRM médullaire comme examen de première intention",
+        "weight": 1,
+        "triggerKeywords": [
+          "IRM",
+          "imagerie",
+          "médullaire",
+          "résonance",
+          "scanner"
+        ]
+      },
+      {
+        "id": "strategie_complementaires",
+        "label": "Propose des examens complémentaires adaptés (bilan biologique, potentiels évoqués si pertinent)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "biologie",
+          "potentiels évoqués",
+          "ponction lombaire",
+          "vitamine B12"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, étudiant, plutôt coopératif mais légèrement anxieux face à ses symptômes neurologiques. Il décrit ses symptômes de manière assez précise car il a fait des recherches sur internet. Il s'inquiète pour son avenir et pose des questions sur la gravité de ses troubles.",
+      "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai des fourmillements dans les deux pieds depuis environ deux semaines, et ça remonte maintenant jusqu'au ventre. J'ai aussi du mal à tenir en équilibre et j'ai eu des problèmes pour uriner récemment. Ça m'inquiète un peu.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "traitements",
+        "allergies",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous pouvez y aller doucement s'il vous plaît, ça me stresse un peu tout ça.",
+        "silence": "Vous avez une idée de ce que j'ai ? Parce que j'ai lu des choses sur internet et je m'inquiète...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Vous pouvez m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

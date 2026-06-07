@@ -166,16 +166,311 @@
   "correction": "# Insuffisance cardiaque\n\nDyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.\n\n## Bonnes pratiques\n\n- Diurétiques pour décongestion, IEC pour le remodelage\n- Évaluer la FE et rechercher cause ischémique si indiqué\n- Éducation, suivi du poids, adaptation thérapeutique\n\n## Erreurs à éviter\n\n- Confondre avec pneumonie sans arguments infectieux\n- Ignorer l’optimisation du traitement de fond",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Monsieur Dupont, 65 ans, homme, se présente aux urgences pour une dyspnée d'effort avec œdèmes des membres inférieurs évoluant depuis 2 semaines.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient orienté vers la dyspnée et les signes d'insuffisance cardiaque",
+        "Réaliser un examen clinique cardiovasculaire et pulmonaire complet",
+        "Proposer un bilan paraclinique adapté (ECG, BNP/NT-proBNP, radiographie thoracique, échocardiographie)",
+        "Évoquer le diagnostic d'insuffisance cardiaque",
+        "Proposer une prise en charge thérapeutique initiale adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas annoncer le diagnostic au patient standardisé",
+        "Ne pas prescrire de traitement sans avoir réalisé l'examen clinique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Otoscope",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment vous appelez-vous",
+          "installez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : caractéristiques de la dyspnée (NYVA, orthopnée, DPN), circonstances d'apparition, évolution",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "essoufflement",
+          "depuis quand",
+          "effort",
+          "repos",
+          "nuit",
+          "position",
+          "orthopnée",
+          "DPN"
+        ]
+      },
+      {
+        "id": "interrogatoire_associes",
+        "label": "Recherche les symptômes associés : œdèmes, fatigue, douleur thoracique, palpitations, toux, fièvre",
+        "weight": 1,
+        "triggerKeywords": [
+          "chevilles",
+          "jambes",
+          "gonflé",
+          "œdème",
+          "fatigue",
+          "douleur thoracique",
+          "palpitations",
+          "toux",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents médicaux (HTA), chirurgicaux et familiaux (cardiovasculaires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "hypertension",
+          "opération",
+          "famille",
+          "père",
+          "cœur",
+          "infarctus"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Évalue les facteurs de risque cardiovasculaire : tabagisme (PA), alcool, activité physique, alimentation",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "cigarette",
+          "fumez",
+          "alcool",
+          "activité physique",
+          "sport",
+          "alimentation",
+          "régime"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Recherche les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "prenez-vous",
+          "allergie"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes : TA, FC, FR, SpO2, température",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pression artérielle",
+          "pouls",
+          "fréquence cardiaque",
+          "saturation",
+          "oxygène",
+          "fréquence respiratoire",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet : inspection, palpation, auscultation cardiaque (souffle, B3), recherche de signes droits (TJ, RHJ, hépatomégalie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cœur",
+          "auscultation",
+          "souffle",
+          "veines jugulaires",
+          "reflux hépatojugulaire",
+          "foie",
+          "hépatomégalie"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire complet : inspection, palpation, percussion, auscultation (râles crépitants bilatéraux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poumons",
+          "auscultation pulmonaire",
+          "râles",
+          "crépitants",
+          "sibilants",
+          "percussion"
+        ]
+      },
+      {
+        "id": "examen_oedemes",
+        "label": "Recherche et évalue les œdèmes des membres inférieurs (godet, bilatéralité, extension)",
+        "weight": 1,
+        "triggerKeywords": [
+          "chevilles",
+          "jambes",
+          "pieds",
+          "œdème",
+          "godet",
+          "pression",
+          "gonflement"
+        ]
+      },
+      {
+        "id": "bilan_paraclinique",
+        "label": "Propose un bilan adapté : ECG, BNP ou NT-proBNP, radiographie thoracique, échocardiographie, biologie (NFS, ionogramme, créatinine, TSH)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "BNP",
+          "NT-proBNP",
+          "radio thoracique",
+          "radiographie",
+          "échocardiographie",
+          "bilan sanguin",
+          "biologie"
+        ]
+      },
+      {
+        "id": "diagnostic_orientation",
+        "label": "Évoque le diagnostic d'insuffisance cardiaque devant le tableau clinique et les arguments paracliniques",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "IC",
+          "dysfonction cardiaque",
+          "insuffisance du cœur"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose une prise en charge thérapeutique initiale : diurétique de l'anse, IEC, mesures hygiéno-diététiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "diurétique",
+          "furosémide",
+          "IEC",
+          "inhibiteur enzyme conversion",
+          "régime sans sel",
+          "restriction hydrique",
+          "surveillance poids"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Explique au patient les mesures hygiéno-diététiques : régime désodé, surveillance du poids, activité physique adaptée, observance thérapeutique",
+        "weight": 1,
+        "triggerKeywords": [
+          "sel",
+          "régime",
+          "poids",
+          "peser",
+          "quotidien",
+          "activité physique",
+          "traitement",
+          "observance",
+          "conseils"
+        ]
+      },
+      {
+        "id": "synthese_conclusion",
+        "label": "Résume les points clés, vérifie la compréhension du patient et planifie le suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "en résumé",
+          "pour résumer",
+          "avez-vous des questions",
+          "suivi",
+          "consultation",
+          "cardiologue"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux mais coopératif, retraité de 65 ans, ancien fumeur. Il s'inquiète pour sa santé cardiaque car son père est décédé d'un infarctus. Il répond volontiers aux questions mais a besoin d'être rassuré.",
+      "phraseOuverture": "Bonjour docteur, je suis très essoufflé depuis deux semaines et mes jambes gonflent de plus en plus. Je m'inquiète un peu…",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.activitePhysique",
+        "traitements",
+        "allergies",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite… Je ne comprends pas tout ce que vous me dites.",
+        "silence": "… (silence) … Vous voulez savoir autre chose ?",
+        "jargon": "Pardon, je ne comprends pas ce mot. Vous pouvez m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

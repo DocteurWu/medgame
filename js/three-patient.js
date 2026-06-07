@@ -54,9 +54,9 @@ export class ThreePatient {
         });
 
         // Position Y ajustée pour que le patient soit posé sur le lit/chaise
-        const seatY = position === 'allonge' ? -0.16 : -0.175;
-        this.group.position.set(position === 'allonge' ? -3.5 : 2.15, seatY, position === 'allonge' ? -2.6 : -1.7);
-        this.group.rotation.y = position === 'allonge' ? Math.PI : 0;
+        const seatY = position === 'allonge' ? 0.08 : -0.175;
+        this.group.position.set(position === 'allonge' ? 4.7 : 1.2, seatY, position === 'allonge' ? 0.2 : -3.5);
+        this.group.rotation.y = 0;
         this.mouth = null;
         this.eyeL = null;
         this.eyeR = null;
@@ -93,13 +93,13 @@ export class ThreePatient {
             this.sweatMat = null;
             this._bloodGroup = null;
 
-            const seatY = newPosition === 'allonge' ? -0.16 : -0.175;
+            const seatY = newPosition === 'allonge' ? 0.08 : -0.175;
             this.group.position.set(
-                newPosition === 'allonge' ? -3.5 : 2.15,
+                newPosition === 'allonge' ? 4.7 : 1.2,
                 seatY,
-                newPosition === 'allonge' ? -2.6 : -1.7
+                newPosition === 'allonge' ? 0.2 : -3.5
             );
-            this.group.rotation.y = newPosition === 'allonge' ? Math.PI : 0;
+            this.group.rotation.y = 0;
 
             if (newPosition === 'allonge') this.buildLying(this.skinMat, this.clothMat);
             else this.buildSitting(this.skinMat, this.clothMat);

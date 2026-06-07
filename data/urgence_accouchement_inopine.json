@@ -613,5 +613,289 @@
       }
     }
   },
-  "correction": "# Correction : Accouchement Inopiné à Domicile et Délivrance Dirigée\n\n## 1. Contexte Physiopathologique & Prise en Charge\nL'accouchement inopiné à domicile (en dehors de toute structure médicale) est une urgence courante. La priorité absolue est de maintenir son calme, de rassurer la patiente et de respecter la physiologie de la naissance.\n\n### Les trois phases cliniques clés :\n- **Phase d'expulsion (2ème stade)** : La dilatation est complète à 10 cm, la tête fœtale est engagée. Il faut accompagner la descente sans forcer ni retenir la tête, pour préserver le périnée maternel et éviter les traumatismes crâniens ou du plexus brachial chez l'enfant.\n- **Séchage immédiat du nouveau-né** : C'est le premier geste de réanimation néonatale systématique. Le nouveau-né mouillé perd sa chaleur extrêmement vite par évaporation. L'hypothermie fœtale provoque une détresse respiratoire sévère, une acidose métabolique et une hypoglycémie.\n- **Délivrance (3ème stade)** : Expulsion du placenta. C'est la phase la plus dangereuse pour la mère. Le risque majeur est l'**Hémorragie du Post-Partum (HPP)** par **atonie utérine** (l'utérus ne se contracte pas, laissant le lit placentaire saigner massivement).\n\n---\n\n## 2. Bons Réflexes (Do's)\n- **Installation adaptée** : Installer la patiente sur le dos ou demi-assise, cuisses fléchies et écartées pour maximiser l'ouverture du détroit inférieur.\n- **Contrôle de la déflexion** : Poser une main douce sur le crâne fœtal lors de sa sortie pour freiner une déflexion trop brutale, protégeant ainsi le périnée.\n- **Dégagement des épaules méthodique** : Attendre la rotation spontanée de la tête, puis guider doucement la tête vers le bas pour dégager l'épaule antérieure sous la symphyse pubienne, puis vers le haut pour dégager l'épaule postérieure.\n- **Séchage vigoureux** : Sécher le bébé immédiatement avec un linge propre et chaud, puis l'installer en peau à peau sur le ventre maternel.\n- **Clampage tardif du cordon** : Clamper et sectionner le cordon après 1 à 2 minutes de vie, une fois que les pulsations du cordon ont cessé.\n- **Délivrance dirigée systématique** : Administrer **5 à 10 UI de Syntocinon (Oxytocine) par voie IV lente ou IM** immédiatement après la sortie du bébé (avant la délivrance placentaire). C'est la recommandation internationale majeure de première intention pour prévenir l'atonie utérine.\n- **Surveillance de la délivrance** : Attendre le décollement spontané du placenta (signes : allongement du cordon à la vulve, utérus qui remonte et se durcit, absence de transmission du pouls maternel au cordon).\n\n---\n\n## 3. Erreurs à Éviter (Don'ts)\n- **Traction forte sur le cordon ombilical** : **ERREUR VITALE CATASTROPHIQUE**. Risque d'arrachement placentaire partiel provoquant une hémorragie interne cataclysmique immédiate, ou d'inversion utérine aiguë (l'utérus se retourne comme un gant, provoquant un choc neurogénique et hémorragique foudroyant).\n- **Expression utérine violente (manœuvre de Kristeller)** : **INTERDITE et DANGEREUSE**. Risque de rupture utérine, d'hématome sous-capsulaire splénique ou hépatique maternel.\n- **Repousser la tête du bébé** ou forcer la mère à serrer les cuisses pour attendre les secours : Provoque une anoxie fœtale immédiate par compression prolongée du cordon et des lésions périnéales majeures.\n- **Laisser le nouveau-né humide** : Conduit rapidement à une détresse respiratoire néonatale par hypothermie sévère.\n- **Inertie thérapeutique post-partum** : Attendre passivement la délivrance sans administrer d'ocytocine prophylactique expose la mère à une atonie utérine silencieuse et progressive avec choc hémorragique secondaire.\n\n---\n\n## 4. Dynamique des Signes Vitaux lors du Choc Hémorragique\nSi l'oxytocine n'est pas administrée rapidement après l'expulsion, l'utérus reste flasque (atonie), entraînant un saignement continu massif :\n- **Chute de la tension artérielle (hypotension)** avec **pincement de la différentielle** (PAS et PAD rapprochées, ex : 75/45 mmHg) due à la vasoconstriction sympathique réflexe périphérique.\n- **Tachycardie compensatrice rapide** (le pouls grimpe > 120 bpm) pour tenter de maintenir le débit cardiaque face à la perte de volume sanguin.\n- **Pâleur, marbrures, froideur des extrémités et soif intense** traduisant la redistribution du sang vers les organes nobles (cœur, cerveau).\n- **L'administration d'Oxytocine (Syntocinon)** et le massage utérin vigoureux sont les clés pour obtenir le **globe de sécurité utérin** dur et tonique qui stoppe le saignement."
+  "correction": "# Correction : Accouchement Inopiné à Domicile et Délivrance Dirigée\n\n## 1. Contexte Physiopathologique & Prise en Charge\nL'accouchement inopiné à domicile (en dehors de toute structure médicale) est une urgence courante. La priorité absolue est de maintenir son calme, de rassurer la patiente et de respecter la physiologie de la naissance.\n\n### Les trois phases cliniques clés :\n- **Phase d'expulsion (2ème stade)** : La dilatation est complète à 10 cm, la tête fœtale est engagée. Il faut accompagner la descente sans forcer ni retenir la tête, pour préserver le périnée maternel et éviter les traumatismes crâniens ou du plexus brachial chez l'enfant.\n- **Séchage immédiat du nouveau-né** : C'est le premier geste de réanimation néonatale systématique. Le nouveau-né mouillé perd sa chaleur extrêmement vite par évaporation. L'hypothermie fœtale provoque une détresse respiratoire sévère, une acidose métabolique et une hypoglycémie.\n- **Délivrance (3ème stade)** : Expulsion du placenta. C'est la phase la plus dangereuse pour la mère. Le risque majeur est l'**Hémorragie du Post-Partum (HPP)** par **atonie utérine** (l'utérus ne se contracte pas, laissant le lit placentaire saigner massivement).\n\n---\n\n## 2. Bons Réflexes (Do's)\n- **Installation adaptée** : Installer la patiente sur le dos ou demi-assise, cuisses fléchies et écartées pour maximiser l'ouverture du détroit inférieur.\n- **Contrôle de la déflexion** : Poser une main douce sur le crâne fœtal lors de sa sortie pour freiner une déflexion trop brutale, protégeant ainsi le périnée.\n- **Dégagement des épaules méthodique** : Attendre la rotation spontanée de la tête, puis guider doucement la tête vers le bas pour dégager l'épaule antérieure sous la symphyse pubienne, puis vers le haut pour dégager l'épaule postérieure.\n- **Séchage vigoureux** : Sécher le bébé immédiatement avec un linge propre et chaud, puis l'installer en peau à peau sur le ventre maternel.\n- **Clampage tardif du cordon** : Clamper et sectionner le cordon après 1 à 2 minutes de vie, une fois que les pulsations du cordon ont cessé.\n- **Délivrance dirigée systématique** : Administrer **5 à 10 UI de Syntocinon (Oxytocine) par voie IV lente ou IM** immédiatement après la sortie du bébé (avant la délivrance placentaire). C'est la recommandation internationale majeure de première intention pour prévenir l'atonie utérine.\n- **Surveillance de la délivrance** : Attendre le décollement spontané du placenta (signes : allongement du cordon à la vulve, utérus qui remonte et se durcit, absence de transmission du pouls maternel au cordon).\n\n---\n\n## 3. Erreurs à Éviter (Don'ts)\n- **Traction forte sur le cordon ombilical** : **ERREUR VITALE CATASTROPHIQUE**. Risque d'arrachement placentaire partiel provoquant une hémorragie interne cataclysmique immédiate, ou d'inversion utérine aiguë (l'utérus se retourne comme un gant, provoquant un choc neurogénique et hémorragique foudroyant).\n- **Expression utérine violente (manœuvre de Kristeller)** : **INTERDITE et DANGEREUSE**. Risque de rupture utérine, d'hématome sous-capsulaire splénique ou hépatique maternel.\n- **Repousser la tête du bébé** ou forcer la mère à serrer les cuisses pour attendre les secours : Provoque une anoxie fœtale immédiate par compression prolongée du cordon et des lésions périnéales majeures.\n- **Laisser le nouveau-né humide** : Conduit rapidement à une détresse respiratoire néonatale par hypothermie sévère.\n- **Inertie thérapeutique post-partum** : Attendre passivement la délivrance sans administrer d'ocytocine prophylactique expose la mère à une atonie utérine silencieuse et progressive avec choc hémorragique secondaire.\n\n---\n\n## 4. Dynamique des Signes Vitaux lors du Choc Hémorragique\nSi l'oxytocine n'est pas administrée rapidement après l'expulsion, l'utérus reste flasque (atonie), entraînant un saignement continu massif :\n- **Chute de la tension artérielle (hypotension)** avec **pincement de la différentielle** (PAS et PAD rapprochées, ex : 75/45 mmHg) due à la vasoconstriction sympathique réflexe périphérique.\n- **Tachycardie compensatrice rapide** (le pouls grimpe > 120 bpm) pour tenter de maintenir le débit cardiaque face à la perte de volume sanguin.\n- **Pâleur, marbrures, froideur des extrémités et soif intense** traduisant la redistribution du sang vers les organes nobles (cœur, cerveau).\n- **L'administration d'Oxytocine (Syntocinon)** et le massage utérin vigoureux sont les clés pour obtenir le **globe de sécurité utérin** dur et tonique qui stoppe le saignement.",
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale en stage aux urgences. Vous êtes appelé en renfort par le SAMU pour un accouchement inopiné à domicile.",
+      "contexte": "Émilie Bernard, 29 ans, femme, se présente pour un accouchement inopiné à domicile à 39 SA avec contractions toutes les 2-3 minutes et envie irrésistible de pousser. La patiente est seule à domicile, le travail progresse de manière extrêmement rapide.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire rapide et ciblé de la patiente",
+        "Effectuer un examen clinique complet incluant un examen obstétrical",
+        "Prendre en charge l'accouchement en phase d'expulsion (installation, accompagnement de l'expulsion, dégagement des épaules)",
+        "Assurer les soins immédiats au nouveau-né (séchage, évaluation Apgar, clampage du cordon)",
+        "Réaliser la délivrance dirigée avec administration d'ocytocine",
+        "Surveiller la patiente en post-partum immédiat (hémorragie, tonicité utérine)",
+        "Communiquer de manière empathique et rassurante avec la patiente tout au long de la prise en charge"
+      ],
+      "consignesInterdites": [
+        "Réaliser une traction forte sur le cordon ombilical pour accélérer la délivrance",
+        "Pratiquer une expression utérine ou manœuvre de Kristeller",
+        "Administrer des tocolytiques",
+        "Réaliser une césarienne ou un geste chirurgical non indiqué",
+        "Laisser la patiente seule sans surveillance"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Procédure",
+      "lieu": "Domicile de la patiente (intervention SMUR/SAMU)",
+      "materielDisponible": [
+        "Kit d'accouchement stérile (champs, gants stériles, pince de Kérr clamp, ciseaux, langes stériles)",
+        "Oxytocine (Syntocinon) 10 UI en ampoule avec seringue et aiguille",
+        "Matériel de réanimation néonatale (aspirateur de mucosités, source d'oxygène, ballon ambu néonatal)",
+        "Chronomètre ou montre",
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Lampe chauffante ou couvertures pour le nouveau-né",
+        "Carnet de santé ou fiche de surveillance materno-fœtale"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, se lave les mains et installe un climat de confiance avec la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "rassurer",
+          "je suis là",
+          "vous n'êtes pas seule"
+        ]
+      },
+      {
+        "id": "interrogatoire_rapide_cible",
+        "label": "Réalise un interrogatoire rapide et ciblé (terme, contractions, perte des eaux, envie de pousser, antécédents obstétricaux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "terme",
+          "contractions",
+          "perte des eaux",
+          "envie de pousser",
+          "combien de temps",
+          "primipare",
+          "grossesse"
+        ]
+      },
+      {
+        "id": "examen_clinique_maternel",
+        "label": "Réalise un examen clinique maternel rapide (constantes, examen abdominal, recherche de signes de gravité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "hauteur utérine",
+          "contraction",
+          "auscultation"
+        ]
+      },
+      {
+        "id": "examen_obstetrical",
+        "label": "Réalise un toucher vaginal stérile confirmant la dilatation complète et identifie la présentation (céphalique, OIP)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dilatation",
+          "col",
+          "10 cm",
+          "effacé",
+          "présentation",
+          "céphalique",
+          "occipito-pubien",
+          "membranes rompues"
+        ]
+      },
+      {
+        "id": "installation_patiente",
+        "label": "Installe correctement la patiente en position adaptée (décubitus latéral ou demi-assise) avec champs stériles",
+        "weight": 1,
+        "triggerKeywords": [
+          "position",
+          "installer",
+          "champs",
+          "stérile",
+          "jambes"
+        ]
+      },
+      {
+        "id": "accompagnement_expulsion",
+        "label": "Accompagne l'expulsion en contrôlant la déflexion de la tête et en demandant à la patiente de pousser pendant les contractions",
+        "weight": 1,
+        "triggerKeywords": [
+          "poussez",
+          "contrôle",
+          "tête",
+          "déflexion",
+          "doucement",
+          "respirer"
+        ]
+      },
+      {
+        "id": "degagement_epaules",
+        "label": "Réalise le dégagement des épaules (traction douce vers le bas pour l'épaule antérieure, puis vers le haut pour la postérieure)",
+        "weight": 1,
+        "triggerKeywords": [
+          "épaules",
+          "traction douce",
+          "dégagement",
+          "rotation"
+        ]
+      },
+      {
+        "id": "soins_nouveau_ne",
+        "label": "Sèche le nouveau-né immédiatement, le place sur le ventre/bras de la mère, et évalue le score d'Apgar",
+        "weight": 1,
+        "triggerKeywords": [
+          "sécher",
+          "Apgar",
+          "cri",
+          "tonus",
+          "coloration",
+          "fréquence cardiaque",
+          "1 minute",
+          "5 minutes"
+        ]
+      },
+      {
+        "id": "clampage_cordon",
+        "label": "Réalise le clampage et la section du cordon après 1 à 2 minutes (clampage tardif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cordon",
+          "clampage",
+          "section",
+          "1 minute",
+          "2 minutes",
+          "clamp de Kérr"
+        ]
+      },
+      {
+        "id": "administration_ocytocine",
+        "label": "Administre l'ocytocine (Syntocinon 5-10 UI IVD ou IM) immédiatement après la naissance pour prévenir l'hémorragie de la délivrance",
+        "weight": 1,
+        "triggerKeywords": [
+          "ocytocine",
+          "Syntocinon",
+          "5 UI",
+          "10 UI",
+          "intraveineuse",
+          "intramusculaire",
+          "délivrance"
+        ]
+      },
+      {
+        "id": "delivrance_dirigee",
+        "label": "Réalise la délivrance dirigée (contre-pression utérine, traction contrôlée sur le cordon) sans traction forte",
+        "weight": 1,
+        "triggerKeywords": [
+          "délivrance",
+          "placenta",
+          "contre-pression",
+          "traction contrôlée",
+          "cordon",
+          "vérification du placenta"
+        ]
+      },
+      {
+        "id": "surveillance_post_partum",
+        "label": "Surveille la patiente en post-partum immédiat (hémorragie, tonicité utérine, constantes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hémorragie",
+          "utérus",
+          "tonique",
+          "saignement",
+          "tension",
+          "surveiller"
+        ]
+      },
+      {
+        "id": "communication_avec_patiente",
+        "label": "Communique de manière continue avec la patiente (explications, encouragements, informations sur l'état du bébé)",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "rassurer",
+          "bravo",
+          "bébé va bien",
+          "garçon",
+          "fille",
+          "poids"
+        ]
+      },
+      {
+        "id": "appel_renfort_neonatal",
+        "label": "Appelle le SAMU/SMUR pour le transfert maternel et néonatal vers la maternité",
+        "weight": 1,
+        "triggerKeywords": [
+          "SAMU",
+          "transfert",
+          "maternité",
+          "SMUR",
+          "ambulance"
+        ]
+      },
+      {
+        "id": "hygiene_asepsie",
+        "label": "Respecte les règles d'hygiène et d'asepsie (lavage des mains, port de gants stériles, matériel stérile)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "stérile",
+          "lavage des mains",
+          "hygiène"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente s'exprimer et exprimer ses craintes sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées lors de l'interrogatoire",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente sur les consignes données",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté et compréhensible (évite le jargon médical non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de bienveillance et de réassurance tout au long de la prise en charge",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Femme de 29 ans, primipare, très anxieuse mais coopérante. Elle est en pleine phase d'expulsion avec une envie irrésistible de pousser. Elle alterne entre des moments de concentration intense pendant les contractions et des moments de panique entre les contractions.",
+      "phraseOuverture": "Oh mon Dieu, je crois que le bébé arrive tout de suite ! Je n'ai pas le temps d'aller à la maternité !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.descriptionDouleur"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "La patiente se crispe, pleure et dit : 'Vous me faites mal ! Faites attention !'",
+        "silence": "La patiente halète, est concentrée sur sa respiration et ne répond pas pendant la contraction. Elle reprend la parole entre les contractions.",
+        "jargon": "La patiente regarde avec incompréhension et dit : 'Je ne comprends pas, parlez-moi en français simple !'"
+      }
+    }
+  }
 }

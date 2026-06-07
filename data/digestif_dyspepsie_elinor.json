@@ -152,16 +152,297 @@
   ],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de gastro-entérologie.",
+      "contexte": "Elinor DASHWOOD, 28 ans, femme, se présente en consultation pour des douleurs épigastriques récidivantes évoluant depuis 5 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la dyspepsie",
+        "Rechercher les signes d'alarme (amaigrissement, vomissements, dysphagie, anémie, hémorragie digestive)",
+        "Explorer les antécédents personnels et familiaux, le mode de vie et les traitements en cours",
+        "Réaliser un examen clinique abdominal et général adapté",
+        "Proposer une stratégie diagnostique et une prise en charge thérapeutique initiale",
+        "Expliquer le diagnostic retenu et les mesures hygiéno-diététiques au patient"
+      ],
+      "consignesInterdites": [
+        "Prescrire une endoscopie en première intention sans avoir éliminé les signes d'alarme",
+        "Ignorer le régime vegan dans l'analyse du contexte",
+        "Ne pas rechercher les signes d'alarme"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Table d'examen",
+        "Gants"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "installe",
+          "confort"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : localisation, type, intensité, durée, rythme des douleurs épigastriques",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "épigastrique",
+          "pesanteur",
+          "intensité",
+          "depuis quand",
+          "fréquence"
+        ]
+      },
+      {
+        "id": "recherche_signes_alarme",
+        "label": "Recherche systématiquement les signes d'alarme de la dyspepsie (amaigrissement, vomissements, dysphagie, anémie, hémorragie digestive, masse palpable)",
+        "weight": 1,
+        "triggerKeywords": [
+          "amaigrissement",
+          "vomissements",
+          "dysphagie",
+          "sang",
+          "anorexie",
+          "fatigue",
+          "pâleur"
+        ]
+      },
+      {
+        "id": "symptomes_associes",
+        "label": "Explore les symptômes associés : digestion lente, ballonnements, nausées, satiété précoce, remontées acides, pyrosis",
+        "weight": 1,
+        "triggerKeywords": [
+          "ballonnements",
+          "nausées",
+          "satiété",
+          "digestion",
+          "pyrosis",
+          "remontées",
+          "brûlures"
+        ]
+      },
+      {
+        "id": "facteurs_aggravants_declenchants",
+        "label": "Identifie les facteurs déclenchants et aggravants (repas, aliments spécifiques, stress, position, médicaments AINS)",
+        "weight": 1,
+        "triggerKeywords": [
+          "repas",
+          "stress",
+          "aliments",
+          "AINS",
+          "position",
+          "café",
+          "alcool"
+        ]
+      },
+      {
+        "id": "antecedents_personnels_familiaux",
+        "label": "Recherche les antécédents personnels (médicaux, chirurgicaux) et familiaux (cancer gastrique, ulcère, RGO)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "cancer",
+          "ulcère",
+          "maladie",
+          "opération"
+        ]
+      },
+      {
+        "id": "mode_de_vie",
+        "label": "Explore le mode de vie : tabac, alimentation (régime vegan), alcool, activité physique, stress professionnel",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "alimentation",
+          "vegan",
+          "régime",
+          "sport",
+          "stress",
+          "profession"
+        ]
+      },
+      {
+        "id": "traitements_en_cours",
+        "label": "Recherche les traitements en cours y compris automédication et compléments alimentaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "automédication",
+          "complément",
+          "IPP",
+          "antiacide"
+        ]
+      },
+      {
+        "id": "allergies",
+        "label": "Recherche les allergies médicamenteuses et alimentaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "allergie",
+          "allergique",
+          "réaction"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général : constantes (TA, FC, T°, SpO2, FR), aspect général, pâleur conjonctivale",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "température",
+          "pâleur",
+          "conjonctives"
+        ]
+      },
+      {
+        "id": "examen_abdominal",
+        "label": "Réalise un examen abdominal complet : inspection, auscultation, palpation (sensibilité épigastrique, défense, masse), percussion",
+        "weight": 1,
+        "triggerKeywords": [
+          "abdomen",
+          "palpation",
+          "épigastre",
+          "défense",
+          "masse",
+          "auscultation",
+          "bruits"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique_pertinente",
+        "label": "Propose une stratégie diagnostique adaptée : recherche Helicobacter pylori (test respiratoire ou sérologie), pas d'endoscopie en l'absence de signes d'alarme chez une patiente jeune",
+        "weight": 1,
+        "triggerKeywords": [
+          "Helicobacter",
+          "test respiratoire",
+          "endoscopie",
+          "biologie",
+          "diagnostic"
+        ]
+      },
+      {
+        "id": "prise_en_charge_initiale",
+        "label": "Propose une prise en charge initiale adaptée : mesures hygiéno-diététiques, traitement symptomatique (IPP ou anti-H2), information sur le régime vegan et carences possibles",
+        "weight": 1,
+        "triggerKeywords": [
+          "hygiéno-diététique",
+          "IPP",
+          "antiacide",
+          "mesures",
+          "régime",
+          "vegan",
+          "carence",
+          "B12"
+        ]
+      },
+      {
+        "id": "explication_diagnostic",
+        "label": "Explique clairement le diagnostic de dyspepsie fonctionnelle, rassure sur l'absence de signe d'alarme et les perspectives d'évolution",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspepsie fonctionnelle",
+          "explique",
+          "rassure",
+          "grave",
+          "évolution",
+          "pronostic"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi : réévaluation à 4-6 semaines, signes d'alarme nécessitant une consultation rapide, critères de réorientation vers le spécialiste",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "réévaluation",
+          "consultation",
+          "signes d'alarme",
+          "spécialiste",
+          "gastro-entérologue"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient sur ses symptômes et ses préoccupations",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inconfort chronique du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient calme, coopératif, légèrement anxieuse face à la chronicité de ses symptômes. Elle s'exprime bien et décrit précisément ses douleurs. Elle s'inquiète d'un éventuel problème grave.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des douleurs au ventre, au niveau de l'estomac, qui reviennent depuis plusieurs mois. Ça me fait peur un peu parce que ça ne passe pas.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions personnelles, ça n'a rien à voir avec mon estomac !",
+        "silence": "Euh... je ne sais pas trop quoi répondre, pouvez-vous reformuler ?",
+        "jargon": "Je ne comprends pas ce que vous voulez dire par là, vous pouvez m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

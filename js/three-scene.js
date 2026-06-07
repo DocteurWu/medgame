@@ -80,8 +80,8 @@ export class ThreeScene {
 
     init() {
         // Initialisation terminée
-        this.scene.background = new THREE.Color(0x8c9bab);
-        this.scene.fog = new THREE.Fog(0x8c9bab, 8, 18);
+        this.scene.background = new THREE.Color(0x2d3135);
+        this.scene.fog = new THREE.Fog(0x2d3135, 8, 18);
 
         this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
         this.scene._camera = this.camera;
@@ -93,7 +93,7 @@ export class ThreeScene {
         });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         this.renderer.setSize(this.container.clientWidth || window.innerWidth, this.container.clientHeight || window.innerHeight);
-        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.enabled = false;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.0;
@@ -101,16 +101,11 @@ export class ThreeScene {
         this.container.appendChild(this.renderer.domElement);
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.08;
-        this.controls.maxPolarAngle = Math.PI / 2 + 0.35; // Autoriser à regarder légèrement vers le haut (plafond) sans traverser le sol
-        this.controls.minPolarAngle = 0.1;
-        this.controls.minDistance = 1.5;
-        this.controls.maxDistance = 8; // Rester dans la pièce fermée
-        this.controls.enableRotate = true;
+        this.controls.enableDamping = false;
+        this.controls.enableRotate = false;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
-        this.controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+        this.controls.touches = {};
         this.controls.target.set(0, 1.0, 0);
 
         this.setCamera('room');
@@ -159,10 +154,12 @@ export class ThreeScene {
 
         // Custom click detection to avoid OrbitControls interference
         this._ptrDown = null;
+        this._cleanedUp = false;
         this.renderer.domElement.addEventListener('pointerdown', (e) => {
             this._ptrDown = { x: e.clientX, y: e.clientY, time: performance.now() };
         });
         this.renderer.domElement.addEventListener('pointerup', (e) => {
+            if (this._cleanedUp) return;
             if (!this._ptrDown) return;
             const dx = Math.abs(e.clientX - this._ptrDown.x);
             const dy = Math.abs(e.clientY - this._ptrDown.y);
@@ -236,10 +233,10 @@ export class ThreeScene {
         this.scene.add(this.hotspotsGroup);
 
         const hotspotsData = [
-            { id: 'tête', pos: [2.15, 1.18, -1.82], color: 0xa020f0, label: 'Patient - Tête' },
-            { id: 'torse', pos: [2.15, 1.14, -1.55], color: 0x00f2fe, label: 'Patient - Torse' },
-            { id: 'abdomen', pos: [2.15, 1.10, -1.30], color: 0xff9f43, label: 'Patient - Abdomen' },
-            { id: 'membre', pos: [2.15, 1.05, -0.9], color: 0x2ecc71, label: 'Patient - Membre' }
+            { id: 'tête', pos: [1.2, 1.18, -3.62], color: 0xa020f0, label: 'Patient - Tête' },
+            { id: 'torse', pos: [1.2, 1.14, -3.35], color: 0x00f2fe, label: 'Patient - Torse' },
+            { id: 'abdomen', pos: [1.2, 1.10, -3.10], color: 0xff9f43, label: 'Patient - Abdomen' },
+            { id: 'membre', pos: [1.2, 1.05, -2.70], color: 0x2ecc71, label: 'Patient - Membre' }
         ];
 
         hotspotsData.forEach(data => {
@@ -388,17 +385,17 @@ export class ThreeScene {
 
     updateHotspotsPosition() {
         if (this.hotspotsGroup) {
-            const isLying = (this.patient && this.patient.group && this.patient.group.position.x < 0);
+            const isLying = (this.patient && this.patient._currentPosition === 'allonge');
             this.hotspotsGroup.children.forEach(mesh => {
                 const id = mesh.userData.hotspotId;
                 if (id === 'tête') {
-                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 1.02 : 1.18, isLying ? -1.98 : -1.82);
+                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 1.26 : 1.18, isLying ? 0.82 : -3.62);
                 } else if (id === 'torse') {
-                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 0.96 : 1.14, isLying ? -2.6 : -1.55);
+                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 1.22 : 1.14, isLying ? 0.38 : -3.35);
                 } else if (id === 'abdomen') {
-                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 0.96 : 1.10, isLying ? -2.9 : -1.30);
+                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 1.18 : 1.10, isLying ? -0.02 : -3.10);
                 } else if (id === 'membre') {
-                    mesh.position.set(isLying ? -3.5 : 2.15, isLying ? 0.84 : 1.05, isLying ? -3.33 : -0.9);
+                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 0.98 : 1.05, isLying ? -0.48 : -2.70);
                 }
             });
         }
@@ -427,13 +424,13 @@ export class ThreeScene {
                 const fpsBtn = document.querySelector('#hud-3d [data-camera="fps"]');
                 if (fpsBtn) fpsBtn.classList.add('active');
 
-                const isLying = (this.patient && this.patient.group && this.patient.group.position.x < 0);
+                const isLying = (this.patient && this.patient._currentPosition === 'allonge');
                 const startPos = isLying 
-                    ? new THREE.Vector3(-1.6, 1.6, -2.5) // Position sûre à côté du lit, hors collision du bureau
-                    : new THREE.Vector3(2.5, 1.6, 0.5);
+                    ? new THREE.Vector3(3.6, 1.6, 0.2) 
+                    : new THREE.Vector3(1.0, 1.6, -2.3);
                 const startLook = isLying 
-                    ? new THREE.Vector3(-3.5, 1.1, -2.6) 
-                    : new THREE.Vector3(2.1, 1.15, -1.65);
+                    ? new THREE.Vector3(4.7, 1.1, 0.2) 
+                    : new THREE.Vector3(1.2, 1.15, -3.45);
                     
                 this.fpsController.activate(startPos, startLook);
                 
@@ -460,13 +457,15 @@ export class ThreeScene {
             this.hotspotsGroup.visible = (mode === 'patient');
         }
 
-        const isLying = (this.patient && this.patient.group && this.patient.group.position.x < 0);
+        const isLying = (this.patient && this.patient._currentPosition === 'allonge');
         const presets = {
-            room: { pos: [0, 2.8, 3.0], target: [0, 1.2, -0.8] },
+            room: { pos: [-3.7, 4.8, 7.5], target: [0.3, 1.3, -0.4] },
             patient: isLying 
-                ? { pos: [-2.1, 2.2, -1.1], target: [-3.5, 1.1, -2.6] }
-                : { pos: [2.7, 2.1, 0.7], target: [2.1, 1.15, -1.65] },
-            desk: { pos: [-0.9, 2.25, 1.05], target: [-0.65, 0.9, -0.85] }
+                ? { pos: [4, 3.6, 3], target: [5.2, 1.8, 0.4] }
+                : { pos: [1.8, 2.1, -1.1], target: [1.2, 1.15, -3.45] },
+            desk: { pos: [-4, 3.8, 2.8], target: [-5, 2.4, -0.5] },
+            cabinet: { pos: [1.5, 3.2, -1.8], target: [3.5, 3.2, -4] },
+            anatomy: { pos: [-3, 3.8, -1.2], target: [-5.1, 3.8, -1.6] }
         };
         const p = presets[mode] || presets.room;
         const targetPos = new THREE.Vector3(...p.pos);
@@ -515,6 +514,7 @@ export class ThreeScene {
     }
 
     onClick(event) {
+        if (this._cleanedUp) return;
         // Masquer le tooltip dès qu'on clique sur un objet pour interagir
         if (this._tooltipEl) this._tooltipEl.style.opacity = '0';
 
@@ -652,6 +652,7 @@ export class ThreeScene {
     }
 
     onMouseMove(event) {
+        if (this._cleanedUp) return;
         if (this.fpsController && this.fpsController.enabled) return;
 
         const hit = this.pick(event);
@@ -1012,6 +1013,7 @@ export class ThreeScene {
     }
 
     cleanup() {
+        this._cleanedUp = true;
         cancelAnimationFrame(this._animFrameId);
         if (this._cameraAnimId) {
             cancelAnimationFrame(this._cameraAnimId);

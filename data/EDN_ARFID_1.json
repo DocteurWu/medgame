@@ -133,16 +133,217 @@
   "correction": "# ARFID\n\nRestriction liée aux caractéristiques sensorielles sans dysmorphophobie.\n\n## Bonnes pratiques\n\n- Soutien nutritionnel et correction des carences\n- Thérapie d’exposition graduée aux textures/aliments\n- Coordination avec famille/école\n\n## Erreurs à éviter\n\n- Confondre avec anorexie mentale (absence de désir de maigrir)\n- Stigmatiser les préférences sensorielles",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de pédiatrie.",
+      "contexte": "Emma LEROY, 14 ans, fille, se présente pour une perte de poids et une restriction alimentaire importante.",
+      "consignesAttendues": [
+        "Réaliser l'interrogatoire pour préciser le trouble alimentaire",
+        "Éliminer une anorexie mentale (recherche de dysmorphophobie et désir de maigrir)",
+        "Proposer une stratégie diagnostique et une prise en charge initiale"
+      ],
+      "consignesInterdites": [
+        "Ne pas interroger sur l'image corporelle",
+        "Ne pas proposer de régime restrictif supplémentaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Dossier médical partiel",
+        "Courbe de croissance"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_debut",
+        "label": "Questionne sur le mode de début de la restriction alimentaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "quand",
+          "depuis quand",
+          "début"
+        ]
+      },
+      {
+        "id": "recherche_sensibilite",
+        "label": "Évalue la composante sensorielle (textures, odeurs, goûts)",
+        "weight": 1,
+        "triggerKeywords": [
+          "texture",
+          "odeur",
+          "goût",
+          "sensibilité"
+        ]
+      },
+      {
+        "id": "exclusion_anorexie_dysmorphie",
+        "label": "Recherche activement un désir de perte de poids ou une dysmorphophobie",
+        "weight": 1,
+        "triggerKeywords": [
+          "maigrir",
+          "poids",
+          "image",
+          "corps",
+          "miroir"
+        ]
+      },
+      {
+        "id": "recherche_comorbidite_anxiete",
+        "label": "Recherche des signes d'anxiété ou de troubles sensoriels associés",
+        "weight": 1,
+        "triggerKeywords": [
+          "anxiété",
+          "peur",
+          "stress",
+          "sensibilité"
+        ]
+      },
+      {
+        "id": "evaluation_impact_croissance",
+        "label": "Évalue l'impact sur la croissance et la fatigue",
+        "weight": 1,
+        "triggerKeywords": [
+          "taille",
+          "croissance",
+          "fatigue",
+          "épuisement"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Propose de vérifier les constantes (tension, pouls, poids)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "poids",
+          "mesurer"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel_celiaque",
+        "label": "Propose de rechercher une cause organique (ex: maladie cœliaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cœliaque",
+          "sérologie",
+          "gluten",
+          "biologie"
+        ]
+      },
+      {
+        "id": "diagnostic_ARFID",
+        "label": "Évoque le diagnostic de trouble de l'évitement/restriction des aliments (ARFID)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ARFID",
+          "évitement",
+          "restriction"
+        ]
+      },
+      {
+        "id": "strategie_nutritionnelle",
+        "label": "Propose un soutien nutritionnel adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "nutrition",
+          "diététicien",
+          "compléments"
+        ]
+      },
+      {
+        "id": "strategie_psychologique",
+        "label": "Propose une thérapie d'exposition sensorielle ou comportementale",
+        "weight": 1,
+        "triggerKeywords": [
+          "exposition",
+          "thérapie",
+          "psychologue",
+          "comportemental"
+        ]
+      },
+      {
+        "id": "synthese_finale",
+        "label": "Réalise une synthèse claire de la situation pour la patiente",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "donc",
+          "conclusion"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Timide, un peu anxieuse face à la nouveauté, mais coopérante. Elle ne se sent pas 'grosse', elle est juste 'déstressée' par certains aliments.",
+      "phraseOuverture": "Bonjour... je viens parce que mes parents s'inquiètent, je ne mange presque plus rien.",
+      "infosVolontaires": [
+        "Elle ne mange que quelques aliments précis (textures lisses ou croquantes)",
+        "Elle se sent très fatiguée en cours"
+      ],
+      "infosSiDemandees": [
+        "Elle n'a jamais eu de problèmes de poids par le passé",
+        "Elle n'a pas de troubles du comportement alimentaire classiques (pas de vomissements, pas de purge)",
+        "Elle est sensible au bruit et aux étiquettes des vêtements (hypersensibilité sensorielle)"
+      ],
+      "infosCachees": [
+        "Elle n'a aucune intention de maigrir (important pour différencier de l'anorexie)"
+      ],
+      "reactions": {
+        "brutal": "Si l'interne est trop direct sur le poids : 'Je ne veux pas grossir, je veux juste que les odeurs s'arrêtent !'",
+        "silence": "Si l'interne ne pose pas de questions sur la texture : Elle reste silencieuse et attend que l'interne guide la discussion.",
+        "jargon": "Si l'interne utilise 'ARFID' sans expliquer : 'C'est quoi ce nom bizarre ?'"
+      }
+    }
+  }
 }

@@ -663,5 +663,274 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au Service d'Urgences.",
+      "contexte": "John Marc, 42 ans, homme, est amené par les secouristes pour inconscience. Vous êtes appelé(e) en urgence pour la prise en charge initiale.",
+      "consignesAttendues": [
+        "Réaliser l'évaluation initiale du patient inconscient selon l'ABCDE",
+        "Mettre le patient en Position Latérale de Sécurité (PLS) si nécessaire",
+        "Rechercher les signes de gravité vitale",
+        "Interroger les secouristes ou les témoins pour recueillir l'anamnèse",
+        "Demander les premiers gestes de surveillance (scope, SpO2, glycémie capillaire)",
+        "Formuler les premières hypothèses diagnostiques devant une inconscience de découverte"
+      ],
+      "consignesInterdites": [
+        "Ne pas quitter le patient sans avoir sécurisé les voies aériennes",
+        "Ne pas administrer de traitement sans diagnostic étiologique",
+        "Ne pas oublier de vérifier la glycémie capillaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Boucle de glycémie capillaire",
+        "Scope de surveillance (ECG, SpO2, PA)",
+        "Matériel d'intubation difficile",
+        "Kit PLS",
+        "Glucomètre",
+        "Ampoule de glucose 30%",
+        "Naloxone",
+        "Flumazénil (selon protocole)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securite_scene",
+        "label": "Sécurise la scène et vérifie l'environnement avant d'approcher le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "sécurité",
+          "environnement",
+          "danger",
+          "scène"
+        ]
+      },
+      {
+        "id": "evaluation_conscience",
+        "label": "Évalue le niveau de conscience (score de Glasgow ou AVPU)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Glasgow",
+          "conscience",
+          "réponse",
+          "stimulation",
+          "AVPU"
+        ]
+      },
+      {
+        "id": "liberation_voies_aeriennes",
+        "label": "Libère les voies aériennes (subluxation mandibulaire, aspiration si besoin)",
+        "weight": 1,
+        "triggerKeywords": [
+          "voies aériennes",
+          "subluxation",
+          "mandibulaire",
+          "aspiration",
+          "canule"
+        ]
+      },
+      {
+        "id": "evaluation_respiration",
+        "label": "Évalue la respiration (fréquence, amplitude, SpO2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "respiration",
+          "SpO2",
+          "saturation",
+          "fréquence respiratoire",
+          "auscultation"
+        ]
+      },
+      {
+        "id": "evaluation_circulation",
+        "label": "Évalue la circulation (pouls, PA, recherche de signes de choc)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "tension",
+          "circulation",
+          "choc",
+          "ECG",
+          "scope"
+        ]
+      },
+      {
+        "id": "glycemie_capillaire",
+        "label": "Réalise une glycémie capillaire en urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "capillaire",
+          "glucomètre",
+          "hypoglycémie"
+        ]
+      },
+      {
+        "id": "mise_en_pls",
+        "label": "Met le patient en Position Latérale de Sécurité si inconscient avec respiration spontanée",
+        "weight": 1,
+        "triggerKeywords": [
+          "PLS",
+          "position latérale",
+          "sécurité",
+          "décubitus latéral"
+        ]
+      },
+      {
+        "id": "recherche_signes_focalite",
+        "label": "Recherche des signes de focalité neurologique (pupilles, asymétrie motrice)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pupilles",
+          "anisocorie",
+          "focalité",
+          "asymétrie",
+          "motricité"
+        ]
+      },
+      {
+        "id": "interroge_secouristes",
+        "label": "Interroge les secouristes/témoins sur les circonstances de survenue",
+        "weight": 1,
+        "triggerKeywords": [
+          "circonstances",
+          "témoins",
+          "secouristes",
+          "anamnèse",
+          "début"
+        ]
+      },
+      {
+        "id": "hypotheses_diagnostiques",
+        "label": "Formule au moins 3 hypothèses diagnostiques devant l'inconscience",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypothèse",
+          "diagnostic",
+          "AVC",
+          "hypoglycémie",
+          "intoxication",
+          "traumatisme",
+          "épilepsie"
+        ]
+      },
+      {
+        "id": "demande_examen_complementaire",
+        "label": "Demande les examens complémentaires adaptés (biologie, imagerie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "biologie",
+          "scanner",
+          "imagerie",
+          "NFS",
+          "ionogramme",
+          "toxicologie"
+        ]
+      },
+      {
+        "id": "traitement_urgence_si_hypoglycemie",
+        "label": "Administre du glucose IV si hypoglycémie confirmée",
+        "weight": 1,
+        "triggerKeywords": [
+          "glucose",
+          "IV",
+          "hypoglycémie",
+          "resucrage",
+          "glucosé"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Met en place une surveillance continue (scope, SpO2, PA)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "scope",
+          "monitoring",
+          "SpO2",
+          "continue"
+        ]
+      },
+      {
+        "id": "transmission_equipe",
+        "label": "Transmet un bilan structuré à l'équipe médicale (SBAR ou équivalent)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transmission",
+          "bilan",
+          "SBAR",
+          "équipe",
+          "médecin"
+        ]
+      },
+      {
+        "id": "documentation",
+        "label": "Documente les gestes réalisés et l'évolution dans le dossier patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "dossier",
+          "documentation",
+          "compte-rendu",
+          "note",
+          "écrit"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_secouristes",
+        "label": "Communique clairement avec les secouristes pour recueillir l'anamnèse",
+        "max": 1
+      },
+      {
+        "id": "communication_equipe",
+        "label": "Commande de manière structurée et hiérarchisée à l'équipe soignante",
+        "max": 1
+      },
+      {
+        "id": "calme_urgence",
+        "label": "Garde son calme et son efficacité malgré le contexte d'urgence",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_technique",
+        "label": "Utilise un vocabulaire technique approprié avec l'équipe médicale",
+        "max": 1
+      },
+      {
+        "id": "empathie_proche",
+        "label": "Fait preuve d'empathie envers les proches/témoins présents",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient inconscient, ne répond pas aux stimuli verbaux, réagit partiellement à la stimulation douloureuse. Les secouristes présents sont coopérants et fournissent les informations demandées.",
+      "phraseOuverture": "Le patient est inconscient, amené par les secouristes. Il a été trouvé au sol par un collègue de travail il y a environ 20 minutes.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "constantes"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [
+        "Le patient a un diabète de type 2 non équilibré (si glycémie demandée)",
+        "Le patient a pris son insuline ce matin mais n'a pas mangé (si anamnèse approfondie)"
+      ],
+      "reactions": {
+        "brutal": "Les secouristes restent professionnels et répondent factuellement aux questions posées.",
+        "silence": "Les secouristes attendent les questions précises et répondent de manière concise.",
+        "jargon": "Les secouristes utilisent un vocabulaire simple et adapté, sans jargon excessif."
+      }
+    }
   }
 }

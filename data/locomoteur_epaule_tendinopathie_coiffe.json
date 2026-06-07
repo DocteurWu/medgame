@@ -109,16 +109,284 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Monsieur Michel Dupont, 55 ans, se présente en consultation pour une douleur chronique de l'épaule droite, majorée à l'élévation du bras, évoluant depuis plusieurs mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la douleur de l'épaule et le retentissement fonctionnel",
+        "Effectuer un examen clinique ciblé de l'épaule droite",
+        "Proposer une stratégie diagnostique adaptée (examens complémentaires)",
+        "Élaborer une stratégie de prise en charge thérapeutique initiale",
+        "Expliquer le diagnostic et le plan de prise en charge au patient de manière compréhensible"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de corticothérapie intra-articulaire sans avoir évoqué les examens d'imagerie au préalable",
+        "Ne pas proposer d'emblée une prise en charge chirurgicale sans avoir mentionné le traitement conservateur"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Cabinet de consultation de médecine générale",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Dynamomètre (optionnel)",
+        "Mètre ruban",
+        "Goniomètre",
+        "Table d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "enchanté"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur selon les critères DCINT (Durée, Circonstances d'apparition, Intensité, Nature, Topographie, Irradiation, Facteurs déclenchants et calmants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "ça fait mal où",
+          "ça irradie",
+          "sur une échelle",
+          "qu'est-ce qui déclenche",
+          "la nuit"
+        ]
+      },
+      {
+        "id": "interrogatoire_retentissement",
+        "label": "Évalue le retentissement fonctionnel et professionnel (activités quotidiennes, travail, loisirs)",
+        "weight": 1,
+        "triggerKeywords": [
+          "au travail",
+          "vous arrivez à",
+          "gêne",
+          "quotidien",
+          "profession",
+          "peintre"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels, familiaux et chirurgicaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "chirurgie",
+          "famille",
+          "allergie",
+          "traitement habituel"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : profession, tabac, alcool, activité physique",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "profession",
+          "activité physique",
+          "sport"
+        ]
+      },
+      {
+        "id": "examen_clinique_inspection",
+        "label": "Réalise une inspection de l'épaule (symétrie, amyotrophie, déformation, cicatrices)",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "regarder",
+          "symétrie",
+          "amyotrophie"
+        ]
+      },
+      {
+        "id": "examen_clinique_mobilite",
+        "label": "Évalue les amplitudes actives et passives de l'épaule (flexion, abduction, rotations)",
+        "weight": 1,
+        "triggerKeywords": [
+          "levez le bras",
+          "amplitude",
+          "mouvement",
+          "passif",
+          "actif"
+        ]
+      },
+      {
+        "id": "examen_clinique_manoeuvres_specifiques",
+        "label": "Réalise les manœuvres spécifiques de la coiffe des rotateurs (signe de Jobe, Neer, Hawkins, arc douloureux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "jobe",
+          "neer",
+          "hawkins",
+          "résistance",
+          "arc douloureux"
+        ]
+      },
+      {
+        "id": "examen_clinique_force",
+        "label": "Évalue la force musculaire en abduction et rotation externe contre résistance",
+        "weight": 1,
+        "triggerKeywords": [
+          "force",
+          "résistance",
+          "poussez contre",
+          "abduction",
+          "rotation"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique_imagerie",
+        "label": "Propose une stratégie diagnostique adaptée (radiographie standard de l'épaule, éventuellement échographie ou IRM selon le contexte)",
+        "weight": 1,
+        "triggerKeywords": [
+          "radio",
+          "radiographie",
+          "échographie",
+          "irm",
+          "imagerie",
+          "examen complémentaire"
+        ]
+      },
+      {
+        "id": "strategie_pec_reeducation",
+        "label": "Propose la rééducation fonctionnelle comme traitement de première intention",
+        "weight": 1,
+        "triggerKeywords": [
+          "rééducation",
+          "kinésithérapie",
+          "kiné",
+          "physiothérapie"
+        ]
+      },
+      {
+        "id": "strategie_pec_antalgiques",
+        "label": "Prescrit un traitement antalgique adapté (paracétamol en première intention, AINS si nécessaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "paracétamol",
+          "antalgique",
+          "anti-inflammatoire",
+          "traitement",
+          "médicament"
+        ]
+      },
+      {
+        "id": "strategie_pec_conseils",
+        "label": "Donne des conseils d'adaptation (repos relatif, adaptation du poste de travail, éviter les mouvements répétitifs)",
+        "weight": 1,
+        "triggerKeywords": [
+          "repos",
+          "éviter",
+          "adapter",
+          "conseils",
+          "poste de travail"
+        ]
+      },
+      {
+        "id": "strategie_pec_suivi",
+        "label": "Planifie un suivi et évoque les critères de recours au spécialiste en cas d'échec du traitement conservateur",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "spécialiste",
+          "orthopédiste",
+          "si ça ne s'améliore pas"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Explique le diagnostic de tendinopathie du sus-épineux/conflit sous-acromial de manière claire et compréhensible",
+        "weight": 1,
+        "triggerKeywords": [
+          "tendinopathie",
+          "coiffe des rotateurs",
+          "sus-épineux",
+          "conflit",
+          "inflammation",
+          "explication"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement inquiet quant à l'impact de sa douleur sur son activité professionnelle. Il est peintre en bâtiment et craint de ne plus pouvoir travailler. Il répond volontiers aux questions mais a besoin d'être rassuré.",
+      "phraseOuverture": "Bonjour docteur, j'ai mal à l'épaule droite depuis plusieurs mois et ça empire. J'arrive plus à lever le bras comme avant et ça me gêne beaucoup pour mon travail.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.facteursDeclenchants",
+        "modeDeVie.emploi"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.activitePhysique",
+        "traitements",
+        "allergies",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et montre des signes d'inconfort.",
+        "silence": "Le patient attend les questions suivantes sans prendre l'initiative.",
+        "jargon": "Le patient demande : 'C'est quoi ça la coiffe des rotateurs ?' ou 'Vous pouvez m'expliquer en termes simples ?'"
+      }
+    }
+  }
 }

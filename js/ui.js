@@ -194,6 +194,22 @@ function displayValue(element, value, path) {
 function displayQuestionBtn(element, questionText, value, path, isHtml = false) {
     if (!element) return;
 
+    // En mode ECOS, on n'affiche PAS les boutons "❓" — l'étudiant doit poser
+    // ses questions librement via le chat. On laisse l'élément vide (ou on
+    // affiche un placeholder si le cas définit un message par défaut).
+    if (sessionStorage.getItem('immersionMode') === 'immersif') {
+        if (path && isFieldLocked(path)) {
+            const currentCase = lockSystem.currentCase || gameState.currentCase;
+            const placeholder = renderLockPlaceholder(path, currentCase);
+            if (placeholder) {
+                element.setAttribute('data-locked', 'true');
+                element.innerHTML = placeholder;
+            }
+        }
+        // En ECOS, on ne révèle pas la valeur statique — l'étudiant doit la demander au patient
+        return;
+    }
+
     if (path && isFieldLocked(path)) {
         const currentCase = lockSystem.currentCase || gameState.currentCase;
         const placeholder = renderLockPlaceholder(path, currentCase);
@@ -250,6 +266,15 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
 }
 
 window.revealAllInterrogatoire = function() {
+    // En mode ECOS, le bouton "tout afficher" est désactivé (anti-pédagogique
+    // dans une vraie station ECOS — le candidat doit mener l'interrogatoire
+    // lui-même).
+    if (sessionStorage.getItem('immersionMode') === 'immersif') {
+        if (typeof showNotification === 'function') {
+            showNotification('⛔ Action désactivée en mode ECOS — vous devez mener l\'interrogatoire.');
+        }
+        return;
+    }
     const section = document.getElementById('section-anamnese');
     if (!section) return;
 

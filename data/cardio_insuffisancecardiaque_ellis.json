@@ -163,5 +163,274 @@
     "ECG",
     "Echographie cardiaque",
     "Bilan sanguin ionogramme"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine interne.",
+      "contexte": "Madame GREY Ellis, 78 ans, se présente aux urgences pour dyspnée et confusion.",
+      "consignesAttendues": [
+        "Réalisez l'interrogatoire de la patiente et/ou de son entourage",
+        "Réalisez l'examen clinique cardiovasculaire et pulmonaire",
+        "Énoncez vos hypothèses diagnostiques",
+        "Proposez un plan de prise en charge initial adapté",
+        "Communiquez avec empathie et clarté avec la patiente et/ou son entourage"
+      ],
+      "consignesInterdites": [
+        "Ne prescrivez pas d'AINS",
+        "Ne prescrivez pas de bêtabloquants non cardiosélectifs",
+        "Ne modifiez pas le traitement diurétique sans justification"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope",
+        "Thermomètre",
+        "ECG",
+        "Radiographie thoracique",
+        "Biologie (NFS, ionogramme, créatinine, BNP/NT-proBNP, CRP, gazométrie)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : dyspnée (ancienneté, sévérité, NYHA)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "essoufflement",
+          "respiration",
+          "NYHA",
+          "effort"
+        ]
+      },
+      {
+        "id": "interrogatoire_confusion",
+        "label": "Explore la confusion (début, durée, signes associés, retentissement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "confusion",
+          "désorientée",
+          "mémoire",
+          "trouble",
+          "conscience"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants (infection récente, observance, régime)",
+        "weight": 1,
+        "triggerKeywords": [
+          "infection",
+          "fièvre",
+          "traitement",
+          "observance",
+          "sel",
+          "hydratation"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents cardiovasculaires et facteurs de risque",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédent",
+          "HTA",
+          "cardiaque",
+          "tabac",
+          "diabète",
+          "cholestérol"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Fait l'inventaire des traitements en cours et de l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "diurétique",
+          "hydrochlorothiazide",
+          "prise"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Prend et interprète les constantes (TA, FC, FR, SpO2, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "température",
+          "fréquence respiratoire"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (JVP, œdèmes, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cœur",
+          "souffle",
+          "turgescence jugulaire",
+          "œdème",
+          "OMI",
+          "pouls"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire (auscultation, recherche de crépitants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poumon",
+          "auscultation",
+          "crépitants",
+          "râles",
+          "clairance"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Évalue l'état de conscience (Glasgow, orientation temporo-spatiale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "Glasgow",
+          "orientation",
+          "confusion",
+          "neurologique"
+        ]
+      },
+      {
+        "id": "hypotheses_diagnostiques",
+        "label": "Énonce au moins 3 hypothèses diagnostiques pertinentes",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "BPCO",
+          "pneumopathie",
+          "sepsis",
+          "embolie",
+          "hypoperfusion"
+        ]
+      },
+      {
+        "id": "diagnostic_pertinent",
+        "label": "Retient le diagnostic d'insuffisance cardiaque comme diagnostic principal",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "IC",
+          "décompensation",
+          "cardiogénique"
+        ]
+      },
+      {
+        "id": "examens_complementaires",
+        "label": "Propose des examens complémentaires pertinents (ECG, radio thorax, BNP, biologie, gazométrie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "radiographie",
+          "BNP",
+          "NT-proBNP",
+          "biologie",
+          "gazométrie",
+          "créatinine",
+          "ionogramme"
+        ]
+      },
+      {
+        "id": "pec_initiale",
+        "label": "Propose une prise en charge initiale adaptée (oxygénothérapie, diurétique IV, traitement étiologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "diurétique",
+          "furosémide",
+          "IV",
+          "position",
+          "traitement infection",
+          "surveillance"
+        ]
+      },
+      {
+        "id": "pec_dangereuse_evitee",
+        "label": "N'ordonne pas de traitement dangereux (AINS, bêtabloquants non cardiosélectifs, thiazidiques seuls)",
+        "weight": 1,
+        "triggerKeywords": [
+          "AINS",
+          "ibuprofène",
+          "bêtabloquant",
+          "carvédilol",
+          "propranolol"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la confusion et la fragilité de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Femme de 78 ans, ancienne chirurgienne à la retraite, habituée à être en position d'autorité. Actuellement confuse, désorientée dans le temps, parfois agitée. Répond de manière incohérente aux questions complexes. Son entourage (fille ou aide-soignante) peut compléter les informations.",
+      "phraseOuverture": "Je ne sais pas ce qui m'arrive… Je suis essoufflée, je n'arrive plus à respirer correctement, et je me sens perdue… Ma fille m'a dit qu'il fallait venir aux urgences.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "traitements",
+        "modeDeVie.alimentation",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Pourquoi vous me posez toutes ces questions ? Je suis malade, pas idiote !",
+        "silence": "… (silence prolongé, regard perdu, ne répond pas)",
+        "jargon": "Je ne comprends pas ce que vous dites. Parlez plus simplement, s'il vous plaît."
+      }
+    }
+  }
 }

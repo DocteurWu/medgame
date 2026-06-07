@@ -139,16 +139,267 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de gastro-entérologie.",
+      "contexte": "Monsieur HORIKOSHI Jirō, 67 ans, homme, se présente pour des douleurs épigastriques évoluant depuis 2 mois avec aggravation progressive, associées à une anorexie, une asthénie et un amaigrissement de 7 kg.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la douleur épigastrique et les symptômes associés",
+        "Rechercher les signes d'alarme et les facteurs de risque de néoplasie gastrique",
+        "Réaliser un examen clinique abdominal et général adapté",
+        "Proposer une stratégie diagnostique pertinente face à cette présentation clinique",
+        "Expliquer au patient la démarche diagnostique et les examens à réaliser"
+      ],
+      "consignesInterdites": [
+        "Poser directement le diagnostic sans avoir réalisé l'interrogatoire complet",
+        "Oublier de rechercher les signes d'alarme (amaigrissement, anorexie, âge > 50 ans)",
+        "Réaliser un examen rectal digital sans indication explicite dans ce cas"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation de gastro-entérologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Gants d'examen",
+        "Demande d'examens biologiques vierge",
+        "Demande d'endoscopie vierge"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "asseyez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur épigastrique (SIREN : Siège, Irradiation, Évolution, Nature, Facteurs déclenchants/aggravant, Facteurs soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où",
+          "depuis quand",
+          "type de douleur",
+          "irradie",
+          "calme",
+          "aggrave"
+        ]
+      },
+      {
+        "id": "recherche_signes_alarme",
+        "label": "Recherche explicitement les signes d'alarme : amaigrissement, anorexie, dysphagie, vomissements, méléna, hématémèse, âge > 50 ans",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "appétit",
+          "avaler",
+          "vomi",
+          "sang",
+          "selles noires"
+        ]
+      },
+      {
+        "id": "antecedents_familiaux",
+        "label": "Recherche les antécédents familiaux de cancer gastrique et les antécédents personnels (Helicobacter pylori, gastrite chronique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "cancer",
+          "estomac",
+          "pylori",
+          "gastrite"
+        ]
+      },
+      {
+        "id": "mode_vie_risques",
+        "label": "Explore les facteurs de risque : tabac, alcool, alimentation (aliments salés/fumés), exposition professionnelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "alimentation",
+          "sel",
+          "fumé",
+          "profession"
+        ]
+      },
+      {
+        "id": "examen_general",
+        "label": "Évalue l'état général : pâleur cutanéo-muqueuse, amaigrissement, altération de l'état général, adénopathies (Virchow)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pâle",
+          "ganglion",
+          "cou",
+          "maigri",
+          "état général"
+        ]
+      },
+      {
+        "id": "examen_abdominal",
+        "label": "Réalise un examen abdominal complet : inspection, auscultation, palpation (sensibilité épigastrique, masse, hépatomégalie, ascite)",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpe",
+          "abdomen",
+          "masse",
+          "foie",
+          "ascite",
+          "épigastre"
+        ]
+      },
+      {
+        "id": "constantes_completes",
+        "label": "Prend et interprète les constantes : TA, FC, température, saturation, FR",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "saturation"
+        ]
+      },
+      {
+        "id": "strategie_endoscopie",
+        "label": "Propose une gastroscopie avec biopsies comme examen de première intention",
+        "weight": 1,
+        "triggerKeywords": [
+          "gastroscopie",
+          "endoscopie",
+          "fibroscopie",
+          "biopsie",
+          "OGD"
+        ]
+      },
+      {
+        "id": "bilan_complementaire",
+        "label": "Prescrit un bilan biologique initial (NFS, CRP, ionogramme, bilan hépatique, albuminémie) et un bilan d'extension si diagnostic confirmé",
+        "weight": 1,
+        "triggerKeywords": [
+          "prise de sang",
+          "NFS",
+          "CRP",
+          "bilan",
+          "scanner",
+          "TDM",
+          "extension"
+        ]
+      },
+      {
+        "id": "annonce_demarche",
+        "label": "Explique clairement au patient la suspicion diagnostique, la nécessité de la gastroscopie et la démarche à suivre",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "cancer",
+          "gastroscopie",
+          "examens",
+          "résultats",
+          "prochaines étapes"
+        ]
+      },
+      {
+        "id": "rcp_oncologie",
+        "label": "Évoque la prise en charge multidisciplinaire en RCP (Réunion de Concertation Pluridisciplinaire) oncologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "RCP",
+          "réunion",
+          "équipe",
+          "chirurgien",
+          "oncologue",
+          "chimiothérapie",
+          "multidisciplinaire"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Réalise une synthèse structurée du cas en reprenant les éléments clés et la stratégie proposée",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "donc",
+          "stratégie",
+          "plan",
+          "proposition"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient et à la gravité potentielle du diagnostic",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient retraité, ancien ingénieur aéronautique, plutôt posé et méthodique. Il est inquiet de son amaigrissement et de la persistance de ses douleurs. Il répond précisément aux questions mais a besoin d'être rassuré.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'ai mal à l'estomac depuis deux mois et ça ne passe pas. En plus, j'ai perdu 7 kilos sans faire attention et je n'ai plus d'appétit du tout.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "amaigrissement de 7 kg en 2 mois",
+        "anorexie",
+        "asthénie"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements"
+      ],
+      "infosCachees": [
+        "Présence d'une adénopathie sus-claviculaire gauche (ganglion de Virchow) à l'examen physique",
+        "Pâleur cutanéo-muqueuse franche"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous me parlez déjà de cancer ? Je ne suis pas prêt à entendre ça comme ça...",
+        "silence": "...",
+        "jargon": "Pardon, qu'est-ce que vous entendez par gastroscopie ? C'est quoi exactement ?"
+      }
+    }
+  }
 }

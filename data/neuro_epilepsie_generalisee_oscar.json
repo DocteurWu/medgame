@@ -158,16 +158,310 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "CASKEY Oscar, 22 ans, homme, se présente aux urgences pour une perte de connaissance survenue ce matin.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient sur l'épisode de perte de connaissance",
+        "Rechercher les caractéristiques de la crise (prodrome, phase tonique, phase clonique, phase post-critique)",
+        "Rechercher les facteurs déclenchants et les antécédents personnels et familiaux d'épilepsie",
+        "Évaluer le retentissement de l'épisode (morsure de langue, traumatisme, confusion post-critique)",
+        "Réaliser un examen neurologique complet",
+        "Proposer un plan de prise en charge initial adapté (examens complémentaires, mesures hygiéno-diététiques, conduite à tenir)"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire un traitement antiépileptique de première intention sans avoir discuté de la stratégie avec le senior",
+        "Ne pas réaliser de geste invasif"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Otoscope",
+        "Ophtalmoscope",
+        "Marteau à réflexes",
+        "Abaisse-langue",
+        "Thermomètre",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment vous appelez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_crise_detail",
+        "label": "Interroge précisément le patient sur le déroulement de la crise (prodrome, phase tonique, phase clonique, phase post-critique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crise",
+          "perte de connaissance",
+          "chute",
+          "secousses",
+          "raideur",
+          "morsure",
+          "langue",
+          "confusion",
+          "après la crise",
+          "post-critique"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants (privation de sommeil, alcool, stress, lumières, hyperventilation, jeûne)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sommeil",
+          "alcool",
+          "stress",
+          "fatigue",
+          "lumière",
+          "déclencheur",
+          "avant la crise",
+          "veille"
+        ]
+      },
+      {
+        "id": "recherche_antecedents_familiaux",
+        "label": "Recherche les antécédents familiaux d'épilepsie",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "parent",
+          "cousin",
+          "frère",
+          "sœur",
+          "épilepsie",
+          "antécédents familiaux"
+        ]
+      },
+      {
+        "id": "recherche_antecedents_personnels",
+        "label": "Recherche les antécédents personnels neurologiques (traumatisme crânien, convulsions fébriles, AVC)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "traumatisme crânien",
+          "convulsion",
+          "fèvre",
+          "enfance",
+          "maladie",
+          "hospitalisation"
+        ]
+      },
+      {
+        "id": "evaluation_retentissement",
+        "label": "Évalue le retentissement de l'épisode (traumatisme, morsure latérale de la langue, durée de la confusion post-critique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "morsure",
+          "langue",
+          "blessure",
+          "tombé",
+          "mal",
+          "confusion",
+          "durée",
+          "combien de temps",
+          "après"
+        ]
+      },
+      {
+        "id": "mode_de_vie",
+        "label": "Explore le mode de vie (profession à risque, conduite automobile, activité sportive, consommation d'alcool et de tabac)",
+        "weight": 1,
+        "triggerKeywords": [
+          "profession",
+          "travail",
+          "conduite",
+          "voiture",
+          "sport",
+          "alcool",
+          "tabac",
+          "métier"
+        ]
+      },
+      {
+        "id": "examen_neurologique_complet",
+        "label": "Réalise un examen neurologique complet (motricité, sensibilité, réflexes ostéo-tendineux, coordination, nerfs crâniens, examen des pupilles)",
+        "weight": 1,
+        "triggerKeywords": [
+          "motricité",
+          "réflexes",
+          "pupilles",
+          "nerfs crâniens",
+          "coordination",
+          "sensibilité",
+          "marcher",
+          "doigt-nez"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général (constantes, examen cardiovasculaire et pulmonaire) pour éliminer une cause alternative",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "cœur",
+          "poumons",
+          "auscultation",
+          "constantes"
+        ]
+      },
+      {
+        "id": "orientation_diagnostic",
+        "label": "Oriente le diagnostic vers une crise épileptique généralisée tonico-clonique et argumente sa démarche",
+        "weight": 1,
+        "triggerKeywords": [
+          "épilepsie",
+          "crise généralisée",
+          "tonico-clonique",
+          "diagnostic",
+          "morsure latérale",
+          "confusion post-critique"
+        ]
+      },
+      {
+        "id": "proposition_examens_complementaires",
+        "label": "Propose les examens complémentaires adaptés (EEG, IRM cérébrale, bilan biologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "EEG",
+          "électroencéphalogramme",
+          "IRM",
+          "scanner",
+          "bilan",
+          "prise de sang",
+          "examens"
+        ]
+      },
+      {
+        "id": "mesures_hygieno_dietetiques",
+        "label": "Explique les mesures hygiéno-diététiques (respect du sommeil, éviter l'alcool, gestion du stress, ne pas conduire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sommeil",
+          "alcool",
+          "conduite",
+          "stress",
+          "hygiène de vie",
+          "conseils",
+          "précautions"
+        ]
+      },
+      {
+        "id": "information_patient",
+        "label": "Informe le patient sur la conduite à tenir en cas de nouvelle crise et sur la nécessité d'un suivi neurologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "neurologue",
+          "consultation",
+          "nouvelle crise",
+          "quoi faire",
+          "urgence"
+        ]
+      },
+      {
+        "id": "annonce_impact_vie_quotidienne",
+        "label": "Aborde l'impact sur la vie quotidienne (conduite automobile, profession à risque en hauteur/avec machines)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conduite",
+          "voiture",
+          "permis",
+          "travail",
+          "scierie",
+          "machine",
+          "hauteur",
+          "restriction"
+        ]
+      },
+      {
+        "id": "synthese_rigueur",
+        "label": "Fait une synthèse rigoureuse et structurée de la situation clinique au senior",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "en résumé",
+          "au total",
+          "homme de 22 ans",
+          "crise généralisée"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif mais inquiet et légèrement confus sur le déroulement exact de l'épisode. Il se souvient du cri initial, de la chute, puis d'un « trou noir » suivi de confusion et de céphalées pendant 30 minutes. Il ne se souvient pas des secousses ni de la morsure de langue (ce sont les témoins qui l'ont informé).",
+      "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai fait un malaise ce matin, je ne me souviens plus de grand-chose…",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "modeDeVie.activitePhysique"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et semble gêné par le ton directif.",
+        "silence": "Le patient attend les questions et ne développe pas spontanément.",
+        "jargon": "Le patient demande : « Vous pouvez m'expliquer ce que ça veut dire ? » si le candidat utilise des termes techniques sans les expliciter."
+      }
+    }
+  }
 }

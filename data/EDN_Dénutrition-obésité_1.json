@@ -158,16 +158,274 @@
   "correction": "# Dénutrition chez patient obèse\n\nPerte de poids significative et réduction des apports > 50% malgré obésité persistante.\n\n## Bonnes pratiques\n\n- Renutrition progressive avec objectifs réalistes\n- Supplémentation si carences (albumine basse, vitamines)\n- Suivi pluridisciplinaire et réévaluation des comorbidités\n\n## Erreurs à éviter\n\n- Confondre avec simple régime ou cancer sans preuves\n- Renutrition trop rapide sans surveillance",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine interne.",
+      "contexte": "Luc BERNARD, 45 ans, homme, se présente pour une fatigue intense et une perte de poids récente.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers la dénutrition et ses causes",
+        "Effectuer un examen clinique ciblé (état nutritionnel, recherche de signes de gravité)",
+        "Proposer un bilan diagnostique initial pertinent",
+        "Évoquer les hypothèses diagnostiques principales",
+        "Proposer une prise en charge thérapeutique adaptée incluant la renutrition"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir évalué l'état nutritionnel",
+        "Ne pas ignorer le contexte d'obésité sous-jacente",
+        "Ne pas omettre le dépistage d'une étiologie organique (cancer digestif)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Pèse-personne",
+        "Mètre ruban",
+        "Otoscope",
+        "Abaque IMC"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : fatigue et perte de poids",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "perte de poids",
+          "combien",
+          "kilogrammes"
+        ]
+      },
+      {
+        "id": "interrogatoire_histoire",
+        "label": "Précise l'histoire de la maladie : durée, mode d'installation, circonstances",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "évolution",
+          "stress",
+          "appétit"
+        ]
+      },
+      {
+        "id": "interrogatoire_alimentaire",
+        "label": "Évalue la prise alimentaire actuelle et son évolution",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "repas",
+          "quantité",
+          "appétit",
+          "réduction"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "père",
+          "cancer",
+          "obésité"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : tabac, alcool, activité physique, profession",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "profession",
+          "stress"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Recherche les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "allergie",
+          "amlodipine"
+        ]
+      },
+      {
+        "id": "examen_clinique_nutritionnel",
+        "label": "Réalise un examen clinique orienté état nutritionnel (poids, IMC, tour de taille, pâleur, fonte musculaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "IMC",
+          "tour de taille",
+          "pâleur",
+          "muscles"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet (cardio-pulmonaire, abdominal, neurologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "palpation",
+          "abdomen",
+          "cœur",
+          "poumons"
+        ]
+      },
+      {
+        "id": "bilan_diagnostique",
+        "label": "Propose un bilan biologique initial pertinent (NFS, CRP, albumine, préalbumine, TSH, ionogramme)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "prise de sang",
+          "albumine",
+          "NFS",
+          "TSH",
+          "CRP"
+        ]
+      },
+      {
+        "id": "diagnostic_denutrition",
+        "label": "Évoque le diagnostic de dénutrition selon les critères HAS (perte de poids > 5% en 1 mois ou > 10% en 6 mois)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dénutrition",
+          "malnutrition",
+          "critères",
+          "perte de poids",
+          "HAS"
+        ]
+      },
+      {
+        "id": "etiologie_organique",
+        "label": "Recherche une étiologie organique, notamment néoplasique (antécédent familial de cancer colorectal)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cancer",
+          "néoplasie",
+          "coloscopie",
+          "digestif",
+          "étiologie"
+        ]
+      },
+      {
+        "id": "strategie_pec",
+        "label": "Propose une prise en charge adaptée : renutrition progressive, supplémentation, suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "renutrition",
+          "supplémentation",
+          "vitamines",
+          "suivi",
+          "diététicien"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur l'importance de la renutrition et les risques de la dénutrition",
+        "weight": 1,
+        "triggerKeywords": [
+          "conseils",
+          "alimentation",
+          "risques",
+          "éducation",
+          "prévention"
+        ]
+      },
+      {
+        "id": "synthese_cloture",
+        "label": "Synthétise les points clés et propose un plan de suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "plan",
+          "suivi",
+          "prochain rendez-vous"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif mais inquiet, légèrement anxieux face à la perte de poids inexpliquée",
+      "phraseOuverture": "Bonjour docteur, je suis très fatigué depuis plusieurs mois et j'ai perdu beaucoup de poids sans vraiment comprendre pourquoi...",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "perteDePoids"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alimentation",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez toutes ces questions, je suis juste fatigué !",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire, pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

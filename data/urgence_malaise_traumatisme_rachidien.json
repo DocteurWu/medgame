@@ -417,5 +417,276 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine d'urgence.",
+      "contexte": "Marc Dubois, 45 ans, homme, victime d'un accident de la route survenu il y a 10 minutes. Le véhicule a quitté la route et est tombé dans un fossé. Le patient portait sa ceinture de sécurité. Il se plaint de douleurs cervicales vives et de douleurs thoraciques antérieures. Il présente une impossibilité de bouger les jambes, une gêne respiratoire et des sueurs. Les secours sont sur place et vous demandent d'évaluer le patient.",
+      "consignesAttendues": [
+        "Effectuer une évaluation clinique rapide et systématique du patient polytraumatisé",
+        "Identifier le traumatisme rachidien cervical avec déficit neurologique et le traumatisme thoraco-abdominal associé",
+        "Mettre en œuvre les mesures de stabilisation immédiates (immobilisation rachis, collier cervical, oxygénologie)",
+        "Organiser le transfert vers un centre spécialisé avec alerte du SAMU/15",
+        "Ne jamais mobiliser le rachis du patient"
+      ],
+      "consignesInterdites": [
+        "Ne pas sortir la victime du véhicule sans immobilisation complète du rachis",
+        "Ne pas mobiliser le rachis cervical (pas de flexion, rotation, extension)",
+        "Ne pas retirer la ceinture de sécurité avant immobilisation complète"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence — Accueil des polytraumatisés",
+      "materielDisponible": [
+        "Collier cervical rigide (différentes tailles)",
+        "Attelle cervico-thoracique / plan dur",
+        "Masque à oxygène haute concentration",
+        "Matériel de perfusion (cathéters, solutés)",
+        "Matériel d'intubation d'urgence",
+        "Oxymètre de pouls",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Téléphone pour alerte SAMU/15"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securisation_scene",
+        "label": "Sécurise la scène et vérifie l'absence de danger immédiat (incendie, trafic, etc.)",
+        "weight": 1,
+        "triggerKeywords": [
+          "danger",
+          "sécurité",
+          "sécuriser la scène",
+          "véhicule stable"
+        ]
+      },
+      {
+        "id": "presentation_role",
+        "label": "Se présente au patient, se nomme et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "médecin"
+        ]
+      },
+      {
+        "id": "evaluation_conscience",
+        "label": "Évalue l'état de conscience du patient (score de Glasgow ou réponse verbale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscient",
+          "Glasgow",
+          "vous m'entendez",
+          "ouvrez les yeux",
+          "répond"
+        ]
+      },
+      {
+        "id": "immobilisation_rachis",
+        "label": "Immobilise le rachis cervical en maintenant l'axe tête-cou-tronc (stabilisation manuelle ou collier cervical)",
+        "weight": 1,
+        "triggerKeywords": [
+          "collier cervical",
+          "immobilisation",
+          "ne bougez pas",
+          "axe tête cou tronc",
+          "stabilisation"
+        ]
+      },
+      {
+        "id": "evaluation_ventilation",
+        "label": "Évalue la fonction ventilation (fréquence respiratoire, saturation, auscultation pulmonaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "respiration",
+          "saturation",
+          "SpO2",
+          "auscultation",
+          "murmure vésiculaire",
+          "oxygène"
+        ]
+      },
+      {
+        "id": "administration_oxygene",
+        "label": "Administre de l'oxygène à haute concentration (masque haute concentration) devant la désaturation à 91%",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "haute concentration",
+          "SpO2",
+          "saturation"
+        ]
+      },
+      {
+        "id": "evaluation_circulation",
+        "label": "Évalue l'état hémodynamique (pouls, tension artérielle, recherche de signes de choc)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "tension",
+          "tension artérielle",
+          "choc",
+          "remplissage",
+          "perfusion"
+        ]
+      },
+      {
+        "id": "evaluation_deficit_neurologique",
+        "label": "Recherche un déficit neurologique (motricité et sensibilité des membres, niveau sensitif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bougez les pieds",
+          "bougez les mains",
+          "sentez",
+          "motricité",
+          "sensibilité",
+          "paraparésie",
+          "paraplégie"
+        ]
+      },
+      {
+        "id": "examen_thoracique",
+        "label": "Réalise un examen thoracique complet (inspection, palpation, auscultation, percussion) pour rechercher un traumatisme thoracique associé",
+        "weight": 1,
+        "triggerKeywords": [
+          "thoracique",
+          "auscultation pulmonaire",
+          "matité",
+          "pneumothorax",
+          "hémothorax",
+          "ceinture de sécurité"
+        ]
+      },
+      {
+        "id": "examen_abdominal",
+        "label": "Réalise un examen abdominal (inspection, palpation) pour rechercher un traumatisme abdominal associé",
+        "weight": 1,
+        "triggerKeywords": [
+          "abdomen",
+          "palpation abdominale",
+          "sensibilité",
+          "défense",
+          "traumatisme abdominal"
+        ]
+      },
+      {
+        "id": "mise_en_position_securisee",
+        "label": "Positionne le patient en respectant l'axe du rachis (décubitus dorsal sur plan dur si extraction nécessaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "plan dur",
+          "décubitus dorsal",
+          "position",
+          "extraction",
+          "brancardage"
+        ]
+      },
+      {
+        "id": "alerte_samu",
+        "label": "Alerte le SAMU/15 pour un transfert vers un centre spécialisé (centre de traumatologie / neurochirurgie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "SAMU",
+          "15",
+          "transfert",
+          "centre spécialisé",
+          "traumatologie",
+          "neurochirurgie"
+        ]
+      },
+      {
+        "id": "bilan_transmission",
+        "label": "Réalise une transmission structurée (type SBAR ou équivalent) des constatations et de la prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "transmission",
+          "bilan",
+          "SBAR",
+          "constatations",
+          "prise en charge"
+        ]
+      },
+      {
+        "id": "voie_veineuse",
+        "label": "Pose une voie veineuse périphérique pour le remplissage et l'administration médicamenteuse si nécessaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "cathéter",
+          "remplissage",
+          "soluté"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Assure une surveillance continue des paramètres vitaux (conscience, ventilation, circulation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "monitorage",
+          "paramètres vitaux",
+          "réévaluation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient s'exprimer et recueille ses plaintes sans l'interrompre brutalement",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule les dires du patient pour vérifier sa compréhension de la situation clinique",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, explique les gestes réalisés et rassure",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à un patient anxieux et douloureux",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient conscient, anxieux, en sueur, douloureux. Il coopère mais est très inquiet de ne pas pouvoir bouger les jambes. Il pose des questions sur la gravité de son état.",
+      "phraseOuverture": "Aïe... j'ai très mal au cou et à la poitrine... je n'arrive plus à bouger les jambes ! Qu'est-ce qui m'arrive ?",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.asymptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "traitements",
+        "allergies",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [
+        "Le patient ne mentionne pas spontanément qu'il portait sa ceinture de sécurité abdominale mal positionnée (sous l'aisselle) — à rechercher à l'examen"
+      ],
+      "reactions": {
+        "brutal": "Le patient se crispe, augmente sa douleur cervicale et devient encore plus anxieux. Il dit : 'Attention, vous me faites mal au cou !'",
+        "silence": "Le patient s'impatiente et demande : 'Vous ne dites rien ? C'est grave ? Est-ce que je vais remarcher ?'",
+        "jargon": "Le patient ne comprend pas et demande : 'Qu'est-ce que vous voulez dire ? Parlez-moi en français simple, je suis inquiet.'"
+      }
+    }
   }
 }

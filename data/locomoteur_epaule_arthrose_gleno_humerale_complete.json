@@ -112,16 +112,252 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de chirurgie orthopédique.",
+      "contexte": "Monsieur Jean Petit, 72 ans, homme, se présente en consultation pour une douleur mécanique chronique de l'épaule droite avec limitation fonctionnelle progressive.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Effectuer un examen clinique de l'épaule droite",
+        "Proposer un bilan complémentaire adapté",
+        "Évoquer le diagnostic d'arthrose gléno-humérale",
+        "Discuter la prise en charge thérapeutique"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'examen d'emblée sans interrogatoire",
+        "Ne pas réaliser de geste invasif"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Consultation de chirurgie orthopédique",
+      "materielDisponible": [
+        "Table d'examen",
+        "Goniomètre",
+        "Stéthoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (localisation, intensité, type, ancienneté)",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "depuis quand",
+          "intensité",
+          "type de douleur"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs",
+        "label": "Recherche les facteurs déclenchants et aggravants",
+        "weight": 1,
+        "triggerKeywords": [
+          "facteurs déclenchants",
+          "aggrave",
+          "mouvement",
+          "activité"
+        ]
+      },
+      {
+        "id": "interrogatoire_autonomie",
+        "label": "Évalue l'impact sur l'autonomie et les activités quotidiennes",
+        "weight": 1,
+        "triggerKeywords": [
+          "autonomie",
+          "activités quotidiennes",
+          "gêne fonctionnelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "maladie",
+          "chirurgie"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (tabac, alcool, activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "profession"
+        ]
+      },
+      {
+        "id": "examen_clinique_observation",
+        "label": "Observe l'épaule (amyotrophie, déformation, attitude vicieuse)",
+        "weight": 1,
+        "triggerKeywords": [
+          "regarder",
+          "observer",
+          "amyotrophie",
+          "déformation"
+        ]
+      },
+      {
+        "id": "examen_clinique_mobilisation",
+        "label": "Évalue les amplitudes articulaires actives et passives",
+        "weight": 1,
+        "triggerKeywords": [
+          "mobiliser",
+          "amplitudes",
+          "flexion",
+          "extension",
+          "rotation"
+        ]
+      },
+      {
+        "id": "examen_clinique_crepitation",
+        "label": "Recherche les crépitations articulaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "crépitement",
+          "crépitation",
+          "grincement"
+        ]
+      },
+      {
+        "id": "examen_clinique_douleur_fin_course",
+        "label": "Identifie la douleur en fin de course articulaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur en fin de course",
+          "limite douloureuse"
+        ]
+      },
+      {
+        "id": "bilan_imagerie",
+        "label": "Prescrit une radiographie de l'épaule de face et de profil",
+        "weight": 1,
+        "triggerKeywords": [
+          "radiographie",
+          "radio",
+          "imagerie",
+          "face",
+          "profil"
+        ]
+      },
+      {
+        "id": "diagnostic_arthrose",
+        "label": "Évoque le diagnostic d'arthrose gléno-humérale",
+        "weight": 1,
+        "triggerKeywords": [
+          "arthrose",
+          "omarthrose",
+          "gléno-humérale",
+          "dégénératif"
+        ]
+      },
+      {
+        "id": "traitement_antalgique",
+        "label": "Propose un traitement antalgique adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "paracétamol",
+          "anti-inflammatoire",
+          "traitement"
+        ]
+      },
+      {
+        "id": "traitement_reeducation",
+        "label": "Prescrit une rééducation fonctionnelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "rééducation",
+          "kinésithérapie",
+          "réhabilitation"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Explique la pathologie et les mesures d'hygiène articulaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "conseils",
+          "hygiène articulaire",
+          "éviter"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux concernant sa perte d'autonomie. Il répond volontiers aux questions mais a besoin de reformulations pour les termes médicaux.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal à l'épaule droite depuis longtemps et ça empire. Je n'arrive plus à lever le bras correctement.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme et répond de manière plus brève.",
+        "silence": "Le patient attend la question suivante sans ajouter d'informations.",
+        "jargon": "Le patient demande : 'Qu'est-ce que vous voulez dire par là ?' ou 'Je ne comprends pas ce mot.'"
+      }
+    }
+  }
 }

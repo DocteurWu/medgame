@@ -434,5 +434,279 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale en stage aux urgences.",
+      "contexte": "Vous êtes appelés par les pompiers devant un bar du centre-ville. Tristan Nguyen, 20 ans, étudiant, est retrouvé inconscient au sol, sur le ventre, avec une forte odeur d'alcool. Des vomissements sont visibles autour de sa bouche. Un ami est présent et paniqué.",
+      "consignesAttendues": [
+        "Évaluer rapidement l'état de conscience du patient",
+        "Vérifier la respiration et la perméabilité des voies aériennes",
+        "Mettre le patient en position latérale de sécurité (PLS) s'il respire",
+        "Nettoyer la bouche pour prévenir l'inhalation de vomissements",
+        "Surveiller les signes vitaux (pouls, respiration, saturation)",
+        "Alerter le SAMU (15) pour une prise en charge adaptée",
+        "Rechercher d'éventuels signes de traumatisme (chute)",
+        "Interroger l'ami présent pour obtenir des informations sur les circonstances"
+      ],
+      "consignesInterdites": [
+        "Ne pas débuter un massage cardiaque si le patient respire",
+        "Ne pas mobiliser le patient de manière inutile (risque rachis)",
+        "Ne pas laisser le patient sur le ventre sans surveillance",
+        "Ne pas donner à boire ou à manger à un patient inconscient"
+      ],
+      "typeStation": "SANS_PS_PSS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Extérieur — devant un bar en centre-ville",
+      "materielDisponible": [
+        "Gants à usage unique",
+        "Masque bouche-à-bouche",
+        "Couverture de survie",
+        "Téléphone pour appeler le 15",
+        "Éventuellement un insufflateur (ballon BAVU) si disponible"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "scene_securite",
+        "label": "Sécurise la scène et vérifie l'absence de danger pour le patient et pour soi",
+        "weight": 1,
+        "triggerKeywords": [
+          "danger",
+          "sécurité",
+          "scène",
+          "véhicule",
+          "trafic"
+        ]
+      },
+      {
+        "id": "appel_aide",
+        "label": "Demande de l'aide (appelle le 15 ou demande à un témoin d'appeler)",
+        "weight": 1,
+        "triggerKeywords": [
+          "15",
+          "SAMU",
+          "appeler",
+          "aide",
+          "secours"
+        ]
+      },
+      {
+        "id": "evaluation_conscience",
+        "label": "Évalue le niveau de conscience (stimulation verbale puis douloureuse, score de Glasgow si possible)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "Glasgow",
+          "stimulation",
+          "verbal",
+          "douloureux",
+          "répond"
+        ]
+      },
+      {
+        "id": "verification_respiration",
+        "label": "Vérifie la présence d'une respiration (regarder, écouter, sentir — méthode RRS)",
+        "weight": 1,
+        "triggerKeywords": [
+          "respire",
+          "respiration",
+          "RRS",
+          "ventilation",
+          "souffle"
+        ]
+      },
+      {
+        "id": "liberation_voies_aeriennes",
+        "label": "Libère les voies aériennes (dégagement de la bouche, bascule de tête si pas de traumatisme rachis suspecté)",
+        "weight": 1,
+        "triggerKeywords": [
+          "voies aériennes",
+          "bouche",
+          "vomissement",
+          "dégager",
+          "bascule",
+          "menton"
+        ]
+      },
+      {
+        "id": "mise_en_pls",
+        "label": "Met le patient en position latérale de sécurité (PLS) car il est inconscient et respire",
+        "weight": 1,
+        "triggerKeywords": [
+          "PLS",
+          "position latérale",
+          "sécurité",
+          "côté",
+          "latéral"
+        ]
+      },
+      {
+        "id": "surveillance_pouls",
+        "label": "Vérifie la présence d'un pouls carotidien",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "carotidien",
+          "cardiaque",
+          "battement"
+        ]
+      },
+      {
+        "id": "surveillance_constantes",
+        "label": "Évalue les constantes vitales (FR, SpO2 si oxymètre, TA, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "saturation",
+          "SpO2",
+          "fréquence respiratoire",
+          "tension",
+          "température",
+          "constantes"
+        ]
+      },
+      {
+        "id": "recherche_traumatisme",
+        "label": "Recherche des signes de traumatisme (chute, plaie, déformation, hématome)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traumatisme",
+          "chute",
+          "plaie",
+          "hématome",
+          "crâne",
+          "rachis"
+        ]
+      },
+      {
+        "id": "interrogatoire_temoin",
+        "label": "Interroge l'ami/témoin présent sur les circonstances (quantité d'alcool, durée, prise de médicaments, chute)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ami",
+          "témoin",
+          "circonstances",
+          "combien",
+          "bu",
+          "médicament",
+          "chute",
+          "durée"
+        ]
+      },
+      {
+        "id": "couverture_thermique",
+        "label": "Couvre le patient pour prévenir l'hypothermie",
+        "weight": 1,
+        "triggerKeywords": [
+          "couvrir",
+          "couverture",
+          "thermique",
+          "hypothermie",
+          "chaud"
+        ]
+      },
+      {
+        "id": "alerte_samu",
+        "label": "Alerte le SAMU (15) avec les informations pertinentes (état, constantes, circonstances)",
+        "weight": 1,
+        "triggerKeywords": [
+          "15",
+          "SAMU",
+          "alerte",
+          "transmission",
+          "bilan"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Assure une surveillance continue de la respiration en attendant les secours",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveiller",
+          "continue",
+          "respiration",
+          "attendre",
+          "secours"
+        ]
+      },
+      {
+        "id": "ne_pas_debuter_mce",
+        "label": "Ne débute PAS de massage cardiaque (le patient respire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "massage cardiaque",
+          "RCP",
+          "MCE",
+          "compressions"
+        ]
+      },
+      {
+        "id": "ne_pas_mobiliser_rachis",
+        "label": "Ne mobilise pas inutilement le rachis sans indication formelle",
+        "weight": 1,
+        "triggerKeywords": [
+          "rachis",
+          "colonne",
+          "immobilisation",
+          "collier"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "calme_autorite",
+        "label": "Reste calme et adopte un ton posé et autoritaire pour gérer la situation d'urgence",
+        "max": 1
+      },
+      {
+        "id": "communication_temoin",
+        "label": "Communique clairement avec le témoin présent (questions directes, ton rassurant)",
+        "max": 1
+      },
+      {
+        "id": "transmission_structuree",
+        "label": "Transmet un bilan structuré au SAMU (état, constantes, circonstances, gestes réalisés)",
+        "max": 1
+      },
+      {
+        "id": "empathie_temoin",
+        "label": "Rassure le témoin/ami paniqué sans le culpabiliser",
+        "max": 1
+      },
+      {
+        "id": "coordination_equipe",
+        "label": "Coordonne les actions avec les pompiers ou autres intervenants présents",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient inconscient, ne répond pas. L'ami présent est paniqué, parle vite, donne des informations de manière désordonnée.",
+      "phraseOuverture": "Oh mon Dieu, oh mon Dieu ! C'est Tristan, il ne répond plus ! On était en train de boire et d'un coup il s'est effondré ! Faites quelque chose !",
+      "infosVolontaires": [
+        "Tristan ne répond plus depuis environ 15-20 minutes",
+        "Ils étaient plusieurs à boire de la bière et des shots de vodka",
+        "Tristan n'a pas mangé ce soir",
+        "Il est tombé au sol après avoir bu plusieurs verres rapidement",
+        "Il a vomi au sol avant de ne plus bouger"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.drogues",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [
+        "Tristan a pris un comprimé de Xanax (alprazolam) donné par un ami pour 'décompresser' avant la soirée — information à obtenir par questionnement approfondi sur les médicaments"
+      ],
+      "reactions": {
+        "brutal": "Je vous demande de vous calmer, je fais mon travail. J'ai besoin que vous répondiez à mes questions clairement.",
+        "silence": "Je comprends que vous êtes choqué. Prenez une inspiration. Dites-moi simplement ce qui s'est passé.",
+        "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous me l'expliquer avec des mots simples ?"
+      }
+    }
   }
 }

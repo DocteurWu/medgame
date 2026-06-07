@@ -158,13 +158,13 @@
   "correction": "# Syncope cardiaque\n\nSurvenue brutale, sans prodrome, contexte de cardiopathie + anomalies ECG = très évocateur.\n\n## Bonnes pratiques\n\n- Hospitalisation en cardiologie\n- Monitoring\n- Pacemaker si trouble de conduction confirmé\n\n## Erreurs à éviter\n\n- Rassurer à tort : syncope cardiaque = potentiellement grave",
   "vitalsDynamics": {
     "trendOverMinutes": 0.12,
-    "urgencyMultiplier": 3.0,
+    "urgencyMultiplier": 3,
     "aggravationTargets": {
       "heartRate": 45,
       "systolic": 75,
       "diastolic": 45,
       "spo2": 88,
-      "temperature": 37.0,
+      "temperature": 37,
       "respiratoryRate": 10
     },
     "stabilizeOnCorrectTreatment": true
@@ -188,5 +188,276 @@
     "Holter ECG 24h",
     "Echographie cardiaque",
     "Bilan sanguin ionogramme"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Monsieur Darcy, 70 ans, homme, se présente aux urgences pour une perte de connaissance brutale survenue au repos il y a environ 30 minutes.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient sur les circonstances de la perte de connaissance, les symptômes associés et les antécédents",
+        "Réaliser un examen clinique cardiovasculaire et neurologique ciblé",
+        "Interpréter l'ECG 12 dérivations fourni (fibrillation auriculaire à 50-60 bpm, bloc auriculo-ventriculaire du troisième degré avec pauses ventriculaires)",
+        "Proposer une stratégie diagnostique et une prise en charge thérapeutique adaptée",
+        "Expliquer au patient le diagnostic retenu et la prise en charge proposée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de bêtabloquants non cardiosélectifs",
+        "Ne pas prescrire d'antidépresseurs tricycliques",
+        "Ne pas prescrire de médicaments allongeant le QT",
+        "Ne pas laisser le patient repartir sans avis cardiologique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Urgence vitale",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "ECG 12 dérivations",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope",
+        "Thermomètre",
+        "Glucomètre",
+        "Scope de surveillance"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en cardiologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_circonstances_perte_connaissance",
+        "label": "Interroge le patient sur les circonstances exactes de la perte de connaissance (début brutal, durée, position, activité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "circonstances",
+          "comment c'est passé",
+          "étiez-vous debout",
+          "étiez-vous assis",
+          "durée"
+        ]
+      },
+      {
+        "id": "interrogatoire_prodromes_symptomes_associes",
+        "label": "Recherche les prodromes et symptômes associés (palpitations, douleur thoracique, dyspnée, vertiges)",
+        "weight": 1,
+        "triggerKeywords": [
+          "avant la perte de connaissance",
+          "palpitations",
+          "douleur thoracique",
+          "vertiges",
+          "nausées"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents_cardiovasculaires",
+        "label": "Explore les antécédents cardiovasculaires personnels et familiaux (mort subite, cardiopathie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "père",
+          "mort subite",
+          "cardiaque",
+          "infarctus"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements_en_cours",
+        "label": "Recherche les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitements",
+          "médicaments",
+          "aspirine",
+          "allergies"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (auscultation cardiaque, prise du pouls, recherche de signes d'insuffisance cardiaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "pouls",
+          "rythme irrégulier",
+          "bruit de galop",
+          "turgescence jugulaire"
+        ]
+      },
+      {
+        "id": "examen_clinique_neurologique",
+        "label": "Réalise un examen neurologique de base (conscience, motricité, sensibilité, réflexes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen neurologique",
+          "conscience",
+          "motricité",
+          "réflexes",
+          "pupilles"
+        ]
+      },
+      {
+        "id": "interpretation_ecg",
+        "label": "Interprète correctement l'ECG (fibrillation auriculaire, BAV III, pauses ventriculaires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "fibrillation auriculaire",
+          "bloc auriculo-ventriculaire",
+          "BAV",
+          "pauses",
+          "rythme irrégulier"
+        ]
+      },
+      {
+        "id": "diagnostic_syncope_cardiaque",
+        "label": "Retient le diagnostic de syncope cardiaque (BAV III avec pauses ventriculaires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "syncope cardiaque",
+          "BAV III",
+          "bloc auriculo-ventriculaire",
+          "syncope à l'effort",
+          "syncope au repos"
+        ]
+      },
+      {
+        "id": "prise_en_charge_urgence",
+        "label": "Propose une prise en charge adaptée en urgence (monitorage, voie veineuse, atropine si nécessaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "monitorage",
+          "voie veineuse",
+          "atropine",
+          "scope",
+          "surveillance"
+        ]
+      },
+      {
+        "id": "strategie_pec_pacemaker",
+        "label": "Propose l'implantation d'un pacemaker comme traitement définitif",
+        "weight": 1,
+        "triggerKeywords": [
+          "pacemaker",
+          "stimulateur cardiaque",
+          "implantation",
+          "chirurgie cardiaque"
+        ]
+      },
+      {
+        "id": "hospitalisation_cardiologie",
+        "label": "Décide de l'hospitalisation en cardiologie pour bilan et prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "hospitalisation",
+          "cardiologie",
+          "USC",
+          "soins intensifs",
+          "transfert"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique clairement au patient le diagnostic, la prise en charge et le pronostic",
+        "weight": 1,
+        "triggerKeywords": [
+          "explique",
+          "diagnostic",
+          "pacemaker",
+          "prise en charge",
+          "pronostic"
+        ]
+      },
+      {
+        "id": "evite_traitements_contradictoires",
+        "label": "Évite de prescrire des traitements contre-indiqués (bêtabloquants, tricycliques, allongeant QT)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bêtabloquants",
+          "tricycliques",
+          "allongeant QT",
+          "contre-indication"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Réalise une synthèse clinique structurée et pertinente",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "au total",
+          "le patient présente",
+          "le diagnostic retenu"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux après l'événement. Il est retraité, ancien cadre, plutôt cultivé et posé. Il répond volontiers aux questions mais peut s'inquiéter si on ne lui explique pas clairement ce qui se passe.",
+      "phraseOuverture": "Bonjour docteur, je suis tombé tout à l'heure, je ne comprends pas ce qui m'est arrivé...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies",
+        "histoireMaladie.remarques",
+        "examenClinique.constantes",
+        "examenClinique.aspectGeneral",
+        "examenClinique.examenCardiovasculaire.auscultation",
+        "examenClinique.examenPulmonaire.auscultation",
+        "examenClinique.examenAbdominal.palpation",
+        "examenClinique.examenNeurologique.conscience"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.activitePhysique",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes, croise les bras. Il faut rétablir le contact par l'empathie.",
+        "silence": "Le patient attend poliment la question suivante. Il ne prend pas spontanément la parole.",
+        "jargon": "Le patient fronce les sourcils et demande : 'Pouvez-vous m'expliquer en termes simples, s'il vous plaît ?'"
+      }
+    }
+  }
 }

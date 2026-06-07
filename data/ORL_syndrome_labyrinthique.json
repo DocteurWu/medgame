@@ -152,16 +152,280 @@
   "correction": "# Labyrinthite aiguë sur otite moyenne — suspicion de syndrome de Cogan\n\nLa patiente présente un syndrome vestibulaire périphérique aigu (nystagmus inhibé par la fixation, Romberg positif, hyporéflexie calorique), une hypoacousie neurosensorielle droite et une otite moyenne aiguë. Le tableau est compatible avec une labyrinthite, pouvant être la première manifestation d’un syndrome de Cogan.\n\n## Points clés\n\n- Vertiges intenses + hypoacousie = atteinte audio-vestibulaire\n- Otoscope inflammatoire = étiologie otitique probable\n- Tests vestibulaires périphériques anormaux\n- IRM utile pour éliminer une atteinte centrale\n\n## Prise en charge\n\n- Antibiothérapie rapide\n- Corticoïdes si déficit cochléaire\n- Suivi ORL rapproché pour surveiller l'évolution auditive\n- Repos et traitement symptomatique",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service d'ORL / urgences ORL.",
+      "contexte": "Amelia Shepherd, 33 ans, femme, se présente aux urgences pour des vertiges rotatoires intenses avec troubles auditifs évoluant depuis 24 heures.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur le syndrome labyrinthique",
+        "Effectuer un examen clinique ciblé incluant l'examen neurologique et l'examen ORL (otoscopie, épreuves d'équilibre, évaluation de l'audition)",
+        "Proposer un diagnostic différentiel argumenté parmi les causes centrales et périphériques de vertige aigu",
+        "Énoncer le diagnostic le plus probable et justifier la stratégie diagnostique et thérapeutique adaptée",
+        "Expliquer au patient la prise en charge proposée de manière compréhensible"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'otoscopie instrumentale (simulation sans matériel réel)",
+        "Ne pas prescrire de traitement sans avoir énoncé le diagnostic",
+        "Ne pas ignorer les signes d'alerte (fièvre, hypoacousie, otalgie)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence ORL",
+      "materielDisponible": [
+        "Otoscope (simulation)",
+        "Diapason 512 Hz",
+        "Abaisse-langue",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Gants à usage unique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie le patient et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "identifie",
+          "patient"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_vertige",
+        "label": "Réalise un interrogatoire structuré du vertige (type, durée, intensité, mode d'installation, facteurs déclenchant, signes associés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rotatoire",
+          "depuis quand",
+          "brutal",
+          "nausées",
+          "vomissements",
+          "oreille bouchée",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "recherche_signes_orl_associes",
+        "label": "Recherche les signes ORL associés : hypoacousie, acouphènes, otalgie, otorrhée, sensation d'oreille bouchée",
+        "weight": 1,
+        "triggerKeywords": [
+          "acouphènes",
+          "hypoacousie",
+          "otalgie",
+          "oreille bouchée",
+          "surdité"
+        ]
+      },
+      {
+        "id": "explore_antecedents_familiaux",
+        "label": "Explore les antécédents personnels (migraines, traumatisme, infection récente) et familiaux (surdité, pathologie auto-immune)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "migraines",
+          "sœur",
+          "surdité familiale",
+          "auto-immun"
+        ]
+      },
+      {
+        "id": "examen_general_constantes",
+        "label": "Prend les constantes (TA, FC, T°, SpO2, FR) et note l'aspect général (patient nauséeux, gêné par les vertiges)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "saturation",
+          "constantes"
+        ]
+      },
+      {
+        "id": "otoscopie_realisee",
+        "label": "Réalise une otoscopie bilatérale et décrit les anomalies (tympan congestif et bombé à droite)",
+        "weight": 1,
+        "triggerKeywords": [
+          "otoscopie",
+          "tympan",
+          "congestif",
+          "bombé",
+          "otite"
+        ]
+      },
+      {
+        "id": "examen_auditif_diapason",
+        "label": "Évalue l'audition par les épreuves au diapason (Weber, Rinne) et identifie une hypoacousie de transmission à droite",
+        "weight": 1,
+        "triggerKeywords": [
+          "diapason",
+          "Weber",
+          "Rinne",
+          "hypoacousie",
+          "audition"
+        ]
+      },
+      {
+        "id": "examen_neurologique_nystagmus",
+        "label": "Recherche un nystagmus (type, direction, modification par la fixation) et décrit un nystagmus horizontal battant à gauche inhibé par la fixation",
+        "weight": 1,
+        "triggerKeywords": [
+          "nystagmus",
+          "fixation",
+          "horizontal",
+          "gauche",
+          "occulomotricité"
+        ]
+      },
+      {
+        "id": "epreuves_equilibre_romberg",
+        "label": "Réalise les épreuves d'équilibre (Romberg, marche aveugle, Fukuda) et identifie une latéralisation à droite",
+        "weight": 1,
+        "triggerKeywords": [
+          "Romberg",
+          "équilibre",
+          "chute",
+          "droite",
+          "Fukuda"
+        ]
+      },
+      {
+        "id": "test_skodique_hints",
+        "label": "Réalise le test HINTS (Head Impulse, Nystagmus, Test of Skew) pour différencier vertige central et périphérique",
+        "weight": 1,
+        "triggerKeywords": [
+          "HINTS",
+          "head impulse",
+          "skew",
+          "central",
+          "périphérique"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel_argumente",
+        "label": "Énumère les diagnostics différentiels pertinents : névrite vestibulaire, syndrome de Ménière, labyrinthite aiguë, cause centrale (AVC cérébelleux), syndrome de Cogan",
+        "weight": 1,
+        "triggerKeywords": [
+          "névrite vestibulaire",
+          "Ménière",
+          "labyrinthite",
+          "central",
+          "Cogan",
+          "AVC"
+        ]
+      },
+      {
+        "id": "diagnostic_retenu_labyrinthite",
+        "label": "Retient le diagnostic de labyrinthite aiguë sur otite moyenne aiguë droite, évoque un possible début de syndrome de Cogan devant l'association surdité + inflammation",
+        "weight": 1,
+        "triggerKeywords": [
+          "labyrinthite",
+          "otite moyenne",
+          "Cogan",
+          "infection",
+          "inflammation"
+        ]
+      },
+      {
+        "id": "strategie_imagerie_audition",
+        "label": "Propose une stratégie diagnostique adaptée : audiogramme tonal et vocal, IRM cérébelleuse avec injection pour éliminer une cause centrale, bilan inflammatoire et sérologie si Cogan suspecté",
+        "weight": 1,
+        "triggerKeywords": [
+          "audiogramme",
+          "IRM",
+          "bilan inflammatoire",
+          "sérologie",
+          "imagerie"
+        ]
+      },
+      {
+        "id": "traitement_initial_antibio_cortico",
+        "label": "Propose un traitement initial adapté : antibiothérapie adaptée à l'otite moyenne aiguë, corticothérapie courte, antiémétiques/vestibulosuppresseurs symptomatiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "antibiothérapie",
+          "corticothérapie",
+          "antiémétique",
+          "vestibulosuppresseur",
+          "traitement"
+        ]
+      },
+      {
+        "id": "orientation_specialiste_suivi",
+        "label": "Planifie une consultation ORL spécialisée rapide et un suivi audiométrique, mentionne la nécessité de surveiller l'évolution vers une surdité bilatérale si Cogan",
+        "weight": 1,
+        "triggerKeywords": [
+          "ORL",
+          "spécialiste",
+          "suivi",
+          "audiométrie",
+          "consultation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, reformule les plaintes principales",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape clé (diagnostic, traitement, suivi)",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient (évite le jargon médical non expliqué : labyrinthite, nystagmus, Weber, Rinne)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la détresse du patient (vertiges intenses, nausées, anxiété)",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patiente anxieuse mais coopérative, professionnelle de santé (neurochirurgienne) donc connaissant le vocabulaire médical mais en situation de vulnérabilité. Exige des explications claires et précises. S'inquiète pour son audition et sa capacité à reprendre le travail.",
+      "phraseOuverture": "Docteur, ça fait 24 heures que j'ai des vertiges terribles, j'ai l'impression que la pièce tourne autour de moi, je vomis, et en plus j'ai l'oreille droite bouchée avec des sifflements. J'ai un peu peur, surtout que ma sœur a fait une surdité brusque il y a quelques années.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "antecedents.familiaux"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Vous êtes brutal(e) ? Je suis médecin aussi, je mérite qu'on me traite avec respect même si je suis patiente.",
+        "silence": "Vous ne dites rien ? Est-ce que c'est grave ? J'ai vraiment peur de perdre l'audition.",
+        "jargon": "Labyrinthite ? Nystagmus ? Pouvez-vous m'expliquer ce que ça signifie en termes simples s'il vous plaît ?"
+      }
+    }
+  }
 }

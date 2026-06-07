@@ -711,13 +711,6 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             res.vitalChanges = { ...vitals };
             res.profession = role;
             return res;
-        }s.vitalChanges.respiratoryRate = 6;
-                res.expressionChange = "cyanose";
-                res.respiratoryPattern = "agonal";
-                res.scoringChange = { type: "fatal", treatmentName: "Allergène administré" };
-                res.soundToPlay = "alarm";
-                return res;
-            }
         }
 
         // --- 1. Masque à oxygène / O2 ---

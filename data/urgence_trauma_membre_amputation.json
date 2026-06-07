@@ -456,5 +456,291 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des Urgences.",
+      "contexte": "Karim Fontaine, 40 ans, homme, se présente aux urgences pour amputation de l'index droit par cisaille industrielle survenue il y a 5 minutes sur son lieu de travail. Le doigt sectionné est au sol.",
+      "consignesAttendues": [
+        "Accueillir le patient et réaliser un interrogatoire ciblé sur le traumatisme",
+        "Examiner le moignon et évaluer l'état hémodynamique",
+        "Prendre en charge le saignement du moignon (compression)",
+        "Récupérer et conditionner correctement le doigt sectionné en vue d'une réimplantation",
+        "Évaluer l'état de choc débutant et mettre en place une surveillance",
+        "Alerter le 15 (SAMU) et prévenir le chirurgien de la main",
+        "Rechercher les antécédents pertinents (diabète, tabagisme) et le mécanisme exact de l'accident",
+        "Aborder la notion d'accident du travail"
+      ],
+      "consignesInterdites": [
+        "Ne pas mettre le doigt sectionné directement dans la glace",
+        "Ne pas jeter le doigt sectionné",
+        "Ne pas ignorer les signes de choc débutant (tachycardie, pâleur, sueurs)",
+        "Ne pas réaliser de garrot au doigt"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Pansements compressifs",
+        "Gants stériles",
+        "Sérum physiologique",
+        "Linges propres",
+        "Sacs étanches",
+        "Glace",
+        "Brancard",
+        "Matériel de surveillance (tensiomètre, oxymètre, scope)",
+        "Voie périphérique et solutés de perfusion",
+        "Téléphone pour appeler le 15"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "installez-vous",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_mecanisme",
+        "label": "Interroge le patient sur le mécanisme exact de l'accident (type de machine, heure, circonstances)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cisaille",
+          "comment c'est arrivé",
+          "il y a combien de temps",
+          "machine",
+          "accident du travail"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents pertinents : diabète, tabagisme, traitements en cours, allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète",
+          "traitement",
+          "médicament",
+          "allergie",
+          "fume",
+          "tabac",
+          "metformine"
+        ]
+      },
+      {
+        "id": "evaluation_etat_hemodynamique",
+        "label": "Évalue l'état hémodynamique : constantes (TA, FC, FR, SpO2), recherche de signes de choc (pâleur, sueurs, tachycardie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "fréquence cardiaque",
+          "pâleur",
+          "sueurs",
+          "choc",
+          "constantes"
+        ]
+      },
+      {
+        "id": "examen_moignon",
+        "label": "Examine le moignon de l'index droit : niveau de section, saignement, état des tissus, pouls distaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "moignon",
+          "index",
+          "saignement",
+          "section",
+          "pouls radial",
+          "examen de la main"
+        ]
+      },
+      {
+        "id": "compression_hemorragie",
+        "label": "Réalise une compression efficace du moignon avec pansement compressif pour contrôler le saignement",
+        "weight": 1,
+        "triggerKeywords": [
+          "compression",
+          "pansement compressif",
+          "comprimer",
+          "arrêter le saignement",
+          "garrot"
+        ]
+      },
+      {
+        "id": "conditionnement_doigt",
+        "label": "Conditionne correctement le doigt sectionné : rinçage au sérum physiologique, enveloppé dans linge humide, mis dans sac étanche sur glace (sans contact direct avec la glace)",
+        "weight": 1,
+        "triggerKeywords": [
+          "doigt",
+          "récupérer",
+          "rincer",
+          "sérum physiologique",
+          "linge humide",
+          "sac",
+          "glace",
+          "réimplantation",
+          "conservation"
+        ]
+      },
+      {
+        "id": "ne_pas_mettre_glace_directe",
+        "label": "Ne met PAS le doigt directement dans la glace (évite la gelure tissulaire)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pas directement dans la glace",
+          "linge humide",
+          "sac étanche",
+          "sur la glace"
+        ]
+      },
+      {
+        "id": "mise_en_surveillance",
+        "label": "Met en place une surveillance : pose de voie périphérique, remplissage si choc, monitoring des constantes",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "remplissage",
+          "surveillance",
+          "scope",
+          "monitoring"
+        ]
+      },
+      {
+        "id": "alerte_samu_chirurgien",
+        "label": "Alerte le 15 (SAMU) et prévient le chirurgien spécialisé de la main pour transfert/réimplantation",
+        "weight": 1,
+        "triggerKeywords": [
+          "15",
+          "SAMU",
+          "chirurgien",
+          "chirurgie de la main",
+          "réimplantation",
+          "transfert",
+          "spécialiste"
+        ]
+      },
+      {
+        "id": "accident_travail",
+        "label": "Aborde la déclaration d'accort du travail et les démarches administratives associées",
+        "weight": 1,
+        "triggerKeywords": [
+          "accident du travail",
+          "déclaration",
+          "employeur",
+          "CPAM",
+          "feuille d'accident"
+        ]
+      },
+      {
+        "id": "information_patient",
+        "label": "Informe le patient de la prise en charge, du pronostic et des étapes à venir (réimplantation, suivi)",
+        "weight": 1,
+        "triggerKeywords": [
+          "je vais vous expliquer",
+          "prise en charge",
+          "réimplantation",
+          "pronostic",
+          "chirurgie",
+          "suivi"
+        ]
+      },
+      {
+        "id": "hygiene_precautions",
+        "label": "Respecte les précautions d'hygiène : lavage des mains, port de gants",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "hygiène",
+          "lavage des mains",
+          "désinfection"
+        ]
+      },
+      {
+        "id": "bilan_glycemique",
+        "label": "Réalise ou demande un dosage de la glycémie (patient diabétique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "diabète",
+          "sucre",
+          "glycémie capillaire",
+          "HbA1c"
+        ]
+      },
+      {
+        "id": "antalgie",
+        "label": "Évalue la douleur (EVA) et prescrit une antalgie adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "EVA",
+          "antalgique",
+          "morphine",
+          "paracétamol",
+          "échelle de douleur"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, reformule ses propos",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le contexte",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la détresse du patient (accident brutal, perte d'un doigt)",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient ouvrier de 40 ans, visiblement angoissé et en douleur. Il est conscient mais pâle, en sueurs, et serre sa main droite ensanglantée. Il répond aux questions mais est pressé et inquiet pour son doigt. Il peut se montrer agité ou se calmer selon l'attitude du médecin.",
+      "phraseOuverture": "Au secours ! Mon doigt, il est coupé ! La cisaille m'a attrapé la main, je saigne !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.descriptionDouleur"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.emploi",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [
+        "Le patient n'a pas de notion de malaise ou de perte de connaissance",
+        "Le doigt a été sectioné net (pas de déchirure), ce qui est favorable pour la réimplantation",
+        "Le patient n'a pas de trouble de la coagulation connu"
+      ],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes, peut devenir hostile si le médecin est trop directif ou ne semble pas prendre en compte sa douleur.",
+        "silence": "Le patient attend que le médecin agisse rapidement. Un silence prolongé le rend plus anxieux : 'Vous faites quoi ? Mon doigt, il va repousser ?'",
+        "jargon": "Le patient ne comprend pas les termes techniques et demande des explications : 'C'est quoi un moignon ? Vous pouvez le recoudre ?'"
+      }
+    }
   }
 }

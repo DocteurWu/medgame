@@ -133,16 +133,264 @@
   "correction": "# PICA\n\nIngestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.\n\n## Bonnes pratiques\n\n- Thérapies comportementales et aménagements environnementaux\n- Corriger les carences (fer)\n- Surveillance parentale et prévention des complications\n\n## Erreurs à éviter\n\n- Minimiser les risques digestifs/toxiques\n- Ignorer le dépistage et la correction des carences",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de pédiatrie.",
+      "contexte": "Lucas, 8 ans, garçon, se présente accompagné de sa mère pour ingestion répétée de substances non comestibles depuis plusieurs mois.",
+      "consignesAttendues": [
+        "Conduire un interrogatoire adapté auprès de l'enfant et de sa mère",
+        "Rechercher les caractéristiques du comportement de pica (nature, fréquence, contexte)",
+        "Évaluer les complications potentielles (carence en fer, occlusion, intoxication)",
+        "Réaliser un examen clinique pédiatrique complet",
+        "Proposer une stratégie diagnostique et une prise en charge adaptée",
+        "Expliquer le diagnostic et les mesures de prévention aux parents"
+      ],
+      "consignesInterdites": [
+        "Ne pas culpabiliser les parents",
+        "Ne pas ignorer le trouble du spectre autistique dans la prise en charge",
+        "Ne pas prescrire de traitement sans avoir éliminé une complication aiguë"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation de pédiatrie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre pédiatrique",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Balance et toise",
+        "Abaque de croissance",
+        "Fiche d'information sur le pica"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne à l'enfant et à la mère",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "on va"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Précise le motif de consultation : nature, fréquence et durée des ingestions",
+        "weight": 1,
+        "triggerKeywords": [
+          "quoi",
+          "depuis quand",
+          "combien de fois",
+          "terre",
+          "papier",
+          "substances"
+        ]
+      },
+      {
+        "id": "interrogatoire_contexte",
+        "label": "Explore le contexte des épisodes (stress, ennui, accès aux substances)",
+        "weight": 1,
+        "triggerKeywords": [
+          "stress",
+          "ennui",
+          "quand",
+          "où",
+          "maison",
+          "école",
+          "seul"
+        ]
+      },
+      {
+        "id": "interrogatoire_complications",
+        "label": "Recherche les signes de complications : douleurs abdominales, vomissements, constipation, pâleur",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "vomi",
+          "constipation",
+          "fatigue",
+          "pâle",
+          "sang",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents : trouble du spectre autistique, développement psychomoteur",
+        "weight": 1,
+        "triggerKeywords": [
+          "autisme",
+          "développement",
+          "parole",
+          "comportement",
+          "suivi",
+          "psychologue"
+        ]
+      },
+      {
+        "id": "interrogatoire_alimentation",
+        "label": "Évalue le régime alimentaire habituel et les carences possibles",
+        "weight": 1,
+        "triggerKeywords": [
+          "mange",
+          "viande",
+          "légumes",
+          "fer",
+          "appétit",
+          "repas"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique pédiatrique complet (abdomen, état général, croissance)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pèse",
+          "mesure",
+          "abdomen",
+          "bouche",
+          "ongles",
+          "pâleur",
+          "courbe"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose un bilan adapté : NFS, ferritine, zinc, plombémie si suspicion d'intoxication",
+        "weight": 1,
+        "triggerKeywords": [
+          "prise de sang",
+          "fer",
+          "ferritine",
+          "plomb",
+          "zinc",
+          "bilan",
+          "NFS"
+        ]
+      },
+      {
+        "id": "diagnostic_pica",
+        "label": "Évoque le diagnostic de pica selon les critères DSM-5",
+        "weight": 1,
+        "triggerKeywords": [
+          "pica",
+          "trouble",
+          "ingestion",
+          "non alimentaire",
+          "DSM"
+        ]
+      },
+      {
+        "id": "prise_en_charge",
+        "label": "Propose une prise en charge adaptée : supplémentation en fer, thérapie comportementale, surveillance parentale",
+        "weight": 1,
+        "triggerKeywords": [
+          "fer",
+          "supplémentation",
+          "comportementale",
+          "psychologue",
+          "surveillance",
+          "prévention"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Explique aux parents les mesures de prévention et le suivi nécessaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "prévenir",
+          "surveiller",
+          "suivi",
+          "danger",
+          "sécuriser"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière claire et adaptée aux parents",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "pica",
+          "trouble",
+          "pas grave",
+          "traitable"
+        ]
+      },
+      {
+        "id": "empathie_bienveillance",
+        "label": "Fait preuve d'empathie et de bienveillance envers l'enfant et les parents",
+        "weight": 1,
+        "triggerKeywords": [
+          "comprendre",
+          "normal",
+          "pas de honte",
+          "ensemble",
+          "aide"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient et la mère terminer sans les interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension des parents",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Enfant calme mais agité, répond brièvement aux questions. Mère inquiète mais coopérative.",
+      "phraseOuverture": "Bonjour docteur, c'est pour Lucas, il mange des choses bizarres depuis quelques mois...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne suis pas folle, je fais attention à lui !",
+        "silence": "...",
+        "jargon": "Le pica ? C'est quoi exactement ?"
+      }
+    }
+  }
 }

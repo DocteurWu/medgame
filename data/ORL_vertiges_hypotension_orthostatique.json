@@ -151,16 +151,265 @@
   "correction": "# Hypotension orthostatique\n\nLes vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.\n\n## Points clés\n\n- Vertiges non systématisés = origine centrale ou cardiovasculaire\n- Orthostatisme positif = diagnostic confirmé\n- Contexte de déshydratation et fortes dépenses physiques chez un pompier\n\n## Prise en charge\n\n- Réhydratation\n- Mesures physiques simples\n- Réévaluation si persistance",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Ben Warren, 42 ans, homme, se présente en consultation pour des vertiges intenses survenant au lever depuis une semaine.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les vertiges et les facteurs déclenchants",
+        "Effectuer un examen clinique adapté incluant la recherche d'un orthostatisme",
+        "Évoquer les principaux diagnostics différentiels devant des vertiges posturaux",
+        "Proposer une prise en charge thérapeutique initiale adaptée",
+        "Éduquer le patient sur les mesures hygiéno-diététiques et les signes d'alerte"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire un traitement sans avoir éliminé une cause grave",
+        "Ne pas ignorer les symptômes associés rapportés par le patient"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre manuel",
+        "Stéthoscope",
+        "Otoscope",
+        "Marteau à réflexes",
+        "Chronomètre",
+        "Table d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "rôle"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_vertiges",
+        "label": "Réalise un interrogatoire orienté sur les vertiges (caractère rotatoire ou non, durée, fréquence, facteurs déclenchants et aggravants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vertige",
+          "rotation",
+          "durée",
+          "fréquence",
+          "déclenche",
+          "position",
+          "lever",
+          "coucher"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_associes",
+        "label": "Recherche les symptômes associés (troubles visuels, auditifs, neurologiques, cardiovasculaires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vision",
+          "audition",
+          "acouphène",
+          "nausée",
+          "vomissement",
+          "syncope",
+          "palpitation",
+          "sueurs"
+        ]
+      },
+      {
+        "id": "explore_antecedents",
+        "label": "Explore les antécédents personnels, familiaux et les traitements en cours",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédent",
+          "traitement",
+          "médicament",
+          "famille",
+          "père",
+          "mère",
+          "ibuprofène"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_risque_orthostatisme",
+        "label": "Recherche les facteurs de risque d'hypotension orthostatique (hydratation, prise médicamenteuse, effort prolongé)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hydratation",
+          "eau",
+          "sel",
+          "effort",
+          "garde",
+          "pompier",
+          "charge",
+          "médicament",
+          "AINS"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet incluant constantes, examen cardiovasculaire, pulmonaire et neurologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "auscultation",
+          "neurologique",
+          "coordination",
+          "romberg"
+        ]
+      },
+      {
+        "id": "realise_test_orthostatisme",
+        "label": "Réalise correctement le test d'orthostatisme (mesure TA couché puis debout à 1 et 3 minutes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "orthostatisme",
+          "couché",
+          "debout",
+          "tension couchée",
+          "tension debout",
+          "chute tensionnelle"
+        ]
+      },
+      {
+        "id": "elimine_causes_graves",
+        "label": "Élimine les causes graves de vertiges (AVC, neuronite vestibulaire, VPPB) par l'examen clinique",
+        "weight": 1,
+        "triggerKeywords": [
+          "avc",
+          "vestibulaire",
+          "vppb",
+          "dix-hallpike",
+          "nystagmus",
+          "dysarthrie",
+          "déficit",
+          "romberg"
+        ]
+      },
+      {
+        "id": "diagnostic_pertinent",
+        "label": "Pose le diagnostic d'hypotension orthostatique en cohérence avec les données cliniques",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypotension orthostatique",
+          "posturale",
+          "orthostatique",
+          "diagnostic"
+        ]
+      },
+      {
+        "id": "prise_en_charge_adaptee",
+        "label": "Propose une prise en charge adaptée (mesures hygiéno-diététiques, éducation au lever progressif, suivi)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hydratation",
+          "sel",
+          "lever progressif",
+          "éducation",
+          "surveillance",
+          "consultation"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur les signes d'alerte nécessitant une consultation urgente",
+        "weight": 1,
+        "triggerKeywords": [
+          "signes d'alerte",
+          "urgence",
+          "consulter",
+          "aggravation",
+          "syncope",
+          "chute"
+        ]
+      },
+      {
+        "id": "conclusion_consultation",
+        "label": "Conclut la consultation de manière structurée (résumé, plan de suivi, vérification compréhension patient)",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "plan",
+          "suivi",
+          "compris",
+          "question",
+          "prochaine consultation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer ses explications sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant de recourir aux questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance tout au long de la consultation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux par rapport à ses symptômes. Il s'inquiète pour sa capacité à exercer son métier de pompier. Il répond volontiers aux questions mais peut minimiser certains symptômes s'il n'est pas spécifiquement interrogé.",
+      "phraseOuverture": "Bonjour docteur, ça fait une semaine que j'ai des vertiges terribles quand je me lève, surtout le matin. J'ai peur que ce soit grave.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies",
+        "modeDeVie.emploi"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [
+        "histoireMaladie.remarques",
+        "modeDeVie.activitePhysique"
+      ],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je n'ai pas fini de vous expliquer...",
+        "silence": "... (silence prolongé, regard interrogateur)",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Pouvez-vous me l'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

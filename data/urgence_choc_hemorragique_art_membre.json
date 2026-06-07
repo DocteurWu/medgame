@@ -504,5 +504,251 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Lucas Martin, 32 ans, homme, se présente pour une plaie hémorragique du membre inférieur gauche survenue lors d'un accident de bricolage avec une tronçonneuse.",
+      "consignesAttendues": [
+        "Accueillir le patient et se présenter",
+        "Réaliser un interrogatoire ciblé sur le mécanisme de l'accident et les symptômes actuels",
+        "Effectuer un examen clinique complet en priorisant l'évaluation hémodynamique",
+        "Identifier le caractère artériel du saignement",
+        "Mettre en œuvre les gestes d'urgence : compression directe, garrot, position de choc",
+        "Alerter le médecin senior et le SAMU (15)",
+        "Expliquer les gestes réalisés au patient avec empathie"
+      ],
+      "consignesInterdites": [
+        "Poser un pansement simple sans compression efficace",
+        "Laisser le patient sans surveillance",
+        "Retirer le garrot une fois posé",
+        "Administrer un traitement médicamenteux sans avis médical",
+        "Minimiser la gravité de la situation devant le patient"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Gants stériles",
+        "Compresses stériles",
+        "Garrot tourniquet (type CAT)",
+        "Bandes élastiques",
+        "Matériel de perfusion (voie veineuse, tubulure, sérum physiologique)",
+        "Oxymètre de pouls",
+        "Tensiomètre",
+        "Couverture de survie",
+        "Brancard avec possibilité de Trendelenburg",
+        "Téléphone interne pour alerte 15"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie le patient et installe un climat de confiance malgré l'urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "identité",
+          "prénom"
+        ]
+      },
+      {
+        "id": "interrogatoire_cible",
+        "label": "Réalise un interrogatoire rapide mais structuré : mécanisme lésionnel, délai, symptômes associés (pâleur, sueurs, vertiges), antécédents, allergies, traitements en cours",
+        "weight": 1,
+        "triggerKeywords": [
+          "tronçonneuse",
+          "combien de temps",
+          "allergie",
+          "traitement",
+          "antécédents",
+          "douleur"
+        ]
+      },
+      {
+        "id": "evaluation_hemodynamique",
+        "label": "Évalue rapidement l'état hémodynamique : pouls, tension, fréquence respiratoire, saturation, recherche de signes de choc (pâleur, sueurs, tachycardie, extrémités froides)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "pâleur",
+          "sueurs",
+          "froid"
+        ]
+      },
+      {
+        "id": "identification_saignement_arteriel",
+        "label": "Identifie le caractère artériel du saignement (sang rouge vif, jets pulsatiles, abondant) à l'inspection de la plaie",
+        "weight": 1,
+        "triggerKeywords": [
+          "rouge vif",
+          "pulsatile",
+          "jet",
+          "artériel",
+          "abondant"
+        ]
+      },
+      {
+        "id": "compression_directe",
+        "label": "Réalise une compression manuelle directe immédiate sur la plaie avec des compresses stériles",
+        "weight": 1,
+        "triggerKeywords": [
+          "compression",
+          "appuyer",
+          "compresses",
+          "pression directe"
+        ]
+      },
+      {
+        "id": "pose_garrot",
+        "label": "Pose un garrot tourniquet 3 cm au-dessus de la plaie (entre la plaie et le cœur) avec serrage efficace jusqu'à arrêt du saignement",
+        "weight": 1,
+        "triggerKeywords": [
+          "garrot",
+          "tourniquet",
+          "au-dessus",
+          "serrer",
+          "arrêt saignement"
+        ]
+      },
+      {
+        "id": "position_choc",
+        "label": "Installe le patient en position de choc : allongé, membres inférieurs surélevés (Trendelenburg), couvert pour lutter contre l'hypothermie",
+        "weight": 1,
+        "triggerKeywords": [
+          "allonger",
+          "surélever jambes",
+          "couvrir",
+          "trendelenburg",
+          "position choc"
+        ]
+      },
+      {
+        "id": "mise_en_place_voie_veineuse",
+        "label": "Met en place une voie veineuse périphérique de bon calibre (14G ou 16G) pour remplissage",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "remplissage",
+          "sérum physiologique",
+          "cathéter"
+        ]
+      },
+      {
+        "id": "alerte_medecin_senior",
+        "label": "Alerte le médecin senior des urgences et/ou le SAMU (15) en communiquant un bilan structuré (SBAR ou équivalent)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alerte",
+          "médecin senior",
+          "SAMU",
+          "15",
+          "choc",
+          "plaie artérielle"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Assure une surveillance continue du patient : constantes, conscience, saignement, efficacité du garrot",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveiller",
+          "constantes",
+          "conscience",
+          "efficacité garrot",
+          "réévaluation"
+        ]
+      },
+      {
+        "id": "information_patient",
+        "label": "Informe le patient de manière adaptée sur la situation, les gestes réalisés et la suite de la prise en charge, avec empathie et réassurance",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "rassurer",
+          "ce que je fais",
+          "comprenez",
+          "inquiétude"
+        ]
+      },
+      {
+        "id": "hygiene_precautions",
+        "label": "Respecte les précautions d'hygiène : port de gants, gestion des déchets souillés",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "hygiène",
+          "asepsie",
+          "protection"
+        ]
+      },
+      {
+        "id": "note_heure_garrot",
+        "label": "Note l'heure de pose du garrot et la communique à l'équipe qui prend le relais",
+        "weight": 1,
+        "triggerKeywords": [
+          "heure garrot",
+          "noter heure",
+          "heure de pose"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient s'exprimer, ne l'interrompt pas de manière brutale même en contexte d'urgence",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour recueillir les informations",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension des informations données par le patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de calme et de bienveillance malgré l'urgence de la situation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Lucas est un homme de 32 ans, menuisier, conscient mais anxieux et douloureux. Il est coopératif mais agité par la douleur et la vue du sang. Il répond aux questions de façon concise en raison de la douleur et du stress. Il peut poser des questions sur la gravité de son état.",
+      "phraseOuverture": "Aïe, aïe, aïe… Docteur, ça saigne beaucoup, j'ai peur… Ma tronçonneuse a glissé sur ma cuisse, je sais pas ce que j'ai mais ça gicle…",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "allergies",
+        "traitements",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Lucas se raidit, devient moins coopératif et dit : « Vous me faites mal ! Faites attention ! »",
+        "silence": "Lucas regarde sa plaie avec inquiétude et dit : « C'est grave, dites-moi que c'est pas grave… »",
+        "jargon": "Lucas fronce les sourcils et dit : « Je comprends pas, parlez-moi en français simple s'il vous plaît. »"
+      }
+    }
   }
 }

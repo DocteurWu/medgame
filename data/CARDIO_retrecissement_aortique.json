@@ -153,13 +153,13 @@
   "correction": "# Rétrécissement aortique serré\n\nDyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.\n\n## Bonnes pratiques\n\n- Confirmer par échocardiographie-Doppler (gradient, surface, HVG)\n- Surveiller la fonction ventriculaire gauche\n- Planifier remplacement valvulaire (chirurgie ou TAVI)\n\n## Erreurs à éviter\n\n- Omettre l'évaluation du gradient et de la surface valvulaire\n- Ne pas corriger les facteurs de risque cardiovasculaires associés",
   "vitalsDynamics": {
     "trendOverMinutes": 0.08,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 55,
       "systolic": 105,
       "diastolic": 65,
       "spo2": 92,
-      "temperature": 37.0,
+      "temperature": 37,
       "respiratoryRate": 24
     },
     "stabilizeOnCorrectTreatment": true
@@ -182,5 +182,231 @@
     "Echographie cardiaque",
     "Bilan sanguin",
     "Coronarographie"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Monsieur Charles Bingley, 72 ans, homme, se présente pour une dyspnée d'effort et des malaises à l'effort évoluant depuis 6 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté cardiovasculaire",
+        "Réaliser un examen clinique cardiovasculaire complet incluant l'auscultation cardiaque",
+        "Identifier les signes évocateurs d'un rétrécissement aortique",
+        "Proposer un bilan diagnostique adapté (ECG, échocardiographie, etc.)",
+        "Expliquer au patient la stratégie diagnostique et la prise en charge thérapeutique envisagée",
+        "Identifier les traitements à éviter dans cette pathologie"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de vasodilatateurs",
+        "Ne pas prescrire de bêtabloquants en phase de décompensation",
+        "Ne pas prescrire de digitaliques sans avis spécialisé",
+        "Ne pas réaliser de test d'effort sans avis cardiologique préalable"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Consultation de cardiologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "ECG 12 dérivations",
+        "Échocardiographe"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet",
+        "label": "Réalise un interrogatoire complet orienté cardiovasculaire (caractérisation des symptômes, facteurs de risque, antécédents)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "effort",
+          "douleur thoracique",
+          "malaise",
+          "syncope",
+          "antécédents",
+          "traitement",
+          "famille"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardiovasculaire",
+        "label": "Réalise un examen clinique cardiovasculaire complet (inspection, palpation, auscultation cardiaque, pouls périphériques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "souffle",
+          "pouls",
+          "carotidien",
+          "foyer aortique"
+        ]
+      },
+      {
+        "id": "identification_signes_RA",
+        "label": "Identifie les signes évocateurs de rétrécissement aortique (souffle systolique râpeux, irradiation carotidiennes, pouls tardif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "souffle systolique",
+          "aortique",
+          "irradiation",
+          "carotides",
+          "rétrécissement",
+          "sténose"
+        ]
+      },
+      {
+        "id": "bilan_diagnostique_adapte",
+        "label": "Propose un bilan diagnostique adapté (ECG, échocardiographie transthoracique, bilan biologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "échocardiographie",
+          "échographie cardiaque",
+          "bilan",
+          "BNP",
+          "troponine"
+        ]
+      },
+      {
+        "id": "diagnostic_RA",
+        "label": "Évoque le diagnostic de rétrécissement aortique serré",
+        "weight": 1,
+        "triggerKeywords": [
+          "rétrécissement aortique",
+          "sténose aortique",
+          "valvulopathie",
+          "RA"
+        ]
+      },
+      {
+        "id": "PEC_chirurgicale",
+        "label": "Propose une prise en charge chirurgicale (remplacement valvulaire aortique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "chirurgie",
+          "remplacement",
+          "prothèse",
+          "TAVI",
+          "RVA",
+          "remplacement valvulaire"
+        ]
+      },
+      {
+        "id": "traitements_eviter",
+        "label": "Identifie les traitements contre-indiqués (vasodilatateurs, bêtabloquants en décompensation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "contre-indication",
+          "vasodilatateur",
+          "IEC",
+          "bêtabloquant",
+          "éviter"
+        ]
+      },
+      {
+        "id": "surveillance_RA",
+        "label": "Explique la nécessité d'une surveillance rapprochée et d'un suivi cardiologique régulier",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "suivi",
+          "cardiologue",
+          "consultation",
+          "échocardiographie"
+        ]
+      },
+      {
+        "id": "conseils_hygieno_dietetiques",
+        "label": "Donne des conseils adaptés (éviter les efforts intenses, adapter l'activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "effort",
+          "activité physique",
+          "repos",
+          "conseils",
+          "éviter"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière claire et empathique au patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "expliquer",
+          "comprendre",
+          "maladie",
+          "valve"
+        ]
+      },
+      {
+        "id": "orientation_specialiste",
+        "label": "Oriente le patient vers un cardiologue spécialisé pour la prise en charge définitive",
+        "weight": 1,
+        "triggerKeywords": [
+          "cardiologue",
+          "spécialiste",
+          "orientation",
+          "consultation spécialisée"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux face aux symptômes, demande des explications claires",
+      "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai du mal à respirer quand je fais des efforts et je fais des malaises.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je ne comprends pas tout...",
+        "silence": "Vous pouvez me poser des questions, je suis là pour répondre.",
+        "jargon": "Pouvez-vous m'expliquer ce que ça signifie ? Je ne suis pas médecin."
+      }
+    }
+  }
 }

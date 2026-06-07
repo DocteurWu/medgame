@@ -173,5 +173,227 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 3
+  "difficulty": 3,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Monsieur WEBBER Richard, 67 ans, homme, se présente pour une dyspnée d'effort et des œdèmes des membres inférieurs.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Réaliser un examen clinique cardiovasculaire et pulmonaire",
+        "Proposer un diagnostic et une stratégie de prise en charge initiale",
+        "Expliquer au patient sa maladie et les mesures hygiéno-diététiques"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de bêtabloquants sans justification",
+        "Ne pas ignorer les antédents d'alcoolisme chronique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service de cardiologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Balance",
+        "ECG",
+        "Radiographie thoracique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet",
+        "label": "Réalise un interrogatoire complet (histoire de la maladie, antécédents, mode de vie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "antécédents",
+          "tabac",
+          "alcool",
+          "alimentation"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_associes",
+        "label": "Recherche les symptômes associés (fatigue, orthopnée, DPN)",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "orthopnée",
+          "dyspnée nocturne",
+          "position couchée"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardio",
+        "label": "Réalise un examen clinique cardiovasculaire complet (auscultation, inspection, palpation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "galop",
+          "OMI",
+          "turgescence jugulaire"
+        ]
+      },
+      {
+        "id": "examen_clinique_pulmonaire",
+        "label": "Réalise un examen clinique pulmonaire (auscultation, percussion)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crépitants",
+          "base",
+          "matité",
+          "percussion"
+        ]
+      },
+      {
+        "id": "prise_constantes",
+        "label": "Prend les constantes (TA, FC, FR, SpO2, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "fréquence respiratoire"
+        ]
+      },
+      {
+        "id": "diagnostic_orientation",
+        "label": "Oriente le diagnostic vers une insuffisance cardiaque",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "cardiomyopathie",
+          "dysfonction ventriculaire"
+        ]
+      },
+      {
+        "id": "strategie_examen_complementaire",
+        "label": "Propose des examens complémentaires adaptés (ECG, radio thorax, BNP, échocardiographie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "radiographie",
+          "BNP",
+          "échocardiographie",
+          "biologie"
+        ]
+      },
+      {
+        "id": "traitement_initial",
+        "label": "Propose un traitement initial adapté (diurétique, IEC)",
+        "weight": 1,
+        "triggerKeywords": [
+          "diurétique",
+          "furosémide",
+          "IEC",
+          "IECA"
+        ]
+      },
+      {
+        "id": "mesures_hygienodietetiques",
+        "label": "Explique les mesures hygiéno-diététiques (régime désodé, activité physique adaptée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sel",
+          "régime",
+          "poids",
+          "activité physique",
+          "sevrage"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur sa maladie et les signes d'alerte",
+        "weight": 1,
+        "triggerKeywords": [
+          "signes d'alerte",
+          "prise de poids",
+          "aggravation",
+          "consulter"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière claire et empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "cœur",
+          "pompe",
+          "explication"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "cardiologue",
+          "traitement"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif mais inquiet, ancien chirurgien, connaît le vocabulaire médical",
+      "phraseOuverture": "Bonjour docteur, je suis essoufflé depuis quelques semaines et j'ai les chevilles qui gonflent.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis moi-même médecin !",
+        "silence": "Pardon, je réfléchissez... Oui, c'est bien ce que je voulais dire.",
+        "jargon": "Oui, je comprends, je suis chirurgien de formation."
+      }
+    }
+  }
 }

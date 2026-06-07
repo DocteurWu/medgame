@@ -145,7 +145,7 @@
   "correction": "# TVP chez un sujet jeune après un long voyage\n\nDouleur unilatérale, spontanée, brutale au mollet avec oedème et signes inflammatoires. L'examen de référence est l'échographie doppler des membres inférieurs, et dosage des D-dimères.\n\n## Bonnes pratiques\n\n- La première chose est d'éliminer l'embolie pulmonaire par la clinique dans un premier temps : dyspnée, douleur thoracique, syncope, désaturation, FR, auscultation… Au moindre doute, on réalise des examens complémentaires : angioscanner, radiographie thoracique, ECG… Attention, l'EP peut être asymptomatique.\n- Il faut identifier si la TVP est provoquée (immobilisation, plâtre, traitement…) ou non. Dans ce cas, il faudra pousser les explorations pour rechercher une étiologie. \n- Il faut encourager la mobilisation précoce et éviter le repos strict au lit pour réduire le risque de complications. \n\n## Erreurs à éviter\n\n- Ne pas adapter l'anticoagulation (posologie et durée de traitement) au risque de récidive. \n- Attendre le résultat des examens avant d'anticoaguler un patient à forte probabilité clinique.",
   "vitalsDynamics": {
     "trendOverMinutes": 0.07,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 105,
       "systolic": 120,
@@ -175,5 +175,270 @@
     "D-dimères",
     "Bilan de thrombophilie",
     "Scanner thoracique"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Alex Ternes, 22 ans, homme, se présente aux urgences pour une douleur soudaine au mollet droit évoluant depuis 2 jours.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient orienté vers la pathologie veineuse thromboembolique",
+        "Réaliser un examen clinique ciblé du membre inférieur et un examen cardio-respiratoire",
+        "Évoquer le diagnostic de thrombose veineuse profonde droite",
+        "Prescrire les examens complémentaires adaptés (D-dimères, échodoppler veineux)",
+        "Initier la prise en charge thérapeutique appropriée (anticoagulation)",
+        "Expliquer au patient le diagnostic, le traitement et les mesures associées"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'AINS seuls comme traitement",
+        "Ne pas réaliser de thrombolyse systémique",
+        "Ne pas se contenter de compression sans anticoagulation",
+        "Ne pas ignorer le contexte de voyage prolongé comme facteur de risque"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Mètre ruban pour mesure du périmètre du mollet",
+        "Ordonnance vierge",
+        "Feuille de consentement"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je vais m'occuper de vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : douleur mollet droit, début brutal, durée 2 jours",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "mollet",
+          "depuis quand",
+          "comment c'est apparu",
+          "brutal"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque thromboembolique : voyage prolongé en avion récent (4 jours), sédentarité, tabac",
+        "weight": 1,
+        "triggerKeywords": [
+          "voyage",
+          "avion",
+          "Asie",
+          "immobilisé",
+          "vol long courrier",
+          "tabac",
+          "fume"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux de maladie thromboembolique",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "parents",
+          "grand-père",
+          "thrombose",
+          "phlébite",
+          "embolie",
+          "AVC"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés : gonflement, dyspnée, douleur thoracique, hémoptysie",
+        "weight": 1,
+        "triggerKeywords": [
+          "gonflement",
+          "jambe gonflée",
+          "essoufflement",
+          "douleur thoracique",
+          "dyspnée",
+          "hémoptysie"
+        ]
+      },
+      {
+        "id": "examen_clinique_membre",
+        "label": "Réalise un examen clinique du membre inférieur droit : inspection, palpation, mesure du périmètre, signe de Homans",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "palpation",
+          "périmètre",
+          "mesure",
+          "Homans",
+          "chaleur",
+          "rougeur",
+          "gonflement"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardio_respiratoire",
+        "label": "Réalise un examen cardio-respiratoire complet (auscultation cardiaque et pulmonaire, FR, SpO2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "cœur",
+          "poumons",
+          "respiration",
+          "saturation",
+          "fréquence respiratoire"
+        ]
+      },
+      {
+        "id": "diagnostic_tvp",
+        "label": "Évoque le diagnostic de thrombose veineuse profonde droite",
+        "weight": 1,
+        "triggerKeywords": [
+          "thrombose veineuse profonde",
+          "TVP",
+          "phlébite",
+          "thrombose",
+          "mollet"
+        ]
+      },
+      {
+        "id": "examens_complementaires",
+        "label": "Prescrit les examens complémentaires adaptés : D-dimères et échodoppler veineux des membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "D-dimères",
+          "doppler",
+          "échodoppler",
+          "échographie veineuse",
+          "bilan",
+          "examens"
+        ]
+      },
+      {
+        "id": "pec_anticoagulation",
+        "label": "Initie une anticoagulation adaptée (HBPM ou AOD) pour une durée de 3 mois",
+        "weight": 1,
+        "triggerKeywords": [
+          "anticoagulant",
+          "HBPM",
+          "héparine",
+          "AOD",
+          "rivaroxaban",
+          "apixaban",
+          "3 mois",
+          "traitement"
+        ]
+      },
+      {
+        "id": "pec_compression",
+        "label": "Prescrit une contention élastique par bas de contention",
+        "weight": 1,
+        "triggerKeywords": [
+          "contention",
+          "bas de compression",
+          "bas élastique",
+          "compression"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Explique au patient le diagnostic, le traitement, les signes d'alerte et les mesures de prévention",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "diagnostic",
+          "traitement",
+          "signes d'alerte",
+          "prévention",
+          "conseils"
+        ]
+      },
+      {
+        "id": "conseils_prevention",
+        "label": "Donne des conseils de prévention : hydratation, mobilisation, contention lors des voyages",
+        "weight": 1,
+        "triggerKeywords": [
+          "hydratation",
+          "bouger",
+          "mobilisation",
+          "voyage",
+          "prévention",
+          "conseils"
+        ]
+      },
+      {
+        "id": "surveillance",
+        "label": "Planifie le suivi du patient : consultation de contrôle, durée de traitement, bilan étiologique si indiqué",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "contrôle",
+          "consultation",
+          "bilan",
+          "étiologique",
+          "thrombophilie"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune homme de 22 ans, étudiant externe, plutôt coopératif mais anxieux. Il s'inquiète pour sa jambe et pose des questions. Il est stressé par ses études.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal au mollet droit depuis 2 jours, c'est apparu d'un coup et ma jambe a gonflé. J'ai peur que ce soit grave.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "histoireMaladie.facteursDeclenchants"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et semble contrarié. Il faut rétablir le contact.",
+        "silence": "Le patient attend que l'interne reprenne la main. Il ne prend pas l'initiative de parler.",
+        "jargon": "Le patient demande : 'C'est quoi ça ?' ou 'Je comprends pas, vous pouvez expliquer ?'"
+      }
+    }
+  }
 }

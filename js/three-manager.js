@@ -8,10 +8,10 @@ import { initUrgenceAgent3D } from './three-urgence-agent.js';
 import { ThreeClinicalAgent } from './three-clinical-agent.js';
 
 const INTERACTION_ZONES = {
-    patient: { x: 2.15, y: 0, z: -1.7 },
-    desk: { x: -0.5, y: 0, z: 0.55 },
-    door: { x: 0, y: 0, z: 3.5 },
-    evier: { x: -3.8, y: 0, z: 1.8 }
+    patient: { x: 1.2, y: 0, z: -3.5 },
+    desk: { x: -3.1, y: 0, z: 0.3 },
+    door: { x: 3.0, y: 0, z: 4.2 },
+    evier: { x: -4.2, y: 0, z: 2.4 }
 };
 
 const ROOM_BOUNDS = { minX: -4.8, maxX: 4.8, minZ: -3.8, maxZ: 3.8 };
@@ -427,11 +427,13 @@ class ThreeManager {
         if (this.scene.patient && this.scene.patient.group) {
              const px = this.scene.patient.group.position.x;
              const pz = this.scene.patient.group.position.z;
-             if (px < 0) {
-                 // Lit
-                 targetZone = { x: px + 1.2, y: 0, z: pz + 0.5 };
+             if (this.scene.patient._currentPosition === 'allonge') {
+                 // Lit (bed frame center x = 4.7, z = 0.2)
+                 // Stand to the left of the bed
+                 targetZone = { x: px - 1.1, y: 0, z: pz };
              } else {
-                 // Chaise
+                 // Chaise (chair center x = 2.15, z = -1.7)
+                 // Stand to the front-left of the chair
                  targetZone = { x: px - 0.2, y: 0, z: pz + 1.2 };
              }
         }
@@ -576,7 +578,7 @@ class ThreeManager {
      */
     _getPatientTorsoPosition() {
         // Par défaut, position assise (fauteuil)
-        let pos = new THREE.Vector3(2.0, 1.2, -1.3);
+        let pos = new THREE.Vector3(1.2, 1.2, -3.5);
 
         if (this.scene?.patient?.group) {
             const patientGroup = this.scene.patient.group;
@@ -1454,6 +1456,18 @@ class ThreeManager {
         this.tooltip.style.left = `${event.clientX + 12}px`;
         this.tooltip.style.top = `${event.clientY - 18}px`;
         this.tooltip.style.display = 'block';
+    }
+
+    toggleLightingTheme() {
+        if (this.scene && this.scene.lightingAgent) {
+            const newTheme = this.scene.lightingAgent.toggleTheme();
+            // Sync normal fog color for the urgency mode
+            if (this.scene.scene.fog) {
+                this.scene._normalFogColor = this.scene.scene.fog.color.clone();
+            }
+            return newTheme;
+        }
+        return 'dark';
     }
 }
 

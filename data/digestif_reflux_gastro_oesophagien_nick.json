@@ -131,16 +131,296 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de gastro-entérologie.",
+      "contexte": "WILDE Nick, 38 ans, homme, se présente en consultation pour des brûlures rétro-sternales évoluant depuis 1 semaine.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes digestifs et les facteurs de risque",
+        "Effectuer un examen clinique abdominal et cardio-respiratoire",
+        "Proposer un diagnostic et argumenter",
+        "Énoncer les mesures hygiéno-diététiques adaptées",
+        "Proposer un traitement médical de première intention",
+        "Évaluer les signes d'alarme et les indications d'endoscopie"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'examens complémentaires en première intention sans justification",
+        "Ne pas ignorer le tabagisme du patient",
+        "Ne pas méconnaître les signes d'alarme (dysphagie, amaigrissement, anémie)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Balance et toise",
+        "Table d'examen"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "enchanté"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet_symptomes",
+        "label": "Explore précisément les caractéristiques des brûlures rétro-sternales (localisation, irradiation, intensité, chronologie, facteurs déclenchants et aggravants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "brûlures",
+          "rétro-sternales",
+          "repas",
+          "couché",
+          "antiacides",
+          "quand",
+          "depuis combien de temps"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_associes",
+        "label": "Recherche les symptômes associés : régurgitations, dysphagie, odynophagie, toux nocturne, épigastralgies",
+        "weight": 1,
+        "triggerKeywords": [
+          "régurgitations",
+          "dysphagie",
+          "difficulté à avaler",
+          "toux",
+          "remontées acides",
+          "brûlures estomac"
+        ]
+      },
+      {
+        "id": "recherche_signes_alarme",
+        "label": "Recherche explicitement les signes d'alarme : dysphagie, amaigrissement, anémie, hématémèse, méléna",
+        "weight": 1,
+        "triggerKeywords": [
+          "dysphagie",
+          "amaigrissement",
+          "perte de poids",
+          "vomissement sanglant",
+          "sang",
+          "anorexie"
+        ]
+      },
+      {
+        "id": "exploration_facteurs_risque",
+        "label": "Explore les facteurs de risque : tabagisme (quantification en paquets-années), alcool, alimentation, IMC, prise médicamenteuse (AINS, aspirine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "cigarette",
+          "alcool",
+          "alimentation",
+          "poids",
+          "taille",
+          "AINS",
+          "médicaments"
+        ]
+      },
+      {
+        "id": "antecedents_personnels_familiaux",
+        "label": "Recherche les antécédents personnels et familiaux (pathologie digestive, cancer œsogastrique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "père",
+          "mère",
+          "cancer",
+          "ulcère"
+        ]
+      },
+      {
+        "id": "examen_clinique_abdominal",
+        "label": "Réalise un examen abdominal complet : inspection, auscultation, palpation (sensibilité épigastrique, défense, masse)",
+        "weight": 1,
+        "triggerKeywords": [
+          "palpation",
+          "abdomen",
+          "épigastre",
+          "douloureux",
+          "souple"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardio_respiratoire",
+        "label": "Réalise un examen cardio-respiratoire (auscultation cardiaque et pulmonaire) pour éliminer une étiologie cardiaque",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "cœur",
+          "poumons",
+          "souffle",
+          "pouls"
+        ]
+      },
+      {
+        "id": "prise_constantes",
+        "label": "Prend les constantes : TA, FC, température, saturation, poids/taille (IMC)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "poids",
+          "taille",
+          "IMC"
+        ]
+      },
+      {
+        "id": "diagnostic_rgo",
+        "label": "Évoque le diagnostic de reflux gastro-œsophagien et l'argumente",
+        "weight": 1,
+        "triggerKeywords": [
+          "reflux",
+          "RGO",
+          "gastro-œsophagien",
+          "reflux gastro-oesophagien"
+        ]
+      },
+      {
+        "id": "mesures_hygieno_dietetiques",
+        "label": "Énonce les mesures hygiéno-diététiques : surélever la tête du lit, éviter les repas copieux, éviter le décubitus après les repas, perte de poids si nécessaire, arrêt du tabac",
+        "weight": 1,
+        "triggerKeywords": [
+          "surélever",
+          "tête du lit",
+          "repas légers",
+          "tabac",
+          "arrêter de fumer",
+          "perte de poids",
+          "alimentation",
+          "éviter"
+        ]
+      },
+      {
+        "id": "traitement_ipp",
+        "label": "Propose un traitement par inhibiteur de la pompe à protons (IPP) en première intention à dose standard pour 4-8 semaines",
+        "weight": 1,
+        "triggerKeywords": [
+          "IPP",
+          "oméprazole",
+          "pantoprazole",
+          "ésoméprazole",
+          "inhibiteur pompe protons",
+          "traitement"
+        ]
+      },
+      {
+        "id": "indication_endoscopie",
+        "label": "Précise les indications d'endoscopie digestive haute (signes d'alarme, échec du traitement après 4-8 semaines, symptômes chroniques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "endoscopie",
+          "fibroscopie",
+          "gastroscopie",
+          "OGD",
+          "signes d'alarme",
+          "échec traitement"
+        ]
+      },
+      {
+        "id": "conseil_arret_tabac",
+        "label": "Conseille l'arrêt du tabac en lien avec les symptômes et propose une aide au sevrage",
+        "weight": 1,
+        "triggerKeywords": [
+          "arrêter",
+          "tabac",
+          "sevrage",
+          "substitution",
+          "patch",
+          "tabacologue"
+        ]
+      },
+      {
+        "id": "synthese_plan_pec",
+        "label": "Synthétise la prise en charge et propose un plan thérapeutique clair avec suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "en résumé",
+          "plan",
+          "suivi",
+          "consultation",
+          "contrôle"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient coopératif, légèrement anxieux par rapport à ses symptômes. Il s'inquiète car les brûlures le réveillent la nuit. Il est ouvert aux conseils mais minimise son tabagisme.",
+      "phraseOuverture": "Bonjour docteur, j'ai des brûlures dans la poitrine depuis une semaine, surtout après les repas et quand je me couche. Ça me gêne beaucoup.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements.actuels",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, j'ai juste mal à la poitrine !",
+        "silence": "Euh... je ne sais pas trop quoi dire d'autre.",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

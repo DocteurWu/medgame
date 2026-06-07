@@ -15,6 +15,7 @@ const TIMER_CONFIG = {
     // Durées par défaut en secondes
     CLASSIC_DURATION: 720,   // 12 min pour mode classique
     URGENCE_DURATION: 300,  // 5 min pour mode urgence
+    ECOS_DURATION: 480,     // 8 min pour mode ECOS (durée officielle CNG)
 
     // Seuils de couleur (ratio temps restant / temps total)
     SAFE_THRESHOLD: 0.60,      // > 60% → vert
@@ -33,7 +34,10 @@ const TIMER_CONFIG = {
     PROGRESS_BAR_ID: 'timer-progress-bar',
 
     // Intervalle de vérification des alertes sonores (secondes)
-    AUDIO_WARNING_AT: [60, 30, 10]  // Alerte sonore à 1 min, 30 s, 10 s
+    AUDIO_WARNING_AT: [60, 30, 10],  // Alerte sonore à 1 min, 30 s, 10 s
+
+    // Mode courant
+    CURRENT_MODE: 'classique'        // 'classique' | 'urgence' | 'ecos'
 };
 
 const timerState = {
@@ -257,6 +261,11 @@ window.playTimerWarningSound = playTimerWarningSound;
 // ==================== DÉDUCTION DE TEMPS ====================
 
 window.deductTime = function (seconds) {
+    // En mode ECOS, le temps n'est jamais déduit (il faut le gérer comme un
+    // vrai ECOS, le candidat doit gérer son temps tout seul).
+    if (TIMER_CONFIG.CURRENT_MODE === 'ecos' || sessionStorage.getItem('immersionMode') === 'immersif') {
+        return true;
+    }
     if (timerState.timeLeft <= 0) return false;
     timerState.timeLeft -= seconds;
     if (timerState.timeLeft <= 0) {
@@ -412,6 +421,11 @@ function initTimer(customDuration, startInterval = true) {
     timerState.totalTime = duration;
     timerState.lastAudioWarningAt = -1;
     timerState.isPaused = false;
+
+    // Détection automatique du mode ECOS
+    if (sessionStorage.getItem('immersionMode') === 'immersif') {
+        TIMER_CONFIG.CURRENT_MODE = 'ecos';
+    }
 
     if (timerState.timerInterval) {
         clearInterval(timerState.timerInterval);

@@ -88,6 +88,23 @@ export class ThreeHUD {
             this._updateSoundButtonUI();
         }
 
+        // Lier le bouton de changement de thème (Jour/Nuit)
+        const themeBtn = document.getElementById('hud-btn-theme');
+        if (themeBtn) {
+            themeBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (this.manager) {
+                    const newTheme = this.manager.toggleLightingTheme();
+                    this._updateThemeButtonUI(newTheme);
+                }
+            };
+            // Initialiser l'état visuel du bouton
+            if (this.manager?.scene?.lightingAgent) {
+                this._updateThemeButtonUI(this.manager.scene.lightingAgent.theme);
+            }
+        }
+
         // Raccourci clavier local (M pour Mute/Unmute)
         this._hudKeyHandler = (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
@@ -143,6 +160,23 @@ export class ThreeHUD {
             soundBtn.style.color = '#00ff66';
             soundBtn.title = "Bip Scope actif (Appuyez sur M pour couper)";
             soundBtn.classList.remove('muted');
+        }
+    }
+
+    /**
+     * Met à jour visuellement le bouton de contrôle du thème (Jour/Nuit)
+     */
+    _updateThemeButtonUI(theme) {
+        const themeBtn = document.getElementById('hud-btn-theme');
+        if (!themeBtn) return;
+        if (theme === 'light') {
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            themeBtn.title = "Passer en mode sombre (Nuit)";
+            themeBtn.style.color = '#ffd700'; // Warm golden sun/moon color in light mode
+        } else {
+            themeBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            themeBtn.title = "Passer en mode lumineux (Jour)";
+            themeBtn.style.color = '#e2e8f0'; // Off-white color in dark mode
         }
     }
 

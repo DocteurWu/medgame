@@ -141,16 +141,268 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service de neurologie.",
+      "contexte": "Georges O'Malley, 34 ans, homme, se présente pour troubles moteurs progressifs avec difficulté à la marche et diminution de l'usage du membre supérieur droit dans un contexte post-traumatique récent.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire orienté sur les troubles neurologiques et le contexte traumatique",
+        "Effectuer un examen neurologique complet incluant l'évaluation de la motricité, des réflexes ostéo-tendineux et des signes pyramidaux",
+        "Proposer une stratégie diagnostique adaptée (imagerie cérébrale et médullaire)",
+        "Énoncer le diagnostic de syndrome pyramidal aigu post-traumatique",
+        "Proposer une prise en charge initiale adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'examen invasif",
+        "Ne pas prescrire de traitement sans avoir posé le diagnostic"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Examen clinique",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service de neurologie",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Abaisse-langue",
+        "Ophtalmoscope",
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en neurologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_contexte_traumatique",
+        "label": "Explore le contexte traumatique (AVP, choc crânien, mécanisme de décélération)",
+        "weight": 1,
+        "triggerKeywords": [
+          "accident",
+          "traumatisme",
+          "choc",
+          "décélération",
+          "projection"
+        ]
+      },
+      {
+        "id": "interrogatoire_chronologie",
+        "label": "Précise la chronologie des symptômes (survenue brutale, aggravation progressive)",
+        "weight": 1,
+        "triggerKeywords": [
+          "quand",
+          "début",
+          "évolution",
+          "aggravation",
+          "brutal"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés (céphalées, nausées, dysarthrie, troubles de la marche)",
+        "weight": 1,
+        "triggerKeywords": [
+          "céphalées",
+          "nausées",
+          "parole",
+          "marche",
+          "raideur"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes vitales (TA, FC, FR, SpO2, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "fréquence",
+          "saturation",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_glasgow",
+        "label": "Évalue le score de Glasgow",
+        "weight": 1,
+        "triggerKeywords": [
+          "glasgow",
+          "conscience",
+          "score"
+        ]
+      },
+      {
+        "id": "examen_paires_craniennes",
+        "label": "Examine les paires crâniennes",
+        "weight": 1,
+        "triggerKeywords": [
+          "paires crâniennes",
+          "oculomoteurs",
+          "facial",
+          "langue"
+        ]
+      },
+      {
+        "id": "examen_motricite",
+        "label": "Évalue la motricité et cote la force musculaire (MRC) à droite et à gauche",
+        "weight": 1,
+        "triggerKeywords": [
+          "force",
+          "motricité",
+          "MRC",
+          "muscle",
+          "cotation"
+        ]
+      },
+      {
+        "id": "examen_reflexes",
+        "label": "Recherche et interprète les réflexes ostéo-tendineux (vifs, polycinétiques à droite)",
+        "weight": 1,
+        "triggerKeywords": [
+          "réflexes",
+          "ostéo-tendineux",
+          "vifs",
+          "polycinétiques"
+        ]
+      },
+      {
+        "id": "examen_signes_pyramidaux",
+        "label": "Recherche les signes pyramidaux (Babinski, hypertonie spastique, clonus)",
+        "weight": 1,
+        "triggerKeywords": [
+          "babinski",
+          "hypertonie",
+          "spastique",
+          "clouteau de canif",
+          "clonus"
+        ]
+      },
+      {
+        "id": "examen_sensibilite",
+        "label": "Évalue la sensibilité (tact, douleur, proprioception)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sensibilité",
+          "tact",
+          "douleur",
+          "proprioception"
+        ]
+      },
+      {
+        "id": "examen_coordination",
+        "label": "Évalue la coordination et l'équilibre (marche, démarche spastique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "coordination",
+          "équilibre",
+          "marche",
+          "démarche",
+          "spastique"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Propose une imagerie cérébrale (IRM cérébrale) et médullaire adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "IRM",
+          "scanner",
+          "imagerie",
+          "cérébrale",
+          "médullaire"
+        ]
+      },
+      {
+        "id": "diagnostic_pyramidal",
+        "label": "Énonce le diagnostic de syndrome pyramidal aigu post-traumatique",
+        "weight": 1,
+        "triggerKeywords": [
+          "syndrome pyramidal",
+          "post-traumatique",
+          "faisceau pyramidal",
+          "lésion centrale"
+        ]
+      },
+      {
+        "id": "prise_en_charge_initiale",
+        "label": "Propose une prise en charge adaptée (surveillance neurologique, traitement anti-œdémateux, rééducation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "anti-œdémateux",
+          "rééducation",
+          "prise en charge"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient conscient, anxieux, légèrement confus, coopérant mais inquiet de ses troubles moteurs. Interne en chirurgie, il a une certaine culture médicale mais est stressé par sa situation.",
+      "phraseOuverture": "Docteur, depuis mon accident de voiture hier, je n'arrive plus à bouger correctement mon bras droit et j'ai du mal à marcher. J'ai très mal à la tête et je suis très inquiet.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, devient moins coopérant et répond par monosyllabes.",
+        "silence": "Le patient remplit le silence en donnant plus de détails sur ses symptômes.",
+        "jargon": "Le patient demande des explications : 'Je ne comprends pas, pouvez-vous m'expliquer avec des mots simples ?'"
+      }
+    }
+  }
 }

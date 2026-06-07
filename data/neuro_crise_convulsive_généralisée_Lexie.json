@@ -140,16 +140,299 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "Lexie Grey, 25 ans, de sexe féminin, se présente aux urgences pour une crise convulsive généralisée survenue il y a environ 30 minutes.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet de la patiente en phase post-critique",
+        "Effectuer un examen clinique neurologique et général adapté",
+        "Proposer une stratégie diagnostique initiale pertinente face à une première crise convulsive généralisée",
+        "Expliquer à la patiente la conduite à tenir et les mesures hygiéno-diététiques",
+        "Rédiger une synthèse orale structurée au médecin senior"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement antiépileptique au long cours sans avis spécialisé",
+        "Ne pas réaliser de geste invasif non justifié",
+        "Ne pas méconnaître les signes de gravité neurologique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Otoscope",
+        "Ophtalmoscope",
+        "Marteau à réflexes",
+        "Abaisse-langue",
+        "Thermomètre",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope",
+        "Stylo lumineux",
+        "Échelle de Glasgow (affichée au mur)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie la patiente et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "Lexie"
+        ]
+      },
+      {
+        "id": "interrogatoire_crise",
+        "label": "Interroge la patiente sur les circonstances de la crise (prodromes, durée, description, morsure de langue, incontinence, phase post-critique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crise",
+          "morsure",
+          "langue",
+          "incontinence",
+          "perte de connaissance",
+          "confusion",
+          "durée",
+          "prodrome"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants : privation de sommeil, stress, alcool, substances, fièvre",
+        "weight": 1,
+        "triggerKeywords": [
+          "sommeil",
+          "stress",
+          "privation",
+          "fatigue",
+          "alcool",
+          "drogue",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche des antécédents personnels et familiaux (épilepsie, traumatisme crânien, maladies neurologiques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "épilepsie",
+          "traumatisme",
+          "crâne",
+          "neurologique"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : profession, activité physique, conduite automobile, contraception",
+        "weight": 1,
+        "triggerKeywords": [
+          "étudiante",
+          "conduite",
+          "travail",
+          "contraception",
+          "activité physique"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Mesure et interprète les constantes vitales (TA, FC, FR, SpO2, Température, Glasgow)",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "saturation",
+          "température",
+          "Glasgow"
+        ]
+      },
+      {
+        "id": "examen_neurologique_complet",
+        "label": "Réalise un examen neurologique complet : conscience, paires crâniennes, motricité, sensibilité, réflexes, coordination, signe de Babinski",
+        "weight": 1,
+        "triggerKeywords": [
+          "pupilles",
+          "motricité",
+          "réflexes",
+          "Babinski",
+          "sensibilité",
+          "coordination",
+          "paires crâniennes",
+          "orientation"
+        ]
+      },
+      {
+        "id": "examen_recherche_signes_gravite",
+        "label": "Recherche des signes de gravité : déficit focal persistant, raideur méningée, signes d'HTIC",
+        "weight": 1,
+        "triggerKeywords": [
+          "déficit",
+          "focal",
+          "raideur",
+          "nuque",
+          "HTIC",
+          "signes de gravité"
+        ]
+      },
+      {
+        "id": "strategie_bilan_biologique",
+        "label": "Propose un bilan biologique adapté : glycémie, ionogramme, calcémie, NFS, CRP, bilan hépatique, toxicologie urinaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "ionogramme",
+          "calcémie",
+          "NFS",
+          "CRP",
+          "toxicologie",
+          "bilan biologique"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Propose une imagerie cérébrale (IRM cérébrale en priorité ou scanner en urgence)",
+        "weight": 1,
+        "triggerKeywords": [
+          "IRM",
+          "scanner",
+          "imagerie",
+          "cérébrale"
+        ]
+      },
+      {
+        "id": "strategie_EEG",
+        "label": "Mentionne la nécessité d'un électroencéphalogramme (EEG)",
+        "weight": 1,
+        "triggerKeywords": [
+          "EEG",
+          "électroencéphalogramme"
+        ]
+      },
+      {
+        "id": "strategie_PEC_initiale",
+        "label": "Propose une prise en charge initiale adaptée : surveillance clinique, pas de traitement antiépileptique systématique en première crise, mesures hygiéno-diététiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "mesures",
+          "hygiène",
+          "sommeil",
+          "conduite",
+          "pas de traitement",
+          "antiépileptique"
+        ]
+      },
+      {
+        "id": "education_patiente",
+        "label": "Informe la patiente sur les mesures de prévention : respect du sommeil, éviter les facteurs déclenchants, contre-indication temporaire de la conduite automobile",
+        "weight": 1,
+        "triggerKeywords": [
+          "conduite",
+          "sommeil",
+          "prévention",
+          "conseils",
+          "expliquer",
+          "informer"
+        ]
+      },
+      {
+        "id": "synthese_orale",
+        "label": "Rédige/oralise une synthèse structurée du cas incluant : identité, motif, histoire, examen, hypothèse diagnostique, bilan proposé",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "synthèse",
+          "en résumé",
+          "pour conclure",
+          "au total"
+        ]
+      },
+      {
+        "id": "conclusion_orientation",
+        "label": "Propose une orientation adaptée (hospitalisation pour bilan, avis neurologique, consultation de suivi)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hospitalisation",
+          "avis",
+          "neurologie",
+          "consultation",
+          "suivi",
+          "orientation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le récit de la patiente",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente sur les événements décrits",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté, explique les termes médicaux et les examens proposés",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété de la patiente après un épisode traumatisant",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune femme de 25 ans, étudiante, anxieuse mais coopérative. Elle est encore somnolente et confuse (Glasgow 14), se souvient mal de la crise elle-même mais se souvient d'avoir été réveillée par les pompiers chez elle. Elle est inquiète car c'est la première fois que cela lui arrive. Elle a des myalgies diffuses et une douleur latérale de la langue.",
+      "phraseOuverture": "Je ne comprends pas ce qui m'est arrivé… Les pompiers m'ont dit que j'ai fait une crise, mais je ne me souviens de rien. J'ai très mal partout et j'ai mordu ma langue.",
+      "infosVolontaires": [
+        "Motif d'admission : crise convulsive généralisée",
+        "Symptômes actuels : perte de connaissance rapportée par témoin, morsure latérale de la langue, incontinence urinaire pendant la crise, confusion post-critique, myalgies diffuses",
+        "Circonstances : crise survenue au domicile ce matin au réveil, témoins présents (colocataire)",
+        "Facteurs déclenchants : nuits très courtes depuis une semaine (révisions d'examens), stress important"
+      ],
+      "infosSiDemandees": [
+        "Antécédents médicaux : aucun, jamais hospitalisée",
+        "Antécédents chirurgicaux : aucun",
+        "Antécédents familiaux : aucun cas d'épilepsie connu dans la famille",
+        "Traitements en cours : aucun",
+        "Allergies : aucune connue",
+        "Mode de vie : étudiante en master, non-fumeuse, pas d'alcool, pas de drogues, activité physique modérée (yoga 1x/semaine)",
+        "Conduite automobile : oui, permis B, voiture personnelle",
+        "Contraception : pilule oestro-progestative"
+      ],
+      "infosCachees": [
+        "La patiente a consommé de la caféine en excès ces derniers jours (5-6 cafés/jour) — ne le mentionne que si on pose la question explicitement"
+      ],
+      "reactions": {
+        "brutal": "La patiente se ferme, répond par monosyllabes, exprime son inconfort : 'Vous me parlez comme si j'étais une enfant…'",
+        "silence": "La patiente attend les questions, reste passive, ne développe pas spontanément",
+        "jargon": "La patiente demande des explications : 'C'est quoi un EEG ? Pourquoi une IRM ? Vous pensez que c'est grave ?'"
+      }
+    }
+  }
 }

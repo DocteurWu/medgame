@@ -159,16 +159,262 @@
   "correction": "# Dysfonction érectile mixte\n\nLe patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement des facteurs cardiovasculaires\n- Évaluer la part psychogène via questionnaires et interrogatoire\n- IPPDE5 en 1re intention en cas d’absence de contre-indication\n- Prise en charge du stress et du sommeil\n\n## Erreurs à éviter\n\n- Mettre d’emblée un traitement hormonal sans hypogonadisme avéré\n- Oublier la dimension psychogène dans les DE post-traumatiques\n- Ignorer les facteurs cardio-vasculaires débutants",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine interne / andrologie.",
+      "contexte": "Owen Hunt, 42 ans, homme, se présente pour une baisse de la qualité des érections depuis plusieurs mois.",
+      "consignesAttendues": [
+        "Réaliser un entretien centré sur la dysfonction érectile avec une approche biopsychosociale",
+        "Rechercher les facteurs de risque vasculaires, psychologiques et médicamenteux",
+        "Réaliser un examen clinique ciblé (cardiovasculaire, urologique, neurologique)",
+        "Proposer une stratégie diagnostique pertinente (bilan biologique, évaluation psychologique)",
+        "Proposer une prise en charge thérapeutique adaptée et personnalisée",
+        "Aborder la question de la libido et du retentissement sur la vie de couple"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'IPPDE5 sans avoir évalué le risque cardiovasculaire",
+        "Ne pas ignorer le contexte de stress post-traumatique",
+        "Ne pas utiliser de jargon médical sans explication"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Thermomètre",
+        "Saturomètre",
+        "Stylo",
+        "Feuille de bilan biologique",
+        "Échelle d'évaluation de la dysfonction érectile (IIEF-5)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne",
+          "rôle"
+        ]
+      },
+      {
+        "id": "exploration_motif",
+        "label": "Explore le motif de consultation de manière structurée (ancienneté, sévérité, retentissement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "combien de temps",
+          "fréquence",
+          "retentissement",
+          "vie de couple"
+        ]
+      },
+      {
+        "id": "interrogatoire_DE",
+        "label": "Réalise un interrogatoire ciblé sur la dysfonction érectile (matinale, situationnelle, libido)",
+        "weight": 1,
+        "triggerKeywords": [
+          "érections matinales",
+          "libido",
+          "désir",
+          "situationnelle",
+          "spontanée"
+        ]
+      },
+      {
+        "id": "facteurs_psychologiques",
+        "label": "Recherche les facteurs psychologiques (stress, anxiété, dépression, SPT)",
+        "weight": 1,
+        "triggerKeywords": [
+          "stress",
+          "anxiété",
+          "dépression",
+          "traumatisme",
+          "mission",
+          "fatigue psychologique"
+        ]
+      },
+      {
+        "id": "facteurs_vasculaires",
+        "label": "Recherche les facteurs de risque vasculaires (HTA, tabac, alcool, sédentarité, antécédents familiaux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypertension",
+          "tabac",
+          "alcool",
+          "père",
+          "cardiaque",
+          "cholestérol",
+          "diabète"
+        ]
+      },
+      {
+        "id": "traitements_en_cours",
+        "label": "Identifie les traitements en cours et leur rôle potentiel (amlodipine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "amlodipine",
+          "médicament",
+          "antihypertenseur"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire (TA, pouls, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "auscultation",
+          "cœur"
+        ]
+      },
+      {
+        "id": "examen_urologique",
+        "label": "Réalise un examen urologique ciblé (pénis, testicules, sensibilité périnéale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen génital",
+          "pénis",
+          "testicules",
+          "sensibilité",
+          "périnée"
+        ]
+      },
+      {
+        "id": "bilan_biologique",
+        "label": "Propose un bilan biologique pertinent (testostérone, glycémie, bilan lipidique, TSH)",
+        "weight": 1,
+        "triggerKeywords": [
+          "testostérone",
+          "glycémie",
+          "cholestérol",
+          "bilan",
+          "prise de sang",
+          "hormones"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de dysfonction érectile mixte de manière claire et empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "dysfonction érectile",
+          "mixte",
+          "psychologique",
+          "vasculaire"
+        ]
+      },
+      {
+        "id": "strategie_therapeutique",
+        "label": "Propose une stratégie thérapeutique adaptée (IPPDE5, psychothérapie, hygiène de vie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "IPPDE5",
+          "sildenafil",
+          "traitement",
+          "psychothérapie",
+          "hygiène de vie",
+          "sommeil"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur la pathologie et les mesures hygiéno-diététiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "explication",
+          "conseils",
+          "mode de vie",
+          "activité physique",
+          "stress"
+        ]
+      },
+      {
+        "id": "suivi",
+        "label": "Propose un suivi adapté (consultation de contrôle, orientation spécialisée si besoin)",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "contrôle",
+          "spécialiste",
+          "urologue"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Patient réservé, militaire, habitué à la discipline. Peu enclin à parler de ses difficultés intimes. Montre des signes de fatigue et d'hypervigilance. Répond de manière concise mais se montre coopérant quand il se sent en confiance.",
+      "phraseOuverture": "Docteur, ça fait plusieurs mois que j'ai des problèmes... enfin, des difficultés au lit. C'est gênant, surtout que je suis jeune et en bonne santé.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.stress",
+        "traitements"
+      ],
+      "infosCachees": [
+        "antecedents.chirurgicaux",
+        "modeDeVie.profession_details"
+      ],
+      "reactions": {
+        "brutal": "Le patient se ferme, croise les bras et répond de manière plus laconique. Il peut dire : 'Je ne vois pas le rapport avec tout ça.'",
+        "silence": "Le patient semble mal à l'aise, regarde ailleurs, peut baisser la voix ou hésiter avant de répondre.",
+        "jargon": "Le patient fronce les sourcils et demande : 'Qu'est-ce que ça veut dire ?' ou 'Je comprends pas, expliquez-moi autrement.'"
+      }
+    }
+  }
 }

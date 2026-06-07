@@ -160,16 +160,323 @@
   "correction": "# Insuffisance rénale aiguë obstructive\n\nLe patient présente une oligurie, des douleurs lombaires, une hématurie, une créatinine élevée et une dilatation pyélocalicielle en imagerie. Le scanner met en évidence un calcul obstructif de l’uretère.\n\n## Bonnes pratiques\n\n- Rechercher une cause obstructive devant toute IRA avec douleurs lombaires\n- Faire une échographie rénale en première intention\n- Lever l'obstacle rapidement : sonde vésicale si globe, drainage JJ ou néphrostomie\n- Arrêter les médicaments néphrotoxiques (AINS !)\n\n## Erreurs à éviter\n\n- Hydrater excessivement un patient avec globe vésical\n- Confondre IRA obstructive avec IRA fonctionnelle\n- Tarder la dérivation des urines",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de néphrologie.",
+      "contexte": "Monsieur Neil Fron, 72 ans, homme, se présente aux urgences pour des douleurs lombaires droites et une baisse du volume urinaire évoluant depuis 5 jours.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient orienté vers la pathologie rénale",
+        "Effectuer un examen clinique ciblé (abdomen, fosses lombaires, signes de surcharge)",
+        "Identifier les facteurs de risque et les étiologies possibles de l'insuffisance rénale aiguë",
+        "Proposer un bilan paraclinique adapté (biologie, imagerie)",
+        "Identifier le diagnostic d'insuffisance rénale aiguë obstructive",
+        "Proposer une prise en charge thérapeutique initiale adaptée (drainage urinaire, arrêt des AINS, réévaluation du traitement antihypertenseur)",
+        "Expliquer au patient le diagnostic et la prise en charge de façon compréhensible"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'AINS",
+        "Ne pas ignorer l'automédication par ibuprofène",
+        "Ne pas retarder le drainage urinaire en cas d'obstruction confirmée"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Otoscope",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Résultats biologiques (créatinine, urée, ionogramme, NFS, ECBU)",
+        "Résultats d'imagerie (échographie rénale, scanner abdomino-pelvien si disponible)",
+        "ECG"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment allez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : douleurs lombaires (localisation, irradiation, type, intensité, ancienneté) et baisse du volume urinaire (oligurie/anurie, durée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "lombaire",
+          "rein",
+          "urine",
+          "volume",
+          "oligurie",
+          "combien de temps",
+          "ça fait combien de jours"
+        ]
+      },
+      {
+        "id": "interrogatoire_iban",
+        "label": "Recherche les signes fonctionnels associés : nausées, vomissements, fièvre, brûlures mictionnelles, hématurie, signes de surcharge (œdèmes, dyspnée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "nausée",
+          "vomi",
+          "fièvre",
+          "brûlure",
+          "sang dans les urines",
+          "œdème",
+          "jambes gonflées",
+          "essoufflement"
+        ]
+      },
+      {
+        "id": "interrogatoire_automedication",
+        "label": "Recherche explicitement une prise d'AINS ou d'automédication (ibuprofène)",
+        "weight": 1,
+        "triggerKeywords": [
+          "médicament",
+          "anti-inflammatoire",
+          "ibuprofène",
+          "automédication",
+          "pris quelque chose",
+          "douleur médicament"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents : HTA, lithiase urinaire, chirurgie, antécédents familiaux d'IRC",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédent",
+          "lithiase",
+          "calcul",
+          "hypertension",
+          "chirurgie",
+          "famille",
+          "rein familial"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : hydratation, tabac, alcool, alimentation",
+        "weight": 1,
+        "triggerKeywords": [
+          "boire",
+          "eau",
+          "hydratation",
+          "tabac",
+          "alcool",
+          "régime",
+          "alimentation"
+        ]
+      },
+      {
+        "id": "examen_clinique_constantes",
+        "label": "Mesure et interprète les constantes (TA, FC, T°, SpO2, FR)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pression artérielle",
+          "pouls",
+          "température",
+          "saturation"
+        ]
+      },
+      {
+        "id": "examen_clinique_abdominal",
+        "label": "Réalise un examen abdominal complet : palpation des fosses lombaaires (recherche d'une masse, douleur à la percussion des angles costovertéraux), palpation vésicale",
+        "weight": 1,
+        "triggerKeywords": [
+          "percussion lombaire",
+          "angle costovertébral",
+          "fosse lombaire",
+          "palpation abdomen",
+          "vessie",
+          "globus vésical"
+        ]
+      },
+      {
+        "id": "examen_clinique_surcharge",
+        "label": "Recherche des signes de surcharge hydrosodée (œdèmes des membres inférieurs, crépitants pulmonaires, TA élevée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "œdème",
+          "jambes",
+          "poumon",
+          "crépitant",
+          "surcharge",
+          "prise de poids"
+        ]
+      },
+      {
+        "id": "bilan_biologique",
+        "label": "Demande un bilan biologique adapté : créatinine, urée, ionogramme (kaliémie), NFS, ECBU, protéinurie",
+        "weight": 1,
+        "triggerKeywords": [
+          "créatinine",
+          "urée",
+          "kaliémie",
+          "ionogramme",
+          "ECBU",
+          "bandelette",
+          "protéinurie",
+          "NFS",
+          "biologie"
+        ]
+      },
+      {
+        "id": "bilan_imagerie",
+        "label": "Demande une échographie rénale en urgence (recherche de dilatation des cavités pyélocalicielles)",
+        "weight": 1,
+        "triggerKeywords": [
+          "échographie rénale",
+          "scanner",
+          "imagerie",
+          "dilatation",
+          "hydronéphrose",
+          "uroscanner"
+        ]
+      },
+      {
+        "id": "diagnostic_IRA_obstructive",
+        "label": "Pose le diagnostic d'insuffisance rénale aiguë obstructive (post-rénale) en intégrant les données cliniques, biologiques et d'imagerie",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance rénale aiguë",
+          "obstruction",
+          "post-rénale",
+          "hydronéphrose",
+          "lithiase obstructive",
+          "IRA obstructive"
+        ]
+      },
+      {
+        "id": "pec_drainage_urinaire",
+        "label": "Propose un drainage urinaire en urgence (sonde vésicale et/ou sonde JJ / néphrostomie selon le niveau de l'obstruction)",
+        "weight": 1,
+        "triggerKeywords": [
+          "drainage",
+          "sonde vésicale",
+          "sonde JJ",
+          "double J",
+          "néphrostomie",
+          "lever l'obstruction",
+          "sondage"
+        ]
+      },
+      {
+        "id": "pec_arret_AINS",
+        "label": "Identifie l'ibuprofène comme facteur aggravant et prescrit son arrêt immédiat",
+        "weight": 1,
+        "triggerKeywords": [
+          "arrêt ibuprofène",
+          "arrêt AINS",
+          "anti-inflammatoire",
+          "néphrotoxique",
+          "arrêter le médicament"
+        ]
+      },
+      {
+        "id": "pec_rehydratation_surveillance",
+        "label": "Propose une réhydratation adaptée, une surveillance de la diurèse et du bilan rénal, et une réévaluation du traitement antihypertenseur (ARA2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "réhydratation",
+          "diurèse",
+          "surveillance",
+          "crécinine",
+          "arrêt ARA2",
+          "candesartan",
+          "surveillance rénale"
+        ]
+      },
+      {
+        "id": "annonce_pec_patient",
+        "label": "Explique au patient le diagnostic, la cause (obstacle sur les voies urinaires, rôle des AINS), la prise en charge proposée et le pronostic de façon claire et empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "diagnostic",
+          "cause",
+          "traitement",
+          "pronostic",
+          "comprenez-vous",
+          "avez-vous des questions"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif et l'histoire de la maladie",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape clé",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, rassure le patient sur la prise en charge",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux, fatigué. Il répond aux questions de façon concise mais se montre préoccupé par ses douleurs et la baisse de ses urines. Il minimise spontanément sa prise d'ibuprofène.",
+      "phraseOuverture": "Bonjour docteur, j'ai très mal au rein droit depuis 5 jours et je n'arrive presque plus à uriner. Ça ne va pas du tout.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies",
+        "histoireMaladie.remarques"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et semble méfiant.",
+        "silence": "Le patient attend la question suivante sans prendre l'initiative.",
+        "jargon": "Le patient demande : 'C'est quoi ça ?' ou 'Je comprends pas, expliquez-moi autrement.'"
+      }
+    }
+  }
 }

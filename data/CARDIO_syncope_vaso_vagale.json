@@ -135,13 +135,13 @@
   "correction": "# Syncope vasovagale\n\nProdromes + déclenchement en station debout prolongée sont typiques.\n\n## Bonnes pratiques\n\n- Rassurer\n- Hydratation\n- Manœuvres de contre-pression (contracter jambes ou bras)\n\n## Erreurs à éviter\n\n- Examens inutiles si tableau typique",
   "vitalsDynamics": {
     "trendOverMinutes": 0.12,
-    "urgencyMultiplier": 3.0,
+    "urgencyMultiplier": 3,
     "aggravationTargets": {
       "heartRate": 45,
       "systolic": 75,
       "diastolic": 45,
       "spo2": 88,
-      "temperature": 37.0,
+      "temperature": 37,
       "respiratoryRate": 10
     },
     "stabilizeOnCorrectTreatment": true
@@ -164,5 +164,285 @@
     "Tilt-test",
     "Bilan sanguin",
     "Holter ECG"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Elizabeth Bennet, 20 ans, femme, se présente aux urgences pour un malaise avec brève perte de connaissance survenu il y a quelques heures.",
+      "consignesAttendues": [
+        "Réalisez l'interrogatoire complet de la patiente",
+        "Pratiquez l'examen clinique cardiovasculaire et neurologique",
+        "Évoquez les diagnostics différentiels",
+        "Expliquez le diagnostic retenu à la patiente",
+        "Proposez une prise en charge adaptée et des mesures de prévention"
+      ],
+      "consignesInterdites": [
+        "Ne prescrivez pas de fludrocortisone à forte dose",
+        "Ne prescrivez pas de midodrine en première intention",
+        "Ne demandez pas d'EEG en urgence systématique",
+        "Ne demandez pas d'IRM cérébrale en urgence"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "ECG 12 dérivations",
+        "Glucomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_circonstances",
+        "label": "Précise les circonstances de survenue du malaise (position, environnement, durée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "debout",
+          "chaud",
+          "bondée",
+          "durée",
+          "combien de temps",
+          "position"
+        ]
+      },
+      {
+        "id": "interrogatoire_prodrome",
+        "label": "Recherche les signes prodromiques (sueurs, vision floue, vertiges, nausées)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sueurs",
+          "vision",
+          "vertige",
+          "nausée",
+          "avant",
+          "prodrome",
+          "ressenti"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux (syncopes, mort subite, épilepsie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "parents",
+          "frère",
+          "sœur",
+          "mort subite",
+          "épilepsie",
+          "cardiaque"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitement",
+        "label": "Recherche un traitement en cours (cardio-vasculaire, psychotrope)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "pilule",
+          "contraception",
+          "prise"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (hydratation, alcool, substances, stress)",
+        "weight": 1,
+        "triggerKeywords": [
+          "eau",
+          "hydratation",
+          "alcool",
+          "cannabis",
+          "drogue",
+          "stress",
+          "sommeil"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (auscultation cardiaque, pouls, TA couché/debout)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "cœur",
+          "pouls",
+          "tension",
+          "debout",
+          "couché",
+          "orthostatique"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique de base (conscience, motricité, sensibilité, réflexes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "neurologique",
+          "conscience",
+          "motricité",
+          "réflexes",
+          "pupilles",
+          "coordination"
+        ]
+      },
+      {
+        "id": "ecg_realise",
+        "label": "Réalise ou demande un ECG 12 dérivations",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "électrocardiogramme",
+          "12 dérivations"
+        ]
+      },
+      {
+        "id": "diagnostic_syncope_vasovagale",
+        "label": "Retient le diagnostic de syncope vasovagale",
+        "weight": 1,
+        "triggerKeywords": [
+          "vasovagale",
+          "vagale",
+          "neurocardiogénique",
+          "réflexe"
+        ]
+      },
+      {
+        "id": "diagnostics_differentiels",
+        "label": "Évoque les diagnostics différentiels pertinents (trouble du rythme, épilepsie, hypotension orthostatique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rythmique",
+          "arythmie",
+          "épilepsie",
+          "orthostatique",
+          "différentiel"
+        ]
+      },
+      {
+        "id": "pec_hydratation",
+        "label": "Reconseille une hydratation abondante",
+        "weight": 1,
+        "triggerKeywords": [
+          "eau",
+          "hydratation",
+          "boire",
+          "litre",
+          "sel",
+          "salé"
+        ]
+      },
+      {
+        "id": "pec_reconnaissance_prodromes",
+        "label": "Explique la reconnaissance des prodromes et l'attitude à adopter (s'allonger, jambes surélevées)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prodrome",
+          "allonger",
+          "jambes",
+          "s'asseoir",
+          "prévenir",
+          "signes"
+        ]
+      },
+      {
+        "id": "pec_manoeuvres_contre_pression",
+        "label": "Enseigne les manœuvres de contre-pression (croisement des jambes, poings serrés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "manœuvre",
+          "contre-pression",
+          "jambes",
+          "poing",
+          "contracter",
+          "isométrique"
+        ]
+      },
+      {
+        "id": "explication_diagnostic",
+        "label": "Explique le diagnostic à la patiente avec des termes simples et la rassure",
+        "weight": 1,
+        "triggerKeywords": [
+          "bénin",
+          "grave",
+          "cerveau",
+          "cœur",
+          "normal",
+          "rassurer",
+          "expliquer"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Jeune femme de 20 ans, étudiante, légèrement anxieuse après son épisode de perte de connaissance. Elle est coopérative mais inquiète et pose beaucoup de questions sur la gravité de son état. Elle a peur que cela se reproduise.",
+      "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai fait un malaise cet après-midi, je me suis évanouie quelques secondes. J'ai très peur, est-ce que c'est grave ?",
+      "infosVolontaires": [
+        "J'étais debout depuis longtemps dans une salle de concert, il faisait très chaud et il y avait beaucoup de monde",
+        "Avant de tomber, j'ai eu des sueurs, ma vision est devenue floue et j'ai eu des vertiges",
+        "Je me suis relevée assez vite, en quelques minutes j'allais bien",
+        "C'est la première fois que ça m'arrive"
+      ],
+      "infosSiDemandees": [
+        "Non, je n'ai pas d'antécédents médicaux particuliers",
+        "Non, pas d'antécédents chirurgicaux",
+        "Non, pas d'antécédents familiaux de mort subite ou d'épilepsie",
+        "Non, je ne prends aucun traitement",
+        "Non, je ne fume pas",
+        "Je bois un peu d'alcool occasionnellement, en soirée",
+        "Non, je ne consomme pas de drogues",
+        "Je bois environ 1 à 1,5 litre d'eau par jour",
+        "Je suis étudiante, j'ai un stress modéré lié aux examens"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous allez un peu vite, je n'ai pas fini de vous expliquer ce qui s'est passé...",
+        "silence": "... (silence) ... Je ne sais pas trop quoi dire d'autre, c'est surtout l'évanouissement qui m'a fait peur.",
+        "jargon": "Pardon, qu'est-ce que vous entendez par là ? Pouvez-vous me l'expliquer avec des mots plus simples ?"
+      }
+    }
+  }
 }

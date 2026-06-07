@@ -112,16 +112,292 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurologie.",
+      "contexte": "Mary Portman, 32 ans, femme, se présente aux urgences pour des crises convulsives généralisées répétées survenues au domicile.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient sur ses crises convulsives",
+        "Rechercher les facteurs déclenchants et les circonstances de survenue",
+        "Effectuer un examen neurologique complet",
+        "Proposer une stratégie diagnostique adaptée",
+        "Expliquer au patient la conduite à tenir en cas de récidive et les mesures de prévention",
+        "Évoquer les conséquences sur la conduite automobile et l'activité professionnelle"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire un traitement antiépileptique sans avoir posé l'indication",
+        "Ne pas ignorer les facteurs déclenchants (alcool, privation de sommeil)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Otoscope",
+        "Marteau à réflexes",
+        "Abaisse-langue",
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Lampe à fente / lampe torche"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en neurologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_crise",
+        "label": "Interroge le patient sur les circonstances de survenue des crises (prodromes, durée, description)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crise",
+          "convulsion",
+          "perte de connaissance",
+          "morsure",
+          "langue",
+          "incontinence",
+          "confusion"
+        ]
+      },
+      {
+        "id": "facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants (privation de sommeil, alcool, stress, sevrage)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sommeil",
+          "alcool",
+          "stress",
+          "fatigue",
+          "sevrage",
+          "manque de sommeil"
+        ]
+      },
+      {
+        "id": "antecedents_personnels",
+        "label": "Recherche les antécédents personnels médicaux et chirurgicaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "opération",
+          "hospitalisation",
+          "traitement"
+        ]
+      },
+      {
+        "id": "antecedents_familiaux",
+        "label": "Recherche les antécédents familiaux d'épilepsie",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "parents",
+          "frère",
+          "sœur",
+          "épilepsie familiale"
+        ]
+      },
+      {
+        "id": "mode_de_vie",
+        "label": "Explore le mode de vie (alcool, tabac, profession, stress)",
+        "weight": 1,
+        "triggerKeywords": [
+          "alcool",
+          "tabac",
+          "profession",
+          "travail",
+          "stress",
+          "consommation"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique complet (conscience, motricité, sensitivité, réflexes, coordination)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Glasgow",
+          "motricité",
+          "réflexes",
+          "coordination",
+          "sensibilité",
+          "pupilles",
+          "nerfs crâniens"
+        ]
+      },
+      {
+        "id": "examen_general",
+        "label": "Réalise un examen général (constantes, état général, recherche de morsure linguale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "température",
+          "saturation",
+          "morsure",
+          "langue"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique adaptée (EEG, IRM cérébrale, bilan biologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "EEG",
+          "électroencéphalogramme",
+          "IRM",
+          "scanner",
+          "bilan biologique",
+          "prise de sang"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels (crise psychogène, syncope, hypoglycémie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "psychogène",
+          "syncope",
+          "hypoglycémie",
+          "diagnostic différentiel"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur les mesures de prévention (éviction des facteurs déclenchants, observance)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "éviction",
+          "sommeil",
+          "alcool",
+          "observance",
+          "conduite à tenir"
+        ]
+      },
+      {
+        "id": "consequences_sociales",
+        "label": "Aborde les conséquences sociales (conduite automobile, activité professionnelle)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conduite",
+          "voiture",
+          "permis",
+          "travail",
+          "profession",
+          "aptitude"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic d'épilepsie généralisée avérée de manière claire et empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "épilepsie",
+          "diagnostic",
+          "maladie",
+          "traitement",
+          "chronique"
+        ]
+      },
+      {
+        "id": "plan_prise_en_charge",
+        "label": "Propose un plan de prise en charge adapté (traitement de fond, suivi, orientation spécialisée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "antiépileptique",
+          "suivi",
+          "neurologue",
+          "consultation",
+          "fond"
+        ]
+      },
+      {
+        "id": "conclusion_entretien",
+        "label": "Conclut l'entretien en vérifiant la compréhension du patient et en répondant à ses questions",
+        "weight": 1,
+        "triggerKeywords": [
+          "compris",
+          "questions",
+          "inquiétude",
+          "récapitulatif",
+          "résumé"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieuse, légèrement confuse post-critique, coopérative mais inquiète pour sa santé et son avenir professionnel",
+      "phraseOuverture": "Docteur, j'ai fait deux crises d'épilepsie en 24 heures, je ne comprends pas ce qui m'arrive...",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez toutes ces questions, je veux juste savoir ce que j'ai !",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire, pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

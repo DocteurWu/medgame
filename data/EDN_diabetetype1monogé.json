@@ -161,16 +161,288 @@
   "correction": "# Diabète monogénique (MODY)\n\nDébut jeune, IMC normal, antécédents familiaux multiples, anticorps négatifs, mutation HNF1A.\n\n## Bonnes pratiques\n\n- Confirmer génétiquement (MODY)\n- Privilégier sulfonylurées chez MODY 3\n- Éducation thérapeutique et suivi glycémique\n\n## Erreurs à éviter\n\n- Classer à tort en DT1 et initier insuline d’emblée sans indication\n- Ignorer le dépistage familial",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service d'endocrinologie-diabétologie.",
+      "contexte": "Emma LACROIX, 24 ans, femme, se présente en consultation pour une soif persistante et une fatigue légère évoluant depuis 6 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers une pathologie endocrinienne métabolique",
+        "Réaliser un examen clinique adapté",
+        "Proposer un bilan biologique initial pertinent",
+        "Évoquer les hypothèses diagnostiques principales",
+        "Expliquer au patient la démarche diagnostique et les examens à réaliser"
+      ],
+      "consignesInterdites": [
+        "Poser un diagnostic définitif sans bilan biologique",
+        "Prescrire un traitement avant d'avoir les résultats du bilan",
+        "Interrompre le patient de manière abrupte"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation d'endocrinologie",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Glucomètre",
+        "Otoscope",
+        "Marteau à réflexes",
+        "Balance",
+        "Toise"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "installez-vous"
+        ]
+      },
+      {
+        "id": "explore_motif",
+        "label": "Explore le motif de consultation : polydipsie, polyurie, fatigue — caractérisation précise (date d'apparition, intensité, évolution, facteurs aggravants/soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "soif",
+          "polydipsie",
+          "polyurie",
+          "fatigue",
+          "depuis quand",
+          "combien",
+          "verres",
+          "litres",
+          "nuit"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_associes",
+        "label": "Recherche les symptômes associés : perte de poids, polyphagie, troubles visuels, infections récurrentes, signes cétoniques (nausées, vomissements, douleurs abdominales, odeur acétonique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "appétit",
+          "vision",
+          "infections",
+          "nausées",
+          "vomissements",
+          "douleur abdominale",
+          "haleine"
+        ]
+      },
+      {
+        "id": "interroge_antecedents_familiaux",
+        "label": "Interroge sur les antécédents familiaux de diabète en précisant le type, l'âge de début et le degré de parenté (arbre généalogique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "famille",
+          "parents",
+          "mère",
+          "père",
+          "grand",
+          "diabète familial",
+          "hérédité",
+          "transmission"
+        ]
+      },
+      {
+        "id": "interroge_mode_vie",
+        "label": "Explore le mode de vie : alimentation, activité physique, consommation d'alcool et de tabac, profession, stress",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "activité physique",
+          "sport",
+          "alcool",
+          "tabac",
+          "profession",
+          "stress",
+          "régime"
+        ]
+      },
+      {
+        "id": "interroge_antecedents_personnels",
+        "label": "Recherche les antécédents médicaux et chirurgicaux personnels, les traitements en cours et les allergies",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "opération",
+          "traitement",
+          "allergie",
+          "maladie",
+          "médicaments"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet : constantes (TA, FC, FR, SpO2, température, IMC), examen cardiovasculaire, pulmonaire, abdominal, neurologique et cutané (recherche d'acanthosis nigricans, lipodystrophies)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "poids",
+          "taille",
+          "IMC",
+          "auscultation",
+          "palpation",
+          "peau",
+          "examen clinique"
+        ]
+      },
+      {
+        "id": "realise_glycemie_capillaire",
+        "label": "Réalise ou demande une glycémie capillaire au lit du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie capillaire",
+          "dextro",
+          "glucomètre",
+          "glycémie"
+        ]
+      },
+      {
+        "id": "propose_bilan_biologique_pertinent",
+        "label": "Propose un bilan biologique pertinent : glycémie à jeun, HbA1c, bilan lipidique, créatinine, ionogramme, anticorps anti-GAD/IA2/insuline, peptide C, TSH",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie à jeun",
+          "HbA1c",
+          "bilan lipidique",
+          "créatinine",
+          "anticorps",
+          "anti-GAD",
+          "peptide C",
+          "TSH",
+          "bilan biologique"
+        ]
+      },
+      {
+        "id": "evoque_hypotheses_diagnostiques",
+        "label": "Évoque les hypothèses diagnostiques : diabète de type 1, diabète de type 2, diabète monogénique (MODY), et les diagnostics différentiels (hyperthyroïdie, diabète insipide)",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète type 1",
+          "diabète type 2",
+          "MODY",
+          "monogénique",
+          "auto-immun",
+          "diagnostic différentiel",
+          "hypothèse"
+        ]
+      },
+      {
+        "id": "oriente_vers_genetique",
+        "label": "Évoque la possibilité d'une consultation de génétique moléculaire si suspicion de MODY (diabète précoce familial, transmission autosomique dominante)",
+        "weight": 1,
+        "triggerKeywords": [
+          "génétique",
+          "MODY",
+          "test génétique",
+          "conseiller génétique",
+          "mutation",
+          "HNF",
+          "glucokinase"
+        ]
+      },
+      {
+        "id": "explique_demarche_diagnostique",
+        "label": "Explique clairement au patient la démarche diagnostique, les examens à réaliser et le suivi prévu",
+        "weight": 1,
+        "triggerKeywords": [
+          "explique",
+          "examens",
+          "résultats",
+          "suivi",
+          "prochain rendez-vous",
+          "démarche"
+        ]
+      },
+      {
+        "id": "conclut_consultation",
+        "label": "Conclut la consultation en résumant les points clés, en répondant aux questions du patient et en fixant un rendez-vous de suivi",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "questions",
+          "rendez-vous",
+          "suivi",
+          "au revoir",
+          "merci"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, utilise des signes d'encouragement non verbaux",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance tout au long de la consultation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patientie coopérative, légèrement anxieuse face à la possibilité d'un diagnostic de diabète. Curieuse et posant des questions sur sa santé.",
+      "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai soif tout le temps depuis plusieurs mois, et je suis fatiguée. Ma mère m'a dit que ça pouvait être du diabète, comme dans ma famille.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "modeDeVie.emploi",
+        "allergies",
+        "traitements"
+      ],
+      "infosCachees": [
+        "antecedents.familiaux.details"
+      ],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis venue pour qu'on m'aide...",
+        "silence": "Vous pouvez me poser d'autres questions si vous voulez, je veux comprendre ce que j'ai.",
+        "jargon": "Pouvez-vous m'expliquer ce que ça veut dire ? Je ne connais pas ce terme médical."
+      }
+    }
+  }
 }

@@ -161,16 +161,287 @@
   "correction": "# Obésité\n\nIMC élevé, tour de taille important, douleurs articulaires et comorbidités associées.\n\n## Bonnes pratiques\n\n- Programme nutritionnel hypocalorique individualisé\n- Activité physique adaptée et progressivité\n- Prise en charge des comorbidités (arthrose, bilan métabolique)\n\n## Erreurs à éviter\n\n- Interventions médicamenteuses sans prise en charge du mode de vie\n- Objectifs irréalistes et non sécurisés",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Maxime Wong, 28 ans, homme, se présente en consultation pour une fatigue chronique et des douleurs articulaires évoluant depuis plusieurs années.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes, les antécédents, le mode de vie et les habitudes alimentaires",
+        "Réaliser un examen clinique adapté incluant la mesure du poids, de la taille, de l'IMC et du tour de taille",
+        "Identifier les facteurs de risque cardiovasculaire et métabolique du patient",
+        "Proposer une stratégie diagnostique pertinente (bilan biologique)",
+        "Élaborer une stratégie de prise en charge thérapeutique globale incluant des mesures hygiéno-diététiques et un suivi adapté",
+        "Aborder la question de la motivation au changement avec le patient"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement médicamenteux pour l'obésité sans avoir proposé de mesures hygiéno-diététiques préalables",
+        "Ne pas culpabiliser le patient sur son mode de vie",
+        "Ne pas ignorer les facteurs de risque cardiovasculaire identifiés"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation de médecine générale",
+      "materielDisponible": [
+        "Balance",
+        "Mètre ruban",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Tableau IMC"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes",
+        "label": "Explore les symptômes actuels (fatigue, douleurs articulaires, essoufflement) : ancienneté, caractéristiques, retentissement",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "douleurs",
+          "essoufflement",
+          "depuis quand",
+          "articulaire"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie : alimentation, activité physique, sédentarité, sommeil",
+        "weight": 1,
+        "triggerKeywords": [
+          "alimentation",
+          "activité physique",
+          "sport",
+          "sédentaire",
+          "mangez",
+          "repas"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels (obésité, arthrose) et familiaux (diabète type 2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "mère",
+          "diabète",
+          "arthrose"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (tabac, alcool, HTA, dyslipidémie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "tension",
+          "cholestérol",
+          "cardiaque"
+        ]
+      },
+      {
+        "id": "examen_clinique_constantes",
+        "label": "Mesure et interprète les constantes : poids, taille, IMC, tour de taille, tension artérielle",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "taille",
+          "IMC",
+          "tour de taille",
+          "tension",
+          "140/90"
+        ]
+      },
+      {
+        "id": "examen_clinique_articulaire",
+        "label": "Réalise un examen de l'appareil locomoteur ciblé sur le genou droit",
+        "weight": 1,
+        "triggerKeywords": [
+          "genou",
+          "arthrose",
+          "mobilisation",
+          "douleur",
+          "articulaire"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique_bilan",
+        "label": "Propose un bilan biologique adapté : glycémie à jeun, HbA1c, bilan lipidique, TSH, bilan hépatique",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "glycémie",
+          "HbA1c",
+          "cholestérol",
+          "TSH",
+          "biologie",
+          "prise de sang"
+        ]
+      },
+      {
+        "id": "strategie_pec_hygieno_dietetique",
+        "label": "Propose des mesures hygiéno-diététiques : régime hypocalorique, activité physique adaptée",
+        "weight": 1,
+        "triggerKeywords": [
+          "régime",
+          "alimentation",
+          "activité physique",
+          "hypocalorique",
+          "perte de poids",
+          "marche"
+        ]
+      },
+      {
+        "id": "strategie_pec_arthrose",
+        "label": "Propose une prise en charge de l'arthrose : antalgiques, kinésithérapie, perte de poids",
+        "weight": 1,
+        "triggerKeywords": [
+          "antalgique",
+          "paracétamol",
+          "kinésithérapie",
+          "arthrose",
+          "genou"
+        ]
+      },
+      {
+        "id": "strategie_pec_suivi",
+        "label": "Propose un suivi régulier avec objectifs progressifs et orientation si besoin (diététicien, psychologue)",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "diététicien",
+          "objectif",
+          "rdv"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Éduque le patient sur les risques liés à l'obésité et l'importance de la modification du mode de vie",
+        "weight": 1,
+        "triggerKeywords": [
+          "risques",
+          "diabète",
+          "cardiaque",
+          "prévention",
+          "important",
+          "santé"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic d'obésité et explique ses implications de manière bienveillante",
+        "weight": 1,
+        "triggerKeywords": [
+          "obésité",
+          "IMC",
+          "diagnostic",
+          "surpoids",
+          "explication"
+        ]
+      },
+      {
+        "id": "communication_motivation",
+        "label": "Aborde la motivation au changement de manière empathique et non jugeante",
+        "weight": 1,
+        "triggerKeywords": [
+          "motivation",
+          "changer",
+          "envie",
+          "difficile",
+          "comprends",
+          "accompagner"
+        ]
+      },
+      {
+        "id": "synthese_plan",
+        "label": "Résume la prise en charge proposée et vérifie l'accord du patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "plan",
+          "d'accord",
+          "questions",
+          "compris"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment sur les questions de poids et de mode de vie",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, peu motivé pour changer ses habitudes, légèrement sur la défensive quand on aborde le sujet de son poids et de son alimentation. Il minimise l'impact de ses symptômes sur sa vie quotidienne.",
+      "phraseOuverture": "Bonjour docteur, je suis fatigué depuis longtemps et j'ai mal au genou droit. Je sais que c'est peut-être à cause de mon poids mais je n'ai pas trop envie de changer ma façon de vivre.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "modeDeVie.activitePhysique",
+        "traitements"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Attendez, vous me dites juste que je suis gros ? C'est pas nouveau !",
+        "silence": "...",
+        "jargon": "C'est quoi l'IMC ? Et l'HbA1c, c'est quoi exactement ?"
+      }
+    }
+  }
 }

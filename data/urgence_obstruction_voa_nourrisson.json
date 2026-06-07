@@ -387,5 +387,229 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences pédiatriques.",
+      "contexte": "Théo Moreau, 1 an, de sexe masculin, est amené en urgence par sa mère pour détresse respiratoire aiguë survenue brutalement lors d'un repas.",
+      "consignesAttendues": [
+        "Évaluer rapidement la gravité de l'obstruction des voies aériennes",
+        "Réaliser la prise en charge d'urgence adaptée (manœuvres de désobstruction)",
+        "Rassurer la mère paniquée",
+        "Ne pas introduire les doigts dans la bouche du nourrisson pour tenter de saisir le corps étranger"
+      ],
+      "consignesInterdites": [
+        "Ne pas tenter d'attraper le corps étranger au fond de la gorge avec les doigts",
+        "Ne pas mettre le nourrisson en position de Trendelenburg (tête en bas sans support)",
+        "Ne pas retarder la prise en charge pour réaliser un examen clinique complet avant les manœuvres"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Examen clinique",
+      "lieu": "Service d'urgence pédiatrique",
+      "materielDisponible": [
+        "Mannequin nourrisson de simulation",
+        "Gants à usage unique",
+        "Masque à oxygène pédiatrique",
+        "Ballon autoremplisseur pédiatrique avec masque",
+        "Chariot d'urgence pédiatrique",
+        "Oxymètre de pouls pédiatrique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne auprès de la mère",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "médecin"
+        ]
+      },
+      {
+        "id": "evaluation_rapidite_detresse",
+        "label": "Identifie rapidement les signes de détresse respiratoire aiguë (cyanose, tirage, toux inefficace, incapacité à pleurer)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cyanose",
+          "tirage",
+          "toux inefficace",
+          "détresse respiratoire",
+          "obstruction"
+        ]
+      },
+      {
+        "id": "reconnait_obstruction_totale",
+        "label": "Reconnaît une obstruction totale des voies aériennes (toux inefficace/absente, impossibilité de crier, cyanose, agitation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "obstruction totale",
+          "corps étranger",
+          "toux inefficace",
+          "ne crie pas",
+          "cyanose"
+        ]
+      },
+      {
+        "id": "position_nourrisson_tete_basse",
+        "label": "Positionne correctement le nourrisson sur l'avant-bras, tête plus basse que le tronc, visage vers le bas",
+        "weight": 1,
+        "triggerKeywords": [
+          "avant-bras",
+          "tête basse",
+          "tête en bas",
+          "position",
+          "soutient mâchoire"
+        ]
+      },
+      {
+        "id": "realise_5_claques_dos",
+        "label": "Réalise 5 claques dans le dos entre les omoplates avec le talon de la main",
+        "weight": 1,
+        "triggerKeywords": [
+          "claques",
+          "dos",
+          "omoplates",
+          "5 claques",
+          "talon de la main"
+        ]
+      },
+      {
+        "id": "verifie_bouche_apres_claques",
+        "label": "Vérifie la bouche après les claques et retire le corps étranger uniquement s'il est visible et accessible",
+        "weight": 1,
+        "triggerKeywords": [
+          "vérifie bouche",
+          "retire",
+          "visible",
+          "accessible"
+        ]
+      },
+      {
+        "id": "realise_5_compressions_thoraciques",
+        "label": "Si inefficace, réalise 5 compressions thoraciques avec 2 doigts au milieu du sternum",
+        "weight": 1,
+        "triggerKeywords": [
+          "compressions thoraciques",
+          "sternum",
+          "2 doigts",
+          "5 compressions"
+        ]
+      },
+      {
+        "id": "alterne_cycles_claques_compressions",
+        "label": "Alterne les cycles de 5 claques dans le dos et 5 compressions thoraciques jusqu'à désobstruction",
+        "weight": 1,
+        "triggerKeywords": [
+          "alterne",
+          "cycle",
+          "répète",
+          "claques et compressions"
+        ]
+      },
+      {
+        "id": "ne_pas_introduire_doigts_gorge",
+        "label": "N'introduit pas les doigts dans la gorge pour tenter de saisir un corps étranger non visible",
+        "weight": 1,
+        "triggerKeywords": []
+      },
+      {
+        "id": "appelle_a_laide",
+        "label": "Appelle à l'aide (équipe soignante, réanimation) si les manœuvres échouent",
+        "weight": 1,
+        "triggerKeywords": [
+          "aide",
+          "réanimation",
+          "appelle",
+          "renfort",
+          "équipe"
+        ]
+      },
+      {
+        "id": "surveillance_post_désobstruction",
+        "label": "Surveille le nourrisson après désobstruction (respiration, coloration, saturation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveille",
+          "respiration",
+          "saturation",
+          "coloration",
+          "après"
+        ]
+      },
+      {
+        "id": "rassure_mere",
+        "label": "Rassure la mère paniquée et lui explique les gestes réalisés",
+        "weight": 1,
+        "triggerKeywords": [
+          "rassure",
+          "mère",
+          "explique",
+          "calme",
+          "inquiète"
+        ]
+      },
+      {
+        "id": "conseils_prevention",
+        "label": "Donne des conseils de prévention (aliments à éviter, surveillance pendant les repas)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "évite",
+          "surveillance",
+          "repas",
+          "aliments",
+          "morceaux"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la mère expliquer la situation sans l'interrompre inutilement",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour recueillir l'histoire de l'événement",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension des informations données par la mère",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué) avec la mère",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance envers la mère paniquée",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Mère anxieuse, paniquée, parlant vite, très inquiète pour son enfant. Elle se sent coupable d'avoir donné des morceaux de fruit.",
+      "phraseOuverture": "Docteur, vite ! Mon fils ne respire plus ! Il s'est étouffé avec un morceau de fruit pendant le repas !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.alimentation"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "La mère devient encore plus paniquée et agitée, elle supplie d'agir vite",
+        "silence": "La mère insiste en répétant 'Faites quelque chose ! Il ne respire plus !'",
+        "jargon": "La mère ne comprend pas et demande 'Qu'est-ce que vous voulez dire ? Est-ce qu'il va mourir ?'"
+      }
+    }
   }
 }

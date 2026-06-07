@@ -764,5 +764,283 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au Service d'Urgences.",
+      "contexte": "John Martin, 58 ans, homme, est amené par les secours pour un Arrêt Cardio-Respiratoire (ACR) survenu brutalement en présence de témoins. Les secouristes ont débuté une réanimation de base à l'arrivée. Vous êtes appelé(e) immédiatement pour prendre en charge ce patient.",
+      "consignesAttendues": [
+        "Prendre en charge l'arrêt cardio-respiratoire selon les recommandations internationales (ERC/ILCOR 2021)",
+        "Identifier les rythmes choquables (FV / TVSP) ou non choquables (Asystolie / AEP)",
+        "Réaliser une RCP de haute qualité (massage cardiaque, ventilation, accès veineux)",
+        "Administrer les traitements médicamenteux adaptés (adrénaline, amiodarone si indiqué)",
+        "Rechercher et traiter les causes réversibles (5H, 5T)",
+        "Coordonner l'équipe de réanimation (rôles attribués, communication claire)",
+        "Assurer la surveillance continue (scope, EtCO2, SpO2, PA)",
+        "Rédiger un compte rendu structuré de la prise en charge"
+      ],
+      "consignesInterdites": [
+        "Ne pas interrompre le massage cardiaque sans indication",
+        "Ne pas administrer de traitement sans vérification de la voie d'abord",
+        "Ne pas quitter le patient sans relève",
+        "Ne pas ignorer les causes réversibles"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence - Salle de déchocage",
+      "materielDisponible": [
+        "Défibrillateur semi-automatique (DSA) / moniteur multiparamétrique",
+        "Chariot d'urgence (adrénaline, amiodarone, atropine, bicarbonate, sérum physiologique)",
+        "Ballon auto-remplisseur (BAVU) avec masque facial",
+        "Canule oropharyngée et matériel d'intubation (laryngoscope, sonde d'intubation, mandrin)",
+        "Voie veineuse périphérique (cathéter, tubulure, sérum physiologique)",
+        "Kit de ponction veineuse centrale",
+        "Kit de drainage thoracique",
+        "Pousse-seringue électrique",
+        "Capnographe (EtCO2)",
+        "Oxymètre de pouls",
+        "Tensiomètre automatique",
+        "ECG 12 dérivations",
+        "Échographe portable (si disponible)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "evaluation_initiale",
+        "label": "Évalue l'état de conscience et la respiration du patient (absence de pouls, absence de respiration)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "respiration",
+          "pouls",
+          "carotidien",
+          "fémoral"
+        ]
+      },
+      {
+        "id": "alerte_secours",
+        "label": "Alerte immédiatement l'équipe de réanimation et demande le chariot d'urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "alerte",
+          "équipe",
+          "chariot d'urgence",
+          "réanimation",
+          "aide"
+        ]
+      },
+      {
+        "id": "rcp_haute_qualite",
+        "label": "Initie une RCP de haute qualité (compressions thoraciques : fréquence 100-120/min, profondeur 5-6 cm, recul complet, minimiser les interruptions)",
+        "weight": 1,
+        "triggerKeywords": [
+          "compressions",
+          "massage cardiaque",
+          "sternum",
+          "100",
+          "120",
+          "5 cm",
+          "6 cm",
+          "recul"
+        ]
+      },
+      {
+        "id": "ventilation",
+        "label": "Assure une ventilation adéquate (BAVU ou intubation, ratio 30:2 ou ventilation continue si intubé)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ventilation",
+          "BAVU",
+          "intubation",
+          "30:2",
+          "ballon",
+          "masque"
+        ]
+      },
+      {
+        "id": "voie_abord",
+        "label": "Pose une voie veineuse périphérique (ou intra-osseuse si échec) pour l'administration des médicaments",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "périphérique",
+          "intra-osseuse",
+          "cathéter",
+          "perfusion"
+        ]
+      },
+      {
+        "id": "analyse_rythme",
+        "label": "Analyse le rythme cardiaque (FV/TVSP vs Asystolie/AEP) et décide de la défibrillation si indiqué",
+        "weight": 1,
+        "triggerKeywords": [
+          "rythme",
+          "fibrillation ventriculaire",
+          "TVSP",
+          "asystolie",
+          "AEP",
+          "défibrillation",
+          "choc électrique"
+        ]
+      },
+      {
+        "id": "defibrillation",
+        "label": "Réalise la défibrillation si rythme choquable (FV/TVSP) avec les énergies appropriées",
+        "weight": 1,
+        "triggerKeywords": [
+          "défibrillation",
+          "choc",
+          "énergie",
+          "joules",
+          "biphasique",
+          "monophasique"
+        ]
+      },
+      {
+        "id": "adrenaline",
+        "label": "Administre l'adrénaline (1 mg IV/IO toutes les 3-5 minutes) selon le protocole",
+        "weight": 1,
+        "triggerKeywords": [
+          "adrénaline",
+          "1 mg",
+          "IV",
+          "IO",
+          "toutes les 3 minutes",
+          "toutes les 5 minutes"
+        ]
+      },
+      {
+        "id": "amiodarone",
+        "label": "Administre l'amiodarone (300 mg IV/IO) après le 3ème choc si FV/TVSP réfractaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "amiodarone",
+          "300 mg",
+          "IV",
+          "IO",
+          "FV réfractaire",
+          "TVSP réfractaire"
+        ]
+      },
+      {
+        "id": "causes_reversibles",
+        "label": "Recherche et traite les causes réversibles (5H : Hypovolémie, Hypoxie, Hyperkaliémie/Hypokaliémie, Hypothermie, H+ (acidose) ; 5T : Tamponnade, Pneumothorax sous tension, Embolie pulmonaire, Intoxication, IDM)",
+        "weight": 1,
+        "triggerKeywords": [
+          "5H",
+          "5T",
+          "causes réversibles",
+          "hypovolémie",
+          "hypoxie",
+          "hyperkaliémie",
+          "hypothermie",
+          "acidose",
+          "tamponnade",
+          "pneumothorax",
+          "embolie pulmonaire",
+          "intoxication",
+          "IDM"
+        ]
+      },
+      {
+        "id": "coordination_equipe",
+        "label": "Coordonne l'équipe de réanimation (attribution des rôles, communication claire, leadership)",
+        "weight": 1,
+        "triggerKeywords": [
+          "équipe",
+          "rôles",
+          "coordination",
+          "leadership",
+          "communication",
+          "chef d'équipe"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Assure la surveillance continue (scope, EtCO2, SpO2, PA, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "scope",
+          "EtCO2",
+          "SpO2",
+          "PA",
+          "température",
+          "monitorage"
+        ]
+      },
+      {
+        "id": "retablissement_circulation",
+        "label": "Identifie le retour à une circulation spontanée (ROSC) et initie la prise en charge post-ACR",
+        "weight": 1,
+        "triggerKeywords": [
+          "ROSC",
+          "retour circulation",
+          "pouls",
+          "pression artérielle",
+          "prise en charge post-ACR"
+        ]
+      },
+      {
+        "id": "compte_rendu",
+        "label": "Rédige un compte rendu structuré de la prise en charge (chronologie, rythmes, traitements, ROSC)",
+        "weight": 1,
+        "triggerKeywords": [
+          "compte rendu",
+          "chronologie",
+          "rythmes",
+          "traitements",
+          "ROSC",
+          "rapport"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_claire",
+        "label": "Commande clairement et fermement les actions de l'équipe (donne des ordres précis, vérifie l'exécution)",
+        "max": 1
+      },
+      {
+        "id": "communication_non_verbale",
+        "label": "Utilise une communication non verbale efficace (contact visuel, gestes, posture)",
+        "max": 1
+      },
+      {
+        "id": "gestion_stress",
+        "label": "Gère son stress et celui de l'équipe (calme, voix posée, encouragement)",
+        "max": 1
+      },
+      {
+        "id": "information_famille",
+        "label": "Informe la famille ou les proches de manière empathique et claire sur la situation",
+        "max": 1
+      },
+      {
+        "id": "transmission_equipe",
+        "label": "Transmet les informations de manière structurée à l'équipe relais (SBAR ou équivalent)",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient inconscient, en arrêt cardio-respiratoire. Aucune interaction verbale possible. Le patient est un mannequin haute-fidélité.",
+      "phraseOuverture": "Le patient est inconscient, ne respire pas, pas de pouls palpable. Les secouristes sont en train de faire du massage cardiaque.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient reste inconscient, aucune réaction.",
+        "silence": "Aucune réponse, le patient est en ACR.",
+        "jargon": "Le patient ne comprend pas, il est inconscient."
+      }
+    }
   }
 }

@@ -246,16 +246,257 @@
   ],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Monsieur Dupont, 58 ans, homme, se présente aux urgences pour une douleur abdominale aiguë de survenue récente.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Effectuer un examen clinique ciblé",
+        "Proposer un diagnostic étiologique",
+        "Demander les examens complémentaires pertinents",
+        "Initier une prise en charge thérapeutique adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir posé de diagnostic",
+        "Ne pas ignorer les signes de gravité clinique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Entretien/Interrogatoire",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "ECG",
+        "Accès aux résultats biologiques et d'imagerie"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "je vais m'occuper de vous"
+        ]
+      },
+      {
+        "id": "recueil_motif",
+        "label": "Recueille le motif de consultation et la plainte principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "pourquoi",
+          "motif",
+          "symptômes",
+          "qu'est-ce qui vous amène"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur selon les critères ODL (Onset, Duration, Location, Character, Radiation, Associated symptoms, Timing, Exacerbating/relieving factors, Severity)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "où",
+          "irradie",
+          "type de douleur",
+          "aggrave",
+          "calme",
+          "intensité",
+          "EVA"
+        ]
+      },
+      {
+        "id": "symptomes_associes",
+        "label": "Recherche les symptômes associés (nausées, vomissements, fièvre, ictère, troubles du transit)",
+        "weight": 1,
+        "triggerKeywords": [
+          "nausées",
+          "vomissements",
+          "fièvre",
+          "ictère",
+          "diarrhée",
+          "constipation",
+          "urines"
+        ]
+      },
+      {
+        "id": "antecedents",
+        "label": "Recherche les antécédents médicaux, chirurgicaux et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "opération",
+          "traitement",
+          "famille",
+          "HTA"
+        ]
+      },
+      {
+        "id": "mode_vie",
+        "label": "Explore le mode de vie (tabac, alcool, alimentation, activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "alimentation",
+          "activité physique",
+          "profession"
+        ]
+      },
+      {
+        "id": "allergies",
+        "label": "Vérification des allergies médicamenteuses",
+        "weight": 1,
+        "triggerKeywords": [
+          "allergie",
+          "médicament",
+          "réaction allergique"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet incluant constantes, examen abdominal, cardiovasculaire et pulmonaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen",
+          "palpation",
+          "auscultation",
+          "Murphy",
+          "défense",
+          "constantes",
+          "tension",
+          "pouls",
+          "température"
+        ]
+      },
+      {
+        "id": "diagnostic_etiologique",
+        "label": "Propose un diagnostic étiologique pertinent (cholécystite aiguë)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cholécystite",
+          "diagnostic",
+          "pensez-vous",
+          "probable",
+          "hypothèse"
+        ]
+      },
+      {
+        "id": "examens_complementaires",
+        "label": "Demande les examens complémentaires pertinents (bilan biologique, imagerie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan",
+          "prise de sang",
+          "échographie",
+          "scanner",
+          "CRP",
+          "leucocytes",
+          "bilirubine"
+        ]
+      },
+      {
+        "id": "pec_initiale",
+        "label": "Initie une prise en charge thérapeutique adaptée (antibiothérapie, antalgiques, repos digestif, avis chirurgical)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antibiothérapie",
+          "antalgique",
+          "perfusion",
+          "chirurgie",
+          "cholécystectomie",
+          "jeûne",
+          "traitement"
+        ]
+      },
+      {
+        "id": "surveillance_gravite",
+        "label": "Évalue la gravité et planifie la surveillance clinique",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "gravité",
+          "signes de gravité",
+          "monitoring",
+          "réévaluation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux, algique, légèrement prostré. Il répond aux questions mais est gêné par la douleur. Il s'attend à être pris en charge rapidement.",
+      "phraseOuverture": "Docteur, j'ai une douleur terrible au ventre, ça fait 12 heures que ça dure et ça ne passe pas.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution",
+        "histoireMaladie.descriptionDouleur",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et montre des signes d'agacement.",
+        "silence": "Le patient attend la question suivante sans prendre l'initiative.",
+        "jargon": "Le patient demande : 'Qu'est-ce que vous voulez dire ? Je ne comprends pas.'"
+      }
+    }
+  }
 }

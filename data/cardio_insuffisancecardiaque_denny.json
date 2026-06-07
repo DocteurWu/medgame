@@ -209,5 +209,295 @@
     "ECG",
     "Echographie cardiaque",
     "Bilan sanguin ionogramme"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie.",
+      "contexte": "Duquette Denny, 39 ans, homme, se présente aux urgences pour une dyspnée sévère et une fatigue extrême d'aggravation progressive depuis plusieurs mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Effectuer un examen clinique cardiovasculaire et pulmonaire",
+        "Identifier les signes de décompensation cardiaque",
+        "Proposer une stratégie diagnostique initiale adaptée",
+        "Proposer une prise en charge thérapeutique initiale",
+        "Expliquer au patient la gravité de sa situation et la nécessité d'une hospitalisation"
+      ],
+      "consignesInterdites": [
+        "Administrer des AINS",
+        "Administrer des bêtabloquadors par voie intraveineuse",
+        "Administrer des corticoïdes sans indication",
+        "Renvoyer le patient à domicile sans prise en charge"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Urgence vitale",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Oxymètre de pouls",
+        "Tensiomètre",
+        "Stéthoscope",
+        "ECG 12 dérivations",
+        "Radiographie thoracique",
+        "Bilan biologique (BNP/NT-proBNP, ionogramme, créatinine, NFS, troponine)",
+        "Oxygénothérapie",
+        "Voie veineuse périphérique",
+        "Diurétiques IV (furosémide)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "médecin"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet",
+        "label": "Réalise un interrogatoire complet : histoire de la maladie, antécédents, traitements en cours, mode de vie",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "antécédents",
+          "traitement",
+          "médicaments",
+          "fumé",
+          "alcool",
+          "orthopnée",
+          "œdèmes"
+        ]
+      },
+      {
+        "id": "constantes_initiales",
+        "label": "Prend et interprète les constantes initiales (TA, FC, SpO2, FR, Temp)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "fréquence respiratoire",
+          "constantes",
+          "95/60",
+          "88%",
+          "110",
+          "26"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (inspection, palpation, auscultation cardiaque)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "galop",
+          "B3",
+          "bruits du cœur",
+          "pouls",
+          "turgescence",
+          "TIJ"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire complet (inspection, percussion, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "râles",
+          "crépitants",
+          "signes de lutte",
+          "dyspnée"
+        ]
+      },
+      {
+        "id": "examen_abdominal",
+        "label": "Réalise un examen abdominal (palpation hépatique, recherche d'ascite)",
+        "weight": 1,
+        "triggerKeywords": [
+          "abdomen",
+          "foie",
+          "hépatomégalie",
+          "ascite",
+          "reflux hépatojugulaire"
+        ]
+      },
+      {
+        "id": "examen_œdèmes",
+        "label": "Recherche des œdèmes des membres inférieurs (godet)",
+        "weight": 1,
+        "triggerKeywords": [
+          "œdèmes",
+          "chevilles",
+          "godet",
+          "pré-tibial",
+          "prise de poids"
+        ]
+      },
+      {
+        "id": "identification_urgence",
+        "label": "Identifie la détresse respiratoire et l'hypoxémie comme urgence vitale",
+        "weight": 1,
+        "triggerKeywords": [
+          "urgence",
+          "détresse",
+          "hypoxie",
+          "88%",
+          "oxygène",
+          "oxygénothérapie"
+        ]
+      },
+      {
+        "id": "mesures_immédiates",
+        "label": "Instaure les mesures immédiates : oxygénothérapie, position semi-assise, voie veineuse",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "voie veineuse",
+          "position",
+          "assis",
+          "jambes pendantes"
+        ]
+      },
+      {
+        "id": "prescription_diurétique_iv",
+        "label": "Prescrit un diurétique de l'anse par voie intraveineuse (furosémide IV)",
+        "weight": 1,
+        "triggerKeywords": [
+          "furosémide",
+          "diurétique",
+          "IV",
+          "Lasilix",
+          "diurèse"
+        ]
+      },
+      {
+        "id": "bilan_diagnostique",
+        "label": "Prescrit un bilan adapté : ECG, radiographie thoracique, BNP/NT-proBNP, ionogramme, créatinine, NFS, troponine",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "radio thorax",
+          "BNP",
+          "NT-proBNP",
+          "biologie",
+          "ionogramme",
+          "créatinine",
+          "troponine",
+          "échocardiographie"
+        ]
+      },
+      {
+        "id": "diagnostic_ica",
+        "label": "Pose le diagnostic d'insuffisance cardiaque décompensée (cardiomyopathie dilatée stade avancé)",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "décompensation",
+          "cardiomyopathie",
+          "dilatée",
+          "stade avancé",
+          "terminale"
+        ]
+      },
+      {
+        "id": "annonce_gravite",
+        "label": "Explique au patient la gravité de sa situation et la nécessité d'une hospitalisation en cardiologie/soins intensifs",
+        "weight": 1,
+        "triggerKeywords": [
+          "hospitalisation",
+          "grave",
+          "soins intensifs",
+          "cardiologie",
+          "transplantation",
+          "liste"
+        ]
+      },
+      {
+        "id": "transplantation_cardiaque",
+        "label": "Évoque la transplantation cardiaque comme option thérapeutique (patient déjà inscrit sur liste)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transplantation",
+          "greffe",
+          "cœur",
+          "liste",
+          "inscrit",
+          "traitement maximal"
+        ]
+      },
+      {
+        "id": "conseils_hygiénodiététiques",
+        "label": "Donne des conseils hygiéno-diététiques (restriction hydrosodée, pesée quotidienne, activité adaptée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sel",
+          "restriction",
+          "eau",
+          "pesée",
+          "quotidienne",
+          "régime",
+          "activité physique"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à un patient jeune en insuffisance cardiaque terminale",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient jeune, fatigué, essoufflé, légèrement anxieux mais coopératif. Il connaît bien sa maladie car suivi depuis longtemps en cardiologie. Il est conscient de la gravité de son état et de sa situation sur liste de transplantation.",
+      "phraseOuverture": "Docteur, je n'arrive plus à respirer, c'est de pire en pire depuis quelques jours. Je suis fatigué en permanence, je n'arrive presque plus à marcher.",
+      "infosVolontaires": [
+        "Dyspnée sévère d'aggravation progressive",
+        "Orthopnée (dort avec plusieurs oreillers)",
+        "Œdèmes des chevilles",
+        "Fatigue extrême",
+        "Inscrit sur liste de transplantation cardiaque",
+        "Cardiomyopathie dilatée connue"
+      ],
+      "infosSiDemandees": [
+        "Antécédents médicaux : cardiomyopathie dilatée diagnostiquée il y a plusieurs ans, traitement médical maximal",
+        "Traitements en cours : Furosémide 40 mg x2/j, IEC à dose maximale",
+        "Mode de vie : ancien ouvrier, activité physique très limitée, jamais fumé, pas d'alcool, hyporexie récente",
+        "Antécédents familiaux : non contributifs",
+        "Allergies : aucune"
+      ],
+      "infosCachees": [
+        "Le patient a arrêté partiellement son traitement il y a 2 semaines par oubli et fatigue"
+      ],
+      "reactions": {
+        "brutal": "Je vous écoute Docteur, je sais que c'est grave... Je veux juste aller mieux.",
+        "silence": "Docteur ? Vous pensez que ça va aller ? J'ai peur...",
+        "jargon": "Pardon Docteur, je ne comprends pas ce que vous voulez dire. Pouvez-vous me l'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

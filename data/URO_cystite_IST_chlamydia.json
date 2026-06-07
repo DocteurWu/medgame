@@ -146,16 +146,269 @@
   "correction": "# Urétrite à Chlamydia\n\nTableau d’infection sexuellement transmissible à Chlamydia trachomatis : pollakiurie, brûlures, BU inflammatoire, ECBU stérile et PCR positive.\n\n## Points clés\n\n- Le couple « BU inflammatoire + ECBU stérile » évoque une IST\n- Chlamydia donne des symptômes mictionnels souvent trompeurs\n- Toujours traiter le partenaire et recommander l’abstinence temporaire\n\n## Erreurs à éviter\n\n- Donner un antibiotique de cystite classique (ex : fosfomycine) — inefficace\n- Oublier le dépistage du partenaire\n- Ne pas rechercher d'autres IST en parallèle",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Monsieur Alex Karev, 34 ans, se présente en consultation pour des brûlures mictionnelles et une pollakiurie évoluant depuis 4 jours.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes urinaires et le contexte sexuel",
+        "Réaliser un examen clinique adapté incluant l'examen urologique",
+        "Proposer un bilan diagnostique pertinent (ECBU, PCR urétrale)",
+        "Annoncer le diagnostic le plus probable et proposer une prise en charge thérapeutique adaptée",
+        "Aborder la question du traitement du partenaire et des mesures de prévention",
+        "Expliquer clairement la conduite à tenir au patient"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir évoqué la nécessité d'un bilan biologique préalable",
+        "Ne pas omettre la question du traitement du partenaire",
+        "Ne pas utiliser de termes médicaux sans les expliquer au patient"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Stratégie diagnostique",
+      "domaineSecondaire": "Éducation/prévention",
+      "lieu": "Cabinet de consultation de médecine générale",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Stéthoscope",
+        "Gants d'examen",
+        "Écouvillon urétral",
+        "Bandelettes urinaires",
+        "Bon de prescription",
+        "Feuille de consentement"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "médecin"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_urinaires",
+        "label": "Explore précisément les symptômes urinaires (pollakiurie, brûlures, écoulement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "brûlures",
+          "pollakiurie",
+          "écoulement",
+          "miction",
+          "uriner"
+        ]
+      },
+      {
+        "id": "interrogatoire_contexte_sexuel",
+        "label": "Aborde le contexte sexuel et les facteurs de risque IST de manière appropriée",
+        "weight": 1,
+        "triggerKeywords": [
+          "rapport",
+          "partenaire",
+          "préservatif",
+          "IST",
+          "sexuel",
+          "protégé"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux pertinents",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "allergie",
+          "traitement",
+          "chirurgie",
+          "famille"
+        ]
+      },
+      {
+        "id": "examen_clinique_constantes",
+        "label": "Réalise la prise des constantes (TA, FC, T°, SpO2)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "température",
+          "constantes"
+        ]
+      },
+      {
+        "id": "examen_clinique_abdominal",
+        "label": "Réalise un examen abdominal avec recherche de sensibilité sus-pubienne",
+        "weight": 1,
+        "triggerKeywords": [
+          "abdomen",
+          "sus-pubien",
+          "palpation",
+          "sensibilité"
+        ]
+      },
+      {
+        "id": "examen_urologique_externe",
+        "label": "Réalise l'examen urologique externe (méat, écoulement, TR)",
+        "weight": 1,
+        "triggerKeywords": [
+          "méat",
+          "urétral",
+          "écoulement",
+          "prostate",
+          "toucher rectal",
+          "examen génital"
+        ]
+      },
+      {
+        "id": "bilan_ECBU",
+        "label": "Prescrit un ECBU (Examen Cyto-Bactériologique des Urines)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECBU",
+          "analyse d'urine",
+          "bandelette urinaire",
+          "urines"
+        ]
+      },
+      {
+        "id": "bilan_PCR_chlamydia",
+        "label": "Prescrit une PCR Chlamydia sur premier jet d'urines ou écouvillon urétral",
+        "weight": 1,
+        "triggerKeywords": [
+          "PCR",
+          "chlamydia",
+          "prélèvement urétral",
+          "premier jet",
+          "IST"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic d'urétrite à Chlamydia de manière claire et empathique",
+        "weight": 1,
+        "triggerKeywords": [
+          "chlamydia",
+          "urétrite",
+          "infection",
+          "diagnostic",
+          "IST"
+        ]
+      },
+      {
+        "id": "traitement_doxycycline",
+        "label": "Prescrit la doxycycline 100 mg x 2/j pendant 7 jours",
+        "weight": 1,
+        "triggerKeywords": [
+          "doxycycline",
+          "antibiotique",
+          "traitement",
+          "7 jours",
+          "100 mg"
+        ]
+      },
+      {
+        "id": "traitement_partenaire",
+        "label": "Évoque la nécessité de traiter le/la partenaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "partenaire",
+          "conjoint",
+          "traitement partenaire",
+          "contaminé"
+        ]
+      },
+      {
+        "id": "conseils_prevention",
+        "label": "Donne des conseils de prévention (abstinence pendant traitement, préservatif, dépistage)",
+        "weight": 1,
+        "triggerKeywords": [
+          "préservatif",
+          "protection",
+          "abstention",
+          "dépistage",
+          "prévention"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi avec contrôle après traitement",
+        "weight": 1,
+        "triggerKeywords": [
+          "contrôle",
+          "suivi",
+          "consultation",
+          "résultat",
+          "guérison"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif mais légèrement gêné par les symptômes. Professionnel de santé (interne en chirurgie), donc connaît le vocabulaire médical mais reste dans son rôle de patient. Peut minimiser certains aspects de sa vie sexuelle.",
+      "phraseOuverture": "Bonjour docteur, ça fait 4 jours que j'ai des brûlures quand j'urine et que j'ai tout le temps envie d'aller aux toilettes. C'est vraiment pénible.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.chirurgicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi",
+        "histoireMaladie.facteursDeclenchants",
+        "examenClinique.examenUrologique"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Excusez-moi, je préférerais qu'on prenne un peu de temps pour en parler...",
+        "silence": "Vous voulez que je vous pose des questions pour vous aider ?",
+        "jargon": "Oui, c'est vrai que je connais un peu le vocabulaire, mais je préfère qu'on soit clair, comme avec n'importe quel patient."
+      }
+    }
+  }
 }

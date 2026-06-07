@@ -687,5 +687,295 @@
       }
     }
   },
-  "correction": "# Correction : Convulsions Fébriles du Nourrisson\n\n## Diagnostic\nIl s'agit d'une **convulsion fébrile complexe (ou prolongée)** en raison de sa durée qui a dépassé **5 minutes** (6 minutes initialement, se prolongeant en l'absence de traitement).\n\nUne convulsion fébrile est dite **complexe** si elle présente au moins un des critères suivants :\n* **Durée prolongée** (> 15 minutes, ou > 5 minutes nécessitant un traitement anticonvulsivant pour l'interrompre).\n* **Caractère focalisé** des secousses (crise partielle).\n* **Récidive** de la crise dans les 24 heures.\n* **Déficit neurologique post-critique** (ex: paralysie transitoire de Todd).\n* **Âge atypique** (< 6 mois ou > 5 ans).\n\n---\n\n## Conduite à Tenir Clinique (AFGSU & Pédiatrie)\n\n### 1. Sécurisation immédiate (Gestes de survie)\n* **Libération des Voies Aériennes (LVA)** : desserrer les vêtements, libérer le cou, aspirer les sécrétions salivaires et glaireuses.\n* **Position Latérale de Sécurité (PLS)** : protège des fausses routes par inhalation de salive ou de vomissements (très fréquents lors de la crise ou de la phase post-critique).\n* **Oxygénothérapie** : systématique au masque à haute concentration dès que possible pour limiter l'hypoxie tissulaire et cérébrale.\n\n### 2. Éliminer une Hypoglycémie Pédiatrique\n* Le **BM test (glycémie capillaire)** est un examen **systématique et obligatoire** chez tout enfant qui convulse.\n* Chez le nourrisson, le seuil d'hypoglycémie est strict : **< 0,60 g/L** (ou < 3,3 mmol/L). Une hypoglycémie non corrigée sous-jacente provoque rapidement des lésions cérébrales irréversibles par neuroglycopénie.\n\n### 3. Traitement Anticonvulsivant de 1ère ligne (si crise > 5 minutes)\n* **Midazolam en intra-buccal (Buccolam)** : **0,5 mg/kg** (soit 6 mg pour un enfant de 12 kg) déposés dans la muqueuse jugale. C'est la voie privilégiée aujourd'hui car rapide, sûre et facile d'accès sans voie veineuse.\n* **Diazépam en intra-rectal (Valium rectal)** : **0,5 mg/kg** (soit 6 mg) à l'aide d'une canule. Excellente alternative historique, simple d'emploi.\n\n### 4. Traitement antipyrétique de la fièvre\n* **Paracétamol (Perfalgan) IV** : **15 mg/kg** (soit 180 mg pour Léo) en perfusion intraveineuse lente sur 15 minutes. N'est administré qu'une fois la convulsion arrêtée.\n* **Moyens physiques doux** : Déshabiller l'enfant (le laisser en couche) et aérer la pièce (température ambiante recommandée à 19-20°C).\n\n---\n\n## 🟢 Bons réflexes (Do's)\n* **Priorité à la PLS** : Mettre l'enfant sur le côté dès le début de la crise pour libérer la filière pharyngée.\n* **Chronométrer précisément** la durée de la convulsion pour guider l'injection d'anticonvulsivants (obligatoire dès 5 minutes).\n* **Glycémie capillaire systématique** : À réaliser dans les premières minutes pour exclure une hypoglycémie pédiatrique.\n* **Utiliser les voies non-invasives d'urgence** : Privilégier la voie intra-buccale (Midazolam) ou intra-rectale (Diazépam) d'emblée, sans perdre de temps à poser une voie veineuse difficile chez un nourrisson convulsant.\n* **Refroidissement physique doux** : Déshabiller l'enfant et le laisser en couche.\n\n---\n\n## 🔴 Erreurs à éviter (Don'ts)\n* **Bains glacés ou enveloppements glacés** : **FORMELLEMENT PROSCRITS**. Ils provoquent une vasoconstriction cutanée brutale (vasospasme), un choc thermique et un risque majeur d'arrêt cardiaque.\n* **Objets dans la bouche** : Ne **JAMAIS** rien introduire dans la bouche (cuillère, doigt, abaisse-langue) sous prétexte d'éviter qu'il « n'avale sa langue » (physiologiquement impossible). Risque majeur de laryngospasme réflexe, d'obstruction complète ou de traumatisme buccal.\n* **Sédatifs adultes non adaptés** : Administrer des doses de benzodiazépines non diluées ou calculées à l'emporte-pièce (ex: 10 mg de Diazépam IV direct) provoque une apnée centrale et un arrêt respiratoire immédiat.\n* **Administrer un sirop per os chez un enfant somnolent** : Risque majeur de fausse route et d'asphyxie.\n* **Retarder le traitement pour poser une VVP** : Ne pas s'acharner sur une voie veineuse chez un enfant en crise tonico-clonique. La première ligne d'urgence est non-veineuse."
+  "correction": "# Correction : Convulsions Fébriles du Nourrisson\n\n## Diagnostic\nIl s'agit d'une **convulsion fébrile complexe (ou prolongée)** en raison de sa durée qui a dépassé **5 minutes** (6 minutes initialement, se prolongeant en l'absence de traitement).\n\nUne convulsion fébrile est dite **complexe** si elle présente au moins un des critères suivants :\n* **Durée prolongée** (> 15 minutes, ou > 5 minutes nécessitant un traitement anticonvulsivant pour l'interrompre).\n* **Caractère focalisé** des secousses (crise partielle).\n* **Récidive** de la crise dans les 24 heures.\n* **Déficit neurologique post-critique** (ex: paralysie transitoire de Todd).\n* **Âge atypique** (< 6 mois ou > 5 ans).\n\n---\n\n## Conduite à Tenir Clinique (AFGSU & Pédiatrie)\n\n### 1. Sécurisation immédiate (Gestes de survie)\n* **Libération des Voies Aériennes (LVA)** : desserrer les vêtements, libérer le cou, aspirer les sécrétions salivaires et glaireuses.\n* **Position Latérale de Sécurité (PLS)** : protège des fausses routes par inhalation de salive ou de vomissements (très fréquents lors de la crise ou de la phase post-critique).\n* **Oxygénothérapie** : systématique au masque à haute concentration dès que possible pour limiter l'hypoxie tissulaire et cérébrale.\n\n### 2. Éliminer une Hypoglycémie Pédiatrique\n* Le **BM test (glycémie capillaire)** est un examen **systématique et obligatoire** chez tout enfant qui convulse.\n* Chez le nourrisson, le seuil d'hypoglycémie est strict : **< 0,60 g/L** (ou < 3,3 mmol/L). Une hypoglycémie non corrigée sous-jacente provoque rapidement des lésions cérébrales irréversibles par neuroglycopénie.\n\n### 3. Traitement Anticonvulsivant de 1ère ligne (si crise > 5 minutes)\n* **Midazolam en intra-buccal (Buccolam)** : **0,5 mg/kg** (soit 6 mg pour un enfant de 12 kg) déposés dans la muqueuse jugale. C'est la voie privilégiée aujourd'hui car rapide, sûre et facile d'accès sans voie veineuse.\n* **Diazépam en intra-rectal (Valium rectal)** : **0,5 mg/kg** (soit 6 mg) à l'aide d'une canule. Excellente alternative historique, simple d'emploi.\n\n### 4. Traitement antipyrétique de la fièvre\n* **Paracétamol (Perfalgan) IV** : **15 mg/kg** (soit 180 mg pour Léo) en perfusion intraveineuse lente sur 15 minutes. N'est administré qu'une fois la convulsion arrêtée.\n* **Moyens physiques doux** : Déshabiller l'enfant (le laisser en couche) et aérer la pièce (température ambiante recommandée à 19-20°C).\n\n---\n\n## 🟢 Bons réflexes (Do's)\n* **Priorité à la PLS** : Mettre l'enfant sur le côté dès le début de la crise pour libérer la filière pharyngée.\n* **Chronométrer précisément** la durée de la convulsion pour guider l'injection d'anticonvulsivants (obligatoire dès 5 minutes).\n* **Glycémie capillaire systématique** : À réaliser dans les premières minutes pour exclure une hypoglycémie pédiatrique.\n* **Utiliser les voies non-invasives d'urgence** : Privilégier la voie intra-buccale (Midazolam) ou intra-rectale (Diazépam) d'emblée, sans perdre de temps à poser une voie veineuse difficile chez un nourrisson convulsant.\n* **Refroidissement physique doux** : Déshabiller l'enfant et le laisser en couche.\n\n---\n\n## 🔴 Erreurs à éviter (Don'ts)\n* **Bains glacés ou enveloppements glacés** : **FORMELLEMENT PROSCRITS**. Ils provoquent une vasoconstriction cutanée brutale (vasospasme), un choc thermique et un risque majeur d'arrêt cardiaque.\n* **Objets dans la bouche** : Ne **JAMAIS** rien introduire dans la bouche (cuillère, doigt, abaisse-langue) sous prétexte d'éviter qu'il « n'avale sa langue » (physiologiquement impossible). Risque majeur de laryngospasme réflexe, d'obstruction complète ou de traumatisme buccal.\n* **Sédatifs adultes non adaptés** : Administrer des doses de benzodiazépines non diluées ou calculées à l'emporte-pièce (ex: 10 mg de Diazépam IV direct) provoque une apnée centrale et un arrêt respiratoire immédiat.\n* **Administrer un sirop per os chez un enfant somnolent** : Risque majeur de fausse route et d'asphyxie.\n* **Retarder le traitement pour poser une VVP** : Ne pas s'acharner sur une voie veineuse chez un enfant en crise tonico-clonique. La première ligne d'urgence est non-veineuse.",
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences pédiatriques.",
+      "contexte": "Léo Martin, 18 mois, garçon, est amené en urgence par ses parents. Le nourrisson est en train de convulser depuis 6 minutes avec une forte fièvre dans un contexte de rhinopharyngite évoluant depuis 24 heures.",
+      "consignesAttendues": [
+        "Prendre en charge la crise convulsive prolongée en urgence vitale immédiate",
+        "Sécuriser les voies aériennes et mettre l'enfant en position latérale de sécurité",
+        "Administrer un benzodiazépines adapté à l'âge et au poids (midazolam intra-buccal ou diazépam intra-rectal à dose pédiatrique)",
+        "Vérifier la glycémie capillaire",
+        "Initier un traitement antipyrétique (paracétamol IV) et un refroidissement physique",
+        "Rassurer les parents et leur expliquer la conduite à tenir",
+        "Réaliser un examen clinique complet après contrôle de la crise",
+        "Rechercher des signes de gravité (raideur de nuque, purpura, signes de localisation neurologique)",
+        "Évoquer les diagnostics différentiels (méningite, hypoglycémie, état de mal épileptique non fébrile)"
+      ],
+      "consignesInterdites": [
+        "Ne pas introduire d'objet dans la bouche de l'enfant (cuillère, abaisse-langue)",
+        "Ne pas administrer de diazépam IV à dose adulte",
+        "Ne pas donner de bain glacé ni envelopper l'enfant de linges glacés",
+        "Ne pas maintenir l'enfant en position dorsale sans libération des voies aériennes"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Service d'urgence pédiatrique — Box de déchoc",
+      "materielDisponible": [
+        "Matériel de libération des voies aériennes (canules de Guedel pédiatriques, aspiration trachéale)",
+        "Masque haute concentration avec bain d'oxygène",
+        "Buccolam (midazolam) seringues pré-remplies pédiatriques",
+        "Diazépam (Valium) solution rectale",
+        "Paracétamol IV (Perfalgan)",
+        "Glucomètre et bandelettes de glycémie capillaire",
+        "Thermomètre",
+        "Scope de surveillance (FC, FR, SpO2, PA)",
+        "Voie veineuse périphérique (cathéter épicrânien pédiatrique)",
+        "Chariot d'urgence pédiatrique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securisation_scene",
+        "label": "Sécurise la scène et identifie une urgence vitale (crise convulsive prolongée > 5 min)",
+        "weight": 1,
+        "triggerKeywords": [
+          "urgence",
+          "crise",
+          "convulsion",
+          "prolongée",
+          "5 minutes"
+        ]
+      },
+      {
+        "id": "liberation_voies_aeriennes",
+        "label": "Libère les voies aériennes (aspiration, canule de Guedel si nécessaire) et met en PLS",
+        "weight": 1,
+        "triggerKeywords": [
+          "voies aériennes",
+          "aspiration",
+          "PLS",
+          "position latérale",
+          "canule",
+          "Guedel"
+        ]
+      },
+      {
+        "id": "administration_oxygene",
+        "label": "Administre de l'oxygène au masque haute concentration",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "masque",
+          "haute concentration",
+          "SpO2",
+          "saturation"
+        ]
+      },
+      {
+        "id": "verification_glycemie",
+        "label": "Vérifie la glycémie capillaire (recherche d'hypoglycémie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie",
+          "glucomètre",
+          "hypoglycémie",
+          "glycémie capillaire"
+        ]
+      },
+      {
+        "id": "administration_benzodiazpines",
+        "label": "Administre un benzodiazépines adapté : midazolam intra-buccal (Buccolam) ou diazépam intra-rectal à dose pédiatrique (0,5 mg/kg)",
+        "weight": 1,
+        "triggerKeywords": [
+          "midazolam",
+          "buccolam",
+          "diazépam",
+          "valium",
+          "intra-buccal",
+          "intra-rectal",
+          "benzodiazépine",
+          "0,5 mg/kg"
+        ]
+      },
+      {
+        "id": "traitement_antipyrétique",
+        "label": "Initie un traitement antipyrétique adapté (paracétamol IV 15 mg/kg) et un refroidissement physique (déshabiller)",
+        "weight": 1,
+        "triggerKeywords": [
+          "paracétamol",
+          "perfalgan",
+          "antipyrétique",
+          "15 mg/kg",
+          "refroidissement",
+          "déshabiller",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "surveillance_continue",
+        "label": "Installe une surveillance continue (scope : FC, FR, SpO2, PA) et prévoit un accès veineux",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "scope",
+          "FC",
+          "SpO2",
+          "voie veineuse",
+          "perfusion",
+          "cathéter"
+        ]
+      },
+      {
+        "id": "examen_clinique_post_crise",
+        "label": "Réalise un examen clinique complet après contrôle de la crise (état neurologique, recherche de raideur de nuque, purpura, signes de localisation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen neurologique",
+          "raideur nuque",
+          "purpura",
+          "signes méningés",
+          "Brudzinski",
+          "Kernig",
+          "fontanelle",
+          "signes de localisation"
+        ]
+      },
+      {
+        "id": "interrogatoire_parents",
+        "label": "Interroge les parents sur le contexte (durée de la crise, fièvre, traitements déjà administrés, antécédents familiaux de convulsions fébriles, développement psychomoteur)",
+        "weight": 1,
+        "triggerKeywords": [
+          "parents",
+          "antécédents",
+          "familiaire",
+          "convulsion fébrile",
+          "père",
+          "développement",
+          "psychomoteur",
+          "durée crise",
+          "fièvre"
+        ]
+      },
+      {
+        "id": "diagnostic_pertinent",
+        "label": "Pose le diagnostic de convulsion fébrile complexe / prolongée (> 5 min) et évoque les diagnostics différentiels",
+        "weight": 1,
+        "triggerKeywords": [
+          "convulsion fébrile",
+          "complexe",
+          "prolongée",
+          "méningite",
+          "diagnostic différentiel",
+          "hypoglycémie"
+        ]
+      },
+      {
+        "id": "rassurance_parents",
+        "label": "Rassure les parents, explique la prise en charge et le pronostic des convulsions fébriles",
+        "weight": 1,
+        "triggerKeywords": [
+          "rassurer",
+          "parents",
+          "expliquer",
+          "pronostic",
+          "convulsion fébrile",
+          "bénin",
+          "pas grave"
+        ]
+      },
+      {
+        "id": "decision_hospitalisation",
+        "label": "Décide d'une hospitalisation en secteur de soins continus ou USI pédiatrique pour surveillance",
+        "weight": 1,
+        "triggerKeywords": [
+          "hospitalisation",
+          "surveillance",
+          "USI",
+          "soins continus",
+          "admission"
+        ]
+      },
+      {
+        "id": "eviter_erreurs_graves",
+        "label": "N'introduit aucun objet dans la bouche de l'enfant et n'utilise pas de bain glacé",
+        "weight": 1,
+        "triggerKeywords": [
+          "ne pas mettre",
+          "bouche",
+          "cuillère",
+          "pas de bain glacé"
+        ]
+      },
+      {
+        "id": "peser_enfant",
+        "label": "Pèse l'enfant (ou demande le poids) pour adapter les posologies",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "12 kg",
+          "peser",
+          "dose",
+          "mg/kg"
+        ]
+      },
+      {
+        "id": "appel_aide",
+        "label": "Appelle à l'aide (senior, équipe de réanimation pédiatrique) si la crise ne cède pas après première ligne de traitement",
+        "weight": 1,
+        "triggerKeywords": [
+          "aide",
+          "senior",
+          "réanimation",
+          "protocole",
+          "seconde ligne",
+          "phénobarbital"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse les parents s'exprimer et recueille leurs informations sans les interrompre brutalement",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes aux parents avant de cibler les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule les informations données par les parents pour vérifier leur exactitude",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté aux parents (pas de jargon médical non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance envers les parents angoissés",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Parent très inquiet et angoissé, parlant vite, visiblement bouleversé par la crise convulsive de son enfant. Le parent répond aux questions mais peut être submergé par l'émotion. Il a besoin d'être rassuré tout en comprenant la gravité de la situation.",
+      "phraseOuverture": "Docteur, aidez-nous ! Mon fils est en train de convulser, ça fait plusieurs minutes, il a une grosse fièvre, je ne sais pas quoi faire !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies",
+        "modeDeVie.activitePhysique"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le parent se ferme, répond par monosyllabes, regarde son enfant avec détresse. « Vous ne comprenez pas, il faut faire quelque chose ! »",
+        "silence": "Le parent reste silencieux un instant, puis dit : « Je ne sais plus quoi dire… Est-ce qu'il va s'en sortir ? »",
+        "jargon": "Le parent fronce les sourcils et demande : « Qu'est-ce que vous voulez dire par là ? Je ne comprends pas ces mots. »"
+      }
+    }
+  }
 }

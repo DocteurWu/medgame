@@ -11,57 +11,53 @@ export class ThreeLightingAgent {
         this.renderer = renderer;
         this.composer = null;
         this.bloomPass = null;
+        this.theme = 'dark';
+        this.ambientLight = null;
+        this.keyLight = null;
+        this.pointLights = [];
     }
 
     /**
      * Configure l'éclairage complet de la scène clinique
      */
     setupLighting() {
-        // Environnement — Lumière hémisphérique (ciel/sol)
-        const hemiLight = new THREE.HemisphereLight(0xddeeff, 0x8899aa, 0.8);
-        this.scene.add(hemiLight);
+        // Environnement — Lumière ambiante douce (ciel)
+        const ambientLight = new THREE.AmbientLight('#7a8b9e', 0.18);
+        this.scene.add(ambientLight);
+        this.ambientLight = ambientLight;
 
-        // Lumière principale (Key Light) — froide, directionnelle — SEULE source d'ombre
-        const keyLight = new THREE.DirectionalLight(0xe8f0ff, 1.4);
-        keyLight.position.set(3, 6, 4);
-        keyLight.castShadow = true;
-        keyLight.shadow.mapSize.width = 1024;
-        keyLight.shadow.mapSize.height = 1024;
-        keyLight.shadow.camera.near = 0.5;
-        keyLight.shadow.camera.far = 20;
-        keyLight.shadow.camera.left = -6;
-        keyLight.shadow.camera.right = 6;
-        keyLight.shadow.camera.top = 6;
-        keyLight.shadow.camera.bottom = -6;
-        keyLight.shadow.bias = -0.0005;
+        // Lumière principale (Sun Light) venant de la fenêtre cinématique
+        const keyLight = new THREE.DirectionalLight('#fed7aa', 1.8);
+        keyLight.position.set(12, 8, 2);
+        keyLight.castShadow = false; // Désactiver l'ombre portée pour supprimer la bande noire
         this.scene.add(keyLight);
+        this.keyLight = keyLight;
 
-        // Lumière de remplissage (Fill Light) — chaude, pas d'ombre
-        const fillLight = new THREE.DirectionalLight(0xffd4a0, 0.4);
-        fillLight.position.set(-2, 3, -2);
-        this.scene.add(fillLight);
+        // Lumières ponctuelles (lampes de la salle sous le plafond y=5.0) — plus douces
+        this.pointLights = [];
+        this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#f8fafc', 0.28, 9));
+        this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#f8fafc', 0.28, 9));
 
-        // Lumière d'accentuation (Rim Light) — bleue, pas d'ombre
-        const rimLight = new THREE.DirectionalLight(0x4488ff, 0.5);
-        rimLight.position.set(-3, 2, 5);
-        this.scene.add(rimLight);
+        // Standing floor lamp warm yellow light on the left wall (floor lamp at z = 3.2)
+        const wallLampLight = new THREE.PointLight('#ff9944', 2.8, 6.5);
+        wallLampLight.position.set(-4.95, 1.7, 3.2);
+        this.scene.add(wallLampLight);
+        this.wallLampLight = wallLampLight;
 
-        // Lumières ponctuelles (lampes de la salle) — pas d'ombre (performances)
-        // Positionnées juste sous le plafond (y=3.5) pour éclairer depuis les néons
-        this._addPointLight(0, 3.35, 0, 0xffffff, 2.5, 14);
-        this._addPointLight(-2.5, 3.35, -1, 0xc8d8ff, 1.0, 8);
-        this._addPointLight(2.5, 3.35, -1, 0xc8d8ff, 1.0, 8);
-        this._addPointLight(-2.5, 3.35, 1.5, 0xdde8ff, 0.8, 7);
-        this._addPointLight(2.5, 3.35, 1.5, 0xdde8ff, 0.8, 7);
+        // Blue laser stand light (foreground)
+        const blueLaserLight = new THREE.PointLight('#00aaff', 2.2, 5.0);
+        blueLaserLight.position.set(-2.0, 1.12, 2.0);
+        this.scene.add(blueLaserLight);
+        this.blueLaserLight = blueLaserLight;
 
-        // Lumière d'appoint sous les instruments (glow bleu)
-        const instLight = new THREE.PointLight(0x44aaff, 0.6, 4);
-        instLight.position.set(-0.5, 1.0, -0.8);
+        // Lumière d'appoint sous les instruments (glow bleu sur le bureau)
+        const instLight = new THREE.PointLight(0x44aaff, 0.35, 4);
+        instLight.position.set(-2.8, 1.45, -0.4);
         this.scene.add(instLight);
+        this.instLight = instLight;
 
         // Configuration globale du renderer
-        this.renderer.shadowMap.enabled = true;
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMap.enabled = false; // Désactivation globale des ombres dures
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.0;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -70,9 +66,68 @@ export class ThreeLightingAgent {
     _addPointLight(x, y, z, color, intensity, distance) {
         const light = new THREE.PointLight(color, intensity, distance);
         light.position.set(x, y, z);
-        // Pas de castShadow sur les PointLights — seul le keyLight directionnel projette des ombres
-        // Cela réduit les draw calls de shadow map de 7 à 1, gain de perf majeur
         this.scene.add(light);
+        return light;
+    }
+
+    toggleTheme() {
+        this.theme = this.theme === 'dark' ? 'light' : 'dark';
+        this.applyTheme();
+        return this.theme;
+    }
+
+    applyTheme() {
+        const isDark = this.theme !== 'light';
+        const bgColor = isDark ? 0x2d3135 : 0xf1f5f9;
+
+        // Background & Fog
+        if (this.scene) {
+            this.scene.background.set(bgColor);
+            if (this.scene.fog) {
+                this.scene.fog.color.set(bgColor);
+            }
+        }
+
+        // Ambient Light
+        if (this.ambientLight) {
+            this.ambientLight.color.set(isDark ? '#7a8b9e' : '#e0f2fe');
+            this.ambientLight.intensity = isDark ? 0.18 : 0.85;
+        }
+
+        // Key Light
+        if (this.keyLight) {
+            this.keyLight.color.set(isDark ? '#fed7aa' : '#fffbeb');
+            this.keyLight.intensity = isDark ? 1.8 : 1.0;
+        }
+
+        // Ceiling Point Lights
+        if (this.pointLights) {
+            this.pointLights.forEach(light => {
+                light.color.set(isDark ? '#f8fafc' : '#ffffff');
+                light.intensity = isDark ? 0.28 : 0.8;
+            });
+        }
+
+        // Standing floor lamp warm light
+        if (this.wallLampLight) {
+            this.wallLampLight.intensity = isDark ? 2.8 : 1.2;
+        }
+
+        // Blue laser light
+        if (this.blueLaserLight) {
+            this.blueLaserLight.intensity = isDark ? 2.2 : 0.8;
+        }
+
+        // Instruments glow light
+        if (this.instLight) {
+            this.instLight.intensity = isDark ? 0.35 : 0.15;
+        }
+
+        // Volumetric sunlight ray
+        const shaft = this.scene.getObjectByName('VolumetricSunlightRay');
+        if (shaft && shaft.material) {
+            shaft.material.opacity = isDark ? 0.075 : 0.02;
+        }
     }
 
     /**

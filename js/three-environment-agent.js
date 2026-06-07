@@ -29,11 +29,12 @@ export class ThreeEnvironmentAgent {
         this._addWallECGMonitor();
         this._addCharriot();
         this._addDustParticles();
+        this._addMedicineCabinet();
+        this._addPottedPlant();
+        this._addExaminationBedDetails();
     }
 
     _addWallTextures() {
-        // Les murs sont déjà créés par buildRoom
-        // On ajoute des détails procéduraux
         const walls = this.scene.children.filter(
             c => c.name && c.name.includes('Mur')
         );
@@ -42,8 +43,6 @@ export class ThreeEnvironmentAgent {
             if (wall.material) {
                 wall.material.roughness = 0.8;
                 wall.material.bumpScale = 0.02;
-
-                // Créer un bump map procédural pour les murs
                 wall.material.bumpMap = this._createNoiseTexture(256, 256, 0.3);
                 wall.material.needsUpdate = true;
             }
@@ -53,81 +52,56 @@ export class ThreeEnvironmentAgent {
     _addFloorDetail() {
         const floor = this.scene.children.find(c => c.name === 'Sol');
         if (floor && floor.material) {
-            floor.material.roughness = 0.9;
-            floor.material.bumpScale = 0.01;
-            floor.material.bumpMap = this._createTilePattern(512, 512);
+            // Keep the shininess of wood parquet
+            floor.material.roughness = 0.15;
+            floor.material.metalness = 0.1;
+            // Subtle wood noise instead of tile grid
+            floor.material.bumpMap = this._createNoiseTexture(256, 256, 0.05);
+            floor.material.bumpScale = 0.005;
             floor.material.needsUpdate = true;
         }
     }
 
     _addWindowEffect() {
-        const windowMesh = this.scene.children.find(c => c.name === 'Fenetre');
-        if (windowMesh) {
-            // Rendre la fenêtre semi-transparente avec un léger glow
-            windowMesh.material.transparent = true;
-            windowMesh.material.opacity = 0.6;
-            windowMesh.material.emissiveIntensity = 0.15;
-
-            // Ajouter un voile lumineux
-            const veilGeom = new THREE.PlaneGeometry(0.6, 0.6);
-            const veilMat = new THREE.MeshBasicMaterial({
-                color: 0x88ccff,
-                transparent: true,
-                opacity: 0.08,
-                side: THREE.DoubleSide
-            });
-            const veil = new THREE.Mesh(veilGeom, veilMat);
-            veil.position.copy(windowMesh.position);
-            veil.position.z += 0.01;
-            this.scene.add(veil);
-
-            // --- Faisceau de Lumière Volumétrique (Effet cinématique de soleil) ---
-            const shaftGeom = new THREE.CylinderGeometry(0.35, 1.6, 6.2, 32, 1, true);
-            // Décaler le pivot vers la base supérieure pour une rotation depuis la fenêtre
-            shaftGeom.translate(0, -3.1, 0);
-            
-            const shaftMat = new THREE.MeshBasicMaterial({
-                color: 0xffedd5, // Doré chaud cinématique
-                transparent: true,
-                opacity: 0.075,
-                side: THREE.DoubleSide,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
-            });
-            
-            const shaft = new THREE.Mesh(shaftGeom, shaftMat);
-            shaft.name = 'VolumetricSunlightRay';
-            shaft.position.copy(windowMesh.position);
-            shaft.position.x += 0.05;
-            
-            // Rotation diagonale plongeante vers le lit du patient
-            shaft.rotation.z = -1.15; // Plongeant
-            shaft.rotation.y = 0.22;  // Tourné vers le centre
-            
-            this.scene.add(shaft);
-        }
+        // --- Faisceau de Lumière Volumétrique (Effet cinématique de soleil) ---
+        const shaftGeom = new THREE.CylinderGeometry(0.35, 1.8, 6.8, 32, 1, true);
+        // Décaler le pivot vers la base supérieure pour une rotation depuis le plafond
+        shaftGeom.translate(0, -3.4, 0);
+        
+        const shaftMat = new THREE.MeshBasicMaterial({
+            color: 0xffedd5, // Doré chaud cinématique
+            transparent: true,
+            opacity: 0.075,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false
+        });
+        
+        const shaft = new THREE.Mesh(shaftGeom, shaftMat);
+        shaft.name = 'VolumetricSunlightRay';
+        shaft.position.set(4.8, 4.2, -2.0); // Origin at top right corner
+        
+        // Rotation diagonale plongeante depuis le haut droit vers le lit/bureau
+        shaft.rotation.z = 1.15; // Plongeant
+        shaft.rotation.y = -0.22;
+        
+        this.scene.add(shaft);
     }
 
     _addMedicalPosters() {
-        // Tableau d'affichage médical sur le mur gauche
-        const posterGeom = new THREE.PlaneGeometry(0.6, 0.8);
+        const frameMat = new THREE.MeshStandardMaterial({ color: 0x8a7e6e, roughness: 0.5, metalness: 0.3 });
 
-        // Créer un poster avec un dégradé (simule du contenu imprimé)
+        // Poster 1: PROTOCOLE ECMO (left wall, x=-5.45)
+        const posterGeom = new THREE.PlaneGeometry(0.6, 0.8);
         const canvas = document.createElement('canvas');
         canvas.width = 256;
         canvas.height = 341;
         const ctx = canvas.getContext('2d');
-
-        // Fond
         ctx.fillStyle = '#f5f5f0';
         ctx.fillRect(0, 0, 256, 341);
-
-        // Titre
         ctx.fillStyle = '#1a1a2e';
         ctx.font = 'bold 14px sans-serif';
         ctx.fillText('PROTOCOLE ECMO', 20, 30);
-
-        // Lignes de texte simulé
         ctx.fillStyle = '#555';
         ctx.font = '8px sans-serif';
         const lines = [
@@ -139,71 +113,129 @@ export class ThreeEnvironmentAgent {
         lines.forEach((line, i) => {
             ctx.fillText(line, 20, 60 + i * 25);
         });
-
-        // Bordure
         ctx.strokeStyle = '#1a1a2e';
         ctx.lineWidth = 2;
         ctx.strokeRect(5, 5, 246, 331);
 
         const posterTexture = new THREE.CanvasTexture(canvas);
-        const posterMat = new THREE.MeshStandardMaterial({
-            map: posterTexture,
-            roughness: 0.8
-        });
+        const posterMat = new THREE.MeshStandardMaterial({ map: posterTexture, roughness: 0.8 });
 
         const poster = new THREE.Mesh(posterGeom, posterMat);
-        poster.position.set(-4.85, 1.5, 1.2);
+        poster.position.set(-5.45, 1.8, -1.2);
         poster.rotation.y = Math.PI / 2;
         poster.name = 'MedicalPoster';
         poster.userData.label = 'Affiche médicale';
         poster.userData.interactive = true;
         this.scene.add(poster);
 
-        // Cadre (ajusté pour le poster tourné de π/2 : le Z local devient X monde)
-        const frameGeom = new THREE.BoxGeometry(0.62, 0.82, 0.01);
-        const frameMat = new THREE.MeshStandardMaterial({ color: 0x8a7e6e, roughness: 0.5, metalness: 0.3 });
-        const frame = new THREE.Mesh(frameGeom, frameMat);
+        const frame = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.82, 0.01), frameMat);
         frame.position.copy(poster.position);
-        // Poster est rotaté π/2 sur Y : le cadre doit être décalé en X (direction du mur)
-        // Le poster normal est en Z+, donc après rotation le décalage arrière est en X-
         frame.position.x -= 0.005;
         frame.rotation.y = Math.PI / 2;
         this.scene.add(frame);
 
-        // Deuxième poster (schéma anatomique)
-        const poster2Geom = new THREE.PlaneGeometry(0.5, 0.5);
-        const canvas2 = document.createElement('canvas');
-        canvas2.width = 256;
-        canvas2.height = 256;
-        const ctx2 = canvas2.getContext('2d');
-        ctx2.fillStyle = '#fff8f0';
-        ctx2.fillRect(0, 0, 256, 256);
-        ctx2.strokeStyle = '#cc0000';
-        ctx2.lineWidth = 2;
-        // Cœur simplifié
-        ctx2.beginPath();
-        ctx2.arc(128, 110, 30, 0, Math.PI * 2);
-        ctx2.stroke();
-        ctx2.beginPath();
-        ctx2.moveTo(128, 140);
-        ctx2.lineTo(128, 200);
-        ctx2.stroke();
-        ctx2.font = '10px sans-serif';
-        ctx2.fillStyle = '#333';
-        ctx2.fillText('CŒUR', 108, 85);
-        const poster2Tex = new THREE.CanvasTexture(canvas2);
-        const poster2Mat = new THREE.MeshStandardMaterial({ map: poster2Tex, roughness: 0.8 });
+        // Poster 2: ANATOMICAL CHART (using detailed canvas blueprint)
+        const poster2Geom = new THREE.PlaneGeometry(0.6, 0.9);
+        const anatomyCanvas = document.createElement('canvas');
+        anatomyCanvas.width = 512;
+        anatomyCanvas.height = 768;
+        const ctxA = anatomyCanvas.getContext('2d');
+        ctxA.fillStyle = '#fefbf3';
+        ctxA.fillRect(0, 0, 512, 768);
+        ctxA.strokeStyle = '#332211';
+        ctxA.lineWidth = 12;
+        ctxA.strokeRect(6, 6, 500, 756);
+        ctxA.strokeStyle = '#554433';
+        ctxA.lineWidth = 1;
+        ctxA.strokeRect(20, 20, 472, 728);
+
+        ctxA.fillStyle = '#554433';
+        ctxA.font = 'bold 24px monospace';
+        ctxA.textAlign = 'center';
+        ctxA.fillText("ANATOMIE HUMAINE", 256, 55);
+        ctxA.font = '10px monospace';
+        ctxA.fillText("SYSTÈME CARDIO-RENAL / CLINIQUE 3D", 256, 75);
+
+        ctxA.strokeStyle = '#b23b3b'; // Red circulation
+        ctxA.lineWidth = 2;
+        ctxA.beginPath();
+        ctxA.lineCap = 'round';
+        ctxA.arc(256, 170, 32, 0, Math.PI * 2);
+        ctxA.moveTo(256, 202);
+        ctxA.lineTo(256, 400);
+        for (let r = 230; r < 340; r += 20) {
+            ctxA.moveTo(250, r); ctxA.quadraticCurveTo(230, r - 5, 215, r + 8);
+            ctxA.moveTo(262, r); ctxA.quadraticCurveTo(282, r - 5, 297, r + 8);
+        }
+        ctxA.rect(236, 400, 40, 25);
+        ctxA.moveTo(256, 220); ctxA.lineTo(170, 280);
+        ctxA.moveTo(256, 220); ctxA.lineTo(342, 280);
+        ctxA.moveTo(238, 425); ctxA.lineTo(210, 580);
+        ctxA.moveTo(274, 425); ctxA.lineTo(302, 580);
+        ctxA.stroke();
+
+        ctxA.strokeStyle = '#2563eb'; // Blue veins
+        ctxA.lineWidth = 1.5;
+        ctxA.beginPath();
+        ctxA.moveTo(254, 250);
+        ctxA.bezierCurveTo(240, 280, 245, 330, 210, 360);
+        ctxA.moveTo(254, 300);
+        ctxA.lineTo(180, 275);
+        ctxA.stroke();
+
+        ctxA.strokeStyle = '#554433';
+        ctxA.lineWidth = 1.5;
+        ctxA.strokeRect(40, 560, 160, 150);
+        ctxA.fillStyle = '#5d4037';
+        ctxA.font = 'bold 12px sans-serif';
+        ctxA.textAlign = 'left';
+        ctxA.fillText("FIG 1. CONFIGURATION", 48, 578);
+        ctxA.font = '9px monospace';
+        ctxA.fillText("Aorte ascendante", 48, 600);
+        ctxA.fillText("Ventricule gauche", 48, 615);
+        ctxA.fillText("Oreillette droite", 48, 630);
+        ctxA.fillText("Valvule mitrale", 48, 645);
+        
+        ctxA.strokeStyle = '#b91c1c';
+        ctxA.beginPath();
+        ctxA.arc(150, 630, 20, 0, Math.PI * 2);
+        ctxA.stroke();
+
+        ctxA.strokeRect(312, 560, 160, 150);
+        ctxA.fillStyle = '#5d4037';
+        ctxA.font = 'bold 12px sans-serif';
+        ctxA.fillText("FIG 2. FLUX CÉRÉBRAL", 320, 578);
+        ctxA.font = '9px monospace';
+        ctxA.fillText("Lobe frontal", 320, 600);
+        ctxA.fillText("Cervelet", 320, 615);
+        ctxA.fillText("Moelle épinière", 320, 630);
+        ctxA.fillText("Cortex sensoriel", 320, 645);
+        
+        ctxA.strokeStyle = '#2563eb';
+        ctxA.beginPath();
+        ctxA.ellipse(420, 630, 20, 14, 0, 0, Math.PI * 2);
+        ctxA.stroke();
+
+        ctxA.fillStyle = '#1e293b';
+        ctxA.font = 'bold 9px sans-serif';
+        ctxA.fillText("Boîte Crânienne [1]", 330, 150);
+        ctxA.fillText("Sternum [2]", 70, 260);
+        ctxA.fillText("Aorte & Valves [3]", 120, 310);
+        ctxA.fillText("Fémur [4]", 110, 510);
+        ctxA.fillText("Tibias & Fibula [5]", 330, 510);
+        
+        const anatomyTexture = new THREE.CanvasTexture(anatomyCanvas);
+        const poster2Mat = new THREE.MeshStandardMaterial({ map: anatomyTexture, roughness: 0.8 });
+        
         const poster2 = new THREE.Mesh(poster2Geom, poster2Mat);
-        poster2.position.set(-4.85, 1.5, 2.2);
+        poster2.position.set(-5.45, 1.8, -2.4);
         poster2.rotation.y = Math.PI / 2;
         poster2.name = 'AnatomicalPoster';
         poster2.userData.label = 'Affiche médicale';
         poster2.userData.interactive = true;
         this.scene.add(poster2);
 
-        // Cadre du deuxième poster
-        const frame2Geom = new THREE.BoxGeometry(0.52, 0.52, 0.01);
-        const frame2 = new THREE.Mesh(frame2Geom, frameMat);
+        const frame2 = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.92, 0.01), frameMat);
         frame2.position.copy(poster2.position);
         frame2.position.x -= 0.005;
         frame2.rotation.y = Math.PI / 2;
@@ -211,7 +243,6 @@ export class ThreeEnvironmentAgent {
     }
 
     _addCurtain() {
-        // Rideau de séparation (optionnel, décoratif)
         const curtainGeom = new THREE.PlaneGeometry(1.2, 2.5);
         const curtainCanvas = document.createElement('canvas');
         curtainCanvas.width = 128;
@@ -222,7 +253,6 @@ export class ThreeEnvironmentAgent {
         gradient.addColorStop(1, '#1a2a4a');
         cctx.fillStyle = gradient;
         cctx.fillRect(0, 0, 128, 256);
-        // Lignes verticales pour texture tissu
         cctx.strokeStyle = 'rgba(255,255,255,0.05)';
         for (let i = 0; i < 128; i += 4) {
             cctx.beginPath();
@@ -237,7 +267,7 @@ export class ThreeEnvironmentAgent {
             side: THREE.DoubleSide
         });
         const curtain = new THREE.Mesh(curtainGeom, curtainMat);
-        curtain.position.set(0, 1.25, -3.98);
+        curtain.position.set(0, 1.25, -4.95);
         curtain.name = 'Curtain';
         curtain.userData.label = 'Rideau';
         curtain.userData.interactive = true;
@@ -245,10 +275,9 @@ export class ThreeEnvironmentAgent {
     }
 
     // ===== PERFUSION (IV STAND) =====
-
     _addIVStand() {
         const ivGroup = new THREE.Group();
-        ivGroup.position.set(-2.5, 0, -3.0); // Placé à droite de la tête de lit
+        ivGroup.position.set(5.2, 0, 0.8); // Placed at head side of right bed
         ivGroup.name = 'IVStand';
         ivGroup.userData.label = 'Perfusion';
         ivGroup.userData.interactive = true;
@@ -303,20 +332,20 @@ export class ThreeEnvironmentAgent {
         bag.name = 'IVBag';
         ivGroup.add(bag);
 
-        // Étiquette de la poche (zone blanche)
+        // Étiquette
         const labelMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9 });
         const label = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.03, 0.032), labelMat);
         label.position.set(0, 1.53, 0);
         ivGroup.add(label);
 
-        // Port de connexion bas (embout cone)
+        // Port bas
         const portMat = new THREE.MeshStandardMaterial({ color: 0x88bbdd, roughness: 0.3, metalness: 0.2 });
         const portCone = new THREE.Mesh(new THREE.ConeGeometry(0.008, 0.02, 8), portMat);
         portCone.position.set(0, 1.52, 0);
         portCone.rotation.x = Math.PI;
         ivGroup.add(portCone);
 
-        // Tuyau descendant (tube CatmullRom)
+        // Tuyau descendant
         const tubePoints = [
             new THREE.Vector3(0, 1.52, 0),
             new THREE.Vector3(0.01, 1.42, 0),
@@ -331,7 +360,7 @@ export class ThreeEnvironmentAgent {
         );
         ivGroup.add(tube);
 
-        // Chambre de goutte (cylindre transparent)
+        // Chambre de goutte
         const chamberMat = new THREE.MeshStandardMaterial({
             color: 0xddeeff,
             transparent: true,
@@ -345,12 +374,12 @@ export class ThreeEnvironmentAgent {
         chamber.name = 'IVChamber';
         ivGroup.add(chamber);
 
-        // Tuyau bas (vers le patient)
+        // Tuyau bas
         const lowTubePoints = [
             new THREE.Vector3(0, 1.05, 0),
-            new THREE.Vector3(0.02, 0.85, -0.02),
-            new THREE.Vector3(0.05, 0.65, -0.04),
-            new THREE.Vector3(0.15, 0.45, 0.0),
+            new THREE.Vector3(-0.05, 0.85, -0.1),
+            new THREE.Vector3(-0.15, 0.65, -0.2),
+            new THREE.Vector3(-0.3, 0.45, -0.4),
         ];
         const lowCurve = new THREE.CatmullRomCurve3(lowTubePoints);
         const lowTube = new THREE.Mesh(
@@ -359,7 +388,7 @@ export class ThreeEnvironmentAgent {
         );
         ivGroup.add(lowTube);
 
-        // Molette de régulation
+        // Molette
         const rollerMat = new THREE.MeshStandardMaterial({ color: 0x446688, roughness: 0.3, metalness: 0.4 });
         const roller = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.015, 10), rollerMat);
         roller.position.set(0.02, 0.95, 0);
@@ -369,7 +398,6 @@ export class ThreeEnvironmentAgent {
         this.scene.add(ivGroup);
         this.ivGroup = ivGroup;
 
-        // Rendre tous les sous-meshes interactifs pour le raycasting
         ivGroup.traverse((child) => {
             if (child.isMesh) {
                 child.userData.interactive = true;
@@ -379,18 +407,16 @@ export class ThreeEnvironmentAgent {
     }
 
     // ===== MONITEUR ECG SUR PIED =====
-
     _addECGMonitor() {
         const ecgGroup = new THREE.Group();
-        ecgGroup.position.set(-2.8, 0, -3.2); // Reste à côté de la tête de lit
+        ecgGroup.position.set(3.8, 0, 0.8); // Head side of right bed
         ecgGroup.name = 'ECGMonitor';
         ecgGroup.userData.label = 'Moniteur ECG';
         ecgGroup.userData.interactive = true;
 
         const metalMat = new THREE.MeshStandardMaterial({ color: 0xbbbbbb, metalness: 0.7, roughness: 0.25 });
-        const darkMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.4, metalness: 0.3 });
 
-        // Pied à 5 branches (chariot) avec roulettes
+        // Pied
         const footRadius = 0.2;
         for (let i = 0; i < 5; i++) {
             const angle = (i / 5) * Math.PI * 2;
@@ -408,18 +434,15 @@ export class ThreeEnvironmentAgent {
             ecgGroup.add(wheel);
         }
 
-        // Tube vertical
         const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.018, 1.3, 10), metalMat);
         pole.position.y = 0.67;
         pole.castShadow = true;
         ecgGroup.add(pole);
 
-        // Bras horizontal (supports l'écran)
         const arm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.03, 0.15), metalMat);
         arm.position.set(0, 1.25, 0.06);
         ecgGroup.add(arm);
 
-        // Bras articulé (col de cygne)
         const neckCurve = new THREE.CatmullRomCurve3([
             new THREE.Vector3(0, 1.25, 0.13),
             new THREE.Vector3(0, 1.28, 0.17),
@@ -431,7 +454,7 @@ export class ThreeEnvironmentAgent {
         );
         ecgGroup.add(neckTube);
 
-        // Écran ECG (texture canvas animée ajoutée via ECGScreenAnimator)
+        // Screen
         const ecgCanvas = document.createElement('canvas');
         ecgCanvas.width = 256;
         ecgCanvas.height = 96;
@@ -441,14 +464,12 @@ export class ThreeEnvironmentAgent {
         const ecgTexture = new THREE.CanvasTexture(ecgCanvas);
         ecgTexture.minFilter = THREE.LinearFilter;
 
-        // Coque de l'écran
         const ecgShellMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.3 });
         const ecgShell = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.22, 0.04), ecgShellMat);
         ecgShell.position.set(0, 1.38, 0.22);
         ecgShell.castShadow = true;
         ecgGroup.add(ecgShell);
 
-        // Surface de l'écran (écran LCD vert)
         const ecgScreenMat = new THREE.MeshStandardMaterial({
             map: ecgTexture,
             emissive: 0x003311,
@@ -460,7 +481,7 @@ export class ThreeEnvironmentAgent {
         ecgScreen.name = 'ECGScreen';
         ecgGroup.add(ecgScreen);
 
-        // Boutons sous l'écran
+        // Buttons
         const btnColors = [0xcc3333, 0x33cc33, 0xffff44, 0x3366ff];
         btnColors.forEach((col, i) => {
             const btn = new THREE.Mesh(
@@ -472,7 +493,7 @@ export class ThreeEnvironmentAgent {
             ecgGroup.add(btn);
         });
 
-        // LED d'état (pulsante verte)
+        // Status LED
         const statusLedMat = new THREE.MeshStandardMaterial({
             color: 0x00ff44,
             emissive: 0x00ff44,
@@ -483,12 +504,12 @@ export class ThreeEnvironmentAgent {
         statusLed.position.set(0.14, 1.45, 0.24);
         ecgGroup.add(statusLed);
 
-        // Câble ECG (tuyau du patient vers le moniteur)
+        // Patient Cable
         const cableCurve = new THREE.CatmullRomCurve3([
             new THREE.Vector3(0, 1.22, 0.22),
-            new THREE.Vector3(-0.3, 1.0, 0.1),
-            new THREE.Vector3(-0.6, 0.85, -0.3),
-            new THREE.Vector3(-0.8, 0.82, -0.5),
+            new THREE.Vector3(0.2, 1.0, 0.0),
+            new THREE.Vector3(0.5, 0.85, -0.2),
+            new THREE.Vector3(0.8, 0.82, -0.4),
         ]);
         const cable = new THREE.Mesh(
             new THREE.TubeGeometry(cableCurve, 16, 0.003, 6, false),
@@ -496,21 +517,18 @@ export class ThreeEnvironmentAgent {
         );
         ecgGroup.add(cable);
 
-        // Sondes (3 pastilles au bout du câble)
+        // Probes
         const probeMat = new THREE.MeshStandardMaterial({ color: 0xff4444, roughness: 0.4, metalness: 0.3 });
         for (let i = 0; i < 3; i++) {
             const probe = new THREE.Mesh(new THREE.SphereGeometry(0.008, 6, 4), probeMat);
-            probe.position.set(-0.75 - i * 0.04, 0.82, -0.45 - i * 0.03);
+            probe.position.set(0.75 + i * 0.04, 0.82, -0.4 - i * 0.03);
             ecgGroup.add(probe);
         }
 
-        // Stocker la LED d'état pour animation pulsante
         this._ecgStatusLedMat = statusLedMat;
-
         this.scene.add(ecgGroup);
         this.ecgScreenMesh = ecgScreen;
 
-        // Rendre tous les sous-meshes interactifs pour le raycasting
         ecgGroup.traverse((child) => {
             if (child.isMesh) {
                 child.userData.interactive = true;
@@ -519,11 +537,11 @@ export class ThreeEnvironmentAgent {
         });
     }
 
-    // ===== MONITEUR ECG MURAL =====
-
+    // ===== MONITEUR ECG MURAL (on right wall, x = 5.45) =====
     _addWallECGMonitor() {
         const group = new THREE.Group();
-        group.position.set(4.5, 2.0, -3.86);
+        group.position.set(4.0, 2.2, -4.95);
+        group.rotation.y = 0; // Lie flush on the back wall
         group.name = 'WallECGMonitor';
         group.userData.label = 'Moniteur ECG mural';
         group.userData.interactive = true;
@@ -576,11 +594,10 @@ export class ThreeEnvironmentAgent {
         });
     }
 
-    // ===== CHARRIOT MÉDICAL =====
-
+    // ===== CHARRIOT MÉDICAL (placed near foot of right bed) =====
     _addCharriot() {
         const chart = new THREE.Group();
-        chart.position.set(-2.35, 0, -0.9); // Placé près du pied du lit dans l'espace vide
+        chart.position.set(3.6, 0, -1.1); // Foot-left side of bed
         chart.name = 'CharriotMedical';
         chart.userData.label = 'Charriot médical';
         chart.userData.interactive = true;
@@ -606,19 +623,15 @@ export class ThreeEnvironmentAgent {
         topTray.receiveShadow = true;
         chart.add(topTray);
 
-        // Rebord du plateau supérieur (bordure de sécurité)
+        // Rebord
         const rimMat = new THREE.MeshStandardMaterial({ color: 0xa0b0c0, metalness: 0.5, roughness: 0.3 });
-        // Rebord avant
         const rimFront = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.025, 0.008), rimMat);
         rimFront.position.set(0, 0.86, 0.16);
         chart.add(rimFront);
-        // Rebord arrière
         const rimBack = rimFront.clone();
         rimBack.position.z = -0.16;
         chart.add(rimBack);
-        // Rebords latéraux
-        const rimSideGeom = new THREE.BoxGeometry(0.008, 0.025, 0.32);
-        const rimLeft = new THREE.Mesh(rimSideGeom, rimMat);
+        const rimLeft = new THREE.Mesh(new THREE.BoxGeometry(0.008, 0.025, 0.32), rimMat);
         rimLeft.position.set(-0.21, 0.86, 0);
         chart.add(rimLeft);
         const rimRight = rimLeft.clone();
@@ -632,7 +645,7 @@ export class ThreeEnvironmentAgent {
         bottomTray.receiveShadow = true;
         chart.add(bottomTray);
 
-        // Barre pousser (poignée)
+        // Poignée
         const handleCurve = new THREE.CatmullRomCurve3([
             new THREE.Vector3(-0.18, 0.84, -0.18),
             new THREE.Vector3(-0.18, 0.94, -0.18),
@@ -653,43 +666,40 @@ export class ThreeEnvironmentAgent {
             wheel.rotation.x = Math.PI / 2;
             wheel.position.set(x, 0.02, z);
             chart.add(wheel);
-            // Axe de roulette
             const axle = new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.005, 0.04, 6), frameMat);
             axle.rotation.x = Math.PI / 2;
             axle.position.set(x, 0.035, z);
             chart.add(axle);
         });
 
-        // Objets sur le plateau supérieur : gants jetables (boîte)
+        // Boîte gants
         const gloveBoxMat = new THREE.MeshStandardMaterial({ color: 0x4488cc, roughness: 0.6, metalness: 0.1 });
         const gloveBox = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.04, 0.06), gloveBoxMat);
         gloveBox.position.set(0.08, 0.87, 0.05);
         gloveBox.castShadow = true;
         chart.add(gloveBox);
 
-        // Désinfectant (flacon)
+        // Désinfectant
         const bottleMat = new THREE.MeshStandardMaterial({ color: 0xff9933, roughness: 0.4, metalness: 0.15, transparent: true, opacity: 0.85 });
         const bottleBody = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.015, 0.07, 8), bottleMat);
         bottleBody.position.set(-0.08, 0.89, 0.06);
         bottleBody.castShadow = true;
         chart.add(bottleBody);
-        // Bouchon du flacon
         const capMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
         const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.01, 0.012, 8), capMat);
         cap.position.set(-0.08, 0.935, 0.06);
         chart.add(cap);
 
-        // Compresses (petit paquet)
+        // Compresses
         const compressMat = new THREE.MeshStandardMaterial({ color: 0xf0f0e8, roughness: 0.9 });
         const compress = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.02, 0.05), compressMat);
         compress.position.set(-0.02, 0.86, -0.05);
         compress.rotation.y = 0.2;
         chart.add(compress);
 
-        // Masque O2 (sur le plateau inférieur)
+        // Masque O2
         const maskMat = new THREE.MeshStandardMaterial({ color: 0x44ccff, transparent: true, opacity: 0.6, roughness: 0.2 });
-        const maskGeom = new THREE.CylinderGeometry(0.03, 0.04, 0.05, 8);
-        const mask = new THREE.Mesh(maskGeom, maskMat);
+        const mask = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.05, 8), maskMat);
         mask.position.set(0.05, 0.38, 0);
         mask.rotation.x = Math.PI / 2;
         mask.castShadow = true;
@@ -699,11 +709,9 @@ export class ThreeEnvironmentAgent {
 
         this.scene.add(chart);
 
-        // Rendre tous les sous-meshes interactifs pour le raycasting
         chart.traverse((child) => {
             if (child.isMesh) {
                 child.userData.interactive = true;
-                // Ne pas écraser le nom/label du masque O2
                 if (child.name !== 'MasqueO2') {
                     child.userData.label = 'Charriot médical';
                 }
@@ -711,8 +719,7 @@ export class ThreeEnvironmentAgent {
         });
     }
 
-    // ===== PARTICULES DE POUSSIÈRE =====
-
+    // ===== PARTICULES DE POUSSIÈRE (Adapted to 11x5x10 room bounds) =====
     _addDustParticles() {
         const dustCount = 200;
         const dustGeom = new THREE.BufferGeometry();
@@ -720,31 +727,30 @@ export class ThreeEnvironmentAgent {
 
         for (let i = 0; i < dustCount; i++) {
             if (i < 100) {
-                // Moitié des poussières concentrées et illuminées le long du faisceau de la fenêtre
-                const t = Math.random(); // Paramètre le long du rayon
-                const rx = -4.9 + 5.5 * t;
-                const ry = 1.8 - 1.8 * t;
-                const rz = -1.0 + (Math.random() - 0.5) * 1.8;
+                // Window beam particles
+                const t = Math.random();
+                const rx = 5.48 - 6.0 * t; // Plunge inward from right wall x=5.5
+                const ry = 2.5 - 2.0 * t;
+                const rz = 0.5 + (Math.random() - 0.5) * 5.0;
                 
-                // Jitter radial
                 dustPositions[i * 3] = rx + (Math.random() - 0.5) * 0.6;
                 dustPositions[i * 3 + 1] = ry + (Math.random() - 0.5) * 0.6;
                 dustPositions[i * 3 + 2] = rz + (Math.random() - 0.5) * 0.6;
             } else {
-                // L'autre moitié dispersée dans toute la salle
-                dustPositions[i * 3] = (Math.random() - 0.5) * 8;
-                dustPositions[i * 3 + 1] = Math.random() * 3 + 0.5;
-                dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 6;
+                // General room distribution
+                dustPositions[i * 3] = (Math.random() - 0.5) * 11;
+                dustPositions[i * 3 + 1] = Math.random() * 4.5 + 0.3;
+                dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 10;
             }
         }
 
         dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
 
         const dustMat = new THREE.PointsMaterial({
-            color: 0xffedd5, // Assorti au soleil doré chaud !
+            color: 0xffedd5,
             size: 0.022,
             transparent: true,
-            opacity: 0.25, // Un peu plus visible pour sublimer l'effet volumétrique
+            opacity: 0.25,
             sizeAttenuation: true,
             depthWrite: false,
             blending: THREE.AdditiveBlending
@@ -754,6 +760,263 @@ export class ThreeEnvironmentAgent {
         dustParticles.name = 'DustParticles';
         this.scene.add(dustParticles);
         this.dustParticles = dustParticles;
+    }
+
+    // ===== STATION C: GLASS MEDICINE CABINET ('Armoire') =====
+    _addMedicineCabinet() {
+        const cabinetGroup = new THREE.Group();
+        cabinetGroup.position.set(3.8, 0, -3.8); // Right rear corner
+        cabinetGroup.name = 'Armoire';
+        cabinetGroup.userData.label = 'Armoire';
+        cabinetGroup.userData.interactive = true;
+
+        const woodCasing = new THREE.Mesh(
+            new THREE.BoxGeometry(1.6, 2.9, 0.62),
+            new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 })
+        );
+        woodCasing.position.set(0, 1.45, 0);
+        woodCasing.castShadow = true;
+        woodCasing.receiveShadow = true;
+        woodCasing.name = 'Armoire';
+        woodCasing.userData.label = 'Armoire';
+        woodCasing.userData.interactive = true;
+        cabinetGroup.add(woodCasing);
+
+        const innerBack = new THREE.Mesh(
+            new THREE.PlaneGeometry(1.48, 2.78),
+            new THREE.MeshStandardMaterial({ color: '#f1f5f9', roughness: 0.9 })
+        );
+        innerBack.position.set(0, 1.45, 0.28);
+        innerBack.rotation.y = Math.PI;
+        cabinetGroup.add(innerBack);
+
+        const glassDoorL = new THREE.Mesh(
+            new THREE.BoxGeometry(0.72, 2.72, 0.02),
+            new THREE.MeshStandardMaterial({
+                color: '#e0f2fe',
+                transparent: true,
+                opacity: 0.35,
+                roughness: 0.1,
+                metalness: 0.9,
+            })
+        );
+        glassDoorL.position.set(-0.37, 1.45, 0.3);
+        cabinetGroup.add(glassDoorL);
+
+        const glassDoorR = new THREE.Mesh(
+            new THREE.BoxGeometry(0.72, 2.72, 0.02),
+            new THREE.MeshStandardMaterial({
+                color: '#e0f2fe',
+                transparent: true,
+                opacity: 0.35,
+                roughness: 0.1,
+                metalness: 0.9,
+            })
+        );
+        glassDoorR.position.set(0.37, 1.45, 0.3);
+        cabinetGroup.add(glassDoorR);
+
+        const shelfGeo = new THREE.BoxGeometry(1.48, 0.03, 0.52);
+        const shelfMat = new THREE.MeshStandardMaterial({ color: '#cbd5e1', transparent: true, opacity: 0.7 });
+        
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#ec4899', '#f8fafc'];
+        
+        for (let h = 0.55; h < 2.5; h += 0.55) {
+            const shelf = new THREE.Mesh(shelfGeo, shelfMat);
+            shelf.position.set(0, h, 0);
+            cabinetGroup.add(shelf);
+
+            for (let s = -0.6; s <= 0.61; s += 0.25) {
+                if (Math.random() > 0.15) {
+                    const spawnGeo = Math.random() > 0.4 ? 
+                        new THREE.CylinderGeometry(0.04, 0.04, 0.12, 10) :
+                        new THREE.BoxGeometry(0.09, 0.1, 0.09);
+                    
+                    const bottleColor = colors[Math.floor(Math.random() * colors.length)];
+                    const itemMat = new THREE.MeshStandardMaterial({
+                        color: bottleColor,
+                        roughness: 0.2,
+                        metalness: Math.random() > 0.6 ? 0.8 : 0.1,
+                    });
+                    
+                    const medicineItem = new THREE.Mesh(spawnGeo, itemMat);
+                    medicineItem.position.set(s, h + 0.075, 0.04 + (Math.random() * 0.1 - 0.05));
+                    medicineItem.rotation.y = Math.random() * Math.PI;
+                    medicineItem.castShadow = true;
+                    cabinetGroup.add(medicineItem);
+                }
+            }
+        }
+
+        const cabLight = new THREE.PointLight('#93c5fd', 1.5, 3.5);
+        cabLight.position.set(0, 2.7, 0.1);
+        cabinetGroup.add(cabLight);
+
+        this.scene.add(cabinetGroup);
+
+        cabinetGroup.traverse((child) => {
+            if (child.isMesh) {
+                child.userData.interactive = true;
+                child.userData.label = 'Armoire';
+            }
+        });
+    }
+
+    // ===== CORNER DECORATION: Potted Plant =====
+    _addPottedPlant() {
+        const plantGroup = new THREE.Group();
+        plantGroup.position.set(-3.8, 0, -4.0); // Corner left back
+        plantGroup.name = 'PottedPlant';
+
+        const plantPot = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.24, 0.18, 0.52, 16),
+            new THREE.MeshStandardMaterial({ color: '#cbd5e1', roughness: 0.7 })
+        );
+        plantPot.position.set(0, 0.26, 0);
+        plantPot.castShadow = true;
+        plantGroup.add(plantPot);
+
+        const soil = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.22, 0.22, 0.04, 12),
+            new THREE.MeshStandardMaterial({ color: '#3d2b1f', roughness: 0.9 })
+        );
+        soil.position.set(0, 0.51, 0);
+        plantGroup.add(soil);
+
+        const leafGeo = new THREE.BoxGeometry(0.08, 0.62, 0.22);
+        const leafMat = new THREE.MeshStandardMaterial({
+            color: '#15803d',
+            roughness: 0.6,
+        });
+        for (let l = 0; l < 9; l++) {
+            const leaf = new THREE.Mesh(leafGeo, leafMat);
+            leaf.position.set(0, 0.68, 0);
+            leaf.rotation.x = Math.sin(l * 1.5) * 0.4 - 0.2;
+            leaf.rotation.y = l * (Math.PI / 4.5);
+            leaf.rotation.z = Math.cos(l * 1.5) * 0.4 + 0.3;
+            leaf.castShadow = true;
+            plantGroup.add(leaf);
+        }
+        this.scene.add(plantGroup);
+    }
+
+    // ===== STATION B DETAILS: Examination Bed structure =====
+    _addExaminationBedDetails() {
+        const bedGroup = new THREE.Group();
+        bedGroup.position.set(3.4, 0, 0.2); // Right side
+        bedGroup.name = 'ExaminationBedDetails';
+
+        // Base steel structure
+        const bedFrame = new THREE.Mesh(
+            new THREE.BoxGeometry(1.0, 0.82, 2.3),
+            new THREE.MeshStandardMaterial({ color: '#e2e8f0', metalness: 0.7, roughness: 0.3 })
+        );
+        bedFrame.position.set(1.3, 0.41, 0);
+        bedFrame.castShadow = true;
+        bedFrame.receiveShadow = true;
+        bedGroup.add(bedFrame);
+
+        // cushions (Mint green/Teal)
+        const cushionMaterial = new THREE.MeshStandardMaterial({
+            color: '#0d9488',
+            roughness: 0.65,
+            metalness: 0.05,
+        });
+
+        const mainCushion = new THREE.Mesh(
+            new THREE.BoxGeometry(0.96, 0.16, 1.62),
+            cushionMaterial
+        );
+        mainCushion.position.set(1.3, 0.9, -0.3);
+        mainCushion.castShadow = true;
+        mainCushion.receiveShadow = true;
+        bedGroup.add(mainCushion);
+
+        const headCushion = new THREE.Mesh(
+            new THREE.BoxGeometry(0.96, 0.16, 0.64),
+            cushionMaterial
+        );
+        headCushion.position.set(1.3, 1.05, 0.78);
+        headCushion.rotation.x = -0.28;
+        headCushion.castShadow = true;
+        bedGroup.add(headCushion);
+
+        const pillow = new THREE.Mesh(
+            new THREE.BoxGeometry(0.72, 0.08, 0.26),
+            new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.9 })
+        );
+        pillow.position.set(1.3, 1.18, 0.92);
+        pillow.rotation.x = -0.28;
+        pillow.castShadow = true;
+        bedGroup.add(pillow);
+
+        // Paper roll
+        const paperRoll = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.08, 0.08, 0.78, 16),
+            new THREE.MeshStandardMaterial({ color: '#f8fafc', roughness: 0.9 })
+        );
+        paperRoll.position.set(1.3, 0.62, 0.9);
+        paperRoll.rotation.z = Math.PI / 2;
+        paperRoll.castShadow = true;
+        bedGroup.add(paperRoll);
+
+        const paperSheet = new THREE.Mesh(
+            new THREE.BoxGeometry(0.78, 0.005, 1.5),
+            new THREE.MeshStandardMaterial({ color: '#ffffff', transparent: true, opacity: 0.86, roughness: 1.0 })
+        );
+        paperSheet.position.set(1.3, 0.985, -0.15);
+        bedGroup.add(paperSheet);
+
+        // Clinical Spotlight
+        const medicalLamp = new THREE.Group();
+        medicalLamp.position.set(0.6, 0, -1.0);
+
+        const lampStandBase = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.18, 0.18, 0.03, 16),
+            new THREE.MeshStandardMaterial({ color: '#475569', metalness: 0.5 })
+        );
+        lampStandBase.castShadow = true;
+        medicalLamp.add(lampStandBase);
+
+        const verticalPole = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.016, 0.016, 1.95, 8),
+            new THREE.MeshStandardMaterial({ color: '#cbd5e1', metalness: 0.8, roughness: 0.1 })
+        );
+        verticalPole.position.set(0, 0.955, 0);
+        verticalPole.castShadow = true;
+        medicalLamp.add(verticalPole);
+
+        const curvedNeck = new THREE.Mesh(
+            new THREE.TorusGeometry(0.24, 0.016, 8, 16, Math.PI / 2),
+            new THREE.MeshStandardMaterial({ color: '#cbd5e1', metalness: 0.8 })
+        );
+        curvedNeck.position.set(0.24, 1.9, 0);
+        curvedNeck.rotation.z = -Math.PI / 2;
+        medicalLamp.add(curvedNeck);
+
+        const lampDome = new THREE.Mesh(
+            new THREE.SphereGeometry(0.14, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2),
+            new THREE.MeshStandardMaterial({ color: '#cbd5e1', metalness: 0.9, roughness: 0.05 })
+        );
+        lampDome.position.set(0.44, 1.76, 0);
+        lampDome.rotation.z = Math.PI / 5;
+        lampDome.castShadow = true;
+        medicalLamp.add(lampDome);
+
+        const spotlight = new THREE.SpotLight('#f0f9ff', 2.8, 5.5, Math.PI / 5, 0.4, 0.5);
+        spotlight.position.set(0.44, 1.76, 0);
+        spotlight.target = mainCushion;
+        medicalLamp.add(spotlight);
+
+        const spotGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(0.05, 8, 8),
+            new THREE.MeshBasicMaterial({ color: '#ffffff' })
+        );
+        spotGlow.position.set(0.44, 1.72, 0);
+        medicalLamp.add(spotGlow);
+
+        bedGroup.add(medicalLamp);
+        this.scene.add(bedGroup);
     }
 
     /**
@@ -789,13 +1052,11 @@ export class ThreeEnvironmentAgent {
      * Appeler dans la boucle de rendu avec le temps elapsed.
      */
     updateEnvironment(elapsed) {
-        // LED d'état ECG sol : pulsation cardiaque réaliste
         if (this._ecgStatusLedMat) {
             const t = (elapsed * 1.2) % 1;
             const beat = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;
             this._ecgStatusLedMat.emissiveIntensity = 0.3 + beat * 0.7;
         }
-        // LED d'état ECG mural
         if (this._wallEcgLedMat) {
             const t = (elapsed * 1.2) % 1;
             const beat2 = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;

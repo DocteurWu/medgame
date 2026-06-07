@@ -362,5 +362,286 @@
       "respiratoryRate": 32
     },
     "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine d'urgence.",
+      "contexte": "Thomas Bernard, 19 ans, homme, se présente aux urgences après une chute de vélo à environ 25 km/h sans casque, avec choc à la tête, perte de connaissance brève et vomissements.",
+      "consignesAttendues": [
+        "Réaliser l'interrogatoire du patient et du témoin",
+        "Effectuer un examen clinique complet orienté",
+        "Évaluer la gravité du traumatisme crânien (score de Glasgow, signes d'alerte)",
+        "Mettre en œuvre les mesures de stabilisation immédiates (immobilisation rachis, surveillance)",
+        "Décider de la stratégie diagnostique adaptée (indication de scanner cérébral)",
+        "Expliquer la prise en charge au patient et à l'accompagnant"
+      ],
+      "consignesInterdites": [
+        "Ne pas asseoir ou mobiliser le patient sans immobilisation préalable du rachis cervical",
+        "Ne pas minimiser les symptômes malgré l'amélioration apparente",
+        "Ne pas administrer d'antalgiques ou d'antiémétiques avant évaluation neurologique complète"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Collier cervical (taille adulte)",
+        "Matériel d'immobilisation (brancard, attelles)",
+        "Oxymètre de pouls",
+        "Tensiomètre",
+        "Otoscope / lampe frontale",
+        "Thermomètre",
+        "Chariot d'urgence accessible",
+        "Feuille de surveillance neurologique (score de Glasgow)"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, identifie le patient et installe un climat de confiance",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "Thomas"
+        ]
+      },
+      {
+        "id": "interrogatoire_circonstances",
+        "label": "Précise les circonstances exactes du traumatisme (vitesse, mécanisme, port du casque, surface d'impact)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vitesse",
+          "casque",
+          "mécanisme",
+          "choc",
+          "vélo",
+          "hauteur"
+        ]
+      },
+      {
+        "id": "interrogatoire_perte_connaissance",
+        "label": "Évalue la perte de connaissance initiale (durée, récupération, signes associés) en interrogeant le témoin",
+        "weight": 1,
+        "triggerKeywords": [
+          "perte de connaissance",
+          "inconscient",
+          "secondes",
+          "témoin",
+          "récupération"
+        ]
+      },
+      {
+        "id": "interrogatoire_amnese",
+        "label": "Recherche une amnésie antérograde ou rétrograde de l'accident",
+        "weight": 1,
+        "triggerKeywords": [
+          "amnésie",
+          "souvenir",
+          "rappelle",
+          "avant l'accident",
+          "après l'accident"
+        ]
+      },
+      {
+        "id": "interrogatoire_vomissements",
+        "label": "Précise les caractéristiques des vomissements (nombre, délai, caractère en jet)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vomissement",
+          "combien",
+          "en jet",
+          "après le choc",
+          "nausée"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents pertinents (traumatisme crânien, troubles de la coagulation, traitement anticoagulant)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "traitement",
+          "anticoagulant",
+          "aspirine",
+          "maladie",
+          "chirurgie"
+        ]
+      },
+      {
+        "id": "examen_glasgow",
+        "label": "Évalue le score de Glasgow (ouverture des yeux, réponse verbale, réponse motrice)",
+        "weight": 1,
+        "triggerKeywords": [
+          "Glasgow",
+          "yeux",
+          "verbale",
+          "motrice",
+          "score",
+          "ouverture des yeux"
+        ]
+      },
+      {
+        "id": "examen_pupilles",
+        "label": "Examine les pupilles (taille, symétrie, réactivité photomotrice)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pupilles",
+          "réactives",
+          "symétriques",
+          "myosis",
+          "mydriase",
+          "lampe"
+        ]
+      },
+      {
+        "id": "examen_rachis_cervical",
+        "label": "Immobilise le rachis cervical (collier ou stabilisation manuelle) et palpe les processus épineux cervicaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "collier cervical",
+          "immobilisation",
+          "rachis",
+          "cou",
+          "ne pas bouger",
+          "axe tête-cou-tronc"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique rapide (motricité des 4 membres, sensibilité, signes de localisation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bouger les mains",
+          "bouger les pieds",
+          "sensibilité",
+          "force",
+          "faiblesse",
+          "membres"
+        ]
+      },
+      {
+        "id": "examen_cuir_chevelu",
+        "label": "Inspecte le cuir chevelu (plaie, hématome, dépression, signe des lunettes/racine du nez)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cuir chevelu",
+          "plaie",
+          "hématome",
+          "saignement",
+          "palpation",
+          "dépression"
+        ]
+      },
+      {
+        "id": "surveillance_conscience",
+        "label": "Met en place une surveillance neurologique répétée (score de Glasgow toutes les 5 minutes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "toutes les 5 minutes",
+          "Glasgow répété",
+          "aggravation",
+          "score"
+        ]
+      },
+      {
+        "id": "strategie_scanner",
+        "label": "Indique la réalisation d'un scanner cérébral en urgence (justification par les critères de gravité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "scanner cérébral",
+          "TDM",
+          "urgence",
+          "critères de gravité",
+          "imagerie"
+        ]
+      },
+      {
+        "id": "alerte_medecin",
+        "label": "Alerte le médecin senior / régulateur 15 pour prise en charge spécialisée",
+        "weight": 1,
+        "triggerKeywords": [
+          "15",
+          "SAMU",
+          "médecin senior",
+          "neurochirurgie",
+          "avis spécialisé",
+          "alerte"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique clairement au patient et à l'accompagnant la situation, les risques et la prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "explique",
+          "scanner",
+          "surveillance",
+          "risque",
+          "neurochirurgie",
+          "comprenez"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient et le témoin terminer sans les interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour recueillir l'histoire",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient sur les événements",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune homme de 19 ans, étudiant, globalement coopérant mais visiblement anxieux et désorienté. Il se plaint de fortes céphalées et a du mal à se souvenir des circonstances exactes de l'accident. Il minimise spontanément ses symptômes en disant « ça va aller ». Il est accompagné d'un ami témoin de la scène.",
+      "phraseOuverture": "Bonjour docteur, je suis tombé de vélo, j'ai mal à la tête mais ça va aller… enfin je crois.",
+      "infosVolontaires": [
+        "Chute de vélo à environ 25 km/h",
+        "Pas de casque",
+        "Perte de connaissance brève (quelques secondes)",
+        "Un épisode de vomissement après l'accident",
+        "Céphalées intenses",
+        "Ne me souviens plus très bien de ce qui s'est passé juste avant et après la chute"
+      ],
+      "infosSiDemandees": [
+        "Antécédents médicaux : aucun",
+        "Antécédents chirurgicaux : aucun",
+        "Antécédents familiaux : aucun",
+        "Traitement en cours : aucun",
+        "Allergies : aucune",
+        "Tabac : non-fumeur",
+        "Alcool : pas ce soir",
+        "Drogues : non, jamais"
+      ],
+      "infosCachees": [
+        "L'amnésie rétrograde et antérograde est plus étendue que ce qu'il dit spontanément (ne le révèle que si on pose la question précisément)",
+        "Il a en réalité vomi 2 fois (ne le dit que si on demande le nombre exact)"
+      ],
+      "reactions": {
+        "brutal": "Je… je sais pas, ça va, arrêtez de me poser des questions, j'ai juste mal à la tête !",
+        "silence": "… (silence, regard flou, semble chercher ses mots)",
+        "jargon": "Le scanner ? C'est quoi exactement ? C'est dangereux ? Et la neurochirurgie, c'est grave docteur ?"
+      }
+    }
   }
 }

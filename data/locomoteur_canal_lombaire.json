@@ -130,16 +130,241 @@
   "postGameQuestions": [],
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de neurochirurgie.",
+      "contexte": "Jean B., 72 ans, homme, se présente pour des douleurs des membres inférieurs à la marche.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers les douleurs des membres inférieurs",
+        "Réaliser un examen clinique neurologique et vasculaire des membres inférieurs",
+        "Proposer un diagnostic différentiel argumenté",
+        "Proposer une stratégie diagnostique adaptée (examens complémentaires)",
+        "Expliquer au patient la prise en charge thérapeutique envisagée"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de traitement sans avoir posé d'hypothèse diagnostique",
+        "Ne pas réaliser de geste invasif"
+      ],
+      "typeStation": "AVEC_PSS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Marteau à réflexes",
+        "Diapason",
+        "Doppler portable",
+        "Mètre ruban pour mesure de l'index de pression systolique",
+        "Ordonnance vierge",
+        "Feuille de prescription d'imagerie"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (localisation, irradiation, type, intensité, facteurs aggravants et soulageants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "où",
+          "depuis quand",
+          "type de douleur",
+          "aggrave",
+          "soulage",
+          "EVA",
+          "intensité"
+        ]
+      },
+      {
+        "id": "recherche_signes_neuro",
+        "label": "Recherche des signes neurologiques associés (paresthésies, troubles sensitifs, déficit moteur)",
+        "weight": 1,
+        "triggerKeywords": [
+          "paresthésies",
+          "engourdissement",
+          "faiblesse",
+          "sensibilité",
+          "marche"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (tabac, diabète, HTA, dyslipidémie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "diabète",
+          "cholestérol",
+          "hypertension",
+          "antécédents cardiovasculaires"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique des membres inférieurs (réflexes, sensibilité, motricité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "réflexes",
+          "rotulien",
+          "achilléen",
+          "sensibilité",
+          "motricité",
+          "Babinski"
+        ]
+      },
+      {
+        "id": "examen_vasculaire",
+        "label": "Réalise un examen vasculaire des membres inférieurs (pouls périphériques, temps de recoloration, IPS)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls",
+          "pédieux",
+          "tibial",
+          "recoloration",
+          "IPS",
+          "index pression"
+        ]
+      },
+      {
+        "id": "test_effort_position",
+        "label": "Évalue l'influence de la position (penché en avant) sur les symptômes",
+        "weight": 1,
+        "triggerKeywords": [
+          "position",
+          "penché",
+          "avant",
+          "debout",
+          "assis",
+          "flexion"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels pertinents (claudication artérielle, canal lombaire étroit, sciatique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "canal lombaire",
+          "claudication",
+          "artérielle",
+          "sciatique",
+          "diagnostic différentiel"
+        ]
+      },
+      {
+        "id": "hypothese_diagnostique",
+        "label": "Retient le diagnostic de canal lombaire étroit comme hypothèse principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "canal lombaire étroit",
+          "sténose",
+          "neurogène",
+          "claudication neurogène"
+        ]
+      },
+      {
+        "id": "strategie_imagerie",
+        "label": "Prescrit une IRM lombaire comme examen d'imagerie de première intention",
+        "weight": 1,
+        "triggerKeywords": [
+          "IRM",
+          "imagerie",
+          "lombaire",
+          "scanner",
+          "radiographie"
+        ]
+      },
+      {
+        "id": "strategie_pec",
+        "label": "Propose une prise en charge thérapeutique adaptée (rééducation, traitement médical, discussion chirurgicale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "laminectomie",
+          "décompression",
+          "chirurgie",
+          "kinésithérapie",
+          "traitement",
+          "prise en charge"
+        ]
+      },
+      {
+        "id": "explication_patient",
+        "label": "Explique clairement au patient le diagnostic et la prise en charge proposée",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "comprendre",
+          "patient",
+          "information",
+          "consentement"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient coopératif, légèrement anxieux, retraité, bon état général",
+      "phraseOuverture": "Bonjour docteur, j'ai mal aux jambes quand je marche, ça fait un an que ça dure et ça empire.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, je vous ai déjà tout dit !",
+        "silence": "...",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là."
+      }
+    }
+  }
 }

@@ -158,5 +158,278 @@
     "Écho-Doppler veineux",
     "IPS",
     "Bilan de coagulation"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine générale.",
+      "contexte": "Monique Dubois, 55 ans, femme, se présente en consultation pour des jambes lourdes et douloureuses en fin de journée, symptômes connus depuis plusieurs années mais aggravés ces dernières semaines.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur la symptomatologie veineuse et les facteurs de risque cardiovasculaire",
+        "Effectuer un examen clinique ciblé des membres inférieurs incluant l'inspection et la palpation",
+        "Évoquer le diagnostic d'insuffisance veineuse chronique et argumenter",
+        "Proposer une prise en charge thérapeutique adaptée incluant les mesures hygiéno-diététiques et la contention veineuse",
+        "Éduquer la patiente sur sa pathologie et les mesures de prévention de la récidive",
+        "Rassurer la patiente et répondre à ses questions"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'anticoagulant à dose curative sans argumentation",
+        "Ne pas proposer de thrombolyse ou de chirurgie en urgence",
+        "Ne pas ignorer les lésions dermatologiques (dermite ocre)",
+        "Ne pas se limiter à la prescription de bas de contention sans explication"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Éducation/prévention",
+      "lieu": "Cabinet de consultation de médecine générale",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Mètre ruban",
+        "Doppler portable",
+        "Table d'examen",
+        "Échelle visuelle analogique de douleur",
+        "Brochure éducative sur l'insuffisance veineuse chronique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe la patiente confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "asseyez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_symptomes",
+        "label": "Explore les caractéristiques des jambes lourdes : ancienneté, localisation, circonstances d'apparition, facteurs aggravants et soulageants",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis combien de temps",
+          "quand cela survient",
+          "position debout",
+          "soulagement",
+          "fin de journée"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire et veineux : sédentarité, antécédents familiaux, grossesses, profession debout",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "profession",
+          "activité physique",
+          "grossesse",
+          "varices"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés : douleurs, crampes nocturnes, démangeaisons, modifications cutanées, œdème",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "démangeaisons",
+          "taches",
+          "œdème",
+          "crampes",
+          "peau"
+        ]
+      },
+      {
+        "id": "interrogatoire_signes_gravite",
+        "label": "Recherche les signes de gravité ou de complication : douleur brutale unilatérale, fièvre, ulcère, phlébite",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur brutale",
+          "fièvre",
+          "ulcère",
+          "jambe rouge",
+          "gonflement soudain"
+        ]
+      },
+      {
+        "id": "examen_clinique_inspection",
+        "label": "Réalise une inspection des membres inférieurs : varices, dermite ocre, œdème, trophisme cutané",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "varises",
+          "taches brunes",
+          "dermite",
+          "œdème",
+          "peau sèche"
+        ]
+      },
+      {
+        "id": "examen_clinique_palpation",
+        "label": "Réalise une palpation adaptée : pouls périphériques (pédieux, tibiaux postérieurs), signe du godet, température cutanée",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls pédieux",
+          "pouls tibiaux",
+          "godet",
+          "palpation",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_clinique_mesures",
+        "label": "Prend les constantes et mesure la tension artérielle, le pouls, la fréquence respiratoire",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "constantes",
+          "pression artérielle"
+        ]
+      },
+      {
+        "id": "diagnostic_argumente",
+        "label": "Évoque le diagnostic d'insuffisance veineuse chronique et l'argumente par les éléments cliniques",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance veineuse",
+          "chronique",
+          "diagnostic",
+          "varices",
+          "stase veineuse"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels pertinents : thrombose veineuse profonde, AOMI, infection cutanée",
+        "weight": 1,
+        "triggerKeywords": [
+          "thrombose",
+          "phlébite",
+          "AOMI",
+          "artérite",
+          "infection",
+          "différentiel"
+        ]
+      },
+      {
+        "id": "strategie_pec_hygieno_dietetique",
+        "label": "Propose des mesures hygiéno-diététiques adaptées : surélévation des jambes, marche, perte de poids si besoin, éviter la station debout prolongée",
+        "weight": 1,
+        "triggerKeywords": [
+          "surélever",
+          "marche",
+          "activité physique",
+          "éviter debout",
+          "jambes surélevées"
+        ]
+      },
+      {
+        "id": "strategie_pec_contention",
+        "label": "Prescrit une contention veineuse adaptée (bas de contention) et explique son utilisation",
+        "weight": 1,
+        "triggerKeywords": [
+          "bas de contention",
+          "contention",
+          "compression",
+          "bas élastiques",
+          "classe"
+        ]
+      },
+      {
+        "id": "strategie_pec_traitement_local",
+        "label": "Propose un traitement local adapté à la dermite ocre et aux lésions cutanées",
+        "weight": 1,
+        "triggerKeywords": [
+          "crème",
+          "dermocorticoïde",
+          "soins cutanés",
+          "hydratation",
+          "dermite ocre"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Éduque la patiente sur la pathologie, les facteurs de risque et les mesures de prévention de la récidive",
+        "weight": 1,
+        "triggerKeywords": [
+          "explication",
+          "éducation",
+          "prévention",
+          "comprendre",
+          "maladie veineuse"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi adapté avec consultation de contrôle et orientation si nécessaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "contrôle",
+          "angiologue",
+          "réévaluation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre et montre de l'attention",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer la plainte",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente sur sa pathologie et le traitement proposé",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté, explique les termes médicaux et vérifie la compréhension",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la gêne fonctionnelle et esthétique de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalite": "Femme de 55 ans, pharmacienne, plutôt coopérative mais légèrement anxieuse. Elle connaît le vocabulaire médical de par sa profession. Elle s'inquiète de l'aggravation récente de ses symptômes et de l'apparition des taches brunes. Elle souhaite des explications claires et une solution efficace.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que j'ai les jambes très lourdes le soir, ça fait des années mais c'est de pire en pire. Et j'ai vu apparaître des taches brunes autour des chevilles, ça m'inquiète un peu.",
+      "infosVolontaires": [
+        "motifConsultation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.evolution",
+        "antecedents.medicaux.varices"
+      ],
+      "infosSiDemandees": [
+        "antecedents.familiaux.diabete",
+        "modeDeVie.profession",
+        "modeDeVie.activitePhysique",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "antecedents.chirurgicaux.cesarienne",
+        "histoireMaladie.facteursDeclenchants",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [
+        "La patiente a peur que ce soit une phlébite ou quelque chose de grave",
+        "Elle a déjà essayé des bas de contention il y a 5 ans mais ne les supportait pas"
+      ],
+      "reactions": {
+        "brutal": "La patiente se ferme, coupe la parole et répond de manière laconique. Elle peut dire : 'Je ne vois pas l'intérêt de cette question.'",
+        "silence": "La patiente attend les questions et ne développe pas spontanément. Elle peut dire : 'Je ne sais pas quoi dire d'autre, c'est vous le médecin.'",
+        "jargon": "La patiente, étant pharmacienne, comprend le jargon mais peut sembler frustrée si on ne va pas assez loin dans les explications. Elle peut dire : 'Oui je sais ce que c'est, mais qu'est-ce que vous proposez concrètement ?'"
+      }
+    }
+  }
 }

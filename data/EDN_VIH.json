@@ -152,16 +152,278 @@
   "correction": "# Infection par le VIH\n\nSymptômes généraux, perte de poids, adénopathies, sérologie positive.\n\n## Bonnes pratiques\n\n- Confirmer par tests de confirmation, bilan initial (CD4, charge virale)\n- Initier un TARV adapté et accompagner l’adhérence\n- Vaccinations et dépistage des co‑infections\n\n## Erreurs à éviter\n\n- Retarder la mise sous TARV sans raison valable\n- Oublier le suivi régulier et l’éducation thérapeutique",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de médecine interne.",
+      "contexte": "Julien DUBOIS, 32 ans, homme, se présente pour une fatigue persistante et une perte de poids inexpliquée.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté sur les symptômes actuels, les antécédents, le mode de vie et les facteurs de risque",
+        "Réaliser un examen clinique ciblé incluant l'examen ganglionnaire",
+        "Proposer une stratégie diagnostique pertinente incluant une sérologie VIH",
+        "Annoncer le diagnostic de suspicion d'infection par le VIH avec empathie et sans jugement",
+        "Expliquer la conduite à tenir et les prochaines étapes (confirmation diagnostique, traitement antirétroviral, suivi)"
+      ],
+      "consignesInterdites": [
+        "Ne pas poser le diagnostic de VIH sans avoir proposé les examens complémentaires",
+        "Ne pas stigmatiser le patient ou poser des jugements de valeur sur son mode de vie",
+        "Ne pas prescrire un traitement antirétroviral sans confirmation sérologique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie diagnostique",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Oxymètre de pouls",
+        "Otoscope",
+        "Balance",
+        "Toise",
+        "Feuille de prescription",
+        "Fiche d'information sur le dépistage VIH"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes",
+        "label": "Explore les symptômes actuels (fatigue, perte de poids, fièvre, sueurs nocturnes, adénopathies)",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "perte de poids",
+          "fièvre",
+          "sueurs",
+          "ganglions",
+          "depuis quand",
+          "combien"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque VIH (rapports sexuels, usage de drogues IV, transfusions)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rapports",
+          "partenaire",
+          "préservatif",
+          "drogues",
+          "transfusion",
+          "risque"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents médicaux et chirurgicaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "maladie",
+          "hospitalisation",
+          "opération",
+          "fièvre prolongée"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (tabac, alcool, alimentation, activité physique, profession)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "alimentation",
+          "sport",
+          "travail",
+          "stress"
+        ]
+      },
+      {
+        "id": "examen_clinique_general",
+        "label": "Réalise un examen clinique général (constantes, aspect général, pâleur, amaigrissement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "tension",
+          "pouls",
+          "température",
+          "pâleur",
+          "amaigri"
+        ]
+      },
+      {
+        "id": "examen_ganglionnaire",
+        "label": "Réalise un examen ganglionnaire complet (cervical, axillaire, inguinal)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ganglions",
+          "adénopathies",
+          "cervical",
+          "axillaire",
+          "palpation"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique_vih",
+        "label": "Propose une sérologie VIH dans la stratégie diagnostique",
+        "weight": 1,
+        "triggerKeywords": [
+          "sérologie",
+          "VIH",
+          "dépistage",
+          "test VIH",
+          "ELISA"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique_autres",
+        "label": "Propose d'autres examens complémentaires pertinents (NFS, CRP, bilan hépatique, radiographie thoracique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "NFS",
+          "CRP",
+          "bilan",
+          "radiographie",
+          "thorax",
+          "Lymphome",
+          "tuberculose"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de suspicion de VIH avec empathie et sans jugement",
+        "weight": 1,
+        "triggerKeywords": [
+          "VIH",
+          "virus",
+          "résultat",
+          "positif",
+          "suspicion",
+          "annonce"
+        ]
+      },
+      {
+        "id": "education_traitement",
+        "label": "Explique le traitement antirétroviral (TARV) et son importance",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "antirétroviral",
+          "TARV",
+          "médicaments",
+          "observance"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Aborde les mesures de prévention (rapports protégés, information des partenaires)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prévention",
+          "préservatif",
+          "protection",
+          "partenaire",
+          "information"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi (consultation spécialisée, bilan initial, soutien psychologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "spécialiste",
+          "psychologue",
+          "prochain rendez-vous"
+        ]
+      },
+      {
+        "id": "cloture_consultation",
+        "label": "Clôture la consultation en vérifiant la compréhension du patient et en répondant à ses questions",
+        "weight": 1,
+        "triggerKeywords": [
+          "compris",
+          "questions",
+          "inquiétude",
+          "récapitulons",
+          "n'hésitez pas"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce du diagnostic",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient anxieux mais coopératif. Il est préoccupé par ses symptômes et craint une maladie grave. Il peut être réticent à aborder les questions intimes (sexualité, drogues).",
+      "phraseOuverture": "Bonjour docteur, je suis fatigué depuis plusieurs semaines et j'ai perdu du poids sans raison. Je m'inquiète un peu.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.emploi"
+      ],
+      "infosCachees": [
+        "Partenaires sexuels multiples sans protection systématique",
+        "Usage occasionnel de drogues récréatives (cocaïne) par voie nasale",
+        "Rapport sexuel non protégé avec un nouveau partenaire il y a 6 mois"
+      ],
+      "reactions": {
+        "brutal": "Je ne comprends pas pourquoi vous me posez ces questions... C'est personnel !",
+        "silence": "...",
+        "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
+      }
+    }
+  }
 }

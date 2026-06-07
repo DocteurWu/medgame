@@ -131,16 +131,274 @@
   "correction": "# Mérycisme\n\nRégurgitations volontaires post‑prandiales avec remastication, sans lésion organique.\n\n## Bonnes pratiques\n\n- Thérapies comportementales ciblées\n- Évaluation et suivi psychologique\n- Éducation nutritionnelle\n\n## Erreurs à éviter\n\n- Confondre avec reflux/obstacle digestif sans preuve\n- Ignorer la composante comportementale",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de psychiatrie.",
+      "contexte": "Clara MARTIN, 19 ans, femme, se présente pour des régurgitations fréquentes après les repas.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet orienté vers les troubles du comportement alimentaire",
+        "Rechercher les caractéristiques du mérycisme (régurgitation volontaire, remastication, sensation de plaisir)",
+        "Éliminer un diagnostic différentiel organique (RGO, sténose pylorique, ARFID)",
+        "Évaluer le retentissement somatique et psychologique",
+        "Proposer une prise en charge adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas se limiter à un diagnostic de RGO sans explorer le comportement alimentaire",
+        "Ne pas prescrire un traitement médical sans avoir évoqué la prise en charge psychologique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Balance et toise",
+        "ECG"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en psychiatrie"
+        ]
+      },
+      {
+        "id": "explore_motif_consultation",
+        "label": "Explore le motif de consultation : régurgitations (fréquence, durée, contexte post-prandial)",
+        "weight": 1,
+        "triggerKeywords": [
+          "régurgitations",
+          "repas",
+          "combien de fois",
+          "depuis quand",
+          "après manger"
+        ]
+      },
+      {
+        "id": "caracterise_regurgitations",
+        "label": "Caractérise les régurgitations : volontaires ou non, remastication, re-ingestion",
+        "weight": 1,
+        "triggerKeywords": [
+          "volontaire",
+          "remastique",
+          "remâche",
+          "avale à nouveau",
+          "contrôlé"
+        ]
+      },
+      {
+        "id": "recherche_plaisir_regurgitation",
+        "label": "Recherche la présence d'une sensation de plaisir ou de soulagement lors des régurgitations",
+        "weight": 1,
+        "triggerKeywords": [
+          "plaisir",
+          "soulagement",
+          "bien-être",
+          "agréable",
+          "détente"
+        ]
+      },
+      {
+        "id": "recherche_characteristiques_merycisme",
+        "label": "Recherche les critères du mérycisme : régurgitation répétée, remastication, re-ingestion, durée > 1 mois",
+        "weight": 1,
+        "triggerKeywords": [
+          "critères",
+          "DSM",
+          "diagnostic",
+          "remastication",
+          "répétée"
+        ]
+      },
+      {
+        "id": "elimine_rgo",
+        "label": "Élimine un reflux gastro-œsophagien (pyrosis, remontées acides, brûrures rétrosternales)",
+        "weight": 1,
+        "triggerKeywords": [
+          "brûlure",
+          "pyrosis",
+          "remontée acide",
+          "rétrosternal",
+          "RGO"
+        ]
+      },
+      {
+        "id": "elimine_stenose_pylorique",
+        "label": "Élimine une sténose pylorique (vomissements en jet, amaigrissement important, contexte chirurgical)",
+        "weight": 1,
+        "triggerKeywords": [
+          "vomissement",
+          "jet",
+          "pylore",
+          "chirurgie gastrique",
+          "estomac"
+        ]
+      },
+      {
+        "id": "elimine_arfid",
+        "label": "Élimine un ARFID (évitement sensoriel, carence nutritionnelle, absence de préoccupation corporelle)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ARFID",
+          "évitement",
+          "sensoriel",
+          "texture",
+          "goût",
+          "peur d'avaler"
+        ]
+      },
+      {
+        "id": "evalue_retentissement_somatique",
+        "label": "Évalue le retentissement somatique : poids, IMC, état dentaire, signes de dénutrition",
+        "weight": 1,
+        "triggerKeywords": [
+          "poids",
+          "IMC",
+          "dent",
+          "émail",
+          "dénutrition",
+          "amaigrissement"
+        ]
+      },
+      {
+        "id": "evale_retentissement_psychologique",
+        "label": "Évalue le retentissement psychologique : anxiété, dépression, isolement, honte, retentissement social",
+        "weight": 1,
+        "triggerKeywords": [
+          "anxiété",
+          "dépression",
+          "honte",
+          "isolement",
+          "social",
+          "stress"
+        ]
+      },
+      {
+        "id": "recherche_antecedents_psy",
+        "label": "Recherche des antécédents psychiatriques personnels et familiaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents psychiatriques",
+          "famille",
+          "psychologue",
+          "psychiatre",
+          "dépression familiale"
+        ]
+      },
+      {
+        "id": "propose_prise_en_charge_psy",
+        "label": "Propose une prise en charge adaptée : thérapie comportementale, suivi psychologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "thérapie comportementale",
+          "TCC",
+          "psychologue",
+          "suivi psychiatrique",
+          "prise en charge"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de mérycisme de manière empathique et non jugeante",
+        "weight": 1,
+        "triggerKeywords": [
+          "mérycisme",
+          "diagnostic",
+          "trouble du comportement alimentaire",
+          "pas de jugement"
+        ]
+      },
+      {
+        "id": "realise_examen_clinique",
+        "label": "Réalise un examen clinique ciblé (constantes, examen bucco-dentaire, examen abdominal)",
+        "weight": 1,
+        "triggerKeywords": [
+          "examen clinique",
+          "constantes",
+          "bouche",
+          "dents",
+          "abdomen",
+          "palpation"
+        ]
+      },
+      {
+        "id": "conclut_consultation",
+        "label": "Conclut la consultation en résumant le diagnostic, la prise en charge et le suivi proposé",
+        "weight": 1,
+        "triggerKeywords": [
+          "résumé",
+          "en résumé",
+          "prochain rendez-vous",
+          "suivi",
+          "n'hésitez pas"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment sur un sujet potentiellement honteux",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune femme réservée, légèrement anxieuse, qui minimise initialement ses symptômes. Elle est soulagée d'en parler mais reste gênée. Elle répond volontiers aux questions une fois mise en confiance.",
+      "phraseOuverture": "Bonjour docteur, euh… c'est un peu gênant mais j'ai des problèmes de régurgitations après les repas. Ça fait un moment déjà.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "… Je… je ne suis pas sûre de comprendre pourquoi vous me posez cette question. C'est assez intrusif.",
+        "silence": "… (silence gêné) … Vous pouvez répéter la question ?",
+        "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là…"
+      }
+    }
+  }
 }

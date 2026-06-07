@@ -1,0 +1,905 @@
+/**
+ * css/ecos.css
+ * Styles pour le mode ECOS (vignette, station, debrief).
+ * S'inspire visuellement du format officiel CNG : papier A4 paysage, police
+ * sobre, accents bleu ECOS officiels, chronomètre bien visible.
+ */
+
+:root {
+    --ecos-primary: #1e88e5;
+    --ecos-primary-dark: #1565c0;
+    --ecos-success: #2ecc71;
+    --ecos-warning: #f39c12;
+    --ecos-danger: #e74c3c;
+    --ecos-bg: #f5f7fb;
+    --ecos-text: #1a1a2e;
+    --ecos-muted: rgba(26, 26, 46, 0.65);
+    --ecos-border: rgba(30, 136, 229, 0.25);
+}
+
+/* ============== VIGNETTE A4 ============== */
+
+.ecos-vignette-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: linear-gradient(135deg, rgba(13, 71, 161, 0.96), rgba(21, 101, 192, 0.95));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    animation: ecosFadeIn 0.4s ease;
+}
+
+body.ecos-locked {
+    overflow: hidden;
+}
+
+@keyframes ecosFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.ecos-vignette-paper {
+    background: #ffffff;
+    width: 100%;
+    max-width: 1100px;
+    aspect-ratio: 1.414 / 1;       /* A4 paysage */
+    max-height: 92vh;
+    border-radius: 8px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: var(--ecos-text);
+    font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+    animation: ecosSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ecosSlideIn {
+    from { transform: translateY(20px) scale(0.97); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.ecos-vignette-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 28px;
+    background: linear-gradient(135deg, var(--ecos-primary), var(--ecos-primary-dark));
+    color: white;
+    border-bottom: 4px solid rgba(0, 0, 0, 0.08);
+}
+
+.ecos-vignette-station-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.ecos-badge-icon { font-size: 1.2rem; }
+.ecos-badge-label { font-size: 0.85rem; }
+
+.ecos-vignette-competences {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ecos-competence-pill {
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.ecos-competence-pill.primary {
+    background: white;
+    color: var(--ecos-primary-dark);
+}
+
+.ecos-vignette-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ecos-vignette-section {
+    background: rgba(30, 136, 229, 0.04);
+    border-left: 4px solid var(--ecos-primary);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+}
+
+.ecos-vignette-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--ecos-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.ecos-vignette-section p,
+.ecos-vignette-section li {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--ecos-text);
+}
+
+.ecos-vignette-attendues { border-left-color: var(--ecos-success); background: rgba(46, 204, 113, 0.06); }
+.ecos-vignette-attendues .ecos-vignette-label { color: #1d7d45; }
+.ecos-vignette-interdites { border-left-color: var(--ecos-danger); background: rgba(231, 76, 60, 0.06); }
+.ecos-vignette-interdites .ecos-vignette-label { color: #b53a2c; }
+
+.ecos-vignette-meta {
+    font-size: 0.92rem;
+    color: var(--ecos-muted);
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    margin-top: 4px;
+}
+
+.ecos-vignette-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    background: #f8f9fb;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ecos-vignette-readtime {
+    color: var(--ecos-muted);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ecos-start-btn {
+    background: linear-gradient(135deg, var(--ecos-success), #27ae60);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+}
+
+.ecos-start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(46, 204, 113, 0.5);
+}
+
+.ecos-start-btn:active {
+    transform: translateY(0);
+}
+
+.ecos-start-timer {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+}
+
+/* ============== STATION ============== */
+
+.ecos-station-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    background: linear-gradient(135deg, #0a1428, #122043);
+    color: white;
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+.ecos-station-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr 320px;
+    grid-template-rows: 80px 1fr;
+    grid-template-areas:
+        "top top top"
+        "patient chat grille";
+    height: 100vh;
+    gap: 0;
+}
+
+.ecos-station-topbar {
+    grid-area: top;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+.ecos-station-chrono {
+    font-family: 'Courier New', monospace;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--ecos-success);
+    text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
+    transition: color 0.5s, text-shadow 0.5s;
+    letter-spacing: 2px;
+}
+
+.ecos-station-chrono.warning {
+    color: var(--ecos-warning);
+    text-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
+    animation: ecosPulse 1.2s ease infinite;
+}
+
+.ecos-station-chrono.critical {
+    color: var(--ecos-danger);
+    text-shadow: 0 0 25px rgba(231, 76, 60, 0.7);
+    animation: ecosPulse 0.6s ease infinite;
+}
+
+@keyframes ecosPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+.ecos-station-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.ecos-icon-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+}
+
+.ecos-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: white;
+}
+
+.ecos-end-btn:hover {
+    background: rgba(231, 76, 60, 0.2);
+    border-color: var(--ecos-danger);
+    color: var(--ecos-danger);
+}
+
+.ecos-station-patient {
+    grid-area: patient;
+    background: rgba(0, 0, 0, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    gap: 12px;
+}
+
+.ecos-patient-avatar {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(30, 136, 229, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: ecosBreathe 4s ease infinite;
+}
+
+@keyframes ecosBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.ecos-patient-avatar .avatar-face {
+    width: 100%;
+    height: 100%;
+}
+
+.ecos-patient-avatar .avatar-head {
+    fill: rgba(30, 136, 229, 0.6);
+    stroke: rgba(255, 255, 255, 0.3);
+    stroke-width: 1;
+}
+.ecos-patient-avatar .avatar-eye {
+    fill: white;
+}
+.ecos-patient-avatar .avatar-mouth {
+    fill: none;
+    stroke: white;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+}
+.ecos-patient-avatar .avatar-glow {
+    fill: none;
+    stroke: rgba(30, 136, 229, 0.4);
+    stroke-width: 2;
+    animation: ecosGlow 2s ease-in-out infinite;
+}
+@keyframes ecosGlow {
+    0%, 100% { stroke-opacity: 0.4; }
+    50% { stroke-opacity: 1; }
+}
+
+.ecos-patient-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: white;
+}
+
+.ecos-patient-meta {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.ecos-station-chat {
+    grid-area: chat;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.1);
+    min-height: 0;
+}
+
+.ecos-chat-log {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ecos-msg {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    line-height: 1.45;
+    animation: ecosMsgIn 0.3s ease;
+}
+
+@keyframes ecosMsgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ecos-msg-speaker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    opacity: 0.7;
+}
+
+.ecos-msg-text {
+    font-size: 1.05rem;
+}
+
+.ecos-msg.from-student {
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--ecos-primary), var(--ecos-primary-dark));
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.ecos-msg.from-patient {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.95);
+    border-bottom-left-radius: 4px;
+}
+
+.ecos-msg.from-patient.opening {
+    border-color: rgba(46, 204, 113, 0.4);
+    background: rgba(46, 204, 113, 0.08);
+}
+
+.ecos-msg.from-patient.thinking {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+.ecos-msg.from-patient.thinking .ecos-msg-text::after {
+    content: ' ✨';
+    animation: ecosDots 1s ease infinite;
+}
+
+.ecos-msg.from-patient.error {
+    border-color: rgba(231, 76, 60, 0.4);
+    background: rgba(231, 76, 60, 0.08);
+    color: var(--ecos-danger);
+}
+
+.ecos-msg.from-patient.impulse {
+    border-color: rgba(243, 156, 18, 0.5);
+    background: rgba(243, 156, 18, 0.1);
+}
+
+@keyframes ecosDots {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.ecos-chat-form {
+    display: flex;
+    gap: 8px;
+    padding: 16px 24px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ecos-chat-form input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 24px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.ecos-chat-form input:focus {
+    border-color: var(--ecos-primary);
+    background: rgba(30, 136, 229, 0.1);
+}
+
+.ecos-chat-form input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.ecos-chat-form button {
+    background: linear-gradient(135deg, var(--ecos-primary), var(--ecos-primary-dark));
+    border: none;
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: transform 0.15s;
+}
+
+.ecos-chat-form button:hover { transform: scale(1.05); }
+
+/* ============== EXAMEN PHYSIQUE INPUT ============== */
+
+.ecos-exam-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 8px 16px 4px;
+    align-items: center;
+}
+
+.ecos-exam-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    background: rgba(0, 242, 254, 0.1);
+    color: #00f2fe;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-family: 'Outfit', sans-serif;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.ecos-exam-toggle:hover {
+    background: rgba(0, 242, 254, 0.22);
+    transform: scale(1.03);
+}
+
+.ecos-exam-form {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+}
+
+.ecos-exam-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 242, 254, 0.35);
+    background: rgba(0, 242, 254, 0.08);
+    color: #00f2fe;
+    font-size: 0.85rem;
+    font-family: 'Outfit', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.ecos-exam-form input:focus {
+    border-color: rgba(0, 242, 254, 0.6);
+    background: rgba(0, 242, 254, 0.12);
+}
+
+.ecos-exam-form input::placeholder {
+    color: rgba(0, 242, 254, 0.45);
+}
+
+.ecos-exam-form button {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: none;
+    background: rgba(0, 242, 254, 0.2);
+    color: #00f2fe;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ecos-exam-form button:hover {
+    background: rgba(0, 242, 254, 0.35);
+    transform: scale(1.05);
+}
+
+.ecos-station-grille {
+    grid-area: grille;
+    background: rgba(0, 0, 0, 0.25);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px 16px;
+    overflow-y: auto;
+}
+
+.ecos-grille-header {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--ecos-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ecos-grille-section {
+    margin-bottom: 20px;
+}
+
+.ecos-grille-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.ecos-grille-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ecos-grille-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    font-size: 0.85rem;
+    line-height: 1.3;
+    transition: all 0.3s;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ecos-grille-item.checked {
+    background: rgba(46, 204, 113, 0.12);
+    color: white;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.ecos-grille-item .ecos-check {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--ecos-success);
+    font-size: 0.9rem;
+    min-width: 16px;
+}
+
+.ecos-grille-item:not(.checked) .ecos-check {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.ecos-toast {
+    position: fixed;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-size: 0.95rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 9500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ecos-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.ecos-toast.warning {
+    background: rgba(243, 156, 18, 0.95);
+    color: white;
+}
+.ecos-toast.error {
+    background: rgba(231, 76, 60, 0.95);
+}
+
+/* ============== ANNONCE ============== */
+
+.ecos-announce-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9100;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.ecos-announce-card {
+    background: linear-gradient(145deg, rgba(20, 30, 50, 0.98), rgba(10, 20, 40, 0.95));
+    border: 1px solid var(--ecos-border);
+    color: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.ecos-announce-card h2 { margin-top: 0; color: var(--ecos-primary); }
+.ecos-announce-card label { display: block; margin: 14px 0 6px; font-weight: 600; color: rgba(255,255,255,0.85); }
+.ecos-announce-card input,
+.ecos-announce-card textarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+.ecos-announce-card textarea { resize: vertical; min-height: 100px; }
+.ecos-announce-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.ecos-btn-primary {
+    background: linear-gradient(135deg, var(--ecos-primary), var(--ecos-primary-dark));
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+.ecos-btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+/* ============== DEBRIEF ============== */
+
+.ecos-debrief-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9200;
+    background: linear-gradient(135deg, rgba(13, 71, 161, 0.97), rgba(21, 101, 192, 0.95));
+    overflow-y: auto;
+    padding: 24px;
+    animation: ecosFadeIn 0.4s ease;
+}
+
+.ecos-debrief-card {
+    background: white;
+    color: var(--ecos-text);
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+.ecos-debrief-header {
+    background: linear-gradient(135deg, var(--ecos-primary), var(--ecos-primary-dark));
+    color: white;
+    padding: 28px 32px;
+    text-align: center;
+}
+
+.ecos-debrief-header h1 { margin: 0 0 12px; font-size: 1.8rem; }
+
+.ecos-debrief-stars {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    letter-spacing: 6px;
+}
+.ecos-debrief-stars .ecos-star {
+    color: rgba(255, 255, 255, 0.2);
+    text-shadow: none;
+}
+.ecos-debrief-stars .ecos-star.lit {
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.ecos-debrief-score {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    font-family: 'Courier New', monospace;
+}
+.ecos-debrief-score span {
+    font-size: 1.5rem;
+    opacity: 0.7;
+}
+
+.ecos-debrief-section {
+    padding: 20px 32px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.ecos-debrief-section:last-of-type { border-bottom: none; }
+
+.ecos-debrief-section h3 {
+    margin: 0 0 12px;
+    color: var(--ecos-primary-dark);
+    font-size: 1.1rem;
+}
+
+.ecos-debrief-bar {
+    height: 12px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+.ecos-debrief-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.8s ease;
+}
+.ecos-debrief-bar-label {
+    font-size: 0.85rem;
+    color: var(--ecos-muted);
+    margin-bottom: 12px;
+}
+
+.ecos-debrief-grille {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ecos-debrief-grille li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.ecos-debrief-grille li.checked { background: rgba(46, 204, 113, 0.08); color: #1d7d45; }
+.ecos-debrief-grille li.partial { background: rgba(243, 156, 18, 0.08); color: #b86a07; }
+.ecos-debrief-grille li.missed { background: rgba(231, 76, 60, 0.06); color: #b53a2c; opacity: 0.8; }
+
+.ecos-debrief-grille .ecos-check {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: white;
+    border: 1px solid currentColor;
+}
+
+.ecos-debrief-feedback {
+    padding: 20px 32px;
+    background: rgba(30, 136, 229, 0.04);
+    border-top: 1px solid rgba(30, 136, 229, 0.1);
+}
+
+.ecos-debrief-feedback h3 { margin-top: 0; color: var(--ecos-primary-dark); }
+.ecos-debrief-feedback p { line-height: 1.5; margin: 0; }
+
+.ecos-debrief-footer {
+    padding: 20px 32px;
+    text-align: right;
+    background: #f8f9fb;
+}
+
+/* ============== RESPONSIVE ============== */
+
+@media (max-width: 1024px) {
+    .ecos-station-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 70px 160px 1fr 200px;
+        grid-template-areas:
+            "top"
+            "patient"
+            "chat"
+            "grille";
+    }
+    .ecos-station-grille {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .ecos-vignette-paper {
+        aspect-ratio: auto;
+        max-height: 95vh;
+    }
+}
+
+@media (max-width: 640px) {
+    .ecos-vignette-paper { padding: 0; }
+    .ecos-vignette-header { flex-direction: column; gap: 10px; align-items: stretch; }
+    .ecos-debrief-header h1 { font-size: 1.3rem; }
+    .ecos-debrief-score { font-size: 2.5rem; }
+}

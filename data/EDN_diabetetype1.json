@@ -146,16 +146,303 @@
   "correction": "# Diabète de type 1\n\nTableau clinique évocateur: hyperglycémie, cétonurie, acidose, anticorps anti‑GAD positifs.\n\n## Bonnes pratiques\n\n- Confirmer le diagnostic (anticorps, HbA1c, gaz du sang)\n- Initier l’insulinothérapie sans délai\n- Corriger les troubles hydro‑électrolytiques et éduquer le patient\n\n## Erreurs à éviter\n\n- Retarder l’insuline chez un sujet jeune avec cétose\n- Confondre avec DT2 en présence d’amaigrissement et auto‑immunité",
   "vitalsDynamics": {
     "trendOverMinutes": 0.06,
-    "urgencyMultiplier": 2.0,
+    "urgencyMultiplier": 2,
     "aggravationTargets": {
       "heartRate": 120,
       "systolic": 90,
       "diastolic": 55,
       "spo2": 90,
-      "temperature": 38.0,
+      "temperature": 38,
       "respiratoryRate": 26
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des urgences.",
+      "contexte": "Adrien PETIT, 18 ans, homme, se présente aux urgences pour une fatigue extrême, une soif intense et une perte de poids rapide de 5 kg en 3 semaines.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire complet du patient",
+        "Réaliser un examen clinique adapté",
+        "Identifier les signes de gravité et le diagnostic de diabète de type 1 avec suspicion d'acidocétose diabétique",
+        "Proposer une stratégie diagnostique initiale pertinente (glycémie capillaire, gaz du sang, ionogramme, corps cétoniques, ECBU)",
+        "Initier la prise en charge thérapeutique urgente (réhydratation, insulinothérapie intraveineuse)",
+        "Expliquer le diagnostic au patient et annoncer la nécessité d'une hospitalisation",
+        "Rédiger une ordonnance de sortie ou un compte rendu structuré"
+      ],
+      "consignesInterdites": [
+        "Ne pas traiter le patient sans avoir vérifié la glycémie capillaire",
+        "Ne pas administrer du glucose IV sans confirmation du diagnostic",
+        "Ne pas renvoyer le patient à domicile sans prise en charge adaptée"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Stratégie pertinente de PEC",
+      "domaineSecondaire": "Urgence vitale",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Thermomètre",
+        "Glycémie capillaire",
+        "ECG",
+        "Kit de prélèvement veineux",
+        "Voie veineuse périphérique",
+        "Perfusion de NaCl 0,9%",
+        "Insuline rapide injectable",
+        "Dextro"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe le patient confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "comment allez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente",
+        "label": "Réalise un interrogatoire orienté complet : chronologie des symptômes, polyurie/polydipsie, amaigrissement, douleurs abdominales, nausées, haleine fruitée",
+        "weight": 1,
+        "triggerKeywords": [
+          "soif",
+          "uriner",
+          "poids",
+          "douleur abdominale",
+          "nausées",
+          "haleine",
+          "fatigue",
+          "depuis quand"
+        ]
+      },
+      {
+        "id": "recherche_facteurs_risque",
+        "label": "Recherche les antécédents personnels, familiaux (diabète type 1, maladies auto-immunes) et le mode de vie",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "diabète familial",
+          "traitement en cours",
+          "allergie"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet : constantes (TA, FC, FR, SpO2, température), état d'hydratation (pli cutané, muqueuses), examen abdominal, examen neurologique (conscience), auscultation cardio-pulmonaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "constantes",
+          "hydratation",
+          "muqueuses",
+          "abdomen",
+          "conscience",
+          "auscultation",
+          "respiration"
+        ]
+      },
+      {
+        "id": "glycemie_capillaire",
+        "label": "Réalise immédiatement une glycémie capillaire face à la suspicion de diabète",
+        "weight": 1,
+        "triggerKeywords": [
+          "glycémie capillaire",
+          "dextro",
+          "glycémie",
+          "sucre dans le sang"
+        ]
+      },
+      {
+        "id": "identification_urgence",
+        "label": "Identifie les signes de gravité : déshydratation, tachycardie, respiration de Kussmaul/Cheyne-Stokes, léthargie, suspicion d'acidocétose diabétique",
+        "weight": 1,
+        "triggerKeywords": [
+          "acidocétose",
+          "urgence",
+          "grave",
+          "déshydratation sévère",
+          "respiration",
+          "ketoacidose"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Prescrit les examens complémentaires pertinents : gaz du sang, ionogramme, créatinine, glycémie veineuse, HbA1c, corps cétoniques sanguins et urinaires, ECBU, lipase si douleur abdominale",
+        "weight": 1,
+        "triggerKeywords": [
+          "gaz du sang",
+          "ionogramme",
+          "HbA1c",
+          "corps cétoniques",
+          "ECBU",
+          "créatinine",
+          "bilan"
+        ]
+      },
+      {
+        "id": "pec_rehydratation",
+        "label": "Initie la réhydratation par voie veineuse (NaCl 0,9%) avec un protocole adapté",
+        "weight": 1,
+        "triggerKeywords": [
+          "perfusion",
+          "réhydratation",
+          "NaCl",
+          "sérum salé",
+          "voie veineuse",
+          "remplissage"
+        ]
+      },
+      {
+        "id": "pec_insulinotherapie",
+        "label": "Initie l'insulinothérapie intraveineuse (insuline rapide en continu) après confirmation de l'hyperglycémie et de l'acidocétose",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuline",
+          "insulinothérapie",
+          "IV",
+          "intraveineuse",
+          "pompe à insuline"
+        ]
+      },
+      {
+        "id": "surveillance_therapeutique",
+        "label": "Planifie la surveillance rapprochée : glycémie horaire, ionogramme de contrôle, surveillance des apports et sorties, surveillance neurologique",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "glycémie horaire",
+          "ionogramme contrôle",
+          "veille",
+          "monitoring"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de diabète de type 1 au patient de manière empathique, en utilisant un vocabulaire adapté, en vérifiant sa compréhension",
+        "weight": 1,
+        "triggerKeywords": [
+          "diabète",
+          "type 1",
+          "annonce",
+          "explique",
+          "comprenez-vous",
+          "questions"
+        ]
+      },
+      {
+        "id": "information_hospitalisation",
+        "label": "Explique la nécessité d'une hospitalisation en urgence (USI ou endocrinologie) et les étapes de la prise en charge",
+        "weight": 1,
+        "triggerKeywords": [
+          "hospitalisation",
+          "USI",
+          "endocrinologie",
+          "transfert",
+          "surveillance rapprochée"
+        ]
+      },
+      {
+        "id": "transmission_equipe",
+        "label": "Transmet les informations à l'équipe soignante (infirmier, senior) de manière structurée (type SBAR)",
+        "weight": 1,
+        "triggerKeywords": [
+          "transmission",
+          "SBAR",
+          "résultat",
+          "glycémie",
+          "ordonnance",
+          "avis senior"
+        ]
+      },
+      {
+        "id": "ordonnance_structuree",
+        "label": "Rédige une ordonnance structurée et lisible avec les prescriptions de réhydratation, insulinothérapie, examens complémentaires et surveillance",
+        "weight": 1,
+        "triggerKeywords": [
+          "ordonnance",
+          "prescription",
+          "posologie",
+          "voie",
+          "fréquence",
+          "identité patient"
+        ]
+      },
+      {
+        "id": "education_initiale",
+        "label": "Commence l'éducation du patient sur la maladie (diabète de type 1), l'importance de l'insulinothérapie au long cours et les signes d'alerte",
+        "weight": 1,
+        "triggerKeywords": [
+          "éducation",
+          "insuline",
+          "au long cours",
+          "signes d'alerte",
+          "auto-surveillance",
+          "diabète"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape clé",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient de 18 ans, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce du diagnostic de diabète de type 1",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Jeune homme de 18 ans, étudiant, plutôt coopératif mais anxieux. Il est fatigué, assoiffé et inquiet de sa perte de poids rapide. Il répond aux questions de façon concise mais se montre réceptif aux explications. Il peut poser des questions sur sa maladie une fois le diagnostic annoncé.",
+      "phraseOuverture": "Bonjour docteur, je suis vraiment épuisé depuis quelques semaines, je n'arrête pas d'avoir soif et j'ai perdu beaucoup de poids sans comprendre pourquoi.",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.debutSymptomes",
+        "histoireMaladie.evolution"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.tabac",
+        "modeDeVie.alcool",
+        "modeDeVie.alimentation",
+        "traitements",
+        "allergies",
+        "histoireMaladie.symptomesAssocies"
+      ],
+      "infosCachees": [
+        "Le patient n'a pas encore consulté pour ces symptômes",
+        "Il n'a pas mesuré sa glycémie lui-même",
+        "Il ne connaît pas de cas de diabète dans sa famille (ou ne sait pas)"
+      ],
+      "reactions": {
+        "brutal": "Le patient se ferme, répond par monosyllabes et semble se sentir jugé ou bousculé.",
+        "silence": "Le patient attend que l'interne reprenne la parole, il ne complète pas spontanément ses réponses.",
+        "jargon": "Le patient semble perdu, fronce les sourcils et demande 'C'est quoi ça ?' ou 'Je comprends pas ce que vous dites.'"
+      }
+    }
+  }
 }

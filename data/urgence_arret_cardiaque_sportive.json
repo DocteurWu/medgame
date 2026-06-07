@@ -449,5 +449,246 @@
     "ECG 12 dérivations",
     "Bilan sanguin",
     "Echographie cardiaque au lit"
-  ]
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage au service des Urgences.",
+      "contexte": "Elena Garcia, 22 ans, femme, est amenée par les pompiers après une perte de connaissance brutale sur un terrain de handball. Elle est inconsciente, ne respire pas et n'a pas de pouls.",
+      "consignesAttendues": [
+        "Reconnaître l'arrêt cardio-respiratoire",
+        "Initier immédiatement la réanimation (RCP)",
+        "Demander le défibrillateur",
+        "Organiser la prise en charge avec l'équipe"
+      ],
+      "consignesInterdites": [
+        "Ne pas attendre avant de commencer le massage cardiaque",
+        "Ne pas mettre en PLS sans RCP",
+        "Ne pas quitter le patient"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgence vitale",
+      "domaineSecondaire": "Communication interpro",
+      "lieu": "Service d'urgence",
+      "materielDisponible": [
+        "Défibrillateur automatique externe (DAE)",
+        "Ballon d'oxygénation (BAVU)",
+        "Matériel de perfusion",
+        "Scope de monitoring"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "securite_scene",
+        "label": "Vérifie la sécurité de la scène et se protège (gants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "gants",
+          "sécurité",
+          "précautions"
+        ]
+      },
+      {
+        "id": "evaluation_conscience",
+        "label": "Évalue la conscience (taper des épaules, parler fort)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "réponse",
+          "Elena",
+          "madame"
+        ]
+      },
+      {
+        "id": "evaluation_respiration",
+        "label": "Évalue la respiration (lever menton, regarder-entendre-sentir)",
+        "weight": 1,
+        "triggerKeywords": [
+          "respiration",
+          "ventilation",
+          "soulever menton"
+        ]
+      },
+      {
+        "id": "appel_renfort",
+        "label": "Appelle à l'aide / active le protocole d'urgence",
+        "weight": 1,
+        "triggerKeywords": [
+          "aide",
+          "SAMU",
+          "renfort",
+          "urgence",
+          "15",
+          "112"
+        ]
+      },
+      {
+        "id": "massage_cardiaque",
+        "label": "Initie le massage cardiaque externe (MCE) correctement",
+        "weight": 1,
+        "triggerKeywords": [
+          "massage",
+          "compressions",
+          "thoracique",
+          "RCP"
+        ]
+      },
+      {
+        "id": "demande_defibrillateur",
+        "label": "Demande immédiatement le défibrillateur (DAE)",
+        "weight": 1,
+        "triggerKeywords": [
+          "défibrillateur",
+          "DAE",
+          "choc",
+          "défibrillation"
+        ]
+      },
+      {
+        "id": "position_defibrillateur",
+        "label": "Positionne correctement les électrodes du DAE",
+        "weight": 1,
+        "triggerKeywords": [
+          "électrodes",
+          "position",
+          "DAE",
+          "défibrillateur"
+        ]
+      },
+      {
+        "id": "analyse_rythme",
+        "label": "Suit les instructions du DAE pour l'analyse du rythme",
+        "weight": 1,
+        "triggerKeywords": [
+          "analyse",
+          "rythme",
+          "choc indiqué",
+          "fibrillation"
+        ]
+      },
+      {
+        "id": "administration_choc",
+        "label": "Administre le choc électrique si indiqué",
+        "weight": 1,
+        "triggerKeywords": [
+          "choc",
+          "écartez-vous",
+          "décharge",
+          "choc délivré"
+        ]
+      },
+      {
+        "id": "reprise_MCE_post_choc",
+        "label": "Reprend immédiatement le MCE après le choc",
+        "weight": 1,
+        "triggerKeywords": [
+          "massage",
+          "reprise",
+          "compressions",
+          "2 minutes"
+        ]
+      },
+      {
+        "id": "ventilation_assistee",
+        "label": "Assure la ventilation avec BAVU si formé",
+        "weight": 1,
+        "triggerKeywords": [
+          "BAVU",
+          "ventilation",
+          "insufflation",
+          "ballon"
+        ]
+      },
+      {
+        "id": "voie_veeuse",
+        "label": "Pose ou demande la pose d'une voie veineuse périphérique",
+        "weight": 1,
+        "triggerKeywords": [
+          "voie veineuse",
+          "perfusion",
+          "KVO",
+          "cathéter"
+        ]
+      },
+      {
+        "id": "administration_adrenaline",
+        "label": "Administre l'adrénaline selon le protocole (1mg IV)",
+        "weight": 1,
+        "triggerKeywords": [
+          "adrénaline",
+          "épinéphrine",
+          "1mg",
+          "IV"
+        ]
+      },
+      {
+        "id": "communication_equipe",
+        "label": "Communique clairement avec l'équipe (rôles, chronométrage)",
+        "weight": 1,
+        "triggerKeywords": [
+          "équipe",
+          "rôle",
+          "tour",
+          "relais",
+          "2 minutes"
+        ]
+      },
+      {
+        "id": "reevaluation_rythme",
+        "label": "Réévalue le rythme cardiaque toutes les 2 minutes",
+        "weight": 1,
+        "triggerKeywords": [
+          "réévaluation",
+          "rythme",
+          "2 minutes",
+          "pouls"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_non_verbale",
+        "label": "Utilise une communication non verbale appropriée (contact, posture)",
+        "max": 1
+      },
+      {
+        "id": "clarte_ordres",
+        "label": "Donne des ordres clairs et concis à l'équipe",
+        "max": 1
+      },
+      {
+        "id": "calme_urgence",
+        "label": "Garde son calme et sa concentration malgré l'urgence",
+        "max": 1
+      },
+      {
+        "id": "coordination_equipe",
+        "label": "Coordonne efficacement les actions de l'équipe",
+        "max": 1
+      },
+      {
+        "id": "information_proches",
+        "label": "Pense à informer ou faire informer les proches présents",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "personnalité": "Patient standardisé jouant le rôle d'un témoin (coéquipier) présent lors de l'événement",
+      "phraseOuverture": "Elena s'est effondrée d'un coup pendant le match ! Elle ne répond plus !",
+      "infosVolontaires": [
+        "motifHospitalisation",
+        "histoireMaladie.symptomesActuels"
+      ],
+      "infosSiDemandees": [
+        "antecedents.medicaux",
+        "antecedents.familiaux",
+        "modeDeVie.activitePhysique"
+      ],
+      "infosCachees": [],
+      "reactions": {
+        "brutal": "Le témoin est paniqué et parle vite, donne des informations de manière désordonnée",
+        "silence": "Le témoin attend les questions et répond brièvement",
+        "jargon": "Le témoin ne comprend pas le jargon médical et demande des explications"
+      }
+    }
+  }
 }
