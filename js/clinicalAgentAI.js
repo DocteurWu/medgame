@@ -288,8 +288,19 @@ class ClinicalAgentAI {
             const fetchPromise = this.callOpenRouterClinicalDirector(actionText, caseData, vitals);
             responseJson = await Promise.race([fetchPromise, timeoutPromise]);
         } catch (err) {
-            console.warn('[ClinicalAgentAI] Erreur ou Timeout OpenRouter. Recours au moteur local robuste...', err.message);
-            responseJson = this.localFallbackEngine(actionText, caseData, vitals);
+            console.error('[ClinicalAgentAI] Erreur d\'appel au Directeur Clinique IA :', err.message);
+            responseJson = {
+                isAction: true,
+                profession: role,
+                clinicalResponse: `⚠️ [Erreur : Impossible d'analyser l'action via l'IA (${err.message}). Veuillez vérifier votre connexion et votre clé API.]`,
+                patientVerbatim: "",
+                vitalChanges: { ...vitals },
+                expressionChange: "normal",
+                respiratoryPattern: "normal",
+                scoringChange: { type: "unnecessary", treatmentName: null },
+                spawnAsset: null,
+                soundToPlay: "incorrect"
+            };
         }
 
         // 4. Supprimer le loading et formater la bulle finale

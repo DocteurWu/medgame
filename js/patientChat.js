@@ -249,9 +249,6 @@
 
         askSuggested(question, prebuiltAnswer, fieldPath) {
             if (!question.trim()) return;
-            this.append('Vous', question);
-            this.messages.push({ role: 'user', content: question });
-            if (window.scoringState) window.scoringState.hasAskedPatient = true;
 
             // Suivi démarche pour le scoring composite — tracer le fieldPath
             if (fieldPath) {
@@ -261,9 +258,8 @@
                 document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path: fieldPath } }));
             }
 
-            // Réponse pré-construite : pas d'appel LLM
-            this.append('Patient', prebuiltAnswer);
-            this.messages.push({ role: 'assistant', content: prebuiltAnswer });
+            // Toujours passer par l'appel LLM dynamique
+            this.ask(question);
         }
 
         async ask(question) {
@@ -272,7 +268,7 @@
             this.messages.push({ role: 'user', content: question });
             if (window.scoringState) window.scoringState.hasAskedPatient = true;
 
-            // D'abord vérifier si une question suggérée correspond (match exact)
+            // Détecter si la question correspond à une question suggérée pour le suivi de la démarche (scoring)
             const suggestions = this._getSuggestedQuestions();
             const normalizedQ = question.toLowerCase().replace(/[?!.,;:'"]/g, '').trim();
             for (const s of suggestions) {
@@ -284,9 +280,7 @@
                         }
                         document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path: s.fieldPath } }));
                     }
-                    this.append('Patient', s.a);
-                    this.messages.push({ role: 'assistant', content: s.a });
-                    return;
+                    break;
                 }
             }
 
@@ -317,13 +311,13 @@
                         );
                     });
                 } catch (err) {
-                    console.warn('[PatientChat] LLMPatient error, falling back:', err);
-                    loading.textContent = this.fallback(question);
+                    console.warn('[PatientChat] LLMPatient error:', err);
+                    loading.textContent = `[Erreur : Impossible de contacter le patient virtuel (${err.message}). Veuillez vérifier votre connexion et votre clé API.]`;
                     loading.classList.add('answer-fade-in');
                     this.messages.push({ role: 'assistant', content: loading.textContent });
                 }
             } else {
-                loading.textContent = this.fallback(question);
+                loading.textContent = `[Erreur : Le moteur de simulation du patient (LLM) n'est pas configuré ou initialisé.]`;
                 loading.classList.add('answer-fade-in');
                 this.messages.push({ role: 'assistant', content: loading.textContent });
             }
