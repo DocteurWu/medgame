@@ -540,8 +540,17 @@ export class DoctorAnimator {
 
     _resolve() {
         if (this._resolved) return;
-        // Les enfants du groupe médecin sont des meshes directs
-        // Rechercher par position approximative ou type de géométrie
+
+        // Tenter d'abord la résolution par nom
+        this._legL = this.group.getObjectByName('DoctorLegL');
+        this._legR = this.group.getObjectByName('DoctorLegR');
+        this._armL = this.group.getObjectByName('DoctorArmL');
+        this._armR = this.group.getObjectByName('DoctorArmR');
+        this._head = this.group.getObjectByName('DoctorHead');
+        this._handL = this.group.getObjectByName('DoctorHandL');
+        this._handR = this.group.getObjectByName('DoctorHandR');
+
+        // Fallback géométrique si les noms ne sont pas définis
         const children = this.group.children;
         for (const child of children) {
             if (!child.isMesh) continue;
@@ -551,22 +560,28 @@ export class DoctorAnimator {
             // Jambes (cylindres bas)
             if (geom.type === 'CylinderGeometry' || geom.type === 'CapsuleGeometry') {
                 if (pos.y < 0.5 && pos.y > 0.1) {
-                    if (pos.x < 0) this._legL = child;
-                    else this._legR = child;
+                    if (pos.x < 0) { if (!this._legL) this._legL = child; }
+                    else { if (!this._legR) this._legR = child; }
                 } else if (pos.y > 0.7 && pos.y < 1.2) {
                     // Bras
-                    if (pos.x < 0) this._armL = child;
-                    else this._armR = child;
+                    if (pos.x < 0) { if (!this._armL) this._armL = child; }
+                    else { if (!this._armR) this._armR = child; }
                 }
             }
-            // Tête
-            if (geom.type === 'SphereGeometry' && pos.y > 1.2) {
-                this._head = child;
+            // Tête (seulement la sphère principale, pas les yeux/nez)
+            if (geom.type === 'SphereGeometry' && pos.y > 1.0) {
+                const radius = geom.parameters?.radius || 0;
+                if (radius > 0.1) {
+                    if (!this._head) this._head = child;
+                }
             }
             // Mains
             if (geom.type === 'SphereGeometry' && pos.y < 0.8 && pos.y > 0.6) {
-                if (pos.x < 0) this._handL = child;
-                else this._handR = child;
+                const radius = geom.parameters?.radius || 0;
+                if (radius < 0.05) {
+                    if (pos.x < 0) { if (!this._handL) this._handL = child; }
+                    else { if (!this._handR) this._handR = child; }
+                }
             }
         }
         this._resolved = true;

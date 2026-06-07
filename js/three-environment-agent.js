@@ -11,6 +11,7 @@ export class ThreeEnvironmentAgent {
         this.textures = new Map();
         this.ivGroup = null;
         this.ecgScreenMesh = null;
+        this.wallEcgScreenMesh = null;
         this.dustParticles = null;
     }
 
@@ -25,6 +26,7 @@ export class ThreeEnvironmentAgent {
         this._addCurtain();
         this._addIVStand();
         this._addECGMonitor();
+        this._addWallECGMonitor();
         this._addCharriot();
         this._addDustParticles();
     }
@@ -517,6 +519,63 @@ export class ThreeEnvironmentAgent {
         });
     }
 
+    // ===== MONITEUR ECG MURAL =====
+
+    _addWallECGMonitor() {
+        const group = new THREE.Group();
+        group.position.set(4.5, 2.0, -3.86);
+        group.name = 'WallECGMonitor';
+        group.userData.label = 'Moniteur ECG mural';
+        group.userData.interactive = true;
+
+        const ecgCanvas = document.createElement('canvas');
+        ecgCanvas.width = 256;
+        ecgCanvas.height = 96;
+        const ecgCtx = ecgCanvas.getContext('2d');
+        ecgCtx.fillStyle = '#001a00';
+        ecgCtx.fillRect(0, 0, 256, 96);
+        const ecgTexture = new THREE.CanvasTexture(ecgCanvas);
+        ecgTexture.minFilter = THREE.LinearFilter;
+
+        const shellMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.3 });
+        const shell = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.35, 0.06), shellMat);
+        shell.castShadow = true;
+        shell.receiveShadow = true;
+        group.add(shell);
+
+        const screenMat = new THREE.MeshStandardMaterial({
+            map: ecgTexture,
+            emissive: 0x003311,
+            emissiveIntensity: 0.8,
+            roughness: 0.05
+        });
+        const screen = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.29, 0.005), screenMat);
+        screen.position.z = 0.035;
+        screen.name = 'WallECGScreen';
+        group.add(screen);
+
+        const ledMat = new THREE.MeshStandardMaterial({
+            color: 0x00ff44,
+            emissive: 0x00ff44,
+            emissiveIntensity: 1.0,
+            roughness: 0.1
+        });
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.004, 6, 4), ledMat);
+        led.position.set(0.22, 0.16, 0.035);
+        group.add(led);
+
+        this.scene.add(group);
+        this.wallEcgScreenMesh = screen;
+        this._wallEcgLedMat = ledMat;
+
+        group.traverse((child) => {
+            if (child.isMesh) {
+                child.userData.interactive = true;
+                child.userData.label = 'Moniteur ECG mural';
+            }
+        });
+    }
+
     // ===== CHARRIOT MÉDICAL =====
 
     _addCharriot() {
@@ -719,15 +778,28 @@ export class ThreeEnvironmentAgent {
     }
 
     /**
+     * Retourne le mesh de l'écran ECG mural pour l'animateur
+     */
+    getWallECGScreenMesh() {
+        return this.wallEcgScreenMesh;
+    }
+
+    /**
      * Met à jour les animations d'environnement (LED ECG, etc.)
      * Appeler dans la boucle de rendu avec le temps elapsed.
      */
     updateEnvironment(elapsed) {
-        // LED d'état ECG : pulsation cardiaque réaliste
+        // LED d'état ECG sol : pulsation cardiaque réaliste
         if (this._ecgStatusLedMat) {
             const t = (elapsed * 1.2) % 1;
             const beat = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;
             this._ecgStatusLedMat.emissiveIntensity = 0.3 + beat * 0.7;
+        }
+        // LED d'état ECG mural
+        if (this._wallEcgLedMat) {
+            const t = (elapsed * 1.2) % 1;
+            const beat2 = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;
+            this._wallEcgLedMat.emissiveIntensity = 0.3 + beat2 * 0.7;
         }
     }
 

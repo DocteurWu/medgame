@@ -669,7 +669,7 @@ export class ThreeInstruments {
     // ===== TABLETTE =====
     _buildTablet(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 0.825, item.z);
+        group.position.set(item.x, 0.905, item.z);
 
         // Cadre (bordure noire)
         const frameMat = createMaterial(0x111111, { roughness: 0.2, metalness: 0.5 });

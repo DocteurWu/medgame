@@ -435,7 +435,7 @@ class ClinicalAgentAI {
      * Appelle l'API d'OpenRouter avec un prompt de type Directeur Clinique / GM
      */
     async callOpenRouterClinicalDirector(action, caseData, vitals) {
-        const endpoint = window.CONFIG?.LLM_API_URL || 'https://openrouter.ai/api/v1/chat/completions';
+        const endpoint = window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions';
         const model = window.CONFIG?.LLM_MODEL || 'openrouter/owl-alpha';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
 

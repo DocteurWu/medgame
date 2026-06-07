@@ -21,6 +21,7 @@ const TOOLTIP_DESCRIPTIONS = {
     'Tablette prescription': 'Prescription et ordonnance — Consultez les résultats et prescribez',
     'Ordinateur': 'Poste informatique — Dossier médical et résultats',
     'Moniteur ECG': 'Moniteur de surveillance — Tracé ECG et constantes vitales en temps réel',
+    'Moniteur ECG mural': 'Moniteur mural — Tracé ECG et constantes vitales en temps réel',
     'Perfusion': 'Perfusion intraveineuse — Soluté en cours d\'administration',
     'Charriot médical': 'Charriot de soins — Matériel et instruments médicaux',
     'Affiche médicale': 'Affiche — Protocole ECMO affiché au mur',
@@ -102,7 +103,7 @@ export class ThreeScene {
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.08;
-        this.controls.maxPolarAngle = Math.PI / 2 - 0.05; // Empêcher de regarder au plafond
+        this.controls.maxPolarAngle = Math.PI / 2 + 0.35; // Autoriser à regarder légèrement vers le haut (plafond) sans traverser le sol
         this.controls.minPolarAngle = 0.1;
         this.controls.minDistance = 1.5;
         this.controls.maxDistance = 8; // Rester dans la pièce fermée
@@ -139,6 +140,11 @@ export class ThreeScene {
         const ecgScreen = this.environmentAgent.getECGScreenMesh();
         if (ecgScreen) {
             this.ecgAnimator = new ECGScreenAnimator(ecgScreen, { width: 256, height: 96, heartRate: 72 });
+        }
+
+        const wallEcgScreen = this.environmentAgent.getWallECGScreenMesh();
+        if (wallEcgScreen) {
+            this.wallEcgAnimator = new ECGScreenAnimator(wallEcgScreen, { width: 256, height: 96, heartRate: 72 });
         }
 
         const dustParticles = this.environmentAgent.getDustParticles();
@@ -597,7 +603,7 @@ export class ThreeScene {
                 if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
                 break;
             }
-            if (name === 'ECGMonitor' || label === 'Moniteur ECG') {
+            if (name === 'ECGMonitor' || name === 'WallECGMonitor' || label === 'Moniteur ECG' || label === 'Moniteur ECG mural') {
                 if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
                 break;
@@ -1102,6 +1108,9 @@ export class ThreeScene {
         if (this.ecgAnimator) {
             this.ecgAnimator.heartRate = bpm;
         }
+        if (this.wallEcgAnimator) {
+            this.wallEcgAnimator.heartRate = bpm;
+        }
     }
 
     /**
@@ -1172,14 +1181,19 @@ export class ThreeScene {
         if (this.ecgAnimator) {
             this.ecgAnimator.update(elapsed);
         }
+        if (this.wallEcgAnimator) {
+            this.wallEcgAnimator.update(elapsed);
+        }
 
         // Animation environnementale (LED ECG, etc.)
         if (this.environmentAgent?.updateEnvironment) {
             this.environmentAgent.updateEnvironment(elapsed);
         }
 
-        // Animation du médecin (si DoctorAnimator actif)
-        if (this.doctorAnimator) {
+        // Animation du médecin (si CharacterController ou DoctorAnimator actif)
+        if (this.characterController && this.characterController.animator) {
+            this.characterController.animator.update(elapsed, dt);
+        } else if (this.doctorAnimator) {
             this.doctorAnimator.update(elapsed, dt);
         }
 

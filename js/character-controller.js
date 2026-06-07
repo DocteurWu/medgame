@@ -65,14 +65,15 @@ export class CharacterController {
         // Tête (Sphere low-poly 8 segments pour effet facetté)
         const headGeom = new THREE.SphereGeometry(0.125, 8, 6);
         const head = new THREE.Mesh(headGeom, mat(0xd7a87a));
-        head.position.y = 1.34;
+        head.position.y = 1.18;
+        head.name = 'DoctorHead';
         head.castShadow = true;
         group.add(head);
 
         // Cheveux Stylisés (polygones multiples sculptés)
         const hairMat = mat(0x242426, { roughness: 0.9 });
         const hairGroup = new THREE.Group();
-        hairGroup.position.set(0, 1.34, 0);
+        hairGroup.position.set(0, 1.18, 0);
 
         // Calotte principale
         const cap = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.65), hairMat);
@@ -116,10 +117,12 @@ export class CharacterController {
         legL.position.set(-0.065, 0.3, 0);
         legL.rotation.y = Math.PI / 6;
         legL.castShadow = true;
+        legL.name = 'DoctorLegL';
         group.add(legL);
 
         const legR = legL.clone();
         legR.position.x = 0.065;
+        legR.name = 'DoctorLegR';
         group.add(legR);
 
         // Chaussures (low-poly wedges)
@@ -143,10 +146,12 @@ export class CharacterController {
         armL.position.set(-0.21, 0.92, 0);
         armL.rotation.y = Math.PI / 6;
         armL.castShadow = true;
+        armL.name = 'DoctorArmL';
         group.add(armL);
 
         const armR = armL.clone();
         armR.position.x = 0.21;
+        armR.name = 'DoctorArmR';
         group.add(armR);
 
         // Dossier patient en main gauche
@@ -168,10 +173,12 @@ export class CharacterController {
 
         const handL = new THREE.Mesh(handGeom, handMat);
         handL.position.set(-0.21, 0.73, 0.01);
+        handL.name = 'DoctorHandL';
         group.add(handL);
 
         const handR = handL.clone();
         handR.position.x = 0.21;
+        handR.name = 'DoctorHandR';
         group.add(handR);
 
         // Stéthoscope
@@ -186,6 +193,52 @@ export class CharacterController {
         });
         return group;
     }
+
+    _addDoctorFace(group) {
+        const faceMat = (col) => new THREE.MeshStandardMaterial({ color: col, roughness: 0.5 });
+        const headY = 1.18;
+
+        // Yeux (petites sphères blanches)
+        const eyeMat = faceMat(0xeeeeee);
+        const pupilMat = faceMat(0x222222);
+        [-0.04, 0.04].forEach(x => {
+            const white = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 6), eyeMat);
+            white.position.set(x, headY + 0.01, 0.1);
+            group.add(white);
+            const pupil = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), pupilMat);
+            pupil.position.set(x, headY + 0.01, 0.115);
+            group.add(pupil);
+        });
+
+        // Nez (petite bosse)
+        const noseMat = faceMat(0xd7a87a);
+        const nose = new THREE.Mesh(new THREE.SphereGeometry(0.012, 6, 4), noseMat);
+        nose.position.set(0, headY - 0.015, 0.11);
+        group.add(nose);
+
+        // Bouche (petit tore)
+        const mouthMat = faceMat(0xaa7777);
+        const mouth = new THREE.Mesh(new THREE.TorusGeometry(0.015, 0.003, 4, 8), mouthMat);
+        mouth.position.set(0, headY - 0.04, 0.1);
+        mouth.rotation.x = Math.PI / 3;
+        group.add(mouth);
+
+        // Lunettes (cercles fins)
+        const glassMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8, roughness: 0.15 });
+        [-0.05, 0.05].forEach(x => {
+            const frame = new THREE.Mesh(new THREE.TorusGeometry(0.022, 0.003, 6, 12), glassMat);
+            frame.position.set(x, headY + 0.005, 0.105);
+            group.add(frame);
+        });
+        const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.003, 0.003), glassMat);
+        bridge.position.set(0, headY + 0.005, 0.105);
+        group.add(bridge);
+    }
+
+    _addStethoscope(group) {
+        const stethMat = new THREE.MeshStandardMaterial({ color: 0x333333, roughness: 0.6, metalness: 0.2 });
+        const tubeCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(0, 1.0, 0),
             new THREE.Vector3(0.15, 0.95, -0.05),
             new THREE.Vector3(0.1, 0.85, 0),
             new THREE.Vector3(0.08, 0.8, -0.02),
@@ -200,7 +253,7 @@ export class CharacterController {
 
         [-0.06, 0.06].forEach(x => {
             const ear = new THREE.Mesh(new THREE.SphereGeometry(0.012, 6, 4), stethMat);
-            ear.position.set(x, 1.15, -0.14);
+            ear.position.set(x, 0.99, -0.14);
             group.add(ear);
         });
     }

@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/api/llm/*"
+  to = "/.netlify/functions/llm-proxy"
+  status = 200

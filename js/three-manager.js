@@ -113,6 +113,8 @@ class ThreeManager {
                 this.character = new CharacterControllerClass(this.scene.scene);
                 // Lier le contrôleur à la scène pour que moveDoctorTo fonctionne
                 this.scene.characterController = this.character;
+                // Orienter le médecin vers le centre de la pièce au démarrage
+                this.character.lookAt(new THREE.Vector3(0, 0.85, 0));
             }
 
             // HUD
@@ -390,9 +392,13 @@ class ThreeManager {
     goToPatient(hitObj) {
         if (!this.scene) return;
         
-        // Au lieu d'ouvrir le chat directement, on ouvre le menu d'examen général
         const arriveAndExamine = () => {
             this.scene.setCamera('patient');
+            if (this.character && this.scene.patient?.group) {
+                const targetPos = this.scene.patient.group.position.clone();
+                targetPos.y = this.character.group.position.y;
+                this.character.lookAt(targetPos);
+            }
             
             if (!this.hasWashedHands && this.hud) {
                 this.hud.showNotification('⚠️ Risque infectieux : Vous n\'avez pas lavé vos mains !', 'warning');
@@ -441,7 +447,10 @@ class ThreeManager {
         if (!this.scene) return;
         const arriveAndPrescribe = () => {
             this.scene.setCamera('desk');
-            if (this.character) this.character.reach();
+            if (this.character) {
+                this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
+                this.character.reach();
+            }
             if (window.openPrescriptionTablet) window.openPrescriptionTablet();
         };
         if (this.character) {
@@ -455,7 +464,10 @@ class ThreeManager {
         if (!this.scene || !instrument) return;
         const arriveAndMeasure = () => {
             this.scene.setCamera('desk');
-            if (this.character) this.character.reach();
+            if (this.character) {
+                this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
+                this.character.reach();
+            }
             if (instrument.key === 'tablet') {
                 this.openPCPanel();
                 return;
@@ -601,6 +613,9 @@ class ThreeManager {
         const wasAlreadyWashed = this.hasWashedHands;
 
         const arrive = () => {
+            if (this.character) {
+                this.character.lookAt(new THREE.Vector3(-4.7, this.character.group.position.y, 1.8));
+            }
             // Animation de lavage (délai simulé)
             this.hud?.showNotification('🚿 Lavage en cours...', 'info');
 
@@ -657,6 +672,9 @@ class ThreeManager {
 
         const arriveAndApply = () => {
             this.scene.setCamera('patient');
+            if (this.character) {
+                this.character.lookAt(new THREE.Vector3(-3.5, this.character.group.position.y, -3.35));
+            }
 
             // Récupérer la SpO2 actuelle
             const vProps = window.vitalSigns?.props;
@@ -711,6 +729,9 @@ class ThreeManager {
         if (!this.scene) return;
         const arrive = () => {
             this.scene.setCamera('desk');
+            if (this.character) {
+                this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
+            }
             this.openPCPanel();
         };
         if (this.character) {

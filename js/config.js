@@ -11,9 +11,9 @@ const CONFIG = {
     SUPABASE_URL: 'https://jxhzjetxquimmkpzlfyh.supabase.co',
     SUPABASE_KEY: 'sb_publishable_Nqjp4eF3ytr3VDciqX8dvA_JhdVP0G0',
 
-    // LLM Chat API — OpenRouter
-    LLM_API_URL: 'https://openrouter.ai/api/v1/chat/completions',
-    LLM_API_KEY: window.__ENV__?.LLM_API_KEY || '',
+    // LLM Chat API — OpenRouter via Netlify Proxy
+    LLM_API_URL: '/api/llm/chat/completions',
+    LLM_API_KEY: '',
     LLM_MODEL: 'openrouter/owl-alpha'
 };
 window.CONFIG = CONFIG;
