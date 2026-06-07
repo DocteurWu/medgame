@@ -289,11 +289,10 @@ Style d'âge : ${ageStyle}
             onComplete?.(fullResponse);
         } catch (err) {
             if (err.name === 'AbortError') return; // Annulation volontaire
-            console.warn('[LLMPatient] Fallback local:', err.message);
-            const fallbackResponse = this._fallback(question);
-            this.history.push({ role: 'assistant', content: fallbackResponse });
-            onToken?.(fallbackResponse);
-            onComplete?.(fallbackResponse);
+            console.error('[LLMPatient] Erreur d\'appel LLM :', err.message);
+            const errorMsg = `[Erreur : Connexion au patient virtuel impossible (${err.message}).]`;
+            onToken?.(errorMsg);
+            onComplete?.(errorMsg);
             onError?.(err.message);
         }
     }
