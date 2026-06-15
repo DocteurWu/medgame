@@ -24,7 +24,7 @@ export class LLMPatient {
 
         // Config depuis window.CONFIG (injectée par config.js)
         this.endpoint = window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions';
-        this.model    = window.CONFIG?.LLM_MODEL    || 'deepseek-v4-flash';
+        this.model    = window.CONFIG?.LLM_MODEL    || 'nex-agi/nex-n2-pro:free';
         this.apiKey   = window.CONFIG?.LLM_API_KEY  || '';
     }
 
@@ -284,22 +284,56 @@ Style d'âge : ${ageStyle}
         ];
 
         try {
-            const fullResponse = await this._callLLM(messages, onToken);
-            this.history.push({ role: 'assistant', content: fullResponse });
-            onComplete?.(fullResponse);
-        } catch (err) {
-            if (err.name === 'AbortError') return; // Annulation volontaire
-            console.error('[LLMPatient] Erreur d\'appel LLM :', err.message);
-            const errorMsg = `[Erreur : Connexion au patient virtuel impossible (${err.message}).]`;
+            const modelsToTry = [
+                this.model,
+                'nvidia/nemotron-3-ultra-550b-a55b:free',
+                'openrouter/owl-alpha',
+                'poolside/laguna-m.1:free'
+            ].filter((m, i, self) => self.indexOf(m) === i); // Éviter les doublons
+
+            let fullResponse = '';
+            let lastError = null;
+
+            for (const modelToTry of modelsToTry) {
+                try {
+                    console.log(`[LLMPatient] Tentative d'appel avec le modèle : ${modelToTry}`);
+                    // En cas d'erreur de modèle précédent, réinitialiser le callback du token
+                    onToken?.(''); 
+                    fullResponse = await this._callLLM(messages, onToken, modelToTry);
+                    this.history.push({ role: 'assistant', content: fullResponse });
+                    onComplete?.(fullResponse);
+                    
+                    // Sauvegarder le modèle fonctionnel pour toute la session
+                    if (window.CONFIG) {
+                        window.CONFIG.LLM_MODEL = modelToTry;
+                    }
+                    this.model = modelToTry;
+                    return; // Succès, on quitte
+                } catch (err) {
+                    if (err.name === 'AbortError') return; // Annulation volontaire
+                    console.warn(`[LLMPatient] Échec avec le modèle ${modelToTry} :`, err.message);
+                    lastError = err;
+                }
+            }
+
+            // Si tous les modèles ont échoué
+            console.error('[LLMPatient] Tous les modèles LLM ont échoué.');
+            const errorMsg = `[Erreur : Connexion au patient virtuel impossible (Tous les modèles ont échoué : ${lastError?.message}).]`;
             onToken?.(errorMsg);
             onComplete?.(errorMsg);
-            onError?.(err.message);
+            onError?.(lastError?.message);
+
+        } catch (globalErr) {
+            if (globalErr.name === 'AbortError') return;
+            console.error('[LLMPatient] Erreur globale ask :', globalErr.message);
+            onError?.(globalErr.message);
         }
     }
 
     // ==================== APPEL LLM + STREAMING ====================
 
-    async _callLLM(messages, onToken) {
+    async _callLLM(messages, onToken, modelOverride) {
+        const modelToUse = modelOverride || this.model;
         const response = await fetch(this.endpoint, {
             method: 'POST',
             headers: {
@@ -309,7 +343,7 @@ Style d'âge : ${ageStyle}
                 'X-Title': 'MedGame'
             },
             body: JSON.stringify({
-                model: this.model,
+                model: modelToUse,
                 messages,
                 stream: true,       // Streaming SSE
                 max_tokens: 220,

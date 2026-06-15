@@ -276,23 +276,45 @@ class ClinicalAgentAI {
         const patient = caseData.patient || {};
         const vitals = window.vitalSigns?.props || {};
 
-        // 3. Obtenir la réponse (OpenRouter ou Fallback Local en parallèle)
+        // 3. Obtenir la réponse (OpenRouter avec Fallback en chaîne)
         let responseJson = null;
+        let lastError = null;
 
-        try {
-            // Créer une promesse de timeout de 8 secondes pour basculer sur le local si lag/erreur
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Timeout OpenRouter')), 8000)
-            );
+        const modelsToTry = [
+            window.CONFIG?.LLM_MODEL || 'nex-agi/nex-n2-pro:free',
+            'nvidia/nemotron-3-ultra-550b-a55b:free',
+            'openrouter/owl-alpha',
+            'poolside/laguna-m.1:free'
+        ].filter((m, i, self) => self.indexOf(m) === i);
 
-            const fetchPromise = this.callOpenRouterClinicalDirector(actionText, caseData, vitals);
-            responseJson = await Promise.race([fetchPromise, timeoutPromise]);
-        } catch (err) {
-            console.error('[ClinicalAgentAI] Erreur d\'appel au Directeur Clinique IA :', err.message);
+        for (const modelToTry of modelsToTry) {
+            try {
+                // Créer une promesse de timeout de 8 secondes par modèle
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error(`Timeout OpenRouter (${modelToTry})`)), 8000)
+                );
+
+                console.log(`[ClinicalAgentAI] Tentative d'action avec le modèle : ${modelToTry}`);
+                const fetchPromise = this.callOpenRouterClinicalDirector(actionText, caseData, vitals, modelToTry);
+                responseJson = await Promise.race([fetchPromise, timeoutPromise]);
+                
+                // Sauvegarder le modèle fonctionnel pour toute la session
+                if (window.CONFIG) {
+                    window.CONFIG.LLM_MODEL = modelToTry;
+                }
+                break; // Réussite !
+            } catch (err) {
+                console.warn(`[ClinicalAgentAI] Échec de l'action avec ${modelToTry} :`, err.message);
+                lastError = err;
+            }
+        }
+
+        if (!responseJson) {
+            console.error('[ClinicalAgentAI] Tous les modèles d\'analyse clinique ont échoué.');
             responseJson = {
                 isAction: true,
                 profession: role,
-                clinicalResponse: `⚠️ [Erreur : Impossible d'analyser l'action via l'IA (${err.message}). Veuillez vérifier votre connexion et votre clé API.]`,
+                clinicalResponse: `⚠️ [Erreur : Impossible d'analyser l'action via l'IA (Tous les modèles ont échoué : ${lastError?.message || 'Erreur inconnue'}). Veuillez vérifier votre connexion et votre clé API.]`,
                 patientVerbatim: "",
                 vitalChanges: { ...vitals },
                 expressionChange: "normal",
@@ -445,9 +467,9 @@ class ClinicalAgentAI {
     /**
      * Appelle l'API d'OpenRouter avec un prompt de type Directeur Clinique / GM
      */
-    async callOpenRouterClinicalDirector(action, caseData, vitals) {
+    async callOpenRouterClinicalDirector(action, caseData, vitals, modelOverride) {
         const endpoint = window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions';
-        const model = window.CONFIG?.LLM_MODEL || 'openrouter/owl-alpha';
+        const model = modelOverride || window.CONFIG?.LLM_MODEL || 'nex-agi/nex-n2-pro:free';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
 
         const correctTreatments = caseData.correctTreatments || [];
