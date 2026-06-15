@@ -27,7 +27,7 @@ const CONFIG = {
     LLM_API_KEY: (isLocalhost && isLocalKeyValid)
         ? localKey
         : '',
-    LLM_MODEL: window.__ENV__?.LLM_MODEL || 'openrouter/owl-alpha'
+    LLM_MODEL: window.__ENV__?.LLM_MODEL || 'nex-agi/nex-n2-pro:free'
 };
 window.CONFIG = CONFIG;
 
