@@ -406,11 +406,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif mais inquiet, légèrement anxieux face à la perte de poids inexpliquée",
       "phraseOuverture": "Bonjour docteur, je suis très fatigué depuis plusieurs mois et j'ai perdu beaucoup de poids sans vraiment comprendre pourquoi...",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "perteDePoids"
       ],
       "infosSiDemandees": [
@@ -425,7 +424,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez toutes ces questions, je suis juste fatigué !",
         "silence": "...",
         "jargon": "Je ne comprends pas ce que vous voulez dire, pouvez-vous m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient coopératif mais inquiet, légèrement anxieux face à la perte de poids inexpliquée"
     }
   }
 }

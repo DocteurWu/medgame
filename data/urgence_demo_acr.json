@@ -785,7 +785,7 @@
         "Ne pas quitter le patient sans relève",
         "Ne pas ignorer les causes réversibles"
       ],
-      "typeStation": "AVEC_PS",
+      "typeStation": "SANS_PS_PSS",
       "domainePrincipal": "Urgence vitale",
       "domaineSecondaire": "Stratégie pertinente de PEC",
       "lieu": "Service d'urgence - Salle de déchocage",
@@ -1024,11 +1024,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient inconscient, en arrêt cardio-respiratoire. Aucune interaction verbale possible. Le patient est un mannequin haute-fidélité.",
-      "phraseOuverture": "Le patient est inconscient, ne respire pas, pas de pouls palpable. Les secouristes sont en train de faire du massage cardiaque.",
+      "phraseOuverture": "",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.descriptionDouleur"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -1040,7 +1039,8 @@
         "brutal": "Le patient reste inconscient, aucune réaction.",
         "silence": "Aucune réponse, le patient est en ACR.",
         "jargon": "Le patient ne comprend pas, il est inconscient."
-      }
+      },
+      "personnalite": "Patient inconscient, en arrêt cardio-respiratoire. Aucune interaction verbale possible. Le patient est un mannequin haute-fidélité."
     }
   }
 }

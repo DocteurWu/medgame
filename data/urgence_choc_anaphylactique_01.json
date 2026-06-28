@@ -561,11 +561,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient agité, anxieux, légèrement confus du fait de l'hypoxie et du choc. Il parle vite, cherche son souffle, se gratte frénétiquement. Il est coopératif mais a du mal à se concentrer longtemps sur les questions.",
       "phraseOuverture": "Au secours docteur ! J'ai été piqué par une guêpe, je n'arrive plus à respirer, je me sens très mal, tout me gratte !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.facteursDeclenchants",
         "allergies.presence",
@@ -585,7 +584,8 @@
         "brutal": "Le patient se braque : « Mais enfin docteur, occupez-vous de moi au lieu de me poser des questions ! Je suis en train de mourir ! »",
         "silence": "Le patient ne répond pas, il est trop essoufflé et agité. Il faut insister calmement avec des questions fermées et courtes.",
         "jargon": "Le patient regarde l'interne avec incompréhension : « Je comprends pas ce que vous dites, parlez français s'il vous plaît ! »"
-      }
+      },
+      "personnalite": "Patient agité, anxieux, légèrement confus du fait de l'hypoxie et du choc. Il parle vite, cherche son souffle, se gratte frénétiquement. Il est coopératif mais a du mal à se concentrer longtemps sur les questions."
     }
   }
 }

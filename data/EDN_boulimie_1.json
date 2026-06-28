@@ -382,11 +382,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune femme de 19 ans, étudiante, anxieuse, préoccupée par son poids et son image corporelle. Elle exprime de la culpabilité et de la honte concernant ses crises de boulimie. Elle est coopérative mais émotive.",
       "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des crises de boulimie et ça me fait peur. Je mange beaucoup trop quand je suis stressée et après je me sens horrible.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -404,7 +403,8 @@
         "brutal": "Je ne suis pas folle ! C'est juste que je mange trop parfois...",
         "silence": "...",
         "jargon": "Je ne comprends pas ce que vous voulez dire par 'comportement compensatoire'..."
-      }
+      },
+      "personnalite": "Jeune femme de 19 ans, étudiante, anxieuse, préoccupée par son poids et son image corporelle. Elle exprime de la culpabilité et de la honte concernant ses crises de boulimie. Elle est coopérative mais émotive."
     }
   }
 }

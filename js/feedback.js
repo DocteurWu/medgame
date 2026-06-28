@@ -345,7 +345,7 @@ window.renderTimeline = renderTimeline;
  * @param {string} caseId — identifiant du cas
  * @returns {{ rank: number, total: number, percentile: number, avgScore: number, avgDemarche: number }}
  */
-function getAnonymousComparison(compositeResult, caseId) {
+function getAnonymousComparison(compositeResult, caseId, mode = 'classic') {
     const STORAGE_KEY = 'medgame_case_stats';
 
     // Charger les stats existantes
@@ -355,6 +355,8 @@ function getAnonymousComparison(compositeResult, caseId) {
     } catch (e) {
         stats = {};
     }
+
+    const partitionKey = `${caseId}_${mode}`;
 
     // Enregistrer cette session
     const entry = {
@@ -366,18 +368,18 @@ function getAnonymousComparison(compositeResult, caseId) {
         timestamp: Date.now()
     };
 
-    if (!stats[caseId]) stats[caseId] = [];
-    stats[caseId].push(entry);
+    if (!stats[partitionKey]) stats[partitionKey] = [];
+    stats[partitionKey].push(entry);
 
-    // Ne garder que les 50 dernières sessions par cas
-    if (stats[caseId].length > 50) {
-        stats[caseId] = stats[caseId].slice(-50);
+    // Ne garder que les 50 dernières sessions par cas et par mode
+    if (stats[partitionKey].length > 50) {
+        stats[partitionKey] = stats[partitionKey].slice(-50);
     }
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
 
     // Calculer les stats de comparaison
-    const sessions = stats[caseId];
+    const sessions = stats[partitionKey];
     const total = sessions.length;
     const sortedScores = sessions.map(s => s.score).sort((a, b) => b - a);
 

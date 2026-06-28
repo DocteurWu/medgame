@@ -33,7 +33,7 @@ const EXAM_CONFIG = {
     examenORL: { label: 'ORL', icon: 'fa-ear-listen' },
     examenVestibulaire: { label: 'Vestibulaire', icon: 'fa-compass' },
     examenDermatologique: { label: 'Dermatologique', icon: 'fa-hand-dots' },
-    examenMusculosquelettique: { label: 'Musculosquettique', icon: 'fa-bone' },
+    examenMusculosquelettique: { label: 'Musculosquelettique', icon: 'fa-bone' },
     examenOphtalmologique: { label: 'Ophtalmologique', icon: 'fa-eye' },
     examenUrologique: { label: 'Urologique', icon: 'fa-droplet' },
     default: { label: 'Autre Examen', icon: 'fa-stethoscope' }
@@ -41,20 +41,105 @@ const EXAM_CONFIG = {
 
 // ==================== NOTIFICATION ====================
 
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.classList.add('notification');
-    notification.textContent = message;
-    document.body.appendChild(notification);
+function showNotification(message, level = 'info') {
+    let container = document.getElementById('medgame-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'medgame-toast-container';
+        container.style.position = 'fixed';
+        container.style.top = '20px';
+        container.style.right = '20px';
+        container.style.zIndex = '999999';
+        container.style.display = 'flex';
+        container.style.flexDirection = 'column';
+        container.style.gap = '10px';
+        container.style.pointerEvents = 'none';
+        container.style.maxWidth = '350px';
+        container.style.width = 'calc(100% - 40px)';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.style.pointerEvents = 'auto';
+    toast.style.padding = '12px 20px';
+    toast.style.borderRadius = '12px';
+    toast.style.fontFamily = 'Inter, system-ui, sans-serif';
+    toast.style.fontSize = '0.9rem';
+    toast.style.fontWeight = '500';
+    toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+    toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+    toast.style.transform = 'translateY(-20px) scale(0.9)';
+    toast.style.opacity = '0';
+    toast.style.display = 'flex';
+    toast.style.alignItems = 'center';
+    toast.style.gap = '10px';
+
+    const levels = {
+        success: {
+            bg: 'rgba(240, 253, 244, 0.95)',
+            border: '1px solid rgba(74, 222, 128, 0.4)',
+            color: '#166534',
+            icon: '✅'
+        },
+        warning: {
+            bg: 'rgba(254, 252, 232, 0.95)',
+            border: '1px solid rgba(250, 204, 21, 0.4)',
+            color: '#854d0e',
+            icon: '⚠️'
+        },
+        error: {
+            bg: 'rgba(254, 242, 242, 0.95)',
+            border: '1px solid rgba(248, 113, 113, 0.4)',
+            color: '#991b1b',
+            icon: '❌'
+        },
+        info: {
+            bg: 'rgba(240, 249, 255, 0.95)',
+            border: '1px solid rgba(56, 189, 248, 0.4)',
+            color: '#075985',
+            icon: 'ℹ️'
+        }
+    };
+
+    const style = levels[level] || levels.info;
+    toast.style.backgroundColor = style.bg;
+    toast.style.border = style.border;
+    toast.style.color = style.color;
+    toast.style.backdropFilter = 'blur(8px)';
+    
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    toast.innerHTML = `<span style="font-size: 1.1rem; flex-shrink: 0;">${style.icon}</span><span style="flex-grow: 1; word-break: break-word;">${message}</span>`;
+
+    container.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        toast.style.transform = 'translateY(0) scale(1)';
+        toast.style.opacity = '1';
+    });
+
     setTimeout(() => {
-        notification.remove();
+        toast.style.transform = prefersReducedMotion ? 'none' : 'translateY(-10px) scale(0.95)';
+        toast.style.opacity = '0';
+        toast.addEventListener('transitionend', () => {
+            toast.remove();
+            if (container.childNodes.length === 0) {
+                container.remove();
+            }
+        });
     }, NOTIFICATION_DURATION);
 }
 
 // ==================== HTML / TEXT UTILITIES ====================
 
 function escapeHtml(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
 
 function normalizeText(text) {
@@ -126,32 +211,32 @@ function parseMarkdown(text) {
 
         if (t.startsWith('# ')) {
             if (inList) { html += '</ul>'; inList = false; }
-            html += `<h3 style="color: var(--primary-color); margin: 12px 0 8px; font-size: 1.2em;">${escapeHtml(t.slice(2))}</h3>`;
+            html += `<h3 class="ecos-md-h3">${escapeHtml(t.slice(2))}</h3>`;
             continue;
         }
         if (t.startsWith('## ')) {
             if (inList) { html += '</ul>'; inList = false; }
-            html += `<h4 style="color: var(--secondary-color); margin: 10px 0 6px; font-size: 1.1em;">${escapeHtml(t.slice(3))}</h4>`;
+            html += `<h4 class="ecos-md-h4">${escapeHtml(t.slice(3))}</h4>`;
             continue;
         }
         if (t.startsWith('### ')) {
             if (inList) { html += '</ul>'; inList = false; }
-            html += `<h5 style="margin: 8px 0 5px; font-size: 1em;">${escapeHtml(t.slice(4))}</h5>`;
+            html += `<h5 class="ecos-md-h5">${escapeHtml(t.slice(4))}</h5>`;
             continue;
         }
 
         if (t.startsWith('- ')) {
             if (!inList) {
-                html += '<ul style="margin: 8px 0; padding-left: 20px; font-size: 0.95em;">';
+                html += '<ul class="ecos-md-ul">';
                 inList = true;
             }
-            html += '<li style="margin: 4px 0;">' + escapeHtml(t.slice(2)) + '</li>';
+            html += '<li class="ecos-md-li">' + escapeHtml(t.slice(2)) + '</li>';
         } else {
             if (inList) {
                 html += '</ul>';
                 inList = false;
             }
-            html += '<p style="margin: 6px 0; font-size: 0.95em;">' + escapeHtml(t) + '</p>';
+            html += '<p class="ecos-md-p">' + escapeHtml(t) + '</p>';
         }
     }
     if (inList) html += '</ul>';
@@ -236,28 +321,50 @@ function safeSetInnerHTML(el, html, trusted = false) {
 // ==================== COOKIE MANAGEMENT ====================
 
 function setCookie(name, value, days) {
+    if (name === 'playedCases') {
+        localStorage.setItem('playedCases_storage', value || "");
+        if (value) {
+            const parts = value.split(',').filter(Boolean);
+            if (parts.length > 30) {
+                value = parts.slice(parts.length - 30).join(',');
+            }
+        }
+    }
+
     let expires = "";
     if (days) {
         let date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    // Encode name and value to prevent injection, add SameSite=Lax
     const encodedName = encodeURIComponent(name);
     const encodedValue = encodeURIComponent(value || "");
     document.cookie = `${encodedName}=${encodedValue}${expires}; path=/; SameSite=Lax`;
 }
 
 function getCookie(name) {
+    if (name === 'playedCases') {
+        const stored = localStorage.getItem('playedCases_storage');
+        if (stored !== null) return stored;
+    }
+
     const encodedName = encodeURIComponent(name) + "=";
     const ca = document.cookie.split(';');
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i].trim();
         if (c.indexOf(encodedName) === 0) {
             try {
-                return decodeURIComponent(c.substring(encodedName.length));
+                const val = decodeURIComponent(c.substring(encodedName.length));
+                if (name === 'playedCases') {
+                    localStorage.setItem('playedCases_storage', val);
+                }
+                return val;
             } catch (e) {
-                return c.substring(encodedName.length);
+                const val = c.substring(encodedName.length);
+                if (name === 'playedCases') {
+                    localStorage.setItem('playedCases_storage', val);
+                }
+                return val;
             }
         }
     }
@@ -265,6 +372,9 @@ function getCookie(name) {
 }
 
 function eraseCookie(name) {
+    if (name === 'playedCases') {
+        localStorage.removeItem('playedCases_storage');
+    }
     const encodedName = encodeURIComponent(name);
     document.cookie = `${encodedName}=; path=/; Max-Age=-99999999; SameSite=Lax`;
 }

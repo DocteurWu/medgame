@@ -879,11 +879,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient conscient, visiblement en détresse respiratoire aiguë, ne pouvant ni parler ni tousser efficacement. Agité, portant instinctivement les mains à sa gorge (signe universel de suffocation).",
       "phraseOuverture": "*Le patient est assis ou debout, porte les mains à sa gorge, ne peut pas parler, ne tousse pas efficacement, présente une détresse respiratoire aiguë avec tirage et cyanose débutante*",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.descriptionDouleur"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -895,7 +894,8 @@
         "brutal": "Le patient ne répond pas verbalement, gesticule, porte les mains à sa gorge, devient progressivement cyanosé",
         "silence": "Le patient ne peut pas parler (obstruction totale), communique par gestes (mains à la gorge)",
         "jargon": "Le patient ne comprend pas le jargon médical, nécessite des consignes simples et directes"
-      }
+      },
+      "personnalite": "Patient conscient, visiblement en détresse respiratoire aiguë, ne pouvant ni parler ni tousser efficacement. Agité, portant instinctivement les mains à sa gorge (signe universel de suffocation)."
     }
   }
 }

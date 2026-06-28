@@ -367,7 +367,7 @@
       "phraseOuverture": "Bonjour docteur, j'ai très mal au pied droit depuis trois jours, surtout la nuit et le matin au réveil. J'ai du mal à marcher.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

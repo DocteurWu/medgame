@@ -410,7 +410,7 @@
       "phraseOuverture": "Docteur, ça fait 24 heures que j'ai des vertiges terribles, j'ai l'impression que la pièce tourne autour de moi, je vomis, et en plus j'ai l'oreille droite bouchée avec des sifflements. J'ai un peu peur, surtout que ma sœur a fait une surdité brusque il y a quelques années.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "antecedents.familiaux"
       ],
       "infosSiDemandees": [

@@ -714,11 +714,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Sophie Martin est une jeune femme de 28 ans, enseignante, habituellement calme et sereine. Dans ce contexte d'urgence vitale, elle est extrêmement agitée, anxieuse, frissonnante et assoiffée. Elle réclame de l'eau, pose des questions répétitives sur son état et celui de son bébé. Sa voix est faible et entrecoupée par la gêne respiratoire. Elle alterne entre des phases d'agitation et de prostration.",
       "phraseOuverture": "Docteur, il y a beaucoup de sang, je me sens très mal, j'ai très soif, est-ce que ça va aller ?",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.descriptionDouleur",
         "histoireMaladie.symptomesAssocies"
@@ -741,7 +740,8 @@
         "brutal": "Sophie se raidit, pleure et dit : « Vous me faites peur, parlez-moi calmement ! »",
         "silence": "Sophie comble le silence en posant des questions anxieuses : « Pourquoi vous ne dites rien ? C'est grave ? Mon bébé va bien ? »",
         "jargon": "Sophie fronce les sourcils et dit : « Je ne comprends pas ce que vous dites, expliquez-moi avec des mots simples s'il vous plaît. »"
-      }
+      },
+      "personnalite": "Sophie Martin est une jeune femme de 28 ans, enseignante, habituellement calme et sereine. Dans ce contexte d'urgence vitale, elle est extrêmement agitée, anxieuse, frissonnante et assoiffée. Elle réclame de l'eau, pose des questions répétitives sur son état et celui de son bébé. Sa voix est faible et entrecoupée par la gêne respiratoire. Elle alterne entre des phases d'agitation et de prostration."
     }
   }
 }

@@ -421,11 +421,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune homme de 22 ans, étudiant externe, plutôt coopératif mais anxieux. Il s'inquiète pour sa jambe et pose des questions. Il est stressé par ses études.",
       "phraseOuverture": "Bonjour docteur, j'ai très mal au mollet droit depuis 2 jours, c'est apparu d'un coup et ma jambe a gonflé. J'ai peur que ce soit grave.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -438,7 +437,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et semble contrarié. Il faut rétablir le contact.",
         "silence": "Le patient attend que l'interne reprenne la main. Il ne prend pas l'initiative de parler.",
         "jargon": "Le patient demande : 'C'est quoi ça ?' ou 'Je comprends pas, vous pouvez expliquer ?'"
-      }
+      },
+      "personnalite": "Jeune homme de 22 ans, étudiant externe, plutôt coopératif mais anxieux. Il s'inquiète pour sa jambe et pose des questions. Il est stressé par ses études."
     }
   }
 }

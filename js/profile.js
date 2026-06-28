@@ -388,6 +388,16 @@ async function loadProfileData() {
     updateSpecialties(sessions);
     updateHistory(sessions);
     updateBadges(sessions, profile);
+
+    // 3.5 Statistiques ECOS (séparées des sessions classiques)
+    if (window.EcosStats) {
+        window.EcosStats.getStats().then(stats => {
+            renderEcosStats(stats);
+        }).catch(e => {
+            console.warn('[Profile] EcosStats unavailable:', e);
+            renderEcosStats(window.EcosStats.computeLocalStats());
+        });
+    }
 }
 
 function updateProfileHeader(profile) {
@@ -689,4 +699,70 @@ function updateBadges(sessions, profile) {
     });
     
     container.innerHTML = html;
+}
+
+// ============================================================
+//  3.5 — Stats mode ECOS séparées
+// ============================================================
+function renderEcosStats(stats) {
+    if (!stats || stats.total === 0) return;
+
+    // Trouver ou créer le container (après #badges-list ou en dernier)
+    let container = document.getElementById('ecos-stats-section');
+    if (!container) {
+        container = document.createElement('section');
+        container.id = 'ecos-stats-section';
+        container.className = 'profile-section';
+        container.style.cssText = 'margin-top:24px;';
+        // Insérer après la section badges si elle existe
+        const badgesSection = document.getElementById('badges-list')?.closest('.profile-section') || document.querySelector('.profile-section:last-of-type');
+        if (badgesSection && badgesSection.parentNode) {
+            badgesSection.parentNode.insertBefore(container, badgesSection.nextSibling);
+        } else {
+            document.querySelector('.profile-content')?.appendChild(container);
+        }
+    }
+
+    const avgBadgeColor = stats.avgScore >= 80 ? '#2ecc71' : stats.avgScore >= 60 ? '#f39c12' : '#e74c3c';
+    const casesCount = stats.casesPlayed?.length || 0;
+
+    container.innerHTML = `
+        <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-hospital-user"></i> Mode ECOS</h2>
+        </div>
+        <div class="stats-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:16px;margin-top:12px;">
+            <div class="stat-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:800;color:#4facfe;">${stats.total}</div>
+                <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;">Stations jouées</div>
+            </div>
+            <div class="stat-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:800;color:${avgBadgeColor};">${stats.avgScore}<span style="font-size:1rem;">%</span></div>
+                <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;">Score moyen</div>
+            </div>
+            <div class="stat-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:800;color:#2ecc71;">${stats.bestScore}<span style="font-size:1rem;">%</span></div>
+                <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;">Meilleur score</div>
+            </div>
+            <div class="stat-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:800;color:#f39c12;">${casesCount}</div>
+                <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;">Cas distincts</div>
+            </div>
+            ${stats.avgAptitude !== undefined ? `
+            <div class="stat-card" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-size:2rem;font-weight:800;color:#9b59b6;">${stats.avgAptitude}<span style="font-size:1rem;">%</span></div>
+                <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:4px;">Aptitudes moy.</div>
+            </div>` : ''}
+        </div>
+        ${stats.recentSessions?.length > 0 ? `
+        <div style="margin-top:16px;">
+            <div style="font-size:0.85rem;font-weight:600;color:rgba(255,255,255,0.6);margin-bottom:8px;">Dernières stations</div>
+            ${stats.recentSessions.slice(0, 5).map(s => `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(255,255,255,0.03);border-radius:8px;margin-bottom:4px;font-size:0.82rem;">
+                    <span style="color:rgba(255,255,255,0.7);">${s.case_id || '—'}</span>
+                    <span style="font-weight:700;color:${s.score >= 80 ? '#2ecc71' : s.score >= 60 ? '#f39c12' : '#e74c3c'};">${s.score}%</span>
+                    <span style="color:rgba(255,255,255,0.3);">${s.stars !== undefined ? '★'.repeat(s.stars) + '☆'.repeat(3 - s.stars) : ''}</span>
+                </div>
+            `).join('')}
+        </div>` : ''}
+    `;
 }

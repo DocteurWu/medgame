@@ -406,8 +406,8 @@
       "personnalite": "Femme de 55 ans, pharmacienne, plutôt coopérative mais légèrement anxieuse. Elle connaît le vocabulaire médical de par sa profession. Elle s'inquiète de l'aggravation récente de ses symptômes et de l'apparition des taches brunes. Elle souhaite des explications claires et une solution efficace.",
       "phraseOuverture": "Bonjour docteur, je viens parce que j'ai les jambes très lourdes le soir, ça fait des années mais c'est de pire en pire. Et j'ai vu apparaître des taches brunes autour des chevilles, ça m'inquiète un peu.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.evolution",
         "antecedents.medicaux.varices"
       ],

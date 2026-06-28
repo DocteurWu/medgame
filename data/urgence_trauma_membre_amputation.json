@@ -719,7 +719,7 @@
       "phraseOuverture": "Au secours ! Mon doigt, il est coupé ! La cisaille m'a attrapé la main, je saigne !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.descriptionDouleur"
       ],

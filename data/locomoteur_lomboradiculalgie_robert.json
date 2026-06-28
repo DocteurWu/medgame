@@ -374,7 +374,7 @@
       "personnalite": "Patient coopératif, légèrement anxieux en raison de l'intensité de la douleur et de l'inquiétude liée à l'irradiation dans le membre inférieur. Il est sportif et s'inquiète de ne plus pouvoir reprendre la course à pied.",
       "phraseOuverture": "Bonjour docteur, j'ai très mal au bas du dos depuis samedir dernier, et ça descend jusque dans la jambe droite, c'est comme des décharges électriques, ça m'inquiète un peu.",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.descriptionDouleur",
         "histoireMaladie.facteursDeclenchants",

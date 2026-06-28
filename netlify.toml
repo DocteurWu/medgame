@@ -1,7 +1,10 @@
 [build]
   publish = "."
 
-[[redirects]]
-  from = "/api/llm/*"
-  to = "/.netlify/functions/llm-proxy"
-  status = 200
+# Groq API — appel direct CORS depuis le client
+# Plus besoin de proxy LLM (Groq supporte le CORS)
+# Garder pour usage futur si besoin de proxy
+# [[redirects]]
+#   from = "/api/llm/*"
+#   to = "/.netlify/functions/llm-proxy"
+#   status = 200

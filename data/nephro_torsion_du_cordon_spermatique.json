@@ -383,11 +383,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune homme sportif, anxieux par la douleur intense et l'inquiétude pour sa fertilité. Il répond aux questions mais est gêné par la douleur.",
       "phraseOuverture": "Docteur, j'ai une douleur terrible au testicule droit, ça fait 3 heures, j'ai même vomi...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -399,7 +398,8 @@
         "brutal": "Aïe ! Faites attention, ça fait très mal !",
         "silence": "...",
         "jargon": "Je ne comprends pas ce que vous voulez dire, expliquez-moi avec des mots simples s'il vous plaît."
-      }
+      },
+      "personnalite": "Jeune homme sportif, anxieux par la douleur intense et l'inquiétude pour sa fertilité. Il répond aux questions mais est gêné par la douleur."
     }
   }
 }

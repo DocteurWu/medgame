@@ -400,8 +400,8 @@
       "personnalite": "Femme jeune, professionnelle de santé (interne en chirurgie), plutôt directe et factuelle, légèrement gênée par le sujet intime mais coopérative. Montre de l'inquiétude quant au retentissement sur sa vie professionnelle et sportive.",
       "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des fuites urinaires depuis quelques semaines, surtout quand je fais du sport ou quand je tousse. Ça commence à me gêner beaucoup, surtout au travail.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],

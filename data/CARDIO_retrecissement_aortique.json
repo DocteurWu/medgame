@@ -390,11 +390,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux face aux symptômes, demande des explications claires",
       "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai du mal à respirer quand je fais des efforts et je fais des malaises.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -406,7 +405,8 @@
         "brutal": "Attendez, vous allez un peu vite, je ne comprends pas tout...",
         "silence": "Vous pouvez me poser des questions, je suis là pour répondre.",
         "jargon": "Pouvez-vous m'expliquer ce que ça signifie ? Je ne suis pas médecin."
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux face aux symptômes, demande des explications claires"
     }
   }
 }

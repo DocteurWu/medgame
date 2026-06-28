@@ -663,11 +663,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient conscient, anxieux, en sueur, douloureux. Il coopère mais est très inquiet de ne pas pouvoir bouger les jambes. Il pose des questions sur la gravité de son état.",
       "phraseOuverture": "Aïe... j'ai très mal au cou et à la poitrine... je n'arrive plus à bouger les jambes ! Qu'est-ce qui m'arrive ?",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "histoireMaladie.descriptionDouleur",
         "histoireMaladie.asymptomesAssocies"
       ],
@@ -686,7 +685,8 @@
         "brutal": "Le patient se crispe, augmente sa douleur cervicale et devient encore plus anxieux. Il dit : 'Attention, vous me faites mal au cou !'",
         "silence": "Le patient s'impatiente et demande : 'Vous ne dites rien ? C'est grave ? Est-ce que je vais remarcher ?'",
         "jargon": "Le patient ne comprend pas et demande : 'Qu'est-ce que vous voulez dire ? Parlez-moi en français simple, je suis inquiet.'"
-      }
+      },
+      "personnalite": "Patient conscient, anxieux, en sueur, douloureux. Il coopère mais est très inquiet de ne pas pouvoir bouger les jambes. Il pose des questions sur la gravité de son état."
     }
   }
 }

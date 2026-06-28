@@ -947,11 +947,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, anxieux mais coopérant. Il est conscient, légèrement pâle, visiblement inquiet par l'importance du saignement. Il répond aux questions de façon concise mais peut se montrer agité par la douleur et la peur.",
       "phraseOuverture": "Au secours ! Je saigne beaucoup, je me suis coupé, ça ne s'arrête pas !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.descriptionDouleur"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -965,7 +964,8 @@
         "brutal": "Le patient se crispe, gémit de douleur et peut reculer si la manipulation de la plaie est douloureuse. Il dit : « Aïe ! Faites attention, ça fait très mal ! »",
         "silence": "Le patient attend les instructions et regarde sa plaie avec inquiétude. Il peut demander : « C'est grave, docteur ? Je vais perdre beaucoup de sang ? »",
         "jargon": "Le patient ne comprend pas les termes médicaux complexes et demande des explications : « Qu'est-ce que vous voulez dire ? Je ne comprends pas. »"
-      }
+      },
+      "personnalite": "Patient jeune, anxieux mais coopérant. Il est conscient, légèrement pâle, visiblement inquiet par l'importance du saignement. Il répond aux questions de façon concise mais peut se montrer agité par la douleur et la peur."
     }
   }
 }

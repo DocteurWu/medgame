@@ -412,8 +412,8 @@
       "personnalite": "Patient plutôt concis, un peu inquiet par ses symptômes visuels, coopératif mais peu informé sur le diabète. Il minimise sa sédentarité et ses habitudes alimentaires.",
       "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques temps et j'ai parfois la vision floue, surtout en fin de journée.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes"
       ],
       "infosSiDemandees": [

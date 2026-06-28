@@ -415,11 +415,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Femme de 48 ans, légèrement anxieuse par rapport à ses symptômes, coopérative mais préoccupée par l'impact sur sa vie quotidienne. Elle a peur d'avoir une maladie grave.",
       "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des trous de mémoire bizarres qui reviennent depuis quelques mois. Ça m'inquiète beaucoup.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -434,7 +433,8 @@
         "brutal": "Attendez, vous allez un peu vite, je ne comprends pas tout...",
         "silence": "...",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Pouvez-vous m'expliquer avec des mots plus simples ?"
-      }
+      },
+      "personnalite": "Femme de 48 ans, légèrement anxieuse par rapport à ses symptômes, coopérative mais préoccupée par l'impact sur sa vie quotidienne. Elle a peur d'avoir une maladie grave."
     }
   }
 }

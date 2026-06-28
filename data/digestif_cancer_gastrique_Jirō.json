@@ -374,11 +374,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient retraité, ancien ingénieur aéronautique, plutôt posé et méthodique. Il est inquiet de son amaigrissement et de la persistance de ses douleurs. Il répond précisément aux questions mais a besoin d'être rassuré.",
       "phraseOuverture": "Bonjour docteur, je viens parce que j'ai mal à l'estomac depuis deux mois et ça ne passe pas. En plus, j'ai perdu 7 kilos sans faire attention et je n'ai plus d'appétit du tout.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "amaigrissement de 7 kg en 2 mois",
         "anorexie",
         "asthénie"
@@ -399,7 +398,8 @@
         "brutal": "Attendez, vous me parlez déjà de cancer ? Je ne suis pas prêt à entendre ça comme ça...",
         "silence": "...",
         "jargon": "Pardon, qu'est-ce que vous entendez par gastroscopie ? C'est quoi exactement ?"
-      }
+      },
+      "personnalite": "Patient retraité, ancien ingénieur aéronautique, plutôt posé et méthodique. Il est inquiet de son amaigrissement et de la persistance de ses douleurs. Il répond précisément aux questions mais a besoin d'être rassuré."
     }
   }
 }

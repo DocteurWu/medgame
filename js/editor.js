@@ -449,10 +449,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (adminLink) adminLink.style.display = 'flex';
         }
     })();
+
+    // Toggle ECOS settings fields visibility
+    document.getElementById('enable-ecos-mode')?.addEventListener('change', (e) => {
+        const fields = document.getElementById('ecos-editor-fields');
+        if (fields) fields.style.display = e.target.checked ? 'block' : 'none';
+    });
 });
 
-window.clearEditor = function () {
-    if (confirm("Êtes-vous sûr de vouloir tout supprimer ? Cette action est irréversible.")) {
+let loadedEcosData = null;
+
+window.clearEditor = async function () {
+    if (await ecosConfirm({ title: 'Tout supprimer', message: "Êtes-vous sûr de vouloir tout supprimer ? Cette action est irréversible.", confirmLabel: 'Supprimer', danger: true })) {
         sessionStorage.removeItem('previewCase');
         localStorage.removeItem('selectedCaseFile');
         localStorage.removeItem('selectedCaseFiles');
@@ -608,6 +616,93 @@ function populateEditor(data) {
     if (typeof loadMiniGraphData === 'function') {
         loadMiniGraphData(data);
     }
+
+    // ECOS Populating Logic
+    loadedEcosData = data.ecos || null;
+
+    const ecosToggle = document.getElementById('enable-ecos-mode');
+    const ecosFields = document.getElementById('ecos-editor-fields');
+    if (data.ecos) {
+        if (ecosToggle) ecosToggle.checked = true;
+        if (ecosFields) ecosFields.style.display = 'block';
+        
+        // Populate Vignette
+        const vig = data.ecos.vignette || {};
+        setText('ecos-role', vig.role || '');
+        setText('ecos-contexte', vig.contexte || '');
+        const typeStationSel = document.getElementById('ecos-type-station');
+        if (typeStationSel) typeStationSel.value = vig.typeStation || 'AVEC_PS';
+        setText('ecos-domaine-principal', vig.domainePrincipal || '');
+        setText('ecos-domaine-secondaire', vig.domaineSecondaire || '');
+        setText('ecos-lieu', vig.lieu || '');
+        setText('ecos-materiel', (vig.materielDisponible || []).join(', '));
+        
+        renderEcosTextList('ecos-consignes-attendues', vig.consignesAttendues || []);
+        renderEcosTextList('ecos-consignes-interdites', vig.consignesInterdites || []);
+        
+        // Populate Patient Standardisé
+        const ps = data.ecos.patientStandardise || {};
+        setText('ecos-ps-personnalite', ps.personnalité || ps.personnalite || '');
+        setText('ecos-ps-ouverture', ps.phraseOuverture || '');
+        setText('ecos-ps-volontaires', (ps.infosVolontaires || []).join(', '));
+        setText('ecos-ps-demandees', (ps.infosSiDemandees || []).join(', '));
+        setText('ecos-ps-cachees', (ps.infosCachees || []).join(', '));
+        
+        const reactions = ps.reactions || {};
+        setText('ecos-ps-reaction-brutal', reactions.brutal || '');
+        setText('ecos-ps-reaction-silence', reactions.silence || '');
+        setText('ecos-ps-reaction-jargon', reactions.jargon || '');
+        
+        // Populate Grilles
+        const aptitudesContainer = document.getElementById('ecos-grille-aptitudes');
+        if (aptitudesContainer) {
+            aptitudesContainer.innerHTML = '';
+            (data.ecos.grilleAptitudesCliniques || []).forEach(apt => {
+                window.addEcosAptitude(apt);
+            });
+        }
+        
+        const commContainer = document.getElementById('ecos-grille-communication');
+        if (commContainer) {
+            commContainer.innerHTML = '';
+            (data.ecos.grilleCommunication || []).forEach(comm => {
+                window.addEcosCommunication(comm);
+            });
+        }
+    } else {
+        if (ecosToggle) ecosToggle.checked = false;
+        if (ecosFields) ecosFields.style.display = 'none';
+        
+        // Reset/empty fields
+        setText('ecos-role', '');
+        setText('ecos-contexte', '');
+        const typeStationSel = document.getElementById('ecos-type-station');
+        if (typeStationSel) typeStationSel.value = 'AVEC_PS';
+        setText('ecos-domaine-principal', '');
+        setText('ecos-domaine-secondaire', '');
+        setText('ecos-lieu', '');
+        setText('ecos-materiel', '');
+        
+        const attenduesContainer = document.getElementById('ecos-consignes-attendues');
+        if (attenduesContainer) attenduesContainer.innerHTML = '';
+        const interditesContainer = document.getElementById('ecos-consignes-interdites');
+        if (interditesContainer) interditesContainer.innerHTML = '';
+        
+        setText('ecos-ps-personnalite', '');
+        setText('ecos-ps-ouverture', '');
+        setText('ecos-ps-volontaires', '');
+        setText('ecos-ps-demandees', '');
+        setText('ecos-ps-cachees', '');
+        
+        setText('ecos-ps-reaction-brutal', '');
+        setText('ecos-ps-reaction-silence', '');
+        setText('ecos-ps-reaction-jargon', '');
+        
+        const aptitudesContainer = document.getElementById('ecos-grille-aptitudes');
+        if (aptitudesContainer) aptitudesContainer.innerHTML = '';
+        const commContainer = document.getElementById('ecos-grille-communication');
+        if (commContainer) commContainer.innerHTML = '';
+    }
 }
 
 function updateItemImage(item, base64) {
@@ -722,6 +817,91 @@ function collectData() {
         }
     }
 
+    // ECOS Collection Logic
+    let ecosData = null;
+    const ecosToggle = document.getElementById('enable-ecos-mode');
+    if (ecosToggle) {
+        if (ecosToggle.checked) {
+            const materialRaw = getText('ecos-materiel');
+            const materialList = materialRaw ? materialRaw.split(',').map(s => s.trim()).filter(s => s) : [];
+
+            const aptList = [];
+            const aptItems = document.querySelectorAll('#ecos-grille-aptitudes .editable-list-item');
+            aptItems.forEach(item => {
+                const idSpan = item.querySelector('[data-key="id"]');
+                const labelSpan = item.querySelector('[data-key="label"]');
+                const weightSpan = item.querySelector('[data-key="weight"]');
+                const kwSpan = item.querySelector('[data-key="triggerKeywords"]');
+                
+                const id = idSpan ? idSpan.textContent.trim() : '';
+                const label = labelSpan ? labelSpan.textContent.trim() : '';
+                const weightText = weightSpan ? weightSpan.textContent.trim() : '1';
+                const weight = parseFloat(weightText) || 1;
+                const kwRaw = kwSpan ? kwSpan.textContent.trim() : '';
+                const triggerKeywords = kwRaw ? kwRaw.split(',').map(s => s.trim()).filter(s => s) : [];
+                
+                if (id || label) {
+                    aptList.push({ id, label, weight, triggerKeywords });
+                }
+            });
+
+            const commList = [];
+            const commItems = document.querySelectorAll('#ecos-grille-communication .editable-list-item');
+            commItems.forEach(item => {
+                const idSpan = item.querySelector('[data-key="id"]');
+                const labelSpan = item.querySelector('[data-key="label"]');
+                const maxSpan = item.querySelector('[data-key="max"]');
+                
+                const id = idSpan ? idSpan.textContent.trim() : '';
+                const label = labelSpan ? labelSpan.textContent.trim() : '';
+                const maxText = maxSpan ? maxSpan.textContent.trim() : '1';
+                const max = parseFloat(maxText) || 1;
+                
+                if (id || label) {
+                    commList.push({ id, label, max });
+                }
+            });
+
+            const splitTextList = (id) => {
+                const val = getText(id);
+                return val ? val.split(',').map(s => s.trim()).filter(s => s) : [];
+            };
+
+            ecosData = {
+                vignette: {
+                    role: getText('ecos-role'),
+                    contexte: getText('ecos-contexte'),
+                    consignesAttendues: collectEcosTextList('ecos-consignes-attendues'),
+                    consignesInterdites: collectEcosTextList('ecos-consignes-interdites'),
+                    typeStation: document.getElementById('ecos-type-station')?.value || 'AVEC_PS',
+                    domainePrincipal: getText('ecos-domaine-principal'),
+                    domaineSecondaire: getText('ecos-domaine-secondaire'),
+                    lieu: getText('ecos-lieu'),
+                    materielDisponible: materialList
+                },
+                grilleAptitudesCliniques: aptList,
+                grilleCommunication: commList,
+                patientStandardise: {
+                    personnalite: getText('ecos-ps-personnalite'),
+                    phraseOuverture: getText('ecos-ps-ouverture'),
+                    infosVolontaires: splitTextList('ecos-ps-volontaires'),
+                    infosSiDemandees: splitTextList('ecos-ps-demandees'),
+                    infosCachees: splitTextList('ecos-ps-cachees'),
+                    reactions: {
+                        brutal: getText('ecos-ps-reaction-brutal'),
+                        silence: getText('ecos-ps-reaction-silence'),
+                        jargon: getText('ecos-ps-reaction-jargon')
+                    }
+                }
+            };
+        } else {
+            ecosData = null;
+        }
+    } else {
+        ecosData = loadedEcosData;
+    }
+    data.ecos = ecosData;
+
     return data;
 }
 
@@ -822,6 +1002,94 @@ function collectTextList(containerId) {
     if (!container) return [];
     return Array.from(container.querySelectorAll('span[data-text]')).map(s => s.dataset.text).filter(s => s);
 }
+
+// ---- ECOS HELPER FUNCTIONS ----
+function addEcosTextListItem(containerId, txt) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const item = document.createElement('div');
+    item.className = 'editable-list-item';
+    item.innerHTML = `
+        <span contenteditable="true" style="flex: 1;" placeholder="Consigne...">${txt}</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
+    `;
+    container.appendChild(item);
+}
+
+function renderEcosTextList(containerId, list) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    list.forEach(txt => {
+        addEcosTextListItem(containerId, txt);
+    });
+}
+
+function collectEcosTextList(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('.editable-list-item span[contenteditable]'))
+        .map(span => span.textContent.trim())
+        .filter(txt => txt && txt !== '...' && txt !== '');
+}
+
+window.addEcosConsigneAttendue = function(txt = '...') {
+    addEcosTextListItem('ecos-consignes-attendues', txt);
+};
+
+window.addEcosConsigneInterdite = function(txt = '...') {
+    addEcosTextListItem('ecos-consignes-interdites', txt);
+};
+
+window.addEcosAptitude = function (apt = {}) {
+    const container = document.getElementById('ecos-grille-aptitudes');
+    if (!container) return;
+    const item = document.createElement('div');
+    item.className = 'editable-list-item';
+    item.style.display = 'grid';
+    item.style.gridTemplateColumns = '1fr 2fr 80px 2fr 100px';
+    item.style.gap = '10px';
+    item.style.alignItems = 'center';
+    item.style.marginBottom = '8px';
+
+    const idVal = apt.id || '';
+    const labelVal = apt.label || '';
+    const weightVal = apt.weight !== undefined ? apt.weight : 1;
+    const keywordsVal = (apt.triggerKeywords || []).join(', ');
+
+    item.innerHTML = `
+        <span data-key="id" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="ID...">${idVal}</span>
+        <span data-key="label" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="Description...">${labelVal}</span>
+        <span data-key="weight" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff; text-align:center;" placeholder="1">${weightVal}</span>
+        <span data-key="triggerKeywords" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="Mots-clés...">${keywordsVal}</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding: 6px;"><i class="fas fa-trash"></i></button>
+    `;
+    container.appendChild(item);
+};
+
+window.addEcosCommunication = function (comm = {}) {
+    const container = document.getElementById('ecos-grille-communication');
+    if (!container) return;
+    const item = document.createElement('div');
+    item.className = 'editable-list-item';
+    item.style.display = 'grid';
+    item.style.gridTemplateColumns = '1fr 2fr 80px 100px';
+    item.style.gap = '10px';
+    item.style.alignItems = 'center';
+    item.style.marginBottom = '8px';
+
+    const idVal = comm.id || '';
+    const labelVal = comm.label || '';
+    const maxVal = comm.max !== undefined ? comm.max : 1;
+
+    item.innerHTML = `
+        <span data-key="id" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="ID...">${idVal}</span>
+        <span data-key="label" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="Description...">${labelVal}</span>
+        <span data-key="max" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff; text-align:center;" placeholder="1">${maxVal}</span>
+        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding: 6px;"><i class="fas fa-trash"></i></button>
+    `;
+    container.appendChild(item);
+};
 
 function collectAllergies() {
     const toggle = document.getElementById('allergies-toggle');

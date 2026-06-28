@@ -398,11 +398,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patiente anxieuse, légèrement sur la défensive, qui a l'impression que les médecins ne la prennent pas au sérieux. Elle est fatiguée par la répétition des épisodes et l'incertitude diagnostique. Elle peut devenir émotive si elle se sent jugée ou si le médecin minimise ses symptômes.",
       "phraseOuverture": "Bonjour docteur, je reviens parce que j'ai encore eu un de ces épisodes… Mon corps fait des choses que je ne contrôle plus, et j'ai vraiment peur que ce soit de l'épilepsie.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],
@@ -421,7 +420,8 @@
         "brutal": "Mais enfin docteur, vous ne pouvez pas me dire que c'est dans ma tête ! Mon corps tremble vraiment, je ne contrôle plus mes bras, c'est terrifiant !",
         "silence": "… (silence prolongé, regard fuyant, puis) Vous ne me croyez pas, c'est ça ?",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire… Pouvez-vous m'expliquer avec des mots plus simples ?"
-      }
+      },
+      "personnalite": "Patiente anxieuse, légèrement sur la défensive, qui a l'impression que les médecins ne la prennent pas au sérieux. Elle est fatiguée par la répétition des épisodes et l'incertitude diagnostique. Elle peut devenir émotive si elle se sent jugée ou si le médecin minimise ses symptômes."
     }
   }
 }

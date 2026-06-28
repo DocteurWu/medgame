@@ -593,11 +593,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Mère anxieuse, paniquée, parlant vite, très inquiète pour son enfant. Elle se sent coupable d'avoir donné des morceaux de fruit.",
       "phraseOuverture": "Docteur, vite ! Mon fils ne respire plus ! Il s'est étouffé avec un morceau de fruit pendant le repas !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.descriptionDouleur"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -609,7 +608,8 @@
         "brutal": "La mère devient encore plus paniquée et agitée, elle supplie d'agir vite",
         "silence": "La mère insiste en répétant 'Faites quelque chose ! Il ne respire plus !'",
         "jargon": "La mère ne comprend pas et demande 'Qu'est-ce que vous voulez dire ? Est-ce qu'il va mourir ?'"
-      }
+      },
+      "personnalite": "Mère anxieuse, paniquée, parlant vite, très inquiète pour son enfant. Elle se sent coupable d'avoir donné des morceaux de fruit."
     }
   }
 }

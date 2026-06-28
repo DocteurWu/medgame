@@ -353,11 +353,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux mais coopératif, gêné par les vertiges et inquiet pour son audition",
       "phraseOuverture": "Bonjour docteur, j'ai des vertiges terribles depuis quelques jours et mon oreille droite coule depuis des mois...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -369,7 +368,8 @@
         "brutal": "Attendez, ça fait mal ! Vous pouvez y aller doucement ?",
         "silence": "... (silence prolongé, regard interrogateur)",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire..."
-      }
+      },
+      "personnalite": "Patient anxieux mais coopératif, gêné par les vertiges et inquiet pour son audition"
     }
   }
 }

@@ -107,6 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCaseFiles = [];
         updateStartSessionButton();
 
+        // Réinitialiser le filtre ECOS à chaque ouverture de thème
+        const filterEcosOnly = document.getElementById('filter-ecos-only');
+        if (filterEcosOnly) {
+            filterEcosOnly.checked = false;
+        }
+
         const themeLower = theme.toLowerCase();
         const mapKeys = { 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
         const searchSpec = mapKeys[themeLower] || themeLower;
@@ -180,7 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. Vérifier si c'est un cas de Supabase préchargé
                 const dbCase = window.allSupabaseCases ? window.allSupabaseCases.find(c => c.id === fileOrId) : null;
                 if (dbCase) {
-                    const data = dbCase.content;
+                    let data = dbCase.content;
+                    if (typeof data === 'string') {
+                        try { data = JSON.parse(data); } catch (e) {}
+                    }
                     return {
                         id: data.id,
                         file: dbCase.id,
@@ -188,7 +197,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
                         redacteur: data.redacteur || '',
                         isPlayed: playedCases.includes(data.id),
-                        isSupabase: true
+                        isSupabase: true,
+                        isEcos: !!data.ecos
                     };
                 } else {
                     // 2. Sinon, c'est un cas local (nom de fichier avec ou sans .json)
@@ -207,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             motif: data.interrogatoire?.motifHospitalisation || "Sans motif",
                             patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
                             redacteur: data.redacteur || '',
-                            isPlayed: playedCases.includes(data.id)
+                            isPlayed: playedCases.includes(data.id),
+                            isEcos: !!data.ecos
                         };
                     } catch (err) {
                         console.error(`Erreur de chargement local pour le cas ${fileOrId} :`, err);
@@ -232,7 +243,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderMotifsList() {
         motifsList.innerHTML = '';
-        currentThemeMotifs.forEach(item => {
+        const filterEcosOnly = document.getElementById('filter-ecos-only');
+        const ecosOnly = filterEcosOnly ? filterEcosOnly.checked : false;
+
+        const filteredMotifs = ecosOnly 
+            ? currentThemeMotifs.filter(item => item.isEcos) 
+            : currentThemeMotifs;
+
+        filteredMotifs.forEach(item => {
             const motifItem = document.createElement('div');
             motifItem.className = 'motif-item';
             if (selectedCaseFiles.includes(item.file)) {
@@ -244,12 +262,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusHtml = '<span class="played-badge"><i class="fas fa-check-circle"></i> Fait</span>';
             }
 
+            let ecosBadgeHtml = '';
+            if (item.isEcos) {
+                ecosBadgeHtml = '<span class="ecos-badge" style="font-size: 0.65rem; color: #fff; background: rgba(52, 152, 219, 0.85); padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 6px; vertical-align: middle; border: 1px solid rgba(52, 152, 219, 0.4);"><i class="fas fa-graduation-cap"></i> ECOS</span>';
+            }
+
             const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par ${item.redacteur}</span>` : '';
 
             motifItem.innerHTML = `
                 <i class="fas fa-file-medical"></i>
                 <div class="motif-info">
-                    <div class="motif-name">${item.motif} ${statusHtml}</div>
+                    <div class="motif-name">${item.motif} ${statusHtml} ${ecosBadgeHtml}</div>
                     <div class="motif-patient-row">
                         <span class="motif-patient">Patient : ${item.patient}</span>
                         ${redacteurHtml}
@@ -268,11 +291,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             motifsList.appendChild(motifItem);
         });
+
+        if (filteredMotifs.length === 0) {
+            motifsList.innerHTML = `<div class="no-motifs">${ecosOnly ? "Aucun cas compatible ECOS pour ce thème." : "Aucun cas disponible pour ce thème."}</div>`;
+        }
+    }
+
+    // Écouteur pour la case à cocher de filtrage ECOS
+    const filterEcosOnly = document.getElementById('filter-ecos-only');
+    if (filterEcosOnly) {
+        filterEcosOnly.addEventListener('change', () => {
+            renderMotifsList();
+        });
     }
 
     // Sélectionner tout ce qui n'est pas fait
     selectUnplayedBtn.addEventListener('click', () => {
-        selectedCaseFiles = currentThemeMotifs
+        const filterEcosOnly = document.getElementById('filter-ecos-only');
+        const ecosOnly = filterEcosOnly ? filterEcosOnly.checked : false;
+
+        let targetItems = currentThemeMotifs;
+        if (ecosOnly) {
+            targetItems = targetItems.filter(m => m.isEcos);
+        }
+
+        selectedCaseFiles = targetItems
             .filter(m => !m.isPlayed)
             .map(m => m.file);
 

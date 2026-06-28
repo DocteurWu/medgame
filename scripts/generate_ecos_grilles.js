@@ -57,7 +57,7 @@ const ONLY = (process.argv.find(a => a.startsWith('--only=')) || '').split('=')[
 const LIMIT = parseInt((process.argv.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '0', 10);
 const FORCE = ARGS.has('--force');
 
-const MAX_PARALLEL = 2;
+const MAX_PARALLEL = 3;
 
 if (!ENV_LLM_KEY && !IS_DRY_RUN) {
     console.error('⚠️  LLM_API_KEY manquante. Le script va s\'arrêter.');
@@ -70,10 +70,12 @@ if (IS_DRY_RUN) {
 }
 
 function listCaseFiles() {
-    return fs.readdirSync(DATA_DIR)
-        .filter(f => f.endsWith('.json') && f !== 'case-index.json')
+    let files = fs.readdirSync(DATA_DIR)
+        .filter(f => f.endsWith('.json') && f !== 'case-index.json' && f !== 'drugs.json')
         .map(f => path.join(DATA_DIR, f))
         .filter(f => !ONLY || path.basename(f) === ONLY);
+    if (LIMIT > 0) files = files.slice(0, LIMIT);
+    return files;
 }
 
 function extractCaseSummary(caseData) {
@@ -97,63 +99,182 @@ function extractCaseSummary(caseData) {
         possibleDiagnostics: caseData.possibleDiagnostics || [],
         correctDiagnostic: caseData.correctDiagnostic || '',
         correctTreatments: caseData.correctTreatments || [],
-        fatalTreatments: caseData.fatalTreatments || []
+        fatalTreatments: caseData.fatalTreatments || [],
+        // Pedagogical context to enable targeted, case-specific grille generation
+        verbatim: interro.verbatim || null,
+        locks: (caseData.locks || []).map(l => ({
+            id: l.id,
+            question: l.question,
+            type: l.type
+        })),
+        correctionSummary: (caseData.correction || '').substring(0, 400) || null,
+        postGameQuestions: (caseData.postGameQuestions || []).slice(0, 3).map(q => q.question || q)
     };
 }
 
 function buildPrompt(caseSummary) {
-    return `Tu es un expert du programme R2C/EDN français (Réforme du 2e cycle). Tu dois produire la "vignette" et la "grille d'évaluation ECOS" pour le cas clinique suivant.
+    // Detect if patient is unconscious/comatose to guide typeStation
+    const isUnconscious = /inconscient|comateux|arrêt cardio|aréactif/i.test(
+        JSON.stringify(caseSummary).substring(0, 500)
+    );
+    const unconsciousInstructions = isUnconscious
+        ? `   - Le patient est inconscient/comateux/ACR : typeStation = "SANS_PS_PSS", phraseOuverture = "" (vide), laisser personnalite descriptif pour l'évaluateur.\n`
+        : '';
 
-RAPPELS ECOS NATIONAUX (CNG 2024) :
-- 11 domaines de compétence évalués : Entretien/Interrogatoire, Annonce, Communication interpro, Éducation/prévention, Examen clinique, Iconographie, Procédure, Stratégie diagnostique, Stratégie pertinente de PEC, Synthèse de résultats, Urgence vitale.
-- Grille d'observation dichotomique (0/1) sur 10-15 items "aptitudes cliniques"
-- Échelle 0/0,25/0,5/0,75/1 sur 2-5 items "communication et attitudes"
+    return `Tu es un expert en simulation médicale et en pédagogie ECOS pour le programme R2C/EDN français.
+Tu dois générer la vignette pédagogique et la grille d'évaluation ECOS pour le cas clinique fourni.
 
-CAS CLINIQUE :
+═══ RÈGLES ECOS NATIONALES (CNG 2024) ═══
+1. GRILLE APTITUDES CLINIQUES : 10-15 items observables, ordonnés chronologiquement.
+   - Chaque item a une "category" parmi : "Interrogatoire", "Examen clinique", "Stratégie diagnostique", "PEC/Thérapeutique", "Annonce/Education", "Urgence".
+   - Chaque item a un "weight" (priorité) :
+     * 1 = item standard (présentation, antécédents généraux)
+     * 2 = item important (symptôme clé, examen pertinent, diagnostic)
+     * 3 = item CRITIQUE ou vital (signe de gravité, urgence vitale, traitement indispensable)
+   - Pas de doublons de critères entre items. Chaque item évalue une action distincte.
+   - Les "triggerKeywords" doivent être spécifiques : éviter les mots génériques seuls ("donc", "bilan", "famille", "résumé").
+     Utilise des expressions précises comme "Cheyne-Stokes", "insuffisance cardiaque", "ECG", "je suis interne en", etc.
+   - Les labels des items doivent être ACTIONNABLES (observable par un évaluateur) : verbe à l'infinitif ou indicatif, critère clair.
+   - Evite les items non-actionnables ("fait preuve de rigueur", "transmission SBAR", prescription d'ordonnance sans UI).
+
+2. GRILLE COMMUNICATION : 3-5 items SPÉCIFIQUES AU CAS (pas les mêmes 5 items génériques pour tous les cas).
+   - Pour les cas d'annonce de diagnostic grave : inclure un item "Annonce progressive et empathique du diagnostic de <pathologie>"
+   - Pour les cas pédiatriques : inclure "Adapte sa communication aux parents et rassure le parent inquiet"
+   - Pour les cas d'urgence : inclure "Explique clairement ses gestes en les réalisant"
+   - Chaque item a un "max" = 1 (échelle 0/0.25/0.5/0.75/1) — la notation fine est à la discrétion de l'évaluateur.
+   - Les labels doivent décrire un comportement OBSERVABLE, avec un critère opérationnel.
+     BON : "Nomme l'émotion du patient (\"Je vois que vous êtes inquiet...\") ou utilise une phrase de validation"
+     MAUVAIS : "Fait preuve d'empathie et de bienveillance"
+
+3. PATIENT STANDARDISÉ :
+   - "personnalite" (sans accent) : profil psychologique riche et SPÉCIFIQUE (ex: anxieux, revendicatif, stoïque, dépressif, confus, méfiant). Inclure contexte social, émotions liées à la pathologie.
+   - "phraseOuverture" : première réplique naturelle du patient, centrée sur ses symptômes TELS QU'IL LES RESSENT (pas de diagnostic livré).
+   - "infosVolontaires" : chemins valides vers les données du JSON du cas. Utilise UNIQUEMENT ces chemins valides :
+     * "motifHospitalisation"
+     * "histoireMaladie.debutSymptomes"
+     * "histoireMaladie.evolution"
+     * "histoireMaladie.descriptionDouleur"
+     * "histoireMaladie.symptomesAssocies"
+     * "histoireMaladie.facteursDeclenchants"
+     * "histoireMaladie.facteursCalmants"
+   - "infosSiDemandees" : mêmes chemins valides, plus :
+     * "antecedents.medicaux"
+     * "antecedents.chirurgicaux"
+     * "antecedents.familiaux"
+     * "modeDeVie.tabac"
+     * "modeDeVie.alcool"
+     * "modeDeVie.activitePhysique"
+     * "traitements"
+     * "allergies"
+   - "infosCachees" : 1-3 éléments pertinents que le patient ne révèle pas spontanément (test la capacité à creuser). Ne pas laisser vide.
+   - "reactions" :
+     * "brutal" : réplique jouable si le médecin est brusque (ex: "Vous pouvez m'expliquer plus doucement ?")
+     * "silence" : réplique jouable si le médecin reste silencieux trop longtemps — le patient exprime un malaise, pas une relance proactive (ex: "... Euh, je ne sais pas quoi dire de plus.")
+     * "jargon" : réplique jouable si le médecin utilise du jargon médical non expliqué
+${unconsciousInstructions}CAS CLINIQUE :
 ${JSON.stringify(caseSummary, null, 2)}
 
-CONTRAINTES DE SORTIE :
-- Renvoie UNIQUEMENT un objet JSON valide (pas de markdown, pas de commentaires).
-- Structure attendue :
+FORMAT DE SORTIE OBLIGATOIRE — JSON VALIDE UNIQUEMENT, AUCUN MARKDOWN :
 
 {
   "vignette": {
     "role": "Vous êtes interne en stage de <service>.",
-    "contexte": "<nom>, <âge> ans, <sexe>, se présente pour <motif>.",
-    "consignesAttendues": ["...", "..."],
-    "consignesInterdites": ["..."],
-    "typeStation": "AVEC_PS" | "AVEC_PSS" | "SANS_PS_PSS",
-    "domainePrincipal": "Entretien/Interrogatoire" | ...,
-    "domaineSecondaire": "...",
-    "lieu": "Service d'urgence" | "Cabinet de consultation" | "...",
-    "materielDisponible": ["..."]
+    "contexte": "<Prénom Nom>, <âge> ans, <sexe>, <motif en termes de patient>.",
+    "consignesAttendues": ["Réaliser un interrogatoire ciblé", "Proposer une stratégie diagnostique"],
+    "consignesInterdites": ["Ne pas prescrire sans avoir examiné"],
+    "typeStation": ${isUnconscious ? '"SANS_PS_PSS"' : '"AVEC_PS"'},
+    "domainePrincipal": "Entretien/Interrogatoire",
+    "domaineSecondaire": "Stratégie diagnostique",
+    "lieu": "Cabinet de consultation",
+    "materielDisponible": ["Stéthoscope", "Tensiomètre", "Marteau à réflexes"]
   },
   "grilleAptitudesCliniques": [
-    { "id": "accueil_presentation", "label": "Se présente et explique son rôle d'interne", "weight": 1, "triggerKeywords": ["bonjour", "je suis interne", "je m'appelle"] },
-    ... (10-15 items pertinents pour ce cas, ordonnés chronologiquement)
+    { "id": "accueil_presentation", "category": "Interrogatoire", "label": "Se présente en donnant son nom et son rôle d'interne", "weight": 1, "triggerKeywords": ["bonjour", "je suis interne", "je m'appelle", "je suis le médecin"] },
+    { "id": "interrogatoire_motif", "category": "Interrogatoire", "label": "Explore le motif de consultation par une question ouverte", "weight": 2, "triggerKeywords": ["qu'est-ce qui vous amène", "dites-moi", "qu'est-ce que vous ressentez", "comment ça a commencé"] }
   ],
   "grilleCommunication": [
-    { "id": "ecoute_active", "label": "Écoute active — laisse le patient terminer sans l'interrompre", "max": 1 },
-    { "id": "questions_ouvertes", "label": "Pose des questions ouvertes avant les questions fermées", "max": 1 },
-    { "id": "reformulation", "label": "Reformule ou vérifie la compréhension du patient", "max": 1 },
-    { "id": "vocabulaire_adapte", "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)", "max": 1 },
-    { "id": "empathie", "label": "Fait preuve d'empathie et de bienveillance", "max": 1 }
+    { "id": "questions_ouvertes", "label": "Débute par des questions ouvertes avant de fermer l'interrogatoire", "max": 1 },
+    { "id": "empathie_nommee", "label": "Nomme ou valide une émotion du patient (\"Je vois que c'est difficile pour vous\")", "max": 1 },
+    { "id": "vocabulaire_adapte", "label": "Explique tout terme médical utilisé en langage courant", "max": 1 }
   ],
   "patientStandardise": {
-    "personnalite": "...",
-    "phraseOuverture": "...",
-    "infosVolontaires": ["motifHospitalisation", "histoireMaladie.symptomesActuels"],
-    "infosSiDemandees": ["antecedents.medicaux", "antecedents.familiaux", "modeDeVie.tabac"],
-    "infosCachees": [],
+    "personnalite": "<profil psychologique riche et spécifique au cas>",
+    "phraseOuverture": "<première réplique naturelle centrée sur les symptômes ressentis>",
+    "infosVolontaires": ["motifHospitalisation", "histoireMaladie.debutSymptomes"],
+    "infosSiDemandees": ["antecedents.medicaux", "modeDeVie.tabac", "histoireMaladie.symptomesAssocies"],
+    "infosCachees": ["<information pertinente que le patient tait>"],
     "reactions": {
-      "brutal": "...",
-      "silence": "...",
-      "jargon": "..."
+      "brutal": "Attendez, vous allez trop vite, je ne comprends rien.",
+      "silence": "... (silence) ... Euh... je ne sais pas trop quoi ajouter.",
+      "jargon": "C'est quoi ce mot ? Vous pouvez m'expliquer autrement ?"
     }
   }
 }
 
-Produis UNIQUEMENT le JSON.`;
+Produis UNIQUEMENT le JSON. Aucun texte avant ou après.`;
+}
+
+/**
+ * Validates the parsed ECOS object and throws with a descriptive error if invalid.
+ */
+function validateEcos(ecos, filePath) {
+    const name = path.basename(filePath);
+    if (!ecos || typeof ecos !== 'object') throw new Error(`[${name}] ecos non-objet`);
+
+    // vignette
+    if (!ecos.vignette) throw new Error(`[${name}] vignette manquante`);
+    const validTypes = ['AVEC_PS', 'AVEC_PSS', 'SANS_PS_PSS'];
+    if (!validTypes.includes(ecos.vignette.typeStation)) {
+        console.warn(`  ⚠ [${name}] typeStation invalide: "${ecos.vignette.typeStation}" — forcé à AVEC_PS`);
+        ecos.vignette.typeStation = 'AVEC_PS';
+    }
+
+    // grilleAptitudesCliniques
+    const grille = ecos.grilleAptitudesCliniques;
+    if (!Array.isArray(grille) || grille.length < 5) {
+        throw new Error(`[${name}] grilleAptitudesCliniques trop courte (${grille?.length ?? 0} items, min 5)`);
+    }
+    const ids = new Set();
+    for (const item of grille) {
+        if (!item.id || !item.label) throw new Error(`[${name}] item sans id ou label`);
+        if (ids.has(item.id)) throw new Error(`[${name}] ID dupliqué: "${item.id}"`);
+        ids.add(item.id);
+        if (typeof item.weight !== 'number') item.weight = 1;
+        item.weight = Math.max(1, Math.min(3, Math.round(item.weight)));
+        if (!item.category) item.category = 'Interrogatoire';
+        if (!Array.isArray(item.triggerKeywords) || item.triggerKeywords.length === 0) {
+            console.warn(`  ⚠ [${name}] item "${item.id}" sans triggerKeywords — tableau vide conservé`);
+            item.triggerKeywords = [];
+        }
+    }
+
+    // grilleCommunication
+    const comm = ecos.grilleCommunication;
+    if (!Array.isArray(comm) || comm.length < 2) {
+        throw new Error(`[${name}] grilleCommunication trop courte (${comm?.length ?? 0} items, min 2)`);
+    }
+    for (const item of comm) {
+        if (typeof item.max !== 'number') item.max = 1;
+        item.max = Math.min(1, Math.max(0, item.max));
+    }
+
+    // patientStandardise
+    const ps = ecos.patientStandardise;
+    if (!ps) throw new Error(`[${name}] patientStandardise manquant`);
+    // Tolerate both spellings, normalize to no-accent
+    if ('personnalité' in ps) {
+        ps.personnalite = ps['personnalité'];
+        delete ps['personnalité'];
+    }
+    if (!ps.personnalite && ecos.vignette.typeStation === 'AVEC_PS') {
+        console.warn(`  ⚠ [${name}] personnalite vide pour une station AVEC_PS`);
+    }
+    if (!Array.isArray(ps.infosVolontaires)) ps.infosVolontaires = [];
+    if (!Array.isArray(ps.infosSiDemandees)) ps.infosSiDemandees = [];
+    if (!Array.isArray(ps.infosCachees)) ps.infosCachees = [];
+    if (!ps.reactions || typeof ps.reactions !== 'object') ps.reactions = {};
+
+    return ecos;
 }
 
 // Modèles fallback si le principal est rate-limited
@@ -194,7 +315,7 @@ async function callLLM(prompt, filePath) {
                             { role: 'user', content: prompt }
                         ],
                         temperature: 0.3,
-                        max_tokens: 2500
+                        max_tokens: 4000
                     })
                 });
                 if (resp.status === 429 || resp.status === 404) {
@@ -257,14 +378,16 @@ async function processCase(filePath) {
 
     try {
         const content = await callLLM(prompt, filePath);
-        const ecos = extractJson(content);
+        let ecos = extractJson(content);
+        ecos = validateEcos(ecos, filePath);
         caseData.ecos = ecos;
 
         if (!IS_DRY_RUN) {
             fs.writeFileSync(filePath, JSON.stringify(caseData, null, 2) + '\n', 'utf-8');
         }
         const count = (ecos.grilleAptitudesCliniques || []).length;
-        console.log(`  ✅ ${path.basename(filePath)} : ${count} items générés`);
+        const hasWeightVariety = new Set((ecos.grilleAptitudesCliniques || []).map(i => i.weight)).size > 1;
+        console.log(`  ✅ ${path.basename(filePath)} : ${count} items générés${hasWeightVariety ? '' : ' ⚠ (tous weight=1)'}`);
         return { ok: true };
     } catch (e) {
         console.error(`  ❌ ${path.basename(filePath)} : ${e.message}`);

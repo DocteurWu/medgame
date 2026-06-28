@@ -613,7 +613,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune homme de 19 ans, étudiant, globalement coopérant mais visiblement anxieux et désorienté. Il se plaint de fortes céphalées et a du mal à se souvenir des circonstances exactes de l'accident. Il minimise spontanément ses symptômes en disant « ça va aller ». Il est accompagné d'un ami témoin de la scène.",
       "phraseOuverture": "Bonjour docteur, je suis tombé de vélo, j'ai mal à la tête mais ça va aller… enfin je crois.",
       "infosVolontaires": [
         "Chute de vélo à environ 25 km/h",
@@ -641,7 +640,8 @@
         "brutal": "Je… je sais pas, ça va, arrêtez de me poser des questions, j'ai juste mal à la tête !",
         "silence": "… (silence, regard flou, semble chercher ses mots)",
         "jargon": "Le scanner ? C'est quoi exactement ? C'est dangereux ? Et la neurochirurgie, c'est grave docteur ?"
-      }
+      },
+      "personnalite": "Jeune homme de 19 ans, étudiant, globalement coopérant mais visiblement anxieux et désorienté. Il se plaint de fortes céphalées et a du mal à se souvenir des circonstances exactes de l'accident. Il minimise spontanément ses symptômes en disant « ça va aller ». Il est accompagné d'un ami témoin de la scène."
     }
   }
 }

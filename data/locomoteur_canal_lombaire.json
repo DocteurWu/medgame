@@ -348,11 +348,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux, retraité, bon état général",
       "phraseOuverture": "Bonjour docteur, j'ai mal aux jambes quand je marche, ça fait un an que ça dure et ça empire.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -364,7 +363,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, je vous ai déjà tout dit !",
         "silence": "...",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là."
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux, retraité, bon état général"
     }
   }
 }

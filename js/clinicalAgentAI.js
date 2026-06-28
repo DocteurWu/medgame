@@ -276,15 +276,12 @@ class ClinicalAgentAI {
         const patient = caseData.patient || {};
         const vitals = window.vitalSigns?.props || {};
 
-        // 3. Obtenir la réponse (OpenRouter avec Fallback en chaîne)
+        // 3. Obtenir la réponse (Groq API avec Fallback local)
         let responseJson = null;
         let lastError = null;
 
         const modelsToTry = [
-            window.CONFIG?.LLM_MODEL || 'nex-agi/nex-n2-pro:free',
-            'nvidia/nemotron-3-ultra-550b-a55b:free',
-            'openrouter/owl-alpha',
-            'poolside/laguna-m.1:free'
+            window.CONFIG?.LLM_MODEL || 'llama-3.3-70b-versatile'
         ].filter((m, i, self) => self.indexOf(m) === i);
 
         for (const modelToTry of modelsToTry) {
@@ -468,8 +465,8 @@ class ClinicalAgentAI {
      * Appelle l'API d'OpenRouter avec un prompt de type Directeur Clinique / GM
      */
     async callOpenRouterClinicalDirector(action, caseData, vitals, modelOverride) {
-        const endpoint = window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions';
-        const model = modelOverride || window.CONFIG?.LLM_MODEL || 'nex-agi/nex-n2-pro:free';
+        const endpoint = window.CONFIG?.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+        const model = modelOverride || window.CONFIG?.LLM_MODEL || 'llama-3.3-70b-versatile';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
 
         const correctTreatments = caseData.correctTreatments || [];
@@ -493,6 +490,10 @@ Actuellement, le patient présente le cas clinique suivant :
 - Traitements de référence attendus : ${correctTreatments.join(', ')}
 - Traitements contre-indiqués / fatals : ${fatalTreatments.join(', ')}
 - Allergies connues du patient : ${allergiesText}
+
+═══ RÈGLE DE SÉCURITÉ CRITIQUE : INTERDICTION DE SPOILER LE DIAGNOSTIC ════════
+1. Tu ne dois JAMAIS mentionner explicitement le diagnostic attendu ("${correctDiagnostic}") dans la réponse narrative ('clinicalResponse') ou les paroles du patient ('patientVerbatim'), SAUF si le joueur l'a lui-même explicitement nommé dans son action.
+2. Décris uniquement les constatations cliniques objectives, les effets des traitements, ou les résultats d'examens techniques. Ne dis pas "Dans le contexte de [diagnostic]" ou "Ce n'est pas le traitement de [diagnostic]". Sois neutre et factuel.
 
 ═══ DIRECTIVE ABSOLUE SUR LES ALLERGIES ════════════════
 Si l'action du joueur consiste à administrer, perfuser ou injecter un allergène connu du patient (ex: Poisson, Pénicilline, etc. selon la liste ci-dessus), le patient doit IMMÉDIATEMENT faire un CHOC ANAPHYLACTIQUE FOUDROYANT.

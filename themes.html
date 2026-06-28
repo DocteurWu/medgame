@@ -132,8 +132,14 @@
                 <button id="close-motifs" class="close-motifs">&times;</button>
                 <h2 id="motifs-title">Choisissez un cas</h2>
 
-                <div id="motifs-actions" class="motifs-actions">
+                <div id="motifs-actions" class="motifs-actions" style="display: flex; gap: 15px; align-items: center; justify-content: center;">
                     <button id="select-unplayed" class="secondary-btn-modal">Sélectionner les cas non faits</button>
+                    <label class="ecos-filter-label" style="color: #fff; font-size: 0.85rem; font-family: var(--font-main); display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; background: rgba(52, 152, 219, 0.1); border: 1px solid rgba(52, 152, 219, 0.3); padding: 6px 14px; border-radius: 20px; transition: all 0.2s ease;"
+                        onmouseover="this.style.background='rgba(52, 152, 219, 0.25)'; this.style.borderColor='#3498db'; this.style.boxShadow='0 0 10px rgba(52, 152, 219, 0.3)';"
+                        onmouseout="this.style.background='rgba(52, 152, 219, 0.1)'; this.style.borderColor='rgba(52, 152, 219, 0.3)'; this.style.boxShadow='none';">
+                        <input type="checkbox" id="filter-ecos-only" style="cursor: pointer; accent-color: #3498db; width: 14px; height: 14px; margin: 0;">
+                        <span style="font-weight: 600;"><i class="fas fa-graduation-cap" style="color: #3498db; margin-right: 4px;"></i> Cas ECOS uniquement</span>
+                    </label>
                 </div>
 
                 <!-- Vue Liste Classique -->

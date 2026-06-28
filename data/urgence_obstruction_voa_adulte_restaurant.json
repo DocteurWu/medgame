@@ -616,11 +616,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient âgé, initialement coopérant mais rapidement en détresse respiratoire majeure. Incapable de parler, de tousser. Agité puis prostré en cas de dégradation. Après désobstruction : soulagé, angoissé, reconnaissant.",
       "phraseOuverture": "*Le patient est assis à table, visage cyanosé, mains serrées autour de la gorge, yeux écarquillés, incapable de parler ou de tousser. Il émet des bruits respiratoires striduleux ou aucun bruit.*",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.facteursDeclenchants"
       ],
@@ -637,7 +636,8 @@
         "brutal": "Le patient ne réagit pas verbalement, gesticule, se penche en avant instinctivement.",
         "silence": "Le patient reste silencieux, regard paniqué, fixe l'examinateur en cherchant de l'aide.",
         "jargon": "Le patient ne comprend pas les termes techniques et montre de l'incompréhension par ses expressions faciales."
-      }
+      },
+      "personnalite": "Patient âgé, initialement coopérant mais rapidement en détresse respiratoire majeure. Incapable de parler, de tousser. Agité puis prostré en cas de dégradation. Après désobstruction : soulagé, angoissé, reconnaissant."
     }
   }
 }

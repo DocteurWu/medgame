@@ -450,14 +450,14 @@
       "personnalite": "Patient fatigué, légèrement anxieux, chef de service hospitalier habitué au milieu médical mais inquiet de la dégradation de son état de santé. Il minimise parfois ses symptômes par fierté professionnelle.",
       "phraseOuverture": "Bonjour docteur, je viens parce que j'urine énormément, jour et nuit, et je n'en peux plus. Je suis fatigué en permanence.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.duree"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
         "antecedents.familiaux",
-        "traitements.actuels",
+        "traitements",
         "modeDeVie.alimentation",
         "modeDeVie.tabac",
         "modeDeVie.alcool",

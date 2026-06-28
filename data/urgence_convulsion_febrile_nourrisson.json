@@ -953,11 +953,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Parent très inquiet et angoissé, parlant vite, visiblement bouleversé par la crise convulsive de son enfant. Le parent répond aux questions mais peut être submergé par l'émotion. Il a besoin d'être rassuré tout en comprenant la gravité de la situation.",
       "phraseOuverture": "Docteur, aidez-nous ! Mon fils est en train de convulser, ça fait plusieurs minutes, il a une grosse fièvre, je ne sais pas quoi faire !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],
@@ -975,7 +974,8 @@
         "brutal": "Le parent se ferme, répond par monosyllabes, regarde son enfant avec détresse. « Vous ne comprenez pas, il faut faire quelque chose ! »",
         "silence": "Le parent reste silencieux un instant, puis dit : « Je ne sais plus quoi dire… Est-ce qu'il va s'en sortir ? »",
         "jargon": "Le parent fronce les sourcils et demande : « Qu'est-ce que vous voulez dire par là ? Je ne comprends pas ces mots. »"
-      }
+      },
+      "personnalite": "Parent très inquiet et angoissé, parlant vite, visiblement bouleversé par la crise convulsive de son enfant. Le parent répond aux questions mais peut être submergé par l'émotion. Il a besoin d'être rassuré tout en comprenant la gravité de la situation."
     }
   }
 }

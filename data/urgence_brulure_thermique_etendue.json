@@ -700,7 +700,7 @@
       "phraseOuverture": "Docteur, aidez-moi, je me suis renversé de l'eau bouillante dessus, j'ai très mal !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.descriptionDouleur"
       ],

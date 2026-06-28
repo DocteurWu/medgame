@@ -90,6 +90,8 @@
                     <div class="btn-layer"></div>
                 </button>
 
+
+
                 <!-- Section auth: login ou déconnexion -->
                 <div id="auth-section" style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="btn-3d" id="login-nav-button" onclick="transitionTo('login.html')"
@@ -160,24 +162,46 @@
             </div>
 
             <div class="modal-body">
-                <p class="setting-label">Degré d'immersion</p>
+                <p class="setting-label">Mode de Jeu</p>
                 <div class="difficulty-selector">
                     <label class="diff-option">
-                        <input type="radio" name="immersionMode" value="classique">
+                        <input type="radio" name="gamePlayMode" value="practice">
                         <span class="diff-card green">
-                            <i class="fas fa-book-open"></i>
-                            <span>Classique</span>
-                            <small>Tout affiché</small>
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Entraînement</span>
+                            <small>Pause possible &bull; Grille visible</small>
                         </span>
                     </label>
                     <label class="diff-option">
-                        <input type="radio" name="immersionMode" value="immersif">
+                        <input type="radio" name="gamePlayMode" value="exam">
                         <span class="diff-card blue">
                             <i class="fas fa-user-md"></i>
-                            <span>ECOS</span>
-                            <small>Vignette &bull; 8 min &bull; Chat libre &bull; Grille de notation</small>
+                            <span>Évaluation</span>
+                            <small>Chrono strict &bull; Grille masquée</small>
                         </span>
                     </label>
+                </div>
+
+                <!-- Réglages ECOS -->
+                <div id="ecos-settings-section" style="margin-top: 20px; background: rgba(52, 152, 219, 0.05); padding: 15px; border-radius: 12px; border: 1px solid rgba(52, 152, 219, 0.2); display: block;">
+                    <h3 style="font-size: 0.95rem; color: #3498db; margin-top: 0; margin-bottom: 12px;"><i class="fas fa-sliders-h"></i> Réglages de la Session</h3>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.85rem; color: #fff;">Feedback narratif LLM</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Génère un retour détaillé à la fin</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="ecos-setting-feedback" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-input-group" style="margin: 0; display: flex; align-items: center; gap: 15px; justify-content: space-between;">
+                        <label class="setting-label" style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);">Durée de la station (secondes)</label>
+                        <input type="number" id="ecos-setting-duration" class="setting-input" value="480" min="60" max="1800"
+                            style="padding: 8px 12px; font-size: 0.85rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); width: 100px; text-align: center;">
+                    </div>
                 </div>
 
                 <p class="setting-label" style="margin-top: 25px;">Mon Profil</p>
@@ -254,9 +278,7 @@
         /* --- LOGIQUE JEU & UI --- */
 
         // Gestion Paramètres
-        if (!sessionStorage.getItem('immersionMode')) {
-            sessionStorage.setItem('immersionMode', 'classique');
-        }
+        sessionStorage.setItem('immersionMode', 'immersif'); // Toujours en mode ECOS/Immersif unifié
 
         const settingsBtn = document.getElementById('settings-button');
         const modal = document.getElementById('settings-modal');
@@ -265,9 +287,15 @@
 
         const openModal = async () => {
             modal.classList.add('active');
-            const current = sessionStorage.getItem('immersionMode') || 'classique';
-            const radio = document.querySelector(`input[name="immersionMode"][value="${current}"]`);
+            const isPractice = localStorage.getItem('ecos_practice_mode') !== 'false';
+            const radio = document.querySelector(`input[name="gamePlayMode"][value="${isPractice ? 'practice' : 'exam'}"]`);
             if (radio) radio.checked = true;
+
+            const ecosSection = document.getElementById('ecos-settings-section');
+            if (ecosSection) ecosSection.style.display = 'block';
+
+            document.getElementById('ecos-setting-feedback').checked = localStorage.getItem('ecos_llm_feedback') !== 'false';
+            document.getElementById('ecos-setting-duration').value = localStorage.getItem('ecos_duration') || '480';
 
             const usernameInput = document.getElementById('setting-username');
             const usernameStatus = document.getElementById('username-status');
@@ -347,10 +375,16 @@
             saveBtn.disabled = true;
             saveBtn.textContent = "Sabre au clair...";
 
-            const checked = document.querySelector('input[name="immersionMode"]:checked');
-            if (checked) {
-                sessionStorage.setItem('immersionMode', checked.value);
-            }
+            const selectedPlayMode = document.querySelector('input[name="gamePlayMode"]:checked')?.value || 'practice';
+            const ecosPractice = selectedPlayMode === 'practice';
+            sessionStorage.setItem('immersionMode', 'immersif'); // Toujours en mode ECOS/Immersif unifié
+
+            const ecosFeedback = document.getElementById('ecos-setting-feedback').checked;
+            const ecosDuration = document.getElementById('ecos-setting-duration').value || '480';
+
+            localStorage.setItem('ecos_practice_mode', ecosPractice ? 'true' : 'false');
+            localStorage.setItem('ecos_llm_feedback', ecosFeedback);
+            localStorage.setItem('ecos_duration', ecosDuration);
 
             const newUsername = document.getElementById('setting-username').value.trim();
             const isPublic = document.getElementById('setting-public-toggle').checked;
@@ -455,6 +489,7 @@
         });
     </script>
     <script src="js/auth.js?v=2"></script>
+    <script src="js/ecos-stats.js?v=2"></script>
     <script src="js/arena_client.js?v=2"></script>
     <script>
         // Check session to update Auth UI on index
@@ -507,6 +542,21 @@
                         }
                     } catch (err) {
                         console.error("Erreur chargement profil:", err);
+                    }
+
+                    // Charger les statistiques ECOS dans le tableau de bord
+                    if (window.EcosStats) {
+                        try {
+                            const stats = await window.EcosStats.getStats();
+                            const completedEl = document.getElementById('ecos-stat-completed');
+                            const averageEl = document.getElementById('ecos-stat-average');
+                            if (completedEl) completedEl.textContent = stats.total || 0;
+                            if (averageEl) {
+                                averageEl.textContent = (stats.avgScore !== undefined && stats.total > 0) ? `${stats.avgScore}/100` : '—';
+                            }
+                        } catch (err) {
+                            console.error("Erreur chargement stats ECOS:", err);
+                        }
                     }
 
                     // Badge haut droit

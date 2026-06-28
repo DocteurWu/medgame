@@ -355,11 +355,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Coopérative mais inquiète, légèrement angoissée par ses chutes répétées. Répond précisément aux questions.",
       "phraseOuverture": "Docteur, je tombe souvent et je n'arrive plus à bien marcher. J'ai l'impression de ne plus savoir où sont mes pieds.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -373,7 +372,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez cette question si sèchement...",
         "silence": "Docteur, vous m'écoutez ? Je ne sais pas si je dois continuer...",
         "jargon": "Je ne comprends pas ce que vous voulez dire par là, vous pouvez m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Coopérative mais inquiète, légèrement angoissée par ses chutes répétées. Répond précisément aux questions."
     }
   }
 }

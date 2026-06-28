@@ -782,11 +782,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, anxieux mais coopératif. Il a mal et est inquiet pour les séquelles. Il répond aux questions de façon concise mais se montre volontaire.",
       "phraseOuverture": "Bonjour docteur, je me suis brûlé avec un produit chimique au travail, j'ai très mal.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.descriptionDouleur"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -803,7 +802,8 @@
         "brutal": "Le patient se crispe et répond de façon plus brève si l'interne est trop directif ou ne le laisse pas s'exprimer.",
         "silence": "Le patient comble le silence en donnant spontanément plus de détails sur l'accident.",
         "jargon": "Le patient demande des explications si l'interne utilise des termes médicaux non expliqués (ex : « phlyctène », « EVA », « règle de Wallace »)."
-      }
+      },
+      "personnalite": "Patient jeune, anxieux mais coopératif. Il a mal et est inquiet pour les séquelles. Il répond aux questions de façon concise mais se montre volontaire."
     }
   }
 }

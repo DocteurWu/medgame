@@ -396,11 +396,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Adolescente réservée, anxieuse, préoccupée par son apparence. Elle minimise ses symptômes et hésite à parler ouvertement de ses habitudes alimentaires. Elle se sent mal à l'aise en public et évite les situations sociales.",
       "phraseOuverture": "Bonjour docteur, je suis venue parce que ma mère s'inquiète pour moi. Elle dit que je maigris trop, mais je me sens bien.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -418,7 +417,8 @@
         "brutal": "Je ne veux plus en parler. Vous ne comprenez pas.",
         "silence": "...",
         "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous expliquer autrement ?"
-      }
+      },
+      "personnalite": "Adolescente réservée, anxieuse, préoccupée par son apparence. Elle minimise ses symptômes et hésite à parler ouvertement de ses habitudes alimentaires. Elle se sent mal à l'aise en public et évite les situations sociales."
     }
   }
 }

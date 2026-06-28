@@ -474,7 +474,7 @@
       "phraseOuverture": "Bonjour docteur, je suis chirurgien cardiaque et je viens parce que je suis essoufflé depuis quelques semaines, surtout à l'effort. C'est gênant dans mon travail.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "modeDeVie.profession"

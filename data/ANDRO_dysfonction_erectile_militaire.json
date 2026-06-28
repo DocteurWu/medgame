@@ -396,7 +396,7 @@
       "phraseOuverture": "Docteur, ça fait plusieurs mois que j'ai des problèmes... enfin, des difficultés au lit. C'est gênant, surtout que je suis jeune et en bonne santé.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

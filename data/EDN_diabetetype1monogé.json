@@ -416,11 +416,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patientie coopérative, légèrement anxieuse face à la possibilité d'un diagnostic de diabète. Curieuse et posant des questions sur sa santé.",
       "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai soif tout le temps depuis plusieurs mois, et je suis fatiguée. Ma mère m'a dit que ça pouvait être du diabète, comme dans ma famille.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes"
       ],
       "infosSiDemandees": [
@@ -442,7 +441,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis venue pour qu'on m'aide...",
         "silence": "Vous pouvez me poser d'autres questions si vous voulez, je veux comprendre ce que j'ai.",
         "jargon": "Pouvez-vous m'expliquer ce que ça veut dire ? Je ne connais pas ce terme médical."
-      }
+      },
+      "personnalite": "Patientie coopérative, légèrement anxieuse face à la possibilité d'un diagnostic de diabète. Curieuse et posant des questions sur sa santé."
     }
   }
 }

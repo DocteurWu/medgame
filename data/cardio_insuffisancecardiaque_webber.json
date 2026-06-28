@@ -375,11 +375,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif mais inquiet, ancien chirurgien, connaît le vocabulaire médical",
       "phraseOuverture": "Bonjour docteur, je suis essoufflé depuis quelques semaines et j'ai les chevilles qui gonflent.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -393,7 +392,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis moi-même médecin !",
         "silence": "Pardon, je réfléchissez... Oui, c'est bien ce que je voulais dire.",
         "jargon": "Oui, je comprends, je suis chirurgien de formation."
-      }
+      },
+      "personnalite": "Patient coopératif mais inquiet, ancien chirurgien, connaît le vocabulaire médical"
     }
   }
 }

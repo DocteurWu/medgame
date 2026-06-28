@@ -465,7 +465,7 @@
         "Ne pas mettre en PLS sans RCP",
         "Ne pas quitter le patient"
       ],
-      "typeStation": "AVEC_PS",
+      "typeStation": "SANS_PS_PSS",
       "domainePrincipal": "Urgence vitale",
       "domaineSecondaire": "Communication interpro",
       "lieu": "Service d'urgence",
@@ -672,11 +672,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient standardisé jouant le rôle d'un témoin (coéquipier) présent lors de l'événement",
-      "phraseOuverture": "Elena s'est effondrée d'un coup pendant le match ! Elle ne répond plus !",
+      "phraseOuverture": "",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.descriptionDouleur"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -688,7 +687,8 @@
         "brutal": "Le témoin est paniqué et parle vite, donne des informations de manière désordonnée",
         "silence": "Le témoin attend les questions et répond brièvement",
         "jargon": "Le témoin ne comprend pas le jargon médical et demande des explications"
-      }
+      },
+      "personnalite": "Patient standardisé jouant le rôle d'un témoin (coéquipier) présent lors de l'événement"
     }
   }
 }

@@ -67,6 +67,9 @@
                 <button class="nav-item" data-target="section-urgence-dyn" style="border-left: 3px solid #e74c3c;">
                     <i class="fas fa-heartbeat" style="color:#e74c3c;"></i> 6. Dynamiques
                 </button>
+                <button class="nav-item" data-target="section-ecos" style="border-left: 3px solid #3498db;">
+                    <i class="fas fa-graduation-cap" style="color:#3498db;"></i> 7. ECOS
+                </button>
             </nav>
 
             <div class="editor-footer">
@@ -489,6 +492,162 @@
 
                     </div>
                 </section>
+
+                <!-- SECTION: ECOS -->
+                <section id="section-ecos" class="game-section">
+                    <h2 class="section-header" style="color: #3498db;"><i class="fas fa-graduation-cap"></i> 7. PARAMÈTRES ECOS</h2>
+                    <div class="medical-card full-width">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div>
+                                <h3 class="card-title" style="margin-bottom: 5px;">Mode ECOS</h3>
+                                <p class="label" style="margin: 0;">Activer le mode ECOS pour ce cas clinique (Vignette A4 + PS + Grilles R2C).</p>
+                            </div>
+                            <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                                <input type="checkbox" id="enable-ecos-mode" style="opacity: 0; width: 0; height: 0;">
+                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px;"></span>
+                            </label>
+                        </div>
+
+                        <div id="ecos-editor-fields" style="display: none;">
+                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+                            
+                            <!-- Vignette Clinique -->
+                            <div class="sub-section" style="margin-bottom: 25px;">
+                                <h4 style="color:#3498db; margin-bottom: 15px;"><i class="fas fa-file-invoice"></i> 7.1 Vignette Clinique</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                                    <div>
+                                        <h5 class="label">Rôle du candidat</h5>
+                                        <div id="ecos-role" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Vous êtes interne en cardiologie de garde...">...</div>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Contexte / Situation</h5>
+                                        <div id="ecos-contexte" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Kitty Bennet, 58 ans, se présente pour...">...</div>
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                                    <div>
+                                        <h5 class="label">Type de station</h5>
+                                        <select id="ecos-type-station" style="width:100%; background: #15151e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; padding: 10px; font-family: inherit;">
+                                            <option value="AVEC_PS">Avec Patient Standardisé (PS)</option>
+                                            <option value="AVEC_PSS">Avec Personnel de Santé (PSS)</option>
+                                            <option value="SANS_PS_PSS">Sans PS ni PSS</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Domaine Principal</h5>
+                                        <div id="ecos-domaine-principal" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Entretien/Interrogatoire">...</div>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Domaine Secondaire</h5>
+                                        <div id="ecos-domaine-secondaire" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Stratégie de prise en charge">...</div>
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                                    <div>
+                                        <h5 class="label">Lieu</h5>
+                                        <div id="ecos-lieu" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Cabinet de consultation, SAU...">...</div>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Matériel disponible (séparé par des virgules)</h5>
+                                        <div id="ecos-materiel" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Tensiomètre, Stéthoscope, ECG...">...</div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 15px;">
+                                    <h5 class="label">Consignes attendues (Tâches à réaliser)</h5>
+                                    <div id="ecos-consignes-attendues" style="margin-bottom: 10px;"></div>
+                                    <button class="btn-add" onclick="addEcosConsigneAttendue()"><i class="fas fa-plus"></i> Ajouter une consigne</button>
+                                </div>
+
+                                <div style="margin-bottom: 15px;">
+                                    <h5 class="label">Consignes interdites / Pièges</h5>
+                                    <div id="ecos-consignes-interdites" style="margin-bottom: 10px;"></div>
+                                    <button class="btn-add" onclick="addEcosConsigneInterdite()"><i class="fas fa-plus"></i> Ajouter un piège / consigne interdite</button>
+                                </div>
+                            </div>
+
+                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+
+                            <!-- Patient Standardisé -->
+                            <div class="sub-section" style="margin-bottom: 25px;">
+                                <h4 style="color:#3498db; margin-bottom: 15px;"><i class="fas fa-user-injured"></i> 7.2 Patient Standardisé (PS)</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                                    <div>
+                                        <h5 class="label">Personnalité du patient</h5>
+                                        <div id="ecos-ps-personnalite" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Patient anxieux, coopératif...">...</div>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Phrase d'ouverture (Verbatim initial)</h5>
+                                        <div id="ecos-ps-ouverture" contenteditable="true" style="background: rgba(160, 32, 240, 0.1); border: 1px dashed var(--primary-color); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff; font-style: italic;" placeholder="Ex: Bonjour docteur, j'ai une vive douleur dans la poitrine...">...</div>
+                                    </div>
+                                </div>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 15px;">
+                                    <div>
+                                        <h5 class="label">Mots-clés / Infos données spontanément (séparés par des virgules)</h5>
+                                        <div id="ecos-ps-volontaires" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: motifHospitalisation, histoireMaladie.symptomesActuels">...</div>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Infos données uniquement si demandées (séparées par des virgules)</h5>
+                                        <div id="ecos-ps-demandees" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: antecedents.medicaux, antecedents.familiaux">...</div>
+                                    </div>
+                                    <div>
+                                        <h5 class="label">Infos cachées (difficiles à obtenir, séparées par des virgules)</h5>
+                                        <div id="ecos-ps-cachees" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: automedication, toxicomanie">...</div>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 15px;">
+                                    <h5 class="label">Réactions du patient</h5>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                                        <div>
+                                            <h6 class="label" style="font-size:0.8rem; opacity:0.8;">Si question brute / brusque</h6>
+                                            <div id="ecos-ps-reaction-brutal" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; min-height: 35px; color:#fff; font-size:0.9rem;" placeholder="Ex: Je ne comprends pas pourquoi vous me brusquez...">...</div>
+                                        </div>
+                                        <div>
+                                            <h6 class="label" style="font-size:0.8rem; opacity:0.8;">Si silence de l'étudiant</h6>
+                                            <div id="ecos-ps-reaction-silence" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; min-height: 35px; color:#fff; font-size:0.9rem;" placeholder="Ex: Euh... vous ne dites plus rien ?...">...</div>
+                                        </div>
+                                        <div>
+                                            <h6 class="label" style="font-size:0.8rem; opacity:0.8;">Si jargon médical incompréhensible</h6>
+                                            <div id="ecos-ps-reaction-jargon" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; min-height: 35px; color:#fff; font-size:0.9rem;" placeholder="Ex: Pouvez-vous parler français ? Je ne comprends pas ce mot...">...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+
+                            <!-- Grilles d'évaluation -->
+                            <div class="sub-section" style="margin-bottom: 25px;">
+                                <h4 style="color:#3498db; margin-bottom: 15px;"><i class="fas fa-tasks"></i> 7.3 Grilles d'évaluation R2C</h4>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <h5 class="label" style="margin-bottom:10px;">Grille d'Aptitudes Cliniques (Scorée sur 70%)</h5>
+                                    <div style="display: grid; grid-template-columns: 1fr 2fr 80px 2fr 100px; gap: 10px; font-weight: bold; margin-bottom: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
+                                        <div>ID Item</div>
+                                        <div>Description (Label)</div>
+                                        <div style="text-align:center;">Poids</div>
+                                        <div>Mots-clés déclencheurs (séparés par virgules)</div>
+                                        <div>Actions</div>
+                                    </div>
+                                    <div id="ecos-grille-aptitudes"></div>
+                                    <button class="btn-add" style="margin-top:10px;" onclick="addEcosAptitude()"><i class="fas fa-plus"></i> Ajouter un critère clinique</button>
+                                </div>
+
+                                <div style="margin-top: 25px;">
+                                    <h5 class="label" style="margin-bottom:10px;">Grille de Communication (Scorée sur 30%)</h5>
+                                    <div style="display: grid; grid-template-columns: 1fr 2fr 80px 100px; gap: 10px; font-weight: bold; margin-bottom: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
+                                        <div>ID Critère</div>
+                                        <div>Description (Label)</div>
+                                        <div style="text-align:center;">Score Max</div>
+                                        <div>Actions</div>
+                                    </div>
+                                    <div id="ecos-grille-communication"></div>
+                                    <button class="btn-add" style="margin-top:10px;" onclick="addEcosCommunication()"><i class="fas fa-plus"></i> Ajouter un critère relationnel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
@@ -691,6 +850,7 @@
     <script src="js/utils.js?v=2"></script>
     <script src="js/game.js?v=2"></script>
     <script src="js/editor_mini_graph.js?v=2"></script>
+    <script src="js/ecos-dialog.js?v=2"></script>
     <script src="js/editor.js?v=2"></script>
 </body>
 

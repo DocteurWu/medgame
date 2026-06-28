@@ -334,10 +334,9 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux, volontaire pour un bilan de santé complet. Il répond volontiers aux questions mais a besoin d'être rassuré.",
       "phraseOuverture": "Bonjour docteur, je suis venu pour un bilan de santé, je me sens globalement bien mais je voulais vérifier que tout va bien à mon âge.",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "symptomesActuels",
         "habitudesAlcool"
       ],
@@ -358,7 +357,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, je suis venu pour un simple bilan !",
         "silence": "Euh... je ne sais pas trop quoi répondre à ça...",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux, volontaire pour un bilan de santé complet. Il répond volontiers aux questions mais a besoin d'être rassuré."
     }
   }
 }

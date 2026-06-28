@@ -386,11 +386,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif mais légèrement gêné par les symptômes. Professionnel de santé (interne en chirurgie), donc connaît le vocabulaire médical mais reste dans son rôle de patient. Peut minimiser certains aspects de sa vie sexuelle.",
       "phraseOuverture": "Bonjour docteur, ça fait 4 jours que j'ai des brûlures quand j'urine et que j'ai tout le temps envie d'aller aux toilettes. C'est vraiment pénible.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes"
       ],
       "infosSiDemandees": [
@@ -408,7 +407,8 @@
         "brutal": "Excusez-moi, je préférerais qu'on prenne un peu de temps pour en parler...",
         "silence": "Vous voulez que je vous pose des questions pour vous aider ?",
         "jargon": "Oui, c'est vrai que je connais un peu le vocabulaire, mais je préfère qu'on soit clair, comme avec n'importe quel patient."
-      }
+      },
+      "personnalite": "Patient coopératif mais légèrement gêné par les symptômes. Professionnel de santé (interne en chirurgie), donc connaît le vocabulaire médical mais reste dans son rôle de patient. Peut minimiser certains aspects de sa vie sexuelle."
     }
   }
 }

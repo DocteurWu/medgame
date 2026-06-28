@@ -411,11 +411,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Femme de 78 ans, ancienne chirurgienne à la retraite, habituée à être en position d'autorité. Actuellement confuse, désorientée dans le temps, parfois agitée. Répond de manière incohérente aux questions complexes. Son entourage (fille ou aide-soignante) peut compléter les informations.",
       "phraseOuverture": "Je ne sais pas ce qui m'arrive… Je suis essoufflée, je n'arrive plus à respirer correctement, et je me sens perdue… Ma fille m'a dit qu'il fallait venir aux urgences.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -430,7 +429,8 @@
         "brutal": "Pourquoi vous me posez toutes ces questions ? Je suis malade, pas idiote !",
         "silence": "… (silence prolongé, regard perdu, ne répond pas)",
         "jargon": "Je ne comprends pas ce que vous dites. Parlez plus simplement, s'il vous plaît."
-      }
+      },
+      "personnalite": "Femme de 78 ans, ancienne chirurgienne à la retraite, habituée à être en position d'autorité. Actuellement confuse, désorientée dans le temps, parfois agitée. Répond de manière incohérente aux questions complexes. Son entourage (fille ou aide-soignante) peut compléter les informations."
     }
   }
 }

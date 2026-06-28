@@ -427,11 +427,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, interne en chirurgie, anxieux mais coopératif. Il s'inquiète pour sa carrière et minimise initialement ses symptômes par fierté professionnelle. Il répond précisément aux questions mais peut se montrer impatient si l'examen est trop long.",
       "phraseOuverture": "Bonjour docteur, je suis tombé dans les escaliers hier pendant ma garde. J'ai perdu connaissance quelques secondes et depuis j'ai des vertiges terribles, je n'arrive plus à marcher droit.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.facteursDeclenchants"
       ],
@@ -454,7 +453,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et manifeste son irritation : 'Je suis médecin aussi, je sais ce que je ressens.'",
         "silence": "Le patient remplit le silence en donnant spontanément plus de détails sur ses symptômes et son anxiété.",
         "jargon": "Le patient corrige l'examinateur avec une pointe d'arrogance : 'Je suis interne en chirurgie, je connais ces termes. Pouvez-vous être plus précis ?'"
-      }
+      },
+      "personnalite": "Patient jeune, interne en chirurgie, anxieux mais coopératif. Il s'inquiète pour sa carrière et minimise initialement ses symptômes par fierté professionnelle. Il répond précisément aux questions mais peut se montrer impatient si l'examen est trop long."
     }
   }
 }

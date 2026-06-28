@@ -874,11 +874,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Femme de 29 ans, primipare, très anxieuse mais coopérante. Elle est en pleine phase d'expulsion avec une envie irrésistible de pousser. Elle alterne entre des moments de concentration intense pendant les contractions et des moments de panique entre les contractions.",
       "phraseOuverture": "Oh mon Dieu, je crois que le bébé arrive tout de suite ! Je n'ai pas le temps d'aller à la maternité !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.descriptionDouleur"
       ],
@@ -895,7 +894,8 @@
         "brutal": "La patiente se crispe, pleure et dit : 'Vous me faites mal ! Faites attention !'",
         "silence": "La patiente halète, est concentrée sur sa respiration et ne répond pas pendant la contraction. Elle reprend la parole entre les contractions.",
         "jargon": "La patiente regarde avec incompréhension et dit : 'Je ne comprends pas, parlez-moi en français simple !'"
-      }
+      },
+      "personnalite": "Femme de 29 ans, primipare, très anxieuse mais coopérante. Elle est en pleine phase d'expulsion avec une envie irrésistible de pousser. Elle alterne entre des moments de concentration intense pendant les contractions et des moments de panique entre les contractions."
     }
   }
 }

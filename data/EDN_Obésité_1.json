@@ -420,11 +420,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, peu motivé pour changer ses habitudes, légèrement sur la défensive quand on aborde le sujet de son poids et de son alimentation. Il minimise l'impact de ses symptômes sur sa vie quotidienne.",
       "phraseOuverture": "Bonjour docteur, je suis fatigué depuis longtemps et j'ai mal au genou droit. Je sais que c'est peut-être à cause de mon poids mais je n'ai pas trop envie de changer ma façon de vivre.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.evolution"
       ],
       "infosSiDemandees": [
@@ -441,7 +440,8 @@
         "brutal": "Attendez, vous me dites juste que je suis gros ? C'est pas nouveau !",
         "silence": "...",
         "jargon": "C'est quoi l'IMC ? Et l'HbA1c, c'est quoi exactement ?"
-      }
+      },
+      "personnalite": "Patient jeune, peu motivé pour changer ses habitudes, légèrement sur la défensive quand on aborde le sujet de son poids et de son alimentation. Il minimise l'impact de ses symptômes sur sa vie quotidienne."
     }
   }
 }
