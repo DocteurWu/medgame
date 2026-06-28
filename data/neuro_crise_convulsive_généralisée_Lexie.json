@@ -407,7 +407,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune femme de 25 ans, étudiante, anxieuse mais coopérative. Elle est encore somnolente et confuse (Glasgow 14), se souvient mal de la crise elle-même mais se souvient d'avoir été réveillée par les pompiers chez elle. Elle est inquiète car c'est la première fois que cela lui arrive. Elle a des myalgies diffuses et une douleur latérale de la langue.",
       "phraseOuverture": "Je ne comprends pas ce qui m'est arrivé… Les pompiers m'ont dit que j'ai fait une crise, mais je ne me souviens de rien. J'ai très mal partout et j'ai mordu ma langue.",
       "infosVolontaires": [
         "Motif d'admission : crise convulsive généralisée",
@@ -432,7 +431,8 @@
         "brutal": "La patiente se ferme, répond par monosyllabes, exprime son inconfort : 'Vous me parlez comme si j'étais une enfant…'",
         "silence": "La patiente attend les questions, reste passive, ne développe pas spontanément",
         "jargon": "La patiente demande des explications : 'C'est quoi un EEG ? Pourquoi une IRM ? Vous pensez que c'est grave ?'"
-      }
+      },
+      "personnalite": "Jeune femme de 25 ans, étudiante, anxieuse mais coopérative. Elle est encore somnolente et confuse (Glasgow 14), se souvient mal de la crise elle-même mais se souvient d'avoir été réveillée par les pompiers chez elle. Elle est inquiète car c'est la première fois que cela lui arrive. Elle a des myalgies diffuses et une douleur latérale de la langue."
     }
   }
 }

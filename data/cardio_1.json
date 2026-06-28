@@ -401,7 +401,7 @@
       "phraseOuverture": "Bonjour docteur, je suis essoufflé depuis deux semaines et mes jambes gonflent de plus en plus.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

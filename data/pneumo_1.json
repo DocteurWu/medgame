@@ -447,11 +447,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux mais coopératif, retraité de 65 ans, ancien fumeur. Il s'inquiète pour sa santé cardiaque car son père est décédé d'un infarctus. Il répond volontiers aux questions mais a besoin d'être rassuré.",
       "phraseOuverture": "Bonjour docteur, je suis très essoufflé depuis deux semaines et mes jambes gonflent de plus en plus. Je m'inquiète un peu…",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],
@@ -470,7 +469,8 @@
         "brutal": "Attendez, vous allez un peu vite… Je ne comprends pas tout ce que vous me dites.",
         "silence": "… (silence) … Vous voulez savoir autre chose ?",
         "jargon": "Pardon, je ne comprends pas ce mot. Vous pouvez m'expliquer avec des mots plus simples ?"
-      }
+      },
+      "personnalite": "Patient anxieux mais coopératif, retraité de 65 ans, ancien fumeur. Il s'inquiète pour sa santé cardiaque car son père est décédé d'un infarctus. Il répond volontiers aux questions mais a besoin d'être rassuré."
     }
   }
 }

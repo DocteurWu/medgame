@@ -681,7 +681,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient inconscient, ne répond pas. L'ami présent est paniqué, parle vite, donne des informations de manière désordonnée.",
       "phraseOuverture": "Oh mon Dieu, oh mon Dieu ! C'est Tristan, il ne répond plus ! On était en train de boire et d'un coup il s'est effondré ! Faites quelque chose !",
       "infosVolontaires": [
         "Tristan ne répond plus depuis environ 15-20 minutes",
@@ -706,7 +705,8 @@
         "brutal": "Je vous demande de vous calmer, je fais mon travail. J'ai besoin que vous répondiez à mes questions clairement.",
         "silence": "Je comprends que vous êtes choqué. Prenez une inspiration. Dites-moi simplement ce qui s'est passé.",
         "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous me l'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient inconscient, ne répond pas. L'ami présent est paniqué, parle vite, donne des informations de manière désordonnée."
     }
   }
 }

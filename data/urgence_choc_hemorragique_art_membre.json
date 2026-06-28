@@ -726,11 +726,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Lucas est un homme de 32 ans, menuisier, conscient mais anxieux et douloureux. Il est coopératif mais agité par la douleur et la vue du sang. Il répond aux questions de façon concise en raison de la douleur et du stress. Il peut poser des questions sur la gravité de son état.",
       "phraseOuverture": "Aïe, aïe, aïe… Docteur, ça saigne beaucoup, j'ai peur… Ma tronçonneuse a glissé sur ma cuisse, je sais pas ce que j'ai mais ça gicle…",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.facteursDeclenchants"
       ],
@@ -748,7 +747,8 @@
         "brutal": "Lucas se raidit, devient moins coopératif et dit : « Vous me faites mal ! Faites attention ! »",
         "silence": "Lucas regarde sa plaie avec inquiétude et dit : « C'est grave, dites-moi que c'est pas grave… »",
         "jargon": "Lucas fronce les sourcils et dit : « Je comprends pas, parlez-moi en français simple s'il vous plaît. »"
-      }
+      },
+      "personnalite": "Lucas est un homme de 32 ans, menuisier, conscient mais anxieux et douloureux. Il est coopératif mais agité par la douleur et la vue du sang. Il répond aux questions de façon concise en raison de la douleur et du stress. Il peut poser des questions sur la gravité de son état."
     }
   }
 }

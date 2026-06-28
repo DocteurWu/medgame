@@ -430,7 +430,7 @@
       "phraseOuverture": "Bonjour docteur, je suis tombé tout à l'heure, je ne comprends pas ce qui m'est arrivé...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "histoireMaladie.facteursDeclenchants",

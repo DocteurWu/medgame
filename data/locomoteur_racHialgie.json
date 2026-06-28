@@ -404,11 +404,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux face à la chronicité de ses douleurs. Il s'inquiète de ne pas avoir de diagnostic après 6 mois de symptômes.",
       "phraseOuverture": "Bonjour docteur, j'ai mal au bas du dos depuis 6 mois et ça ne passe pas malgré le paracétamol. Mon médecin m'a envoyé ici pour qu'on cherche ce que j'ai.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -420,7 +419,8 @@
         "brutal": "Attendez, je ne comprends pas pourquoi vous me posez toutes ces questions sur ma famille, c'est mon dos qui me fait mal !",
         "silence": "Euh... je ne vois pas trop ce que vous voulez dire. Pouvez-vous reformuler ?",
         "jargon": "Pardon, c'est quoi une enthésite ? Et HLA-B27, c'est quoi exactement ?"
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux face à la chronicité de ses douleurs. Il s'inquiète de ne pas avoir de diagnostic après 6 mois de symptômes."
     }
   }
 }

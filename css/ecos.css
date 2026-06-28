@@ -903,3 +903,480 @@ body.ecos-locked {
     .ecos-debrief-header h1 { font-size: 1.3rem; }
     .ecos-debrief-score { font-size: 2.5rem; }
 }
+
+/* ============== CONFIRM DIALOG ============== */
+.ecos-confirm-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11000; /* au-dessus des autres overlays */
+    font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+    animation: fadeIn 0.2s ease-out forwards;
+}
+
+.ecos-confirm-dialog {
+    background: white;
+    color: #1e293b;
+    width: 90%;
+    max-width: 440px;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: scale(0.95);
+    animation: scaleUp 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes scaleUp {
+    from { transform: scale(0.95); }
+    to { transform: scale(1); }
+}
+
+.ecos-confirm-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.ecos-confirm-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.ecos-confirm-body {
+    font-size: 0.95rem;
+    color: #475569;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.ecos-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.ecos-confirm-btn {
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.ecos-confirm-btn-cancel {
+    background: #f1f5f9;
+    color: #475569;
+}
+.ecos-confirm-btn-cancel:hover {
+    background: #e2e8f0;
+}
+
+.ecos-confirm-btn-confirm {
+    background: #00d4ff;
+    color: white;
+}
+.ecos-confirm-btn-confirm:hover {
+    opacity: 0.9;
+}
+.ecos-confirm-btn-confirm.danger {
+    background: #ef4444;
+}
+
+/* Chronomètre en pause */
+.ecos-station-chrono.paused {
+    color: #94a3b8 !important;
+    text-shadow: 0 0 10px rgba(148, 163, 184, 0.3) !important;
+    animation: none !important;
+}
+
+/* Media query pour l'impression du debrief ECOS */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+    #ecos-debrief-overlay, #ecos-debrief-overlay * {
+        visibility: visible !important;
+    }
+    #ecos-debrief-overlay {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        background: white !important;
+        color: black !important;
+        overflow: visible !important;
+        padding: 0 !important;
+    }
+    .ecos-debrief-card {
+        box-shadow: none !important;
+        background: white !important;
+        color: black !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 20px !important;
+        margin: 0 !important;
+        border: none !important;
+    }
+    .ecos-debrief-header h1 {
+        color: black !important;
+    }
+    .ecos-debrief-bar {
+        border: 1px solid #ccc !important;
+        background: #f0f0f0 !important;
+    }
+    .ecos-debrief-bar-fill {
+        background: #4a4a4a !important; /* Couleur neutre d'impression */
+    }
+    .ecos-debrief-grille li {
+        border-bottom: 1px solid #eee !important;
+        background: transparent !important;
+        color: black !important;
+    }
+    .ecos-debrief-grille li.checked {
+        font-weight: bold !important;
+    }
+    .ecos-debrief-footer {
+        display: none !important;
+    }
+}
+
+/* ============== NEW ECOS STYLES ============== */
+
+/* ============== PAUSE OVERLAY ============== */
+.ecos-pause-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    background: rgba(10, 20, 40, 0.65);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+.ecos-pause-card {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 20px;
+    padding: 32px 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: scale(0.95);
+    animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.ecos-pause-card h2 {
+    margin-top: 0;
+    font-size: 1.6rem;
+    color: var(--ecos-primary);
+}
+.ecos-pause-card p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 24px;
+}
+
+/* ============== DARK MODE ============== */
+@media (prefers-color-scheme: dark) {
+    .ecos-vignette-paper {
+        background: #111827;
+        color: #f3f4f6;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    }
+    .ecos-vignette-section {
+        background: rgba(30, 136, 229, 0.08);
+    }
+    .ecos-vignette-section p,
+    .ecos-vignette-section li {
+        color: #e5e7eb;
+    }
+    .ecos-vignette-footer {
+        background: #1f2937;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .ecos-vignette-readtime {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    .ecos-debrief-card {
+        background: #111827;
+        color: #f3f4f6;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+    }
+    .ecos-debrief-section {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .ecos-debrief-section h3 {
+        color: #60a5fa;
+    }
+    .ecos-debrief-bar {
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .ecos-debrief-grille li.checked { background: rgba(46, 204, 113, 0.15); color: #4ade80; }
+    .ecos-debrief-grille li.partial { background: rgba(243, 156, 18, 0.15); color: #fbbf24; }
+    .ecos-debrief-grille li.missed { background: rgba(231, 76, 60, 0.1); color: #f87171; }
+    .ecos-debrief-grille .ecos-check {
+        background: #1f2937;
+    }
+    .ecos-debrief-feedback {
+        background: rgba(30, 136, 229, 0.08);
+        border-top: 1px solid rgba(30, 136, 229, 0.15);
+    }
+    .ecos-debrief-feedback h3 { color: #60a5fa; }
+    .ecos-debrief-footer {
+        background: #1f2937;
+    }
+    .ecos-confirm-dialog {
+        background: #1e293b;
+        color: #f1f5f9;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+    }
+    .ecos-confirm-header h3 {
+        color: #f8fafc;
+    }
+    .ecos-confirm-body {
+        color: #94a3b8;
+    }
+    .ecos-confirm-btn-cancel {
+        background: #334155;
+        color: #cbd5e1;
+    }
+    .ecos-confirm-btn-cancel:hover {
+        background: #475569;
+    }
+}
+
+/* ============== ACCESSIBILITY & FOCUS ============== */
+.ecos-station-actions button:focus-visible,
+.ecos-chat-form input:focus-visible,
+.ecos-chat-form button:focus-visible,
+.ecos-exam-toggle:focus-visible,
+.ecos-exam-form input:focus-visible,
+.ecos-exam-form button:focus-visible,
+.ecos-start-btn:focus-visible,
+.ecos-confirm-btn:focus-visible,
+.ecos-debrief-footer button:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: 2px;
+}
+
+/* ============== TYPING INDICATOR ============== */
+.ecos-typing-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 17px;
+    padding: 0 4px;
+}
+.ecos-typing-indicator span {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: ecosBounce 1.4s infinite ease-in-out both;
+}
+.ecos-typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.ecos-typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes ecosBounce {
+    0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+}
+
+/* ============== KEYFRAME ANIMATIONS ============== */
+@keyframes checkPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+.ecos-grille-item.checked .ecos-check {
+    animation: checkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fillBar {
+    from { width: 0; }
+    to { width: 100%; }
+}
+.ecos-debrief-bar-fill {
+    animation: fillBar 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============== REDUCED MOTION ============== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-delay: 0s !important;
+        animation-duration: 0s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0s !important;
+        scroll-behavior: auto !important;
+        transform: none !important;
+    }
+    .ecos-station-chrono.warning,
+    .ecos-station-chrono.critical {
+        animation: none !important;
+    }
+    .ecos-patient-avatar {
+        animation: none !important;
+    }
+    .ecos-patient-avatar .avatar-glow {
+        animation: none !important;
+    }
+}
+
+/* ============== MARKDOWN TYPOGRAPHY ============== */
+.ecos-md-h3 { color: var(--ecos-primary); margin: 16px 0 8px; font-size: 1.25rem; font-weight: 700; }
+.ecos-md-h4 { color: rgba(255, 255, 255, 0.85); margin: 14px 0 6px; font-size: 1.1rem; font-weight: 600; }
+.ecos-md-h5 { color: rgba(255, 255, 255, 0.7); margin: 10px 0 4px; font-size: 1rem; font-weight: 600; }
+.ecos-md-ul { margin: 8px 0; padding-left: 20px; font-size: 0.95rem; }
+.ecos-md-li { margin: 4px 0; line-height: 1.4; }
+.ecos-md-p { margin: 8px 0; font-size: 0.95rem; line-height: 1.45; }
+
+/* ============== RESPONSIVE EXTRA CONTRAST & SCALING ============== */
+@media (max-width: 640px) {
+    .ecos-station-grid {
+        grid-template-rows: 70px 100px 1fr 160px;
+    }
+    .ecos-station-patient {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 16px;
+        gap: 16px;
+    }
+    .ecos-patient-avatar {
+        width: 60px;
+        height: 60px;
+    }
+    .ecos-patient-name {
+        font-size: 1.1rem;
+    }
+    .ecos-station-chrono {
+        font-size: 1.6rem;
+    }
+    .ecos-icon-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .ecos-chat-form {
+        padding: 10px 16px;
+    }
+    .ecos-chat-form button {
+        width: 40px;
+        height: 40px;
+    }
+    .ecos-exam-input-row {
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ecos-station-grid {
+        grid-template-rows: 60px 80px 1fr 140px;
+    }
+    .ecos-station-patient {
+        padding: 8px 12px;
+    }
+    .ecos-patient-avatar {
+        width: 48px;
+        height: 48px;
+    }
+    .ecos-patient-name {
+        font-size: 1rem;
+    }
+    .ecos-patient-meta {
+        font-size: 0.8rem;
+    }
+    .ecos-station-chrono {
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+    }
+    .ecos-icon-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+    .ecos-chat-form input {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+    .ecos-chat-form button {
+        width: 34px;
+        height: 34px;
+        font-size: 0.9rem;
+    }
+    .ecos-exam-toggle {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+    }
+    .ecos-exam-form input {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+}
+
+/* Integrated ECOS Chat Panel in 2D */
+.ecos-chat-integrated {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.ecos-chat-integrated #dialogue-messages {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+/* Verbatim message styling inside integrated chat */
+.ecos-chat-integrated .dialogue-message {
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    max-width: 85%;
+    line-height: 1.4;
+    font-size: 0.9rem;
+    animation: msgIn 0.25s ease-out forwards;
+}
+
+.ecos-chat-integrated .dialogue-message.from-user {
+    background: rgba(0, 242, 254, 0.1);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    align-self: flex-end;
+    color: #e0ffff;
+}
+
+.ecos-chat-integrated .dialogue-message.from-patient {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    align-self: flex-start;
+    color: #f5f6fa;
+}
+
+.ecos-chat-integrated .dialogue-message strong {
+    color: #4facfe;
+    font-weight: 600;
+}
+

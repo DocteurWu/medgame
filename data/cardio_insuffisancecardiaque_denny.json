@@ -473,7 +473,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, fatigué, essoufflé, légèrement anxieux mais coopératif. Il connaît bien sa maladie car suivi depuis longtemps en cardiologie. Il est conscient de la gravité de son état et de sa situation sur liste de transplantation.",
       "phraseOuverture": "Docteur, je n'arrive plus à respirer, c'est de pire en pire depuis quelques jours. Je suis fatigué en permanence, je n'arrive presque plus à marcher.",
       "infosVolontaires": [
         "Dyspnée sévère d'aggravation progressive",
@@ -497,7 +496,8 @@
         "brutal": "Je vous écoute Docteur, je sais que c'est grave... Je veux juste aller mieux.",
         "silence": "Docteur ? Vous pensez que ça va aller ? J'ai peur...",
         "jargon": "Pardon Docteur, je ne comprends pas ce que vous voulez dire. Pouvez-vous me l'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient jeune, fatigué, essoufflé, légèrement anxieux mais coopératif. Il connaît bien sa maladie car suivi depuis longtemps en cardiologie. Il est conscient de la gravité de son état et de sa situation sur liste de transplantation."
     }
   }
 }

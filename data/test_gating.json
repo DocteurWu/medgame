@@ -387,7 +387,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Femme de 45 ans, ingénieure, plutôt coopérative mais visiblement angoissée par la douleur thoracique. Répond aux questions de façon concise mais peut se montrer inquiète et poser des questions sur la gravité de son état.",
       "phraseOuverture": "Docteur, j'ai une douleur dans la poitrine depuis une heure, ça ne passe pas et je transpire beaucoup… J'ai peur que ce soit le cœur.",
       "infosVolontaires": [
         "douleur thoracique brutale",
@@ -413,7 +412,8 @@
         "brutal": "La patiente se ferme, répond par monosyllabes et manifeste son mécontentement : 'Vous ne m'écoutez pas, j'ai vraiment mal et vous me posez des questions bêtes.'",
         "silence": "La patiente attend la question suivante en regardant l'interne avec anxiété, peut dire : 'C'est grave, docteur ?'",
         "jargon": "La patiente demande des explications : 'Je ne comprends pas ce que vous dites, vous pouvez m'expliquer avec des mots simples ?'"
-      }
+      },
+      "personnalite": "Femme de 45 ans, ingénieure, plutôt coopérative mais visiblement angoissée par la douleur thoracique. Répond aux questions de façon concise mais peut se montrer inquiète et poser des questions sur la gravité de son état."
     }
   }
 }

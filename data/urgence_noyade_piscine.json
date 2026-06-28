@@ -443,7 +443,7 @@
         "Ne pas administrer de sédatifs ou de morphine sans avis spécialisé",
         "Ne pas se mettre en danger (retirer le patient de l'eau soi-même sans équipement)"
       ],
-      "typeStation": "AVEC_PS",
+      "typeStation": "SANS_PS_PSS",
       "domainePrincipal": "Urgence vitale",
       "domaineSecondaire": "Stratégie pertinente de PEC",
       "lieu": "Service d'urgence",
@@ -669,11 +669,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient de 15 ans, inconscient, ne répond pas aux stimuli verbaux. Respire avec difficulté. Pâle, cyanosé, tremblant. Écume rosée aux lèvres. Les parents sont présents, très angoissés.",
-      "phraseOuverture": "[Le patient est inconscient — c'est le sauveteur ou un proche qui parle] « Il a coulé ! On l'a sorti de l'eau, il ne répond plus ! »",
+      "phraseOuverture": "",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.facteursDeclenchants"
       ],
@@ -695,7 +694,8 @@
         "brutal": "[Le parent crie] « Mais faites quelque chose ! Il ne bouge plus ! Pourquoi vous ne faites rien ?! »",
         "silence": "[Le parent est en état de choc, ne parle plus, pleure silencieusement]",
         "jargon": "[Si le candidat utilise du jargon sans expliquer] Le parent répond : « Je comprends pas ce que vous dites, parlez français ! »"
-      }
+      },
+      "personnalite": "Patient de 15 ans, inconscient, ne répond pas aux stimuli verbaux. Respire avec difficulté. Pâle, cyanosé, tremblant. Écume rosée aux lèvres. Les parents sont présents, très angoissés."
     }
   }
 }

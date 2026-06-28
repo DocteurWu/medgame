@@ -382,11 +382,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune femme réservée, légèrement anxieuse, qui minimise initialement ses symptômes. Elle est soulagée d'en parler mais reste gênée. Elle répond volontiers aux questions une fois mise en confiance.",
       "phraseOuverture": "Bonjour docteur, euh… c'est un peu gênant mais j'ai des problèmes de régurgitations après les repas. Ça fait un moment déjà.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -398,7 +397,8 @@
         "brutal": "… Je… je ne suis pas sûre de comprendre pourquoi vous me posez cette question. C'est assez intrusif.",
         "silence": "… (silence gêné) … Vous pouvez répéter la question ?",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là…"
-      }
+      },
+      "personnalite": "Jeune femme réservée, légèrement anxieuse, qui minimise initialement ses symptômes. Elle est soulagée d'en parler mais reste gênée. Elle répond volontiers aux questions une fois mise en confiance."
     }
   }
 }

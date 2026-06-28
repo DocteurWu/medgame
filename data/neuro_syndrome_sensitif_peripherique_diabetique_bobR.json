@@ -372,7 +372,7 @@
       "phraseOuverture": "Bonjour docteur, j'ai des fourmillements dans les pieds depuis quelques mois et je commence à avoir du mal à marcher, surtout le soir.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

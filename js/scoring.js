@@ -51,7 +51,12 @@ window.resetDemarche = resetDemarche;
  * @param {string} fieldPath — chemin du champ (ex: 'interrogatoire.modeDeVie.tabac')
  */
 function trackInterrogatoire(fieldPath) {
-    if (fieldPath) scoringState.demarche.interrogatoireAsked.add(fieldPath);
+    if (fieldPath) {
+        scoringState.demarche.interrogatoireAsked.add(fieldPath);
+        if (window.EcosMode && typeof window.EcosMode.checkItemByFieldPath === 'function') {
+            window.EcosMode.checkItemByFieldPath(fieldPath);
+        }
+    }
 }
 window.trackInterrogatoire = trackInterrogatoire;
 
@@ -82,6 +87,11 @@ window.trackLockUnlocked = trackLockUnlocked;
  */
 function trackExamsOrdered(exams) {
     scoringState.demarche.examsOrdered = exams || [];
+    if (window.EcosMode && typeof window.EcosMode.checkItemByExamName === 'function') {
+        (exams || []).forEach(ex => {
+            window.EcosMode.checkItemByExamName(ex);
+        });
+    }
 }
 window.trackExamsOrdered = trackExamsOrdered;
 
@@ -134,6 +144,7 @@ function calculateDemarcheScore(currentCase) {
     // Histoire de la maladie
     const hm = interro.histoireMaladie || {};
     if (hm.debutSymptomes) interrogatoireFields.push('interrogatoire.histoireMaladie.debutSymptomes');
+    if (hm.descriptionDouleur) interrogatoireFields.push('interrogatoire.histoireMaladie.descriptionDouleur');
     if (hm.evolution) interrogatoireFields.push('interrogatoire.histoireMaladie.evolution');
     if (hm.facteursDeclenchants) interrogatoireFields.push('interrogatoire.histoireMaladie.facteursDeclenchants');
     if (hm.symptomesAssocies) interrogatoireFields.push('interrogatoire.histoireMaladie.symptomesAssocies');
@@ -494,17 +505,6 @@ function calculateStars(compositeScore, hasFatalError, breakdown) {
 
 // ==================== FONCTIONS EXISTANTES (compatibilité) ====================
 
-/**
- * Calcule le score courant basé sur les règles du cas et le nombre de tentatives.
- * @returns {number} Score calculé (minimum 0)
- */
-function calculateScore() {
-    if (!scoringState.currentCase || !scoringState.currentCase.scoringRules) return 0;
-    let baseScore = scoringState.currentCase.scoringRules.baseScore || 100;
-    let attemptPenalty = scoringState.currentCase.scoringRules.attemptPenalty || 10;
-    return Math.max(0, baseScore - (scoringState.attempts * attemptPenalty));
-}
-
 function handleTraitementClick(event) {
     const traitement = event.target.dataset.traitement;
     if (scoringState.selectedTreatments.includes(traitement)) {
@@ -524,63 +524,6 @@ function handleTraitementClick(event) {
             feedbackTimeline.log('traitement', `Traitement ajouté : ${traitement}`);
         }
     }
-}
-
-/**
- * Calcule le score en pourcentage et le bonus temps.
- * Version legacy — calcule un score simple pour compatibilité ascendante.
- * Pour le scoring composite avancé, utiliser calculateCompositeScore().
- * @returns {object} Résultat détaillé avec percentageScore, timeBonus, hasFatalError, etc.
- */
-function calculateDetailedScore() {
-    const currentCase = scoringState.currentCase;
-    if (!currentCase) return { percentageScore: 0, timeBonus: 0, hasFatalError: false, selectedFatalTreatments: [], isCorrect: false, selectedDiagnostic: '', correctDiagnostic: '' };
-    const selectedTreatments = scoringState.selectedTreatments;
-    const correctTreatments = currentCase.correctTreatments || [];
-    const selectedDiagnostic = (document.getElementById('diagnostic-select') || {}).value || '';
-    const correctDiagnostic = currentCase.correctDiagnostic || '';
-
-    const allCorrectSelected = correctTreatments.every(t => selectedTreatments.includes(t));
-    const isCorrect = selectedDiagnostic === correctDiagnostic && allCorrectSelected && selectedTreatments.length === correctTreatments.length;
-
-    // Calculate percentage score
-    let percentageScore = 0;
-    const diagnosticWeight = 50;
-    const treatmentWeight = 50;
-
-    if (selectedDiagnostic === correctDiagnostic) {
-        percentageScore += diagnosticWeight;
-    }
-
-    // Fatal error check
-    const fatalTreatments = currentCase.fatalTreatments || [];
-    const selectedFatalTreatments = selectedTreatments.filter(t => fatalTreatments.includes(t));
-    const hasFatalError = selectedFatalTreatments.length > 0;
-
-    if (correctTreatments.length > 0 && !hasFatalError) {
-        const correctSelectedCount = selectedTreatments.filter(t => correctTreatments.includes(t)).length;
-        const treatmentPointsPerCorrect = treatmentWeight / Math.max(correctTreatments.length, selectedTreatments.length);
-        percentageScore += correctSelectedCount * treatmentPointsPerCorrect;
-    }
-
-    percentageScore = Math.max(0, Math.min(100, Math.round(percentageScore)));
-
-    // Time bonus
-    const totalTime = getTimeLimit();
-    const timeLeftValue = (typeof timerState !== 'undefined' && timerState.timeLeft) || 0;
-    const timeBonus = (timeLeftValue > 0)
-        ? Math.round(10 * (timeLeftValue / totalTime))
-        : 0;
-
-    return {
-        percentageScore,
-        timeBonus,
-        hasFatalError,
-        selectedFatalTreatments,
-        isCorrect,
-        selectedDiagnostic,
-        correctDiagnostic
-    };
 }
 
 /**
@@ -705,7 +648,6 @@ function renderCompositeScorePanel(result) {
 }
 
 window.calculateCompositeScore = calculateCompositeScore;
-window.calculateDetailedScore = calculateDetailedScore;
 window.calculateXpEarned = calculateXpEarned;
 window.calculateStars = calculateStars;
 window.calculateDiagnosticScore = calculateDiagnosticScore;
@@ -713,5 +655,4 @@ window.calculateTraitementScore = calculateTraitementScore;
 window.extractCategories = extractCategories;
 window.renderCompositeScorePanel = renderCompositeScorePanel;
 window.handleTraitementClick = handleTraitementClick;
-window.calculateScore = calculateScore;
 window.SCORING_WEIGHTS = SCORING_WEIGHTS;

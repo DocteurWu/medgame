@@ -12,8 +12,7 @@
     "CARDIO_syncope_cardiaque.json",
     "CARDIO_retrecissement_aortique.json",
     "CARDIO_hta_secondaire_hyperaldosteronisme.json",
-    "CARDIO_angor_stable.json",
-    "patient_test_complet.json"
+    "CARDIO_angor_stable.json"
   ],
   "endocrinologie": [
     "EDN_diabetetype2_1.json",
@@ -87,6 +86,9 @@
   "gynecologie": [
     "GYNECO_test_etat_de_choc.json",
     "urgence_accouchement_inopine.json"
+  ],
+  "pneumologie": [
+    "pneumo_1.json"
   ],
   "urgence": [
     "urgence_accouchement_inopine.json",

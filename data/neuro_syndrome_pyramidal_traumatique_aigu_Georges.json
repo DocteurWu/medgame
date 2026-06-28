@@ -384,11 +384,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient conscient, anxieux, légèrement confus, coopérant mais inquiet de ses troubles moteurs. Interne en chirurgie, il a une certaine culture médicale mais est stressé par sa situation.",
       "phraseOuverture": "Docteur, depuis mon accident de voiture hier, je n'arrive plus à bouger correctement mon bras droit et j'ai du mal à marcher. J'ai très mal à la tête et je suis très inquiet.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -402,7 +401,8 @@
         "brutal": "Le patient se ferme, devient moins coopérant et répond par monosyllabes.",
         "silence": "Le patient remplit le silence en donnant plus de détails sur ses symptômes.",
         "jargon": "Le patient demande des explications : 'Je ne comprends pas, pouvez-vous m'expliquer avec des mots simples ?'"
-      }
+      },
+      "personnalite": "Patient conscient, anxieux, légèrement confus, coopérant mais inquiet de ses troubles moteurs. Interne en chirurgie, il a une certaine culture médicale mais est stressé par sa situation."
     }
   }
 }

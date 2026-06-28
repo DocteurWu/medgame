@@ -340,11 +340,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux concernant sa perte d'autonomie. Il répond volontiers aux questions mais a besoin de reformulations pour les termes médicaux.",
       "phraseOuverture": "Bonjour docteur, j'ai très mal à l'épaule droite depuis longtemps et ça empire. Je n'arrive plus à lever le bras correctement.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels"
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -357,7 +356,8 @@
         "brutal": "Le patient se ferme et répond de manière plus brève.",
         "silence": "Le patient attend la question suivante sans ajouter d'informations.",
         "jargon": "Le patient demande : 'Qu'est-ce que vous voulez dire par là ?' ou 'Je ne comprends pas ce mot.'"
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux concernant sa perte d'autonomie. Il répond volontiers aux questions mais a besoin de reformulations pour les termes médicaux."
     }
   }
 }

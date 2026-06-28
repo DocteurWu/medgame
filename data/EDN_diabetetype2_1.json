@@ -500,7 +500,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Madame DUPONT est une femme de 52 ans, employée de bureau, plutôt coopérative mais légèrement anxieuse à l'idée d'un diagnostic de diabète. Elle minimise initialement ses symptômes et a besoin d'être rassurée. Elle pose des questions sur les conséquences de la maladie et sur les changements à apporter dans sa vie quotidienne.",
       "phraseOuverture": "Bonjour docteur, je suis venue parce que je suis fatiguée depuis des mois, et mon médecin m'a dit qu'il fallait vérifier si je n'avais pas du diabète. Ma mère en a, alors je me demande si c'est ça...",
       "infosVolontaires": [
         "Motif de consultation : fatigue persistante depuis plusieurs mois, suspicion de diabète",
@@ -523,7 +522,8 @@
         "brutal": "Madame DUPONT se ferme, coupe la communication et répond de manière laconique. Elle peut dire : 'Je ne vois pas pourquoi vous me posez toutes ces questions, c'est juste de la fatigue...'",
         "silence": "Madame DUPONT attend que l'interne reprenne la parole. Elle ne complète pas spontanément ses réponses et peut sembler perdue.",
         "jargon": "Madame DUPONT fronce les sourcils et demande : 'C'est quoi ça, HbA1c ? Vous pouvez m'expliquer en termes simples s'il vous plaît ?'"
-      }
+      },
+      "personnalite": "Madame DUPONT est une femme de 52 ans, employée de bureau, plutôt coopérative mais légèrement anxieuse à l'idée d'un diagnostic de diabète. Elle minimise initialement ses symptômes et a besoin d'être rassurée. Elle pose des questions sur les conséquences de la maladie et sur les changements à apporter dans sa vie quotidienne."
     }
   }
 }

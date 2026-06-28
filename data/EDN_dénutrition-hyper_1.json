@@ -426,7 +426,7 @@
       "phraseOuverture": "Bonjour docteur, je vous amène mon fils Kwame, il a 6 ans. Il est très fatigué depuis quelques semaines, il a beaucoup maigri et je m'inquiète beaucoup.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],

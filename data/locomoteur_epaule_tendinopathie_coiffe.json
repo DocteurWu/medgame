@@ -363,7 +363,7 @@
       "personnalite": "Patient coopératif, légèrement inquiet quant à l'impact de sa douleur sur son activité professionnelle. Il est peintre en bâtiment et craint de ne plus pouvoir travailler. Il répond volontiers aux questions mais a besoin d'être rassuré.",
       "phraseOuverture": "Bonjour docteur, j'ai mal à l'épaule droite depuis plusieurs mois et ça empire. J'arrive plus à lever le bras comme avant et ça me gêne beaucoup pour mon travail.",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "histoireMaladie.descriptionDouleur",

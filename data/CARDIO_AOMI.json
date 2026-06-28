@@ -437,8 +437,8 @@
       "personnalite": "Patient coopératif, légèrement inquiet, ancien ouvrier retraité, compréhension correcte mais demande des explications simples.",
       "phraseOuverture": "Bonjour docteur, j'ai mal au mollet droit quand je marche, ça fait quelques mois maintenant et c'est de plus en plus gênant.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],

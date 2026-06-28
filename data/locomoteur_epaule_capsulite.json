@@ -356,8 +356,8 @@
       "personnalite": "Patient coopératif, légèrement anxieux face à la douleur et l'incapacité fonctionnelle",
       "phraseOuverture": "Bonjour docteur, j'ai de plus en plus de mal à bouger mon épaule gauche, ça fait plusieurs semaines et ça ne s'arrange pas.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels"
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

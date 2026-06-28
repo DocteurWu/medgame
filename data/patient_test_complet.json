@@ -471,11 +471,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux, algique, légèrement prostré. Il répond aux questions mais est gêné par la douleur. Il s'attend à être pris en charge rapidement.",
       "phraseOuverture": "Docteur, j'ai une douleur terrible au ventre, ça fait 12 heures que ça dure et ça ne passe pas.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "histoireMaladie.descriptionDouleur",
@@ -496,7 +495,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et montre des signes d'agacement.",
         "silence": "Le patient attend la question suivante sans prendre l'initiative.",
         "jargon": "Le patient demande : 'Qu'est-ce que vous voulez dire ? Je ne comprends pas.'"
-      }
+      },
+      "personnalite": "Patient anxieux, algique, légèrement prostré. Il répond aux questions mais est gêné par la douleur. Il s'attend à être pris en charge rapidement."
     }
   }
 }

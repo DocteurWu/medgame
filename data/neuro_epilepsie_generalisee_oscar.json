@@ -442,11 +442,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif mais inquiet et légèrement confus sur le déroulement exact de l'épisode. Il se souvient du cri initial, de la chute, puis d'un « trou noir » suivi de confusion et de céphalées pendant 30 minutes. Il ne se souvient pas des secousses ni de la morsure de langue (ce sont les témoins qui l'ont informé).",
       "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai fait un malaise ce matin, je ne me souviens plus de grand-chose…",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -461,7 +460,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et semble gêné par le ton directif.",
         "silence": "Le patient attend les questions et ne développe pas spontanément.",
         "jargon": "Le patient demande : « Vous pouvez m'expliquer ce que ça veut dire ? » si le candidat utilise des termes techniques sans les expliciter."
-      }
+      },
+      "personnalite": "Patient coopératif mais inquiet et légèrement confus sur le déroulement exact de l'épisode. Il se souvient du cri initial, de la chute, puis d'un « trou noir » suivi de confusion et de céphalées pendant 30 minutes. Il ne se souvient pas des secousses ni de la morsure de langue (ce sont les témoins qui l'ont informé)."
     }
   }
 }

@@ -400,8 +400,8 @@
       "personnalite": "Patient coopératif, légèrement anxieux par rapport à ses symptômes. Il s'inquiète car les brûlures le réveillent la nuit. Il est ouvert aux conseils mais minimise son tabagisme.",
       "phraseOuverture": "Bonjour docteur, j'ai des brûlures dans la poitrine depuis une semaine, surtout après les repas et quand je me couche. Ça me gêne beaucoup.",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.facteursDeclenchants",
         "histoireMaladie.symptomesAssocies"
       ],
@@ -412,7 +412,7 @@
         "modeDeVie.tabac",
         "modeDeVie.alcool",
         "modeDeVie.alimentation",
-        "traitements.actuels",
+        "traitements",
         "allergies"
       ],
       "infosCachees": [],

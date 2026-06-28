@@ -386,7 +386,7 @@
       "personnalite": "Patient coopératif, légèrement anxieux par rapport à ses symptômes. Il s'inquiète pour sa capacité à exercer son métier de pompier. Il répond volontiers aux questions mais peut minimiser certains symptômes s'il n'est pas spécifiquement interrogé.",
       "phraseOuverture": "Bonjour docteur, ça fait une semaine que j'ai des vertiges terribles quand je me lève, surtout le matin. J'ai peur que ce soit grave.",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.facteursDeclenchants",
         "histoireMaladie.symptomesAssocies",

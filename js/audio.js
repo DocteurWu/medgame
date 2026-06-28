@@ -21,15 +21,18 @@ const MedGameAudio = (function () {
     let audioCtx = null;
     let masterGain = null;
     let isInitialized = false;
-    let isMuted = false;
-    let volume = 0.3;
+    let isMuted = localStorage.getItem('medgame.audio.muted') === 'true';
+    let volume = parseFloat(localStorage.getItem('medgame.audio.volume') ?? '0.3');
 
     /**
      * Initialiser le contexte audio
      * (Doit être appelé après une interaction utilisateur pour Chrome/Edge)
      */
     function init() {
-        if (isInitialized) return;
+        if (isInitialized) {
+            resume();
+            return;
+        }
 
         try {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -37,6 +40,7 @@ const MedGameAudio = (function () {
             masterGain.gain.value = volume;
             masterGain.connect(audioCtx.destination);
             isInitialized = true;
+            resume();
         } catch (e) {
             console.warn('MedGameAudio: Web Audio API not available', e);
         }
@@ -47,7 +51,7 @@ const MedGameAudio = (function () {
      */
     function resume() {
         if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
+            audioCtx.resume().catch(e => console.warn('MedGameAudio: resume failed', e));
         }
     }
 
@@ -222,7 +226,44 @@ const MedGameAudio = (function () {
             createOscillator(523.25, 'sine', now + 0.4, 0.25, 0.22);
             createOscillator(392, 'sine', now + 0.8, 0.6, 0.28);    // G4 (résolution)
             createOscillator(329.63, 'sine', now + 0.9, 0.7, 0.20); // E4
+        },
+
+        timerWarning(secondsLeft) {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            const frequency = secondsLeft <= 10 ? 880 : secondsLeft <= 30 ? 660 : 440;
+            const vol = secondsLeft <= 10 ? 0.3 : secondsLeft <= 30 ? 0.2 : 0.1;
+            const duration = secondsLeft <= 10 ? 0.15 : 0.3;
+
+            createOscillator(frequency, 'sine', now, duration, vol);
+
+            // Double bip pour les 10 dernières secondes
+            if (secondsLeft <= 10) {
+                createOscillator(frequency, 'sine', now + 0.2, duration, vol);
+            }
+        },
+
+        typing() {
+            if (!audioCtx) return;
+            resume();
+            const now = audioCtx.currentTime;
+            createOscillator(900, 'sine', now, 0.05, 0.05);
         }
+    };
+
+    const lastPlayed = {};
+    const THROTTLE_DELAYS = {
+        correct: 500,
+        incorrect: 500,
+        click: 50,
+        reveal: 300,
+        tick: 100,
+        select: 200,
+        ecosBell: 1000,
+        ecosGongStart: 2000,
+        ecosGongEnd: 2000,
+        timerWarning: 200
     };
 
     // ==================== PUBLIC API ====================
@@ -235,12 +276,25 @@ const MedGameAudio = (function () {
 
         /**
          * Jouer un effet sonore
-         * @param {string} name - Nom du son: 'correct', 'incorrect', 'click', 'reveal', 'complete', 'tick', 'alert', 'select'
+         * @param {string} name - Nom du son
+         * @param {*} param - Paramètre optionnel (ex: secondes restantes)
          */
-        play(name) {
-            if (isMuted || !isInitialized) return;
+        play(name, param) {
+            if (isMuted) return;
+            if (!isInitialized) {
+                init();
+            }
+            if (!isInitialized) return;
+
+            const now = Date.now();
+            const delay = THROTTLE_DELAYS[name] || 0;
+            if (delay && lastPlayed[name] && (now - lastPlayed[name] < delay)) {
+                return;
+            }
+            lastPlayed[name] = now;
+
             if (sounds[name]) {
-                sounds[name]();
+                sounds[name](param);
             }
         },
 
@@ -249,6 +303,7 @@ const MedGameAudio = (function () {
          */
         setVolume(v) {
             volume = Math.max(0, Math.min(1, v));
+            localStorage.setItem('medgame.audio.volume', volume);
             if (masterGain) {
                 masterGain.gain.value = volume;
             }
@@ -266,6 +321,7 @@ const MedGameAudio = (function () {
          */
         mute() {
             isMuted = true;
+            localStorage.setItem('medgame.audio.muted', 'true');
         },
 
         /**
@@ -273,6 +329,7 @@ const MedGameAudio = (function () {
          */
         unmute() {
             isMuted = false;
+            localStorage.setItem('medgame.audio.muted', 'false');
         },
 
         /**

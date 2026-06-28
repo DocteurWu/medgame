@@ -358,6 +358,13 @@ onDomReady(async () => {
     function loadCase(isPartialRefresh = false) {
         // Prepare time but don't start timer yet (nurse intro first)
         if (!isPartialRefresh) {
+            if (window.EcosMode && typeof window.EcosMode.stop === 'function') {
+                window.EcosMode.stop();
+            }
+            if (window.feedbackTimeline && typeof window.feedbackTimeline.reset === 'function') {
+                window.feedbackTimeline.reset();
+            }
+
             // Utiliser initTimer pour configurer le timer adaptatif (couleurs, overlay, barre)
             if (typeof initTimer === 'function') {
                 initTimer(undefined, false); // false = ne pas démarrer l'intervalle
@@ -371,7 +378,7 @@ onDomReady(async () => {
             }
             // Reset the "Tout afficher" button for the new case
             const revealBtn = document.getElementById('btn-reveal-all');
-            if (revealBtn) revealBtn.style.display = '';
+            if (revealBtn) revealBtn.style.display = sessionStorage.getItem('immersionMode') === 'immersif' ? 'none' : '';
             
         } else {
             // If partial refresh, we must be careful with NurseIntro
@@ -850,15 +857,35 @@ onDomReady(async () => {
                 currentCase.patient,
                 currentCase.interrogatoire.motifHospitalisation,
                 () => {
-                    // Start the timer only after nurse is dismissed
-                    if (timerState.timerInterval) clearInterval(timerState.timerInterval);
-                    timerState.timerInterval = setInterval(updateTimer, 1000);
+                    if (sessionStorage.getItem('immersionMode') === 'immersif' &&
+                        window.EcosMode &&
+                        !window.EcosMode.isActive()) {
+                        if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) {
+                            if (typeof showNotification === 'function') {
+                                showNotification("⚠️ Mode ECOS non disponible pour les urgences vitales.", "warning");
+                            }
+                            if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+                            timerState.timerInterval = setInterval(updateTimer, 1000);
+                            renderUrgenceState();
+                        } else {
+                            window.EcosMode.start(currentCase);
+                        }
+                    } else {
+                        // Start the timer only after nurse is dismissed
+                        if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+                        timerState.timerInterval = setInterval(updateTimer, 1000);
 
-                    if (urgenceState.isUrgenceMode) renderUrgenceState();
+                        if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) renderUrgenceState();
+                    }
                 }
             );
-        } else if (urgenceState.isUrgenceMode) {
+        } else if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) {
             renderUrgenceState();
+        } else if (sessionStorage.getItem('immersionMode') === 'immersif' &&
+                   window.EcosMode &&
+                   !window.EcosMode.isActive()) {
+            // Partial refresh (e.g. replay), start ECOS directly
+            window.EcosMode.start(currentCase);
         }
 
         // Sync 3D scene with current case data
@@ -871,21 +898,6 @@ onDomReady(async () => {
         // Sync prescription manager with current case
         if (window.prescriptionManager && typeof window.prescriptionManager.setCase === 'function') {
             window.prescriptionManager.setCase(currentCase);
-        }
-
-        // ===== MODE ECOS =====
-        // Si l'utilisateur a activé le mode immersif (= mode ECOS) dans les
-        // paramètres, on démarre le flow ECOS complet : vignette A4 → station
-        // 8 min → annonce → debrief avec grille.
-        // On n'active pas ECOS pour les cas d'urgence (qui ont leur propre flow).
-        if (sessionStorage.getItem('immersionMode') === 'immersif' &&
-            window.EcosMode &&
-            !window.EcosMode.isActive() &&
-            !(typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode)) {
-            // Petit délai pour laisser la page charger
-            setTimeout(() => {
-                window.EcosMode.start(currentCase);
-            }, 350);
         }
     }
 
@@ -1348,12 +1360,17 @@ onDomReady(async () => {
 
     // Validation is now handled solely by validate-traitement.
 
-    nextCaseButton.addEventListener('click', () => {
+    function loadNextCase() {
         if (!gameState.nextCase()) {
             window.location.href = 'index.html';
             return;
         }
         loadCase();
+    }
+    window.loadNextCase = loadNextCase;
+
+    nextCaseButton.addEventListener('click', () => {
+        loadNextCase();
     });
 
     // --- MOBILE TABS LOGIC ---
@@ -1732,6 +1749,7 @@ onDomReady(async () => {
 
     // --- KEYBOARD SHORTCUTS ---
     document.addEventListener('keydown', (e) => {
+        if (window.EcosMode && window.EcosMode.isActive && window.EcosMode.isActive()) return;
         // Ignore if user is typing in an input/select/textarea
         const tag = (e.target.tagName || '').toLowerCase();
         if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
@@ -1786,10 +1804,10 @@ onDomReady(async () => {
     // --- QUIT CONFIRMATION ---
     const quitBtns = document.querySelectorAll('.quit-btn, a[href="index.html"]');
     quitBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', async (e) => {
             e.preventDefault();
             const confirmMsg = 'Quitter la partie ? Votre progression non sauvegardée sera perdue.';
-            if (confirm(confirmMsg)) {
+            if (await ecosConfirm({ title: 'Quitter la partie', message: confirmMsg, confirmLabel: 'Quitter', danger: true })) {
                 window.location.href = 'index.html';
             }
         });
@@ -1833,5 +1851,9 @@ onDomReady(async () => {
             deactivate3DMode();
         }
     });
+
+    window.refreshCaseUI = (isPartial = true) => {
+        loadCase(isPartial);
+    };
 
 });

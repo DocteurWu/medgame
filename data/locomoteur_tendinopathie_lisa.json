@@ -335,7 +335,7 @@
       "personnalite": "Patient coopératif, légèrement anxieux par rapport à la douleur chronique et l'impact sur ses activités quotidiennes",
       "phraseOuverture": "Bonjour docteur, j'ai mal à la hanche gauche depuis quelques mois et ça commence à vraiment me gêner dans ma vie de tous les jours.",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "histoireMaladie"
       ],
       "infosSiDemandees": [

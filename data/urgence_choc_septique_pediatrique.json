@@ -924,11 +924,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Les parents de Léo (représentés par le patient standardisé jouant le rôle du père ou de la mère) sont extrêmement angoissés, inquiets, et très impliqués. Ils répondent aux questions de manière parfois désordonnée, insistent sur la rapidité de l'aggravation et l'apparition des taches cutanées. Ils posent des questions sur le pronostic et la gravité.",
       "phraseOuverture": "Docteur, c'est notre fils Léo, il a 3 ans. Hier il a commencé à avoir très mal à la tête et de la fièvre, et ce matin il ne répondait presque plus… Et regardez, il a des taches rouges qui apparaissent sur les cuisses, ça s'étend très vite ! On a vraiment peur !",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "histoireMaladie.symptomesAssocies",
@@ -947,7 +946,8 @@
         "brutal": "Le parent se braque : « Mais enfin docteur, il faut faire quelque chose ! Regardez-le, il ne répond plus ! Pourquoi vous ne faites rien ?! »",
         "silence": "Le parent reste silencieux un instant, visiblement submergé par l'angoisse, puis murmure : « Il va s'en sortir, n'est-ce pas ? Dites-moi qu'il va s'en sortir… »",
         "jargon": "Le parent semble perdu : « Pardon ? C'est quoi un purpura ? Vous pouvez expliquer avec des mots simples s'il vous plaît ? »"
-      }
+      },
+      "personnalite": "Les parents de Léo (représentés par le patient standardisé jouant le rôle du père ou de la mère) sont extrêmement angoissés, inquiets, et très impliqués. Ils répondent aux questions de manière parfois désordonnée, insistent sur la rapidité de l'aggravation et l'apparition des taches cutanées. Ils posent des questions sur le pronostic et la gravité."
     }
   }
 }

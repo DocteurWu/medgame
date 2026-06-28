@@ -363,11 +363,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, sportif, anxieux mais coopérant. Il a très mal et a peur de la gravité. Il est pressé de savoir s'il pourra rejouer au rugby.",
       "phraseOuverture": "Bonjour docteur, je me suis fait un plaquage au rugby il y a une heure, j'ai très mal à l'épaule droite et je n'arrive plus du tout à bouger mon bras.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.descriptionDouleur"
       ],
@@ -385,7 +384,8 @@
         "brutal": "Aïe ! Vous me faites mal ! Faites attention à mon bras !",
         "silence": "Vous pouvez me dire ce que vous pensez que j'ai ? J'ai vraiment peur que ce soit grave...",
         "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient jeune, sportif, anxieux mais coopérant. Il a très mal et a peur de la gravité. Il est pressé de savoir s'il pourra rejouer au rugby."
     }
   }
 }

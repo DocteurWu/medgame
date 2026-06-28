@@ -681,7 +681,7 @@
         "Ne pas administrer de traitement sans diagnostic étiologique",
         "Ne pas oublier de vérifier la glycémie capillaire"
       ],
-      "typeStation": "AVEC_PS",
+      "typeStation": "SANS_PS_PSS",
       "domainePrincipal": "Urgence vitale",
       "domaineSecondaire": "Stratégie diagnostique",
       "lieu": "Service d'urgence",
@@ -907,11 +907,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient inconscient, ne répond pas aux stimuli verbaux, réagit partiellement à la stimulation douloureuse. Les secouristes présents sont coopérants et fournissent les informations demandées.",
-      "phraseOuverture": "Le patient est inconscient, amené par les secouristes. Il a été trouvé au sol par un collègue de travail il y a environ 20 minutes.",
+      "phraseOuverture": "",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.descriptionDouleur",
         "constantes"
       ],
       "infosSiDemandees": [
@@ -930,7 +929,8 @@
         "brutal": "Les secouristes restent professionnels et répondent factuellement aux questions posées.",
         "silence": "Les secouristes attendent les questions précises et répondent de manière concise.",
         "jargon": "Les secouristes utilisent un vocabulaire simple et adapté, sans jargon excessif."
-      }
+      },
+      "personnalite": "Patient inconscient, ne répond pas aux stimuli verbaux, réagit partiellement à la stimulation douloureuse. Les secouristes présents sont coopérants et fournissent les informations demandées."
     }
   }
 }

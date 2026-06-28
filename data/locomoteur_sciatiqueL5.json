@@ -370,11 +370,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif mais algique, légèrement anxieux concernant la douleur et l'impact sur son travail.",
       "phraseOuverture": "Bonjour docteur, j'ai très mal au bas du dos et ça descend dans la jambe droite, ça fait 10 jours que je souffre.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -387,7 +386,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et semble méfiant.",
         "silence": "Le patient remplit le silence en donnant spontanément plus de détails sur ses symptômes.",
         "jargon": "Le patient semble perdu et demande : 'C'est quoi ça ?' ou 'Je comprends pas, vous pouvez expliquer ?'"
-      }
+      },
+      "personnalite": "Patient coopératif mais algique, légèrement anxieux concernant la douleur et l'impact sur son travail."
     }
   }
 }

@@ -375,11 +375,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieuse, légèrement confuse post-critique, coopérative mais inquiète pour sa santé et son avenir professionnel",
       "phraseOuverture": "Docteur, j'ai fait deux crises d'épilepsie en 24 heures, je ne comprends pas ce qui m'arrive...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],
@@ -397,7 +396,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez toutes ces questions, je veux juste savoir ce que j'ai !",
         "silence": "...",
         "jargon": "Je ne comprends pas ce que vous voulez dire, pouvez-vous m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient anxieuse, légèrement confuse post-critique, coopérative mais inquiète pour sa santé et son avenir professionnel"
     }
   }
 }

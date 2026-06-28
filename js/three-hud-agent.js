@@ -1453,6 +1453,10 @@ export class ThreeHUD {
                                 root2d.scrollTop = root2d.scrollHeight;
                             }
                             chat.messages.push({ role: 'assistant', content: finalResponse });
+
+                            if (window.EcosMode && typeof window.EcosMode.classifyAndCheck === 'function') {
+                                window.EcosMode.classifyAndCheck(question, finalResponse);
+                            }
                         },
                         // Callback en cas d'erreur (Ollama absent, réseau coupé, etc.)
                         (errorMsg) => {

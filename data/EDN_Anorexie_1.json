@@ -396,11 +396,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux, perfectionniste, ayant du mal à exprimer ses émotions. Il minimise ses symptômes et justifie ses restrictions alimentaires par un souhait de 'mieux manger'. Il est méfiant face aux questions sur son poids et son image corporelle.",
       "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques mois et j'ai des problèmes digestifs. Mon médecin m'a envoyé vous voir.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -418,7 +417,8 @@
         "brutal": "Je ne vois pas en quoi c'est votre affaire ce que je mange. Je fais attention à ma santé, c'est tout.",
         "silence": "... (silence prolongé) Je ne sais pas trop quoi répondre...",
         "jargon": "Pardon ? Je ne comprends pas ce que vous voulez dire par là."
-      }
+      },
+      "personnalite": "Patient anxieux, perfectionniste, ayant du mal à exprimer ses émotions. Il minimise ses symptômes et justifie ses restrictions alimentaires par un souhait de 'mieux manger'. Il est méfiant face aux questions sur son poids et son image corporelle."
     }
   }
 }

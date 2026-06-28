@@ -378,7 +378,7 @@
       "phraseOuverture": "Bonjour docteur, c'est pour Lucas, il mange des choses bizarres depuis quelques mois...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

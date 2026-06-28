@@ -458,11 +458,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux, répond précisément aux questions",
       "phraseOuverture": "Bonjour docteur, j'ai mal au thoracique quand je monte les escaliers, ça fait plusieurs mois maintenant.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -474,7 +473,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez autant de questions, je vous ai déjà dit ce que j'avais !",
         "silence": "Euh... je ne sais pas trop quoi dire, c'est vous le médecin...",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là."
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux, répond précisément aux questions"
     }
   }
 }

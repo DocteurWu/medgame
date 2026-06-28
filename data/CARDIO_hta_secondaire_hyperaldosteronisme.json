@@ -414,7 +414,7 @@
       "personnalite": "Patient anxieux, informaticien stressé, inquiet de ne pas pouvoir être opéré à cause de sa tension. Il a entendu parler de l'hypertension mais ne comprend pas pourquoi elle ne se traite pas facilement.",
       "phraseOuverture": "Bonjour docteur, on m'a trouvé une tension trop haute lors de mon bilan pré-op, et mon médecin m'a envoyé ici en urgence. Je ne comprends pas, je ne me sens pas si mal que ça…",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "HTA sévère 165/105",
         "crampes musculaires",
         "fatigue",

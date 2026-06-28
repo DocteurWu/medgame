@@ -378,11 +378,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieuse, légèrement confuse en début de prise en charge, s'améliore rapidement après correction glycémique. Coopérative une fois rassurée.",
       "phraseOuverture": "Docteur, j'ai fait une crise terrible à la maison, je ne comprends pas ce qui m'est arrivé...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -396,7 +395,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me parlez comme ça, je suis malade !",
         "silence": "Vous pouvez me poser des questions, je vous écoute...",
         "jargon": "Pouvez-vous m'expliquer ce que vous voulez dire ? Je ne comprends pas ces termes médicaux."
-      }
+      },
+      "personnalite": "Patient anxieuse, légèrement confuse en début de prise en charge, s'améliore rapidement après correction glycémique. Coopérative une fois rassurée."
     }
   }
 }

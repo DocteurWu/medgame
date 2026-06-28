@@ -426,7 +426,7 @@
       "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des douleurs au ventre, au niveau de l'estomac, qui reviennent depuis plusieurs mois. Ça me fait peur un peu parce que ça ne passe pas.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

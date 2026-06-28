@@ -517,7 +517,7 @@
         "Laisser le patient sans surveillance",
         "Omettre la surveillance rapprochée après administration de Naloxone"
       ],
-      "typeStation": "AVEC_PS",
+      "typeStation": "SANS_PS_PSS",
       "domainePrincipal": "Urgence vitale",
       "domaineSecondaire": "Stréquence pertinente de PEC",
       "lieu": "Service d'urgence — Box de déchocage / SAU",
@@ -761,11 +761,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient comateux, aréactif aux stimulations verbales, réagit partiellement aux stimulations nociceptives. Après administration de Naloxone, le patient se réveille progressivement, est confus, agité, parfois agressif verbalement, et peut présenter des signes de sevrage (tachycardie, sueurs, mydriase, agitation).",
-      "phraseOuverture": "Le patient est inconscient, ne répond pas aux ordres simples. Les secours l'ont retrouvé inanimé dans une ruelle avec une seringue à proximité.",
+      "phraseOuverture": "",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "examenClinique.constantes",
         "examenClinique.aspectGeneral",
         "examenClinique.examenNeurologique.conscience",
@@ -792,7 +791,8 @@
         "brutal": "Le patient standardisé ne réagit pas brutalement — il est comateux. Après Naloxone, il peut devenir agité et agressif verbalement, nécessitant une contention douce et une verbalisation apaisante.",
         "silence": "Le patient ne répond pas aux questions tant qu'il est comateux. Après réveil sous Naloxone, il répond de manière laconique, confuse, parfois hostile.",
         "jargon": "Si l'étudiant utilise du jargon sans explication, le patient standardisé (une fois réveillé) demande : « Qu'est-ce que vous voulez dire ? Je comprends pas. »"
-      }
+      },
+      "personnalite": "Patient comateux, aréactif aux stimulations verbales, réagit partiellement aux stimulations nociceptives. Après administration de Naloxone, le patient se réveille progressivement, est confus, agité, parfois agressif verbalement, et peut présenter des signes de sevrage (tachycardie, sueurs, mydriase, agitation)."
     }
   }
 }

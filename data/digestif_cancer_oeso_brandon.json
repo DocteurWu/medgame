@@ -425,7 +425,7 @@
       "phraseOuverture": "Docteur, j'ai du mal à avaler depuis quelques mois et ça empire. J'ai perdu beaucoup de poids aussi.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.evolution",
         "histoireMaladie.symptomesAssocies"
       ],

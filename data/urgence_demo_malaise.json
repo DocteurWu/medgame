@@ -871,7 +871,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux mais coopératif, légèrement essoufflé, se tenant le thorax. Il répond aux questions de façon concise mais se montre inquiet pour son état de santé.",
       "phraseOuverture": "Docteur, j'ai une douleur très forte dans la poitrine, ça m'a pris d'un coup et ça ne passe pas… J'ai très peur.",
       "infosVolontaires": [
         "Motif : douleur thoracique brutale",
@@ -900,7 +899,8 @@
         "jargon": "Le patient fronce les sourcils et dit : 'Je ne comprends pas, vous pouvez m'expliquer avec des mots simples ?'",
         "empathie": "Le patient se détend visiblement, baisse les épaules et dit : 'Merci docteur, ça me rassure que vous preniez ça au sérieux.'",
         "annonce_gravite": "Le patient pâlit, ses yeux s'écarquillent. Il dit : 'Un infarctus ? Mais je suis trop jeune pour ça… Qu'est-ce que je risque ?'"
-      }
+      },
+      "personnalite": "Patient anxieux mais coopératif, légèrement essoufflé, se tenant le thorax. Il répond aux questions de façon concise mais se montre inquiet pour son état de santé."
     }
   }
 }

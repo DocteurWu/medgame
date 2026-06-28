@@ -401,11 +401,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux mais coopératif. Il est préoccupé par ses symptômes et craint une maladie grave. Il peut être réticent à aborder les questions intimes (sexualité, drogues).",
       "phraseOuverture": "Bonjour docteur, je suis fatigué depuis plusieurs semaines et j'ai perdu du poids sans raison. Je m'inquiète un peu.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",
@@ -423,7 +422,8 @@
         "brutal": "Je ne comprends pas pourquoi vous me posez ces questions... C'est personnel !",
         "silence": "...",
         "jargon": "Je ne comprends pas ce que vous voulez dire. Pouvez-vous m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient anxieux mais coopératif. Il est préoccupé par ses symptômes et craint une maladie grave. Il peut être réticent à aborder les questions intimes (sexualité, drogues)."
     }
   }
 }

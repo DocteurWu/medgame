@@ -149,6 +149,9 @@ export class ThreeScene {
 
         this.collectInteractive();
 
+        // Re-collecter les interactifs quand un GLB async charge (stéthoscope)
+        document.addEventListener('instruments-updated', () => this.collectInteractive());
+
         // Initialisation des Hotspots Cliniques Holographiques
         this._initHotspots();
 

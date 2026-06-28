@@ -415,11 +415,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Jeune homme de 18 ans, étudiant, plutôt coopératif mais anxieux. Il est fatigué, assoiffé et inquiet de sa perte de poids rapide. Il répond aux questions de façon concise mais se montre réceptif aux explications. Il peut poser des questions sur sa maladie une fois le diagnostic annoncé.",
       "phraseOuverture": "Bonjour docteur, je suis vraiment épuisé depuis quelques semaines, je n'arrête pas d'avoir soif et j'ai perdu beaucoup de poids sans comprendre pourquoi.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution"
       ],
@@ -442,7 +441,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et semble se sentir jugé ou bousculé.",
         "silence": "Le patient attend que l'interne reprenne la parole, il ne complète pas spontanément ses réponses.",
         "jargon": "Le patient semble perdu, fronce les sourcils et demande 'C'est quoi ça ?' ou 'Je comprends pas ce que vous dites.'"
-      }
+      },
+      "personnalite": "Jeune homme de 18 ans, étudiant, plutôt coopératif mais anxieux. Il est fatigué, assoiffé et inquiet de sa perte de poids rapide. Il répond aux questions de façon concise mais se montre réceptif aux explications. Il peut poser des questions sur sa maladie une fois le diagnostic annoncé."
     }
   }
 }

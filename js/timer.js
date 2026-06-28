@@ -51,7 +51,11 @@ const timerState = {
     urgencyLevel: 'safe',         // 'safe' | 'warning' | 'critical' | 'danger'
     ratio: 1.0,                   // Temps restant / temps total
     lastAudioWarningAt: -1,       // Dernier seuil sonore déclenché (-1 = aucun)
-    isPaused: false
+    isPaused: false,
+    
+    // Wall-clock timing properties to prevent browser background throttling drift
+    endTime: 0,
+    pausedTimeLeft: 0
 };
 
 window.timerState = timerState;
@@ -107,8 +111,6 @@ function getTimerVisualState(ratio) {
 
 /**
  * Crée ou met à jour la barre de progression sous le timer.
- * @param {number} ratio — 0.0 à 1.0
- * @param {string} color — couleur CSS
  */
 function updateTimerProgressBar(ratio, color) {
     // Désactivé : suppression complète de la barre de progression verte sous le timer
@@ -118,15 +120,20 @@ function updateTimerProgressBar(ratio, color) {
 
 function displayTime(seconds) {
     const totalTime = timerState.totalTime || getTimeLimit();
-    const minutes = Math.floor(Math.max(0, seconds) / 60);
-    const remainingSeconds = Math.max(0, seconds) % 60;
-    const timeStr = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.max(0, seconds) % 60;
+    const timeStr = hrs > 0 
+        ? `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+        : `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
     // Mise à jour du texte du timer
     const timerEl = document.getElementById('timer');
     if (timerEl) timerEl.textContent = timeStr;
     const mobileTimer = document.getElementById('mobile-timer');
     if (mobileTimer) mobileTimer.textContent = timeStr;
+    const ecosChrono = document.getElementById('ecos-chrono');
+    if (ecosChrono) ecosChrono.textContent = timeStr;
 
     // Calcul du ratio et du niveau d'urgence
     const ratio = totalTime > 0 ? Math.max(0, seconds) / totalTime : 1;
@@ -138,7 +145,7 @@ function displayTime(seconds) {
     timerState.urgencyLevel = visual.level;
 
     // Appliquer le style dynamique aux éléments timer
-    const timerEls = [timerEl, mobileTimer].filter(Boolean);
+    const timerEls = [timerEl, mobileTimer, ecosChrono].filter(Boolean);
     timerEls.forEach(el => {
         // Retirer les anciennes classes
         el.classList.remove('warning', 'critical', 'safe');
@@ -198,6 +205,12 @@ function displayTime(seconds) {
  * @param {number} seconds — temps restant en secondes
  */
 function triggerTimerAudioWarnings(seconds) {
+    // Tic-tac des 10 dernières secondes
+    if (seconds <= 10 && seconds > 0 && !timerState.isPaused) {
+        if (typeof MedGameAudio !== 'undefined') {
+            MedGameAudio.play('tick');
+        }
+    }
     // Ne jouer un son qu'une seule fois par seuil
     for (const threshold of TIMER_CONFIG.AUDIO_WARNING_AT) {
         if (seconds <= threshold && timerState.lastAudioWarningAt < threshold) {
@@ -210,49 +223,10 @@ function triggerTimerAudioWarnings(seconds) {
 
 /**
  * Joue un bip d'avertissement sonore.
- * Seuil de 10s → bip rapide et aigu
- * Seuil de 30s → bip moyen
- * Seuil de 60s → bip doux
  */
 function playTimerWarningSound(secondsLeft) {
-    try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-
-        // Plus le temps est court, plus le son est aigu et fort
-        const frequency = secondsLeft <= 10 ? 880 : secondsLeft <= 30 ? 660 : 440;
-        const volume = secondsLeft <= 10 ? 0.3 : secondsLeft <= 30 ? 0.2 : 0.1;
-        const duration = secondsLeft <= 10 ? 0.15 : 0.3;
-
-        oscillator.frequency.value = frequency;
-        oscillator.type = 'sine';
-        gainNode.gain.value = volume;
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-
-        oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + duration + 0.05);
-
-        // Double bip pour les 10 dernières secondes
-        if (secondsLeft <= 10) {
-            const osc2 = audioCtx.createOscillator();
-            const gain2 = audioCtx.createGain();
-            osc2.connect(gain2);
-            gain2.connect(audioCtx.destination);
-            osc2.frequency.value = frequency;
-            osc2.type = 'sine';
-            gain2.gain.value = volume;
-            gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3 + duration);
-            osc2.start(audioCtx.currentTime + 0.2);
-            osc2.stop(audioCtx.currentTime + 0.3 + duration + 0.05);
-        }
-
-        // Fermer le contexte proprement
-        setTimeout(() => audioCtx.close(), 1000);
-    } catch (e) {
-        // AudioContext pas disponible (mobile, CORS, etc.) — silencieux
+    if (typeof MedGameAudio !== 'undefined') {
+        MedGameAudio.play('timerWarning', secondsLeft);
     }
 }
 
@@ -267,7 +241,10 @@ window.deductTime = function (seconds) {
         return true;
     }
     if (timerState.timeLeft <= 0) return false;
+    
     timerState.timeLeft -= seconds;
+    timerState.endTime = Date.now() + timerState.timeLeft * 1000;
+    
     if (timerState.timeLeft <= 0) {
         timerState.timeLeft = 0;
         displayTime(0);
@@ -280,21 +257,31 @@ window.deductTime = function (seconds) {
 // ==================== TICK PRINCIPAL ====================
 
 function updateTimer() {
-    if (timerState.timeLeft > 0) {
-        timerState.timeLeft--;
-        displayTime(timerState.timeLeft);
-    } else if (timerState.timeLeft === 0) {
-        timerState.timeLeft = -1;
+    if (timerState.isPaused) return;
+
+    const remaining = Math.max(0, Math.round((timerState.endTime - Date.now()) / 1000));
+    timerState.timeLeft = remaining;
+
+    displayTime(timerState.timeLeft);
+
+    if (remaining <= 0) {
         clearInterval(timerState.timerInterval);
+        timerState.timerInterval = null;
+        timerState.timeLeft = -1;
         showNotification('Temps écoulé !');
 
         // Mark case as played
         if (timerState.currentCase) {
-            const playedCases = getCookie('playedCases');
-            let arr = playedCases ? playedCases.split(',') : [];
-            if (!arr.includes(timerState.currentCase.id)) {
-                arr.push(timerState.currentCase.id);
-                setCookie('playedCases', arr.join(','), 365);
+            try {
+                let playedCases = localStorage.getItem('playedCases');
+                let arr = playedCases ? JSON.parse(playedCases) : [];
+                if (!Array.isArray(arr)) arr = [];
+                if (!arr.includes(timerState.currentCase.id)) {
+                    arr.push(timerState.currentCase.id);
+                    localStorage.setItem('playedCases', JSON.stringify(arr));
+                }
+            } catch (e) {
+                console.warn("Failed to save played cases to localStorage", e);
             }
         }
 
@@ -341,7 +328,7 @@ function updateTimer() {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 10050; /* overlay au dessus de la vignette si ouverte */
             transition: background-color 1s ease;
         }
     `;
@@ -391,7 +378,15 @@ displayTime = function(seconds) {
 function pauseTimer() {
     if (timerState.timerInterval && !timerState.isPaused) {
         clearInterval(timerState.timerInterval);
+        timerState.timerInterval = null;
         timerState.isPaused = true;
+        timerState.pausedTimeLeft = Math.max(0, Math.round((timerState.endTime - Date.now()) / 1000));
+    }
+    // Si ECOS est actif, suspendre ses intervalles
+    if (window.EcosMode && window.EcosMode.isActive && window.EcosMode.isActive()) {
+        if (typeof window.EcosMode.pause === 'function') {
+            window.EcosMode.pause();
+        }
     }
 }
 window.pauseTimer = pauseTimer;
@@ -402,7 +397,15 @@ window.pauseTimer = pauseTimer;
 function resumeTimer() {
     if (timerState.isPaused && timerState.timeLeft > 0) {
         timerState.isPaused = false;
+        timerState.endTime = Date.now() + timerState.timeLeft * 1000;
+        timerState.pausedTimeLeft = 0;
         timerState.timerInterval = setInterval(updateTimer, 1000);
+    }
+    // Si ECOS est actif, reprendre ses intervalles
+    if (window.EcosMode && window.EcosMode.isActive && window.EcosMode.isActive()) {
+        if (typeof window.EcosMode.resume === 'function') {
+            window.EcosMode.resume();
+        }
     }
 }
 window.resumeTimer = resumeTimer;
@@ -421,6 +424,8 @@ function initTimer(customDuration, startInterval = true) {
     timerState.totalTime = duration;
     timerState.lastAudioWarningAt = -1;
     timerState.isPaused = false;
+    timerState.pausedTimeLeft = 0;
+    timerState.endTime = Date.now() + duration * 1000;
 
     // Détection automatique du mode ECOS
     if (sessionStorage.getItem('immersionMode') === 'immersif') {

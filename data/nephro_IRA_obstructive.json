@@ -451,11 +451,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopératif, légèrement anxieux, fatigué. Il répond aux questions de façon concise mais se montre préoccupé par ses douleurs et la baisse de ses urines. Il minimise spontanément sa prise d'ibuprofène.",
       "phraseOuverture": "Bonjour docteur, j'ai très mal au rein droit depuis 5 jours et je n'arrive presque plus à uriner. Ça ne va pas du tout.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "histoireMaladie.symptomesAssocies"
@@ -476,7 +475,8 @@
         "brutal": "Le patient se ferme, répond par monosyllabes et semble méfiant.",
         "silence": "Le patient attend la question suivante sans prendre l'initiative.",
         "jargon": "Le patient demande : 'C'est quoi ça ?' ou 'Je comprends pas, expliquez-moi autrement.'"
-      }
+      },
+      "personnalite": "Patient coopératif, légèrement anxieux, fatigué. Il répond aux questions de façon concise mais se montre préoccupé par ses douleurs et la baisse de ses urines. Il minimise spontanément sa prise d'ibuprofène."
     }
   }
 }

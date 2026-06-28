@@ -440,10 +440,9 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, étudiant, plutôt coopératif mais légèrement anxieux face à ses symptômes neurologiques. Il décrit ses symptômes de manière assez précise car il a fait des recherches sur internet. Il s'inquiète pour son avenir et pose des questions sur la gravité de ses troubles.",
       "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai des fourmillements dans les deux pieds depuis environ deux semaines, et ça remonte maintenant jusqu'au ventre. J'ai aussi du mal à tenir en équilibre et j'ai eu des problèmes pour uriner récemment. Ça m'inquiète un peu.",
       "infosVolontaires": [
-        "motifConsultation",
+        "motifHospitalisation",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "histoireMaladie.descriptionDouleur",
@@ -464,7 +463,8 @@
         "brutal": "Attendez, vous pouvez y aller doucement s'il vous plaît, ça me stresse un peu tout ça.",
         "silence": "Vous avez une idée de ce que j'ai ? Parce que j'ai lu des choses sur internet et je m'inquiète...",
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Vous pouvez m'expliquer avec des mots plus simples ?"
-      }
+      },
+      "personnalite": "Patient jeune, étudiant, plutôt coopératif mais légèrement anxieux face à ses symptômes neurologiques. Il décrit ses symptômes de manière assez précise car il a fait des recherches sur internet. Il s'inquiète pour son avenir et pose des questions sur la gravité de ses troubles."
     }
   }
 }

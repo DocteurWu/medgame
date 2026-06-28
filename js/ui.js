@@ -135,7 +135,7 @@ function showImageModal(src, caption) {
     if (img) img.alt = caption || '';
     if (cap) cap.textContent = caption || '';
     if (overlay) overlay.style.display = 'flex';
-    currentZoom = 1;
+    uiState.currentZoom = 1;
     updateImageZoom();
 }
 
@@ -148,13 +148,12 @@ function hideImageModal() {
 
 function updateImageZoom() {
     const img = document.getElementById('image-modal-img');
-    if (img) img.style.transform = `scale(${currentZoom})`;
+    if (img) img.style.transform = `scale(${uiState.currentZoom})`;
 }
 
 window.showImageModal = showImageModal;
-let currentZoom = 1;
 window.zoomImage = (delta) => {
-    currentZoom = Math.min(Math.max(currentZoom + delta, 0.5), 3);
+    uiState.currentZoom = Math.min(Math.max(uiState.currentZoom + delta, 0.5), 3);
     updateImageZoom();
 };
 
@@ -195,9 +194,19 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
     if (!element) return;
 
     // En mode ECOS, on n'affiche PAS les boutons "❓" — l'étudiant doit poser
-    // ses questions librement via le chat. On laisse l'élément vide (ou on
-    // affiche un placeholder si le cas définit un message par défaut).
+    // ses questions librement via le chat.
     if (sessionStorage.getItem('immersionMode') === 'immersif') {
+        const asked = window.scoringState?.demarche?.interrogatoireAsked?.has(path);
+        if (asked) {
+            element.removeAttribute('data-locked');
+            if (isHtml) {
+                element.innerHTML = value ?? '';
+            } else {
+                element.textContent = value ?? '';
+            }
+            return;
+        }
+
         if (path && isFieldLocked(path)) {
             const currentCase = lockSystem.currentCase || gameState.currentCase;
             const placeholder = renderLockPlaceholder(path, currentCase);
@@ -205,8 +214,9 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
                 element.setAttribute('data-locked', 'true');
                 element.innerHTML = placeholder;
             }
+        } else {
+            element.innerHTML = `<span style="color: rgba(255,255,255,0.25); font-style: italic; font-size: 0.82rem;"><i class="fas fa-keyboard"></i> À demander par chat...</span>`;
         }
-        // En ECOS, on ne révèle pas la valeur statique — l'étudiant doit la demander au patient
         return;
     }
 
@@ -311,6 +321,15 @@ window.revealAllInterrogatoire = function() {
 // ==================== INIT ====================
 
 function initUI() {
+    uiState.backgroundMusicEl = document.getElementById('heartbeat-audio');
+
+    if (sessionStorage.getItem('immersionMode') === 'immersif') {
+        const revealBtn = document.getElementById('btn-reveal-all');
+        if (revealBtn) revealBtn.style.display = 'none';
+        const openPrescriptionBtn = document.getElementById('btn-open-prescription');
+        if (openPrescriptionBtn) openPrescriptionBtn.style.display = 'none';
+    }
+
     // Correction modal controls
     const correctionBack = document.getElementById('correction-back');
     if (correctionBack) correctionBack.addEventListener('click', hideCorrectionModal);
@@ -318,6 +337,9 @@ function initUI() {
     // Prescription modal open button
     const openPrescriptionBtn = document.getElementById('btn-open-prescription');
     if (openPrescriptionBtn) {
+        if (sessionStorage.getItem('immersionMode') === 'immersif') {
+            openPrescriptionBtn.style.display = 'none';
+        }
         openPrescriptionBtn.addEventListener('click', () => {
             if (window.prescriptionManager && typeof window.prescriptionManager.open === 'function') {
                 window.prescriptionManager.open();

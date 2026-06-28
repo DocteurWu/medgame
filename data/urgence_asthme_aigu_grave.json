@@ -725,7 +725,6 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, conscient, extrêmement anxieux et agité par la sensation d'asphyxie. Il est en détresse respiratoire majeure : orthopnée stricte, tirage, sueurs, impossible de faire des phrases complètes (ne répond que par mots isolés ou hochements de tête). Il est coopérant mais paniqué. Il répond aux questions brèves par oui/non ou par des mots uniques.",
       "phraseOuverture": "*Haletant, penché en avant, mains sur les genoux* « Je... je peux plus... respirer... le chat... Ventoline... marche pas... je vais mourir... »",
       "infosVolontaires": [
         "motifHospitalisation",
@@ -750,7 +749,8 @@
         "brutal": "*Tousse, s'agite davantage* « Mais... répondez-moi... je peux pas respirer là ! » (le patient montre une aggravation de son anxiété et de sa détresse)",
         "silence": "*Regarde l'interne avec des yeux écarquillés, halète intensément* (le patient attend une action immédiate, le silence est mal vécu en contexte de détresse respiratoire)",
         "jargon": "*Confus, secoue la tête* « Je comprends pas... les mots... dites-moi en mots simples... »"
-      }
+      },
+      "personnalite": "Patient jeune, conscient, extrêmement anxieux et agité par la sensation d'asphyxie. Il est en détresse respiratoire majeure : orthopnée stricte, tirage, sueurs, impossible de faire des phrases complètes (ne répond que par mots isolés ou hochements de tête). Il est coopérant mais paniqué. Il répond aux questions brèves par oui/non ou par des mots uniques."
     }
   }
 }

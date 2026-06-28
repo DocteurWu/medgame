@@ -391,11 +391,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient anxieux, gêné par sa situation, tendance à minimiser les symptômes. Peu loquace au début mais se livre progressivement si mis en confiance. Exprime de la honte et de la culpabilité.",
       "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai pris beaucoup de poids ces derniers temps et je n'arrive pas à contrôler ce que je mange...",
       "infosVolontaires": [
-        "motifConsultation",
-        "histoireMaladie.symptomesActuels",
+        "motifHospitalisation",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes"
       ],
       "infosSiDemandees": [
@@ -416,7 +415,8 @@
         "brutal": "Le patient se ferme, baisse les yeux et répond par monosyllabes. Il peut dire : 'Je ne vois pas pourquoi vous me posez cette question...'",
         "silence": "Le patient met quelques secondes à répondre, semble chercher ses mots. Il peut dire : 'C'est difficile à expliquer...'",
         "jargon": "Le patient semble perdu et demande : 'Qu'est-ce que vous voulez dire par là ?' ou 'Je ne comprends pas le terme...'"
-      }
+      },
+      "personnalite": "Patient anxieux, gêné par sa situation, tendance à minimiser les symptômes. Peu loquace au début mais se livre progressivement si mis en confiance. Exprime de la honte et de la culpabilité."
     }
   }
 }

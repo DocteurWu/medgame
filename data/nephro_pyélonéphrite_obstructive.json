@@ -388,7 +388,7 @@
       "phraseOuverture": "Bonjour docteur, j'ai très mal au dos à droite et j'ai beaucoup de fièvre. Je crois que c'est encore un calcul...",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

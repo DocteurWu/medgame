@@ -337,7 +337,7 @@
       "phraseOuverture": "Bonjour docteur, c'est moi qui ai remarqué que le dos de Camille n'était pas droit. Ça fait quelques mois et ça semble s'aggraver.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels"
+        "histoireMaladie.symptomesAssocies"
       ],
       "infosSiDemandees": [
         "antecedents.medicaux",

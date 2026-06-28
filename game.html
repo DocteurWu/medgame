@@ -67,11 +67,7 @@
         }
     </script>
 
-    <!-- Hidden containers for patientChat.js compatibility -->
-    <div id="dialogue-panel" style="display:none;" aria-hidden="true">
-        <div id="dialogue-messages"></div>
-        <form id="dialogue-form"><input id="dialogue-input" type="text" /></form>
-    </div>
+
 
     <div id="three-overlay" class="three-overlay" style="display:none;">
         <div class="hud-cinematic-vignette" aria-hidden="true"></div>
@@ -220,6 +216,9 @@
                     style="display: none; color: #ff4757; text-shadow: 0 0 5px rgba(255, 71, 87, 0.5);">
                     <i class="fas fa-bolt" aria-hidden="true"></i> Intervention Vite!
                 </button>
+                <button class="nav-item" data-target="section-ecos-grille" role="tab" aria-selected="false" aria-controls="section-ecos-grille" id="nav-ecos-grille">
+                    <i class="fas fa-clipboard-list" aria-hidden="true"></i> Grille d'évaluation
+                </button>
                 <button class="nav-item" data-target="section-synthese" role="tab" aria-selected="false" aria-controls="section-synthese">
                     <i class="fas fa-check-circle" aria-hidden="true"></i> Synthèse & Décision
                 </button>
@@ -237,7 +236,12 @@
             </div>
 
             <div class="sidebar-footer">
-                <div id="timer" class="timer-display" role="timer" aria-label="Temps écoulé" aria-live="off">00:00</div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; width: 100%;">
+                    <div id="timer" class="timer-display" role="timer" aria-label="Temps écoulé" aria-live="off" style="margin: 0; flex: 1;">00:00</div>
+                    <button id="btn-pause-timer" style="display: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" title="Mettre en pause / reprendre">
+                        <i class="fas fa-pause"></i>
+                    </button>
+                </div>
                 <a href="index.html" class="quit-btn" aria-label="Quitter le cas et retourner à l'accueil">QUITTER</a>
             </div>
         </aside>
@@ -246,9 +250,14 @@
         <main class="main-content" id="main-content" role="main">
 
             <header class="top-bar">
-                <div class="case-info">
-                    <span class="label">MOTIF D'ADMISSION</span>
-                    <h2 id="motif-hospitalisation">Chargement...</h2>
+                <div class="case-info" style="display:flex; align-items:center; gap:15px;">
+                    <div>
+                        <span class="label">MOTIF D'ADMISSION</span>
+                        <h2 id="motif-hospitalisation">Chargement...</h2>
+                    </div>
+                    <button id="btn-view-vignette" class="btn-3d" style="margin-left: 20px; padding: 8px 16px; font-size: 0.85rem; border-color: rgba(52, 152, 219, 0.4); background: rgba(52, 152, 219, 0.15); border-radius: 20px; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" title="Voir la vignette clinique">
+                        <i class="fas fa-file-alt" style="color: #3498db;"></i> Vignette
+                    </button>
                 </div>
 
                 <!-- Compact Vitals pour Mobile -->
@@ -289,6 +298,15 @@
 
                     <div id="patient-verbatim-container" class="verbatim-container">
 
+                    </div>
+
+                    <!-- Integrated ECOS Chat Panel inside Anamnèse section -->
+                    <div id="dialogue-panel" style="display: flex !important; flex-direction: column; height: 350px; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 20px;" class="ecos-chat-integrated" aria-hidden="false">
+                        <div id="dialogue-messages" style="flex: 1; overflow-y: auto; margin-bottom: 12px; padding-right: 5px; display: flex; flex-direction: column; gap: 8px;"></div>
+                        <form id="dialogue-form" style="display: flex; gap: 10px; align-items: center;">
+                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Posez une question au patient (ex: Où avez-vous mal ?)..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem;" />
+                            <button type="submit" style="background: linear-gradient(135deg,#00f2fe,#4facfe); border: none; color: #0a0f28; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                        </form>
                     </div>
 
                     <div class="grid-layout">
@@ -370,6 +388,12 @@
                             <!-- Note: Vitals sont dans la sidebar. This contains only body exams. -->
                             <h3 class="card-title">Examen par appareil</h3>
 
+                            <!-- ECOS Geste Clinique Text input -->
+                            <div class="ecos-exam-input-row-2d" style="margin-bottom: 20px; display: flex; gap: 10px; background: rgba(52, 152, 219, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(52, 152, 219, 0.15);">
+                                <input id="ecos-exam-input-physique-2d" type="text" autocomplete="off" placeholder="Saisissez un geste d'examen clinique (ex: auscultation cardiaque)..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem;" />
+                                <button id="ecos-exam-submit-physique-2d" style="background: #3498db; border: none; color: white; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;"><i class="fas fa-search"></i> Réaliser</button>
+                            </div>
+
                             <div class="exam-details-grid">
                                 <!-- Dynamically populated by JS -->
                             </div>
@@ -381,6 +405,13 @@
                 <section id="section-examens" class="game-section" role="tabpanel" aria-labelledby="nav-examens">
                     <h2 class="section-header">3. EXAMENS COMPLÉMENTAIRES</h2>
                     <div class="medical-card full-width" id="examens">
+                        
+                        <!-- ECOS Exam Prescription Text input -->
+                        <div class="ecos-exam-input-row-2d" style="margin-bottom: 20px; display: flex; gap: 10px; background: rgba(52, 152, 219, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(52, 152, 219, 0.15);">
+                            <input id="ecos-exam-input-comp-2d" type="text" autocomplete="off" placeholder="Saisissez un examen complémentaire à prescrire (ex: ECG, NFS)..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem;" />
+                            <button id="ecos-exam-submit-comp-2d" style="background: #3498db; border: none; color: white; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;"><i class="fas fa-search"></i> Demander</button>
+                        </div>
+
                         <div class="exam-categories">
                             <!-- Populated by JS -->
                         </div>
@@ -404,6 +435,26 @@
                             <div id="urgence-actions-container" class="treatments-grid"
                                 style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
                                 <!-- Boutons d'action générés dynamiquement par game.js -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECTION: GRILLE ECOS -->
+                <section id="section-ecos-grille" class="game-section" role="tabpanel" aria-labelledby="nav-ecos-grille">
+                    <h2 class="section-header">Grille d'évaluation ECOS (R2C)</h2>
+                    <div class="medical-card full-width" style="background: rgba(10, 15, 30, 0.65); border: 1px solid rgba(0, 242, 254, 0.15);">
+                        <p style="color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-bottom: 20px;">
+                            Cette grille se remplit automatiquement en fonction de vos questions au patient et de vos demandes d'examens.
+                        </p>
+                        <div class="ecos-grille-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 300px;">
+                                <h3 class="card-title" style="margin-bottom: 12px; color: #00f2fe; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;"><i class="fas fa-stethoscope"></i> Démarche clinique</h3>
+                                <ul class="ecos-grille-list" id="ecos-grille-apt-2d" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+                            </div>
+                            <div style="flex: 1; min-width: 300px;">
+                                <h3 class="card-title" style="margin-bottom: 12px; color: #ffb347; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;"><i class="fas fa-comments"></i> Communication</h3>
+                                <ul class="ecos-grille-list" id="ecos-grille-comm-2d" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
                             </div>
                         </div>
                     </div>
@@ -572,10 +623,14 @@
     <script src="js/prescription.js?v=2"></script>
     <script src="js/player_map.js?v=2"></script>
     <script src="js/clinicalAgentAI.js?v=2"></script>
+    <script src="js/ecos-dialog.js?v=2"></script>
     <script src="js/ecosMode.js?v=2"></script>
 
-    <!-- LLMPatient (ES module) — doit être chargé en module pour qu'il enregistre window.LLMPatient -->
-    <script type="module" src="js/llm-patient.js?v=2"></script>
+    <!-- Modules LLM : client unifié, cache LRU, fallback rule-based, puis patient (ES module) -->
+    <script src="js/llm-client.js?v=3"></script>
+    <script src="js/llm-cache.js?v=3"></script>
+    <script src="js/llm-fallback.js?v=3"></script>
+    <script type="module" src="js/llm-patient.js?v=3"></script>
 
     <!-- 3D Modules -->
     <script type="module" src="js/three-cache-control.js?v=20260524-nostore"></script>

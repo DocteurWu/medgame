@@ -395,11 +395,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient jeune, légèrement anxieux du fait de la douleur et de la localisation des symptômes. Il est coopérant mais gêné de parler de sa vie sexuelle. Il répond volontiers aux questions médicales mais peut être évasif sur les questions intimes si elles ne sont pas posées avec tact.",
       "phraseOuverture": "Bonjour docteur, j'ai très mal à la bourse droite depuis deux jours, ça ne passe pas et j'ai de la fièvre.",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.evolution",
         "examenClinique.constantes.temperature",
@@ -422,7 +421,8 @@
         "brutal": "Attendez, pourquoi vous me posez ça ? C'est pas mes habitudes qu'il faut regarder !",
         "silence": "... (silence gêné) Bah... j'ai mal, c'est tout ce que je sais.",
         "jargon": "Pardon, je comprends pas ce que vous dites. Vous pouvez m'expliquer avec des mots simples ?"
-      }
+      },
+      "personnalite": "Patient jeune, légèrement anxieux du fait de la douleur et de la localisation des symptômes. Il est coopérant mais gêné de parler de sa vie sexuelle. Il répond volontiers aux questions médicales mais peut être évasif sur les questions intimes si elles ne sont pas posées avec tact."
     }
   }
 }

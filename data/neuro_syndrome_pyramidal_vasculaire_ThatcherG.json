@@ -406,11 +406,10 @@
       }
     ],
     "patientStandardise": {
-      "personnalité": "Patient coopérant, légèrement anxieux mais conscient et orienté. Il s'exprime avec une légère dysarthrie. Il est inquiet pour sa santé et pose des questions sur la gravité de son état.",
       "phraseOuverture": "Docteur, je n'arrive plus à bouger mon côté droit, c'est arrivé d'un coup, et j'ai du mal à marcher…",
       "infosVolontaires": [
         "motifHospitalisation",
-        "histoireMaladie.symptomesActuels",
+        "histoireMaladie.symptomesAssocies",
         "histoireMaladie.debutSymptomes",
         "histoireMaladie.symptomesAssocies"
       ],
@@ -428,7 +427,8 @@
         "brutal": "Le patient se montre surpris et légèrement agacé si l'interne le brusque ou ne lui laisse pas le temps de répondre. Il peut répondre de manière laconique.",
         "silence": "Le patient attend que l'interne le guide. En l'absence de questions, il ne fournit pas spontanément d'informations supplémentaires.",
         "jargon": "Le patient demande des explications si l'interne utilise des termes médicaux incompréhensibles : 'Qu'est-ce que ça veut dire, un syndrome pyramidal ?' ou 'C'est quoi une hémiparésie ?'"
-      }
+      },
+      "personnalite": "Patient coopérant, légèrement anxieux mais conscient et orienté. Il s'exprime avec une légère dysarthrie. Il est inquiet pour sa santé et pose des questions sur la gravité de son état."
     }
   }
 }
