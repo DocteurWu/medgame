@@ -151,6 +151,12 @@ export class ThreeScene {
 
         // Re-collecter les interactifs quand un GLB async charge (stéthoscope)
         document.addEventListener('instruments-updated', () => this.collectInteractive());
+        document.addEventListener('patient-model-changed', () => {
+            if (this.patientAnimator) {
+                this.patientAnimator.reset();
+            }
+            this.collectInteractive();
+        });
 
         // Initialisation des Hotspots Cliniques Holographiques
         this._initHotspots();
@@ -236,10 +242,7 @@ export class ThreeScene {
         this.scene.add(this.hotspotsGroup);
 
         const hotspotsData = [
-            { id: 'tête', pos: [1.2, 1.18, -3.62], color: 0xa020f0, label: 'Patient - Tête' },
-            { id: 'torse', pos: [1.2, 1.14, -3.35], color: 0x00f2fe, label: 'Patient - Torse' },
-            { id: 'abdomen', pos: [1.2, 1.10, -3.10], color: 0xff9f43, label: 'Patient - Abdomen' },
-            { id: 'membre', pos: [1.2, 1.05, -2.70], color: 0x2ecc71, label: 'Patient - Membre' }
+            { id: 'tête', pos: [1.2, 1.18, -3.62], color: 0xa020f0, label: 'Patient - Tête' }
         ];
 
         hotspotsData.forEach(data => {
@@ -466,7 +469,7 @@ export class ThreeScene {
             patient: isLying 
                 ? { pos: [4, 3.6, 3], target: [5.2, 1.8, 0.4] }
                 : { pos: [1.8, 2.1, -1.1], target: [1.2, 1.15, -3.45] },
-            desk: { pos: [-4, 3.8, 2.8], target: [-5, 2.4, -0.5] },
+            desk: { pos: [-4.8, 2.2, 1.2], target: [-3.3, 1.4, -0.3] },
             cabinet: { pos: [1.5, 3.2, -1.8], target: [3.5, 3.2, -4] },
             anatomy: { pos: [-3, 3.8, -1.2], target: [-5.1, 3.8, -1.6] }
         };
@@ -1165,6 +1168,9 @@ export class ThreeScene {
         // Animation du patient (respiration, clignements, expression)
         if (this.patientAnimator) {
             this.patientAnimator.update(elapsed, dt);
+        }
+        if (this.patient && this.patient.update) {
+            this.patient.update(elapsed, dt);
         }
 
         // Animation des instruments (LED pulsante, etc.)

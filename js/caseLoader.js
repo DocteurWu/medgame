@@ -9,7 +9,7 @@
 const caseLoaderCache = {
     memory: new Map(),
     localStorageKey: 'medgame_case_cache',
-    ttl: 10 * 60 * 1000,
+    ttl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 0 : 10 * 60 * 1000,
 
     get(key) {
         const cached = this.memory.get(key);

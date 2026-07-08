@@ -1502,6 +1502,13 @@ onDomReady(async () => {
             showNotification(`Session démarrée : ${gameState.cases.length} cas chargé(s)`);
             playSound('reveal');
             loadCase();
+
+            // Auto-activer le mode 3D par défaut ou si déjà actif en session
+            const wantsTextMode = localStorage.getItem('medgame_text_mode_default') === 'true';
+            const wasIn3D = sessionStorage.getItem('use3D') === 'true';
+            if ((wasIn3D || !wantsTextMode) && window.innerWidth >= 768) {
+                activate3DMode();
+            }
         }
         displayTime(timerState.timeLeft);
     }
@@ -1820,7 +1827,13 @@ onDomReady(async () => {
             showNotification('Mode 3D non disponible');
             return;
         }
-        await manager.toggle3D();
+        if (!manager.enabled) {
+            await manager.toggle3D();
+        } else {
+            if (manager.transition) {
+                await manager.transition.transitionTo3D();
+            }
+        }
     }
 
     async function deactivate3DMode() {

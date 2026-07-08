@@ -4,6 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+            try {
+                localStorage.removeItem('medgame_case_cache');
+                if ('caches' in window) {
+                    caches.keys().then(names => {
+                        names.forEach(name => caches.delete(name));
+                    });
+                }
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(regs => {
+                        regs.forEach(reg => reg.unregister());
+                    });
+                }
+                console.info('[Dev Cache Buster] Case cache, service workers and Cache Storage cleared.');
+            } catch (e) {
+                console.warn('[Dev Cache Buster] Failed to clear dev caches:', e);
+            }
+        }
+    </script>
     <meta name="description" content="MedGame - Simulation médicale clinique pour étudiants en médecine">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -630,16 +650,14 @@
     <script src="js/llm-client.js?v=3"></script>
     <script src="js/llm-cache.js?v=3"></script>
     <script src="js/llm-fallback.js?v=3"></script>
+    <script src="js/MedicalGameManager.js?v=2"></script>
     <script type="module" src="js/llm-patient.js?v=3"></script>
 
     <!-- 3D Modules -->
-    <script type="module" src="js/three-cache-control.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-animations.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-room.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-instruments.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-patient.js?v=20260524-nostore"></script>
-    <script type="module" src="js/three-doctor.js?v=20260524-nostore"></script>
-    <script type="module" src="js/three-background.js?v=20260524-nostore"></script>
 
     <!-- 3D Agent Modules -->
     <script type="module" src="js/three-asset-agent.js?v=20260524-nostore"></script>
@@ -653,7 +671,6 @@
     <script type="module" src="js/three-lock-agent.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-manager.js?v=20260524-nostore"></script>
 
-    <!-- 3D Manager is loaded as ES module above (line 461) -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="js/game.js?v=20251220-1645"></script>

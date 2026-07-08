@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createMaterial } from './three-room.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 /**
  * three-patient.js — Modèle patient procédural avec visage détaillé
@@ -25,11 +26,20 @@ export class ThreePatient {
         this.sweatMat = null;
         this._bloodGroup = null;
         this._currentPosition = 'allonge';
+        this._lastLoadId = 0;
+        this.mixer = null;
+        this.glbSkinMaterials = [];
+        this._currentSkinColor = 0xd7a87a;
+        this._currentEmissiveColor = 0x1a0800;
+        this._currentEmissiveIntensity = 0.04;
         this.loadCase({ patient: { position3D: 'allonge', tenue: 'bleu', expression: 'normal' } });
     }
 
     loadCase(caseData) {
         this.group.clear();
+        this.mixer = null;
+        this.glbSkinMaterials = [];
+        
         const patient = caseData?.patient || {};
         const position = patient.position3D || 'allonge';
         this._currentPosition = position;
@@ -54,9 +64,11 @@ export class ThreePatient {
         });
 
         // Position Y ajustée pour que le patient soit posé sur le lit/chaise
-        const seatY = position === 'allonge' ? 0.08 : -0.175;
-        this.group.position.set(position === 'allonge' ? 4.7 : 1.2, seatY, position === 'allonge' ? 0.2 : -3.5);
+        const seatY = position === 'allonge' ? 0.23 : -0.175; // Augmenté Y de 0.08 à 0.15 pour le lit
+        this.group.position.set(position === 'allonge' ? 4.7 : -1.0, seatY, position === 'allonge' ? 0.2 : -2.5);
         this.group.rotation.y = 0;
+        this.group.rotation.z = 0;
+        
         this.mouth = null;
         this.eyeL = null;
         this.eyeR = null;
@@ -66,11 +78,27 @@ export class ThreePatient {
         this.sweatGroup = null;
         this.sweatMat = null;
         this._bloodGroup = null;
+
+        // Groupe conteneur pour le corps (permet d'alterner procédural/GLTF)
+        this.bodyGroup = new THREE.Group();
+        this.group.add(this.bodyGroup);
+
+        this.rootGroup = this.group;
+        // Rediriger temporairement this.group vers this.bodyGroup pour la construction procédurale
+        this.group = this.bodyGroup;
+
         if (position === 'allonge') this.buildLying(this.skinMat, this.clothMat);
         else this.buildSitting(this.skinMat, this.clothMat);
+
+        // Restaurer this.group
+        this.group = this.rootGroup;
+
         this._buildSweatDrops(position);
         this._buildBloodSplotches(position);
         this.applyExpression(patient.expression || 'normal');
+
+        // Charger asynchronement le modèle GLB Kenney
+        this._loadKenneyModel(patient, position);
     }
 
     /**
@@ -83,6 +111,8 @@ export class ThreePatient {
         if (newPosition !== this._currentPosition) {
             this._currentPosition = newPosition;
             this.group.clear();
+            this.mixer = null;
+            this.glbSkinMaterials = [];
             this.mouth = null;
             this.eyeL = null;
             this.eyeR = null;
@@ -93,16 +123,26 @@ export class ThreePatient {
             this.sweatMat = null;
             this._bloodGroup = null;
 
-            const seatY = newPosition === 'allonge' ? 0.08 : -0.175;
+            const seatY = newPosition === 'allonge' ? 0.23 : -0.175; // Augmenté Y de 0.08 à 0.15
             this.group.position.set(
-                newPosition === 'allonge' ? 4.7 : 1.2,
+                newPosition === 'allonge' ? 4.7 : -1.0,
                 seatY,
-                newPosition === 'allonge' ? 0.2 : -3.5
+                newPosition === 'allonge' ? 0.2 : -2.5
             );
             this.group.rotation.y = 0;
+            this.group.rotation.z = 0;
+
+            this.bodyGroup = new THREE.Group();
+            this.group.add(this.bodyGroup);
+
+            this.rootGroup = this.group;
+            this.group = this.bodyGroup;
 
             if (newPosition === 'allonge') this.buildLying(this.skinMat, this.clothMat);
             else this.buildSitting(this.skinMat, this.clothMat);
+
+            this.group = this.rootGroup;
+
             this._buildSweatDrops(newPosition);
             this._buildBloodSplotches(newPosition);
 
@@ -110,6 +150,9 @@ export class ThreePatient {
                 animator.reset();
                 animator.group = this.group;
             }
+
+            const patientData = { sexe: visuel.sexe || 'M' };
+            this._loadKenneyModel(patientData, newPosition);
         }
 
         const expr = visuel.expression || 'normal';
@@ -125,7 +168,7 @@ export class ThreePatient {
                 normal:     0xd7a87a,
             };
             const c = colors[visuel.couleurPeau];
-            if (c !== undefined) this.skinMat.color.set(c);
+            if (c !== undefined) this._updateSkinMaterial(c);
         }
 
         if (this._bloodGroup) {
@@ -670,30 +713,7 @@ export class ThreePatient {
         this._buildHand(-0.30, 0.87, -0.38, skin, false, true);
         this._buildHand(0.30, 0.87, -0.38, skin, true, true);
 
-        // === COUVERTURE / DRAP ===
-        const blanketMat = new THREE.MeshStandardMaterial({
-            color: 0xe8e0d0,
-            roughness: 0.92,
-            metalness: 0.0,
-        });
-        // Drap principal
-        const blanket = new THREE.Mesh(
-            new THREE.BoxGeometry(0.65, 0.04, 0.90),
-            blanketMat
-        );
-        blanket.position.set(0, 0.92, -0.60);
-        blanket.receiveShadow = true;
-        blanket.castShadow = false;
-        this.group.add(blanket);
-
-        // Pli du drap (repli sur le dessus)
-        const fold = new THREE.Mesh(
-            new THREE.BoxGeometry(0.63, 0.05, 0.08),
-            blanketMat
-        );
-        fold.position.set(0, 0.94, -0.14);
-        fold.castShadow = true;
-        this.group.add(fold);
+        // Blanket removed as requested
     }
 
     /**
@@ -773,11 +793,7 @@ export class ThreePatient {
             this.browR.position.y = this.browR.position.y;
         }
 
-        if (this.skinMat) {
-            this.skinMat.color.set(0xd7a87a);
-            if (this.skinMat.emissive) this.skinMat.emissive.set(0x1a0800);
-            this.skinMat.emissiveIntensity = 0.04;
-        }
+        this._updateSkinMaterial(0xd7a87a, 0x1a0800, 0.04);
 
         if (this._bloodGroup) this._bloodGroup.visible = false;
         if (this.sweatMat) this.sweatMat.opacity = 0;
@@ -791,10 +807,10 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = 0.15;
         }
         if (expression === 'pale') {
-            if (this.skinMat) this.skinMat.color.set(0xd4c4b0);
+            this._updateSkinMaterial(0xd4c4b0);
         }
         if (expression === 'cyanotic' || expression === 'cyanose') {
-            if (this.skinMat) this.skinMat.color.set(0x8fa8be);
+            this._updateSkinMaterial(0x8fa8be);
             this.mouth.rotation.z = 0.12;
             if (this.eyeL) this.eyeL.scale.y = 0.85;
             if (this.eyeR) this.eyeR.scale.y = 0.85;
@@ -802,22 +818,14 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = 0.08;
         }
         if (expression === 'feverish' || expression === 'fievre') {
-            if (this.skinMat) {
-                this.skinMat.color.set(0xe8b0a0);
-                this.skinMat.emissive.set(0x331108);
-                this.skinMat.emissiveIntensity = 0.15;
-            }
+            this._updateSkinMaterial(0xe8b0a0, 0x331108, 0.15);
             if (this.eyeL) this.eyeL.scale.y = 0.9;
             if (this.eyeR) this.eyeR.scale.y = 0.9;
             if (this.browL) this.browL.rotation.z = -0.1;
             if (this.browR) this.browR.rotation.z = 0.1;
         }
         if (expression === 'sweating' || expression === 'sueur') {
-            if (this.skinMat) {
-                this.skinMat.color.set(0xe0d5c4);
-                this.skinMat.emissive.set(0x111508);
-                this.skinMat.emissiveIntensity = 0.08;
-            }
+            this._updateSkinMaterial(0xe0d5c4, 0x111508, 0.08);
             if (this.sweatMat) this.sweatMat.opacity = 0.75;
         }
         if (expression === 'anxieux') {
@@ -841,7 +849,7 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = -0.05;
         }
         if (expression === 'hemorragie' || expression === 'saignement') {
-            if (this.skinMat) this.skinMat.color.set(0xc8b8a8);
+            this._updateSkinMaterial(0xc8b8a8);
             this.mouth.rotation.z = 0.22;
             this.mouth.scale.y = 0.4;
             if (this.eyeL) this.eyeL.scale.y = 0.35;
@@ -851,7 +859,7 @@ export class ThreePatient {
             if (this._bloodGroup) this._bloodGroup.visible = true;
         }
         if (expression === 'inconscient' || expression === 'pls') {
-            if (this.skinMat) this.skinMat.color.set(0xc0b0a0);
+            this._updateSkinMaterial(0xc0b0a0);
             this.mouth.rotation.z = 0.05;
             this.mouth.scale.y = 0.6;
             if (this.eyeL) this.eyeL.scale.y = 0.05;
@@ -864,10 +872,7 @@ export class ThreePatient {
             }
         }
         if (expression === 'arret_cardiaque' || expression === 'acr') {
-            if (this.skinMat) {
-                this.skinMat.color.set(0x909090);
-                this.skinMat.emissive.set(0x000000);
-            }
+            this._updateSkinMaterial(0x909090, 0x000000);
             this.mouth.scale.y = 1.5;
             this.mouth.rotation.z = 0;
             if (this.eyeL) this.eyeL.scale.y = 0.02;
@@ -876,11 +881,7 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = 0.0;
         }
         if (expression === 'choc' || expression === 'choc_hemorragique') {
-            if (this.skinMat) {
-                this.skinMat.color.set(0xd8cec0);
-                this.skinMat.emissive.set(0x080808);
-                this.skinMat.emissiveIntensity = 0.05;
-            }
+            this._updateSkinMaterial(0xd8cec0, 0x080808, 0.05);
             this.mouth.rotation.z = 0.1;
             this.mouth.scale.y = 0.7;
             if (this.eyeL) this.eyeL.scale.y = 0.7;
@@ -889,11 +890,7 @@ export class ThreePatient {
             if (this.browR) this.browR.rotation.z = 0.1;
         }
         if (expression === 'brulure') {
-            if (this.skinMat) {
-                this.skinMat.color.set(0x8b4030);
-                this.skinMat.emissive.set(0x3a1005);
-                this.skinMat.emissiveIntensity = 0.3;
-            }
+            this._updateSkinMaterial(0x8b4030, 0x3a1005, 0.3);
             this.mouth.rotation.z = 0.25;
             this.mouth.scale.y = 0.3;
             if (this.eyeL) this.eyeL.scale.y = 0.5;
@@ -903,9 +900,7 @@ export class ThreePatient {
             if (this._bloodGroup) this._bloodGroup.visible = true;
         }
         if (expression === 'convulsion') {
-            if (this.skinMat) {
-                this.skinMat.color.set(0xd0c8b8);
-            }
+            this._updateSkinMaterial(0xd0c8b8);
             this.mouth.rotation.z = 0.3;
             this.mouth.scale.y = 0.2;
             if (this.eyeL) this.eyeL.scale.y = 0.8;
@@ -1022,5 +1017,152 @@ export class ThreePatient {
         });
         
         this.group.add(this.sweatGroup);
+    }
+
+    _loadKenneyModel(patient, position) {
+        let modelPath = '';
+        if (patient.model3D) {
+            modelPath = `assets/models/patients/${patient.model3D}`;
+        } else {
+            const gender = (patient.sexe || 'M').toUpperCase();
+            const isFemale = gender === 'F' || gender === 'FEMME';
+            const age = patient.age !== undefined ? parseInt(patient.age) : 40;
+            
+            let variant = 'a';
+            if (age < 30) {
+                // Jeune (a ou b)
+                variant = (patient.prenom || 'Jean').length % 2 === 0 ? 'a' : 'b';
+            } else if (age < 60) {
+                // Adulte d'âge moyen (c ou d)
+                variant = (patient.prenom || 'Jean').length % 2 === 0 ? 'c' : 'd';
+            } else {
+                // Senior (e ou f)
+                variant = (patient.prenom || 'Jean').length % 2 === 0 ? 'e' : 'f';
+            }
+            
+            modelPath = isFemale ? 
+                `assets/models/patients/character-female-${variant}.glb` : 
+                `assets/models/patients/character-male-${variant}.glb`;
+        }
+
+        const loadId = ++this._lastLoadId;
+        const loader = new GLTFLoader();
+
+        loader.load(modelPath, (gltf) => {
+            if (loadId !== this._lastLoadId) return;
+
+            // Vider le groupe procédural et ajouter le modèle GLTF
+            this.bodyGroup.clear();
+
+            const model = gltf.scene;
+
+            // Activer les ombres et configurer l'interactivité
+            this.glbSkinMaterials = [];
+            model.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    child.userData = { label: 'Patient', interactive: true };
+
+                    if (child.material) {
+                        if (!child.material._cloned) {
+                            child.material = child.material.clone();
+                            child.material._cloned = true;
+                        }
+                        const nameLower = child.name.toLowerCase();
+                        if (nameLower.includes('head') || nameLower.includes('body') || nameLower.includes('skin')) {
+                            if (!this.glbSkinMaterials.includes(child.material)) {
+                                this.glbSkinMaterials.push(child.material);
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Appliquer la couleur et l'émissivité en cours au moment du chargement
+            if (this._currentSkinColor !== undefined) {
+                this.glbSkinMaterials.forEach(mat => {
+                    mat.color.set(this._currentSkinColor);
+                    if (this._currentEmissiveColor !== undefined && mat.emissive) {
+                        mat.emissive.set(this._currentEmissiveColor);
+                    }
+                    if (this._currentEmissiveIntensity !== undefined) {
+                        mat.emissiveIntensity = this._currentEmissiveIntensity;
+                    }
+                });
+            }
+
+            // 1. Calculer les dimensions et l'échelle sur le modèle non tourné (debout)
+            model.updateMatrixWorld(true);
+            const box = new THREE.Box3().setFromObject(model);
+            const size = box.getSize(new THREE.Vector3());
+            console.log("GLB Model size (unrotated):", size);
+            
+            // Hauteur cible : 1.65 mètres * 0.7 = 1.155 (réduit de 30% pour mieux s'intégrer)
+            const targetHeight = 1.155;
+            let scale = 1.28; // Valeur par défaut si size.y est invalide
+            if (size.y > 0.1 && size.y < 10) {
+                scale = targetHeight / size.y;
+            }
+            model.scale.set(scale, scale, scale);
+
+            // 2. Ajustement de position et rotation selon la posture
+            if (position === 'allonge') {
+                // Allongé sur le dos (visage vers le haut) et tête vers le coussin (Z négatif, côté mur)
+                model.rotation.set(-Math.PI / 2, 0, 0); // Orienté face-up, tête à -Z
+                // Centré sur le lit
+                model.position.set(0, 0.86, -0.2);
+            } else {
+                // Assis sur la chaise : face à la caméra
+                model.rotation.set(0, Math.PI, 0);
+                // Hauteur Y ajustée légèrement vers le haut
+                model.position.set(0, -0.29, 0.05);
+            }
+
+            this.bodyGroup.add(model);
+
+            // Gérer les animations intégrées du modèle GLTF (idle pour allongé, sit pour assis)
+            if (gltf.animations && gltf.animations.length > 0) {
+                this.mixer = new THREE.AnimationMixer(model);
+                this.mixer.timeScale = 0.1; // Remis à 10% de la vitesse d'origine (très subtil)
+                const animName = position === 'allonge' ? 'idle' : 'sit';
+                const clip = gltf.animations.find(a => a.name === animName) || gltf.animations[0];
+                if (clip) {
+                    const action = this.mixer.clipAction(clip);
+                    action.play();
+                }
+            }
+
+            // Déclencher un événement de mise à jour pour que le PatientAnimator et la scène se réinitialisent
+            document.dispatchEvent(new CustomEvent('patient-model-changed'));
+        }, undefined, (error) => {
+            console.error('Erreur lors du chargement du modèle GLB du patient:', error);
+        });
+    }
+
+    _updateSkinMaterial(color, emissiveColor, emissiveIntensity) {
+        if (color !== undefined) this._currentSkinColor = color;
+        if (emissiveColor !== undefined) this._currentEmissiveColor = emissiveColor;
+        if (emissiveIntensity !== undefined) this._currentEmissiveIntensity = emissiveIntensity;
+
+        if (this.skinMat) {
+            if (color !== undefined) this.skinMat.color.set(color);
+            if (emissiveColor !== undefined && this.skinMat.emissive) this.skinMat.emissive.set(emissiveColor);
+            if (emissiveIntensity !== undefined) this.skinMat.emissiveIntensity = emissiveIntensity;
+        }
+
+        if (this.glbSkinMaterials) {
+            this.glbSkinMaterials.forEach(mat => {
+                if (color !== undefined) mat.color.set(color);
+                if (emissiveColor !== undefined && mat.emissive) mat.emissive.set(emissiveColor);
+                if (emissiveIntensity !== undefined) mat.emissiveIntensity = emissiveIntensity;
+            });
+        }
+    }
+
+    update(elapsed, dt) {
+        if (this.mixer) {
+            this.mixer.update(dt);
+        }
     }
 }

@@ -745,6 +745,46 @@
     }
 
     async function handleUserQuestion(question) {
+        if (window.medicalGameManager) {
+            const placeholder = appendConversation('PS', '<div class="ecos-typing-indicator"><span></span><span></span><span></span></div>', 'thinking');
+            try {
+                const result = await window.medicalGameManager.processAction(question);
+                placeholder.classList.remove('thinking');
+                
+                let displayHTML = "";
+                let rawTextForCheck = "";
+                
+                if (result.narrative && result.dialogue) {
+                    displayHTML = `<em>(${result.narrative})</em><br>« ${result.dialogue} »`;
+                    rawTextForCheck = `*(${result.narrative})* "${result.dialogue}"`;
+                } else if (result.narrative) {
+                    displayHTML = `<em>${result.narrative}</em>`;
+                    rawTextForCheck = `*${result.narrative}*`;
+                    
+                    const speakerEl = placeholder.querySelector('.ecos-msg-speaker');
+                    if (speakerEl) speakerEl.textContent = "MJ";
+                } else if (result.dialogue) {
+                    displayHTML = `« ${result.dialogue} »`;
+                    rawTextForCheck = `"${result.dialogue}"`;
+                } else {
+                    displayHTML = `<em>Le patient ne réagit pas.</em>`;
+                    rawTextForCheck = `Le patient ne réagit pas.`;
+                    const speakerEl = placeholder.querySelector('.ecos-msg-speaker');
+                    if (speakerEl) speakerEl.textContent = "MJ";
+                }
+                
+                const textEl = placeholder.querySelector('.ecos-msg-text');
+                if (textEl) textEl.innerHTML = displayHTML;
+                
+                window.ECOS_BYPASS_HISTORY_SYNC = true;
+                await classifyAndCheck(question, rawTextForCheck);
+                return;
+            } catch (err) {
+                console.warn('[ECOS] MedicalGameManager error, using fallback:', err);
+                placeholder.remove();
+            }
+        }
+
         if (!window.llmPatientInstance) {
             // Pas d'instance : utiliser llmFallback si disponible
             const fallbackAnswer = window.llmFallback

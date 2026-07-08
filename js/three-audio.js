@@ -10,7 +10,7 @@ export class MedicalAudio {
         this.ctx = null;
         this.masterGain = null;
         this._initialized = false;
-        this._muted = false;
+        this._muted = localStorage.getItem('medgame.audio.muted') === 'true';
         this._volume = 0.6;
 
         // Sources actives

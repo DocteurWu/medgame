@@ -77,6 +77,7 @@ Si tu veux contribuer, fais une pull request et je regarderai ça avec plaisir �
 ## 📄 Licence
 
 🔹 **Code** → GPLv3
+🔹 **Ressources 3D (Patients & Mobilier)** → Licences libres (CC0 / CC-BY). Voir les crédits détaillés dans [ATTRIBUTIONS.md](file:///c:/Users/Louaï/Desktop/medgame-main/ATTRIBUTIONS.md).
 
 Medgame est distribué sous licence GNU General Public License v3.0. Cela signifie que vous pouvez utiliser, étudier, partager et modifier le logiciel librement, à condition de distribuer les modifications sous la même licence.
 
