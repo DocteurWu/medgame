@@ -1,4 +1,26 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const gltfLoader = new GLTFLoader();
+
+function loadFurnitureModel(path, scale, position, rotation, parent, setupCallback) {
+    gltfLoader.load(path, (gltf) => {
+        const model = gltf.scene;
+        model.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
+        });
+        model.scale.set(scale.x, scale.y, scale.z);
+        model.position.set(position.x, position.y, position.z);
+        model.rotation.set(rotation.x, rotation.y, rotation.z);
+        parent.add(model);
+        if (setupCallback) setupCallback(model);
+    }, undefined, (err) => {
+        console.error(`Erreur de chargement du modèle 3D: ${path}`, err);
+    });
+}
 
 export function createMaterial(color, opts = {}) {
     return new THREE.MeshStandardMaterial({
@@ -104,7 +126,57 @@ export function buildRoom(scene) {
     // H. Sleek dark floating sink cabinet (Meuble Evier)
     box(scene, { x: 0.52, y: 0.52, z: 1.1 }, { x: -5.2, y: 0.64, z: 2.4 }, createMaterial(0x18181b, { roughness: 0.45, metalness: 0.1 }), 'Meuble Evier', true);
     box(scene, { x: 0.42, y: 0.05, z: 0.82 }, { x: -5.2, y: 0.9, z: 2.4 }, createMaterial(0xf8fafc, { roughness: 0.2 }), 'Evier basin', true);
-    box(scene, { x: 0.04, y: 0.22, z: 0.04 }, { x: -5.38, y: 1.01, z: 2.4 }, createMaterial(0xd1d5db, { metalness: 0.95, roughness: 0.05 }), 'Robinet');
+    
+    // Robinet 3D Model
+    const robinetGroup = new THREE.Group();
+    robinetGroup.position.set(-5.35, 0.93, 2.4);
+    loadFurnitureModel(
+        'assets/models/furniture/Kitchen Sink Faucet.glb',
+        { x: 0.6, y: 0.6, z: 0.6 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0, z: 0 }, // Tourné de 90° sens indirect (Math.PI/2 - Math.PI/2 = 0)
+        robinetGroup
+    );
+    scene.add(robinetGroup);
+
+    // Plante au sol à côté de l'évier
+    const plantGroup = new THREE.Group();
+    plantGroup.position.set(-5.2, 0, 3.2);
+    loadFurnitureModel(
+        'assets/models/furniture/Houseplant.glb',
+        { x: 0.9, y: 0.9, z: 0.9 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0, z: 0 },
+        plantGroup
+    );
+    scene.add(plantGroup);
+
+    // Lotion Bottle 3D Model (Très Petit et déplacé à l'arrière !)
+    const lotionGroup = new THREE.Group();
+    lotionGroup.position.set(-5.3, 1.1, 2.65); // Placé à l'arrière du lavabo
+    loadFurnitureModel(
+        'assets/models/furniture/Lotion Bottle Small.glb',
+        { x: 0.008, y: 0.008, z: 0.008 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 5 * Math.PI / 4, z: 0 }, // Tourné de 180° (Math.PI/4 + Math.PI = 5*Math.PI/4)
+        lotionGroup
+    );
+    scene.add(lotionGroup);
+
+    // Porte d'entrée 3D (remplace le rideau)
+    const doorGroup = new THREE.Group();
+    doorGroup.position.set(0, 0, -4.95);
+    loadFurnitureModel(
+        'assets/models/furniture/Door.glb',
+        { x: 0.7, y: 0.7, z: 0.7 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0, z: 0 },
+        doorGroup
+    );
+    doorGroup.name = 'Porte entree';
+    doorGroup.userData.label = 'Porte d\'entrée';
+    doorGroup.userData.interactive = true;
+    scene.add(doorGroup);
 }
 
 export function buildFurniture(scene) {
@@ -241,15 +313,23 @@ export function buildFurniture(scene) {
     keyboard.castShadow = true;
     deskGroup.add(keyboard);
 
-    // Notebooks & clinic papers
-    const books = new THREE.Mesh(
-        new THREE.BoxGeometry(0.4, 0.06, 0.32),
-        new THREE.MeshStandardMaterial({ color: '#2563eb', roughness: 0.4 })
+    // Tasse de café décorative
+    loadFurnitureModel(
+        'assets/models/furniture/Coffee cup.glb',
+        { x: 0.15, y: 0.15, z: 0.15 },
+        { x: 0.2, y: 1.44, z: 0.2 },
+        { x: 0, y: 0, z: 0 },
+        deskGroup
     );
-    books.position.set(0.68, 1.47, -0.18);
-    books.rotation.y = -0.12;
-    books.castShadow = true;
-    deskGroup.add(books);
+
+    // Livres décoratifs 3D
+    loadFurnitureModel(
+        'assets/models/furniture/Book Stack.glb',
+        { x: 0.5, y: 0.5, z: 0.5 },
+        { x: 0.68, y: 1.52, z: -0.18 }, // Modifié y de 1.48 à 1.52
+        { x: 0, y: -0.12, z: 0 },
+        deskGroup
+    );
 
     // Modern Luxury Doctor Chair
     const chairGroup = new THREE.Group();
@@ -305,34 +385,9 @@ export function buildFurniture(scene) {
     const lampGroup = new THREE.Group();
     lampGroup.position.set(-0.85, 1.44, -0.36);
 
-    const lampBase = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.08, 0.08, 0.015, 16),
-        new THREE.MeshStandardMaterial({ color: '#cbd5e1', metalness: 0.8, roughness: 0.2 })
-    );
-    lampBase.castShadow = true;
-    lampGroup.add(lampBase);
-
-    const lampC_arm = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.015, 0.015, 0.44, 8),
-        new THREE.MeshStandardMaterial({ color: '#cbd5e1', metalness: 0.8 })
-    );
-    lampC_arm.position.set(0, 0.22, 0);
-    lampC_arm.rotation.z = -0.22;
-    lampC_arm.castShadow = true;
-    lampGroup.add(lampC_arm);
-
-    const lampHead = new THREE.Mesh(
-        new THREE.ConeGeometry(0.09, 0.14, 16),
-        new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 })
-    );
-    lampHead.position.set(0.08, 0.42, 0);
-    lampHead.rotation.z = -1.22;
-    lampHead.castShadow = true;
-    lampGroup.add(lampHead);
-
     // Cozy lamp local yellow light
     const lampLight = new THREE.PointLight('#ffaa44', 1.8, 4.5);
-    lampLight.position.set(0.12, 0.38, 0);
+    lampLight.position.set(0, 0.45, 0);
     lampGroup.add(lampLight);
     
     // Tiny glowing sphere at lamp bulb
@@ -340,106 +395,47 @@ export function buildFurniture(scene) {
         new THREE.SphereGeometry(0.024, 8, 8),
         new THREE.MeshBasicMaterial({ color: '#ffeeaa' })
     );
-    bulb.position.set(0.12, 0.38, 0);
+    bulb.position.set(0, 0.45, 0);
     lampGroup.add(bulb);
+
+    // Modèle 3D de la lampe de bureau
+    loadFurnitureModel(
+        'assets/models/furniture/Light Desk.glb',
+        { x: 0.65, y: 0.65, z: 0.65 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: -Math.PI / 4, z: 0 },
+        lampGroup
+    );
 
     deskGroup.add(lampGroup);
     scene.add(deskGroup);
 
     // ==========================================
-    // SITTING AREA: SITTING PATIENT CHAIR (Fauteuil patient premium)
+    // SITTING AREA: SITTING PATIENT CHAIRS (Fauteuils patients premium)
     // ==========================================
-    const chairColor = new THREE.MeshStandardMaterial({ color: '#0d9488', roughness: 0.65 });
-    const chairBaseMat = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.5 });
-    box(scene, { x: 0.7, y: 0.5, z: 0.7 }, { x: 1.2, y: 0.25, z: -3.5 }, chairBaseMat, 'Base fauteuil');
-    box(scene, { x: 0.8, y: 0.1, z: 0.8 }, { x: 1.2, y: 0.5, z: -3.5 }, chairColor, 'Assise fauteuil');
-    box(scene, { x: 0.8, y: 0.9, z: 0.1 }, { x: 1.2, y: 1.0, z: -3.85 }, chairColor, 'Dossier fauteuil');
-    box(scene, { x: 0.1, y: 0.3, z: 0.8 }, { x: 0.75, y: 0.7, z: -3.5 }, chairColor, 'Accoudoir G');
-    box(scene, { x: 0.1, y: 0.3, z: 0.8 }, { x: 1.65, y: 0.7, z: -3.5 }, chairColor, 'Accoudoir D');
-
-    // ==========================================
-    // EXTRA STUFF FOR REALISM: Waiting Stool
-    // ==========================================
-    const stool = new THREE.Group();
-    stool.position.set(2.0, 0, -3.5);
-    stool.name = 'PatientStool';
-    const stoolMetal = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.25, 0.25, 0.03, 16),
-        new THREE.MeshStandardMaterial({ color: '#cbd5e1', metalness: 0.9 })
+    const patientChairGroup = new THREE.Group();
+    patientChairGroup.position.set(-2.6, 0, -2.5);
+    loadFurnitureModel(
+        'assets/models/furniture/Couch Small.glb',
+        { x: 0.45, y: 0.45, z: 0.45 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0, z: 0 }, // Orienté vers le bureau/médecin (+Z)
+        patientChairGroup
     );
-    stoolMetal.position.set(0, 0.015, 0);
-    stool.add(stoolMetal);
-    
-    const stoolPole = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.02, 0.02, 0.52, 8),
-        new THREE.MeshStandardMaterial({ color: '#94a3b8', metalness: 0.8 })
+    scene.add(patientChairGroup);
+
+    const patientChairGroup2 = new THREE.Group();
+    patientChairGroup2.position.set(-4.2, 0, -2.5);
+    loadFurnitureModel(
+        'assets/models/furniture/Couch Small.glb',
+        { x: 0.45, y: 0.45, z: 0.45 },
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0, z: 0 }, // Orienté vers le bureau/médecin (+Z)
+        patientChairGroup2
     );
-    stoolPole.position.set(0, 0.26, 0);
-    stoolPole.castShadow = true;
-    stool.add(stoolPole);
+    scene.add(patientChairGroup2);
 
-    const stoolSeat = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.22, 0.22, 0.08, 16),
-        new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.7 })
-    );
-    stoolSeat.position.set(0, 0.54, 0);
-    stoolSeat.castShadow = true;
-    stool.add(stoolSeat);
-    scene.add(stool);
+    // Houseplants removed for cleaner look
 
-    // ==========================================
-    // STANDING FLOOR LAMP (Left wall warm light)
-    // ==========================================
-    const floorLamp = new THREE.Group();
-    floorLamp.position.set(-5.0, 0, 3.2);
-    floorLamp.name = 'FloorLamp';
-    
-    const lampMetalMat = new THREE.MeshStandardMaterial({ color: 0x27272a, metalness: 0.8, roughness: 0.2 });
-    
-    const baseMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.02, 16), lampMetalMat);
-    baseMesh.position.y = 0.01;
-    baseMesh.castShadow = true;
-    floorLamp.add(baseMesh);
-    
-    const poleMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.6, 8), lampMetalMat);
-    poleMesh.position.y = 0.8;
-    poleMesh.castShadow = true;
-    floorLamp.add(poleMesh);
-    
-    const shadeMesh = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.15, 16), lampMetalMat);
-    shadeMesh.position.set(-0.06, 1.65, 0);
-    shadeMesh.rotation.z = Math.PI / 4;
-    shadeMesh.castShadow = true;
-    floorLamp.add(shadeMesh);
-    
-    scene.add(floorLamp);
-
-    // ==========================================
-    // BED PRIVACY DIVIDER SCREEN
-    // ==========================================
-    const dividerMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.7, metalness: 0.05 });
-    box(scene, { x: 0.05, y: 1.6, z: 1.0 }, { x: 3.9, y: 0.8, z: -0.6 }, dividerMat, 'Separateur Lit');
-
-    // ==========================================
-    // BLUE LIGHT / LASER STAND (Foreground flare)
-    // ==========================================
-    const laserStand = new THREE.Group();
-    laserStand.position.set(-2.0, 0, 2.0);
-    laserStand.name = 'LaserStand';
-    
-    const lBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.02, 12), lampMetalMat);
-    lBase.position.y = 0.01;
-    laserStand.add(lBase);
-    
-    const lPole = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 1.1, 8), lampMetalMat);
-    lPole.position.y = 0.55;
-    lPole.castShadow = true;
-    laserStand.add(lPole);
-    
-    const lensMat = new THREE.MeshBasicMaterial({ color: 0x00d2ff });
-    const lensMesh = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 12), lensMat);
-    lensMesh.position.y = 1.12;
-    laserStand.add(lensMesh);
-    
-    scene.add(laserStand);
+    // Removed procedural floor lamp and laser stand for a cleaner look
 }

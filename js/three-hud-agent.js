@@ -30,7 +30,9 @@ export class ThreeHUD {
         this.sweepSpeed = 1.6; // Pixels par frame
 
         // --- Système Audio Bip ECG ---
-        this.isSoundMuted = sessionStorage.getItem('hud_scope_muted') !== 'false';
+        const globalMuted = localStorage.getItem('medgame.audio.muted') === 'true';
+        const sessionMuted = sessionStorage.getItem('hud_scope_muted');
+        this.isSoundMuted = globalMuted || (sessionMuted !== null ? sessionMuted === 'true' : false);
         this.soundVolume = parseFloat(sessionStorage.getItem('hud_scope_volume') || '0.15');
         this.audioCtx = null;
         this._hudKeyHandler = null;

@@ -4,6 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
+            try {
+                localStorage.removeItem('medgame_case_cache');
+                if ('caches' in window) {
+                    caches.keys().then(names => {
+                        names.forEach(name => caches.delete(name));
+                    });
+                }
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(regs => {
+                        regs.forEach(reg => reg.unregister());
+                    });
+                }
+                console.info('[Dev Cache Buster] Case cache, service workers and Cache Storage cleared.');
+            } catch (e) {
+                console.warn('[Dev Cache Buster] Failed to clear dev caches:', e);
+            }
+        }
+    </script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -197,6 +217,28 @@
                         </label>
                     </div>
 
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.85rem; color: #fff;">Effets Sonores</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Active les bips ECG et les effets sonores</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-sound-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.85rem; color: #fff;">Mode 3D par défaut</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Commencer en mode 3D (désactiver pour le mode textuel)</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-view-mode-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
                     <div class="setting-input-group" style="margin: 0; display: flex; align-items: center; gap: 15px; justify-content: space-between;">
                         <label class="setting-label" style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);">Durée de la station (secondes)</label>
                         <input type="number" id="ecos-setting-duration" class="setting-input" value="480" min="60" max="1800"
@@ -296,6 +338,8 @@
 
             document.getElementById('ecos-setting-feedback').checked = localStorage.getItem('ecos_llm_feedback') !== 'false';
             document.getElementById('ecos-setting-duration').value = localStorage.getItem('ecos_duration') || '480';
+            document.getElementById('setting-sound-toggle').checked = localStorage.getItem('medgame.audio.muted') !== 'true';
+            document.getElementById('setting-view-mode-toggle').checked = localStorage.getItem('medgame_text_mode_default') !== 'true';
 
             const usernameInput = document.getElementById('setting-username');
             const usernameStatus = document.getElementById('username-status');
@@ -381,10 +425,14 @@
 
             const ecosFeedback = document.getElementById('ecos-setting-feedback').checked;
             const ecosDuration = document.getElementById('ecos-setting-duration').value || '480';
+            const soundEnabled = document.getElementById('setting-sound-toggle').checked;
+            const defaultTo3D = document.getElementById('setting-view-mode-toggle').checked;
 
             localStorage.setItem('ecos_practice_mode', ecosPractice ? 'true' : 'false');
             localStorage.setItem('ecos_llm_feedback', ecosFeedback);
             localStorage.setItem('ecos_duration', ecosDuration);
+            localStorage.setItem('medgame.audio.muted', soundEnabled ? 'false' : 'true');
+            localStorage.setItem('medgame_text_mode_default', defaultTo3D ? 'false' : 'true');
 
             const newUsername = document.getElementById('setting-username').value.trim();
             const isPublic = document.getElementById('setting-public-toggle').checked;

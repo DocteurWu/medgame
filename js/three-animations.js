@@ -249,7 +249,10 @@ export class PatientAnimator {
             }
         }
 
-        this.group.position.y = this._baseY + breathY;
+        // Désactivé pour éviter l'effet de lévitation du patient par-dessus le lit
+        if (this._baseY !== undefined) {
+            this.group.position.y = this._baseY;
+        }
 
         // Dilatation du torse (scale X/Z qui augmente à l'inspi, diminue à l'expir)
         if (this._torso) {

@@ -23,7 +23,7 @@ export class ThreeEnvironmentAgent {
         this._addFloorDetail();
         this._addWindowEffect();
         this._addMedicalPosters();
-        this._addCurtain();
+        // this._addCurtain(); // Removed, replaced by 3D Door model in three-room.js
         this._addIVStand();
         this._addECGMonitor();
         this._addWallECGMonitor();
@@ -277,7 +277,7 @@ export class ThreeEnvironmentAgent {
     // ===== PERFUSION (IV STAND) =====
     _addIVStand() {
         const ivGroup = new THREE.Group();
-        ivGroup.position.set(5.2, 0, 0.8); // Placed at head side of right bed
+        ivGroup.position.set(5.2, 0, -0.4); // Placed at head side of right bed (after 180 rotation)
         ivGroup.name = 'IVStand';
         ivGroup.userData.label = 'Perfusion';
         ivGroup.userData.interactive = true;
@@ -409,7 +409,7 @@ export class ThreeEnvironmentAgent {
     // ===== MONITEUR ECG SUR PIED =====
     _addECGMonitor() {
         const ecgGroup = new THREE.Group();
-        ecgGroup.position.set(3.8, 0, 0.8); // Head side of right bed
+        ecgGroup.position.set(3.8, 0, -0.4); // Head side of right bed (after 180 rotation)
         ecgGroup.name = 'ECGMonitor';
         ecgGroup.userData.label = 'Moniteur ECG';
         ecgGroup.userData.interactive = true;
@@ -903,7 +903,8 @@ export class ThreeEnvironmentAgent {
     // ===== STATION B DETAILS: Examination Bed structure =====
     _addExaminationBedDetails() {
         const bedGroup = new THREE.Group();
-        bedGroup.position.set(3.4, 0, 0.2); // Right side
+        bedGroup.position.set(6.0, 0, 0.2); // Right side, shifted due to rotation
+        bedGroup.rotation.y = Math.PI; // Pivoter de 180 degrés
         bedGroup.name = 'ExaminationBedDetails';
 
         // Base steel structure

@@ -263,9 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let ecosBadgeHtml = '';
-            if (item.isEcos) {
-                ecosBadgeHtml = '<span class="ecos-badge" style="font-size: 0.65rem; color: #fff; background: rgba(52, 152, 219, 0.85); padding: 2px 6px; border-radius: 10px; font-weight: 700; margin-left: 6px; vertical-align: middle; border: 1px solid rgba(52, 152, 219, 0.4);"><i class="fas fa-graduation-cap"></i> ECOS</span>';
-            }
 
             const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par ${item.redacteur}</span>` : '';
 
