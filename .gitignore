@@ -42,3 +42,9 @@ sql/add_timed_mode.sql
 sql_rls_policies.sql
 nul
 out.txt
+
+# Agent and tool outputs
+graphify-out/
+.ruff_cache/
+.skillkit/
+scratch/

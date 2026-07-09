@@ -321,6 +321,7 @@ body.mode-3d #scene-container {
 /* ==================== 3D PLAYABILITY LAYER ==================== */
 
 .hud-crosshair {
+    display: none;
     position: absolute;
     left: 50%;
     top: 50%;

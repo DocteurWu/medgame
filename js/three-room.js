@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 
 const gltfLoader = new GLTFLoader();
+const objLoader = new OBJLoader();
 
 function loadFurnitureModel(path, scale, position, rotation, parent, setupCallback) {
     gltfLoader.load(path, (gltf) => {
@@ -19,6 +21,36 @@ function loadFurnitureModel(path, scale, position, rotation, parent, setupCallba
         if (setupCallback) setupCallback(model);
     }, undefined, (err) => {
         console.error(`Erreur de chargement du modèle 3D: ${path}`, err);
+    });
+}
+
+function loadOBJModel(path, targetHeight, position, rotation, parent, setupCallback) {
+    objLoader.load(path, (obj) => {
+        obj.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+                child.material = new THREE.MeshStandardMaterial({
+                    color: 0xdddddd,
+                    roughness: 0.4,
+                    metalness: 0.2
+                });
+            }
+        });
+        // Auto-scale based on bounding box
+        const box = new THREE.Box3().setFromObject(obj);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        const currentHeight = size.y || 1;
+        const scaleFactor = targetHeight / currentHeight;
+        obj.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+        obj.position.set(position.x, position.y, position.z);
+        obj.rotation.set(rotation.x, rotation.y, rotation.z);
+        parent.add(obj);
+        if (setupCallback) setupCallback(obj);
+    }, undefined, (err) => {
+        console.error(`Erreur de chargement du modèle OBJ: ${path}`, err);
     });
 }
 
@@ -51,59 +83,22 @@ export function buildRoom(scene) {
     const roomLength = 10;
     const roomHeight = 5;
 
-    // A. Dark Slate Ceramic/Tile Floor (Dynamically drawn on Canvas)
-    const floorCanvas = document.createElement('canvas');
-    floorCanvas.width = 512;
-    floorCanvas.height = 512;
-    const ctxF = floorCanvas.getContext('2d');
-    
-    // Background (dark slate)
-    ctxF.fillStyle = '#1e2022';
-    ctxF.fillRect(0, 0, 512, 512);
-    
-    // Draw tiles with slight inner shading for a beveled/premium ceramic look
-    const tileSize = 64;
-    for (let x = 0; x < 512; x += tileSize) {
-        for (let y = 0; y < 512; y += tileSize) {
-            // Draw tile body with subtle variation
-            ctxF.fillStyle = Math.random() > 0.5 ? '#1a1c1e' : '#1c1e20';
-            ctxF.fillRect(x + 2, y + 2, tileSize - 4, tileSize - 4);
-            
-            // Highlight top-left edge of each tile for realism
-            ctxF.fillStyle = 'rgba(255, 255, 255, 0.015)';
-            ctxF.fillRect(x + 2, y + 2, tileSize - 4, 2);
-            ctxF.fillRect(x + 2, y + 2, 2, tileSize - 4);
-            
-            // Shadow bottom-right edge of each tile
-            ctxF.fillStyle = 'rgba(0, 0, 0, 0.2)';
-            ctxF.fillRect(x + tileSize - 4, y + 2, 2, tileSize - 4);
-            ctxF.fillRect(x + 2, y + tileSize - 4, tileSize - 4, 2);
-        }
-    }
-    
-    // Draw Grout Lines (dark/almost black)
-    ctxF.strokeStyle = '#0a0c0e';
-    ctxF.lineWidth = 3;
-    for (let i = 0; i <= 512; i += tileSize) {
-        ctxF.beginPath();
-        ctxF.moveTo(i, 0);
-        ctxF.lineTo(i, 512);
-        ctxF.stroke();
-        
-        ctxF.beginPath();
-        ctxF.moveTo(0, i);
-        ctxF.lineTo(512, i);
-        ctxF.stroke();
-    }
+    // A. Granite Tile Floor Texture
+    const textureLoader = new THREE.TextureLoader();
+    const floorMap = textureLoader.load('assets/textures/granite_tile_1k/textures/granite_tile_diff_1k.jpg');
+    floorMap.wrapS = THREE.RepeatWrapping;
+    floorMap.wrapT = THREE.RepeatWrapping;
+    floorMap.repeat.set(5, 5);
 
-    const floorTexture = new THREE.CanvasTexture(floorCanvas);
-    floorTexture.wrapS = THREE.RepeatWrapping;
-    floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(3, 3);
+    const floorAo = textureLoader.load('assets/textures/granite_tile_1k/textures/granite_tile_ao_1k.jpg');
+    floorAo.wrapS = THREE.RepeatWrapping;
+    floorAo.wrapT = THREE.RepeatWrapping;
+    floorAo.repeat.set(5, 5);
 
     const floorMat = new THREE.MeshStandardMaterial({
-        map: floorTexture,
-        roughness: 0.18,
+        map: floorMap,
+        aoMap: floorAo,
+        roughness: 0.22,
         metalness: 0.1,
     });
     box(scene, { x: roomWidth + 0.2, y: 0.05, z: roomLength + 0.2 }, { x: 0, y: 0, z: 0 }, floorMat, 'Sol');
@@ -438,4 +433,24 @@ export function buildFurniture(scene) {
     // Houseplants removed for cleaner look
 
     // Removed procedural floor lamp and laser stand for a cleaner look
+
+    // ==========================================
+    // STATION C: BALANCE À COLONNE (Column Scale)
+    // ==========================================
+    const scaleGroup = new THREE.Group();
+    scaleGroup.name = 'BalanceColonne';
+    scaleGroup.userData.label = 'Balance à colonne';
+    scaleGroup.userData.interactive = true;
+
+    // Position: En face du lit du patient (au pied du lit).
+    // Lit : x = 4.7, z = 0.2. Pied du lit : z = 1.35.
+    // Placement à x = 4.7, y = 0, z = 2.4 (rotation de -pi/2 sur Y).
+    loadOBJModel(
+        'assets/models/furniture/Scale_LP.obj',
+        2.3, // Hauteur cible de 1.6m
+        { x: 4.7, y: 0, z: 3 },
+        { x: 0, y: -Math.PI / 2, z: 0 },
+        scaleGroup
+    );
+    scene.add(scaleGroup);
 }

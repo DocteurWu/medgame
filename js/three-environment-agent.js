@@ -21,7 +21,7 @@ export class ThreeEnvironmentAgent {
     enhanceRoom() {
         this._addWallTextures();
         this._addFloorDetail();
-        this._addWindowEffect();
+        // this._addWindowEffect(); // Volumetric window light beam removed as requested
         this._addMedicalPosters();
         // this._addCurtain(); // Removed, replaced by 3D Door model in three-room.js
         this._addIVStand();
@@ -52,12 +52,6 @@ export class ThreeEnvironmentAgent {
     _addFloorDetail() {
         const floor = this.scene.children.find(c => c.name === 'Sol');
         if (floor && floor.material) {
-            // Keep the shininess of wood parquet
-            floor.material.roughness = 0.15;
-            floor.material.metalness = 0.1;
-            // Subtle wood noise instead of tile grid
-            floor.material.bumpMap = this._createNoiseTexture(256, 256, 0.05);
-            floor.material.bumpScale = 0.005;
             floor.material.needsUpdate = true;
         }
     }
