@@ -596,6 +596,9 @@ export class DoctorAnimator {
     startWalking() {
         this._isWalking = true;
         this._walkPhase = 0;
+        if (this.group.playAction) {
+            this.group.playAction('walk');
+        }
     }
 
     /**
@@ -609,6 +612,10 @@ export class DoctorAnimator {
         if (this._legR) this._legR.rotation.x = 0;
         if (this._armL) this._armL.rotation.x = 0;
         if (this._armR) this._armR.rotation.x = 0;
+        
+        if (this.group.playAction) {
+            this.group.playAction('idle');
+        }
     }
 
     /**
@@ -617,6 +624,11 @@ export class DoctorAnimator {
      * @param {number} dt — deltaTime
      */
     update(elapsed, dt) {
+        if (this.group.mixer) {
+            this.group.mixer.update(dt || 0.016);
+            return;
+        }
+
         this._resolve();
         const safeDt = Math.min(dt || 0.016, 0.05);
 

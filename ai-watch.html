@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectateur 3D - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Spectator View Styling -->
+    <style>
+        :root {
+            --bg-dark: #070913;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border-glow: rgba(0, 242, 254, 0.25);
+            --text-glow: #00f2fe;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --border-red: rgba(255, 71, 87, 0.3);
+            --text-red: #ff4757;
+            --border-green: rgba(46, 204, 113, 0.3);
+            --text-green: #2ecc71;
+            --font-main: 'Inter', sans-serif;
+            --font-title: 'Outfit', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: var(--font-main);
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 3D Scene Viewport */
+        #scene-container {
+            width: 60%;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at center, #1a2238 0%, #070913 100%);
+        }
+
+        #camera-controls-tip {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 15, 36, 0.8);
+            border: 1px solid var(--border-glow);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-family: var(--font-title);
+            color: var(--text-glow);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Spectator Dashboard */
+        #watch-dashboard {
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(8, 11, 26, 0.85) 0%, rgba(5, 7, 18, 0.95) 100%);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Glassmorphic Header */
+        header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #conn-status {
+            font-family: var(--font-title);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .status-disconnected {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--border-red);
+            color: var(--text-red);
+        }
+
+        .status-connected {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            color: var(--text-glow);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Toast notifications */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 42%;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(10, 15, 36, 0.9);
+            border-left: 4px solid var(--text-glow);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: var(--font-title);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s forwards, fadeOut 0.3s 3.7s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(8px);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Widgets styling */
+        .widget {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .widget-title {
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-glow);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Case Info Widget */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        /* Vitals Monitor Widget */
+        .vitals-monitor-panel {
+            background: #000c00;
+            border: 2px solid #002200;
+            border-radius: 8px;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            font-family: monospace;
+            box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.15);
+        }
+
+        .vital-box {
+            border-right: 1px solid rgba(0, 255, 0, 0.2);
+            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vital-box:last-child {
+            border-right: none;
+        }
+
+        .vital-name {
+            color: #00aa00;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .vital-num {
+            color: #00ff00;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            margin: 2px 0;
+        }
+
+        .vital-unit {
+            color: #00aa00;
+            font-size: 0.65rem;
+        }
+
+        /* Chat Feed Widget */
+        .chat-feed {
+            height: 180px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .chat-bubble {
+            max-width: 90%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            line-height: 1.35;
+        }
+
+        .bubble-user {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bubble-patient {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .bubble-sender {
+            font-weight: bold;
+            font-size: 0.72rem;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .bubble-sender-user {
+            color: var(--text-glow);
+        }
+
+        .bubble-sender-patient {
+            color: #a3b8cc;
+        }
+
+        /* Actions lists widget */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 4px;
+            border-left: 2px solid transparent;
+        }
+
+        .checklist-item.checked {
+            border-left-color: var(--text-green);
+        }
+
+        .checklist-item.checked i {
+            color: var(--text-green);
+        }
+
+        .checklist-item i {
+            color: var(--text-muted);
+            width: 14px;
+        }
+
+        .score-val {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-glow);
+            text-align: center;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            color: #f1c40f;
+            font-size: 1.2rem;
+        }
+
+        .stars-container i.inactive {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Utility pulse animation */
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 242, 254, 0.2); }
+            50% { border-color: rgba(0, 242, 254, 0.5); }
+            100% { border-color: rgba(0, 242, 254, 0.2); }
+        }
+
+        .connected-widget {
+            animation: borderPulse 2s infinite ease-in-out;
+        }
+    </style>
+    
+    <!-- Environment shims for loaded game scripts -->
+    <script>
+        window.gameState = {
+            currentCase: null,
+            score: 0,
+            activeExams: [],
+            getProgress() {
+                return { current: 1, total: 1, percentage: 100 };
+            }
+        };
+        window.vitalSigns = {
+            props: {
+                heartRate: 80, systolic: 120, diastolic: 80, spo2: 98, temperature: 37, respiratoryRate: 16
+            }
+        };
+        window.scoringState = {
+            attempts: 0,
+            selectedTreatments: []
+        };
+        window.lockSystem = {
+            unlockedLocks: new Set()
+        };
+        window.timerState = {
+            timeLeft: 480,
+            totalTime: 480
+        };
+        window.PAIN_LEVEL = 0;
+
+        window.showNotification = function(msg) {
+            console.log('[Notification]', msg);
+            if (window.showWatchToast) window.showWatchToast(msg);
+        };
+        window.playSound = function(sound) {
+            console.log('[Sound played]', sound);
+        };
+        window.isFieldLocked = function() { return false; };
+    </script>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+
+    <!-- 3D Scene Viewport -->
+    <div id="scene-container">
+        <div id="camera-controls-tip">
+            <i class="fas fa-arrows-alt"></i>
+            <span>Maintenez le clic gauche pour inspecter la pièce 3D</span>
+        </div>
+    </div>
+
+    <!-- Spectator Control Dashboard -->
+    <div id="watch-dashboard">
+        <header>
+            <h1><i class="fas fa-heartbeat"></i> MedGame Arena</h1>
+            <div id="conn-status" class="status-disconnected">
+                <span style="width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block;"></span>
+                <span>Déconnecté</span>
+            </div>
+        </header>
+
+        <!-- Toast Notification Area -->
+        <div id="toast-container"></div>
+
+        <!-- Case Info Widget -->
+        <div class="widget" id="widget-info">
+            <div class="widget-title"><i class="fas fa-user-md"></i> Informations Cas Clinique</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Patient</span>
+                    <span class="info-value" id="val-patient">Aucun cas actif</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Spécialité</span>
+                    <span class="info-value" id="val-specialty">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Difficulté</span>
+                    <span class="info-value" id="val-difficulty">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Temps Restant</span>
+                    <span class="info-value" id="val-timer">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vitals Monitor Widget -->
+        <div class="widget" id="widget-vitals">
+            <div class="widget-title"><i class="fas fa-wave-square"></i> Moniteur Multiparamétrique</div>
+            <div class="vitals-monitor-panel">
+                <div class="vital-box">
+                    <span class="vital-name">FC</span>
+                    <span class="vital-num" id="vit-fc">—</span>
+                    <span class="vital-unit">bpm</span>
+                </div>
+                <div class="vital-box">
+                    <span class="vital-name">PA</span>
+                    <span class="vital-num" id="vit-pa">—</span>
+                    <span class="vital-unit">mmHg</span>
+                </div>
+                <div class="vital-box">
+                    <span class="vital-name">SpO2</span>
+                    <span class="vital-num" id="vit-spo2">—</span>
+                    <span class="vital-unit">%</span>
+                </div>
+                <div class="vital-box">
+                    <span class="vital-name">FR</span>
+                    <span class="vital-num" id="vit-fr">—</span>
+                    <span class="vital-unit">/min</span>
+                </div>
+                <div class="vital-box">
+                    <span class="vital-name">Temp</span>
+                    <span class="vital-num" id="vit-temp">—</span>
+                    <span class="vital-unit">°C</span>
+                </div>
+                <div class="vital-box">
+                    <span class="vital-name">Douleur</span>
+                    <span class="vital-num" id="vit-douleur">—</span>
+                    <span class="vital-unit">/10</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Feed Widget -->
+        <div class="widget" id="widget-chat">
+            <div class="widget-title"><i class="fas fa-comments"></i> Actions et Dialogue</div>
+            <div class="chat-feed" id="chat-feed-container">
+                <div style="padding:15px;text-align:center;color:var(--text-muted)">
+                    En attente du démarrage du cas...
+                </div>
+            </div>
+        </div>
+
+        <!-- Semio Locks & Exams checklist Widget -->
+        <div class="widget" id="widget-checklist">
+            <div class="widget-title"><i class="fas fa-clipboard-list"></i> Démarche Clinique</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                    <div style="font-size:0.75rem;color:var(--text-glow);margin-bottom:6px;font-weight:bold;">VERROUS DIAGNOSTIQUES</div>
+                    <div id="locks-list"></div>
+                </div>
+                <div>
+                    <div style="font-size:0.75rem;color:var(--text-glow);margin-bottom:6px;font-weight:bold;">EXAMENS & TRAITEMENTS</div>
+                    <div id="exams-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Score evaluation Widget -->
+        <div class="widget" id="widget-score">
+            <div class="widget-title"><i class="fas fa-star"></i> Évaluation Finale</div>
+            <div class="score-val" id="score-percentage">—</div>
+            <div class="stars-container" id="stars-container">
+                <i class="fas fa-star inactive"></i>
+                <i class="fas fa-star inactive"></i>
+                <i class="fas fa-star inactive"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legacy / global scripts for 3D engine setup -->
+    <script src="js/audio.js?v=2"></script>
+    <script src="js/nurse.js?v=2"></script>
+    <script src="js/utils.js?v=2"></script>
+    <script src="js/timer.js?v=2"></script>
+    <script src="js/vitalSigns.js?v=2"></script>
+    <script src="js/lockSystem.js?v=2"></script>
+    <script src="js/scoring.js?v=2"></script>
+    <script src="js/feedback.js?v=3"></script>
+    <script src="js/ui.js?v=2"></script>
+    
+    <!-- 3D Scripts -->
+    <script type="module" src="js/three-animations.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-room.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-instruments.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-patient.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-asset-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-lighting-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-environment-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-scene.js?v=20260524-nostore"></script>
+    <script type="module" src="js/character-controller.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-tablet.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-hud-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-transition-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-lock-agent.js?v=20260524-nostore"></script>
+    <script type="module" src="js/three-manager.js?v=20260524-nostore"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <!-- Spectator websocket client bridge -->
+    <script type="module" src="js/ai-watch.js"></script>
+</body>
+</html>

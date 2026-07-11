@@ -217,6 +217,33 @@ export class LLMPatient {
     }
 
     /**
+     * Traduit un chemin de propriété technique du JSON en sujet en langage naturel pour le LLM.
+     */
+    _getFriendlySubjectName(path) {
+        const mapping = {
+            'motifHospitalisation': 'le motif de votre venue / pourquoi vous êtes là',
+            'histoireMaladie.debutSymptomes': 'quand vos symptômes ont commencé / depuis combien de temps vous souffrez',
+            'histoireMaladie.symptomesActuels': 'la description de vos symptômes ou douleurs actuels',
+            'histoireMaladie.descriptionDouleur': 'la description de vos symptômes ou douleurs actuels',
+            'histoireMaladie.evolution': 'l\'évolution de vos symptômes ou de vos douleurs',
+            'histoireMaladie.facteursDeclenchants': 'ce qui déclenche ou aggrave vos symptômes (ex: effort, repas)',
+            'histoireMaladie.facteursCalmants': 'ce qui calme ou soulage vos symptômes (ex: repos, médicaments)',
+            'histoireMaladie.symptomesAssocies': 'vos autres symptômes ou signes associés (ex: sueurs, vertiges, essoufflement)',
+            'antecedents.medicaux': 'vos antécédents médicaux / vos maladies connues',
+            'antecedents.chirurgicaux': 'vos antécédents chirurgicaux / vos opérations passées',
+            'antecedents.familiaux': 'vos antécédents familiaux / les maladies dans votre famille (père, mère, fratrie)',
+            'traitements': 'vos traitements habituels / vos médicaments de tous les jours',
+            'allergies': 'vos allergies ou réactions à des médicaments / aliments',
+            'modeDeVie.tabac': 'votre consommation de tabac / si vous fumez',
+            'modeDeVie.alcool': 'votre consommation d\'alcool',
+            'modeDeVie.activitePhysique': 'votre activité physique / sport',
+            'modeDeVie.alimentation': 'votre régime alimentaire / ce que vous mangez',
+            'modeDeVie.emploi': 'votre profession / travail ou niveau de stress'
+        };
+        return mapping[path] || path;
+    }
+
+    /**
      * Construit la partie statique du system prompt (identités, antécédents, comportement).
      */
     buildStaticSystemPrompt() {
@@ -257,30 +284,36 @@ Respecte scrupuleusement les consignes de divulgation d'informations suivantes :
             if (ecosData.infosVolontaires?.length) {
                 const voluntaries = ecosData.infosVolontaires.map(path => {
                     const val = this._resolvePath(c, path);
-                    return val ? `- ${path} : "${val}"` : null;
+                    if (!val) return null;
+                    const subject = this._getFriendlySubjectName(path);
+                    return `- Tu es autorisé(e) à parler librement de : ${subject}`;
                 }).filter(Boolean);
                 if (voluntaries.length) {
-                    directriceComportementale += `\n- INFORMATIONS QUE TU PEUX RÉVÉLER VOLONTAIREMENT (dès le début ou s'il pose une question d'ouverture très générale, de façon naturelle sans tout balancer d'un coup) :\n${voluntaries.join('\n')}`;
+                    directriceComportementale += `\n- INFORMATIONS QUE TU PEUX RÉVÉLER VOLONTAIREMENT (dès le début ou de façon naturelle sans attendre de question précise) :\n${voluntaries.join('\n')}`;
                 }
             }
 
             if (ecosData.infosSiDemandees?.length) {
                 const requested = ecosData.infosSiDemandees.map(path => {
                     const val = this._resolvePath(c, path);
-                    return val ? `- Pour le sujet '${path}', réponds : "${val}"` : null;
+                    if (!val) return null;
+                    const subject = this._getFriendlySubjectName(path);
+                    return `- Tu ne dois divulguer d'informations sur : "${subject}" QUE si le médecin te le demande explicitement (ne devance pas ses questions)`;
                 }).filter(Boolean);
                 if (requested.length) {
-                    directriceComportementale += `\n- INFORMATIONS À DONNER UNIQUEMENT SI LE MÉDECIN LE DEMANDE EXPLICITEMENT (sois réactif mais ne devance pas les questions) :\n${requested.join('\n')}`;
+                    directriceComportementale += `\n- INFORMATIONS À NE RÉVÉLER QUE SI LE MÉDECIN LE DEMANDE EXPLICITEMENT :\n${requested.join('\n')}`;
                 }
             }
 
             if (ecosData.infosCachees?.length) {
                 const hidden = ecosData.infosCachees.map(path => {
                     const val = this._resolvePath(c, path);
-                    return val ? `- Pour '${path}', réponds : "${val}"` : null;
+                    if (!val) return null;
+                    const subject = this._getFriendlySubjectName(path);
+                    return `- Tu ne dois divulguer d'informations sur : "${subject}" QUE si le médecin insiste lourdement ou pose la question plusieurs fois (reste évasif ou dis que ce n'est rien au premier abord)`;
                 }).filter(Boolean);
                 if (hidden.length) {
-                    directriceComportementale += `\n- INFORMATIONS CACHÉES (Tu NE DOIS PAS les donner spontanément, ni à la première demande simple. Reste évasif ou dis que ce n'est rien au premier abord. Donne-les uniquement si le médecin insiste lourdement ou pose la question une deuxième fois) :\n${hidden.join('\n')}`;
+                    directriceComportementale += `\n- INFORMATIONS CACHÉES (A NE RÉVÉLER QUE SI LE MÉDECIN INSISTE LOURDEMENT) :\n${hidden.join('\n')}`;
                 }
             }
 

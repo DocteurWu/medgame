@@ -535,3 +535,39 @@ body {
         font-size: 1.5rem;
     }
 }
+
+/* Gender Selector Styles */
+.gender-selector {
+    display: inline-flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.gender-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.gender-btn:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gender-btn.active {
+    color: #050714;
+    background: var(--primary-color);
+    box-shadow: 0 0 10px var(--primary-glow);
+    font-weight: 600;
+}

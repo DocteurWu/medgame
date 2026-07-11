@@ -403,6 +403,22 @@ async function loadProfileData() {
 function updateProfileHeader(profile) {
     const username = profile?.username || 'Médecin';
     document.getElementById('profile-username').textContent = username;
+
+    // Render gender state
+    const gender = (profile?.sexe || 'M').toUpperCase();
+    const selector = document.getElementById('gender-selector');
+    if (selector) {
+        selector.style.display = 'inline-flex';
+        const btnM = document.getElementById('gender-btn-m');
+        const btnF = document.getElementById('gender-btn-f');
+        if (gender === 'F') {
+            btnF.classList.add('active');
+            btnM.classList.remove('active');
+        } else {
+            btnM.classList.add('active');
+            btnF.classList.remove('active');
+        }
+    }
     
     // Calculate level
     const xp = profile?.total_xp || 0;
@@ -415,6 +431,55 @@ function updateProfileHeader(profile) {
     document.getElementById('xp-bar').style.width = `${Math.min(xpProgress, 100)}%`;
     document.getElementById('xp-text').textContent = `${xp} / ${Math.round(xpForNextLevel)} XP`;
 }
+
+window.updateProfileGender = async function(sexe) {
+    try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) return;
+
+        const { error } = await supabase
+            .from('profiles')
+            .update({ sexe: sexe })
+            .eq('id', session.user.id);
+
+        if (error) throw error;
+
+        // Update UI locally
+        const btnM = document.getElementById('gender-btn-m');
+        const btnF = document.getElementById('gender-btn-f');
+        if (sexe === 'F') {
+            btnF.classList.add('active');
+            btnM.classList.remove('active');
+        } else {
+            btnM.classList.add('active');
+            btnF.classList.remove('active');
+        }
+
+        // Update local storage fallback
+        const savedProfile = localStorage.getItem('medgame_profile');
+        if (savedProfile) {
+            const parsed = JSON.parse(savedProfile);
+            parsed.sexe = sexe;
+            localStorage.setItem('medgame_profile', JSON.stringify(parsed));
+        }
+    } catch (err) {
+        console.error('Error updating gender:', err);
+        const btnM = document.getElementById('gender-btn-m');
+        const btnF = document.getElementById('gender-btn-f');
+        if (sexe === 'F') {
+            btnF.classList.add('active');
+            btnM.classList.remove('active');
+        } else {
+            btnM.classList.add('active');
+            btnF.classList.remove('active');
+        }
+        
+        const savedProfile = localStorage.getItem('medgame_profile');
+        const parsed = savedProfile ? JSON.parse(savedProfile) : { username: 'Médecin' };
+        parsed.sexe = sexe;
+        localStorage.setItem('medgame_profile', JSON.stringify(parsed));
+    }
+};
 
 function calculateLevel(xp) {
     if (!xp || xp <= 0) return 1;

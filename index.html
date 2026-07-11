@@ -301,6 +301,18 @@
                             <option value="Autre">Autre</option>
                         </select>
                     </div>
+
+                    <!-- Séparateur -->
+                    <div style="width: 100%; height: 1px; background: rgba(255,255,255,0.05);"></div>
+
+                    <!-- Genre / Sexe -->
+                    <div class="setting-input-group" style="margin: 0;">
+                        <label class="setting-label" style="margin-bottom: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.9);"><i class="fas fa-venus-mars"></i> Genre</label>
+                        <select id="setting-sexe" class="setting-input" style="padding: 10px 14px; font-size: 0.9rem; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); color: white; width: 100%; border-radius: 8px; cursor: pointer;">
+                            <option value="M">Homme</option>
+                            <option value="F">Femme</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -354,12 +366,13 @@
                 if (session) {
                     const { data, error } = await supabase
                         .from('profiles')
-                        .select('username, is_public, username_updated_at, rank, rank_updated_at')
+                        .select('username, is_public, username_updated_at, rank, rank_updated_at, sexe')
                         .eq('id', session.user.id)
                         .single();
 
                     if (!error && data) {
                         document.getElementById('setting-public-toggle').checked = data.is_public;
+                        document.getElementById('setting-sexe').value = data.sexe || 'M';
 
                         // Gestion du pseudonyme
                         const defaultPseudo = session.user.email.substring(0, 3) + '***';
@@ -407,8 +420,17 @@
                         console.error("Erreur chargement profil:", error);
                         usernameInput.value = session.user.email.split('@')[0];
                         usernameInput.disabled = false;
+                        
+                        const savedProfile = localStorage.getItem('medgame_profile') ? JSON.parse(localStorage.getItem('medgame_profile')) : {};
+                        document.getElementById('setting-sexe').value = savedProfile.sexe || 'M';
                     }
                 }
+            } else {
+                // Fallback local storage
+                const savedProfile = localStorage.getItem('medgame_profile') ? JSON.parse(localStorage.getItem('medgame_profile')) : {};
+                usernameInput.value = savedProfile.username || 'Médecin';
+                usernameInput.disabled = false;
+                document.getElementById('setting-sexe').value = savedProfile.sexe || 'M';
             }
         };
         const closeModal = () => modal.classList.remove('active');
@@ -473,6 +495,23 @@
                         updateData.rank = rankSelect.value;
                         updateData.rank_updated_at = new Date().toISOString();
                     }
+
+                    // Sexe
+                    const selectedSexe = document.getElementById('setting-sexe').value;
+                    updateData.sexe = selectedSexe;
+
+                    // Sauvegarder localement dans medgame_profile pour un accès rapide
+                    try {
+                        const savedProfile = localStorage.getItem('medgame_profile') ? JSON.parse(localStorage.getItem('medgame_profile')) : {};
+                        savedProfile.sexe = selectedSexe;
+                        if (!document.getElementById('setting-username').disabled && newUsername) {
+                            savedProfile.username = newUsername;
+                        }
+                        if (updateData.rank) {
+                            savedProfile.rank = updateData.rank;
+                        }
+                        localStorage.setItem('medgame_profile', JSON.stringify(savedProfile));
+                    } catch (e) {}
 
                     const { error } = await supabase
                         .from('profiles')

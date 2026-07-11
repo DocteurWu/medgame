@@ -47,6 +47,7 @@ class LLMClient {
         ].filter((m, idx, self) => self.indexOf(m) === idx);
 
         let lastError = null;
+        let isProxyOffline = false;
 
         for (const currentModel of modelsToTry) {
             let attempt = 0;
@@ -57,7 +58,18 @@ class LLMClient {
                 }
 
                 try {
-                    console.log(`[LLMClient] Modèle : ${currentModel} (essai ${attempt + 1}/${maxRetries + 1})`);
+                    // Determine URL, Key, and Model (fallback to backup direct OpenRouter if proxy is offline)
+                    let targetUrl = endpoint;
+                    let targetKey = apiKey;
+                    let targetModel = currentModel;
+
+                    if (isProxyOffline && window.__ENV__?.LLM_API_KEY_BACKUP) {
+                        targetUrl = window.__ENV__.LLM_API_URL_BACKUP;
+                        targetKey = window.__ENV__.LLM_API_KEY_BACKUP;
+                        targetModel = window.__ENV__.LLM_MODEL_BACKUP || 'tencent/hy3:free';
+                    }
+
+                    console.log(`[LLMClient] Cible : ${targetUrl} | Modèle : ${targetModel} (essai ${attempt + 1}/${maxRetries + 1})`);
                     
                     // Controller combiné pour le timeout
                     const timeoutController = new AbortController();
@@ -68,21 +80,24 @@ class LLMClient {
                         ? this._combineSignals(signal, timeoutController.signal)
                         : timeoutController.signal;
 
-                    const response = await fetch(endpoint, {
+                    const response = await fetch(targetUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {}),
+                            ...(targetKey ? { 'Authorization': `Bearer ${targetKey}` } : {}),
                             'HTTP-Referer': window.location.origin || 'http://localhost',
                             'X-Title': 'MedGame'
                         },
                         body: JSON.stringify({
-                            model: currentModel,
+                            model: targetModel,
                             messages,
                             stream,
-                            max_tokens: maxTokens,
+                            max_tokens: Math.max(maxTokens || 3000, 3000),
                             temperature,
-                            top_p: 0.95
+                            top_p: 0.95,
+                            reasoning: {
+                                exclude: true
+                            }
                         }),
                         signal: combinedSignal
                     });
@@ -108,7 +123,7 @@ class LLMClient {
 
                     // Enregistrer le modèle fonctionnel dans la configuration globale
                     if (window.CONFIG) {
-                        window.CONFIG.LLM_MODEL = currentModel;
+                        window.CONFIG.LLM_MODEL = targetModel;
                     }
                     return trimmedText;
 
@@ -122,6 +137,14 @@ class LLMClient {
                         console.warn(`[LLMClient] Timeout atteint sur ${currentModel}`);
                     } else {
                         console.warn(`[LLMClient] Erreur lors de l'appel : ${err.message}`);
+                    }
+
+                    // Si le proxy local échoue (erreur réseau ou HTTP status non-OK), basculer sur l'API directe
+                    if (!isProxyOffline && window.__ENV__?.LLM_API_KEY_BACKUP) {
+                        console.warn(`[LLMClient] Local MCP proxy error (${err.message}). Swapping to direct OpenRouter API backup...`);
+                        isProxyOffline = true;
+                        attempt = 0; // reset attempts for the fallback
+                        continue;
                     }
 
                     lastError = err;

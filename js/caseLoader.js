@@ -86,8 +86,35 @@ async function loadCasesMetadata() {
  */
 async function loadCasesData() {
     try {
-        // Preview Mode check
         const urlParams = new URLSearchParams(window.location.search);
+        
+        // Auto-start case via case query parameter
+        const caseParam = urlParams.get('case');
+        if (caseParam) {
+            if (typeof supabase !== 'undefined' && !caseParam.endsWith('.json')) {
+                try {
+                    const { data, error } = await supabase
+                        .from('cases')
+                        .select('*')
+                        .eq('id', caseParam)
+                        .single();
+
+                    if (!error && data) {
+                        const content = data.content;
+                        if (!content.id) content.id = data.id;
+                        return [content];
+                    }
+                } catch (err) {
+                    console.warn("Supabase single fetch failed from query param", err);
+                }
+            }
+
+            // Fallback local
+            const caseData = await lazyLoadCase(caseParam.endsWith('.json') ? caseParam : `${caseParam}.json`);
+            return [caseData];
+        }
+
+        // Preview Mode check
         if (urlParams.get('preview') === 'true') {
             const previewData = sessionStorage.getItem('previewCase');
             if (previewData) {
