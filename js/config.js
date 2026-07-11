@@ -14,7 +14,7 @@ const CONFIG = {
     LLM_API_URL: window.__ENV__?.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions',
     LLM_API_KEY: window.__ENV__?.LLM_API_KEY || '',
     LLM_MODEL: window.__ENV__?.LLM_MODEL || 'llama-3.3-70b-versatile',
-    LLM_MAX_TOKENS: 220,
+    LLM_MAX_TOKENS: 3000,
     LLM_TEMPERATURE: 0.85,
     LLM_TOP_P: 0.92
 };

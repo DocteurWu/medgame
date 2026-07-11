@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="css/profile.css?v=2">
+    <link rel="stylesheet" href="css/profile.css?v=5">
     <link rel="stylesheet" href="css/device-check.css?v=2">
     
     <!-- Three.js -->
@@ -50,7 +50,13 @@
                     <i class="fas fa-user-md"></i>
                 </div>
                 <div class="profile-info">
-                    <h1 id="profile-username">Chargement...</h1>
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h1 id="profile-username" style="margin: 0;">Chargement...</h1>
+                        <div class="gender-selector" id="gender-selector">
+                            <button id="gender-btn-m" class="gender-btn" onclick="updateProfileGender('M')">Homme</button>
+                            <button id="gender-btn-f" class="gender-btn" onclick="updateProfileGender('F')">Femme</button>
+                        </div>
+                    </div>
                     <div class="profile-level">
                         <span class="level-badge" id="level-badge">Niv. 1</span>
                         <div class="xp-progress">
@@ -149,7 +155,7 @@
     <script src="js/config.js?v=2"></script>
     <script src="js/auth.js?v=2"></script>
     <script src="js/ecos-stats.js?v=1"></script>
-    <script src="js/profile.js?v=3"></script>
+    <script src="js/profile.js?v=5"></script>
     <script src="js/device-check.js?v=2"></script>
 </body>
 

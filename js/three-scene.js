@@ -639,6 +639,10 @@ export class ThreeScene {
                 this.callbacks.onArmoire?.(hitObj);
                 break;
             }
+            if (name === 'Porte entree' || label.toLowerCase().includes('porte')) {
+                window.location.href = 'index.html';
+                break;
+            }
             // Tout objet interactif avec un label — fly-to générique
             if (current.userData?.interactive && hitPoint) {
                 if (!isFPS) {
@@ -665,18 +669,7 @@ export class ThreeScene {
         const hoveredObj = hit?.object || null;
 
         // Détection si un overlay/modal 2D ou 3D est visible à l'écran
-        const pcOverlay = document.getElementById('pc-overlay');
-        const armoireOverlay = document.getElementById('armoire-overlay');
-        const examMenu = document.getElementById('clinical-exam-menu');
-        const prescriptionModal = document.getElementById('prescription-modal');
-        const correctionOverlay = document.getElementById('correction-overlay');
-
-        const isOverlayVisible = 
-            (pcOverlay && pcOverlay.style.display !== 'none') ||
-            armoireOverlay ||
-            examMenu ||
-            (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
-            (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true');
+        const isOverlayVisible = this._isOverlayVisible();
 
         // Gestion du hover glow (désactivé si overlay visible pour éviter des glitchs visuels)
         this._updateHoverGlow(isOverlayVisible ? null : hoveredObj);
@@ -848,18 +841,7 @@ export class ThreeScene {
         if (!this._tooltipEl) return;
 
         // Détecter si un overlay/modal est ouvert à l'écran (Dossier médical, armoire, QCM, etc.)
-        const pcOverlay = document.getElementById('pc-overlay');
-        const armoireOverlay = document.getElementById('armoire-overlay');
-        const examMenu = document.getElementById('clinical-exam-menu');
-        const prescriptionModal = document.getElementById('prescription-modal');
-        const correctionOverlay = document.getElementById('correction-overlay');
-
-        const isOverlayVisible = 
-            (pcOverlay && pcOverlay.style.display !== 'none') ||
-            armoireOverlay ||
-            examMenu ||
-            (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
-            (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true');
+        const isOverlayVisible = this._isOverlayVisible();
 
         const isFPS = !!(this.fpsController && this.fpsController.enabled);
 
@@ -926,6 +908,32 @@ export class ThreeScene {
         this._tooltipEl.style.top = ty + 'px';
         this._tooltipEl.style.opacity = '1';
         this._tooltipVisible = true;
+    }
+
+    /**
+     * Vérifie si un overlay ou une modale (2D/3D/jeu/QCM) est actuellement visible
+     * @returns {boolean}
+     */
+    _isOverlayVisible() {
+        const pcOverlay = document.getElementById('pc-overlay');
+        const armoireOverlay = document.getElementById('armoire-overlay');
+        const examMenu = document.getElementById('clinical-exam-menu');
+        const prescriptionModal = document.getElementById('prescription-modal');
+        const correctionOverlay = document.getElementById('correction-overlay');
+        const lockChallengeModal = document.getElementById('lock-challenge-modal');
+        const imageOverlay = document.getElementById('image-overlay');
+        const mobileMonitorOverlay = document.getElementById('mobile-monitor-overlay');
+
+        return !!(
+            (pcOverlay && pcOverlay.style.display !== 'none') ||
+            armoireOverlay ||
+            examMenu ||
+            (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
+            (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true') ||
+            lockChallengeModal ||
+            (imageOverlay && imageOverlay.style.display !== 'none') ||
+            (mobileMonitorOverlay && mobileMonitorOverlay.style.display !== 'none')
+        );
     }
 
     /**
@@ -1217,18 +1225,7 @@ export class ThreeScene {
             const hoveredObj = hit?.object || null;
 
             // Détection si un overlay/modal 2D ou 3D est visible à l'écran
-            const pcOverlay = document.getElementById('pc-overlay');
-            const armoireOverlay = document.getElementById('armoire-overlay');
-            const examMenu = document.getElementById('clinical-exam-menu');
-            const prescriptionModal = document.getElementById('prescription-modal');
-            const correctionOverlay = document.getElementById('correction-overlay');
-
-            const isOverlayVisible = 
-                (pcOverlay && pcOverlay.style.display !== 'none') ||
-                armoireOverlay ||
-                examMenu ||
-                (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
-                (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true');
+            const isOverlayVisible = this._isOverlayVisible();
 
             // Mettre à jour l'effet de hover glow
             this._updateHoverGlow(isOverlayVisible ? null : hoveredObj);

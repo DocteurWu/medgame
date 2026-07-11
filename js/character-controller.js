@@ -1,16 +1,173 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { easeInOut } from './three-animations.js';
 import { DoctorAnimator } from './three-animations.js';
 
 export class CharacterController {
     constructor(scene) {
         this.scene = scene;
-        this.group = this.createDoctor();
-        this.scene.add(this.group);
-        this.group.position.set(0, 0, 2.6);
+        
+        // Main group
+        this.group = new THREE.Group();
         this.group.name = 'Doctor';
+        this.group.position.set(0, 0, 2.6);
+        this.scene.add(this.group);
+
+        // Procedural doctor (instant fallback)
+        this.proceduralGroup = this.createDoctor();
+        this.group.add(this.proceduralGroup);
+        this.group.userData.armR = this.proceduralGroup.userData.armR;
+
         this.isMoving = false;
         this.animator = new DoctorAnimator(this.group);
+
+        this.mixer = null;
+        this.actions = {};
+        this.currentAction = null;
+        this.activeModel = null;
+
+        // Bind playAction to group for DoctorAnimator access
+        this.group.playAction = this.playAction.bind(this);
+
+        // Load doctor GLB model based on user gender
+        this.loadUserGenderAndModel();
+    }
+
+    async loadUserGenderAndModel() {
+        let gender = 'M';
+
+        // 1. Try local storage first for fast initial rendering
+        const savedProfile = localStorage.getItem('medgame_profile');
+        if (savedProfile) {
+            try {
+                const parsed = JSON.parse(savedProfile);
+                if (parsed && parsed.sexe) {
+                    gender = parsed.sexe;
+                }
+            } catch (e) {
+                console.warn('Error parsing local profile:', e);
+            }
+        }
+
+        // 2. Query Supabase profiles table in background
+        if (window.supabase) {
+            try {
+                const { data: { session } } = await window.supabase.auth.getSession();
+                if (session && session.user) {
+                    const { data: profile } = await window.supabase
+                        .from('profiles')
+                        .select('sexe')
+                        .eq('id', session.user.id)
+                        .single();
+                    
+                    if (profile && profile.sexe) {
+                        gender = profile.sexe;
+                        
+                        // Sync with local storage
+                        try {
+                            const updatedProfile = savedProfile ? JSON.parse(savedProfile) : {};
+                            updatedProfile.sexe = gender;
+                            localStorage.setItem('medgame_profile', JSON.stringify(updatedProfile));
+                        } catch (e) {}
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not retrieve user gender from Supabase, using local fallback:', e);
+            }
+        }
+
+        const modelFile = (gender || 'M').toUpperCase() === 'F' ? 'femme.glb' : 'homme.glb';
+        console.log(`[CharacterController] Loading doctor model: ${modelFile} for gender: ${gender}`);
+        this.loadModel(`assets/models/doctors/${modelFile}`);
+    }
+
+    loadModel(modelPath) {
+        const loader = new GLTFLoader();
+        loader.load(modelPath, (gltf) => {
+            // Remove procedural doctor fallback
+            if (this.proceduralGroup) {
+                this.group.remove(this.proceduralGroup);
+                this.proceduralGroup = null;
+            }
+
+            // Remove previous model if any
+            if (this.activeModel) {
+                this.group.remove(this.activeModel);
+            }
+
+            this.activeModel = gltf.scene;
+
+            // Enable shadows
+            this.activeModel.traverse((child) => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+
+            // Auto scale model to target doctor height (1.155m - 30% reduction from 1.65m)
+            this.activeModel.updateMatrixWorld(true);
+            const box = new THREE.Box3().setFromObject(this.activeModel);
+            const size = box.getSize(new THREE.Vector3());
+            const targetHeight = 2.3;
+            let scale = 1.0;
+            if (size.y > 0.1 && size.y < 10) {
+                scale = targetHeight / size.y;
+            }
+            this.activeModel.scale.set(scale, scale, scale);
+            
+            // Align the bottom of the model (feet) with Y = 0
+            const minYOffset = -box.min.y * scale;
+            this.activeModel.position.set(0, minYOffset, 0);
+            this.activeModel.rotation.set(0, 0, 0);
+
+            this.group.add(this.activeModel);
+
+            // Locate right arm bone/mesh for wave/reach gestures
+            let armR = null;
+            this.activeModel.traverse((child) => {
+                const name = (child.name || '').toLowerCase();
+                if (name.includes('rightarm') || name.includes('armr') || name.includes('arm_r') || name.includes('bra_r') || name.includes('bras_r')) {
+                    armR = child;
+                }
+            });
+            if (armR) {
+                this.group.userData.armR = armR;
+            }
+
+            // Handle GLTF animations
+            if (gltf.animations && gltf.animations.length > 0) {
+                this.mixer = new THREE.AnimationMixer(this.activeModel);
+                this.group.mixer = this.mixer;
+                this.actions = {};
+                gltf.animations.forEach((clip) => {
+                    this.actions[clip.name.toLowerCase()] = this.mixer.clipAction(clip);
+                });
+
+                this.playAction('idle');
+            }
+        }, undefined, (err) => {
+            console.error('Error loading doctor GLB model:', err);
+        });
+    }
+
+    playAction(name) {
+        if (!this.actions || Object.keys(this.actions).length === 0) return;
+        const actionName = name.toLowerCase();
+        let action = this.actions[actionName];
+        if (!action) {
+            const keys = Object.keys(this.actions);
+            const matchingKey = keys.find(k => k.includes(actionName));
+            action = matchingKey ? this.actions[matchingKey] : this.actions[keys[0]];
+        }
+
+        if (action && this.currentAction !== action) {
+            if (this.currentAction) {
+                this.currentAction.fadeOut(0.25);
+            }
+            action.reset().fadeIn(0.25).play();
+            this.currentAction = action;
+        }
     }
 
     createDoctor() {
