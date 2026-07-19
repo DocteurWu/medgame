@@ -1061,17 +1061,10 @@ onDomReady(async () => {
         if (timerState.timerInterval) clearInterval(timerState.timerInterval);
 
         // --- ANTI-FARM: Calculate XP based on attempt number ---
-        const caseAttemptsKey = `case_attempts_${currentCase.id}`;
-        let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey)) || 0;
-        caseAttempts++;
-        localStorage.setItem(caseAttemptsKey, caseAttempts);
-
         const xpResult = calculateXpEarned(percentageScore, compositeResult.vitesseScore);
         const xpEarned = xpResult.xpEarned;
         const xpMessage = xpResult.xpMessage;
-
-        // Save current composite score
-        localStorage.setItem(`case_score_${currentCase.id}`, percentageScore);
+        const caseAttempts = xpResult.caseAttempts;
 
         // Build color-coded comparison HTML
         const diagnosticCorrect = (diagScore >= 80);
@@ -1168,8 +1161,13 @@ onDomReady(async () => {
             setCookie('playedCases', playedCases.join(','), 365);
         }
 
-        // SUPABASE: Sauvegarde de la session de jeu et XP
-        if (typeof supabase !== 'undefined') {
+        // Sauvegarde centralisée des XP (local + Supabase)
+        if (typeof addXp === 'function') {
+            addXp(xpEarned).catch(err => console.warn("Erreur lors de l'incrémentation XP :", err));
+        }
+
+        // SUPABASE: Sauvegarde de la session de jeu
+        if (typeof supabase !== 'undefined' && supabase.auth) {
             supabase.auth.getUser().then(async ({ data: { user } }) => {
                 if (user) {
                     try {
@@ -1183,7 +1181,6 @@ onDomReady(async () => {
                             selectedTreatments: selectedTreatments,
                             hasFatalError: hasFatalError,
                             xpEarned: xpEarned,
-                            // --- Scoring composite avancé ---
                             compositeScore: percentageScore,
                             demarcheScore: compositeResult.demarcheScore,
                             diagnosticScore: compositeResult.diagnosticScore,
@@ -1192,8 +1189,7 @@ onDomReady(async () => {
                             stars: stars
                         };
 
-                        // 1. Enregistrer la session
-                        const { error: sessionError } = await supabase
+                        await supabase
                             .from('play_sessions')
                             .insert([
                                 {
@@ -1204,25 +1200,8 @@ onDomReady(async () => {
                                     duration_seconds: durationSeconds
                                 }
                             ]);
-                        if (sessionError) throw sessionError;
-
-                        // 2. Mettre à jour l'XP global (score + bonus de temps)
-                        const { data: profile, error: profileErr } = await supabase
-                            .from('profiles')
-                            .select('total_xp')
-                            .eq('id', user.id)
-                            .single();
-
-                        if (!profileErr && profile) {
-                            const newXp = (profile.total_xp || 0) + xpEarned;
-                            await supabase
-                                .from('profiles')
-                                .update({ total_xp: newXp })
-                                .eq('id', user.id);
-                        }
-
                     } catch (err) {
-                        console.error("Erreur lors de la sauvegarde Supabase :", err);
+                        console.warn("Erreur lors de l'enregistrement de la session dans Supabase :", err);
                     }
                 }
             });

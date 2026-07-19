@@ -140,27 +140,16 @@ function renderUrgenceState() {
 }
 
 async function awardUrgenceXp(xpAmount) {
-    if (!window.supabase) return;
+    if (!xpAmount || xpAmount <= 0) return;
     try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session && session.user) {
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('total_xp')
-                .eq('id', session.user.id)
-                .single();
-
-            if (profile) {
-                const newXp = (profile.total_xp || 0) + xpAmount;
-                await supabase
-                    .from('profiles')
-                    .update({ total_xp: newXp })
-                    .eq('id', session.user.id);
-                showNotification(`Tu as gagné ${xpAmount} XP !`, 'success');
-            }
+        if (typeof addXp === 'function') {
+            await addXp(xpAmount);
+        } else if (typeof setLocalXp === 'function' && typeof getLocalXp === 'function') {
+            setLocalXp(getLocalXp() + xpAmount);
         }
+        showNotification(`Tu as gagné ${xpAmount} XP !`, 'success');
     } catch (error) {
-        console.error("Erreur lors de l'attribution de l'XP :", error);
+        console.error("Erreur lors de l'attribution de l'XP urgence :", error);
     }
 }
 

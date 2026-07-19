@@ -378,3 +378,80 @@ function eraseCookie(name) {
     const encodedName = encodeURIComponent(name);
     document.cookie = `${encodedName}=; path=/; Max-Age=-99999999; SameSite=Lax`;
 }
+
+// ==================== XP MANAGEMENT UTILITIES ====================
+
+function getLocalXp() {
+    try {
+        const storedXp = localStorage.getItem('medgame_xp');
+        if (storedXp !== null) {
+            const parsed = parseInt(storedXp, 10);
+            if (!isNaN(parsed)) return parsed;
+        }
+        const cookieXp = getCookie('xp');
+        if (cookieXp !== null) {
+            const parsed = parseInt(cookieXp, 10);
+            if (!isNaN(parsed)) return parsed;
+        }
+    } catch (e) {
+        console.warn('Error reading local XP:', e);
+    }
+    return 0;
+}
+
+function setLocalXp(amount) {
+    const xpVal = Math.max(0, parseInt(amount, 10) || 0);
+    try {
+        localStorage.setItem('medgame_xp', xpVal.toString());
+        setCookie('xp', xpVal.toString(), COOKIE_EXPIRY_DAYS);
+    } catch (e) {
+        console.warn('Error setting local XP:', e);
+    }
+    return xpVal;
+}
+
+async function addXp(xpEarned) {
+    const gained = parseInt(xpEarned, 10) || 0;
+    if (gained <= 0) return getLocalXp();
+
+    const currentLocal = getLocalXp();
+    let updatedXp = currentLocal + gained;
+    setLocalXp(updatedXp);
+
+    if (typeof supabase !== 'undefined' && supabase.auth) {
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session && session.user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('total_xp')
+                    .eq('id', session.user.id)
+                    .maybeSingle();
+
+                const remoteXp = profile && profile.total_xp !== null && profile.total_xp !== undefined
+                    ? parseInt(profile.total_xp, 10)
+                    : 0;
+
+                updatedXp = Math.max(remoteXp + gained, updatedXp);
+                setLocalXp(updatedXp);
+
+                await supabase
+                    .from('profiles')
+                    .upsert({
+                        id: session.user.id,
+                        total_xp: updatedXp,
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'id' });
+            }
+        } catch (err) {
+            console.warn('Supabase XP update error:', err);
+        }
+    }
+
+    return updatedXp;
+}
+
+window.getLocalXp = getLocalXp;
+window.setLocalXp = setLocalXp;
+window.addXp = addXp;
+

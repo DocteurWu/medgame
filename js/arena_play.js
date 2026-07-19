@@ -982,10 +982,14 @@ async function renderPodium() {
                 .single();
 
             if (myArenaRow && (!myArenaRow.xp_earned || myArenaRow.xp_earned === 0)) {
-                // Update my own profile XP
-                const { data: prof } = await supabase.from('profiles').select('total_xp').eq('id', myUserId).single();
-                if (prof) {
-                    await supabase.from('profiles').update({ total_xp: (prof.total_xp || 0) + earnedXp }).eq('id', myUserId);
+                // Update my profile XP (local + Supabase)
+                if (typeof addXp === 'function') {
+                    await addXp(earnedXp);
+                } else {
+                    const { data: prof } = await supabase.from('profiles').select('total_xp').eq('id', myUserId).single();
+                    if (prof) {
+                        await supabase.from('profiles').update({ total_xp: (prof.total_xp || 0) + earnedXp }).eq('id', myUserId);
+                    }
                 }
                 // Mark XP as awarded
                 await supabase.from('arena_players').update({

@@ -75,9 +75,16 @@
     <script src="js/config.js?v=2"></script>
     <script src="js/auth.js?v=2"></script>
     <script>
-        // Vérifier l'authentification
+        // Authentification facultative (les invités peuvent jouer sans inscription)
         document.addEventListener('DOMContentLoaded', async () => {
-            await window.requireAuth();
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    console.log('[Auth] Joueur connecté :', session.user.email);
+                } else {
+                    console.log('[Auth] Mode Invité / Essai 1-clic actif');
+                }
+            }
         });
 
         // Disable audio if MUSIC_ENABLED is 0
