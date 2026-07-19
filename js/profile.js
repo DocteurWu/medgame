@@ -281,7 +281,21 @@ async function loadProfileData() {
             console.warn('Profile error:', profileError.message);
             useFallback = true;
         } else {
-            profile = profileData;
+            profile = profileData || {};
+            const localXp = typeof getLocalXp === 'function' ? getLocalXp() : 0;
+            const remoteXp = profile.total_xp || 0;
+            const effectiveXp = Math.max(remoteXp, localXp);
+
+            profile.total_xp = effectiveXp;
+            if (typeof setLocalXp === 'function') setLocalXp(effectiveXp);
+
+            if (effectiveXp > remoteXp && session?.user?.id) {
+                supabase
+                    .from('profiles')
+                    .upsert({ id: session.user.id, total_xp: effectiveXp }, { onConflict: 'id' })
+                    .then(() => {})
+                    .catch(e => console.warn('XP sync error:', e));
+            }
             
             // --- LOGIQUE TOP 10 STREAK (Célébrité) ---
             if (profile.is_public) {
@@ -359,16 +373,17 @@ async function loadProfileData() {
         useFallback = true;
     }
     
-    // ... rest of fallback logic ...
     if (useFallback || !profile) {
-        // ... same fallback ...
         const savedProfile = localStorage.getItem('medgame_profile');
         if (savedProfile) {
             profile = JSON.parse(savedProfile);
+            if (typeof getLocalXp === 'function') {
+                profile.total_xp = Math.max(profile.total_xp || 0, getLocalXp());
+            }
         } else {
             profile = {
                 username: 'Médecin',
-                total_xp: getCookie('xp') ? parseInt(getCookie('xp')) : 0,
+                total_xp: typeof getLocalXp === 'function' ? getLocalXp() : (getCookie('xp') ? parseInt(getCookie('xp')) : 0),
                 rank: 'DFGSM3'
             };
         }

@@ -92,16 +92,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
 
                     if (data.user) {
-                        // Forcer la mise à jour du profil avec le bon rang
-                        // On utilise upsert pour s'assurer que ça passe même si le profil n'est pas encore créé par le trigger
+                        const guestXp = typeof getLocalXp === 'function' ? getLocalXp() : 0;
                         await supabase
                             .from('profiles')
                             .upsert({
                                 id: data.user.id,
                                 rank: selectedRank,
-                                username: email.split('@')[0], // Pseudo par défaut
+                                username: email.split('@')[0],
+                                total_xp: guestXp,
                                 rank_updated_at: new Date().toISOString()
-                            });
+                            }, { onConflict: 'id' });
                     }
 
                     if (data.session === null) {

@@ -1737,11 +1737,14 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         } catch (e) { console.warn('[ECOS] localStorage write failed:', e); }
 
         // Supabase si utilisateur connecté
-        if (typeof supabase !== 'undefined') {
+        if (typeof addXp === 'function') {
+            addXp(finalScore).catch(err => console.warn('[ECOS] XP update failed:', err));
+        }
+
+        if (typeof supabase !== 'undefined' && supabase.auth) {
             supabase.auth.getUser().then(async ({ data: { user } }) => {
                 if (!user) return;
                 try {
-                    // 1. Enregistrer la session
                     await supabase.from('play_sessions').insert([{
                         user_id: user.id,
                         case_id: ecosSessionStats.case_id,
@@ -1750,22 +1753,7 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
                         duration_seconds: ecosSessionStats.durationSeconds,
                         mode: 'ecos'
                     }]);
-
-                    // 2. Mettre à jour l'XP global
-                    const { data: profile, error: profileErr } = await supabase
-                        .from('profiles')
-                        .select('total_xp')
-                        .eq('id', user.id)
-                        .single();
-
-                    if (!profileErr && profile) {
-                        const newXp = (profile.total_xp || 0) + finalScore;
-                        await supabase
-                            .from('profiles')
-                            .update({ total_xp: newXp })
-                            .eq('id', user.id);
-                    }
-                } catch (e) { console.warn('[ECOS] Supabase session save / XP update failed:', e); }
+                } catch (e) { console.warn('[ECOS] Supabase session save failed:', e); }
             }).catch(() => {});
         }
     }

@@ -103,14 +103,18 @@
             </div>
 
             <div class="button-container" role="group" aria-label="Actions principales">
+                <!-- Tester un cas en 1 clic (Accès direct sans inscription - pour invités seulement) -->
+                <button class="btn-3d primary guest-only" id="quick-play-button" onclick="startQuickTest()" aria-label="Tester un cas clinique sans inscription">
+                    <span class="btn-content"><i class="fas fa-bolt" aria-hidden="true"></i> Tester un cas (1 clic)</span>
+                    <div class="btn-layer"></div>
+                </button>
+
                 <!-- Boutons réservés aux utilisateurs connectés -->
                 <button class="btn-3d primary auth-only" id="play-button" onclick="transitionTo('themes.html')"
                     style="display:none;" aria-label="Commencer une partie">
                     <span class="btn-content"><i class="fas fa-play" aria-hidden="true"></i> Commencer ma garde</span>
                     <div class="btn-layer"></div>
                 </button>
-
-
 
                 <!-- Section auth: login ou déconnexion -->
                 <div id="auth-section" style="display: flex; flex-direction: column; gap: 10px;">
@@ -559,6 +563,12 @@
 
 
 
+        // Lancer un cas d'essai en 1 clic sans inscription
+        function startQuickTest() {
+            localStorage.setItem('selectedCaseFile', 'CARDIO_angor_stable.json');
+            transitionTo('game.html?case=CARDIO_angor_stable.json');
+        }
+
         // Fonction transition douce avec audio
         function transitionTo(url) {
             if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('click');
@@ -587,8 +597,11 @@
                 if (session) {
                     // --- Utilisateur CONNECTÉ ---
 
-                    // Cacher la section auth, montrer les boutons auth-only
+                    // Cacher la section auth et les éléments réservés aux invités, montrer les boutons auth-only
                     document.getElementById('auth-section').style.display = 'none';
+                    document.querySelectorAll('.guest-only').forEach(el => {
+                        el.style.display = 'none';
+                    });
 
                     document.querySelectorAll('.auth-only').forEach(el => {
                         el.style.display = '';
@@ -615,17 +628,24 @@
                     }
 
                     try {
+                        const localXp = typeof getLocalXp === 'function' ? getLocalXp() : 0;
                         const { data: profile, error } = await supabase
                             .from('profiles')
                             .select('username, total_xp, rank')
                             .eq('id', session.user.id)
-                            .single();
+                            .maybeSingle();
 
                         if (!error && profile) {
                             if (profile.username) displayedUsername = profile.username;
-                            niveau = calculateLevel(profile.total_xp || 0);
-                            xpText = `${profile.total_xp || 0} XP`;
+                            const totalXp = Math.max(profile.total_xp || 0, localXp);
+                            if (typeof setLocalXp === 'function') setLocalXp(totalXp);
+                            niveau = calculateLevel(totalXp);
+                            xpText = `${totalXp} XP`;
                             rankText = `Niv. ${niveau} ${profile.rank ? '· ' + profile.rank : ''}`;
+                        } else {
+                            niveau = calculateLevel(localXp);
+                            xpText = `${localXp} XP`;
+                            rankText = `Niv. ${niveau}`;
                         }
                     } catch (err) {
                         console.error("Erreur chargement profil:", err);
@@ -678,7 +698,9 @@
 
                 } else {
                     // --- Utilisateur NON connecté ---
-                    // Seulement "Comment jouer" et "Connexion" visibles (déjà l'état par défaut)
+                    document.querySelectorAll('.guest-only').forEach(el => {
+                        el.style.display = '';
+                    });
                     document.getElementById('user-badge-top').style.display = 'none';
                 }
             }

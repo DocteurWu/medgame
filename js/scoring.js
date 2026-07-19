@@ -531,30 +531,34 @@ function handleTraitementClick(event) {
  * Maintenant utilise le score composite pour l'XP de base.
  */
 function calculateXpEarned(percentageScore, timeBonus) {
-    const currentCase = scoringState.currentCase;
-    const caseAttemptsKey = `case_attempts_${currentCase.id}`;
-    let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey)) || 0;
+    const currentCase = scoringState.currentCase || {};
+    const caseId = currentCase.id || 'default_case';
+    const caseAttemptsKey = `case_attempts_${caseId}`;
+    let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey), 10) || 0;
     caseAttempts++;
-    localStorage.setItem(caseAttemptsKey, caseAttempts);
+    localStorage.setItem(caseAttemptsKey, caseAttempts.toString());
 
     let xpEarned = 0;
     let xpMessage = '';
 
+    const safePercentage = Math.max(0, parseInt(percentageScore, 10) || 0);
+    const safeBonus = Math.max(0, parseInt(timeBonus, 10) || 0);
+
     if (caseAttempts === 1) {
-        xpEarned = percentageScore + timeBonus;
+        xpEarned = safePercentage + safeBonus;
         xpMessage = 'Première tentative - XP complet';
     } else if (caseAttempts === 2) {
-        const previousScoreKey = `case_score_${currentCase.id}`;
-        const previousScore = parseInt(localStorage.getItem(previousScoreKey)) || percentageScore;
-        const averageScore = Math.round((previousScore + percentageScore) / 2);
-        xpEarned = averageScore + timeBonus;
+        const previousScoreKey = `case_score_${caseId}`;
+        const previousScore = parseInt(localStorage.getItem(previousScoreKey), 10) || safePercentage;
+        const averageScore = Math.round((previousScore + safePercentage) / 2);
+        xpEarned = averageScore + safeBonus;
         xpMessage = `Deuxième tentative - Moyenne: ${averageScore}%`;
     } else {
         xpEarned = 0;
         xpMessage = `Tentative #${caseAttempts} - Pas d'XP`;
     }
 
-    localStorage.setItem(`case_score_${currentCase.id}`, percentageScore);
+    localStorage.setItem(`case_score_${caseId}`, safePercentage.toString());
 
     return { xpEarned, xpMessage, caseAttempts };
 }

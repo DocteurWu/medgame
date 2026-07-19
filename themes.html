@@ -53,9 +53,14 @@
     <script src="js/config.js?v=2"></script>
     <script src="js/auth.js?v=2"></script>
     <script>
-        // Vérifier l'authentification avant de charger la page
+        // Chargement session (les invités peuvent aussi naviguer dans les thèmes)
         document.addEventListener('DOMContentLoaded', async () => {
-            await window.requireAuth();
+            if (typeof supabase !== 'undefined') {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session) {
+                    console.log('[Auth] Utilisateur connecté sur la sélection');
+                }
+            }
         });
     </script>
 
