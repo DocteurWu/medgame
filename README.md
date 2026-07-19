@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/images/readme_banner.png" alt="Medgame Banner" width="100%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" />
-</p>
-
 <h1 align="center">🎮 Medgame — Next-Gen Clinical Medical Simulation Engine</h1>
 
 <p align="center">
@@ -18,13 +14,9 @@
 
 ---
 
-## 📹 Démo & Aperçu Interactif
+## ⚡ En Bref
 
-> **Aperçu en temps réel :** Simulation clinique complète avec modélisation 3D WebGL fluide à 60 FPS, moniteurs de constantes vitables réactifs et moteur de sémiologie interactive.
-
-<p align="center">
-  <img src="assets/images/demo_preview.gif" alt="Medgame 3D Interactive Demo" width="100%" style="border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);" />
-</p>
+> **Simulation Clinique Immersive :** Simulation d'urgence et d'anamnèse en environnement 3D WebGL fluide à 60 FPS, moniteurs de constantes vitables réactifs (ECG, SpO2, PA) et moteur de sémiologique interactive avec système de verrous (gating).
 
 ---
 
@@ -34,7 +26,7 @@
 
 | 📑 Cas Cliniques | 🎮 Performance 3D | ⚡ Framework Overhead | 📱 Accessibilité |
 | :---: | :---: | :---: | :---: |
-| **89+ Clinical Cases** | **60 FPS WebGL Engine** | **0 External Overhead** | **PWA Ready** |
+| **120+ Clinical Cases** | **60 FPS WebGL Engine** | **0 External Overhead** | **PWA Ready** |
 | *Banque sémiologique complète (Cardio, Neuro, Pneumo...)* | *Moteur 3D Three.js sans lag ni saccade* | *Code 100% Vanilla JS ultra-léger et rapide* | *Progressive Web App installable hors-ligne* |
 
 </div>

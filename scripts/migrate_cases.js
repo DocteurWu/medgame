@@ -20,7 +20,7 @@ if (!supabaseUrl || !supabaseKey) {
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function migrateCases() {
-    const caseIndexPath = path.join(__dirname, 'data', 'case-index.json');
+    const caseIndexPath = path.join(__dirname, '..', 'data', 'case-index.json');
     console.log(`Lecture de l'index: ${caseIndexPath}`);
 
     if (!fs.existsSync(caseIndexPath)) {
@@ -38,7 +38,7 @@ async function migrateCases() {
         for (const filename of files) {
             if (filename === "patient_test_complet.json" || filename === "test_gating.json") continue; // On skip eventuellement les tests purs.
 
-            const filePath = path.join(__dirname, 'data', filename);
+            const filePath = path.join(__dirname, '..', 'data', filename);
             if (fs.existsSync(filePath)) {
                 try {
                     const fileContent = fs.readFileSync(filePath, 'utf-8');

@@ -1,6 +1,12 @@
 import WebSocket from 'ws';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
 async function runIntegrationTest() {
     console.log('[Integration Test] Starting MCP Server via StdioClientTransport...');
@@ -9,7 +15,7 @@ async function runIntegrationTest() {
     const transport = new StdioClientTransport({
         command: 'node',
         args: ['mcp-server.js'],
-        cwd: process.cwd(),
+        cwd: rootDir,
         env: { ...process.env, LLM_API_KEY: '' } // Force fallback
     });
 
