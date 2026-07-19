@@ -13,6 +13,8 @@ export class ThreeEnvironmentAgent {
         this.ecgScreenMesh = null;
         this.wallEcgScreenMesh = null;
         this.dustParticles = null;
+        // Références d'animation décorative (horloge murale temps réel)
+        this._clockHands = null;
     }
 
     /**
@@ -32,6 +34,14 @@ export class ThreeEnvironmentAgent {
         this._addMedicineCabinet();
         this._addPottedPlant();
         this._addExaminationBedDetails();
+        // --- Habillage clinique & ambiance lumineuse (extensions purement décoratives,
+        //     non interactives : aucun impact sur le raycasting / la logique de jeu) ---
+        this._addCeilingLightPanels();
+        this._addWallWainscot();
+        this._addVitalSignsMonitor();
+        this._addWasteBins();
+        this._addSinkAccessories();
+        this._addWallClock();
     }
 
     _addWallTextures() {
@@ -52,6 +62,19 @@ export class ThreeEnvironmentAgent {
     _addFloorDetail() {
         const floor = this.scene.children.find(c => c.name === 'Sol');
         if (floor && floor.material) {
+            // Sol clinique type linoléum/PVC semi-mat :
+            // on casse les reflets "miroir" (roughness relevée, vernis retiré, IBL atténué)
+            floor.material.roughness = 0.52;
+            if ('clearcoat' in floor.material) {
+                floor.material.clearcoat = 0.0;
+                floor.material.clearcoatRoughness = 0.5;
+            }
+            if ('envMapIntensity' in floor.material) {
+                floor.material.envMapIntensity = 0.28;
+            }
+            if ('aoMapIntensity' in floor.material) {
+                floor.material.aoMapIntensity = 1.0;
+            }
             floor.material.needsUpdate = true;
         }
     }
@@ -61,7 +84,7 @@ export class ThreeEnvironmentAgent {
         const shaftGeom = new THREE.CylinderGeometry(0.35, 1.8, 6.8, 32, 1, true);
         // Décaler le pivot vers la base supérieure pour une rotation depuis le plafond
         shaftGeom.translate(0, -3.4, 0);
-        
+
         const shaftMat = new THREE.MeshBasicMaterial({
             color: 0xffedd5, // Doré chaud cinématique
             transparent: true,
@@ -70,34 +93,34 @@ export class ThreeEnvironmentAgent {
             blending: THREE.AdditiveBlending,
             depthWrite: false
         });
-        
+
         const shaft = new THREE.Mesh(shaftGeom, shaftMat);
         shaft.name = 'VolumetricSunlightRay';
         shaft.position.set(4.8, 4.2, -2.0); // Origin at top right corner
-        
+
         // Rotation diagonale plongeante depuis le haut droit vers le lit/bureau
         shaft.rotation.z = 1.15; // Plongeant
         shaft.rotation.y = -0.22;
-        
+
         this.scene.add(shaft);
     }
 
     _addMedicalPosters() {
         const frameMat = new THREE.MeshStandardMaterial({ color: 0x8a7e6e, roughness: 0.5, metalness: 0.3 });
 
-        // Poster 1: PROTOCOLE ECMO (left wall, x=-5.45)
+        // Poster 1: PROTOCOLE ECMO (left wall, wall at x=-5.5)
         const posterGeom = new THREE.PlaneGeometry(0.6, 0.8);
         const canvas = document.createElement('canvas');
-        canvas.width = 256;
-        canvas.height = 341;
+        canvas.width = 512;
+        canvas.height = 682;
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#f5f5f0';
-        ctx.fillRect(0, 0, 256, 341);
+        ctx.fillRect(0, 0, 512, 682);
         ctx.fillStyle = '#1a1a2e';
-        ctx.font = 'bold 14px sans-serif';
-        ctx.fillText('PROTOCOLE ECMO', 20, 30);
+        ctx.font = 'bold 28px sans-serif';
+        ctx.fillText('PROTOCOLE ECMO', 40, 60);
         ctx.fillStyle = '#555';
-        ctx.font = '8px sans-serif';
+        ctx.font = '16px sans-serif';
         const lines = [
             '1. Cannulation veineuse...',
             '2. Débit initial: 3L/min...',
@@ -105,135 +128,168 @@ export class ThreeEnvironmentAgent {
             '4. Sédation protocol...'
         ];
         lines.forEach((line, i) => {
-            ctx.fillText(line, 20, 60 + i * 25);
+            ctx.fillText(line, 40, 120 + i * 50);
         });
         ctx.strokeStyle = '#1a1a2e';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(5, 5, 246, 331);
+        ctx.lineWidth = 4;
+        ctx.strokeRect(10, 10, 492, 662);
 
         const posterTexture = new THREE.CanvasTexture(canvas);
-        const posterMat = new THREE.MeshStandardMaterial({ map: posterTexture, roughness: 0.8 });
+        posterTexture.colorSpace = THREE.SRGBColorSpace;
+        posterTexture.generateMipmaps = true;
+        posterTexture.minFilter = THREE.LinearMipmapLinearFilter;
+        posterTexture.magFilter = THREE.LinearFilter;
 
+        // Anti Z-Fighting (polygonOffset) + Lissage Alpha Blend (transparent + low alphaTest threshold)
+        const posterMat = new THREE.MeshStandardMaterial({
+            map: posterTexture,
+            roughness: 0.8,
+            transparent: true,
+            opacity: 1.0,
+            alphaTest: 0.005,
+            depthWrite: true,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1
+        });
+
+        // Frame is centered at x = -5.46 with depth 0.01 (front face at x = -5.455)
+        const frame = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.82, 0.01), frameMat);
+        frame.position.set(-5.46, 1.8, -1.2);
+        frame.rotation.y = Math.PI / 2;
+        this.scene.add(frame);
+
+        // Poster plane is offset in front at x = -5.445 (10mm clear gap from frame face, 5.5cm from wall)
         const poster = new THREE.Mesh(posterGeom, posterMat);
-        poster.position.set(-5.45, 1.8, -1.2);
+        poster.position.set(-5.445, 1.8, -1.2);
         poster.rotation.y = Math.PI / 2;
         poster.name = 'MedicalPoster';
         poster.userData.label = 'Affiche médicale';
         poster.userData.interactive = true;
         this.scene.add(poster);
 
-        const frame = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.82, 0.01), frameMat);
-        frame.position.copy(poster.position);
-        frame.position.x -= 0.005;
-        frame.rotation.y = Math.PI / 2;
-        this.scene.add(frame);
-
         // Poster 2: ANATOMICAL CHART (using detailed canvas blueprint)
         const poster2Geom = new THREE.PlaneGeometry(0.6, 0.9);
         const anatomyCanvas = document.createElement('canvas');
-        anatomyCanvas.width = 512;
-        anatomyCanvas.height = 768;
+        anatomyCanvas.width = 1024;
+        anatomyCanvas.height = 1536;
         const ctxA = anatomyCanvas.getContext('2d');
         ctxA.fillStyle = '#fefbf3';
-        ctxA.fillRect(0, 0, 512, 768);
+        ctxA.fillRect(0, 0, 1024, 1536);
         ctxA.strokeStyle = '#332211';
-        ctxA.lineWidth = 12;
-        ctxA.strokeRect(6, 6, 500, 756);
+        ctxA.lineWidth = 24;
+        ctxA.strokeRect(12, 12, 1000, 1512);
         ctxA.strokeStyle = '#554433';
-        ctxA.lineWidth = 1;
-        ctxA.strokeRect(20, 20, 472, 728);
+        ctxA.lineWidth = 2;
+        ctxA.strokeRect(40, 40, 944, 1456);
 
         ctxA.fillStyle = '#554433';
-        ctxA.font = 'bold 24px monospace';
+        ctxA.font = 'bold 48px monospace';
         ctxA.textAlign = 'center';
-        ctxA.fillText("ANATOMIE HUMAINE", 256, 55);
-        ctxA.font = '10px monospace';
-        ctxA.fillText("SYSTÈME CARDIO-RENAL / CLINIQUE 3D", 256, 75);
+        ctxA.fillText("ANATOMIE HUMAINE", 512, 110);
+        ctxA.font = '20px monospace';
+        ctxA.fillText("SYSTÈME CARDIO-RENAL / CLINIQUE 3D", 512, 150);
 
         ctxA.strokeStyle = '#b23b3b'; // Red circulation
-        ctxA.lineWidth = 2;
+        ctxA.lineWidth = 4;
         ctxA.beginPath();
         ctxA.lineCap = 'round';
-        ctxA.arc(256, 170, 32, 0, Math.PI * 2);
-        ctxA.moveTo(256, 202);
-        ctxA.lineTo(256, 400);
-        for (let r = 230; r < 340; r += 20) {
-            ctxA.moveTo(250, r); ctxA.quadraticCurveTo(230, r - 5, 215, r + 8);
-            ctxA.moveTo(262, r); ctxA.quadraticCurveTo(282, r - 5, 297, r + 8);
+        ctxA.arc(512, 340, 64, 0, Math.PI * 2);
+        ctxA.moveTo(512, 404);
+        ctxA.lineTo(512, 800);
+        for (let r = 460; r < 680; r += 40) {
+            ctxA.moveTo(500, r); ctxA.quadraticCurveTo(460, r - 10, 430, r + 16);
+            ctxA.moveTo(524, r); ctxA.quadraticCurveTo(564, r - 10, 594, r + 16);
         }
-        ctxA.rect(236, 400, 40, 25);
-        ctxA.moveTo(256, 220); ctxA.lineTo(170, 280);
-        ctxA.moveTo(256, 220); ctxA.lineTo(342, 280);
-        ctxA.moveTo(238, 425); ctxA.lineTo(210, 580);
-        ctxA.moveTo(274, 425); ctxA.lineTo(302, 580);
+        ctxA.rect(472, 800, 80, 50);
+        ctxA.moveTo(512, 440); ctxA.lineTo(340, 560);
+        ctxA.moveTo(512, 440); ctxA.lineTo(684, 560);
+        ctxA.moveTo(476, 850); ctxA.lineTo(420, 1160);
+        ctxA.moveTo(548, 850); ctxA.lineTo(604, 1160);
         ctxA.stroke();
 
         ctxA.strokeStyle = '#2563eb'; // Blue veins
-        ctxA.lineWidth = 1.5;
+        ctxA.lineWidth = 3;
         ctxA.beginPath();
-        ctxA.moveTo(254, 250);
-        ctxA.bezierCurveTo(240, 280, 245, 330, 210, 360);
-        ctxA.moveTo(254, 300);
-        ctxA.lineTo(180, 275);
+        ctxA.moveTo(508, 500);
+        ctxA.bezierCurveTo(480, 560, 490, 660, 420, 720);
+        ctxA.moveTo(508, 600);
+        ctxA.lineTo(360, 550);
         ctxA.stroke();
 
         ctxA.strokeStyle = '#554433';
-        ctxA.lineWidth = 1.5;
-        ctxA.strokeRect(40, 560, 160, 150);
+        ctxA.lineWidth = 3;
+        ctxA.strokeRect(80, 1120, 320, 300);
         ctxA.fillStyle = '#5d4037';
-        ctxA.font = 'bold 12px sans-serif';
+        ctxA.font = 'bold 24px sans-serif';
         ctxA.textAlign = 'left';
-        ctxA.fillText("FIG 1. CONFIGURATION", 48, 578);
-        ctxA.font = '9px monospace';
-        ctxA.fillText("Aorte ascendante", 48, 600);
-        ctxA.fillText("Ventricule gauche", 48, 615);
-        ctxA.fillText("Oreillette droite", 48, 630);
-        ctxA.fillText("Valvule mitrale", 48, 645);
-        
+        ctxA.fillText("FIG 1. CONFIGURATION", 96, 1156);
+        ctxA.font = '18px monospace';
+        ctxA.fillText("Aorte ascendante", 96, 1200);
+        ctxA.fillText("Ventricule gauche", 96, 1230);
+        ctxA.fillText("Oreillette droite", 96, 1260);
+        ctxA.fillText("Valvule mitrale", 96, 1290);
+
         ctxA.strokeStyle = '#b91c1c';
         ctxA.beginPath();
-        ctxA.arc(150, 630, 20, 0, Math.PI * 2);
+        ctxA.arc(300, 1260, 40, 0, Math.PI * 2);
         ctxA.stroke();
 
-        ctxA.strokeRect(312, 560, 160, 150);
+        ctxA.strokeRect(624, 1120, 320, 300);
         ctxA.fillStyle = '#5d4037';
-        ctxA.font = 'bold 12px sans-serif';
-        ctxA.fillText("FIG 2. FLUX CÉRÉBRAL", 320, 578);
-        ctxA.font = '9px monospace';
-        ctxA.fillText("Lobe frontal", 320, 600);
-        ctxA.fillText("Cervelet", 320, 615);
-        ctxA.fillText("Moelle épinière", 320, 630);
-        ctxA.fillText("Cortex sensoriel", 320, 645);
-        
+        ctxA.font = 'bold 24px sans-serif';
+        ctxA.fillText("FIG 2. FLUX CÉRÉBRAL", 640, 1156);
+        ctxA.font = '18px monospace';
+        ctxA.fillText("Lobe frontal", 640, 1200);
+        ctxA.fillText("Cervelet", 640, 1230);
+        ctxA.fillText("Moelle épinière", 640, 1260);
+        ctxA.fillText("Cortex sensoriel", 640, 1290);
+
         ctxA.strokeStyle = '#2563eb';
         ctxA.beginPath();
-        ctxA.ellipse(420, 630, 20, 14, 0, 0, Math.PI * 2);
+        ctxA.ellipse(840, 1260, 40, 28, 0, 0, Math.PI * 2);
         ctxA.stroke();
 
         ctxA.fillStyle = '#1e293b';
-        ctxA.font = 'bold 9px sans-serif';
-        ctxA.fillText("Boîte Crânienne [1]", 330, 150);
-        ctxA.fillText("Sternum [2]", 70, 260);
-        ctxA.fillText("Aorte & Valves [3]", 120, 310);
-        ctxA.fillText("Fémur [4]", 110, 510);
-        ctxA.fillText("Tibias & Fibula [5]", 330, 510);
-        
+        ctxA.font = 'bold 18px sans-serif';
+        ctxA.fillText("Boîte Crânienne [1]", 660, 300);
+        ctxA.fillText("Sternum [2]", 140, 520);
+        ctxA.fillText("Aorte & Valves [3]", 240, 620);
+        ctxA.fillText("Fémur [4]", 220, 1020);
+        ctxA.fillText("Tibias & Fibula [5]", 660, 1020);
+
         const anatomyTexture = new THREE.CanvasTexture(anatomyCanvas);
-        const poster2Mat = new THREE.MeshStandardMaterial({ map: anatomyTexture, roughness: 0.8 });
-        
+        anatomyTexture.colorSpace = THREE.SRGBColorSpace;
+        anatomyTexture.generateMipmaps = true;
+        anatomyTexture.minFilter = THREE.LinearMipmapLinearFilter;
+        anatomyTexture.magFilter = THREE.LinearFilter;
+
+        const poster2Mat = new THREE.MeshStandardMaterial({
+            map: anatomyTexture,
+            roughness: 0.8,
+            transparent: true,
+            opacity: 1.0,
+            alphaTest: 0.005,
+            depthWrite: true,
+            polygonOffset: true,
+            polygonOffsetFactor: -1,
+            polygonOffsetUnits: -1
+        });
+
+        // Frame2 centered at x = -5.46
+        const frame2 = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.92, 0.01), frameMat);
+        frame2.position.set(-5.46, 1.8, -2.4);
+        frame2.rotation.y = Math.PI / 2;
+        this.scene.add(frame2);
+
+        // Poster 2 plane offset in front at x = -5.445
         const poster2 = new THREE.Mesh(poster2Geom, poster2Mat);
-        poster2.position.set(-5.45, 1.8, -2.4);
+        poster2.position.set(-5.445, 1.8, -2.4);
         poster2.rotation.y = Math.PI / 2;
         poster2.name = 'AnatomicalPoster';
         poster2.userData.label = 'Affiche médicale';
         poster2.userData.interactive = true;
         this.scene.add(poster2);
-
-        const frame2 = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.92, 0.01), frameMat);
-        frame2.position.copy(poster2.position);
-        frame2.position.x -= 0.005;
-        frame2.rotation.y = Math.PI / 2;
-        this.scene.add(frame2);
     }
 
     _addCurtain() {
@@ -457,6 +513,7 @@ export class ThreeEnvironmentAgent {
         ecgCtx.fillRect(0, 0, 256, 96);
         const ecgTexture = new THREE.CanvasTexture(ecgCanvas);
         ecgTexture.minFilter = THREE.LinearFilter;
+        ecgTexture.colorSpace = THREE.SRGBColorSpace;
 
         const ecgShellMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.3 });
         const ecgShell = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.22, 0.04), ecgShellMat);
@@ -464,10 +521,12 @@ export class ThreeEnvironmentAgent {
         ecgShell.castShadow = true;
         ecgGroup.add(ecgShell);
 
+        // emissiveMap: le tracé ECG animé devient lui-même lumineux (glow projeté)
         const ecgScreenMat = new THREE.MeshStandardMaterial({
             map: ecgTexture,
-            emissive: 0x003311,
-            emissiveIntensity: 0.8,
+            emissive: 0xffffff,
+            emissiveMap: ecgTexture,
+            emissiveIntensity: 0.9,
             roughness: 0.05
         });
         const ecgScreen = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.18, 0.005), ecgScreenMat);
@@ -548,6 +607,7 @@ export class ThreeEnvironmentAgent {
         ecgCtx.fillRect(0, 0, 256, 96);
         const ecgTexture = new THREE.CanvasTexture(ecgCanvas);
         ecgTexture.minFilter = THREE.LinearFilter;
+        ecgTexture.colorSpace = THREE.SRGBColorSpace;
 
         const shellMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.4, metalness: 0.3 });
         const shell = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.35, 0.06), shellMat);
@@ -555,10 +615,12 @@ export class ThreeEnvironmentAgent {
         shell.receiveShadow = true;
         group.add(shell);
 
+        // emissiveMap: le tracé animé rayonne (bloom + lumière d'ambiance)
         const screenMat = new THREE.MeshStandardMaterial({
             map: ecgTexture,
-            emissive: 0x003311,
-            emissiveIntensity: 0.8,
+            emissive: 0xffffff,
+            emissiveMap: ecgTexture,
+            emissiveIntensity: 0.9,
             roughness: 0.05
         });
         const screen = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.29, 0.005), screenMat);
@@ -691,6 +753,59 @@ export class ThreeEnvironmentAgent {
         compress.rotation.y = 0.2;
         chart.add(compress);
 
+        // --- Fournitures supplémentaires (chariot "plus fourni") ---
+        // Boîte de seringues
+        const syringeBox = new THREE.Mesh(
+            new THREE.BoxGeometry(0.09, 0.03, 0.05),
+            new THREE.MeshStandardMaterial({ color: 0xe8f0f8, roughness: 0.5 })
+        );
+        syringeBox.position.set(0.02, 0.865, 0.1);
+        syringeBox.rotation.y = 0.1;
+        syringeBox.castShadow = true;
+        chart.add(syringeBox);
+
+        // Flacon pompe de gel hydroalcoolique
+        const gelMat = new THREE.MeshPhysicalMaterial({
+            color: 0x7cc4e8,
+            transparent: true,
+            opacity: 0.7,
+            roughness: 0.15,
+            clearcoat: 0.6,
+            clearcoatRoughness: 0.2
+        });
+        const gelBottle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.018, 0.06, 8), gelMat);
+        gelBottle.position.set(-0.13, 0.885, -0.03);
+        gelBottle.castShadow = true;
+        chart.add(gelBottle);
+        const gelPump = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.02, 6), capMat);
+        gelPump.position.set(-0.13, 0.925, -0.03);
+        chart.add(gelPump);
+
+        // Boîte de pansements
+        const bandageBox = new THREE.Mesh(
+            new THREE.BoxGeometry(0.08, 0.025, 0.06),
+            new THREE.MeshStandardMaterial({ color: 0xf3e2c7, roughness: 0.7 })
+        );
+        bandageBox.position.set(0.11, 0.862, -0.06);
+        bandageBox.rotation.y = -0.18;
+        bandageBox.castShadow = true;
+        chart.add(bandageBox);
+
+        // Ampoules alignées sur le plateau inférieur
+        const ampouleMat = new THREE.MeshPhysicalMaterial({
+            color: 0xdfe9f2,
+            transparent: true,
+            opacity: 0.55,
+            roughness: 0.05,
+            clearcoat: 0.8
+        });
+        for (let a = 0; a < 3; a++) {
+            const amp = new THREE.Mesh(new THREE.CylinderGeometry(0.004, 0.004, 0.03, 6), ampouleMat);
+            amp.rotation.z = Math.PI / 2;
+            amp.position.set(-0.09 + a * 0.035, 0.37, -0.07);
+            chart.add(amp);
+        }
+
         // Masque O2
         const maskMat = new THREE.MeshStandardMaterial({ color: 0x44ccff, transparent: true, opacity: 0.6, roughness: 0.2 });
         const mask = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.05, 8), maskMat);
@@ -712,7 +827,6 @@ export class ThreeEnvironmentAgent {
             }
         });
     }
-
     // ===== PARTICULES DE POUSSIÈRE (Adapted to 11x5x10 room bounds) =====
     _addDustParticles() {
         const dustCount = 200;
@@ -726,7 +840,7 @@ export class ThreeEnvironmentAgent {
                 const rx = 5.48 - 6.0 * t; // Plunge inward from right wall x=5.5
                 const ry = 2.5 - 2.0 * t;
                 const rz = 0.5 + (Math.random() - 0.5) * 5.0;
-                
+
                 dustPositions[i * 3] = rx + (Math.random() - 0.5) * 0.6;
                 dustPositions[i * 3 + 1] = ry + (Math.random() - 0.5) * 0.6;
                 dustPositions[i * 3 + 2] = rz + (Math.random() - 0.5) * 0.6;
@@ -812,9 +926,9 @@ export class ThreeEnvironmentAgent {
 
         const shelfGeo = new THREE.BoxGeometry(1.48, 0.03, 0.52);
         const shelfMat = new THREE.MeshStandardMaterial({ color: '#cbd5e1', transparent: true, opacity: 0.7 });
-        
+
         const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#ec4899', '#f8fafc'];
-        
+
         for (let h = 0.55; h < 2.5; h += 0.55) {
             const shelf = new THREE.Mesh(shelfGeo, shelfMat);
             shelf.position.set(0, h, 0);
@@ -822,17 +936,17 @@ export class ThreeEnvironmentAgent {
 
             for (let s = -0.6; s <= 0.61; s += 0.25) {
                 if (Math.random() > 0.15) {
-                    const spawnGeo = Math.random() > 0.4 ? 
+                    const spawnGeo = Math.random() > 0.4 ?
                         new THREE.CylinderGeometry(0.04, 0.04, 0.12, 10) :
                         new THREE.BoxGeometry(0.09, 0.1, 0.09);
-                    
+
                     const bottleColor = colors[Math.floor(Math.random() * colors.length)];
                     const itemMat = new THREE.MeshStandardMaterial({
                         color: bottleColor,
                         roughness: 0.2,
                         metalness: Math.random() > 0.6 ? 0.8 : 0.1,
                     });
-                    
+
                     const medicineItem = new THREE.Mesh(spawnGeo, itemMat);
                     medicineItem.position.set(s, h + 0.075, 0.04 + (Math.random() * 0.1 - 0.05));
                     medicineItem.rotation.y = Math.random() * Math.PI;
@@ -912,10 +1026,15 @@ export class ThreeEnvironmentAgent {
         bedGroup.add(bedFrame);
 
         // cushions (Mint green/Teal)
-        const cushionMaterial = new THREE.MeshStandardMaterial({
+        const cushionMaterial = new THREE.MeshPhysicalMaterial({
             color: '#0d9488',
-            roughness: 0.65,
+            roughness: 0.55,
             metalness: 0.05,
+            sheen: 0.4,                    // similicuir médical : reflet rasant doux
+            sheenColor: new THREE.Color('#99f6e4'),
+            sheenRoughness: 0.6,
+            clearcoat: 0.15,
+            clearcoatRoughness: 0.4
         });
 
         const mainCushion = new THREE.Mesh(
@@ -955,9 +1074,17 @@ export class ThreeEnvironmentAgent {
         paperRoll.castShadow = true;
         bedGroup.add(paperRoll);
 
+        // Drap d'examen : très légère émissivité pour capter le spot et éviter les zones mortes
         const paperSheet = new THREE.Mesh(
             new THREE.BoxGeometry(0.78, 0.005, 1.5),
-            new THREE.MeshStandardMaterial({ color: '#ffffff', transparent: true, opacity: 0.86, roughness: 1.0 })
+            new THREE.MeshStandardMaterial({
+                color: '#ffffff',
+                transparent: true,
+                opacity: 0.86,
+                roughness: 1.0,
+                emissive: 0xffffff,
+                emissiveIntensity: 0.04
+            })
         );
         paperSheet.position.set(1.3, 0.985, -0.15);
         bedGroup.add(paperSheet);
@@ -998,20 +1125,470 @@ export class ThreeEnvironmentAgent {
         lampDome.castShadow = true;
         medicalLamp.add(lampDome);
 
-        const spotlight = new THREE.SpotLight('#f0f9ff', 2.8, 5.5, Math.PI / 5, 0.4, 0.5);
+        // Spot d'examen puissant et focalisé sur le patient (angle resserré, intensité doublée+)
+        const spotlight = new THREE.SpotLight('#f0f9ff', 6.5, 6.0, Math.PI / 6, 0.45, 0.5);
         spotlight.position.set(0.44, 1.76, 0);
         spotlight.target = mainCushion;
         medicalLamp.add(spotlight);
 
+        // Ampoule : toneMapped:false => halo lumineux via le bloom pass
         const spotGlow = new THREE.Mesh(
-            new THREE.SphereGeometry(0.05, 8, 8),
-            new THREE.MeshBasicMaterial({ color: '#ffffff' })
+            new THREE.SphereGeometry(0.055, 8, 8),
+            new THREE.MeshBasicMaterial({ color: '#ffffff', toneMapped: false })
         );
         spotGlow.position.set(0.44, 1.72, 0);
         medicalLamp.add(spotGlow);
 
         bedGroup.add(medicalLamp);
         this.scene.add(bedGroup);
+    }
+
+    // ===== DALLES LED DE PLAFOND (éclairage hospitalier) =====
+    // Alignées sur les point lights existants (x = ±2.5, z = 0)
+    _addCeilingLightPanels() {
+        const frameMat = new THREE.MeshStandardMaterial({ color: 0xd7dde3, metalness: 0.6, roughness: 0.35 });
+        const diffuserMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0xf2f6ff,
+            emissiveIntensity: 1.35, // Diffuseur lumineux => halo doux via bloom
+            roughness: 0.55,
+            metalness: 0.0
+        });
+
+        [[-2.5, 0], [2.5, 0]].forEach(([px, pz]) => {
+            const panel = new THREE.Group();
+            panel.position.set(px, 4.96, pz);
+            panel.name = 'CeilingLightPanel'; // décoratif, non interactif
+
+            const frame = new THREE.Mesh(new THREE.BoxGeometry(1.24, 0.05, 0.64), frameMat);
+            frame.receiveShadow = true;
+            panel.add(frame);
+
+            const diffuser = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.02, 0.56), diffuserMat);
+            diffuser.position.y = -0.02;
+            panel.add(diffuser);
+
+            this.scene.add(panel);
+        });
+    }
+
+    // ===== SOUS-BASSEMENT MURAL (wainscot bleu clinique + baguette) =====
+    _addWallWainscot() {
+        // Bleu "lavable" typique des hôpitaux, finition satinée
+        const wainscotMat = new THREE.MeshPhysicalMaterial({
+            color: '#a9cbdb',
+            roughness: 0.38,
+            clearcoat: 0.35,
+            clearcoatRoughness: 0.3,
+            envMapIntensity: 0.5
+        });
+        const railMat = new THREE.MeshStandardMaterial({ color: '#f1f5f9', roughness: 0.5 });
+        const h = 0.9;
+
+        // Mur du fond (face interne z = -4.95) — 2 segments pour dégager la porte (x ∈ [-0.9, 0.9])
+        const segW = 4.6;
+        const backL = new THREE.Mesh(new THREE.BoxGeometry(segW, h, 0.02), wainscotMat);
+        backL.position.set(-3.2, h / 2, -4.94);
+        backL.receiveShadow = true;
+        backL.name = 'SousBassement';
+        this.scene.add(backL);
+        const backR = backL.clone();
+        backR.position.x = 3.2;
+        this.scene.add(backR);
+
+        // Mur droit (face interne x = 5.45)
+        const right = new THREE.Mesh(new THREE.BoxGeometry(0.02, h, 10), wainscotMat);
+        right.position.set(5.44, h / 2, 0);
+        right.receiveShadow = true;
+        right.name = 'SousBassement';
+        this.scene.add(right);
+
+        // Baguettes de finition blanches en partie haute du sous-bassement
+        const railBackL = new THREE.Mesh(new THREE.BoxGeometry(segW, 0.04, 0.03), railMat);
+        railBackL.position.set(-3.2, h + 0.02, -4.935);
+        this.scene.add(railBackL);
+        const railBackR = railBackL.clone();
+        railBackR.position.x = 3.2;
+        this.scene.add(railBackR);
+
+        const railRight = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.04, 10), railMat);
+        railRight.position.set(5.435, h + 0.02, 0);
+        this.scene.add(railRight);
+    }
+
+    // ===== MONITEUR MULTIPARAMÉTRIQUE (FC / SpO2 / TA — écho aux constantes de l'UI) =====
+    _addVitalSignsMonitor() {
+        const vsCanvas = document.createElement('canvas');
+        vsCanvas.width = 256;
+        vsCanvas.height = 160;
+        const vc = vsCanvas.getContext('2d');
+
+        // Fond clinique sombre
+        vc.fillStyle = '#081120';
+        vc.fillRect(0, 0, 256, 160);
+        // Barre de titre
+        vc.fillStyle = '#12263f';
+        vc.fillRect(0, 0, 256, 22);
+        vc.fillStyle = '#7dd3fc';
+        vc.font = 'bold 11px sans-serif';
+        vc.textAlign = 'left';
+        vc.fillText('◉ PATIENT MONITOR — BOX 3', 8, 15);
+
+        // Ligne FC / SpO2
+        vc.fillStyle = '#64748b';
+        vc.font = '10px sans-serif';
+        vc.fillText('FC', 10, 48);
+        vc.fillText('SpO₂', 130, 48);
+        vc.fillStyle = '#22c55e';
+        vc.font = 'bold 30px monospace';
+        vc.fillText('72', 34, 52);
+        vc.font = '9px sans-serif';
+        vc.fillText('bpm', 80, 52);
+        vc.fillStyle = '#38bdf8';
+        vc.font = 'bold 30px monospace';
+        vc.fillText('98', 166, 52);
+        vc.font = '9px sans-serif';
+        vc.fillText('%', 212, 52);
+
+        // Ligne TA
+        vc.fillStyle = '#64748b';
+        vc.font = '10px sans-serif';
+        vc.fillText('TA', 10, 86);
+        vc.fillStyle = '#f59e0b';
+        vc.font = 'bold 22px monospace';
+        vc.fillText('128/80', 34, 88);
+        vc.font = '8px sans-serif';
+        vc.fillText('mmHg', 112, 88);
+
+        // Séparateur
+        vc.strokeStyle = 'rgba(125, 211, 252, 0.25)';
+        vc.lineWidth = 1;
+        vc.beginPath();
+        vc.moveTo(8, 100);
+        vc.lineTo(248, 100);
+        vc.stroke();
+
+        // Mini tracé ECG décoratif
+        vc.strokeStyle = '#22c55e';
+        vc.lineWidth = 1.5;
+        vc.beginPath();
+        const base = 132;
+        for (let x = 8; x <= 248; x += 4) {
+            const p = ((x - 8) % 40) / 40;
+            let y = 0;
+            if (p < 0.1) y = -2 * Math.sin((p / 0.1) * Math.PI);          // onde P
+            else if (p >= 0.15 && p < 0.2) y = 3;                          // Q
+            else if (p >= 0.2 && p < 0.25) y = -14;                        // R (pic)
+            else if (p >= 0.25 && p < 0.3) y = 4;                          // S
+            else if (p >= 0.4 && p < 0.55) y = -3 * Math.sin(((p - 0.4) / 0.15) * Math.PI); // onde T
+            if (x === 8) vc.moveTo(x, base + y); else vc.lineTo(x, base + y);
+        }
+        vc.stroke();
+
+        const vsTexture = new THREE.CanvasTexture(vsCanvas);
+        vsTexture.colorSpace = THREE.SRGBColorSpace;
+        vsTexture.minFilter = THREE.LinearFilter;
+
+        const group = new THREE.Group();
+        group.position.set(5.42, 2.05, -0.9); // Mur droit, côté tête du lit
+        group.rotation.y = -Math.PI / 2;      // Écran tourné vers la salle (-x)
+        group.name = 'VitalSignsMonitor';     // décoratif, non interactif
+
+        const shell = new THREE.Mesh(
+            new THREE.BoxGeometry(0.46, 0.32, 0.05),
+            new THREE.MeshStandardMaterial({ color: 0x151a20, roughness: 0.35, metalness: 0.4 })
+        );
+        group.add(shell);
+
+        const screen = new THREE.Mesh(
+            new THREE.BoxGeometry(0.42, 0.27, 0.005),
+            new THREE.MeshStandardMaterial({
+                map: vsTexture,
+                emissive: 0xffffff,
+                emissiveMap: vsTexture,
+                emissiveIntensity: 0.85, // Écran lumineux => fait écho aux constantes de l'UI
+                roughness: 0.08
+            })
+        );
+        screen.position.z = 0.028;
+        group.add(screen);
+
+        // Bras de fixation murale
+        const armMat = new THREE.MeshStandardMaterial({ color: 0x9aa5b1, metalness: 0.8, roughness: 0.25 });
+        const wallArm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.1), armMat);
+        wallArm.position.set(0, -0.22, -0.04);
+        group.add(wallArm);
+
+        this.scene.add(group);
+    }
+
+    // ===== POUBELLES : DASRI (jaune) + corbeille classique =====
+    _addWasteBins() {
+        // --- Poubelle DASRI jaune (déchets de soins) près du chariot ---
+        const dasri = new THREE.Group();
+        dasri.position.set(3.15, 0, -1.85);
+        dasri.name = 'DASRIBin'; // décoratif, non interactif
+
+        const dasriBodyMat = new THREE.MeshPhysicalMaterial({
+            color: '#f5c518',
+            roughness: 0.4,
+            clearcoat: 0.45,
+            clearcoatRoughness: 0.3
+        });
+        const dasriBody = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.135, 0.42, 18), dasriBodyMat);
+        dasriBody.position.y = 0.21;
+        dasriBody.castShadow = true;
+        dasriBody.receiveShadow = true;
+        dasri.add(dasriBody);
+
+        const dasriLid = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.165, 0.165, 0.05, 18),
+            new THREE.MeshPhysicalMaterial({ color: '#d4a017', roughness: 0.45, clearcoat: 0.4 })
+        );
+        dasriLid.position.y = 0.445;
+        dasriLid.castShadow = true;
+        dasri.add(dasriLid);
+
+        // Pédale
+        const pedal = new THREE.Mesh(
+            new THREE.BoxGeometry(0.07, 0.02, 0.05),
+            new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.6 })
+        );
+        pedal.position.set(0, 0.02, 0.17);
+        dasri.add(pedal);
+
+        // Étiquette DASRI
+        const dasriCanvas = document.createElement('canvas');
+        dasriCanvas.width = 128;
+        dasriCanvas.height = 96;
+        const dCtx = dasriCanvas.getContext('2d');
+        dCtx.fillStyle = '#fefce8';
+        dCtx.fillRect(0, 0, 128, 96);
+        dCtx.strokeStyle = '#eab308';
+        dCtx.lineWidth = 6;
+        dCtx.strokeRect(3, 3, 122, 90);
+        dCtx.fillStyle = '#111827';
+        dCtx.font = 'bold 26px sans-serif';
+        dCtx.textAlign = 'center';
+        dCtx.fillText('DASRI', 64, 44);
+        dCtx.font = '9px sans-serif';
+        dCtx.fillText('DÉCHETS DE SOINS', 64, 66);
+        const dasriLabelTex = new THREE.CanvasTexture(dasriCanvas);
+        dasriLabelTex.colorSpace = THREE.SRGBColorSpace;
+        const dasriLabel = new THREE.Mesh(
+            new THREE.PlaneGeometry(0.13, 0.1),
+            new THREE.MeshStandardMaterial({ map: dasriLabelTex, roughness: 0.6 })
+        );
+        dasriLabel.position.set(0, 0.26, 0.152);
+        dasri.add(dasriLabel);
+
+        this.scene.add(dasri);
+
+        // --- Corbeille classique grise près du bureau ---
+        const bin = new THREE.Group();
+        bin.position.set(-4.55, 0, 0.55);
+        bin.name = 'WasteBin'; // décoratif, non interactif
+
+        const binBody = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.14, 0.11, 0.34, 16),
+            new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.4, roughness: 0.5 })
+        );
+        binBody.position.y = 0.17;
+        binBody.castShadow = true;
+        binBody.receiveShadow = true;
+        bin.add(binBody);
+
+        // Sac blanc débordant légèrement
+        const bag = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.125, 0.13, 0.04, 16),
+            new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.85 })
+        );
+        bag.position.y = 0.35;
+        bin.add(bag);
+
+        this.scene.add(bin);
+    }
+
+    // ===== ACCESSOIRES D'HYGIÈNE PRÈS DU LAVABO (mur gauche, x = -5.45) =====
+    _addSinkAccessories() {
+        const accessories = new THREE.Group();
+        accessories.name = 'SinkAccessories'; // décoratif, non interactif
+
+        const whitePlastic = new THREE.MeshPhysicalMaterial({
+            color: 0xf8fafc,
+            roughness: 0.3,
+            clearcoat: 0.5,
+            clearcoatRoughness: 0.25
+        });
+        const chrome = new THREE.MeshStandardMaterial({ color: 0xd4d9df, metalness: 1.0, roughness: 0.22 });
+
+        // --- Distributeur de savon mural ---
+        const soap = new THREE.Group();
+        soap.position.set(-5.42, 1.5, 2.95);
+        soap.rotation.y = Math.PI / 2; // Face tournée vers la salle (+x)
+        const soapBody = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.16, 0.06), whitePlastic);
+        soapBody.castShadow = true;
+        soap.add(soapBody);
+        const soapWindow = new THREE.Mesh(
+            new THREE.BoxGeometry(0.03, 0.08, 0.005),
+            new THREE.MeshPhysicalMaterial({ color: 0x93c5fd, transparent: true, opacity: 0.6, roughness: 0.1, clearcoat: 0.8 })
+        );
+        soapWindow.position.set(0, -0.01, 0.031);
+        soap.add(soapWindow);
+        const soapNozzle = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.03, 8), chrome);
+        soapNozzle.position.set(0, -0.09, 0.02);
+        soapNozzle.rotation.x = Math.PI / 3;
+        soap.add(soapNozzle);
+        accessories.add(soap);
+
+        // --- Distributeur d'essuie-mains mural ---
+        const towel = new THREE.Group();
+        towel.position.set(-5.42, 1.52, 1.9);
+        towel.rotation.y = Math.PI / 2;
+        const towelBody = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.32, 0.11), whitePlastic);
+        towelBody.castShadow = true;
+        towel.add(towelBody);
+        // Fente de distribution + feuilles visibles
+        const slot = new THREE.Mesh(
+            new THREE.BoxGeometry(0.2, 0.015, 0.02),
+            new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.7 })
+        );
+        slot.position.set(0, -0.15, 0.04);
+        towel.add(slot);
+        const paper = new THREE.Mesh(
+            new THREE.BoxGeometry(0.16, 0.05, 0.015),
+            new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.95 })
+        );
+        paper.position.set(0, -0.18, 0.04);
+        towel.add(paper);
+        accessories.add(towel);
+
+        // --- Étagère murale au-dessus du lavabo + consommables ---
+        const shelf = new THREE.Group();
+        shelf.position.set(-5.4, 2.12, 2.4);
+        shelf.rotation.y = Math.PI / 2;
+        const board = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.025, 0.16), whitePlastic);
+        board.castShadow = true;
+        board.receiveShadow = true;
+        shelf.add(board);
+        // Boîte de gants bleue
+        const gloves = new THREE.Mesh(
+            new THREE.BoxGeometry(0.11, 0.05, 0.07),
+            new THREE.MeshStandardMaterial({ color: 0x3b82f6, roughness: 0.55 })
+        );
+        gloves.position.set(-0.15, 0.04, 0);
+        gloves.castShadow = true;
+        shelf.add(gloves);
+        // Flacon ambré
+        const amberBottle = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.025, 0.025, 0.09, 10),
+            new THREE.MeshPhysicalMaterial({ color: 0xb45309, transparent: true, opacity: 0.85, roughness: 0.15, clearcoat: 0.6 })
+        );
+        amberBottle.position.set(0.02, 0.055, 0);
+        amberBottle.castShadow = true;
+        shelf.add(amberBottle);
+        // Boîte blanche
+        const whiteBox = new THREE.Mesh(
+            new THREE.BoxGeometry(0.08, 0.06, 0.06),
+            new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.6 })
+        );
+        whiteBox.position.set(0.16, 0.042, 0);
+        whiteBox.rotation.y = 0.2;
+        whiteBox.castShadow = true;
+        shelf.add(whiteBox);
+        accessories.add(shelf);
+
+        this.scene.add(accessories);
+    }
+
+    // ===== HORLOGE MURALE TEMPS RÉEL (mur du fond) =====
+    _addWallClock() {
+        const clock = new THREE.Group();
+        clock.position.set(2.0, 3.15, -4.93);
+        clock.name = 'WallClock'; // décoratif, non interactif
+
+        // Cadran (canvas)
+        const faceCanvas = document.createElement('canvas');
+        faceCanvas.width = 128;
+        faceCanvas.height = 128;
+        const fc = faceCanvas.getContext('2d');
+        fc.fillStyle = '#f8fafc';
+        fc.beginPath();
+        fc.arc(64, 64, 62, 0, Math.PI * 2);
+        fc.fill();
+        fc.strokeStyle = '#1e293b';
+        for (let i = 0; i < 12; i++) {
+            const a = (i / 12) * Math.PI * 2;
+            const bold = i % 3 === 0;
+            fc.lineWidth = bold ? 4 : 2;
+            fc.beginPath();
+            fc.moveTo(64 + Math.sin(a) * (bold ? 48 : 52), 64 - Math.cos(a) * (bold ? 48 : 52));
+            fc.lineTo(64 + Math.sin(a) * 58, 64 - Math.cos(a) * 58);
+            fc.stroke();
+        }
+        fc.fillStyle = '#1e293b';
+        fc.font = 'bold 14px sans-serif';
+        fc.textAlign = 'center';
+        fc.textBaseline = 'middle';
+        fc.fillText('12', 64, 16);
+        fc.fillText('3', 112, 64);
+        fc.fillText('6', 64, 112);
+        fc.fillText('9', 16, 64);
+
+        const faceTex = new THREE.CanvasTexture(faceCanvas);
+        faceTex.colorSpace = THREE.SRGBColorSpace;
+
+        // Boîtier + cadran
+        const rim = new THREE.Mesh(
+            new THREE.TorusGeometry(0.16, 0.018, 8, 32),
+            new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.85, roughness: 0.25 })
+        );
+        clock.add(rim);
+        const back = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.16, 0.16, 0.025, 32),
+            new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.6, roughness: 0.4 })
+        );
+        back.rotation.x = Math.PI / 2;
+        back.position.z = -0.012;
+        clock.add(back);
+        const face = new THREE.Mesh(
+            new THREE.CircleGeometry(0.15, 32),
+            new THREE.MeshStandardMaterial({ map: faceTex, roughness: 0.4 })
+        );
+        face.position.z = 0.002;
+        clock.add(face);
+
+        // Aiguilles (pivot à la base => rotation.z animée dans updateEnvironment)
+        const handMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.4 });
+        const hourHand = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.06, 0.003), handMat);
+        hourHand.geometry.translate(0, 0.03, 0);
+        hourHand.position.z = 0.008;
+        clock.add(hourHand);
+
+        const minuteHand = new THREE.Mesh(new THREE.BoxGeometry(0.009, 0.095, 0.003), handMat);
+        minuteHand.geometry.translate(0, 0.0475, 0);
+        minuteHand.position.z = 0.011;
+        clock.add(minuteHand);
+
+        const secondHand = new THREE.Mesh(
+            new THREE.BoxGeometry(0.003, 0.1, 0.002),
+            new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.4 })
+        );
+        secondHand.geometry.translate(0, 0.05, 0);
+        secondHand.position.z = 0.014;
+        clock.add(secondHand);
+
+        // Cache central
+        const cap = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.008, 0.008, 0.004, 10),
+            new THREE.MeshStandardMaterial({ color: 0xdc2626, roughness: 0.3 })
+        );
+        cap.rotation.x = Math.PI / 2;
+        cap.position.z = 0.015;
+        clock.add(cap);
+
+        this._clockHands = { hour: hourHand, minute: minuteHand, second: secondHand };
+        this.scene.add(clock);
     }
 
     /**
@@ -1056,6 +1633,16 @@ export class ThreeEnvironmentAgent {
             const t = (elapsed * 1.2) % 1;
             const beat2 = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;
             this._wallEcgLedMat.emissiveIntensity = 0.3 + beat2 * 0.7;
+        }
+        // Horloge murale : aiguilles synchronisées sur l'heure réelle du système
+        if (this._clockHands) {
+            const now = new Date();
+            const s = now.getSeconds() + now.getMilliseconds() / 1000;
+            const m = now.getMinutes() + s / 60;
+            const h = (now.getHours() % 12) + m / 60;
+            this._clockHands.second.rotation.z = -(s / 60) * Math.PI * 2;
+            this._clockHands.minute.rotation.z = -(m / 60) * Math.PI * 2;
+            this._clockHands.hour.rotation.z = -(h / 12) * Math.PI * 2;
         }
     }
 

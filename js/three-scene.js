@@ -61,7 +61,7 @@ export class ThreeScene {
         // === Système hover glow ===
         this._hoveredObject = null;
         this._hoveredOriginalEmissives = new Map();
-        this._hoverGlowIntensity = 0.12;
+        this._hoverGlowIntensity = 0.15;
         this._hoverGlowColor = new THREE.Color(0x1a3a6c);
         this._tooltipEl = null;
         this._tooltipVisible = false;
@@ -93,10 +93,11 @@ export class ThreeScene {
         });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
         this.renderer.setSize(this.container.clientWidth || window.innerWidth, this.container.clientHeight || window.innerHeight);
-        this.renderer.shadowMap.enabled = false;
+        // Ombres douces activées dès la création (avant le 1er rendu => aucune recompilation de matériau)
+        this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.0;
+        this.renderer.toneMappingExposure = 1.05;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.container.appendChild(this.renderer.domElement);
 
@@ -187,7 +188,7 @@ export class ThreeScene {
             onDeactivate: () => {
                 this.controls.enabled = true;
                 document.body.classList.remove('mode-fps'); // Nettoyage de l'UI
-                
+
                 // Réafficher le modèle 3D du médecin en sortant du mode FPS
                 if (this.characterController && this.characterController.group) {
                     this.characterController.group.visible = true;
@@ -202,7 +203,7 @@ export class ThreeScene {
                     document.querySelectorAll('#hud-3d [data-camera]').forEach(b => b.classList.remove('active'));
                     activeBtn.classList.add('active');
                 }
-                
+
                 if (this._skipDeactivateCameraReset) {
                     this._skipDeactivateCameraReset = false;
                     // Mettre à jour OrbitControls target pour regarder vers l'avant à partir de la position actuelle
@@ -253,7 +254,9 @@ export class ThreeScene {
                 side: THREE.DoubleSide,
                 transparent: true,
                 opacity: 0.8,
-                depthWrite: false
+                depthWrite: false,
+                blending: THREE.AdditiveBlending, // Rendu holographique lumineux
+                toneMapped: false // Couleurs franches à travers l'ACES tone mapping
             });
             const mesh = new THREE.Mesh(geom, mat);
             // Coucher l'anneau à plat sur le lit
@@ -271,6 +274,43 @@ export class ThreeScene {
 
         // Visibles uniquement en vue "patient" (épuré !)
         this.hotspotsGroup.visible = false;
+
+        // Hotspots d'auscultation pour le stéthoscope
+        this.auscultationHotspotsGroup = new THREE.Group();
+        this.auscultationHotspotsGroup.name = "AuscultationHotspots";
+        this.scene.add(this.auscultationHotspotsGroup);
+
+        const auscultationData = [
+            { id: 'auscultation_cardio', pos: [1.25, 1.15, -3.4], color: 0x00ffff, label: 'Auscultation Cardiaque' },
+            { id: 'auscultation_pulmo_gauche', pos: [1.34, 1.14, -3.4], color: 0x00ff00, label: 'Auscultation Pulmonaire Gauche' },
+            { id: 'auscultation_pulmo_droit', pos: [1.08, 1.14, -3.4], color: 0x00ff00, label: 'Auscultation Pulmonaire Droite' }
+        ];
+
+        auscultationData.forEach(data => {
+            const geom = new THREE.RingGeometry(0.045, 0.055, 32);
+            const mat = new THREE.MeshBasicMaterial({
+                color: data.color,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.85,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending, // Rendu holographique lumineux
+                toneMapped: false
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.position.set(...data.pos);
+            mesh.userData = {
+                interactive: true,
+                isHotspot: true,
+                hotspotId: data.id,
+                label: data.label
+            };
+            this.auscultationHotspotsGroup.add(mesh);
+            this.interactiveObjects.push(mesh);
+        });
+
+        this.auscultationHotspotsGroup.visible = false;
     }
 
     /**
@@ -285,17 +325,18 @@ export class ThreeScene {
             z-index: 10000;
             opacity: 0;
             transition: opacity 0.2s ease;
-            background: rgba(10, 18, 40, 0.92);
+            background: linear-gradient(160deg, rgba(12, 22, 48, 0.94), rgba(8, 14, 32, 0.92));
             color: #e0e8f4;
-            border: 1px solid rgba(100, 170, 255, 0.45);
-            border-radius: 8px;
+            border: 1px solid rgba(120, 190, 255, 0.35);
+            border-radius: 10px;
             padding: 8px 14px;
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             font-size: 13px;
             line-height: 1.4;
+            letter-spacing: 0.2px;
             max-width: 260px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 12px rgba(100,170,255,0.15);
-            backdrop-filter: blur(6px);
+            box-shadow: 0 6px 24px rgba(0,0,0,0.45), 0 0 14px rgba(100,170,255,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+            backdrop-filter: blur(8px);
         `;
         const titleEl = document.createElement('div');
         titleEl.style.cssText = `
@@ -390,8 +431,8 @@ export class ThreeScene {
     }
 
     updateHotspotsPosition() {
+        const isLying = (this.patient && this.patient._currentPosition === 'allonge');
         if (this.hotspotsGroup) {
-            const isLying = (this.patient && this.patient._currentPosition === 'allonge');
             this.hotspotsGroup.children.forEach(mesh => {
                 const id = mesh.userData.hotspotId;
                 if (id === 'tête') {
@@ -405,6 +446,28 @@ export class ThreeScene {
                 }
             });
         }
+        if (this.auscultationHotspotsGroup) {
+            this.auscultationHotspotsGroup.children.forEach(mesh => {
+                const id = mesh.userData.hotspotId;
+                if (id === 'auscultation_cardio') {
+                    mesh.position.set(isLying ? 4.76 : 1.26, isLying ? 1.21 : 1.15, isLying ? 0.38 : -3.4);
+                } else if (id === 'auscultation_pulmo_gauche') {
+                    mesh.position.set(isLying ? 4.86 : 1.34, isLying ? 1.20 : 1.14, isLying ? 0.38 : -3.4);
+                } else if (id === 'auscultation_pulmo_droit') {
+                    mesh.position.set(isLying ? 4.60 : 1.08, isLying ? 1.20 : 1.14, isLying ? 0.38 : -3.4);
+                }
+            });
+        }
+    }
+
+    updateStethoscopeHotspotsVisibility() {
+        const isPatientMode = (this.currentCameraMode === 'patient');
+        if (this.hotspotsGroup) {
+            this.hotspotsGroup.visible = (isPatientMode && !this.stethoscopeMode);
+        }
+        if (this.auscultationHotspotsGroup) {
+            this.auscultationHotspotsGroup.visible = (isPatientMode && !!this.stethoscopeMode);
+        }
     }
 
     setCamera(mode, animate = true) {
@@ -416,30 +479,30 @@ export class ThreeScene {
                 if (this.hotspotsGroup) {
                     this.hotspotsGroup.visible = false;
                 }
-                
+
                 // Masquer le modèle 3D du médecin en mode FPS pour l'immersion
                 if (this.characterController && this.characterController.group) {
                     this.characterController.group.visible = false;
                 }
-                
+
                 this.controls.enabled = false;
                 document.body.classList.add('mode-fps'); // Masquer le HUD superflus pour une immersion 100% propre
-                
+
                 // Mettre à jour l'état actif des boutons
                 document.querySelectorAll('#hud-3d [data-camera]').forEach(b => b.classList.remove('active'));
                 const fpsBtn = document.querySelector('#hud-3d [data-camera="fps"]');
                 if (fpsBtn) fpsBtn.classList.add('active');
 
                 const isLying = (this.patient && this.patient._currentPosition === 'allonge');
-                const startPos = isLying 
-                    ? new THREE.Vector3(3.6, 1.6, 0.2) 
+                const startPos = isLying
+                    ? new THREE.Vector3(3.6, 1.6, 0.2)
                     : new THREE.Vector3(1.0, 1.6, -2.3);
-                const startLook = isLying 
-                    ? new THREE.Vector3(4.7, 1.1, 0.2) 
+                const startLook = isLying
+                    ? new THREE.Vector3(4.7, 1.1, 0.2)
                     : new THREE.Vector3(1.2, 1.15, -3.45);
-                    
+
                 this.fpsController.activate(startPos, startLook);
-                
+
                 if (window.showNotification) {
                     window.showNotification('Mode FPS activé. ZQSD pour marcher, souris pour regarder, clic gauche pour interagir, Échap pour quitter.', 'info');
                 }
@@ -451,7 +514,7 @@ export class ThreeScene {
             }
             this.controls.enabled = true;
             document.body.classList.remove('mode-fps'); // Restaurer le HUD normal
-            
+
             // Réafficher le modèle 3D du médecin
             if (this.characterController && this.characterController.group) {
                 this.characterController.group.visible = true;
@@ -460,13 +523,16 @@ export class ThreeScene {
 
         this.currentCameraMode = mode;
         if (this.hotspotsGroup) {
-            this.hotspotsGroup.visible = (mode === 'patient');
+            this.hotspotsGroup.visible = (mode === 'patient' && !this.stethoscopeMode);
+        }
+        if (this.auscultationHotspotsGroup) {
+            this.auscultationHotspotsGroup.visible = (mode === 'patient' && !!this.stethoscopeMode);
         }
 
         const isLying = (this.patient && this.patient._currentPosition === 'allonge');
         const presets = {
             room: { pos: [-3.7, 4.8, 7.5], target: [0.3, 1.3, -0.4] },
-            patient: isLying 
+            patient: isLying
                 ? { pos: [4, 3.6, 3], target: [5.2, 1.8, 0.4] }
                 : { pos: [1.8, 2.1, -1.1], target: [1.2, 1.15, -3.45] },
             desk: { pos: [-4.8, 2.2, 1.2], target: [-3.3, 1.4, -0.3] },
@@ -495,16 +561,16 @@ export class ThreeScene {
                 const t = Math.min(1, (now - startTime) / duration);
                 // Cubic Bezier Ease In-Out
                 const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-                
+
                 this.camera.position.lerpVectors(startPos, targetPos, ease);
-                
+
                 // Effet cinématique de grue : courbe parabolique verticale
                 const heightArc = Math.sin(ease * Math.PI) * 0.28;
                 this.camera.position.y += heightArc;
 
                 this.controls.target.lerpVectors(startTarget, targetLook, ease);
                 this.controls.update();
-                
+
                 if (t < 1) {
                     this._cameraAnimId = requestAnimationFrame(step);
                 } else {
@@ -537,7 +603,7 @@ export class ThreeScene {
 
         if (isFPS) {
             this._skipDeactivateCameraReset = true;
-            
+
             // Adapter le mode caméra cible pour l'UI
             const label = (this._findObjectLabel(hitObj) || '').toLowerCase();
             if (hitObj.userData?.isHotspot || label.includes('patient')) {
@@ -547,13 +613,26 @@ export class ThreeScene {
             } else {
                 this.currentCameraMode = 'room';
             }
-            
+
             this.fpsController.deactivate();
         }
 
         // --- Clic sur un Hotspot Clinique 3D d'examen ---
         if (hitObj.userData?.isHotspot) {
             const id = hitObj.userData.hotspotId;
+            if (id === 'auscultation_cardio') {
+                if (this.manager && this.manager.clinicalAgent) {
+                    this.manager.clinicalAgent.performAction('auscultation_cardio');
+                }
+                return;
+            }
+            if (id === 'auscultation_pulmo_gauche' || id === 'auscultation_pulmo_droit') {
+                if (this.manager && this.manager.clinicalAgent) {
+                    this.manager.clinicalAgent.performAction('auscultation_pneumo');
+                }
+                return;
+            }
+
             medicalAudio.playMeasureSound();
             if (this.manager && this.manager.clinicalAgent) {
                 this.manager.clinicalAgent.openExaminationMenu(id);
@@ -1247,6 +1326,14 @@ export class ThreeScene {
         // --- Animation des Hotspots 3D d'examen ---
         if (this.hotspotsGroup && this.hotspotsGroup.visible) {
             this.hotspotsGroup.children.forEach(mesh => {
+                const pulse = Math.sin(elapsed * 4.5);
+                const scale = 1.0 + pulse * 0.15;
+                mesh.scale.set(scale, scale, 1.0);
+                mesh.material.opacity = 0.55 + pulse * 0.25;
+            });
+        }
+        if (this.auscultationHotspotsGroup && this.auscultationHotspotsGroup.visible) {
+            this.auscultationHotspotsGroup.children.forEach(mesh => {
                 const pulse = Math.sin(elapsed * 4.5);
                 const scale = 1.0 + pulse * 0.15;
                 mesh.scale.set(scale, scale, 1.0);
