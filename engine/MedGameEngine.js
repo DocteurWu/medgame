@@ -25,6 +25,11 @@ function getFriendlySubjectName(path) {
     return mapping[path] || path;
 }
 
+// In-game time consumed per newly ordered complementary exam (seconds)
+const EXAM_TIME_COST_SECONDS = 60;
+// Typo tolerance threshold for strict diagnostic matching
+const DIAGNOSTIC_TYPO_SIMILARITY = 0.9;
+
 function normalizeText(text) {
     if (!text) return '';
     return text
@@ -35,6 +40,35 @@ function normalizeText(text) {
         .replace(/\s+/g, " ")            // collapse spaces
         .trim();
 }
+
+function getSimilarity(a, b) {
+    const maxLen = Math.max(a.length, b.length);
+    if (maxLen === 0) return 1;
+    return 1 - getLevenshteinDistance(a, b) / maxLen;
+}
+
+// Fuzzy match between an available exam name and a relevant exam name.
+// Handles naming drift between case authors ("Écho-Doppler veineux" vs
+// "Echographie doppler des membres inférieurs").
+function fuzzyMatchExam(availableName, relevantName) {
+    const a = normalizeText(availableName);
+    const r = normalizeText(relevantName);
+    if (!a || !r) return false;
+    if (a === r || a.includes(r) || r.includes(a)) return true;
+    if (getSimilarity(a, r) >= 0.6) return true;
+    const aTokens = a.split(' ').filter(w => w.length > 3);
+    const rTokens = r.split(' ').filter(w => w.length > 3);
+    return aTokens.some(t => rTokens.some(rt => rt.includes(t) || t.includes(rt)));
+}
+
+// Map LLM-detected physical gestures to examenClinique sections
+const GESTURE_TO_SECTION = {
+    'auscultation_card': 'examenCardiovasculaire',
+    'auscultation_pulm': 'examenPulmonaire',
+    'palpation_abdo': 'examenAbdominal',
+    'reflex_osteo': 'examenNeurologique',
+    'inspection': 'aspectGeneral'
+};
 
 function getLevenshteinDistance(a, b) {
     const matrix = [];
@@ -59,8 +93,8 @@ function getLevenshteinDistance(a, b) {
 export class MedGameEngine {
     constructor(config = {}) {
         this.apiKey = config.apiKey || process.env.LLM_API_KEY || '';
-        this.apiUrl = config.apiUrl || process.env.LLM_API_URL || 'https://openrouter.ai/api/v1/chat/completions';
-        this.model = config.model || process.env.LLM_MODEL || 'tencent/hy3:free';
+        this.apiUrl = config.apiUrl || process.env.LLM_API_URL || 'https://api.deepseek.com/chat/completions';
+        this.model = config.model || process.env.LLM_MODEL || 'deepseek-v4-flash';
         this.resetState();
     }
 
@@ -75,15 +109,18 @@ export class MedGameEngine {
         this.activeExams = [];
         this.selectedTreatments = [];
         this.selectedDiagnostic = '';
+        this.diagnosticLocked = false;
         this.attempts = 0;
+        this.score = 0;
         this.chatHistory = [];
         this.isFinished = false;
-        
+        this.fatalErrorTriggered = false;
+
         // Progress tracking (démarche)
         this.demarche = {
             interrogatoireAsked: new Set(),
             examsOrdered: [],
-            examSectionsViewed: new Set(),
+            clinicalGestures: new Set(),
             locksUnlocked: new Set()
         };
 
@@ -224,9 +261,6 @@ export class MedGameEngine {
         }
 
         this.updateVitals();
-        
-        // Auto-mark clinical exam viewed since we check the state
-        this.demarche.examSectionsViewed.add('section-examen-clinique');
 
         // Serialized locks
         const locks = (this.caseData.locks || []).map(l => {
@@ -292,6 +326,8 @@ export class MedGameEngine {
             availableExams: this.caseData.availableExams || [],
             score: this.score || 0,
             attempts: this.attempts,
+            diagnosticLocked: this.diagnosticLocked,
+            fatalErrorTriggered: this.fatalErrorTriggered,
             chatHistory: this.chatHistory,
             isFinished: this.isFinished,
             scoreBreakdown: this.isFinished ? this.calculateCompositeScore() : null,
@@ -357,14 +393,16 @@ export class MedGameEngine {
         if (this.isFinished) {
             throw new Error("Game is already finished.");
         }
+        if (this.fatalErrorTriggered) {
+            throw new Error("Fatal error already triggered. Case is over.");
+        }
 
-        // Add user message to history
-        this.chatHistory.push({ role: 'user', content: text });
+        // Keyword fallback tracking (secondary signal; primary = LLM-disclosed fields)
         this.trackInterrogatoireByKeywords(text);
 
         // Perform LLM request
         if (!this.apiKey) {
-            throw new Error("API Key for LLM is not configured. Please set the LLM_API_KEY environment variable.");
+            throw new Error("API Key for LLM is not configured. Please set LLM_API_KEY in .env.");
         }
 
         this.updateVitals();
@@ -398,6 +436,7 @@ IMPORTANT - DIRECTIVES DE DÉROULEMENT ET DE DIALOGUE (ROLEPLAY) :
 4. Adapte le registre de langue du dialogue au profil du patient (âge, profession, contexte de vie).
 5. Formule les réponses verbales du patient à la première personne du singulier ("Je...", "Moi...").
 6. Ne révèle pas toutes les informations médicales d'un coup. Le patient ne doit répondre que précisément et de manière concise à ce qui est demandé. S'il est fatigué ou essoufflé, il doit faire des phrases courtes.
+7. Le champ "disclosedInfoFields" doit lister UNIQUEMENT les catégories d'informations que le patient vient EFFECTIVEMENT de révéler dans SA réponse de ce tour (jamais les questions posées, jamais ce qu'il garde pour lui).
 
 Voici le cas clinique actuel :
 - Patient : ${JSON.stringify(this.caseData.patient || {})}
@@ -427,7 +466,7 @@ Tu devez obligatoirement répondre sous forme d'un objet JSON valide contenant e
   "exams": array de { "type": "palpation_abdo"|"auscultation_pulm"|"auscultation_card"|"reflex_osteo"|"inspection"|"other", "description": "résultat clinique descriptif" } ou null,
   "prescriptions": array de { "nom": string, "dosage": string, "voie": string, "frequence": string, "duree": string } ou null,
   "otherActions": array de { "actionId": string, "description": string } ou null,
-  "vitalChanges": {
+    "vitalChanges": {
     "heartRate": number ou null,
     "systolic": number ou null,
     "diastolic": number ou null,
@@ -436,43 +475,90 @@ Tu devez obligatoirement répondre sous forme d'un objet JSON valide contenant e
     "respiratoryRate": number ou null,
     "painLevel": number ou null
   } ou null,
+  "disclosedInfoFields": array de chemins d'informations du patient réellement divulgués dans ta réponse de ce tour (ex: "modeDeVie.tabac", "antecedents.familiaux", "histoireMaladie.symptomesAssocies", "traitements", "allergies") ou null,
   "narrativeResponse": string
 }
 
 Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`\`json), pas d'explication.`;
 
-        try {
-            const response = await fetch(this.apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.apiKey}`
-                },
-                body: JSON.stringify({
-                    model: this.model,
-                    messages: [
-                        { role: 'system', content: systemPrompt },
-                        ...this.chatHistory.slice(0, -1).map(msg => ({
-                            role: msg.role === 'user' ? 'user' : 'assistant',
-                            content: msg.content
-                        })),
-                        { role: 'user', content: `ENTRÉE DE L'ÉTUDIANT : "${text}"` }
-                    ],
-                    temperature: 0.1,
-                    max_tokens: 3000,
-                    reasoning: {
-                        exclude: true
-                    }
-                })
-            });
+        const buildMessages = () => [
+            { role: 'system', content: systemPrompt },
+            ...this.chatHistory.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'assistant',
+                content: msg.content
+            })),
+            { role: 'user', content: `ENTRÉE DE L'ÉTUDIANT : "${text}"` }
+        ];
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        let data = null;
+        let lastError = null;
+        for (let attempt = 1; attempt <= 2; attempt++) {
+            try {
+                const response = await fetch(this.apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: this.model,
+                        messages: buildMessages(),
+                        temperature: 0.1,
+                        max_tokens: 3000
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                data = await response.json();
+                lastError = null;
+                break;
+            } catch (err) {
+                lastError = err;
+                if (attempt < 2) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
             }
+        }
 
-            const data = await response.json();
-            const textResponse = data.choices?.[0]?.message?.content || '';
-            const parsed = this.cleanAndParseJson(textResponse);
+        if (lastError || !data) {
+            // Rollback-safe: chatHistory was NOT touched before the call
+            console.error("[MedGameEngine] LLM chat failed:", lastError);
+            throw new Error(`Patient LLM indisponible (${lastError ? lastError.message : 'réponse vide'}). Vérifiez LLM_API_URL et LLM_MODEL dans .env.`);
+        }
+
+        const textResponse = data.choices?.[0]?.message?.content || '';
+        let parsed;
+        try {
+            parsed = this.cleanAndParseJson(textResponse);
+        } catch (err) {
+            throw new Error(`Réponse LLM illisible (JSON invalide): ${err.message}`);
+        }
+
+        // Commit user message only once the LLM call succeeded (no orphan history)
+        this.chatHistory.push({ role: 'user', content: text });
+
+        // Track physical exam gestures actually performed (scoring input)
+        if (Array.isArray(parsed.exams)) {
+            for (const ex of parsed.exams) {
+                if (ex && ex.type && GESTURE_TO_SECTION[ex.type]) {
+                    this.demarche.clinicalGestures.add(ex.type);
+                }
+            }
+        }
+
+        // Track information fields genuinely disclosed by the patient (primary anamnesis signal)
+        if (Array.isArray(parsed.disclosedInfoFields)) {
+            for (const rawPath of parsed.disclosedInfoFields) {
+                if (!rawPath || typeof rawPath !== 'string') continue;
+                let p = rawPath.trim();
+                if (p === 'motifHospitalisation') continue; // already known from opening line
+                if (!p.startsWith('interrogatoire.')) p = `interrogatoire.${p}`;
+                this.demarche.interrogatoireAsked.add(p);
+            }
+        }
 
             // Apply physiological changes
             if (parsed.vitalChanges) {
@@ -535,11 +621,6 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
             this.chatHistory.push({ role: 'assistant', content: finalOutput });
             return { response: finalOutput, parsed };
-
-        } catch (err) {
-            console.error("[MedGameEngine] LLM chat failed:", err);
-            throw err;
-        }
     }
 
     cleanAndParseJson(text) {
@@ -559,27 +640,55 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
     prescribe(treatments) {
         if (!this.caseData) throw new Error("No active case");
         if (!Array.isArray(treatments)) throw new Error("Treatments must be an array");
+        if (this.isFinished) throw new Error("Game is already finished.");
 
         // Filter input treatments to only matching possible ones
-        const validTreatments = treatments.filter(t => 
+        const validTreatments = treatments.filter(t =>
             (this.caseData.possibleTreatments || []).includes(t)
         );
 
-        this.selectedTreatments = validTreatments;
-        return { success: true, selectedTreatments: this.selectedTreatments };
+        // Append-only: prescriptions are commitments, they cannot be silently undone
+        for (const t of validTreatments) {
+            if (!this.selectedTreatments.includes(t)) {
+                this.selectedTreatments.push(t);
+            }
+        }
+
+        // Fatal error check is IMMEDIATE: prescribing a contraindicated/fatal treatment ends the case
+        const fatalHit = this.selectedTreatments.find(t =>
+            (this.caseData.fatalTreatments || []).includes(t)
+        );
+        if (fatalHit && !this.fatalErrorTriggered) {
+            this.fatalErrorTriggered = true;
+            this.isFinished = true;
+            const results = this.calculateCompositeScore();
+            this.score = results.compositeScore;
+            return {
+                success: true,
+                selectedTreatments: [...this.selectedTreatments],
+                gameOver: true,
+                fatalTreatment: fatalHit,
+                score: this.score,
+                evaluation: results
+            };
+        }
+
+        return { success: true, selectedTreatments: [...this.selectedTreatments], appended: validTreatments.length };
     }
 
     orderExams(exams) {
         if (!this.caseData) throw new Error("No active case");
         if (!Array.isArray(exams)) throw new Error("Exams must be an array");
+        if (this.isFinished) throw new Error("Game is already finished.");
 
         // Filter valid exams
         const validExams = exams.filter(e => 
             (this.caseData.availableExams || []).includes(e)
         );
 
-        // Subtract 120 seconds in-game time as penalty for exams
-        this.timePenalties += 120;
+        // Time cost is proportional to the number of NEW exams ordered
+        const newExams = validExams.filter(e => !this.activeExams.includes(e));
+        this.timePenalties += newExams.length * EXAM_TIME_COST_SECONDS;
 
         for (const exam of validExams) {
             if (!this.activeExams.includes(exam)) {
@@ -685,12 +794,20 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
     selectDiagnostic(diagnostic) {
         if (!this.caseData) throw new Error("No active case");
+        if (this.isFinished) throw new Error("Game is already finished.");
+
+        // ECOS conditions: a single, definitive diagnostic commitment
+        if (this.diagnosticLocked) {
+            throw new Error(`Diagnostic déjà validé ("${this.selectedDiagnostic}"). Un seul essai est autorisé.`);
+        }
+
         const options = this.caseData.possibleDiagnostics || [];
         if (!options.includes(diagnostic)) {
             throw new Error(`Diagnostic '${diagnostic}' not available. Choose from: ${options.join(', ')}`);
         }
         this.selectedDiagnostic = diagnostic;
-        return { success: true, selectedDiagnostic: this.selectedDiagnostic };
+        this.diagnosticLocked = true;
+        return { success: true, selectedDiagnostic: this.selectedDiagnostic, locked: true };
     }
 
     calculateCompositeScore() {
@@ -732,28 +849,60 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
         demPoints += (askedCount / totalInterroFields) * 40;
         demMax += 40;
 
-        // Clinical Exam (auto-marked viewed on getstate)
-        demPoints += this.demarche.examSectionsViewed.has('section-examen-clinique') ? 25 : 0;
+        // Clinical Exam: credit only gestures ACTUALLY performed via chat actions
+        const clinique = this.caseData.examenClinique || {};
+        const targetSections = ['examenCardiovasculaire', 'examenPulmonaire', 'examenAbdominal', 'examenNeurologique']
+            .filter(c => clinique[c] && Object.keys(clinique[c]).length > 0);
+        if (clinique.aspectGeneral) {
+            targetSections.push('aspectGeneral');
+        }
+        if (targetSections.length === 0) {
+            demPoints += 25;
+        } else {
+            const coveredSections = new Set(
+                [...this.demarche.clinicalGestures]
+                    .map(g => GESTURE_TO_SECTION[g])
+                    .filter(Boolean)
+            );
+            const coveredRatio = targetSections.filter(s => coveredSections.has(s)).length / targetSections.length;
+            demPoints += coveredRatio * 25;
+        }
         demMax += 25;
 
-        // Complementary Exams
+        // Complementary Exams: fuzzy matching between relevantExams and availableExams
         const availableExams = this.caseData.availableExams || [];
         const relevantExams = this.caseData.relevantExams || [];
         const examsOrdered = this.demarche.examsOrdered;
 
         if (availableExams.length > 0) {
-            const targetExams = relevantExams.length > 0 ? relevantExams : availableExams;
-            const orderedRelevant = examsOrdered.filter(e => targetExams.includes(e));
-            const orderRatio = orderedRelevant.length / Math.max(targetExams.length, 1);
-            
-            const uselessExams = examsOrdered.filter(e => !targetExams.includes(e));
-            const uselessPenalty = uselessExams.length * 0.05;
-            
-            demPoints += Math.max(0, orderRatio - uselessPenalty) * 20;
+            // Resolve the naming drift between relevantExams and availableExams lists.
+            let targetExams = [];
+            if (relevantExams.length > 0) {
+                targetExams = availableExams.filter(e =>
+                    relevantExams.some(r => fuzzyMatchExam(e, r))
+                );
+            }
+            if (targetExams.length === 0) {
+                targetExams = relevantExams.length > 0 ? [...relevantExams] : [...availableExams];
+                // If relevant names never match the menu, fall back to grading against the actual menu
+                const orderedInMenu = examsOrdered.filter(e => availableExams.includes(e));
+                const orderedRatio = orderedInMenu.length / Math.max(availableExams.length, 1);
+                demPoints += orderedRatio * 20 * 0.5; // capped at half credit: relevance unverified
+                demMax += 20;
+            } else {
+                const orderedRelevant = examsOrdered.filter(e => targetExams.includes(e));
+                const orderRatio = orderedRelevant.length / targetExams.length;
+
+                const uselessExams = examsOrdered.filter(e => !targetExams.includes(e));
+                const uselessPenalty = Math.min(uselessExams.length * 0.05, orderRatio);
+
+                demPoints += Math.max(0, orderRatio - uselessPenalty) * 20;
+                demMax += 20;
+            }
         } else {
             demPoints += 20;
+            demMax += 20;
         }
-        demMax += 20;
 
         // Semio Locks
         const locks = this.caseData.locks || [];
@@ -767,7 +916,7 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
         const demarcheScore = demMax > 0 ? Math.round((demPoints / demMax) * 100) : 100;
 
-        // 2. Diagnosis Score
+        // 2. Diagnosis Score — strict: exact match, official alternatives, or typo tolerance only
         let diagnosticScore = 0;
         const normSel = normalizeText(this.selectedDiagnostic);
         const normCor = normalizeText(this.caseData.correctDiagnostic);
@@ -777,14 +926,9 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                 diagnosticScore = 100;
             } else if ((this.caseData.alternativeDiagnostics || []).map(normalizeText).includes(normSel)) {
                 diagnosticScore = 80;
-            } else if (normSel.includes(normCor) || normCor.includes(normSel)) {
-                diagnosticScore = 60;
-            } else {
-                const dist = getLevenshteinDistance(normSel, normCor);
-                const maxLen = Math.max(normSel.length, normCor.length);
-                const similarity = maxLen > 0 ? 1 - (dist / maxLen) : 0;
-                if (similarity >= 0.75) diagnosticScore = 60;
-                else if (similarity >= 0.50) diagnosticScore = 30;
+            } else if (getSimilarity(normSel, normCor) >= DIAGNOSTIC_TYPO_SIMILARITY) {
+                // Near-identical spelling only (typo tolerance), no semantic leniency
+                diagnosticScore = 90;
             }
         }
 
@@ -811,9 +955,9 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
             traitementScore = Math.max(0, Math.min(100, Math.round((sensitivity - penalty) * 100)));
         }
 
-        // 4. Speed Score
+        // 4. Speed Score — square-root curve: fast play is rewarded, mid-range time is not crushed
         const timeLeft = this.getTimeLeft();
-        const vitesseScore = Math.round((timeLeft / this.timeLimit) * 100);
+        const vitesseScore = Math.round(100 * Math.sqrt(Math.max(0, timeLeft) / this.timeLimit));
 
         // Weighted Composite Score
         let compositeScore = Math.round(
@@ -847,6 +991,7 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
     submit() {
         if (!this.caseData) throw new Error("No active case");
+        if (this.isFinished) throw new Error("Case already submitted. Submission is definitive.");
         this.attempts++;
         this.isFinished = true;
 
