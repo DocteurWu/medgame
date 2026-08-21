@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node --test test/engine.test.mjs test/mcp.test.mjs",
+    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs",
     "mcp": "node mcp-server.js"
   },
   "repository": {
