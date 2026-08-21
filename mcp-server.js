@@ -1,3 +1,4 @@
+import fs from 'fs/promises';
 import dotenv from 'dotenv';
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
@@ -93,7 +94,7 @@ export const tools = [
     },
     {
         name: "send_chat_action",
-        description: "Submit a message or clinical action in natural language to the patient. E.g. 'Bonjour, comment allez-vous ?' or 'Injecter 1g de Paracétamol'. Returns dialogue response and physical narrative.",
+        description: "Submit a message or clinical action in natural language to the patient. E.g. 'Bonjour, comment allez-vous ?' or 'Injecter 1g de Paracétamol'. Requires a working LLM_API configuration (.env). Physical gestures (inspection, palpation, auscultation) detected here feed the clinical exam score.",
         inputSchema: {
             type: "object",
             properties: {
@@ -107,7 +108,7 @@ export const tools = [
     },
     {
         name: "order_exams",
-        description: "Prescribe complementary exams (e.g. ['ECG', 'Bilan sanguin']). Automatically applies a 120s penalty to the timer.",
+        description: "Prescribe complementary exams (e.g. ['ECG', 'Bilan sanguin']). Each NEW exam consumes 60s of in-game time. Ordering is definitive.",
         inputSchema: {
             type: "object",
             properties: {
@@ -122,7 +123,7 @@ export const tools = [
     },
     {
         name: "prescribe_treatments",
-        description: "Prescribe a list of therapeutic treatments (e.g. ['Bêta-bloquant', 'Aspirine']).",
+        description: "Prescribe therapeutic treatments (e.g. ['Bêta-bloquant', 'Aspirine']). Append-only and definitive: prescriptions cannot be revoked. Prescribing a fatal/contraindicated treatment triggers an immediate game over.",
         inputSchema: {
             type: "object",
             properties: {
@@ -159,7 +160,7 @@ export const tools = [
     },
     {
         name: "select_diagnostic",
-        description: "Select a final diagnostic choice from the available possible diagnostics.",
+        description: "Select the final diagnostic choice from the available possible diagnostics. SINGLE-SHOT under ECOS rules: the first selection is locked and cannot be changed. Choose wisely before calling.",
         inputSchema: {
             type: "object",
             properties: {
@@ -173,10 +174,39 @@ export const tools = [
     },
     {
         name: "submit_game",
-        description: "Submit the case for final evaluation and composite scoring. Ends the case.",
+        description: "Submit the case for final evaluation and composite scoring. Ends the case. DEFINITIVE: a case can only be submitted once.",
         inputSchema: {
             type: "object",
             properties: {},
+        },
+    },
+    {
+        name: "submit_case_feedback",
+        description: "After playing a case, submit a review of its quality: verdict, problems encountered, and concrete suggestions to make the experience better for a human medical student (ECOS). Call this once per played case.",
+        inputSchema: {
+            type: "object",
+            properties: {
+                caseId: {
+                    type: "string",
+                    description: "The ID of the case that was just played (e.g. 'cardio_angor_stable')."
+                },
+                verdict: {
+                    type: "string",
+                    enum: ["bon", "moyen", "nul"],
+                    description: "Overall verdict on the case quality."
+                },
+                problemes: {
+                    type: "array",
+                    items: { type: "string" },
+                    description: "Problems encountered while playing: inconsistencies, impossible locks, robotic dialogue, missing info, scoring quirks..."
+                },
+                suggestions: {
+                    type: "array",
+                    items: { type: "string" },
+                    description: "Concrete suggestions to improve fun, clarity, immersion or pedagogy for human players."
+                }
+            },
+            required: ["caseId", "verdict"]
         },
     }
 ];
@@ -184,6 +214,21 @@ export const tools = [
 mcpServer.setRequestHandler(ListToolsRequestSchema, async () => {
     return { tools };
 });
+
+// Persist an AI review of a case as one JSON line in data/feedback.jsonl
+export async function submitCaseFeedback(args) {
+    const entry = {
+        date: new Date().toISOString(),
+        caseId: args.caseId,
+        verdict: args.verdict,
+        problemes: Array.isArray(args.problemes) ? args.problemes : [],
+        suggestions: Array.isArray(args.suggestions) ? args.suggestions : []
+    };
+    const feedbackPath = process.env.MEDGAME_FEEDBACK_FILE || path.join(process.cwd(), 'data', 'feedback.jsonl');
+    await fs.mkdir(path.dirname(feedbackPath), { recursive: true });
+    await fs.appendFile(feedbackPath, JSON.stringify(entry) + '\n', 'utf-8');
+    return { success: true, savedTo: feedbackPath, ...entry };
+}
 
 mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name, arguments: args } = request.params;
@@ -256,6 +301,12 @@ mcpServer.setRequestHandler(CallToolRequestSchema, async (request) => {
                     state: engine.getState()
                 };
                 break;
+
+            case "submit_case_feedback":
+                result = await submitCaseFeedback(args);
+                eventType = 'case_feedback';
+                eventDetails = { caseId: args.caseId, verdict: args.verdict };
+                break;
             
             default:
                 throw new Error(`Tool not found: ${name}`);
@@ -304,7 +355,7 @@ if (isMain) {
                 try {
                     const parsed = JSON.parse(body);
                     const apiKey = process.env.LLM_API_KEY;
-                    const apiUrl = process.env.LLM_API_URL || 'https://openrouter.ai/api/v1/chat/completions';
+                    const apiUrl = process.env.LLM_API_URL || 'https://api.deepseek.com/chat/completions';
 
                     if (!apiKey) {
                         res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -322,7 +373,7 @@ if (isMain) {
                             'X-Title': 'MedGame'
                         },
                         body: JSON.stringify({
-                            model: parsed.model || process.env.LLM_MODEL || 'tencent/hy3:free',
+                            model: parsed.model || process.env.LLM_MODEL || 'deepseek-v4-flash',
                             messages: parsed.messages,
                             temperature: parsed.temperature ?? 0.7,
                             max_tokens: Math.max(parsed.max_tokens ?? 3000, 3000),

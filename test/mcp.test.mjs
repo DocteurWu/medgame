@@ -1,5 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
+import fs from 'fs/promises';
+import os from 'os';
+import path from 'path';
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { mcpServer, engine } from "../mcp-server.js";
@@ -53,11 +56,11 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
     
     await client.connect(clientTransport);
 
-    await t.test('listTools should return all 9 medgame tools', async () => {
+    await t.test('listTools should return all 10 medgame tools', async () => {
         const result = await client.listTools();
         assert.ok(result);
         assert.ok(Array.isArray(result.tools));
-        
+
         const toolNames = result.tools.map(t => t.name);
         assert.ok(toolNames.includes('list_cases'));
         assert.ok(toolNames.includes('start_case'));
@@ -68,7 +71,8 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
         assert.ok(toolNames.includes('submit_lock_answer'));
         assert.ok(toolNames.includes('select_diagnostic'));
         assert.ok(toolNames.includes('submit_game'));
-        assert.equal(toolNames.length, 9);
+        assert.ok(toolNames.includes('submit_case_feedback'));
+        assert.equal(toolNames.length, 10);
     });
 
     await t.test('callTool list_cases should return available case files', async () => {
@@ -106,6 +110,38 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
         assert.ok(lastMsg.content.toLowerCase().includes('douleur'));
         
         restoreFetch();
+    });
+
+    await t.test('callTool submit_case_feedback should persist review to JSONL', async () => {
+        const tmpFile = path.join(os.tmpdir(), `medgame-feedback-test-${Date.now()}.jsonl`);
+        process.env.MEDGAME_FEEDBACK_FILE = tmpFile;
+
+        const response = await client.callTool({
+            name: 'submit_case_feedback',
+            arguments: {
+                caseId: 'cardio_angor_stable',
+                verdict: 'bon',
+                problemes: ['Dialogue un peu robotique sur les antécédents'],
+                suggestions: ['Ajouter un verrou sémiologique sur les facteurs de risque']
+            }
+        });
+        assert.ok(!response.isError);
+
+        const result = JSON.parse(response.content[0].text);
+        assert.equal(result.success, true);
+        assert.equal(result.caseId, 'cardio_angor_stable');
+        assert.equal(result.verdict, 'bon');
+
+        const raw = await fs.readFile(tmpFile, 'utf-8');
+        const lines = raw.trim().split('\n').map(l => JSON.parse(l));
+        const last = lines[lines.length - 1];
+        assert.equal(last.caseId, 'cardio_angor_stable');
+        assert.equal(last.verdict, 'bon');
+        assert.ok(Array.isArray(last.problemes));
+        assert.ok(Array.isArray(last.suggestions));
+
+        delete process.env.MEDGAME_FEEDBACK_FILE;
+        await fs.unlink(tmpFile);
     });
 
     // Cleanup transports
