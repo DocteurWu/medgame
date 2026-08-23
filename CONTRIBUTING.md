@@ -64,3 +64,5 @@ Pour discuter d'idées de cas, de fonctionnalités ou rejoindre l'équipe active
 Merci encore pour votre aide dans l'amélioration de l'éducation médicale ! 🩺
 
 <!-- pair correct test 2 -->
+
+<!-- yolo test -->
