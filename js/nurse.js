@@ -25,6 +25,23 @@ const NurseIntro = (() => {
         `Bonjour Docteur ! {patient}, {age} ans, a été {admission} ce matin pour {motif}.`
     ]
 
+    // Phrases neutres : SANS le motif d'hospitalisation (mode ECOS — l'étudiant
+    // doit obtenir le motif lui-même auprès du patient, sinon premier item offert).
+    const NURSE_PHRASES_NEUTRAL = [
+        `Bonjour Docteur ! Je vous présente {patient}, {age} ans. {pronoun} vient d'être {admission}.`,
+        `Docteur, votre nouveau patient : {patient}, {age} ans, tout juste {admission}.`,
+        `Bonjour ! {patient}, {age} ans, vient d'arriver dans le service.`,
+        `Docteur, on a besoin de vous ! {patient}, {age} ans vient d'être {admission}.`,
+        `Vite Docteur ! {patient}, {age} ans, vous attend dans le box.`,
+        `Ah Docteur, vous tombez bien ! Voici {patient}, {age} ans.`,
+        `Docteur ! J'ai {patient} pour vous, {age} ans.`,
+        `Nouveau cas : {patient}, {age} ans. Il/Elle n'a pas encore été interrogé(e).`,
+        `{patient}, {age} ans, attend votre évaluation. Bonne chance !`,
+        `Docteur, je vous amène {patient}, {age} ans.`,
+        `On vous attendait ! {patient}, {age} ans, est installé(e).`,
+        `Bonjour Docteur ! {patient}, {age} ans a été {admission} ce matin.`
+    ];
+
     /**
      * Injects the nurse overlay HTML into the DOM if not present.
      */
@@ -224,13 +241,18 @@ const NurseIntro = (() => {
         const pronoun = (patient.sexe && patient.sexe.toLowerCase().startsWith('f')) ? 'Elle' : 'Il';
         const admission = (patient.sexe && patient.sexe.toLowerCase().startsWith('f')) ? 'admise' : 'admis';
 
-        const randomPhrase = NURSE_PHRASES[Math.floor(Math.random() * NURSE_PHRASES.length)];
+        // Sans motif (mode ECOS) → phrases neutres : le motif doit venir du patient
+        const useNeutral = !motif;
+        const phrasePool = useNeutral ? NURSE_PHRASES_NEUTRAL : NURSE_PHRASES;
+        const esc = (typeof escapeHtml === 'function') ? escapeHtml : (s) => s;
+
+        const randomPhrase = phrasePool[Math.floor(Math.random() * phrasePool.length)];
         const text = randomPhrase
-            .replace('{patient}', `<span class="patient-name">${patient.prenom} ${patient.nom}</span>`)
-            .replace('{age}', patient.age)
+            .replace('{patient}', `<span class="patient-name">${esc(patient.prenom)} ${esc(patient.nom)}</span>`)
+            .replace('{age}', esc(patient.age))
             .replace('{pronoun}', pronoun)
             .replace('{admission}', admission)
-            .replace('{motif}', `<span class="motif">${motif}</span>`);
+            .replace('{motif}', `<span class="motif">${esc(motif)}</span>`);
 
         bubbleTextEl.innerHTML = text;
 

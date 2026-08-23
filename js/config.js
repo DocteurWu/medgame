@@ -9,11 +9,10 @@ const CONFIG = {
     SUPABASE_URL: 'https://jxhzjetxquimmkpzlfyh.supabase.co',
     SUPABASE_KEY: 'sb_publishable_Nqjp4eF3ytr3VDciqX8dvA_JhdVP0G0',
 
-    // LLM — Groq API (Llama 3.3, gratuit, rapide, stable)
-    // Appel direct depuis le client — Groq supporte le CORS
-    LLM_API_URL: window.__ENV__?.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions',
-    LLM_API_KEY: window.__ENV__?.LLM_API_KEY || '',
-    LLM_MODEL: window.__ENV__?.LLM_MODEL || 'llama-3.3-70b-versatile',
+    // LLM — obligatoirement via un proxy serveur (aucune clé côté client).
+    // Production : fonction Netlify. Dev local : proxy MCP (voir js/env.example.js).
+    LLM_API_URL: window.__ENV__?.LLM_API_URL || '/.netlify/functions/llm-proxy',
+    LLM_MODEL: window.__ENV__?.LLM_MODEL || 'deepseek-chat',
     LLM_MAX_TOKENS: 3000,
     LLM_TEMPERATURE: 0.85,
     LLM_TOP_P: 0.92

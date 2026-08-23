@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "medgame-case-schema",
+  "title": "Medgame — Cas clinique (format linéaire OU graphe urgence)",
+  "type": "object",
+  "required": ["id", "patient", "interrogatoire", "correction"],
+  "properties": {
+    "id": { "type": "string", "minLength": 3, "pattern": "^[^\\s\"'\\\\<>]+$" },
+    "redacteur": { "type": "string" },
+    "difficulty": { "type": ["string", "number"] },
+
+    "patient": {
+      "type": "object",
+      "required": ["nom", "age", "sexe"],
+      "properties": {
+        "nom": { "type": "string", "minLength": 1 },
+        "prenom": { "type": "string" },
+        "age": { "type": ["string", "number"] },
+        "sexe": { "type": "string", "enum": ["M", "F", "H", "Homme", "Femme"] },
+        "taille": { "type": ["string", "number"] },
+        "poids": { "type": ["string", "number"] },
+        "groupeSanguin": { "type": "string" }
+      }
+    },
+
+    "interrogatoire": { "type": "object" },
+    "examenClinique": { "type": "object" },
+    "correction": { "type": "string", "minLength": 1 },
+
+    "ecos": {
+      "type": "object",
+      "properties": {
+        "vignette": { "type": "object" },
+        "patientStandardise": { "type": "object" },
+        "grilleAptitudes": { "type": "array" },
+        "grilleCommunication": { "type": "array" }
+      }
+    },
+
+    "vitalsDynamics": {
+      "type": "object",
+      "properties": {
+        "trendOverMinutes": { "type": "number", "minimum": 0, "maximum": 1 },
+        "urgencyMultiplier": { "type": "number", "minimum": 1 },
+        "aggravationTargets": { "type": "object" },
+        "stabilizeOnCorrectTreatment": { "type": "boolean" }
+      }
+    },
+
+    "locks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "target_fields", "type", "challenge"],
+        "properties": {
+          "id": { "type": "string", "minLength": 3 },
+          "target_fields": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "type": { "type": "string", "enum": ["SAISIE", "QCM"] },
+          "label": { "type": "string" },
+          "prerequisites": { "type": "array", "items": { "type": "string" } },
+          "feedback_error": { "type": "string" },
+          "challenge": {
+            "type": "object",
+            "required": ["question"],
+            "properties": {
+              "question": { "type": "string", "minLength": 5 },
+              "expected_keywords": { "type": "array", "items": { "type": "string" } },
+              "options": { "type": "array", "items": { "type": "string" } },
+              "correct_index": { "type": "integer", "minimum": 0 },
+              "correct_indices": { "type": "array", "items": { "type": "integer", "minimum": 0 } }
+            }
+          }
+        }
+      }
+    },
+
+    "possibleDiagnostics": { "type": "array", "items": { "type": "string" } },
+    "correctDiagnostic": {
+      "type": ["string", "array"],
+      "items": { "type": "string", "minLength": 3 }
+    },
+    "alternativeDiagnostics": { "type": "array", "items": { "type": "string" } },
+    "possibleTreatments": { "type": "array", "items": { "type": "string" } },
+    "correctTreatments": { "type": "array", "items": { "type": "string" } },
+    "secondLineTreatments": { "type": "array", "items": { "type": "string" } },
+    "fatalTreatments": { "type": "array", "items": { "type": "string" } },
+    "availableExams": { "type": "array", "items": { "type": "string" } },
+    "relevantExams": { "type": "array", "items": { "type": "string" } },
+    "examResults": { "type": "object" },
+    "scoringRules": { "type": "object" },
+    "feedback": {
+      "type": "object",
+      "properties": {
+        "correct": { "type": "string" },
+        "default": { "type": "string" }
+      }
+    },
+    "postGameQuestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "anyOf": [
+          { "required": ["challenge"], "properties": { "challenge": { "type": "object" } } },
+          {
+            "required": ["question", "options"],
+            "properties": {
+              "question": { "type": "string", "minLength": 5 },
+              "options": { "type": "array", "minItems": 2, "items": { "type": "string" } },
+              "correct_index": { "type": "integer", "minimum": 0 },
+              "correct_indices": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+              "explanation": { "type": "string" }
+            }
+          }
+        ]
+      }
+    },
+
+    "gameplayConfig": {
+      "type": "object",
+      "required": ["startNode"],
+      "properties": {
+        "startNode": { "type": "string" }
+      }
+    },
+    "nodes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["descriptionClinique"],
+        "properties": {
+          "id": { "type": "string" },
+          "descriptionClinique": { "type": "string", "minLength": 3 },
+          "isEndState": { "type": "boolean" },
+          "success": { "type": "boolean" },
+          "xpReward": { "type": "number", "minimum": 0 },
+          "actionsDisponibles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "nextNode"],
+              "properties": {
+                "label": { "type": "string", "minLength": 2 },
+                "nextNode": { "type": "string" },
+                "tempsExecutionSec": { "type": "number", "minimum": 0 },
+                "feedback": { "type": "string" }
+              }
+            }
+          },
+          "evolutionAuto": {
+            "type": "object",
+            "required": ["delaiSecondes", "nextNode"],
+            "properties": {
+              "delaiSecondes": { "type": "number", "minimum": 1 },
+              "nextNode": { "type": "string" },
+              "motif": { "type": "string" }
+            }
+          },
+          "constantesCibles": { "type": "object" }
+        }
+      }
+    }
+  },
+
+  "allOf": [
+    {
+      "if": { "required": ["gameplayConfig"] },
+      "then": { "properties": {} },
+      "else": {
+        "required": ["correctDiagnostic"],
+        "properties": {
+          "correctDiagnostic": { "type": ["string", "array"], "minLength": 3 }
+        }
+      }
+    }
+  ]
+}

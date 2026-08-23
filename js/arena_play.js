@@ -27,19 +27,8 @@ let timedPlayerFinished = false;
 let timedTotalQuestions = 0;
 let endsAtCheckInterval = null;
 
-/** Scoring rule based on number of mismatches */
-function computeScore(selected, correctSet) {
-    const totalExpected = correctSet.size;
-    // Wrong = selected but not correct, Missed = correct but not selected
-    const wrong = [...selected].filter(i => !correctSet.has(i)).length;
-    const missed = [...correctSet].filter(i => !selected.has(i)).length;
-    const diff = wrong + missed;
-
-    if (diff === 0) return 1.0;
-    if (diff === 1) return 0.5;
-    if (diff === 2) return 0.2;
-    return 0.0;
-}
+// Scoring : désormais calculé SERVEUR (RPC submit_arena_answer — voir sql/002_security_hardening.sql)
+// Règle conservée : 0 écart = 1pt | 1 écart = 0.5pt | 2 écarts = 0.2pt | 3+ = 0pt
 
 async function initArenaPlay() {
     if (typeof supabase === 'undefined') return;
@@ -387,9 +376,9 @@ async function processTimedEvent(root) {
         .select('question_id')
         .eq('player_id', myPlayerId);
 
-    // Load all questions for this event (sans correct_indices pour éviter la triche)
+    // Load all questions for this event (vue sûre sans correct_indices — anticheat)
     const { data: questions, error } = await supabase
-        .from('arena_questions')
+        .from('arena_questions_safe')
         .select('id, event_id, order_num, question, sub_question, image_url, options, time_limit, correction_time_limit, explanation')
         .eq('event_id', currentEvent.id)
         .order('order_num', { ascending: true });
@@ -496,34 +485,26 @@ window.timedSubmitAnswer = async function (isAuto = false) {
     stopTimer();
     document.querySelectorAll('.option-item').forEach(el => { el.style.cursor = 'default'; el.onclick = null; });
 
-    // Fetch correct_indices for scoring (not stored client-side to prevent cheating)
-    const { data: corrData } = await supabase
-        .from('arena_questions')
-        .select('correct_indices')
-        .eq('id', currentQuestion.id)
-        .single();
-    const correctSet = new Set(
-        Array.isArray(corrData?.correct_indices)
-            ? corrData.correct_indices
-            : JSON.parse(corrData?.correct_indices || '[]')
-    );
-    currentQuestion.correct_indices = corrData?.correct_indices || [];
-    const points = computeScore(selectedIndices, correctSet);
+    // Anticheat : score calculé et agrégé SERVEUR via RPC.
+    // Le client ne lit jamais correct_indices avant soumission et n'écrit jamais son score.
     const selectedArr = [...selectedIndices];
+    const { data: result, error } = await supabase.rpc('submit_arena_answer', {
+        p_question_id: currentQuestion.id,
+        p_answer_indices: selectedArr
+    });
 
-    await supabase.from('arena_answers').insert([{
-        player_id: myPlayerId,
-        question_id: currentQuestion.id,
-        answer_indices: selectedArr,
-        score_awarded: points
-    }]).select();
-
-    const { data: pData } = await supabase.from('arena_players').select('score').eq('id', myPlayerId).single();
-    let totalScore = points;
-    if (pData) {
-        totalScore = (pData.score || 0) + points;
-        await supabase.from('arena_players').update({ score: totalScore }).eq('id', myPlayerId);
+    if (error) {
+        console.error("Erreur submit_arena_answer:", error);
+        hasAnsweredCurrent = false;
+        return;
     }
+
+    const points = Number(result?.points ?? 0);
+    const totalScore = Number(result?.total_score ?? 0);
+    const correctArr = Array.isArray(result?.correct_indices)
+        ? result.correct_indices
+        : JSON.parse(result?.correct_indices || '[]');
+    currentQuestion.correct_indices = correctArr;
 
     renderTimedCorrection(points, totalScore, isAuto);
 };
@@ -737,7 +718,7 @@ async function fetchCurrentQuestion(retries = 3) {
     for (let attempt = 0; attempt < retries; attempt++) {
         try {
             const { data, error } = await supabase
-                .from('arena_questions')
+                .from('arena_questions_safe')
                 .select('id, event_id, order_num, question, sub_question, image_url, options, time_limit, correction_time_limit, explanation')
                 .eq('id', currentEvent.current_question_id)
                 .maybeSingle();
@@ -830,44 +811,26 @@ async function submitAnswer(isAuto = false) {
     const btn = document.getElementById('submit-btn');
     if (btn) { btn.disabled = true; btn.innerHTML = isAuto ? 'Temps écoulé !' : '<i class="fas fa-circle-notch fa-spin"></i> Envoi...'; }
 
-    // Fetch correct_indices for scoring (not stored client-side to prevent cheating)
-    const { data: corrData } = await supabase
-        .from('arena_questions')
-        .select('correct_indices')
-        .eq('id', currentQuestion.id)
-        .single();
-    const correctSet = new Set(
-        Array.isArray(corrData?.correct_indices)
-            ? corrData.correct_indices
-            : JSON.parse(corrData?.correct_indices || '[]')
-    );
-    currentQuestion.correct_indices = corrData?.correct_indices || [];
-    const points = computeScore(selectedIndices, correctSet);
+    // Anticheat : score calculé et agrégé SERVEUR via RPC.
     const selectedArr = [...selectedIndices];
+    const { data: result, error } = await supabase.rpc('submit_arena_answer', {
+        p_question_id: currentQuestion.id,
+        p_answer_indices: selectedArr
+    });
 
-    // Score is kept track of entirely internally (as "points" 1, 0.5, 0.2)
-    // No direct XP gain per question anymore.
-    const xpGained = 0; // Remove per-question XP
-
-    const { error } = await supabase
-        .from('arena_answers')
-        .insert([{
-            player_id: myPlayerId,
-            question_id: currentQuestion.id,
-            answer_indices: selectedArr,
-            score_awarded: points
-        }]);
-
-    if (error && error.code !== '23505') { // ignore duplicates
+    if (error) {
         console.error("Erreur envoi réponse:", error);
+        hasAnsweredCurrent = false;
+        if (btn) { btn.disabled = false; btn.innerHTML = 'Valider ma réponse'; }
+        return;
     }
 
-    // Accumulate total "points" within the event (not XP)
-    const { data: pData } = await supabase.from('arena_players').select('score').eq('id', myPlayerId).single();
-    if (pData) {
-        // Here score is actually the number of QCM points (1, 1.5, 2.2, etc.)
-        await supabase.from('arena_players').update({ score: (pData.score || 0) + points }).eq('id', myPlayerId);
-    }
+    const points = Number(result?.points ?? 0);
+    const correctArr = Array.isArray(result?.correct_indices)
+        ? result.correct_indices
+        : JSON.parse(result?.correct_indices || '[]');
+    currentQuestion.correct_indices = correctArr;
+    const correctSet = new Set(correctArr);
 
     // Show immediate inline feedback
     showInlineFeedback(points, correctSet);
@@ -972,30 +935,21 @@ async function renderPodium() {
 
     if (myRank > 0 && myRank <= 5) {
         earnedXp = rewards[myRank - 1] || 0;
-        if (earnedXp > 0 && myData) {
-            // Idempotence guard: check if XP was already awarded
-            const { data: myArenaRow } = await supabase
-                .from('arena_players')
-                .select('id, xp_earned')
-                .eq('event_id', currentEvent.id)
-                .eq('user_id', myUserId)
-                .single();
-
-            if (myArenaRow && (!myArenaRow.xp_earned || myArenaRow.xp_earned === 0)) {
-                // Update my profile XP (local + Supabase)
-                if (typeof addXp === 'function') {
-                    await addXp(earnedXp);
-                } else {
-                    const { data: prof } = await supabase.from('profiles').select('total_xp').eq('id', myUserId).single();
-                    if (prof) {
-                        await supabase.from('profiles').update({ total_xp: (prof.total_xp || 0) + earnedXp }).eq('id', myUserId);
-                    }
+        if (myData) {
+            // Anticheat : rang et XP calculés SERVEUR via RPC idempotente.
+            // (remplace le read-then-update non transactionnel, doublable avec 2 onglets)
+            const { data: claimedXp, error: xpError } = await supabase.rpc('claim_arena_xp', {
+                p_event_id: currentEvent.id
+            });
+            if (xpError) {
+                console.error("Erreur claim_arena_xp:", xpError);
+            } else {
+                earnedXp = Number(claimedXp ?? 0);
+                if (earnedXp > 0 && typeof addLocalXp === 'function') {
+                    // L'XP est déjà créditée côté serveur par la RPC :
+                    // on synchronise uniquement l'affichage local.
+                    addLocalXp(earnedXp);
                 }
-                // Mark XP as awarded
-                await supabase.from('arena_players').update({
-                    final_rank: myRank,
-                    xp_earned: earnedXp
-                }).eq('id', myArenaRow.id);
             }
         }
     }

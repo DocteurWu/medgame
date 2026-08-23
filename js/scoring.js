@@ -18,6 +18,10 @@ const scoringState = {
     currentCase: null,
     attempts: 0,
     selectedTreatments: [],
+    // Diagnostic capturé à la validation (source unique — le scoring ne lit plus le DOM)
+    selectedDiagnostic: '',
+    // Verrou anti re-validation : un cas ne peut être scoré qu'une seule fois
+    caseFinalized: false,
     // --- Traçage de la démarche clinique ---
     demarche: {
         interrogatoireAsked: new Set(),   // chemins de champs dévoilés via boutons questions
@@ -42,6 +46,8 @@ function resetDemarche() {
         locksUnlocked: new Set(),
         startedAt: Date.now()
     };
+    scoringState.selectedDiagnostic = '';
+    scoringState.caseFinalized = false;
 }
 window.resetDemarche = resetDemarche;
 
@@ -228,6 +234,13 @@ function calculateDemarcheScore(currentCase) {
 function calculateDiagnosticScore(selectedDiagnostic, correctDiagnostic) {
     if (!selectedDiagnostic || !correctDiagnostic) return 0;
 
+    // correctDiagnostic peut être un tableau de diagnostics acceptés
+    // (ex. URO_troubles_fonctionnels : IUE OU hyperactivité vésicale)
+    if (Array.isArray(correctDiagnostic)) {
+        if (correctDiagnostic.length === 0) return 0;
+        return Math.max(...correctDiagnostic.map(d => calculateDiagnosticScore(selectedDiagnostic, d)));
+    }
+
     // 1. Match exact (strict puis normalisé)
     if (selectedDiagnostic === correctDiagnostic) return 100;
     const normSel = normalizeText(selectedDiagnostic);
@@ -375,7 +388,9 @@ function calculateTraitementScore(selectedTreatments, correctTreatments, fatalTr
 
 /**
  * Calcule le score de VITESSE (0-100).
- * Basé sur la fraction du temps restant.
+ * Courbe non linéaire : plein points tant que ≤ 60 % du temps est consommé,
+ * puis décroissance linéaire jusqu'à 0 quand tout le temps est écoulé.
+ * Évite de pénaliser l'exhaustivité clinique (examens, interrogatoire complet).
  *
  * @param {number} timeLeft — secondes restantes
  * @param {number} totalTime — durée totale du cas en secondes
@@ -383,8 +398,11 @@ function calculateTraitementScore(selectedTreatments, correctTreatments, fatalTr
  */
 function calculateVitesseScore(timeLeft, totalTime) {
     if (!totalTime || totalTime <= 0) return 50; // fallback
-    const ratio = Math.max(0, timeLeft) / totalTime;
-    return Math.round(ratio * 100);
+    const ratio = Math.max(0, Math.min(1, timeLeft / totalTime));
+    // Zone gracieuse : ≥ 40 % du temps restant (= ≤ 60 % consommé) → 100 %
+    const GRACE_RATIO = 0.40;
+    if (ratio >= GRACE_RATIO) return 100;
+    return Math.round((ratio / GRACE_RATIO) * 100);
 }
 
 /**
@@ -419,7 +437,10 @@ function calculateCompositeScore() {
     const selectedTreatments = scoringState.selectedTreatments;
     const correctTreatments = currentCase.correctTreatments || [];
     const fatalTreatments = currentCase.fatalTreatments || [];
-    const selectedDiagnostic = (document.getElementById('diagnostic-select') || {}).value || '';
+    // Source unique : diagnostic capturé dans scoringState à la validation
+    // (fallback DOM pour rétrocompatibilité avec les anciens appels)
+    const selectedDiagnostic = scoringState.selectedDiagnostic
+        || (document.getElementById('diagnostic-select') || {}).value || '';
     const correctDiagnostic = currentCase.correctDiagnostic || '';
 
     const totalTime = getTimeLimit();
@@ -439,9 +460,10 @@ function calculateCompositeScore() {
         vitesseScore * SCORING_WEIGHTS.vitesse
     );
 
-    // Plafonner à 0 si erreur fatale de traitement
+    // Erreur fatale = ÉCHEC DU CAS : un traitement contre-indiqué peut tuer le patient.
+    // Le score composite tombe à 0 (cohérent avec les 0 étoiles et le message UI).
     if (traitementResult.hasFatalError) {
-        compositeScore = Math.max(0, compositeScore);
+        compositeScore = 0;
     }
 
     compositeScore = Math.max(0, Math.min(100, compositeScore));
@@ -534,24 +556,35 @@ function calculateXpEarned(percentageScore, timeBonus) {
     const currentCase = scoringState.currentCase || {};
     const caseId = currentCase.id || 'default_case';
     const caseAttemptsKey = `case_attempts_${caseId}`;
+    const caseAttemptsAtKey = `case_attempts_at_${caseId}`;
     let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey), 10) || 0;
+
+    // Anti-farm avec expiration : rejouer un cas bien plus tard redevient récompensé
+    const ATTEMPT_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 jours
+    const lastAttemptAt = parseInt(localStorage.getItem(caseAttemptsAtKey), 10) || 0;
+    if (lastAttemptAt && (Date.now() - lastAttemptAt) > ATTEMPT_EXPIRY_MS) {
+        caseAttempts = 0;
+    }
+
     caseAttempts++;
     localStorage.setItem(caseAttemptsKey, caseAttempts.toString());
+    localStorage.setItem(caseAttemptsAtKey, Date.now().toString());
 
     let xpEarned = 0;
     let xpMessage = '';
 
     const safePercentage = Math.max(0, parseInt(percentageScore, 10) || 0);
-    const safeBonus = Math.max(0, parseInt(timeBonus, 10) || 0);
 
+    // XP = score composite uniquement (la vitesse est déjà comptée à 10 % du
+    // composite — la compter aussi en bonus la faisait peser deux fois).
     if (caseAttempts === 1) {
-        xpEarned = safePercentage + safeBonus;
+        xpEarned = safePercentage;
         xpMessage = 'Première tentative - XP complet';
     } else if (caseAttempts === 2) {
         const previousScoreKey = `case_score_${caseId}`;
         const previousScore = parseInt(localStorage.getItem(previousScoreKey), 10) || safePercentage;
         const averageScore = Math.round((previousScore + safePercentage) / 2);
-        xpEarned = averageScore + safeBonus;
+        xpEarned = averageScore;
         xpMessage = `Deuxième tentative - Moyenne: ${averageScore}%`;
     } else {
         xpEarned = 0;

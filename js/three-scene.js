@@ -9,6 +9,7 @@ import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js';
 import { medicalAudio } from './three-audio.js';
 import { ThreeFPSController } from './three-fps-controller.js';
+import { ThreeQualityAgent } from './three-quality-agent.js';
 
 /**
  * Dictionnaire de descriptions riches pour les objets interactifs
@@ -101,6 +102,21 @@ export class ThreeScene {
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.container.appendChild(this.renderer.domElement);
 
+        // ── Robustesse : perte de contexte WebGL (driver, onglet en arrière-plan)
+        // → bascule 2D propre au lieu d'un canvas noir définitif.
+        this.renderer.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            console.error('[ThreeScene] Contexte WebGL perdu — bascule en mode 2D.');
+            try { this.cleanup(); } catch (err) {}
+            const manager = window.threeManager;
+            if (manager && typeof manager.disable3D === 'function') {
+                manager.disable3D();
+                if (typeof showNotification === 'function') {
+                    showNotification('Mode 3D désactivé (contexte graphique perdu).', 'warning');
+                }
+            }
+        });
+
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = false;
         this.controls.enableRotate = false;
@@ -119,7 +135,10 @@ export class ThreeScene {
 
         this.lightingAgent = new ThreeLightingAgent(this.scene, this.renderer);
         this.lightingAgent.setupLighting();
-        this.lightingAgent.setupPostProcessing();
+        // Agent qualité : preset auto-détecté/sauvegardé + post-processing adapté
+        // (async : le composer monte quelques frames après le premier rendu)
+        this.qualityAgent = new ThreeQualityAgent(this);
+        this.qualityAgent.init().catch((e) => console.warn('[ThreeScene] Agent qualité:', e));
 
         this.patient = new ThreePatient(this.scene);
         this.instruments = new ThreeInstruments(this.scene);
@@ -1103,6 +1122,7 @@ export class ThreeScene {
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);
+        if (this.lightingAgent) this.lightingAgent.resize(w, h);
     }
 
     cleanup() {
@@ -1121,6 +1141,7 @@ export class ThreeScene {
         this.renderer.dispose();
         this.renderer.forceContextLoss();
         this.controls.dispose();
+        if (this.qualityAgent) this.qualityAgent.dispose();
         if (this.lightingAgent) this.lightingAgent.dispose();
     }
 
@@ -1252,6 +1273,13 @@ export class ThreeScene {
         const dt = this._lastAnimTime ? (now - this._lastAnimTime) / 1000 : 0.016;
         this._lastAnimTime = now;
 
+        // ── Économie GPU : overlay plein écran (quiz, prescription, correction…)
+        // → la scène est invisible : rendu limité à ~8 fps au lieu de 60.
+        if (this._isOverlayVisible()) {
+            if (now - (this._lastOverlayRender || 0) < 125) return;
+            this._lastOverlayRender = now;
+        }
+
         // Animation du patient (respiration, clignements, expression)
         if (this.patientAnimator) {
             this.patientAnimator.update(elapsed, dt);
@@ -1343,6 +1371,11 @@ export class ThreeScene {
 
         // === Animation hover lift (interpolation douce) ===
         this._updateHoverLift(dt);
+
+        // === Qualité adaptative : résolution dynamique selon les FPS ===
+        if (this.qualityAgent) {
+            this.qualityAgent.sample(dt);
+        }
 
         // --- Respiration de caméra stable et organique (Camera Bobbing - désactivée en mode FPS) ---
         if (this.camera && this.controls && !this._cameraAnimId && !this._ptrDown && (!this.fpsController || !this.fpsController.enabled)) {

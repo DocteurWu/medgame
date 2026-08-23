@@ -586,7 +586,6 @@
         });
     </script>
     <script src="js/auth.js?v=2"></script>
-    <script src="js/ecos-stats.js?v=2"></script>
     <script src="js/arena_client.js?v=2"></script>
     <script>
         // Check session to update Auth UI on index
@@ -649,21 +648,6 @@
                         }
                     } catch (err) {
                         console.error("Erreur chargement profil:", err);
-                    }
-
-                    // Charger les statistiques ECOS dans le tableau de bord
-                    if (window.EcosStats) {
-                        try {
-                            const stats = await window.EcosStats.getStats();
-                            const completedEl = document.getElementById('ecos-stat-completed');
-                            const averageEl = document.getElementById('ecos-stat-average');
-                            if (completedEl) completedEl.textContent = stats.total || 0;
-                            if (averageEl) {
-                                averageEl.textContent = (stats.avgScore !== undefined && stats.total > 0) ? `${stats.avgScore}/100` : '—';
-                            }
-                        } catch (err) {
-                            console.error("Erreur chargement stats ECOS:", err);
-                        }
                     }
 
                     // Badge haut droit

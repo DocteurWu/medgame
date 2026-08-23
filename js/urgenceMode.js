@@ -17,6 +17,11 @@ function renderUrgenceState() {
     const currentUrgenceNode = urgenceState.currentUrgenceNode;
     const currentCase = urgenceState.currentCase;
 
+    // Garde de sortie : éviter de perdre un scénario d'urgence par F5 accidentel
+    if (!currentUrgenceNode.isEndState) {
+        addBeforeUnloadGuard();
+    }
+
     // Dispatcher l'événement pour l'agent urgence 3D
     document.dispatchEvent(new CustomEvent('urgence-state-render', {
         detail: { node: currentUrgenceNode, caseData: currentCase }
@@ -88,6 +93,7 @@ function renderUrgenceState() {
     if (currentUrgenceNode.isEndState) {
         if (urgenceState.urgenceTimerTimeout) clearTimeout(urgenceState.urgenceTimerTimeout);
         if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+        removeBeforeUnloadGuard();
 
         const playedCases = getCookie('playedCases');
         let arr = playedCases ? playedCases.split(',') : [];
@@ -95,6 +101,11 @@ function renderUrgenceState() {
             arr.push(currentCase.id);
             setCookie('playedCases', arr.join(','), 365);
         }
+
+        // ── Persistance de la session (comme classique/ECOS) ──
+        // Sans elle, les urgences n'apparaissent ni dans l'historique,
+        // ni dans les badges « Urgentiste », ni dans les stats spécialités.
+        persistUrgenceSession(currentCase, currentUrgenceNode);
 
         setTimeout(() => {
             let html = `<div style="text-align:center; padding: 20px;">`;
@@ -153,6 +164,85 @@ async function awardUrgenceXp(xpAmount) {
     }
 }
 
+/**
+ * Enregistre la session d'urgence (local + Supabase play_sessions).
+ * @param {object} currentCase
+ * @param {object} endNode — nœud final (isEndState)
+ */
+function persistUrgenceSession(currentCase, endNode) {
+    const score = endNode.success ? 100 : 0;
+    const durationSeconds = timerState.totalTime
+        ? Math.max(0, timerState.totalTime - Math.max(0, timerState.timeLeft))
+        : 0;
+
+    const stats = {
+        mode: 'urgence',
+        success: !!endNode.success,
+        xpEarned: endNode.xpReward || 0,
+        endNodeId: endNode.id || null,
+        compositeScore: score,
+        demarcheScore: null,
+        diagnosticScore: null,
+        traitementScore: null,
+        vitesseScore: null,
+        stars: endNode.success ? 3 : 0
+    };
+
+    // LocalStorage pour les stats offline
+    try {
+        const stored = JSON.parse(localStorage.getItem('urgence_sessions') || '[]');
+        stored.push({ case_id: currentCase.id, score, success: !!endNode.success, ts: Date.now(), durationSeconds });
+        if (stored.length > 200) stored.splice(0, stored.length - 200);
+        localStorage.setItem('urgence_sessions', JSON.stringify(stored));
+    } catch (e) { console.warn('[Urgence] localStorage write failed:', e); }
+
+    // Supabase si connecté
+    if (typeof supabase !== 'undefined' && supabase.auth) {
+        supabase.auth.getUser().then(async ({ data: { user } }) => {
+            if (!user) return;
+            try {
+                await supabase.from('play_sessions').insert([{
+                    user_id: user.id,
+                    case_id: currentCase.id,
+                    score,
+                    stats,
+                    duration_seconds: durationSeconds,
+                    mode: 'urgence'
+                }]);
+            } catch (e) {
+                console.warn('[Urgence] Erreur enregistrement session Supabase :', e);
+            }
+        }).catch(() => {});
+    }
+
+    // ── Badges : évaluation + notification (badge Urgentiste désormais atteignable) ──
+    if (window.BadgeSystem && typeof window.BadgeSystem.evaluateAndPersist === 'function') {
+        try {
+            const localSessions = JSON.parse(localStorage.getItem('urgence_sessions') || '[]')
+                .map(s => ({ case_id: s.case_id, score: s.score, mode: 'urgence' }));
+            const fresh = window.BadgeSystem.evaluateAndPersist(localSessions, null);
+            window.BadgeSystem.notifyNewBadges(fresh);
+        } catch (e) { console.warn('[Urgence] Badge evaluation failed:', e); }
+    }
+}
+
+/**
+ * Garde de sortie pendant un scénario d'urgence en cours.
+ */
+function addBeforeUnloadGuard() {
+    window.addEventListener('beforeunload', urgenceBeforeUnload);
+}
+function removeBeforeUnloadGuard() {
+    window.removeEventListener('beforeunload', urgenceBeforeUnload);
+}
+function urgenceBeforeUnload(e) {
+    if (urgenceState.isUrgenceMode && !urgenceState.currentUrgenceNode?.isEndState) {
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+    }
+}
+
 function executeUrgenceAction(action, clickedButton) {
     if (urgenceState.urgenceTimerTimeout) clearTimeout(urgenceState.urgenceTimerTimeout);
 
@@ -176,13 +266,15 @@ function executeUrgenceAction(action, clickedButton) {
         window.deductTime(action.tempsExecutionSec);
     }
 
-    const REAL_DELAY_MS = 5000;
+    // Délai réel aligné sur le coût affiché (borné pour l'UX) :
+    // le badge "-Xs" correspond désormais à la vraie attente ressentie.
+    const realDelayMs = Math.min(7000, Math.max(2500, (action.tempsExecutionSec || 5) * 1000));
     setTimeout(() => {
         if (action.feedback) {
             showNotification(action.feedback);
         }
         transitionUrgenceState(action.nextNode);
-    }, REAL_DELAY_MS);
+    }, realDelayMs);
 }
 
 function transitionUrgenceState(nextNodeId) {

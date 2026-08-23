@@ -200,11 +200,24 @@ onDomReady(async () => {
     
     // selectedTreatments & attempts now in scoringState (scoring.js)
     // timeLeft & timerInterval now in timerState (timer.js)
-    timerState.onTimeUp = () => {
-        const t = timerState.currentCase;
-        const defaultText = t && t.correctDiagnostic ? `Diagnostic optimal: ${t.correctDiagnostic}\nTraitements optimaux: ${(t.correctTreatments || []).join(', ')}` : '';
-        showCorrectionModal(t && t.correction ? t.correction : defaultText);
-    };
+
+    /**
+     * Fin de temps (mode classique uniquement).
+     * ECOS et urgence posent leur propre onTimeUp / gèrent leur propre fin.
+     * Exécute le pipeline complet de clôture (score, XP, feedback, session).
+     */
+    function handleTimeUp() {
+        if (window.EcosMode && window.EcosMode.isActive && window.EcosMode.isActive()) return;
+        if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) {
+            const t = timerState.currentCase;
+            const defaultText = t && t.correctDiagnostic ? `Diagnostic optimal: ${t.correctDiagnostic}\nTraitements optimaux: ${(t.correctTreatments || []).join(', ')}` : '';
+            showCorrectionModal(t && t.correction ? t.correction : defaultText);
+            return;
+        }
+        processCaseValidation({ timedOut: true });
+    }
+
+    timerState.onTimeUp = handleTimeUp;
 
     // Urgence mode moved to js/urgenceMode.js
 
@@ -231,7 +244,10 @@ onDomReady(async () => {
     });
     document.addEventListener('locksystem-unlock', (e) => {
         if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.lockId) {
-            feedbackTimeline.log('lock', `Verrou déverrouillé : ${e.detail.lockId}`);
+            const label = e.detail.revealed
+                ? `Verrou révélé après échec : ${e.detail.lockId}`
+                : `Verrou déverrouillé : ${e.detail.lockId}`;
+            feedbackTimeline.log('lock', label);
         }
     });
 
@@ -284,6 +300,8 @@ onDomReady(async () => {
         if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
         if (uiState.backgroundMusicEl) uiState.backgroundMusicEl.play();
         if (!gameState.nextCase()) {
+            // Session terminée : purge snapshot + sélection de cas
+            if (window.SessionSnapshot) window.SessionSnapshot.clearFullSession();
             window.location.href = 'index.html';
             return;
         }
@@ -376,6 +394,18 @@ onDomReady(async () => {
                 displayTime(timerState.timeLeft);
                 if (timerState.timerInterval) clearInterval(timerState.timerInterval);
             }
+
+            // Restaurer le callback fin de temps (ECOS écrase onTimeUp pendant sa station)
+            timerState.onTimeUp = handleTimeUp;
+
+            // Réinitialiser le verrou de validation avec le nouveau cas
+            scoringState.caseFinalized = false;
+            const diagSelectReset = document.getElementById('diagnostic-select');
+            if (diagSelectReset) diagSelectReset.disabled = false;
+            const validateBtnReset = document.getElementById('validate-traitement');
+            if (validateBtnReset) validateBtnReset.disabled = false;
+            const validateExamsReset = document.getElementById('validate-exams');
+            if (validateExamsReset) validateExamsReset.disabled = false;
             // Reset the "Tout afficher" button for the new case
             const revealBtn = document.getElementById('btn-reveal-all');
             if (revealBtn) revealBtn.style.display = sessionStorage.getItem('immersionMode') === 'immersif' ? 'none' : '';
@@ -853,9 +883,14 @@ onDomReady(async () => {
 
         if (!isPartialRefresh) {
             // Show nurse intro, then start the timer when dismissed
+            // Anti-spoiler ECOS : pas de motif d'hospitalisation annoncé —
+            // l'étudiant doit l'obtenir auprès du patient (item du barème).
+            const isEcosStation = sessionStorage.getItem('immersionMode') === 'immersif'
+                && window.EcosMode
+                && !(typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode);
             NurseIntro.show(
                 currentCase.patient,
-                currentCase.interrogatoire.motifHospitalisation,
+                isEcosStation ? null : currentCase.interrogatoire.motifHospitalisation,
                 () => {
                     if (sessionStorage.getItem('immersionMode') === 'immersif' &&
                         window.EcosMode &&
@@ -864,16 +899,15 @@ onDomReady(async () => {
                             if (typeof showNotification === 'function') {
                                 showNotification("⚠️ Mode ECOS non disponible pour les urgences vitales.", "warning");
                             }
-                            if (timerState.timerInterval) clearInterval(timerState.timerInterval);
-                            timerState.timerInterval = setInterval(updateTimer, 1000);
+                            startTimerNow();
                             renderUrgenceState();
                         } else {
                             window.EcosMode.start(currentCase);
                         }
                     } else {
                         // Start the timer only after nurse is dismissed
-                        if (timerState.timerInterval) clearInterval(timerState.timerInterval);
-                        timerState.timerInterval = setInterval(updateTimer, 1000);
+                        // (endTime recalculé : le temps de l'intro n'est pas décompté)
+                        startTimerNow();
 
                         if (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode) renderUrgenceState();
                     }
@@ -898,6 +932,14 @@ onDomReady(async () => {
         // Sync prescription manager with current case
         if (window.prescriptionManager && typeof window.prescriptionManager.setCase === 'function') {
             window.prescriptionManager.setCase(currentCase);
+        }
+
+        // ── Sauvegarde/reprise : restaurer l'état interrompu puis capturer ──
+        if (window.SessionSnapshot) {
+            if (!isPartialRefresh) {
+                window.SessionSnapshot.applyPendingRestore();
+            }
+            window.SessionSnapshot.capture();
         }
     }
 
@@ -932,13 +974,29 @@ onDomReady(async () => {
 
     // calculateScore, handleTraitementClick, calculateDetailedScore, calculateXpEarned moved to js/scoring.js
 
-    document.getElementById('validate-traitement').addEventListener('click', () => {
+    /**
+     * Pipeline complet de clôture d'un cas (validation manuelle OU fin de temps).
+     * Machine à états : un cas ne peut être scoré qu'UNE SEULE FOIS
+     * (scoringState.caseFinalized) — plus aucune re-validation ni brute-force du score.
+     */
+    function processCaseValidation(opts = {}) {
+        const timedOut = !!opts.timedOut;
+
+        // --- Verrou anti re-validation ---
+        if (scoringState.caseFinalized) return;
+
         const currentCase = gameState.currentCase;
         scoringState.attempts++;
         const attempts = scoringState.attempts;
         const selectedTreatments = scoringState.selectedTreatments;
-        const selectedDiagnostic = document.getElementById('diagnostic-select').value || '';
+        // Capture du diagnostic dans l'état (le scoring ne lit plus le DOM)
+        const selectedDiagnostic = (document.getElementById('diagnostic-select') || {}).value || '';
+        scoringState.selectedDiagnostic = selectedDiagnostic;
         const correctDiagnostic = currentCase.correctDiagnostic;
+
+        if (timedOut && typeof feedbackTimeline !== 'undefined') {
+            feedbackTimeline.log('section', '⏱️ Temps écoulé — cas clôturé automatiquement');
+        }
 
         // --- Timeline feedback : enregistrement du diagnostic et traitement ---
         if (typeof feedbackTimeline !== 'undefined') {
@@ -956,6 +1014,8 @@ onDomReady(async () => {
         // Démarche 40% · Diagnostic 30% · Traitement 20% · Vitesse 10%
         // ========================================
         const compositeResult = calculateCompositeScore();
+        // Verrou posé dès que le score est calculé : plus aucun re-clic possible.
+        scoringState.caseFinalized = true;
         const diagScore = compositeResult.diagnosticScore;
         const treatScore = compositeResult.traitementScore;
 
@@ -1166,6 +1226,23 @@ onDomReady(async () => {
             addXp(xpEarned).catch(err => console.warn("Erreur lors de l'incrémentation XP :", err));
         }
 
+        // ── Badges : évaluation + notification en jeu au moment du déblocage ──
+        if (window.BadgeSystem && typeof window.BadgeSystem.evaluateAndPersist === 'function') {
+            try {
+                const localSessions = [
+                    ...JSON.parse(localStorage.getItem('ecos_sessions') || '[]'),
+                    ...JSON.parse(localStorage.getItem('urgence_sessions') || '[]')
+                ].map(s => ({ case_id: s.case_id, score: s.score, mode: s.mode || 'ecos' }));
+                localSessions.push({
+                    case_id: currentCase.id,
+                    score: percentageScore,
+                    mode: 'classique'
+                });
+                const fresh = window.BadgeSystem.evaluateAndPersist(localSessions, null);
+                window.BadgeSystem.notifyNewBadges(fresh);
+            } catch (e) { console.warn('[Badges] Évaluation en jeu échouée :', e); }
+        }
+
         // SUPABASE: Sauvegarde de la session de jeu
         if (typeof supabase !== 'undefined' && supabase.auth) {
             supabase.auth.getUser().then(async ({ data: { user } }) => {
@@ -1206,7 +1283,20 @@ onDomReady(async () => {
                 }
             });
         }
-    });
+
+        // --- Verrouillage de l'interface : plus aucune modification après validation ---
+        const diagSelectEl = document.getElementById('diagnostic-select');
+        if (diagSelectEl) diagSelectEl.disabled = true;
+        document.querySelectorAll('#availableTreatments button').forEach(b => { b.disabled = true; b.style.pointerEvents = 'none'; });
+        const validateExamsBtn = document.getElementById('validate-exams');
+        if (validateExamsBtn) validateExamsBtn.disabled = true;
+
+        // Cas clôturé : le snapshot de reprise n'a plus de raison d'être
+        if (window.SessionSnapshot) window.SessionSnapshot.clear();
+    }
+
+    // Listener mince : toute la logique vit dans processCaseValidation
+    document.getElementById('validate-traitement').addEventListener('click', () => processCaseValidation());
 
 
     // La gestion des boutons d'examens est maintenant faite dynamiquement dans loadCase()
@@ -1478,6 +1568,24 @@ onDomReady(async () => {
         loadingEl.remove();
         
         if (gameState.cases.length > 0) {
+            // ── Reprise de session : un F5 ne perd plus la partie en cours ──
+            let resumed = false;
+            if (window.SessionSnapshot) {
+                const snap = window.SessionSnapshot.tryRestore(gameState.cases.map(c => c.id));
+                if (snap) {
+                    const msg = `Une partie en cours a été trouvée (cas ${snap.caseIndex + 1}/${snap.caseIds.length}). La reprendre ?`;
+                    resumed = (typeof ecosConfirm === 'function')
+                        ? await ecosConfirm({
+                            title: 'Reprendre la partie ?',
+                            message: msg,
+                            confirmLabel: 'Reprendre',
+                            cancelLabel: 'Nouvelle partie'
+                        })
+                        : confirm(msg);
+                    if (!resumed) window.SessionSnapshot.clear();
+                }
+            }
+
             showNotification(`Session démarrée : ${gameState.cases.length} cas chargé(s)`);
             playSound('reveal');
             loadCase();
@@ -1507,6 +1615,9 @@ onDomReady(async () => {
             showCorrectionModal(comparisonHtml + (currentCase.correction || ''));
             return;
         }
+        // Normalisation : certains cas utilisent {question, options} à plat
+        // au lieu de {challenge: {...}} — sans cela le quiz plante.
+        currentCase.postGameQuestions = currentCase.postGameQuestions.map(q => q.challenge ? q : { challenge: q });
         currentQuizIndex = 0;
         quizComparisonHtml = comparisonHtml;
         showPostGameQuestion(0);

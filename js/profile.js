@@ -713,49 +713,11 @@ function getStarsHtml(score) {
 
 function updateBadges(sessions, profile) {
     const container = document.getElementById('badges-grid');
-    
-    const badges = [
-        // Progression
-        { id: 'first_case', name: 'Première Garde', desc: 'Terminer votre premier cas clinique', icon: 'fa-user-md', color: '#4facfe', condition: () => sessions.length >= 1 },
-        { id: 'ten_cases', name: 'Semaine de Garde', desc: 'Terminer 10 cas cliniques', icon: 'fa-star', color: '#00f2fe', condition: () => sessions.length >= 10 },
-        { id: 'fifty_cases', name: 'Mois de Garde', desc: 'Terminer 50 cas cliniques', icon: 'fa-hospital', color: '#ffd700', condition: () => sessions.length >= 50 },
-        { id: 'hundred_cases', name: 'Vétéran de Bichat', desc: 'Terminer 100 cas cliniques', icon: 'fa-shield-heart', color: '#ff4757', condition: () => sessions.length >= 100 },
-        
-        // Performance
-        { id: 'perfect_score', name: 'Diagnostic Précis', desc: 'Obtenir un score > 90%', icon: 'fa-bolt', color: '#f9d423', condition: () => sessions.some(s => s.score >= 90) },
-        { id: 'major', name: 'Major de Promo', desc: '3 cas consécutifs avec > 90%', icon: 'fa-graduation-cap', color: '#ff9a9e', condition: () => {
-            if (sessions.length < 3) return false;
-            for (let i = 0; i <= sessions.length - 3; i++) {
-                if (sessions[i].score >= 90 && sessions[i+1].score >= 90 && sessions[i+2].score >= 90) return true;
-            }
-            return false;
-        }},
-        { id: 'sans_faute', name: 'Sans Faute', desc: 'Obtenir 100% de précision', icon: 'fa-check-double', color: '#2ecc71', condition: () => sessions.some(s => s.score === 100) },
-        
-        // Spécialités
-        { id: 'cardio_expert', name: 'Cardiologue', desc: 'Maîtriser 5 cas de cardiologie', icon: 'fa-heart', color: '#ff4757', condition: () => sessions.filter(s => s.case_id?.toLowerCase().includes('cardio')).length >= 5 },
-        { id: 'neuro_expert', name: 'Neurologue', desc: 'Maîtriser 5 cas de neurologie', icon: 'fa-brain', color: '#a29bfe', condition: () => sessions.filter(s => s.case_id?.toLowerCase().includes('neuro')).length >= 5 },
-        { id: 'urgentiste', name: 'Urgentiste', desc: 'Maîtriser 5 cas d\'urgence', icon: 'fa-ambulance', color: '#ff7f50', condition: () => sessions.filter(s => s.case_id?.toLowerCase().includes('urgence')).length >= 5 },
-        { id: 'gastro_expert', name: 'Gastrologue', desc: 'Maîtriser 5 cas digestifs', icon: 'fa-pills', color: '#ff9ff3', condition: () => sessions.filter(s => s.case_id?.toLowerCase().includes('digestif')).length >= 5 },
-        { id: 'nephro_expert', name: 'Néphrologue', desc: 'Maîtriser 3 cas de néphrologie', icon: 'fa-vials', iconClass: 'fas', color: '#74b9ff', condition: () => sessions.filter(s => s.case_id?.toLowerCase().includes('nephro')).length >= 3 },
-        { id: 'polyvalent', name: 'Interne Polyvalent', desc: 'Jouer dans 3 spécialités différentes', icon: 'fa-stethoscope', color: '#55efc4', condition: () => {
-            const cats = ['cardio', 'neuro', 'urgence', 'digestif', 'nephro', 'pneumo', 'uro'];
-            const found = cats.filter(c => sessions.some(s => s.case_id?.toLowerCase().includes(c)));
-            return found.length >= 3;
-        }},
 
-        // Compétition
-        { id: 'arena_gladiator', name: 'Gladiateur de l\'Arène', desc: 'Participer à une compétition de QCM (Arena)', icon: 'fa-broadcast-tower', color: '#00f2fe', condition: () => sessions.some(s => s.mode === 'arena') },
-        
-        // Social / Engagement
-        { id: 'public_profile', name: 'Célébrité de Bichat', desc: 'Être dans le Top 10 public pendant 14 jours consécutifs', icon: 'fa-crown', color: '#ffd700', condition: () => {
-            const streak = profile?.top_10_streak || 0;
-            return streak >= 14;
-        }, progress: () => `${profile?.top_10_streak || 0}/14 jours` },
-        { id: 'contributor', name: 'Maître de Stage', desc: 'Atteindre le niveau 2', icon: 'fa-edit', color: '#74b9ff', condition: () => calculateLevel(profile?.total_xp || 0) >= 2 },
-        { id: 'legend', name: 'Légende de Bichat', desc: 'Atteindre le niveau 10', icon: 'fa-trophy', color: '#ffd700', condition: () => calculateLevel(profile?.total_xp || 0) >= 10 },
-        { id: 'immortal', name: 'Doyen de la Faculté', desc: 'Atteindre le niveau 20', icon: 'fa-medal', color: '#fdcb6e', condition: () => calculateLevel(profile?.total_xp || 0) >= 20 },
-    ];
+    // Définitions partagées (js/badges.js — source unique, aussi utilisée en jeu)
+    const badges = (window.BadgeSystem && typeof window.BadgeSystem.getDefinitions === 'function')
+        ? window.BadgeSystem.getDefinitions(sessions, profile)
+        : [];
     
     let html = '';
     badges.forEach(badge => {
@@ -787,21 +749,22 @@ function updateBadges(sessions, profile) {
 function renderEcosStats(stats) {
     if (!stats || stats.total === 0) return;
 
-    // Trouver ou créer le container (après #badges-list ou en dernier)
+    // Trouver ou créer le container — sélecteurs alignés sur profile.html réel
+    // (.profile-container / .badges-card ; #badges-list et .profile-content n'existent pas)
     let container = document.getElementById('ecos-stats-section');
     if (!container) {
         container = document.createElement('section');
         container.id = 'ecos-stats-section';
-        container.className = 'profile-section';
-        container.style.cssText = 'margin-top:24px;';
-        // Insérer après la section badges si elle existe
-        const badgesSection = document.getElementById('badges-list')?.closest('.profile-section') || document.querySelector('.profile-section:last-of-type');
-        if (badgesSection && badgesSection.parentNode) {
-            badgesSection.parentNode.insertBefore(container, badgesSection.nextSibling);
-        } else {
-            document.querySelector('.profile-content')?.appendChild(container);
+        container.className = 'profile-card';
+        container.style.cssText = 'margin-top:24px;padding:24px;';
+        const anchor = document.getElementById('badges-grid')?.closest('.badges-card')
+            || document.querySelector('.profile-columns')
+            || document.querySelector('.profile-container');
+        if (anchor && anchor.parentNode) {
+            anchor.parentNode.insertBefore(container, anchor.nextSibling);
         }
     }
+    if (!container.parentNode) return;
 
     const avgBadgeColor = stats.avgScore >= 80 ? '#2ecc71' : stats.avgScore >= 60 ? '#f39c12' : '#e74c3c';
     const casesCount = stats.casesPlayed?.length || 0;

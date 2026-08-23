@@ -212,7 +212,9 @@ async function loadCasesData() {
             });
 
             if (mergedCases.length > 0) {
-                localStorage.removeItem('selectedCaseFiles');
+                // NOTE : la sélection n'est PAS purgée ici — elle est conservée
+                // pour la reprise de session (SessionSnapshot). Elle est purgée
+                // par SessionSnapshot.clearFullSession() en fin de session.
                 return mergedCases;
             }
         }
@@ -232,7 +234,7 @@ async function loadCasesData() {
                     if (!error && data) {
                         const content = data.content;
                         if (!content.id) content.id = data.id;
-                        localStorage.removeItem('selectedCaseFile');
+                        // Sélection conservée pour la reprise de session (voir SessionSnapshot)
                         return [content];
                     }
                 } catch (err) {
@@ -242,7 +244,7 @@ async function loadCasesData() {
 
             // Fallback local
             const caseData = await lazyLoadCase(selectedCaseFile.endsWith('.json') ? selectedCaseFile : `${selectedCaseFile}.json`);
-            localStorage.removeItem('selectedCaseFile');
+            // Sélection conservée pour la reprise de session (voir SessionSnapshot)
             return [caseData];
         }
 
