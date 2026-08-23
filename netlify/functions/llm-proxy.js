@@ -13,20 +13,39 @@
 const rateLimitMap = new Map();
 const RATE_LIMIT = 60;        // requêtes par fenêtre
 const RATE_WINDOW_MS = 60000; // 1 minute
+// NOTE : ce rate-limit est en mémoire par instance (serverless = instances multiples).
+// Il constitue un garde-fou basique ; pour une limite stricte, utiliser un store
+// distribué (Upstash Redis / Netlify Blobs).
 
-const ALLOWED_ORIGINS = [
+const ALLOWED_ORIGINS = new Set([
     'https://medgame.app',
     'https://medgame.netlify.app',
     'http://localhost',
-    'http://127.0.0.1'
-];
+    'http://localhost:8888',
+    'http://localhost:8080',
+    'http://127.0.0.1',
+    'http://127.0.0.1:8888',
+    'http://127.0.0.1:8080'
+]);
 
+// Modèles autorisés — IDs alignés sur les upstreams possibles (DeepSeek par défaut,
+// Groq/OpenRouter si LLM_API_URL pointe vers eux). Un ID non supporté par
+// l'upstream courant renverra l'erreur 400 de celui-ci.
 const WHITELISTED_MODELS = new Set([
+    // DeepSeek
+    'deepseek-chat',
+    'deepseek-reasoner',
+    // Groq
+    'llama-3.3-70b-versatile',
+    'llama-3.1-8b-instant',
+    'openai/gpt-oss-120b',
+    'openai/gpt-oss-20b',
+    'qwen/qwen3-32b',
+    // OpenRouter (si LLM_API_URL = https://openrouter.ai/api/v1/chat/completions)
     'qwen/qwen3-27b',
     'qwen/qwen3-235b-a22b:free',
     'qwen/qwen3-30b-a3b:free',
     'qwen/qwen-2.5-72b-instruct:free',
-    'openai/gpt-4o-mini',
     'google/gemini-2.5-flash',
     'deepseek/deepseek-r1-distill-llama-70b:free',
     'deepseek/deepseek-chat-v3-0324:free',
@@ -34,7 +53,7 @@ const WHITELISTED_MODELS = new Set([
 
 const MAX_TOKENS_CAP = 4000;
 const MAX_MESSAGES = 30;
-const MAX_CONTENT_LENGTH = 8000;
+const MAX_CONTENT_LENGTH = 16000;
 
 // ── Rate-limiting par IP ────────────────────────────────────────────────────
 function checkRateLimit(ip) {
@@ -68,15 +87,13 @@ export default async (request, context) => {
     const origin = request.headers.get('origin') || '';
     const referer = request.headers.get('referer') || '';
 
-    // CORS : vérifier origine et referer parmi les domaines autorisés
-    const isAllowedOrigin = ALLOWED_ORIGINS.some(o =>
-        origin === o || origin.startsWith(o) ||
-        // Netlify Deploy Previews : *.netlify.app
-        (origin.endsWith('.netlify.app') && origin.includes('medgame'))
-    );
-    const isAllowedReferer = !referer || ALLOWED_ORIGINS.some(o => referer.startsWith(o)) ||
-        (referer.includes('netlify.app') && referer.includes('medgame')) ||
-        referer.startsWith('http://localhost') || referer.startsWith('http://127.0.0.1');
+    // CORS : origine exacte (pas de startsWith — évite http://localhost.evil.com)
+    // ou Referer du domaine autorisé. Les Deploy Previews Netlify sont tolérées.
+    const isAllowedOrigin = ALLOWED_ORIGINS.has(origin) ||
+        (origin.endsWith('.netlify.app') && origin.includes('medgame'));
+    const isAllowedReferer = ALLOWED_ORIGINS.has(referer) ||
+        [...ALLOWED_ORIGINS].some(o => referer.startsWith(o + '/')) ||
+        (referer.includes('.netlify.app') && referer.includes('medgame'));
 
     const corsHeaders = {
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -149,16 +166,17 @@ export default async (request, context) => {
 
         // ── Construire un corps épuré (whitelist de champs) ────────────────
         const safeBody = {
-            model: body.model,
+            model: body.model || process.env.LLM_MODEL || 'deepseek-chat',
             messages: body.messages.map(m => ({ role: m.role, content: m.content })),
             temperature: typeof body.temperature === 'number' ? Math.min(2, Math.max(0, body.temperature)) : 0.7,
             max_tokens: body.max_tokens || 800,
             stream: body.stream === true
         };
         if (body.top_p !== undefined) safeBody.top_p = Math.min(1, Math.max(0, body.top_p));
+        if (body.response_format !== undefined) safeBody.response_format = body.response_format;
 
         // ── Appel upstream ─────────────────────────────────────────────────
-        const llmUrl = process.env.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+        const llmUrl = process.env.LLM_API_URL || 'https://api.deepseek.com/chat/completions';
         const apiKey = process.env.LLM_API_KEY;
         if (!apiKey) {
             console.error('[Proxy] LLM_API_KEY manquante');

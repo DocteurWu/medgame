@@ -37,6 +37,38 @@ class MedicalGameManager {
         try {
             console.log(`[MedicalGameManager] Analyse de l'entrée : "${inputText}"`);
 
+            // ── Politique de divulgation ECOS (alignée sur llm-patient.js) ──
+            // Sans elle, le GM peut faire dire au patient des infos déclarées
+            // « cachées » ou « à ne révéler que si demandé » → item de grille invalidé.
+            let disclosureBlock = '';
+            const ecosStd = caseData.ecos?.patientStandardise;
+            if (ecosStd) {
+                const resolveVal = (path) => {
+                    try {
+                        return String(path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), caseData) ?? '');
+                    } catch (e) { return ''; }
+                };
+                const subjectOf = (path) => {
+                    const parts = path.split('.');
+                    return parts[parts.length - 1].replace(/([A-Z])/g, ' $1').toLowerCase().trim();
+                };
+                const buildList = (paths, instruction) => (paths || [])
+                    .map(p => {
+                        const val = resolveVal(p);
+                        return val ? `- ${subjectOf(p)} (« ${val.substring(0, 120)} ») → ${instruction}` : null;
+                    })
+                    .filter(Boolean).join('\n');
+
+                const vol = buildList(ecosStd.infosVolontaires, 'révélation LIBRE et spontanée autorisée.');
+                const dem = buildList(ecosStd.infosSiDemandees, 'révélation UNIQUEMENT si la question de l\'étudiant porte explicitement dessus.');
+                const cac = buildList(ecosStd.infosCachees, 'JAMAIS révélée au premier abord : reste évasif (« ce n\'est rien », « rien de spécial ») ; ne lâche l\'information que si l\'étudiant insiste lourdement ou reformule plusieurs fois.');
+
+                disclosureBlock = `
+RÈGLES DE DIVULGATION (station ECOS — À RESPECTER STRICTEMENT pour le DIALOGUE du patient) :
+${vol ? `\nINFORMATIONS VOLONTAIRES (peuvent apparaître spontanément) :\n${vol}\n` : ''}${dem ? `\nINFORMATIONS SUR DEMANDE EXPLICITE UNIQUEMENT :\n${dem}\n` : ''}${cac ? `\nINFORMATIONS CACHÉES (évasif au premier abord) :\n${cac}\n` : ''}
+RÈGLE GÉNÉRALE : toute information du dossier NON listée ci-dessus comme « libre » ne doit JAMAIS être dévoilée spontanément par le patient. Le diagnostic, son nom, les résultats d'examens complémentaires non demandés et le traitement prévu ne sont JAMAIS révélés par le dialogue.`;
+            }
+
             const systemPrompt = `Tu es le "Game Manager" (Maître du Jeu) d'une simulation médicale immersive pour étudiants en médecine.
 Ton rôle est de traduire les actions ou questions en langage naturel soumises par l'étudiant en actions concrètes dans le jeu, de simuler la physiologie du patient et de générer une réponse narrative globale et immersive.
 
@@ -45,6 +77,7 @@ Voici le cas clinique actuel :
 - Motifs et histoire : ${JSON.stringify(caseData.interrogatoire || {})}
 - Examen physique disponible (référence) : ${JSON.stringify(caseData.examenClinique || {})}
 - Examens complémentaires (si demandés) : ${JSON.stringify(caseData.examResults || {})}
+${disclosureBlock}
 
 Voici les constantes vitales courantes du patient :
 - FC (Fréquence Cardiaque) : ${vitals.heartRate || vitals.HR || 80} bpm
@@ -89,13 +122,36 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                         { role: 'user', content: `ENTRÉE DE L'ÉTUDIANT : "${inputText}"` }
                     ],
                     temperature: 0.1, // Basse température pour plus de régularité dans la structure JSON
-                    maxTokens: 600
+                    maxTokens: 600,
+                    // Latence perçue : 12 s × 1 retry (~24 s pire cas au lieu de ~90 s)
+                    timeoutMs: 12000,
+                    maxRetries: 1,
+                    responseFormat: { type: 'json_object' }
                 });
             } else {
                 throw new Error("Client LLM non disponible.");
             }
 
-            const parsed = this._cleanAndParseJson(responseText);
+            let parsed = null;
+            try {
+                parsed = this._cleanAndParseJson(responseText);
+            } catch (jsonErr) {
+                console.warn("[MedicalGameManager] JSON invalide, tentative de salvage :", jsonErr.message, " brut:", responseText.slice(0,600));
+                // Salvage : si le LLM a renvoyé du texte libre au lieu de JSON, l'utiliser comme dialogue direct
+                if (responseText && responseText.trim().length > 0) {
+                    parsed = {
+                        dialogue: responseText.trim().slice(0, 800),
+                        exams: null,
+                        prescriptions: null,
+                        otherActions: null,
+                        vitalChanges: null,
+                        narrativeResponse: ""
+                    };
+                    console.log("[MedicalGameManager] Salvage dialogue brut utilisé");
+                } else {
+                    throw jsonErr;
+                }
+            }
             console.log("[MedicalGameManager] Analyse JSON réussie :", parsed);
 
             // Appliquer les actions déterministes dans le jeu
@@ -107,8 +163,11 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
             };
 
         } catch (err) {
-            console.warn("[MedicalGameManager] Erreur ou échec LLM, exécution du fallback local :", err);
-            return this._fallbackLocal(inputText, caseData, vitals);
+            // Ne propager que les vraies erreurs réseau/timeout ; le salvage ci-dessus a déjà évité le fallback silencieux
+            console.error("[MedicalGameManager] Échec LLM — propagation de l'erreur au chat :", err);
+            const msg = err?.message || String(err);
+            // Ajouter un diagnostic technique clair (cause visible dans le chat au lieu de "Je ne comprends pas...")
+            throw new Error(msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — GameManager] ${msg} | Endpoint: ${window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy'} | Vérifiez mcp-server (npm run mcp) + .env LLM_API_KEY | F12 Network`);
         } finally {
             this.isProcessing = false;
         }
@@ -116,18 +175,28 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
     /**
      * Nettoie et analyse la chaîne JSON retournée par le LLM.
+     * Tolérant : extrait le premier objet JSON même s'il est entouré de texte/markdown.
      */
     _cleanAndParseJson(text) {
         let cleaned = (text || '').trim();
-        if (cleaned.startsWith('```json')) {
-            cleaned = cleaned.substring(7);
-        } else if (cleaned.startsWith('```')) {
-            cleaned = cleaned.substring(3);
+        // Retirer blocs ```json ... ``` ou ``` ... ```
+        const codeBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+        if (codeBlockMatch) cleaned = codeBlockMatch[1].trim();
+
+        // Tentative directe
+        try { return JSON.parse(cleaned); } catch (_) {}
+
+        // Extraire le premier objet JSON { ... } équilibré
+        const firstBrace = cleaned.indexOf('{');
+        const lastBrace = cleaned.lastIndexOf('}');
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+            const candidate = cleaned.slice(firstBrace, lastBrace + 1);
+            try { return JSON.parse(candidate); } catch (_) {}
+            // Nettoyer les commentaires/trailing commas éventuels
+            const repaired = candidate.replace(/,\s*([}\]])/g, '$1');
+            try { return JSON.parse(repaired); } catch (_) {}
         }
-        if (cleaned.endsWith('```')) {
-            cleaned = cleaned.substring(0, cleaned.length - 3);
-        }
-        cleaned = cleaned.trim();
+        // Échec : laisser le throw
         return JSON.parse(cleaned);
     }
 

@@ -39,7 +39,7 @@ export class LLMPatient {
         this._initAmeAndMemoire();
 
         // Config depuis window.CONFIG (injectée par config.js)
-        this.endpoint    = window.CONFIG?.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+        this.endpoint    = window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy';
         this.model       = window.CONFIG?.LLM_MODEL    || 'llama-3.3-70b-versatile';
         this.apiKey      = window.CONFIG?.LLM_API_KEY  || '';
         this.maxTokens   = window.CONFIG?.LLM_MAX_TOKENS   || 220;
@@ -618,21 +618,23 @@ ${appliedTreatmentsText}`.trim();
             cleanQuestion = "Bonjour docteur.";
         }
 
-        // Cache lookup
+        // La question entre TOUJOURS dans l'historique, même en cas de cache hit
+        this.history.push({ role: 'user', content: cleanQuestion });
+
+        // Cache lookup — clé STABLE : le prompt complet contient les constantes
+        // live et le journal de mémoire (mutés à chaque tour) → hit-rate ≈ 0 sinon.
+        const stableCacheKey = `case:${this.caseData?.id || 'unknown'}`;
         const systemPrompt = this.buildStaticSystemPrompt() + "\n" + this.buildDynamicSystemPrompt();
-        const cachedResponse = window.llmCache?.get(systemPrompt, cleanQuestion);
+        const cachedResponse = window.llmCache?.get(stableCacheKey, cleanQuestion);
         if (cachedResponse) {
             console.log(`[LLMPatient] Cache hit pour : "${cleanQuestion}"`);
-            
-            // Extract response part from cached content
+
+            // Réponse cachée : on ne rejoue PAS <patient_state> (l'âme/mémoire
+            // seraient mutées deux fois). Seul le texte est diffusé.
             let cachedCleanResponse = cachedResponse;
             const tagStart = cachedResponse.indexOf('<patient_state>');
             if (tagStart !== -1) {
                 cachedCleanResponse = cachedResponse.slice(0, tagStart).trim();
-                const stateContent = cachedResponse.indexOf('</patient_state>') !== -1 
-                    ? cachedResponse.slice(tagStart + 15, cachedResponse.indexOf('</patient_state>'))
-                    : cachedResponse.slice(tagStart + 15);
-                this._updateAmeAndMemoire(stateContent);
             }
 
             // Simulation de frappe pour la réponse cachée
@@ -654,9 +656,6 @@ ${appliedTreatmentsText}`.trim();
             }, 30);
             return;
         }
-
-        // Ajouter la question à l'historique
-        this.history.push({ role: 'user', content: cleanQuestion });
 
         const messages = [
             { role: 'system', content: systemPrompt },
@@ -731,7 +730,8 @@ ${appliedTreatmentsText}`.trim();
 
             // Ne stocker que la réponse propre dans l'historique de conversation
             this.history.push({ role: 'assistant', content: safeResponse });
-            window.llmCache?.set(systemPrompt, cleanQuestion, safeResponse);
+            // Cache avec la même clé stable que le lookup (case:<id> + question)
+            window.llmCache?.set(stableCacheKey, cleanQuestion, safeResponse);
 
             onComplete?.(safeResponse);
 
@@ -742,33 +742,20 @@ ${appliedTreatmentsText}`.trim();
 
         } catch (err) {
             if (err.name === 'AbortError') return;
-            console.warn('[LLMPatient] Appel API échoué ou expiré, utilisation du fallback rule-based :', err);
-
-            // Fallback local
-            const fallbackResponse = window.llmFallback ? window.llmFallback.answer(cleanQuestion, this.caseData) : "Je me sens très fatigué, docteur...";
-            const safeFallback = this._applySafetyFilter(fallbackResponse);
-
-            // Simuler l'âme et la mémoire en fallback
-            this._simulateFallbackStateUpdate(cleanQuestion);
-
-            // Simulation de frappe pour le fallback
-            let index = 0;
-            const words = safeFallback.split(' ');
-            const streamInterval = setInterval(() => {
-                if (this._abortController?.signal?.aborted) {
-                    clearInterval(streamInterval);
-                    return;
-                }
-                if (index < words.length) {
-                    const token = (index > 0 ? ' ' : '') + words[index];
-                    onToken?.(token);
-                    index++;
-                } else {
-                    clearInterval(streamInterval);
-                    this.history.push({ role: 'assistant', content: safeFallback });
-                    onComplete?.(safeFallback);
-                }
-            }, 30);
+            console.error('[LLMPatient] Appel LLM échoué :', err);
+            const endpointHint = this.endpoint || '(endpoint inconnu)';
+            const modelHint = this.model || '(modèle inconnu)';
+            const msg = err.message || String(err);
+            const isTimeout = msg.includes('Timeout') || msg.includes('aborted');
+            const diagnostic = `⚠️ [ERREUR LLM] ${msg}\n→ Endpoint: ${endpointHint} | Modèle: ${modelHint}`
+                + (isTimeout ? '\n→ Cause probable : timeout (30s) ou proxy injoignable' : '')
+                + `\n→ Vérifiez : 1) Serveur/proxy démarré ? 2) .env contient LLM_API_KEY et LLM_API_URL ?`
+                + ` 3) Console (F12) → Network → llm-proxy pour le détail HTTP.`
+                + ` 4) Si vous ouvrez index.html en file://, lancez npx serve . et ouvrez http://localhost:3000`;
+            // Propager l'erreur au chat pour affichage explicite (plus de fallback silencieux)
+            onError?.(diagnostic);
+            // Ne pas pousser de fallback silencieux dans l'historique
+            throw new Error(diagnostic);
         }
     }
 

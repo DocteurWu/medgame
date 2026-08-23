@@ -71,8 +71,8 @@
         Votre navigateur ne prend pas en charge la music
     </audio>
 
-    <script src="js/env.js?v=2"></script>
-    <script src="js/config.js?v=2"></script>
+    <script src="js/env.js?v=11"></script>
+    <script src="js/config.js?v=11"></script>
     <script src="js/auth.js?v=2"></script>
     <script>
         // Authentification facultative (les invités peuvent jouer sans inscription)
@@ -307,6 +307,12 @@
                     <i class="fas fa-vr-cardboard"></i>
                     <span class="immersive-btn-text">Vue 3D</span>
                 </button>
+
+                <!-- Lien Profil : progression accessible depuis le jeu -->
+                <a href="profile.html" id="profile-link-btn" aria-label="Voir mon profil et ma progression" title="Profil & progression"
+                   style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; margin-left:10px; border-radius:20px; text-decoration:none; font-size:0.85rem; color:#fff; background:rgba(155,89,182,0.15); border:1px solid rgba(155,89,182,0.4); transition:all .2s;">
+                    <i class="fas fa-user-graduate"></i>
+                </a>
             </header>
 
             <div class="content-scroll-area">
@@ -643,22 +649,22 @@
     <script src="js/scoring.js?v=2"></script>
     <script src="js/feedback.js?v=3"></script>
     <script src="js/ui.js?v=2"></script>
-    <script src="js/patientChat.js?v=2"></script>
+    <script src="js/patientChat.js?v=12"></script>
     <script src="js/urgenceMode.js?v=2"></script>
     <script src="js/caseLoader.js?v=2"></script>
     <script src="js/gameState.js?v=2"></script>
     <script src="js/prescription.js?v=2"></script>
     <script src="js/player_map.js?v=2"></script>
-    <script src="js/clinicalAgentAI.js?v=2"></script>
+    <script src="js/clinicalAgentAI.js?v=10"></script>
     <script src="js/ecos-dialog.js?v=2"></script>
     <script src="js/ecosMode.js?v=2"></script>
 
     <!-- Modules LLM : client unifié, cache LRU, fallback rule-based, puis patient (ES module) -->
-    <script src="js/llm-client.js?v=3"></script>
+    <script src="js/llm-client.js?v=12"></script>
     <script src="js/llm-cache.js?v=3"></script>
-    <script src="js/llm-fallback.js?v=3"></script>
-    <script src="js/MedicalGameManager.js?v=2"></script>
-    <script type="module" src="js/llm-patient.js?v=3"></script>
+    <script src="js/llm-fallback.js?v=12"></script>
+    <script src="js/MedicalGameManager.js?v=12"></script>
+    <script type="module" src="js/llm-patient.js?v=4"></script>
 
     <!-- 3D Modules -->
     <script type="module" src="js/three-animations.js?v=20260524-nostore"></script>

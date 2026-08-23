@@ -34,11 +34,12 @@ class LLMClient {
         signal,
         onToken,
         timeoutMs = 30000,
-        maxRetries = 2
+        maxRetries = 2,
+        responseFormat = null
     }) {
-        const endpoint = window.CONFIG?.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+        const endpoint = window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
-        const defaultModel = window.CONFIG?.LLM_MODEL || 'llama-3.3-70b-versatile';
+        const defaultModel = window.CONFIG?.LLM_MODEL || 'deepseek-chat';
 
         // Modèle unique — Groq gère le fallback côté serveur
         const requestedModel = model || defaultModel;
@@ -47,7 +48,6 @@ class LLMClient {
         ].filter((m, idx, self) => self.indexOf(m) === idx);
 
         let lastError = null;
-        let isProxyOffline = false;
 
         for (const currentModel of modelsToTry) {
             let attempt = 0;
@@ -58,16 +58,12 @@ class LLMClient {
                 }
 
                 try {
-                    // Determine URL, Key, and Model (fallback to backup direct OpenRouter if proxy is offline)
-                    let targetUrl = endpoint;
-                    let targetKey = apiKey;
-                    let targetModel = currentModel;
-
-                    if (isProxyOffline && window.__ENV__?.LLM_API_KEY_BACKUP) {
-                        targetUrl = window.__ENV__.LLM_API_URL_BACKUP;
-                        targetKey = window.__ENV__.LLM_API_KEY_BACKUP;
-                        targetModel = window.__ENV__.LLM_MODEL_BACKUP || 'tencent/hy3:free';
-                    }
+                    // Sécurité : aucun fallback clé-embarquée. Tout passe par le proxy
+                    // (Netlify en prod, MCP local en dev). Si le proxy est down,
+                    // les modules appelants basculent sur leur mode dégradé (llm-fallback).
+                    const targetUrl = endpoint;
+                    const targetKey = apiKey;
+                    const targetModel = currentModel;
 
                     console.log(`[LLMClient] Cible : ${targetUrl} | Modèle : ${targetModel} (essai ${attempt + 1}/${maxRetries + 1})`);
                     
@@ -84,20 +80,19 @@ class LLMClient {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            ...(targetKey ? { 'Authorization': `Bearer ${targetKey}` } : {}),
-                            'HTTP-Referer': window.location.origin || 'http://localhost',
-                            'X-Title': 'MedGame'
+                            ...(targetKey ? { 'Authorization': `Bearer ${targetKey}` } : {})
+                            // Pas de headers custom (HTTP-Referer/X-Title) : ils déclenchent
+                            // un preflight CORS que le proxy local n'autorisait pas.
                         },
                         body: JSON.stringify({
                             model: targetModel,
                             messages,
                             stream,
-                            max_tokens: Math.max(maxTokens || 3000, 3000),
+                            // Plafond (et non plancher) : respecter la demande de l'appelant, bornée [50, 4000]
+                            max_tokens: Math.min(Math.max(maxTokens || 300, 50), 4000),
                             temperature,
                             top_p: 0.95,
-                            reasoning: {
-                                exclude: true
-                            }
+                            ...(responseFormat ? { response_format: responseFormat } : {})
                         }),
                         signal: combinedSignal
                     });
@@ -105,7 +100,17 @@ class LLMClient {
                     clearTimeout(timeoutId);
 
                     if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                        let bodyText = '';
+                        try { bodyText = await response.text(); } catch (_) {}
+                        let detail = bodyText.slice(0, 400);
+                        try { const j = JSON.parse(bodyText); if (j.error) detail = j.error; } catch (_) {}
+                        const hint = response.status === 500 && /LLM_API_KEY/.test(detail)
+                            ? ' → LLM_API_KEY manquante côté serveur (.env / Netlify env vars)'
+                            : response.status === 403 ? ' → Origine non autorisée (ouvrez via http://localhost, pas file://)'
+                            : response.status === 429 ? ' → Rate-limit proxy (attendez 1 min)'
+                            : response.status === 400 && /whitelist/i.test(detail) ? ` → Modèle non whitelisté (${detail})`
+                            : '';
+                        throw new Error(`HTTP ${response.status} ${response.statusText}${detail ? ` — ${detail}` : ''}${hint} [endpoint: ${targetUrl}]`);
                     }
 
                     let fullText = '';
@@ -139,14 +144,8 @@ class LLMClient {
                         console.warn(`[LLMClient] Erreur lors de l'appel : ${err.message}`);
                     }
 
-                    // Si le proxy local échoue (erreur réseau ou HTTP status non-OK), basculer sur l'API directe
-                    if (!isProxyOffline && window.__ENV__?.LLM_API_KEY_BACKUP) {
-                        console.warn(`[LLMClient] Local MCP proxy error (${err.message}). Swapping to direct OpenRouter API backup...`);
-                        isProxyOffline = true;
-                        attempt = 0; // reset attempts for the fallback
-                        continue;
-                    }
-
+                    // Si le proxy local échoue, pas de bascule clé-embarquée :
+                    // on retente via les retries puis on laisse l'erreur remonter.
                     lastError = err;
                     attempt++;
 
