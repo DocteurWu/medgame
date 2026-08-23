@@ -334,10 +334,16 @@ const isMain = process.argv[1] && fileURLToPath(import.meta.url).toLowerCase() =
 if (isMain) {
     // Setup HTTP server with health check, secure LLM proxy, and WebSocket upgrades
     const httpServer = http.createServer((req, res) => {
-        // Set CORS headers for local browser access
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        // CORS : outil de développement local uniquement — restreint aux origines locales
+        // (jamais exposé publiquement : ne pas lancer ce serveur derrière un domaine public)
+        const origin = req.headers.origin || '';
+        const isLocalOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+        if (isLocalOrigin) {
+            res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Vary', 'Origin');
+        }
         res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, HTTP-Referer, X-Title');
 
         if (req.method === 'OPTIONS') {
             res.writeHead(200);
@@ -373,14 +379,14 @@ if (isMain) {
                             'X-Title': 'MedGame'
                         },
                         body: JSON.stringify({
-                            model: parsed.model || process.env.LLM_MODEL || 'deepseek-v4-flash',
+                            model: parsed.model || process.env.LLM_MODEL || 'deepseek-chat',
                             messages: parsed.messages,
                             temperature: parsed.temperature ?? 0.7,
-                            max_tokens: Math.max(parsed.max_tokens ?? 3000, 3000),
+                            // Plafond (et non plancher) : aligné sur js/llm-client.js
+                            max_tokens: Math.min(Math.max(parsed.max_tokens ?? 300, 50), 4000),
                             stream: parsed.stream ?? false,
-                            reasoning: {
-                                exclude: true
-                            }
+                            ...(parsed.response_format ? { response_format: parsed.response_format } : {}),
+                            ...(parsed.top_p !== undefined ? { top_p: parsed.top_p } : {})
                         })
                     });
 

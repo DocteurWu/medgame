@@ -680,18 +680,39 @@
 
     // ==================== CHAT PATIENT ====================
 
+    /**
+     * Conteneur de conversation : log ECOS dédié s'il existe, sinon le panneau
+     * de dialogue standard (#dialogue-messages) partagé avec patientChat.
+     * (Bug historique : #ecos-chat-log n'existait dans aucun HTML → résultats
+     * d'examens invisibles et transcript exporté vide.)
+     */
+    function getConversationLog() {
+        return document.getElementById('ecos-chat-log')
+            || document.getElementById('dialogue-messages');
+    }
+
     function appendConversation(speaker, text, kind = 'normal') {
-        const log = document.getElementById('ecos-chat-log');
+        // Le transcript est TOUJOURS alimenté, même sans conteneur visible
+        ecosState.conversationLog.push({ speaker, text, t: Date.now() - ecosState.startedAt, kind });
+
+        const log = getConversationLog();
         if (!log) return null;
-        
+
         const row = document.createElement('div');
-        row.className = `ecos-msg ${speaker === 'Vous' ? 'from-student' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
+        const inDialoguePanel = log.id === 'dialogue-messages';
         const innerText = (kind === 'thinking') ? text : escapeHtml(text);
-        row.innerHTML = `<div class="ecos-msg-speaker">${escapeHtml(speaker)}</div><div class="ecos-msg-text">${innerText}</div>`;
+
+        if (inDialoguePanel) {
+            // Structure compatible panneau standard, en conservant les hooks
+            // .ecos-msg-speaker / .ecos-msg-text utilisés par les mises à jour
+            row.className = `dialogue-message ${speaker === 'Vous' ? 'from-user' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
+            row.innerHTML = `<strong class="ecos-msg-speaker">${escapeHtml(speaker)} : </strong><span class="ecos-msg-text">${innerText}</span>`;
+        } else {
+            row.className = `ecos-msg ${speaker === 'Vous' ? 'from-student' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
+            row.innerHTML = `<div class="ecos-msg-speaker">${escapeHtml(speaker)}</div><div class="ecos-msg-text">${innerText}</div>`;
+        }
         log.appendChild(row);
         log.scrollTop = log.scrollHeight;
-
-        ecosState.conversationLog.push({ speaker, text, t: Date.now() - ecosState.startedAt, kind });
 
         if (kind === 'thinking' && window.MedGameAudio) {
             window.MedGameAudio.play('typing');
@@ -780,18 +801,24 @@
                 await classifyAndCheck(question, rawTextForCheck);
                 return;
             } catch (err) {
-                console.warn('[ECOS] MedicalGameManager error, using fallback:', err);
-                placeholder.remove();
+                console.error('[ECOS] MedicalGameManager error:', err);
+                const msg = err?.message || String(err);
+                const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg} | Vérifiez proxy .env LLM_API_KEY`;
+                // Afficher l'erreur au lieu de retirer silencieusement
+                const textEl2 = placeholder?.querySelector('.ecos-msg-text');
+                if (textEl2) textEl2.textContent = errorAnswer;
+                placeholder?.classList.add('error');
+                placeholder?.classList.remove('thinking');
+                await classifyAndCheck(question, errorAnswer).catch(()=>{});
+                return;
             }
         }
 
         if (!window.llmPatientInstance) {
-            // Pas d'instance : utiliser llmFallback si disponible
-            const fallbackAnswer = window.llmFallback
-                ? window.llmFallback.answer(question, ecosState.caseData)
-                : '⚠️ Moteur patient indisponible (LLM hors ligne).';
-            appendConversation('PS', fallbackAnswer, window.llmFallback ? 'normal' : 'error');
-            await classifyAndCheck(question, fallbackAnswer);
+            // Plus de fallback silencieux : diagnostic explicite
+            const errorAnswer = `⚠️ [ERREUR LLM — ECOS] Aucune instance LLM (window.llmPatientInstance manquante).\n→ Vérifiez : js/llm-patient.js chargé ? Ouvrez via http://localhost (pas file://) | F12 Network`;
+            appendConversation('PS', errorAnswer, 'error');
+            await classifyAndCheck(question, errorAnswer);
             return;
         }
 
@@ -806,7 +833,7 @@
                     (token) => {
                         fullAnswer += token;
                         placeholder.querySelector('.ecos-msg-text').textContent = fullAnswer;
-                        const log = document.getElementById('ecos-chat-log');
+                        const log = getConversationLog();
                         if (log) log.scrollTop = log.scrollHeight;
                         if (window.MedGameAudio) window.MedGameAudio.play('typing');
                     },
@@ -830,17 +857,13 @@
             await classifyAndCheck(question, finalAnswer);
         } catch (err) {
             const textEl = placeholder.querySelector('.ecos-msg-text');
-            // Utiliser le fallback rule-based si LLM est KO
-            const fallbackAnswer = window.llmFallback
-                ? window.llmFallback.answer(question, ecosState.caseData)
-                : '⚠️ Erreur LLM. Réessayez.';
-            if (textEl) textEl.textContent = fallbackAnswer;
-            if (!window.llmFallback) {
-                placeholder.classList.add('error');
-            }
+            const msg = err?.message || String(err);
+            const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg}\n→ Endpoint: ${window.CONFIG?.LLM_API_URL || '?'} | F12 → Network llm-proxy`;
+            if (textEl) textEl.textContent = errorAnswer;
+            placeholder.classList.add('error');
             placeholder.classList.remove('thinking');
-            console.warn('[ECOS] LLM ask failed, fallback used:', err);
-            await classifyAndCheck(question, fallbackAnswer).catch(() => {});
+            console.error('[ECOS] LLM ask failed:', err);
+            await classifyAndCheck(question, errorAnswer).catch(() => {});
         }
     }
 
@@ -1419,50 +1442,76 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
 
     // ==================== LOCAL STORAGE STATS ====================
 
+    /**
+     * SOURCE UNIQUE du barème ECOS (doc = sauvegarde = affichage) :
+     *   Aptitudes cliniques 50 % · Communication 20 % · Diagnostic 30 %
+     *   + bonus vitesse max +5 pts (≤40 % du temps utilisé : 5 pts, ≤60 % : 3,
+     *   ≤80 % : 1, sinon 0).
+     * @param {string} diag — diagnostic soumis
+     */
+    function computeEcosScores(diag) {
+        const totalApt = ecosState.grilleAptitudes.length;
+        const checkedApt = ecosState.gridChecked.size;
+        const aptitudePct = totalApt > 0 ? Math.round((checkedApt / totalApt) * 100) : 0;
+
+        const commTotal = ecosState.grilleComm.reduce((s, g) => s + (g.max || 1), 0);
+        let commSum = 0;
+        ecosState.grilleComm.forEach(g => {
+            const val = ecosState.commScores[g.id];
+            if (typeof val === 'number') {
+                commSum += Math.max(0, Math.min(g.max || 1, val));
+            }
+        });
+        const commPct = commTotal > 0 ? Math.round((commSum / commTotal) * 100) : 0;
+
+        const diagScore = window.calculateDiagnosticScore
+            ? window.calculateDiagnosticScore(diag, ecosState.caseData.correctDiagnostic)
+            : (diag ? 50 : 0);
+
+        const totalDurationMs = ECOS_CONFIG.STATION_DURATION * 1000;
+        const usedMs = Date.now() - (ecosState.startedAt || Date.now());
+        const timeRatio = Math.max(0, Math.min(1, usedMs / totalDurationMs));
+        const vitesseBonus = timeRatio <= 0.4 ? 5
+            : timeRatio <= 0.6 ? 3
+            : timeRatio <= 0.8 ? 1
+            : 0;
+
+        const baseScore = Math.round(aptitudePct * 0.5 + commPct * 0.2 + diagScore * 0.3);
+        const finalScore = Math.min(100, baseScore + vitesseBonus);
+
+        return { aptitudePct, commPct, diagScore, vitesseBonus, baseScore, finalScore };
+    }
+
     function saveSessionToLocalStorage(diag, announce) {
         const STORAGE_KEY = 'medgame_ecos_sessions';
         try {
             let sessions = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             const caseId = ecosState.caseData?.id || 'unknown';
             if (!sessions[caseId]) sessions[caseId] = [];
-            
-            const totalApt = ecosState.grilleAptitudes.length;
-            const checkedApt = ecosState.gridChecked.size;
-            const aptitudePct = totalApt > 0 ? Math.round((checkedApt / totalApt) * 100) : 0;
-            const commTotal = ecosState.grilleComm.reduce((s, g) => s + (g.max || 1), 0);
-            
-            let commSum = 0;
-            ecosState.grilleComm.forEach(g => {
-                const val = ecosState.commScores[g.id];
-                if (typeof val === 'number') {
-                    commSum += Math.max(0, Math.min(g.max || 1, val));
-                }
-            });
-            const commPct = commTotal > 0 ? Math.round((commSum / commTotal) * 100) : 0;
-            
-            const diagScore = window.calculateDiagnosticScore 
-                ? window.calculateDiagnosticScore(diag, ecosState.caseData.correctDiagnostic)
-                : (diag ? 50 : 0);
-            
-            const finalScore = Math.round(aptitudePct * 0.5 + commPct * 0.2 + diagScore * 0.3);
-            
+
+            // Barème unifié : identique à l'affichage du debrief
+            const scores = computeEcosScores(diag);
+            const { aptitudePct, commPct, diagScore } = scores;
+            const finalScore = scores.finalScore;
+
             sessions[caseId].push({
                 date: new Date().toISOString(),
                 finalScore,
                 aptitudePct,
                 commPct,
                 diagScore,
+                vitesseBonus: scores.vitesseBonus,
                 diagSubmitted: diag,
                 announceSubmitted: announce,
                 gridChecked: Array.from(ecosState.gridChecked),
                 questionsAsked: ecosState.questionsAsked,
                 duration: (Date.now() - ecosState.startedAt) / 1000
             });
-            
+
             if (sessions[caseId].length > 10) {
                 sessions[caseId] = sessions[caseId].slice(-10);
             }
-            
+
             localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
         } catch (e) {
             console.warn('[ECOS] Failed to save session to localStorage:', e);
@@ -1475,38 +1524,12 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         ecosState.phase = 'debrief';
         destroyStationLayout();
 
-        // Calculs de score
+        // Barème unifié (source unique : computeEcosScores — 50/20/30 + bonus vitesse)
         const totalApt = ecosState.grilleAptitudes.length;
         const checkedApt = ecosState.gridChecked.size;
-        const aptitudePct = totalApt > 0 ? Math.round((checkedApt / totalApt) * 100) : 0;
-        
-        const commTotal = ecosState.grilleComm.reduce((s, g) => s + (g.max || 1), 0);
-        let commSum = 0;
-        ecosState.grilleComm.forEach(g => {
-            const val = ecosState.commScores[g.id];
-            if (typeof val === 'number') {
-                commSum += Math.max(0, Math.min(g.max || 1, val));
-            }
-        });
-        const commPct = commTotal > 0 ? Math.round((commSum / commTotal) * 100) : 0;
-
-        const diagScore = window.calculateDiagnosticScore 
-            ? window.calculateDiagnosticScore(ecosState.diagSubmitted, ecosState.caseData.correctDiagnostic)
-            : (ecosState.diagSubmitted ? 50 : 0);
-
-        // 3.3 Bonus vitesse : jusqu'à +5 pts si l'étudiant a utilisé ≤ 80% du temps
-        const totalDurationMs = ECOS_CONFIG.STATION_DURATION * 1000;
-        const usedMs = Date.now() - (ecosState.startedAt || Date.now());
-        const timeRatio = Math.max(0, Math.min(1, usedMs / totalDurationMs));
-        // Bonus max 5 pts si ≤ 40% du temps utilisé, dégressif jusqu'à 80%
-        const vitesseBonus = timeRatio <= 0.4 ? 5
-            : timeRatio <= 0.6 ? 3
-            : timeRatio <= 0.8 ? 1
-            : 0;
-
-        // Score ECOS final : 45% clinique / 20% communication / 30% diagnostic / 5% vitesse
-        const baseScore = Math.round(aptitudePct * 0.45 + commPct * 0.2 + diagScore * 0.3);
-        const finalScore = Math.min(100, baseScore + vitesseBonus);
+        const scores = computeEcosScores(ecosState.diagSubmitted);
+        const { aptitudePct, commPct, diagScore, vitesseBonus } = scores;
+        const finalScore = scores.finalScore;
 
         // Étoiles basées sur les seuils configurés
         const stars = finalScore >= ECOS_CONFIG.STARS_THRESHOLDS[0] ? 3 
@@ -1530,7 +1553,7 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
                 <section class="ecos-debrief-section">
                     <h3>🩺 Aptitudes cliniques (50%)</h3>
                     <div class="ecos-debrief-bar"><div class="ecos-debrief-bar-fill" style="width:${aptitudePct}%;background:${aptitudePct >= 80 ? '#2ecc71' : aptitudePct >= 50 ? '#f39c12' : '#e74c3c'};"></div></div>
-                    <div class="ecos-debrief-bar-label">${checkedApt} / ${totalApt} items validés (${aptitudePct}%)</div>
+                    <div class="ecos-debrief-bar-label">${checkedApt} / ${totalApt} items validés (${aptitudePct}%)${vitesseBonus > 0 ? ` · ⚡ Bonus vitesse : +${vitesseBonus} pts` : ''}</div>
                     <ul class="ecos-debrief-grille">
                         ${ecosState.grilleAptitudes.map(g => `
                             <li class="${ecosState.gridChecked.has(g.id) ? 'checked' : 'missed'}">
@@ -1739,6 +1762,16 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         // Supabase si utilisateur connecté
         if (typeof addXp === 'function') {
             addXp(finalScore).catch(err => console.warn('[ECOS] XP update failed:', err));
+        }
+
+        // ── Badges : évaluation + notification au debrief ECOS ──
+        if (window.BadgeSystem && typeof window.BadgeSystem.evaluateAndPersist === 'function') {
+            try {
+                const localSessions = JSON.parse(localStorage.getItem('ecos_sessions') || '[]')
+                    .map(s => ({ case_id: s.case_id, score: s.score, mode: 'ecos' }));
+                const fresh = window.BadgeSystem.evaluateAndPersist(localSessions, null);
+                window.BadgeSystem.notifyNewBadges(fresh);
+            } catch (e) { console.warn('[ECOS] Badge evaluation failed:', e); }
         }
 
         if (typeof supabase !== 'undefined' && supabase.auth) {

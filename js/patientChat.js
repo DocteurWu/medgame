@@ -472,12 +472,15 @@
                     this.messages.push({ role: 'assistant', content: rawTextForHistory });
 
                 } catch (err) {
-                    console.warn('[PatientChat] MedicalGameManager error, calling fallback:', err);
-                    const localAnswer = this.fallback(question);
+                    console.error('[PatientChat] MedicalGameManager error:', err);
+                    const errMsg = err?.message || String(err);
+                    // Plus de fallback silencieux : afficher l'erreur technique
+                    const errorAnswer = `⚠️ [ERREUR LLM] ${errMsg}\n→ Vérifiez : proxy LLM démarré ? .env → LLM_API_KEY / LLM_API_URL ? Console (F12) → Network`;
                     loading.removeAttribute('data-is-typing');
-                    loading.innerHTML = this._safeMarkdown(localAnswer);
+                    loading.innerHTML = this._safeMarkdown(errorAnswer);
                     loading.classList.add('answer-fade-in');
-                    this.messages.push({ role: 'assistant', content: localAnswer });
+                    loading.style.borderLeft = '3px solid #ff4757';
+                    this.messages.push({ role: 'assistant', content: errorAnswer });
                 }
             } else if (this._llm) {
                 try {
@@ -523,19 +526,25 @@
                         );
                     });
                 } catch (err) {
-                    console.warn('[PatientChat] LLMPatient error, calling fallback:', err);
-                    const localAnswer = this.fallback(question);
+                    console.error('[PatientChat] LLMPatient error:', err);
+                    const errMsg = err?.message || String(err);
+                    const errorAnswer = errMsg.includes('⚠️ [ERREUR LLM]')
+                        ? errMsg
+                        : `⚠️ [ERREUR LLM] ${errMsg}\n→ Vérifiez : endpoint ${window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy'} | modèle ${window.CONFIG?.LLM_MODEL || '?'} | F12 → Network/Console`;
                     loading.removeAttribute('data-is-typing');
-                    loading.innerHTML = this._safeMarkdown(localAnswer);
+                    loading.innerHTML = this._safeMarkdown(errorAnswer);
                     loading.classList.add('answer-fade-in');
-                    this.messages.push({ role: 'assistant', content: localAnswer });
+                    loading.style.borderLeft = '3px solid #ff4757';
+                    this.messages.push({ role: 'assistant', content: errorAnswer });
                 }
             } else {
-                const localAnswer = this.fallback(question);
+                // Aucun moteur LLM instancié (LLMPatient non chargé)
+                const errorAnswer = `⚠️ [ERREUR LLM] Aucun moteur LLM initialisé (window.LLMPatient manquant).\n→ Vérifiez : 1) js/llm-patient.js bien chargé en <script type="module"> ? 2) Console (F12) pour erreurs d'import ? 3) Ouvrez via http://localhost (pas file://)`;
                 loading.removeAttribute('data-is-typing');
-                loading.innerHTML = this._safeMarkdown(localAnswer);
+                loading.innerHTML = this._safeMarkdown(errorAnswer);
                 loading.classList.add('answer-fade-in');
-                this.messages.push({ role: 'assistant', content: localAnswer });
+                loading.style.borderLeft = '3px solid #ff4757';
+                this.messages.push({ role: 'assistant', content: errorAnswer });
             }
 
             // ECOS semantic evaluation hook
@@ -550,10 +559,14 @@
         }
 
         fallback(question) {
+            // Conservé pour compatibilité, mais désormais le fallback local
+            // n'est plus utilisé silencieusement — les erreurs LLM affichent
+            // directement leur diagnostic. Ce chemin ne sert que si le LLM
+            // n'a jamais été instancié et qu'on veut une réponse locale.
             if (window.llmFallback && this.caseData) {
                 return window.llmFallback.answer(question, this.caseData);
             }
-            return `[Erreur : Le moteur de simulation du patient (LLM) n'est pas disponible.]`;
+            return `⚠️ [ERREUR LLM] Moteur de simulation du patient non disponible.\n→ Vérifiez : js/llm-patient.js chargé ? CONFIG.LLM_API_URL = ${window.CONFIG?.LLM_API_URL || '?'} | Ouvrez la console (F12)`;
         }
 
         stringifyPatient(value) {

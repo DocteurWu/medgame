@@ -10,6 +10,20 @@ class LLMFallback {
         // Dictionnaires de mots-clés et leurs catégories associées
         this.categories = [
             {
+                name: 'age',
+                keywords: ['âge', 'ans', 'vieilli', 'jeune'],
+                extractor: (c) => c.patient?.age ? `J'ai ${c.patient.age} ans.` : null
+            },
+            {
+                name: 'nom',
+                keywords: ['nom', 'appelle', 'prénom'],
+                extractor: (c) => {
+                    const p = c.patient || {};
+                    const full = `${p.prenom || ''} ${p.nom || ''}`.trim();
+                    return full ? `Je m'appelle ${full}.` : null;
+                }
+            },
+            {
                 name: 'motif',
                 keywords: ['motif', 'hospitalisation', 'venir', 'amener', 'ici', 'problème', 'urgence', 'quoi', 'passe', 'sert', 'arrive'],
                 extractor: (c) => c.interrogatoire?.motifHospitalisation
@@ -93,7 +107,12 @@ class LLMFallback {
                     const tabac = c.interrogatoire?.modeDeVie?.tabac;
                     if (!tabac) return 'Je ne fume pas.';
                     if (typeof tabac === 'object') {
-                        return `Tabac : statut ${tabac.statut || ''}, quantité ${tabac.quantite || 'non précisée'}.`;
+                        const statut = String(tabac.statut || '').toLowerCase();
+                        const quantite = parseFloat(String(tabac.quantite || '').replace(',', '.')) || 0;
+                        if (quantite === 0 || /non|aucun|jamais|ancien|ex[- ]?/.test(statut)) {
+                            return quantite === 0 ? 'Je ne fume pas.' : `J'ai arrêté de fumer.`;
+                        }
+                        return `Oui, je fume environ ${tabac.quantite || 'quelques cigarettes'} par jour.`;
                     }
                     return String(tabac);
                 }
@@ -127,14 +146,9 @@ class LLMFallback {
             (text) => `Alors... ${text.toLowerCase()}`
         ];
 
-        // Réponses vagues ou esquives si aucune correspondance n'est trouvée
-        this.fallbacks = [
-            "Je ne comprends pas trop votre question, docteur...",
-            "Je me sens fatigué(e), je ne sais pas trop comment vous répondre.",
-            "Pouvez-vous reformuler ? J'ai un peu la tête qui tourne.",
-            "Je ne sais pas... Je veux juste que ma douleur s'arrête.",
-            "Désolé(e), je n'ai pas compris ce que vous me demandez."
-        ];
+        // SUPPRIMÉ : les phrases d'esquive masquaient les vraies erreurs LLM.
+        // Si le LLM échoue, on affiche désormais une erreur technique explicite (voir answer()).
+        this.fallbacks = [];
     }
 
     /**
@@ -156,29 +170,48 @@ class LLMFallback {
 
         const cleanQ = this._removeAccents(question.toLowerCase().trim());
 
+        // ── 1. Intentions explicites (nom, politesse pure) ─────────────────
+        if (/\b(nom|prénom)\b/.test(cleanQ) || /\bappel/i.test(cleanQ)) {
+            const p = caseData.patient || {};
+            const full = `${p.prenom || ''} ${p.nom || ''}`.trim();
+            if (full) return `Je m'appelle ${full}.`;
+        }
+        const isGreeting = /\b(bonjour|salut|coucou|hello|bonsoir|hey)\b/.test(cleanQ);
+        const wordCount = cleanQ.split(/\s+/).filter(w => w.length > 1).length;
+        const hasMedicalContent = /(douleur|mal\b|symptome|hopital|souffr|malade|fievre|nausee)/.test(cleanQ) || wordCount > 6;
+        if (isGreeting && !hasMedicalContent) {
+            const g = ["Bonjour docteur...", "Ah, bonjour docteur. Oui ?", "Bonjour... Je suis un peu inquiet(e) de cette consultation."];
+            return g[Math.floor(Math.random() * g.length)];
+        }
+        if (/\bmerci\b/.test(cleanQ)) return "De rien, docteur...";
+        if (/\bau revoir\b/.test(cleanQ)) return "Au revoir docteur... et merci pour tout.";
+
         // Vérification des règles de la station ECOS concernant les informations cachées
         const isEcosMode = !!(window.EcosMode?.isActive?.());
         const hiddenInfos = caseData.ecos?.patientStandardise?.infosCachees || [];
 
-        // Parcourir les catégories pour trouver le meilleur match de mots-clés
+        // ── 2. Matching par racines de mots (tolère amène/amener, symptôme/symptômes…) ──
+        const qStems = cleanQ.split(/[^a-z0-9]+/)
+            .filter(w => w.length >= 4)
+            .map(w => w.slice(0, 5));
+
         let bestCategory = null;
         let maxMatches = 0;
 
         for (const cat of this.categories) {
             let matches = 0;
             for (const keyword of cat.keywords) {
-                const cleanKeyword = this._removeAccents(keyword);
-                // Si le mot-clé est très court (<= 3 caractères), on exige des frontières de mot strictes.
-                // Sinon, on autorise le mot-clé comme préfixe (ex: douleur -> douleurs, fumer -> fumez).
-                let regex;
-                if (cleanKeyword.length <= 3) {
-                    regex = new RegExp(`\\b${cleanKeyword}\\b`, 'i');
+                const kw = this._removeAccents(keyword.toLowerCase());
+                let hit = false;
+                if (kw.length <= 4) {
+                    // Mot-clé court : correspondance exacte sur le mot entier
+                    hit = new RegExp(`\\b${kw}\\b`, 'i').test(cleanQ);
                 } else {
-                    regex = new RegExp(`\\b${cleanKeyword}`, 'i');
+                    // Racine de 5 lettres : tolère les variations de suffixe
+                    const kwStem = kw.slice(0, 5);
+                    hit = qStems.some(st => st === kwStem || st.startsWith(kwStem) || kwStem.startsWith(st));
                 }
-                if (regex.test(cleanQ)) {
-                    matches++;
-                }
+                if (hit) matches++;
             }
             if (matches > maxMatches) {
                 maxMatches = matches;
@@ -205,9 +238,12 @@ class LLMFallback {
             }
         }
 
-        // Si aucun mot-clé ne matche, renvoyer une phrase d'esquive naturelle
-        const fallbackIndex = Math.floor(Math.random() * this.fallbacks.length);
-        return this.fallbacks[fallbackIndex];
+        // Plus d'esquive silencieuse : on expose l'échec du moteur local
+        // (ce code n'est atteint que si le LLM est HS et qu'aucun mot-clé n'a matché)
+        return `⚠️ [ERREUR LLM — Fallback local] Aucune réponse du LLM et aucun mot-clé trouvé pour « ${question} ».`
+            + ` Vérifiez : 1) Le proxy LLM est-il démarré (/.netlify/functions/llm-proxy ou mcp-server / env LLM_API_KEY) ?`
+            + ` 2) La console (F12) pour le détail HTTP.`
+            + ` 3) Si vous êtes en file:// ouvrez via http://localhost (npx serve .).`;
     }
 }
 
