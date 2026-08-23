@@ -448,17 +448,21 @@
                     let rawTextForHistory = "";
 
                     if (result.narrative && result.dialogue) {
-                        displayHTML = `<em>(${result.narrative})</em> <br>« ${result.dialogue} »`;
+                        const safeNarr = this._safeMarkdown(result.narrative);
+                        const safeDial = this._safeMarkdown(result.dialogue);
+                        displayHTML = `<em>(${safeNarr})</em><br>« ${safeDial} »`;
                         rawTextForHistory = `*(${result.narrative})* "${result.dialogue}"`;
                     } else if (result.narrative) {
-                        displayHTML = `<em>${result.narrative}</em>`;
+                        const safeNarr = this._safeMarkdown(result.narrative);
+                        displayHTML = `<em>${safeNarr}</em>`;
                         rawTextForHistory = `*${result.narrative}*`;
                         
                         // Modifier l'étiquette pour "Maître du Jeu" s'il n'y a pas de dialogue direct
                         const labelEl = loading.parentNode?.querySelector('strong');
                         if (labelEl) labelEl.textContent = "Maître du Jeu : ";
                     } else if (result.dialogue) {
-                        displayHTML = `« ${result.dialogue} »`;
+                        const safeDial = this._safeMarkdown(result.dialogue);
+                        displayHTML = `« ${safeDial} »`;
                         rawTextForHistory = `"${result.dialogue}"`;
                     } else {
                         displayHTML = `<em>Le patient ne réagit pas.</em>`;
@@ -467,7 +471,7 @@
                         if (labelEl) labelEl.textContent = "Maître du Jeu : ";
                     }
 
-                    loading.innerHTML = this._safeMarkdown(displayHTML);
+                    loading.innerHTML = displayHTML;
                     loading.classList.add('answer-fade-in');
                     this.messages.push({ role: 'assistant', content: rawTextForHistory });
 
