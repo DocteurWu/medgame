@@ -62,3 +62,5 @@ Pour discuter d'idées de cas, de fonctionnalités ou rejoindre l'équipe active
 *   Contacter le mainteneur par email : **hamlat.louai@gmail.com** ou soutenir le projet via [Revolut](https://revolut.me/louai2405).
 
 Merci encore pour votre aide dans l'amélioration de l'éducation médicale ! 🩺
+
+<!-- pair correct test 2 -->
