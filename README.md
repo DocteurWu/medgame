@@ -5,11 +5,37 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/DocteurWu/medgame/actions/workflows/ci.yml"><img src="https://github.com/DocteurWu/medgame/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://github.com/DocteurWu/medgame/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge&logo=gnu" alt="License GPLv3"></a>
+  <a href="https://github.com/DocteurWu/medgame/releases"><img src="https://img.shields.io/github/v/release/DocteurWu/medgame?label=Version&style=for-the-badge&logo=github" alt="Version"></a>
+  <a href="https://github.com/DocteurWu/medgame/stargazers"><img src="https://img.shields.io/github/stars/DocteurWu/medgame?style=for-the-badge&logo=github&color=yellow" alt="Stars"></a>
+  <a href="https://github.com/DocteurWu/medgame/network/members"><img src="https://img.shields.io/github/forks/DocteurWu/medgame?style=for-the-badge&logo=github" alt="Forks"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/DocteurWu/medgame/issues"><img src="https://img.shields.io/github/issues/DocteurWu/medgame?style=for-the-badge&logo=github" alt="Issues"></a>
+  <a href="https://github.com/DocteurWu/medgame/pulls"><img src="https://img.shields.io/github/issues-pr/DocteurWu/medgame?style=for-the-badge&logo=github" alt="PRs"></a>
+  <a href="https://github.com/DocteurWu/medgame/commits/master"><img src="https://img.shields.io/github/last-commit/DocteurWu/medgame?style=for-the-badge&logo=git" alt="Last Commit"></a>
+  <a href="https://github.com/DocteurWu/medgame/graphs/contributors"><img src="https://img.shields.io/github/contributors/DocteurWu/medgame?style=for-the-badge" alt="Contributors"></a>
+  <a href="https://github.com/DocteurWu/medgame"><img src="https://img.shields.io/github/repo-size/DocteurWu/medgame?style=for-the-badge&logo=github" alt="Repo Size"></a>
+  <a href="https://github.com/DocteurWu/medgame"><img src="https://img.shields.io/github/languages/code-size/DocteurWu/medgame?style=for-the-badge" alt="Code Size"></a>
+</p>
+
+<p align="center">
   <a href="https://threejs.org/"><img src="https://img.shields.io/badge/3D%20Engine-Three.js%20r128-black?style=for-the-badge&logo=three.js" alt="Three.js Engine"></a>
   <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/Stack-Vanilla%20JS%20%7C%20HTML5%20%7C%20CSS3-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="Vanilla JS"></a>
   <a href="https://supabase.com/"><img src="https://img.shields.io/badge/Backend-Supabase%20RLS-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase Backend"></a>
   <a href="https://docker.com"><img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Ready"></a>
+  <img src="https://img.shields.io/badge/Node-%3E%3D20-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node 20">
+  <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=for-the-badge&logo=github" alt="PRs Welcome">
+  <img src="https://img.shields.io/badge/Maintained-Yes-00C853?style=for-the-badge&logo=github" alt="Maintained">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/github/languages/top/DocteurWu/medgame?style=for-the-badge" alt="Top Language">
+  <img src="https://img.shields.io/github/commit-activity/m/DocteurWu/medgame?style=for-the-badge" alt="Commit Activity">
+  <img src="https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA Ready">
+  <img src="https://img.shields.io/badge/Medgame-120%2B%20Cases-critical?style=for-the-badge&logo=heart-pulse" alt="Cases">
 </p>
 
 ---
