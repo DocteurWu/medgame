@@ -1,10 +1,18 @@
 /**
  * three-lighting-agent.js — Agent d'éclairage avancé
- * HDR, ombres dynamiques douces, IBL (RoomEnvironment), post-processing (bloom, SSAO, tone mapping)
+ * HDR (HDRI Poly Haven + fallback procédural), ombres dynamiques douces,
+ * IBL (RoomEnvironment), post-processing complet (GTAO, bloom, MSAA, tone mapping).
  */
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+// Sources HDRI neutres (réflexions PBR crédibles) — tentées dans l'ordre, fallback procédural si offline
+const HDRI_SOURCES = [
+    'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/photo_studio_01_1k.hdr',
+    'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/brown_photostudio_02_1k.hdr'
+];
+const HDRI_TIMEOUT_MS = 8000;
 
 export class ThreeLightingAgent {
     constructor(scene, renderer) {
@@ -12,6 +20,8 @@ export class ThreeLightingAgent {
         this.renderer = renderer;
         this.composer = null;
         this.bloomPass = null;
+        this.gtaoPass = null;
+        this.renderPass = null;
         this.theme = 'dark';
         this.ambientLight = null;
         this.keyLight = null;
@@ -20,6 +30,17 @@ export class ThreeLightingAgent {
         this.hemiLight = null;
         this.bounceLights = [];
         this._envTexture = null;
+        this._hdriLoaded = false;
+
+        // Réglages qualité pilotés par ThreeQualityAgent
+        this.quality = {
+            msaa: 4,
+            gtao: true,
+            bloom: true,
+            shadowSize: 2048,
+            gtaoRadius: 0.6,
+            gtaoSamples: 12
+        };
     }
 
     /**
@@ -38,16 +59,16 @@ export class ThreeLightingAgent {
         this.scene.add(hemiLight);
         this.hemiLight = hemiLight;
 
-        // Lumière principale (Sun Light) venant de la fenêtre cinématique
+        // Lumière principale (Sun Light) entrant par la fenêtre du mur droit (x = 5.5, z ≈ -2.2)
         const keyLight = new THREE.DirectionalLight('#fed7aa', 1.9);
-        keyLight.position.set(12, 8, 2);
-        // Ombres portées RÉACTIVÉES en version douce (PCF).
+        keyLight.position.set(11, 7.5, -3.5);
+        // Ombres portées en version douce (PCF).
         // NOTE HISTORIQUE : l'ancienne "bande noire" ne venait pas des ombres elles-mêmes,
         // mais de la shadow-camera par défaut (frustum ±5 trop étroit pour une salle de 11×10)
         // combinée à un bias nul (shadow acne). Frustum resserré sur la salle + normalBias
         // => ombres propres, douces, sans bande ni acne.
         keyLight.castShadow = true;
-        keyLight.shadow.mapSize.set(2048, 2048);
+        keyLight.shadow.mapSize.set(this.quality.shadowSize, this.quality.shadowSize);
         keyLight.shadow.camera.near = 2;
         keyLight.shadow.camera.far = 30;
         keyLight.shadow.camera.left = -9;
@@ -61,7 +82,7 @@ export class ThreeLightingAgent {
         this.scene.add(keyLight);
         this.keyLight = keyLight;
 
-        // Lumières ponctuelles (lampes de la salle sous le plafond y=5.0) — plus douces
+        // Lumières ponctuelles (dalles LED du plafond sous y=5.0) — plus douces
         this.pointLights = [];
         this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#f8fafc', 0.28, 9));
         this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#f8fafc', 0.28, 9));
@@ -100,11 +121,14 @@ export class ThreeLightingAgent {
 
         // Environnement IBL : c'est lui qui donne du "réel" aux métaux, vernis et céramiques
         this._setupEnvironment();
+        // Puis tentative de chargement d'une vraie HDRI (meilleures réflexions)
+        this._loadHDRI();
     }
 
     /**
      * Génère un environnement IBL procédural (RoomEnvironment + PMREM).
      * Fournit des réflexions PBR crédibles sur tous les matériaux standard/physical.
+     * Sert de fallback immédiat si la HDRI distante n'est pas (encore) disponible.
      */
     _setupEnvironment() {
         try {
@@ -122,6 +146,49 @@ export class ThreeLightingAgent {
         }
     }
 
+    /**
+     * Charge une HDRI equirectangulaire depuis un CDN (Poly Haven).
+     * Améliore nettement la qualité des réflexions PBR par rapport au RoomEnvironment procédural.
+     * En cas d'échec réseau ou de timeout, conserve le fallback procédural existant.
+     */
+    _loadHDRI() {
+        if (this._hdriLoaded || !navigator.onLine) return;
+
+        const tryLoad = async () => {
+            const { RGBELoader } = await import('three/addons/loaders/RGBELoader.js');
+            const loader = new RGBELoader();
+
+            for (const url of HDRI_SOURCES) {
+                try {
+                    const texture = await new Promise((resolve, reject) => {
+                        const timer = setTimeout(() => reject(new Error('timeout')), HDRI_TIMEOUT_MS);
+                        loader.load(url, (tex) => { clearTimeout(timer); resolve(tex); }, undefined, (err) => {
+                            clearTimeout(timer); reject(err);
+                        });
+                    });
+                    texture.mapping = THREE.EquirectangularReflectionMapping;
+                    this.scene.environment = texture;
+                    if ('environmentIntensity' in this.scene) {
+                        this.scene.environmentIntensity = this.theme === 'light' ? 0.55 : 0.35;
+                    }
+                    // Libérer l'environnement procédural devenu inutile
+                    if (this._envTexture && this._envTexture !== texture) {
+                        this._envTexture.dispose();
+                        this._envTexture = texture;
+                    }
+                    this._hdriLoaded = true;
+                    console.info('[LightingAgent] HDRI chargée ✅ réflexions PBR améliorées');
+                    return;
+                } catch (e) {
+                    console.warn(`[LightingAgent] HDRI indisponible (${url}), essai suivant…`);
+                }
+            }
+            console.info('[LightingAgent] HDRI non chargée — fallback procédural conservé');
+        };
+
+        tryLoad().catch(() => {});
+    }
+
     _addPointLight(x, y, z, color, intensity, distance) {
         const light = new THREE.PointLight(color, intensity, distance);
         light.position.set(x, y, z);
@@ -129,124 +196,141 @@ export class ThreeLightingAgent {
         return light;
     }
 
-    toggleTheme() {
-        this.theme = this.theme === 'dark' ? 'light' : 'dark';
-        this.applyTheme();
-        return this.theme;
-    }
+    /**
+     * Applique les réglages qualité (appelé par ThreeQualityAgent).
+     * @param {Object} q — { msaa, gtao, bloom, shadowSize, gtaoRadius, gtaoSamples }
+     */
+    setQualitySettings(q = {}) {
+        Object.assign(this.quality, q);
 
-    applyTheme() {
-        const isDark = this.theme !== 'light';
-        const bgColor = isDark ? 0x2d3135 : 0xf1f5f9;
-
-        // Background & Fog
-        if (this.scene) {
-            this.scene.background.set(bgColor);
-            if (this.scene.fog) {
-                this.scene.fog.color.set(bgColor);
+        // Taille de la shadow map (dispose obligatoire pour appliquer le changement)
+        if (this.keyLight) {
+            const size = this.quality.shadowSize;
+            if (this.keyLight.shadow.mapSize.x !== size) {
+                this.keyLight.shadow.mapSize.set(size, size);
+                if (this.keyLight.shadow.map) {
+                    this.keyLight.shadow.map.dispose();
+                    this.keyLight.shadow.map = null;
+                }
             }
         }
 
-        // Ambient Light
-        if (this.ambientLight) {
-            this.ambientLight.color.set(isDark ? '#7a8b9e' : '#e0f2fe');
-            this.ambientLight.intensity = isDark ? 0.14 : 0.55;
+        // Passes post-processing (si le composer existe déjà)
+        if (this.gtaoPass) {
+            this.gtaoPass.enabled = !!this.quality.gtao;
+            if (this.quality.gtao && typeof this.gtaoPass.updateGtaoMaterial === 'function') {
+                this.gtaoPass.updateGtaoMaterial({
+                    radius: this.quality.gtaoRadius,
+                    samples: this.quality.gtaoSamples
+                });
+            }
+        }
+        if (this.bloomPass) {
+            this.bloomPass.enabled = !!this.quality.bloom;
         }
 
-        // Key Light
-        if (this.keyLight) {
-            this.keyLight.color.set(isDark ? '#fed7aa' : '#fffbeb');
-            this.keyLight.intensity = isDark ? 1.9 : 1.0;
+        // Plus aucun effet requis → rendu direct (MSAA du canvas, chemin le plus rapide)
+        if (!this.quality.gtao && !this.quality.bloom && this.composer) {
+            this.teardownComposer();
         }
+    }
 
-        // Ceiling Point Lights
-        if (this.pointLights) {
-            this.pointLights.forEach(light => {
-                light.color.set(isDark ? '#f8fafc' : '#ffffff');
-                light.intensity = isDark ? 0.28 : 0.8;
-            });
-        }
-
-        // Standing floor lamp warm light
-        if (this.wallLampLight) {
-            this.wallLampLight.intensity = isDark ? 2.8 : 1.2;
-        }
-
-        // Blue laser light
-        if (this.blueLaserLight) {
-            this.blueLaserLight.intensity = isDark ? 2.2 : 0.8;
-        }
-
-        // Instruments glow light
-        if (this.instLight) {
-            this.instLight.intensity = isDark ? 0.35 : 0.15;
-        }
-
-        // Lumière hémisphérique (rebond ciel/sol)
-        if (this.hemiLight) {
-            this.hemiLight.intensity = isDark ? 0.25 : 0.5;
-        }
-
-        // Lumières de rebond (bounce)
-        if (this.bounceLights && this.bounceLights.length === 2) {
-            this.bounceLights[0].intensity = isDark ? 0.22 : 0.3;
-            this.bounceLights[1].intensity = isDark ? 0.14 : 0.22;
-        }
-
-        // Intensité IBL globale (three >= r163)
-        if ('environmentIntensity' in this.scene) {
-            this.scene.environmentIntensity = isDark ? 0.35 : 0.55;
-        }
-
-        // Volumetric sunlight ray
-        const shaft = this.scene.getObjectByName('VolumetricSunlightRay');
-        if (shaft && shaft.material) {
-            shaft.material.opacity = isDark ? 0.075 : 0.02;
-        }
+    toggleTheme() {
+        // Mode jour supprimé : le rendu sombre clinique est le seul thème.
+        return this.theme;
     }
 
     /**
-     * Configure le post-processing (Bloom, FXAA, etc.)
+     * Configure le post-processing complet :
+     * RenderPass (MSAA HalfFloat) → GTAO (occlusion ambiante) → Bloom → OutputPass.
+     * Le composer n'est créé que si la qualité l'exige (bloom ou gtao actifs).
      */
-    setupPostProcessing() {
-        // N'a besoin de composer que si on veut du bloom
-        // Pour les navigateurs moins puissants, on peut le désactiver
-        const pixelRatio = this.renderer.getPixelRatio();
-        if (pixelRatio > 1.5) {
-            this._setupBloomComposer();
-        }
-    }
+    async setupPostProcessing() {
+        const wantsComposer = this.quality.bloom || this.quality.gtao;
+        if (!wantsComposer || this.composer) return;
 
-    async _setupBloomComposer() {
         try {
             const postprocessing = await import('three/addons/postprocessing/EffectComposer.js');
             const renderPassMod = await import('three/addons/postprocessing/RenderPass.js');
-            const bloomPassMod = await import('three/addons/postprocessing/UnrealBloomPass.js');
             const outputPassMod = await import('three/addons/postprocessing/OutputPass.js');
 
             const { EffectComposer } = postprocessing;
             const { RenderPass } = renderPassMod;
-            const { UnrealBloomPass } = bloomPassMod;
             const { OutputPass } = outputPassMod;
 
-            this.composer = new EffectComposer(this.renderer);
+            const width = window.innerWidth;
+            const height = window.innerHeight;
 
-            const renderPass = new RenderPass(this.scene, this._getActiveCamera());
-            this.composer.addPass(renderPass);
+            // Render target MSAA HalfFloat : conserve l'anti-aliasing matériel
+            // même quand la scène passe par le composer (WebGL2 uniquement).
+            const rtParams = {
+                type: THREE.HalfFloatType,
+                colorSpace: THREE.LinearSRGBColorSpace
+            };
+            if (this.renderer.capabilities.isWebGL2 && this.quality.msaa > 0) {
+                rtParams.samples = this.quality.msaa;
+            }
+            const renderTarget = new THREE.WebGLRenderTarget(width, height, rtParams);
+            this._builtMsaa = rtParams.samples || 0;
 
-            // Bloom — valeurs douces pour un rendu médical (légèrement affinées)
-            this.bloomPass = new UnrealBloomPass(
-                new THREE.Vector2(window.innerWidth, window.innerHeight),
-                0.45, // strength
-                0.4,  // radius
-                0.85  // threshold
-            );
-            this.composer.addPass(this.bloomPass);
+            this.composer = new EffectComposer(this.renderer, renderTarget);
+            this.composer.setPixelRatio(this.renderer.getPixelRatio());
+            this.composer.setSize(width, height);
+
+            this.renderPass = new RenderPass(this.scene, this._getActiveCamera());
+            this.composer.addPass(this.renderPass);
+
+            // GTAO — occlusion ambiante temps réel (contact shading réaliste)
+            if (this.quality.gtao) {
+                try {
+                    const gtaoMod = await import('three/addons/postprocessing/GTAOPass.js');
+                    const { GTAOPass } = gtaoMod;
+                    this.gtaoPass = new GTAOPass(this.scene, this._getActiveCamera(), width, height);
+                    if (typeof this.gtaoPass.updateGtaoMaterial === 'function') {
+                        this.gtaoPass.updateGtaoMaterial({
+                            radius: this.quality.gtaoRadius,
+                            distanceExponent: 1.0,
+                            thickness: 1.0,
+                            scale: 1.0,
+                            samples: this.quality.gtaoSamples
+                        });
+                    }
+                    if (typeof this.gtaoPass.updatePdMaterial === 'function') {
+                        this.gtaoPass.updatePdMaterial({
+                            lumaPhi: 10.0,
+                            depthPhi: 2.0,
+                            normalPhi: 3.0,
+                            radius: 4.0,
+                            radiusExponent: 16.0,
+                            rings: 2.0,
+                            samples: 16.0
+                        });
+                    }
+                    this.composer.addPass(this.gtaoPass);
+                } catch (e) {
+                    console.warn('[LightingAgent] GTAO indisponible:', e);
+                    this.gtaoPass = null;
+                }
+            }
+
+            // Bloom — valeurs douces pour un rendu médical (halos ampoules/écrans uniquement)
+            if (this.quality.bloom) {
+                const bloomPassMod = await import('three/addons/postprocessing/UnrealBloomPass.js');
+                const { UnrealBloomPass } = bloomPassMod;
+                this.bloomPass = new UnrealBloomPass(
+                    new THREE.Vector2(width, height),
+                    0.38, // strength
+                    0.35, // radius
+                    0.88  // threshold
+                );
+                this.composer.addPass(this.bloomPass);
+            }
 
             const outputPass = new OutputPass();
             this.composer.addPass(outputPass);
         } catch (e) {
             console.warn('[LightingAgent] Post-processing non disponible:', e);
+            this.composer = null;
         }
     }
 
@@ -256,6 +340,41 @@ export class ThreeLightingAgent {
         if (this.scene._camera) return this.scene._camera;
         if (this.scene.userData?.camera) return this.scene.userData.camera;
         return null;
+    }
+
+    /**
+     * Reconstruit le composer si le niveau de MSAA demandé a changé.
+     * @returns {boolean} true si une reconstruction est nécessaire/nécessaire faite
+     */
+    needsRebuild(msaa) {
+        return !!this.composer && (this._builtMsaa || 0) !== (msaa || 0);
+    }
+
+    teardownComposer() {
+        if (this.composer) {
+            // Disposer les passes (GTAO/Bloom allouent leurs propres render targets —
+            // sans cela : fuite VRAM à chaque changement de palier qualité)
+            try { this.gtaoPass?.dispose?.(); } catch (e) { /* pass sans dispose */ }
+            try { this.bloomPass?.dispose?.(); } catch (e) {}
+            try { this.renderPass?.dispose?.(); } catch (e) {}
+            this.composer.renderTarget1?.dispose();
+            this.composer.renderTarget2?.dispose();
+            this.composer = null;
+            this.renderPass = null;
+            this.gtaoPass = null;
+            this.bloomPass = null;
+        }
+    }
+
+    /**
+     * Redimensionne le composer (appelé sur resize fenêtre)
+     */
+    resize(width, height) {
+        if (!this.composer) return;
+        // Synchroniser le pixel ratio du composer avec celui du renderer
+        // (modifié dynamiquement par l'agent qualité)
+        this.composer.setPixelRatio(this.renderer.getPixelRatio());
+        this.composer.setSize(width, height);
     }
 
     /**
@@ -283,11 +402,11 @@ export class ThreeLightingAgent {
 
         if (this.bloomPass) {
             const bloomStrengths = {
-                room: 0.45,
-                patient: 0.7,
-                desk: 0.3
+                room: 0.38,
+                patient: 0.6,
+                desk: 0.28
             };
-            this.bloomPass.strength = bloomStrengths[mode] || 0.45;
+            this.bloomPass.strength = bloomStrengths[mode] || 0.38;
         }
     }
 
@@ -296,8 +415,12 @@ export class ThreeLightingAgent {
      */
     dispose() {
         if (this.composer) {
-            this.composer.renderTarget1.dispose();
-            this.composer.renderTarget2.dispose();
+            try { this.gtaoPass?.dispose?.(); } catch (e) {}
+            try { this.bloomPass?.dispose?.(); } catch (e) {}
+            try { this.renderPass?.dispose?.(); } catch (e) {}
+            this.composer.renderTarget1?.dispose();
+            this.composer.renderTarget2?.dispose();
+            this.composer = null;
         }
         if (this._envTexture) {
             this._envTexture.dispose();

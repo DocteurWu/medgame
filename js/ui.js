@@ -87,23 +87,23 @@ function showCorrectionModal(text) {
     let finalHtml = '';
 
     if (text) {
-        const htmlMatch = text.match(/^([\s\S]*?<hr[^>]*>)([\s\S]*)$/);
+        // Sanitization : les corrections peuvent provenir de cas communautaires (Supabase)
+        const sanitized = sanitizeHtml(text);
+        const htmlMatch = sanitized.match(/^([\s\S]*?<hr[^>]*>)([\s\S]*)$/);
         if (htmlMatch) {
             finalHtml += htmlMatch[1];
             finalHtml += parseMarkdown(htmlMatch[2]);
         } else {
-            if (/<[a-z][\s\S]*>/i.test(text)) {
-                finalHtml += text;
-            } else {
-                finalHtml += parseMarkdown(text);
-            }
+            finalHtml += sanitized;
         }
     }
 
     const c = uiState.currentCase;
-    if (c && c.correctionImage) {
-        finalHtml += `<div style="text-align: center; margin-top: 20px;">
-                    <img src="${c.correctionImage}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;" onclick="window.showImageModal('${c.correctionImage}', 'Illustration Correction')">
+    const corrImgSrc = c ? String(c.correctionImage || '') : '';
+    if (corrImgSrc) {
+        const imgSrc = escapeHtml(corrImgSrc);
+        finalHtml += `<div style="text-align: center; margin-top: 20px;" data-correction-img="${imgSrc}">
+                    <img src="${imgSrc}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;">
                 </div>`;
     }
 
@@ -116,6 +116,17 @@ function showCorrectionModal(text) {
     }
 
     contentEl.innerHTML = finalHtml;
+
+    // Handler image correction : attribut data + addEventListener (jamais d'onclick inline interpolé)
+    const imgWrap = contentEl.querySelector('[data-correction-img]');
+    if (imgWrap) {
+        imgWrap.addEventListener('click', () => {
+            if (typeof window.showImageModal === 'function') {
+                window.showImageModal(imgWrap.dataset.correctionImg, 'Illustration Correction');
+            }
+        });
+    }
+
     const overlay = document.getElementById('correction-overlay');
     if (overlay) overlay.style.display = 'flex';
 }
@@ -248,7 +259,8 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
         // Notifier le HUD 3D de la progression interrogatoire
         document.dispatchEvent(new CustomEvent('interrogatoire-asked', { detail: { path } }));
 
-        if (typeof window.deductTime === 'function') {
+        // « Tout afficher » pré-paie le forfait groupé : pas de double facturation
+        if (!btn.dataset.prepaid && typeof window.deductTime === 'function') {
             const hasTime = window.deductTime(5);
             if (!hasTime) {
                 showNotification("Temps in-game insuffisant pour poser cette question.");
@@ -312,8 +324,10 @@ window.revealAllInterrogatoire = function() {
     const revealBtn = document.getElementById('btn-reveal-all');
     if (revealBtn) revealBtn.style.display = 'none';
 
-    // Cliquer chaque bouton avec un léger décalage
+    // Marquer les boutons comme pré-payés (le forfait groupé est déjà déduit)
+    // puis les cliquer avec un léger décalage
     btns.forEach((btn, i) => {
+        btn.dataset.prepaid = 'true';
         setTimeout(() => btn.click(), i * 120);
     });
 };

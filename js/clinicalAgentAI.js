@@ -336,8 +336,9 @@ class ClinicalAgentAI {
                 let cleanResponse = responseJson.clinicalResponse;
                 const prefixRegex = new RegExp(`^(${finalRole}|Directeur Clinique|Radiologue|Infirmier|Infirmière|Biologiste|Médecin Réanimateur|Cardiologue|Intervention)\\s*:\\s*`, 'i');
                 cleanResponse = cleanResponse.replace(prefixRegex, '').trim();
-                
-                textSpan.innerHTML = cleanResponse;
+
+                // Sortie LLM : injection textuelle (jamais innerHTML — anti-XSS)
+                textSpan.textContent = cleanResponse;
             }
         }
 
@@ -365,6 +366,8 @@ class ClinicalAgentAI {
 
         // D. Verbatim du patient (parole réactive) — désactivé si l'on souhaite que le LLM réponde lui-même à la place
         if (!options.skipVerbatim && responseJson.patientVerbatim?.trim()) {
+            // Sortie LLM : échappement systématique (anti-XSS)
+            const verbatim = escapeHtml(responseJson.patientVerbatim.trim());
             setTimeout(() => {
                 if (messages3d) {
                     const row = document.createElement('div');
@@ -373,7 +376,7 @@ class ClinicalAgentAI {
                         <div class="dialog-msg-patient">
                             <span class="dialog-msg-avatar">🗣️</span>
                             <div class="dialog-msg-bubble" style="border-left:3px solid #ff9f43;">
-                                <span class="dialog-msg-text"><strong>Patient :</strong> « ${responseJson.patientVerbatim} »</span>
+                                <span class="dialog-msg-text"><strong>Patient :</strong> « ${verbatim} »</span>
                             </div>
                         </div>
                     `;
@@ -385,7 +388,7 @@ class ClinicalAgentAI {
                 if (root2d) {
                     const r = document.createElement('div');
                     r.className = 'dialogue-message from-patient';
-                    r.innerHTML = `<strong>Patient : </strong><span>« ${responseJson.patientVerbatim} »</span>`;
+                    r.innerHTML = `<strong>Patient : </strong><span>« ${verbatim} »</span>`;
                     root2d.appendChild(r);
                     root2d.scrollTop = root2d.scrollHeight;
                 }
@@ -452,7 +455,12 @@ class ClinicalAgentAI {
         if (root2d) {
             const card2d = document.createElement('div');
             card2d.className = 'dialogue-message clinical-action-card-2d';
-            card2d.innerHTML = `🩺 <strong>${finalRoleForLog} :</strong> ${cleanResponseForLog}`;
+            // Sortie LLM : injection textuelle (jamais innerHTML — anti-XSS)
+            const roleStrong = document.createElement('strong');
+            roleStrong.textContent = `🩺 ${finalRoleForLog} : `;
+            const bodySpan = document.createElement('span');
+            bodySpan.textContent = cleanResponseForLog;
+            card2d.append(roleStrong, bodySpan);
             root2d.appendChild(card2d);
             root2d.scrollTop = root2d.scrollHeight;
         }
@@ -465,7 +473,7 @@ class ClinicalAgentAI {
      * Appelle l'API d'OpenRouter avec un prompt de type Directeur Clinique / GM
      */
     async callOpenRouterClinicalDirector(action, caseData, vitals, modelOverride) {
-        const endpoint = window.CONFIG?.LLM_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+        const endpoint = window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy';
         const model = modelOverride || window.CONFIG?.LLM_MODEL || 'llama-3.3-70b-versatile';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
 
@@ -549,9 +557,7 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {}),
-                'HTTP-Referer': window.location.origin || 'http://localhost',
-                'X-Title': 'MedGame'
+                ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {})
             },
             body: JSON.stringify({
                 model,

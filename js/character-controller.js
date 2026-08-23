@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { easeInOut } from './three-animations.js';
 import { DoctorAnimator } from './three-animations.js';
+import { loadGLBSmart } from './three-loaders.js';
 
 export class CharacterController {
     constructor(scene) {
@@ -82,8 +82,7 @@ export class CharacterController {
     }
 
     loadModel(modelPath) {
-        const loader = new GLTFLoader();
-        loader.load(modelPath, (gltf) => {
+        loadGLBSmart(modelPath, (gltf) => {
             // Remove procedural doctor fallback
             if (this.proceduralGroup) {
                 this.group.remove(this.proceduralGroup);

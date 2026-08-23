@@ -21,30 +21,28 @@
     "EDN_boulimie_1.json",
     "EDN_ARFID_1.json",
     "EDN_hyperphagie_1.json",
-    "EDN_Mérycisme_1.json",
+    "EDN_Merycisme_1.json",
     "EDN_PICA_1.json",
     "EDN_diabetetype2_2.json",
-    "EDN_dénutrition-hyper_1.json",
-    "EDN_Dénutrition-obésité_1.json",
+    "EDN_denutrition-hyper_1.json",
+    "EDN_Denutrition-obesite_1.json",
     "EDN_diabetetype1.json",
-    "EDN_Obésité_1.json",
+    "EDN_Obesite_1.json",
     "EDN_VIH.json",
-    "EDN_diabetetype1monogé.json"
+    "EDN_diabetetype1monoge.json"
   ],
-  "agents-infectieux": [],
   "appareil-digestif": [
     "digestif_cancer_oeso_brandon.json",
     "digestif_dyspepsie_elinor.json",
-    "digestif_cancer_gastrique_Jirō.json",
+    "digestif_cancer_gastrique_Jiro.json",
     "digestif_reflux_gastro_oesophagien_nick.json"
   ],
-  "immunologie": [],
   "uronephro": [
-    "nephro_pyélonéphrite_obstructive.json",
-    "nephro_varicocèle.json",
+    "nephro_pyelonephrite_obstructive.json",
+    "nephro_varicocele.json",
     "nephro_IRA_obstructive.json",
     "nephro_torsion_du_cordon_spermatique.json",
-    "nephro_orchiépididymite.json",
+    "nephro_orchiepididymite.json",
     "ANDRO_dysfonction_erectile_militaire.json",
     "URO_cystite_IST_chlamydia.json",
     "URO_polyurie_diurese_osmotique_diabete.json",
@@ -62,12 +60,12 @@
     "neuro_polyneuropathie_jacques.json",
     "neuro_crise_psychogene_JoeW.json",
     "neuro_epilepsie_averee_mary.json",
-    "neuro_crise_convulsive_généralisée_Lexie.json",
+    "neuro_crise_convulsive_generalisee_Lexie.json",
     "neuro_crise_hypoglycemique_adele.json",
     "neuro_syndrome_cordon_posterieur_Blaise.json",
     "neuro_syndrome_pyramidal_traumatique_aigu_Georges.json",
     "neuro_syndrome_pyramidal_vasculaire_ThatcherG.json",
-    "neuro_syndrome_sensitif_central_cordons_postérieurs_MarieC.json",
+    "neuro_syndrome_sensitif_central_cordons_posterieurs_MarieC.json",
     "neuro_syndrome_sensitif_peripherique_diabetique_bobR.json"
   ],
   "locomoteur": [
@@ -91,7 +89,6 @@
     "pneumo_1.json"
   ],
   "urgence": [
-    "urgence_accouchement_inopine.json",
     "urgence_choc_anaphylactique_01.json",
     "urgence_demo_acr.json",
     "urgence_demo_hemorragie.json",

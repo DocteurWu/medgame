@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import { createMaterial } from './three-room.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { gltfLoader as _sharedGLTFLoader } from './three-loaders.js';
+
+// ── Cache d'assets : les GLB/textures ne sont ni retéléchargés ni reparsés
+// entre deux chargements de cas (latence réduite au changement de patient).
+THREE.Cache.enabled = true;
 
 /**
  * three-patient.js — Modèle patient procédural avec visage détaillé
@@ -44,23 +48,29 @@ export class ThreePatient {
         const position = patient.position3D || 'allonge';
         this._currentPosition = position;
 
-        // Matériaux PBR améliorés pour la peau (Flat-Shading)
-        this.skinMat = new THREE.MeshStandardMaterial({
+        // Peau PBR lisse : sheen léger (pseudo-subsurface), plus de flat shading "low-poly"
+        this.skinMat = new THREE.MeshPhysicalMaterial({
             color: 0xd7a87a,
-            roughness: 0.65,
-            metalness: 0.02,
-            flatShading: true,
+            roughness: 0.52,
+            metalness: 0.0,
+            sheen: 0.4,
+            sheenRoughness: 0.65,
+            sheenColor: new THREE.Color(0xffd9c2),
             emissive: 0x1a0800,
             emissiveIntensity: 0.04,
+            envMapIntensity: 0.6
         });
 
-        // Matériau tissu amélioré (Flat-Shading)
+        // Tissu textile : sheen pour le reflet rasant des fibres (plus de flat shading)
         const clothColor = patient.tenue === 'blouse_blanche' ? 0xf2f4f7 : 0x4f72a8;
-        this.clothMat = new THREE.MeshStandardMaterial({
+        this.clothMat = new THREE.MeshPhysicalMaterial({
             color: clothColor,
-            roughness: 0.85,
+            roughness: 0.9,
             metalness: 0.0,
-            flatShading: true
+            sheen: 0.55,
+            sheenRoughness: 0.6,
+            sheenColor: new THREE.Color(0xffffff),
+            envMapIntensity: 0.45
         });
 
         // Position Y ajustée pour que le patient soit posé sur le lit/chaise
@@ -269,13 +279,12 @@ export class ThreePatient {
         const mat = (color, opts = {}) => new THREE.MeshStandardMaterial({
             color,
             roughness: opts.roughness ?? 0.8,
-            metalness: opts.metalness ?? 0.0,
-            flatShading: true
+            metalness: opts.metalness ?? 0.0
         });
 
-        // Sclérotique facettée
+        // Sclérotique lisse
         const white = new THREE.Mesh(
-            new THREE.SphereGeometry(0.024, 6, 4),
+            new THREE.SphereGeometry(0.024, 14, 10),
             mat(0xf8f5f0)
         );
         white.scale.set(1.4, 1.0, 0.4);
@@ -390,7 +399,7 @@ export class ThreePatient {
         mouthGroup.userData = { label: 'Patient', interactive: true };
 
         const lipMat = new THREE.MeshStandardMaterial({
-            color: 0xa04040, roughness: 0.8, flatShading: true
+            color: 0xa04040, roughness: 0.8
         });
 
         const upperLip = new THREE.Mesh(
@@ -422,13 +431,12 @@ export class ThreePatient {
 
         const hairMat = new THREE.MeshStandardMaterial({
             color: 0x2a1a0a,
-            roughness: 0.9,
-            metalness: 0.05,
-            flatShading: true
+            roughness: 0.85,
+            metalness: 0.05
         });
 
         const cap = new THREE.Mesh(
-            new THREE.SphereGeometry(0.175, 8, 6, 0, Math.PI * 2, 0, Math.PI * 0.55),
+            new THREE.SphereGeometry(0.175, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.55),
             hairMat
         );
         cap.position.y = 0.01;
@@ -1046,7 +1054,7 @@ export class ThreePatient {
         }
 
         const loadId = ++this._lastLoadId;
-        const loader = new GLTFLoader();
+        const loader = _sharedGLTFLoader;
 
         loader.load(modelPath, (gltf) => {
             if (loadId !== this._lastLoadId) return;

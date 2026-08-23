@@ -1,10 +1,6 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-
-const gltfLoader = new GLTFLoader();
-const objLoader = new OBJLoader();
+import { gltfLoader, objLoader } from './three-loaders.js';
 
 // ============================================================
 // TEXTURES PROCÉDURALES (Canvas) — grain bois & micro-bruit

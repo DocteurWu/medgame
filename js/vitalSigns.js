@@ -156,10 +156,9 @@ class VitalSignsMonitor {
 
         const targets = cfg.aggravationTargets;
 
-        // Si stabilisé par traitement, revenir progressivement vers la base (mais pas en dessous)
-        const effectiveFraction = this.treatmentStabilized
-            ? Math.max(0, this.currentTrendFraction - 0.004) // récupération lente
-            : this.currentTrendFraction;
+        // Fraction effective = currentTrendFraction (décroît réellement quand
+        // treatmentStabilized — voir _dynamicsTick : récupération visible).
+        const effectiveFraction = this.currentTrendFraction;
 
         // Valeur interpolée entre base et cible d'aggravation
         let targetVal = targets[vitalKey] !== undefined ? targets[vitalKey] : baseVal;
@@ -212,18 +211,44 @@ class VitalSignsMonitor {
     }
 
     /**
-     * Applique l'impact d'un traitement sur les constantes.
-     * Appelé depuis game.js quand un traitement correct est sélectionné.
+     * Applique l'impact d'un traitement sur les constantes — PENDANT le cas.
+     * Garde pédagogique : seul un traitement correct (1re ou 2e ligne) améliore
+     * réellement l'état ; un traitement contre-indiqué AGGRAVE le patient ;
+     * un traitement hors cible est neutre (pas d'amélioration cosmétique).
      * @param {string} treatmentName — nom du traitement appliqué
      */
     applyTreatmentImpact(treatmentName) {
         if (!this.dynamicsConfig || !this.dynamicsConfig.stabilizeOnCorrectTreatment) return;
 
-        // Stabiliser les constantes : figer la tendance et amorcer une récupération
+        const name = (treatmentName || '').toLowerCase().trim();
+        if (!name) return;
+
+        const _matches = (list) => (list || []).some(ref => {
+            const r = String(ref || '').toLowerCase().trim();
+            return r && (r === name || name.includes(r) || r.includes(name));
+        });
+
+        const currentCase = (window.scoringState && window.scoringState.currentCase) || null;
+        const isCorrect = _matches(currentCase?.correctTreatments);
+        const isSecondLine = _matches(currentCase?.secondLineTreatments);
+        const isFatal = _matches([
+            ...(currentCase?.fatalTreatments || []),
+            ...((window.scoringState && window.scoringState._fatalOverrideTreatments) || [])
+        ]);
+
+        if (!isCorrect && !isSecondLine) {
+            if (isFatal) {
+                this._applyAggravation(treatmentName);
+            }
+            // Traitement hors cible : aucune amélioration des constantes
+            return;
+        }
+
+        // Stabiliser les constantes : la récupération progressive est gérée
+        // par _dynamicsTick (currentTrendFraction décroît désormais réellement).
         this.treatmentStabilized = true;
 
         // Effet immédiat modeste sur certaines constantes selon le type de traitement
-        const name = (treatmentName || '').toLowerCase();
         if (name.includes('o2') || name.includes('oxygène') || name.includes('oxygene')) {
             this.props.spo2 = Math.min(100, Math.round(this.props.spo2 + 3));
         }
@@ -238,6 +263,26 @@ class VitalSignsMonitor {
         if (name.includes('antibiothérapie') || name.includes('antibiotique') || name.includes('antibiotherapie')) {
             this.props.temperature = Math.max(36.0, Math.round((this.props.temperature - 0.4) * 10) / 10);
         }
+
+        document.dispatchEvent(new CustomEvent('vital-treatment-impact', {
+            detail: { treatment: treatmentName, effect: 'amelioration' }
+        }));
+
+        this.updateDisplay();
+        this.startAnimations();
+    }
+
+    /**
+     * Aggravation visible après un traitement contre-indiqué / dangereux.
+     */
+    _applyAggravation(treatmentName) {
+        this.props.heartRate = Math.min(185, Math.round(this.props.heartRate + 8));
+        this.props.systolic = Math.max(60, Math.round(this.props.systolic - 8));
+        this.props.spo2 = Math.max(70, Math.round(this.props.spo2 - 2));
+
+        document.dispatchEvent(new CustomEvent('vital-treatment-impact', {
+            detail: { treatment: treatmentName, effect: 'aggravation' }
+        }));
 
         this.updateDisplay();
         this.startAnimations();
@@ -262,12 +307,22 @@ class VitalSignsMonitor {
     // ==================== TICK DE PROGRESSION TEMPORELLE (1s) ====================
 
     _dynamicsTick() {
-        if (this.treatmentStabilized || !this.dynamicsConfig) {
+        if (!this.dynamicsConfig) {
             this.elapsedSeconds++;
             return;
         }
 
         this.elapsedSeconds++;
+
+        if (this.treatmentStabilized) {
+            // Récupération lente et VISIBLE : la fraction de tendance décroît
+            // (~0.004/s → récupération complète en ~4 min depuis 1.0).
+            this.currentTrendFraction = Math.max(0, this.currentTrendFraction - 0.004);
+            if (this.elapsedSeconds % 2 === 0) {
+                this._recalcAllProps();
+            }
+            return;
+        }
 
         // Calculer la fraction de tendance : trendOverMinutes × minutes écoulées
         const isUrgence = (typeof urgenceState !== 'undefined' && urgenceState.isUrgenceMode);

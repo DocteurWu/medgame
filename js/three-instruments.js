@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { box, createMaterial } from './three-room.js';
 import { pulseEmissive } from './three-animations.js';
+import { gltfLoader as _sharedGLTFLoader } from './three-loaders.js';
 
 const INSTRUMENTS = [
     { id: 'tensiometer', label: 'Tensiometre', x: -3.3, z: -0.4, key: 'tension', title: 'TA' },
@@ -246,7 +246,7 @@ export class ThreeInstruments {
         group.position.set(item.x, 1.425, item.z);
         this._tagGroup(group, item);
 
-        const loader = new GLTFLoader();
+        const loader = _sharedGLTFLoader;
         loader.load('assets/3D/stethoscope.glb', (gltf) => {
             const model = gltf.scene;
 

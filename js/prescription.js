@@ -342,6 +342,12 @@
                     feedbackTimeline.log('traitement', `Prescription : ${prescription.nom} ${prescription.dosage} ${prescription.voie}`);
                 }
 
+                // Réponse physiologique EN TEMPS RÉEL (le moniteur réagit pendant
+                // le cas — amélioration si correct, aggravation si contre-indiqué)
+                if (window.vitalSigns && typeof window.vitalSigns.applyTreatmentImpact === 'function') {
+                    window.vitalSigns.applyTreatmentImpact(prescription.nom);
+                }
+
                 // Callback : nettoyer le formulaire uniquement après ajout effectif
                 if (typeof onSuccess === 'function') onSuccess();
             };

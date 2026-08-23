@@ -13,9 +13,29 @@
  */
 
 const lockSystem = {
-    unlockedLocks: new Set(),
+    unlockedLocks: new Set(),   // clés composées "caseId:lockId" (étanchéité inter-cas)
+    currentCase: null,
     onLoadCase: null // callback: (isPartialRefresh) => void
 };
+
+/** Portée du cas courant pour l'isolation des verrous entre cas */
+function _caseScope() {
+    return (lockSystem.currentCase && lockSystem.currentCase.id) || 'global';
+}
+function _lockKey(lockId) {
+    return `${_caseScope()}:${lockId}`;
+}
+function _hasLock(lockId) {
+    return lockSystem.unlockedLocks.has(_lockKey(lockId));
+}
+
+/**
+ * Réinitialise les verrous déverrouillés (appelé au changement de cas).
+ */
+function resetLocksForNewCase() {
+    lockSystem.unlockedLocks.clear();
+    try { sessionStorage.removeItem('unlockedLocks'); } catch (e) {}
+}
 
 function initLockSystem() {
     try {
@@ -29,17 +49,26 @@ function saveLocks() {
 }
 
 /**
+ * Un verrou est-il déverrouillé dans le cas courant ?
+ * @param {string} lockId
+ * @returns {boolean}
+ */
+function isLockUnlocked(lockId) {
+    return _hasLock(lockId);
+}
+
+/**
  * Vérifie si un verrou est déverrouillable (tous ses prérequis sont satisfaits).
  * @param {object} lock — l'objet verrou
  * @returns {{ canUnlock: boolean, missingPrereqs: string[] }}
  */
 function getLockStatus(lock) {
     if (!lock || !lock.id) return { canUnlock: false, missingPrereqs: [] };
-    if (lockSystem.unlockedLocks.has(lock.id)) {
+    if (_hasLock(lock.id)) {
         return { canUnlock: true, missingPrereqs: [] };
     }
     const prereqs = lock.prerequisites || [];
-    const missingPrereqs = prereqs.filter(pId => !lockSystem.unlockedLocks.has(pId));
+    const missingPrereqs = prereqs.filter(pId => !_hasLock(pId));
     return {
         canUnlock: missingPrereqs.length === 0,
         missingPrereqs
@@ -70,7 +99,7 @@ function getFieldLockInfo(path) {
 
     for (const lock of currentCase.locks) {
         if (!lock.target_fields.includes(path)) continue;
-        if (lockSystem.unlockedLocks.has(lock.id)) continue;
+        if (_hasLock(lock.id)) continue;
 
         result.lock = lock;
         const status = getLockStatus(lock);
@@ -151,7 +180,7 @@ function showLockChallenge(lockId) {
         challengeHtml = `
             <div class="lock-modal">
                 <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
-                <p class="challenge-question">${lock.challenge.question}</p>
+                <p class="challenge-question">${escapeHtml(lock.challenge.question)}</p>
                 <input type="text" id="lock-answer" placeholder="Votre réponse..." autocomplete="off">
                 <p id="lock-error" class="error-feedback"></p>
                 <div class="correction-actions">
@@ -164,10 +193,10 @@ function showLockChallenge(lockId) {
         challengeHtml = `
             <div class="lock-modal">
                 <h3><i class="fas fa-unlock-alt"></i> DÉFI SÉMIOLOGIQUE</h3>
-                <p class="challenge-question">${lock.challenge.question}</p>
+                <p class="challenge-question">${escapeHtml(lock.challenge.question)}</p>
                 <div class="mcq-options">
                     ${lock.challenge.options.map((opt, i) =>
-                        `<div class="mcq-option" data-index="${i}">${opt}</div>`
+                        `<div class="mcq-option" data-index="${i}">${escapeHtml(opt)}</div>`
                     ).join('')}
                 </div>
                 <p id="lock-error" class="error-feedback"></p>
@@ -238,8 +267,9 @@ function showLockChallenge(lockId) {
             cancelBtn.style.width = '100%';
             const newCancelBtn = cancelBtn.cloneNode(true);
             cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            // 3 échecs : information révélée mais PAS de points de démarche
             newCancelBtn.onclick = () => {
-                unlock(lockId);
+                unlock(lockId, { revealed: true });
                 modalOverlay.remove();
             };
             if (typeof gsap !== 'undefined') {
@@ -301,8 +331,9 @@ function showLockChallenge(lockId) {
 
             const newCancelBtn = cancelBtn.cloneNode(true);
             cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            // 3 échecs : information révélée mais PAS de points de démarche
             newCancelBtn.onclick = () => {
-                unlock(lockId);
+                unlock(lockId, { revealed: true });
                 modalOverlay.remove();
             };
             if (typeof gsap !== 'undefined') {
@@ -317,20 +348,27 @@ function showLockChallenge(lockId) {
     }
 }
 
-function unlock(lockId) {
-    lockSystem.unlockedLocks.add(lockId);
+/**
+ * Déverrouille (ou révèle) un verrou.
+ * @param {string} lockId
+ * @param {{ revealed?: boolean }} [opts] — revealed=true : information obtenue
+ *        après 3 échecs → le champ devient visible mais SANS points de démarche.
+ */
+function unlock(lockId, opts = {}) {
+    const revealed = !!opts.revealed;
+    lockSystem.unlockedLocks.add(_lockKey(lockId));
     saveLocks();
-    
-    // Suivi démarche pour le scoring composite
-    if (typeof trackLockUnlocked === 'function') {
+
+    // Suivi démarche pour le scoring composite — uniquement si le défi est RÉSOLU
+    if (!revealed && typeof trackLockUnlocked === 'function') {
         trackLockUnlocked(lockId);
     }
-    
+
     // Dispatcher un événement pour que le 3D Lock Agent soit notifié
     document.dispatchEvent(new CustomEvent('locksystem-unlock', {
-        detail: { lockId }
+        detail: { lockId, revealed }
     }));
-    
+
     if (lockSystem.onLoadCase) {
         lockSystem.onLoadCase(true);
     }
@@ -338,3 +376,5 @@ function unlock(lockId) {
 
 window.lockSystem = lockSystem;
 window.showLockChallenge = showLockChallenge;
+window.isLockUnlocked = isLockUnlocked;
+window.resetLocksForNewCase = resetLocksForNewCase;

@@ -28,7 +28,13 @@ const gameState = {
                 timerState.currentCase = this.currentCase;
             }
             if (lockSystem) {
+                // Étanchéité inter-cas : les verrous déverrouillés d'un cas
+                // ne fuient pas dans le suivant (clés namespacées + reset).
+                const caseChanged = !lockSystem.currentCase || lockSystem.currentCase.id !== this.currentCase.id;
                 lockSystem.currentCase = this.currentCase;
+                if (caseChanged && typeof resetLocksForNewCase === 'function') {
+                    resetLocksForNewCase();
+                }
             }
             if (scoringState) {
                 scoringState.currentCase = this.currentCase;

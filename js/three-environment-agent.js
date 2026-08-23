@@ -36,8 +36,11 @@ export class ThreeEnvironmentAgent {
         this._addExaminationBedDetails();
         // --- Habillage clinique & ambiance lumineuse (extensions purement décoratives,
         //     non interactives : aucun impact sur le raycasting / la logique de jeu) ---
+        this._addDaylightWindow();
         this._addCeilingLightPanels();
+        this._addCeilingAreaLights();
         this._addWallWainscot();
+        this._addBaseboards();
         this._addVitalSignsMonitor();
         this._addWasteBins();
         this._addSinkAccessories();
@@ -1214,6 +1217,240 @@ export class ThreeEnvironmentAgent {
         const railRight = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.04, 10), railMat);
         railRight.position.set(5.435, h + 0.02, 0);
         this.scene.add(railRight);
+    }
+
+    // ===== FENÊTRE DE JOUR (mur droit) + VUE EXTÉRIEURE + FAISCEAU VOLUMÉTRIQUE =====
+    // Ouverture : z ∈ [-3.4, -1.6], y ∈ [1.3, 3.1] — zone libre entre le moniteur vital (z=-0.9)
+    // et l'armoire du fond. La key light directionnelle est alignée sur cette fenêtre.
+    _addDaylightWindow() {
+        const winCenterZ = -2.5;
+        const winCenterY = 2.2;
+        const winW = 1.8;
+        const winH = 1.8;
+
+        // --- Cadre aluminium brossé ---
+        const frameMat = new THREE.MeshStandardMaterial({
+            color: 0xb8bec6,
+            metalness: 0.85,
+            roughness: 0.32,
+            envMapIntensity: 1.0
+        });
+        const frameT = 0.07;   // épaisseur des montants
+        const frameD = 0.09;   // profondeur (le long de x)
+
+        const mkFrame = (w, hgt, px, py) => {
+            const m = new THREE.Mesh(new THREE.BoxGeometry(frameD, hgt, w), frameMat);
+            m.position.set(5.46, py, px);
+            m.castShadow = true;
+            this.scene.add(m);
+            return m;
+        };
+        mkFrame(winW + frameT * 2, frameT, winCenterZ, winCenterY + winH / 2 + frameT / 2); // traverse haute
+        mkFrame(winW + frameT * 2, frameT, winCenterZ, winCenterY - winH / 2 - frameT / 2); // traverse basse
+        mkFrame(frameT, winH, winCenterZ - winW / 2 - frameT / 2, winCenterY);              // montant gauche
+        mkFrame(frameT, winH, winCenterZ + winW / 2 + frameT / 2, winCenterY);              // montant droit
+
+        // --- Meneaux (croisillons) ---
+        const mullionMat = new THREE.MeshStandardMaterial({ color: 0xcdd3da, metalness: 0.7, roughness: 0.4 });
+        const vMullion = new THREE.Mesh(new THREE.BoxGeometry(0.05, winH, 0.035), mullionMat);
+        vMullion.position.set(5.47, winCenterY, winCenterZ);
+        this.scene.add(vMullion);
+        const hMullion = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.035, winW), mullionMat);
+        hMullion.position.set(5.47, winCenterY, winCenterZ);
+        this.scene.add(hMullion);
+
+        // --- Vitrage (reflets IBL, quasi transparent) ---
+        const glass = new THREE.Mesh(
+            new THREE.PlaneGeometry(winW, winH),
+            new THREE.MeshPhysicalMaterial({
+                color: 0xdfeefa,
+                transparent: true,
+                opacity: 0.1,
+                roughness: 0.03,
+                metalness: 0,
+                envMapIntensity: 1.4,
+                side: THREE.DoubleSide
+            })
+        );
+        glass.rotation.y = -Math.PI / 2;
+        glass.position.set(5.49, winCenterY, winCenterZ);
+        this.scene.add(glass);
+
+        // --- Appui de fenêtre intérieur ---
+        const sill = new THREE.Mesh(
+            new THREE.BoxGeometry(0.18, 0.035, winW + 0.22),
+            new THREE.MeshPhysicalMaterial({
+                color: 0xf1f5f9,
+                roughness: 0.3,
+                clearcoat: 0.5,
+                clearcoatRoughness: 0.25,
+                envMapIntensity: 0.5
+            })
+        );
+        sill.position.set(5.41, winCenterY - winH / 2 - 0.05, winCenterZ);
+        sill.castShadow = true;
+        sill.receiveShadow = true;
+        this.scene.add(sill);
+
+        // --- Vue extérieure : ciel dégradé, soleil voilé, arbres et bâtiments lointains ---
+        const backdrop = new THREE.Mesh(
+            new THREE.PlaneGeometry(15, 9),
+            new THREE.MeshBasicMaterial({
+                map: this._createExteriorViewTexture(),
+                fog: false // le brouillard intérieur ne doit pas délaver le ciel
+            })
+        );
+        backdrop.rotation.y = -Math.PI / 2; // face vers l'intérieur de la salle
+        backdrop.position.set(8.4, 2.6, winCenterZ);
+        backdrop.name = 'ExteriorView';
+        this.scene.add(backdrop);
+
+        // --- Faisceau de lumière volumétrique entrant par la fenêtre ---
+        const shaftGeom = new THREE.BoxGeometry(3.6, winH * 0.8, winW * 0.65);
+        shaftGeom.translate(-1.8, 0, 0); // pivot côté fenêtre, s'étend vers l'intérieur (-x)
+        const shaftMat = new THREE.MeshBasicMaterial({
+            color: 0xfff2dd,
+            transparent: true,
+            opacity: 0.032,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            fog: false
+        });
+        const shaft = new THREE.Mesh(shaftGeom, shaftMat);
+        shaft.name = 'VolumetricSunlightRay';
+        shaft.position.set(5.42, winCenterY, winCenterZ);
+        shaft.rotation.z = 0.38;  // plongeant vers le sol
+        shaft.rotation.y = 0.12;  // légèrement orienté vers le centre de la salle
+        this.scene.add(shaft);
+
+        // --- Lumière ciel froide (fill bleuté juste devant la fenêtre) ---
+        const skyFill = new THREE.PointLight('#cfe6ff', 0.55, 7);
+        skyFill.position.set(4.8, winCenterY, winCenterZ);
+        this.scene.add(skyFill);
+    }
+
+    /**
+     * Texture canvas de la vue extérieure : ciel bleu dégradé, halo solaire,
+     * nuages doux, ligne d'arbres et silhouettes de bâtiments à l'horizon.
+     */
+    _createExteriorViewTexture() {
+        const c = document.createElement('canvas');
+        c.width = 1024;
+        c.height = 512;
+        const ctx = c.getContext('2d');
+
+        // Ciel dégradé
+        const sky = ctx.createLinearGradient(0, 0, 0, 400);
+        sky.addColorStop(0, '#5f9fd8');
+        sky.addColorStop(0.55, '#a5cdec');
+        sky.addColorStop(1, '#e6f2fa');
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, 1024, 400);
+
+        // Halo solaire diffus
+        const sun = ctx.createRadialGradient(320, 120, 10, 320, 120, 190);
+        sun.addColorStop(0, 'rgba(255,252,235,0.95)');
+        sun.addColorStop(0.25, 'rgba(255,244,214,0.45)');
+        sun.addColorStop(1, 'rgba(255,244,214,0)');
+        ctx.fillStyle = sun;
+        ctx.fillRect(0, 0, 1024, 400);
+
+        // Nuages doux
+        ctx.globalAlpha = 0.55;
+        for (let i = 0; i < 7; i++) {
+            const cx = Math.random() * 1024;
+            const cy = 60 + Math.random() * 160;
+            const cw = 90 + Math.random() * 160;
+            const ch = 14 + Math.random() * 20;
+            const cloud = ctx.createRadialGradient(cx, cy, 2, cx, cy, cw / 2);
+            cloud.addColorStop(0, 'rgba(255,255,255,0.9)');
+            cloud.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = cloud;
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(1, ch / cw);
+            ctx.beginPath();
+            ctx.arc(0, 0, cw / 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+        ctx.globalAlpha = 1;
+
+        // Silhouettes de bâtiments lointains (bleutées, floues)
+        ctx.fillStyle = 'rgba(148,170,192,0.75)';
+        let bx = 0;
+        while (bx < 1024) {
+            const bw = 30 + Math.random() * 70;
+            const bh = 25 + Math.random() * 65;
+            ctx.fillRect(bx, 372 - bh, bw, bh);
+            bx += bw + 8 + Math.random() * 26;
+        }
+
+        // Ligne d'arbres
+        ctx.fillStyle = 'rgba(96,128,88,0.9)';
+        for (let i = 0; i < 60; i++) {
+            const tx = Math.random() * 1024;
+            const tr = 8 + Math.random() * 16;
+            ctx.beginPath();
+            ctx.arc(tx, 378 + Math.random() * 8, tr, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Sol verdoyant
+        const ground = ctx.createLinearGradient(0, 380, 0, 512);
+        ground.addColorStop(0, '#8aa878');
+        ground.addColorStop(1, '#6d8a5e');
+        ctx.fillStyle = ground;
+        ctx.fillRect(0, 380, 1024, 132);
+
+        const tex = new THREE.CanvasTexture(c);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.anisotropy = 4;
+        return tex;
+    }
+
+    // ===== PLINTHES (finition architecturale au sol) =====
+    _addBaseboards() {
+        const mat = new THREE.MeshPhysicalMaterial({
+            color: '#eef2f6',
+            roughness: 0.35,
+            clearcoat: 0.4,
+            clearcoatRoughness: 0.3,
+            envMapIntensity: 0.4
+        });
+        const h = 0.12;
+
+        // Mur du fond — 2 segments pour dégager la porte (x ∈ [-0.95, 0.95])
+        const segW = 4.55;
+        const backL = new THREE.Mesh(new THREE.BoxGeometry(segW, h, 0.025), mat);
+        backL.position.set(-3.225, h / 2, -4.94);
+        backL.receiveShadow = true;
+        this.scene.add(backL);
+        const backR = backL.clone();
+        backR.position.x = 3.225;
+        this.scene.add(backR);
+
+        // Mur droit — pleine longueur
+        const right = new THREE.Mesh(new THREE.BoxGeometry(0.025, h, 10), mat);
+        right.position.set(5.44, h / 2, 0);
+        right.receiveShadow = true;
+        this.scene.add(right);
+    }
+
+    // ===== RECT AREA LIGHTS (éclairage doux aligné sur les dalles LED) =====
+    _addCeilingAreaLights() {
+        import('three/addons/lights/RectAreaLightUniformsLib.js')
+            .then(({ RectAreaLightUniformsLib }) => {
+                RectAreaLightUniformsLib.init();
+                [[-2.5, 0], [2.5, 0]].forEach(([px, pz]) => {
+                    const light = new THREE.RectAreaLight(0xf2f6ff, 1.4, 1.16, 0.56);
+                    light.position.set(px, 4.9, pz);
+                    light.rotation.x = -Math.PI / 2; // éclaire vers le sol
+                    this.scene.add(light);
+                });
+            })
+            .catch(() => { /* addon indisponible : les point lights suffisent */ });
     }
 
     // ===== MONITEUR MULTIPARAMÉTRIQUE (FC / SpO2 / TA — écho aux constantes de l'UI) =====

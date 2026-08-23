@@ -94,7 +94,7 @@ export class MedGameEngine {
     constructor(config = {}) {
         this.apiKey = config.apiKey || process.env.LLM_API_KEY || '';
         this.apiUrl = config.apiUrl || process.env.LLM_API_URL || 'https://api.deepseek.com/chat/completions';
-        this.model = config.model || process.env.LLM_MODEL || 'deepseek-v4-flash';
+        this.model = config.model || process.env.LLM_MODEL || 'deepseek-chat';
         this.resetState();
     }
 

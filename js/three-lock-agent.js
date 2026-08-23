@@ -84,19 +84,17 @@ export class ThreeLockAgent {
     }
 
     /**
-     * Vérifie si un verrou est déverrouillé
+     * Vérifie si un verrou est déverrouillé (clés namespacées par cas)
      */
     _isUnlocked(lockId) {
+        if (typeof isLockUnlocked === 'function') {
+            return isLockUnlocked(lockId);
+        }
+        // Fallback legacy : Set brut (ancien format sans namespace)
         if (typeof lockSystem !== 'undefined' && lockSystem.unlockedLocks instanceof Set) {
-            return lockSystem.unlockedLocks.has(lockId);
+            return lockSystem.unlockedLocks.has(lockId) || [...lockSystem.unlockedLocks].some(k => k.endsWith(`:${lockId}`));
         }
-        // Fallback : vérifier sessionStorage
-        try {
-            const saved = JSON.parse(sessionStorage.getItem('unlockedLocks') || '[]');
-            return saved.includes(lockId);
-        } catch {
-            return false;
-        }
+        return false;
     }
 
     /**

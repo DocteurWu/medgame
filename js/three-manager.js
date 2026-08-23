@@ -1,11 +1,53 @@
 // --- ThreeManager as ES module ---
-import * as THREE from 'three';
-import { ThreeScene } from './three-scene.js';
-import { ThreeHUD } from './three-hud-agent.js';
-import { ThreeTransitionAgent } from './three-transition-agent.js';
-import { initLockAgent3D } from './three-lock-agent.js';
-import { initUrgenceAgent3D } from './three-urgence-agent.js';
-import { ThreeClinicalAgent } from './three-clinical-agent.js';
+//
+// ⚡ LAZY-LOADING : les ~150 Ko de modules 3D (three-scene et sa chaîne) ne sont
+// plus chargés d'office. Ils sont importés dynamiquement UNIQUEMENT quand le
+// mode 3D est réellement activé — en mode 2D (mobile < 768px, WebGL absent,
+// choix utilisateur), aucun octet de 3D n'est téléchargé ni parsé.
+
+let _mods = null;      // cache des modules chargés
+let _modsPromise = null;
+let _THREE = null;     // namespace three.js, résolu au chargement
+
+// Proxy THREE : le code existant (`new THREE.Vector3(...)`) fonctionne tel quel,
+// dès lors qu'il ne s'exécute qu'une fois le mode 3D chargé (garanti : ces
+// chemins ne sont atteignables qu'après _init3D()).
+const THREE = new Proxy({}, {
+    get(_, prop) {
+        if (!_THREE) throw new Error('[three-manager] THREE accédé avant le chargement du mode 3D');
+        return _THREE[prop];
+    }
+});
+
+function loadModules() {
+    if (_mods) return Promise.resolve(_mods);
+    if (!_modsPromise) {
+        _modsPromise = Promise.all([
+            import('three'),
+            import('./three-scene.js'),
+            import('./three-hud-agent.js'),
+            import('./three-transition-agent.js'),
+            import('./three-lock-agent.js'),
+            import('./three-urgence-agent.js'),
+            import('./three-clinical-agent.js')
+        ]).then(([three, scene, hud, transition, lockAgent, urgenceAgent, clinical]) => {
+            _THREE = three;
+            _mods = {
+                ThreeScene: scene.ThreeScene,
+                ThreeHUD: hud.ThreeHUD,
+                ThreeTransitionAgent: transition.ThreeTransitionAgent,
+                initLockAgent3D: lockAgent.initLockAgent3D,
+                initUrgenceAgent3D: urgenceAgent.initUrgenceAgent3D,
+                ThreeClinicalAgent: clinical.ThreeClinicalAgent
+            };
+            return _mods;
+        }).catch(err => {
+            _modsPromise = null; // permettre un retry au prochain enable3D
+            throw err;
+        });
+    }
+    return _modsPromise;
+}
 
 const INTERACTION_ZONES = {
     patient: { x: 1.2, y: 0, z: -3.5 },
@@ -78,6 +120,9 @@ class ThreeManager {
         try {
             console.info('[three-manager] Démarrage du mode 3D immersif...');
 
+            // ⚡ Chargement paresseux de tout le pipeline 3D (première activation)
+            const mods = await loadModules();
+
             let container = containerEl || document.getElementById('scene-container');
             if (!container) {
                 container = document.createElement('div');
@@ -88,13 +133,13 @@ class ThreeManager {
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                const ccModule = await import('./character-controller.js?v=20260525');
+                const ccModule = await import('./character-controller.js?v=20260821-3d');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
             }
 
-            this.scene = new ThreeScene(container, {
+            this.scene = new mods.ThreeScene(container, {
                 onPatient: (hitObj) => this.goToPatient(hitObj),
                 onInstrument: (instrument) => this.goToInstrument(instrument),
                 onPC: () => this.goToPC(),
@@ -118,20 +163,20 @@ class ThreeManager {
             }
 
             // HUD
-            this.hud = new ThreeHUD(this);
+            this.hud = new mods.ThreeHUD(this);
             this.hud.show();
 
             // Transitions
-            this.transition = new ThreeTransitionAgent(this);
+            this.transition = new mods.ThreeTransitionAgent(this);
 
             // Lock Agent 3D (cadenas animés)
-            this.lockAgent = initLockAgent3D(this);
+            this.lockAgent = mods.initLockAgent3D(this);
 
             // Urgence Agent 3D (overlay urgence immersif)
-            this.urgenceAgent = initUrgenceAgent3D(this);
+            this.urgenceAgent = mods.initUrgenceAgent3D(this);
 
             // Clinical Agent 3D (examen clinique interactif)
-            this.clinicalAgent = new ThreeClinicalAgent(this);
+            this.clinicalAgent = new mods.ThreeClinicalAgent(this);
 
             this.enabled = true;
             this.bindControls();
@@ -1456,18 +1501,6 @@ class ThreeManager {
         this.tooltip.style.left = `${event.clientX + 12}px`;
         this.tooltip.style.top = `${event.clientY - 18}px`;
         this.tooltip.style.display = 'block';
-    }
-
-    toggleLightingTheme() {
-        if (this.scene && this.scene.lightingAgent) {
-            const newTheme = this.scene.lightingAgent.toggleTheme();
-            // Sync normal fog color for the urgency mode
-            if (this.scene.scene.fog) {
-                this.scene._normalFogColor = this.scene.scene.fog.color.clone();
-            }
-            return newTheme;
-        }
-        return 'dark';
     }
 }
 

@@ -142,6 +142,61 @@ function escapeHtml(str) {
         .replace(/'/g, "&#39;");
 }
 
+/**
+ * Sanitize une chaîne HTML provenant d'une source non fiable
+ * (contenus de cas communautaires, réponses LLM) avant innerHTML.
+ * Approche allowlist : seuls les tags/attributs sûrs survivent,
+ * les handlers on* et les URL javascript:/data: sont supprimés.
+ */
+const _SAFE_TAGS = new Set([
+    'A', 'ABBR', 'B', 'BLOCKQUOTE', 'BR', 'CODE', 'DD', 'DEL', 'DIV', 'DL', 'DT',
+    'EM', 'FIGCAPTION', 'FIGURE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'HR', 'I',
+    'IMG', 'INS', 'KBD', 'LI', 'MARK', 'OL', 'P', 'PRE', 'Q', 'S', 'SAMP', 'SMALL',
+    'SPAN', 'STRONG', 'SUB', 'SUP', 'TABLE', 'TBODY', 'TD', 'TH', 'THEAD', 'TR',
+    'U', 'UL'
+]);
+const _SAFE_ATTRS = new Set(['class', 'title', 'alt', 'colspan', 'rowspan']);
+const _SAFE_URL_RE = /^(https?:|\/|#[a-z0-9_-]*)/i;
+
+function sanitizeHtml(dirty) {
+    if (!dirty || typeof dirty !== 'string') return '';
+    let doc;
+    try {
+        doc = new DOMParser().parseFromString(dirty, 'text/html');
+    } catch (e) {
+        return escapeHtml(dirty);
+    }
+
+    const walk = (node) => {
+        [...node.children].forEach(el => {
+            if (!_SAFE_TAGS.has(el.tagName)) {
+                // script/style/iframe/etc. : supprimés avec leur contenu
+                el.remove();
+                return;
+            }
+            [...el.attributes].forEach(attr => {
+                const name = attr.name.toLowerCase();
+                if (name.startsWith('on')) { el.removeAttribute(attr.name); return; }
+                if ((el.tagName === 'A' && name === 'href') || (el.tagName === 'IMG' && name === 'src')) {
+                    const val = attr.value.trim();
+                    if (!_SAFE_URL_RE.test(val) || val.toLowerCase().startsWith('javascript:')) {
+                        el.removeAttribute(attr.name);
+                    }
+                    if (el.tagName === 'A' && name === 'href') {
+                        el.setAttribute('rel', 'noopener noreferrer');
+                        el.setAttribute('target', '_blank');
+                    }
+                    return;
+                }
+                if (!_SAFE_ATTRS.has(name)) el.removeAttribute(attr.name);
+            });
+            walk(el);
+        });
+    };
+    walk(doc.body);
+    return doc.body.innerHTML;
+}
+
 function normalizeText(text) {
     return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 }
@@ -451,7 +506,19 @@ async function addXp(xpEarned) {
     return updatedXp;
 }
 
+/**
+ * Ajoute de l'XP en local UNIQUEMENT (aucun write Supabase).
+ * À utiliser quand l'XP a déjà été créditée côté serveur via une RPC
+ * (ex. claim_arena_xp) afin d'éviter tout double crédit.
+ */
+function addLocalXp(xpEarned) {
+    const gained = parseInt(xpEarned, 10) || 0;
+    if (gained <= 0) return getLocalXp();
+    return setLocalXp(getLocalXp() + gained);
+}
+
 window.getLocalXp = getLocalXp;
 window.setLocalXp = setLocalXp;
 window.addXp = addXp;
+window.addLocalXp = addLocalXp;
 

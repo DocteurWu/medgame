@@ -447,3 +447,17 @@ function initTimer(customDuration, startInterval = true) {
     if (oldOverlay) oldOverlay.style.backgroundColor = 'transparent';
 }
 window.initTimer = initTimer;
+
+/**
+ * Démarre réellement le compte à rebours MAINTENANT.
+ * Recalcule endTime à partir de timeLeft : le temps passé pendant l'intro
+ * (nurse, layout…) n'est pas décompté du budget annoncé au joueur.
+ */
+function startTimerNow() {
+    timerState.endTime = Date.now() + Math.max(0, timerState.timeLeft) * 1000;
+    if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+    timerState.isPaused = false;
+    timerState.timerInterval = setInterval(updateTimer, 1000);
+    displayTime(Math.max(0, timerState.timeLeft));
+}
+window.startTimerNow = startTimerNow;
