@@ -83,3 +83,4 @@ gh pr merge --merge --admin --repo DocteurWu/medgame
 - [ ] Demander 15 stars → Starstruck
 
 Une fois pushé, ton profil passe de 1 à ~7-8 achievements + 25+ shields visibles.
+test
