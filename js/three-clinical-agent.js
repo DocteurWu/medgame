@@ -26,6 +26,9 @@ export class ThreeClinicalAgent {
     // ========== PANNEAU DE PROGRESSION CLINIQUE ==========
 
     _initProgressPanel() {
+        // Vestige : en mode LLM tout l'examen passe par la bulle unique → pas de panneau point-and-click
+        const isLLM = document.body.classList.contains('llm-mode') || (typeof isLLMMode === 'function' && isLLMMode());
+        if (isLLM) return;
         const existing = document.getElementById('clinical-progress-panel');
         if (existing) { this._progressPanel = existing; return; }
 

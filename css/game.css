@@ -2061,6 +2061,10 @@ body.llm-mode .mobile-tab-item[data-tab="examen"],
 body.llm-mode .mobile-tab-item[data-tab="exams"] {
     display: none !important;
 }
+/* Vestige 3D : panneau progression examen clinique point-and-click — masqué en mode LLM (tout passe par la bulle) */
+body.llm-mode #clinical-progress-panel {
+    display: none !important;
+}
 
 /* Custom Question Buttons */
 .btn-question {
