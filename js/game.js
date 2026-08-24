@@ -314,6 +314,70 @@ onDomReady(async () => {
 
     // parseBP, parseNum, VitalSignsMonitor class moved to js/vitalSigns.js
 
+    // ==================== IAO (Infirmier d'Accueil et d'Orientation) ====================
+    function fallbackIaoResume(caseData) {
+        const pat = caseData.patient || {};
+        const inter = caseData.interrogatoire || {};
+        const hm = inter.histoireMaladie || {};
+        const prenom = pat.prenom || '';
+        const nom = pat.nom || '';
+        const age = pat.age || '?';
+        const motif = inter.motifHospitalisation || 'un motif non précisé';
+        const verb = inter.verbatim ? `"${inter.verbatim}"` : (hm.debutSymptomes ? `Début ${hm.debutSymptomes}, évolution ${hm.evolution || ''}`.trim() : '');
+        const pronoun = pat.sexe && String(pat.sexe).toLowerCase().startsWith('f') ? 'Elle' : 'Il';
+        return `${prenom} ${nom}, ${age} ans, accueilli(e) pour ${String(motif).toLowerCase()}. ${pronoun} déclare à l'IAO : ${verb || '—'}. Accueil réalisé, patient conscient, orienté, en attente d'évaluation médicale.`;
+    }
+
+    function renderIAO(caseData) {
+        const resumeEl = document.getElementById('iao-resume');
+        const tempEl = document.getElementById('iao-temp');
+        const glyEl = document.getElementById('iao-gly');
+        const poidsEl = document.getElementById('iao-poids');
+        const tailleEl = document.getElementById('iao-taille');
+        if (!caseData) return;
+        // Resume
+        let resume = '';
+        if (caseData.iao && caseData.iao.resume) {
+            resume = caseData.iao.resume;
+        } else {
+            resume = fallbackIaoResume(caseData);
+        }
+        if (resumeEl) resumeEl.textContent = resume;
+
+        // Mesures : priorité 1) caseData.iao.mesures 2) fallback constantes/patient/examResults
+        const iaoMes = (caseData.iao && caseData.iao.mesures) || {};
+        const cst = (caseData.examenClinique && caseData.examenClinique.constantes) || {};
+        const pat = caseData.patient || {};
+        const examRes = caseData.examResults || {};
+        let glyVal = iaoMes.glycemie || iaoMes.glycémie || examRes.glycemie || examRes.glycémie || '';
+        // Bilan sanguin peut contenir glycémie dans string
+        if (!glyVal && typeof examRes['Bilan sanguin'] === 'string' && /glyc/i.test(examRes['Bilan sanguin'])) glyVal = examRes['Bilan sanguin'];
+        if (tempEl) tempEl.textContent = iaoMes.temperature || cst.temperature || '--';
+        if (glyEl) glyEl.textContent = glyVal || '--';
+        if (poidsEl) poidsEl.textContent = iaoMes.poids || pat.poids || '--';
+        if (tailleEl) tailleEl.textContent = iaoMes.taille || pat.taille || '--';
+    }
+
+    function applyLLMModeUI() {
+        const llmMode = (typeof isLLMMode === 'function') ? isLLMMode() : (localStorage.getItem('medgame_llm_mode') ?? 'true') !== 'false';
+        document.body.classList.toggle('llm-mode', llmMode);
+        document.body.classList.toggle('no-llm-mode', !llmMode);
+        const dlg = document.getElementById('dialogue-panel');
+        if (dlg) {
+            dlg.style.display = llmMode ? 'flex' : 'none';
+            dlg.setAttribute('aria-hidden', llmMode ? 'false' : 'true');
+        }
+        const navIao = document.getElementById('nav-iao');
+        if (navIao) navIao.style.display = llmMode ? '' : 'none';
+        const mobIao = document.getElementById('mobile-tab-iao');
+        if (mobIao) mobIao.style.display = llmMode ? '' : 'none';
+        // Cacher les inputs ECOS 2D en mode LLM (tout via bulle unique)
+        document.querySelectorAll('.ecos-exam-input-row-2d').forEach(el => {
+            el.style.display = llmMode ? 'none' : '';
+        });
+        return llmMode;
+    }
+
     function mountVitalMonitorAtConstants() {
         const sidebarScope = document.getElementById('sidebar-scope');
         if (!sidebarScope) return;
@@ -441,7 +505,7 @@ onDomReady(async () => {
         displayValue(document.getElementById('patient-poids'), currentCase.patient.poids, 'patient.poids');
         displayValue(document.getElementById('patient-groupeSanguin'), currentCase.patient.groupeSanguin, 'patient.groupeSanguin');
 
-        // Update sidebar patient mini-card
+        // Update sidebar patient mini-card — seul bracelet visible en mode LLM
         const patientNomSidebar = document.getElementById('patient-nom-sidebar');
         const patientAgeSidebar = document.getElementById('patient-age-sidebar');
         const patientSexeSidebar = document.getElementById('patient-sexe-sidebar');
@@ -457,10 +521,18 @@ onDomReady(async () => {
 
         displayValue(motifHospitalisation, currentCase.interrogatoire.motifHospitalisation, 'interrogatoire.motifHospitalisation');
 
+        const llmMode = applyLLMModeUI();
+        // Rendu IAO (toujours, mais visible via CSS seulement en llm-mode)
+        renderIAO(currentCase);
+
         const immersionMode = sessionStorage.getItem('immersionMode') || 'classique';
         const revealAllBtn = document.getElementById('btn-reveal-all');
 
-        if (immersionMode === 'classique') {
+        if (llmMode) {
+            // ===== MODE LLM : on ne remplit PAS Terrain/Antec/HdM — tout est conversationnel =====
+            // Les cartes #antecedents et #histoire-maladie sont masquées via CSS (body.llm-mode)
+            if (revealAllBtn) revealAllBtn.style.display = 'none';
+        } else if (immersionMode === 'classique') {
             // ===== MODE CLASSIQUE: tout affiché d'office =====
             if (revealAllBtn) revealAllBtn.style.display = 'none';
 
@@ -678,14 +750,15 @@ onDomReady(async () => {
             displayQuestionBtn(remarques, 'Avez-vous d\'autres remarques ?', hm.remarques, 'interrogatoire.histoireMaladie.remarques');
         }
 
-        // Display patient details (taille/poids/groupeSanguin) in visible section
-        const patientTailleDisplay = document.getElementById('patient-taille-display');
-        const patientPoidsDisplay = document.getElementById('patient-poids-display');
-        const patientGroupeDisplay = document.getElementById('patient-groupe-display');
-        if (patientTailleDisplay) patientTailleDisplay.textContent = currentCase.patient.taille || '--';
-        if (patientPoidsDisplay) patientPoidsDisplay.textContent = currentCase.patient.poids || '--';
-        if (patientGroupeDisplay) patientGroupeDisplay.textContent = currentCase.patient.groupeSanguin || '--';
-
+        // Display patient details (taille/poids/groupeSanguin) — masqué en LLM (reporté dans IAO)
+        if (!llmMode) {
+            const patientTailleDisplay = document.getElementById('patient-taille-display');
+            const patientPoidsDisplay = document.getElementById('patient-poids-display');
+            const patientGroupeDisplay = document.getElementById('patient-groupe-display');
+            if (patientTailleDisplay) patientTailleDisplay.textContent = currentCase.patient.taille || '--';
+            if (patientPoidsDisplay) patientPoidsDisplay.textContent = currentCase.patient.poids || '--';
+            if (patientGroupeDisplay) patientGroupeDisplay.textContent = currentCase.patient.groupeSanguin || '--';
+        }
 
         const verbatimContainer = document.getElementById('patient-verbatim-container');
         if (verbatimContainer) {
@@ -717,7 +790,11 @@ onDomReady(async () => {
 
         displayValue(aspectGeneral, currentCase.examenClinique.aspectGeneral, 'examenClinique.aspectGeneral');
 
-        // Dynamic rendering of clinical exam sections
+        // Dynamic rendering of clinical exam sections — masqué en LLM (tout via bulle)
+        if (llmMode) {
+            const examDetailsGridLLM = document.querySelector('.exam-details-grid');
+            if (examDetailsGridLLM) examDetailsGridLLM.innerHTML = '';
+        } else {
         const examDetailsGrid = document.querySelector('.exam-details-grid');
         if (examDetailsGrid) {
             examDetailsGrid.innerHTML = ''; // Clear previous content
@@ -745,6 +822,7 @@ onDomReady(async () => {
                 }
             }
         }
+        } // fin else llmMode (examDetailsGrid visible uniquement hors LLM)
 
         if (!isPartialRefresh) {
             examensResults.innerHTML = '';
@@ -767,15 +845,18 @@ onDomReady(async () => {
             });
         }
 
-        // Générer dynamiquement les boutons d'examens pour ce cas
+        // Générer dynamiquement les boutons d'examens — masqués en LLM (tout via bulle)
         const examensSection = document.getElementById('examens');
-        const examCategoriesDiv = examensSection.querySelector('.exam-categories');
+        const examCategoriesDiv = examensSection ? examensSection.querySelector('.exam-categories') : null;
         const validateExamsBtn = document.getElementById('validate-exams');
+        if (llmMode) {
+            if (examCategoriesDiv) examCategoriesDiv.innerHTML = '';
+            if (validateExamsBtn) validateExamsBtn.style.display = 'none';
+        } else if (examCategoriesDiv) {
+            // Vider les catégories d'examens existantes
+            examCategoriesDiv.innerHTML = '';
 
-        // Vider les catégories d'examens existantes
-        examCategoriesDiv.innerHTML = '';
-
-        if (isFieldLocked('examensComplementaires')) {
+            if (isFieldLocked('examensComplementaires')) {
             const info = getFieldLockInfo('examensComplementaires');
             const lock = info.lock;
             if (info.blockedByPrereqs) {
@@ -832,6 +913,7 @@ onDomReady(async () => {
                 examCategoriesDiv.innerHTML = '<p>Aucun examen disponible pour ce cas.</p>';
             }
         }
+        } // fin else-if llmMode pour examens
 
         // Afficher les traitements disponibles
         const availableTreatments = document.getElementById('availableTreatments');
@@ -1454,6 +1536,7 @@ onDomReady(async () => {
         });
 
         const sectionMap = {
+            'iao': 'section-iao',
             'anamnese': 'section-anamnese',
             'examen': 'section-examen-clinique',
             'exams': 'section-examens',

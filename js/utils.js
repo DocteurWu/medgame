@@ -353,6 +353,41 @@ function getTimeLimit() {
     return 720; // 12 minutes par défaut (mode classique)
 }
 
+// ==================== LLM MODE HELPER ====================
+
+/**
+ * Détermine si l'on est en mode LLM conversationnel.
+ * - LLM ON  : seul nom/prenom/age/sexe + vitaux visibles, tout le reste via chat
+ * - LLM OFF : affichage complet classique, bulle de discussion masquée
+ * Stocké en localStorage `medgame_llm_mode` (true par défaut).
+ */
+function isLLMMode() {
+    const v = localStorage.getItem('medgame_llm_mode');
+    if (v === null) return true;
+    return v !== 'false';
+}
+function setLLMMode(enabled) {
+    localStorage.setItem('medgame_llm_mode', enabled ? 'true' : 'false');
+    if (typeof document !== 'undefined') {
+        document.body.classList.toggle('llm-mode', enabled);
+        document.body.classList.toggle('no-llm-mode', !enabled);
+    }
+}
+if (typeof document !== 'undefined') {
+    const applyLLMBodyClass = () => {
+        const enabled = isLLMMode();
+        document.body.classList.toggle('llm-mode', enabled);
+        document.body.classList.toggle('no-llm-mode', !enabled);
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyLLMBodyClass);
+    } else {
+        applyLLMBodyClass();
+    }
+}
+window.isLLMMode = isLLMMode;
+window.setLLMMode = setLLMMode;
+
 // ==================== SAFE DOM UTILITIES ====================
 
 /**
