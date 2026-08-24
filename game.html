@@ -230,6 +230,9 @@
 
             <!-- NAVIGATION -->
             <nav class="sidebar-nav" id="sidebar-nav" role="navigation" aria-label="Sections du cas clinique">
+                <button class="nav-item" data-target="section-iao" id="nav-iao" role="tab" aria-selected="false" aria-controls="section-iao">
+                    <i class="fas fa-user-nurse" aria-hidden="true"></i> IAO
+                </button>
                 <button class="nav-item active" data-target="section-anamnese" role="tab" aria-selected="true" aria-controls="section-anamnese">
                     <i class="fas fa-comments" aria-hidden="true"></i> Anamnèse
                 </button>
@@ -316,6 +319,24 @@
             </header>
 
             <div class="content-scroll-area">
+
+                <!-- SECTION: IAO (Infirmier d'Accueil et d'Orientation) — LLM uniquement -->
+                <section id="section-iao" class="game-section" role="tabpanel" aria-labelledby="nav-iao">
+                    <h2 class="section-header">0. ACCUEIL IAO</h2>
+                    <div class="medical-card full-width" id="iao-card">
+                        <h3 class="card-title"><i class="fas fa-user-nurse"></i> Note d'accueil IAO</h3>
+                        <div id="iao-resume" class="iao-resume" style="background: rgba(0,242,254,0.05); border-left:3px solid rgba(0,242,254,0.35); padding:14px 16px; border-radius:8px; margin-bottom:16px; line-height:1.6; color:rgba(255,255,255,0.92); font-size:0.95rem;">
+                            Chargement...
+                        </div>
+                        <div id="iao-mesures" class="iao-mesures" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;">
+                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-thermometer-half"></i> Température</span><b id="iao-temp">--</b></div>
+                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-tint"></i> Glycémie</span><b id="iao-gly">--</b></div>
+                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-weight"></i> Poids</span><b id="iao-poids">--</b></div>
+                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-ruler-vertical"></i> Taille</span><b id="iao-taille">--</b></div>
+                        </div>
+                        <p style="margin-top:12px; font-size:0.78rem; color:rgba(255,255,255,0.45);"><i class="fas fa-info-circle"></i> Mesures réalisées à l'accueil IAO. Le reste de l'interrogatoire et des examens se poursuit via la bulle de discussion.</p>
+                    </div>
+                </section>
 
                 <!-- SECTION: ANAMNÈSE -->
                 <section id="section-anamnese" class="game-section active mobile-active" role="tabpanel" aria-labelledby="nav-anamnese">
@@ -544,6 +565,10 @@
 
         <!-- MOBILE TAB NAVIGATION -->
         <nav class="mobile-tabs" role="tablist" aria-label="Navigation mobile entre sections">
+            <button class="mobile-tab-item" data-tab="iao" id="mobile-tab-iao" role="tab" aria-selected="false" aria-controls="section-iao">
+                <i class="fas fa-user-nurse" aria-hidden="true"></i>
+                <span>IAO</span>
+            </button>
             <button class="mobile-tab-item active" data-tab="anamnese" role="tab" aria-selected="true" aria-controls="section-anamnese">
                 <i class="fas fa-comments" aria-hidden="true"></i>
                 <span>Anamnèse</span>
@@ -612,9 +637,9 @@
         <div id="correction-modal" class="correction-modal" tabindex="-1">
             <h2 class="correction-title">Correction du cas</h2>
             <div id="correction-content"></div>
-            <button id="toggle-case-review" class="secondary-btn" aria-label="Afficher ou masquer la revue du cas">Revoir le cas</button>
+            <button id="toggle-case-review" class="secondary-btn small" aria-label="Afficher ou masquer la revue du cas" style="font-size:0.78rem; padding:5px 10px; opacity:0.9; align-self:flex-start;">Revoir le cas</button>
             <div id="case-review" class="case-review"></div>
-            <div class="correction-actions">
+            <div class="correction-actions" style="justify-content:space-between;">
                 <button id="correction-back" class="secondary-btn" aria-label="Retour à la liste des cas">Retour</button>
                 <button id="correction-next" class="primary-btn" aria-label="Passer au cas suivant">Cas Suivant</button>
             </div>
@@ -647,7 +672,7 @@
     <script src="js/vitalSigns.js?v=2"></script>
     <script src="js/lockSystem.js?v=2"></script>
     <script src="js/scoring.js?v=2"></script>
-    <script src="js/feedback.js?v=3"></script>
+    <script src="js/feedback.js?v=4"></script>
     <script src="js/ui.js?v=2"></script>
     <script src="js/patientChat.js?v=14"></script>
     <script src="js/urgenceMode.js?v=2"></script>

@@ -412,95 +412,49 @@ window.getAnonymousComparison = getAnonymousComparison;
  */
 function renderScoringGrid(compositeResult, currentCase) {
     const b = compositeResult.breakdown;
-
     const totalTime = (typeof getTimeLimit === 'function') ? getTimeLimit() : 720;
     const timeLeft = (typeof timerState !== 'undefined' && timerState.timeLeft) || 0;
     const timeUsed = totalTime - timeLeft;
     const timeUsedMin = Math.floor(timeUsed / 60);
     const timeUsedSec = timeUsed % 60;
-
-    function barColor(score) {
-        if (score >= 80) return '#2ecc71';
-        if (score >= 50) return '#f39c12';
-        return '#e74c3c';
+    function barColor(s){ if(s>=80) return '#2ecc71'; if(s>=50) return '#f39c12'; return '#e74c3c'; }
+    function badgeFor(score){
+        if(score>=80) return '<span class="corr-badge badge-ok">OK</span>';
+        if(score>=50) return '<span class="corr-badge badge-warn">Moyen</span>';
+        return '<span class="corr-badge badge-err">À revoir</span>';
     }
-
-    function renderAxisRow(icon, label, weight, score, contribution, details) {
-        const color = barColor(score);
-        return `
-            <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
-                <span style="font-size:1.3rem; min-width:32px; text-align:center;">${icon}</span>
-                <div style="flex:1;">
-                    <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:3px;">
-                        <span style="font-weight:700; font-size:0.9rem; color:rgba(255,255,255,0.9);">${label} <span style="font-size:0.75rem; color:rgba(255,255,255,0.45); font-weight:400;">(${Math.round(weight * 100)}% du score)</span></span>
-                        <span style="font-weight:800; font-size:1.05rem; color:${color};">${score}%</span>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.08); border-radius:6px; height:8px; overflow:hidden; margin-bottom:3px;">
-                        <div style="background:${color}; height:100%; width:${score}%; border-radius:6px; transition:width 0.8s ease;"></div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:rgba(255,255,255,0.5);">
-                        <span>Contribution : <strong style="color:${color};">${contribution.toFixed(1)} pts</strong></span>
-                        ${details ? `<span style="color:rgba(255,255,255,0.4);">${details}</span>` : ''}
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    // Détails spécifiques par axe
     const dem = scoringState.demarche;
     const interroCount = dem.interrogatoireAsked ? dem.interrogatoireAsked.size : 0;
     const interroFields = (typeof getInterrogatoireFieldCount === 'function') ? getInterrogatoireFieldCount(currentCase) : 0;
-    const interroDetails = interroFields > 0 ? `Interrogatoire ${interroCount}/${interroFields}` : '';
-
-    const diagDetails = compositeResult.diagnosticScore === 100 ? 'Diagnostic exact'
-        : compositeResult.diagnosticScore === 80 ? 'Alias/variante accepté'
-        : compositeResult.diagnosticScore === 60 ? 'Diagnostic proche'
-        : compositeResult.diagnosticScore === 30 ? 'Même spécialité'
-        : compositeResult.diagnosticScore > 0 ? 'Partiellement correct'
-        : 'Non identifié';
-
-    const td = compositeResult.treatmentDetails || {};
-    const firstLineCount = (td.firstLineHit || []).length;
-    const secondLineCount = (td.secondLineHit || []).length;
-    const treatDetails = compositeResult.hasFatalError ? 'Erreur fatale'
-        : firstLineCount > 0 ? `${firstLineCount} 1ère intention`
-        : secondLineCount > 0 ? `${secondLineCount} 2ème intention`
-        : compositeResult.traitementScore >= 80 ? 'Traitement complet'
-        : compositeResult.traitementScore > 0 ? 'Partiel'
-        : 'Non identifié';
-
-    const vitesseDetails = `${timeUsedMin}min ${timeUsedSec.toString().padStart(2, '0')}s / ${Math.floor(totalTime / 60)}min`;
-
     const totalContribution = b.demarche.contribution + b.diagnostic.contribution + b.traitement.contribution + b.vitesse.contribution;
-
+    const rows = [
+        { icon:'🩺', label:'Démarche', score:b.demarche.score, weight:SCORING_WEIGHTS.demarche, contrib:b.demarche.contribution, detail: interroFields? `${interroCount}/${interroFields} champs` : '' },
+        { icon:'🎯', label:'Diagnostic', score:b.diagnostic.score, weight:SCORING_WEIGHTS.diagnostic, contrib:b.diagnostic.contribution, detail: b.diagnostic.score===100?'Exact':b.diagnostic.score>=80?'Variante':b.diagnostic.score>=30?'Proche':'Manqué' },
+        { icon:'💊', label:'Traitement', score:b.traitement.score, weight:SCORING_WEIGHTS.traitement, contrib:b.traitement.contribution, detail: compositeResult.hasFatalError?'Fatal': (compositeResult.treatmentDetails?.firstLineHit?.length?'1ère':'2ème') },
+        { icon:'⏱️', label:'Vitesse', score:b.vitesse.score, weight:SCORING_WEIGHTS.vitesse, contrib:b.vitesse.contribution, detail: `${timeUsedMin}m${String(timeUsedSec).padStart(2,'0')}s` }
+    ];
     return `
-        <div style="background:linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15)); border-radius:12px; padding:16px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.08);">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                <span style="font-size:1.2rem;">📋</span>
-                <span style="font-weight:700; font-size:1rem; color:rgba(255,255,255,0.9);">Grille de notation</span>
-                <span style="font-size:0.7rem; color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.08); padding:2px 8px; border-radius:10px;">Score final = ${totalContribution.toFixed(1)} / 100</span>
+        <div style="background:rgba(0,0,0,0.22); border-radius:10px; padding:10px 12px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.07);">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                <span style="font-weight:700; font-size:0.92rem;">📋 Grille</span>
+                <span style="font-size:0.70rem; color:rgba(255,255,255,0.45); background:rgba(255,255,255,0.07); padding:2px 7px; border-radius:10px;">Total ${totalContribution.toFixed(1)}/100</span>
+                <span style="margin-left:auto; font-size:0.75rem; color:${barColor(compositeResult.compositeScore)}; font-weight:700;">${compositeResult.compositeScore}% ${'★'.repeat(compositeResult.stars)}${'☆'.repeat(3-compositeResult.stars)}</span>
             </div>
-
-            ${renderAxisRow('🩺', 'Démarche clinique', SCORING_WEIGHTS.demarche, b.demarche.score, b.demarche.contribution, interroDetails)}
-            ${renderAxisRow('🎯', 'Diagnostic', SCORING_WEIGHTS.diagnostic, b.diagnostic.score, b.diagnostic.contribution, diagDetails)}
-            ${renderAxisRow('💊', 'Traitement', SCORING_WEIGHTS.traitement, b.traitement.score, b.traitement.contribution, treatDetails)}
-            ${renderAxisRow('⏱️', 'Vitesse', SCORING_WEIGHTS.vitesse, b.vitesse.score, b.vitesse.contribution, vitesseDetails)}
-
-            <!-- Formule vitesse -->
-            <div style="margin-top:10px; padding:10px 12px; background:rgba(255,255,255,0.04); border-radius:8px; font-size:0.78rem; color:rgba(255,255,255,0.55); line-height:1.5;">
-                <strong style="color:rgba(255,255,255,0.75);">⏱️ Comment est calculée la vitesse ?</strong><br>
-                <code style="background:rgba(255,255,255,0.08); padding:1px 5px; border-radius:3px; font-size:0.75rem;">
-                    score_vitesse = round(temps_restant / temps_total × 100)
-                </code><br>
-                Pour obtenir le maximum (+10 pts), validez le plus tôt possible.<br>
-                <span style="color:rgba(255,255,255,0.4);">
-                    ${b.vitesse.score === 100 ? '✅ Temps maximum conservé — score vitesse parfait !'
-                        : b.vitesse.score >= 70 ? 'Bon rythme — peu de points perdus.'
-                        : b.vitesse.score >= 40 ? 'Temps moyen — validez plus tôt pour gagner des points.'
-                        : '⚡ Temps très long — la rapidité compte en clinique.'}
-                </span>
-            </div>
+            <table class="corr-table">
+                <thead><tr><th>Axe</th><th>Score</th><th>Poids</th><th>Contrib.</th><th>Détail</th><th>État</th></tr></thead>
+                <tbody>
+                ${rows.map(r=>`
+                    <tr>
+                        <td>${r.icon} ${r.label}</td>
+                        <td style="font-weight:700; color:${barColor(r.score)}">${r.score}%</td>
+                        <td>${Math.round(r.weight*100)}%</td>
+                        <td>${r.contrib.toFixed(1)}</td>
+                        <td style="font-size:0.75rem; color:rgba(255,255,255,0.55)">${escapeHtml(r.detail)}</td>
+                        <td>${badgeFor(r.score)}</td>
+                    </tr>
+                `).join('')}
+                </tbody>
+            </table>
         </div>
     `;
 }
@@ -533,93 +487,81 @@ function renderDetailedFeedback(compositeResult, currentCase) {
     // 5. Timeline
     const timelineHtml = renderTimeline();
 
-    // --- Rendu ---
-    const strengthItems = analysis.strengths.length > 0
-        ? analysis.strengths.map(s => `<li style="color:#2ecc71; margin:4px 0;">✅ ${escapeHtml(s)}</li>`).join('')
-        : '<li style="color:rgba(255,255,255,0.5);">Aucun point fort identifié ce coup-ci</li>';
-
-    const weaknessItems = analysis.weaknesses.length > 0
-        ? analysis.weaknesses.map(w => `<li style="color:#e74c3c; margin:4px 0;">❌ ${escapeHtml(w)}</li>`).join('')
-        : '';
-
-    const tipItems = analysis.tips.length > 0
-        ? analysis.tips.map(t => `<li style="color:#f39c12; margin:4px 0;">💡 ${escapeHtml(t)}</li>`).join('')
-        : '';
-
-    // Comparaison percentile bar
-    const compColor = comparison.percentile >= 75 ? '#2ecc71'
-        : comparison.percentile >= 50 ? '#f39c12'
-        : '#e74c3c';
-
-    const comparisonBlock = comparison.total > 1 ? `
-        <div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px; margin-top:12px;">
-            <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-                <span style="font-weight:700;">📊 Comparaison anonyme</span>
-                <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">(${comparison.total} sessions sur ce cas)</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
-                <div style="text-align:center;">
-                    <div style="font-size:2rem; font-weight:800; color:${compColor};">${comparison.percentile}<span style="font-size:0.8rem;">%</span></div>
-                    <div style="font-size:0.7rem; color:rgba(255,255,255,0.5);">Percentile</div>
-                </div>
-                <div style="flex:1;">
-                    <div style="position:relative; height:24px; background:rgba(255,255,255,0.1); border-radius:12px; overflow:hidden;">
-                        <div style="position:absolute; left:0; height:100%; width:${comparison.percentile}%; background:${compColor}; opacity:0.6; border-radius:12px;"></div>
-                        <div style="position:absolute; height:100%; width:2px; left:50%; background:rgba(255,255,255,0.3);"></div>
-                        <div style="position:absolute; left:${comparison.percentile}%; top:50%; transform:translate(-50%,-50%); font-size:0.7rem; font-weight:700; color:white; text-shadow: 0 0 4px rgba(0,0,0,0.8);">Vous</div>
-                    </div>
-                </div>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:rgba(255,255,255,0.5);">
-                <span>Score moyen : <strong style="color:rgba(255,255,255,0.8);">${comparison.avgScore}%</strong></span>
-                <span>Démarche moy. : <strong style="color:rgba(255,255,255,0.8);">${comparison.avgDemarche}%</strong></span>
-                <span>Rang : <strong style="color:${compColor};">#${comparison.rank}/${comparison.total}</strong></span>
-            </div>
-        </div>
-    ` : `
-        <div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px; margin-top:12px; text-align:center;">
-            <span style="font-size:0.85rem; color:rgba(255,255,255,0.5);">
-                🏁 Première session sur ce cas — rejouez pour voir votre progression !
-            </span>
-        </div>
+    // --- 3 petits tableaux compacts ---
+    // Tableau 2 : Décision (diagnostic + traitement) – attendu vs vous
+    const correctDiag = currentCase.correctDiagnostic || '—';
+    const selectedDiag = (typeof scoringState !== 'undefined' && scoringState.selectedDiagnostic) || compositeResult.selectedDiagnostic || '';
+    const diagOk = compositeResult.diagnosticScore >= 80;
+    const diagBadge = diagOk ? '<span class="corr-badge badge-ok">✅ OK</span>' : (compositeResult.diagnosticScore>0 ? '<span class="corr-badge badge-warn">≈ Proche</span>' : '<span class="corr-badge badge-err">❌</span>');
+    const correctTreats = currentCase.correctTreatments || [];
+    const selectedTreats = (typeof scoringState !== 'undefined' && scoringState.selectedTreatments) || [];
+    const treatOk = compositeResult.traitementScore >= 80 && !compositeResult.hasFatalError;
+    const treatBadge = compositeResult.hasFatalError ? '<span class="corr-badge badge-err">💀 Fatal</span>' : (treatOk ? '<span class="corr-badge badge-ok">✅ OK</span>' : (compositeResult.traitementScore>0 ? '<span class="corr-badge badge-warn">Partiel</span>' : '<span class="corr-badge badge-err">❌</span>'));
+    const decisionTable = `
+        <table class="corr-table">
+            <thead><tr><th>Critère</th><th>Attendu</th><th>Vous</th><th>Statut</th></tr></thead>
+            <tbody>
+                <tr><td>🎯 Diagnostic</td><td>${escapeHtml(correctDiag)}</td><td>${escapeHtml(selectedDiag || '—')}</td><td>${diagBadge}</td></tr>
+                <tr><td>💊 Traitement</td><td>${escapeHtml(correctTreats.join(' + ') || '—')}</td><td>${escapeHtml(selectedTreats.join(' + ') || '—')}</td><td>${treatBadge}</td></tr>
+            </tbody>
+        </table>
     `;
-
-    // Assemblage final
+    // Tableau 3 : Démarche détaillée – 4 domaines
+    const dem = scoringState.demarche;
+    const interroCount = dem.interrogatoireAsked ? dem.interrogatoireAsked.size : 0;
+    const interroFields = (typeof getInterrogatoireFieldCount === 'function') ? getInterrogatoireFieldCount(currentCase) : 0;
+    const examViewed = dem.examSectionsViewed?.has('section-examen-clinique') || dem.examSectionsViewed?.has('section-examen');
+    const availableExams = currentCase.availableExams || [];
+    const relevantExams = currentCase.relevantExams || availableExams;
+    const orderedRelevant = (dem.examsOrdered || []).filter(e => relevantExams.includes(e));
+    const locks = currentCase.locks || [];
+    const unlockedCount = locks.filter(l => dem.locksUnlocked?.has(l.id)).length;
+    const demarcheTable = `
+        <table class="corr-table">
+            <thead><tr><th>Domaine</th><th>Cible</th><th>Obtenu</th><th>%</th></tr></thead>
+            <tbody>
+                <tr><td>💬 Interrogatoire</td><td>${interroFields}</td><td>${interroCount}</td><td>${interroFields? Math.round(interroCount/interroFields*100):100}%</td></tr>
+                <tr><td>🩺 Examen</td><td>1</td><td>${examViewed?1:0}</td><td>${examViewed?100:0}%</td></tr>
+                <tr><td>🔬 Examens comp.</td><td>${relevantExams.length}</td><td>${orderedRelevant.length}</td><td>${relevantExams.length? Math.round(orderedRelevant.length/relevantExams.length*100):100}%</td></tr>
+                <tr><td>🔓 Défis</td><td>${locks.length}</td><td>${unlockedCount}</td><td>${locks.length? Math.round(unlockedCount/locks.length*100):100}%</td></tr>
+            </tbody>
+        </table>
+    `;
+    // Points forts/faibles compactés en 1 ligne
+    const strengthItems = analysis.strengths.slice(0,3).map(s => `✅ ${escapeHtml(s)}`).join(' · ');
+    const weaknessItems = analysis.weaknesses.slice(0,3).map(w => `❌ ${escapeHtml(w)}`).join(' · ');
+    const tipItems = analysis.tips.slice(0,2).map(t => `💡 ${escapeHtml(t)}`).join(' · ');
+    const syntheseLigne = [strengthItems, weaknessItems, tipItems].filter(Boolean).join('<br>');
+    // Comparaison compacte
+    const compColor = comparison.percentile >= 75 ? '#2ecc71' : comparison.percentile >= 50 ? '#f39c12' : '#e74c3c';
+    const comparisonBlock = comparison.total > 1 ? `
+        <div style="background:rgba(0,0,0,0.18); border-radius:8px; padding:8px 10px; margin-top:8px; display:flex; align-items:center; gap:10px; font-size:0.78rem;">
+            <span style="font-weight:700; color:${compColor};">${comparison.percentile}%</span>
+            <div style="flex:1; height:8px; background:rgba(255,255,255,0.08); border-radius:6px; overflow:hidden; position:relative;">
+                <div style="height:100%; width:${comparison.percentile}%; background:${compColor}; opacity:0.6;"></div>
+            </div>
+            <span style="color:rgba(255,255,255,0.5); font-size:0.70rem;">#${comparison.rank}/${comparison.total} · moy ${comparison.avgScore}%</span>
+        </div>
+    ` : `<div style="text-align:center; font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:6px;">🏁 Première session — rejouez pour comparer</div>`;
+    // Assemblage final ultra-compact : 3 petits tableaux + pédagogie courte + timeline repliée
     return `
-        <!-- FEEDBACK DÉTAILLÉ POST-CAS -->
-        <div class="detailed-feedback" style="margin-top:16px;">
-            <!-- Grille de notation détaillée -->
+        <div class="detailed-feedback" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
             ${scoringGridHtml}
-
-            <!-- Timeline -->
-            <div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px;">
-                ${timelineHtml}
+            <div style="background:rgba(0,0,0,0.15); border-radius:8px; padding:8px 10px;">
+                <div style="font-weight:700; font-size:0.82rem; margin-bottom:4px; color:rgba(255,255,255,0.85);">🎯 Décision</div>
+                ${decisionTable}
             </div>
-
-            <!-- Points forts / faiblesses -->
-            <div style="display:flex; gap:12px; margin-top:12px; flex-wrap:wrap;">
-                ${analysis.strengths.length > 0 ? `
-                <div style="flex:1; min-width:200px; background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.2); border-radius:8px; padding:12px;">
-                    <h4 style="color:#2ecc71; margin:0 0 8px; font-size:0.9rem;">👍 Points forts</h4>
-                    <ul style="list-style:none; padding:0; margin:0; font-size:0.85rem;">${strengthItems}</ul>
-                </div>` : ''}
-                ${analysis.weaknesses.length > 0 ? `
-                <div style="flex:1; min-width:200px; background:rgba(231,76,60,0.08); border:1px solid rgba(231,76,60,0.2); border-radius:8px; padding:12px;">
-                    <h4 style="color:#e74c3c; margin:0 0 8px; font-size:0.9rem;">👎 À améliorer</h4>
-                    <ul style="list-style:none; padding:0; margin:0; font-size:0.85rem;">${weaknessItems}</ul>
-                </div>` : ''}
-                ${analysis.tips.length > 0 ? `
-                <div style="flex:1; min-width:200px; background:rgba(243,156,18,0.08); border:1px solid rgba(243,156,18,0.2); border-radius:8px; padding:12px;">
-                    <h4 style="color:#f39c12; margin:0 0 8px; font-size:0.9rem;">💡 Conseils</h4>
-                    <ul style="list-style:none; padding:0; margin:0; font-size:0.85rem;">${tipItems}</ul>
-                </div>` : ''}
+            <div style="background:rgba(0,0,0,0.15); border-radius:8px; padding:8px 10px;">
+                <div style="font-weight:700; font-size:0.82rem; margin-bottom:4px; color:rgba(255,255,255,0.85);">🩺 Démarche</div>
+                ${demarcheTable}
             </div>
-
-            <!-- Explication pédagogique -->
-            ${pedagogical}
-
-            <!-- Comparaison anonyme -->
+            ${syntheseLigne ? `<div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 10px; font-size:0.78rem; line-height:1.5; color:rgba(255,255,255,0.75);">${syntheseLigne}</div>` : ''}
+            <div style="background:rgba(0,0,0,0.12); border-radius:8px; padding:8px 10px; font-size:0.80rem; line-height:1.5;">${generatePedagogicalExplanation(compositeResult, currentCase).replace(/padding:16px/g,'padding:8px').replace(/margin-top:12px/g,'margin-top:6px')}</div>
             ${comparisonBlock}
+            <details id="corr-timeline" style="background:rgba(0,0,0,0.12); border-radius:8px; padding:6px 10px;">
+                <summary>⏱️ Timeline (${feedbackTimeline.events.length} actions) — cliquer pour déplier</summary>
+                <div style="margin-top:6px;">${timelineHtml}</div>
+            </details>
         </div>
     `;
 }
