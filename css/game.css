@@ -1073,15 +1073,60 @@ body::after {
 
 .correction-modal {
     background: #1a1a2e;
-    padding: 40px;
-    border-radius: 20px;
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
+    padding: 16px 18px;
+    border-radius: 16px;
+    max-width: 680px;
+    width: 92vw;
+    max-height: 86vh;
     overflow-y: auto;
     border: 1px solid var(--primary-color);
-    box-shadow: 0 0 50px rgba(160, 32, 240, 0.3);
+    box-shadow: 0 0 40px rgba(160, 32, 240, 0.25);
 }
+
+/* Tables compacts correction */
+.corr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.80rem;
+    margin: 6px 0 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.corr-table th {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 15, 30, 0.95);
+    color: var(--primary-color);
+    font-size: 0.70rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 7px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.corr-table td {
+    padding: 5px 7px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.88);
+    vertical-align: middle;
+}
+.corr-table tr:last-child td { border-bottom: none; }
+.corr-table .corr-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 0.70rem;
+    font-weight: 700;
+}
+.corr-table .badge-ok { background: rgba(46,204,113,0.15); color: #2ecc71; border:1px solid rgba(46,204,113,0.3); }
+.corr-table .badge-warn { background: rgba(243,156,18,0.15); color: #f1c40f; border:1px solid rgba(243,156,18,0.3); }
+.corr-table .badge-err { background: rgba(231,76,60,0.15); color: #ff6b6b; border:1px solid rgba(231,76,60,0.3); }
+#toggle-case-review.small { font-size:0.78rem; padding:5px 10px; opacity:0.9; }
+
+/* Timeline repliée */
+#corr-timeline { font-size:0.78rem; }
+#corr-timeline summary { cursor:pointer; color:var(--primary-color); font-weight:600; }
 
 .correction-title {
     color: var(--primary-color);
@@ -1964,6 +2009,57 @@ body::after {
     .action-btn {
         border: 2px solid ButtonText;
     }
+}
+
+/* ===== LLM MODE — masquages & IAO ===== */
+body.llm-mode #antecedents,
+body.llm-mode #histoire-maladie {
+    display: none !important;
+}
+body.llm-mode #section-examen-clinique .medical-card,
+body.llm-mode #section-examens .medical-card {
+    display: none !important;
+}
+/* En mode LLM, on cache aussi les inputs ECOS 2D : tout passe par la bulle unique */
+body.llm-mode .ecos-exam-input-row-2d,
+body.llm-mode #patient-verbatim-container {
+    display: none !important;
+}
+/* IAO mesures */
+.iao-mesure {
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:10px;
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+.iao-mesure .iao-label {
+    font-size:0.72rem;
+    color:rgba(255,255,255,0.5);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+.iao-mesure b {
+    font-size:1.05rem;
+    color:#fff;
+}
+/* En mode sans-LLM, on masque la bulle et l'onglet IAO */
+body.no-llm-mode #dialogue-panel {
+    display: none !important;
+}
+body.no-llm-mode #section-iao,
+body.no-llm-mode #nav-iao,
+body.no-llm-mode #mobile-tab-iao {
+    display: none !important;
+}
+/* En LLM la section IAO est disponible via .active (pas de forçage display) */
+body.llm-mode .nav-item[data-target="section-examen-clinique"],
+body.llm-mode .nav-item[data-target="section-examens"],
+body.llm-mode .mobile-tab-item[data-tab="examen"],
+body.llm-mode .mobile-tab-item[data-tab="exams"] {
+    display: none !important;
 }
 
 /* Custom Question Buttons */
