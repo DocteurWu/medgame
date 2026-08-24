@@ -421,7 +421,9 @@ class ThreeManager {
     }
 
     closeAllOverlays() {
-        ['dialogue-panel', 'prescription-modal', 'diagnostic-floating-panel'].forEach(id => {
+        // dialogue-panel est un panneau 2D permanent (display:flex !important dans game.html)
+        // il ne doit pas être masqué par le manager 3D ; seules les modales 3D le sont
+        ['prescription-modal', 'diagnostic-floating-panel'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.classList.remove('active');

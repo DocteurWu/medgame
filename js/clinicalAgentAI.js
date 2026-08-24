@@ -123,6 +123,10 @@ class ClinicalAgentAI {
 
         chat.ask = async function(question) {
             if (!question?.trim()) return;
+            if (chat.isAsking) {
+                console.warn("[ClinicalAgentAI] Already waiting for patient response, ignoring input.");
+                return;
+            }
 
             if (self.isClinicalAction(question)) {
                 // Intercepter et traiter l'action avec l'IA Game Master
