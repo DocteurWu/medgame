@@ -356,6 +356,8 @@
             document.getElementById('ecos-setting-duration').value = localStorage.getItem('ecos_duration') || '480';
             document.getElementById('setting-sound-toggle').checked = localStorage.getItem('medgame.audio.muted') !== 'true';
             document.getElementById('setting-view-mode-toggle').checked = localStorage.getItem('medgame_text_mode_default') !== 'true';
+            const llmToggle = document.getElementById('setting-llm-mode');
+            if (llmToggle) llmToggle.checked = (localStorage.getItem('medgame_llm_mode') ?? 'true') !== 'false';
 
             const usernameInput = document.getElementById('setting-username');
             const usernameStatus = document.getElementById('username-status');
@@ -459,6 +461,8 @@
             localStorage.setItem('ecos_duration', ecosDuration);
             localStorage.setItem('medgame.audio.muted', soundEnabled ? 'false' : 'true');
             localStorage.setItem('medgame_text_mode_default', defaultTo3D ? 'false' : 'true');
+            const llmModeEnabled = document.getElementById('setting-llm-mode') ? document.getElementById('setting-llm-mode').checked : true;
+            localStorage.setItem('medgame_llm_mode', llmModeEnabled ? 'true' : 'false');
 
             const newUsername = document.getElementById('setting-username').value.trim();
             const isPublic = document.getElementById('setting-public-toggle').checked;
