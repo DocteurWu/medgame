@@ -99,6 +99,7 @@
             if (!this.panel) return;
             this.panel.classList.add('active');
             this.panel.setAttribute('aria-hidden', 'false');
+            this.panel.style.display = 'flex';
             if (this.messages.length === 0) {
                 const patient = this.caseData?.patient || {};
                 const nom = `${patient.prenom || ''} ${patient.nom || 'le patient'}`.trim();
@@ -127,6 +128,7 @@
             if (!this.panel) return;
             this.panel.classList.remove('active');
             this.panel.setAttribute('aria-hidden', 'true');
+            this.panel.style.display = 'none';
         }
 
         _safeMarkdown(text) {
@@ -154,13 +156,12 @@
         _stripPromptLeaks(text) {
             if (!text) return '';
             let t = text;
-            // Supprimer les blocs "PS ..." jusqu'à la fin
-            t = t.replace(/\n\s*PS\s*[:\.].*$/s, '');
-            // Supprimer les blocs "Note:" ou "(Note: ...)"
-            t = t.replace(/\n\s*Note\s*[:\.].*$/s, '');
+            // Supprimer uniquement les blocs PS/Note en fin de message (une ligne), pas glouton sur tout le reste
+            t = t.replace(/\n\s*PS\s*[:\.][^\n]*$/i, '');
+            t = t.replace(/\n\s*Note\s*[:\.][^\n]*$/i, '');
             t = t.replace(/\(Note\s*:[^)]*\)/gi, '');
-            // Supprimer les "system-reminder" ou "Plan Mode"
-            t = t.replace(/\n\s*(system[- ]reminder|Plan Mode|Operational Mode).*$/s, '');
+            // Supprimer les "system-reminder" ou "Plan Mode" uniquement s'ils sont en fin
+            t = t.replace(/\n\s*(system[- ]reminder|Plan Mode|Operational Mode)[^\n]*$/i, '');
             // Supprimer les blocs entre crochets [action], [thinking], etc.
             t = t.replace(/\[(thinking|action|note|context|system)[^\]]*\]/gi, '');
             return t.trim();
@@ -474,6 +475,8 @@
                     loading.innerHTML = displayHTML;
                     loading.classList.add('answer-fade-in');
                     this.messages.push({ role: 'assistant', content: rawTextForHistory });
+                    const root = document.getElementById('dialogue-messages');
+                    if (root) root.scrollTop = root.scrollHeight;
 
                 } catch (err) {
                     console.error('[PatientChat] MedicalGameManager error:', err);

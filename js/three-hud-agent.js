@@ -1312,6 +1312,10 @@ export class ThreeHUD {
             this._origChatAsk = chat.ask;
             chat.ask = async (question) => {
                 if (!question.trim()) return;
+                if (chat.isAsking) {
+                    console.warn("[3D Chat] Already waiting for patient response, ignoring input.");
+                    return;
+                }
 
                 const isAction = window.clinicalAgentAI && window.clinicalAgentAI.isClinicalAction(question);
                 
