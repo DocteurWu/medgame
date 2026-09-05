@@ -351,22 +351,90 @@ document.addEventListener('DOMContentLoaded', () => {
         const daySeed = new Date().toISOString().slice(0, 10);
         let hash = 0;
         for (let i = 0; i < daySeed.length; i++) hash = (hash * 31 + daySeed.charCodeAt(i)) >>> 0;
-        casesReady.then(() => {
+        casesReady.then(async () => {
             const allFiles = Object.entries(casesData).flatMap(([spec, files]) => files.map(f => ({ spec, file: f })));
             if (allFiles.length === 0) return;
             const pick = allFiles[hash % allFiles.length];
             const banner = document.getElementById('daily-case-banner');
-            if (banner && pick) {
-                banner.style.display = 'block';
-                banner.innerHTML = `🎯 <strong>Cas du jour</strong> (${daySeed}) — <button id="daily-case-go" style="margin-left:8px;padding:6px 14px;border-radius:20px;border:1px solid rgba(0,242,254,0.5);background:rgba(0,242,254,0.15);color:#fff;cursor:pointer;font-weight:700;">Jouer : ${pick.file}</button>`;
-                const go = document.getElementById('daily-case-go');
-                if (go) go.addEventListener('click', () => {
-                    localStorage.setItem('selectedThemes', JSON.stringify([pick.spec]));
-                    localStorage.setItem('selectedCaseFiles', JSON.stringify([pick.file]));
-                    localStorage.removeItem('selectedCaseFile');
-                    window.location.href = 'game.html';
-                });
+            if (!banner || !pick) return;
+
+            // Nettoyage esthétique du titre (sans .json ni underscores bruts)
+            const formatCleanTitle = (file) => {
+                let name = file || '';
+                name = name.replace(/\.json$/i, '');
+                name = name.replace(/^[a-zA-Z0-9]+[_-]/i, '');
+                name = name.replace(/_/g, ' ');
+                name = name.replace(/\s+\d+$/i, '');
+                if (name.length > 0) {
+                    name = name.charAt(0).toUpperCase() + name.slice(1);
+                }
+                return name || 'Cas du jour';
+            };
+
+            let displayTitle = formatCleanTitle(pick.file);
+
+            // Récupérer un titre plus propre depuis les données si disponible et concis
+            try {
+                let fullTitle = displayTitle;
+                if (window.allSupabaseCases) {
+                    const found = window.allSupabaseCases.find(c => c.id === pick.file);
+                    if (found) {
+                        const content = typeof found.content === 'string' ? JSON.parse(found.content) : found.content;
+                        if (found.title) fullTitle = found.title;
+                        if (content?.title) fullTitle = content.title;
+                    }
+                } else {
+                    const filename = pick.file.endsWith('.json') ? pick.file : `${pick.file}.json`;
+                    const res = await fetch(`data/${filename}`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.title) fullTitle = data.title;
+                        else if (data.interrogatoire?.motifHospitalisation && data.interrogatoire.motifHospitalisation.length <= 32) {
+                            fullTitle = data.interrogatoire.motifHospitalisation;
+                        }
+                    }
+                }
+                if (fullTitle && fullTitle.length <= 32) {
+                    displayTitle = fullTitle;
+                }
+            } catch (_) {}
+
+            // Vérification si déjà complété
+            let isPlayed = false;
+            const playedStr = getCookie('playedCases') || '';
+            const playedList = playedStr ? playedStr.split(',').filter(Boolean) : [];
+            const cleanId = pick.file.replace('.json', '');
+            if (playedList.includes(cleanId) || playedList.includes(pick.file)) {
+                isPlayed = true;
             }
+
+            banner.style.display = 'inline-flex';
+            banner.setAttribute('title', `Cas du jour : ${displayTitle} (${pick.spec})`);
+
+            const tagHtml = isPlayed
+                ? `<span class="daily-case-tag" style="background:rgba(46,213,115,0.18);color:#2ed573;"><i class="fas fa-check-circle" style="color:#2ed573;"></i> Fait</span>`
+                : `<span class="daily-case-tag"><i class="fas fa-fire"></i> Cas du jour</span>`;
+
+            const btnHtml = isPlayed
+                ? `<span class="daily-case-btn" style="border-color:rgba(46,213,115,0.4);"><i class="fas fa-redo"></i> Rejouer</span>`
+                : `<span class="daily-case-btn"><i class="fas fa-play"></i> Jouer</span>`;
+
+            banner.innerHTML = `${tagHtml}<span class="daily-case-name">${displayTitle}</span>${btnHtml}`;
+
+            const launch = () => {
+                localStorage.setItem('selectedThemes', JSON.stringify([pick.spec]));
+                localStorage.setItem('selectedCaseFiles', JSON.stringify([pick.file]));
+                localStorage.removeItem('selectedCaseFile');
+                window.location.href = 'game.html';
+            };
+
+            banner.addEventListener('click', launch);
+            banner.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    launch();
+                }
+            });
         });
     } catch (e) { /* non bloquant */ }
 

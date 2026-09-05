@@ -100,6 +100,107 @@ body {
     transform: translateX(-5px);
 }
 
+/* --- TOP NAVIGATION & COMPACT CAS DU JOUR --- */
+.themes-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.themes-nav-bar .back-link-bottom {
+    margin-bottom: 0;
+}
+
+.daily-case-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 6px;
+    background: rgba(10, 20, 40, 0.65);
+    border: 1px solid rgba(0, 242, 254, 0.35);
+    border-radius: 25px;
+    color: #fff;
+    font-size: 0.82rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 242, 254, 0.12);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    outline: none;
+}
+
+.daily-case-pill:hover,
+.daily-case-pill:focus-visible {
+    background: rgba(15, 30, 60, 0.85);
+    border-color: rgba(0, 242, 254, 0.7);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(0, 242, 254, 0.3);
+    transform: translateY(-2px);
+}
+
+.daily-case-pill:active {
+    transform: translateY(0);
+}
+
+.daily-case-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 700;
+    font-size: 0.72rem;
+    color: #00f2fe;
+    background: rgba(0, 242, 254, 0.15);
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.daily-case-tag i {
+    color: #ff9f43;
+    filter: drop-shadow(0 0 4px rgba(255, 159, 67, 0.6));
+}
+
+.daily-case-name {
+    font-weight: 500;
+    color: #f1f5f9;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.82rem;
+}
+
+.daily-case-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.25), rgba(179, 136, 255, 0.3));
+    border: 1px solid rgba(0, 242, 254, 0.5);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.daily-case-btn i {
+    font-size: 0.7rem;
+}
+
+.daily-case-pill:hover .daily-case-btn {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.45), rgba(179, 136, 255, 0.55));
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+}
+
 .container {
     width: fit-content;
     max-width: 95vw;
@@ -741,7 +842,32 @@ body {
     .back-link-bottom {
         font-size: 0.8rem;
         padding: 6px 10px;
-        margin-bottom: 5px;
+        margin-bottom: 0;
+    }
+
+    .themes-nav-bar {
+        gap: 8px;
+    }
+
+    .daily-case-pill {
+        font-size: 0.75rem;
+        padding: 3px 8px 3px 5px;
+        gap: 6px;
+    }
+
+    .daily-case-name {
+        max-width: 140px;
+        font-size: 0.75rem;
+    }
+
+    .daily-case-tag {
+        font-size: 0.68rem;
+        padding: 2px 6px;
+    }
+
+    .daily-case-btn {
+        font-size: 0.7rem;
+        padding: 2px 8px;
     }
 }
 

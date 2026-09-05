@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
 import { buildFurniture, buildRoom, createMaterial } from './three-room.js';
 import { ThreePatient } from './three-patient.js';
 import { ThreeInstruments } from './three-instruments.js';
@@ -11,90 +13,129 @@ import { medicalAudio } from './three-audio.js';
 import { ThreeFPSController } from './three-fps-controller.js';
 import { ThreeQualityAgent } from './three-quality-agent.js';
 
+import { Easing, OverlayWatcher, disposeObject3D, prefersReducedMotion } from './three-core-utils.js';
+import { CameraDirector } from './three-camera-director.js';
+import { HoverHighlighter } from './three-highlight.js';
+import { HudTooltip } from './three-hud.js';
+import { EcosSession } from './three-ecos-session.js';
+
 /**
- * Dictionnaire de descriptions riches pour les objets interactifs
+ * Descriptions riches des objets interactifs de la chambre clinique
  */
 const TOOLTIP_DESCRIPTIONS = {
-    'Tensiometre': 'Mesure de la tension artérielle — Placez le brassard sur le bras du patient',
-    'Oxymetre': 'Saturation en oxygène SpO2 — Clipsez sur le doigt du patient',
-    'Thermometre': 'Mesure de la température corporelle — Thermomètre électronique',
-    'Glucometre': 'Glycémie capillaire — Insérez une bandelette et prélevez une goutte de sang',
-    'Tablette prescription': 'Prescription et ordonnance — Consultez les résultats et prescribez',
-    'Ordinateur': 'Poste informatique — Dossier médical et résultats',
-    'Moniteur ECG': 'Moniteur de surveillance — Tracé ECG et constantes vitales en temps réel',
-    'Moniteur ECG mural': 'Moniteur mural — Tracé ECG et constantes vitales en temps réel',
-    'Perfusion': 'Perfusion intraveineuse — Soluté en cours d\'administration',
-    'Charriot médical': 'Charriot de soins — Matériel et instruments médicaux',
-    'Affiche médicale': 'Affiche — Protocole ECMO affiché au mur',
-    'Rideau': 'Rideau de séparation',
-    'Patient': 'Patient — Examinez le patient',
-    'Patient - Torse': 'Torse du patient — Palpation et inspection',
-    'Patient - Tête': 'Tête du patient — Examen neurologique',
-    'Evier': 'Évier — Lavage des mains',
-    'Meuble Evier': 'Évier — Lavez vos mains avant d\'examiner le patient',
-    'Masque à Oxygène': 'Masque O₂ — Appliquez si SpO₂ < 92%',
-    'Patient - Abdomen': 'Abdomen du patient — Palpation et percussion',
-    'Armoire': 'Armoire à pharmacie — Cliquez pour ouvrir les traitements prescriptibles',
-    'Porte entree': 'Porte d\'entrée',
-    'Fenetre': 'Fenêtre',
+    'Tensiometre': 'Tension artérielle — brassard à placer au bras du patient',
+    'Oxymetre': 'SpO₂ — capteur de saturométrie à clipser au doigt',
+    'Thermometre': 'Température corporelle — thermomètre électronique',
+    'Glucometre': 'Glycémie capillaire — bandelette + prélèvement d\'une goutte de sang',
+    'Stethoscope': 'Stéthoscope — révèle les foyers d\'auscultation cardio-pulmonaire',
+    'Tablette prescription': 'Prescription et ordonnance — examens et traitements',
+    'Ordinateur': 'Poste informatique — dossier médical et résultats biologiques',
+    'Moniteur ECG': 'Moniteur de surveillance multiparamétrique en temps réel',
+    'Moniteur ECG mural': 'Moniteur mural — tracé ECG et constantes vitales',
+    'Perfusion': 'Perfusion intraveineuse — soluté et débit en cours',
+    'Charriot médical': 'Chariot d\'urgence et matériel de soins',
+    'Affiche médicale': 'Protocole et algorithmes d\'urgence affichés au mur',
+    'Patient': 'Examinez et interrogez le patient',
+    'Patient - Torse': 'Torse du patient — inspection, auscultation, palpation',
+    'Patient - Tête': 'Tête du patient — état neurologique et muqueuses',
+    'Patient - Abdomen': 'Abdomen du patient — palpation abdominale',
+    'Evier': 'Solution hydro-alcoolique — friction obligatoire avant examen',
+    'Meuble Evier': 'Solution hydro-alcoolique — friction obligatoire avant examen',
+    'Masque à Oxygène': 'Masque à haute concentration — indiqué si SpO₂ < 92 %',
+    'Armoire': 'Armoire à pharmacie — médicaments et solutés prescriptibles',
+    'Porte entree': 'Sortie de la chambre',
+    'Fenetre': 'Fenêtre extérieure',
 };
 
-const FPS_INTERACTION_DISTANCE = 2.4;
+const OVERLAY_IDS = [
+    'pc-overlay', 'armoire-overlay', 'clinical-exam-menu', 'prescription-modal',
+    'correction-overlay', 'lock-challenge-modal', 'image-overlay', 'mobile-monitor-overlay',
+];
+
+const FPS_INTERACTION_DISTANCE = 2.5;
+const HOVER_RAYCAST_HZ = 30;
+const MAX_DT = 0.05;
 
 export class ThreeScene {
     constructor(container, callbacks = {}) {
         this.container = container;
         this.callbacks = callbacks;
         this.scene = new THREE.Scene();
-        this.interactiveObjects = [];
+
         this.raycaster = new THREE.Raycaster();
-        this.mouse = new THREE.Vector2();
+        this.pointer = new THREE.Vector2();
+        this._pointerClient = { x: 0, y: 0 };
+        this._pointerInside = false;
+        this._raycastAccum = 0;
+        this._interactiveRoots = [];
+        this.interactiveObjects = []; // Compatibilité externe
+
+        this.reducedMotion = prefersReducedMotion();
+        this._ac = new AbortController();
+        this._cleanedUp = false;
+
+        // Effets visuels & caméras
+        this.currentCameraMode = 'room';
+        this.stethoscopeMode = false;
+        this.screenShakeIntensity = 0;
+        this._urgencyFogColor = new THREE.Color(0x4a2233);
+        this._normalFogColor = null;
+
+        // Agents & sous-systèmes
         this.assetAgent = new ThreeAssetAgent(this);
         this.lightingAgent = null;
         this.environmentAgent = null;
+        this.qualityAgent = null;
+        this.fpsController = null;
+        this.characterController = null;
+
+        // Animateurs
         this.patientAnimator = null;
         this.doctorAnimator = null;
         this.dustAnimator = null;
         this.ivAnimator = null;
         this.ecgAnimator = null;
-        this.fpsController = null;
+        this.wallEcgAnimator = null;
 
-        // === Système hover glow ===
-        this._hoveredObject = null;
-        this._hoveredOriginalEmissives = new Map();
-        this._hoverGlowIntensity = 0.15;
-        this._hoverGlowColor = new THREE.Color(0x1a3a6c);
-        this._tooltipEl = null;
-        this._tooltipVisible = false;
+        // Hotspots simples pour le patient (Tête / Torse / Abdomen) et auscultation
+        this.hotspotsGroup = null;
+        this.auscultationHotspotsGroup = null;
 
-        // === Système hover lift (soulèvement au survol) ===
-        this._hoverLiftTarget = null;      // Groupe actuellement soulevé
-        this._hoverLiftPrevTarget = null;   // Précédent groupe soulevé (pour anim de descente)
-        this._hoverLiftBaseY = 0;          // Position Y d'origine du groupe
-        this._hoverLiftPrevBaseY = 0;      // Position Y d'origine du groupe précédent
-        this._hoverLiftAmount = 0.012;     // Hauteur de soulèvement (en unités 3D)
-        this._hoverLiftCurrent = 0;         // Valeur interpolée actuelle
-
-        // === Caméra fly-to ===
-        this._cameraAnimId = null;
+        // Session ECOS et Overlays
+        this.overlays = new OverlayWatcher(OVERLAY_IDS);
+        this.session = new EcosSession({
+            durationSec: callbacks.stationDuration ?? 480,
+            onTick: (r, d) => this.callbacks.onTimer?.(r, d),
+            onPhase: (p) => {
+                if (p === 'warning') medicalAudio.playAlert?.('warning');
+                this.callbacks.onStationPhase?.(p);
+            },
+        });
     }
 
-    init() {
-        // Initialisation terminée
-        this.scene.background = new THREE.Color(0x2d3135);
-        this.scene.fog = new THREE.Fog(0x2d3135, 8, 18);
+    /* ================= INITIALISATION ================= */
 
-        this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
+    init() {
+        const { signal } = this._ac;
+
+        // Ambiance de la pièce et brouillard
+        this.scene.background = new THREE.Color(0x2d3135);
+        this.scene.fog = new THREE.Fog(0x2d3135, 9, 22);
+        this._normalFogColor = this.scene.fog.color.clone();
+
+        // Caméra principale
+        this.camera = new THREE.PerspectiveCamera(52, this._aspect(), 0.08, 80);
         this.scene._camera = this.camera;
+
+        // Moteur de rendu WebGL avec PBR et ACESFilmic Tone Mapping
         this.renderer = new THREE.WebGLRenderer({
             antialias: true,
-            alpha: true,
-            powerPreference: "high-performance",
-            stencil: false
+            alpha: false,
+            powerPreference: 'high-performance',
+            stencil: false,
         });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-        this.renderer.setSize(this.container.clientWidth || window.innerWidth, this.container.clientHeight || window.innerHeight);
-        // Ombres douces activées dès la création (avant le 1er rendu => aucune recompilation de matériau)
+        this.renderer.setSize(...this._size());
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -102,239 +143,153 @@ export class ThreeScene {
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.container.appendChild(this.renderer.domElement);
 
-        // ── Robustesse : perte de contexte WebGL (driver, onglet en arrière-plan)
-        // → bascule 2D propre au lieu d'un canvas noir définitif.
-        this.renderer.domElement.addEventListener('webglcontextlost', (e) => {
-            e.preventDefault();
-            console.error('[ThreeScene] Contexte WebGL perdu — bascule en mode 2D.');
-            try { this.cleanup(); } catch (err) {}
-            const manager = window.threeManager;
-            if (manager && typeof manager.disable3D === 'function') {
-                manager.disable3D();
-                if (typeof showNotification === 'function') {
-                    showNotification('Mode 3D désactivé (contexte graphique perdu).', 'warning');
-                }
-            }
-        });
+        this.renderer.domElement.tabIndex = 0;
+        this.renderer.domElement.setAttribute('aria-label', 'Salle d\'examen 3D interactive');
 
+        // Environnement PBR (Reflets réalistes chrome, verre, instruments)
+        this._setupEnvironmentMap();
+        this._setupContextLossGuard(signal);
+
+        // Orbit Controls
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-        // Orbit limité : rotation douce + zoom molette/pincement, pas de pan
-        // (le pan perdait les joueurs hors de la salle). Limites polaires pour
-        // ne jamais passer sous le sol ni dans le plafond.
-        this.controls.enableDamping = true;
-        this.controls.dampingFactor = 0.08;
-        this.controls.enableRotate = true;
-        this.controls.rotateSpeed = 0.55;
-        this.controls.enablePan = false;
-        this.controls.enableZoom = true;
-        this.controls.zoomSpeed = 0.7;
-        this.controls.minDistance = 1.0;
-        this.controls.maxDistance = 12.0;
-        this.controls.minPolarAngle = 0.15;
-        this.controls.maxPolarAngle = Math.PI / 2.05;
-        this.controls.touches = {
-            ONE: THREE.TOUCH.ROTATE,
-            TWO: THREE.TOUCH.DOLLY_ROTATE
-        };
+        Object.assign(this.controls, {
+            enableDamping: true,
+            dampingFactor: 0.075,
+            rotateSpeed: 0.5,
+            enablePan: false,
+            zoomSpeed: 0.7,
+            minDistance: 0.85,
+            maxDistance: 12,
+            minPolarAngle: 0.15,
+            maxPolarAngle: Math.PI / 2.05,
+        });
+        this.controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE };
         this.controls.target.set(0, 1.0, 0);
 
-        this.setCamera('room');
+        // Directeur de caméra cinématique
+        this.director = new CameraDirector(this.camera, this.controls, {
+            reducedMotion: this.reducedMotion,
+            roomCenter: new THREE.Vector3(0, 1.1, -0.5),
+        });
 
+        // Construction géométrie pièce & mobilier
         buildRoom(this.scene);
         buildFurniture(this.scene);
 
+        // Agents d'environnement et d'éclairage
         this.environmentAgent = new ThreeEnvironmentAgent(this.scene);
         this.environmentAgent.enhanceRoom();
 
         this.lightingAgent = new ThreeLightingAgent(this.scene, this.renderer);
         this.lightingAgent.setupLighting();
-        // Appliquer l'exposition du preset courant : setCamera('room') plus haut
-        // s'est exécuté AVANT la création du lighting et n'a rien appliqué.
-        // Sans ça, l'exposition restait bloquée à 1.05 + bloom 0.38 (= éblouissement au chargement).
-        this.lightingAgent.setCameraExposure(this.currentCameraMode || 'room');
-        // Agent qualité : preset auto-détecté/sauvegardé + post-processing adapté
-        // (async : le composer monte quelques frames après le premier rendu)
-        this.qualityAgent = new ThreeQualityAgent(this);
-        this.qualityAgent.init().catch((e) => console.warn('[ThreeScene] Agent qualité:', e));
 
+        this.qualityAgent = new ThreeQualityAgent(this);
+        this.qualityAgent.init().catch(e => console.warn('[ThreeScene] qualité:', e));
+
+        // Patient et instruments médicaux
         this.patient = new ThreePatient(this.scene);
         this.instruments = new ThreeInstruments(this.scene);
-
-        // Initialiser les animateurs
         this.patientAnimator = new PatientAnimator(this.patient.group);
 
-        // Animateurs d'environnement (perfusion, ECG, poussière)
-        const ivGroup = this.environmentAgent.getIVGroup();
-        if (ivGroup) {
-            this.ivAnimator = new IVFluidAnimator(ivGroup, { dropInterval: 0.8, dropSpeed: 0.3 });
-        }
+        this._setupEnvAnimators();
 
-        const ecgScreen = this.environmentAgent.getECGScreenMesh();
-        if (ecgScreen) {
-            this.ecgAnimator = new ECGScreenAnimator(ecgScreen, { width: 256, height: 96, heartRate: 72 });
-        }
-
-        const wallEcgScreen = this.environmentAgent.getWallECGScreenMesh();
-        if (wallEcgScreen) {
-            this.wallEcgAnimator = new ECGScreenAnimator(wallEcgScreen, { width: 256, height: 96, heartRate: 72 });
-        }
-
-        const dustParticles = this.environmentAgent.getDustParticles();
-        if (dustParticles) {
-            this.dustAnimator = new DustAnimator(dustParticles);
-        }
-
-        this.collectInteractive();
-
-        // Re-collecter les interactifs quand un GLB async charge (stéthoscope)
-        document.addEventListener('instruments-updated', () => this.collectInteractive());
-        document.addEventListener('patient-model-changed', () => {
-            if (this.patientAnimator) {
-                this.patientAnimator.reset();
-            }
-            this.collectInteractive();
-        });
-
-        // Initialisation des Hotspots Cliniques Holographiques
+        // Hotspots discrets et parfaitement adaptés aux personnages
         this._initHotspots();
 
-        // Custom click detection to avoid OrbitControls interference
-        this._ptrDown = null;
-        this._cleanedUp = false;
-        this.renderer.domElement.addEventListener('pointerdown', (e) => {
-            this._ptrDown = { x: e.clientX, y: e.clientY, time: performance.now() };
-        });
-        this.renderer.domElement.addEventListener('pointerup', (e) => {
-            if (this._cleanedUp) return;
-            if (!this._ptrDown) return;
-            const dx = Math.abs(e.clientX - this._ptrDown.x);
-            const dy = Math.abs(e.clientY - this._ptrDown.y);
-            const dt = performance.now() - this._ptrDown.time;
-            if (dx < 8 && dy < 8 && dt < 400) {
-                this.onClick(e);
-            }
-            this._ptrDown = null;
-        });
-        this.renderer.domElement.addEventListener('mousemove', (e) => this.onMouseMove(e));
-        window.addEventListener('resize', () => this.resize());
+        // Surlignage & Tooltip HUD
+        this.highlighter = new HoverHighlighter(this.scene, { liftAmount: this.reducedMotion ? 0 : 0.014 });
+        this.tooltip = new HudTooltip();
 
-        // === Initialiser le contrôleur FPS ===
-        this.fpsController = new ThreeFPSController(this.camera, this.renderer.domElement, {
-            onInteract: () => this.interactFromFPS(),
-            onDeactivate: () => {
-                this.controls.enabled = true;
-                document.body.classList.remove('mode-fps'); // Nettoyage de l'UI
+        this.setCamera('room', false);
+        this.collectInteractive();
+        this._bindEvents(signal);
+        this._setupFPS();
 
-                // Réafficher le modèle 3D du médecin en sortant du mode FPS
-                if (this.characterController && this.characterController.group) {
-                    this.characterController.group.visible = true;
-                }
+        this._clock = new THREE.Clock();
+        this._loop = this._loop.bind(this);
+        this._animFrameId = requestAnimationFrame(this._loop);
+    }
 
-                const crosshairEl = document.getElementById('hud-crosshair');
-                if (crosshairEl) {
-                    crosshairEl.classList.remove('is-targeting');
-                }
-                const activeBtn = document.querySelector(`#hud-3d [data-camera="${this.currentCameraMode || 'room'}"]`);
-                if (activeBtn) {
-                    document.querySelectorAll('#hud-3d [data-camera]').forEach(b => b.classList.remove('active'));
-                    activeBtn.classList.add('active');
-                }
+    _aspect() {
+        const [w, h] = this._size();
+        return w / h;
+    }
 
-                if (this._skipDeactivateCameraReset) {
-                    this._skipDeactivateCameraReset = false;
-                    // Mettre à jour OrbitControls target pour regarder vers l'avant à partir de la position actuelle
-                    const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion);
-                    this.controls.target.copy(this.camera.position).add(dir.multiplyScalar(2.0));
-                    this._clampCameraInRoom(this.camera.position);
-                    this.controls.update();
-                } else {
-                    // Retour au dernier preset guidé (pas toujours 'room') :
-                    // mémorisé à l'entrée en FPS dans setCamera('fps').
-                    this.setCamera(this._cameraBeforeFPS || 'room', true);
-                    this._cameraBeforeFPS = null;
-                }
-            }
-        });
-
-        // Raccourci touche F pour le mode FPS
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'KeyF' && !e.repeat) {
-                if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
-                if (this.fpsController && this.fpsController.enabled) {
-                    this.fpsController.deactivate();
-                } else {
-                    this.setCamera('fps');
-                }
-            }
-        });
-
-        // === Créer le tooltip HTML ===
-        this._createTooltip();
-
-        this.animate();
+    _size() {
+        return [this.container.clientWidth || window.innerWidth, this.container.clientHeight || window.innerHeight];
     }
 
     /**
-     * Crée et positionne les anneaux holographiques 3D sur le patient (Tête, Torse, Abdomen, Membres)
+     * Environment map procédurale (RoomEnvironment + PMREM)
      */
+    _setupEnvironmentMap() {
+        try {
+            const pmrem = new THREE.PMREMGenerator(this.renderer);
+            const envScene = new RoomEnvironment();
+            this._envRT = pmrem.fromScene(envScene, 0.04);
+            this.scene.environment = this._envRT.texture;
+            if ('environmentIntensity' in this.scene) {
+                this.scene.environmentIntensity = 0.65;
+            }
+            envScene.traverse?.(o => o.geometry?.dispose?.());
+            pmrem.dispose();
+        } catch (e) {
+            console.warn('[ThreeScene] RoomEnvironment non disponible:', e);
+        }
+    }
+
+    _setupContextLossGuard(signal) {
+        this.renderer.domElement.addEventListener('webglcontextlost', (e) => {
+            e.preventDefault();
+            console.error('[ThreeScene] Contexte WebGL perdu -> repli 2D.');
+            try { this.cleanup(); } catch {}
+            window.threeManager?.disable3D?.();
+            window.showNotification?.('Mode 3D désactivé (contexte graphique perdu).', 'warning');
+        }, { signal });
+    }
+
+    _setupEnvAnimators() {
+        const iv = this.environmentAgent.getIVGroup?.();
+        if (iv) this.ivAnimator = new IVFluidAnimator(iv, { dropInterval: 0.8, dropSpeed: 0.3 });
+
+        const ecg = this.environmentAgent.getECGScreenMesh?.();
+        if (ecg) this.ecgAnimator = new ECGScreenAnimator(ecg, { width: 256, height: 96, heartRate: 72 });
+
+        const wallEcg = this.environmentAgent.getWallECGScreenMesh?.();
+        if (wallEcg) this.wallEcgAnimator = new ECGScreenAnimator(wallEcg, { width: 256, height: 96, heartRate: 72 });
+
+        if (!this.reducedMotion) {
+            const dust = this.environmentAgent.getDustParticles?.();
+            if (dust) this.dustAnimator = new DustAnimator(dust);
+        }
+    }
+
+    /* ================= HOTSPOTS D'AUSCULTATION (STÉTHOSCOPE UNIQUEMENT) ================= */
+
     _initHotspots() {
-        this.hotspotsGroup = new THREE.Group();
-        this.hotspotsGroup.name = "ClinicalHotspots";
-        this.scene.add(this.hotspotsGroup);
+        // Aucune zone interactive affichée sur le corps du patient (corps 100% dégagé)
+        this.hotspotsGroup = null;
 
-        const hotspotsData = [
-            { id: 'tête', pos: [1.2, 1.18, -3.62], color: 0xa020f0, label: 'Patient - Tête' }
-        ];
-
-        hotspotsData.forEach(data => {
-            // Ring geometry pour un effet holographique haut de gamme
-            const geom = new THREE.RingGeometry(0.065, 0.08, 32);
-            const mat = new THREE.MeshBasicMaterial({
-                color: data.color,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.8,
-                depthWrite: false,
-                blending: THREE.AdditiveBlending, // Rendu holographique lumineux
-                toneMapped: false // Couleurs franches à travers l'ACES tone mapping
-            });
-            const mesh = new THREE.Mesh(geom, mat);
-            // Coucher l'anneau à plat sur le lit
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.position.set(...data.pos);
-            mesh.userData = {
-                interactive: true,
-                isHotspot: true,
-                hotspotId: data.id,
-                label: data.label
-            };
-            this.hotspotsGroup.add(mesh);
-            this.interactiveObjects.push(mesh);
-        });
-
-        // Visibles uniquement en vue "patient" (épuré !)
-        this.hotspotsGroup.visible = false;
-
-        // Hotspots d'auscultation pour le stéthoscope
+        // Hotspots d'auscultation (visibles UNIQUEMENT si stéthoscope équipé en vue patient)
         this.auscultationHotspotsGroup = new THREE.Group();
         this.auscultationHotspotsGroup.name = "AuscultationHotspots";
         this.scene.add(this.auscultationHotspotsGroup);
 
-        const auscultationData = [
-            { id: 'auscultation_cardio', pos: [1.25, 1.15, -3.4], color: 0x00ffff, label: 'Auscultation Cardiaque' },
-            { id: 'auscultation_pulmo_gauche', pos: [1.34, 1.14, -3.4], color: 0x00ff00, label: 'Auscultation Pulmonaire Gauche' },
-            { id: 'auscultation_pulmo_droit', pos: [1.08, 1.14, -3.4], color: 0x00ff00, label: 'Auscultation Pulmonaire Droite' }
+        const auscultData = [
+            { id: 'auscultation_cardio', pos: [1.26, 1.15, -3.4], color: 0x00ffff, label: 'Foyer Cardiaque' },
+            { id: 'auscultation_pulmo_gauche', pos: [1.34, 1.14, -3.4], color: 0x00ff00, label: 'Poumon Gauche' },
+            { id: 'auscultation_pulmo_droit', pos: [1.08, 1.14, -3.4], color: 0x00ff00, label: 'Poumon Droit' }
         ];
 
-        auscultationData.forEach(data => {
-            const geom = new THREE.RingGeometry(0.045, 0.055, 32);
+        auscultData.forEach(data => {
+            const geom = new THREE.RingGeometry(0.045, 0.06, 32);
             const mat = new THREE.MeshBasicMaterial({
                 color: data.color,
                 side: THREE.DoubleSide,
                 transparent: true,
                 opacity: 0.85,
                 depthWrite: false,
-                blending: THREE.AdditiveBlending, // Rendu holographique lumineux
+                blending: THREE.AdditiveBlending,
                 toneMapped: false
             });
             const mesh = new THREE.Mesh(geom, mat);
@@ -353,1097 +308,579 @@ export class ThreeScene {
         this.auscultationHotspotsGroup.visible = false;
     }
 
-    /**
-     * Crée l'élément HTML du tooltip riche
-     */
-    _createTooltip() {
-        const tooltip = document.createElement('div');
-        tooltip.id = 'medgame-3d-tooltip';
-        tooltip.style.cssText = `
-            position: fixed;
-            pointer-events: none;
-            z-index: 10000;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            background: linear-gradient(160deg, rgba(12, 22, 48, 0.94), rgba(8, 14, 32, 0.92));
-            color: #e0e8f4;
-            border: 1px solid rgba(120, 190, 255, 0.35);
-            border-radius: 10px;
-            padding: 8px 14px;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            font-size: 13px;
-            line-height: 1.4;
-            letter-spacing: 0.2px;
-            max-width: 260px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.45), 0 0 14px rgba(100,170,255,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
-            backdrop-filter: blur(8px);
-        `;
-        const titleEl = document.createElement('div');
-        titleEl.style.cssText = `
-            font-weight: 700;
-            font-size: 14px;
-            color: #88ccff;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        `;
-        titleEl.innerHTML = '<span style="font-size:16px">🔬</span> <span id="medgame-tooltip-title"></span>';
-        const descEl = document.createElement('div');
-        descEl.id = 'medgame-tooltip-desc';
-        descEl.style.cssText = `
-            color: #b0c4de;
-            font-size: 12px;
-        `;
-        const hintEl = document.createElement('div');
-        hintEl.id = 'medgame-tooltip-hint';
-        hintEl.style.cssText = `
-            margin-top: 6px;
-            color: #66aaff;
-            font-size: 11px;
-            font-style: italic;
-        `;
-        tooltip.appendChild(titleEl);
-        tooltip.appendChild(descEl);
-        tooltip.appendChild(hintEl);
-        document.body.appendChild(tooltip);
-        this._tooltipEl = tooltip;
-    }
-
-    /**
-     * Supprime le tooltip HTML
-     */
-    _destroyTooltip() {
-        if (this._tooltipEl && this._tooltipEl.parentNode) {
-            this._tooltipEl.parentNode.removeChild(this._tooltipEl);
-        }
-        this._tooltipEl = null;
-    }
-
-    collectInteractive() {
-        this.interactiveObjects = [];
-        this.scene.traverse((obj) => {
-            if (obj.userData?.interactive) this.interactiveObjects.push(obj);
-        });
-    }
-
-    loadCase(caseData) {
-        this.patient.loadCase(caseData);
-        this.updateHotspotsPosition();
-        // Recréer l'animateur car le groupe patient est reconstruit
-        this.patientAnimator = new PatientAnimator(this.patient.group, {
-            breathRate: caseData?.patient?.breathRate || 1.2,
-            expression: caseData?.patient?.expression || 'normal'
-        });
-        this.collectInteractive();
-
-        // Démarrer le bip ECG synchronisé à la FC du cas
-        medicalAudio.init();
-        medicalAudio.resume();
-        const hr = this._parseHeartRate(caseData);
-        if (hr > 0) {
-            medicalAudio.startECGBeep(hr);
-        }
-
-        // Démarrer l'alarme si cas critique
-        const isUrgent = this._isUrgentCase(caseData);
-        if (isUrgent) {
-            medicalAudio.startAlarm('critical');
-        }
-    }
-
-    /** Parse la FC depuis les données du cas */
-    _parseHeartRate(caseData) {
-        const vitals = caseData?.examenClinique?.constantes;
-        if (!vitals) return 72;
-        const str = vitals.pouls || vitals.heartRate || '72';
-        const m = String(str).match(/[\d]+/);
-        return m ? parseInt(m[0]) : 72;
-    }
-
-    /** Détermine si le cas est critique */
-    _isUrgentCase(caseData) {
-        const vitals = caseData?.examenClinique?.constantes;
-        if (!vitals) return false;
-        const hr = this._parseHeartRate(caseData);
-        const spo2 = parseInt(String(vitals.saturationO2 || '100').match(/[\d]+/)?.[0] || '100');
-        return hr > 120 || spo2 < 90 || (caseData.difficulty || 1) >= 3;
-    }
-
     updateHotspotsPosition() {
-        const isLying = (this.patient && this.patient._currentPosition === 'allonge');
-        if (this.hotspotsGroup) {
-            this.hotspotsGroup.children.forEach(mesh => {
-                const id = mesh.userData.hotspotId;
-                if (id === 'tête') {
-                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 1.26 : 1.18, isLying ? 0.82 : -3.62);
-                } else if (id === 'torse') {
-                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 1.22 : 1.14, isLying ? 0.38 : -3.35);
-                } else if (id === 'abdomen') {
-                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 1.18 : 1.10, isLying ? -0.02 : -3.10);
-                } else if (id === 'membre') {
-                    mesh.position.set(isLying ? 4.7 : 1.2, isLying ? 0.98 : 1.05, isLying ? -0.48 : -2.70);
-                }
-            });
-        }
-        if (this.auscultationHotspotsGroup) {
-            this.auscultationHotspotsGroup.children.forEach(mesh => {
-                const id = mesh.userData.hotspotId;
-                if (id === 'auscultation_cardio') {
-                    mesh.position.set(isLying ? 4.76 : 1.26, isLying ? 1.21 : 1.15, isLying ? 0.38 : -3.4);
-                } else if (id === 'auscultation_pulmo_gauche') {
-                    mesh.position.set(isLying ? 4.86 : 1.34, isLying ? 1.20 : 1.14, isLying ? 0.38 : -3.4);
-                } else if (id === 'auscultation_pulmo_droit') {
-                    mesh.position.set(isLying ? 4.60 : 1.08, isLying ? 1.20 : 1.14, isLying ? 0.38 : -3.4);
-                }
-            });
-        }
+        const isLying = (this.patient?._currentPosition === 'allonge');
+        const auscultMap = {
+            'auscultation_cardio': isLying ? [4.76, 1.21, 0.38] : [1.26, 1.15, -3.4],
+            'auscultation_pulmo_gauche': isLying ? [4.86, 1.20, 0.38] : [1.34, 1.14, -3.4],
+            'auscultation_pulmo_droit': isLying ? [4.60, 1.20, 0.38] : [1.08, 1.14, -3.4]
+        };
+        this.auscultationHotspotsGroup?.children.forEach(child => {
+            const pos = auscultMap[child.userData.hotspotId];
+            if (pos) child.position.set(...pos);
+        });
     }
 
     updateStethoscopeHotspotsVisibility() {
         const isPatientMode = (this.currentCameraMode === 'patient');
-        if (this.hotspotsGroup) {
-            this.hotspotsGroup.visible = (isPatientMode && !this.stethoscopeMode);
-        }
         if (this.auscultationHotspotsGroup) {
             this.auscultationHotspotsGroup.visible = (isPatientMode && !!this.stethoscopeMode);
         }
     }
 
-    setCamera(mode, animate = true) {
-        if (mode === 'fps') {
-            if (this.fpsController) {
-                if (this.fpsController.enabled) return;
+    /* ================= GESTION DES ÉVÉNEMENTS ================= */
 
-                // Mémoriser le preset guidé courant pour le retour (Échap/F).
-                if (this.currentCameraMode && this.currentCameraMode !== 'fps') {
-                    this._cameraBeforeFPS = this.currentCameraMode;
-                }
-                this.currentCameraMode = 'fps';
-                if (this.hotspotsGroup) {
-                    this.hotspotsGroup.visible = false;
-                }
+    _bindEvents(signal) {
+        const el = this.renderer.domElement;
 
-                // Masquer le modèle 3D du médecin en mode FPS pour l'immersion
-                if (this.characterController && this.characterController.group) {
-                    this.characterController.group.visible = false;
-                }
+        el.addEventListener('pointerdown', (e) => {
+            this._ptrDown = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId };
+        }, { signal });
 
-                this.controls.enabled = false;
-                document.body.classList.add('mode-fps'); // Masquer le HUD superflus pour une immersion 100% propre
+        el.addEventListener('pointerup', (e) => {
+            const d = this._ptrDown;
+            this._ptrDown = null;
+            if (this._cleanedUp || !d || d.id !== e.pointerId) return;
+            const moved = Math.hypot(e.clientX - d.x, e.clientY - d.y);
+            if (moved < 9 && performance.now() - d.t < 450) this.onClick(e);
+        }, { signal });
 
-                // Mettre à jour l'état actif des boutons
-                document.querySelectorAll('#hud-3d [data-camera]').forEach(b => b.classList.remove('active'));
-                const fpsBtn = document.querySelector('#hud-3d [data-camera="fps"]');
-                if (fpsBtn) fpsBtn.classList.add('active');
+        el.addEventListener('pointermove', (e) => {
+            this._pointerClient.x = e.clientX;
+            this._pointerClient.y = e.clientY;
+            this._pointerInside = true;
+        }, { signal, passive: true });
 
-                const isLying = (this.patient && this.patient._currentPosition === 'allonge');
-                const startPos = isLying
-                    ? new THREE.Vector3(3.6, 1.6, 0.2)
-                    : new THREE.Vector3(1.0, 1.6, -2.3);
-                const startLook = isLying
-                    ? new THREE.Vector3(4.7, 1.1, 0.2)
-                    : new THREE.Vector3(1.2, 1.15, -3.45);
+        el.addEventListener('pointerleave', () => {
+            this._pointerInside = false;
+            this.highlighter.set(null);
+            this.tooltip.hide();
+        }, { signal });
 
-                this.fpsController.activate(startPos, startLook);
+        window.addEventListener('resize', () => this.resize(), { signal });
+        document.addEventListener('visibilitychange', () => this._clock.getDelta(), { signal });
 
-                if (window.showNotification) {
-                    window.showNotification('Mode FPS activé. ZQSD pour marcher, souris pour regarder, clic gauche pour interagir, Échap pour quitter.', 'info');
-                }
-            }
-            return;
-        } else {
-            if (this.fpsController && this.fpsController.enabled) {
-                this.fpsController.deactivate();
-            }
-            this.controls.enabled = true;
-            document.body.classList.remove('mode-fps'); // Restaurer le HUD normal
+        document.addEventListener('instruments-updated', () => this.collectInteractive(), { signal });
+        document.addEventListener('patient-model-changed', () => {
+            this.patientAnimator?.reset();
+            this.updateHotspotsPosition();
+            this.collectInteractive();
+        }, { signal });
 
-            // Réafficher le modèle 3D du médecin
-            if (this.characterController && this.characterController.group) {
-                this.characterController.group.visible = true;
-            }
-        }
+        window.addEventListener('keydown', (e) => this._onKeyDown(e), { signal });
+    }
 
-        this.currentCameraMode = mode;
-        if (this.hotspotsGroup) {
-            this.hotspotsGroup.visible = (mode === 'patient' && !this.stethoscopeMode);
-        }
-        if (this.auscultationHotspotsGroup) {
-            this.auscultationHotspotsGroup.visible = (mode === 'patient' && !!this.stethoscopeMode);
-        }
+    _onKeyDown(e) {
+        const tag = document.activeElement?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement?.isContentEditable) return;
 
-        const isLying = (this.patient && this.patient._currentPosition === 'allonge');
-        // Presets intérieurs, sauf 'room' : vue globale dollhouse depuis
-        // l'ouverture avant (aucun mur en z=+5) — toute la salle + médecin cadrés.
-        const presets = {
-            room: { pos: [-4.4, 3.9, 7.8], target: [0.5, 0.8, -1.0] },
-            patient: isLying
-                ? { pos: [3.1, 2.2, 2.3], target: [4.7, 1.0, 0.1] }
-                : { pos: [1.8, 2.1, -1.1], target: [1.2, 1.15, -3.45] },
-            desk: { pos: [-1.8, 2.0, 1.4], target: [-3.6, 1.3, -0.7] },
-            cabinet: { pos: [1.5, 2.2, -1.6], target: [3.8, 1.5, -3.8] },
-            anatomy: { pos: [-3.4, 1.9, -1.8], target: [-5.4, 1.8, -1.8] }
-        };
-        const p = presets[mode] || presets.room;
-        const targetPos = this._clampCameraInRoom(new THREE.Vector3(...p.pos));
-        const targetLook = new THREE.Vector3(...p.target);
-
-        if (animate && this._cameraAnimId) {
-            cancelAnimationFrame(this._cameraAnimId);
-        }
-
-        if (!animate) {
-            this.camera.position.copy(targetPos);
-            this.controls.target.copy(targetLook);
-            this.controls.update();
-        } else {
-            const startPos = this.camera.position.clone();
-            const startTarget = this.controls.target.clone();
-            const duration = 650;
-            const startTime = performance.now();
-
-            const step = (now) => {
-                const t = Math.min(1, (now - startTime) / duration);
-                // Cubic Bezier Ease In-Out
-                const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-                this.camera.position.lerpVectors(startPos, targetPos, ease);
-
-                // Effet cinématique de grue : courbe parabolique verticale
-                const heightArc = Math.sin(ease * Math.PI) * 0.28;
-                this.camera.position.y += heightArc;
-                this._clampCameraInRoom(this.camera.position);
-
-                this.controls.target.lerpVectors(startTarget, targetLook, ease);
-                this.controls.update();
-
-                if (t < 1) {
-                    this._cameraAnimId = requestAnimationFrame(step);
-                } else {
-                    this._cameraAnimId = null;
-                }
-            };
-            this._cameraAnimId = requestAnimationFrame(step);
-        }
-
-        if (this.lightingAgent) {
-            this.lightingAgent.setCameraExposure(mode);
+        switch (e.code) {
+            case 'KeyF':
+                if (e.repeat) return;
+                this.fpsController?.enabled ? this.fpsController.deactivate() : this.setCamera('fps');
+                break;
+            case 'Digit1': this.setCamera('room'); break;
+            case 'Digit2': this.setCamera('patient'); break;
+            case 'Digit3': this.setCamera('desk'); break;
         }
     }
 
-    onClick(event) {
-        if (this._cleanedUp) return;
-        // Masquer le tooltip dès qu'on clique sur un objet pour interagir
-        if (this._tooltipEl) this._tooltipEl.style.opacity = '0';
+    /* ================= RAYCASTING & INTERACTION ================= */
 
-        const isFPS = !!(this.fpsController && this.fpsController.enabled);
-        // Vue globale 'room' = caméra FIXE (3e personne statique) :
-        // seul le médecin bouge, aucun fly-to automatique.
-        // Les vues rapprochées (patient/desk/…) gardent le fly-to.
-        const holdCam = this.currentCameraMode === 'room' && !isFPS;
-
-        const hit = this.pick(event);
-        if (!hit) {
-            return;
-        }
-
-        // Obtenir le point 3D de l'intersection pour le fly-to
-        const hitPoint = hit.point ? hit.point.clone() : null;
-        const hitObj = hit.object;
-
-        if (isFPS) {
-            this._skipDeactivateCameraReset = true;
-
-            // Adapter le mode caméra cible pour l'UI
-            const label = (this._findObjectLabel(hitObj) || '').toLowerCase();
-            if (hitObj.userData?.isHotspot || label.includes('patient')) {
-                this.currentCameraMode = 'patient';
-            } else if (hitObj.userData?.pcAction || label.includes('ordinateur') || label.includes('poste informatique') || label.includes('desk')) {
-                this.currentCameraMode = 'desk';
-            } else {
-                this.currentCameraMode = 'room';
-            }
-
-            this.fpsController.deactivate();
-        }
-
-        // --- Clic sur un Hotspot Clinique 3D d'examen ---
-        if (hitObj.userData?.isHotspot) {
-            const id = hitObj.userData.hotspotId;
-            if (id === 'auscultation_cardio') {
-                if (this.manager && this.manager.clinicalAgent) {
-                    this.manager.clinicalAgent.performAction('auscultation_cardio');
-                }
-                return;
-            }
-            if (id === 'auscultation_pulmo_gauche' || id === 'auscultation_pulmo_droit') {
-                if (this.manager && this.manager.clinicalAgent) {
-                    this.manager.clinicalAgent.performAction('auscultation_pneumo');
-                }
-                return;
-            }
-
-            medicalAudio.playMeasureSound();
-            if (this.manager && this.manager.clinicalAgent) {
-                this.manager.clinicalAgent.openExaminationMenu(id);
-                if (id === 'tête') {
-                    this.manager.openPatientDialog();
-                }
-            } else {
-                // Fallback via callback existant
-                this.callbacks.onPatient?.(hitObj);
-            }
-            return;
-        }
-
-        const instrument = this.instruments.getByObject(hitObj);
-        if (instrument) {
-            // Animation de rebond sur l'instrument cliqué
-            this.instruments.triggerBounce(instrument.id);
-            // Son de mesure
-            medicalAudio.playMeasureSound();
-
-            // Fly-to vers l'instrument cliqué (sauf vue globale fixe)
-            if (hitPoint && !isFPS && !holdCam) {
-                this.flyCameraTo(hitPoint, hitPoint, 700);
-            }
-            this.callbacks.onInstrument?.(instrument, hitObj);
-            return;
-        }
-
-        if ((hitObj.userData?.label || '').toLowerCase().includes('patient')) {
-            // Fly-to vers le patient (sauf vue globale fixe)
-            if (hitPoint && !isFPS && !holdCam) {
-                this.flyCameraTo(hitPoint, hitPoint, 700);
-            }
-            this.callbacks.onPatient?.(hitObj);
-            return;
-        }
-
-        if (hitObj.userData?.pcAction) {
-            if (hitPoint && !isFPS && !holdCam) {
-                this.flyCameraTo(hitPoint, hitPoint, 600);
-            }
-            this.callbacks.onPC?.(hitObj);
-            return;
-        }
-
-        // Environnement interactif — fly-to + notification
-        let current = hitObj;
-        while (current) {
-            const name = current.name || '';
-            const label = current.userData?.label || '';
-            if (name === 'MedicalPoster' || label === 'Affiche médicale') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 600);
-                if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
-                break;
-            }
-            if (name === 'ECGMonitor' || name === 'WallECGMonitor' || label === 'Moniteur ECG' || label === 'Moniteur ECG mural') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
-                if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
-                break;
-            }
-            if (name === 'Meuble Evier' || name === 'Evier basin' || label === 'Évier — Lavage des mains') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
-                this.callbacks.onEvier?.(hitObj);
-                break;
-            }
-            if (name === 'IVStand' || label === 'Perfusion') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
-                if (window.showNotification) window.showNotification('Perfusion — Soluté en cours d\'administration');
-                break;
-            }
-            if (name === 'MasqueO2' || label === 'Masque à Oxygène') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
-                this.callbacks.onMasqueO2?.(hitObj);
-                break;
-            }
-            if (name === 'CharriotMedical' || label === 'Charriot médical') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
-                if (window.showNotification) window.showNotification('Charriot médical — Matériel de soin');
-                break;
-            }
-            if (name === 'Armoire' || label === 'Armoire') {
-                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
-                this.callbacks.onArmoire?.(hitObj);
-                break;
-            }
-            if (name === 'Porte entree' || label.toLowerCase().includes('porte')) {
-                window.location.href = 'index.html';
-                break;
-            }
-            // Tout objet interactif avec un label — fly-to générique (sauf vue globale fixe)
-            if (current.userData?.interactive && hitPoint) {
-                if (!isFPS && !holdCam) {
-                    this.flyCameraTo(hitPoint, hitPoint, 700);
-                }
-                break;
-            }
-            current = current.parent;
-        }
-
-        this.callbacks.onObject?.(hitObj);
-    }
-
-    interactFromFPS() {
-        if (!this.fpsController || !this.fpsController.enabled) return;
-        this.onClick(null);
-    }
-
-    onMouseMove(event) {
-        if (this._cleanedUp) return;
-        if (this.fpsController && this.fpsController.enabled) return;
-
-        const hit = this.pick(event);
-        const hoveredObj = hit?.object || null;
-
-        // Détection si un overlay/modal 2D ou 3D est visible à l'écran
-        const isOverlayVisible = this._isOverlayVisible();
-
-        // Gestion du hover glow (désactivé si overlay visible pour éviter des glitchs visuels)
-        this._updateHoverGlow(isOverlayVisible ? null : hoveredObj);
-
-        // Mise à jour du tooltip
-        this._updateTooltip(hoveredObj, event);
-
-        // Changement du curseur
-        this.renderer.domElement.style.cursor = (hoveredObj && !isOverlayVisible) ? 'pointer' : 'default';
-
-        this.callbacks.onHover?.(hoveredObj, event);
-    }
-
-    // ===== SYSTÈME HOVER GLOW =====
-
-    /**
-     * Met à jour l'effet de surbrillance sur l'objet survolé
-     * - Sauvegarde les emissive d'origine
-     * - Applique un glow bleu progressif sur tous les meshes du groupe
-     */
-    _updateHoverGlow(hoveredObj) {
-        // Déterminer le groupe racine interactif de l'objet survolé
-        let newHoverRoot = null;
-        if (hoveredObj) {
-            newHoverRoot = this._findInteractiveRoot(hoveredObj);
-        }
-
-        // Si c'est le même objet, ne rien faire
-        if (newHoverRoot === this._hoveredObject) return;
-
-        // Restaurer les matériaux de l'ancien objet
-        this._clearHoverGlow();
-
-        // Appliquer le glow sur le nouvel objet
-        if (newHoverRoot) {
-            this._applyHoverGlow(newHoverRoot);
-        }
-
-        // === Gestion du hover lift (soulèvement) ===
-        // Si on change de cible, on conserve la précédente pour la descente douce
-        if (this._hoverLiftTarget && this._hoverLiftTarget !== newHoverRoot) {
-            this._hoverLiftPrevTarget = this._hoverLiftTarget;
-            this._hoverLiftPrevBaseY = this._hoverLiftBaseY;
-        }
-        // Démarrer le lift sur le nouvel objet
-        if (newHoverRoot) {
-            this._hoverLiftTarget = newHoverRoot;
-            this._hoverLiftBaseY = newHoverRoot.position.y;
-        } else {
-            this._hoverLiftTarget = null;
-        }
-
-        this._hoveredObject = newHoverRoot;
-    }
-
-    /**
-     * Trouve le groupe racine interactif d'un objet (remonte la hiérarchie)
-     */
-    _findInteractiveRoot(obj) {
-        let current = obj;
-        while (current) {
-            if (current.userData?.interactive && (current.isGroup || current.children?.length > 0)) {
-                return current;
-            }
-            // Vérifier si un parent a un instrument ou un label interactif
-            if (current.userData?.instrument) return current;
-            current = current.parent;
-        }
-        // Fallback: l'objet lui-même s'il est interactif
-        if (obj.userData?.interactive) return obj;
-        return null;
-    }
-
-    /**
-     * Applique le glow bleu sur tous les meshes du groupe
-     */
-    _applyHoverGlow(root) {
-        const targets = root.isMesh ? [root] : [];
-        root.traverse((child) => {
-            if (child.isMesh) targets.push(child);
+    collectInteractive() {
+        const all = [];
+        this.scene.traverse(o => { if (o.userData?.interactive) all.push(o); });
+        const set = new Set(all);
+        this._interactiveRoots = all.filter(o => {
+            let p = o.parent;
+            while (p) { if (set.has(p)) return false; p = p.parent; }
+            return true;
         });
-
-        for (const mesh of targets) {
-            if (!mesh.material) continue;
-            // Sauvegarder l'état d'origine
-            const origEmissive = mesh.material.emissive ? mesh.material.emissive.clone() : new THREE.Color(0x000000);
-            const origIntensity = mesh.material.emissiveIntensity || 0;
-            this._hoveredOriginalEmissives.set(mesh.uuid, {
-                emissive: origEmissive,
-                intensity: origIntensity,
-            });
-            // Appliquer le glow
-            mesh.material.emissive = this._hoverGlowColor.clone();
-            mesh.material.emissiveIntensity = origIntensity + this._hoverGlowIntensity;
-            mesh.material.needsUpdate = true;
-        }
+        this.interactiveObjects = all;
     }
 
-    /**
-     * Retire le glow et restaure les matériaux d'origine
-     */
-    _clearHoverGlow() {
-        if (!this._hoveredObject) return;
-
-        const root = this._hoveredObject;
-        const targets = root.isMesh ? [root] : [];
-        root.traverse((child) => {
-            if (child.isMesh) targets.push(child);
-        });
-
-        for (const mesh of targets) {
-            if (!mesh.material) continue;
-            const saved = this._hoveredOriginalEmissives.get(mesh.uuid);
-            if (saved) {
-                mesh.material.emissive.copy(saved.emissive);
-                mesh.material.emissiveIntensity = saved.intensity;
-            } else {
-                mesh.material.emissiveIntensity = Math.max(0, (mesh.material.emissiveIntensity || 0) - this._hoverGlowIntensity);
-            }
-            mesh.material.needsUpdate = true;
-        }
-
-        this._hoveredOriginalEmissives.clear();
-    }
-
-    // ===== HOVER LIFT (soulèvement au survol) =====
-
-    /**
-     * Interpolation douce du soulèvement vertical au survol
-     * Montée rapide, descente douce. Gère aussi la redescente de l'ancien objet.
-     */
-    _updateHoverLift(dt) {
-        // Descente douce de l'ancien objet (s'il y en a un)
-        if (this._hoverLiftPrevTarget) {
-            this._hoverLiftPrevBaseY += dt * 0; // baseY ne change pas
-            const prevLift = this._hoverLiftPrevTarget.position.y - this._hoverLiftPrevBaseY;
-            if (prevLift > 0.0005) {
-                // Redescendre progressivement
-                const newLift = prevLift * Math.max(0, 1 - dt * 8);
-                this._hoverLiftPrevTarget.position.y = this._hoverLiftPrevBaseY + newLift;
-            } else {
-                // Fini, remettre à la position exacte
-                this._hoverLiftPrevTarget.position.y = this._hoverLiftPrevBaseY;
-                this._hoverLiftPrevTarget = null;
-            }
-        }
-
-        // Cas où plus rien n'est survolé — ne rien faire de plus
-        if (!this._hoverLiftTarget) {
-            this._hoverLiftCurrent = Math.max(0, this._hoverLiftCurrent - dt * 0.5);
-            return;
-        }
-
-        // Interpolation vers la hauteur cible
-        const target = this._hoverLiftAmount;
-        const speed = this._hoverLiftCurrent < target ? 12 : 6;
-        this._hoverLiftCurrent += (target - this._hoverLiftCurrent) * Math.min(1, dt * speed);
-
-        // Appliquer le déplacement vertical
-        this._hoverLiftTarget.position.y = this._hoverLiftBaseY + this._hoverLiftCurrent;
-    }
-
-    // ===== TOOLTIP RICHE =====
-
-    /**
-     * Met à jour la position et le contenu du tooltip
-     */
-    _updateTooltip(hoveredObj, event) {
-        if (!this._tooltipEl) return;
-
-        // Détecter si un overlay/modal est ouvert à l'écran (Dossier médical, armoire, QCM, etc.)
-        const isOverlayVisible = this._isOverlayVisible();
-
-        const isFPS = !!(this.fpsController && this.fpsController.enabled);
-
-        if (!hoveredObj || isOverlayVisible) {
-            this._tooltipEl.style.opacity = '0';
-            this._tooltipVisible = false;
-            return;
-        }
-
-        // Trouver le label de l'objet
-        const label = this._findObjectLabel(hoveredObj);
-        if (!label) {
-            this._tooltipEl.style.opacity = '0';
-            this._tooltipVisible = false;
-            return;
-        }
-
-        const description = TOOLTIP_DESCRIPTIONS[label] || '';
-
-        // Mettre à jour le contenu
-        const titleSpan = this._tooltipEl.querySelector('#medgame-tooltip-title');
-        if (titleSpan) titleSpan.textContent = label;
-        const descSpan = this._tooltipEl.querySelector('#medgame-tooltip-desc');
-        if (descSpan) descSpan.textContent = description;
-        const hintSpan = this._tooltipEl.querySelector('#medgame-tooltip-hint');
-
-        // Indice contextuel selon le type d'objet
-        if (hoveredObj.userData?.instrument) {
-            hintSpan.textContent = '🖱️ Cliquer pour utiliser';
-        } else if (label.toLowerCase().includes('patient')) {
-            hintSpan.textContent = '🖱️ Cliquer pour examiner';
-        } else if (label === 'Armoire') {
-            hintSpan.textContent = '🖱️ Cliquer pour ouvrir l\'armoire à pharmacie';
-        } else if (label.toLowerCase().includes('ecg') || label.toLowerCase().includes('perfusion') || label.toLowerCase().includes('charriot')) {
-            hintSpan.textContent = '👁️ Objet d\'ambiance — Cliquer pour info';
-        } else {
-            hintSpan.textContent = '';
-        }
-
-        // Positionner le tooltip près du curseur ou au centre en mode FPS
-        let tx, ty;
-        if (isFPS) {
-            tx = window.innerWidth / 2 + 20;
-            ty = window.innerHeight / 2 - 20;
-        } else {
-            if (!event) {
-                this._tooltipEl.style.opacity = '0';
-                this._tooltipVisible = false;
-                return;
-            }
+    pick(arg = null) {
+        const isCenter = (arg === true) || (this.fpsController?.enabled && !arg?.clientX);
+        if (isCenter) {
+            this.pointer.set(0, 0);
+        } else if (arg && typeof arg.clientX === 'number') {
             const rect = this.renderer.domElement.getBoundingClientRect();
-            tx = event.clientX + 16;
-            ty = event.clientY - 10;
-        }
-
-        // Empêcher le tooltip de sortir de la fenêtre
-        const ttWidth = 260;
-        const ttHeight = 80;
-        if (tx + ttWidth > window.innerWidth) tx = window.innerWidth - ttWidth - 10;
-        if (ty + ttHeight > window.innerHeight) ty = window.innerHeight - ttHeight - 10;
-        if (ty < 0) ty = 10;
-
-        this._tooltipEl.style.left = tx + 'px';
-        this._tooltipEl.style.top = ty + 'px';
-        this._tooltipEl.style.opacity = '1';
-        this._tooltipVisible = true;
-    }
-
-    /**
-     * Vérifie si un overlay ou une modale (2D/3D/jeu/QCM) est actuellement visible
-     * @returns {boolean}
-     */
-    _isOverlayVisible() {
-        const pcOverlay = document.getElementById('pc-overlay');
-        const armoireOverlay = document.getElementById('armoire-overlay');
-        const examMenu = document.getElementById('clinical-exam-menu');
-        const prescriptionModal = document.getElementById('prescription-modal');
-        const correctionOverlay = document.getElementById('correction-overlay');
-        const lockChallengeModal = document.getElementById('lock-challenge-modal');
-        const imageOverlay = document.getElementById('image-overlay');
-        const mobileMonitorOverlay = document.getElementById('mobile-monitor-overlay');
-
-        return !!(
-            (pcOverlay && pcOverlay.style.display !== 'none') ||
-            armoireOverlay ||
-            examMenu ||
-            (prescriptionModal && prescriptionModal.style.display !== 'none' && prescriptionModal.getAttribute('aria-hidden') !== 'true') ||
-            (correctionOverlay && correctionOverlay.style.display !== 'none' && correctionOverlay.getAttribute('aria-hidden') !== 'true') ||
-            lockChallengeModal ||
-            (imageOverlay && imageOverlay.style.display !== 'none') ||
-            (mobileMonitorOverlay && mobileMonitorOverlay.style.display !== 'none')
-        );
-    }
-
-    /**
-     * Trouve le label d'un objet en remontant la hiérarchie
-     */
-    _findObjectLabel(obj) {
-        let current = obj;
-        while (current) {
-            if (current.userData?.label) return current.userData.label;
-            if (current.userData?.instrument?.label) return current.userData.instrument.label;
-            if (current.name) return current.name;
-            current = current.parent;
-        }
-        return null;
-    }
-
-    // ===== CAMÉRA FLY-TO =====
-
-    /**
-     * Borne de sécurité : la caméra guidée reste dans la pièce et au-dessus du sol.
-     * Exception : la vue globale 'room' est une vue dollhouse placée DEVANT
-     * l'ouverture (pas de mur en z=+5) pour cadrer toute la salle + le médecin.
-     */
-    _clampCameraInRoom(v) {
-        if (this.currentCameraMode === 'room') {
-            v.x = Math.max(-6.0, Math.min(6.0, v.x));
-            v.y = Math.max(0.4, Math.min(4.8, v.y));
-            v.z = Math.max(-4.7, Math.min(8.2, v.z));
-            return v;
-        }
-        v.x = Math.max(-5.2, Math.min(5.2, v.x));
-        v.y = Math.max(0.4, Math.min(4.6, v.y));
-        v.z = Math.max(-4.7, Math.min(4.7, v.z));
-        return v;
-    }
-
-    /**
-     * Anime la caméra en volant doucement vers une position proche d'un objet 3D
-     * @param {THREE.Vector3} targetPosition — position de l'objet visé
-     * @param {THREE.Vector3} [lookAtTarget] — point de regard (défaut: l'objet lui-même)
-     * @param {number} [duration] — durée en ms (défaut 800)
-     */
-    flyCameraTo(targetPosition, lookAtTarget, duration = 800) {
-        if (!this.camera || !this.controls) return;
-        if (!lookAtTarget) lookAtTarget = targetPosition.clone();
-
-        // Offset orienté : on recule vers le centre de la pièce plutôt qu'un
-        // décalage fixe qui pouvait envoyer la caméra dans un mur.
-        const toCenter = new THREE.Vector3(-targetPosition.x, 0, -targetPosition.z);
-        if (toCenter.lengthSq() < 0.01) toCenter.set(1, 0, 1);
-        toCenter.normalize();
-        const cameraOffset = toCenter.multiplyScalar(1.4).add(new THREE.Vector3(0, 0.9, 0));
-        const endPos = this._clampCameraInRoom(targetPosition.clone().add(cameraOffset));
-        const endTarget = lookAtTarget.clone();
-
-        // S'assurer que la caméra reste à une distance raisonnable
-        const dist = endPos.distanceTo(endTarget);
-        if (dist < 1.0) {
-            endPos.add(endTarget.clone().sub(endPos).normalize().multiplyScalar(1.0 - dist));
-        }
-
-        const startPos = this.camera.position.clone();
-        const startTarget = this.controls.target.clone();
-        const startTime = performance.now();
-
-        // Annuler toute animation en cours
-        if (this._cameraAnimId) {
-            cancelAnimationFrame(this._cameraAnimId);
-            this._cameraAnimId = null;
-        }
-
-        const step = (now) => {
-            const t = Math.min(1, (now - startTime) / duration);
-            // Easing in-out cubique
-            const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-            this.camera.position.lerpVectors(startPos, endPos, e);
-            this._clampCameraInRoom(this.camera.position);
-            this.controls.target.lerpVectors(startTarget, endTarget, e);
-            this.controls.update();
-
-            if (t < 1) {
-                this._cameraAnimId = requestAnimationFrame(step);
-            } else {
-                this._cameraAnimId = null;
-            }
-        };
-        this._cameraAnimId = requestAnimationFrame(step);
-    }
-
-    pick(event) {
-        if (this.fpsController && this.fpsController.enabled) {
-            this.mouse.set(0, 0);
-        } else {
-            if (!event) return null;
+            this.pointer.x = ((arg.clientX - rect.left) / rect.width) * 2 - 1;
+            this.pointer.y = -((arg.clientY - rect.top) / rect.height) * 2 + 1;
+        } else if (this._pointerInside) {
             const rect = this.renderer.domElement.getBoundingClientRect();
-            this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-            this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-        }
-        this.raycaster.setFromCamera(this.mouse, this.camera);
-        const hit = this.raycaster.intersectObjects(this.interactiveObjects, true)[0] || null;
-        if (this.fpsController && this.fpsController.enabled && hit && hit.distance > FPS_INTERACTION_DISTANCE) {
+            this.pointer.x = ((this._pointerClient.x - rect.left) / rect.width) * 2 - 1;
+            this.pointer.y = -((this._pointerClient.y - rect.top) / rect.height) * 2 + 1;
+        } else {
             return null;
         }
+
+        this.raycaster.setFromCamera(this.pointer, this.camera);
+        const hit = this.raycaster.intersectObjects(this._interactiveRoots, true)[0] || null;
+        if (isCenter && hit && hit.distance > FPS_INTERACTION_DISTANCE) return null;
         return hit;
     }
 
+    /* ================= SURVOL (HOVER GLOW & TOOLTIP) ================= */
+
+    _updateHover(dt) {
+        this._raycastAccum += dt;
+        if (this._raycastAccum < 1 / HOVER_RAYCAST_HZ) return;
+        this._raycastAccum = 0;
+
+        const fps = !!this.fpsController?.enabled;
+        if (this.overlays.visible) {
+            this.highlighter.set(null);
+            this.tooltip.hide();
+            return;
+        }
+
+        const hit = this.pick(fps);
+        const obj = hit?.object ?? null;
+        const root = obj ? this._findInteractiveRoot(obj) : null;
+
+        this.highlighter.set(root);
+        this.renderer.domElement.style.cursor = root ? 'pointer' : 'default';
+
+        const crosshair = document.getElementById('hud-crosshair');
+        crosshair?.classList.toggle('is-targeting', !!root);
+
+        if (!root) {
+            this.tooltip.hide();
+            return;
+        }
+
+        const ud = root.userData;
+        const label = this._findObjectLabel(root);
+
+        this.tooltip.show({
+            icon: ud.instrument ? '🩺' : '🔬',
+            label,
+            desc: ud.hint || TOOLTIP_DESCRIPTIONS[label] || '',
+            hint: this._hintFor(root, label),
+            done: !!ud.completed,
+        }, fps ? window.innerWidth / 2 : this._pointerClient.x, fps ? window.innerHeight / 2 : this._pointerClient.y);
+
+        this.callbacks.onHover?.(obj);
+    }
+
+    _hintFor(root, label) {
+        const ud = root.userData;
+        if (ud.isHotspot) return '🖱️ Cliquer pour examiner';
+        if (ud.instrument) return '🖱️ Cliquer pour utiliser';
+        if (label === 'Meuble Evier' || label.includes('Evier')) return this.session.handsClean ? '✔ Mains désinfectées' : '⚠️ Désinfectez-vous les mains';
+        if (label === 'Armoire') return '🖱️ Ouvrir l\'armoire à pharmacie';
+        if (label.toLowerCase().includes('patient')) return '🖱️ Interroger / Examiner';
+        return '';
+    }
+
+    _findInteractiveRoot(obj) {
+        let c = obj, best = null;
+        while (c) {
+            if (c.userData?.interactive) best = c;
+            c = c.parent;
+        }
+        return best;
+    }
+
+    _findObjectLabel(obj) {
+        let c = obj;
+        while (c) {
+            if (c.userData?.label) return c.userData.label;
+            if (c.userData?.instrument?.label) return c.userData.instrument.label;
+            c = c.parent;
+        }
+        return obj.name || 'Objet';
+    }
+
+    /* ================= CLIC & INTERACTIONS MÉDICALES ================= */
+
+    onClick(event) {
+        if (this._cleanedUp) return;
+        this.tooltip.hide();
+
+        const fps = !!this.fpsController?.enabled;
+        if (event && typeof event.clientX === 'number') {
+            this._pointerClient.x = event.clientX;
+            this._pointerClient.y = event.clientY;
+            this._pointerInside = true;
+        }
+
+        const hit = this.pick(fps ? true : event);
+        if (!hit) return;
+
+        const root = this._findInteractiveRoot(hit.object) ?? hit.object;
+        const label = this._findObjectLabel(root);
+        const holdCam = this.currentCameraMode === 'room' && !fps;
+
+        // Hotspots d'examen patient (Tête / Torse / Abdomen ou auscultation)
+        if (root.userData?.isHotspot || hit.object.userData?.isHotspot) {
+            const targetNode = root.userData?.isHotspot ? root : hit.object;
+            return this._activateHotspot(targetNode);
+        }
+
+        // Instruments médicaux
+        const instrument = this.instruments.getByObject(hit.object) || this.instruments.getByObject(root);
+        if (instrument) {
+            this.instruments.triggerBounce(instrument.id);
+            medicalAudio.playMeasureSound();
+            this.session.record('instrument', { id: instrument.id });
+            this._setActiveTool(instrument.id);
+            if (!holdCam && !fps) this.director.focusOn(root, { duration: 600 });
+            this.callbacks.onInstrument?.(instrument, hit.object);
+            return;
+        }
+
+        // Hygiène des mains (Évier / SHA) :
+        // NE PAS voler la caméra vers l'évier ! Cela permet au joueur d'observer le médecin
+        // marcher de manière fluide et naturelle vers l'évier.
+        if (root.name === 'Meuble Evier' || label.includes('Evier') || label.includes('Évier')) {
+            this.session.washHands();
+            window.showNotification?.('Hygiène : friction hydro-alcoolique effectuée ✔', 'success');
+            this.callbacks.onEvier?.(root);
+            return;
+        }
+
+        // Porte de sortie
+        if (root.name === 'Porte entree' || label.toLowerCase().includes('porte')) {
+            this.callbacks.onExit?.(this.session.summary()) ?? (window.location.href = 'index.html');
+            return;
+        }
+
+        // Dossier médical / PC
+        if (root.userData?.pcAction || label.includes('Ordinateur')) {
+            if (!holdCam && !fps) this.director.focusOn(root, { duration: 550 });
+            this.callbacks.onPC?.(root);
+            return;
+        }
+
+        // Examen patient direct (clic sur le corps)
+        if (label.toLowerCase().includes('patient')) {
+            if (!holdCam && !fps) this.director.focusOn(root, { duration: 650 });
+            this.callbacks.onPatient?.(root);
+            return;
+        }
+
+        // Armoire à pharmacie & Masque O2
+        if (label === 'Armoire') {
+            if (!holdCam && !fps) this.director.focusOn(root, { duration: 600 });
+            this.callbacks.onArmoire?.(root);
+            return;
+        }
+        if (label === 'Masque à Oxygène') {
+            this.callbacks.onMasqueO2?.(root);
+            return;
+        }
+
+        if (!holdCam && !fps) this.director.focusOn(root, { duration: 650 });
+        this.callbacks.onObject?.(root);
+    }
+
+    _activateHotspot(node) {
+        const ud = node.userData;
+        const id = ud.hotspotId;
+
+        medicalAudio.playMeasureSound();
+
+        if (id && id.startsWith('auscultation_')) {
+            const action = (id === 'auscultation_cardio') ? 'auscultation_cardio' : 'auscultation_pneumo';
+            this.manager?.clinicalAgent?.performAction(action);
+            return;
+        }
+
+        if (this.manager?.clinicalAgent) {
+            this.manager.clinicalAgent.openExaminationMenu(id);
+            if (id === 'tête') {
+                this.manager.openPatientDialog?.();
+            }
+        } else {
+            this.callbacks.onPatient?.(node);
+        }
+    }
+
+    _setActiveTool(toolId) {
+        const map = { stethoscope: 'stethoscope', marteau: 'marteau' };
+        const tool = map[toolId] ?? null;
+        this.stethoscopeMode = (tool === 'stethoscope');
+        this.updateStethoscopeHotspotsVisibility();
+    }
+
+    /* ================= CONTRÔLE DE CAMÉRA ================= */
+
+    setCamera(mode, animate = true) {
+        if (mode === 'fps') return this._enterFPS();
+        if (this.fpsController?.enabled) this.fpsController.deactivate();
+
+        this.controls.enabled = true;
+        document.body.classList.remove('mode-fps');
+        if (this.characterController?.group) this.characterController.group.visible = true;
+
+        this.currentCameraMode = mode;
+        this.updateStethoscopeHotspotsVisibility();
+
+        const lying = this.patient?._currentPosition === 'allonge';
+        const presets = {
+            room:    { pos: [-4.4, 3.9, 7.8], target: [0.5, 0.8, -1.0] },
+            patient: lying ? { pos: [3.1, 2.2, 2.3], target: [4.7, 1.05, 0.1] }
+                           : { pos: [1.8, 2.05, -1.05], target: [1.2, 1.15, -3.45] },
+            desk:    { pos: [-1.8, 2.0, 1.4], target: [-3.6, 1.3, -0.7] },
+            cabinet: { pos: [1.5, 2.2, -1.6], target: [3.8, 1.5, -3.8] },
+            anatomy: { pos: [-3.4, 1.9, -1.8], target: [-5.4, 1.8, -1.8] },
+        };
+        const p = presets[mode] ?? presets.room;
+
+        this.director.setBounds(
+            new THREE.Vector3(...(mode === 'room' ? [-6, 0.4, -4.7] : [-5.2, 0.45, -4.7])),
+            new THREE.Vector3(...(mode === 'room' ? [6, 4.8, 8.2] : [5.2, 4.6, 4.7])),
+        );
+        this.director.moveTo(new THREE.Vector3(...p.pos), new THREE.Vector3(...p.target), {
+            duration: animate ? 680 : 0,
+            ease: Easing.inOutCubic,
+        });
+
+        this.lightingAgent?.setCameraExposure(mode);
+        document.querySelectorAll('#hud-3d [data-camera]').forEach(b =>
+            b.classList.toggle('active', b.dataset.camera === mode));
+    }
+
+    flyCameraTo(targetPosition, lookAtTarget, duration = 700) {
+        if (!this.director || !targetPosition) return;
+        const target = lookAtTarget || targetPosition;
+        this.director.moveTo(targetPosition, target, { duration, ease: Easing.inOutCubic });
+    }
+
+    _setupFPS() {
+        this.fpsController = new ThreeFPSController(this.camera, this.renderer.domElement, {
+            onInteract: () => this.onClick(null),
+            onDeactivate: () => {
+                this.controls.enabled = true;
+                document.body.classList.remove('mode-fps');
+                if (this.characterController?.group) this.characterController.group.visible = true;
+                document.getElementById('hud-crosshair')?.classList.remove('is-targeting');
+                this.setCamera(this._cameraBeforeFPS || 'room', true);
+                this._cameraBeforeFPS = null;
+            },
+        });
+    }
+
+    _enterFPS() {
+        if (!this.fpsController || this.fpsController.enabled) return;
+        if (this.currentCameraMode && this.currentCameraMode !== 'fps') {
+            this._cameraBeforeFPS = this.currentCameraMode;
+        }
+        this.currentCameraMode = 'fps';
+        this.director.cancel();
+        if (this.hotspotsGroup) this.hotspotsGroup.visible = false;
+        if (this.auscultationHotspotsGroup) this.auscultationHotspotsGroup.visible = false;
+        if (this.characterController?.group) this.characterController.group.visible = false;
+        this.controls.enabled = false;
+        document.body.classList.add('mode-fps');
+        document.querySelectorAll('#hud-3d [data-camera]').forEach(b =>
+            b.classList.toggle('active', b.dataset.camera === 'fps'));
+
+        const lying = this.patient?._currentPosition === 'allonge';
+        this.fpsController.activate(
+            lying ? new THREE.Vector3(3.6, 1.6, 0.2) : new THREE.Vector3(1.0, 1.6, -2.3),
+            lying ? new THREE.Vector3(4.7, 1.1, 0.2) : new THREE.Vector3(1.2, 1.15, -3.45),
+        );
+        window.showNotification?.('Mode immersif : ZQSD pour marcher, clic pour interagir, Échap pour quitter.', 'info');
+    }
+
+    triggerScreenShake(intensity = 0.08) {
+        this.screenShakeIntensity = Math.min(0.25, Math.max(this.screenShakeIntensity, intensity));
+    }
+
+    /* ================= GESTION DU CAS CLINIQUE & CONSTANTES ================= */
+
+    loadCase(caseData) {
+        this.patient.loadCase(caseData);
+        this.updateHotspotsPosition();
+        this.updateStethoscopeHotspotsVisibility();
+
+        this.session = new EcosSession({
+            durationSec: caseData?.durationSec ?? 480,
+            onTick: (r, d) => this.callbacks.onTimer?.(r, d),
+            onPhase: p => this.callbacks.onStationPhase?.(p),
+        });
+        this.session.start();
+
+        this.patientAnimator = new PatientAnimator(this.patient.group, {
+            breathRate: caseData?.patient?.breathRate ?? 1.2,
+            expression: caseData?.patient?.expression ?? 'normal',
+        });
+        this.collectInteractive();
+
+        medicalAudio.init();
+        medicalAudio.resume();
+        const hr = this._parseHeartRate(caseData);
+        if (hr > 0) medicalAudio.startECGBeep(hr);
+        if (this._isUrgentCase(caseData)) {
+            medicalAudio.startAlarm('critical');
+            this.triggerScreenShake(0.12);
+        }
+        this.setHeartRate(hr);
+    }
+
+    _parseHeartRate(c) {
+        const v = c?.examenClinique?.constantes;
+        const m = String(v?.pouls ?? v?.heartRate ?? 72).match(/\d+/);
+        return m ? +m[0] : 72;
+    }
+
+    _isUrgentCase(c) {
+        const v = c?.examenClinique?.constantes;
+        if (!v) return false;
+        const spo2 = +(String(v.saturationO2 ?? '100').match(/\d+/)?.[0] ?? 100);
+        return this._parseHeartRate(c) > 120 || spo2 < 90 || (c.difficulty ?? 1) >= 3;
+    }
+
+    setPatientExpression(expr, d = 0.8) {
+        this.patientAnimator?.setExpression(expr, d);
+        this.patient?.applyExpression(expr);
+    }
+
+    setRespirationPattern(p) {
+        this.patientAnimator?.setRespirationPattern(p);
+    }
+
+    setHeartRate(bpm) {
+        if (this.ecgAnimator) this.ecgAnimator.heartRate = bpm;
+        if (this.wallEcgAnimator) this.wallEcgAnimator.heartRate = bpm;
+    }
+
+    setIVDropInterval(i) {
+        if (this.ivAnimator) this.ivAnimator.dropInterval = i;
+    }
+
+    setPatientVitals(v = {}) {
+        if (v.heartRate !== undefined) {
+            this.setHeartRate(v.heartRate);
+            medicalAudio.updateHeartRate(v.heartRate);
+            this.instruments?.animatedParts?.forEach(p => {
+                if (p.type === 'pulsingLED') p.freq = v.heartRate / 60;
+            });
+        }
+        if (v.dyspnea) {
+            this.setRespirationPattern('dyspnea');
+        } else if (v.respiratoryRate !== undefined) {
+            const rr = v.respiratoryRate;
+            this.setRespirationPattern(rr > 25 ? 'tachypnea' : rr < 6 ? 'agonal' : rr < 10 ? 'bradypnea' : 'normal');
+        }
+        if (v.expression) this.setPatientExpression(v.expression);
+        if (v.spO2 !== undefined && this.ivAnimator) {
+            this.ivAnimator.dropInterval = v.spO2 < 90 ? 0.4 : v.spO2 < 95 ? 0.6 : 0.8;
+        }
+    }
+
+    moveDoctorTo(target, onArrive) {
+        if (this.characterController) return this.characterController.moveTo(target, onArrive);
+        if (!this.doctorAnimator) {
+            const d = this.scene.getObjectByName('Doctor');
+            if (d) this.doctorAnimator = new DoctorAnimator(d);
+        }
+        this.doctorAnimator?.startWalking();
+    }
+
+    /* ================= BOUCLE DE RENDU PRINCIPALE ================= */
+
+    _loop() {
+        this._animFrameId = requestAnimationFrame(this._loop);
+        if (this._cleanedUp) return;
+
+        if (document.hidden) {
+            this._clock.getDelta();
+            return;
+        }
+
+        const dt = Math.min(this._clock.getDelta(), MAX_DT);
+        const t = this._clock.elapsedTime;
+
+        const overlayed = this.overlays.visible;
+        if (overlayed) {
+            this._overlayAccum = (this._overlayAccum ?? 0) + dt;
+            if (this._overlayAccum < 0.125) return;
+            this._overlayAccum = 0;
+        }
+
+        this.session.update(dt);
+
+        this.patientAnimator?.update(t, dt);
+        this.patient?.update?.(t, dt);
+        this.instruments?.update?.(t);
+        this.dustAnimator?.update(t);
+        this.ivAnimator?.update(t, dt);
+        this.ecgAnimator?.update(t);
+        this.wallEcgAnimator?.update(t);
+        this.environmentAgent?.updateEnvironment?.(t);
+
+        if (this.characterController?.animator) {
+            this.characterController.animator.update(t, dt);
+        } else {
+            this.doctorAnimator?.update(t, dt);
+        }
+
+        if (this.fpsController?.enabled) this.fpsController.update(dt);
+
+        if (!overlayed) this._updateHover(dt);
+        this.highlighter.update(dt, this.camera);
+        this.qualityAgent?.sample(dt);
+
+        if (this.auscultationHotspotsGroup?.visible) {
+            const s = 1.0 + Math.sin(t * 4.0) * 0.1;
+            this.auscultationHotspotsGroup.children.forEach(c => c.scale.set(s, s, 1));
+        }
+
+        // Screen Shake amorti
+        if (this.screenShakeIntensity > 0.001) {
+            this.camera.position.x += (Math.random() - 0.5) * this.screenShakeIntensity;
+            this.camera.position.y += (Math.random() - 0.5) * this.screenShakeIntensity;
+            this.screenShakeIntensity *= 0.92;
+        }
+
+        // Cadrage et cinématique caméra
+        this.director.beginFrame();
+        if (!this.fpsController?.enabled) this.controls.update();
+        this.director.endFrame(dt);
+
+        // Rendu final
+        if (!this.lightingAgent?.render?.()) {
+            this.renderer.render(this.scene, this.camera);
+        }
+    }
+
     resize() {
-        const w = this.container.clientWidth || window.innerWidth;
-        const h = this.container.clientHeight || window.innerHeight;
+        const [w, h] = this._size();
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);
-        if (this.lightingAgent) this.lightingAgent.resize(w, h);
+        this.lightingAgent?.resize(w, h);
     }
+
+    /* ================= NETTOYAGE & LIBÉRATION MÉMOIRE ================= */
 
     cleanup() {
+        if (this._cleanedUp) return;
         this._cleanedUp = true;
+
         cancelAnimationFrame(this._animFrameId);
-        if (this._cameraAnimId) {
-            cancelAnimationFrame(this._cameraAnimId);
-            this._cameraAnimId = null;
-        }
-        // Arrêter tous les sons
+        this._ac.abort();
+
         medicalAudio.destroy();
-        this._clearHoverGlow();
-        this._hoverLiftTarget = null;
-        this._hoverLiftPrevTarget = null;
-        this._destroyTooltip();
+        this.overlays.dispose();
+        this.tooltip.dispose();
+        this.highlighter.dispose();
+        this.director.cancel();
+        this.controls.dispose();
+        this.qualityAgent?.dispose();
+        this.lightingAgent?.dispose();
+        this.fpsController?.dispose?.();
+
+        this._envRT?.dispose();
+        disposeObject3D(this.scene);
+        this.scene.clear();
+
         this.renderer.dispose();
         this.renderer.forceContextLoss();
-        this.controls.dispose();
-        if (this.qualityAgent) this.qualityAgent.dispose();
-        if (this.lightingAgent) this.lightingAgent.dispose();
-    }
-
-    /**
-     * Change l'expression du patient avec une transition douce
-     * @param {string} expression — 'normal' | 'douleur' | 'grimace' | 'sourire' | 'pale' | 'anxieux' | 'etonne' | 'cyanose' | 'fievre' | 'sueur'
-     * @param {number} duration — durée de transition en secondes (défaut 0.8)
-     */
-    setPatientExpression(expression, duration = 0.8) {
-        if (this.patientAnimator) {
-            this.patientAnimator.setExpression(expression, duration);
-        }
-        // Appliquer aussi les changements de couleur peau via ThreePatient
-        if (this.patient) {
-            this.patient.applyExpression(expression);
-        }
-    }
-
-    /**
-     * Change le motif de respiration du patient
-     * @param {string} pattern — 'normal' | 'tachypnea' | 'bradypnea' | 'dyspnea' | 'cheyneStokes' | 'agonal'
-     */
-    setRespirationPattern(pattern) {
-        if (this.patientAnimator) {
-            this.patientAnimator.setRespirationPattern(pattern);
-        }
-    }
-
-    /**
-     * Configure les constantes vitales du patient de façon cohérente
-     * Ajuste automatiquement la respiration, l'expression, le rythme ECG et la perfusion
-     * @param {Object} vitals — { respiratoryRate, heartRate, expression, spO2, dyspnea }
-     */
-    setPatientVitals(vitals = {}) {
-        // Fréquence cardiaque → ECG + son
-        if (vitals.heartRate !== undefined) {
-            this.setHeartRate(vitals.heartRate);
-            // Mettre à jour le bip ECG audio
-            medicalAudio.updateHeartRate(vitals.heartRate);
-            // LED oxymètre : pulsation plus rapide si tachycardie
-            if (this.instruments?.animatedParts) {
-                for (const part of this.instruments.animatedParts) {
-                    if (part.type === 'pulsingLED') {
-                        part.freq = vitals.heartRate / 60;
-                    }
-                }
-            }
-        }
-
-        // Motif respiratoire basé sur FR et signes
-        if (vitals.dyspnea) {
-            this.setRespirationPattern('dyspnea');
-        } else if (vitals.respiratoryRate !== undefined) {
-            if (vitals.respiratoryRate > 25) {
-                this.setRespirationPattern('tachypnea');
-            } else if (vitals.respiratoryRate < 10) {
-                this.setRespirationPattern(vitals.respiratoryRate < 6 ? 'agonal' : 'bradypnea');
-            } else {
-                this.setRespirationPattern('normal');
-            }
-        }
-
-        // Expression faciale
-        if (vitals.expression) {
-            this.setPatientExpression(vitals.expression);
-        }
-
-        // SpO2 bas → accélérer la perfusion (effet visuel d'urgence)
-        if (vitals.spO2 !== undefined && this.ivAnimator) {
-            const interval = vitals.spO2 < 90 ? 0.4 : vitals.spO2 < 95 ? 0.6 : 0.8;
-            this.ivAnimator.dropInterval = interval;
-        }
-    }
-
-    /**
-     * Change la fréquence cardiaque du moniteur ECG
-     * @param {number} bpm — battements par minute
-     */
-    setHeartRate(bpm) {
-        if (this.ecgAnimator) {
-            this.ecgAnimator.heartRate = bpm;
-        }
-        if (this.wallEcgAnimator) {
-            this.wallEcgAnimator.heartRate = bpm;
-        }
-    }
-
-    /**
-     * Change le débit de la perfusion (intervalle entre les gouttes)
-     * @param {number} interval — secondes entre gouttes (défaut 0.8)
-     */
-    setIVDropInterval(interval) {
-        if (this.ivAnimator) {
-            this.ivAnimator.dropInterval = interval;
-        }
-    }
-
-    /**
-     * Active l'animation de marche du médecin vers une position cible
-     * @param {Object} target — { x, y, z }
-     * @param {Function} onArrive — callback à l'arrivée
-     */
-    moveDoctorTo(target, onArrive) {
-        // Utiliser le CharacterController si disponible (gère la marche intégralement)
-        if (this.characterController) {
-            this.characterController.moveTo(target, () => {
-                if (onArrive) onArrive();
-            });
-            return;
-        }
-        // Fallback : DoctorAnimator autonome (sans CharacterController)
-        if (!this.doctorAnimator) {
-            const doctor = this.scene.getObjectByName('Doctor') || this.scene.children.find(
-                c => c.userData?.armR
-            );
-            if (doctor) {
-                this.doctorAnimator = new DoctorAnimator(doctor);
-            }
-        }
-        if (this.doctorAnimator) {
-            this.doctorAnimator.startWalking();
-        }
-    }
-
-    animate() {
-        this._animFrameId = requestAnimationFrame(() => this.animate());
-        const now = performance.now();
-        const elapsed = now / 1000;
-        const dt = this._lastAnimTime ? (now - this._lastAnimTime) / 1000 : 0.016;
-        this._lastAnimTime = now;
-
-        // ── Économie GPU : overlay plein écran (quiz, prescription, correction…)
-        // → la scène est invisible : rendu limité à ~8 fps au lieu de 60.
-        if (this._isOverlayVisible()) {
-            if (now - (this._lastOverlayRender || 0) < 125) return;
-            this._lastOverlayRender = now;
-        }
-
-        // Animation du patient (respiration, clignements, expression)
-        if (this.patientAnimator) {
-            this.patientAnimator.update(elapsed, dt);
-        }
-        if (this.patient && this.patient.update) {
-            this.patient.update(elapsed, dt);
-        }
-
-        // Animation des instruments (LED pulsante, etc.)
-        if (this.instruments?.update) {
-            this.instruments.update(elapsed);
-        }
-
-        // Animation des particules de poussière
-        if (this.dustAnimator) {
-            this.dustAnimator.update(elapsed);
-        }
-
-        // Animation de la perfusion (gouttes)
-        if (this.ivAnimator) {
-            this.ivAnimator.update(elapsed, dt);
-        }
-
-        // Animation de l'écran ECG (ligne cardiaque)
-        if (this.ecgAnimator) {
-            this.ecgAnimator.update(elapsed);
-        }
-        if (this.wallEcgAnimator) {
-            this.wallEcgAnimator.update(elapsed);
-        }
-
-        // Animation environnementale (LED ECG, etc.)
-        if (this.environmentAgent?.updateEnvironment) {
-            this.environmentAgent.updateEnvironment(elapsed);
-        }
-
-        // Animation du médecin (si CharacterController ou DoctorAnimator actif)
-        if (this.characterController && this.characterController.animator) {
-            this.characterController.animator.update(elapsed, dt);
-        } else if (this.doctorAnimator) {
-            this.doctorAnimator.update(elapsed, dt);
-        }
-
-        // Mettre à jour le contrôleur FPS s'il est actif et gérer le raycasting/gaze interactif
-        if (this.fpsController && this.fpsController.enabled) {
-            this.fpsController.update(dt);
-
-            // Raycast gaze interactif au centre de l'écran (0,0)
-            const hit = this.pick(null);
-            const hoveredObj = hit?.object || null;
-
-            // Détection si un overlay/modal 2D ou 3D est visible à l'écran
-            const isOverlayVisible = this._isOverlayVisible();
-
-            // Mettre à jour l'effet de hover glow
-            this._updateHoverGlow(isOverlayVisible ? null : hoveredObj);
-
-            // Mettre à jour le tooltip
-            this._updateTooltip(hoveredObj, null);
-
-            // Mettre à jour la classe du crosshair
-            const crosshairEl = document.getElementById('hud-crosshair');
-            if (crosshairEl) {
-                if (hoveredObj && !isOverlayVisible) {
-                    crosshairEl.classList.add('is-targeting');
-                } else {
-                    crosshairEl.classList.remove('is-targeting');
-                }
-            }
-        }
-
-        // --- Animation des Hotspots 3D d'examen ---
-        if (this.hotspotsGroup && this.hotspotsGroup.visible) {
-            this.hotspotsGroup.children.forEach(mesh => {
-                const pulse = Math.sin(elapsed * 4.5);
-                const scale = 1.0 + pulse * 0.15;
-                mesh.scale.set(scale, scale, 1.0);
-                mesh.material.opacity = 0.55 + pulse * 0.25;
-            });
-        }
-        if (this.auscultationHotspotsGroup && this.auscultationHotspotsGroup.visible) {
-            this.auscultationHotspotsGroup.children.forEach(mesh => {
-                const pulse = Math.sin(elapsed * 4.5);
-                const scale = 1.0 + pulse * 0.15;
-                mesh.scale.set(scale, scale, 1.0);
-                mesh.material.opacity = 0.55 + pulse * 0.25;
-            });
-        }
-
-        // === Animation hover lift (interpolation douce) ===
-        this._updateHoverLift(dt);
-
-        // === Qualité adaptative : résolution dynamique selon les FPS ===
-        if (this.qualityAgent) {
-            this.qualityAgent.sample(dt);
-        }
-
-        // Pas de "camera bobbing" : en vue globale fixe la caméra ne doit JAMAIS
-        // dériver toute seule (l'ancien bob ajoutait un offset cumulatif permanent).
-
-        if (this.lightingAgent && this.lightingAgent.render()) {
-            // Composer handled rendering (bloom, etc.)
-        } else {
-            this.renderer.render(this.scene, this.camera);
-        }
-
-        // update controls uniquement si on n'est pas en mode FPS
-        if (!this.fpsController || !this.fpsController.enabled) {
-            this.controls.update();
-        }
+        this.renderer.domElement.remove();
     }
 }
