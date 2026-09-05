@@ -425,9 +425,10 @@
         // Construire le layout ECOS
         ensureStationLayout();
 
-        // Basculer en mode 3D automatiquement au début de la station (le patient est là en 3D !)
+        // Basculer en mode 3D automatiquement au début de la station (si activé dans les réglages et écran suffisant)
         setTimeout(async () => {
-            if (window.threeManager && !window.threeManager.enabled) {
+            const wantsTextMode = localStorage.getItem('medgame_text_mode_default') === 'true';
+            if (!wantsTextMode && window.innerWidth >= 768 && window.threeManager && !window.threeManager.enabled) {
                 await window.threeManager.toggle3D();
             }
         }, 100);
