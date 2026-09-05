@@ -133,7 +133,7 @@ class ThreeManager {
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                const ccModule = await import('./character-controller.js?v=20260821-3d');
+                const ccModule = await import('./character-controller.js?v=20260905-fix3');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
@@ -159,7 +159,7 @@ class ThreeManager {
                 // Lier le contrôleur à la scène pour que moveDoctorTo fonctionne
                 this.scene.characterController = this.character;
                 // Orienter le médecin vers le centre de la pièce au démarrage
-                this.character.lookAt(new THREE.Vector3(0, 0.85, 0));
+                this.character.lookAt(new THREE.Vector3(0, 0, 0));
             }
 
             // HUD
