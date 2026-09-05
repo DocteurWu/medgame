@@ -40,7 +40,7 @@
 
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index.css?v=1.2">
+    <link rel="stylesheet" href="css/index.css?v=3.0">
     <link rel="stylesheet" href="css/device-check.css?v=2">
     <link rel="stylesheet" href="css/arena.css?v=2">
     <link rel="stylesheet" href="css/immersive.css?v=2">
@@ -69,6 +69,7 @@
     <a href="#main-card" class="skip-link" style="position:absolute;top:-100px;left:0;background:#00f2fe;color:#000;padding:12px 24px;z-index:99999;font-weight:700;text-decoration:none;border-radius:0 0 8px 0;">Aller au contenu principal</a>
 
     <div id="canvas-container" aria-hidden="true"></div>
+    <div id="page-veil" aria-hidden="true"></div>
     <script src="js/env.js?v=2"></script>
     <script src="js/config.js?v=2"></script>
 
@@ -340,7 +341,7 @@
     <!-- Audio Module -->
     <script src="js/audio.js?v=2"></script>
     <!-- Three.js Background Module -->
-    <script type="module" src="js/three-background.js?v=2"></script>
+    <script type="module" src="js/three-background.js?v=3"></script>
 
     <!-- Game Logic -->
     <script>
@@ -587,21 +588,70 @@
             transitionTo('game.html?case=CARDIO_angor_stable.json');
         }
 
-        // Fonction transition douce avec audio
+        /* ── Transition de page : warp 3D + voile radial + fade ── */
+        let _transitioning = false;
         function transitionTo(url) {
+            if (_transitioning) return;
+            _transitioning = true;
             if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('click');
+            const veil = document.getElementById('page-veil');
+            if (veil) {
+                veil.style.setProperty('--vx', (window._lastPointer?.x ?? 50) + '%');
+                veil.style.setProperty('--vy', (window._lastPointer?.y ?? 50) + '%');
+                veil.classList.add('active');
+            }
+            if (window.ThreeBackground && typeof window.ThreeBackground.warp === 'function') {
+                window.ThreeBackground.warp();
+            }
+            const card = document.getElementById('main-card');
+            if (card) {
+                card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease';
+                card.style.transform = 'scale(0.92) translateZ(-80px)';
+                card.style.opacity = '0';
+            }
+            document.body.style.transition = 'opacity 0.5s ease 0.15s';
             document.body.style.opacity = 0;
-            document.body.style.transition = 'opacity 0.5s ease';
-            setTimeout(() => window.location.href = url, 500);
+            setTimeout(() => window.location.href = url, 600);
         }
 
-        // Effet 3D Tilt sur la carte principale
-        const card = document.getElementById('main-card');
-        document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
+        /* ── Tilt 3D + reflet interactif (rAF, desktop) ── */
+        (() => {
+            const card = document.getElementById('main-card');
+            if (!card) return;
+            const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+
+            document.addEventListener('mousemove', (e) => {
+                window._lastPointer = { x: (e.clientX / window.innerWidth) * 100, y: (e.clientY / window.innerHeight) * 100 };
+                if (!finePointer || reduced || _transitioning) return;
+                const r = card.getBoundingClientRect();
+                const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+                const k = inside ? 8 : 3;
+                tx = ((e.clientY - (r.top + r.height / 2)) / r.height) * -k;
+                ty = ((e.clientX - (r.left + r.width / 2)) / r.width) * k;
+                card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+                card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+                if (!raf) raf = requestAnimationFrame(tick);
+            }, { passive: true });
+
+            function tick() {
+                cx += (tx - cx) * 0.12;
+                cy += (ty - cy) * 0.12;
+                card.style.transform = `rotateX(${cx.toFixed(2)}deg) rotateY(${cy.toFixed(2)}deg)`;
+                if (Math.abs(tx - cx) > 0.02 || Math.abs(ty - cy) > 0.02) {
+                    raf = requestAnimationFrame(tick);
+                } else {
+                    raf = null;
+                }
+            }
+
+            document.addEventListener('mouseleave', () => {
+                tx = 0;
+                ty = 0;
+                if (!raf) raf = requestAnimationFrame(tick);
+            });
+        })();
     </script>
     <script src="js/auth.js?v=2"></script>
     <script src="js/arena_client.js?v=2"></script>
