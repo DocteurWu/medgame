@@ -475,6 +475,7 @@
             localStorage.setItem('ecos_duration', ecosDuration);
             localStorage.setItem('medgame.audio.muted', soundEnabled ? 'false' : 'true');
             localStorage.setItem('medgame_text_mode_default', defaultTo3D ? 'false' : 'true');
+            if (!defaultTo3D) sessionStorage.removeItem('use3D');
             localStorage.setItem('medgame_calm_mode', calmEnabled ? 'true' : 'false');
             const llmModeEnabled = document.getElementById('setting-llm-mode') ? document.getElementById('setting-llm-mode').checked : true;
             localStorage.setItem('medgame_llm_mode', llmModeEnabled ? 'true' : 'false');
@@ -652,6 +653,16 @@
                 if (!raf) raf = requestAnimationFrame(tick);
             });
         })();
+
+        /* ── Battement cardiaque synchronisé 3D -> UI ── */
+        window.addEventListener('medgame:heartbeat', () => {
+            const icon = document.querySelector('.icon-pulse');
+            if (icon) {
+                icon.classList.remove('beat');
+                void icon.offsetWidth;
+                icon.classList.add('beat');
+            }
+        });
     </script>
     <script src="js/auth.js?v=2"></script>
     <script src="js/arena_client.js?v=2"></script>

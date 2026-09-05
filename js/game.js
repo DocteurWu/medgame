@@ -1824,7 +1824,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             // Auto-activer le mode 3D par défaut ou si déjà actif en session
             const wantsTextMode = localStorage.getItem('medgame_text_mode_default') === 'true';
             const wasIn3D = sessionStorage.getItem('use3D') === 'true';
-            if ((wasIn3D || !wantsTextMode) && window.innerWidth >= 768) {
+            if (!wantsTextMode && (wasIn3D || window.innerWidth >= 768)) {
                 activate3DMode();
             }
         }
