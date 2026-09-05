@@ -19,7 +19,7 @@
 
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/themes.css?v=2">
+    <link rel="stylesheet" href="css/themes.css?v=3">
     <link rel="stylesheet" href="css/player_map.css?v=2">
     <link rel="stylesheet" href="css/device-check.css?v=2">
     <link rel="manifest" href="manifest.json">
@@ -69,8 +69,10 @@
 
 
         <h1 class="h1">Sélectionnez l'UE</h1>
-        <div id="daily-case-banner" style="display:none; margin-bottom:8px; padding:10px 18px; border-radius:14px; background:rgba(0,242,254,0.08); border:1px solid rgba(0,242,254,0.3); color:#fff; font-size:0.9rem; max-width:640px; text-align:center;"></div>
-        <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
+        <div class="themes-nav-bar">
+            <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
+            <div id="daily-case-banner" class="daily-case-pill" style="display:none;" role="button" tabindex="0" title="Lancer le cas du jour"></div>
+        </div>
         <div class="container">
             <div class="themes-container">
                 <div id="themes-grid">
@@ -182,7 +184,7 @@
     <!-- Three.js Background Module -->
     <script type="module" src="js/three-background.js?v=2"></script>
 
-    <script src="js/themes.js?v=20251220-1645"></script>
+    <script src="js/themes.js?v=20260905-compact"></script>
     <script src="js/player_map.js?v=2"></script>
     <script>
         // Forcer le rechargement de game.html
