@@ -385,6 +385,11 @@
 
         async ask(question) {
             if (!question || !question.trim()) return;
+            if (window.gameState && window.gameState.isPatientDead) {
+                this.append('Système', '💀 Le patient est décédé — aucune réponse possible. Consultez la correction.');
+                if (typeof showNotification === 'function') showNotification('Patient décédé', 'error');
+                return;
+            }
 
             // Deduplication / loading guard
             if (this.isAsking) {

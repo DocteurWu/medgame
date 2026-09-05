@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "170 cm",
     "poids": "80 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleurs des membres inférieurs à la marche",
@@ -141,7 +153,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2,
+  "difficulty": 1,
   "ecos": {
     "vignette": {
       "role": "Vous êtes interne en stage de neurochirurgie.",
@@ -366,5 +378,63 @@
       },
       "personnalite": "Patient coopératif, légèrement anxieux, retraité, bon état général"
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal aux jambes quand je marche, ça fait un an que ça dure et ça empire.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Canal lombaire étroit)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "NFS-Plaquettes",
+      "CRP"
+    ],
+    "utiles": [
+      "Radiographie lombaire",
+      "Écho-Doppler artériel des membres inférieurs",
+      "IRM lombaire"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers les douleurs des membres inférieurs",
+    "Réaliser un examen clinique neurologique et vasculaire des membres inférieurs",
+    "Proposer un diagnostic différentiel argumenté"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)"
 }

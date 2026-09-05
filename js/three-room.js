@@ -114,12 +114,14 @@ function enhanceLoadedMaterials(root) {
     });
 }
 
-function loadFurnitureModel(path, scale, position, rotation, parent, setupCallback) {
+function loadFurnitureModel(path, scale, position, rotation, parent, setupCallback, castShadow = true) {
     gltfLoader.load(path, (gltf) => {
         const model = gltf.scene;
         model.traverse((child) => {
             if (child.isMesh) {
-                child.castShadow = true;
+                // Petit mobilier (<10cm : tasse, livres, lotion) : pas d'ombres
+                // portées — invisibles à l'œil, coûteuses en shadow map.
+                child.castShadow = castShadow;
                 child.receiveShadow = true;
             }
         });
@@ -293,6 +295,21 @@ export function buildRoom(scene) {
     // D. RIGHT WALL (x = 5.5) — Completely Solid plaster to match the screenshot
     box(scene, { x: 0.1, y: roomHeight, z: roomLength }, { x: roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur droit');
 
+    // C. LEFT WALL (x = -5.5) — ferme la pièce côté bureau/lavabo.
+    // Sans lui la caméra voyait le vide dès qu'on orbitait vers l'ouest.
+    box(scene, { x: 0.1, y: roomHeight, z: roomLength }, { x: -roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur gauche');
+
+    // E. CEILING (y = 5) — dalle acoustique claire, reçoit les dalles LED.
+    // La face avant (z = +5) reste ouverte façon "dollhouse" pour la caméra room.
+    const ceilMat = new THREE.MeshPhysicalMaterial({
+        color: '#e8edf2',
+        roughness: 0.95,
+        bumpMap: wallNoise,
+        bumpScale: 0.05,
+        envMapIntensity: 0.15
+    });
+    box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight, z: 0 }, ceilMat, 'Plafond');
+
     // Molding/Trim along top of the walls (from the screenshot)
     // Finition laquée satinée pour capter un léger reflet sous le plafond
     const moldingMat = new THREE.MeshPhysicalMaterial({
@@ -304,6 +321,7 @@ export function buildRoom(scene) {
     });
     box(scene, { x: roomWidth, y: 0.22, z: 0.12 }, { x: 0, y: roomHeight - 0.11, z: -roomLength / 2 + 0.05 }, moldingMat, 'Moulure fond');
     box(scene, { x: 0.12, y: 0.22, z: roomLength }, { x: roomWidth / 2 - 0.05, y: roomHeight - 0.11, z: 0 }, moldingMat, 'Moulure droite');
+    box(scene, { x: 0.12, y: 0.22, z: roomLength }, { x: -roomWidth / 2 + 0.05, y: roomHeight - 0.11, z: 0 }, moldingMat, 'Moulure gauche');
 
     // H. Sleek dark floating sink cabinet (Meuble Evier)
     // Laque noire biseautée — les arêtes adoucies accrochent la lumière
@@ -339,7 +357,7 @@ export function buildRoom(scene) {
     );
     scene.add(plantGroup);
 
-    // Lotion Bottle 3D Model (Très Petit et déplacé à l'arrière !)
+    // Lotion Bottle 3D Model (minuscule : sans ombre portée)
     const lotionGroup = new THREE.Group();
     lotionGroup.position.set(-5.3, 1.1, 2.65); // Placé à l'arrière du lavabo
     loadFurnitureModel(
@@ -347,7 +365,9 @@ export function buildRoom(scene) {
         { x: 0.008, y: 0.008, z: 0.008 },
         { x: 0, y: 0, z: 0 },
         { x: 0, y: 5 * Math.PI / 4, z: 0 }, // Tourné de 180° (Math.PI/4 + Math.PI = 5*Math.PI/4)
-        lotionGroup
+        lotionGroup,
+        null,
+        false
     );
     scene.add(lotionGroup);
 
@@ -420,56 +440,9 @@ export function buildFurniture(scene) {
         deskGroup.add(rightLeg);
     };
 
-    // Load Doctor Desk model with fallback
-    const deskUrl = 'https://cdn.jsdelivr.net/gh/pmndrs/market-assets@master/models/desk/model.gltf';
-    let deskCompleted = false;
-    const deskTimeoutId = setTimeout(() => {
-        if (!deskCompleted) {
-            deskCompleted = true;
-            console.warn("Timeout loading desk GLTF, using procedural desk.");
-            createProceduralDesk();
-        }
-    }, 5000);
-
-    gltfLoader.load(deskUrl, (gltf) => {
-        if (deskCompleted) return;
-        deskCompleted = true;
-        clearTimeout(deskTimeoutId);
-
-        const model = gltf.scene;
-        model.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-            }
-        });
-        enhanceLoadedMaterials(model);
-
-        // Bounding box auto-scale
-        const box = new THREE.Box3().setFromObject(model);
-        const size = new THREE.Vector3();
-        box.getSize(size);
-        const currentHeight = size.y || 1;
-        const targetHeight = 1.4;
-        const scaleFactor = targetHeight / currentHeight;
-        model.scale.set(scaleFactor, scaleFactor, scaleFactor);
-
-        // Center model in X and Z, bottom at y = 0
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        model.position.x = -center.x * scaleFactor;
-        model.position.z = -center.z * scaleFactor;
-        model.position.y = -box.min.y * scaleFactor;
-
-        deskGroup.add(model);
-        document.dispatchEvent(new CustomEvent('instruments-updated'));
-    }, undefined, (err) => {
-        if (deskCompleted) return;
-        deskCompleted = true;
-        clearTimeout(deskTimeoutId);
-        console.warn("Failed to load desk GLTF, using procedural desk:", err);
-        createProceduralDesk();
-    });
+    // Bureau 100% procédural local (aucune dépendance CDN) :
+    // grain bois + vernis satiné, construit instantanément, zéro latence réseau.
+    createProceduralDesk();
 
     // Slim Computer Monitor (All-in-one style)
     // Aluminium brossé (metalness 1 + roughness modérée => reflets anisotropes crédibles)
@@ -587,27 +560,33 @@ export function buildFurniture(scene) {
     keyboard.castShadow = true;
     deskGroup.add(keyboard);
 
-    // Tasse de café décorative
+    // Tasse de café décorative (petit objet : sans ombre portée)
     loadFurnitureModel(
         'assets/models/furniture/Coffee cup.glb',
         { x: 0.15, y: 0.15, z: 0.15 },
         { x: 0.2, y: 1.44, z: 0.2 },
         { x: 0, y: 0, z: 0 },
-        deskGroup
+        deskGroup,
+        null,
+        false
     );
 
-    // Livres décoratifs 3D
+    // Livres décoratifs 3D (sans ombre portée)
     loadFurnitureModel(
         'assets/models/furniture/Book Stack.glb',
         { x: 0.5, y: 0.5, z: 0.5 },
         { x: 0.68, y: 1.52, z: -0.18 }, // Modifié y de 1.48 à 1.52
         { x: 0, y: -0.12, z: 0 },
-        deskGroup
+        deskGroup,
+        null,
+        false
     );
 
-    // Modern Luxury Doctor Chair
+    // Chaise du médecin : reculée devant le bureau (l'assise chevauchait
+    // le plateau et la tablette sur la capture). Monde : z ≈ +0.4, dégagé du
+    // bord avant du bureau (z = 0).
     const chairGroup = new THREE.Group();
-    chairGroup.position.set(-0.2, 0, 0.65);
+    chairGroup.position.set(-0.2, 0, 1.0);
     chairGroup.rotation.y = -0.3;
 
     // Chair metallic legs — chrome poli
@@ -691,8 +670,8 @@ export function buildFurniture(scene) {
     const lampGroup = new THREE.Group();
     lampGroup.position.set(-0.85, 1.44, -0.36);
 
-    // Cozy lamp local yellow light
-    const lampLight = new THREE.PointLight('#ffaa44', 1.8, 4.5);
+    // Cozy lamp local warm light (modérée : l'ancien 1.8 brûlait le vernis du bureau)
+    const lampLight = new THREE.PointLight('#ffaa44', 0.9, 3.0);
     lampLight.position.set(0, 0.45, 0);
     lampGroup.add(lampLight);
 

@@ -112,6 +112,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filterEcosOnly) {
             filterEcosOnly.checked = false;
         }
+        const searchReset = document.getElementById('motifs-search');
+        if (searchReset) searchReset.value = '';
+        const sortReset = document.getElementById('motifs-sort');
+        if (sortReset) sortReset.value = 'default';
 
         const themeLower = theme.toLowerCase();
         const mapKeys = { 'urgences': 'urgence', 'urgence': 'urgence', 'pédiatrie': 'pédiatrie' };
@@ -198,7 +202,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         redacteur: data.redacteur || '',
                         isPlayed: playedCases.includes(data.id),
                         isSupabase: true,
-                        isEcos: !!data.ecos
+                        isEcos: !!data.ecos,
+                        difficulty: data.difficulty || 2,
+                        vignette: (data.correction || '').slice(0, 110),
+                        examCount: (data.availableExams || []).length,
+                        lockCount: (data.locks || []).length,
+                        isUrgence: !!(data.gameplayConfig || (data.id || '').toLowerCase().includes('urgence'))
                     };
                 } else {
                     // 2. Sinon, c'est un cas local (nom de fichier avec ou sans .json)
@@ -218,7 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
                             redacteur: data.redacteur || '',
                             isPlayed: playedCases.includes(data.id),
-                            isEcos: !!data.ecos
+                            isEcos: !!data.ecos,
+                            difficulty: data.difficulty || 2,
+                            vignette: (data.correction || '').slice(0, 110),
+                            examCount: (data.availableExams || []).length,
+                            lockCount: (data.locks || []).length,
+                            isUrgence: !!(data.gameplayConfig || (data.id || '').toLowerCase().includes('urgence'))
                         };
                     } catch (err) {
                         console.error(`Erreur de chargement local pour le cas ${fileOrId} :`, err);
@@ -241,14 +255,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function difficultyStars(d) {
+        const n = Math.max(1, Math.min(3, parseInt(d, 10) || 2));
+        return '★'.repeat(n) + '☆'.repeat(3 - n);
+    }
+
     function renderMotifsList() {
         motifsList.innerHTML = '';
         const filterEcosOnly = document.getElementById('filter-ecos-only');
         const ecosOnly = filterEcosOnly ? filterEcosOnly.checked : false;
+        const searchEl = document.getElementById('motifs-search');
+        const sortEl = document.getElementById('motifs-sort');
+        const query = searchEl ? searchEl.value.trim().toLowerCase() : '';
+        const sortMode = sortEl ? sortEl.value : 'default';
 
-        const filteredMotifs = ecosOnly 
-            ? currentThemeMotifs.filter(item => item.isEcos) 
-            : currentThemeMotifs;
+        let filteredMotifs = ecosOnly
+            ? currentThemeMotifs.filter(item => item.isEcos)
+            : [...currentThemeMotifs];
+
+        if (query) {
+            filteredMotifs = filteredMotifs.filter(item =>
+                `${item.motif} ${item.patient} ${item.id}`.toLowerCase().includes(query));
+        }
+        if (sortMode === 'difficulty') {
+            filteredMotifs.sort((a, b) => (a.difficulty || 2) - (b.difficulty || 2));
+        } else if (sortMode === 'unplayed') {
+            filteredMotifs.sort((a, b) => Number(a.isPlayed || false) - Number(b.isPlayed || false));
+        }
+
+        // En-tête progression du thème
+        const doneCount = currentThemeMotifs.filter(m => m.isPlayed).length;
+        const header = document.createElement('div');
+        header.style.cssText = 'text-align:center;color:rgba(255,255,255,0.65);font-size:0.82rem;margin-bottom:10px;';
+        header.textContent = currentThemeMotifs.length > 0
+            ? `${doneCount}/${currentThemeMotifs.length} cas faits dans ce thème`
+            : '';
+        motifsList.appendChild(header);
 
         filteredMotifs.forEach(item => {
             const motifItem = document.createElement('div');
@@ -262,18 +304,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusHtml = '<span class="played-badge"><i class="fas fa-check-circle"></i> Fait</span>';
             }
 
-            let ecosBadgeHtml = '';
+            let ecosBadgeHtml = item.isEcos ? '<span class="played-badge" style="background:rgba(52,152,219,0.15);color:#3498db;">ECOS</span>' : '';
+            const urgBadge = item.isUrgence ? '<span class="played-badge" style="background:rgba(255,71,87,0.15);color:#ff6b81;">⏱ Urgence ~5min</span>' : '';
+            const diffBadge = `<span class="played-badge" style="background:rgba(255,193,7,0.15);color:#ffc107;" title="Difficulté ${item.difficulty || 2}/3">${difficultyStars(item.difficulty)}</span>`;
+            const metaLine = `<span class="motif-patient">🧪 ${item.examCount || 0} ex. · 🔐 ${item.lockCount || 0} défis</span>`;
 
             const redacteurHtml = item.redacteur ? `<span class="motif-redacteur">rédigé par ${item.redacteur}</span>` : '';
 
             motifItem.innerHTML = `
                 <i class="fas fa-file-medical"></i>
                 <div class="motif-info">
-                    <div class="motif-name">${item.motif} ${statusHtml} ${ecosBadgeHtml}</div>
+                    <div class="motif-name">${item.motif} ${statusHtml} ${ecosBadgeHtml} ${urgBadge} ${diffBadge}</div>
                     <div class="motif-patient-row">
                         <span class="motif-patient">Patient : ${item.patient}</span>
                         ${redacteurHtml}
                     </div>
+                    <div class="motif-patient-row">${metaLine}</div>
                 </div>
             `;
 
@@ -290,9 +336,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (filteredMotifs.length === 0) {
-            motifsList.innerHTML = `<div class="no-motifs">${ecosOnly ? "Aucun cas compatible ECOS pour ce thème." : "Aucun cas disponible pour ce thème."}</div>`;
+            motifsList.innerHTML += `<div class="no-motifs">${query ? "Aucun cas ne correspond à la recherche." : (ecosOnly ? "Aucun cas compatible ECOS pour ce thème." : "Aucun cas disponible pour ce thème.")}</div>`;
         }
     }
+
+    // Recherche + tri (P0)
+    const motifsSearch = document.getElementById('motifs-search');
+    if (motifsSearch) motifsSearch.addEventListener('input', () => renderMotifsList());
+    const motifsSort = document.getElementById('motifs-sort');
+    if (motifsSort) motifsSort.addEventListener('change', () => renderMotifsList());
+
+    // Cas du jour déterministe (P0 rejouabilité)
+    try {
+        const daySeed = new Date().toISOString().slice(0, 10);
+        let hash = 0;
+        for (let i = 0; i < daySeed.length; i++) hash = (hash * 31 + daySeed.charCodeAt(i)) >>> 0;
+        casesReady.then(() => {
+            const allFiles = Object.entries(casesData).flatMap(([spec, files]) => files.map(f => ({ spec, file: f })));
+            if (allFiles.length === 0) return;
+            const pick = allFiles[hash % allFiles.length];
+            const banner = document.getElementById('daily-case-banner');
+            if (banner && pick) {
+                banner.style.display = 'block';
+                banner.innerHTML = `🎯 <strong>Cas du jour</strong> (${daySeed}) — <button id="daily-case-go" style="margin-left:8px;padding:6px 14px;border-radius:20px;border:1px solid rgba(0,242,254,0.5);background:rgba(0,242,254,0.15);color:#fff;cursor:pointer;font-weight:700;">Jouer : ${pick.file}</button>`;
+                const go = document.getElementById('daily-case-go');
+                if (go) go.addEventListener('click', () => {
+                    localStorage.setItem('selectedThemes', JSON.stringify([pick.spec]));
+                    localStorage.setItem('selectedCaseFiles', JSON.stringify([pick.file]));
+                    localStorage.removeItem('selectedCaseFile');
+                    window.location.href = 'game.html';
+                });
+            }
+        });
+    } catch (e) { /* non bloquant */ }
 
     // Écouteur pour la case à cocher de filtrage ECOS
     const filterEcosOnly = document.getElementById('filter-ecos-only');

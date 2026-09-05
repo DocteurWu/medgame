@@ -11,7 +11,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "62 kg",
-    "groupeSanguin": "O-"
+    "groupeSanguin": "O-",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Hémorragie vaginale massive survenue 10 minutes après un accouchement par voie basse.",
@@ -743,5 +755,61 @@
       },
       "personnalite": "Sophie Martin est une jeune femme de 28 ans, enseignante, habituellement calme et sereine. Dans ce contexte d'urgence vitale, elle est extrêmement agitée, anxieuse, frissonnante et assoiffée. Elle réclame de l'eau, pose des questions répétitives sur son état et celui de son bébé. Sa voix est faible et entrecoupée par la gêne respiratoire. Elle alterne entre des phases d'agitation et de prostration."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, il y a beaucoup de sang, je me sens très mal, j'ai très soif, est-ce que ça va aller ?",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Hémorragie du post-partum immédiat sur atonie utérine compliquée d'un état de choc hémorragique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Gaz du sang artériel + Lactates",
+      "Nouveau bilan d'hémoglobine (Hémocue)"
+    ],
+    "utiles": [
+      "Bilan de coagulation complet (TP, TCA, Fibrigène)",
+      "Échographie pelvienne au lit du patient"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « La tension de la patiente est de 85/65 mmHg. Quelle est sa pression artérielle différentielle, et comment l'interprétez-vous cliniquement lors d'un choc hémorragique ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Évaluer l'état hémodynamique de la patiente dès l'entrée dans la salle",
+    "Identifier les signes de choc hémorragique",
+    "Mettre en œuvre les premières mesures de prise en charge de l'hémorragie du post-partum immédiat"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

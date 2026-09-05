@@ -397,6 +397,8 @@ function calculateTraitementScore(selectedTreatments, correctTreatments, fatalTr
  * @returns {number} score vitesse 0-100
  */
 function calculateVitesseScore(timeLeft, totalTime) {
+    // En entraînement, la vitesse ne pénalise pas : l'exhaustivité prime.
+    if (window.MedGameModes && window.MedGameModes.isPracticeMode()) return 100;
     if (!totalTime || totalTime <= 0) return 50; // fallback
     const ratio = Math.max(0, Math.min(1, timeLeft / totalTime));
     // Zone gracieuse : ≥ 40 % du temps restant (= ≤ 60 % consommé) → 100 %

@@ -127,6 +127,37 @@ function getLockForField(path) {
 }
 
 /**
+ * Modale explicite quand un verrou est bloqué par ses prérequis (P0 UX).
+ * Indique quoi faire, dans quel ordre, avec un bouton d'action.
+ */
+function showLockBlockedModal(lock, prereqNames) {
+    const label = lock.label || (lock.challenge && lock.challenge.question) || lock.id;
+    const list = prereqNames.length > 0 ? prereqNames.join(' → ') : 'le prérequis indiqué';
+    if (typeof showNotification === 'function') {
+        showNotification(`🔒 « ${label} » verrouillé — faites d'abord : ${list}`, 'info');
+    }
+    const overlay = document.createElement('div');
+    overlay.className = 'correction-overlay';
+    overlay.style.display = 'flex';
+    overlay.style.zIndex = '2000';
+    overlay.innerHTML = `
+        <div class="lock-modal">
+            <h3><i class="fas fa-lock"></i> Verrou sémiologique — par étapes</h3>
+            <p>Pour débloquer <strong>${escapeHtml(label)}</strong>, terminez d'abord :</p>
+            <ol style="text-align:left; margin: 10px 0 16px 20px; line-height:1.6;">
+                ${prereqNames.map(n => `<li>${escapeHtml(n)}</li>`).join('')}
+            </ol>
+            <p style="opacity:0.75; font-size:0.85rem;">Astuce : chaque défi réussi rapporte des points de démarche. Après 2 échecs, un indice s'affiche.</p>
+            <div class="correction-actions">
+                <button class="primary-btn" id="lock-blocked-ok">Compris, je continue</button>
+            </div>
+        </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#lock-blocked-ok').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+}
+
+/**
  * Affiche la modale de défi sémiologique pour déverrouiller un champ.
  * Vérifie les prérequis avant d'ouvrir le défi.
  * @param {string} lockId - Identifiant du verrou
@@ -157,8 +188,7 @@ function showLockChallenge(lockId) {
     const status = getLockStatus(lock);
     if (!status.canUnlock) {
         const prereqNames = getPrereqNames(status.missingPrereqs, currentCase.locks);
-        const message = `Ce verrou est verrouillé. Déverrouillez d'abord : ${prereqNames.join(', ')}`;
-        showNotification(`🔒 ${message}`);
+        showLockBlockedModal(lock, prereqNames);
         return;
     }
 
@@ -276,7 +306,7 @@ function showLockChallenge(lockId) {
                 gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
             }
         } else {
-            document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
+            document.getElementById('lock-error').textContent = `Tentative ${lockAttempts}/3 — ${lock.feedback_error || "Réponse incorrecte. Relisez le champ concerné."}`;
             if (typeof gsap !== 'undefined') {
                 gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
             }
@@ -340,7 +370,7 @@ function showLockChallenge(lockId) {
                 gsap.to(".lock-modal", { y: -10, repeat: 1, yoyo: true, duration: 0.2 });
             }
         } else {
-            document.getElementById('lock-error').textContent = lock.feedback_error || "Réponse incorrecte.";
+            document.getElementById('lock-error').textContent = `Tentative ${lockAttempts}/3 — ${lock.feedback_error || "Réponse incorrecte. Comparez les options une par une."}`;
             if (typeof gsap !== 'undefined') {
                 gsap.to(".lock-modal", { x: 10, repeat: 3, yoyo: true, duration: 0.1 });
             }

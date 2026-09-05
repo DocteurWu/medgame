@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "82 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Vertiges rotatoires intenses et otorrhée chronique droite",
@@ -371,5 +383,63 @@
       },
       "personnalite": "Patient anxieux mais coopératif, gêné par les vertiges et inquiet pour son audition"
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai des vertiges terribles depuis quelques jours et mon oreille droite coule depuis des mois...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Cholestéatome compliqué)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Audiogramme",
+      "TDM rochers"
+    ],
+    "utiles": [
+      "IRM cérébrale",
+      "Épreuves caloriques",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Prise de sang (CRP, NFS)"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté ORL et vestibulaire",
+    "Effectuer un examen clinique ORL et vestibulaire complet",
+    "Identifier les signes de cholestéatome à l'otoscopie"
+  ],
+  "referentiel": "Collège ORL / Barany Society"
 }

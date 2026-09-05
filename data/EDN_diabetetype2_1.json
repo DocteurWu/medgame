@@ -9,7 +9,19 @@
     "poids": "95 kg",
     "groupeSanguin": "O+",
     "imc": "36.2 kg/m²",
-    "poidsNaissance": "4.1 kg"
+    "poidsNaissance": "4.1 kg",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Bilan de santé suite à fatigue persistante et suspicion de diabète de type 2",
@@ -525,5 +537,66 @@
       },
       "personnalite": "Madame DUPONT est une femme de 52 ans, employée de bureau, plutôt coopérative mais légèrement anxieuse à l'idée d'un diagnostic de diabète. Elle minimise initialement ses symptômes et a besoin d'être rassurée. Elle pose des questions sur les conséquences de la maladie et sur les changements à apporter dans sa vie quotidienne."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que je suis fatiguée depuis des mois, et mon médecin m'a dit qu'il fallait vérifier si je n'avais pas du diabète. Ma mère en a, alors je me demande si c'est ça...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "antecedents.familiaux",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Diabète de type 2)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Glycémie à jeun"
+    ],
+    "utiles": [
+      "Hémoglobine glyquée (HbA1c)",
+      "Bilan lipidique",
+      "Mesure du tour de taille"
+    ],
+    "inutiles": [
+      "Test de tolérance au glucose (HGPO)",
+      "ECG",
+      "Échographie hépatique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes cardinaux du diabète et les facteurs de risque cardiovasculaire",
+    "Effectuer un examen clinique ciblé comprenant la mesure des constantes, le calcul de l'IMC, le tour de taille, l'examen des pieds (monofilament), la recherche d'acanthosis nigricans et l'examen du fond d'œil ou orientation vers un ophtalmologue",
+    "Proposer une stratégie diagnostique adaptée (glycémie à jeun, HbA1c, bilan lipidique, créatininémie, microalbuminurie)"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

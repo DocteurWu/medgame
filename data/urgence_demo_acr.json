@@ -2,7 +2,7 @@
   "id": "urgence_demo_acr",
   "title": "Arrêt Cardio-Respiratoire (ACR)",
   "specialty": "urgence",
-  "difficulty": 1,
+  "difficulty": 3,
   "redacteur": "Dr. Demo",
   "patient": {
     "nom": "Martin",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Arrêt Cardio-Respiratoire (ACR)",
@@ -1042,5 +1054,53 @@
       },
       "personnalite": "Patient inconscient, en arrêt cardio-respiratoire. Aucune interaction verbale possible. Le patient est un mannequin haute-fidélité."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens pour : Arrêt Cardio-Respiratoire (ACR).",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Prendre en charge l'arrêt cardio-respiratoire selon les recommandations internationales (ERC/ILCOR 2021)",
+    "Identifier les rythmes choquables (FV / TVSP) ou non choquables (Asystolie / AEP)",
+    "Réaliser une RCP de haute qualité (massage cardiaque, ventilation, accès veineux)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

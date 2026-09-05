@@ -2,7 +2,7 @@
   "id": "urgence_demo_hemorragie",
   "title": "Hémorragie Massive (Section Artérielle)",
   "specialty": "urgence",
-  "difficulty": 1,
+  "difficulty": 3,
   "redacteur": "Dr. Demo",
   "patient": {
     "nom": "Julien",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Hémorragie Massive (Section Artérielle)",
@@ -967,5 +979,53 @@
       },
       "personnalite": "Patient jeune, anxieux mais coopérant. Il est conscient, légèrement pâle, visiblement inquiet par l'importance du saignement. Il répond aux questions de façon concise mais peut se montrer agité par la douleur et la peur."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Au secours ! Je saigne beaucoup, je me suis coupé, ça ne s'arrête pas !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Prenez en charge ce patient en urgence",
+    "Réalisez un interrogatoire ciblé et un examen clinique adapté",
+    "Mettez en œuvre les gestes d'urgence nécessaires pour contrôler l'hémorragie"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

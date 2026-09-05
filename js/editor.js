@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         if (caseData) {
                             sessionStorage.setItem('isImprovement', 'true');
-                            sessionStorage.setItem('originalCaseId', caseData.id);
                             populateEditor(caseData);
                             alert('Cas chargé pour amélioration ! Lorsque vous cliquerez sur "Soumettre", il sera envoyé comme une nouvelle proposition (Review).');
                         } else {
@@ -995,12 +994,6 @@ function renderTextList(containerId, list) {
         `;
         container.appendChild(item);
     });
-}
-
-function collectTextList(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return [];
-    return Array.from(container.querySelectorAll('span[data-text]')).map(s => s.dataset.text).filter(s => s);
 }
 
 // ---- ECOS HELPER FUNCTIONS ----

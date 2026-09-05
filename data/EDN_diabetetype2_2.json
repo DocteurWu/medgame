@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "170 cm",
     "poids": "95 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Fatigue et vision floue occasionnelle",
@@ -437,5 +449,66 @@
         "jargon": "Pardon, je comprends pas très bien ce que vous dites. Vous pouvez m'expliquer avec des mots plus simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques temps et j'ai parfois la vision floue, surtout en fin de journée.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "antecedents.familiaux",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Diabète de type 2)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie à jeun",
+      "Hémoglobine glyquée (HbA1c)"
+    ],
+    "utiles": [
+      "Bilan lipidique",
+      "Mesure du tour de taille",
+      "Bilan sanguin complet"
+    ],
+    "inutiles": [
+      "Test de tolérance au glucose",
+      "Dosage des anticorps anti-GAD",
+      "Échographie hépatique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes actuels, les antécédents personnels et familiaux, le mode de vie et les traitements en cours",
+    "Réaliser un examen clinique ciblé incluant la mesure des constantes, l'évaluation du statut pondéral (IMC, tour de taille) et un examen des fonds d'œil ou orientation vers cet examen",
+    "Proposer un bilan biologique initial adapté incluant au minimum une glycémie à jeun et une HbA1c"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

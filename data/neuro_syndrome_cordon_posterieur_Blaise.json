@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "177 cm",
     "poids": "75 kg",
-    "groupeSanguin": "AB+"
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Troubles sensitifs d'apparition récente",
@@ -466,5 +478,63 @@
       },
       "personnalite": "Patient jeune, étudiant, plutôt coopératif mais légèrement anxieux face à ses symptômes neurologiques. Il décrit ses symptômes de manière assez précise car il a fait des recherches sur internet. Il s'inquiète pour son avenir et pose des questions sur la gravité de ses troubles."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai des fourmillements dans les deux pieds depuis environ deux semaines, et ça remonte maintenant jusqu'au ventre. J'ai aussi du mal à tenir en équilibre et j'ai eu des problèmes pour uriner récemment. Ça m'inquiète un peu.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syndrome du cordon postérieur)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Radiographie du Rachis dorsal",
+      "Scanner rachidien"
+    ],
+    "utiles": [
+      "IRM médullaire"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Radiographie du Rachis dorsal",
+      "Scanner rachidien"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Quel élément d'examen permet d'éliminer une atteinte périphérique ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les troubles sensitifs et les symptômes associés",
+    "Effectuer un examen neurologique complet ciblé sur la sensibilité, les réflexes et l'équilibre",
+    "Proposer un diagnostic syndromique parmi les diagnostics différentiels proposés"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

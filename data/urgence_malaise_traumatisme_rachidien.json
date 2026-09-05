@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "175 cm",
     "poids": "85 kg",
-    "groupeSanguin": "A-"
+    "groupeSanguin": "A-",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Accident de la route : véhicule sorti de la route dans un fossé.",
@@ -688,5 +700,54 @@
       },
       "personnalite": "Patient conscient, anxieux, en sueur, douloureux. Il coopère mais est très inquiet de ne pas pouvoir bouger les jambes. Il pose des questions sur la gravité de son état."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Aïe... j'ai très mal au cou et à la poitrine... je n'arrive plus à bouger les jambes ! Qu'est-ce qui m'arrive ?",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Traumatisme rachidien cervical avec déficit neurologique + traumatisme thoraco-abdominal associé)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Marc dit « je ne sens plus mes jambes » après un traumatisme du cou. Que signifie ce signe ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Effectuer une évaluation clinique rapide et systématique du patient polytraumatisé",
+    "Identifier le traumatisme rachidien cervical avec déficit neurologique et le traumatisme thoraco-abdominal associé",
+    "Mettre en œuvre les mesures de stabilisation immédiates (immobilisation rachis, collier cervical, oxygénologie)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

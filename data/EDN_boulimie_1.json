@@ -7,7 +7,19 @@
     "sexe": "F",
     "taille": "170 cm",
     "poids": "68 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": " Préoccupations concernant des crises de boulimie ",
@@ -406,5 +418,65 @@
       },
       "personnalite": "Jeune femme de 19 ans, étudiante, anxieuse, préoccupée par son poids et son image corporelle. Elle exprime de la culpabilité et de la honte concernant ses crises de boulimie. Elle est coopérative mais émotive."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des crises de boulimie et ça me fait peur. Je mange beaucoup trop quand je suis stressée et après je me sens horrible.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Troubles du comportement alimentaire non spécifiés (TCANS))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan thyroïdien"
+    ],
+    "utiles": [
+      "Examen psychologique",
+      "Dosage des D-dimères",
+      "Électrocardiogramme (ECG)"
+    ],
+    "inutiles": [
+      "Mesure de la kaliémie",
+      "Bilan lipidique",
+      "Dosage de l'amylase"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien clinique centré sur les troubles du comportement alimentaire",
+    "Évaluer la fréquence, les circonstances déclenchantes et les comportements compensatoires associés aux crises",
+    "Rechercher des symptômes anxio-dépressifs associés"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

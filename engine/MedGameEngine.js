@@ -460,6 +460,13 @@ Voici les constantes vitales courantes du patient :
 4. Identifier s'il y a d'AUTRES ACTIONS cliniques.
 5. Calculer l'impact physiologique immédiat sur les constantes.
 
+Pour les prescriptions : exécute toujours celle imposée par le médecin, quelle que soit la molécule ou la voie (même hors catalogue). Si tu juges la dose cliniquement significative, ajoute une remarque concise dans narrativeResponse : "Infirmier : « Attention, dose élevée, risque X… »". Cette remarque est informative et peut amener le médecin à reconsidérer, mais n'empêche jamais l'administration si le médecin persiste. Dans tous les cas, produces vitalChanges et gameState selon le scénario. Pas de détecteur externe ni de table en dure.
+
+COHÉRENCE ABSOLUE (narrative ↔ vitaux ↔ gameState ↔ dialogue) :
+- vitalChanges doit refléter EXACTEMENT les chiffres cités dans narrativeResponse. Si tu décris une FC extrême, une TA effondrée ou explosée ou une SpO2 effondrée dans le récit, les mêmes valeurs (ou pire) doivent figurer dans vitalChanges.
+- Si narrativeResponse décrit une détresse vitale, une perte de connaissance ou un ACR, gameState.status est OBLIGATOIREMENT "deteriorating" (avec catchWindowSec) ou "dead" (ACR acté) — à toi de juger la gravité. JAMAIS "stable" dans ce cas.
+- Le dialogue du patient doit refléter son état réel : s'il est inconscient, cyanosé ou en détresse critique → dialogue=null ou propos agoniques/incohérents. JAMAIS une réponse normale et rassurante en contradiction avec le tableau clinique.
+
 Tu devez obligatoirement répondre sous forme d'un objet JSON valide contenant exactement ces clés :
 {
   "dialogue": string ou null,
@@ -476,7 +483,12 @@ Tu devez obligatoirement répondre sous forme d'un objet JSON valide contenant e
     "painLevel": number ou null
   } ou null,
   "disclosedInfoFields": array de chemins d'informations du patient réellement divulgués dans ta réponse de ce tour (ex: "modeDeVie.tabac", "antecedents.familiaux", "histoireMaladie.symptomesAssocies", "traitements", "allergies") ou null,
-  "narrativeResponse": string
+  "narrativeResponse": string,
+  "gameState": {
+    "status": "stable" | "deteriorating" | "dead" | "recovering",
+    "deathReason": string ou null,
+    "catchWindowSec": number ou null
+  } ou null
 }
 
 Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`\`json), pas d'explication.`;
@@ -617,6 +629,14 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                 finalOutput = `"${parsed.dialogue}"`;
             } else {
                 finalOutput = `Le patient ne réagit pas.`;
+            }
+
+            // Surface gameState (deteriorating / dead) dans la sortie serveur
+            if (parsed.gameState && (parsed.gameState.status === 'deteriorating' || parsed.gameState.status === 'dead')) {
+                const gsLabel = parsed.gameState.status === 'dead'
+                    ? `💀 Décès : ${parsed.gameState.deathReason || 'cause non précisée'}`
+                    : `⚠️ Détérioration critique — rattrapage possible (${parsed.gameState.catchWindowSec || 60} s)`;
+                finalOutput += `\n[${gsLabel}]`;
             }
 
             this.chatHistory.push({ role: 'assistant', content: finalOutput });

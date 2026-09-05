@@ -7,7 +7,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "58 kg",
-    "groupeSanguin": "B-"
+    "groupeSanguin": "B-",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Soif persistante et fatigue légère",
@@ -444,5 +456,65 @@
       },
       "personnalite": "Patientie coopérative, légèrement anxieuse face à la possibilité d'un diagnostic de diabète. Curieuse et posant des questions sur sa santé."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai soif tout le temps depuis plusieurs mois, et je suis fatiguée. Ma mère m'a dit que ça pouvait être du diabète, comme dans ma famille.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "antecedents.familiaux",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Diabète monogénique (MODY))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie à jeun",
+      "Hémoglobine glyquée (HbA1c)"
+    ],
+    "utiles": [
+      "Dosage des anticorps anti-GAD",
+      "Dosage des anticorps anti-IA2",
+      "Bilan sanguin complet"
+    ],
+    "inutiles": [
+      "Test de tolérance au glucose",
+      "Corps cétoniques urinaires",
+      "Séquence génétique (MODY)"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une pathologie endocrinienne métabolique",
+    "Réaliser un examen clinique adapté",
+    "Proposer un bilan biologique initial pertinent"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

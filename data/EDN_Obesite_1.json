@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "175 cm",
     "poids": "120 kg",
-    "groupeSanguin": "AB+"
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Fatigue chronique et douleurs articulaires",
@@ -443,5 +455,64 @@
       },
       "personnalite": "Patient jeune, peu motivé pour changer ses habitudes, légèrement sur la défensive quand on aborde le sujet de son poids et de son alimentation. Il minimise l'impact de ses symptômes sur sa vie quotidienne."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis longtemps et j'ai mal au genou droit. Je sais que c'est peut-être à cause de mon poids mais je n'ai pas trop envie de changer ma façon de vivre.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Obésité)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan lipidique"
+    ],
+    "utiles": [
+      "Mesure du tour de taille",
+      "Radiographie du genou",
+      "Dosage de la glycémie à jeun"
+    ],
+    "inutiles": [
+      "Échographie hépatique",
+      "Test d’effort cardiaque",
+      "Bilan nutritionnel"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes, les antécédents, le mode de vie et les habitudes alimentaires",
+    "Réaliser un examen clinique adapté incluant la mesure du poids, de la taille, de l'IMC et du tour de taille",
+    "Identifier les facteurs de risque cardiovasculaire et métabolique du patient"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

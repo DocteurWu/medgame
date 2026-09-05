@@ -11,6 +11,7 @@ const gameState = {
     activeExams: [],
     vitalMonitorInstance: null,
     isLoaded: false,
+    isPatientDead: false,
 
     setCases(casesList) {
         this.cases = casesList || [];
@@ -23,6 +24,7 @@ const gameState = {
             this.currentCase = this.cases[index];
             this.score = 0;
             this.activeExams = [];
+            this.isPatientDead = false;
             
             if (timerState) {
                 timerState.currentCase = this.currentCase;
@@ -109,6 +111,7 @@ const gameState = {
         this.currentCase = null;
         this.score = 0;
         this.activeExams = [];
+        this.isPatientDead = false;
         if (this.vitalMonitorInstance) {
             this.vitalMonitorInstance.stopVitalUpdates();
             this.vitalMonitorInstance = null;

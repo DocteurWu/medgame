@@ -261,11 +261,16 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
 
         // « Tout afficher » pré-paie le forfait groupé : pas de double facturation
         if (!btn.dataset.prepaid && typeof window.deductTime === 'function') {
-            const hasTime = window.deductTime(5);
-            if (!hasTime) {
-                showNotification("Temps in-game insuffisant pour poser cette question.");
-                if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('alert');
-                return;
+            const cost = (window.MedGameModes)
+                ? window.MedGameModes.getActionTimeCost('question', 5)
+                : 5;
+            if (cost > 0) {
+                const hasTime = window.deductTime(cost);
+                if (!hasTime) {
+                    showNotification("Temps in-game insuffisant pour poser cette question.");
+                    if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('alert');
+                    return;
+                }
             }
         }
 
@@ -307,8 +312,11 @@ window.revealAllInterrogatoire = function() {
         return;
     }
 
-    // 20% de réduction : N questions × 5s × 0.8
-    const cost = Math.round(btns.length * 5 * 0.8);
+    // 20% de réduction : N questions × 5s × 0.8 (2s/question en entraînement)
+    const baseCost = Math.round(btns.length * 5 * 0.8);
+    const cost = (window.MedGameModes)
+        ? Math.round(btns.length * window.MedGameModes.getActionTimeCost('revealAllPerQuestion', 4))
+        : baseCost;
     if (typeof window.deductTime === 'function') {
         const hasTime = window.deductTime(cost);
         if (!hasTime) {

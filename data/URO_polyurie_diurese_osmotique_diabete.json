@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "94 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Polyurie et nycturie importantes depuis plusieurs semaines",
@@ -475,5 +487,63 @@
         "jargon": "Pardon, qu'est-ce que vous entendez par là ? Pouvez-vous me l'expliquer avec des mots simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'urine énormément, jour et nuit, et je n'en peux plus. Je suis fatigué en permanence.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Polyurie par diurèse osmotique due à hyperglycémie)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECBU",
+      "Bandelette urinaire"
+    ],
+    "utiles": [
+      "Glycémie veineuse",
+      "HbA1c",
+      "Ionogramme sanguin"
+    ],
+    "inutiles": [
+      "Pad-test (optionnel)",
+      "Calendrier mictionnel avec volumes"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la polyurie et le contexte diabétique",
+    "Effectuer un examen clinique adapté",
+    "Proposer un bilan diagnostique pertinent"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)"
 }

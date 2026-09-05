@@ -175,8 +175,6 @@ window.requireAuth = async function (redirectUrl = 'login.html', requireAdmin = 
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) {
-        // Utiliser sessionStorage pour rediriger l'utilisateur vers la page qu'il voulait après login
-        sessionStorage.setItem('redirectAfterLogin', window.location.href);
         window.location.href = redirectUrl;
         return null;
     }

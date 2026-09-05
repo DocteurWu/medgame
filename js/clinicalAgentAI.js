@@ -10,6 +10,8 @@
 class ClinicalAgentAI {
     constructor() {
         this.isActive = true;
+        this.history = [];   // Mémoire conversationnelle complète (user/assistant)
+        this.caseId = null;  // Détection de changement de cas → reset mémoire
         this.injectStyles();
         this.initHooks();
         console.info('[ClinicalAgentAI] Initialisé avec succès !');
@@ -280,6 +282,13 @@ class ClinicalAgentAI {
         const patient = caseData.patient || {};
         const vitals = window.vitalSigns?.props || {};
 
+        // Reset mémoire si nouveau cas
+        if (this.caseId !== caseData.id) {
+            this.history = [];
+            this.caseId = caseData.id;
+            console.log(`[ClinicalAgentAI] Nouveau cas (${caseData.id || '?'}), mémoire réinitialisée`);
+        }
+
         // 3. Obtenir la réponse (Groq API avec Fallback local)
         let responseJson = null;
         let lastError = null;
@@ -494,7 +503,7 @@ class ClinicalAgentAI {
         }
 
         const systemPrompt = `Tu es le "Directeur Clinique / Game Master" (Maître du Jeu) d'une simulation médicale d'urgences réelles en 3D.
-Le joueur est le médecin réanimateur. Il vient de saisir l'action clinique libre suivante : "${action}"
+Le joueur est le médecin réanimateur. Chaque message utilisateur contient l'action clinique libre qu'il vient de saisir.
 
 Actuellement, le patient présente le cas clinique suivant :
 - Patient : ${patient.nom}, ${patient.age} ans, ${patient.sexe}
@@ -532,6 +541,9 @@ Les constantes vitales courantes du patient mesurées au scope sont :
 - Fréquence Respiratoire (FR) : ${vitals.respiratoryRate || '16'} /min
 - Température (T°) : ${vitals.temperature || '37'} °C
 
+HISTORIQUE DES ACTIONS PRÉCÉDENTES (pour la continuité — ne contredis JAMAIS ce qui a déjà été administré ou constaté) :
+${this.history.length ? this.history.slice(-20).map(m => `- ${m.role === 'user' ? 'Médecin' : 'Maître'}: ${m.content}`).join('\n') : '(début de la prise en charge — aucune action précédente)'}
+
 Analyse l'action du joueur médicalement de façon réaliste et décide de ses conséquences immédiates sur la physiologie et l'environnement 3D.
 Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou après, pas de balises markdown) contenant EXACTEMENT les clés suivantes :
 {
@@ -565,7 +577,12 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             },
             body: JSON.stringify({
                 model,
-                messages: [{ role: 'system', content: systemPrompt }],
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    // Mémoire conversationnelle : fenêtre glissante (20 derniers messages)
+                    ...this.history.slice(-20),
+                    { role: 'user', content: action }
+                ],
                 stream: false,
                 temperature: 0.1, // Basse température pour forcer la structure JSON
                 max_tokens: 450
@@ -587,7 +604,16 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             content = content.substring(3, content.length - 3);
         }
 
-        return JSON.parse(content.trim());
+        // Commit mémoire — uniquement après un tour réussi (rollback-safe)
+        let parsedResult = null;
+        try {
+            parsedResult = JSON.parse(content.trim());
+        } catch (e) {
+            throw e;
+        }
+        this.history.push({ role: 'user', content: action });
+        this.history.push({ role: 'assistant', content: `${parsedResult.clinicalResponse || ''}${parsedResult.patientVerbatim ? ` Patient: « ${parsedResult.patientVerbatim} »` : ''}`.trim() });
+        return parsedResult;
     }
 
     /**

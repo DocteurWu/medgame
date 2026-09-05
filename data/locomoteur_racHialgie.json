@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "70 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleurs lombaires depuis 6 mois",
@@ -138,7 +150,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2,
+  "difficulty": 1,
   "ecos": {
     "vignette": {
       "role": "Vous êtes interne en stage de médecine interne.",
@@ -422,5 +434,61 @@
       },
       "personnalite": "Patient coopératif, légèrement anxieux face à la chronicité de ses douleurs. Il s'inquiète de ne pas avoir de diagnostic après 6 mois de symptômes."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal au bas du dos depuis 6 mois et ça ne passe pas malgré le paracétamol. Mon médecin m'a envoyé ici pour qu'on cherche ce que j'ai.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Spondyloarthrite axiale débutante)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "NFS-Plaquettes",
+      "CRP"
+    ],
+    "utiles": [
+      "VS",
+      "Radiographie du bassin (articulations sacro-iliaques)"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une rachialgie inflammatoire",
+    "Rechercher les critères d'imputabilité inflammatoire (réveils nocturnes, raideur matinale, amélioration à l'effort)",
+    "Rechercher les antécédents familiaux de spondyloarthrite et les symptômes associés (uvéite, psoriasis, MICI, enthésites)"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)"
 }

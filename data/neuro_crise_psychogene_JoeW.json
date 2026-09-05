@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "1,68 m",
     "poids": "60 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Épisodes répétés de mouvements anormaux avec impression de perte de contrôle",
@@ -423,5 +435,61 @@
       },
       "personnalite": "Patiente anxieuse, légèrement sur la défensive, qui a l'impression que les médecins ne la prennent pas au sérieux. Elle est fatiguée par la répétition des épisodes et l'incertitude diagnostique. Elle peut devenir émotive si elle se sent jugée ou si le médecin minimise ses symptômes."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je reviens parce que j'ai encore eu un de ces épisodes… Mon corps fait des choses que je ne contrôle plus, et j'ai vraiment peur que ce soit de l'épilepsie.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise psychogène non épileptique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie capillaire",
+      "Ionogramme sanguin"
+    ],
+    "utiles": [
+      "EEG",
+      "IRM cérébrale"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers la distinction entre crise épileptique et crise psychogène non épileptique",
+    "Effectuer un examen neurologique complet",
+    "Proposer une stratégie diagnostique adaptée"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

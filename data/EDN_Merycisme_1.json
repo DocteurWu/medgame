@@ -7,7 +7,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "55 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Régurgitations fréquentes après les repas",
@@ -400,5 +412,62 @@
       },
       "personnalite": "Jeune femme réservée, légèrement anxieuse, qui minimise initialement ses symptômes. Elle est soulagée d'en parler mais reste gênée. Elle répond volontiers aux questions une fois mise en confiance."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, euh… c'est un peu gênant mais j'ai des problèmes de régurgitations après les repas. Ça fait un moment déjà.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Mérycisme)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Endoscopie digestive"
+    ],
+    "utiles": [
+      "Évaluation psychologique",
+      "pH-métrie œsophagienne",
+      "Scanner abdominal"
+    ],
+    "inutiles": [
+      "Dosage des D-dimères",
+      "Échographie rénale",
+      "Test respiratoire à l’urée"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers les troubles du comportement alimentaire",
+    "Rechercher les caractéristiques du mérycisme (régurgitation volontaire, remastication, sensation de plaisir)",
+    "Éliminer un diagnostic différentiel organique (RGO, sténose pylorique, ARFID)"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

@@ -2,7 +2,7 @@
   "id": "urgence_urg_01",
   "title": "Choc Hémorragique par Plaie Artérielle du Membre Inférieur",
   "specialty": "urgence",
-  "difficulty": 2,
+  "difficulty": 3,
   "redacteur": "Clawd UE10",
   "patient": {
     "nom": "Martin",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "75 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Plaie hémorragique du membre inférieur lors d'un accident de bricolage.",
@@ -750,5 +762,52 @@
       },
       "personnalite": "Lucas est un homme de 32 ans, menuisier, conscient mais anxieux et douloureux. Il est coopératif mais agité par la douleur et la vue du sang. Il répond aux questions de façon concise en raison de la douleur et du stress. Il peut poser des questions sur la gravité de son état."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Aïe, aïe, aïe… Docteur, ça saigne beaucoup, j'ai peur… Ma tronçonneuse a glissé sur ma cuisse, je sais pas ce que j'ai mais ça gicle…",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Plaie artérielle de la cuisse avec choc hémorragique débutant)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Le sang est rouge vif et gicle en jets pulsatiles. De quel type d'hémorragie s'agit-il ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Accueillir le patient et se présenter",
+    "Réaliser un interrogatoire ciblé sur le mécanisme de l'accident et les symptômes actuels",
+    "Effectuer un examen clinique complet en priorisant l'évaluation hémodynamique"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

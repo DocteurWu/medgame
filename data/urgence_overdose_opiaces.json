@@ -2,7 +2,7 @@
   "id": "urgence_overdose_opiaces",
   "title": "Overdose aux Opioïdes et Syndrome Toxique Opioïde",
   "specialty": "urgence",
-  "difficulty": 2,
+  "difficulty": 3,
   "redacteur": "L'équipe Médicale MedGame",
   "patient": {
     "nom": "Moreau",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "70 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Patient de 28 ans retrouvé inconscient sur la voie publique, suspect d'overdose.",
@@ -794,5 +806,64 @@
       },
       "personnalite": "Patient comateux, aréactif aux stimulations verbales, réagit partiellement aux stimulations nociceptives. Après administration de Naloxone, le patient se réveille progressivement, est confus, agité, parfois agressif verbalement, et peut présenter des signes de sevrage (tachycardie, sueurs, mydriase, agitation)."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens pour : Patient de 28 ans retrouvé inconscient sur la voie publique, suspect d'overdose..",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Glycémie capillaire (BM test), Gaz du sang artériel)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Overdose aux opioïdes (syndrome toxique opioïde))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie capillaire (BM test)",
+      "Gaz du sang artériel",
+      "Toxiques urinaires"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Glycémie capillaire (BM test) + Gaz du sang artériel. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Devant un patient inconscient présentant un myosis bilatéral serré (pinpoint) et une fréquence respiratoire à 6/min, quel syndrome toxique évoquez-vous d'emblée ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Overdose aux opioïdes (syndrome toxique opioïde) vs Intoxication aiguë aux opiacés. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Intoxication aiguë aux opiacés",
+    "Surdosage aux opioïdes",
+    "Toxidrome opioïde"
+  ],
+  "objectifs": [
+    "Prendre en charge le patient en urgence vitale",
+    "Réaliser un examen clinique complet et ciblé",
+    "Identifier le syndrome toxique opioïde"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

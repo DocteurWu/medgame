@@ -6,6 +6,7 @@
     /* Cyan */
     --editor-danger: #ff4757;
     --editor-success: #2ecc71;
+    --editor-info: #3498db;
 }
 
 [contenteditable="true"] {

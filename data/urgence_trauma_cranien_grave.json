@@ -2,7 +2,7 @@
   "id": "urgence_trauma_cranien_grave",
   "title": "Traumatisme Crânien Grave — Chute de Vélo sans Casque",
   "specialty": "urgence",
-  "difficulty": 2,
+  "difficulty": 3,
   "redacteur": "Clawd UE10",
   "patient": {
     "nom": "Bernard",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "182 cm",
     "poids": "78 kg",
-    "groupeSanguin": "AB+"
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Chute de vélo avec choc à la tête, perte de connaissance brève.",
@@ -643,5 +655,55 @@
       },
       "personnalite": "Jeune homme de 19 ans, étudiant, globalement coopérant mais visiblement anxieux et désorienté. Il se plaint de fortes céphalées et a du mal à se souvenir des circonstances exactes de l'accident. Il minimise spontanément ses symptômes en disant « ça va aller ». Il est accompagné d'un ami témoin de la scène."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis tombé de vélo, j'ai mal à la tête mais ça va aller… enfin je crois.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Traumatisme crânien avec signes de gravité (PCI, amnésie, vomissements))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Thomas a perdu connaissance 30 secondes, a vomi et ne se souvient pas de l'accident. Quels sont ces signes ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser l'interrogatoire du patient et du témoin",
+    "Effectuer un examen clinique complet orienté",
+    "Évaluer la gravité du traumatisme crânien (score de Glasgow, signes d'alerte)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

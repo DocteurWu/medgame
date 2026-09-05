@@ -9,7 +9,7 @@ const INSTRUMENTS = [
     { id: 'oximeter', label: 'Oxymetre', x: -2.9, z: -0.4, key: 'saturationO2', title: 'SpO2' },
     { id: 'thermometer', label: 'Thermometre', x: -2.7, z: -0.4, key: 'temperature', title: 'T' },
     { id: 'glucometer', label: 'Glucometre', x: -2.5, z: -0.4, key: 'glycemie', title: 'Glycemie' },
-    { id: 'tablet', label: 'Tablette prescription', x: -2.3, z: -0.4, key: 'tablet', title: 'Rx' }
+    { id: 'tablet', label: 'Tablette prescription', x: -2.55, z: -0.15, key: 'tablet', title: 'Rx' }
 ];
 
 /**
@@ -243,7 +243,7 @@ export class ThreeInstruments {
     // ===== STÉTHOSCOPE (modèle GLB Sketchfab) =====
     _buildStethoscope(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.425, item.z);
+        group.position.set(item.x, 1.445, item.z);
         this._tagGroup(group, item);
 
         const loader = _sharedGLTFLoader;
@@ -262,6 +262,11 @@ export class ThreeInstruments {
             const s = targetSize / maxDim;
             model.scale.set(s, s, s);
             model.rotation.x = -Math.PI / 2;
+
+            // Plaquer la base du modèle sur le plateau (borne min.y → +0.005)
+            model.updateMatrixWorld(true);
+            const bb = new THREE.Box3().setFromObject(model);
+            model.position.y += (0.005 - bb.min.y);
 
             model.traverse((child) => {
                 if (child.isMesh) {
@@ -288,7 +293,7 @@ export class ThreeInstruments {
 
     _buildTensiometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.425, item.z);
+        group.position.set(item.x, 1.445, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0xf0f0f0, { roughness: 0.3, metalness: 0.2 });
@@ -374,7 +379,7 @@ export class ThreeInstruments {
     // ===== OXymÈTRE =====
     _buildOximeter(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.425, item.z);
+        group.position.set(item.x, 1.445, item.z);
 
         // Boîtier clip (forme en pince)
         const shellMat = createMaterial(0x2a2a2a, { roughness: 0.3, metalness: 0.4 });
@@ -382,7 +387,7 @@ export class ThreeInstruments {
             new THREE.BoxGeometry(0.06, 0.025, 0.04),
             shellMat
         );
-        upperShell.position.y = 0.03;
+        upperShell.position.y = 0.045;
         upperShell.castShadow = true;
         group.add(upperShell);
 
@@ -390,7 +395,7 @@ export class ThreeInstruments {
             new THREE.BoxGeometry(0.06, 0.025, 0.04),
             shellMat
         );
-        lowerShell.position.y = 0.0;
+        lowerShell.position.y = 0.015;
         lowerShell.castShadow = true;
         group.add(lowerShell);
 
@@ -401,7 +406,7 @@ export class ThreeInstruments {
             hingeMat
         );
         hinge.rotation.z = Math.PI / 2;
-        hinge.position.set(-0.035, 0.015, 0);
+        hinge.position.set(-0.035, 0.03, 0);
         group.add(hinge);
 
         // LED pulsante rouge (émetteur)
@@ -415,7 +420,7 @@ export class ThreeInstruments {
             new THREE.SphereGeometry(0.005, 8, 6),
             ledRedMat
         );
-        ledRed.position.set(0, 0.015, 0.022);
+        ledRed.position.set(0, 0.03, 0.022);
         ledRed.name = 'OxymetreLEDRed';
         group.add(ledRed);
 
@@ -471,7 +476,7 @@ export class ThreeInstruments {
     // ===== THERMOMÈTRE =====
     _buildThermometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.425, item.z);
+        group.position.set(item.x, 1.445, item.z);
 
         // Bâtonnet principal (corps du thermomètre)
         const stickMat = createMaterial(0xf8f8f8, { roughness: 0.2, metalness: 0.3 });
@@ -528,7 +533,7 @@ export class ThreeInstruments {
     // ===== GLUCOMÈTRE =====
     _buildGlucometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.425, item.z);
+        group.position.set(item.x, 1.445, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0x1a1a3a, { roughness: 0.25, metalness: 0.15 });
@@ -593,10 +598,12 @@ export class ThreeInstruments {
         return group;
     }
 
-    // ===== TABLETTE =====
+    // ===== TABLETTE (posée à plat sur le bureau, écran vers le haut) =====
     _buildTablet(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.49, item.z);
+        group.position.set(item.x, 1.452, item.z);
+        // À plat : l'écran (plan XY) bascule vers le haut
+        group.rotation.x = -Math.PI / 2;
 
         // Cadre (bordure noire)
         const frameMat = createMaterial(0x111111, { roughness: 0.2, metalness: 0.5 });
@@ -657,7 +664,7 @@ export class ThreeInstruments {
             emissive: item.id === 'tablet' ? 0x003366 : 0x000000,
             emissiveIntensity: item.id === 'tablet' ? 0.25 : 0
         });
-        const mesh = box(this.scene, { x: 0.26, y: 0.08, z: 0.18 }, { x: item.x, y: 1.49, z: item.z }, mat, item.label, true);
+        const mesh = box(this.scene, { x: 0.26, y: 0.08, z: 0.18 }, { x: item.x, y: 1.48, z: item.z }, mat, item.label, true);
         mesh.userData.instrument = item;
         return mesh;
     }

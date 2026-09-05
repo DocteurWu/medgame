@@ -2,7 +2,7 @@
   "id": "urgence_demo_malaise",
   "title": "Douleur Thoracique Suspecte",
   "specialty": "urgence",
-  "difficulty": 1,
+  "difficulty": 3,
   "redacteur": "Dr. Demo",
   "patient": {
     "nom": "Jean",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleur Thoracique Suspecte",
@@ -902,5 +914,53 @@
       },
       "personnalite": "Patient anxieux mais coopératif, légèrement essoufflé, se tenant le thorax. Il répond aux questions de façon concise mais se montre inquiet pour son état de santé."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, j'ai une douleur très forte dans la poitrine, ça m'a pris d'un coup et ça ne passe pas… J'ai très peur.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réalisez un interrogatoire complet orienté sur la douleur thoracique",
+    "Effectuez un examen clinique cardiovasculaire et pulmonaire adapté",
+    "Évaluez la gravité et identifiez les signes de détresse vitale"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

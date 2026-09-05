@@ -368,6 +368,62 @@ Respecte scrupuleusement les consignes de divulgation d'informations suivantes :
             personnaliteType = "DÉFINIE PAR LE CAS";
         }
 
+        // ── LLM-first : persona auteur prioritaire sur tout (ECOS comme classique) ──
+        // patient.persona = { ton, registre, loquacite, style_parole, exemples_phrases[], anxiete, confiance }
+        const persona = pat.persona || null;
+        if (persona && (persona.ton || persona.style_parole || persona.registre)) {
+            personnaliteType = `PERSONA AUTEUR — ${persona.ton || persona.registre || 'personnalisé'}`;
+            const loq = persona.loquacite === 'bavard'
+                ? 'Tu es bavard(e) : tu digresses un peu (famille, travail) avant de revenir au symptôme.'
+                : persona.loquacite === 'reserve'
+                    ? 'Tu es réservé(e) : phrases très courtes, il faut te poser des questions précises pour obtenir chaque détail.'
+                    : 'Tu réponds en 1-2 phrases, ni trop bavard ni mutique.';
+            const exemples = Array.isArray(persona.exemples_phrases) && persona.exemples_phrases.length
+                ? `\nExemples de ton naturel (inspire-t-en sans les recopier mot à mot) : ${persona.exemples_phrases.map(s => `« ${s} »`).join(' / ')}`
+                : '';
+            directriceComportementale = `PERSONA DU CAS (à suivre strictement) — Ton : ${persona.ton || 'naturel'}. Registre : ${persona.registre || 'courant'}. Style : ${persona.style_parole || 'parlé spontané'}. ${loq}${exemples}`;
+            if (typeof persona.anxiete === 'number') this.ame.anxiete = persona.anxiete;
+            if (typeof persona.confiance === 'number') this.ame.confiance = persona.confiance;
+        }
+
+        // ── LLM-first : difficulté du cas → réticence du patient ──
+        // 1 = coopératif (donne spontanément l'essentiel), 2 = standard, 3 = réticent (minimise, digresse, exige des questions précises)
+        const difficulty = parseInt(c.difficulty, 10) || 2;
+        let difficultyDirective = '';
+        if (difficulty <= 1) {
+            difficultyDirective = `DIFFICULTÉ 1/3 (cas facile) : tu es coopératif(ve) et clair(e). Tu donnes spontanément le motif, le début et le facteur déclenchant. Tu réponds directement aux questions sans détour.`;
+        } else if (difficulty >= 3) {
+            difficultyDirective = `DIFFICULTÉ 3/3 (cas difficile) : tu es réticent(e) et tu minimises (« c'est rien, ça va passer »). Tu ne donnes les détails clés (irradiation, durée exacte, antécédents, traitements) QUE si le médecin pose la question précise. Tu digresses parfois (travail, famille) et il faut te recadrer. Ne brade jamais l'information d'emblée.`;
+        } else {
+            difficultyDirective = `DIFFICULTÉ 2/3 (cas standard) : tu donnes le motif spontanément, mais les détails (caractérisation complète, antécédents, traitements) nécessitent des questions ciblées.`;
+        }
+
+        // ── LLM-first : divulgation unifiée (dialogue prioritaire, repli ECOS) ──
+        const dlg = c.dialogue || null;
+        const spontane = dlg?.spontane || ecosData?.infosVolontaires || ['motifHospitalisation'];
+        const siQuestion = dlg?.si_question || ecosData?.infosSiDemandees || [];
+        const siInsiste = dlg?.si_insiste || ecosData?.infosCachees || [];
+        const neJamais = [...(dlg?.ne_jamais_reveler || []), ...(c.correctDiagnostic ? [c.correctDiagnostic] : [])];
+        const objectifs = Array.isArray(dlg?.objectifs_cles) ? dlg.objectifs_cles : [];
+        const disclosureText = [
+            spontane.length ? `SPONTANÉ (tu peux l'évoquer sans question précise) : ${spontane.map(p => this._getFriendlySubjectName(p)).join(' ; ')}` : '',
+            siQuestion.length ? `SI QUESTION EXPLICITE UNIQUEMENT : ${siQuestion.map(p => this._getFriendlySubjectName(p)).join(' ; ')}` : '',
+            siInsiste.length ? `SI INSISTANCE LOURDE UNIQUEMENT (reste évasif d'abord) : ${siInsiste.map(p => this._getFriendlySubjectName(p)).join(' ; ')}` : '',
+            neJamais.length ? `NE JAMAIS RÉVÉLER (même si on insiste — décris les symptômes à la place) : ${neJamais.join(' ; ')}` : '',
+            objectifs.length ? `CE QUE LE BON MÉDECIN DOIT TE FAIRE DIRE (ne les donne pas d'emblée) : ${objectifs.join(' ; ')}` : ''
+        ].filter(Boolean).join('\n');
+
+        // ── LLM-first : gradation des examens → réactions du patient ──
+        // Le patient ne connaît pas les résultats, mais réagit quand on lui annonce un examen.
+        const grad = c.examGradation || null;
+        let examDirective = `Si le médecin t'annonce un examen, réagis humainement (peur, soulagement, question naïve : « ça fait mal ? ») sans inventer le résultat.`;
+        if (grad && (grad.parfaits || grad.utiles || grad.dangereux)) {
+            const parts = [];
+            if (grad.parfaits?.length) parts.push(`examens clés de ce cas (ne les suggère jamais toi-même) : ${grad.parfaits.join(', ')}`);
+            if (grad.dangereux?.length) parts.push(`si on t'annonce un examen inapproprié (${grad.dangereux.join(', ')}), montre de l'inquiétude : « c'est vraiment nécessaire, docteur ? »`);
+            if (parts.length) examDirective = parts.join('. ') + '. ' + examDirective;
+        }
+
         const age = parseInt(pat.age) || 50;
         let ageStyle = '';
         if (age < 25)      ageStyle = 'Tu es jeune, utilise du vocabulaire moderne, relâché et tutoie si le feeling passe. Ne sois pas trop formel.';
@@ -424,6 +480,13 @@ Mode de vie :
 Type : ${personnaliteType}
 Directives : ${directriceComportementale}
 Style d'âge : ${ageStyle}
+${difficultyDirective}
+
+═══ DIVULGATION (QUOI DIRE, QUAND) ══════════════════════
+${disclosureText}
+
+═══ EXAMENS (COMMENT RÉAGIR) ════════════════════════════
+${examDirective}
 
 ═══ ÉTAT PSYCHOLOGIQUE (TON ÂME) ═══════════════════════
 - Niveau d'anxiété actuel (0 à 100) : ${this.ame.anxiete}/100
@@ -659,8 +722,8 @@ ${appliedTreatmentsText}`.trim();
 
         const messages = [
             { role: 'system', content: systemPrompt },
-            // Garder les 12 derniers messages (6 échanges) pour la context window
-            ...this.history.slice(-12)
+            // Mémoire quasi-complète : 50 derniers messages (25 échanges), garde-fou tokens
+            ...this.history.slice(-50)
         ];
 
         try {

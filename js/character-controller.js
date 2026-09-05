@@ -49,10 +49,14 @@ export class CharacterController {
             }
         }
 
-        // 2. Query Supabase profiles table in background
+        // 2. Query Supabase profiles table in background (avec timeout :
+        // si le client auth reste coincé, le docteur ne doit pas attendre)
         if (window.supabase) {
             try {
-                const { data: { session } } = await window.supabase.auth.getSession();
+                const sessionPromise = window.supabase.auth.getSession();
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('supabase timeout')), 3000));
+                const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
                 if (session && session.user) {
                     const { data: profile } = await window.supabase
                         .from('profiles')
@@ -104,11 +108,12 @@ export class CharacterController {
                 }
             });
 
-            // Auto scale model to target doctor height (1.155m - 30% reduction from 1.65m)
+            // Auto scale model to human height (~1.70m debout, cohérent avec
+            // le patient ~1.65m équivalent — l'ancien 2.3 faisait un géant 2x).
             this.activeModel.updateMatrixWorld(true);
             const box = new THREE.Box3().setFromObject(this.activeModel);
             const size = box.getSize(new THREE.Vector3());
-            const targetHeight = 2.3;
+            const targetHeight = 1.7;
             let scale = 1.0;
             if (size.y > 0.1 && size.y < 10) {
                 scale = targetHeight / size.y;
@@ -122,16 +127,29 @@ export class CharacterController {
 
             this.group.add(this.activeModel);
 
-            // Locate right arm bone/mesh for wave/reach gestures
+            // Locate right arm bone/mesh for wave/reach gestures.
+            // Les GLB docteurs sont monolithiques (world/geometry_0) : on cherche
+            // un bras explicite, sinon on marque l'absence pour un geste corps entier.
             let armR = null;
             this.activeModel.traverse((child) => {
                 const name = (child.name || '').toLowerCase();
-                if (name.includes('rightarm') || name.includes('armr') || name.includes('arm_r') || name.includes('bra_r') || name.includes('bras_r')) {
+                if (name.includes('rightarm') || name.includes('armr') || name.includes('arm_r') || name.includes('bra_r') || name.includes('bras_r') || name.includes('arm-right') || name.includes('arm_right')) {
                     armR = child;
                 }
             });
             if (armR) {
                 this.group.userData.armR = armR;
+                this._hasArm = true;
+            } else {
+                // Pas de bras articulé : reach/wave animeront le buste entier
+                this._hasArm = false;
+            }
+
+            // Re-résoudre l'animateur sur le nouveau modèle (l'ancien pointait
+            // les meshes procéduraux supprimés → marche totalement inerte)
+            if (this.animator) {
+                this.animator._resolved = false;
+                this.animator._resolve();
             }
 
             // Handle GLTF animations
@@ -414,30 +432,74 @@ export class CharacterController {
         });
     }
 
+    // Waypoints de contournement : le médecin ne traverse plus le lit ni le bureau.
+    // Si le segment direct coupe un obstacle, on passe par le centre dégagé.
+    _computePath(start, end) {
+        const obstacles = [
+            { minX: 3.9, maxX: 5.0, minZ: -1.2, maxZ: 1.6 },  // lit
+            { minX: -4.7, maxX: -2.1, minZ: -1.4, maxZ: 0.2 }  // bureau
+        ];
+        const crosses = (a, b, o) => {
+            // Test simplifié : les deux points sont de part et d'autre de la boîte
+            const inBox = (p) => p.x > o.minX && p.x < o.maxX && p.z > o.minZ && p.z < o.maxZ;
+            if (inBox(a) || inBox(b)) return true;
+            // Échantillonner le segment
+            for (let t = 0.1; t < 1; t += 0.1) {
+                const x = a.x + (b.x - a.x) * t;
+                const z = a.z + (b.z - a.z) * t;
+                if (x > o.minX && x < o.maxX && z > o.minZ && z < o.maxZ) return true;
+            }
+            return false;
+        };
+        for (const o of obstacles) {
+            if (crosses(start, end, o)) {
+                return [new THREE.Vector3(0.5, 0, 1.6), end];
+            }
+        }
+        return [end];
+    }
+
     moveTo(target, onArrive) {
         if (!target || !this.scene) return;
         const start = this.group.position.clone();
         const end = new THREE.Vector3(target.x, target.y || 0, target.z);
+        const legs = this._computePath(start, end);
+        this._walkLegs(legs, 0, onArrive);
+    }
+
+    _walkLegs(legs, idx, onArrive) {
+        if (idx >= legs.length) {
+            this.isMoving = false;
+            if (this.animator) this.animator.stopWalking();
+            if (onArrive) onArrive();
+            return;
+        }
+        const start = this.group.position.clone();
+        const end = legs[idx];
         const duration = 900 + start.distanceTo(end) * 130;
         const startTime = performance.now();
         this.isMoving = true;
-        this.group.lookAt(end.x, this.group.position.y, end.z);
-        this.animator.startWalking();
+        // Orientation progressive vers la cible (slerp manuel sur Y)
+        const m = new THREE.Matrix4().lookAt(start, new THREE.Vector3(end.x, start.y, end.z), new THREE.Vector3(0, 1, 0));
+        const targetQuat = new THREE.Quaternion().setFromRotationMatrix(m);
+        const startQuat = this.group.quaternion.clone();
+        if (this.animator) this.animator.startWalking();
 
         const step = (now) => {
             const t = Math.min(1, (now - startTime) / duration);
             const e = easeInOut(t);
             this.group.position.lerpVectors(start, end, e);
-            // Léger rebond vertical pendant la marche (additif, ne perturbe pas l'arrivée)
-            const bounce = Math.sin(t * Math.PI * 8) * 0.035 * (1 - t);
-            this.group.position.y += bounce;
+            // Orientation smooth sur les 30% premiers du trajet
+            const tq = Math.min(1, t / 0.3);
+            this.group.quaternion.slerpQuaternions(startQuat, targetQuat, easeInOut(tq));
+            // Rebond vertical ABSOLU (pas cumulatif) pendant la marche
+            const bounce = Math.sin(e * Math.PI * 8) * 0.035 * (1 - e);
+            this.group.position.y = end.y + bounce;
             if (t < 1) {
                 requestAnimationFrame(step);
             } else {
                 this.group.position.copy(end);
-                this.isMoving = false;
-                this.animator.stopWalking();
-                if (onArrive) onArrive();
+                this._walkLegs(legs, idx + 1, onArrive);
             }
         };
         requestAnimationFrame(step);
@@ -445,9 +507,29 @@ export class CharacterController {
 
     reach() {
         const arm = this.group.userData.armR;
-        if (!arm) return;
-        arm.rotation.x = -0.9;
-        setTimeout(() => { arm.rotation.x = 0; }, 650);
+        if (arm && this._hasArm !== false) {
+            arm.rotation.x = -0.9;
+            setTimeout(() => { arm.rotation.x = 0; }, 650);
+            return;
+        }
+        // Modèle monolithique : inclinaison du buste vers l'avant
+        this._bodyGesture(-0.18, 650);
+    }
+
+    /**
+     * Geste corps entier (fallback quand le GLB n'a pas de bras articulé) :
+     * penche le buste puis revient. Sans conflit avec moveTo (rotation.x locale).
+     */
+    _bodyGesture(angleX, durationMs) {
+        const g = this.group;
+        if (!g || this._gestureActive) return;
+        this._gestureActive = true;
+        const origX = g.rotation.x;
+        g.rotation.x = angleX;
+        setTimeout(() => {
+            g.rotation.x = origX;
+            this._gestureActive = false;
+        }, durationMs);
     }
 
     /**
@@ -469,12 +551,31 @@ export class CharacterController {
      */
     wave() {
         const armR = this.group.userData.armR;
-        if (!armR) return;
-        const origRot = armR.rotation.clone();
-        armR.rotation.x = -0.5;
-        armR.rotation.z = 0.3;
-        setTimeout(() => {
-            armR.rotation.copy(origRot);
-        }, 800);
+        if (armR && this._hasArm !== false) {
+            const origRot = armR.rotation.clone();
+            armR.rotation.x = -0.5;
+            armR.rotation.z = 0.3;
+            setTimeout(() => {
+                armR.rotation.copy(origRot);
+            }, 800);
+            return;
+        }
+        // Modèle monolithique : hochement latéral du buste
+        if (this._gestureActive) return;
+        this._gestureActive = true;
+        const g = this.group;
+        const origZ = g.rotation.z;
+        const t0 = performance.now();
+        const sway = () => {
+            const t = (performance.now() - t0) / 800;
+            if (t >= 1) {
+                g.rotation.z = origZ;
+                this._gestureActive = false;
+                return;
+            }
+            g.rotation.z = origZ + Math.sin(t * Math.PI * 2) * 0.08;
+            requestAnimationFrame(sway);
+        };
+        requestAnimationFrame(sway);
     }
 }

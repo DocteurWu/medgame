@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "1,62 m",
     "poids": "70 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Crise convulsive secondaire à une hypoglycémie",
@@ -152,7 +164,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2,
+  "difficulty": 1,
   "ecos": {
     "vignette": {
       "role": "Vous êtes interne en stage au service des urgences.",
@@ -398,5 +410,58 @@
       },
       "personnalite": "Patient anxieuse, légèrement confuse en début de prise en charge, s'améliore rapidement après correction glycémique. Coopérative une fois rassurée."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, j'ai fait une crise terrible à la maison, je ne comprends pas ce qui m'est arrivé...",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise convulsive secondaire à une hypoglycémie)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie capillaire",
+      "Ionogramme sanguin"
+    ],
+    "utiles": [
+      "Scanner cérébral"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Accueillir la patiente et se présenter",
+    "Réaliser un interrogatoire complet orienté sur l'épisode de crise convulsive et le contexte diabétique",
+    "Effectuer un examen clinique complet incluant un examen neurologique détaillé"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

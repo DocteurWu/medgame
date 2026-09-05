@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "185 cm",
     "poids": "100 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": " Prise de poids et crises de boulimie ",
@@ -418,5 +430,65 @@
       },
       "personnalite": "Patient anxieux, gêné par sa situation, tendance à minimiser les symptômes. Peu loquace au début mais se livre progressivement si mis en confiance. Exprime de la honte et de la culpabilité."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai pris beaucoup de poids ces derniers temps et je n'arrive pas à contrôler ce que je mange...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Hyperphagie boulimique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan thyroïdien"
+    ],
+    "utiles": [
+      "Examen psychologique",
+      "Dosage de la glycémie",
+      "Bilan lipidique"
+    ],
+    "inutiles": [
+      "Électrocardiogramme (ECG)",
+      "Mesure de la kaliémie",
+      "Dosage de l'amylase"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers les troubles du comportement alimentaire",
+    "Évaluer les crises de boulimie (fréquence, quantité, contexte déclenchant, comportements compensatoires)",
+    "Rechercher des symptômes dépressifs et anxieux associés"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

@@ -2,7 +2,7 @@
   "id": "urgence_trauma_membre_amputation",
   "title": "Amputation Traumatique du Doigt — Piège Diagnostique et Prise en Charge",
   "specialty": "urgence",
-  "difficulty": 2,
+  "difficulty": 3,
   "redacteur": "Clawd UE10",
   "patient": {
     "nom": "Fontaine",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "175 cm",
     "poids": "82 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Amputation d'un doigt par cisaille industrielle.",
@@ -742,5 +754,54 @@
         "jargon": "Le patient ne comprend pas les termes techniques et demande des explications : 'C'est quoi un moignon ? Vous pouvez le recoudre ?'"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Au secours ! Mon doigt, il est coupé ! La cisaille m'a attrapé la main, je saigne !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Amputation traumatique de l'index droit avec état de choc débutant)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Pour conserver le doigt amputé en vue d'une réimplantation, quelle est la bonne méthode ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Accueillir le patient et réaliser un interrogatoire ciblé sur le traumatisme",
+    "Examiner le moignon et évaluer l'état hémodynamique",
+    "Prendre en charge le saignement du moignon (compression)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

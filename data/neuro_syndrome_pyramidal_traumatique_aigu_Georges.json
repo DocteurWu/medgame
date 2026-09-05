@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "1,78 m",
     "poids": "75 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Troubles moteurs progressifs avec difficulté à la marche et diminution de l’usage du membre supérieur droit dans un contexte post-traumatique récent",
@@ -404,5 +416,61 @@
       },
       "personnalite": "Patient conscient, anxieux, légèrement confus, coopérant mais inquiet de ses troubles moteurs. Interne en chirurgie, il a une certaine culture médicale mais est stressé par sa situation."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, depuis mon accident de voiture hier, je n'arrive plus à bouger correctement mon bras droit et j'ai du mal à marcher. J'ai très mal à la tête et je suis très inquiet.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syndrome pyramidal aigu secondaire à une lésion traumatique du faisceau pyramidal gauche)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Scanner cérébral en urgence",
+      "IRM cérébrale"
+    ],
+    "utiles": [
+      "IRM médullaire",
+      "Bilan biologique standard"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire orienté sur les troubles neurologiques et le contexte traumatique",
+    "Effectuer un examen neurologique complet incluant l'évaluation de la motricité, des réflexes ostéo-tendineux et des signes pyramidaux",
+    "Proposer une stratégie diagnostique adaptée (imagerie cérébrale et médullaire)"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

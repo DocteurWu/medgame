@@ -441,10 +441,13 @@
             </div>
 
             <div class="footer-actions">
+                <button class="btn-premium" onclick="startDemoCase()" style="background:linear-gradient(135deg,#00f2fe,#4facfe);color:#0a0f28;font-weight:800;">
+                    <i class="fas fa-bolt"></i> Lancer le cas démo (2 min)
+                </button>
                 <a href="index.html" class="btn-premium" onclick="transitionTo('index.html'); return false;">
                     <i class="fas fa-home"></i> Retour à l'accueil
                 </a>
-                <span class="version-text">VERSION 3.0 • SIMULATION ÉDUCATIVE</span>
+                <span class="version-text">VERSION 3.0 • SIMULATION ÉDUCATIVE — Conseil : 1 Parler → 2 Examiner → 3 Prescrire → 4 Valider</span>
             </div>
 
         </div>
@@ -459,8 +462,16 @@
             document.body.style.opacity = 0;
             setTimeout(() => window.location.href = url, 500);
         }
+        // P0 : onboarding jouable — cas démo court sans inscription
+        function startDemoCase() {
+            try {
+                localStorage.setItem('ecos_practice_mode', 'true');
+                localStorage.setItem('selectedCaseFiles', JSON.stringify(['urgence_demo_malaise.json']));
+                localStorage.removeItem('selectedCaseFile');
+            } catch (e) {}
+            transitionTo('game.html');
+        }
     </script>
-    <script src="js/device-check.js?v=2"></script>
 </body>
 
 </html>

@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "176 cm",
     "poids": "88 kg",
-    "groupeSanguin": "AB+"
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Fièvre et douleur lombaire droite intense",
@@ -403,5 +415,64 @@
         "jargon": "Qu'est-ce que vous entendez par 'sepsis' ? Je ne comprends pas ce terme."
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au dos à droite et j'ai beaucoup de fièvre. Je crois que c'est encore un calcul...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Pyélonéphrite obstructive)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "NFS",
+      "CRP"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "Urée",
+      "Créatininémie"
+    ],
+    "inutiles": [
+      "Bandelette urinaire",
+      "ECBU",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient",
+    "Effectuer un examen clinique ciblé",
+    "Identifier les signes de gravité et le diagnostic de pyélonéphrite obstructive"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)"
 }

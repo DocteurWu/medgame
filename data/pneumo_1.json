@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "175 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée et œdèmes",
@@ -472,5 +484,62 @@
       },
       "personnalite": "Patient anxieux mais coopératif, retraité de 65 ans, ancien fumeur. Il s'inquiète pour sa santé cardiaque car son père est décédé d'un infarctus. Il répond volontiers aux questions mais a besoin d'être rassuré."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis très essoufflé depuis deux semaines et mes jambes gonflent de plus en plus. Je m'inquiète un peu…",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie"
+    ],
+    "utiles": [
+      "Radiographie thoracique",
+      "Gaz du sang artériel",
+      "Bilan sanguin complet"
+    ],
+    "inutiles": [
+      "Bilan rénal",
+      "Bilan hépatique",
+      "Dosage des D-dimères"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient orienté vers la dyspnée et les signes d'insuffisance cardiaque",
+    "Réaliser un examen clinique cardiovasculaire et pulmonaire complet",
+    "Proposer un bilan paraclinique adapté (ECG, BNP/NT-proBNP, radiographie thoracique, échocardiographie)"
+  ],
+  "referentiel": "Collège de pneumologie (SPLF)"
 }

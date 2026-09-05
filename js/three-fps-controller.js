@@ -166,17 +166,34 @@ export class ThreeFPSController {
         }
     }
 
+    /**
+     * Change les obstacles de collision (générés depuis la scène : lit, bureau…).
+     * @param {Array<{minX,maxX,minZ,maxZ}>} boxes
+     */
+    setObstacles(boxes) {
+        if (Array.isArray(boxes) && boxes.length) this._customObstacles = boxes;
+    }
+
     checkCollision(x, z) {
         if (x < this.bounds.minX) return { collided: true };
         if (x > this.bounds.maxX) return { collided: true };
         if (z < this.bounds.minZ) return { collided: true };
         if (z > this.bounds.maxZ) return { collided: true };
 
-        const obstacles = [
-            { minX: -4.3, maxX: -2.7, minZ: -4.0, maxZ: -1.2 },
-            { minX: -2.3, maxX: 0.7, minZ: -1.7, maxZ: -0.1 },
-            { minX: 3.7, maxX: 5.0, minZ: 0.3, maxZ: 1.7 },
-            { minX: 1.5, maxX: 2.8, minZ: -2.35, maxZ: -1.05 }
+        // Obstacles calibrés sur le mobilier réel (bureau, lit, armoire,
+        // évier, fauteuils, ECG, perfusion, chariot). Marge ~0.25m pour le corps.
+        // Glissade : l'appelant teste X puis Z séparément, on ne bloque que l'axe en faute.
+        const obstacles = this._customObstacles || [
+            { minX: -4.7, maxX: -2.1, minZ: -1.4, maxZ: 0.2 },   // bureau médecin
+            { minX: 3.9, maxX: 5.0, minZ: -1.2, maxZ: 1.6 },     // lit d'examen
+            { minX: 3.4, maxX: 4.2, minZ: -0.9, maxZ: 0.1 },     // moniteur ECG sur pied
+            { minX: 4.9, maxX: 5.0, minZ: -0.7, maxZ: -0.1 },    // pied perfusion
+            { minX: 3.2, maxX: 4.0, minZ: -1.5, maxZ: -0.7 },    // chariot médical
+            { minX: 2.9, maxX: 4.7, minZ: -4.2, maxZ: -3.4 },    // armoire pharmacie
+            { minX: -5.0, maxX: -4.9, minZ: 1.8, maxZ: 3.0 },    // meuble évier
+            { minX: -4.7, maxX: -3.7, minZ: -3.0, maxZ: -2.0 },  // fauteuil patient 2
+            { minX: -3.1, maxX: -2.1, minZ: -3.0, maxZ: -2.0 },  // fauteuil patient 1
+            { minX: 4.4, maxX: 5.0, minZ: 2.6, maxZ: 3.4 }       // balance à colonne
         ];
 
         for (const box of obstacles) {

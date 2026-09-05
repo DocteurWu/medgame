@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "1,73 m",
     "poids": "88 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Paresthésies distales progressives des membres inférieurs avec instabilité à la marche",
@@ -123,7 +135,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 2,
+  "difficulty": 1,
   "ecos": {
     "vignette": {
       "role": "Vous êtes interne en stage de neurologie.",
@@ -391,5 +403,58 @@
         "jargon": "Pouvez-vous m'expliquer ce que vous entendez par là ? Je ne comprends pas très bien."
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai des fourmillements dans les pieds depuis quelques mois et je commence à avoir du mal à marcher, surtout le soir.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syndrome sensitif périphérique secondaire à une polyneuropathie diabétique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan glycémique",
+      "Électroneuromyogramme"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes neurologiques et les facteurs de risque métaboliques",
+    "Effectuer un examen neurologique ciblé des membres inférieurs (sensibilité, réflexes, coordination, équilibre)",
+    "Évoquer le diagnostic de polyneuropathie diabétique devant le tableau clinique"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

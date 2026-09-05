@@ -2,7 +2,7 @@
   "id": "urgence_inconscient_pls_bar",
   "title": "Inconscient qui Respire — Alcoolémie au Sortir d'un Bar",
   "specialty": "urgence",
-  "difficulty": 1,
+  "difficulty": 3,
   "redacteur": "Clawd UE10",
   "patient": {
     "nom": "Nguyen",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "176 cm",
     "poids": "70 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Jeune homme inconscient au sol devant un bar.",
@@ -708,5 +720,55 @@
       },
       "personnalite": "Patient inconscient, ne répond pas. L'ami présent est paniqué, parle vite, donne des informations de manière désordonnée."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Oh mon Dieu, oh mon Dieu ! C'est Tristan, il ne répond plus ! On était en train de boire et d'un coup il s'est effondré ! Faites quelque chose !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Coma éthylique avec inhalation de vomissements — inconscient qui respire)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Tristan est inconscient mais respire à 10/min. Faut-il commencer un massage cardiaque ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Évaluer rapidement l'état de conscience du patient",
+    "Vérifier la respiration et la perméabilité des voies aériennes",
+    "Mettre le patient en position latérale de sécurité (PLS) s'il respire"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

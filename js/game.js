@@ -101,28 +101,6 @@ function addVisualFeedback(element, type) {
 }
 
 /**
- * Mettre à jour l'état visuel du timer (vert/orange/rouge adaptatif)
- */
-function updateTimerVisualState() {
-    const timerEls = document.querySelectorAll('.timer-display');
-    const totalTime = getTimeLimit();
-    timerEls.forEach(el => {
-        el.classList.remove('warning', 'critical', 'safe');
-        const ratio = totalTime > 0 ? timerState.timeLeft / totalTime : 0;
-        // Vert (>50%), Orange (25-50%), Rouge (<25%), Critique (<10%)
-        if (ratio <= 0.10 && timerState.timeLeft > 0) {
-            el.classList.add('critical');
-        } else if (ratio <= 0.25) {
-            el.classList.add('critical');
-        } else if (ratio <= 0.50) {
-            el.classList.add('warning');
-        } else {
-            el.classList.add('safe');
-        }
-    });
-}
-
-/**
  * Wrapper pour jouer un son de façon sûre
  */
 function playSound(name) {
@@ -218,6 +196,158 @@ onDomReady(async () => {
     }
 
     timerState.onTimeUp = handleTimeUp;
+
+    // ==================== CATCH WINDOW / DEATH (Maître du Jeu) ====================
+    let catchWindowTimeout = null;
+    let catchWindowInterval = null;
+    let catchWindowRemaining = 0;
+    let pendingDeathReason = null;
+    let pendingAllowResuscitation = null;
+
+    function clearCatchWindowTimers() {
+        if (catchWindowTimeout) { clearTimeout(catchWindowTimeout); catchWindowTimeout = null; }
+        if (catchWindowInterval) { clearInterval(catchWindowInterval); catchWindowInterval = null; }
+    }
+
+    window.startCatchWindow = function(seconds, requiredAntidotes, deathReason) {
+        clearCatchWindowTimers();
+        catchWindowRemaining = Math.max(0, parseInt(seconds, 10) || 60);
+        pendingDeathReason = deathReason || 'Dégradation critique';
+        pendingAllowResuscitation = null;
+        // Bandeau générique (on ne spoile pas les antidotes)
+        if (typeof showNotification === 'function') showNotification('⚠️ État critique — prise en charge urgente requise', 'error');
+        // Afficher un compte à rebours discret dans le header (réutilise #motif-hospitalisation suffix)
+        const banner = document.createElement('div');
+        banner.id = 'catch-window-banner';
+        banner.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:9998;background:rgba(231,76,60,0.95);color:white;padding:10px 18px;border-radius:10px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;';
+        banner.innerHTML = `<i class="fas fa-heart-crack"></i> <span>Détérioration critique — <span id="catch-countdown">${catchWindowRemaining}s</span></span> <span style="font-weight:400;opacity:0.85;">Antidote à administrer via la bulle</span>`;
+        document.body.appendChild(banner);
+        if (typeof feedbackTimeline !== 'undefined') feedbackTimeline.log('traitement', `Fenêtre de rattrapage ouverte: ${catchWindowRemaining}s — ${pendingDeathReason}`);
+        catchWindowInterval = setInterval(() => {
+            catchWindowRemaining--;
+            const el = document.getElementById('catch-countdown');
+            if (el) el.textContent = catchWindowRemaining + 's';
+            if (catchWindowRemaining <= 0) {
+                clearInterval(catchWindowInterval); catchWindowInterval = null;
+            }
+        }, 1000);
+        catchWindowTimeout = setTimeout(() => {
+            const b = document.getElementById('catch-window-banner');
+            if (b) b.remove();
+            clearCatchWindowTimers();
+            // Si le joueur n'a pas récupéré, le Maître tranche la mort
+            if (window.gameState && !window.gameState.isPatientDead) {
+                window.triggerPatientDeath(pendingDeathReason, pendingAllowResuscitation);
+            }
+        }, catchWindowRemaining * 1000);
+        // Stocker pour que le Maître puisse l'annuler via recovering
+        window._catchWindowAntidotes = requiredAntidotes || [];
+    };
+
+    window.cancelCatchWindow = function() {
+        clearCatchWindowTimers();
+        const b = document.getElementById('catch-window-banner');
+        if (b) b.remove();
+        pendingDeathReason = null;
+        pendingAllowResuscitation = null;
+        window._catchWindowAntidotes = [];
+    };
+
+    window.triggerPatientDeath = async function(deathReason, allowResuscitation) {
+        if (window.gameState && window.gameState.isPatientDead) return;
+        clearCatchWindowTimers();
+        const b = document.getElementById('catch-window-banner');
+        if (b) b.remove();
+        if (window.gameState) window.gameState.isPatientDead = true;
+        if (window.scoringState) {
+            window.scoringState.caseFinalized = false;
+            if (!window.scoringState._fatalOverrideTreatments) window.scoringState._fatalOverrideTreatments = [];
+            // Marqueur pour scoring 0
+            const tag = deathReason ? `Décès: ${deathReason}` : 'Décès iatrogène';
+            if (!window.scoringState._fatalOverrideTreatments.includes(tag)) window.scoringState._fatalOverrideTreatments.push(tag);
+        }
+        // Couper le chat et les prescriptions
+        const dlgInput = document.getElementById('dialogue-input');
+        const dlgBtn = document.querySelector('#dialogue-form button[type="submit"]');
+        if (dlgInput) { dlgInput.disabled = true; dlgInput.placeholder = 'Patient décédé — prise en charge terminée'; }
+        if (dlgBtn) dlgBtn.disabled = true;
+        const drugSearch = document.getElementById('drug-search');
+        if (drugSearch) drugSearch.disabled = true;
+        // Stop timers
+        if (typeof timerState !== 'undefined' && timerState.timerInterval) { clearInterval(timerState.timerInterval); timerState.timerInterval = null; }
+        if (window.vitalSigns && typeof window.vitalSigns.stopVitalUpdates === 'function') window.vitalSigns.stopVitalUpdates();
+        // Forcer vitaux critiques si pas déjà mis par le LLM
+        if (window.vitalSigns && window.vitalSigns.props) {
+            window.vitalSigns.props.heartRate = 0;
+            window.vitalSigns.props.systolic = 0;
+            window.vitalSigns.props.diastolic = 0;
+            window.vitalSigns.props.spo2 = 0;
+            window.vitalSigns.props.respiratoryRate = 0;
+            if (typeof window.vitalSigns.updateDisplay === 'function') window.vitalSigns.updateDisplay();
+            if (typeof window.vitalSigns.startAnimations === 'function') window.vitalSigns.startAnimations();
+        }
+        if (typeof feedbackTimeline !== 'undefined') feedbackTimeline.log('traitement', `💀 DÉCÈS — ${deathReason || 'cause iatrogène'}`);
+        if (typeof showNotification === 'function') showNotification(`💀 Décès du patient — ${deathReason || 'arrêt cardio-respiratoire'}`, 'error');
+        // Avatar en état critique
+        const av = document.getElementById('patient-avatar');
+        if (av) { av.setAttribute('data-state', 'critical'); av.setAttribute('data-expression', 'cyanotic'); }
+
+        // Générer correction personnalisée via LLM (générique bandeau → détaillé en correction)
+        let personalized = deathReason || 'Surdosage / erreur médicamenteuse létale détectée par le Maître du Jeu.';
+        if (window.LLMClient && window.gameState && window.gameState.currentCase) {
+            try {
+                const c = window.gameState.currentCase;
+                // Correction PERSONNALISÉE : s'appuie sur la mémoire du Game Master (actions réelles du joueur)
+                const gmHistory = window.medicalGameManager?.history?.length
+                    ? window.medicalGameManager.history.slice(-20).map(m => `- ${m.role === 'user' ? 'Médecin' : 'Maître'}: ${m.content}`).join('\n')
+                    : '(historique indisponible)';
+                const administered = window.prescriptionManager?.prescriptions?.length
+                    ? window.prescriptionManager.prescriptions.map(p => `${p.nom} ${p.dosage || ''} ${p.voie || ''}`.trim()).join(', ')
+                    : 'aucun';
+                const corrPrompt = `Tu es le Maître du Jeu. Le joueur vient de provoquer le décès du patient par : "${deathReason}". Patient: ${JSON.stringify(c.patient)} Cas: ${c.id}.
+Déroulé réel de la prise en charge (mémoire du Game Master) :
+${gmHistory}
+Traitements réellement administrés : ${administered}.
+Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ PRÉCIS : ce que le joueur a fait et ce qui a tué, l'antidote qui aurait sauvé (sans le spoiler pendant le jeu), et le rappel posologique adapté à SON erreur. Reste didactique, sans jargon inutile.`;
+                const txt = await window.LLMClient.request({ messages: [{role:'system', content:'Tu es un réanimateur pédagogue. Réponds en français, 4-6 lignes max.'},{role:'user', content:corrPrompt}], temperature:0.7, maxTokens:400, timeoutMs:12000, maxRetries:0, stream:false });
+                if (txt && txt.trim()) personalized = txt.trim();
+            } catch (e) { console.warn('[Death] correction LLM failed', e); }
+        }
+
+        const allowRea = (allowResuscitation === true) || (allowResuscitation === null && String(deathReason||'').toLowerCase().includes('arrêt') === false ? false : allowResuscitation);
+        // Overlay décès
+        const overlay = document.createElement('div');
+        overlay.id = 'death-overlay';
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;padding:20px;';
+        overlay.innerHTML = `<div style="background:linear-gradient(145deg,rgba(231,76,60,0.15),rgba(0,0,0,0.85));border:2px solid #e74c3c;border-radius:16px;max-width:640px;width:100%;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.6);text-align:center;">
+            <div style="font-size:3rem;margin-bottom:10px;">💀</div>
+            <h2 style="color:#ff6b81;margin:0 0 8px;">Décès du patient</h2>
+            <p style="color:rgba(255,255,255,0.9);margin:0 0 12px;"><strong>${escapeHtml(deathReason || 'Arrêt cardio-respiratoire')}</strong></p>
+            <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:14px;text-align:left;color:rgba(255,255,255,0.85);font-size:0.92rem;line-height:1.5;max-height:240px;overflow:auto;">${escapeHtml(personalized).replace(/\n/g,'<br>')}</div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+                <button id="death-see-correction" style="flex:1;padding:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;border-radius:10px;cursor:pointer;font-weight:600;">Voir la correction</button>
+                <button id="death-restart" style="flex:1;padding:12px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;color:white;border-radius:10px;cursor:pointer;font-weight:700;">Recommencer</button>
+            </div>
+            ${allowRea ? `<button id="death-rea" style="margin-top:10px;width:100%;padding:10px;background:rgba(0,242,254,0.12);border:1px solid rgba(0,242,254,0.35);color:#00f2fe;border-radius:10px;cursor:pointer;font-weight:600;"><i class="fas fa-heart-pulse"></i> Tenter réanimation (MCE / adrénaline)</button>` : `<p style="margin-top:10px;color:rgba(255,255,255,0.45);font-size:0.8rem;">Réanimation non proposée pour ce geste (décision du Maître du Jeu).</p>`}
+        </div>`;
+        document.body.appendChild(overlay);
+        document.getElementById('death-see-correction').addEventListener('click', () => {
+            const t = window.gameState && window.gameState.currentCase;
+            const corr = t && t.correction ? `💀 ${escapeHtml(deathReason||'Décès')}<br><br>` + t.correction + `<br><hr><div style="background:rgba(231,76,60,0.08);padding:12px;border-radius:8px;">${escapeHtml(personalized).replace(/\n/g,'<br>')}</div>` : personalized;
+            showCorrectionModal(corr);
+        });
+        document.getElementById('death-restart').addEventListener('click', () => window.location.reload());
+        const reaBtn = document.getElementById('death-rea');
+        if (reaBtn) reaBtn.addEventListener('click', async () => {
+            overlay.remove();
+            if (dlgInput) { dlgInput.disabled = false; dlgInput.placeholder = 'Tentez une réanimation...'; dlgInput.focus(); }
+            if (dlgBtn) dlgBtn.disabled = false;
+            if (window.gameState) window.gameState.isPatientDead = false;
+            showNotification('🫀 Tentative de réanimation — poursuivez via la bulle', 'info');
+            if (typeof feedbackTimeline !== 'undefined') feedbackTimeline.log('traitement', 'Tentative de réanimation engagée');
+            // Le prochain message repassera par le Maître qui décidera si recovering ou dead définitif
+        });
+    };
 
     // Urgence mode moved to js/urgenceMode.js
 
@@ -438,6 +568,21 @@ onDomReady(async () => {
     }
 
     function loadCase(isPartialRefresh = false) {
+        // Nettoyage état décès / fenêtre de rattrapage entre deux cas
+        if (!isPartialRefresh) {
+            if (typeof window.cancelCatchWindow === 'function') window.cancelCatchWindow();
+            const deadOverlay = document.getElementById('death-overlay');
+            if (deadOverlay) deadOverlay.remove();
+            const catchBanner = document.getElementById('catch-window-banner');
+            if (catchBanner) catchBanner.remove();
+            const dlgInput = document.getElementById('dialogue-input');
+            if (dlgInput) { dlgInput.disabled = false; dlgInput.placeholder = 'Posez une question au patient (ex: Où avez-vous mal ?)...'; }
+            const dlgBtn = document.querySelector('#dialogue-form button[type="submit"]');
+            if (dlgBtn) dlgBtn.disabled = false;
+            const drugSearch = document.getElementById('drug-search');
+            if (drugSearch) drugSearch.disabled = false;
+            if (window.gameState) window.gameState.isPatientDead = false;
+        }
         // Prepare time but don't start timer yet (nurse intro first)
         if (!isPartialRefresh) {
             if (window.EcosMode && typeof window.EcosMode.stop === 'function') {
@@ -1441,11 +1586,14 @@ onDomReady(async () => {
         
         playSound('click');
 
-        // 120s in-game time deduction for any exams requested
+        // Coût temps in-game : 120s en examen, 30s en entraînement (encourage l'exhaustivité)
         if (typeof window.deductTime === 'function') {
-            const hasTime = window.deductTime(120);
+            const examCost = (window.MedGameModes)
+                ? window.MedGameModes.getActionTimeCost('examLot', 120)
+                : 120;
+            const hasTime = examCost > 0 ? window.deductTime(examCost) : true;
             if (!hasTime) {
-                showNotification('Temps in-game insuffisant (2 min requises).');
+                showNotification('Temps in-game insuffisant (2 min requises en mode Examen, 30s en Entraînement).');
                 return;
             }
         }

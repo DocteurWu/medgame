@@ -19,9 +19,53 @@
         "sexe": { "type": "string", "enum": ["M", "F", "H", "Homme", "Femme"] },
         "taille": { "type": ["string", "number"] },
         "poids": { "type": ["string", "number"] },
-        "groupeSanguin": { "type": "string" }
+        "groupeSanguin": { "type": "string" },
+        "personnalite": { "type": "string" },
+        "comportement": { "type": "string" },
+        "caractere": { "type": "string" },
+        "persona": {
+          "type": "object",
+          "properties": {
+            "ton": { "type": "string" },
+            "registre": { "type": "string" },
+            "loquacite": { "type": "string", "enum": ["bavard", "normal", "reserve"] },
+            "style_parole": { "type": "string" },
+            "exemples_phrases": { "type": "array", "items": { "type": "string" } },
+            "anxiete": { "type": "number", "minimum": 0, "maximum": 100 },
+            "confiance": { "type": "number", "minimum": 0, "maximum": 100 }
+          }
+        }
       }
     },
+
+    "dialogue": {
+      "type": "object",
+      "description": "Pilotage LLM-first de la divulgation (prioritaire sur ecos.patientStandardise si présent)",
+      "properties": {
+        "phraseOuverture": { "type": "string" },
+        "objectifs_cles": { "type": "array", "items": { "type": "string" } },
+        "spontane": { "type": "array", "items": { "type": "string" } },
+        "si_question": { "type": "array", "items": { "type": "string" } },
+        "si_insiste": { "type": "array", "items": { "type": "string" } },
+        "ne_jamais_reveler": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "examGradation": {
+      "type": "object",
+      "description": "Gradation pédagogique des examens : parfaits > utiles > inutiles > dangereux/inappropriés",
+      "properties": {
+        "parfaits": { "type": "array", "items": { "type": "string" } },
+        "utiles": { "type": "array", "items": { "type": "string" } },
+        "inutiles": { "type": "array", "items": { "type": "string" } },
+        "dangereux": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "hints": { "type": "array", "items": { "type": ["string", "object"] } },
+    "pieges": { "type": "array", "items": { "type": "string" } },
+    "objectifs": { "type": "array", "items": { "type": "string" } },
+    "referentiel": { "type": "string" },
 
     "interrogatoire": { "type": "object" },
     "examenClinique": { "type": "object" },

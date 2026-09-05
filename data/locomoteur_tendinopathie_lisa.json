@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "57 kg",
-    "groupeSanguin": "0-"
+    "groupeSanguin": "0-",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleur de hanche gauche",
@@ -352,5 +364,62 @@
         "jargon": "Je ne comprends pas très bien ce terme, vous pouvez me l'expliquer avec des mots plus simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal à la hanche gauche depuis quelques mois et ça commence à vraiment me gêner dans ma vie de tous les jours.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Tendinopathie simple du moyen fessier gauche)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Scanner pelvien",
+      "IRM pelvien"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": [
+      "Scanner pelvien",
+      "IRM pelvien",
+      "Echographie pelvienne"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « A partir des informations recueillies à l'interrogatoire, quel est le mécanisme à l'origine de la douleur ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la douleur de hanche gauche",
+    "Effectuer un examen clinique locomoteur ciblé de la hanche gauche",
+    "Proposer un diagnostic et argumenter"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)"
 }
