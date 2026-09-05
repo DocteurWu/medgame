@@ -11,7 +11,19 @@
     "sexe": "F",
     "taille": "168 cm",
     "poids": "58 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Perte de connaissance brutale sur terrain de sport.",
@@ -690,5 +702,57 @@
       },
       "personnalite": "Patient standardisé jouant le rôle d'un témoin (coéquipier) présent lors de l'événement"
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens pour : Perte de connaissance brutale sur terrain de sport..",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (ECG 12 dérivations, Bilan sanguin)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Arrêt cardio-respiratoire (probable fibrillation ventriculaire))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG 12 dérivations + Bilan sanguin. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Elena ne répond pas, ne respire pas et n'a pas de pouls carotidien. Quel est le diagnostic ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Arrêt cardio-respiratoire (probable fibrillation ventriculaire) vs Arrêt cardiaque récupéré. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Arrêt cardiaque récupéré",
+    "Fibrillation ventriculaire"
+  ],
+  "objectifs": [
+    "Reconnaître l'arrêt cardio-respiratoire",
+    "Initier immédiatement la réanimation (RCP)",
+    "Demander le défibrillateur"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

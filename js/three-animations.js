@@ -612,6 +612,8 @@ export class DoctorAnimator {
         if (this._legR) this._legR.rotation.x = 0;
         if (this._armL) this._armL.rotation.x = 0;
         if (this._armR) this._armR.rotation.x = 0;
+        // Remettre le buste droit (roulis monolithique)
+        if (this.group && !this._legL && !this._legR) this.group.rotation.z = 0;
         
         if (this.group.playAction) {
             this.group.playAction('idle');
@@ -644,18 +646,28 @@ export class DoctorAnimator {
     /** Cycle de marche avec balancement des jambes et bras */
     _animateWalkCycle(phase) {
         const swing = 0.4; // amplitude angulaire des bras/jambes
+        let articulated = false;
 
         if (this._legL) {
             this._legL.rotation.x = Math.sin(phase) * swing;
+            articulated = true;
         }
         if (this._legR) {
             this._legR.rotation.x = Math.sin(phase + Math.PI) * swing;
+            articulated = true;
         }
         if (this._armL) {
             this._armL.rotation.x = Math.sin(phase + Math.PI) * swing * 0.7;
+            articulated = true;
         }
         if (this._armR) {
             this._armR.rotation.x = Math.sin(phase) * swing * 0.7;
+            articulated = true;
+        }
+        // Modèle monolithique (GLB docteur sans os) : roulis du buste pour
+        // éviter l'effet "glissade" (avant : marche totalement inerte + bounce seul)
+        if (!articulated && this.group) {
+            this.group.rotation.z = Math.sin(phase) * 0.045;
         }
     }
 
@@ -676,17 +688,6 @@ export class DoctorAnimator {
             this._head.rotation.y = Math.sin(t * 0.4) * 0.02;
         }
     }
-}
-
-// ===== ORIGINAL idleBreathing (compatibilité) =====
-
-/**
- * Respiration idle simple (compatibilité rétro)
- * @deprecated Utiliser PatientAnimator à la place
- */
-export function idleBreathing(group, elapsed) {
-    if (!group) return;
-    group.position.y = Math.sin(elapsed * 1.6) * 0.015;
 }
 
 // ===== ANIMATEUR DE PARTICULES =====

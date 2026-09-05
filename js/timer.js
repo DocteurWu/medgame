@@ -165,15 +165,16 @@ function displayTime(seconds) {
         el.style.color = visual.color;
         el.style.textShadow = `0 0 12px ${visual.glow}`;
 
-        // Animation de pulsation selon l'urgence
+        // Animation de pulsation selon l'urgence (désactivée en mode calme)
         el.style.animation = '';
-        if (visual.level === 'danger') {
+        const calmMode = window.MedGameModes && window.MedGameModes.isCalmMode();
+        if (!calmMode && visual.level === 'danger') {
             // Pulsation rapide et intense
             el.style.animation = 'timerDanger 0.4s ease infinite';
-        } else if (visual.level === 'critical') {
+        } else if (!calmMode && visual.level === 'critical') {
             // Pulsation modérée
             el.style.animation = 'timerCritical 0.6s ease infinite';
-        } else if (visual.level === 'warning') {
+        } else if (!calmMode && visual.level === 'warning') {
             // Pulsation lente
             el.style.animation = 'timerWarning 1.2s ease infinite';
         }
@@ -205,6 +206,8 @@ function displayTime(seconds) {
  * @param {number} seconds — temps restant en secondes
  */
 function triggerTimerAudioWarnings(seconds) {
+    // Mode calme : aucun stress sonore.
+    if (window.MedGameModes && window.MedGameModes.isCalmMode()) return;
     // Tic-tac des 10 dernières secondes
     if (seconds <= 10 && seconds > 0 && !timerState.isPaused) {
         if (typeof MedGameAudio !== 'undefined') {
@@ -341,6 +344,11 @@ function updateTimer() {
  */
 function updateUrgencyOverlay(urgencyLevel) {
     let overlay = document.getElementById('timer-urgency-overlay');
+    // Mode calme : jamais de teinte rouge anxiogène.
+    if (window.MedGameModes && window.MedGameModes.isCalmMode()) {
+        if (overlay) overlay.style.backgroundColor = 'transparent';
+        return;
+    }
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'timer-urgency-overlay';

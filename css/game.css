@@ -1,6 +1,5 @@
 /* Modern Game CSS - Deep Sci-Fi Theme */
 :root {
-    --primary-hue: 190;
     --primary-color: #00f2fe;
     /* Cyan */
     --primary-glow: rgba(0, 242, 254, 0.5);
@@ -2106,3 +2105,24 @@ body.llm-mode #clinical-progress-panel {
         transform: translateY(0);
     }
 }
+/* === P0 Quick wins : progression live + breadcrumb + mode calme === */
+#medgame-progress-card{background:rgba(10,15,30,0.65);border:1px solid rgba(0,242,254,0.18);border-radius:14px;padding:12px 14px;margin:10px 12px;color:#fff;font-size:0.82rem}
+.mg-progress-header{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:8px}
+.mg-mode-badge{font-size:0.65rem;font-weight:600;background:rgba(0,242,254,0.15);border:1px solid rgba(0,242,254,0.35);padding:2px 8px;border-radius:20px;margin-left:6px}
+.mg-progress-bar{background:rgba(255,255,255,0.1);border-radius:8px;height:8px;overflow:hidden;margin-bottom:10px}
+.mg-progress-fill{background:linear-gradient(90deg,#00f2fe,#4facfe);height:100%;width:0%;transition:width .5s ease;border-radius:8px}
+.mg-progress-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.mg-progress-list li{display:flex;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid transparent}
+.mg-progress-list li.partial{border-color:rgba(243,156,18,0.4)}
+.mg-progress-list li.done{border-color:rgba(46,204,113,0.5);background:rgba(46,204,113,0.08)}
+.mg-progress-actions{display:flex;gap:6px;margin-top:10px}
+.mg-progress-actions button{flex:1;padding:7px 4px;font-size:0.72rem;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:#fff;cursor:pointer}
+.mg-progress-actions button:hover{background:rgba(0,242,254,0.15);border-color:rgba(0,242,254,0.4)}
+.mg-progress-actions button.active{background:rgba(46,204,113,0.2);border-color:#2ecc71}
+#mg-breadcrumb{font-size:0.75rem;color:rgba(255,255,255,0.55);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap}
+#mg-breadcrumb [data-step]{padding:2px 8px;border-radius:12px;border:1px solid transparent}
+#mg-breadcrumb [data-step].active{background:rgba(0,242,254,0.15);border-color:rgba(0,242,254,0.4);color:#fff}
+body.calm-mode .timer-display{animation:none !important;text-shadow:none !important}
+body.calm-mode #timer-urgency-overlay{display:none !important}
+@media (max-width:768px){#medgame-progress-card{margin:8px;font-size:0.78rem}.mg-progress-actions{flex-wrap:wrap}}
+

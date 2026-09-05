@@ -9,12 +9,15 @@ export class MedicalAudio {
     constructor() {
         this.ctx = null;
         this.masterGain = null;
+        this._compressor = null;
         this._initialized = false;
         this._muted = localStorage.getItem('medgame.audio.muted') === 'true';
-        this._volume = 0.6;
+        this._volume = parseFloat(localStorage.getItem('medgame.audio.volume') || '0.6') || 0.6;
 
-        // Sources actives
+        // Sources actives — intervalles SÉPARÉS (l'ancien _heartbeatInterval
+        // partagé faisait que stopECGBeep tuait aussi le heartbeat)
         this._heartbeatInterval = null;
+        this._ecgInterval = null;
         this._alarmInterval = null;
         this._lastHeartRate = 72;
         this._alarmActive = false;
@@ -30,8 +33,15 @@ export class MedicalAudio {
         try {
             this.ctx = new (window.AudioContext || window.webkitAudioContext)();
             this.masterGain = this.ctx.createGain();
-            this.masterGain.gain.value = this._volume;
-            this.masterGain.connect(this.ctx.destination);
+            this.masterGain.gain.value = this._muted ? 0 : this._volume;
+
+            // Compresseur master : évite le clip quand alarme + succès + bip
+            // se superposent (square + accords simultanés satureraient).
+            this._compressor = this.ctx.createDynamicsCompressor();
+            this._compressor.threshold.value = -18;
+            this._compressor.ratio.value = 6;
+            this.masterGain.connect(this._compressor);
+            this._compressor.connect(this.ctx.destination);
 
             // Filtre low-pass pour le warm-up du son
             this._lowpassFilter = this.ctx.createBiquadFilter();
@@ -54,11 +64,20 @@ export class MedicalAudio {
 
     setVolume(v) {
         this._volume = Math.max(0, Math.min(1, v));
-        if (this.masterGain) this.masterGain.gain.value = this._volume;
+        if (this.masterGain && !this._muted) this.masterGain.gain.value = this._volume;
+        try { localStorage.setItem('medgame.audio.volume', String(this._volume)); } catch {}
     }
 
-    mute() { this._muted = true; if (this.masterGain) this.masterGain.gain.value = 0; }
-    unmute() { this._muted = false; if (this.masterGain) this.masterGain.gain.value = this._volume; }
+    mute() {
+        this._muted = true;
+        if (this.masterGain) this.masterGain.gain.value = 0;
+        try { localStorage.setItem('medgame.audio.muted', 'true'); } catch {}
+    }
+    unmute() {
+        this._muted = false;
+        if (this.masterGain) this.masterGain.gain.value = this._volume;
+        try { localStorage.setItem('medgame.audio.muted', 'false'); } catch {}
+    }
 
     // ==================== BATTEMENTS CARDIAQUES ====================
 
@@ -152,7 +171,7 @@ export class MedicalAudio {
         if (!this._ecgBeepActive) return;
         const intervalMs = (60 / this._lastHeartRate) * 1000;
         this._playECGBeep();
-        this._heartbeatInterval = setTimeout(() => {
+        this._ecgInterval = setTimeout(() => {
             this._scheduleECGBeep();
         }, intervalMs);
     }
@@ -175,9 +194,9 @@ export class MedicalAudio {
 
     stopECGBeep() {
         this._ecgBeepActive = false;
-        if (this._heartbeatInterval) {
-            clearTimeout(this._heartbeatInterval);
-            this._heartbeatInterval = null;
+        if (this._ecgInterval) {
+            clearTimeout(this._ecgInterval);
+            this._ecgInterval = null;
         }
     }
 
@@ -206,9 +225,9 @@ export class MedicalAudio {
 
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            osc.type = 'square';
+            osc.type = 'sine'; // sine doux (l'ancien square 0.04 agressait + clippait)
             osc.frequency.value = freq;
-            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.setValueAtTime(0.03, now);
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
             osc.connect(gain);
             gain.connect(this.masterGain);

@@ -10,6 +10,7 @@
     "validate:cases": "node scripts/validate-cases.mjs",
     "validate:cases:strict": "node scripts/validate-cases.mjs --strict",
     "generate:index": "node scripts/generate-case-index.mjs",
+    "enrich:cases": "node scripts/enrich-cases.mjs",
     "generate:feedback": "node scripts/generate-ecos-feedback.mjs"
   },
   "repository": {

@@ -8,7 +8,19 @@
     "taille": "180 cm",
     "poids": "65 kg",
     "groupeSanguin": "A-",
-    "imc": "20.1 kg/m²"
+    "imc": "20.1 kg/m²",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Baisse d'énergie et troubles digestifs",
@@ -420,5 +432,65 @@
       },
       "personnalite": "Patient anxieux, perfectionniste, ayant du mal à exprimer ses émotions. Il minimise ses symptômes et justifie ses restrictions alimentaires par un souhait de 'mieux manger'. Il est méfiant face aux questions sur son poids et son image corporelle."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques mois et j'ai des problèmes digestifs. Mon médecin m'a envoyé vous voir.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Anorexie mentale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet (NFS)",
+      "Ionogramme sanguin"
+    ],
+    "utiles": [
+      "Bilan thyroïdien (TSH, T4L)",
+      "Évaluation psychologique",
+      "ECG"
+    ],
+    "inutiles": [
+      "Bilan hépatique",
+      "Glycémie à jeun",
+      "Albuminémie"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien clinique structuré explorant les habitudes alimentaires, l'image corporelle et le rapport au corps",
+    "Évaluer les signes de dénutrition et les complications somatiques",
+    "Proposer une prise en charge adaptée incluant un suivi psychiatrique et nutritionnel"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

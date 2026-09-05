@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "68 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Fatigue persistante et perte de poids inexpliquée",
@@ -425,5 +437,65 @@
       },
       "personnalite": "Patient anxieux mais coopératif. Il est préoccupé par ses symptômes et craint une maladie grave. Il peut être réticent à aborder les questions intimes (sexualité, drogues)."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis plusieurs semaines et j'ai perdu du poids sans raison. Je m'inquiète un peu.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Infection par le VIH)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Sérologie VIH"
+    ],
+    "utiles": [
+      "Protéine C-réactive (CRP)",
+      "Hémoculture",
+      "Radiographie pulmonaire"
+    ],
+    "inutiles": [
+      "Test de dépistage du paludisme",
+      "Bilan nutritionnel",
+      "Dosage des anticorps anti-GAD"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes actuels, les antécédents, le mode de vie et les facteurs de risque",
+    "Réaliser un examen clinique ciblé incluant l'examen ganglionnaire",
+    "Proposer une stratégie diagnostique pertinente incluant une sérologie VIH"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

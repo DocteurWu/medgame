@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "183 cm",
     "poids": "86 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Baisse de la qualité des érections depuis plusieurs mois",
@@ -416,5 +428,64 @@
         "jargon": "Le patient fronce les sourcils et demande : 'Qu'est-ce que ça veut dire ?' ou 'Je comprends pas, expliquez-moi autrement.'"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, ça fait plusieurs mois que j'ai des problèmes... enfin, des difficultés au lit. C'est gênant, surtout que je suis jeune et en bonne santé.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Dysfonction érectile mixte (psychogène + vasculaire))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan hormonal",
+      "Testostérone totale"
+    ],
+    "utiles": [
+      "Glycémie à jeun",
+      "HbA1c",
+      "Profil lipidique"
+    ],
+    "inutiles": [
+      "Doppler pénien",
+      "Questionnaire IIEF-5"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien centré sur la dysfonction érectile avec une approche biopsychosociale",
+    "Rechercher les facteurs de risque vasculaires, psychologiques et médicamenteux",
+    "Réaliser un examen clinique ciblé (cardiovasculaire, urologique, neurologique)"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)"
 }

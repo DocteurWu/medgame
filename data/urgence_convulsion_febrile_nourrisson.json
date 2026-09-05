@@ -2,7 +2,7 @@
   "id": "urgence_convulsion_febrile_nourrisson",
   "title": "Convulsion Fébrile du Nourrisson (Crise Prolongée)",
   "specialty": "urgence",
-  "difficulty": 2,
+  "difficulty": 3,
   "redacteur": "L'équipe Médicale MedGame",
   "patient": {
     "nom": "Martin",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "80 cm",
     "poids": "12 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Nourrisson de 18 mois amené par ses parents aux urgences en train de convulser avec une forte fièvre.",
@@ -977,5 +989,67 @@
       },
       "personnalite": "Parent très inquiet et angoissé, parlant vite, visiblement bouleversé par la crise convulsive de son enfant. Le parent répond aux questions mais peut être submergé par l'émotion. Il a besoin d'être rassuré tout en comprenant la gravité de la situation."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, aidez-nous ! Mon fils est en train de convulser, ça fait plusieurs minutes, il a une grosse fièvre, je ne sais pas quoi faire !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (GLYCEMIE_CAPILLAIRE)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Convulsion fébrile complexe / prolongée (> 5 min))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "GLYCEMIE_CAPILLAIRE"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": [
+      "PONCTION_LOMBAIRE",
+      "NFS_CRP_HEMOCULTURE",
+      "TDM_CEREBRALE",
+      "IONOGRAMME_SANGUIN"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : GLYCEMIE_CAPILLAIRE. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Léo présente des secousses tonico-cloniques généralisées sous fièvre de 39,5°C depuis plus de 6 minutes. Comment classer cliniquement cette crise ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Convulsion fébrile complexe / prolongée (> 5 min) vs Convulsion fébrile complexe. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Convulsion fébrile complexe",
+    "Crise convulsive fébrile prolongée",
+    "Convulsion fébrile prolongée"
+  ],
+  "objectifs": [
+    "Prendre en charge la crise convulsive prolongée en urgence vitale immédiate",
+    "Sécuriser les voies aériennes et mettre l'enfant en position latérale de sécurité",
+    "Administrer un benzodiazépines adapté à l'âge et au poids (midazolam intra-buccal ou diazépam intra-rectal à dose pédiatrique)"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

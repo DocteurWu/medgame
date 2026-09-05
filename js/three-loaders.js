@@ -30,6 +30,50 @@ gltfLoader.setDRACOLoader(dracoLoader);
 export const objLoader = new OBJLoader(loadingManager);
 
 // ============================================================
+// CHARGEMENT GLB ROBUSTE (cache + timeout + erreur propre)
+// ============================================================
+
+// Le CharacterController importait `loadGLBSmart` qui n'existait pas :
+// l'import nommé manquant faisait échouer TOUT le module => aucun docteur.
+// Cette fonction comble le trou + déduplique les chargements redondants.
+const _glbPromises = new Map();
+
+/**
+ * Charge un GLB avec cache, timeout et callbacks compatibles GLTFLoader.
+ * @param {string} path — chemin du .glb
+ * @param {Function} onLoad — callback(gltf)
+ * @param {Function} [onProgress] — callback(xhr)
+ * @param {Function} [onError] — callback(err)
+ * @param {Object} [opts] — { timeoutMs }
+ */
+export function loadGLBSmart(path, onLoad, onProgress, onError, opts = {}) {
+    const timeoutMs = opts.timeoutMs ?? 25000;
+
+    if (!_glbPromises.has(path)) {
+        _glbPromises.set(path, new Promise((resolve, reject) => {
+            const timer = setTimeout(() => {
+                _glbPromises.delete(path); // retry possible après timeout
+                reject(new Error(`[loadGLBSmart] timeout ${timeoutMs}ms : ${path}`));
+            }, timeoutMs);
+            gltfLoader.load(
+                path,
+                (gltf) => { clearTimeout(timer); resolve(gltf); },
+                onProgress,
+                (err) => { clearTimeout(timer); _glbPromises.delete(path); reject(err); }
+            );
+        }));
+    }
+
+    _glbPromises.get(path).then(
+        (gltf) => { try { onLoad?.(gltf); } catch (e) { console.warn('[loadGLBSmart] onLoad:', e); } },
+        (err) => {
+            console.warn('[loadGLBSmart] Échec:', path, err);
+            try { onError?.(err); } catch {}
+        }
+    );
+}
+
+// ============================================================
 // ÉCRAN DE CHARGEMENT PROGRESSIF
 // ============================================================
 

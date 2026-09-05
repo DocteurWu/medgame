@@ -7,7 +7,19 @@
     "sexe": "F",
     "taille": "169 cm",
     "poids": "58 kg",
-    "groupeSanguin": "A-"
+    "groupeSanguin": "A-",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Vertiges rotatoires intenses avec troubles auditifs depuis 24 heures",
@@ -427,5 +439,64 @@
         "jargon": "Labyrinthite ? Nystagmus ? Pouvez-vous m'expliquer ce que ça signifie en termes simples s'il vous plaît ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, ça fait 24 heures que j'ai des vertiges terribles, j'ai l'impression que la pièce tourne autour de moi, je vomis, et en plus j'ai l'oreille droite bouchée avec des sifflements. J'ai un peu peur, surtout que ma sœur a fait une surdité brusque il y a quelques années.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Romberg",
+      "Test de Fukuda"
+    ],
+    "utiles": [
+      "Test des index",
+      "Head Impulse Test (HIT)",
+      "Épreuve calorique"
+    ],
+    "inutiles": [
+      "Audiogramme tonal",
+      "Tympanogramme",
+      "IRM des rochers"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur le syndrome labyrinthique",
+    "Effectuer un examen clinique ciblé incluant l'examen neurologique et l'examen ORL (otoscopie, épreuves d'équilibre, évaluation de l'audition)",
+    "Proposer un diagnostic différentiel argumenté parmi les causes centrales et périphériques de vertige aigu"
+  ],
+  "referentiel": "Collège ORL / Barany Society"
 }

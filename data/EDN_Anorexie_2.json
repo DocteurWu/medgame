@@ -7,7 +7,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "45 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": " Perte de poids importante et inquiétude concernant l'image corporelle ",
@@ -420,5 +432,65 @@
       },
       "personnalite": "Adolescente réservée, anxieuse, préoccupée par son apparence. Elle minimise ses symptômes et hésite à parler ouvertement de ses habitudes alimentaires. Elle se sent mal à l'aise en public et évite les situations sociales."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que ma mère s'inquiète pour moi. Elle dit que je maigris trop, mais je me sens bien.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Anorexie mentale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan thyroïdien"
+    ],
+    "utiles": [
+      "Examen psychologique approfondi",
+      "Dosage des D-dimères",
+      "Sérologie VIH"
+    ],
+    "inutiles": [
+      "Bilan hépatique",
+      "ECG",
+      "Mesure de l'impédancemétrie bioélectrique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien avec l'adolescente et sa mère pour explorer les troubles du comportement alimentaire",
+    "Évaluer la sévérité de la dénutrition et les complications somatiques",
+    "Rechercher des comorbidités psychiatriques (anxiété, dépression, idées suicidaires)"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

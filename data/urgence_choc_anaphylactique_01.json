@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "75 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "paniqué, dyspnéique, phrases de 2-3 mots",
+      "registre": "haletant, familier sous stress",
+      "loquacite": "reserve",
+      "style_parole": "souffle court audible, mots hachés, incapable de phrases longues (SpO2 basse), répond « oui/non » puis un détail",
+      "exemples_phrases": [
+        "J'étou... j'étouffe... la guêpe...",
+        "Ça gratte... partout... aidez-moi..."
+      ],
+      "anxiete": 95,
+      "confiance": 50
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Détresse respiratoire et éruption cutanée suite à une piqûre de guêpe.",
@@ -587,5 +599,54 @@
       },
       "personnalite": "Patient agité, anxieux, légèrement confus du fait de l'hypoxie et du choc. Il parle vite, cherche son souffle, se gratte frénétiquement. Il est coopératif mais a du mal à se concentrer longtemps sur les questions."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "[sifflement respiratoire] J'étouffe... guêpe... ça gratte partout...",
+    "objectifs_cles": [
+      "repérer la triade hypotension + bronchospasme + urticaire post-piqûre",
+      "retrouver l'allergène et le délai (minutes)",
+      "AGIR vite : adrénaline IM 0.5mg sans attendre le bilan"
+    ],
+    "spontane": [
+      "motifHospitalisation"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "🚨 Ici on ne bilanne pas d'abord : adrénaline 0.5mg IM immédiate, O2, perfusion, surveillance. Chaque minute compte (dégradation auto à 45s).",
+    "💡 Interro express : quoi (piqûre de guêpe ?) + quand (il y a combien de minutes ?) + atcd allergiques connus.",
+    "🎯 Après stabilisation : tryptase, bilan, éviction + trousse d'urgence (auto-injecteur) et éducation."
+  ],
+  "pieges": [
+    "Choc anaphylactoïde",
+    "Réaction allergique sévère"
+  ],
+  "objectifs": [
+    "Accueillir le patient et évaluer rapidement la gravité de la situation",
+    "Réaliser un interrogatoire ciblé (allergies, antécédents, chronologie des symptômes)",
+    "Effectuer un examen clinique complet orienté (constantes, auscultation pulmonaire, examen cutané, recherche d'un œdème de Quincke)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

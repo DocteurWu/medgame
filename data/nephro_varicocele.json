@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "181 cm",
     "poids": "79 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleur scrotale gauche chronique",
@@ -373,5 +385,65 @@
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire..."
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai des douleurs au niveau des testicules à gauche depuis quelques mois. C'est surtout une pesanteur qui augmente dans la journée.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Varicocèle)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Créatininémie",
+      "Urée"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "CRP",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Protéinurie des 24h",
+      "Albuminurie",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": [
+      "Scanner abdomino-pelvien",
+      "Spermogramme"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la symptomatologie scrotale et les facteurs de risque",
+    "Effectuer un examen clinique ciblé de la région inguino-scrotale",
+    "Proposer un diagnostic différentiel et argumenter le diagnostic le plus probable"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)"
 }

@@ -328,8 +328,33 @@
             });
         }
 
+        addPrescriptionSilently(prescription) {
+            // Ajout direct sans re-vérification — le Maître a déjà tranché
+            this.prescriptions.push({ ...prescription, id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()) });
+            this.syncScoring();
+            this.renderList();
+            if (typeof feedbackTimeline !== 'undefined') {
+                feedbackTimeline.log('traitement', `Prescription (Maître) : ${prescription.nom} ${prescription.dosage} ${prescription.voie}`);
+            }
+        }
+
         addPrescription(prescription, onSuccess) {
-            // --- Vérification des contre-indications avant d'ajouter ---
+            // Si le Maître est disponible et qu'on est en mode LLM, on route via lui pour qu'il décide de la létalité
+            if (typeof isLLMMode === 'function' && isLLMMode() && window.medicalGameManager && window.medicalGameManager.processAction) {
+                const text = `Je prescris ${prescription.nom} ${prescription.dosage || ''} par voie ${prescription.voie || ''} (${prescription.frequence || ''})`;
+                window.medicalGameManager.processAction(text).then(res => {
+                    if (res && res.narrative) {
+                        if (typeof showNotification === 'function') showNotification(res.narrative.slice(0,180), 'info');
+                    }
+                    if (typeof onSuccess === 'function') onSuccess();
+                }).catch(err => {
+                    const msg = err && err.message ? err.message : String(err);
+                    if (typeof showNotification === 'function') showNotification(msg.slice(0,220), 'error');
+                    // AUCUN FALLBACK : on affiche l'erreur et on ne prescrit pas
+                });
+                return;
+            }
+            // Hors LLM ou Maître indisponible : vérification locale classique
             const { matched, patientContext } = this.checkContreIndications(prescription.contreIndications || []);
 
             const doAdd = () => {

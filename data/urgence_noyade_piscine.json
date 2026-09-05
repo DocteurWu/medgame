@@ -2,7 +2,7 @@
   "id": "urgence_urg_06",
   "title": "Noyade en Piscine — Inconscient qui Respire",
   "specialty": "urgence",
-  "difficulty": 2,
+  "difficulty": 3,
   "redacteur": "Clawd UE10",
   "patient": {
     "nom": "Leroy",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "170 cm",
     "poids": "60 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Sorti de piscine inconscient après avoir coulé.",
@@ -697,5 +709,54 @@
       },
       "personnalite": "Patient de 15 ans, inconscient, ne répond pas aux stimuli verbaux. Respire avec difficulté. Pâle, cyanosé, tremblant. Écume rosée aux lèvres. Les parents sont présents, très angoissés."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens pour : Sorti de piscine inconscient après avoir coulé..",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Noyade avec inhalation d'eau — inconscient qui respire)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Maxime est inconscient mais respire (24/min). Est-ce un ACR ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Évaluer la sécurité de la scène et se protéger (gants)",
+    "Évaluer l'état de conscience du patient (score de Glasgow, réponse à la stimulation)",
+    "Mettre le patient en Position Latérale de Sécurité (PLS) car il est inconscient et respire"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

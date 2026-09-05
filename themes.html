@@ -69,6 +69,7 @@
 
 
         <h1 class="h1">Sélectionnez l'UE</h1>
+        <div id="daily-case-banner" style="display:none; margin-bottom:8px; padding:10px 18px; border-radius:14px; background:rgba(0,242,254,0.08); border:1px solid rgba(0,242,254,0.3); color:#fff; font-size:0.9rem; max-width:640px; text-align:center;"></div>
         <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
         <div class="container">
             <div class="themes-container">
@@ -137,7 +138,14 @@
                 <button id="close-motifs" class="close-motifs">&times;</button>
                 <h2 id="motifs-title">Choisissez un cas</h2>
 
-                <div id="motifs-actions" class="motifs-actions" style="display: flex; gap: 15px; align-items: center; justify-content: center;">
+                <div id="motifs-actions" class="motifs-actions" style="display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <input id="motifs-search" type="search" placeholder="🔍 Rechercher (motif, patient…)" aria-label="Rechercher un cas"
+                        style="flex:1; min-width:180px; padding:8px 14px; border-radius:20px; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.3); color:#fff; font-size:0.85rem;">
+                    <select id="motifs-sort" aria-label="Trier les cas" style="padding:8px 12px; border-radius:20px; background:rgba(0,0,0,0.3); color:#fff; border:1px solid rgba(255,255,255,0.15); font-size:0.85rem;">
+                        <option value="default">Tri : défaut</option>
+                        <option value="difficulty">Difficulté ★</option>
+                        <option value="unplayed">Non faits d'abord</option>
+                    </select>
                     <button id="select-unplayed" class="secondary-btn-modal">Sélectionner les cas non faits</button>
                     <label class="ecos-filter-label" style="display: none !important; color: #fff; font-size: 0.85rem; font-family: var(--font-main); align-items: center; gap: 8px; cursor: pointer; user-select: none; background: rgba(52, 152, 219, 0.1); border: 1px solid rgba(52, 152, 219, 0.3); padding: 6px 14px; border-radius: 20px; transition: all 0.2s ease;"
                         onmouseover="this.style.background='rgba(52, 152, 219, 0.25)'; this.style.borderColor='#3498db'; this.style.boxShadow='0 0 10px rgba(52, 152, 219, 0.3)';"
@@ -182,8 +190,6 @@
             window.location.reload(true);
         }
     </script>
-
-    <script src="js/device-check.js?v=2"></script>
 </body>
 
 </html>

@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "70 kg",
-    "groupeSanguin": "A-"
+    "groupeSanguin": "A-",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée et confusion",
@@ -144,7 +156,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 3,
+  "difficulty": 2,
   "alternativeDiagnostics": [
     "IC à fraction d'éjection conservée",
     "OAP"
@@ -432,5 +444,67 @@
       },
       "personnalite": "Femme de 78 ans, ancienne chirurgienne à la retraite, habituée à être en position d'autorité. Actuellement confuse, désorientée dans le temps, parfois agitée. Répond de manière incohérente aux questions complexes. Son entourage (fille ou aide-soignante) peut compléter les informations."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Je ne sais pas ce qui m'arrive… Je suis essoufflée, je n'arrive plus à respirer correctement, et je me sens perdue… Ma fille m'a dit qu'il fallait venir aux urgences.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (BNP/NT-proBNP, ECG)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie cardiaque"
+    ],
+    "utiles": [
+      "Radio thoracique"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Scintigraphie cardiaque",
+      "Test d'effort"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : BNP/NT-proBNP + ECG. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Insuffisance cardiaque vs IC à fraction d'éjection conservée. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "IC à fraction d'éjection conservée",
+    "OAP"
+  ],
+  "objectifs": [
+    "Réalisez l'interrogatoire de la patiente et/ou de son entourage",
+    "Réalisez l'examen clinique cardiovasculaire et pulmonaire",
+    "Énoncez vos hypothèses diagnostiques"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

@@ -60,7 +60,9 @@ export class ThreeLightingAgent {
         this.hemiLight = hemiLight;
 
         // Lumière principale (Sun Light) entrant par la fenêtre du mur droit (x = 5.5, z ≈ -2.2)
-        const keyLight = new THREE.DirectionalLight('#fed7aa', 1.9);
+        // Intensité calibrée r155+ (lumières physiques) : 1.9 surexposait
+        // nappes et oreillers en blanc pur — 1.3 suffit avec IBL + hemi.
+        const keyLight = new THREE.DirectionalLight('#fed7aa', 1.3);
         keyLight.position.set(11, 7.5, -3.5);
         // Ombres portées en version douce (PCF).
         // NOTE HISTORIQUE : l'ancienne "bande noire" ne venait pas des ombres elles-mêmes,
@@ -71,10 +73,12 @@ export class ThreeLightingAgent {
         keyLight.shadow.mapSize.set(this.quality.shadowSize, this.quality.shadowSize);
         keyLight.shadow.camera.near = 2;
         keyLight.shadow.camera.far = 30;
-        keyLight.shadow.camera.left = -9;
-        keyLight.shadow.camera.right = 9;
-        keyLight.shadow.camera.top = 9;
-        keyLight.shadow.camera.bottom = -9;
+        // Frustum resserré sur la salle utile (±7 au lieu de ±9) : texels plus
+        // fins à résolution égale, moins de hors-champ ombré pour rien.
+        keyLight.shadow.camera.left = -7;
+        keyLight.shadow.camera.right = 7;
+        keyLight.shadow.camera.top = 7;
+        keyLight.shadow.camera.bottom = -7;
         keyLight.shadow.bias = -0.0002;
         keyLight.shadow.normalBias = 0.03;
         keyLight.target.position.set(0, 1, 0);
@@ -82,25 +86,19 @@ export class ThreeLightingAgent {
         this.scene.add(keyLight);
         this.keyLight = keyLight;
 
-        // Lumières ponctuelles (dalles LED du plafond sous y=5.0) — plus douces
+        // Lumières ponctuelles (dalles LED du plafond sous y=5.0) — sobres
         this.pointLights = [];
-        this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#f8fafc', 0.28, 9));
-        this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#f8fafc', 0.28, 9));
+        this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#f8fafc', 0.22, 9));
+        this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#f8fafc', 0.22, 9));
 
-        // Standing floor lamp warm yellow light on the left wall (floor lamp at z = 3.2)
-        const wallLampLight = new THREE.PointLight('#ff9944', 2.8, 6.5);
-        wallLampLight.position.set(-4.95, 1.7, 3.2);
-        this.scene.add(wallLampLight);
-        this.wallLampLight = wallLampLight;
-
-        // Blue laser stand light (foreground)
-        const blueLaserLight = new THREE.PointLight('#00aaff', 2.2, 5.0);
-        blueLaserLight.position.set(-2.0, 1.12, 2.0);
-        this.scene.add(blueLaserLight);
-        this.blueLaserLight = blueLaserLight;
+        // NOTE : les lampes décoratives (lampadaire chaud, laser bleu) ont été
+        // supprimées car leurs objets n'existent plus dans la pièce — chaque
+        // Point/Spot coûte du shader en forward, on ne garde que l'utile.
+        this.wallLampLight = null;
+        this.blueLaserLight = null;
 
         // Lumière d'appoint sous les instruments (glow bleu sur le bureau)
-        const instLight = new THREE.PointLight(0x44aaff, 0.35, 4);
+        const instLight = new THREE.PointLight(0x44aaff, 0.25, 4);
         instLight.position.set(-2.8, 1.45, -0.4);
         this.scene.add(instLight);
         this.instLight = instLight;
@@ -108,9 +106,9 @@ export class ThreeLightingAgent {
         // --- Lumières de rebond (bounce lights) : éclairent subtilement les zones d'ombre ---
         this.bounceLights = [];
         // Rebond chaud : la key light frappe le sol côté fenêtre et rediffuse vers le plafond
-        this.bounceLights.push(this._addPointLight(3.6, 0.5, 1.6, '#ffd9b0', 0.22, 7));
+        this.bounceLights.push(this._addPointLight(3.6, 0.5, 1.6, '#ffd9b0', 0.15, 7));
         // Contre-jour froid côté opposé : détache les volumes du mur du fond
-        this.bounceLights.push(this._addPointLight(-4.4, 2.6, -2.6, '#9db8d6', 0.14, 8));
+        this.bounceLights.push(this._addPointLight(-4.4, 2.6, -2.6, '#9db8d6', 0.1, 8));
 
         // Configuration globale du renderer
         this.renderer.shadowMap.enabled = true; // Ombres douces PCF (voir note historique plus haut)
@@ -138,7 +136,7 @@ export class ThreeLightingAgent {
             this.scene.environment = this._envTexture;
             // Intensité globale (three >= r163) — ignorée silencieusement sur versions antérieures
             if ('environmentIntensity' in this.scene) {
-                this.scene.environmentIntensity = this.theme === 'light' ? 0.55 : 0.35;
+                this.scene.environmentIntensity = this.theme === 'light' ? 0.4 : 0.25;
             }
             pmrem.dispose();
         } catch (e) {
@@ -169,7 +167,7 @@ export class ThreeLightingAgent {
                     texture.mapping = THREE.EquirectangularReflectionMapping;
                     this.scene.environment = texture;
                     if ('environmentIntensity' in this.scene) {
-                        this.scene.environmentIntensity = this.theme === 'light' ? 0.55 : 0.35;
+                        this.scene.environmentIntensity = this.theme === 'light' ? 0.4 : 0.25;
                     }
                     // Libérer l'environnement procédural devenu inutile
                     if (this._envTexture && this._envTexture !== texture) {
@@ -313,15 +311,16 @@ export class ThreeLightingAgent {
                 }
             }
 
-            // Bloom — valeurs douces pour un rendu médical (halos ampoules/écrans uniquement)
+            // Bloom — valeurs sobres (les dalles/écrans/ampoules ne doivent
+            // pas bloomer en halo géant : seuil haut + force contenue)
             if (this.quality.bloom) {
                 const bloomPassMod = await import('three/addons/postprocessing/UnrealBloomPass.js');
                 const { UnrealBloomPass } = bloomPassMod;
                 this.bloomPass = new UnrealBloomPass(
                     new THREE.Vector2(width, height),
-                    0.38, // strength
+                    0.3, // strength
                     0.35, // radius
-                    0.88  // threshold
+                    0.92  // threshold
                 );
                 this.composer.addPass(this.bloomPass);
             }
@@ -394,19 +393,19 @@ export class ThreeLightingAgent {
      */
     setCameraExposure(mode) {
         const exposures = {
-            room: 1.05,
-            patient: 1.2,
-            desk: 0.95
+            room: 0.92,
+            patient: 1.0,
+            desk: 0.9
         };
-        this.renderer.toneMappingExposure = exposures[mode] || 1.05;
+        this.renderer.toneMappingExposure = exposures[mode] || 0.92;
 
         if (this.bloomPass) {
             const bloomStrengths = {
-                room: 0.38,
-                patient: 0.6,
-                desk: 0.28
+                room: 0.25,
+                patient: 0.32,
+                desk: 0.25
             };
-            this.bloomPass.strength = bloomStrengths[mode] || 0.38;
+            this.bloomPass.strength = bloomStrengths[mode] || 0.25;
         }
     }
 

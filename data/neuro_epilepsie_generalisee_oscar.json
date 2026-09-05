@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "70 kg",
-    "groupeSanguin": "AB+"
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "confus et inquiet, amnésique de la crise",
+      "registre": "jeune, courant, hésitant",
+      "loquacite": "normal",
+      "style_parole": "cherche ses mots, « trou noir », céphalées post-critiques, se raccroche au récit des témoins",
+      "exemples_phrases": [
+        "Je me souviens plus... y a un trou noir, et après j'avais super mal à la tête.",
+        "On m'a dit que je tremblais partout, mais moi je m'en rappelle pas..."
+      ],
+      "anxiete": 75,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Perte de connaissance",
@@ -463,5 +475,60 @@
       },
       "personnalite": "Patient coopératif mais inquiet et légèrement confus sur le déroulement exact de l'épisode. Il se souvient du cri initial, de la chute, puis d'un « trou noir » suivi de confusion et de céphalées pendant 30 minutes. Il ne se souvient pas des secousses ni de la morsure de langue (ce sont les témoins qui l'ont informé)."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur... je suis venu parce que j'ai fait un malaise ce matin, je me souviens plus de grand-chose, juste d'un trou noir...",
+    "objectifs_cles": [
+      "reconstituer la crise via témoins (cri, chute, secousses, morsure, confusion 30min)",
+      "éliminer diagnostics proches (syncope, crise psychogène) par la durée et les signes",
+      "justifier EEG + IRM (ECG et scanner non indiqués ici)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "antecedents.familiaux"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise épileptique généralisée tonico-clonique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "EEG",
+      "IRM cérébrale"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": [
+      "ECG",
+      "Scanner cérébral en urgence"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Qui doit-on interroger absolument pour avoir des informations sur cette perte de connaissance ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient sur l'épisode de perte de connaissance",
+    "Rechercher les caractéristiques de la crise (prodrome, phase tonique, phase clonique, phase post-critique)",
+    "Rechercher les facteurs déclenchants et les antécédents personnels et familiaux d'épilepsie"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

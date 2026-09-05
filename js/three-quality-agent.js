@@ -15,9 +15,9 @@ export const QUALITY_PRESETS = {
         pixelRatio: 1.25,
         msaa: 0,
         gtao: false,
-        bloom: true,
-        shadowSize: 2048,
-        dust: true,
+        bloom: false,
+        shadowSize: 1024,
+        dust: false,
         gtaoRadius: 0.5,
         gtaoSamples: 8
     },
@@ -34,22 +34,22 @@ export const QUALITY_PRESETS = {
     },
     high: {
         label: 'Haute',
-        pixelRatio: 2,
+        pixelRatio: 1.5,
         msaa: 4,
         gtao: true,
         bloom: true,
-        shadowSize: 4096,
+        shadowSize: 2048,
         dust: true,
         gtaoRadius: 0.8,
         gtaoSamples: 14
     },
     ultra: {
         label: 'Ultra',
-        pixelRatio: 2,
+        pixelRatio: 1.75,
         msaa: 4,
         gtao: true,
         bloom: true,
-        shadowSize: 4096,
+        shadowSize: 2048,
         dust: true,
         gtaoRadius: 1.0,
         gtaoSamples: 20
@@ -62,7 +62,7 @@ export class ThreeQualityAgent {
      */
     constructor(scene3d) {
         this.scene3d = scene3d;
-        this.presetName = 'high';
+        this.presetName = 'medium';
         this.resScale = 1;              // multiplicateur dynamique 0.65 → 1
         this.basePixelRatio = 1.5;
         this._fpsEma = 60;
@@ -70,10 +70,14 @@ export class ThreeQualityAgent {
         this._goodSince = 0;
         this._startTime = performance.now();
         this._boundClick = null;
+        // Paliers de dégradation couplés (au-delà de la simple résolution) :
+        // 0 = plein preset, 1 = GTAO allégé, 2 = ombres 1024 + bloom off
+        this._degradeLevel = 0;
     }
 
     /**
      * Heuristique de capacité GPU/CPU pour choisir le preset initial.
+     * Ultra exige un vrai GPU + écran haute densité (jamais auto sur iGPU/batterie).
      */
     detectTier() {
         try {
@@ -83,11 +87,11 @@ export class ThreeQualityAgent {
             const dpr = window.devicePixelRatio || 1;
 
             if (!isWebGL2 || cores <= 4) return 'medium';
-            if (cores >= 8 && mem >= 8 && dpr >= 1.25) return 'ultra';
+            if (cores >= 8 && mem >= 8 && dpr >= 2) return 'ultra';
             if (cores >= 6) return 'high';
             return 'medium';
         } catch (e) {
-            return 'high';
+            return 'medium';
         }
     }
 
@@ -130,6 +134,7 @@ export class ThreeQualityAgent {
 
         this.basePixelRatio = Math.min(window.devicePixelRatio || 1, preset.pixelRatio);
         this.resScale = 1;
+        this._degradeLevel = 0;
         this.applyResolution();
 
         if (rebuild) {
@@ -164,8 +169,11 @@ export class ThreeQualityAgent {
     }
 
     /**
-     * Résolution dynamique : appelée chaque frame par la boucle animate().
-     * Downscale progressif si FPS < 45, remontée douce si FPS > 58.
+     * Résolution dynamique + paliers couplés : appelée chaque frame par animate().
+     * Palier 0 : downscale progressif (resScale → 0.65).
+     * Palier 1 : GTAO allégé (samples 8, radius 0.5).
+     * Palier 2 : ombres 1024 + bloom off (gros gain, visuel conservé).
+     * Remontée inverse après 8s > 58fps.
      * @param {number} dt — delta time en secondes
      */
     sample(dt) {
@@ -178,17 +186,41 @@ export class ThreeQualityAgent {
 
         if (now - this._lastAdjust < 1500) return;
 
-        if (this._fpsEma < 45 && this.resScale > 0.65) {
-            this.resScale = Math.max(0.65, this.resScale - 0.1);
-            this.applyResolution();
-            this._lastAdjust = now;
-            this._goodSince = 0;
-        } else if (this._fpsEma > 58 && this.resScale < 1) {
-            if (!this._goodSince) this._goodSince = now;
-            if (now - this._goodSince > 4000) {
-                this.resScale = Math.min(1, this.resScale + 0.05);
+        const la = this.scene3d.lightingAgent;
+        if (this._fpsEma < 45) {
+            if (this.resScale > 0.65) {
+                this.resScale = Math.max(0.65, this.resScale - 0.1);
                 this.applyResolution();
                 this._lastAdjust = now;
+                this._goodSince = 0;
+            } else if (this._degradeLevel < 1) {
+                this._degradeLevel = 1;
+                la?.setQualitySettings({ gtaoRadius: 0.5, gtaoSamples: 8 });
+                this._lastAdjust = now;
+                this._goodSince = 0;
+            } else if (this._degradeLevel < 2) {
+                this._degradeLevel = 2;
+                la?.setQualitySettings({ shadowSize: 1024, bloom: false });
+                this._lastAdjust = now;
+                this._goodSince = 0;
+            }
+        } else if (this._fpsEma > 58) {
+            if (!this._goodSince) this._goodSince = now;
+            if (now - this._goodSince > 8000) {
+                const preset = QUALITY_PRESETS[this.presetName];
+                if (this._degradeLevel >= 2) {
+                    this._degradeLevel = 1;
+                    la?.setQualitySettings({ shadowSize: preset.shadowSize, bloom: preset.bloom });
+                    this._lastAdjust = now;
+                } else if (this._degradeLevel >= 1) {
+                    this._degradeLevel = 0;
+                    la?.setQualitySettings({ gtaoRadius: preset.gtaoRadius, gtaoSamples: preset.gtaoSamples });
+                    this._lastAdjust = now;
+                } else if (this.resScale < 1) {
+                    this.resScale = Math.min(1, this.resScale + 0.05);
+                    this.applyResolution();
+                    this._lastAdjust = now;
+                }
             }
         } else {
             this._goodSince = 0;

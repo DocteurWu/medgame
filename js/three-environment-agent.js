@@ -82,32 +82,6 @@ export class ThreeEnvironmentAgent {
         }
     }
 
-    _addWindowEffect() {
-        // --- Faisceau de Lumière Volumétrique (Effet cinématique de soleil) ---
-        const shaftGeom = new THREE.CylinderGeometry(0.35, 1.8, 6.8, 32, 1, true);
-        // Décaler le pivot vers la base supérieure pour une rotation depuis le plafond
-        shaftGeom.translate(0, -3.4, 0);
-
-        const shaftMat = new THREE.MeshBasicMaterial({
-            color: 0xffedd5, // Doré chaud cinématique
-            transparent: true,
-            opacity: 0.075,
-            side: THREE.DoubleSide,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false
-        });
-
-        const shaft = new THREE.Mesh(shaftGeom, shaftMat);
-        shaft.name = 'VolumetricSunlightRay';
-        shaft.position.set(4.8, 4.2, -2.0); // Origin at top right corner
-
-        // Rotation diagonale plongeante depuis le haut droit vers le lit/bureau
-        shaft.rotation.z = 1.15; // Plongeant
-        shaft.rotation.y = -0.22;
-
-        this.scene.add(shaft);
-    }
-
     _addMedicalPosters() {
         const frameMat = new THREE.MeshStandardMaterial({ color: 0x8a7e6e, roughness: 0.5, metalness: 0.3 });
 
@@ -143,14 +117,10 @@ export class ThreeEnvironmentAgent {
         posterTexture.minFilter = THREE.LinearMipmapLinearFilter;
         posterTexture.magFilter = THREE.LinearFilter;
 
-        // Anti Z-Fighting (polygonOffset) + Lissage Alpha Blend (transparent + low alphaTest threshold)
+        // Opaque (pas de cutout : évite le tri transparent coûteux) + polygonOffset anti z-fighting
         const posterMat = new THREE.MeshStandardMaterial({
             map: posterTexture,
             roughness: 0.8,
-            transparent: true,
-            opacity: 1.0,
-            alphaTest: 0.005,
-            depthWrite: true,
             polygonOffset: true,
             polygonOffsetFactor: -1,
             polygonOffsetUnits: -1
@@ -171,12 +141,14 @@ export class ThreeEnvironmentAgent {
         poster.userData.interactive = true;
         this.scene.add(poster);
 
-        // Poster 2: ANATOMICAL CHART (using detailed canvas blueprint)
+        // Poster 2: ANATOMICAL CHART (canvas 512x768 : affiche de 0.6x0.9m vue
+        // à plusieurs mètres — 1024x1536 était 4x trop lourde en VRAM/upload)
         const poster2Geom = new THREE.PlaneGeometry(0.6, 0.9);
         const anatomyCanvas = document.createElement('canvas');
-        anatomyCanvas.width = 1024;
-        anatomyCanvas.height = 1536;
+        anatomyCanvas.width = 512;
+        anatomyCanvas.height = 768;
         const ctxA = anatomyCanvas.getContext('2d');
+        ctxA.scale(0.5, 0.5); // dessin codé en 1024x1536, rendu en 512x768
         ctxA.fillStyle = '#fefbf3';
         ctxA.fillRect(0, 0, 1024, 1536);
         ctxA.strokeStyle = '#332211';
@@ -270,10 +242,6 @@ export class ThreeEnvironmentAgent {
         const poster2Mat = new THREE.MeshStandardMaterial({
             map: anatomyTexture,
             roughness: 0.8,
-            transparent: true,
-            opacity: 1.0,
-            alphaTest: 0.005,
-            depthWrite: true,
             polygonOffset: true,
             polygonOffsetFactor: -1,
             polygonOffsetUnits: -1
@@ -293,38 +261,6 @@ export class ThreeEnvironmentAgent {
         poster2.userData.label = 'Affiche médicale';
         poster2.userData.interactive = true;
         this.scene.add(poster2);
-    }
-
-    _addCurtain() {
-        const curtainGeom = new THREE.PlaneGeometry(1.2, 2.5);
-        const curtainCanvas = document.createElement('canvas');
-        curtainCanvas.width = 128;
-        curtainCanvas.height = 256;
-        const cctx = curtainCanvas.getContext('2d');
-        const gradient = cctx.createLinearGradient(0, 0, 0, 256);
-        gradient.addColorStop(0, '#2a3a5a');
-        gradient.addColorStop(1, '#1a2a4a');
-        cctx.fillStyle = gradient;
-        cctx.fillRect(0, 0, 128, 256);
-        cctx.strokeStyle = 'rgba(255,255,255,0.05)';
-        for (let i = 0; i < 128; i += 4) {
-            cctx.beginPath();
-            cctx.moveTo(i, 0);
-            cctx.lineTo(i, 256);
-            cctx.stroke();
-        }
-        const curtainTex = new THREE.CanvasTexture(curtainCanvas);
-        const curtainMat = new THREE.MeshStandardMaterial({
-            map: curtainTex,
-            roughness: 0.9,
-            side: THREE.DoubleSide
-        });
-        const curtain = new THREE.Mesh(curtainGeom, curtainMat);
-        curtain.position.set(0, 1.25, -4.95);
-        curtain.name = 'Curtain';
-        curtain.userData.label = 'Rideau';
-        curtain.userData.interactive = true;
-        this.scene.add(curtain);
     }
 
     // ===== PERFUSION (IV STAND) =====
@@ -524,12 +460,12 @@ export class ThreeEnvironmentAgent {
         ecgShell.castShadow = true;
         ecgGroup.add(ecgShell);
 
-        // emissiveMap: le tracé ECG animé devient lui-même lumineux (glow projeté)
+        // emissiveMap: le tracé ECG animé reste lisible sans éblouir (0.55 < seuil bloom)
         const ecgScreenMat = new THREE.MeshStandardMaterial({
             map: ecgTexture,
             emissive: 0xffffff,
             emissiveMap: ecgTexture,
-            emissiveIntensity: 0.9,
+            emissiveIntensity: 0.55,
             roughness: 0.05
         });
         const ecgScreen = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.18, 0.005), ecgScreenMat);
@@ -618,12 +554,12 @@ export class ThreeEnvironmentAgent {
         shell.receiveShadow = true;
         group.add(shell);
 
-        // emissiveMap: le tracé animé rayonne (bloom + lumière d'ambiance)
+        // emissiveMap: tracé mural lisible sans halo (0.55 < seuil bloom)
         const screenMat = new THREE.MeshStandardMaterial({
             map: ecgTexture,
             emissive: 0xffffff,
             emissiveMap: ecgTexture,
-            emissiveIntensity: 0.9,
+            emissiveIntensity: 0.55,
             roughness: 0.05
         });
         const screen = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.29, 0.005), screenMat);
@@ -830,14 +766,14 @@ export class ThreeEnvironmentAgent {
             }
         });
     }
-    // ===== PARTICULES DE POUSSIÈRE (Adapted to 11x5x10 room bounds) =====
+    // ===== PARTICULES DE POUSSIÈRE (120 : 200 était trop dense à dessiner) =====
     _addDustParticles() {
-        const dustCount = 200;
+        const dustCount = 120;
         const dustGeom = new THREE.BufferGeometry();
         const dustPositions = new Float32Array(dustCount * 3);
 
         for (let i = 0; i < dustCount; i++) {
-            if (i < 100) {
+            if (i < 60) {
                 // Window beam particles
                 const t = Math.random();
                 const rx = 5.48 - 6.0 * t; // Plunge inward from right wall x=5.5
@@ -959,7 +895,8 @@ export class ThreeEnvironmentAgent {
             }
         }
 
-        const cabLight = new THREE.PointLight('#93c5fd', 1.5, 3.5);
+        // Lueur d'ambiance d'armoire (faible : la vitre émissive porte déjà l'effet)
+        const cabLight = new THREE.PointLight('#93c5fd', 0.35, 2.5);
         cabLight.position.set(0, 2.7, 0.1);
         cabinetGroup.add(cabLight);
 
@@ -1060,7 +997,7 @@ export class ThreeEnvironmentAgent {
 
         const pillow = new THREE.Mesh(
             new THREE.BoxGeometry(0.72, 0.08, 0.26),
-            new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.9 })
+            new THREE.MeshStandardMaterial({ color: '#e9edf1', roughness: 0.9 })
         );
         pillow.position.set(1.3, 1.18, 0.92);
         pillow.rotation.x = -0.28;
@@ -1077,16 +1014,17 @@ export class ThreeEnvironmentAgent {
         paperRoll.castShadow = true;
         bedGroup.add(paperRoll);
 
-        // Drap d'examen : très légère émissivité pour capter le spot et éviter les zones mortes
+        // Drap d'examen mat : zéro émissivité (l'ancien emissiveIntensity
+        // + spot 6.5 + bloom = nappe blanche éblouissante de la capture).
         const paperSheet = new THREE.Mesh(
             new THREE.BoxGeometry(0.78, 0.005, 1.5),
             new THREE.MeshStandardMaterial({
-                color: '#ffffff',
+                color: '#eef2f5',
                 transparent: true,
-                opacity: 0.86,
+                opacity: 0.95,
                 roughness: 1.0,
-                emissive: 0xffffff,
-                emissiveIntensity: 0.04
+                emissive: 0x000000,
+                emissiveIntensity: 0
             })
         );
         paperSheet.position.set(1.3, 0.985, -0.15);
@@ -1128,16 +1066,18 @@ export class ThreeEnvironmentAgent {
         lampDome.castShadow = true;
         medicalLamp.add(lampDome);
 
-        // Spot d'examen puissant et focalisé sur le patient (angle resserré, intensité doublée+)
-        const spotlight = new THREE.SpotLight('#f0f9ff', 6.5, 6.0, Math.PI / 6, 0.45, 0.5);
+        // Spot d'examen doux et focalisé sur le patient (decay physique = 2 :
+        // à ~0.9m du matelas, 1.2 cd ≈ 1.5x — le drap mat ne clipse plus).
+        const spotlight = new THREE.SpotLight('#e8f1f8', 1.2, 5.0, Math.PI / 5, 0.7, 2.0);
         spotlight.position.set(0.44, 1.76, 0);
         spotlight.target = mainCushion;
         medicalLamp.add(spotlight);
 
-        // Ampoule : toneMapped:false => halo lumineux via le bloom pass
+        // Ampoule : halo réduit (l'ancien globe 0.055 + toneMapped:false
+        // saturait le bloom en orbe géante sur la capture).
         const spotGlow = new THREE.Mesh(
-            new THREE.SphereGeometry(0.055, 8, 8),
-            new THREE.MeshBasicMaterial({ color: '#ffffff', toneMapped: false })
+            new THREE.SphereGeometry(0.032, 8, 8),
+            new THREE.MeshBasicMaterial({ color: '#fff4e0', toneMapped: false })
         );
         spotGlow.position.set(0.44, 1.72, 0);
         medicalLamp.add(spotGlow);
@@ -1153,7 +1093,7 @@ export class ThreeEnvironmentAgent {
         const diffuserMat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             emissive: 0xf2f6ff,
-            emissiveIntensity: 1.35, // Diffuseur lumineux => halo doux via bloom
+            emissiveIntensity: 0.55, // Panneau allumé mais sous le seuil du bloom (0.92)
             roughness: 0.55,
             metalness: 0.0
         });
@@ -1325,7 +1265,8 @@ export class ThreeEnvironmentAgent {
         this.scene.add(shaft);
 
         // --- Lumière ciel froide (fill bleuté juste devant la fenêtre) ---
-        const skyFill = new THREE.PointLight('#cfe6ff', 0.55, 7);
+        // Réduite : la key light + hemi portent déjà l'éclairage jour.
+        const skyFill = new THREE.PointLight('#cfe6ff', 0.3, 7);
         skyFill.position.set(4.8, winCenterY, winCenterZ);
         this.scene.add(skyFill);
     }
@@ -1336,9 +1277,10 @@ export class ThreeEnvironmentAgent {
      */
     _createExteriorViewTexture() {
         const c = document.createElement('canvas');
-        c.width = 1024;
-        c.height = 512;
+        c.width = 512;
+        c.height = 256;
         const ctx = c.getContext('2d');
+        ctx.scale(0.5, 0.5); // dessin codé en 1024x512, rendu en 512x256 (fond à 8m, flou)
 
         // Ciel dégradé
         const sky = ctx.createLinearGradient(0, 0, 0, 400);
@@ -1438,17 +1380,17 @@ export class ThreeEnvironmentAgent {
         this.scene.add(right);
     }
 
-    // ===== RECT AREA LIGHTS (éclairage doux aligné sur les dalles LED) =====
+    // ===== RECT AREA LIGHT (éclairage doux unique aligné sur les dalles LED) =====
+    // Une seule source centrée au lieu de 2 (doublon des points plafond) :
+    // RectArea ne gère pas les ombres et coûte du shader sur tout Standard/Physical.
     _addCeilingAreaLights() {
         import('three/addons/lights/RectAreaLightUniformsLib.js')
             .then(({ RectAreaLightUniformsLib }) => {
                 RectAreaLightUniformsLib.init();
-                [[-2.5, 0], [2.5, 0]].forEach(([px, pz]) => {
-                    const light = new THREE.RectAreaLight(0xf2f6ff, 1.4, 1.16, 0.56);
-                    light.position.set(px, 4.9, pz);
-                    light.rotation.x = -Math.PI / 2; // éclaire vers le sol
-                    this.scene.add(light);
-                });
+                const light = new THREE.RectAreaLight(0xf2f6ff, 1.1, 2.4, 0.6);
+                light.position.set(0, 4.9, 0);
+                light.rotation.x = -Math.PI / 2; // éclaire vers le sol
+                this.scene.add(light);
             })
             .catch(() => { /* addon indisponible : les point lights suffisent */ });
     }
@@ -1897,24 +1839,6 @@ export class ThreeEnvironmentAgent {
             imageData.data[i + 3] = 255;
         }
         ctx.putImageData(imageData, 0, 0);
-        return new THREE.CanvasTexture(canvas);
-    }
-
-    _createTilePattern(width, height) {
-        const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#c8c0b0';
-        ctx.fillRect(0, 0, width, height);
-        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
-        ctx.lineWidth = 1;
-        const tileSize = 32;
-        for (let x = 0; x < width; x += tileSize) {
-            for (let y = 0; y < height; y += tileSize) {
-                ctx.strokeRect(x, y, tileSize, tileSize);
-            }
-        }
         return new THREE.CanvasTexture(canvas);
     }
 }

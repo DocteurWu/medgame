@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "70 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Détresse respiratoire aiguë majeure après exposition à un chat (allergène connu).",
@@ -752,5 +764,63 @@
       },
       "personnalite": "Patient jeune, conscient, extrêmement anxieux et agité par la sensation d'asphyxie. Il est en détresse respiratoire majeure : orthopnée stricte, tirage, sueurs, impossible de faire des phrases complètes (ne répond que par mots isolés ou hochements de tête). Il est coopérant mais paniqué. Il répond aux questions brèves par oui/non ou par des mots uniques."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "*Haletant, penché en avant, mains sur les genoux* « Je... je peux plus... respirer... le chat... Ventoline... marche pas... je vais mourir... »",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Gaz du sang artériel, Radiographie du thorax (face))"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Asthme aigu grave (avec signes d'épuisement))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Gaz du sang artériel",
+      "Radiographie du thorax (face)"
+    ],
+    "utiles": [
+      "Bilan biologique standard",
+      "Électrocardiogramme (ECG)"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Scanner thoracique AP"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Gaz du sang artériel + Radiographie du thorax (face). Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Devant cette polypnée à 32/min, quelle anomalie des gaz du sang artériel témoigne d'un épuisement respiratoire critique imminent ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire ciblé du patient en tenant compte de la dyspnée sévère (questions brèves, fermées, adaptées à l'urgence vitale)",
+    "Réaliser un examen clinique complet orienté (constantes, examen pulmonaire, recherche de signes de gravité et de détresse respiratoire)",
+    "Identifier les signes de gravité de l'asthme aigu grave (silent chest, épuisement, SpO2 < 92%, FR > 30, tachycardie, impossibilité de parler)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

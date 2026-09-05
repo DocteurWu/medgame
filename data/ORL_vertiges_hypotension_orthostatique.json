@@ -7,7 +7,19 @@
     "sexe": "M",
     "taille": "183 cm",
     "poids": "89 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Vertiges intenses au lever depuis une semaine",
@@ -411,5 +423,62 @@
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Pouvez-vous me l'expliquer avec des mots simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, ça fait une semaine que j'ai des vertiges terribles quand je me lève, surtout le matin. J'ai peur que ce soit grave.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Hypotension orthostatique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Bilan sanguin"
+    ],
+    "utiles": [
+      "Ionogramme",
+      "Glycémie",
+      "Tilt test"
+    ],
+    "inutiles": [
+      "Orthostatisme"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les vertiges et les facteurs déclenchants",
+    "Effectuer un examen clinique adapté incluant la recherche d'un orthostatisme",
+    "Évoquer les principaux diagnostics différentiels devant des vertiges posturaux"
+  ],
+  "referentiel": "Collège ORL / Barany Society"
 }

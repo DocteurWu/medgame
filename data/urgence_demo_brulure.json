@@ -2,7 +2,7 @@
   "id": "urgence_demo_brulure",
   "title": "Brûlure Chimique Intensive",
   "specialty": "urgence",
-  "difficulty": 1,
+  "difficulty": 3,
   "redacteur": "Dr. Demo",
   "patient": {
     "nom": "Lucas",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Brûlure Chimique Intensive",
@@ -805,5 +817,53 @@
       },
       "personnalite": "Patient jeune, anxieux mais coopératif. Il a mal et est inquiet pour les séquelles. Il répond aux questions de façon concise mais se montre volontaire."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je me suis brûlé avec un produit chimique au travail, j'ai très mal.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réalisez l'interrogatoire du patient en explorant le mécanisme de la brûlure, le produit en cause, le délai de prise en charge et les premiers gestes réalisés.",
+    "Pratiquez un examen clinique ciblé de la brûlure (localisation, étendue, profondeur, surface corporelle atteinte) et un examen général.",
+    "Évaluez la douleur du patient à l'aide d'une échelle adaptée."
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

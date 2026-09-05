@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "182 cm",
     "poids": "81 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleur soudaine au mollet droit",
@@ -440,5 +452,66 @@
       },
       "personnalite": "Jeune homme de 22 ans, étudiant externe, plutôt coopératif mais anxieux. Il s'inquiète pour sa jambe et pose des questions. Il est stressé par ses études."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au mollet droit depuis 2 jours, c'est apparu d'un coup et ma jambe a gonflé. J'ai peur que ce soit grave.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Écho-Doppler veineux, D-dimères)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Thrombose veineuse profonde droite)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [
+      "Echographie doppler des membres inférieurs",
+      "Bilan sanguin",
+      "Radiographie de la jambe droite"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "ECG",
+      "Radio thorax",
+      "Scanner TAP",
+      "Angioscanner thoracique"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler veineux + D-dimères. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Thrombose veineuse profonde droite vs Phlébite. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Phlébite",
+    "Thrombose veineuse proximale"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient orienté vers la pathologie veineuse thromboembolique",
+    "Réaliser un examen clinique ciblé du membre inférieur et un examen cardio-respiratoire",
+    "Évoquer le diagnostic de thrombose veineuse profonde droite"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

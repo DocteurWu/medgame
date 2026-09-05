@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "175 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée d'effort et malaise à l'effort",
@@ -164,7 +176,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 3,
+  "difficulty": 2,
   "alternativeDiagnostics": [
     "Rétrécissement aortique dégénératif",
     "Sténose aortique"
@@ -408,5 +420,67 @@
       },
       "personnalite": "Patient coopératif, légèrement anxieux face aux symptômes, demande des explications claires"
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai du mal à respirer quand je fais des efforts et je fais des malaises.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (ECG, Echographie cardiaque)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Rétrécissement aortique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Bilan sanguin",
+      "Coronarographie"
+    ],
+    "utiles": [
+      "Echographie",
+      "Radio thorax",
+      "Test d'effort"
+    ],
+    "inutiles": [
+      "Holter ECG",
+      "IRM cardiaque",
+      "Scanner cardiaque"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Echographie cardiaque. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Rétrécissement aortique vs Rétrécissement aortique dégénératif. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Rétrécissement aortique dégénératif",
+    "Sténose aortique"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté cardiovasculaire",
+    "Réaliser un examen clinique cardiovasculaire complet incluant l'auscultation cardiaque",
+    "Identifier les signes évocateurs d'un rétrécissement aortique"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

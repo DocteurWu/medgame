@@ -243,6 +243,17 @@
                         </label>
                     </div>
 
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="font-weight: 600; font-size: 0.85rem; color: #fff;">Mode calme</span>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Désactive pulsations, overlay rouge et bips stressants</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-calm-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
                     <div class="setting-input-group" style="margin: 0; display: flex; align-items: center; gap: 15px; justify-content: space-between;">
                         <label class="setting-label" style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.9);">Durée de la station (secondes)</label>
                         <input type="number" id="ecos-setting-duration" class="setting-input" value="480" min="60" max="1800"
@@ -356,6 +367,7 @@
             document.getElementById('ecos-setting-duration').value = localStorage.getItem('ecos_duration') || '480';
             document.getElementById('setting-sound-toggle').checked = localStorage.getItem('medgame.audio.muted') !== 'true';
             document.getElementById('setting-view-mode-toggle').checked = localStorage.getItem('medgame_text_mode_default') !== 'true';
+            document.getElementById('setting-calm-toggle').checked = localStorage.getItem('medgame_calm_mode') === 'true';
             const llmToggle = document.getElementById('setting-llm-mode');
             if (llmToggle) llmToggle.checked = (localStorage.getItem('medgame_llm_mode') ?? 'true') !== 'false';
 
@@ -455,12 +467,14 @@
             const ecosDuration = document.getElementById('ecos-setting-duration').value || '480';
             const soundEnabled = document.getElementById('setting-sound-toggle').checked;
             const defaultTo3D = document.getElementById('setting-view-mode-toggle').checked;
+            const calmEnabled = document.getElementById('setting-calm-toggle').checked;
 
             localStorage.setItem('ecos_practice_mode', ecosPractice ? 'true' : 'false');
             localStorage.setItem('ecos_llm_feedback', ecosFeedback);
             localStorage.setItem('ecos_duration', ecosDuration);
             localStorage.setItem('medgame.audio.muted', soundEnabled ? 'false' : 'true');
             localStorage.setItem('medgame_text_mode_default', defaultTo3D ? 'false' : 'true');
+            localStorage.setItem('medgame_calm_mode', calmEnabled ? 'true' : 'false');
             const llmModeEnabled = document.getElementById('setting-llm-mode') ? document.getElementById('setting-llm-mode').checked : true;
             localStorage.setItem('medgame_llm_mode', llmModeEnabled ? 'true' : 'false');
 
@@ -744,7 +758,6 @@
 
         document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
     </script>
-    <script src="js/device-check.js?v=2"></script>
 </body>
 
 </html>

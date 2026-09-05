@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "95 cm",
     "poids": "15 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Léthargie progressive, abattement extrême et forte fièvre depuis la veille chez un enfant de 3 ans.",
@@ -949,5 +961,69 @@
       },
       "personnalite": "Les parents de Léo (représentés par le patient standardisé jouant le rôle du père ou de la mère) sont extrêmement angoissés, inquiets, et très impliqués. Ils répondent aux questions de manière parfois désordonnée, insistent sur la rapidité de l'aggravation et l'apparition des taches cutanées. Ils posent des questions sur le pronostic et la gravité."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, c'est notre fils Léo, il a 3 ans. Hier il a commencé à avoir très mal à la tête et de la fièvre, et ce matin il ne répondait presque plus… Et regardez, il a des taches rouges qui apparaissent sur les cuisses, ça s'étend très vite ! On a vraiment peur !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Hémoculture en urgence, NFS, CRP, Procalcitonine, Lactates sanguins)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Choc septique avec Purpura fulminans sur méningococcémie suspectée)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Hémoculture en urgence",
+      "NFS, CRP, Procalcitonine, Lactates sanguins",
+      "Bilan de coagulation complet (TP, TCA, Fibrinogène, D-Dimères)"
+    ],
+    "utiles": [
+      "Glycémie capillaire (Hémoglucotest)",
+      "Gazométrie artérielle"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Ponction lombaire immédiate"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Hémoculture en urgence + NFS, CRP, Procalcitonine, Lactates sanguins. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Chez cet enfant de 3 ans pesant 15 kg, quelle est la formule recommandée pour estimer la pression artérielle systolique (PAS) minimale acceptable (seuil de collapsus) ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Choc septique avec Purpura fulminans sur méningococcémie suspectée vs Purpura fulminans. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Purpura fulminans",
+    "Méningococcémie",
+    "Infection invasive à méningocoque"
+  ],
+  "objectifs": [
+    "Accueillir les parents et l'enfant, se présenter et expliquer son rôle",
+    "Réaliser un interrogatoire rapide des parents ciblé sur le contexte d'urgence",
+    "Effectuer un examen clinique complet et rapide adapté à un enfant de 3 ans en état de choc"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

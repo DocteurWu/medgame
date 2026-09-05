@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "70 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "polie mais minimisante (« c'est rien, ça passe »)",
+      "registre": "courant, précis sur les faits",
+      "loquacite": "normal",
+      "style_parole": "décrit bien l'effort (escaliers) si on demande, élude la gravité, mentionne la trinitrine seulement si on creuse les traitements",
+      "exemples_phrases": [
+        "Oh, c'est quand je monte les escaliers, ça serre... mais dès que je m'arrête ça passe.",
+        "J'ai un petit spray dans mon sac, un pschitt sous la langue et ça va mieux."
+      ],
+      "anxiete": 55,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleur thoracique à l'effort",
@@ -158,7 +170,7 @@
     "Scintigraphie myocardique",
     "Bilan sanguin"
   ],
-  "difficulty": 2,
+  "difficulty": 3,
   "vitalsDynamics": {
     "trendOverMinutes": 0.05,
     "urgencyMultiplier": 1.5,
@@ -476,5 +488,69 @@
       },
       "personnalite": "Patient coopératif, légèrement anxieux, répond précisément aux questions"
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal au thoracique quand je monte les escaliers, ça fait plusieurs mois maintenant.",
+    "objectifs_cles": [
+      "caractérisation PQRST de la douleur (constrictive, effort, repos/trinitrine)",
+      "durée et stabilité (6 mois stables = stable vs instable)",
+      "terrain : diabète + hérédité coronaire paternelle",
+      "justifier test d'effort puis coronarographie (ECG repos normal ne suffit pas)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Angor stable)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Test d'effort",
+      "Angiographie coronarienne",
+      "Scintigraphie myocardique",
+      "Bilan sanguin"
+    ],
+    "utiles": [
+      "Echographie",
+      "Holter ECG"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "IRM cardiaque"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Test d'effort. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Quel est le signe fonctionnel principal de l'angor stable ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Angor stable vs Angor instable. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Angor instable",
+    "Syndrome coronarien aigu"
+  ],
+  "objectifs": [
+    "Réaliser un entretien centré sur la douleur thoracique et les facteurs de risque cardiovasculaire",
+    "Effectuer un examen clinique cardiovasculaire complet",
+    "Proposer une stratégie diagnostique adaptée (ECG, bilan biologique, épreuve d'effort ou imagerie)"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

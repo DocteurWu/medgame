@@ -10,6 +10,8 @@
 class MedicalGameManager {
     constructor() {
         this.isProcessing = false;
+        this.history = [];   // Mémoire conversationnelle complète (user/assistant)
+        this.caseId = null;  // Détection de changement de cas → reset mémoire
     }
 
     /**
@@ -26,6 +28,13 @@ class MedicalGameManager {
         const caseData = window.gameState?.currentCase;
         if (!caseData) {
             return { narrative: "Aucun cas clinique n'est actuellement chargé.", dialogue: null };
+        }
+
+        // Reset mémoire si nouveau cas
+        if (this.caseId !== caseData.id) {
+            this.history = [];
+            this.caseId = caseData.id;
+            console.log(`[MedicalGameManager] Nouveau cas (${caseData.id}) — mémoire réinitialisée`);
         }
 
         const vitals = window.vitalSigns?.props || {
@@ -69,8 +78,9 @@ ${vol ? `\nINFORMATIONS VOLONTAIRES (peuvent apparaître spontanément) :\n${vol
 RÈGLE GÉNÉRALE : toute information du dossier NON listée ci-dessus comme « libre » ne doit JAMAIS être dévoilée spontanément par le patient. Le diagnostic, son nom, les résultats d'examens complémentaires non demandés et le traitement prévu ne sont JAMAIS révélés par le dialogue.`;
             }
 
+            const patientDead = !!(window.gameState && window.gameState.isPatientDead);
             const systemPrompt = `Tu es le "Game Manager" (Maître du Jeu) d'une simulation médicale immersive pour étudiants en médecine.
-Ton rôle est de traduire les actions ou questions en langage naturel soumises par l'étudiant en actions concrètes dans le jeu, de simuler la physiologie du patient et de générer une réponse narrative globale et immersive.
+Tu es le SEUL routeur décisionnel : toute entrée passe par toi. Tu délègues virtuellement aux rôles (infirmier qui pose la perf, radiologie qui rend l'image, biologie, réanimation) et tu tranches la physiologie, la gravité et l'issue.
 
 Voici le cas clinique actuel :
 - Patient : ${JSON.stringify(caseData.patient || {})}
@@ -86,18 +96,40 @@ Voici les constantes vitales courantes du patient :
 - FR (Fréquence Respiratoire) : ${vitals.respiratoryRate || 16} /min
 - Température : ${vitals.temperature || 37} °C
 - Niveau de Douleur actuel (0 à 10) : ${window.PAIN_LEVEL || 0}
+- Statut patient : ${patientDead ? 'DÉCÉDÉ (game over possible)' : 'Vivant'}
 
-Évalue la saisie de l'étudiant et décompose-la en intentions. Tu dois :
-1. Identifier s'il y a du DIALOGUE (des questions verbales posées au patient). Si oui, formule une réponse verbale à la première personne du singulier ("Je...", "Moi...") que le patient dirait en réponse, cohérente avec son histoire et son état.
-2. Identifier s'il y a des EXAMENS PHYSIQUES (ex: palpation, auscultation). Si oui, extrais les résultats correspondants de la référence clinique ou déduis-les cliniquement s'ils ne sont pas spécifiés.
-3. Identifier s'il y a des PRESCRIPTIONS de médicaments ou traitements.
-4. Identifier s'il y a d'AUTRES ACTIONS cliniques (ex: brancher le scope, positionner en PLS).
-5. Calculer l'impact physiologique immédiat sur les constantes (ex: si palpation douloureuse, FC augmente temporairement de +10 bpm, douleur augmente ; si paracétamol ou trinitrine donné pour douleur, douleur diminue de -2, FC baisse de -5 bpm ; si détresse respiratoire et O2 administré, SpO2 s'améliore de +3%, FR baisse de -4, etc.).
+RÈGLE GÉNÉRALE — EXÉCUTION MAÎTRE :
+Tu exécutes toujours la prescription imposée par le médecin, quelle que soit la molécule ou la voie (même hors catalogue). Tu normalises la dose avec ta connaissance pharmacologique.
+INTERDICTION ABSOLUE DE REFUSER : l'infirmier n'a JAMAIS le droit de refuser une prescription, de bloquer l'administration ni d'alerter le cadre de santé. Il peut formuler UNE remarque concise (si tu juges le risque pertinent), PUIS il exécute. Les formulations "refuse", "aucun médicament n'est administré", "alerte le cadre" sont INTERDITES dans narrativeResponse.
+Si le médecin maintient, reformule ou ajuste sa prescription (ex: "j'engage ma responsabilité", "ok 10g alors"), la nouvelle prescription est EXÉCUTÉE immédiatement avec ses conséquences physiologiques.
+
+TRAITEMENTS DÉJÀ ADMINISTRÉS (source de vérité factuelle — ne JAMAIS contredire ni inventer autre chose) :
+${this._getAdministeredPrescriptions()}
+
+La conversation précédente (messages user/assistant) t'est fournie dans l'historique : résous les références comme "j'engage ma responsabilité" ou "ok 10g alors" grâce aux prescriptions des tours précédents.
+
+PHARMACOVIGILANCE MAÎTRISE (jugement du Maître) :
+Si tu juges la dose cliniquement significative (excès, voie inappropriée, contre-indication potentielle), tu ajoutes une remarque concise dans narrativeResponse : "Infirmier : « Attention, dose élevée, risque X… »". Cette remarque est informative et peut amener le médecin à reconsidérer, mais n'empêche jamais l'administration si le médecin persiste.
+Si la dose est jugée conforme à la posologie usuelle, tu ne présentes aucune remarque ; tu exécutes discrètement.
+
+Dans tous les cas, tu produces vitalChanges (physiologie attendue) et gameState (status/décès le cas échéant) selon le scénario clinique. Le catchWindowSec apparaît uniquement si tu as jugé un risque pertinent et que le joueur n'a pas encore administré l'antidote.
+
+COHÉRENCE ABSOLUE (narrative ↔ vitaux ↔ gameState ↔ dialogue) :
+- vitalChanges doit refléter EXACTEMENT les chiffres cités dans narrativeResponse. Si tu décris une FC extrême, une TA effondrée ou explosée ou une SpO2 effondrée dans le récit, les mêmes valeurs (ou pire) doivent figurer dans vitalChanges.
+- Si narrativeResponse décrit une détresse vitale, une perte de connaissance ou un ACR, gameState.status est OBLIGATOIREMENT "deteriorating" (avec catchWindowSec) ou "dead" (ACR acté) — à toi de juger la gravité. JAMAIS "stable" dans ce cas.
+- Le dialogue du patient doit refléter son état réel : s'il est inconscient, cyanosé ou en détresse critique → dialogue=null ou propos agoniques/incohérents. JAMAIS une réponse normale et rassurante en contradiction avec le tableau clinique.
+
+Évalue la saisie de l'étudiant et décompose-la en intentions :
+1. DIALOGUE : si le patient est décédé, dialogue=null (patient inconscient/décédé ne parle plus). Sinon réponse en "Je..." cohérente avec l'état post-action.
+2. EXAMENS PHYSIQUES : résultats depuis la référence ou déduits.
+3. PRESCRIPTIONS : nom/dosage/voie même si hors catalogue.
+4. AUTRES ACTIONS cliniques.
+5. Impact physiologique : calcule les nouvelles constantes cibles.
 
 Tu dois obligatoirement répondre sous forme d'un objet JSON valide contenant exactement ces clés :
 {
-  "dialogue": string ou null (réponse verbale du patient s'il y a une question, sinon null),
-  "exams": array de { "type": "palpation_abdo"|"auscultation_pulm"|"auscultation_card"|"reflex_osteo"|"inspection"|"other", "description": "résultat clinique descriptif" } ou null,
+  "dialogue": string ou null,
+  "exams": array de { "type": string, "description": string } ou null,
   "prescriptions": array de { "nom": string, "dosage": string, "voie": string, "frequence": string, "duree": string } ou null,
   "otherActions": array de { "actionId": string, "description": string } ou null,
   "vitalChanges": {
@@ -109,16 +141,31 @@ Tu dois obligatoirement répondre sous forme d'un objet JSON valide contenant ex
     "respiratoryRate": number ou null,
     "painLevel": number ou null
   } ou null,
-  "narrativeResponse": string (description narrative à la 2ème personne du pluriel "Vous..." décrivant l'action effectuée par l'étudiant, la réaction physique visible du patient et les changements physiologiques, ex: "Vous palpez l'abdomen inférieur droit. Le patient grimace de douleur et se contracte...")
+  "narrativeResponse": string,
+  "gameState": {
+    "status": "stable" | "deteriorating" | "dead" | "recovering",
+    "deathReason": string ou null,
+    "catchWindowSec": number ou null,
+    "requiredAntidotes": array de string ou null,
+    "allowResuscitation": boolean ou null
+  } ou null
 }
 
-Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`\`json), pas d'explication.`;
+RÈGLES gameState :
+- "deteriorating" = dégradation en cours, tu imposes catchWindowSec (ex: 60) et tu restes générique dans narrativeResponse ("anomalie critique, prise en charge urgente requise") sans spoiler les antidotes.
+- "dead" = décès acté, dialogue doit être null, vitalChanges doit être critique (ex: heartRate 0-25, spo2 60-75).
+- "recovering" = le joueur a administré l'antidote attendu dans la fenêtre, tu fais remonter les vitaux.
+- Si le patient est déjà décédé au début du tour, tu restes en "dead" sauf si l'action est une réanimation et allowResuscitation=true.
+
+Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
 
             let responseText = "";
             if (window.LLMClient) {
                 responseText = await window.LLMClient.request({
                     messages: [
                         { role: 'system', content: systemPrompt },
+                        // Mémoire conversationnelle : fenêtre glissante (30 derniers messages ≈ 15 échanges)
+                        ...this.history.slice(-30),
                         { role: 'user', content: `ENTRÉE DE L'ÉTUDIANT : "${inputText}"` }
                     ],
                     temperature: 0.1, // Basse température pour plus de régularité dans la structure JSON
@@ -136,30 +183,31 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
             try {
                 parsed = this._cleanAndParseJson(responseText);
             } catch (jsonErr) {
-                console.warn("[MedicalGameManager] JSON invalide, tentative de salvage :", jsonErr.message, " brut:", responseText.slice(0,600));
-                // Salvage : si le LLM a renvoyé du texte libre au lieu de JSON, l'utiliser comme dialogue direct
-                if (responseText && responseText.trim().length > 0) {
-                    parsed = {
-                        dialogue: responseText.trim().slice(0, 800),
-                        exams: null,
-                        prescriptions: null,
-                        otherActions: null,
-                        vitalChanges: null,
-                        narrativeResponse: ""
-                    };
-                    console.log("[MedicalGameManager] Salvage dialogue brut utilisé");
-                } else {
-                    throw jsonErr;
-                }
+                // AUCUN FALLBACK : on propage l'erreur explicite
+                throw new Error(`⚠️ [ERREUR LLM — GameManager] JSON invalide : ${jsonErr.message} | Brut: ${responseText.slice(0,300)} | Endpoint: ${window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy'}`);
             }
             console.log("[MedicalGameManager] Analyse JSON réussie :", parsed);
 
-            // Appliquer les actions déterministes dans le jeu
+            // Appliquer les actions déterministes dans le jeu (routeur)
             await this._executeGameActions(parsed, caseData);
+
+            // Si le Maître a décrété le décès, on coupe le dialogue côté client (cohérence)
+            if (parsed.gameState && parsed.gameState.status === 'dead' && parsed.dialogue) {
+                parsed.dialogue = null;
+            }
+
+            // Commit mémoire — uniquement après un tour réussi (rollback-safe)
+            const rxSummary = (parsed.prescriptions && Array.isArray(parsed.prescriptions))
+                ? ` Prescriptions exécutées : ${parsed.prescriptions.map(rx => `${rx.nom} ${rx.dosage || ''} ${rx.voie || ''}`.trim()).join('; ')}.`
+                : '';
+            this.history.push({ role: 'user', content: inputText });
+            this.history.push({ role: 'assistant', content: `${parsed.narrativeResponse || 'Action enregistrée.'}${rxSummary}` });
 
             return {
                 narrative: parsed.narrativeResponse || "Action enregistrée.",
-                dialogue: parsed.dialogue || null
+                dialogue: parsed.dialogue || null,
+                gameState: parsed.gameState || null,
+                vitalChanges: parsed.vitalChanges || null
             };
 
         } catch (err) {
@@ -171,6 +219,15 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
         } finally {
             this.isProcessing = false;
         }
+    }
+
+    /**
+     * Liste factuelle des traitements réellement administrés (source de vérité anti-hallucination).
+     */
+    _getAdministeredPrescriptions() {
+        const rxs = window.prescriptionManager?.prescriptions;
+        if (!Array.isArray(rxs) || rxs.length === 0) return 'aucun';
+        return rxs.map(p => `${p.nom} ${p.dosage || ''} ${p.voie || ''}`.trim()).join(', ');
     }
 
     /**
@@ -202,15 +259,21 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
     /**
      * Exécute les actions de jeu sur la base de la structure analysée.
+     * Routeur : infirmier / radio / bio / réa sont simulés via le Maître.
      */
     async _executeGameActions(parsed, caseData) {
-        // 1. Prescriptions
-        if (parsed.prescriptions && Array.isArray(parsed.prescriptions)) {
+        // 0. Si patient déjà décédé et pas de réanimation autorisée, on ne rejoue pas de prescriptions
+        const alreadyDead = !!(window.gameState && window.gameState.isPatientDead);
+        if (alreadyDead && (!parsed.gameState || parsed.gameState.status !== 'recovering')) {
+            console.warn("[MedicalGameManager] Patient déjà décédé — actions non jouées sauf réanimation");
+        }
+
+        // 1. Prescriptions — via le Maître (infirmier virtuel)
+        if (parsed.prescriptions && Array.isArray(parsed.prescriptions) && !alreadyDead) {
             for (const rx of parsed.prescriptions) {
                 if (!rx.nom) continue;
-                console.log(`[MedicalGameManager] Application de la prescription : ${rx.nom}`);
+                console.log(`[MedicalGameManager] Application de la prescription (via infirmier) : ${rx.nom} ${rx.dosage || ''} ${rx.voie || ''}`);
 
-                // Recherche d'un médicament équivalent dans le PrescriptionManager
                 let matchedDrug = null;
                 if (window.prescriptionManager && window.prescriptionManager.drugs) {
                     const normNom = rx.nom.toLowerCase();
@@ -229,12 +292,12 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                         duree: rx.duree || "1 jour",
                         contreIndications: matchedDrug ? matchedDrug.contreIndications : []
                     };
-                    window.prescriptionManager.addPrescription(finalRx);
-                }
-
-                // Appliquer l'impact du traitement sur les constantes vitales
-                if (window.vitalSigns && typeof window.vitalSigns.applyTreatmentImpact === 'function') {
-                    window.vitalSigns.applyTreatmentImpact(rx.nom);
+                    // Ajout silencieux (pas de 2e check LLM) — le Maître a déjà tranché
+                    if (typeof window.prescriptionManager.addPrescriptionSilently === 'function') {
+                        window.prescriptionManager.addPrescriptionSilently(finalRx);
+                    } else {
+                        window.prescriptionManager.addPrescription(finalRx);
+                    }
                 }
             }
         }
@@ -277,9 +340,9 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
             }
         }
 
-        // 3. Constantes vitales
+        // 3. Constantes vitales — dictées par le Maître
         if (parsed.vitalChanges && window.vitalSigns && window.vitalSigns.props) {
-            console.log(`[MedicalGameManager] Application des changements de constantes :`, parsed.vitalChanges);
+            console.log(`[MedicalGameManager] Application des changements de constantes (Maître) :`, parsed.vitalChanges);
             let updated = false;
 
             for (const [key, val] of Object.entries(parsed.vitalChanges)) {
@@ -287,8 +350,6 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                     if (key === 'painLevel') {
                         window.PAIN_LEVEL = val;
                         updated = true;
-                        
-                        // Expression faciale 3D en cas de douleur élevée (> 5)
                         if (val > 5 && window.threeManager?.hud?._applyFacialExpression) {
                             window.threeManager.hud._applyFacialExpression('douleur', 1.0);
                             setTimeout(() => {
@@ -316,57 +377,26 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                 }
             }
         }
+
+        // 4. État de jeu — rattrapage / décès décidé par le Maître
+        if (parsed.gameState) {
+            const gs = parsed.gameState;
+            if (gs.status === 'deteriorating' && typeof window.startCatchWindow === 'function') {
+                window.startCatchWindow(gs.catchWindowSec || 60, gs.requiredAntidotes || [], gs.deathReason || 'Dégradation critique');
+            } else if (gs.status === 'dead' && typeof window.triggerPatientDeath === 'function') {
+                // Si deteriorating était déjà en cours, le Maître peut trancher direct dead
+                window.triggerPatientDeath(gs.deathReason || 'Décès iatrogène', gs.allowResuscitation);
+            } else if (gs.status === 'recovering' && typeof window.cancelCatchWindow === 'function') {
+                window.cancelCatchWindow();
+                if (typeof showNotification === 'function') showNotification('✅ Prise en charge salvatrice — état stabilisé', 'success');
+            } else if (gs.status === 'stable' && typeof window.cancelCatchWindow === 'function') {
+                // Rien à faire, on s'assure que la fenêtre est fermée
+                window.cancelCatchWindow();
+            }
+        }
     }
 
-    /**
-     * Fallback de secours en local avec règles déterministes (sans LLM).
-     */
-    _fallbackLocal(inputText, caseData, vitals) {
-        console.info("[MedicalGameManager] Fallback local déclenché.");
-        const textLower = inputText.toLowerCase();
-
-        let narrative = "Vous examinez le patient.";
-        let dialogue = null;
-
-        // Détection sommaire de traitement
-        if (textLower.includes("paracétamol") || textLower.includes("paracetamol")) {
-            narrative = "Vous administrez 1g de Paracétamol. Le patient semble légèrement soulagé.";
-            if (window.prescriptionManager) {
-                window.prescriptionManager.addPrescription({
-                    nom: "Paracétamol", classe: "Antalgique", dosage: "1g", voie: "PO", frequence: "1 fois", duree: "1 jour", contreIndications: []
-                });
-            }
-            if (window.vitalSigns) {
-                window.vitalSigns.applyTreatmentImpact("Paracétamol");
-                window.PAIN_LEVEL = Math.max(0, (window.PAIN_LEVEL || 4) - 2);
-                window.vitalSigns.updateDisplay();
-            }
-        }
-
-        // Détection sommaire d'examen
-        if (textLower.includes("palpe") || textLower.includes("palpation")) {
-            const abdoResult = caseData.examenClinique?.examenAbdominal?.palpation || "Abdomen souple, indolore.";
-            narrative = `Vous palpez le patient. Résultat abdominal : ${abdoResult}`;
-            
-            if (abdoResult.toLowerCase().includes("douleur") || abdoResult.toLowerCase().includes("sensible")) {
-                window.PAIN_LEVEL = Math.min(10, (window.PAIN_LEVEL || 0) + 2);
-                if (window.threeManager?.hud?._applyFacialExpression) {
-                    window.threeManager.hud._applyFacialExpression('douleur', 1.0);
-                    setTimeout(() => window.threeManager.hud._resetFacialExpression(), 2500);
-                }
-                if (window.vitalSigns) window.vitalSigns.updateDisplay();
-            }
-        }
-
-        // Détection de dialogue simple
-        if (window.llmFallback) {
-            dialogue = window.llmFallback.answer(inputText, caseData);
-        } else {
-            dialogue = "Je ne me sens pas très bien, docteur.";
-        }
-
-        return { narrative, dialogue };
-    }
+    // AUCUN FALLBACK : toute erreur LLM est propagée comme message d'erreur explicite (cf. catch plus haut)
 }
 
 // Instance globale

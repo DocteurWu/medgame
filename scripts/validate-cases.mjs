@@ -51,7 +51,8 @@ const stats = {
     total: files.length,
     locks: 0, fatalTreatments: 0, alternativeDiagnostics: 0,
     secondLineTreatments: 0, relevantExams: 0, richFeedback: 0,
-    linear: 0, graph: 0
+    linear: 0, graph: 0,
+    persona: 0, dialogue: 0, examGradation: 0, hints: 0
 };
 
 for (const file of files) {
@@ -132,6 +133,11 @@ for (const file of files) {
     if (Array.isArray(json.secondLineTreatments) && json.secondLineTreatments.length) stats.secondLineTreatments++;
     if (Array.isArray(json.relevantExams) && json.relevantExams.length) stats.relevantExams++;
     if (isRichFeedback) stats.richFeedback++;
+    // Couverture LLM-first (patient incarné, pas affichage statique)
+    if (json.patient?.persona?.ton) stats.persona++;
+    if (json.dialogue?.spontane || json.ecos?.patientStandardise?.infosVolontaires) stats.dialogue++;
+    if (json.examGradation && (json.examGradation.parfaits?.length || json.examGradation.utiles?.length)) stats.examGradation++;
+    if (Array.isArray(json.hints) && json.hints.length) stats.hints++;
 
     if (STRICT) {
         if (!(Array.isArray(json.fatalTreatments) && json.fatalTreatments.length)) warn(file, 'fatalTreatments manquant (--strict)');
@@ -187,6 +193,11 @@ console.log(`   alternativeDiag  : ${stats.alternativeDiagnostics}/${stats.total
 console.log(`   secondLine       : ${stats.secondLineTreatments}/${stats.total} (${pct(stats.secondLineTreatments)})`);
 console.log(`   relevantExams    : ${stats.relevantExams}/${stats.total} (${pct(stats.relevantExams)})`);
 console.log(`   feedback riche   : ${stats.richFeedback}/${stats.total} (${pct(stats.richFeedback)})`);
+console.log(`   ── LLM-first ──`);
+console.log(`   persona (ton)    : ${stats.persona}/${stats.total} (${pct(stats.persona)})`);
+console.log(`   dialogue (tours) : ${stats.dialogue}/${stats.total} (${pct(stats.dialogue)})`);
+console.log(`   examGradation    : ${stats.examGradation}/${stats.total} (${pct(stats.examGradation)})`);
+console.log(`   hints            : ${stats.hints}/${stats.total} (${pct(stats.hints)})`);
 
 console.log(`\n${errors === 0 ? '✅' : '❌'} Terminé : ${errors} erreur(s), ${warnings} warning(s)\n`);
 process.exit(errors > 0 || (STRICT && warnings > 0) ? 1 : 0);

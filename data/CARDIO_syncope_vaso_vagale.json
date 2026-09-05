@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "160 cm",
     "poids": "55 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Malaise",
@@ -146,7 +158,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 1,
+  "difficulty": 2,
   "alternativeDiagnostics": [
     "Lipothymie",
     "Malaise vagal"
@@ -444,5 +456,69 @@
         "jargon": "Pardon, qu'est-ce que vous entendez par là ? Pouvez-vous me l'expliquer avec des mots plus simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai fait un malaise cet après-midi, je me suis évanouie quelques secondes. J'ai très peur, est-ce que c'est grave ?",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (ECG, Tilt-test)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syncope vasovagale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Bilan sanguin",
+      "Holter ECG"
+    ],
+    "utiles": [
+      "Echographie",
+      "Radio thorax",
+      "Test d'effort"
+    ],
+    "inutiles": [
+      "IRM cardiaque",
+      "Scanner cardiaque",
+      "Angioscanner"
+    ],
+    "dangereux": [
+      "Coronarographie"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Tilt-test. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Syncope vasovagale vs Lipothymie. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Lipothymie",
+    "Malaise vagal"
+  ],
+  "objectifs": [
+    "Réalisez l'interrogatoire complet de la patiente",
+    "Pratiquez l'examen clinique cardiovasculaire et neurologique",
+    "Évoquez les diagnostics différentiels"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

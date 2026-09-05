@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "178 cm",
     "poids": "76 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée sévère et fatigue extrême",
@@ -190,7 +202,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 3,
+  "difficulty": 2,
   "alternativeDiagnostics": [
     "Insuffisance cardiaque gauche",
     "Oedème aigu du poumon"
@@ -499,5 +511,66 @@
       },
       "personnalite": "Patient jeune, fatigué, essoufflé, légèrement anxieux mais coopératif. Il connaît bien sa maladie car suivi depuis longtemps en cardiologie. Il est conscient de la gravité de son état et de sa situation sur liste de transplantation."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, je n'arrive plus à respirer, c'est de pire en pire depuis quelques jours. Je suis fatigué en permanence, je n'arrive presque plus à marcher.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (BNP/NT-proBNP, ECG)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie cardiaque"
+    ],
+    "utiles": [
+      "Glycémie",
+      "Radio thoracique",
+      "Bilan sanguin"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : BNP/NT-proBNP + ECG. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Compte tenu des constantes et du motif d'admission, quels signes doivent être recherchés ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Insuffisance cardiaque vs Insuffisance cardiaque gauche. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Insuffisance cardiaque gauche",
+    "Oedème aigu du poumon"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient",
+    "Effectuer un examen clinique cardiovasculaire et pulmonaire",
+    "Identifier les signes de décompensation cardiaque"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

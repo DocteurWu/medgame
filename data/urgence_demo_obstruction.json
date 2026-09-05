@@ -2,7 +2,7 @@
   "id": "urgence_demo_obstruction",
   "title": "Obstruction Totale (Étouffement)",
   "specialty": "urgence",
-  "difficulty": 1,
+  "difficulty": 3,
   "redacteur": "Dr. Demo",
   "patient": {
     "nom": "Sophie",
@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "80 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Obstruction Totale (Étouffement)",
@@ -897,5 +909,53 @@
       },
       "personnalite": "Patient conscient, visiblement en détresse respiratoire aiguë, ne pouvant ni parler ni tousser efficacement. Agité, portant instinctivement les mains à sa gorge (signe universel de suffocation)."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "*Le patient est assis ou debout, porte les mains à sa gorge, ne peut pas parler, ne tousse pas efficacement, présente une détresse respiratoire aiguë avec tirage et cyanose débutante*",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Identifier rapidement le caractère complet de l'obstruction des voies aériennes",
+    "Réaliser la prise en charge immédiate de l'obstruction totale des voies aérienne selon les recommandations en vigueur",
+    "Effectuer les manœuvres de désobstruction adaptées"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

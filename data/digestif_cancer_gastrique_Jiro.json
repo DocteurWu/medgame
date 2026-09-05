@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "182 cm",
     "poids": "72 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleurs épigastriques",
@@ -401,5 +413,58 @@
       },
       "personnalite": "Patient retraité, ancien ingénieur aéronautique, plutôt posé et méthodique. Il est inquiet de son amaigrissement et de la persistance de ses douleurs. Il répond précisément aux questions mais a besoin d'être rassuré."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai mal à l'estomac depuis deux mois et ça ne passe pas. En plus, j'ai perdu 7 kilos sans faire attention et je n'ai plus d'appétit du tout.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Adénocarcinome gastrique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Test Helicobacter pylori isolé",
+      "Endoscopie digestive haute"
+    ],
+    "utiles": [
+      "Scanner TAP"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Selon les symptômes associés rapportés par le patient, comment appelle-t-on l'aspect général de ce patient ? (5 mots max) ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la douleur épigastrique et les symptômes associés",
+    "Rechercher les signes d'alarme et les facteurs de risque de néoplasie gastrique",
+    "Réaliser un examen clinique abdominal et général adapté"
+  ],
+  "referentiel": "Collège d'hépato-gastro-entérologie (SNFGE)"
 }

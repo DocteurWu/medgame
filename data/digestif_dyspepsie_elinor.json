@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "164 cm",
     "poids": "55 kg",
-    "groupeSanguin": "0-"
+    "groupeSanguin": "0-",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleurs épigastriques récidivantes",
@@ -444,5 +456,65 @@
         "jargon": "Je ne comprends pas ce que vous voulez dire par là, vous pouvez m'expliquer avec des mots simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des douleurs au ventre, au niveau de l'estomac, qui reviennent depuis plusieurs mois. Ça me fait peur un peu parce que ça ne passe pas.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Dyspepsie fonctionnelle)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Endoscopie oeso-gastro-duodénale (EOGD)",
+      "Scanner abdominal"
+    ],
+    "utiles": [
+      "Test respiratoire à l’urée marquée"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Endoscopie oeso-gastro-duodénale (EOGD)",
+      "Scanner abdominal",
+      "Scintigraphie de vidange gastrique au Technétium 99m"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Que recherche cet examen ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la dyspepsie",
+    "Rechercher les signes d'alarme (amaigrissement, vomissements, dysphagie, anémie, hémorragie digestive)",
+    "Explorer les antécédents personnels et familiaux, le mode de vie et les traitements en cours"
+  ],
+  "referentiel": "Collège d'hépato-gastro-entérologie (SNFGE)"
 }

@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "172 cm",
     "poids": "86 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Douleur au mollet",
@@ -459,5 +471,74 @@
         "jargon": "Pardon, je ne comprends pas ce que vous voulez dire par là. Vous pouvez m'expliquer avec des mots plus simples ?"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal au mollet droit quand je marche, ça fait quelques mois maintenant et c'est de plus en plus gênant.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Écho-Doppler artériel, IPS (Index de Pression Systolique))"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Artériopathie oblitérante des membres inférieurs (AOMI))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG"
+    ],
+    "utiles": [
+      "Echographie cardiaque",
+      "Echographie doppler des membres inférieurs",
+      "Bilan sanguin"
+    ],
+    "inutiles": [
+      "Test de marche",
+      "Angioscanner",
+      "IPS"
+    ],
+    "dangereux": [
+      "Radio thorax",
+      "IRM cardiaque",
+      "Scanner cardiaque"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler artériel + IPS (Index de Pression Systolique). Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Artériopathie oblitérante des membres inférieurs (AOMI) vs Artérite des membres inférieurs. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Artérite des membres inférieurs",
+    "Claudication artérielle"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une claudication intermittente",
+    "Effectuer un examen clinique cardiovasculaire des membres inférieurs",
+    "Proposer un diagnostic étiologique"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

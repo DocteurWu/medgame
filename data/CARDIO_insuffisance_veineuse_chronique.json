@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "165 cm",
     "poids": "73 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Jambes lourdes",
@@ -140,7 +152,7 @@
     },
     "stabilizeOnCorrectTreatment": true
   },
-  "difficulty": 1,
+  "difficulty": 2,
   "alternativeDiagnostics": [
     "Varices essentielles",
     "Insuffisance veineuse superficielle"
@@ -431,5 +443,62 @@
         "jargon": "La patiente, étant pharmacienne, comprend le jargon mais peut sembler frustrée si on ne va pas assez loin dans les explications. Elle peut dire : 'Oui je sais ce que c'est, mais qu'est-ce que vous proposez concrètement ?'"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai les jambes très lourdes le soir, ça fait des années mais c'est de pire en pire. Et j'ai vu apparaître des taches brunes autour des chevilles, ça m'inquiète un peu.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Écho-Doppler veineux, IPS)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance veineuse chronique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [
+      "Échographie doppler des membres inférieurs"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "ECG",
+      "Radio thorax",
+      "Bilan sanguin",
+      "Angioscanner des membres inférieurs"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler veineux + IPS. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Insuffisance veineuse chronique vs Varices essentielles. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Varices essentielles",
+    "Insuffisance veineuse superficielle"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la symptomatologie veineuse et les facteurs de risque cardiovasculaire",
+    "Effectuer un examen clinique ciblé des membres inférieurs incluant l'inspection et la palpation",
+    "Évoquer le diagnostic d'insuffisance veineuse chronique et argumenter"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

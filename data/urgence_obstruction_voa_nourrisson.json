@@ -11,7 +11,19 @@
     "sexe": "M",
     "taille": "75 cm",
     "poids": "9 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Nourrisson en détresse respiratoire aiguë après un repas.",
@@ -611,5 +623,54 @@
       },
       "personnalite": "Mère anxieuse, paniquée, parlant vite, très inquiète pour son enfant. Elle se sent coupable d'avoir donné des morceaux de fruit."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, vite ! Mon fils ne respire plus ! Il s'est étouffé avec un morceau de fruit pendant le repas !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Obstruction totale des voies aériennes par corps étranger)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Le nourrisson ne crie pas, a les lèvres bleues et a mis un aliment en bouche. Que se passe-t-il ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Évaluer rapidement la gravité de l'obstruction des voies aériennes",
+    "Réaliser la prise en charge d'urgence adaptée (manœuvres de désobstruction)",
+    "Rassurer la mère paniquée"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }

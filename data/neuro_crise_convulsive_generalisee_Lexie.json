@@ -8,7 +8,19 @@
     "sexe": "F",
     "taille": "1,65 m",
     "poids": "58 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Crise convulsive généralisée",
@@ -434,5 +446,63 @@
       },
       "personnalite": "Jeune femme de 25 ans, étudiante, anxieuse mais coopérative. Elle est encore somnolente et confuse (Glasgow 14), se souvient mal de la crise elle-même mais se souvient d'avoir été réveillée par les pompiers chez elle. Elle est inquiète car c'est la première fois que cela lui arrive. Elle a des myalgies diffuses et une douleur latérale de la langue."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Je ne comprends pas ce qui m'est arrivé… Les pompiers m'ont dit que j'ai fait une crise, mais je ne me souviens de rien. J'ai très mal partout et j'ai mordu ma langue.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise d'épilepsie généralisée tonico-clonique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Scanner cérébral sans injection"
+    ],
+    "utiles": [
+      "EEG (à distance de la crise)",
+      "Glycémie capillaire",
+      "Bilan hépatique"
+    ],
+    "inutiles": [
+      "Bilan gynécologique",
+      "Calcémie"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet de la patiente en phase post-critique",
+    "Effectuer un examen clinique neurologique et général adapté",
+    "Proposer une stratégie diagnostique initiale pertinente face à une première crise convulsive généralisée"
+  ],
+  "referentiel": "Collège de neurologie / ILAE"
 }

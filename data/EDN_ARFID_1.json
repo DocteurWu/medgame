@@ -7,7 +7,19 @@
     "sexe": "F",
     "taille": "155 cm",
     "poids": "40 kg",
-    "groupeSanguin": "A+"
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Perte de poids et restriction alimentaire",
@@ -345,5 +357,65 @@
         "jargon": "Si l'interne utilise 'ARFID' sans expliquer : 'C'est quoi ce nom bizarre ?'"
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour... je viens parce que mes parents s'inquiètent, je ne mange presque plus rien.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (ARFID)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan nutritionnel"
+    ],
+    "utiles": [
+      "Évaluation psychologique",
+      "Test de tolérance alimentaire",
+      "Coloscopie"
+    ],
+    "inutiles": [
+      "Dosage des anticorps anti-transglutaminase",
+      "Échographie thyroïdienne",
+      "Scanner crânien"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser l'interrogatoire pour préciser le trouble alimentaire",
+    "Éliminer une anorexie mentale (recherche de dysmorphophobie et désir de maigrir)",
+    "Proposer une stratégie diagnostique et une prise en charge initiale"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)"
 }

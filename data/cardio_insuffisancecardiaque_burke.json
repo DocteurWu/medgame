@@ -8,7 +8,19 @@
     "sexe": "M",
     "taille": "180 cm",
     "poids": "82 kg",
-    "groupeSanguin": "B+"
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Dyspnée d'effort",
@@ -499,5 +511,66 @@
         "jargon": "Je suis médecin, je comprends le vocabulaire, mais expliquez-moi quand même ce que ça signifie pour moi."
       }
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis chirurgien cardiaque et je viens parce que je suis essoufflé depuis quelques semaines, surtout à l'effort. C'est gênant dans mon travail.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (BNP/NT-proBNP, ECG)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie cardiaque",
+      "Bilan sanguin"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": [
+      "Scintigraphie cardiaque",
+      "Epreuve d'effort",
+      "Spirométrie",
+      "Bilan sanguin"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : BNP/NT-proBNP + ECG. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « A quel anomalie structurelle du cœur peut-on s'attendre sachant que le patient a de l'HTA ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Insuffisance cardiaque vs Insuffisance cardiaque droite. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Insuffisance cardiaque droite",
+    "OAP"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la dyspnée et les facteurs de risque cardiovasculaire",
+    "Réaliser un examen clinique cardiovasculaire et pulmonaire complet",
+    "Proposer un diagnostic étiologique pertinent"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)"
 }

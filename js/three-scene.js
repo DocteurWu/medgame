@@ -118,11 +118,24 @@ export class ThreeScene {
         });
 
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-        this.controls.enableDamping = false;
-        this.controls.enableRotate = false;
+        // Orbit limité : rotation douce + zoom molette/pincement, pas de pan
+        // (le pan perdait les joueurs hors de la salle). Limites polaires pour
+        // ne jamais passer sous le sol ni dans le plafond.
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.08;
+        this.controls.enableRotate = true;
+        this.controls.rotateSpeed = 0.55;
         this.controls.enablePan = false;
-        this.controls.enableZoom = false;
-        this.controls.touches = {};
+        this.controls.enableZoom = true;
+        this.controls.zoomSpeed = 0.7;
+        this.controls.minDistance = 1.0;
+        this.controls.maxDistance = 12.0;
+        this.controls.minPolarAngle = 0.15;
+        this.controls.maxPolarAngle = Math.PI / 2.05;
+        this.controls.touches = {
+            ONE: THREE.TOUCH.ROTATE,
+            TWO: THREE.TOUCH.DOLLY_ROTATE
+        };
         this.controls.target.set(0, 1.0, 0);
 
         this.setCamera('room');
@@ -135,6 +148,10 @@ export class ThreeScene {
 
         this.lightingAgent = new ThreeLightingAgent(this.scene, this.renderer);
         this.lightingAgent.setupLighting();
+        // Appliquer l'exposition du preset courant : setCamera('room') plus haut
+        // s'est exécuté AVANT la création du lighting et n'a rien appliqué.
+        // Sans ça, l'exposition restait bloquée à 1.05 + bloom 0.38 (= éblouissement au chargement).
+        this.lightingAgent.setCameraExposure(this.currentCameraMode || 'room');
         // Agent qualité : preset auto-détecté/sauvegardé + post-processing adapté
         // (async : le composer monte quelques frames après le premier rendu)
         this.qualityAgent = new ThreeQualityAgent(this);
@@ -228,9 +245,13 @@ export class ThreeScene {
                     // Mettre à jour OrbitControls target pour regarder vers l'avant à partir de la position actuelle
                     const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion);
                     this.controls.target.copy(this.camera.position).add(dir.multiplyScalar(2.0));
+                    this._clampCameraInRoom(this.camera.position);
                     this.controls.update();
                 } else {
-                    this.setCamera('room', true);
+                    // Retour au dernier preset guidé (pas toujours 'room') :
+                    // mémorisé à l'entrée en FPS dans setCamera('fps').
+                    this.setCamera(this._cameraBeforeFPS || 'room', true);
+                    this._cameraBeforeFPS = null;
                 }
             }
         });
@@ -494,6 +515,10 @@ export class ThreeScene {
             if (this.fpsController) {
                 if (this.fpsController.enabled) return;
 
+                // Mémoriser le preset guidé courant pour le retour (Échap/F).
+                if (this.currentCameraMode && this.currentCameraMode !== 'fps') {
+                    this._cameraBeforeFPS = this.currentCameraMode;
+                }
                 this.currentCameraMode = 'fps';
                 if (this.hotspotsGroup) {
                     this.hotspotsGroup.visible = false;
@@ -549,17 +574,19 @@ export class ThreeScene {
         }
 
         const isLying = (this.patient && this.patient._currentPosition === 'allonge');
+        // Presets intérieurs, sauf 'room' : vue globale dollhouse depuis
+        // l'ouverture avant (aucun mur en z=+5) — toute la salle + médecin cadrés.
         const presets = {
-            room: { pos: [-3.7, 4.8, 7.5], target: [0.3, 1.3, -0.4] },
+            room: { pos: [-4.4, 3.9, 7.8], target: [0.5, 0.8, -1.0] },
             patient: isLying
-                ? { pos: [4, 3.6, 3], target: [5.2, 1.8, 0.4] }
+                ? { pos: [3.1, 2.2, 2.3], target: [4.7, 1.0, 0.1] }
                 : { pos: [1.8, 2.1, -1.1], target: [1.2, 1.15, -3.45] },
-            desk: { pos: [-4.8, 2.2, 1.2], target: [-3.3, 1.4, -0.3] },
-            cabinet: { pos: [1.5, 3.2, -1.8], target: [3.5, 3.2, -4] },
-            anatomy: { pos: [-3, 3.8, -1.2], target: [-5.1, 3.8, -1.6] }
+            desk: { pos: [-1.8, 2.0, 1.4], target: [-3.6, 1.3, -0.7] },
+            cabinet: { pos: [1.5, 2.2, -1.6], target: [3.8, 1.5, -3.8] },
+            anatomy: { pos: [-3.4, 1.9, -1.8], target: [-5.4, 1.8, -1.8] }
         };
         const p = presets[mode] || presets.room;
-        const targetPos = new THREE.Vector3(...p.pos);
+        const targetPos = this._clampCameraInRoom(new THREE.Vector3(...p.pos));
         const targetLook = new THREE.Vector3(...p.target);
 
         if (animate && this._cameraAnimId) {
@@ -586,6 +613,7 @@ export class ThreeScene {
                 // Effet cinématique de grue : courbe parabolique verticale
                 const heightArc = Math.sin(ease * Math.PI) * 0.28;
                 this.camera.position.y += heightArc;
+                this._clampCameraInRoom(this.camera.position);
 
                 this.controls.target.lerpVectors(startTarget, targetLook, ease);
                 this.controls.update();
@@ -610,6 +638,10 @@ export class ThreeScene {
         if (this._tooltipEl) this._tooltipEl.style.opacity = '0';
 
         const isFPS = !!(this.fpsController && this.fpsController.enabled);
+        // Vue globale 'room' = caméra FIXE (3e personne statique) :
+        // seul le médecin bouge, aucun fly-to automatique.
+        // Les vues rapprochées (patient/desk/…) gardent le fly-to.
+        const holdCam = this.currentCameraMode === 'room' && !isFPS;
 
         const hit = this.pick(event);
         if (!hit) {
@@ -672,8 +704,8 @@ export class ThreeScene {
             // Son de mesure
             medicalAudio.playMeasureSound();
 
-            // Fly-to vers l'instrument cliqué
-            if (hitPoint && !isFPS) {
+            // Fly-to vers l'instrument cliqué (sauf vue globale fixe)
+            if (hitPoint && !isFPS && !holdCam) {
                 this.flyCameraTo(hitPoint, hitPoint, 700);
             }
             this.callbacks.onInstrument?.(instrument, hitObj);
@@ -681,8 +713,8 @@ export class ThreeScene {
         }
 
         if ((hitObj.userData?.label || '').toLowerCase().includes('patient')) {
-            // Fly-to vers le patient
-            if (hitPoint && !isFPS) {
+            // Fly-to vers le patient (sauf vue globale fixe)
+            if (hitPoint && !isFPS && !holdCam) {
                 this.flyCameraTo(hitPoint, hitPoint, 700);
             }
             this.callbacks.onPatient?.(hitObj);
@@ -690,7 +722,7 @@ export class ThreeScene {
         }
 
         if (hitObj.userData?.pcAction) {
-            if (hitPoint && !isFPS) {
+            if (hitPoint && !isFPS && !holdCam) {
                 this.flyCameraTo(hitPoint, hitPoint, 600);
             }
             this.callbacks.onPC?.(hitObj);
@@ -703,37 +735,37 @@ export class ThreeScene {
             const name = current.name || '';
             const label = current.userData?.label || '';
             if (name === 'MedicalPoster' || label === 'Affiche médicale') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 600);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 600);
                 if (window.showNotification) window.showNotification('Affiche médicale : Protocole ECMO');
                 break;
             }
             if (name === 'ECGMonitor' || name === 'WallECGMonitor' || label === 'Moniteur ECG' || label === 'Moniteur ECG mural') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Moniteur ECG — Surveillez les constantes vitales');
                 break;
             }
             if (name === 'Meuble Evier' || name === 'Evier basin' || label === 'Évier — Lavage des mains') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
                 this.callbacks.onEvier?.(hitObj);
                 break;
             }
             if (name === 'IVStand' || label === 'Perfusion') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Perfusion — Soluté en cours d\'administration');
                 break;
             }
             if (name === 'MasqueO2' || label === 'Masque à Oxygène') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
                 this.callbacks.onMasqueO2?.(hitObj);
                 break;
             }
             if (name === 'CharriotMedical' || label === 'Charriot médical') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
                 if (window.showNotification) window.showNotification('Charriot médical — Matériel de soin');
                 break;
             }
             if (name === 'Armoire' || label === 'Armoire') {
-                if (hitPoint && !isFPS) this.flyCameraTo(hitPoint, hitPoint, 700);
+                if (hitPoint && !isFPS && !holdCam) this.flyCameraTo(hitPoint, hitPoint, 700);
                 this.callbacks.onArmoire?.(hitObj);
                 break;
             }
@@ -741,9 +773,9 @@ export class ThreeScene {
                 window.location.href = 'index.html';
                 break;
             }
-            // Tout objet interactif avec un label — fly-to générique
+            // Tout objet interactif avec un label — fly-to générique (sauf vue globale fixe)
             if (current.userData?.interactive && hitPoint) {
-                if (!isFPS) {
+                if (!isFPS && !holdCam) {
                     this.flyCameraTo(hitPoint, hitPoint, 700);
                 }
                 break;
@@ -1051,6 +1083,24 @@ export class ThreeScene {
     // ===== CAMÉRA FLY-TO =====
 
     /**
+     * Borne de sécurité : la caméra guidée reste dans la pièce et au-dessus du sol.
+     * Exception : la vue globale 'room' est une vue dollhouse placée DEVANT
+     * l'ouverture (pas de mur en z=+5) pour cadrer toute la salle + le médecin.
+     */
+    _clampCameraInRoom(v) {
+        if (this.currentCameraMode === 'room') {
+            v.x = Math.max(-6.0, Math.min(6.0, v.x));
+            v.y = Math.max(0.4, Math.min(4.8, v.y));
+            v.z = Math.max(-4.7, Math.min(8.2, v.z));
+            return v;
+        }
+        v.x = Math.max(-5.2, Math.min(5.2, v.x));
+        v.y = Math.max(0.4, Math.min(4.6, v.y));
+        v.z = Math.max(-4.7, Math.min(4.7, v.z));
+        return v;
+    }
+
+    /**
      * Anime la caméra en volant doucement vers une position proche d'un objet 3D
      * @param {THREE.Vector3} targetPosition — position de l'objet visé
      * @param {THREE.Vector3} [lookAtTarget] — point de regard (défaut: l'objet lui-même)
@@ -1060,9 +1110,13 @@ export class ThreeScene {
         if (!this.camera || !this.controls) return;
         if (!lookAtTarget) lookAtTarget = targetPosition.clone();
 
-        // Calculer une position de caméra décalée (offset pour observer l'objet)
-        const cameraOffset = new THREE.Vector3(1.2, 0.8, 1.5);
-        const endPos = targetPosition.clone().add(cameraOffset);
+        // Offset orienté : on recule vers le centre de la pièce plutôt qu'un
+        // décalage fixe qui pouvait envoyer la caméra dans un mur.
+        const toCenter = new THREE.Vector3(-targetPosition.x, 0, -targetPosition.z);
+        if (toCenter.lengthSq() < 0.01) toCenter.set(1, 0, 1);
+        toCenter.normalize();
+        const cameraOffset = toCenter.multiplyScalar(1.4).add(new THREE.Vector3(0, 0.9, 0));
+        const endPos = this._clampCameraInRoom(targetPosition.clone().add(cameraOffset));
         const endTarget = lookAtTarget.clone();
 
         // S'assurer que la caméra reste à une distance raisonnable
@@ -1087,6 +1141,7 @@ export class ThreeScene {
             const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
             this.camera.position.lerpVectors(startPos, endPos, e);
+            this._clampCameraInRoom(this.camera.position);
             this.controls.target.lerpVectors(startTarget, endTarget, e);
             this.controls.update();
 
@@ -1377,13 +1432,8 @@ export class ThreeScene {
             this.qualityAgent.sample(dt);
         }
 
-        // --- Respiration de caméra stable et organique (Camera Bobbing - désactivée en mode FPS) ---
-        if (this.camera && this.controls && !this._cameraAnimId && !this._ptrDown && (!this.fpsController || !this.fpsController.enabled)) {
-            const bobX = Math.sin(elapsed * 0.8) * 0.0025;
-            const bobY = Math.cos(elapsed * 0.6) * 0.0018;
-            this.camera.position.x += bobX;
-            this.camera.position.y += bobY;
-        }
+        // Pas de "camera bobbing" : en vue globale fixe la caméra ne doit JAMAIS
+        // dériver toute seule (l'ancien bob ajoutait un offset cumulatif permanent).
 
         if (this.lightingAgent && this.lightingAgent.render()) {
             // Composer handled rendering (bloom, etc.)

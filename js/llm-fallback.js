@@ -186,9 +186,12 @@ class LLMFallback {
         if (/\bmerci\b/.test(cleanQ)) return "De rien, docteur...";
         if (/\bau revoir\b/.test(cleanQ)) return "Au revoir docteur... et merci pour tout.";
 
-        // Vérification des règles de la station ECOS concernant les informations cachées
+        // Vérification des règles de divulgation LLM-first (dialogue prioritaire, repli ECOS)
         const isEcosMode = !!(window.EcosMode?.isActive?.());
-        const hiddenInfos = caseData.ecos?.patientStandardise?.infosCachees || [];
+        const dlg = caseData.dialogue || null;
+        const hiddenInfos = dlg?.si_insiste || caseData.ecos?.patientStandardise?.infosCachees || [];
+        // Catégories mappées vers chemins : si la question touche un sujet "si_insiste",
+        // le fallback reste évasif (le LLM ferait pareil) sauf insistance explicite.
 
         // ── 2. Matching par racines de mots (tolère amène/amener, symptôme/symptômes…) ──
         const qStems = cleanQ.split(/[^a-z0-9]+/)
@@ -221,10 +224,11 @@ class LLMFallback {
 
         // Si une catégorie correspond
         if (bestCategory && maxMatches > 0) {
-            // Si cette catégorie ou ce chemin d'information fait partie des infos cachées ECOS
-            if (isEcosMode && hiddenInfos.some(hiddenPath => hiddenPath.toLowerCase().includes(bestCategory.name.toLowerCase()))) {
+            // Sujet "si_insiste" : rester évasif sauf insistance (marqueurs : "insiste", "vraiment", "dis-moi tout", "?!" ou question répétée)
+            const insists = /insiste|vraiment|dis-moi tout|dis moi tout|stp|sil vous plait|s'il vous plait|!!|\?\?/.test(cleanQ);
+            if (!insists && hiddenInfos.some(hiddenPath => hiddenPath.toLowerCase().includes(bestCategory.name.toLowerCase()))) {
                 const reactions = caseData.ecos?.patientStandardise?.reactions;
-                return reactions?.silence || "Je ne préfère pas en parler... ce n'est pas important.";
+                return reactions?.silence || "Euh... c'est rien, docteur, vraiment. On peut parler d'autre chose ?";
             }
 
             const rawContent = bestCategory.extractor(caseData);

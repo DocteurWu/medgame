@@ -11,7 +11,19 @@
     "sexe": "F",
     "taille": "163 cm",
     "poids": "75 kg",
-    "groupeSanguin": "O+"
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
   },
   "interrogatoire": {
     "motifHospitalisation": "Accouchement inopiné à domicile chez une patiente à terme de 39 SA avec contractions toutes les 2-3 minutes.",
@@ -897,5 +909,64 @@
       },
       "personnalite": "Femme de 29 ans, primipare, très anxieuse mais coopérante. Elle est en pleine phase d'expulsion avec une envie irrésistible de pousser. Elle alterne entre des moments de concentration intense pendant les contractions et des moments de panique entre les contractions."
     }
-  }
+  },
+  "dialogue": {
+    "phraseOuverture": "Oh mon Dieu, je crois que le bébé arrive tout de suite ! Je n'ai pas le temps d'aller à la maternité !",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Toucher vaginal, Monitoring cardiotocographique (RCF))"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Accouchement inopiné à domicile en phase d'expulsion (dilatation complète à 10 cm))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Toucher vaginal",
+      "Monitoring cardiotocographique (RCF)"
+    ],
+    "utiles": [
+      "Échographie obstétricale au lit"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Toucher vaginal + Monitoring cardiotocographique (RCF). Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Le toucher vaginal montre un col dilaté à 10 cm avec affleurement de la tête fœtale. Comment qualifie-t-on cette phase du travail et quelle est la conduite à tenir ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Accouchement inopiné à domicile en phase d'expulsion (dilatation complète à 10 cm) vs Accouchement inopiné à domicile. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Accouchement inopiné à domicile",
+    "Travail en phase active - Dilatation complète"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire rapide et ciblé de la patiente",
+    "Effectuer un examen clinique complet incluant un examen obstétrical",
+    "Prendre en charge l'accouchement en phase d'expulsion (installation, accompagnement de l'expulsion, dégagement des épaules)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)"
 }
