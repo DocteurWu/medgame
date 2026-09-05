@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { easeInOut } from './three-animations.js';
 import { DoctorAnimator } from './three-animations.js';
-import { loadGLBSmart } from './three-loaders.js';
+import { gltfLoader, loadGLBSmart } from './three-loaders.js';
 
 export class CharacterController {
     constructor(scene) {
@@ -33,139 +33,129 @@ export class CharacterController {
         this.loadUserGenderAndModel();
     }
 
-    async loadUserGenderAndModel() {
+    loadUserGenderAndModel() {
         let gender = 'M';
 
-        // 1. Try local storage first for fast initial rendering
-        const savedProfile = localStorage.getItem('medgame_profile');
-        if (savedProfile) {
-            try {
+        // 1. Profil local en priorité pour un chargement immédiat à 0ms
+        try {
+            const savedProfile = localStorage.getItem('medgame_profile');
+            if (savedProfile) {
                 const parsed = JSON.parse(savedProfile);
                 if (parsed && parsed.sexe) {
                     gender = parsed.sexe;
                 }
-            } catch (e) {
-                console.warn('Error parsing local profile:', e);
             }
+        } catch (e) {
+            console.warn('[CharacterController] Erreur lecture profil local:', e);
         }
 
-        // 2. Query Supabase profiles table in background (avec timeout :
-        // si le client auth reste coincé, le docteur ne doit pas attendre)
-        if (window.supabase) {
-            try {
-                const sessionPromise = window.supabase.auth.getSession();
-                const timeoutPromise = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('supabase timeout')), 3000));
-                const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
-                if (session && session.user) {
-                    const { data: profile } = await window.supabase
-                        .from('profiles')
-                        .select('sexe')
-                        .eq('id', session.user.id)
-                        .single();
-                    
-                    if (profile && profile.sexe) {
-                        gender = profile.sexe;
-                        
-                        // Sync with local storage
-                        try {
-                            const updatedProfile = savedProfile ? JSON.parse(savedProfile) : {};
-                            updatedProfile.sexe = gender;
-                            localStorage.setItem('medgame_profile', JSON.stringify(updatedProfile));
-                        } catch (e) {}
-                    }
-                }
-            } catch (e) {
-                console.warn('Could not retrieve user gender from Supabase, using local fallback:', e);
-            }
-        }
-
+        // Lancement immédiat du chargement GLB
         const modelFile = (gender || 'M').toUpperCase() === 'F' ? 'femme.glb' : 'homme.glb';
-        console.log(`[CharacterController] Loading doctor model: ${modelFile} for gender: ${gender}`);
+        console.info(`[CharacterController] 🚀 Chargement immédiat du modèle GLB docteur : ${modelFile} (sexe: ${gender})`);
         this.loadModel(`assets/models/doctors/${modelFile}`);
+
+        // 2. Synchronisation Supabase en arrière-plan (non-bloquante)
+        if (window.supabase) {
+            window.supabase.auth.getSession().then(({ data: { session } }) => {
+                if (session && session.user) {
+                    window.supabase.from('profiles').select('sexe').eq('id', session.user.id).single()
+                        .then(({ data: profile }) => {
+                            if (profile && profile.sexe && profile.sexe !== gender) {
+                                const newGender = profile.sexe;
+                                const newModelFile = newGender.toUpperCase() === 'F' ? 'femme.glb' : 'homme.glb';
+                                console.info(`[CharacterController] Mise à jour du genre vers : ${newModelFile}`);
+                                this.loadModel(`assets/models/doctors/${newModelFile}`);
+                            }
+                        }).catch(() => {});
+                }
+            }).catch(() => {});
+        }
     }
 
     loadModel(modelPath) {
-        loadGLBSmart(modelPath, (gltf) => {
-            // Remove procedural doctor fallback
-            if (this.proceduralGroup) {
-                this.group.remove(this.proceduralGroup);
-                this.proceduralGroup = null;
-            }
+        gltfLoader.load(
+            modelPath,
+            (gltf) => {
+                console.info('[CharacterController] Modèle GLB docteur chargé avec succès ✅ :', modelPath);
 
-            // Remove previous model if any
-            if (this.activeModel) {
-                this.group.remove(this.activeModel);
-            }
-
-            this.activeModel = gltf.scene;
-
-            // Enable shadows
-            this.activeModel.traverse((child) => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
+                // Retirer immédiatement le docteur procédural de fallback
+                if (this.proceduralGroup) {
+                    this.group.remove(this.proceduralGroup);
+                    this.proceduralGroup = null;
                 }
-            });
 
-            // Auto scale model to human height (~1.70m debout, cohérent avec
-            // le patient ~1.65m équivalent — l'ancien 2.3 faisait un géant 2x).
-            this.activeModel.updateMatrixWorld(true);
-            const box = new THREE.Box3().setFromObject(this.activeModel);
-            const size = box.getSize(new THREE.Vector3());
-            const targetHeight = 1.7;
-            let scale = 1.0;
-            if (size.y > 0.1 && size.y < 10) {
-                scale = targetHeight / size.y;
-            }
-            this.activeModel.scale.set(scale, scale, scale);
-            
-            // Align the bottom of the model (feet) with Y = 0
-            const minYOffset = -box.min.y * scale;
-            this.activeModel.position.set(0, minYOffset, 0);
-            this.activeModel.rotation.set(0, 0, 0);
-
-            this.group.add(this.activeModel);
-
-            // Locate right arm bone/mesh for wave/reach gestures.
-            // Les GLB docteurs sont monolithiques (world/geometry_0) : on cherche
-            // un bras explicite, sinon on marque l'absence pour un geste corps entier.
-            let armR = null;
-            this.activeModel.traverse((child) => {
-                const name = (child.name || '').toLowerCase();
-                if (name.includes('rightarm') || name.includes('armr') || name.includes('arm_r') || name.includes('bra_r') || name.includes('bras_r') || name.includes('arm-right') || name.includes('arm_right')) {
-                    armR = child;
+                // Retirer le précédent modèle actif si existant
+                if (this.activeModel) {
+                    this.group.remove(this.activeModel);
+                    this.activeModel = null;
                 }
-            });
-            if (armR) {
-                this.group.userData.armR = armR;
-                this._hasArm = true;
-            } else {
-                // Pas de bras articulé : reach/wave animeront le buste entier
-                this._hasArm = false;
-            }
 
-            // Re-résoudre l'animateur sur le nouveau modèle (l'ancien pointait
-            // les meshes procéduraux supprimés → marche totalement inerte)
-            if (this.animator) {
-                this.animator._resolved = false;
-                this.animator._resolve();
-            }
+                this.activeModel = gltf.scene;
 
-            // Handle GLTF animations
-            if (gltf.animations && gltf.animations.length > 0) {
-                this.mixer = new THREE.AnimationMixer(this.activeModel);
-                this.group.mixer = this.mixer;
-                this.actions = {};
-                gltf.animations.forEach((clip) => {
-                    this.actions[clip.name.toLowerCase()] = this.mixer.clipAction(clip);
+                // Ombres et matériaux PBR
+                this.activeModel.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                        if (child.material) {
+                            child.material.needsUpdate = true;
+                        }
+                    }
                 });
 
-                this.playAction('idle');
+                // Ajustement de la taille (~1.70m de hauteur)
+                this.activeModel.updateMatrixWorld(true);
+                const box = new THREE.Box3().setFromObject(this.activeModel);
+                const size = box.getSize(new THREE.Vector3());
+                const targetHeight = 1.70;
+                let scale = 1.0;
+                if (size.y > 0.05 && size.y < 50) {
+                    scale = targetHeight / size.y;
+                }
+                this.activeModel.scale.set(scale, scale, scale);
+
+                // Caler les pieds du modèle au niveau du sol (Y = 0)
+                const minYOffset = -box.min.y * scale;
+                this.activeModel.position.set(0, minYOffset, 0);
+                this.activeModel.rotation.set(0, 0, 0);
+
+                this.group.add(this.activeModel);
+
+                // Détection de bras pour les animations/gestes
+                let armR = null;
+                this.activeModel.traverse((child) => {
+                    const name = (child.name || '').toLowerCase();
+                    if (name.includes('rightarm') || name.includes('armr') || name.includes('arm_r') || name.includes('bras_r')) {
+                        armR = child;
+                    }
+                });
+                if (armR) {
+                    this.group.userData.armR = armR;
+                    this._hasArm = true;
+                } else {
+                    this._hasArm = false;
+                }
+
+                if (this.animator) {
+                    this.animator._resolved = false;
+                }
+
+                // Animations GLTF si présentes
+                if (gltf.animations && gltf.animations.length > 0) {
+                    this.mixer = new THREE.AnimationMixer(this.activeModel);
+                    this.group.mixer = this.mixer;
+                    this.actions = {};
+                    gltf.animations.forEach((clip) => {
+                        this.actions[clip.name.toLowerCase()] = this.mixer.clipAction(clip);
+                    });
+                    this.playAction('idle');
+                }
+            },
+            undefined,
+            (err) => {
+                console.error('[CharacterController] Erreur chargement GLB docteur :', modelPath, err);
             }
-        }, undefined, (err) => {
-            console.error('Error loading doctor GLB model:', err);
-        });
+        );
     }
 
     playAction(name) {
@@ -461,6 +451,10 @@ export class CharacterController {
 
     moveTo(target, onArrive) {
         if (!target || !this.scene) return;
+        if (this._stepAnimId) {
+            cancelAnimationFrame(this._stepAnimId);
+            this._stepAnimId = null;
+        }
         const start = this.group.position.clone();
         const end = new THREE.Vector3(target.x, target.y || 0, target.z);
         const legs = this._computePath(start, end);
@@ -468,41 +462,65 @@ export class CharacterController {
     }
 
     _walkLegs(legs, idx, onArrive) {
+        if (this._stepAnimId) {
+            cancelAnimationFrame(this._stepAnimId);
+            this._stepAnimId = null;
+        }
+
         if (idx >= legs.length) {
             this.isMoving = false;
+            // Rétablir la verticalité parfaite
+            this.group.rotation.x = 0;
+            this.group.rotation.z = 0;
             if (this.animator) this.animator.stopWalking();
             if (onArrive) onArrive();
             return;
         }
         const start = this.group.position.clone();
         const end = legs[idx];
-        const duration = 900 + start.distanceTo(end) * 130;
+        const dist = start.distanceTo(end);
+        // Durée réaliste permettant de voir le déplacement fluide
+        const duration = Math.max(900, dist * 550);
         const startTime = performance.now();
         this.isMoving = true;
-        // Orientation progressive vers la cible (slerp manuel sur Y)
-        const m = new THREE.Matrix4().lookAt(start, new THREE.Vector3(end.x, start.y, end.z), new THREE.Vector3(0, 1, 0));
-        const targetQuat = new THREE.Quaternion().setFromRotationMatrix(m);
+
+        // Orientation précise face à la destination (rotation Y uniquement)
+        const dummy = new THREE.Object3D();
+        dummy.position.set(start.x, 0, start.z);
+        dummy.lookAt(end.x, 0, end.z);
+        const targetQuat = dummy.quaternion.clone();
         const startQuat = this.group.quaternion.clone();
+
         if (this.animator) this.animator.startWalking();
 
         const step = (now) => {
             const t = Math.min(1, (now - startTime) / duration);
             const e = easeInOut(t);
             this.group.position.lerpVectors(start, end, e);
-            // Orientation smooth sur les 30% premiers du trajet
-            const tq = Math.min(1, t / 0.3);
+
+            // Orientation fluide vers la destination
+            const tq = Math.min(1, t / 0.25);
             this.group.quaternion.slerpQuaternions(startQuat, targetQuat, easeInOut(tq));
-            // Rebond vertical ABSOLU (pas cumulatif) pendant la marche
-            const bounce = Math.sin(e * Math.PI * 8) * 0.035 * (1 - e);
-            this.group.position.y = end.y + bounce;
+            // Garantir que le docteur ne penche jamais en avant ou en arrière
+            this.group.rotation.x = 0;
+            this.group.rotation.z = 0;
+
+            // Rebond vertical léger
+            const bounce = Math.sin(e * Math.PI * 6) * 0.02 * (1 - e);
+            this.group.position.y = (end.y || 0) + bounce;
+
             if (t < 1) {
-                requestAnimationFrame(step);
+                this._stepAnimId = requestAnimationFrame(step);
             } else {
+                this._stepAnimId = null;
                 this.group.position.copy(end);
+                this.group.position.y = end.y || 0;
+                this.group.rotation.x = 0;
+                this.group.rotation.z = 0;
                 this._walkLegs(legs, idx + 1, onArrive);
             }
         };
-        requestAnimationFrame(step);
+        this._stepAnimId = requestAnimationFrame(step);
     }
 
     reach() {
@@ -540,10 +558,13 @@ export class CharacterController {
     }
 
     /**
-     * Fait tourner le médecin pour regarder un point
+     * Fait tourner le médecin pour regarder un point en restant strictement vertical
      */
     lookAt(point) {
-        this.group.lookAt(point.x, point.y, point.z);
+        if (!point) return;
+        this.group.lookAt(point.x, this.group.position.y, point.z);
+        this.group.rotation.x = 0;
+        this.group.rotation.z = 0;
     }
 
     /**
