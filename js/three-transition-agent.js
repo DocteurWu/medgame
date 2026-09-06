@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { TaskScheduler } from './task-scheduler.js';
 
 /**
  * three-transition-agent.js — Agent de transitions 2D ↔ 3D
@@ -48,7 +49,16 @@ export class ThreeTransitionAgent {
 
         await new Promise(r => setTimeout(r, 400));
 
-        // 4. Afficher le container 3D avec un fade in
+        // 3.5 Préchauffage GPU asynchrone des shaders pour éliminer le gel à la première frame
+        if (this.manager.scene?.renderer && this.manager.scene?.scene && this.manager.scene?.camera) {
+            await TaskScheduler.warmupShaders(
+                this.manager.scene.renderer,
+                this.manager.scene.scene,
+                this.manager.scene.camera
+            );
+        }
+
+        // 4. Afficher le container 3D avec un fade in fluide (sans aucun gel)
         if (sceneContainer) {
             sceneContainer.style.opacity = '0';
             sceneContainer.style.transition = 'opacity 0.8s ease';

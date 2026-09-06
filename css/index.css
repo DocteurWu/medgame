@@ -83,7 +83,7 @@ html {
 }
 
 .btn-3d {
-    min-height: 52px;
+    min-height: clamp(46px, 5.8vh, 52px);
     min-width: 44px;
 }
 
@@ -155,9 +155,9 @@ body {
     backdrop-filter: blur(24px) saturate(150%);
     -webkit-backdrop-filter: blur(24px) saturate(150%);
     border-radius: var(--radius-xl);
-    padding: 3rem 3.6rem;
+    padding: clamp(1.8rem, 3.2vh, 2.8rem) clamp(2.2rem, 3.6vw, 3.4rem);
     width: 100%;
-    max-width: 520px;
+    max-width: min(510px, 92vw);
     text-align: center;
     box-shadow:
         0 40px 80px -20px rgba(0, 0, 0, 0.85),
@@ -232,10 +232,10 @@ body {
     position: relative;
     display: inline-grid;
     place-items: center;
-    width: 84px;
-    height: 84px;
-    margin-bottom: 1.1rem;
-    font-size: 2.3rem;
+    width: clamp(66px, 8.5vh, 82px);
+    height: clamp(66px, 8.5vh, 82px);
+    margin-bottom: clamp(0.7rem, 1.2vh, 1rem);
+    font-size: clamp(1.8rem, 2.8vh, 2.2rem);
     color: var(--accent);
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 71, 87, 0.18), transparent 70%);
@@ -283,11 +283,11 @@ body {
 
 .glitch-title {
     font-family: var(--font-title);
-    font-size: 3.6rem;
+    font-size: clamp(2.8rem, 4.8vh, 3.5rem);
     font-weight: 900;
-    letter-spacing: 4px;
+    letter-spacing: clamp(2.5px, 0.4vw, 4px);
     line-height: 1;
-    margin-bottom: 0.4rem;
+    margin-bottom: clamp(0.2rem, 0.5vh, 0.4rem);
     position: relative;
     background: linear-gradient(110deg, #ffffff 0%, var(--primary) 40%, #ffffff 55%, var(--secondary) 80%, #ffffff 100%);
     background-size: 250% auto;
@@ -304,14 +304,14 @@ body {
 
 .subtitle {
     color: var(--secondary);
-    font-size: 0.85rem;
+    font-size: clamp(0.76rem, 1.15vh, 0.85rem);
     font-weight: 600;
-    letter-spacing: 4px;
-    margin-bottom: 2.2rem;
+    letter-spacing: clamp(2.5px, 0.4vw, 4px);
+    margin-bottom: clamp(1.2rem, 2vh, 1.8rem);
     text-transform: uppercase;
     display: inline-flex;
     align-items: center;
-    gap: 14px;
+    gap: clamp(10px, 1.2vw, 14px);
 }
 
 .subtitle::before, .subtitle::after {
@@ -329,7 +329,7 @@ body {
 .button-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: clamp(0.65rem, 1.1vh, 0.95rem);
 }
 
 .btn-3d {
@@ -340,8 +340,8 @@ body {
     color: white;
     font-family: var(--font-title);
     font-weight: 600;
-    font-size: 0.95rem;
-    padding: 1.1rem 1.8rem;
+    font-size: clamp(0.88rem, 1.3vh, 0.95rem);
+    padding: clamp(0.82rem, 1.35vh, 1.05rem) clamp(1.4rem, 2vw, 1.8rem);
     border-radius: var(--radius-md);
     cursor: pointer;
     overflow: hidden;
@@ -446,13 +446,13 @@ body {
 }
 
 .disclaimer {
-    margin-top: 1.8rem;
+    margin-top: clamp(1rem, 1.6vh, 1.6rem);
     font-size: 0.72rem;
     font-weight: 300;
     letter-spacing: 0.3px;
     color: rgba(255, 255, 255, 0.38);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding-top: 1rem;
+    padding-top: clamp(0.6rem, 1vh, 0.9rem);
 }
 
 /* ── Badge utilisateur (coin supérieur droit) ──────────────────── */
@@ -717,7 +717,7 @@ input:checked + .slider:before {
 /* ── Leaderboard ───────────────────────────────────────────────── */
 .leaderboard-panel {
     position: absolute;
-    right: 40px;
+    right: clamp(20px, 2.5vw, 40px);
     top: 50%;
     transform: translateY(-50%);
     background: var(--glass-bg);
@@ -725,9 +725,9 @@ input:checked + .slider:before {
     -webkit-backdrop-filter: blur(24px) saturate(160%);
     border: 1px solid var(--glass-border);
     border-radius: 22px;
-    padding: 1.5rem;
-    width: 330px;
-    max-height: 70vh;
+    padding: clamp(1rem, 1.8vh, 1.5rem);
+    width: clamp(290px, 22vw, 330px);
+    max-height: min(74vh, 620px);
     display: flex;
     flex-direction: column;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), 0 0 50px -20px rgba(255, 215, 0, 0.18);
@@ -742,16 +742,16 @@ input:checked + .slider:before {
 }
 
 .leaderboard-header {
-    margin-bottom: 1rem;
+    margin-bottom: clamp(0.6rem, 1vh, 1rem);
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 0.8rem;
+    padding-bottom: clamp(0.5rem, 0.9vh, 0.8rem);
 }
 
 .leaderboard-header h3 {
     font-family: var(--font-title);
     color: var(--gold);
-    font-size: 1.15rem;
+    font-size: clamp(1rem, 1.5vh, 1.15rem);
     letter-spacing: 2px;
     text-transform: uppercase;
     text-shadow: 0 0 14px rgba(255, 215, 0, 0.45);
@@ -766,14 +766,14 @@ input:checked + .slider:before {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: clamp(6px, 0.8vh, 8px);
     padding-right: 5px;
 }
 
 .leaderboard-item {
     display: flex;
     align-items: center;
-    padding: 10px 12px;
+    padding: clamp(7px, 1vh, 10px) clamp(10px, 1vw, 12px);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 14px;
@@ -788,14 +788,14 @@ input:checked + .slider:before {
 }
 
 .lb-rank {
-    width: 30px;
-    height: 30px;
+    width: clamp(26px, 3.2vh, 30px);
+    height: clamp(26px, 3.2vh, 30px);
     display: grid;
     place-items: center;
     border-radius: 50%;
     font-weight: 800;
-    font-size: 0.85rem;
-    margin-right: 12px;
+    font-size: clamp(0.78rem, 1.1vh, 0.85rem);
+    margin-right: clamp(10px, 1vw, 12px);
     flex-shrink: 0;
     background: rgba(0, 0, 0, 0.35);
     color: rgba(255, 255, 255, 0.7);
@@ -822,7 +822,7 @@ input:checked + .slider:before {
 
 .lb-name {
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: clamp(0.82rem, 1.2vh, 0.9rem);
     color: #fff;
     white-space: nowrap;
     overflow: hidden;
@@ -830,7 +830,7 @@ input:checked + .slider:before {
 }
 
 .lb-role {
-    font-size: 0.68rem;
+    font-size: clamp(0.64rem, 0.88vh, 0.68rem);
     color: var(--primary);
     opacity: 0.8;
 }
@@ -838,7 +838,7 @@ input:checked + .slider:before {
 .lb-xp {
     font-weight: 800;
     color: var(--secondary);
-    font-size: 0.88rem;
+    font-size: clamp(0.8rem, 1.15vh, 0.88rem);
     white-space: nowrap;
 }
 
@@ -964,5 +964,41 @@ input:checked + .slider:before {
     }
     .glass-card::after {
         display: none;
+    }
+}
+
+/* ── Adaptation dynamique aux écrans d'ordinateurs portables (Hauteur) ── */
+@media (max-height: 820px) {
+    #user-badge-top {
+        top: 10px !important;
+        right: 14px !important;
+        padding: 5px 12px 5px 8px !important;
+    }
+    #user-badge-top > div:first-child {
+        width: 26px !important;
+        height: 26px !important;
+    }
+    #top-username {
+        font-size: 0.8rem !important;
+    }
+    #admin-button {
+        bottom: 12px !important;
+        left: 14px !important;
+        padding: 8px 16px !important;
+        font-size: 0.78rem !important;
+    }
+}
+
+@media (max-height: 660px) {
+    #user-badge-top {
+        top: 6px !important;
+        right: 10px !important;
+        padding: 4px 10px 4px 6px !important;
+    }
+    #admin-button {
+        bottom: 8px !important;
+        left: 10px !important;
+        padding: 6px 12px !important;
+        font-size: 0.72rem !important;
     }
 }

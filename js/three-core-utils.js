@@ -27,24 +27,16 @@ export function dampVec3(out, target, lambda, dt) {
     return out;
 }
 
+import { SceneDisposer } from './scene-disposer.js';
+
 /* ---------- Libération mémoire profonde ---------- */
-function disposeMaterial(mat) {
-    if (!mat) return;
-    for (const key of Object.keys(mat)) {
-        const val = mat[key];
-        if (val && val.isTexture) val.dispose();
-    }
-    mat.dispose();
+export function disposeMaterial(mat) {
+    SceneDisposer.disposeMaterial(mat);
 }
 
 export function disposeObject3D(root) {
     if (!root) return;
-    root.traverse((obj) => {
-        if (obj.geometry) obj.geometry.dispose();
-        const m = obj.material;
-        if (Array.isArray(m)) m.forEach(disposeMaterial);
-        else if (m) disposeMaterial(m);
-    });
+    SceneDisposer.purge(root);
     root.parent?.remove(root);
 }
 

@@ -103,6 +103,10 @@ graph TD
 ## 🌟 Fonctionnalités Clés
 
 - 🏥 **Consultation & Examen Physique 3D** : Exploration interactive de la chambre d'examen avec visualisation dynamique du patient selon l'âge, le sexe et la pathologie.
+- 🫀 **ECG Academy 12 Dérivations (`ecg-trainer.html`)** : Simulateur d'électrocardiogramme haute fidélité 12 dérivations (DI-DIII, aVR-aVF, V1-V6) avec bibliothèque de tracés pathologiques (STEMI, FA, BAV, TV...), checklist méthodique d'interprétation et mode évaluation clinique.
+- 🎧 **Stéthoscope Virtuel & Phonocardiogramme (`auscultation.html`)** : Torse anatomique interactif avec foyers cardiaques (Aortique, Pulmonaire, Tricuspide, Mitral) et pulmonaires bilatéraux, synthèse audio Web Audio API temps réel (B1/B2, souffles, crépitants, sibilants) et tracé phonocardiographique synchronisé.
+- 🧠 **Atlas Anatomique 3D Interactif (`atlas.html`)** : Visualiseur 3D multi-systèmes (squelette, muscles, viscères, cœur, cerveau) avec sélection d'organes, mode transparence, vue éclatée (explode) et fiches sémiologiques traduites.
+- 🎯 **Skill Lab & Badges de Compétence (`skills.html`)** : Centre d'entraînement modulaire permettant aux étudiants de s'exercer et de débloquer des badges certifiants (ECG, Auscultation, Sémiologie).
 - 💓 **Moniteur de Constantes en Temps Réel** : Tracé ECG dynamique, saturation SpO2 et pression artérielle générés avec effets visuels fluides.
 - 🔐 **Engine Sémiologique & Système de Gating** : Progression conditionnée par la logique clinique (impossible d'ordonner un examen sans justification prioritaire).
 - ✏️ **Éditeur de Cas Intégré** : Interface auteur permettant de créer, tester et publier de nouveaux cas cliniques en communauté.
@@ -110,7 +114,7 @@ graph TD
   - **Niveau 1 (Externe)** : Résolution des cas cliniques validés.
   - **Niveau 2 (Interne - 1500 XP)** : Déblocage de l'Éditeur pour soumettre ses propres scénarios.
   - **Niveau 5 (Professeur)** : Droit de validation et peer-review sur la banque de cas.
-- ⏱️ **Mode Urgence Chronométré** : Mises en situation sous haute pression de temps avec décision rapide requis.
+- ⏱️ **Mode Urgence & Évaluation Clinique** : Mises en situation et tests diagnostiques sans chrono stressant, favorisant le raisonnement médical structuré.
 
 ---
 

@@ -73,6 +73,9 @@ const gameState = {
                 }
             }
             
+            // Événement global pour déclencher le préchargement prédictif d'assets et les mises à jour
+            document.dispatchEvent(new CustomEvent('case-loaded', { detail: { caseData: this.currentCase } }));
+
             return this.currentCase;
         }
         return null;

@@ -18,6 +18,8 @@ import { CameraDirector } from './three-camera-director.js';
 import { HoverHighlighter } from './three-highlight.js';
 import { HudTooltip } from './three-hud.js';
 import { EcosSession } from './three-ecos-session.js';
+import { TaskScheduler } from './task-scheduler.js';
+import { SceneDisposer } from './scene-disposer.js';
 
 /**
  * Descriptions riches des objets interactifs de la chambre clinique
@@ -208,6 +210,9 @@ export class ThreeScene {
         this._clock = new THREE.Clock();
         this._loop = this._loop.bind(this);
         this._animFrameId = requestAnimationFrame(this._loop);
+
+        // Préchauffage des shaders WebGL (warmup asynchrone pour 0 freeze au premier frame)
+        TaskScheduler.warmupShaders(this.renderer, this.scene, this.camera);
     }
 
     _aspect() {
@@ -874,9 +879,10 @@ export class ThreeScene {
         this.qualityAgent?.dispose();
         this.lightingAgent?.dispose();
         this.fpsController?.dispose?.();
+        this.patient?.dispose?.();
 
         this._envRT?.dispose();
-        disposeObject3D(this.scene);
+        SceneDisposer.purge(this.scene);
         this.scene.clear();
 
         this.renderer.dispose();

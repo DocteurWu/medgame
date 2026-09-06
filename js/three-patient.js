@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { createMaterial } from './three-room.js';
 import { gltfLoader as _sharedGLTFLoader } from './three-loaders.js';
+import { SceneDisposer } from './scene-disposer.js';
 
 // ── Cache d'assets : les GLB/textures ne sont ni retéléchargés ni reparsés
 // entre deux chargements de cas (latence réduite au changement de patient).
@@ -40,7 +41,9 @@ export class ThreePatient {
     }
 
     loadCase(caseData) {
-        this.group.clear();
+        if (this.group) {
+            SceneDisposer.purge(this.group);
+        }
         this.mixer = null;
         this.glbSkinMaterials = [];
         
@@ -120,7 +123,7 @@ export class ThreePatient {
 
         if (newPosition !== this._currentPosition) {
             this._currentPosition = newPosition;
-            this.group.clear();
+            SceneDisposer.purge(this.group);
             this.mixer = null;
             this.glbSkinMaterials = [];
             this.mouth = null;
@@ -1059,8 +1062,8 @@ export class ThreePatient {
         loader.load(modelPath, (gltf) => {
             if (loadId !== this._lastLoadId) return;
 
-            // Vider le groupe procédural et ajouter le modèle GLTF
-            this.bodyGroup.clear();
+            // Vider le groupe procédural et disposer la VRAM avant d'ajouter le modèle GLTF
+            SceneDisposer.purge(this.bodyGroup);
 
             const model = gltf.scene;
 
@@ -1172,5 +1175,14 @@ export class ThreePatient {
         if (this.mixer) {
             this.mixer.update(dt);
         }
+    }
+
+    dispose() {
+        if (this.group) {
+            SceneDisposer.purge(this.group);
+            this.group.parent?.remove(this.group);
+        }
+        this.mixer = null;
+        this.glbSkinMaterials = [];
     }
 }

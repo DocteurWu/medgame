@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas 3D — MedGame</title>
+    <meta name="description" content="Atlas anatomique 3D MedGame (BodyParts3D) : explorer 2 234 structures, 15 systèmes.">
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/atlas.css?v=6">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body class="atlas-body">
+    <div class="atlas-layout">
+        <aside class="atlas-side left" aria-label="Contrôles de l'atlas">
+            <div class="atlas-brand">
+                <a href="index.html" aria-label="Retour accueil">← Accueil</a>
+                <h1>ATLAS <span>3D</span></h1>
+            </div>
+            <input id="atlas-search" class="atlas-search" type="search" placeholder="Rechercher : cœur, foie, poumon…" autocomplete="off" aria-label="Rechercher une structure">
+            <div id="atlas-results" aria-live="polite"></div>
+            <div class="atlas-hint">Astuce : tape en français (<em>coeur</em>, <em>foie</em>, <em>rein</em>). Clic direct sur le corps = inspection.</div>
+            <div class="atlas-section-title">Systèmes</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+                <button class="atlas-btn" id="sys-all">Tout cocher</button>
+                <button class="atlas-btn" id="sys-none">Tout décocher</button>
+            </div>
+            <div id="atlas-systems"></div>
+            <div class="atlas-section-title">Préréglages</div>
+            <div class="atlas-presets">
+                <button class="atlas-btn" id="preset-all">Tout</button>
+                <button class="atlas-btn" id="preset-skeleton">Squelette</button>
+                <button class="atlas-btn" id="preset-organs">Organes</button>
+                <button class="atlas-btn" id="preset-vessels">Vaisseaux</button>
+            </div>
+            <div class="atlas-section-title">Vue éclatée</div>
+            <input type="range" class="explode" id="atlas-explode" min="0" max="100" value="0" aria-label="Niveau d'explosion">
+            <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+                <button class="atlas-btn" id="btn-rotate">⟳ Rotation auto</button>
+                <button class="atlas-btn" id="btn-reset">Réinitialiser</button>
+            </div>
+            <div class="atlas-section-title">Déplacement</div>
+            <div class="atlas-hint" style="margin-bottom:0;">Commandes dans le bandeau de droite · clavier : <i>←→ orbite, ↑↓ monter/descendre, +/− zoom, R centre</i>.</div>
+            <div id="atlas-error"></div>
+            <div class="atlas-footer">
+                Données <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D 4.0</a> © DBCLS — <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="https://github.com/ashemag/human-atlas" target="_blank" rel="noopener">Human Atlas (MIT)</a>.<br>
+                Référence homme adulte. Explorateur éducatif, pas un outil diagnostique.
+            </div>
+        </aside>
+        <main id="atlas-viewport" aria-label="Visionneuse 3D">
+            <div class="atlas-loading" id="atlas-loading">
+                <div class="ld-box">
+                    <div style="font-size:32px;color:#00f2fe;"><i class="fas fa-brain"></i></div>
+                    <div style="font-weight:700;margin:8px 0;">Chargement de l'anatomie…</div>
+                    <div class="ld-bar"><div class="ld-bar-fill" id="atlas-bar"></div></div>
+                    <div id="atlas-pct" style="font-size:12px;color:#88ccff;">0%</div>
+                    <div style="font-size:11px;opacity:0.6;margin-top:8px;">~33 Mo la première fois, mis en cache ensuite. Référence homme adulte.</div>
+                </div>
+            </div>
+        </main>
+        <aside class="atlas-side right" aria-label="Fiche structure">
+            <div class="atlas-section-title" style="margin-top:0;">Fiche structure</div>
+            <div class="detail-card" id="atlas-detail">
+                <h2>Aucune sélection</h2>
+                <p>Clique sur une structure du corps, ou cherche <em>cœur</em>, <em>foie</em>, <em>poumon</em>…</p>
+            </div>
+            <div class="detail-meta" id="atlas-meta"></div>
+            <div style="display:flex;gap:6px;margin-top:12px;">
+                <button class="atlas-btn" id="btn-isolate">Isoler</button>
+                <button class="atlas-btn" id="btn-show">Tout revoir</button>
+            </div>
+            <div class="atlas-section-title">Commandes</div>
+            <div class="atlas-nav-float" role="group" aria-label="Déplacer la caméra">
+                <span></span>
+                <button class="atlas-btn nav-btn" data-nav="up" aria-label="Monter">▲</button>
+                <span></span>
+                <button class="atlas-btn nav-btn" data-nav="left" aria-label="Gauche">◀</button>
+                <button class="atlas-btn nav-btn" data-nav="reset" aria-label="Recentrer">●</button>
+                <button class="atlas-btn nav-btn" data-nav="right" aria-label="Droite">▶</button>
+                <span></span>
+                <button class="atlas-btn nav-btn" data-nav="down" aria-label="Descendre">▼</button>
+                <span></span>
+                <button class="atlas-btn nav-btn" data-nav="zin" aria-label="Zoom avant">＋</button>
+                <button class="atlas-btn nav-btn" data-nav="zout" aria-label="Zoom arrière">－</button>
+                <button class="atlas-btn nav-btn" data-nav="front" aria-label="Vue de face">Face</button>
+                <div class="nav-kbd"><i>←→ orbite · ↑↓ monter · +/− zoom · R centre</i></div>
+            </div>
+        </aside>
+    </div>
+    <script src="js/env.js?v=2"></script>
+    <script src="js/config.js?v=3"></script>
+    <script type="module" src="js/atlas.js?v=6"></script>
+</body>
+</html>
