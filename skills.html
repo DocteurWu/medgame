@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centre d'Entraînement Clinique (Skill Lab) - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/skills.css?v=2">
+</head>
+<body>
+
+    <!-- Barre supérieure de navigation -->
+    <header class="skills-header">
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-home"></i> Accueil MedGame
+        </button>
+
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #10b981, #00f2fe); display:flex; align-items:center; justify-content:center; color:#0a0f28;">
+                <i class="fas fa-brain"></i>
+            </div>
+            <span style="font-family:'Outfit',sans-serif; font-weight:800; font-size:1.1rem; color:#fff;">SKILL LAB</span>
+        </div>
+
+        <button class="back-btn" onclick="window.location.href='profile.html'">
+            <i class="fas fa-user-md"></i> Mon Profil
+        </button>
+    </header>
+
+    <!-- Titre Hero -->
+    <div class="skills-hero">
+        <h1>SALLE D'ENTRAÎNEMENT CLINIQUE</h1>
+        <p>Développez vos réflexes d'interne : analysez les tracés électrocardiographiques et affûtez votre oreille stéthoscopique avant de partir en garde.</p>
+    </div>
+
+    <!-- Grille des 2 Modules Principaux -->
+    <main class="skills-grid">
+        
+        <!-- Carte 1 : ECG Academy 12 Dérivations -->
+        <div class="skill-card ecg">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon ecg">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div class="card-title-wrap">
+                        <h2>ECG Academy</h2>
+                        <span class="card-badge">12 Dérivations &bull; Mesures interactives</span>
+                    </div>
+                </div>
+                <p class="card-desc">
+                    Explorez les tracés sur vrai papier millimétré (25 mm/s, 10 mm/mV), utilisez la réglette de mesure pour calculer les intervalles (PR, QRS, QT/QTc) et relevez le défi du test d'évaluation clinique.
+                </p>
+            </div>
+
+            <div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Tracés Validés</span>
+                        <span class="stat-val" id="hub-ecg-completed">0 tracés</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Meilleur Score</span>
+                        <span class="stat-val" id="hub-ecg-highscore">0%</span>
+                    </div>
+                </div>
+                <a href="ecg-trainer.html" class="btn-launch">
+                    <span>Lancer l'ECG Academy</span> <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Carte 2 : Stéthoscope Virtuel -->
+        <div class="skill-card auscult">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon auscult">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <div class="card-title-wrap">
+                        <h2>Stéthoscope Lab</h2>
+                        <span class="card-badge" style="color:#10b981;">Auscultation Cardio-Pulmonaire</span>
+                    </div>
+                </div>
+                <p class="card-desc">
+                    Écoutez les souffles cardiaques et les bruits pulmonaires sur un torse interactif, commutez entre cloche et membrane, observez le phonocardiogramme synchrone et passez le test à l'aveugle.
+                </p>
+            </div>
+
+            <div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Auscultations</span>
+                        <span class="stat-val" id="hub-auscult-completed">0 cas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Meilleur Score</span>
+                        <span class="stat-val" id="hub-auscult-highscore">0%</span>
+                    </div>
+                </div>
+                <a href="auscultation.html" class="btn-launch auscult">
+                    <span>Lancer le Stéthoscope Lab</span> <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Vitrine des Badges Skill Lab -->
+    <section class="badges-section">
+        <div class="badges-card">
+            <h3><i class="fas fa-trophy"></i> Badges d'Excellence du Skill Lab</h3>
+            <div class="skills-badges-grid" id="skills-badges-list">
+                <!-- Rendu dynamique -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="js/badges.js"></script>
+    <script src="js/skills-hub.js"></script>
+</body>
+</html>

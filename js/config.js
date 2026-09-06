@@ -15,7 +15,12 @@ const CONFIG = {
     LLM_MODEL: window.__ENV__?.LLM_MODEL || 'deepseek-chat',
     LLM_MAX_TOKENS: 3000,
     LLM_TEMPERATURE: 0.85,
-    LLM_TOP_P: 0.92
+    LLM_TOP_P: 0.92,
+
+    // Atlas 3D (Human Atlas / BodyParts3D) — streaming lazy-load, rien dans le repo en V1.
+    ATLAS_ENABLED: 1,
+    ATLAS_BASE_URL: window.__ENV__?.ATLAS_BASE_URL || 'https://cdn.jsdelivr.net/gh/ashemag/human-atlas@main/public/models',
+    ATLAS_GZIP: true
 };
 window.CONFIG = CONFIG;
 

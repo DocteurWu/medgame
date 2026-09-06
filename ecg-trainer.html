@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG Academy 12 Dérivations - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/ecg-trainer.css?v=2">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="ecg-navbar">
+        <div class="nav-left">
+            <button class="back-btn" onclick="window.location.href='skills.html'">
+                <i class="fas fa-arrow-left"></i> Skill Lab
+            </button>
+            <div class="app-title-group">
+                <div class="app-logo">
+                    <i class="fas fa-heartbeat" style="color:#fff;"></i>
+                </div>
+                <div>
+                    <h1>ECG ACADEMY</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab-btn active" id="tab-mode-learn">
+                <i class="fas fa-book-open"></i> Entraînement Libre
+            </button>
+            <button class="nav-tab-btn" id="tab-mode-quiz">
+                <i class="fas fa-graduation-cap"></i> Mode Évaluation
+            </button>
+        </div>
+
+        <div class="nav-stats">
+            <div>Validés : <span id="stat-ecg-completed">0</span></div>
+            <div>Record : <span id="stat-ecg-highscore">0%</span></div>
+        </div>
+    </header>
+
+    <!-- Conteneur Principal -->
+    <main class="ecg-container">
+        
+        <!-- Colonne Gauche : Tracé ECG & Contrôles -->
+        <section class="ecg-main-section">
+            
+            <!-- Carte Info Cas & Menu Déroulant Bibliothèque -->
+            <div class="ecg-meta-card">
+                <div class="case-info">
+                    <h2 id="case-title">Chargement de l'ECG...</h2>
+                    <p id="case-patient">Chargement du contexte clinique...</p>
+                </div>
+                <div class="case-meta-right">
+                    <!-- Petit menu déroulant pour la bibliothèque en haut -->
+                    <div class="ecg-picker-group" id="ecg-picker-group">
+                        <label for="ecg-case-select" class="ecg-picker-label">
+                            <i class="fas fa-layer-group"></i> Tracé :
+                        </label>
+                        <select id="ecg-case-select" class="ecg-dropdown-select" title="Choisir un tracé ECG">
+                            <!-- Généré dynamiquement -->
+                        </select>
+                    </div>
+                    <div class="case-tags">
+                        <span class="badge-diff debutant" id="case-difficulty">DÉBUTANT</span>
+                        <span class="badge-diff" id="case-category" style="background:rgba(0,242,254,0.15); color:#00f2fe; border:1px solid #00f2fe;">NORMAL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas de Papier Millimétré ECG -->
+            <div class="ecg-canvas-wrapper">
+                <canvas id="ecg-canvas"></canvas>
+            </div>
+
+            <!-- Barre d'outils et mesures -->
+            <div class="ecg-toolbar">
+                <div class="tool-group">
+                    <button class="tool-btn" id="btn-toggle-caliper" title="Activer les curseurs de mesure">
+                        <i class="fas fa-ruler-combined"></i> Réglette & Mesures
+                    </button>
+                    <button class="tool-btn" id="btn-toggle-theme" title="Basculer entre papier millimétré et thème sombre">
+                        <i class="fas fa-moon"></i> Thème Sombre
+                    </button>
+                </div>
+
+                <div class="caliper-readout" id="caliper-live-readout">
+                    <span style="opacity:0.6;"><i class="fas fa-arrows-alt-h"></i> Réglette désactivée</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Colonne Droite : Diagnostic/Question, Checklist & Analyse -->
+        <aside class="ecg-sidebar">
+            
+            <!-- Carte Question & Interprétation (Visible à droite de l'ECG) -->
+            <div class="sidebar-card" id="ecg-quiz-panel">
+                <div id="quiz-view-header" class="hidden" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:#00f2fe; font-weight:700; font-size:0.9rem;" id="quiz-progress-text">Question 1 / 5</span>
+                    <button id="btn-next-case" class="tool-btn" style="display:none; background:rgba(0,242,254,0.25); border-color:#00f2fe;">
+                        Question Suivante <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <h3 style="margin-bottom:10px;"><i class="fas fa-stethoscope"></i> Diagnostic Électrocardiographique</h3>
+                <div id="ecg-question-text" style="font-size:0.95rem; line-height:1.45; color:#fff; font-weight:500;">
+                    Quel est le diagnostic principal sur cet enregistrement ?
+                </div>
+
+                <div class="quiz-options" id="ecg-options-container">
+                    <!-- Options dynamiquement mélangées -->
+                </div>
+
+                <div class="feedback-box" id="ecg-feedback-box" style="display:none;">
+                    <div id="ecg-explanation-text"></div>
+                </div>
+            </div>
+
+            <!-- Contenus d'Apprentissage (Checklist Méthodique) masqués en mode évaluation -->
+            <div id="learn-view-sidebar" style="display:flex; flex-direction:column; gap:18px;">
+                <!-- Checklist d'Interprétation Pas-à-Pas -->
+                <div class="sidebar-card" id="ecg-checklist-container">
+                    <h3><i class="fas fa-tasks"></i> Analyse Méthodique</h3>
+                    <div class="metrics-list" id="ecg-metrics-list">
+                        <!-- Généré dynamiquement -->
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/audio.js"></script>
+    <script src="js/badges.js"></script>
+    <script src="data/ecg-database.js"></script>
+    <script src="js/ecg-canvas.js"></script>
+    <script src="js/ecg-trainer.js"></script>
+</body>
+</html>

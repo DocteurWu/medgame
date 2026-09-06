@@ -137,13 +137,16 @@ export class ThreeClinicalAgent {
             subtitle = 'Auscultation cardiaque et pulmonaire';
             actions = [
                 { label: 'Auscultation Cardiaque', icon: 'fas fa-stethoscope', id: 'auscultation_cardio', done: this.examinedActions.has('auscultation_cardio') },
-                { label: 'Auscultation Pulmonaire', icon: 'fas fa-lungs', id: 'auscultation_pneumo', done: this.examinedActions.has('auscultation_pneumo') }
+                { label: 'Auscultation Pulmonaire', icon: 'fas fa-lungs', id: 'auscultation_pneumo', done: this.examinedActions.has('auscultation_pneumo') },
+                { label: 'Voir le cœur en 3D 🧠', icon: 'fas fa-cube', id: 'atlas_coeur', done: false },
+                { label: 'Voir les poumons en 3D 🧠', icon: 'fas fa-cube', id: 'atlas_poumon', done: false }
             ];
         } else if (zone === 'abdomen') {
             title = '🤲 Examen Abdominal';
             subtitle = 'Palpation et percussion';
             actions = [
-                { label: 'Palpation Abdominale', icon: 'fas fa-hand-paper', id: 'palpation_abdo', done: this.examinedActions.has('palpation_abdo') }
+                { label: 'Palpation Abdominale', icon: 'fas fa-hand-paper', id: 'palpation_abdo', done: this.examinedActions.has('palpation_abdo') },
+                { label: 'Voir foie/estomac en 3D 🧠', icon: 'fas fa-cube', id: 'atlas_abdomen', done: false }
             ];
         } else if (zone === 'membre') {
             title = '🦵 Examen des Membres';
@@ -264,6 +267,17 @@ export class ThreeClinicalAgent {
         let severity = 'normal'; // 'normal' | 'warning' | 'critical'
 
         switch (actionId) {
+            case 'atlas_coeur':
+            case 'atlas_poumon':
+            case 'atlas_abdomen': {
+                const presets = {
+                    atlas_coeur: { focus: 'heart', systems: ['cardiac', 'arterial', 'skeletal'], label: 'Cœur' },
+                    atlas_poumon: { focus: 'lung', systems: ['respiratory', 'skeletal'], label: 'Poumons' },
+                    atlas_abdomen: { focus: 'liver', systems: ['digestive', 'urinary', 'skeletal'], label: 'Foie / Abdomen' },
+                };
+                document.dispatchEvent(new CustomEvent('medgame:open-atlas', { detail: presets[actionId] }));
+                return; // pas de carte résultat, pas de scoring : pur visuel de référence
+            }
             case 'auscultation_cardio': {
                 title = 'Auscultation Cardiaque';
                 icon = 'fas fa-heartbeat';

@@ -1509,12 +1509,23 @@ class ThreeManager {
 // Export de la classe pour compatibilité ES modules
 export { ThreeManager };
 
+import { predictiveStreamer } from './predictive-streamer.js';
+
 // Singleton global — disponible pour game.js via window.threeManager
 window.threeManager = new ThreeManager();
 
+// Streaming prédictif automatique sur chargement d'un cas clinique
+document.addEventListener('case-loaded', (e) => {
+    if (e.detail?.caseData) {
+        predictiveStreamer.predictForCase(e.detail.caseData);
+    }
+});
+
 // Initialisation passive (ne démarre pas le 3D automatiquement)
 const init3DManager = () => {
-    // Prêt pour initialisation différée
+    if (window.gameState?.currentCase) {
+        predictiveStreamer.predictForCase(window.gameState.currentCase);
+    }
 };
 
 if (document.readyState === 'loading') {

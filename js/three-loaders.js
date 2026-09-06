@@ -29,17 +29,16 @@ gltfLoader.setDRACOLoader(dracoLoader);
 
 export const objLoader = new OBJLoader(loadingManager);
 
+import { offlineAssetCache } from './offline-asset-cache.js';
+
 // ============================================================
-// CHARGEMENT GLB ROBUSTE (cache + timeout + erreur propre)
+// CHARGEMENT GLB ROBUSTE (cache persistant + timeout + erreur propre)
 // ============================================================
 
-// Le CharacterController importait `loadGLBSmart` qui n'existait pas :
-// l'import nommé manquant faisait échouer TOUT le module => aucun docteur.
-// Cette fonction comble le trou + déduplique les chargements redondants.
 const _glbPromises = new Map();
 
 /**
- * Charge un GLB avec cache, timeout et callbacks compatibles GLTFLoader.
+ * Charge un GLB avec cache persistant OfflineAssetCache, timeout et callbacks compatibles GLTFLoader.
  * @param {string} path — chemin du .glb
  * @param {Function} onLoad — callback(gltf)
  * @param {Function} [onProgress] — callback(xhr)
@@ -55,12 +54,38 @@ export function loadGLBSmart(path, onLoad, onProgress, onError, opts = {}) {
                 _glbPromises.delete(path); // retry possible après timeout
                 reject(new Error(`[loadGLBSmart] timeout ${timeoutMs}ms : ${path}`));
             }, timeoutMs);
-            gltfLoader.load(
-                path,
-                (gltf) => { clearTimeout(timer); resolve(gltf); },
-                onProgress,
-                (err) => { clearTimeout(timer); _glbPromises.delete(path); reject(err); }
-            );
+
+            // Tente de récupérer un Blob URL depuis le CacheStorage persistant
+            offlineAssetCache.getOrFetchUrl(path, (ratio) => {
+                onProgress?.({ lengthComputable: true, loaded: ratio * 100, total: 100 });
+            }).then(blobUrl => {
+                gltfLoader.load(
+                    blobUrl,
+                    (gltf) => {
+                        clearTimeout(timer);
+                        resolve(gltf);
+                    },
+                    undefined,
+                    (err) => {
+                        // Si le blobUrl échoue (cas de références relatives), repli sur le path d'origine
+                        console.warn('[loadGLBSmart] Repli sur path direct après échec blob:', err);
+                        gltfLoader.load(
+                            path,
+                            (gltf) => { clearTimeout(timer); resolve(gltf); },
+                            onProgress,
+                            (errDirect) => { clearTimeout(timer); _glbPromises.delete(path); reject(errDirect); }
+                        );
+                    }
+                );
+            }).catch(() => {
+                // Si CacheStorage indisponible ou fetch blob échoué, repli direct
+                gltfLoader.load(
+                    path,
+                    (gltf) => { clearTimeout(timer); resolve(gltf); },
+                    onProgress,
+                    (err) => { clearTimeout(timer); _glbPromises.delete(path); reject(err); }
+                );
+            });
         }));
     }
 

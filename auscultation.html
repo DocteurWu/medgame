@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stéthoscope Lab & Auscultation - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/auscultation.css?v=3">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="auscult-navbar">
+        <div class="nav-left">
+            <button class="back-btn" onclick="window.location.href='skills.html'">
+                <i class="fas fa-arrow-left"></i> Skill Lab
+            </button>
+            <div class="app-title-group">
+                <div class="app-logo-auscult">
+                    <i class="fas fa-headphones" style="color:#0a0f24;"></i>
+                </div>
+                <div>
+                    <h1>STÉTHOSCOPE LAB</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab-btn active" id="tab-mode-learn">
+                <i class="fas fa-stethoscope"></i> Exploration Libre
+            </button>
+            <button class="nav-tab-btn" id="tab-mode-quiz">
+                <i class="fas fa-volume-up"></i> Test à l'Aveugle
+            </button>
+        </div>
+
+        <div class="nav-stats">
+            <div>Validés : <span id="stat-auscult-completed">0</span></div>
+            <div>Record : <span id="stat-auscult-highscore">0%</span></div>
+        </div>
+    </header>
+
+    <!-- Conteneur Principal -->
+    <main class="auscult-container">
+        
+        <!-- Colonne Gauche : Torse interactif, Audio & Phonocardiogramme -->
+        <section class="auscult-main-section">
+            
+            <!-- Carte Info Cas -->
+            <div class="meta-card">
+                <div class="case-info">
+                    <h2 id="case-title" style="font-family:'Outfit',sans-serif; margin:0 0 4px 0;">Chargement du cas...</h2>
+                    <p id="case-patient" style="margin:0; font-size:0.88rem; color:rgba(255,255,255,0.7);">Chargement du contexte clinique...</p>
+                </div>
+                <div class="case-tags" style="display:flex; gap:8px;">
+                    <span class="badge-diff debutant" id="case-difficulty">DÉBUTANT</span>
+                    <span class="badge-diff urgence" id="case-type">CARDIOLOGIE</span>
+                </div>
+            </div>
+
+            <!-- Espace de Travail Torse + Audio -->
+            <div class="torso-workspace">
+                
+                <!-- Torse Anatomique avec Filtres & Hotspots -->
+                <div class="torso-panel">
+                    <div class="foyer-filter-bar">
+                        <button class="foyer-filter-btn active" data-filter="all">Tous les Foyers</button>
+                        <button class="foyer-filter-btn" data-filter="cardiac">🩺 Cœur</button>
+                        <button class="foyer-filter-btn" data-filter="pulmonary">🫁 Poumons</button>
+                    </div>
+
+                    <div class="torso-diagram-container">
+                        <svg class="torso-silhouette" viewBox="0 0 360 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Cou & Épaules & Thorax -->
+                            <path d="M140 40 C140 20, 220 20, 220 40 C270 70, 310 130, 305 230 C300 320, 280 400, 270 420 L90 420 C80 400, 60 320, 55 230 C50 130, 90 70, 140 40 Z" fill="rgba(0, 242, 254, 0.03)" stroke="rgba(0, 242, 254, 0.25)" stroke-width="2"/>
+                            
+                            <!-- Clavicules -->
+                            <path d="M75 90 Q175 110 180 100 M180 100 Q185 110 285 90" stroke="rgba(255, 255, 255, 0.25)" stroke-width="3" stroke-linecap="round"/>
+                            
+                            <!-- Sternum -->
+                            <rect x="173" y="105" width="14" height="135" rx="7" fill="rgba(255, 255, 255, 0.12)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1"/>
+                            <circle cx="180" cy="245" r="5" fill="rgba(255, 255, 255, 0.2)"/> <!-- Appendice xiphoïde -->
+                            
+                            <!-- Silhouette du Cœur -->
+                            <path d="M175 145 C150 145, 135 170, 140 210 C145 250, 190 280, 230 270 C245 240, 225 180, 195 150 Z" fill="rgba(255, 71, 87, 0.06)" stroke="rgba(255, 71, 87, 0.22)" stroke-dasharray="4 4"/>
+                            
+                            <!-- Poumon Droit -->
+                            <path d="M85 120 C100 110, 155 125, 160 145 C165 210, 160 300, 145 330 C110 340, 80 300, 75 220 Z" fill="rgba(16, 185, 129, 0.04)" stroke="rgba(16, 185, 129, 0.2)" stroke-dasharray="3 3"/>
+                            
+                            <!-- Poumon Gauche -->
+                            <path d="M275 120 C260 110, 205 125, 200 145 C205 200, 215 280, 225 330 C250 340, 280 300, 285 220 Z" fill="rgba(16, 185, 129, 0.04)" stroke="rgba(16, 185, 129, 0.2)" stroke-dasharray="3 3"/>
+                            
+                            <!-- Arcs costaux fins -->
+                            <path d="M187 135 Q235 150 280 170 M173 135 Q125 150 80 170" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                            <path d="M187 165 Q240 185 285 210 M173 165 Q120 185 75 210" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                            <path d="M187 195 Q245 220 290 250 M173 195 Q115 220 70 250" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                            <path d="M187 225 Q245 255 285 290 M173 225 Q115 255 75 290" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                        </svg>
+
+                        <!-- Foyers Cardiaques (Ao, Pu, Tri, Mit, Car, Axi) -->
+                        <button class="torso-hotspot cardiac spot-aortique" data-hotspot="aortique" title="Foyer Aortique (2e EID)">Ao</button>
+                        <button class="torso-hotspot cardiac spot-pulmonaire" data-hotspot="pulmonaire" title="Foyer Pulmonaire (2e EIG)">Pu</button>
+                        <button class="torso-hotspot cardiac spot-tricuspide" data-hotspot="tricuspide" title="Foyer Tricuspide">Tri</button>
+                        <button class="torso-hotspot cardiac spot-apex" data-hotspot="apex" title="Foyer Mitral / Apex (5e EIG)">Mit</button>
+                        <button class="torso-hotspot cardiac spot-carotide" data-hotspot="carotide_droite" title="Irradiation Carotidienne">Car</button>
+                        <button class="torso-hotspot cardiac spot-aisselle" data-hotspot="aisselle_gauche" title="Irradiation Axillaire">Axi</button>
+
+                        <!-- Foyers Pulmonaires & Voies Aériennes -->
+                        <button class="torso-hotspot airway spot-trachee" data-hotspot="trachee" title="Larynx & Trachée">Tr</button>
+                        <button class="torso-hotspot pulmonary spot-p-apexd" data-hotspot="poumon_apex_droit" title="Apex Pulmonaire Droit">P1</button>
+                        <button class="torso-hotspot pulmonary spot-p-apexg" data-hotspot="poumon_apex_gauche" title="Apex Pulmonaire Gauche">P2</button>
+                        <button class="torso-hotspot pulmonary spot-p-mid-d" data-hotspot="poumon_champs_moyen" title="Champs Moyen Droit">P3</button>
+                        <button class="torso-hotspot pulmonary spot-p-mid-g" data-hotspot="poumon_champs_moyen" title="Champs Moyen Gauche">P4</button>
+                        <button class="torso-hotspot pulmonary spot-p-based" data-hotspot="poumon_base_droite" title="Base Pulmonaire Droite">P5</button>
+                        <button class="torso-hotspot pulmonary spot-p-baseg" data-hotspot="poumon_base_gauche" title="Base Pulmonaire Gauche">P6</button>
+                    </div>
+                </div>
+
+                <!-- Panneau Audio & Phonocardiogramme Synchrone -->
+                <div class="audio-visual-panel">
+                    
+                    <div class="hotspot-status-header">
+                        <span id="current-hotspot-label" class="hotspot-current-title">
+                            <i class="fas fa-dot-circle" style="color:var(--auscult-cyan);"></i> Foyer Mitral / Apex
+                        </span>
+                        <div class="filter-switch-group">
+                            <button class="filter-btn active" id="btn-filter-diaphragm">
+                                <i class="fas fa-circle"></i> Membrane (Aigus)
+                            </button>
+                            <button class="filter-btn" id="btn-filter-bell">
+                                <i class="fas fa-bell"></i> Cloche (Graves)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Phonocardiogramme Canvas -->
+                    <div class="phono-canvas-wrapper">
+                        <div class="phono-overlay-labels">PHONOCARDIOGRAMME TEMPS RÉEL (B1 - B2)</div>
+                        <div class="phono-time-markers">25 mm/s &bull; Filtre actif</div>
+                        <canvas id="phonocardiogram-canvas"></canvas>
+                    </div>
+
+                    <!-- Boutons Audio -->
+                    <div class="audio-controls-bar">
+                        <button class="btn-audio-play" id="btn-toggle-audio">
+                            <i class="fas fa-play"></i> Écouter au Stéthoscope
+                        </button>
+                        <div class="audio-hint">
+                            <i class="fas fa-hand-pointer" style="color:var(--auscult-cyan);"></i> Cliquez sur un repère anatomique pour ausculter
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Colonne Droite : Fiche sémiologique, Bibliothèque & Évaluation -->
+        <aside class="auscult-sidebar">
+            
+            <!-- Mode Exploration Libre : Sémiologie + Bibliothèque -->
+            <div id="learn-view-sidebar" class="learn-sidebar-wrap">
+                <div class="sidebar-card semiology-card">
+                    <div class="semiology-header">
+                        <h3><i class="fas fa-notes-medical"></i> Sémiologie Clinique</h3>
+                        <button class="btn-eval-case" id="btn-eval-case-toggle" title="Tester mes connaissances sur ce cas">
+                            <i class="fas fa-graduation-cap"></i> Auto-évaluation
+                        </button>
+                    </div>
+                    <p id="semiology-description">Description sémiologique du souffle...</p>
+                </div>
+
+                <div class="sidebar-card library-card">
+                    <div class="library-card-header">
+                        <h3><i class="fas fa-list-ul"></i> Bibliothèque Auscultatoire</h3>
+                        <div class="lib-filter-tabs">
+                            <button class="lib-filter-btn" data-lib-filter="cardiac"><i class="fas fa-heartbeat" style="color:#ff4757;"></i> Cœur (<span id="lib-count-cardiac">6</span>)</button>
+                            <button class="lib-filter-btn" data-lib-filter="pulmonary"><i class="fas fa-lungs" style="color:#10b981;"></i> Poumons (<span id="lib-count-pulmonary">4</span>)</button>
+                            <button class="lib-filter-btn active" data-lib-filter="all">Tous (<span id="lib-count-all">10</span>)</button>
+                        </div>
+                    </div>
+                    <div class="case-selector-list" id="auscult-case-list">
+                        <!-- Liste des cas groupés et séparés -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mode Test à l'Aveugle / Évaluation interactive -->
+            <div class="sidebar-card hidden" id="auscult-quiz-panel">
+                <div id="quiz-view-header" style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:#00f2fe; font-weight:700; font-size:0.9rem;" id="quiz-progress-text">Question 1 / 5</span>
+                    <button id="btn-next-case" class="tool-btn" style="display:none; background:rgba(0,242,254,0.25); border-color:#00f2fe;">
+                        Question Suivante <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button id="btn-exit-eval" class="tool-btn hidden" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.2); font-size:0.75rem; padding:4px 10px;">
+                        <i class="fas fa-arrow-left"></i> Fiche
+                    </button>
+                </div>
+
+                <h3 style="margin-bottom:10px;"><i class="fas fa-ear-listen"></i> Évaluation Sémiologique</h3>
+                <div id="auscult-question-text" style="font-size:0.92rem; line-height:1.45; color:#fff; font-weight:500;">
+                    Quel bruit ou souffle cardiaque/pulmonaire identifiez-vous ?
+                </div>
+
+                <div class="quiz-options" id="auscult-options-container" style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
+                    <!-- Options dynamiques mélangées -->
+                </div>
+
+                <div class="feedback-box" id="auscult-feedback-box" style="display:none; margin-top:14px; padding:14px; border-radius:12px; font-size:0.85rem;">
+                    <div id="auscult-explanation-text"></div>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/audio.js"></script>
+    <script src="js/badges.js"></script>
+    <script src="data/auscultation-database.js"></script>
+    <script src="js/auscultation-audio.js"></script>
+    <script src="js/auscultation.js"></script>
+</body>
+</html>

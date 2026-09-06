@@ -10,7 +10,7 @@
                 localStorage.removeItem('medgame_case_cache');
                 if ('caches' in window) {
                     caches.keys().then(names => {
-                        names.forEach(name => caches.delete(name));
+                        names.filter(name => name !== 'medgame-v1-assets').forEach(name => caches.delete(name));
                     });
                 }
                 if ('serviceWorker' in navigator) {
@@ -719,6 +719,9 @@
     <script type="module" src="js/three-transition-agent.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-lock-agent.js?v=20260524-nostore"></script>
     <script type="module" src="js/three-manager.js?v=20260524-nostore"></script>
+    <!-- Atlas 3D overlay (chargé à la demande, DA MedGame) -->
+    <link rel="stylesheet" href="css/atlas.css?v=6">
+    <script type="module" src="js/three-atlas-overlay.js?v=6"></script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
