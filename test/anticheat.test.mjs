@@ -205,3 +205,57 @@ test('Scoring — Diagnostic is strict (no semantic leniency)', async (t) => {
         assert.equal(engine.calculateCompositeScore().diagnosticScore, 100);
     });
 });
+
+test('Scoring — Doing nothing yields 0 score in interrogatoire and demarche', async (t) => {
+    const engine = new MedGameEngine();
+    await engine.startCase('CARDIO_thrombose_veineuse_profonde_droite.json');
+
+    await t.test('without any questions, exams or prescriptions, score is 0 in MedGameEngine', () => {
+        const result = engine.calculateCompositeScore();
+        assert.equal(result.compositeScore, 0, 'Composite score should be 0 when nothing is done');
+        assert.equal(result.demarcheScore, 0, 'Demarche score should be 0 when no actions taken');
+        assert.equal(result.diagnosticScore, 0, 'Diagnostic score should be 0 when no diagnostic selected');
+        assert.equal(result.traitementScore, 0, 'Traitement score should be 0 when no treatment prescribed');
+    });
+
+    await t.test('scoring.js calculateDemarcheScore and calculateCompositeScore return 0 when nothing is done', async () => {
+        const fs = await import('node:fs');
+        const path = await import('node:path');
+        const vm = await import('node:vm');
+
+        const context = {
+            window: {},
+            sessionStorage: {
+                getItem: (k) => 'immersif',
+                setItem: () => {}
+            },
+            document: {
+                getElementById: () => null
+            },
+            Date,
+            Math,
+            Set,
+            Array,
+            Object,
+            parseInt
+        };
+        context.window = context;
+
+        const scoringCode = fs.readFileSync(path.resolve('js/scoring.js'), 'utf8');
+        vm.runInNewContext(scoringCode, context);
+
+        const caseData = JSON.parse(fs.readFileSync(path.resolve('data/CARDIO_thrombose_veineuse_profonde_droite.json'), 'utf8'));
+
+        context.resetDemarche();
+        const demScore = context.calculateDemarcheScore(caseData);
+        assert.equal(demScore, 0, 'calculateDemarcheScore must be 0 when nothing was asked');
+
+        context.scoringState.currentCase = caseData;
+        const comp = context.calculateCompositeScore();
+        assert.equal(comp.compositeScore, 0, 'calculateCompositeScore must be 0 when nothing was done');
+        assert.equal(comp.demarcheScore, 0, 'demarcheScore must be 0');
+        assert.equal(comp.diagnosticScore, 0, 'diagnosticScore must be 0');
+        assert.equal(comp.traitementScore, 0, 'traitementScore must be 0');
+    });
+});
+

@@ -670,7 +670,10 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         // Rendu IAO (toujours, mais visible via CSS seulement en llm-mode)
         renderIAO(currentCase);
 
-        const immersionMode = sessionStorage.getItem('immersionMode') || 'classique';
+        const immersionMode = sessionStorage.getItem('immersionMode') || 'immersif';
+        if (!sessionStorage.getItem('immersionMode')) {
+            sessionStorage.setItem('immersionMode', 'immersif');
+        }
         const revealAllBtn = document.getElementById('btn-reveal-all');
 
         if (llmMode) {

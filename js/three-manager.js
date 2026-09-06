@@ -362,7 +362,7 @@ class ThreeManager {
                     break;
                 case '3':
                     e.preventDefault();
-                    this.goToPrescription();
+                    this.goToTablet();
                     break;
                 case '4':
                     e.preventDefault();
@@ -395,6 +395,8 @@ class ThreeManager {
                 this.goToPatient();
             } else if (action === 'pc') {
                 this.goToPC();
+            } else if (action === 'tablet') {
+                this.goToTablet();
             } else if (action === 'armoire') {
                 this.openArmoire();
             } else if (action === 'vitals') {
@@ -492,20 +494,32 @@ class ThreeManager {
         }
     }
 
-    goToPrescription() {
+    goToTablet() {
         if (!this.scene) return;
-        const arriveAndPrescribe = () => {
+        const arriveAndOpenTablet = () => {
             this.scene.setCamera('desk');
             if (this.character) {
                 this.character.lookAt(new THREE.Vector3(-1.5, this.character.group.position.y, -1.2));
                 this.character.reach();
             }
-            if (window.openPrescriptionTablet) window.openPrescriptionTablet();
+            this.openTablet();
         };
         if (this.character) {
-            this.character.moveTo(INTERACTION_ZONES.desk, arriveAndPrescribe);
+            this.character.moveTo(INTERACTION_ZONES.desk, arriveAndOpenTablet);
         } else {
-            arriveAndPrescribe();
+            arriveAndOpenTablet();
+        }
+    }
+
+    goToPrescription() {
+        this.goToTablet();
+    }
+
+    openTablet() {
+        if (window.openTablet) {
+            window.openTablet();
+        } else if (window.EcosMode && typeof window.EcosMode.openAnnounce === 'function') {
+            window.EcosMode.openAnnounce();
         }
     }
 
@@ -518,7 +532,7 @@ class ThreeManager {
                 this.character.reach();
             }
             if (instrument.key === 'tablet') {
-                this.openPCPanel();
+                this.openTablet();
                 return;
             }
             if (this.currentCase) {
@@ -812,24 +826,6 @@ class ThreeManager {
                             <h4 style="color:#00f2fe;margin:0 0 12px 0;font-size:0.9rem;"><i class="fas fa-stethoscope"></i> Examen Clinique</h4>
                             <div id="pc-clinical-exam"></div>
                         </div>
-                        <div class="pc-section" id="pc-decision" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
-                            <h4 style="color:#00f2fe;margin:0 0 12px 0;font-size:0.9rem;"><i class="fas fa-gavel"></i> Décision Clinique</h4>
-                            <div>
-                                <label style="color:rgba(255,255,255,0.7);font-size:0.85rem;">Diagnostic :</label>
-                                <select id="pc-diagnostic-select" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:10px 12px;border-radius:8px;font-size:0.9rem;margin-bottom:12px;">
-                                    <option value="">-- Choisir --</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style="color:rgba(255,255,255,0.7);font-size:0.85rem;">Traitements :</label>
-                                <div id="pc-treatments-grid" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;"></div>
-                            </div>
-                            <button id="pc-validate-btn" style="width:100%;background:linear-gradient(135deg,#a020f0,#6a0dad);border:none;color:#fff;padding:14px;border-radius:12px;cursor:pointer;font-size:1rem;font-weight:700;">
-                                <i class="fas fa-check-double"></i> VALIDER LE CAS
-                            </button>
-                            <div id="pc-score-display" style="text-align:center;font-size:1.2rem;font-weight:700;color:#2ecc71;margin-top:10px;"></div>
-                            <div id="pc-treatment-feedback" style="text-align:center;font-size:0.9rem;color:#ffc107;margin-top:6px;"></div>
-                        </div>
                     </div>
                 </div>
             `;
@@ -1035,20 +1031,7 @@ class ThreeManager {
     }
 
     _bindPCPanelEvents() {
-        const validateBtn = document.getElementById('pc-validate-btn');
-        if (validateBtn) {
-            validateBtn.addEventListener('click', () => {
-                const validateBtn2D = document.getElementById('validate-traitement');
-                if (validateBtn2D) validateBtn2D.click();
-                setTimeout(() => {
-                    const scoreEl = document.getElementById('pc-score-display');
-                    if (scoreEl) scoreEl.textContent = window.gameState?.score ? `Score: ${window.gameState.score}` : '';
-                    const feedbackEl = document.getElementById('pc-treatment-feedback');
-                    const feedback2D = document.getElementById('treatment-feedback');
-                    if (feedbackEl && feedback2D) feedbackEl.textContent = feedback2D.textContent;
-                }, 500);
-            });
-        }
+        // Le panneau PC sert uniquement à la consultation des examens et du dossier
     }
 
     _populatePCPanel() {
@@ -1121,62 +1104,6 @@ class ThreeManager {
             html += '</div>';
             if (ec.aspectGeneral) html += `<p class="pc-aspect">${ec.aspectGeneral}</p>`;
             clinicalEl.innerHTML = html;
-        }
-
-        const diagSelect = document.getElementById('pc-diagnostic-select');
-        if (diagSelect && currentCase.possibleDiagnostics) {
-            diagSelect.innerHTML = '<option value="">-- Choisir --</option>';
-            currentCase.possibleDiagnostics.forEach(d => {
-                const opt = document.createElement('option');
-                opt.value = d;
-                opt.textContent = d;
-                diagSelect.appendChild(opt);
-            });
-            const handler = () => {
-                const select2D = document.getElementById('diagnostic-select');
-                if (select2D) select2D.value = diagSelect.value;
-                // Notifier le HUD 3D de la progression diagnostic
-                if (this.hud && this.hud._syncProgress) this.hud._syncProgress();
-            };
-            diagSelect.removeEventListener('change', diagSelect._prevHandler);
-            diagSelect._prevHandler = handler;
-            diagSelect.addEventListener('change', handler);
-        }
-
-        const treatGrid = document.getElementById('pc-treatments-grid');
-        if (treatGrid && currentCase.possibleTreatments) {
-            treatGrid.innerHTML = '';
-            currentCase.possibleTreatments.forEach(t => {
-                const btn = document.createElement('button');
-                btn.className = 'pc-treat-btn';
-                const tName = (typeof t === 'string') ? t : (t.nom || String(t));
-                btn.textContent = tName;
-                btn.dataset.traitement = tName;
-                btn.addEventListener('click', () => {
-                    btn.classList.toggle('selected');
-                    window.scoringState = window.scoringState || {};
-                    if (btn.classList.contains('selected')) {
-                        if (!window.scoringState.selectedTreatments) window.scoringState.selectedTreatments = [];
-                        if (!window.scoringState.selectedTreatments.includes(tName)) {
-                            window.scoringState.selectedTreatments.push(tName);
-                        }
-                    } else {
-                        if (window.scoringState.selectedTreatments) {
-                            window.scoringState.selectedTreatments = window.scoringState.selectedTreatments.filter(x => x !== tName);
-                        }
-                    }
-                    const treatBtn2D = document.querySelector(`#availableTreatments button[data-traitement="${tName}"]`);
-                    if (treatBtn2D) treatBtn2D.click();
-                    // Notifier le HUD 3D de la progression traitement
-                    if (this.hud && this.hud._syncProgress) this.hud._syncProgress();
-                });
-                treatGrid.appendChild(btn);
-            });
-        }
-
-        const scoreEl = document.getElementById('pc-score-display');
-        if (scoreEl && window.gameState) {
-            scoreEl.textContent = window.gameState.score ? `Score: ${window.gameState.score}` : '';
         }
     }
 

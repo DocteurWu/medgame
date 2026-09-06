@@ -531,6 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
             banner.innerHTML = `${tagHtml}<span class="daily-case-name">${displayTitle}</span>${btnHtml}`;
 
             const launch = () => {
+                sessionStorage.setItem('immersionMode', 'immersif');
                 localStorage.setItem('selectedThemes', JSON.stringify([pick.spec]));
                 localStorage.setItem('selectedCaseFiles', JSON.stringify([pick.file]));
                 localStorage.removeItem('selectedCaseFile');
@@ -585,6 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lancer la session
     startSessionBtn.addEventListener('click', () => {
         if (selectedCaseFiles.length > 0) {
+            sessionStorage.setItem('immersionMode', 'immersif');
             localStorage.setItem('selectedThemes', JSON.stringify([currentThemeInModal]));
             localStorage.setItem('selectedCaseFiles', JSON.stringify(selectedCaseFiles));
             localStorage.removeItem('selectedCaseFile');
