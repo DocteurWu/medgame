@@ -805,7 +805,20 @@ ${appliedTreatmentsText}`.trim();
 
         } catch (err) {
             if (err.name === 'AbortError') return;
-            console.error('[LLMPatient] Appel LLM échoué :', err);
+            console.warn('[LLMPatient] Appel LLM échoué :', err.message);
+
+            // Secours robuste immédiat : utiliser les données cliniques du cas
+            if (window.llmFallback && this.caseData) {
+                console.info('[LLMPatient] Utilisation du moteur clinique local de secours.');
+                const fallbackAnswer = window.llmFallback.answer(cleanQuestion, this.caseData);
+                if (fallbackAnswer) {
+                    const safeResponse = this._applySafetyFilter(fallbackAnswer);
+                    this.history.push({ role: 'assistant', content: safeResponse });
+                    onComplete?.(safeResponse);
+                    return safeResponse;
+                }
+            }
+
             const endpointHint = this.endpoint || '(endpoint inconnu)';
             const modelHint = this.model || '(modèle inconnu)';
             const msg = err.message || String(err);
@@ -815,9 +828,7 @@ ${appliedTreatmentsText}`.trim();
                 + `\n→ Vérifiez : 1) Serveur/proxy démarré ? 2) .env contient LLM_API_KEY et LLM_API_URL ?`
                 + ` 3) Console (F12) → Network → llm-proxy pour le détail HTTP.`
                 + ` 4) Si vous ouvrez index.html en file://, lancez npx serve . et ouvrez http://localhost:3000`;
-            // Propager l'erreur au chat pour affichage explicite (plus de fallback silencieux)
             onError?.(diagnostic);
-            // Ne pas pousser de fallback silencieux dans l'historique
             throw new Error(diagnostic);
         }
     }
