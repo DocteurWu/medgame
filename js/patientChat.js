@@ -70,8 +70,15 @@
             }
         }
 
-        setCase(caseData) {
+        setCase(caseData, force = false) {
+            const isSameCase = this.caseData && caseData && (this.caseData.id === caseData.id);
             this.caseData = caseData;
+            
+            // Si c'est un rafraîchissement partiel du même cas en cours, ne pas vider les messages
+            if (isSameCase && !force && this.messages.length > 0) {
+                return;
+            }
+
             this.messages = [];
             this.panel = document.getElementById('dialogue-panel');
             const messagesEl = document.getElementById('dialogue-messages');
@@ -325,49 +332,32 @@
 
             // Bouton déroulant
             const toggleBtn = document.createElement('button');
-            toggleBtn.textContent = this.suggestedOpen ? '📋 Questions suggérées ▲' : '📋 Questions suggérées ▼';
+            toggleBtn.className = 'suggested-questions-toggle';
+            toggleBtn.innerHTML = this.suggestedOpen ? '<i class="fas fa-lightbulb"></i> Questions suggérées <i class="fas fa-chevron-up" style="float:right;margin-top:2px;"></i>' : '<i class="fas fa-lightbulb"></i> Questions suggérées <i class="fas fa-chevron-down" style="float:right;margin-top:2px;"></i>';
             toggleBtn.style.cssText = `
-                background: rgba(0,242,254,0.12); border: 1px solid rgba(0,242,254,0.3);
-                color: #00f2fe; padding: 6px 12px; border-radius: 20px; cursor: pointer;
-                font-size: 0.82rem; font-family: 'Outfit', sans-serif; width: 100%;
-                text-align: left; transition: all 0.2s;
+                width: 100%; text-align: left; margin-top: 8px;
             `;
-            toggleBtn.addEventListener('mouseenter', () => toggleBtn.style.background = 'rgba(0,242,254,0.22)');
-            toggleBtn.addEventListener('mouseleave', () => toggleBtn.style.background = 'rgba(0,242,254,0.12)');
 
             const list = document.createElement('div');
-            list.style.cssText = `display:${this.suggestedOpen ? 'flex' : 'none'}; margin-top:6px; max-height:180px; overflow-y:auto; flex-wrap:wrap; gap:4px;`;
+            list.style.cssText = `display:${this.suggestedOpen ? 'flex' : 'none'}; margin-top:8px; max-height:180px; overflow-y:auto; flex-wrap:wrap; gap:6px;`;
 
             toggleBtn.addEventListener('click', () => {
                 this.suggestedOpen = !this.suggestedOpen;
                 list.style.display = this.suggestedOpen ? 'flex' : 'none';
-                toggleBtn.textContent = this.suggestedOpen ? '📋 Questions suggérées ▲' : '📋 Questions suggérées ▼';
+                toggleBtn.innerHTML = this.suggestedOpen ? '<i class="fas fa-lightbulb"></i> Questions suggérées <i class="fas fa-chevron-up" style="float:right;margin-top:2px;"></i>' : '<i class="fas fa-lightbulb"></i> Questions suggérées <i class="fas fa-chevron-down" style="float:right;margin-top:2px;"></i>';
             });
 
             // Boutons de questions (slice 8)
             questions.slice(0, 8).forEach(item => {
                 const btn = document.createElement('button');
+                btn.className = 'suggested-question-chip';
                 btn.textContent = item.q;
-                btn.style.cssText = `
-                    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
-                    color: rgba(255,255,255,0.85); padding: 5px 10px; border-radius: 14px;
-                    cursor: pointer; font-size: 0.78rem; font-family: 'Outfit', sans-serif;
-                    text-align: left; transition: all 0.2s; flex: 1 1 auto; min-width: 0;
-                `;
-                btn.addEventListener('mouseenter', () => {
-                    btn.style.background = 'rgba(0,242,254,0.15)';
-                    btn.style.borderColor = 'rgba(0,242,254,0.4)';
-                });
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.background = 'rgba(255,255,255,0.06)';
-                    btn.style.borderColor = 'rgba(255,255,255,0.15)';
-                });
                 btn.addEventListener('click', () => {
                     if (this.isAsking) return;
                     this.askSuggested(item.q, item.fieldPath);
                     this.suggestedOpen = false;
                     list.style.display = 'none';
-                    toggleBtn.textContent = '📋 Questions suggérées ▼';
+                    toggleBtn.innerHTML = '<i class="fas fa-lightbulb"></i> Questions suggérées <i class="fas fa-chevron-down" style="float:right;margin-top:2px;"></i>';
                 });
                 list.appendChild(btn);
             });
@@ -594,10 +584,16 @@
             if (!root) return document.createTextNode('');
             const row = document.createElement('div');
             row.className = `dialogue-message ${speaker === 'Vous' ? 'from-user' : 'from-patient'}`;
-            const label = document.createElement('strong');
-            label.textContent = `${speaker} : `;
+            const isUser = speaker === 'Vous';
+            const icon = isUser ? '<i class="fas fa-user-md"></i>' : '<i class="fas fa-user-injured"></i>';
+            const speakerLabel = isUser ? 'Médecin' : (speaker || 'Patient');
+            const label = document.createElement('span');
+            label.className = 'ecos-msg-speaker';
+            label.innerHTML = `${icon} ${speakerLabel}`;
             const body = document.createElement('span');
-            body.innerHTML = this._safeMarkdown(text);
+            body.className = 'ecos-msg-text';
+            const formatted = isUser ? this._safeMarkdown(text) : this._safeMarkdown(text).replace(/\(([^)]+)\)/g, '<div class="clinical-stage-direction"><i class="fas fa-notes-medical"></i> <em>$1</em></div>');
+            body.innerHTML = formatted;
             row.append(label, body);
             root.appendChild(row);
             root.scrollTop = root.scrollHeight;

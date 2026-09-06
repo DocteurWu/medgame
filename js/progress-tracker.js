@@ -50,47 +50,11 @@
     }
 
     function ensureUI() {
-        // 1. Carte progression dans la sidebar (sous patient-mini-card)
-        if (!document.getElementById('medgame-progress-card')) {
-            const anchor = document.querySelector('.patient-mini-card');
-            const card = document.createElement('div');
-            card.id = 'medgame-progress-card';
-            card.setAttribute('role', 'status');
-            card.setAttribute('aria-live', 'polite');
-            card.innerHTML = `
-                <div class="mg-progress-header">
-                    <span><i class="fas fa-clipboard-check"></i> Démarche <span id="mg-mode-badge" class="mg-mode-badge"></span></span>
-                    <strong id="mg-progress-score">0%</strong>
-                </div>
-                <div class="mg-progress-bar"><div id="mg-progress-fill" class="mg-progress-fill"></div></div>
-                <ul class="mg-progress-list">
-                    <li id="mg-p-interro">❓ Interrogatoire <span>—</span></li>
-                    <li id="mg-p-examen">🩺 Examen clinique <span>—</span></li>
-                    <li id="mg-p-exams">🧪 Examens compl. <span>—</span></li>
-                    <li id="mg-p-locks">🔐 Défis <span>—</span></li>
-                </ul>
-                <div class="mg-progress-actions">
-                    <button id="mg-btn-hint" type="button" title="Obtenir un indice (-15s, max 3)"><i class="fas fa-lightbulb"></i> Indice</button>
-                    <button id="mg-btn-nurse" type="button" title="Demander l'avis de l'infirmier"><i class="fas fa-user-nurse"></i> Infirmier</button>
-                    <button id="mg-btn-calm" type="button" title="Activer/désactiver le mode calme (sans stress visuel/sonore)"><i class="fas fa-leaf"></i> Calme</button>
-                </div>`;
-            if (anchor && anchor.parentNode) anchor.parentNode.insertBefore(card, anchor.nextSibling);
-            else document.body.appendChild(card);
+        // Supprimer la carte progression dans la sidebar si présente (inutile selon utilisateur)
+        const existingCard = document.getElementById('medgame-progress-card');
+        if (existingCard) existingCard.remove();
 
-            const hintBtn = card.querySelector('#mg-btn-hint');
-            if (hintBtn) hintBtn.addEventListener('click', () => window.MedGameHints && window.MedGameHints.requestHint());
-            const nurseBtn = card.querySelector('#mg-btn-nurse');
-            if (nurseBtn) nurseBtn.addEventListener('click', () => window.MedGameHints && window.MedGameHints.askNurse());
-            const calmBtn = card.querySelector('#mg-btn-calm');
-            if (calmBtn) calmBtn.addEventListener('click', () => {
-                if (!window.MedGameModes) return;
-                const next = !window.MedGameModes.isCalmMode();
-                window.MedGameModes.setCalmMode(next);
-                if (typeof showNotification === 'function') showNotification(next ? '🍃 Mode calme activé.' : '⚡ Mode calme désactivé.');
-                refresh();
-            });
-        }
-        // 2. Fil d'Ariane dans la top-bar
+        // Fil d'Ariane dans la top-bar
         if (!document.getElementById('mg-breadcrumb')) {
             const topBar = document.querySelector('.top-bar .case-info');
             if (topBar) {

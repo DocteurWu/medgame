@@ -88,15 +88,115 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Erreur lors du chargement des cas :', err);
     });
 
-    // Gestion des clics sur les cartes de thème
-    themeCards.forEach(card => {
-        card.addEventListener('click', async () => {
-            const theme = card.dataset.theme;
+    // Palette de couleurs pour chaque spécialité médicale (synchronisation avec le fond 3D)
+    const THEME_COLORS = {
+        'Cardiologie': { a: 0xff4757, b: 0x5f27cd, glow: 'rgba(255, 71, 87, 0.45)' },
+        'Uronephro': { a: 0x00d2d3, b: 0x2e86de, glow: 'rgba(0, 210, 211, 0.45)' },
+        'Endocrinologie': { a: 0xffa801, b: 0xff5e57, glow: 'rgba(255, 168, 1, 0.45)' },
+        'Neurosensorielle': { a: 0x0be881, b: 0x48dbfb, glow: 'rgba(11, 232, 129, 0.45)' },
+        'Neurologie/psychiatrie': { a: 0xb388ff, b: 0x5f27cd, glow: 'rgba(179, 136, 255, 0.45)' },
+        'Gynecologie': { a: 0xff78ae, b: 0xff6b6b, glow: 'rgba(255, 120, 174, 0.45)' },
+        'Agents-infectieux': { a: 0x2ed573, b: 0x10ac84, glow: 'rgba(46, 213, 115, 0.45)' },
+        'Appareil-digestif': { a: 0xff7f50, b: 0xee5253, glow: 'rgba(255, 127, 80, 0.45)' },
+        'Locomoteur': { a: 0x70a1ff, b: 0x5352ed, glow: 'rgba(112, 161, 255, 0.45)' },
+        'Urgence': { a: 0xff3838, b: 0x220000, glow: 'rgba(255, 56, 56, 0.55)' }
+    };
+    const DEFAULT_THEME_COLORS = { a: 0x00f2fe, b: 0xb388ff };
 
-            // Afficher le modal des motifs
+    // Transition cinématique fluide
+    function transitionTo(url) {
+        const veil = document.getElementById('page-veil');
+        if (veil) veil.classList.add('active');
+        if (window.ThreeBackground && window.ThreeBackground.warp) {
+            window.ThreeBackground.warp(450);
+        }
+        setTimeout(() => {
+            window.location.href = url;
+        }, 380);
+    }
+
+    // Intercepter le retour au menu
+    const backMenuLink = document.querySelector('.back-link-bottom');
+    if (backMenuLink) {
+        backMenuLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            transitionTo('index.html');
+        });
+    }
+
+    // Gestion des clics et survols sur les cartes de thème
+    themeCards.forEach(card => {
+        const theme = card.dataset.theme;
+        const colors = THEME_COLORS[theme] || DEFAULT_THEME_COLORS;
+
+        // Réactivité dynamique du fond 3D au survol
+        card.addEventListener('mouseenter', () => {
+            if (window.ThreeBackground && window.ThreeBackground.setTheme) {
+                window.ThreeBackground.setTheme(colors.a, colors.b);
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            if (!motifsModal || motifsModal.style.display === 'none') {
+                if (window.ThreeBackground && window.ThreeBackground.setTheme) {
+                    window.ThreeBackground.setTheme(DEFAULT_THEME_COLORS.a, DEFAULT_THEME_COLORS.b);
+                }
+            }
+        });
+
+        // Onde de choc 3D au clic
+        card.addEventListener('click', (e) => {
+            if (window.ThreeBackground && window.ThreeBackground.pulse) {
+                window.ThreeBackground.pulse(e.clientX, e.clientY);
+            }
             showMotifsForTheme(theme);
         });
     });
+
+    // Effet de tilt 3D et reflet interactif sur les cartes (Desktop)
+    if (window.matchMedia('(pointer: fine)').matches) {
+        themeCards.forEach(card => {
+            let tiltX = 0, tiltY = 0;
+            let targetX = 0, targetY = 0;
+            let isHovered = false;
+            let animId = null;
+
+            const updateTilt = () => {
+                tiltX += (targetX - tiltX) * 0.15;
+                tiltY += (targetY - tiltY) * 0.15;
+                if (isHovered) {
+                    card.style.transform = `perspective(800px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateY(-6px) scale(1.02)`;
+                    animId = requestAnimationFrame(updateTilt);
+                } else {
+                    card.style.transform = '';
+                    cancelAnimationFrame(animId);
+                }
+            };
+
+            card.addEventListener('mouseenter', () => {
+                isHovered = true;
+                animId = requestAnimationFrame(updateTilt);
+            });
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${((x / rect.width) * 100).toFixed(1)}%`);
+                card.style.setProperty('--mouse-y', `${((y / rect.height) * 100).toFixed(1)}%`);
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                targetX = -((y - cy) / cy) * 6;
+                targetY = ((x - cx) / cx) * 6;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                isHovered = false;
+                targetX = 0;
+                targetY = 0;
+            });
+        });
+    }
 
     // Afficher les motifs pour un thème
     async function showMotifsForTheme(theme) {
@@ -124,6 +224,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const motifsGraph = document.getElementById('motifs-graph');
         const motifsActions = document.getElementById('motifs-actions');
         const motifsContent = document.querySelector('.motifs-content');
+
+        const col = THEME_COLORS[theme] || DEFAULT_THEME_COLORS;
+        if (window.ThreeBackground && window.ThreeBackground.setTheme) {
+            window.ThreeBackground.setTheme(col.a, col.b);
+        }
+        if (motifsContent) {
+            motifsContent.style.borderColor = col.glow || 'rgba(0, 242, 254, 0.35)';
+            motifsContent.style.boxShadow = `0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px ${col.glow || 'rgba(0, 242, 254, 0.2)'}`;
+        }
 
         motifsTitle.textContent = `Thème : ${theme}`;
         motifsModal.style.display = 'flex';
@@ -425,7 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('selectedThemes', JSON.stringify([pick.spec]));
                 localStorage.setItem('selectedCaseFiles', JSON.stringify([pick.file]));
                 localStorage.removeItem('selectedCaseFile');
-                window.location.href = 'game.html';
+                transitionTo('game.html');
             };
 
             banner.addEventListener('click', launch);
@@ -479,7 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('selectedThemes', JSON.stringify([currentThemeInModal]));
             localStorage.setItem('selectedCaseFiles', JSON.stringify(selectedCaseFiles));
             localStorage.removeItem('selectedCaseFile');
-            window.location.href = 'game.html';
+            transitionTo('game.html');
         }
     });
 
@@ -490,6 +599,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.motifs-content').classList.remove('graph-mode');
         const graph = document.getElementById('motifs-graph');
         if (graph) graph.style.display = 'none';
+        if (window.ThreeBackground && window.ThreeBackground.setTheme) {
+            window.ThreeBackground.setTheme(DEFAULT_THEME_COLORS.a, DEFAULT_THEME_COLORS.b);
+        }
     });
 
     window.addEventListener('click', (event) => {
@@ -499,6 +611,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.motifs-content').classList.remove('graph-mode');
             const graph = document.getElementById('motifs-graph');
             if (graph) graph.style.display = 'none';
+            if (window.ThreeBackground && window.ThreeBackground.setTheme) {
+                window.ThreeBackground.setTheme(DEFAULT_THEME_COLORS.a, DEFAULT_THEME_COLORS.b);
+            }
         }
     });
 });

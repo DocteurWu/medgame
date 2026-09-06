@@ -607,41 +607,51 @@ function renderCompositeScorePanel(result) {
     const b = result.breakdown;
 
     function barColor(score) {
-        if (score >= 80) return '#2ecc71';
-        if (score >= 50) return '#f39c12';
-        return '#e74c3c';
+        if (score >= 80) return 'linear-gradient(90deg, #10b981, #059669)';
+        if (score >= 50) return 'linear-gradient(90deg, #f59e0b, #d97706)';
+        return 'linear-gradient(90deg, #ef4444, #b91c1c)';
+    }
+
+    function barTextColor(score) {
+        if (score >= 80) return '#34d399';
+        if (score >= 50) return '#fbbf24';
+        return '#f87171';
     }
 
     function renderBar(label, data) {
-        const color = barColor(data.score);
+        const bgGrad = barColor(data.score);
+        const textColor = barTextColor(data.score);
         return `
-            <div style="margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <span style="font-size: 0.85rem; color: rgba(255,255,255,0.85);">${label}</span>
-                    <span style="font-size: 0.85rem; font-weight: 700; color: ${color};">${data.score}% <span style="font-size:0.7rem;opacity:0.6;">(×${data.weight})</span></span>
+            <div style="margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <span style="font-size: 0.88rem; font-weight: 600; color: rgba(255,255,255,0.9);">${label}</span>
+                    <span style="font-size: 0.88rem; font-weight: 800; color: ${textColor};">${data.score}% <span style="font-size:0.72rem;opacity:0.65;color:rgba(255,255,255,0.7);">(×${data.weight})</span></span>
                 </div>
-                <div style="background: rgba(255,255,255,0.1); border-radius: 6px; height: 8px; overflow: hidden;">
-                    <div style="background: ${color}; height: 100%; width: ${data.score}%; border-radius: 6px; transition: width 0.8s ease;"></div>
+                <div style="background: rgba(255,255,255,0.08); border-radius: 8px; height: 9px; overflow: hidden; padding: 1px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">
+                    <div style="background: ${bgGrad}; height: 100%; width: ${Math.max(2, data.score)}%; border-radius: 7px; transition: width 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 0 10px rgba(0,242,254,0.3);"></div>
                 </div>
-                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 2px;">Contribution : ${data.contribution.toFixed(1)} pts</div>
+                <div style="font-size: 0.72rem; color: rgba(255,255,255,0.55); margin-top: 3px; display:flex; justify-content:space-between;">
+                    <span>Contribution : <strong>${data.contribution.toFixed(1)} pts</strong></span>
+                </div>
             </div>
         `;
     }
 
     function renderStars(count) {
-        let html = '<div style="display:flex;justify-content:center;gap:8px;margin:12px 0;">';
+        let html = '<div style="display:flex;justify-content:center;gap:12px;margin:8px 0 14px;">';
         for (let i = 1; i <= 3; i++) {
             if (i <= count) {
-                html += '<i class="fas fa-star" style="font-size:1.8rem;color:#ffc107;text-shadow:0 0 12px rgba(255,193,7,0.5);"></i>';
+                html += '<i class="fas fa-star" style="font-size:1.9rem;color:#facc15;filter:drop-shadow(0 0 12px rgba(250,204,21,0.7));"></i>';
             } else {
-                html += '<i class="far fa-star" style="font-size:1.8rem;color:rgba(255,255,255,0.15);"></i>';
+                html += '<i class="far fa-star" style="font-size:1.9rem;color:rgba(255,255,255,0.18);"></i>';
             }
         }
         html += '</div>';
         return html;
     }
 
-    const starsLabel = result.stars === 3 ? 'Excellence' : result.stars === 2 ? 'Bonne démarche' : result.stars === 1 ? 'Partiel' : 'Échec';
+    const starsLabel = result.stars === 3 ? '🏆 Maîtrise Clinique d\'Excellence' : result.stars === 2 ? '⭐ Bonne Démarche Clinique' : result.stars === 1 ? '⚠️ Prise en charge partielle' : '❌ Objectifs non atteints';
+    const mainColor = barTextColor(result.compositeScore);
 
     // Traitement detail annotations
     let traitementDetail = '';
@@ -649,39 +659,39 @@ function renderCompositeScorePanel(result) {
         const td = result.treatmentDetails;
         const annotations = [];
         if (td.firstLineHit && td.firstLineHit.length > 0) {
-            annotations.push(`<span style="color:#2ecc71;">✓ 1ère intention</span>`);
+            annotations.push(`<span style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:#34d399;padding:2px 7px;border-radius:6px;">✓ 1ère intention (${td.firstLineHit.length})</span>`);
         }
         if (td.secondLineHit && td.secondLineHit.length > 0) {
-            annotations.push(`<span style="color:#f39c12;">⚠ 2ème intention</span>`);
+            annotations.push(`<span style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;padding:2px 7px;border-radius:6px;">⚠ 2ème intention</span>`);
         }
         if (td.unnecessary && td.unnecessary.length > 0) {
-            annotations.push(`<span style="color:#e74c3c;">✗ ${td.unnecessary.length} inutile(s)</span>`);
+            annotations.push(`<span style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;padding:2px 7px;border-radius:6px;">✗ ${td.unnecessary.length} inutile(s)</span>`);
         }
         if (td.missed && td.missed.length > 0) {
-            annotations.push(`<span style="color:rgba(255,255,255,0.5);">⊘ ${td.missed.length} manquant(s)</span>`);
+            annotations.push(`<span style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.65);padding:2px 7px;border-radius:6px;">⊘ ${td.missed.length} manquant(s)</span>`);
         }
         if (annotations.length > 0) {
-            traitementDetail = `<div style="font-size:0.7rem; margin-top:2px;">${annotations.join(' · ')}</div>`;
+            traitementDetail = `<div style="font-size:0.75rem; margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">${annotations.join('')}</div>`;
         }
     }
 
     return `
-        <div style="text-align:center; margin-bottom:16px;">
+        <div style="text-align:center; margin-bottom:20px; padding:15px; background:rgba(8,12,28,0.5); border-radius:16px; border:1px solid rgba(255,255,255,0.07);">
             ${renderStars(result.stars)}
-            <div style="font-size:2.2rem; font-weight:800; font-family:var(--font-title); color:${barColor(result.compositeScore)}; margin-bottom:4px;">
+            <div style="font-size:2.8rem; font-weight:800; font-family:var(--font-title); color:${mainColor}; text-shadow:0 0 20px rgba(0,242,254,0.25); line-height:1; margin-bottom:6px;">
                 ${result.compositeScore}%
             </div>
-            <div style="font-size:0.8rem; color:rgba(255,255,255,0.5);">${starsLabel}</div>
-            ${result.diagnosticScore > 0 && result.diagnosticScore < 100 ? `<div style="font-size:0.7rem; color:#f39c12; margin-top:4px;">Diagnostic proche : ${result.diagnosticScore}%</div>` : ''}
+            <div style="font-size:0.9rem; font-weight:600; color:rgba(255,255,255,0.8);">${starsLabel}</div>
+            ${result.diagnosticScore > 0 && result.diagnosticScore < 100 ? `<div style="font-size:0.75rem; color:#fbbf24; margin-top:6px; background:rgba(245,158,11,0.1); display:inline-block; padding:3px 10px; border-radius:10px; border:1px solid rgba(245,158,11,0.25);">Diagnostic proche : ${result.diagnosticScore}%</div>` : ''}
         </div>
-        <div style="background:rgba(0,0,0,0.25); border-radius:10px; padding:12px 16px; margin-bottom:12px;">
+        <div style="background:rgba(6,10,24,0.55); border-radius:14px; padding:16px 18px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.06);">
             ${renderBar('🩺 Démarche clinique', b.demarche)}
-            ${renderBar('🎯 Diagnostic', b.diagnostic)}
+            ${renderBar('🎯 Précision diagnostique', b.diagnostic)}
             <div style="position:relative;">
-                ${renderBar('💊 Traitement', b.traitement)}
+                ${renderBar('💊 Prescription thérapeutique', b.traitement)}
                 ${traitementDetail}
             </div>
-            ${renderBar('⏱️ Vitesse', b.vitesse)}
+            ${renderBar('⏱️ Gestion du temps', b.vitesse)}
         </div>
     `;
 }

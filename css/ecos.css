@@ -1337,53 +1337,329 @@ body.ecos-locked {
     }
 }
 
-/* Integrated ECOS Chat Panel in 2D */
-.ecos-chat-integrated {
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
+/* Integrated ECOS Chat Panel in 2D — Cyber-Clinical Communicator */
+.ecos-chat-integrated,
+#dialogue-panel.ecos-chat-integrated {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 420px;
+    height: clamp(390px, 48vh, 560px);
+    background: rgba(10, 16, 34, 0.78) !important;
+    border: 1px solid rgba(0, 242, 254, 0.25) !important;
+    border-radius: 18px !important;
+    padding: 18px 20px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 242, 254, 0.03) !important;
+    backdrop-filter: blur(24px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.ecos-chat-integrated #dialogue-messages {
+.ecos-chat-integrated::before,
+#dialogue-panel.ecos-chat-integrated::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f2fe 35%, #b388ff 75%, transparent);
+    opacity: 0.8;
+}
+
+/* Communicator Header */
+.communicator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.communicator-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00f2fe;
+    box-shadow: 0 0 10px #00f2fe;
+    animation: statusPulse 2s infinite ease-in-out;
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 8px #00f2fe; }
+    50% { opacity: 0.4; transform: scale(0.85); box-shadow: 0 0 2px #00f2fe; }
+}
+
+.communicator-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+}
+
+.communicator-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #00f2fe;
+    background: rgba(0, 242, 254, 0.12);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+/* Dialogue Messages Container */
+.ecos-chat-integrated #dialogue-messages,
+#dialogue-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 14px;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.1) transparent;
+    scrollbar-color: rgba(0, 242, 254, 0.3) rgba(255, 255, 255, 0.03);
 }
 
-.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar {
+.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar,
+#dialogue-messages::-webkit-scrollbar {
     width: 6px;
 }
 
-.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.1);
-    border-radius: 3px;
+.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar-track,
+#dialogue-messages::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
 }
 
-/* Verbatim message styling inside integrated chat */
-.ecos-chat-integrated .dialogue-message {
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    max-width: 85%;
-    line-height: 1.4;
-    font-size: 0.9rem;
-    animation: msgIn 0.25s ease-out forwards;
+.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar-thumb,
+#dialogue-messages::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.35);
+    border-radius: 10px;
 }
 
-.ecos-chat-integrated .dialogue-message.from-user {
-    background: rgba(0, 242, 254, 0.1);
-    border: 1px solid rgba(0, 242, 254, 0.2);
+.ecos-chat-integrated #dialogue-messages::-webkit-scrollbar-thumb:hover,
+#dialogue-messages::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 254, 0.65);
+}
+
+/* Verbatim Message Bubble Styling */
+.ecos-chat-integrated .dialogue-message,
+#dialogue-messages .dialogue-message {
+    padding: 12px 18px;
+    border-radius: 16px;
+    max-width: 84%;
+    line-height: 1.55;
+    font-size: 0.94rem;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    animation: msgIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes msgIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* From User (Doctor / Médecin) */
+.ecos-chat-integrated .dialogue-message.from-user,
+#dialogue-messages .dialogue-message.from-user {
     align-self: flex-end;
-    color: #e0ffff;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.16) 0%, rgba(13, 71, 161, 0.32) 100%);
+    border: 1px solid rgba(0, 242, 254, 0.42);
+    border-top-right-radius: 4px;
+    color: #f0fdfa;
+    box-shadow: 0 8px 25px rgba(0, 242, 254, 0.12), 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-.ecos-chat-integrated .dialogue-message.from-patient {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+/* From Patient */
+.ecos-chat-integrated .dialogue-message.from-patient,
+#dialogue-messages .dialogue-message.from-patient {
     align-self: flex-start;
-    color: #f5f6fa;
+    background: rgba(14, 20, 44, 0.88);
+    border: 1px solid rgba(179, 136, 255, 0.25);
+    border-top-left-radius: 4px;
+    color: #f8fafc;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(179, 136, 255, 0.04);
 }
 
-.ecos-chat-integrated .dialogue-message strong {
-    color: #4facfe;
-    font-weight: 600;
+/* Speaker Badge */
+.dialogue-message .ecos-msg-speaker,
+.dialogue-message > strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.dialogue-message.from-user .ecos-msg-speaker,
+.dialogue-message.from-user > strong {
+    color: #00f2fe;
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.45);
+}
+
+.dialogue-message.from-patient .ecos-msg-speaker,
+.dialogue-message.from-patient > strong {
+    color: #b388ff;
+    text-shadow: 0 0 10px rgba(179, 136, 255, 0.45);
+}
+
+/* Message Text */
+.dialogue-message .ecos-msg-text {
+    display: block;
+    line-height: 1.55;
+    font-size: 0.94rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Clinical Observation / Stage Direction Box */
+.clinical-stage-direction {
+    display: block;
+    background: rgba(179, 136, 255, 0.08);
+    border-left: 3px solid rgba(179, 136, 255, 0.5);
+    border-radius: 4px 8px 8px 4px;
+    padding: 8px 12px;
+    margin: 6px 0 10px 0;
+    color: rgba(226, 232, 240, 0.88);
+    font-size: 0.88rem;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.clinical-stage-direction i {
+    color: #b388ff;
+    margin-right: 6px;
+    font-style: normal;
+}
+
+/* Dialogue Input Form */
+#dialogue-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: rgba(6, 11, 24, 0.55);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+}
+
+#chat-suggestions {
+    flex-shrink: 0;
+}
+
+#dialogue-input {
+    flex: 1;
+    padding: 12px 18px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: rgba(10, 15, 32, 0.88) !important;
+    color: #ffffff !important;
+    font-family: inherit !important;
+    font-size: 0.92rem !important;
+    outline: none !important;
+    transition: all 0.25s ease !important;
+}
+
+#dialogue-input:focus {
+    border-color: rgba(0, 242, 254, 0.6) !important;
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.3) !important;
+    background: rgba(12, 18, 38, 0.95) !important;
+}
+
+#dialogue-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+#dialogue-form button[type="submit"] {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
+    border: none !important;
+    color: #050b1a !important;
+    padding: 12px 22px !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.5px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 18px rgba(0, 242, 254, 0.35) !important;
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+
+#dialogue-form button[type="submit"]:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 24px rgba(0, 242, 254, 0.55) !important;
+    filter: brightness(1.1) !important;
+}
+
+#dialogue-form button[type="submit"]:active {
+    transform: translateY(0) scale(0.98) !important;
+}
+
+/* Suggested Questions Styling */
+.suggested-questions-toggle {
+    background: rgba(0, 242, 254, 0.1) !important;
+    border: 1px solid rgba(0, 242, 254, 0.3) !important;
+    color: #00f2fe !important;
+    padding: 8px 14px !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    font-size: 0.82rem !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 600 !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.1) !important;
+}
+
+.suggested-questions-toggle:hover {
+    background: rgba(0, 242, 254, 0.2) !important;
+    border-color: rgba(0, 242, 254, 0.5) !important;
+    box-shadow: 0 0 18px rgba(0, 242, 254, 0.25) !important;
+}
+
+.suggested-question-chip {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    padding: 6px 12px !important;
+    border-radius: 14px !important;
+    cursor: pointer !important;
+    font-size: 0.8rem !important;
+    font-family: 'Outfit', sans-serif !important;
+    transition: all 0.2s ease !important;
+}
+
+.suggested-question-chip:hover {
+    background: rgba(0, 242, 254, 0.16) !important;
+    border-color: rgba(0, 242, 254, 0.45) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px) !important;
 }
 

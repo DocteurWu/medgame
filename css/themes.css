@@ -24,7 +24,7 @@
 
 body {
     font-family: var(--font-main);
-    background: radial-gradient(circle at center, transparent 0%, var(--dark-bg) 100%),
+    background: radial-gradient(circle at center, transparent 0%, var(--dark-bg) 95%),
         url('../assets/images/FondAccueil.webp');
     background-size: cover;
     background-position: center;
@@ -38,6 +38,22 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* --- PAGE VEIL TRANSITION --- */
+#page-veil {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0, 242, 254, 0.15), rgba(5, 7, 20, 0.95) 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#page-veil.active {
+    opacity: 1;
+    pointer-events: all;
 }
 
 /* --- BACKGROUND 3D --- */
@@ -69,35 +85,45 @@ body {
 .h1 {
     font-family: var(--font-title);
     text-align: center;
-    color: white;
-    font-size: 2.2rem;
-    margin-bottom: 5px;
-    text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+    font-size: 2.3rem;
+    margin-bottom: 6px;
     font-weight: 800;
     margin-top: 0;
     letter-spacing: 2px;
     text-transform: uppercase;
     flex-shrink: 0;
+    background: linear-gradient(135deg, #ffffff 30%, var(--primary) 70%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.35));
 }
 
 .back-link-bottom {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
-    margin-bottom: 5px;
+    margin-bottom: 0;
     display: inline-flex;
     align-items: center;
-    font-size: 0.85rem;
-    padding: 6px 12px;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 14px;
     border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    background: rgba(12, 18, 36, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     flex-shrink: 0;
 }
 
 .back-link-bottom:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateX(-5px);
+    background: rgba(0, 242, 254, 0.15);
+    border-color: rgba(0, 242, 254, 0.5);
+    color: #fff;
+    transform: translateX(-4px);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
 }
 
 /* --- TOP NAVIGATION & COMPACT CAS DU JOUR --- */
@@ -204,29 +230,30 @@ body {
 .container {
     width: fit-content;
     max-width: 95vw;
-    margin: 10px auto;
-    background: rgba(10, 15, 30, 0.5);
-    border-radius: 20px;
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.05);
-    padding: 10px;
+    margin: 6px auto 10px auto;
+    background: rgba(10, 15, 30, 0.6);
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 0 30px rgba(0, 242, 254, 0.04);
+    padding: 12px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    overflow: hidden;
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    overflow-y: auto;
+    max-height: calc(100vh - 110px);
 }
 
 /* Desktop screens: use more space */
 @media (min-width: 1400px) {
     .container {
-        max-width: 1200px;
-        padding: 35px;
+        max-width: 1100px;
+        padding: 20px 30px;
     }
 
     .h1 {
-        font-size: 3rem;
+        font-size: 2.6rem;
     }
 }
 
@@ -235,31 +262,34 @@ body {
     grid-template-columns: repeat(3, 1fr);
     /* 3x3 fixe */
     gap: 12px;
-    padding: 10px;
+    padding: 6px;
     width: 100%;
-    max-width: 900px;
-    overflow: hidden;
+    max-width: 940px;
 }
 
 .theme-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(15, 23, 42, 0.65);
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    padding: 8px 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    padding: 12px 10px;
     text-align: center;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
+                box-shadow 0.35s cubic-bezier(0.165, 0.84, 0.44, 1),
+                border-color 0.35s ease,
+                background 0.35s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 130px;
+    min-height: 122px;
     height: 100%;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     position: relative;
     overflow: hidden;
     width: 100%;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 
 .theme-card::before {
@@ -268,292 +298,200 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--ue-color, #00f2fe), transparent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease, height 0.3s ease;
 }
 
 .theme-card:hover::before {
     opacity: 1;
+    height: 3px;
+}
+
+.theme-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.12) 0%, transparent 65%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.theme-card:hover::after {
+    opacity: 1;
 }
 
 .theme-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 24px var(--ue-glow, rgba(0, 242, 254, 0.35));
+    border-color: var(--ue-color, rgba(0, 242, 254, 0.6));
 }
 
 .theme-card.selected {
-    border-color: #007bff;
-    background: linear-gradient(145deg, #e3f2fd, #f8f9fa);
-    box-shadow: 0 12px 28px rgba(0, 123, 255, 0.25);
-    transform: translateY(-6px);
+    border-color: var(--ue-color, #00f2fe) !important;
+    background: linear-gradient(145deg, rgba(25, 40, 70, 0.8), rgba(15, 25, 45, 0.85)) !important;
+    box-shadow: 0 0 0 2px var(--ue-color, #00f2fe), 0 12px 28px rgba(0, 0, 0, 0.4) !important;
+    transform: translateY(-4px);
 }
 
-.theme-card.selected::after {
-    content: '✓';
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: #007bff;
-    color: #fff;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+.theme-card.selected::before {
+    height: 3px;
+    opacity: 1;
 }
 
 .theme-card .emoji {
     font-size: 2rem;
     margin-bottom: 5px;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
 }
 
 .theme-card .theme-icon {
-    width: 3rem;
-    height: 3rem;
-    margin-bottom: 5px;
+    width: 2.7rem;
+    height: 2.7rem;
+    margin-bottom: 6px;
     object-fit: contain;
-    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+    transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.35s ease;
+}
+
+.theme-card:hover .theme-icon {
+    transform: scale(1.12) translateY(-2px);
+    filter: drop-shadow(0 0 14px var(--ue-glow, rgba(0, 242, 254, 0.6)));
 }
 
 .theme-card h2 {
+    font-family: var(--font-title);
     font-size: 0.95rem;
-    margin-bottom: 4px;
-    color: #1a1a1a;
+    margin-bottom: 3px;
+    color: #ffffff;
     font-weight: 700;
-    line-height: 1.2;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    line-height: 1.25;
+    letter-spacing: 0.2px;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    transition: text-shadow 0.3s ease;
+}
+
+.theme-card:hover h2 {
+    text-shadow: 0 0 12px var(--ue-glow, rgba(0, 242, 254, 0.7));
 }
 
 .theme-subtitle {
-    font-size: 0.75rem;
-    color: #333333;
+    font-size: 0.73rem;
+    color: rgba(226, 232, 240, 0.7);
     margin: 0;
-    line-height: 1.2;
-    padding: 0 3px;
-    font-weight: 500;
+    line-height: 1.25;
+    padding: 0 4px;
+    font-weight: 400;
+    transition: color 0.3s ease;
 }
 
-/* Cardiologie - Tons Rouges/Roses plus vifs */
+.theme-card:hover .theme-subtitle {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+/* Cardiologie */
 .theme-card[data-theme="Cardiologie"] {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-    border: 1px solid rgba(255, 154, 158, 0.3);
+    --ue-color: #ff4757;
+    --ue-glow: rgba(255, 71, 87, 0.45);
+    background: linear-gradient(145deg, rgba(38, 15, 22, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Cardiologie"]:hover {
-    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(255, 117, 140, 0.3);
-}
-
-.theme-card.selected[data-theme="Cardiologie"] {
-    background: linear-gradient(135deg, #ff9a9e 0%, #fff 100%);
-    border-color: #ff758c;
-    box-shadow: 0 0 0 2px #ff758c, 0 10px 20px rgba(255, 117, 140, 0.2);
-}
-
-/* Uro-néphrologie - Tons Bleus/Cyans (Eau/Rein) */
+/* Uro-néphrologie */
 .theme-card[data-theme="Uronephro"] {
-    background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
-    border: 1px solid rgba(102, 166, 255, 0.3);
+    --ue-color: #00d2d3;
+    --ue-glow: rgba(0, 210, 211, 0.45);
+    background: linear-gradient(145deg, rgba(12, 32, 45, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Uronephro"]:hover {
-    background: linear-gradient(120deg, #66a6ff 0%, #89f7fe 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(102, 166, 255, 0.3);
-}
-
-.theme-card.selected[data-theme="Uronephro"] {
-    background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px #007bff, 0 10px 20px rgba(0, 123, 255, 0.2);
-}
-
-/* Endocrinologie - Tons Violets/Mauves */
+/* Endocrinologie */
 .theme-card[data-theme="Endocrinologie"] {
-    background: linear-gradient(to top, #c471f5 0%, #fa71cd 100%);
-    border: 1px solid rgba(196, 113, 245, 0.3);
+    --ue-color: #ffa801;
+    --ue-glow: rgba(255, 168, 1, 0.45);
+    background: linear-gradient(145deg, rgba(38, 30, 12, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Endocrinologie"]:hover {
-    background: linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(196, 113, 245, 0.3);
-}
-
-.theme-card.selected[data-theme="Endocrinologie"] {
-    background: linear-gradient(to top, #e6dee9 0%, #f3e7e9 99%, #e3eeff 100%);
-    border-color: #c471f5;
-    box-shadow: 0 0 0 2px #c471f5, 0 10px 20px rgba(196, 113, 245, 0.2);
-}
-
-/* Neurosensorielle - Tons Oranges/Jaunes (Lumière/Sens) */
+/* Neurosensorielle */
 .theme-card[data-theme="Neurosensorielle"] {
-    background: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
-    border: 1px solid rgba(253, 160, 133, 0.3);
+    --ue-color: #0be881;
+    --ue-glow: rgba(11, 232, 129, 0.45);
+    background: linear-gradient(145deg, rgba(12, 35, 25, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Neurosensorielle"]:hover {
-    background: linear-gradient(120deg, #fda085 0%, #f6d365 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(253, 160, 133, 0.3);
-}
-
-.theme-card.selected[data-theme="Neurosensorielle"] {
-    background: linear-gradient(120deg, #f6d365 0%, #fff 100%);
-    border-color: #fda085;
-    box-shadow: 0 0 0 2px #fda085, 0 10px 20px rgba(253, 160, 133, 0.2);
-}
-
-/* Neurologie / Psychiatrie - Tons Violets Profonds */
+/* Neurologie / Psychiatrie */
 .theme-card[data-theme="Neurologie/psychiatrie"] {
-    background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
-    border: 1px solid rgba(129, 140, 248, 0.3);
+    --ue-color: #b388ff;
+    --ue-glow: rgba(179, 136, 255, 0.45);
+    background: linear-gradient(145deg, rgba(30, 18, 50, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Neurologie/psychiatrie"]:hover {
-    background: linear-gradient(135deg, #818cf8 0%, #a5b4fc 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(129, 140, 248, 0.3);
-}
-
-.theme-card.selected[data-theme="Neurologie/psychiatrie"] {
-    background: linear-gradient(135deg, #a5b4fc 0%, #fff 100%);
-    border-color: #818cf8;
-    box-shadow: 0 0 0 2px #818cf8, 0 10px 20px rgba(129, 140, 248, 0.2);
-}
-
-/* Gynécologie - Tons Roses / Mauves */
+/* Gynécologie */
 .theme-card[data-theme="Gynecologie"] {
-    background: linear-gradient(135deg, #fbcfe8 0%, #f472b6 100%);
-    border: 1px solid rgba(244, 114, 182, 0.3);
+    --ue-color: #ff78ae;
+    --ue-glow: rgba(255, 120, 174, 0.45);
+    background: linear-gradient(145deg, rgba(40, 15, 30, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Gynecologie"]:hover {
-    background: linear-gradient(135deg, #f472b6 0%, #fbcfe8 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(244, 114, 182, 0.3);
-}
-
-.theme-card.selected[data-theme="Gynecologie"] {
-    background: linear-gradient(135deg, #fbcfe8 0%, #fff 100%);
-    border-color: #f472b6;
-    box-shadow: 0 0 0 2px #f472b6, 0 10px 20px rgba(244, 114, 182, 0.2);
-}
-
-/* Agents infectieux - Tons Verts / Émeraude */
+/* Agents infectieux */
 .theme-card[data-theme="Agents-infectieux"] {
-    background: linear-gradient(135deg, #d1fae5 0%, #10b981 100%);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    --ue-color: #2ed573;
+    --ue-glow: rgba(46, 213, 115, 0.45);
+    background: linear-gradient(145deg, rgba(14, 35, 24, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Agents-infectieux"]:hover {
-    background: linear-gradient(135deg, #10b981 0%, #d1fae5 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
-}
-
-.theme-card.selected[data-theme="Agents-infectieux"] {
-    background: linear-gradient(135deg, #d1fae5 0%, #fff 100%);
-    border-color: #10b981;
-    box-shadow: 0 0 0 2px #10b981, 0 10px 20px rgba(16, 185, 129, 0.2);
-}
-
-/* Appareil digestif - Tons Marron Pastel */
+/* Appareil digestif */
 .theme-card[data-theme="Appareil-digestif"] {
-    background: linear-gradient(135deg, #f5e6d3 0%, #a67c52 100%);
-    border: 1px solid rgba(166, 124, 82, 0.3);
+    --ue-color: #ff7f50;
+    --ue-glow: rgba(255, 127, 80, 0.45);
+    background: linear-gradient(145deg, rgba(40, 22, 15, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Appareil-digestif"]:hover {
-    background: linear-gradient(135deg, #a67c52 0%, #f5e6d3 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(166, 124, 82, 0.3);
-}
-
-.theme-card.selected[data-theme="Appareil-digestif"] {
-    background: linear-gradient(135deg, #f5e6d3 0%, #fff 100%);
-    border-color: #a67c52;
-    box-shadow: 0 0 0 2px #a67c52, 0 10px 20px rgba(166, 124, 82, 0.2);
-}
-
-/* Locomoteur - Tons Gris / Os / Beige */
+/* Locomoteur */
 .theme-card[data-theme="Locomoteur"] {
-    background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
-    border: 1px solid rgba(226, 209, 195, 0.3);
+    --ue-color: #70a1ff;
+    --ue-glow: rgba(112, 161, 255, 0.45);
+    background: linear-gradient(145deg, rgba(18, 28, 48, 0.65), rgba(15, 23, 42, 0.7));
 }
 
-.theme-card[data-theme="Locomoteur"]:hover {
-    background: linear-gradient(135deg, #e2d1c3 0%, #fdfcfb 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(226, 209, 195, 0.4);
-}
-
-.theme-card.selected[data-theme="Locomoteur"] {
-    background: linear-gradient(135deg, #fdfcfb 0%, #fff 100%);
-    border-color: #d2b48c;
-    box-shadow: 0 0 0 2px #d2b48c, 0 10px 20px rgba(210, 180, 140, 0.2);
-}
-
-/* A venir - Tons Gris/Neutres */
+/* A venir */
 .theme-card[data-theme="A_venir"] {
-    background: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
-    border: 1px solid rgba(200, 200, 200, 0.3);
-    opacity: 0.8;
+    --ue-color: #a4b0be;
+    --ue-glow: rgba(164, 176, 190, 0.35);
+    background: linear-gradient(145deg, rgba(20, 25, 35, 0.65), rgba(15, 23, 42, 0.7));
+    opacity: 0.7;
 }
 
-.theme-card[data-theme="A_venir"]:hover {
-    background: linear-gradient(to top, #accbee 0%, #e7f0fd 100%);
-    opacity: 1;
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
-
-.theme-card.selected[data-theme="A_venir"] {
-    background: #e2ebf0;
-    border-color: #6c757d;
-}
-
-/* Immunologie (si ajouté plus tard) */
-.theme-card[data-theme="Immunologie"] {
-    background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-}
-
-/* Urgence - Tons Rouges (alerte) */
+/* Urgence - Mode Alerte */
 .theme-card[data-theme="Urgence"] {
-    background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(200, 30, 50, 0.3) 100%);
-    border: 2px solid rgba(255, 71, 87, 0.8) !important;
-    box-shadow: 0 0 15px rgba(255, 71, 87, 0.4), inset 0 0 20px rgba(255, 71, 87, 0.2);
-    grid-column: 1 / -1; /* Prend toute la place sur la ligne sur PC */
+    --ue-color: #ff3838;
+    --ue-glow: rgba(255, 56, 56, 0.55);
+    background: linear-gradient(135deg, rgba(48, 12, 20, 0.72) 0%, rgba(22, 9, 15, 0.82) 100%);
+    border: 1.5px solid rgba(255, 56, 56, 0.6) !important;
+    box-shadow: 0 0 20px rgba(255, 56, 56, 0.25), inset 0 0 20px rgba(255, 56, 56, 0.1);
+    grid-column: 1 / -1;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 25px;
-    min-height: 100px;
-    height: 100px;
-    animation: pulse-urgence 2s infinite alternate;
+    gap: 20px;
+    min-height: 80px;
+    height: 80px;
+    animation: pulse-urgence 2.5s infinite ease-in-out;
 }
 
 .theme-card[data-theme="Urgence"] .emoji {
-    font-size: 2.8rem;
+    font-size: 2.4rem;
     animation: rotate-siren 1.5s infinite linear;
-    filter: drop-shadow(0 0 10px rgba(255, 71, 87, 0.8));
+    filter: drop-shadow(0 0 10px rgba(255, 56, 56, 0.8));
     margin-bottom: 0;
 }
 
 .theme-card[data-theme="Urgence"] .theme-icon {
-    width: 2.8rem;
-    height: 2.8rem;
-    animation: rotate-siren 1.5s infinite linear;
-    filter: drop-shadow(0 0 10px rgba(255, 71, 87, 0.8));
+    width: 2.6rem;
+    height: 2.6rem;
+    animation: rotate-siren 2s infinite ease-in-out;
+    filter: drop-shadow(0 0 12px rgba(255, 56, 56, 0.7));
     margin-bottom: 0;
 }
 
@@ -565,31 +503,31 @@ body {
 }
 
 .theme-card[data-theme="Urgence"] h2 {
-    color: #ff4757;
-    text-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
+    color: #ff4d4d;
+    text-shadow: 0 0 14px rgba(255, 56, 56, 0.7);
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-size: 1.4rem;
-    margin-bottom: 4px;
+    font-size: 1.15rem;
+    margin-bottom: 2px;
 }
 
 .theme-card[data-theme="Urgence"] .theme-subtitle {
-    color: #ffb8b8;
-    font-size: 0.95rem;
+    color: rgba(255, 200, 200, 0.85);
+    font-size: 0.82rem;
     padding: 0;
 }
 
 .theme-card[data-theme="Urgence"]:hover {
-    background: linear-gradient(135deg, rgba(255, 71, 87, 0.2) 0%, rgba(200, 30, 50, 0.5) 100%);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(255, 71, 87, 0.6), inset 0 0 30px rgba(255, 71, 87, 0.3) !important;
-    border-color: #ff4757 !important;
+    background: linear-gradient(135deg, rgba(65, 15, 28, 0.85) 0%, rgba(30, 10, 18, 0.9) 100%);
+    border-color: #ff3838 !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 56, 56, 0.55), inset 0 0 25px rgba(255, 56, 56, 0.2) !important;
+    transform: translateY(-4px) scale(1.015);
 }
 
 .theme-card.selected[data-theme="Urgence"] {
-    background: linear-gradient(135deg, rgba(255, 71, 87, 0.4) 0%, rgba(255, 71, 87, 0.7) 100%);
-    border-color: #ff4757 !important;
-    box-shadow: 0 0 0 3px #ff4757, 0 10px 30px rgba(255, 71, 87, 0.6) !important;
+    background: linear-gradient(135deg, rgba(75, 18, 32, 0.9) 0%, rgba(40, 12, 22, 0.95) 100%) !important;
+    border-color: #ff3838 !important;
+    box-shadow: 0 0 0 3px #ff3838, 0 12px 30px rgba(255, 56, 56, 0.6) !important;
 }
 
 @keyframes pulse-urgence {
@@ -891,63 +829,71 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 5, 16, 0.92);
-    backdrop-filter: blur(12px);
+    background: rgba(3, 6, 16, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     z-index: 9999;
     /* Au-dessus de tout */
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: fadeIn 0.3s ease;
+    animation: fadeIn 0.25s ease;
 }
 
 .motifs-content {
-    background: rgba(10, 15, 30, 0.85);
+    background: rgba(10, 16, 32, 0.90);
     width: 90%;
-    max-width: 600px;
-    border-radius: 20px;
-    padding: 30px;
+    max-width: 620px;
+    border-radius: 24px;
+    padding: 28px;
     position: relative;
-    box-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
-    border: 1px solid var(--glass-border);
-    max-height: 80vh;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 242, 254, 0.15);
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    max-height: 82vh;
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
 
 .close-motifs {
     position: absolute;
-    top: 15px;
+    top: 16px;
     right: 20px;
     background: none;
     border: none;
-    font-size: 2rem;
-    color: #333;
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
+    line-height: 1;
 }
 
 .close-motifs:hover {
-    color: #ff0055;
+    color: #ff4757;
+    transform: scale(1.15);
 }
 
 #motifs-title {
-    color: var(--primary);
     font-family: var(--font-title);
     font-size: 1.5rem;
-    margin-bottom: 10px;
+    font-weight: 800;
+    margin-bottom: 12px;
     text-align: center;
-    border-bottom: 1px solid var(--glass-border);
-    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
     letter-spacing: 1px;
+    background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .motifs-actions {
     display: flex;
     justify-content: center;
     margin-bottom: 15px;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .secondary-btn-modal {
@@ -958,53 +904,56 @@ body {
     border-radius: 20px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
     font-family: var(--font-main);
+    font-size: 0.82rem;
 }
 
 .secondary-btn-modal:hover {
     background: rgba(0, 242, 254, 0.2);
     border-color: var(--primary);
     color: #fff;
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    box-shadow: 0 0 14px rgba(0, 242, 254, 0.3);
+    transform: translateY(-1px);
 }
 
 .motifs-list {
     overflow-y: auto;
-    padding-right: 10px;
+    padding-right: 8px;
+    margin-top: 5px;
 }
 
 .loading,
 .no-motifs,
 .error {
     text-align: center;
-    padding: 20px;
-    color: #495057;
+    padding: 24px;
+    color: rgba(255, 255, 255, 0.65);
     font-weight: 500;
 }
 
 .error {
-    color: #dc3545;
+    color: #ff4757;
 }
 
 .motif-item {
-    background: rgba(255, 255, 255, 0.05);
-    margin-bottom: 12px;
-    padding: 15px 20px;
-    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    margin-bottom: 10px;
+    padding: 14px 18px;
+    border-radius: 14px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
 .motif-item:hover {
-    transform: translateX(5px);
-    border-color: var(--primary);
-    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.1);
-    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(6px);
+    border-color: rgba(0, 242, 254, 0.4);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 15px rgba(0, 242, 254, 0.15);
+    background: rgba(0, 242, 254, 0.08);
 }
 
 .motif-item i {
@@ -1029,28 +978,30 @@ body {
 .motif-name {
     color: #fff !important;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-family: var(--font-title);
+    letter-spacing: 0.2px;
 }
 
 .motif-patient {
-    color: var(--text-muted) !important;
-    font-size: 0.9rem;
+    color: rgba(203, 213, 225, 0.75) !important;
+    font-size: 0.85rem;
 }
 
 .motif-redacteur {
-    color: #6c757d !important;
-    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: 0.78rem;
     font-style: italic;
     margin-left: 10px;
 }
 
 .played-badge {
-    background: #e7f5ed;
-    color: #1a8754;
+    background: rgba(46, 213, 115, 0.15);
+    color: #2ed573;
+    border: 1px solid rgba(46, 213, 115, 0.3);
     padding: 2px 8px;
     border-radius: 10px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     margin-left: 8px;
     display: inline-flex;
@@ -1059,50 +1010,52 @@ body {
 }
 
 .played-badge i {
-    font-size: 0.8rem;
-    color: #1a8754;
+    font-size: 0.75rem;
+    color: #2ed573;
 }
 
 .motif-item.selected {
     border-color: var(--primary);
-    background: rgba(0, 242, 254, 0.1);
-    box-shadow: 0 0 0 1px var(--primary);
+    background: rgba(0, 242, 254, 0.12);
+    box-shadow: 0 0 0 1px var(--primary), 0 0 20px rgba(0, 242, 254, 0.2);
 }
 
 .motif-item.selected::after {
     content: '✓';
     margin-left: auto;
     background: var(--primary);
-    color: #000;
-    width: 20px;
-    height: 20px;
+    color: #030712;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 0.82rem;
+    font-weight: 800;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
 }
 
 .start-session {
-    margin-top: 20px;
+    margin-top: 18px;
     background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
     color: white;
     border: none;
-    padding: 15px;
-    border-radius: 12px;
+    padding: 14px 20px;
+    border-radius: 14px;
     font-weight: 700;
     font-family: var(--font-title);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 242, 254, 0.35);
 }
 
 .start-session:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.5);
+    filter: brightness(1.1);
 }
 
 .start-session:active {
@@ -1119,17 +1072,25 @@ body {
     }
 }
 
-/* Custom Scrollbar for Motifs List */
-.motifs-list::-webkit-scrollbar {
+/* Custom Scrollbar for Motifs List & Container */
+.motifs-list::-webkit-scrollbar,
+.container::-webkit-scrollbar {
     width: 6px;
 }
 
-.motifs-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
+.motifs-list::-webkit-scrollbar-track,
+.container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 10px;
 }
 
-.motifs-list::-webkit-scrollbar-thumb {
-    background: #007bff;
+.motifs-list::-webkit-scrollbar-thumb,
+.container::-webkit-scrollbar-thumb {
+    background: rgba(0, 242, 254, 0.3);
     border-radius: 10px;
+}
+
+.motifs-list::-webkit-scrollbar-thumb:hover,
+.container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 242, 254, 0.6);
 }
