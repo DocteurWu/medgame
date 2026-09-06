@@ -211,8 +211,6 @@ export class ThreeScene {
         this._loop = this._loop.bind(this);
         this._animFrameId = requestAnimationFrame(this._loop);
 
-        // Préchauffage des shaders WebGL (warmup asynchrone pour 0 freeze au premier frame)
-        TaskScheduler.warmupShaders(this.renderer, this.scene, this.camera);
     }
 
     _aspect() {

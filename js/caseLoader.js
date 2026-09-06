@@ -249,9 +249,12 @@ async function loadCasesData() {
         }
 
         // Themes fallback
-        const selectedThemes = JSON.parse(localStorage.getItem('selectedThemes')) || [];
-        if (selectedThemes.length === 0) {
-            throw new Error('Aucun thème sélectionné');
+        let selectedThemes = [];
+        try {
+            selectedThemes = JSON.parse(localStorage.getItem('selectedThemes')) || [];
+        } catch {}
+        if (!Array.isArray(selectedThemes) || selectedThemes.length === 0) {
+            selectedThemes = ['cardiologie'];
         }
 
         const caseIndex = await loadCasesMetadata();

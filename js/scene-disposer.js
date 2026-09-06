@@ -1,4 +1,4 @@
-﻿/**
+/**
  * scene-disposer.js — Nettoyage chirurgical de la mémoire VRAM et des ressources WebGL
  * Libère explicitement les GPU Buffers, textures, render targets et listeners
  * pour éviter les fuites de mémoire (VRAM bloquée) au changement de patient ou de scène.
@@ -23,10 +23,10 @@ export class SceneDisposer {
     static disposeMaterial(mat) {
         if (!mat) return;
 
-        // 1. Textures standards
+        // 1. Textures standards (uniquement si marquées canDispose ou RenderTarget dynamique)
         for (const prop of this.TEXTURE_PROPERTIES) {
             const tex = mat[prop];
-            if (tex && tex.isTexture) {
+            if (tex && tex.isTexture && (tex.userData?.canDispose || tex.isRenderTargetTexture)) {
                 tex.dispose();
                 mat[prop] = null;
             }

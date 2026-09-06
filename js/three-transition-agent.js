@@ -49,14 +49,6 @@ export class ThreeTransitionAgent {
 
         await new Promise(r => setTimeout(r, 400));
 
-        // 3.5 Préchauffage GPU asynchrone des shaders pour éliminer le gel à la première frame
-        if (this.manager.scene?.renderer && this.manager.scene?.scene && this.manager.scene?.camera) {
-            await TaskScheduler.warmupShaders(
-                this.manager.scene.renderer,
-                this.manager.scene.scene,
-                this.manager.scene.camera
-            );
-        }
 
         // 4. Afficher le container 3D avec un fade in fluide (sans aucun gel)
         if (sceneContainer) {
