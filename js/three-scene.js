@@ -30,7 +30,9 @@ const TOOLTIP_DESCRIPTIONS = {
     'Thermometre': 'Température corporelle — thermomètre électronique',
     'Glucometre': 'Glycémie capillaire — bandelette + prélèvement d\'une goutte de sang',
     'Stethoscope': 'Stéthoscope — révèle les foyers d\'auscultation cardio-pulmonaire',
-    'Tablette prescription': 'Prescription et ordonnance — examens et traitements',
+    'Tablette de décision': 'Tablette clinique — Poser le diagnostic et formuler l\'annonce au patient pour clôturer le cas',
+    'Tablette prescription': 'Tablette clinique — Poser le diagnostic et formuler l\'annonce au patient pour clôturer le cas',
+    'Tablette': 'Tablette clinique — Poser le diagnostic et formuler l\'annonce au patient',
     'Ordinateur': 'Poste informatique — dossier médical et résultats biologiques',
     'Moniteur ECG': 'Moniteur de surveillance multiparamétrique en temps réel',
     'Moniteur ECG mural': 'Moniteur mural — tracé ECG et constantes vitales',
@@ -52,6 +54,7 @@ const TOOLTIP_DESCRIPTIONS = {
 const OVERLAY_IDS = [
     'pc-overlay', 'armoire-overlay', 'clinical-exam-menu', 'prescription-modal',
     'correction-overlay', 'lock-challenge-modal', 'image-overlay', 'mobile-monitor-overlay',
+    'ecos-announce-overlay', 'ecos-debrief-overlay',
 ];
 
 const FPS_INTERACTION_DISTANCE = 2.5;

@@ -886,9 +886,8 @@
         if (window.llmPatientInstance) {
             try {
                 appendConversation('PS', msg, 'impulse');
-                await classifyAndCheck('(patient parle spontanément)', msg);
             } catch (e) {
-                console.warn('[ECOS] Impatience classification failed:', e);
+                console.warn('[ECOS] Impatience append failed:', e);
             }
         }
     }
@@ -1346,12 +1345,24 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
     // ==================== PHASE D'ANNONCE ====================
 
     function enterAnnouncePhase() {
+        if (document.pointerLockElement) {
+            try { document.exitPointerLock(); } catch (_) {}
+        }
+        if (!ecosState.caseData && window.gameState?.currentCase) {
+            ecosState.caseData = window.gameState.currentCase;
+        }
+
         const overlay = document.getElementById('ecos-announce-overlay') || (() => {
             const el = document.createElement('div');
             el.id = 'ecos-announce-overlay';
             el.className = 'ecos-announce-overlay';
             el.innerHTML = `
                 <div class="ecos-announce-card">
+                    <div class="ecos-tablet-frame-bar">
+                        <span class="ecos-tablet-dot"></span>
+                        <span class="ecos-tablet-title"><i class="fas fa-tablet-alt"></i> Tablette Clinique — Synthèse & Annonce</span>
+                        <span class="ecos-tablet-status"><i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i></span>
+                    </div>
                     <h2>📢 Annonce et Décision</h2>
                     <p id="ecos-announce-time-msg"></p>
                     <ol>
@@ -1362,10 +1373,10 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                         <label for="ecos-diag-input">Diagnostic :</label>
                         <input type="text" id="ecos-diag-input" placeholder="Tapez votre diagnostic..." required autocomplete="off" />
                         <label for="ecos-announce-input">Annonce au patient (parlez-lui comme à un vrai patient) :</label>
-                        <textarea id="ecos-announce-input" rows="5" placeholder="« Monsieur/Madame, d'après ce que vous m'avez dit et mon examen, je think que... »" required></textarea>
+                        <textarea id="ecos-announce-input" rows="5" placeholder="« Monsieur/Madame, d'après ce que vous m'avez dit et mon examen, je pense que... »" required></textarea>
                         <div class="ecos-announce-actions">
-                            <button type="button" id="ecos-announce-cancel" class="ecos-btn-secondary">Retour station</button>
-                            <button type="submit" id="ecos-announce-submit" class="ecos-btn-primary">Valider et voir le debrief</button>
+                            <button type="button" id="ecos-announce-cancel" class="ecos-btn-secondary"><i class="fas fa-arrow-left"></i> Retour</button>
+                            <button type="submit" id="ecos-announce-submit" class="ecos-btn-primary"><i class="fas fa-check"></i> Valider et voir le debrief</button>
                         </div>
                     </form>
                 </div>
@@ -1400,6 +1411,12 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
 
     async function submitAnnounce(e) {
         if (e) e.preventDefault();
+        if (document.pointerLockElement) {
+            try { document.exitPointerLock(); } catch (_) {}
+        }
+        if (!ecosState.caseData && window.gameState?.currentCase) {
+            ecosState.caseData = window.gameState.currentCase;
+        }
         const submitBtn = document.getElementById('ecos-announce-submit');
         if (submitBtn) submitBtn.disabled = true;
         const cancelBtn = document.getElementById('ecos-announce-cancel');
@@ -1498,10 +1515,13 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         const totalDurationMs = ECOS_CONFIG.STATION_DURATION * 1000;
         const usedMs = Date.now() - (ecosState.startedAt || Date.now());
         const timeRatio = Math.max(0, Math.min(1, usedMs / totalDurationMs));
-        const vitesseBonus = timeRatio <= 0.4 ? 5
+        const hasParticipated = checkedApt > 0 || (diag && diagScore > 0) || (ecosState.questionsAsked > 0);
+        const vitesseBonus = hasParticipated ? (
+            timeRatio <= 0.4 ? 5
             : timeRatio <= 0.6 ? 3
             : timeRatio <= 0.8 ? 1
-            : 0;
+            : 0
+        ) : 0;
 
         const baseScore = Math.round(aptitudePct * 0.5 + commPct * 0.2 + diagScore * 0.3);
         const finalScore = Math.min(100, baseScore + vitesseBonus);
@@ -1548,6 +1568,9 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
     // ==================== DEBRIEF ====================
 
     function showDebrief() {
+        if (document.pointerLockElement) {
+            try { document.exitPointerLock(); } catch (_) {}
+        }
         ecosState.phase = 'debrief';
         destroyStationLayout();
 
@@ -1819,31 +1842,46 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
     }
 
     async function generateFeedbackNarrative() {
+        const missed = ecosState.grilleAptitudes.filter(g => !ecosState.gridChecked.has(g.id));
+        const checked = ecosState.grilleAptitudes.filter(g => ecosState.gridChecked.has(g.id));
+        const questionsAsked = ecosState.questionsAsked || 0;
+
+        // Cas où l'étudiant n'a absolument rien fait
+        if (checked.length === 0 && questionsAsked === 0) {
+            return '<p><strong>Aucune démarche clinique réalisée.</strong> Vous n\'avez posé aucune question au patient et aucun examen clinique n\'a été pratiqué. En station ECOS, il est impératif d\'initier activement l\'interrogatoire (présentation, motif de consultation, anamnèse) dès le début de l\'épreuve.</p>';
+        }
+
         if (!window.CONFIG?.LLM_API_URL) {
-            const missed = ecosState.grilleAptitudes.filter(g => !ecosState.gridChecked.has(g.id));
+            if (checked.length === 0) {
+                return '<p><strong>Aucune démarche clinique réalisée.</strong> Vous n\'avez posé aucune question au patient et aucun examen clinique n\'a été réalisé. Veillez à interroger le patient dès le début de la station.</p>';
+            }
             if (missed.length === 0) {
                 return '<p>Félicitations, vous avez validé l\'ensemble de la démarche clinique ! Votre prise en charge a été rigoureuse.</p>';
             } else {
-                return `<p>Démarche clinique correcte, mais vous avez manqué certains points importants comme : ${missed.slice(0, 3).map(g => g.label).join(', ')}. Veillez à couvrir tous les aspects de l'anamnèse.</p>`;
+                return `<p>Prise en charge clinique partielle (${checked.length}/${ecosState.grilleAptitudes.length} items validés). Points clés manqués : ${missed.slice(0, 3).map(g => g.label).join(', ')}. Veillez à couvrir tous les aspects de l'anamnèse.</p>`;
             }
         }
-        const missed = ecosState.grilleAptitudes.filter(g => !ecosState.gridChecked.has(g.id));
-        const checked = ecosState.grilleAptitudes.filter(g => ecosState.gridChecked.has(g.id));
         
-        const prompt = `Tu es un enseignant de médecine. Un étudiant vient de terminer une station ECOS. Donne un feedback PÉDAGOGIQUE court et bienveillant.
+        const prompt = `Tu es un enseignant et évaluateur universitaire de médecine lors d'une station ECOS.
+Donne un feedback PÉDAGOGIQUE direct, factuel et constructif à l'étudiant.
+
+RÈGLE ABSOLUE : Base-toi STRICTEMENT sur les faits objectifs ci-dessous. N'invente JAMAIS d'actions non réalisées.
+INTERDICTION FORMELLE d'écrire "vous avez bien commencé" ou de faire des éloges non méritées si l'étudiant a posé très peu ou pas de questions. Sois juste et précis.
 
 CAS : ${ecosState.caseData.id} — ${ecosState.caseData.interrogatoire?.motifHospitalisation || ''}
 DIAGNOSTIC ATTENDU : ${ecosState.caseData.correctDiagnostic}
-DIAGNOSTIC PROPOSÉ : ${ecosState.diagSubmitted || '(aucun)'}
+DIAGNOSTIC PROPOSÉ : ${ecosState.diagSubmitted || '(aucun diagnostic formulé)'}
+ANNONCE AU PATIENT : ${ecosState.announceSubmitted || '(aucune annonce formulée)'}
+NOMBRE DE QUESTIONS POSÉES : ${questionsAsked}
 
-CE QUE L'ÉTUDIANT A ABORDÉ : ${checked.map(g => g.label).join(', ') || '(rien)'}
-CE QU'IL A OUBLIÉ : ${missed.map(g => g.label).join(', ') || '(tout couvert)'}
+ITEMS DE LA GRILLE VALIDÉS (${checked.length}) : ${checked.map(g => g.label).join(', ') || '(aucun item validé)'}
+ITEMS MANQUÉS (${missed.length}) : ${missed.map(g => g.label).join(', ') || '(tous couverts)'}
 
-FORMAT : 2-3 phrases courtes en français, ton bienveillant mais exigeant, qui pointent 1-2 axes d'amélioration concrets. Pas de markdown, pas de titres.`;
+FORMAT : 2-3 phrases courtes en français, ton pédagogique universitaire, professionnel et constructif. Pas de markdown, pas de titres.`;
 
         try {
             const text = await llmChat([
-                { role: 'system', content: 'Tu es un enseignant de médecine bienveillant et exigeant.' },
+                { role: 'system', content: 'Tu es un enseignant de médecine universitaire rigoureux, juste et constructif.' },
                 { role: 'user', content: prompt }
             ], {
                 temperature: ECOS_CONFIG.LLM_TEMP.feedback,
@@ -1853,10 +1891,13 @@ FORMAT : 2-3 phrases courtes en français, ton bienveillant mais exigeant, qui p
             return escapeHtml(text || '').replace(/\n/g, '<br>');
         } catch (e) {
             console.warn('[ECOS] generateFeedbackNarrative failed:', e);
+            if (checked.length === 0) {
+                return '<p><strong>Aucune démarche clinique réalisée.</strong> Vous n\'avez posé aucune question au patient et aucun examen clinique n\'a été réalisé. Veillez à interroger le patient dès le début de la station.</p>';
+            }
             if (missed.length === 0) {
                 return '<p>Félicitations, vous avez validé l\'ensemble de la démarche clinique ! Votre prise en charge a été rigoureuse.</p>';
             } else {
-                return `<p>Démarche clinique correcte, mais vous avez manqué certains points importants comme : ${missed.slice(0, 3).map(g => g.label).join(', ')}. Veillez à couvrir tous les aspects de l'anamnèse.</p>`;
+                return `<p>Prise en charge clinique partielle (${checked.length}/${ecosState.grilleAptitudes.length} items validés). Points clés manqués : ${missed.slice(0, 3).map(g => g.label).join(', ')}. Veillez à couvrir tous les aspects de l'anamnèse.</p>`;
             }
         }
     }
@@ -2112,6 +2153,9 @@ FORMAT : 2-3 phrases courtes en français, ton bienveillant mais exigeant, qui p
         classifyAndCheck,
         checkItemByFieldPath,
         checkItemByExamName,
+        openAnnounce: enterAnnouncePhase,
+        endStation: onStationEnd,
+        submitAnnounce,
         CONFIG: ECOS_CONFIG
     };
 })();

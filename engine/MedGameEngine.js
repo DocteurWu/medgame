@@ -920,7 +920,8 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
                 demMax += 20;
             }
         } else {
-            demPoints += 20;
+            const hasEngagement = askedCount > 0 || this.demarche.clinicalGestures.size > 0 || examsOrdered.length > 0;
+            if (hasEngagement) demPoints += 20;
             demMax += 20;
         }
 
@@ -930,11 +931,12 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
             const unlockedCount = locks.filter(l => this.demarche.locksUnlocked.has(l.id)).length;
             demPoints += (unlockedCount / locks.length) * 15;
         } else {
-            demPoints += 15;
+            const hasEngagement = askedCount > 0 || this.demarche.clinicalGestures.size > 0 || examsOrdered.length > 0;
+            if (hasEngagement) demPoints += 15;
         }
         demMax += 15;
 
-        const demarcheScore = demMax > 0 ? Math.round((demPoints / demMax) * 100) : 100;
+        const demarcheScore = demMax > 0 ? Math.round((demPoints / demMax) * 100) : 0;
 
         // 2. Diagnosis Score — strict: exact match, official alternatives, or typo tolerance only
         let diagnosticScore = 0;
@@ -964,7 +966,7 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
             hasFatalError = true;
             traitementScore = 0;
         } else if (correctTreatments.length === 0) {
-            traitementScore = 100;
+            traitementScore = this.selectedTreatments.length > 0 ? 100 : 0;
         } else {
             const firstLineHit = this.selectedTreatments.filter(t => correctTreatments.includes(t));
             const secondLineHit = this.selectedTreatments.filter(t => secondLine.includes(t));
@@ -977,7 +979,8 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
 
         // 4. Speed Score — square-root curve: fast play is rewarded, mid-range time is not crushed
         const timeLeft = this.getTimeLeft();
-        const vitesseScore = Math.round(100 * Math.sqrt(Math.max(0, timeLeft) / this.timeLimit));
+        const hasParticipated = demarcheScore > 0 || diagnosticScore > 0 || (this.selectedTreatments.length > 0 && traitementScore > 0);
+        const vitesseScore = hasParticipated ? Math.round(100 * Math.sqrt(Math.max(0, timeLeft) / this.timeLimit)) : 0;
 
         // Weighted Composite Score
         let compositeScore = Math.round(

@@ -9,7 +9,7 @@ const INSTRUMENTS = [
     { id: 'oximeter', label: 'Oxymetre', x: -2.9, z: -0.4, key: 'saturationO2', title: 'SpO2' },
     { id: 'thermometer', label: 'Thermometre', x: -2.7, z: -0.4, key: 'temperature', title: 'T' },
     { id: 'glucometer', label: 'Glucometre', x: -2.5, z: -0.4, key: 'glycemie', title: 'Glycemie' },
-    { id: 'tablet', label: 'Tablette prescription', x: -2.55, z: -0.15, key: 'tablet', title: 'Rx' }
+    { id: 'tablet', label: 'Tablette de décision', x: -2.55, z: -0.15, key: 'tablet', title: 'Fin' }
 ];
 
 /**
@@ -87,109 +87,72 @@ function createTabletScreenTexture() {
     canvas.height = 192;
     const ctx = canvas.getContext('2d');
 
-    // Fond écran tablette
-    ctx.fillStyle = '#1a2a4a';
+    // Fond écran tablette (dégradé moderne médical)
+    const bgGrad = ctx.createLinearGradient(0, 0, 256, 192);
+    bgGrad.addColorStop(0, '#0a1526');
+    bgGrad.addColorStop(1, '#112240');
+    ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 256, 192);
 
     // Barre de statut
-    ctx.fillStyle = '#0d1926';
-    ctx.fillRect(0, 0, 256, 20);
-    ctx.font = '9px sans-serif';
-    ctx.fillStyle = '#8fa8c8';
+    ctx.fillStyle = '#060d18';
+    ctx.fillRect(0, 0, 256, 22);
+    ctx.font = 'bold 9px sans-serif';
+    ctx.fillStyle = '#00f2fe';
     ctx.textAlign = 'left';
-    ctx.fillText('MedGame Rx', 8, 14);
+    ctx.fillText('MEDGAME CLINIC OS', 10, 15);
     ctx.textAlign = 'right';
-    ctx.fillText('14:32', 248, 14);
+    ctx.fillStyle = '#8fa8c8';
+    ctx.fillText('14:32  ⚡ 100%', 246, 15);
 
-    // Grille d'icônes 3×2
-    const icons = [
-        { label: 'Ordonnance', color: '#4facfe', shape: 'pill' },
-        { label: 'Biolan', color: '#43e97b', shape: 'vial' },
-        { label: 'Imagerie', color: '#fa709a', shape: 'xray' },
-        { label: 'ECG', color: '#fee140', shape: 'wave' },
-        { label: 'Notes', color: '#a18cd1', shape: 'note' },
-        { label: 'Profil', color: '#fbc2eb', shape: 'user' },
-    ];
+    // Header carte
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 13px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('CLÔTURE DU CAS', 128, 48);
 
-    icons.forEach((icon, i) => {
-        const col = i % 3;
-        const row = Math.floor(i / 3);
-        const cx = 42 + col * 82;
-        const cy = 55 + row * 75;
+    ctx.fillStyle = '#00f2fe';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('Diagnostic & Annonce Patient', 128, 64);
 
-        // Fond icône arrondi
-        ctx.fillStyle = icon.color + '22';
-        ctx.beginPath();
-        ctx.arc(cx, cy, 24, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = icon.color + '66';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+    // Carte centrale
+    ctx.fillStyle = 'rgba(0, 242, 254, 0.07)';
+    ctx.strokeStyle = 'rgba(0, 242, 254, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.roundRect(16, 75, 224, 60, 8);
+    ctx.fill();
+    ctx.stroke();
 
-        // Forme simple
-        ctx.fillStyle = icon.color;
-        ctx.strokeStyle = icon.color;
-        ctx.lineWidth = 2;
+    // Étapes dans la carte
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = '10px sans-serif';
+    ctx.fillText('1. Formuler votre diagnostic', 30, 96);
+    ctx.fillText('2. Annoncer au patient', 30, 114);
 
-        if (icon.shape === 'pill') {
-            ctx.beginPath();
-            ctx.roundRect(cx - 10, cy - 5, 20, 10, 5);
-            ctx.fill();
-        } else if (icon.shape === 'vial') {
-            ctx.fillRect(cx - 4, cy - 10, 8, 16);
-            ctx.strokeStyle = icon.color;
-            ctx.lineWidth = 1;
-            ctx.strokeRect(cx - 6, cy - 8, 12, 12);
-        } else if (icon.shape === 'xray') {
-            ctx.strokeStyle = icon.color;
-            ctx.beginPath();
-            ctx.moveTo(cx - 8, cy - 8);
-            ctx.lineTo(cx, cy);
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(cx + 8, cy - 8);
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(cx + 8, cy + 8);
-            ctx.moveTo(cx, cy);
-            ctx.lineTo(cx - 8, cy + 8);
-            ctx.stroke();
-        } else if (icon.shape === 'wave') {
-            ctx.beginPath();
-            for (let x = -10; x <= 10; x += 1) {
-                const yy = Math.sin(x * 0.6) * 6;
-                if (x === -10) ctx.moveTo(cx + x, cy + yy);
-                else ctx.lineTo(cx + x, cy + yy);
-            }
-            ctx.stroke();
-        } else if (icon.shape === 'note') {
-            ctx.fillRect(cx - 7, cy - 8, 14, 18);
-            for (let ln = 0; ln < 3; ln++) {
-                ctx.strokeStyle = '#1a2a4a';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(cx - 4, cy - 4 + ln * 5);
-                ctx.lineTo(cx + 4, cy - 4 + ln * 5);
-                ctx.stroke();
-            }
-        } else if (icon.shape === 'user') {
-            ctx.beginPath();
-            ctx.arc(cx, cy - 5, 5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.ellipse(cx, cy + 7, 10, 5, 0, Math.PI, 0);
-            ctx.fill();
-        }
+    ctx.fillStyle = '#00f2fe';
+    ctx.fillText('✓', 215, 96);
+    ctx.fillText('✓', 215, 114);
 
-        // Label sous l'icône
-        ctx.font = '9px sans-serif';
-        ctx.fillStyle = '#b0c4de';
-        ctx.textAlign = 'center';
-        ctx.fillText(icon.label, cx, cy + 30);
-    });
+    // Bouton de clôture au bas de l'écran
+    const btnGrad = ctx.createLinearGradient(20, 145, 236, 178);
+    btnGrad.addColorStop(0, '#00c6ff');
+    btnGrad.addColorStop(1, '#0072ff');
+    ctx.fillStyle = btnGrad;
+    ctx.beginPath();
+    ctx.roundRect(20, 145, 216, 34, 8);
+    ctx.fill();
 
-    // Bordure subtile
-    ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('OUVRIR LA TABLETTE (CLIC)', 128, 166);
+
+    // Bordure d'écran globale
+    ctx.strokeStyle = 'rgba(0, 242, 254, 0.25)';
     ctx.lineWidth = 1;
-    ctx.strokeRect(4, 24, 248, 164);
+    ctx.strokeRect(2, 24, 252, 166);
 
     return new THREE.CanvasTexture(canvas);
 }

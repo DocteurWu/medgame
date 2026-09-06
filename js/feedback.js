@@ -55,9 +55,12 @@ function analyzePerformance(compositeResult, currentCase) {
         strengths.push('Démarche clinique exhaustive et rigoureuse');
     } else if (b.demarche.score >= 50) {
         tips.push('Explorez davantage l\'interrogatoire et l\'examen clinique avant de conclure');
-    } else {
+    } else if (b.demarche.score > 0) {
         weaknesses.push('Démarche clinique incomplète — des éléments importants ont été manqués');
         tips.push('Prenez le temps de poser toutes les questions et de réaliser un examen clinique complet');
+    } else {
+        weaknesses.push('Démarche clinique non initiée — aucune question posée');
+        tips.push('Prenez l\'initiative d\'interroger le patient et d\'explorer les symptômes avant de conclure');
     }
 
     // Détail interrogatoire
@@ -67,6 +70,9 @@ function analyzePerformance(compositeResult, currentCase) {
     if (interroFields > 0) {
         if (interroCount >= interroFields * 0.8) {
             strengths.push(`Interrogatoire complet (${interroCount}/${interroFields} champs explorés)`);
+        } else if (interroCount === 0) {
+            weaknesses.push('Interrogatoire non réalisé — aucune question posée');
+            tips.push('Interrogez le patient ou cliquez sur les questions pour explorer son motif');
         } else if (interroCount < interroFields * 0.4) {
             weaknesses.push(`Interrogatoire insuffisant (${interroCount}/${interroFields} champs) — des informations clés manquent`);
             tips.push('Cliquez sur les boutons de question pour révéler les informations du patient');
@@ -205,6 +211,10 @@ function generatePedagogicalExplanation(compositeResult, currentCase) {
         headerIcon = '📚';
         headerText = 'Des lacunes à combler — révisez les points ci-dessous';
         headerColor = '#e67e22';
+    } else if (compositeResult.compositeScore === 0 && demarche === 0) {
+        headerIcon = '⚠️';
+        headerText = 'Aucune démarche clinique réalisée';
+        headerColor = '#e74c3c';
     } else {
         headerIcon = '⚠️';
         headerText = 'Ce cas mérite d\'être revu en profondeur';
@@ -239,8 +249,10 @@ function generatePedagogicalExplanation(compositeResult, currentCase) {
     }
 
     // Paragraphe démarche
-    if (demarche < 50) {
-        paragraphs.push(`<strong>Démarche clinique</strong> — Une démarche clinique incomplète mène souvent à des diagnostics erronés. Prenez le temps de recueillir tous les éléments avant de conclure.`);
+    if (demarche === 0) {
+        paragraphs.push(`<strong>Démarche clinique ❌</strong> — Aucune question n'a été posée et aucun examen n'a été mené. Prenez le temps d'explorer l'anamnèse avant de poser votre diagnostic.`);
+    } else if (demarche < 50) {
+        paragraphs.push(`<strong>Démarche clinique ⚠️</strong> — Une démarche clinique incomplète mène souvent à des diagnostics erronés. Prenez le temps de recueillir tous les éléments avant de conclure.`);
     }
 
     // Paragraphe points clés du cas

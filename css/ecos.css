@@ -674,25 +674,63 @@ body.ecos-locked {
 .ecos-announce-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9100;
-    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.65);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
+    backdrop-filter: blur(4px);
 }
 
 .ecos-announce-card {
-    background: linear-gradient(145deg, rgba(20, 30, 50, 0.98), rgba(10, 20, 40, 0.95));
-    border: 1px solid var(--ecos-border);
+    background: linear-gradient(145deg, rgba(20, 30, 50, 0.98), rgba(10, 20, 40, 0.96));
+    border: 1px solid rgba(0, 242, 254, 0.3);
     color: white;
-    border-radius: 16px;
-    padding: 32px;
-    max-width: 700px;
+    border-radius: 20px;
+    padding: 28px 32px;
+    max-width: 720px;
     width: 100%;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 242, 254, 0.12);
     max-height: 90vh;
     overflow-y: auto;
+}
+
+.ecos-tablet-frame-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(0, 242, 254, 0.18);
+    font-size: 0.88rem;
+    color: #00f2fe;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.ecos-tablet-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00f2fe;
+    box-shadow: 0 0 8px #00f2fe;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.ecos-tablet-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ecos-tablet-status {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.82rem;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
 .ecos-announce-card h2 { margin-top: 0; color: var(--ecos-primary); }
@@ -742,7 +780,7 @@ body.ecos-locked {
 .ecos-debrief-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9200;
+    z-index: 10001;
     background: linear-gradient(135deg, rgba(13, 71, 161, 0.97), rgba(21, 101, 192, 0.95));
     overflow-y: auto;
     padding: 24px;

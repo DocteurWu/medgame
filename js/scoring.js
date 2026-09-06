@@ -156,23 +156,12 @@ function calculateDemarcheScore(currentCase) {
     if (hm.symptomesAssocies) interrogatoireFields.push('interrogatoire.histoireMaladie.symptomesAssocies');
     if (hm.remarques) interrogatoireFields.push('interrogatoire.histoireMaladie.remarques');
 
-    // En mode classique, tous les champs sont dévoilés automatiquement => bonus partiel
-    if (sessionStorage.getItem('immersionMode') !== 'immersif') {
-        // Mode classique : le joueur a accès sans effort, mais on vérifie s'il a consulté
-        // On attribue 60% du score car les données sont déjà visibles
-        const viewedRatio = dem.examSectionsViewed.has('section-examen-clinique') ? 1 : 0;
-        points += 24; // Bonus de visibilité automatique
-        maxPoints += 40;
-        points += viewedRatio * 16;
-        maxPoints += 16;
-    } else {
-        // Mode immersif (ECOS) : le joueur doit poser des questions
-        const totalInterroFields = Math.max(interrogatoireFields.length, 1);
-        const askedCount = interrogatoireFields.filter(f => dem.interrogatoireAsked.has(f)).length;
-        const interroRatio = askedCount / totalInterroFields;
-        points += interroRatio * 40;
-        maxPoints += 40;
-    }
+    // Interrogatoire (poids 40 pts) : basé sur les questions effectivement posées
+    const totalInterroFields = Math.max(interrogatoireFields.length, 1);
+    const askedCount = interrogatoireFields.filter(f => dem.interrogatoireAsked.has(f)).length;
+    const interroRatio = askedCount / totalInterroFields;
+    points += interroRatio * 40;
+    maxPoints += 40;
 
     // --- 2. Examen clinique (poids 25 pts) ---
     const hasExamView = dem.examSectionsViewed.has('section-examen-clinique') ||
@@ -197,8 +186,9 @@ function calculateDemarcheScore(currentCase) {
 
         points += Math.max(0, orderRatio - uselessPenalty) * 20;
     } else {
-        // Pas d'examens disponibles pour ce cas, points gratuits
-        points += 20;
+        // Pas d'examens disponibles pour ce cas : accordé uniquement si démarche clinique engagée
+        const hasEngagement = askedCount > 0 || hasExamView;
+        if (hasEngagement) points += 20;
     }
     maxPoints += 20;
 
@@ -209,8 +199,9 @@ function calculateDemarcheScore(currentCase) {
         const lockRatio = unlockedCount / locks.length;
         points += lockRatio * 15;
     } else {
-        // Pas de verrous pour ce cas
-        points += 15;
+        // Pas de verrous pour ce cas : accordé uniquement si démarche clinique engagée
+        const hasEngagement = askedCount > 0 || hasExamView;
+        if (hasEngagement) points += 15;
     }
     maxPoints += 15;
 
@@ -445,7 +436,7 @@ function calculateCompositeScore() {
         || (document.getElementById('diagnostic-select') || {}).value || '';
     const correctDiagnostic = currentCase.correctDiagnostic || '';
 
-    const totalTime = getTimeLimit();
+    const totalTime = typeof getTimeLimit === 'function' ? getTimeLimit() : 720;
     const timeLeft = (typeof timerState !== 'undefined' && timerState.timeLeft) || 0;
 
     // --- Calcul des 4 composantes ---
@@ -454,12 +445,15 @@ function calculateCompositeScore() {
     const traitementResult = calculateTraitementScore(selectedTreatments, correctTreatments, fatalTreatments);
     const vitesseScore = calculateVitesseScore(timeLeft, totalTime);
 
+    const hasParticipation = demarcheScore > 0 || diagnosticScore > 0 || (selectedTreatments.length > 0 && traitementResult.score > 0);
+    const effectiveVitesseScore = hasParticipation ? vitesseScore : 0;
+
     // --- Score composite pondéré ---
     let compositeScore = Math.round(
         demarcheScore * SCORING_WEIGHTS.demarche +
         diagnosticScore * SCORING_WEIGHTS.diagnostic +
         traitementResult.score * SCORING_WEIGHTS.traitement +
-        vitesseScore * SCORING_WEIGHTS.vitesse
+        effectiveVitesseScore * SCORING_WEIGHTS.vitesse
     );
 
     // Erreur fatale = ÉCHEC DU CAS : un traitement contre-indiqué peut tuer le patient.
@@ -475,7 +469,7 @@ function calculateCompositeScore() {
         demarche: { score: demarcheScore, weight: SCORING_WEIGHTS.demarche, contribution: Math.round(demarcheScore * SCORING_WEIGHTS.demarche * 100) / 100 },
         diagnostic: { score: diagnosticScore, weight: SCORING_WEIGHTS.diagnostic, contribution: Math.round(diagnosticScore * SCORING_WEIGHTS.diagnostic * 100) / 100 },
         traitement: { score: traitementResult.score, weight: SCORING_WEIGHTS.traitement, contribution: Math.round(traitementResult.score * SCORING_WEIGHTS.traitement * 100) / 100 },
-        vitesse: { score: vitesseScore, weight: SCORING_WEIGHTS.vitesse, contribution: Math.round(vitesseScore * SCORING_WEIGHTS.vitesse * 100) / 100 }
+        vitesse: { score: effectiveVitesseScore, weight: SCORING_WEIGHTS.vitesse, contribution: Math.round(effectiveVitesseScore * SCORING_WEIGHTS.vitesse * 100) / 100 }
     };
 
     // --- Star rating 0-3 (avec garantie démarche) ---
