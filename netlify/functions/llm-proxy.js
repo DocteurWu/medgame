@@ -198,7 +198,8 @@ export default async (request, context) => {
 
         if (!upstream.ok) {
             const errText = await upstream.text().catch(() => '');
-            console.error(`[Proxy] Erreur upstream ${upstream.status}: ${errText.slice(0, 200)}`);
+            console.error(`[Proxy] Erreur upstream ${upstream.status}: ${errText.slice(0, 300)}`);
+            return jsonError(errText || `Erreur fournisseur LLM (${upstream.status})`, upstream.status, corsHeaders);
         }
 
         return new Response(upstream.body, {
