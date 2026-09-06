@@ -133,7 +133,7 @@ class ThreeManager {
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                const ccModule = await import('./character-controller.js?v=20260905-fix3');
+                const ccModule = await import('./character-controller.js?v=20260906-pbr');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
@@ -1521,8 +1521,9 @@ document.addEventListener('case-loaded', (e) => {
     }
 });
 
-// Initialisation passive (ne démarre pas le 3D automatiquement)
+// Initialisation passive (démarre le 3D uniquement si render=3d ou session active)
 const init3DManager = () => {
+    window.threeManager?.init?.();
     if (window.gameState?.currentCase) {
         predictiveStreamer.predictForCase(window.gameState.currentCase);
     }

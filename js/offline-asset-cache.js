@@ -1,4 +1,4 @@
-﻿/**
+/**
  * offline-asset-cache.js — Gestionnaire de cache persistant hors-ligne haute performance
  * Stocke et sert les assets 3D lourds (.glb, .bin, textures, scans) via CacheStorage API.
  * Réduit à zéro les temps de re-téléchargement et élimine la latence réseau inter-sessions.
@@ -78,7 +78,7 @@ export class OfflineAssetCache {
         const total = contentLength ? parseInt(contentLength, 10) : 0;
         let blob;
 
-        if (total > 0 && response.body && typeof ReadableStream !== 'undefined') {
+        if (onProgress && total > 0 && response.body && typeof ReadableStream !== 'undefined') {
             const reader = response.body.getReader();
             const chunks = [];
             let loaded = 0;
@@ -88,9 +88,7 @@ export class OfflineAssetCache {
                 if (done) break;
                 chunks.push(value);
                 loaded += value.length;
-                if (onProgress) {
-                    try { onProgress(loaded / total); } catch {}
-                }
+                try { onProgress(loaded / total); } catch {}
             }
             blob = new Blob(chunks);
         } else {

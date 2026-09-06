@@ -92,12 +92,20 @@ export class CharacterController {
 
                 this.activeModel = gltf.scene;
 
-                // Ombres et matériaux PBR
+                // Ombres et matériaux PBR (garantir un rendu diélectrique réaliste avec texture diffuse visible)
                 this.activeModel.traverse((child) => {
                     if (child.isMesh) {
                         child.castShadow = true;
                         child.receiveShadow = true;
                         if (child.material) {
+                            // Assurer un rendu non-métallique pour tissu/peau afin que la texture diffuse (map)
+                            // soit 100% visible et éclairée naturellement en PBR
+                            child.material.metalness = Math.min(child.material.metalness ?? 0, 0.05);
+                            child.material.roughness = Math.max(child.material.roughness ?? 0.85, 0.75);
+                            if (child.material.map) {
+                                child.material.map.colorSpace = THREE.SRGBColorSpace;
+                                child.material.map.needsUpdate = true;
+                            }
                             child.material.needsUpdate = true;
                         }
                     }

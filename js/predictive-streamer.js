@@ -1,4 +1,4 @@
-﻿/**
+/**
  * predictive-streamer.js — Moteur de streaming prédictif d'assets en arrière-plan
  * Analyse l'état clinique actuel, anticipe les choix du joueur et charge
  * silencieusement les assets 3D et imageries sans impacter la boucle de rendu.
@@ -64,9 +64,21 @@ export class PredictiveStreamer {
             candidateAssets.push({ url: glbPath, priority: 1 });
         }
 
-        // 2. Détecter les images médicales éventuelles (ECG, radios, scanners)
+        // 2. Modèle 3D du docteur (Priorité 1)
+        try {
+            const savedProfile = localStorage.getItem('medgame_profile');
+            let docGender = 'M';
+            if (savedProfile) {
+                const parsed = JSON.parse(savedProfile);
+                if (parsed?.sexe) docGender = parsed.sexe;
+            }
+            const docFile = docGender.toUpperCase() === 'F' ? 'femme.glb' : 'homme.glb';
+            candidateAssets.push({ url: `assets/models/doctors/${docFile}`, priority: 1 });
+        } catch {}
+
+        // 3. Détecter les images médicales éventuelles (ECG, radios, scanners)
         const caseStr = JSON.stringify(caseData);
-        const imageMatches = caseStr.match(/assets\/[^\"]+\.(?:png|jpg|jpeg|webp|svg)/gi) || [];
+        const imageMatches = caseStr.match(/assets\/images\/[^\"]+\.(?:png|jpg|jpeg|webp|svg)/gi) || [];
         for (const imgUrl of imageMatches) {
             candidateAssets.push({ url: imgUrl, priority: 3 });
         }
@@ -97,7 +109,7 @@ export class PredictiveStreamer {
             }
 
             // Yield coopératif pour laisser respirer le thread d'exécution
-            await new Promise(resolve => setTimeout(resolve, 30));
+            await new Promise(resolve => setTimeout(resolve, 60));
         }
 
         this._isProcessing = false;
