@@ -35,6 +35,16 @@ window.CONFIG = CONFIG;
     } else if (typeof window.createClient === 'function') {
         window.supabase = window.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
     } else {
-        console.error("Supabase SDK not found. Make sure to include the script tag.");
+        // Supabase optionnel sur les pages autonomes (atlas, auscultation, etc.)
+        // Proxy résilient pour éviter les erreurs console inutiles
+        window.supabase = new Proxy({}, {
+            get(target, prop) {
+                if (prop === 'then' || prop === Symbol.toPrimitive || prop === 'toJSON') return undefined;
+                return () => {
+                    console.warn(`[Config] Supabase SDK non inclus sur cette page. L'appel à supabase.${String(prop)}() est ignoré.`);
+                    return Promise.resolve({ data: null, error: new Error('Supabase SDK non chargé') });
+                };
+            }
+        });
     }
 })();
