@@ -464,7 +464,7 @@ export class ThreeScene {
             done: !!ud.completed,
         }, fps ? window.innerWidth / 2 : this._pointerClient.x, fps ? window.innerHeight / 2 : this._pointerClient.y);
 
-        this.callbacks.onHover?.(obj);
+        this.callbacks.onHover?.(obj, { clientX: this._pointerClient?.x ?? (window.innerWidth / 2), clientY: this._pointerClient?.y ?? (window.innerHeight / 2) });
     }
 
     _hintFor(root, label) {

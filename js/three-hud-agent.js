@@ -1340,6 +1340,22 @@ export class ThreeHUD {
                     let avatarSpan = null;
                     let currentFullText = '';
 
+                    if (!this.llmPatient) {
+                        const caseData = this.manager?.currentCase || window.gameState?.currentCase || window.patientChat?.caseData;
+                        if (caseData) {
+                            this.llmPatient = new LLMPatient(caseData);
+                        } else if (window.patientChat?._llm) {
+                            this.llmPatient = window.patientChat._llm;
+                        }
+                    }
+
+                    if (!this.llmPatient) {
+                        console.warn('[3D Chat] Aucun LLMPatient disponible, délégation à origAsk.');
+                        this._hideThinkingIndicator();
+                        if (origAsk) return origAsk(question);
+                        return;
+                    }
+
                     // Lancer la requête LLM streaming
                     await this.llmPatient.ask(
                         question,
@@ -1433,12 +1449,14 @@ export class ThreeHUD {
                         // Callback en cas d'erreur (Ollama absent, réseau coupé, etc.)
                         (errorMsg) => {
                             this._hideThinkingIndicator();
-                            console.warn('[3D Chat] Erreur de flux LLM, fallback local automatique déjà géré par LLMPatient.');
+                            console.warn('[3D Chat] Erreur de flux LLM, affichage direct dans le dialogue.');
+                            pushMessage('Patient', typeof errorMsg === 'string' ? errorMsg : 'Le patient ne répond pas.', null);
                         }
                     );
                 } catch (err) {
                     this._hideThinkingIndicator();
                     console.error('[3D Chat] Erreur critique dans la gestion du chat:', err);
+                    pushMessage('Patient', `⚠️ Erreur : ${err?.message || 'Erreur lors de la réponse du patient.'}`, null);
                 }
             };
         }
@@ -1469,14 +1487,14 @@ export class ThreeHUD {
             // Pour chaque message 2D, vérifier s'il manque dans le 3D
             let addedAny = false;
             classicMessages.forEach(m => {
-                const span = m.querySelector('span');
-                const rawText = span ? span.textContent : m.textContent;
+                const textSpan = m.querySelector('.ecos-msg-text') || m.querySelector('span:not(.ecos-msg-speaker)');
+                const rawText = textSpan ? textSpan.textContent : m.textContent;
                 const norm = normalizeText(rawText);
-                if (norm && !existingTexts.has(norm)) {
+                if (norm && norm !== 'médecin' && norm !== 'medecin' && norm !== 'patient' && !existingTexts.has(norm)) {
                     // Déterminer le type (user vs patient)
                     const isFromUser = m.classList.contains('from-user');
                     const speaker = isFromUser ? 'Vous' : 'Patient';
-                    const cleanText = span ? span.textContent.trim() : rawText.replace(/^(Patient|Vous)\s*:\s*/i, '').trim();
+                    const cleanText = textSpan ? textSpan.textContent.trim() : rawText.replace(/^(Patient|Vous)\s*:\s*/i, '').trim();
                     pushMessage(speaker, cleanText, null);
                     existingTexts.add(norm);
                     addedAny = true;
