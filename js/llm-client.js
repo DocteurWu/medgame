@@ -144,9 +144,11 @@ class LLMClient {
                         console.warn(`[LLMClient] Erreur lors de l'appel : ${err.message}`);
                     }
 
-                    // Si le proxy local échoue, pas de bascule clé-embarquée :
-                    // on retente via les retries puis on laisse l'erreur remonter.
                     lastError = err;
+                    // Échec immédiat sans retry sur erreur d'authentification (401/403)
+                    if (err.message && (err.message.includes('401') || err.message.includes('403'))) {
+                        throw err;
+                    }
                     attempt++;
 
                     // Backoff exponentiel avant le retry (1s, 2s, 4s...)
