@@ -32,9 +32,9 @@
     <title>Cas Clinique - MedGame</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
     <link rel="stylesheet" href="css/style.css?v=2">
-    <link rel="stylesheet" href="css/game.css?v=2">
+    <link rel="stylesheet" href="css/game.css?v=5">
     <link rel="stylesheet" href="css/immersive.css?v=2">
-    <link rel="stylesheet" href="css/ecos.css?v=2">
+    <link rel="stylesheet" href="css/ecos.css?v=5">
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -354,11 +354,18 @@
                     </div>
 
                     <!-- Integrated ECOS Chat Panel inside Anamnèse section -->
-                    <div id="dialogue-panel" style="display: flex !important; flex-direction: column; height: 350px; background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; margin-bottom: 20px;" class="ecos-chat-integrated" aria-hidden="false">
-                        <div id="dialogue-messages" style="flex: 1; overflow-y: auto; margin-bottom: 12px; padding-right: 5px; display: flex; flex-direction: column; gap: 8px;"></div>
-                        <form id="dialogue-form" style="display: flex; gap: 10px; align-items: center;">
-                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Posez une question au patient (ex: Où avez-vous mal ?)..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem;" />
-                            <button type="submit" style="background: linear-gradient(135deg,#00f2fe,#4facfe); border: none; color: #0a0f28; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                    <div id="dialogue-panel" class="ecos-chat-integrated" aria-hidden="false">
+                        <div class="communicator-header">
+                            <div class="communicator-status">
+                                <span class="status-pulse-dot"></span>
+                                <span class="communicator-title"><i class="fas fa-comments"></i> INTERROGATOIRE DU PATIENT</span>
+                            </div>
+                            <span class="communicator-badge"><i class="fas fa-satellite-dish"></i> DIRECT CLINIQUE</span>
+                        </div>
+                        <div id="dialogue-messages"></div>
+                        <form id="dialogue-form">
+                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Posez une question au patient (ex: Où avez-vous mal ?)..." />
+                            <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
                         </form>
                     </div>
 

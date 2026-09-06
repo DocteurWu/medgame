@@ -1149,16 +1149,18 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             window.EcosMode.start(currentCase);
         }
 
-        // Sync 3D scene with current case data
-        if (window.threeManager && window.threeManager.enabled) {
-            window.threeManager.loadCase(currentCase);
-        }
-        if (window.patientChat) {
-            window.patientChat.setCase(currentCase);
-        }
-        // Sync prescription manager with current case
-        if (window.prescriptionManager && typeof window.prescriptionManager.setCase === 'function') {
-            window.prescriptionManager.setCase(currentCase);
+        // Sync 3D scene with current case data (uniquement au chargement initial d'un cas)
+        if (!isPartialRefresh) {
+            if (window.threeManager && window.threeManager.enabled) {
+                window.threeManager.loadCase(currentCase);
+            }
+            if (window.patientChat) {
+                window.patientChat.setCase(currentCase);
+            }
+            // Sync prescription manager with current case
+            if (window.prescriptionManager && typeof window.prescriptionManager.setCase === 'function') {
+                window.prescriptionManager.setCase(currentCase);
+            }
         }
 
         // ── Sauvegarde/reprise : restaurer l'état interrompu puis capturer ──

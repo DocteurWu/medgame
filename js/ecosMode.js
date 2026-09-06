@@ -692,6 +692,11 @@
             || document.getElementById('dialogue-messages');
     }
 
+    function formatClinicalText(raw) {
+        if (!raw || typeof raw !== 'string') return '';
+        return escapeHtml(raw).replace(/\(([^)]+)\)/g, '<div class="clinical-stage-direction"><i class="fas fa-notes-medical"></i> <em>$1</em></div>');
+    }
+
     function appendConversation(speaker, text, kind = 'normal') {
         // Le transcript est TOUJOURS alimenté, même sans conteneur visible
         ecosState.conversationLog.push({ speaker, text, t: Date.now() - ecosState.startedAt, kind });
@@ -707,7 +712,11 @@
             // Structure compatible panneau standard, en conservant les hooks
             // .ecos-msg-speaker / .ecos-msg-text utilisés par les mises à jour
             row.className = `dialogue-message ${speaker === 'Vous' ? 'from-user' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
-            row.innerHTML = `<strong class="ecos-msg-speaker">${escapeHtml(speaker)} : </strong><span class="ecos-msg-text">${innerText}</span>`;
+            const isUser = speaker === 'Vous';
+            const speakerIcon = isUser ? '<i class="fas fa-user-md"></i>' : '<i class="fas fa-user-injured"></i>';
+            const speakerLabel = isUser ? 'Médecin' : (escapeHtml(speaker) || 'Patient');
+            const formatted = (kind === 'thinking' || isUser) ? innerText : formatClinicalText(text);
+            row.innerHTML = `<span class="ecos-msg-speaker">${speakerIcon} ${speakerLabel}</span><span class="ecos-msg-text">${formatted}</span>`;
         } else {
             row.className = `ecos-msg ${speaker === 'Vous' ? 'from-student' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
             row.innerHTML = `<div class="ecos-msg-speaker">${escapeHtml(speaker)}</div><div class="ecos-msg-text">${innerText}</div>`;
@@ -839,7 +848,9 @@
                         if (window.MedGameAudio) window.MedGameAudio.play('typing');
                     },
                     (final) => {
-                        placeholder.querySelector('.ecos-msg-text').textContent = final || fullAnswer;
+                        const res = final || fullAnswer;
+                        const el = placeholder.querySelector('.ecos-msg-text');
+                        if (el) el.innerHTML = formatClinicalText(res);
                         resolve();
                     },
                     (err) => reject(new Error(err))
@@ -1087,20 +1098,35 @@ Règles :
         // Évite d'envoyer les messages d'erreurs du patient au classificateur
         if (!answer || answer.includes('⚠️ Erreur') || answer.includes('Moteur patient indisponible')) return;
 
-        const prompt = `Tu es un évaluateur ECOS. On te donne une question posée par l'étudiant-médecin et la réponse du patient. Tu dois déterminer quels items de la grille d'aptitudes cliniques ont été validés par cet échange.
+        const prompt = `Tu es un évaluateur ECOS clinique rigoureux (Faculté de Médecine). On te donne une question ou action formulée par l'étudiant-médecin et la réponse du patient. Tu dois déterminer quels items de la grille d'aptitudes cliniques ont été valablement abordés ou réalisés.
 
-GRILLE D'APTITUDES (chaque item a un id et un label ; coche = l'étudiant a abordé le sujet ou fait le geste) :
-${grille.map(g => `- ${g.id} : ${g.label}${g.triggerKeywords ? ' [keywords: ' + g.triggerKeywords.join(', ') + ']' : ''}`).join('\n')}
+GRILLE D'APTITUDES CLINICALES :
+${grille.map(g => {
+    const isPres = g.id.includes('presentation') || g.id.includes('accueil');
+    const filteredKw = g.triggerKeywords ? g.triggerKeywords.filter(k => {
+        if (isPres && ['bonjour', 'salut', 'bonsoir', 'coucou', 'hello', 'yo'].includes(k.toLowerCase().trim())) return false;
+        return true;
+    }) : [];
+    return `- ${g.id} : ${g.label}${filteredKw.length > 0 ? ' [keywords: ' + filteredKw.join(', ') + ']' : ''}`;
+}).join('\n')}
 
-QUESTION DE L'ÉTUDIANT : ${question}
+QUESTION / ACTION DE L'ÉTUDIANT : ${question}
 RÉPONSE DU PATIENT : ${answer}
 
-RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMENT les ids qui sont nouvellement validés. Si rien n'est validé, renvoie {"checked": []}.
-IMPORTANT : N'évaluez et ne cochez QUE les items d'interrogatoire (anamnèse, antécédents, mode de vie, histoire de la maladie). NE COCHEZ PAS les items d'examen physique (ceux commençant par 'examen_') car ceux-ci ne peuvent être validés que par une demande d'examen physique explicite.`;
+RÈGLES D'ÉVALUATION STRICTES (CONFORMITÉ ECOS / R2C) :
+1. RÈGLE D'OR POUR LA PRÉSENTATION DU SOIGNANT (items 'presentation', 'accueil_presentation', 'presentation_role') :
+   - Pour valider la présentation, l'étudiant DOIT EXPLICITEMENT se présenter en indiquant son rôle ou statut soignant (ex: "Docteur", "Dr", "Médecin", "Interne", "Externe", "Je suis le Dr...") OU donner son nom/prénom (ex: "Je m'appelle...").
+   - Une salutation banale isolée ("salut", "bonjour", "bonsoir", "coucou", "hello", "bonjour monsieur/madame") SANS déclinaison de son rôle soignant ou de son nom NE VALIDE EN AUCUN CAS cet item de présentation.
+2. EXAMEN PHYSIQUE :
+   - N'évaluez et ne cochez QUE les items d'interrogatoire (anamnèse, antécédents, mode de vie, histoire de la maladie). NE COCHEZ PAS les items d'examen physique (ceux commençant par 'examen_') qui nécessitent une demande d'examen spécifique.
+3. STRICTE PERTINENCE :
+   - Ne validez un item que si l'étudiant a explicitement posé une question ou investigué le sujet clinique précis.
+
+RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMENT les ids qui sont nouvellement validés. Si rien n'est validé, renvoie {"checked": []}.`;
 
         try {
             const text = await llmChat([
-                { role: 'system', content: 'Tu es un évaluateur ECOS. Tu renvoies UNIQUEMENT un JSON strict {checked: [ids]}.' },
+                { role: 'system', content: 'Tu es un évaluateur ECOS clinique strict. Tu renvoies UNIQUEMENT un JSON strict {checked: [ids]}.' },
                 { role: 'user', content: prompt }
             ], {
                 temperature: ECOS_CONFIG.LLM_TEMP.classify,
@@ -1110,7 +1136,7 @@ IMPORTANT : N'évaluez et ne cochez QUE les items d'interrogatoire (anamnèse, a
             });
             const json = extractJsonSafe(text);
             
-            // Garantir que le classificateur chat ne coche pas d'items examen_ cliniques
+            // Validation souveraine par le LLM (seul le LLM tranche selon la consigne d'évaluation)
             const newly = (json.checked || [])
                 .filter(id => !ecosState.gridChecked.has(id))
                 .filter(id => !id.startsWith('examen_') && !id.startsWith('examen-'));
@@ -1157,7 +1183,7 @@ IMPORTANT : N'évaluez et ne cochez QUE les items d'interrogatoire (anamnèse, a
     function buildFallbackGrilleAptitudes(caseData) {
         const int = caseData.interrogatoire || {};
         const items = [
-            { id: 'presentation', label: 'Se présente et explique son rôle', weight: 1, triggerKeywords: ['bonjour', 'présente', 'interne', 'appelle'] },
+            { id: 'presentation', label: 'Se présente et explique son rôle', weight: 1, triggerKeywords: ['présente', 'interne', 'externe', 'médecin', 'docteur', 'appelle'] },
             { id: 'motif', label: 'Demande le motif de consultation', weight: 1, triggerKeywords: ['motif', 'raison', 'amène', 'pousse'] },
             { id: 'histoire_debut', label: 'Caractérise le début des symptômes', weight: 1, triggerKeywords: ['depuis', 'quand', 'début', 'commencé'] },
             { id: 'histoire_caractere', label: 'Décrit les caractéristiques (type, intensité, siège)', weight: 1, triggerKeywords: ['douleur', 'siège', 'type', 'intensité'] },

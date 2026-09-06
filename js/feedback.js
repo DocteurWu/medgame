@@ -527,40 +527,44 @@ function renderDetailedFeedback(compositeResult, currentCase) {
             </tbody>
         </table>
     `;
-    // Points forts/faibles compactés en 1 ligne
-    const strengthItems = analysis.strengths.slice(0,3).map(s => `✅ ${escapeHtml(s)}`).join(' · ');
-    const weaknessItems = analysis.weaknesses.slice(0,3).map(w => `❌ ${escapeHtml(w)}`).join(' · ');
-    const tipItems = analysis.tips.slice(0,2).map(t => `💡 ${escapeHtml(t)}`).join(' · ');
-    const syntheseLigne = [strengthItems, weaknessItems, tipItems].filter(Boolean).join('<br>');
+    // Points forts/faibles compactés avec design de badges modernes
+    const strengthItems = analysis.strengths.slice(0,3).map(s => `<span style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); color:#34d399; padding:4px 8px; border-radius:8px; display:inline-block; margin:2px;">✅ ${escapeHtml(s)}</span>`).join(' ');
+    const weaknessItems = analysis.weaknesses.slice(0,3).map(w => `<span style="background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#f87171; padding:4px 8px; border-radius:8px; display:inline-block; margin:2px;">❌ ${escapeHtml(w)}</span>`).join(' ');
+    const tipItems = analysis.tips.slice(0,2).map(t => `<span style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); color:#fbbf24; padding:4px 8px; border-radius:8px; display:inline-block; margin:2px;">💡 ${escapeHtml(t)}</span>`).join(' ');
+    const syntheseLigne = [strengthItems, weaknessItems, tipItems].filter(Boolean).join(' ');
+
     // Comparaison compacte
-    const compColor = comparison.percentile >= 75 ? '#2ecc71' : comparison.percentile >= 50 ? '#f39c12' : '#e74c3c';
+    const compColor = comparison.percentile >= 75 ? '#34d399' : comparison.percentile >= 50 ? '#fbbf24' : '#f87171';
     const comparisonBlock = comparison.total > 1 ? `
-        <div style="background:rgba(0,0,0,0.18); border-radius:8px; padding:8px 10px; margin-top:8px; display:flex; align-items:center; gap:10px; font-size:0.78rem;">
-            <span style="font-weight:700; color:${compColor};">${comparison.percentile}%</span>
+        <div style="background:rgba(10,16,36,0.65); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:10px 14px; margin-top:8px; display:flex; align-items:center; gap:12px; font-size:0.82rem;">
+            <span style="font-weight:800; font-size:1.05rem; color:${compColor};">${comparison.percentile}%</span>
             <div style="flex:1; height:8px; background:rgba(255,255,255,0.08); border-radius:6px; overflow:hidden; position:relative;">
-                <div style="height:100%; width:${comparison.percentile}%; background:${compColor}; opacity:0.6;"></div>
+                <div style="height:100%; width:${comparison.percentile}%; background:linear-gradient(90deg, #00f2fe, ${compColor}); border-radius:6px;"></div>
             </div>
-            <span style="color:rgba(255,255,255,0.5); font-size:0.70rem;">#${comparison.rank}/${comparison.total} · moy ${comparison.avgScore}%</span>
+            <span style="color:rgba(255,255,255,0.6); font-size:0.75rem;">Rang #${comparison.rank}/${comparison.total} · moy ${comparison.avgScore}%</span>
         </div>
     ` : `<div style="text-align:center; font-size:0.75rem; color:rgba(255,255,255,0.45); margin-top:6px;">🏁 Première session — rejouez pour comparer</div>`;
-    // Assemblage final ultra-compact : 3 petits tableaux + pédagogie courte + timeline repliée
+
+    // Assemblage final : cartes dark glass + pédagogie + timeline repliée
     return `
-        <div class="detailed-feedback" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+        <div class="detailed-feedback" style="margin-top:12px; display:flex; flex-direction:column; gap:10px;">
             ${scoringGridHtml}
-            <div style="background:rgba(0,0,0,0.15); border-radius:8px; padding:8px 10px;">
-                <div style="font-weight:700; font-size:0.82rem; margin-bottom:4px; color:rgba(255,255,255,0.85);">🎯 Décision</div>
+            <div style="background:rgba(12,18,40,0.65); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:12px 14px;">
+                <div style="font-weight:700; font-size:0.86rem; margin-bottom:6px; color:#00f2fe;"><i class="fas fa-bullseye"></i> Décision Diagnostique & Thérapeutique</div>
                 ${decisionTable}
             </div>
-            <div style="background:rgba(0,0,0,0.15); border-radius:8px; padding:8px 10px;">
-                <div style="font-weight:700; font-size:0.82rem; margin-bottom:4px; color:rgba(255,255,255,0.85);">🩺 Démarche</div>
+            <div style="background:rgba(12,18,40,0.65); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:12px 14px;">
+                <div style="font-weight:700; font-size:0.86rem; margin-bottom:6px; color:#4facfe;"><i class="fas fa-stethoscope"></i> Bilan de la Démarche Clinique</div>
                 ${demarcheTable}
             </div>
-            ${syntheseLigne ? `<div style="background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 10px; font-size:0.78rem; line-height:1.5; color:rgba(255,255,255,0.75);">${syntheseLigne}</div>` : ''}
-            <div style="background:rgba(0,0,0,0.12); border-radius:8px; padding:8px 10px; font-size:0.80rem; line-height:1.5;">${generatePedagogicalExplanation(compositeResult, currentCase).replace(/padding:16px/g,'padding:8px').replace(/margin-top:12px/g,'margin-top:6px')}</div>
+            ${syntheseLigne ? `<div style="background:rgba(8,12,28,0.5); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:10px 12px; font-size:0.80rem; line-height:1.6;">${syntheseLigne}</div>` : ''}
+            <div style="background:rgba(12,18,40,0.65); border:1px solid rgba(0,242,254,0.15); border-radius:12px; padding:12px 14px; font-size:0.82rem; line-height:1.6;">
+                ${generatePedagogicalExplanation(compositeResult, currentCase).replace(/padding:16px/g,'padding:8px').replace(/margin-top:12px/g,'margin-top:6px')}
+            </div>
             ${comparisonBlock}
-            <details id="corr-timeline" style="background:rgba(0,0,0,0.12); border-radius:8px; padding:6px 10px;">
-                <summary>⏱️ Timeline (${feedbackTimeline.events.length} actions) — cliquer pour déplier</summary>
-                <div style="margin-top:6px;">${timelineHtml}</div>
+            <details id="corr-timeline" style="background:rgba(10,16,36,0.65); border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:8px 12px; cursor:pointer;">
+                <summary style="font-weight:600; color:var(--primary-color);">⏱️ Chronologie détaillée (${feedbackTimeline.events.length} actions tracées) — cliquer pour déplier</summary>
+                <div style="margin-top:8px;">${timelineHtml}</div>
             </details>
         </div>
     `;
