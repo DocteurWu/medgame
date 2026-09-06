@@ -24,12 +24,12 @@ function loadModules() {
     if (!_modsPromise) {
         _modsPromise = Promise.all([
             import('three'),
-            import('./three-scene.js'),
-            import('./three-hud-agent.js'),
-            import('./three-transition-agent.js'),
-            import('./three-lock-agent.js'),
-            import('./three-urgence-agent.js'),
-            import('./three-clinical-agent.js')
+            import('./three-scene.js?v=20260906-v2'),
+            import('./three-hud-agent.js?v=20260906-v2'),
+            import('./three-transition-agent.js?v=20260906-v2'),
+            import('./three-lock-agent.js?v=20260906-v2'),
+            import('./three-urgence-agent.js?v=20260906-v2'),
+            import('./three-clinical-agent.js?v=20260906-v2')
         ]).then(([three, scene, hud, transition, lockAgent, urgenceAgent, clinical]) => {
             _THREE = three;
             _mods = {
@@ -133,7 +133,7 @@ class ThreeManager {
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                const ccModule = await import('./character-controller.js?v=20260906-pbr');
+                const ccModule = await import('./character-controller.js?v=20260906-v2');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
@@ -1199,7 +1199,11 @@ class ThreeManager {
     }
 
     get currentCase() {
-        return window.gameState?.currentCase || null;
+        return this._currentCase || window.gameState?.currentCase || null;
+    }
+
+    set currentCase(val) {
+        this._currentCase = val;
     }
 
     loadCase(caseData) {
@@ -1500,8 +1504,10 @@ class ThreeManager {
             return;
         }
         this.tooltip.textContent = object.userData?.label || object.name || '';
-        this.tooltip.style.left = `${event.clientX + 12}px`;
-        this.tooltip.style.top = `${event.clientY - 18}px`;
+        if (event && typeof event.clientX === 'number' && typeof event.clientY === 'number') {
+            this.tooltip.style.left = `${event.clientX + 12}px`;
+            this.tooltip.style.top = `${event.clientY - 18}px`;
+        }
         this.tooltip.style.display = 'block';
     }
 }
@@ -1517,12 +1523,18 @@ window.threeManager = new ThreeManager();
 // Streaming prédictif automatique sur chargement d'un cas clinique
 document.addEventListener('case-loaded', (e) => {
     if (e.detail?.caseData) {
+        if (window.threeManager) {
+            window.threeManager.currentCase = e.detail.caseData;
+        }
         predictiveStreamer.predictForCase(e.detail.caseData);
     }
 });
 
 // Initialisation passive (démarre le 3D uniquement si render=3d ou session active)
 const init3DManager = () => {
+    if (window.gameState?.currentCase && window.threeManager) {
+        window.threeManager.currentCase = window.gameState.currentCase;
+    }
     window.threeManager?.init?.();
     if (window.gameState?.currentCase) {
         predictiveStreamer.predictForCase(window.gameState.currentCase);
