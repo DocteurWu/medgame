@@ -1,0 +1,393 @@
+{
+  "id": "locomoteur_gonflement_articulaire_douloureux_genou_m_mirko",
+  "redacteur": "diapo du prof",
+  "patient": {
+    "nom": "Jankovic",
+    "prenom": "Mirko",
+    "age": 47,
+    "sexe": "M",
+    "taille": "186 cm",
+    "poids": "81 kg",
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Genou droit chaud, très gonflé et douloureux jour et nuit avec fébricule",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Champion du monde des échecs",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Apparition brutale il y a 3j d'emblée très douloureuses (EVA 8/10)",
+      "evolution": "Paroxystique",
+      "facteursDeclenchants": "/",
+      "descriptionDouleur": "Douleur de la première articulation métatarso-phalangienne(MTP1) du pied droit en coup de poignard, maximales la nuit et la matin au réveil",
+      "symptomesAssocies": [
+        "Difficulté à marcher"
+      ],
+      "remarques": "..."
+    },
+    "verbatim": "Bonjour docteur... mon genou a gonflé d'un coup depuis hier soir. Il est brûlant, énorme, et la douleur me réveille la nuit, je ne peux plus marcher."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Rhumatoïde": {
+      "inspection": "Gros orteil droit rouge et gonflé",
+      "palpation": "Gros orteil droit chaud",
+      "mobilisation active": "Normale",
+      "mobilisation passive": "Normale",
+      "mobilité contrariée": "Normale"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Ankylose de la MTP1",
+    "Arthrite aiguë de la MTP1",
+    "Tendinopathie simple du gros orteil droit",
+    "Rupture tendineuse du gros orteil droit",
+    "Laxité du gros orteil droit"
+  ],
+  "correctDiagnostic": "Arthrite aiguë de la MTP1",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [],
+  "correctTreatments": [],
+  "correction": "# Cas ECOS : Genou droit chaud, très gonflé et douloureux jour et nuit avec fébricule\n\n## Diagnostic retenu : Arthrite aiguë de la MTP1\n\n### Référentiel R2C / EDN\nItem 196. Douleur et épanchement articulaire. Arthrite septique.\n\n### Prise en charge clinique et thérapeutique\nToute monoarthrite aiguë est une arthrite septique jusqu'à preuve du contraire : ponction articulaire immédiate avant tout antibiotique et avis chirurgical.\n\nPrise en charge conforme aux recommandations officielles des sociétés savantes françaises et européennes (HAS, collèges des enseignants). Évaluation sémiologique rigoureuse, identification des critères de gravité et stratégie diagnostique et thérapeutique graduée.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Selon les informations de l'interrogatoire, quel est le mécanisme de le douleur ?",
+        "options": [
+          "Mécanique",
+          "Inflammatoire",
+          "On ne peut pas savoir"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Les douleurs sont \"maximales la nuit et le matin au réveil\"...",
+      "id": "lock_1767809447559",
+      "target_fields": [
+        "examenClinique.Rhumatoïde"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences orthopédiques / rhumatologie.",
+      "contexte": "Vous recevez M. Mirko Jankovic, 47 ans, consultant pour une impotence totale du genou droit d'apparition rapide avec épanchement volumineux et température à 38.3°C.",
+      "consignesAttendues": [
+        "Reconnaître l'urgence diagnostique d'une monoarthrite aiguë jusqu'à preuve du contraire septique",
+        "Réaliser un examen clinique complet de l'articulation (choc rotulien, chaleur, rougeur, porte d'entrée cutanée)",
+        "Poser l'indication formelle et immédiate d'une ponction articulaire évacuatrice et diagnostique",
+        "Prescrire l'analyse cytologique, microcristalline et bactériologique du liquide synovial",
+        "Mettre en route l'antibiothérapie probabiliste adaptée uniquement APRÈS réalisation de la ponction"
+      ],
+      "consignesInterdites": [
+        "Ne jamais débuter d'antibiothérapie avant la réalisation des prélèvements bactériologiques articulaires",
+        "Ne pas infiltrer de corticoïdes en présence d'une suspicion d'arthrite septique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box d'accueil des urgences",
+      "materielDisponible": [
+        "Kit de ponction articulaire stérile",
+        "Flacons pour liquide articulaire",
+        "Thermomètre",
+        "Stéthoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Recherche du choc rotulien et de la porte d'entrée",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Ponction articulaire aseptique avec analyse liquide (> 50 000 leucocytes/mm³)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "NFS, CRP, hémocultures",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Antibiothérapie IV antistaphylococcique après ponction",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... mon genou a gonflé d'un coup depuis hier soir. Il est brûlant, énorme, et la douleur me réveille la nuit, je ne peux plus marcher.",
+      "infosVolontaires": [
+        "Genou droit chaud, très gonflé et douloureux jour et nuit avec fébricule",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Très douloureux, ne peut pas poser le pied par terre, genou fléchi à 30° antalgique."
+    },
+    "titre": "Genou droit chaud, très gonflé et douloureux jour et nuit avec fébricule",
+    "itemR2C": "Item 196. Douleur et épanchement articulaire. Arthrite septique.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences orthopédiques / rhumatologie.",
+      "contexte": "Vous recevez M. Mirko Jankovic, 47 ans, consultant pour une impotence totale du genou droit d'apparition rapide avec épanchement volumineux et température à 38.3°C.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Reconnaître l'urgence diagnostique d'une monoarthrite aiguë jusqu'à preuve du contraire septique",
+        "Réaliser un examen clinique complet de l'articulation (choc rotulien, chaleur, rougeur, porte d'entrée cutanée)",
+        "Poser l'indication formelle et immédiate d'une ponction articulaire évacuatrice et diagnostique",
+        "Prescrire l'analyse cytologique, microcristalline et bactériologique du liquide synovial",
+        "Mettre en route l'antibiothérapie probabiliste adaptée uniquement APRÈS réalisation de la ponction"
+      ],
+      "interdits": [
+        "Ne jamais débuter d'antibiothérapie avant la réalisation des prélèvements bactériologiques articulaires",
+        "Ne pas infiltrer de corticoïdes en présence d'une suspicion d'arthrite septique"
+      ],
+      "materielDisponible": [
+        "Kit de ponction articulaire stérile",
+        "Flacons pour liquide articulaire",
+        "Thermomètre",
+        "Stéthoscope"
+      ],
+      "lieu": "Box d'accueil des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Mirko",
+        "nom": "Jankovic",
+        "age": 47,
+        "sexe": "M"
+      },
+      "personnalite": "Très douloureux, ne peut pas poser le pied par terre, genou fléchi à 30° antalgique.",
+      "phraseOuverture": "Bonjour docteur... mon genou a gonflé d'un coup depuis hier soir. Il est brûlant, énorme, et la douleur me réveille la nuit, je ne peux plus marcher.",
+      "infosVolontaires": [
+        "Genou droit chaud, très gonflé et douloureux jour et nuit avec fébricule",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Toute monoarthrite aiguë est une arthrite septique jusqu'à preuve du contraire : ponction articulaire immédiate avant tout antibiotique et avis chirurgical.",
+      "erreursRedhibitoires": [
+        "Injecter des antibiotiques avant la ponction articulaire",
+        "Banaliser comme une simple poussée d'arthrose"
+      ],
+      "elementsAttendus": [
+        "Recherche du choc rotulien et de la porte d'entrée",
+        "Ponction articulaire aseptique avec analyse liquide (> 50 000 leucocytes/mm³)",
+        "NFS, CRP, hémocultures",
+        "Antibiothérapie IV antistaphylococcique après ponction"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Recherche du choc rotulien et de la porte d'entrée",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Ponction articulaire aseptique avec analyse liquide (> 50 000 leucocytes/mm³)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "NFS, CRP, hémocultures",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Antibiothérapie IV antistaphylococcique après ponction",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au pied droit depuis trois jours, surtout la nuit et le matin au réveil. J'ai du mal à marcher.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Arthrite aiguë de la MTP1)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Selon les informations de l'interrogatoire, quel est le mécanisme de le douleur ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une douleur de la première articulation métatarso-phalangienne du pied droit",
+    "Effectuer un examen clinique ciblé du pied droit et un examen général",
+    "Proposer un diagnostic étiologique parmi les hypothèses proposées"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Genou droit chaud, très gonflé et douloureux jour et nuit avec fébricule"
+}

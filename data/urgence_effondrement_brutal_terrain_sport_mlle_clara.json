@@ -1,0 +1,702 @@
+{
+  "id": "urgence_effondrement_brutal_terrain_sport_mlle_clara",
+  "title": "Arrêt Cardiaque chez une Jeune Sportive",
+  "specialty": "urgence",
+  "difficulty": 3,
+  "redacteur": "Clawd UE10",
+  "patient": {
+    "nom": "Dumont",
+    "prenom": "Clara",
+    "age": 22,
+    "sexe": "F",
+    "taille": "168 cm",
+    "poids": "58 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sportive de haut niveau, handball"
+      },
+      "tabac": {
+        "quantite": "Non-fumeuse",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Aucune"
+      },
+      "alimentation": {
+        "regime": "Équilibré, suivi nutritionnel",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Étudiante en STAPS",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Malaise à l'effort signalé il y a 6 mois, non investigué"
+      ],
+      "chirurgicaux": [],
+      "familiaux": [
+        "Père décédé à 45 ans (cause inconnue)"
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Brutal, il y a 1 minute",
+      "evolution": "Aiguë",
+      "facteursDeclenchants": "Effort intense lors d'un match de handball",
+      "descriptionDouleur": "Aucune plainte — elle ne répond pas",
+      "asymptomesAssocies": [
+        "Inconscience",
+        "Absence de mouvement",
+        "Pâleur"
+      ],
+      "remarques": "Effondrée en plein terrain"
+    },
+    "verbatim": "Elle ne répond pas ! Elle ne respire plus !"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "Non mesurable",
+      "pouls": "0 bpm",
+      "temperature": "37°C",
+      "saturationO2": "0%",
+      "frequenceRespiratoire": "0/min"
+    },
+    "aspectGeneral": "Inconsciente, au sol, couleur grisâtre. Aucun mouvement respiratoire visible. Pas de réaction à la stimulation.",
+    "examenCardiovasculaire": {
+      "auscultation": "Silence auscultatoire",
+      "inspection": "Pas de battements visibles au cou",
+      "palpation": "Pas de pouls carotidien"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Silence respiratoire",
+      "inspection": "Pas de mouvement thoracique",
+      "percussion": ""
+    },
+    "examenAbdominal": {
+      "palpation": "ND",
+      "auscultation": "ND"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Arrêt cardio-respiratoire (probable fibrillation ventriculaire)",
+    "Syncope vagale",
+    "Malaise vagal post-effort",
+    "Epilepsie"
+  ],
+  "correctDiagnostic": "Arrêt cardio-respiratoire (probable fibrillation ventriculaire)",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Débuter le massage cardiaque immédiatement",
+    "Mettre en PLS et attendre",
+    "Envoyer chercher un défibrillateur (DAE)",
+    "Donner de l'eau",
+    "Frapper la poitrine (précordial thump)"
+  ],
+  "correctTreatments": [
+    "Débuter le massage cardiaque immédiatement",
+    "Envoyer chercher un défibrillateur (DAE)"
+  ],
+  "fatalTreatments": [
+    "Mettre en PLS et attendre"
+  ],
+  "correction": "# Correction : Arrêt Cardiaque chez une Jeune Sportive\n\n## Diagnostic\nInconscience + absence de respiration + absence de pouls carotidien = **ARRÊT CARDIO-RESPIRATOIRE**. Chez une jeune sportive, la cause la plus probable est une **fibrillation ventriculaire** sur cardiomyopathie non diagnostiquée (antécédent familial de mort subite du père).\n\n## La chaîne de survie (AFGSU)\n1. **Reconnaître** l'ACR : pas de réponse, pas de respiration normale\n2. **Alerte** immédiate du 15/SAMU + envoyer chercher un DAE\n3. **Débuter le MCE** : 30 compressions / 2 insufflations\n4. **Utiliser le DAE** dès son arrivée\n5. **Continuer** jusqu'à l'arrivée des secours\n\n## Points clés\n- Rythme : **100-120 compressions/min** (Stayin' Alive)\n- Profondeur : **4-6 cm** chez l'adulte\n- Bien laisser remonter le thorax (décompression)\n- Chez le jeune sportif : cause = cardiopathie jusqu'à preuve du contraire\n\n## Piège classique\nMettre en PLS face à un ACR est **FATAL**. La PLS est pour l'inconscient QUI RESPIRE. L'ACR = massage immédiat !",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Terminé."
+  },
+  "locks": [
+    {
+      "id": "lock_urg03_diagnostic",
+      "type": "QCM",
+      "challenge": {
+        "question": "Elena ne répond pas, ne respire pas et n'a pas de pouls carotidien. Quel est le diagnostic ?",
+        "options": [
+          "Malaise vagal",
+          "Syncope simple",
+          "Arrêt cardio-respiratoire",
+          "Crise d'épilepsie"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "L'absence totale de conscience, respiration ET pouls carotidien définit l'arrêt cardio-respiratoire. C'est une urgence vitale absolue.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_urg03_rythme",
+      "type": "SAISIE",
+      "challenge": {
+        "question": "À quel rythme (compressions par minute) devez-vous pratiquer le massage cardiaque chez l'adulte ?",
+        "answer": "100",
+        "alternatives": [
+          "120",
+          "80",
+          "60",
+          "100-120"
+        ]
+      },
+      "feedback_error": "Le rythme optimal est de 100 à 120 compressions par minute. Facilité mémo-technique : le rythme de 'Stayin' Alive' des Bee Gees.",
+      "target_fields": [
+        "correctTreatments"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s1"
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Lors d'un match de handball, Elena s'effondre brutalement au sol. Ses coéquipières courent vers elle. Elle est inerte, grisâtre. Pas de mouvement. Le coach s'approche et crie : « Elle ne respire plus ! »",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Vérifier la réponse : secouer les épaules, crier « Ça va ? »",
+          "tempsExecutionSec": 10,
+          "feedback": "Pas de réponse. Elle est totalement inconsciente.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "La mettre en PLS (position latérale de sécurité)",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR FATALE : la PLS est pour l'inconscient QUI RESPIRE. Elena ne respire pas ! Perdre du temps = perdre la victime.",
+          "nextNode": "s_err_pls"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Elena ne répond pas. Vous regardez son thorax : pas de mouvement respiratoire. Vous recherchez le pouls carotidien : absent.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Cri d'alerte « Au secours ! Arrêt cardiaque ! Un défibrillateur ! » et débuter le MCE",
+          "tempsExecutionSec": 10,
+          "feedback": "Vous criez pour alerter et commencez les compressions thoraciques. Le rythme est bon.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Envoyer quelqu'un appeler le SAMU sans toucher la victime",
+          "tempsExecutionSec": 15,
+          "feedback": "Chaque seconde sans massage = 10% de chances de survie en moins. Il faut commencer IMMÉDIATEMENT.",
+          "nextNode": "s3_delayed"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s3": {
+      "id": "s3",
+      "descriptionClinique": "Vous faites des compressions sur le sternum. La poitrine se déprime bien. Un spectateur court chercher le DAE dans le gymnase. Après 30 compressions, vous faites 2 insufflations.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Continuer le cycle 30/2 sans interruption",
+          "tempsExecutionSec": 60,
+          "feedback": "Vous maintenez un rythme régulier. Chaque compression perfuse le cerveau.",
+          "nextNode": "s4"
+        },
+        {
+          "label": "Arrêter pour vérifier le pouls toutes les minutes",
+          "tempsExecutionSec": 20,
+          "feedback": "ERREUR : vérifier le pouls interrompt le massage. On ne s'arrête JAMAIS sauf pour le DAE.",
+          "nextNode": "s3_inter"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s3_inter": {
+      "id": "s3_inter",
+      "descriptionClinique": "Les interruptions répétées réduisent l'efficacité de la réanimation. Le flux sanguin cérébral s'effondre à chaque pause.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Reprendre le massage en continu jusqu'au DAE",
+          "tempsExecutionSec": 60,
+          "feedback": "Vous reprenez. Le DAE arrive.",
+          "nextNode": "s4"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s3_delayed": {
+      "id": "s3_delayed",
+      "descriptionClinique": "20 secondes perdues sans massage. L'ischémie cérébrale progresse. Vous commencez enfin les compressions mais du temps précieux est perdu.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Continuer le massage et attendre le DAE",
+          "tempsExecutionSec": 60,
+          "feedback": "Le massage est enfin en cours. DAE en approche.",
+          "nextNode": "s4"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s4": {
+      "id": "s4",
+      "descriptionClinique": "Le DAE arrive ! Quelqu'un le pose à côté d'Elena. L'appareil s'allume.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Allumer le DAE, poser les électrodes, suivre les instructions vocales",
+          "tempsExecutionSec": 30,
+          "feedback": "Le DAE analyse le rythme : « Choc recommandé ». Vous vous éloignez et le DAE décharge.",
+          "nextNode": "s5"
+        },
+        {
+          "label": "Arrêter le massage pour poser le DAE, puis attendre l'analyse",
+          "tempsExecutionSec": 30,
+          "feedback": "Vous avez arrêté le massage trop tôt. Continuez le MCE PENDANT la pose des électrodes.",
+          "nextNode": "s5"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s5": {
+      "id": "s5",
+      "descriptionClinique": "Après le choc du DAE, le moniteur affiche un rythme. Le DAE dit « Reprise immédiate du massage ».",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "37",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Reprendre immédiatement les compressions",
+          "tempsExecutionSec": 30,
+          "feedback": "Bon réflexe. Vous reprenez les 30/2. Le SAMU arrive.",
+          "nextNode": "s6_good"
+        },
+        {
+          "label": "Vérifier le pouls avant de reprendre",
+          "tempsExecutionSec": 15,
+          "feedback": "Le DAE ne vous le demande pas. Reprendre IMMÉDIATEMENT. Le pouls sera vérifié par le SAMU.",
+          "nextNode": "s6_good"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s6_good": {
+      "id": "s6_good",
+      "descriptionClinique": "Le SMUR prend le relais avec ventilation assistée et adrénaline. Après 3 chocs DAE et une injection d'amiodarone, Elena récupère un rythme cardiaque. Elle est héliportée en réanimation. Votre réaction immédiate a permis de maintenir une perfusion cérébrale. Elena a toutes ses chances de s'en sortir.",
+      "constantesCibles": {
+        "tension": "90/60",
+        "pouls": "85",
+        "saturationO2": "95",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "14"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
+    },
+    "s_err_pls": {
+      "id": "s_err_pls",
+      "descriptionClinique": "En la mettant en PLS, vous perdez 15 secondes cruciales. La PLS ne maintient pas la perfusion cérébrale. Elena fait un arrêt cardiaque irréversible sans massage. Pronostic neurologique désastreux.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "36",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "alternativeDiagnostics": [
+    "Arrêt cardiaque récupéré",
+    "Fibrillation ventriculaire"
+  ],
+  "secondLineTreatments": [
+    "Amiodarone 300mg IV",
+    "Bicarbonate molaire"
+  ],
+  "relevantExams": [
+    "ECG 12 dérivations",
+    "Bilan sanguin",
+    "Echographie cardiaque au lit"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin du sport / urgentiste présent sur le complexe sportif.",
+      "contexte": "Clara, 22 ans, s'effondre sans contact lors d'un match de handball, inerte sur le parquet.",
+      "consignesAttendues": [
+        "Reconnaître immédiatement la mort subite de l'adulte jeune",
+        "Demander immédiatement le DAE du gymnase et faire appeler le 15",
+        "Démarrer les compressions thoraciques sans délai",
+        "Poser les électrodes du DAE et délivrer le choc électrique si fibrillation ventriculaire",
+        "Reprendre immédiatement le massage pendant 2 minutes après le choc avant toute réévaluation"
+      ],
+      "consignesInterdites": [
+        "Ne pas perdre de temps à chercher un pouls si la victime ne respire pas",
+        "Ne pas retirer les électrodes du DAE"
+      ],
+      "typeStation": "SANS_PS_PSS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Terrain de sport",
+      "materielDisponible": [
+        "Défibrillateur automatisé externe (DAE)",
+        "Chronomètre",
+        "Téléphone 15"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Alerte et demande du DAE",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Massage cardiaque continu immédiat",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Délivrance rapide du premier choc",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Enquête étiologique ultérieure (cardiomyopathie, canalopathie)",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_non_verbale",
+        "label": "Utilise une communication non verbale appropriée (contact, posture)",
+        "max": 1
+      },
+      {
+        "id": "clarte_ordres",
+        "label": "Donne des ordres clairs et concis à l'équipe",
+        "max": 1
+      },
+      {
+        "id": "calme_urgence",
+        "label": "Garde son calme et sa concentration malgré l'urgence",
+        "max": 1
+      },
+      {
+        "id": "coordination_equipe",
+        "label": "Coordonne efficacement les actions de l'équipe",
+        "max": 1
+      },
+      {
+        "id": "information_proches",
+        "label": "Pense à informer ou faire informer les proches présents",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Elle ne répond pas ! Elle ne respire plus !",
+      "infosVolontaires": [
+        "Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Inconsciente, aucun mouvement, mannequin de réanimation."
+    },
+    "titre": "Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport",
+    "itemR2C": "Item 336. Arrêt cardio-respiratoire. Item 233. Mort subite.",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin du sport / urgentiste présent sur le complexe sportif.",
+      "contexte": "Clara, 22 ans, s'effondre sans contact lors d'un match de handball, inerte sur le parquet.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Reconnaître immédiatement la mort subite de l'adulte jeune",
+        "Demander immédiatement le DAE du gymnase et faire appeler le 15",
+        "Démarrer les compressions thoraciques sans délai",
+        "Poser les électrodes du DAE et délivrer le choc électrique si fibrillation ventriculaire",
+        "Reprendre immédiatement le massage pendant 2 minutes après le choc avant toute réévaluation"
+      ],
+      "interdits": [
+        "Ne pas perdre de temps à chercher un pouls si la victime ne respire pas",
+        "Ne pas retirer les électrodes du DAE"
+      ],
+      "materielDisponible": [
+        "Défibrillateur automatisé externe (DAE)",
+        "Chronomètre",
+        "Téléphone 15"
+      ],
+      "lieu": "Terrain de sport"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Clara",
+        "nom": "Dumont",
+        "age": 22,
+        "sexe": "F"
+      },
+      "personnalite": "Inconsciente, aucun mouvement, mannequin de réanimation.",
+      "phraseOuverture": "Elle ne répond pas ! Elle ne respire plus !",
+      "infosVolontaires": [
+        "Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "La survie d'une mort subite du sportif repose sur la défibrillation ultra-précoce dans les 3 minutes et le massage cardiaque ininterrompu.",
+      "erreursRedhibitoires": [
+        "Attendre les secours pour masser",
+        "Interrompre les compressions après la délivrance du choc sans masser"
+      ],
+      "elementsAttendus": [
+        "Alerte et demande du DAE",
+        "Massage cardiaque continu immédiat",
+        "Délivrance rapide du premier choc",
+        "Enquête étiologique ultérieure (cardiomyopathie, canalopathie)"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Alerte et demande du DAE",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Massage cardiaque continu immédiat",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Délivrance rapide du premier choc",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Enquête étiologique ultérieure (cardiomyopathie, canalopathie)",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens pour : Perte de connaissance brutale sur terrain de sport..",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (ECG 12 dérivations, Bilan sanguin)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Arrêt cardio-respiratoire (probable fibrillation ventriculaire))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG 12 dérivations + Bilan sanguin. Demande-les en priorité.",
+    "🔐 Défi à prévoir : « Elena ne répond pas, ne respire pas et n'a pas de pouls carotidien. Quel est le diagnostic ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Diagnostics proches à départager : Arrêt cardio-respiratoire (probable fibrillation ventriculaire) vs Arrêt cardiaque récupéré. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Arrêt cardiaque récupéré",
+    "Fibrillation ventriculaire"
+  ],
+  "objectifs": [
+    "Reconnaître l'arrêt cardio-respiratoire",
+    "Initier immédiatement la réanimation (RCP)",
+    "Demander le défibrillateur"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)",
+  "motif": "Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport"
+}

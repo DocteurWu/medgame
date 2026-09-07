@@ -1,0 +1,432 @@
+{
+  "id": "endo_amaigrissement_involontaire_et_fievre_m_girard",
+  "patient": {
+    "nom": "Girard",
+    "prenom": "Paul",
+    "age": 67,
+    "sexe": "M",
+    "taille": "110 cm",
+    "poids": "14 kg",
+    "groupeSanguin": "O-",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Amaigrissement involontaire rapide et sueurs",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Faible, léthargie marquée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Insuffisant",
+        "particularites": "Apports très limités, fièvre récente"
+      },
+      "emploi": {
+        "profession": "Aucun (enfant)",
+        "stress": "Inconnu"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Infection respiratoire récente"
+      ],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Grand-mère",
+          "pathologie": "Malnutrition",
+          "age": "60"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Quelques semaines",
+      "evolution": "Rapide",
+      "facteursDeclenchants": "Épisode fébrile prolongé",
+      "symptomesAssocies": [
+        "Fièvre",
+        "Diarrhée",
+        "Perte musculaire marquée"
+      ],
+      "remarques": "Enfant vivant dans un contexte de ressources limitées."
+    },
+    "verbatim": "Bonjour docteur, je flotte dans tous mes pantalons. J'ai perdu près de 10 kilos sans faire aucun régime et je n'ai plus d'appétit."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/60 mmHg",
+      "pouls": "110 bpm",
+      "temperature": "38.2°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "24/min"
+    },
+    "aspectGeneral": "Cachectique, hypotrophie musculaire, faible graisse sous-cutanée",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie légère"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles fins à droite"
+    },
+    "examenAbdominal": {
+      "palpation": "Périmètre brachial 12 cm, abdomen souple"
+    },
+    "examenNeurologique": {
+      "conscience": "Léthargique mais orienté"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan nutritionnel",
+    "Périmètre brachial",
+    "Protéine C-réactive (CRP)",
+    "Hémoculture",
+    "Radiographie pulmonaire",
+    "Test de dépistage du paludisme",
+    "Coproculture",
+    "IRM cérébrale",
+    "Échographie cardiaque",
+    "Dosage des hormones thyroïdiennes",
+    "Scanner abdominal",
+    "Sérologie VIH",
+    "Analyse des gaz du sang",
+    "Électroencéphalogramme",
+    "Test de sudation",
+    "Bilan lipidique"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Anémie sévère, hypoalbuminémie, leucocytose",
+    "Bilan nutritionnel": "Déficit calorique et protéique sévère",
+    "Périmètre brachial": "12 cm (sous le seuil de malnutrition aiguë)",
+    "Protéine C-réactive (CRP)": "Élevée (inflammation aiguë)",
+    "Hémoculture": "Positive à Streptococcus pneumoniae",
+    "Radiographie pulmonaire": "Foyer infectieux lobe inférieur droit",
+    "Test de dépistage du paludisme": "Négatif",
+    "Coproculture": "Présence de germes entéropathogènes",
+    "IRM cérébrale": "Normale",
+    "Échographie cardiaque": "Normale",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Scanner abdominal": "Normale",
+    "Sérologie VIH": "Négative",
+    "Analyse des gaz du sang": "Légère acidose métabolique",
+    "Électroencéphalogramme": "Normale",
+    "Test de sudation": "Normal (pas de mucoviscidose)",
+    "Bilan lipidique": "Normale",
+    "Glycémie (contrôle)": "0.6 g/L"
+  },
+  "possibleDiagnostics": [
+    "Dénutrition hypercatabolique",
+    "Dénutrition marasmique",
+    "Tuberculose",
+    "Septicémie",
+    "Maladie cœliaque"
+  ],
+  "correctDiagnostic": "Dénutrition hypercatabolique",
+  "feedback": {
+    "Dénutrition hypercatabolique": "Diagnostic correct ! Perte de poids rapide liée à une infection et un état hypercatabolique.",
+    "Dénutrition marasmique": "Incorrect. La dénutrition marasmique est chronique, sans facteur aigu comme ici.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Renutrition progressive",
+    "Antibiothérapie",
+    "Supplémentation vitaminique",
+    "Chirurgie abdominale",
+    "Antituberculeux",
+    "Régime sans gluten"
+  ],
+  "correctTreatments": [
+    "Renutrition progressive",
+    "Antibiothérapie",
+    "Supplémentation vitaminique"
+  ],
+  "correction": "# Dénutrition hypercatabolique\n\nPerte pondérale rapide avec infection aiguë, marqueurs inflammatoires élevés.\n\n## Bonnes pratiques\n\n- Renutrition prudente et progressive\n- Traitement de la cause (antibiothérapie)\n- Supplémentation micro‑nutritionnelle, surveillance clinique et biologique\n\n## Erreurs à éviter\n\n- Renutrition trop rapide (risque de syndrome de renutrition inappropriée)\n- Oublier de traiter l’infection et de surveiller électrolytes",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine interne.",
+      "contexte": "Vous recevez M. Paul Girard, 67 ans, adressé pour une perte de 9 kg en 2 mois dans un contexte d'asthénie et de fébricule vespérale.",
+      "consignesAttendues": [
+        "Quantifier précisément la perte de poids et sa cinétique",
+        "Rechercher les signes d'orientation étiologique (néoplasique, infectieux, inflammatoire)",
+        "Évaluer la sévérité de la dénutrition selon les critères HAS",
+        "Prescrire les examens complémentaires de première ligne",
+        "Initier une prise en charge nutritionnelle orale précoce"
+      ],
+      "consignesInterdites": [
+        "Ne pas attendre le bilan étiologique pour débuter le support nutritionnel",
+        "Ne pas prescrire de compléments sans évaluation des apports"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box de consultation hospitalière",
+      "materielDisponible": [
+        "Balance",
+        "Toise",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Calcul du pourcentage de perte de poids",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Palpation des aires ganglionnaires",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription scanner thoraco-abdomino-pelvien",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Compléments nutritionnels oraux",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la mère terminer sans l'interrompre, montre de l'attention",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le contexte",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la mère sur les informations données",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué) et adapte son discours au niveau de compréhension de la mère",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance envers l'enfant et sa mère, tient compte du contexte difficile",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je flotte dans tous mes pantalons. J'ai perdu près de 10 kilos sans faire aucun régime et je n'ai plus d'appétit.",
+      "infosVolontaires": [
+        "Amaigrissement involontaire rapide et sueurs",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Fatigué, abattu, inquiet de la fonte musculaire rapide."
+    },
+    "titre": "Amaigrissement involontaire rapide et sueurs",
+    "itemR2C": "Item 252. Dénutrition chez l'adulte et l'enfant.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine interne.",
+      "contexte": "Vous recevez M. Paul Girard, 67 ans, adressé pour une perte de 9 kg en 2 mois dans un contexte d'asthénie et de fébricule vespérale.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Quantifier précisément la perte de poids et sa cinétique",
+        "Rechercher les signes d'orientation étiologique (néoplasique, infectieux, inflammatoire)",
+        "Évaluer la sévérité de la dénutrition selon les critères HAS",
+        "Prescrire les examens complémentaires de première ligne",
+        "Initier une prise en charge nutritionnelle orale précoce"
+      ],
+      "interdits": [
+        "Ne pas attendre le bilan étiologique pour débuter le support nutritionnel",
+        "Ne pas prescrire de compléments sans évaluation des apports"
+      ],
+      "materielDisponible": [
+        "Balance",
+        "Toise",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Thermomètre"
+      ],
+      "lieu": "Box de consultation hospitalière"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Paul",
+        "nom": "Girard",
+        "age": 67,
+        "sexe": "M"
+      },
+      "personnalite": "Fatigué, abattu, inquiet de la fonte musculaire rapide.",
+      "phraseOuverture": "Bonjour docteur, je flotte dans tous mes pantalons. J'ai perdu près de 10 kilos sans faire aucun régime et je n'ai plus d'appétit.",
+      "infosVolontaires": [
+        "Amaigrissement involontaire rapide et sueurs",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic de dénutrition sévère, organiser le bilan étiologique urgent d'une altération de l'état général et débuter la renutrition.",
+      "erreursRedhibitoires": [
+        "Omettre le calcul du pourcentage de perte pondérale",
+        "Négliger la prescription d'une imagerie thoracique"
+      ],
+      "elementsAttendus": [
+        "Calcul du pourcentage de perte de poids",
+        "Palpation des aires ganglionnaires",
+        "Prescription scanner thoraco-abdomino-pelvien",
+        "Compléments nutritionnels oraux"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Calcul du pourcentage de perte de poids",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Palpation des aires ganglionnaires",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription scanner thoraco-abdomino-pelvien",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Compléments nutritionnels oraux",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je vous amène mon fils Kwame, il a 6 ans. Il est très fatigué depuis quelques semaines, il a beaucoup maigri et je m'inquiète beaucoup.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Dénutrition hypercatabolique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan nutritionnel"
+    ],
+    "utiles": [
+      "Périmètre brachial",
+      "Protéine C-réactive (CRP)",
+      "Hémoculture"
+    ],
+    "inutiles": [
+      "Radiographie pulmonaire",
+      "Test de dépistage du paludisme",
+      "Coproculture"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire de la mère et de l'enfant adapté à l'âge",
+    "Effectuer un examen clinique pédiatrique complet",
+    "Identifier les signes de dénutrition sévère et les critères de gravité"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Amaigrissement involontaire rapide et sueurs"
+}

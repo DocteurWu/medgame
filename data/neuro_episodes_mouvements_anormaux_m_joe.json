@@ -1,0 +1,415 @@
+{
+  "id": "neuro_episodes_mouvements_anormaux_m_joe",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Williams",
+    "prenom": "Joe",
+    "age": 27,
+    "sexe": "M",
+    "taille": "1,68 m",
+    "poids": "60 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Épisodes récurrents de mouvements anormaux sans perte de connaissance vraie",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "irrégulière"
+      },
+      "tabac": {
+        "quantite": "occasionnel",
+        "duree": "5 ans"
+      },
+      "alcool": {
+        "quantite": "occasionnel"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "repas parfois sautés en période de stress"
+      },
+      "emploi": {
+        "profession": "Assistante administrative",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive depuis plusieurs mois",
+      "evolution": "Épisodes fluctuants, récurrents, non stéréotypés",
+      "facteursDeclenchants": "Stress émotionnel intense",
+      "descriptionDouleur": "Oppression thoracique transitoire",
+      "symptomesAssocies": [
+        "Mouvements asynchrones des membres",
+        "Cris pendant les épisodes",
+        "Pleurs",
+        "Absence de phase post-critique"
+      ],
+      "remarques": "Absence de morsure de langue et d’incontinence"
+    },
+    "verbatim": "Bonjour docteur... les médecins des urgences n'arrêtent pas de m'augmenter mes doses de médicaments contre l'épilepsie, mais mes crises continuent de plus belle et durent parfois 40 minutes."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "125/80 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patiente vigilante, anxieuse, bon état général",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle",
+      "inspection": "Absence de signe d’insuffisance cardiaque",
+      "palpation": "Pouls périphériques présents et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire bien perçu, pas de râles",
+      "inspection": "Respiration calme hors épisode",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore",
+      "auscultation": "Bruits hydro-aériques normaux"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 15/15",
+      "fonctionssuperieures": "Discours cohérent, orientation temporo-spatiale conservée",
+      "pairescraniennes": "Normales",
+      "motricite": "Force normale aux quatre membres",
+      "sensibilite": "Normale",
+      "reflexesosteotendineux": "Symétriques, Babinski négatif",
+      "coordinationequilibre": "Normaux"
+    }
+  },
+  "availableExams": [
+    "Glycémie capillaire",
+    "Ionogramme sanguin",
+    "EEG",
+    "IRM cérébrale"
+  ],
+  "examResults": {
+    "Glycémie capillaire": "0.95 g/L",
+    "Ionogramme sanguin": "Normal",
+    "EEG": "Absence d’activité épileptiforme",
+    "IRM cérébrale": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Crise psychogène non épileptique",
+    "Crise d’épilepsie",
+    "Trouble anxieux avec manifestations somatiques"
+  ],
+  "correctDiagnostic": "Crise psychogène non épileptique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antiépileptique",
+    "Psychothérapie",
+    "Prise en charge psychiatrique"
+  ],
+  "correctTreatments": [
+    "Psychothérapie",
+    "Prise en charge psychiatrique"
+  ],
+  "correction": "\nCorrection – Crise psychogène non épileptique\n\nPoints importants\n\nLes épisodes décrits ne correspondent pas à une crise d’épilepsie typique : les mouvements sont asynchrones, non stéréotypés, avec conscience préservée ou rapidement récupérée.\nL’absence de morsure latérale de langue, d’incontinence urinaire et de phase post-critique est un argument fort contre une crise épileptique.\nLe contexte de stress émotionnel, les antécédents de trouble anxieux et la labilité émotionnelle orientent vers une origine psychogène.\nLes examens complémentaires (EEG, imagerie cérébrale, bilan biologique) sont strictement normaux, éliminant une cause neurologique ou métabolique.\nLe diagnostic retenu est celui de crise psychogène non épileptique, à différencier impérativement de l’épilepsie pour éviter un traitement inadapté.\nLa prise en charge repose sur une approche psychiatrique et psychothérapeutique, sans indication à un traitement antiépileptique.\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "<p class=\"MsoNormal\" style=\"line-height: 18.4px; font-size: medium; caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);\"><span style=\"color: white;\">Quel élément est le plus en faveur d’une crise symptomatique plutôt que d’une épilepsie ?<o:p></o:p></span></p>",
+        "options": [
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Présence de mouvements convulsifs</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>",
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Glycémie capillaire à 0,38 g/L</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>",
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Perte de connaissance&nbsp;</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>",
+          "<span style=\"font-size: 12pt; line-height: 18.4px; font-family: Aptos, sans-serif;\">Âge de la patiente&nbsp;</span><span style=\"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: -webkit-standard;\"></span><br>"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Une hypoglycémie sévère est une cause aiguë et réversible de crise convulsive."
+    }
+  ],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Joe Williams, 27 ans, adressé après plusieurs passages aux urgences pour des crises spectaculaires de secousses prolongées résistantes aux anticonvulsivants.",
+      "consignesAttendues": [
+        "Rechercher les éléments sémiologiques différentiels clés (yeux clos avec résistance à l'ouverture, mouvements de balancement du bassin, absence de morsure latérale de langue)",
+        "Noter la durée prolongée des crises (> 15-30 minutes) sans état de mal électrique",
+        "Vérifier la normalité de l'examen neurologique intercritique et des bilans biologiques",
+        "Annoncer le diagnostic de crise non épileptique psychogène (CNEP) avec bienveillance, sans rejet ni stigmatisation",
+        "Déprogrammer l'escalade médicamenteuse antiépileptique inutile et orienter vers une prise en charge psychothérapeutique"
+      ],
+      "consignesInterdites": [
+        "Ne pas dire au patient qu'il 'fait semblant' ou 'simule'",
+        "Ne pas injecter de benzodiazépines en continu risquant une dépression respiratoire iatrogène"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box de consultation de neurologie",
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Stéthoscope",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Absence de stertor, yeux fermés avec résistance active",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Mouvements asynchrones avec préservation de la réactivité",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Normalité de l'EEG simultané pendant la crise",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Alliance thérapeutique et orientation vers psychothérapie TCC/EMDR",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce diagnostique",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... les médecins des urgences n'arrêtent pas de m'augmenter mes doses de médicaments contre l'épilepsie, mais mes crises continuent de plus belle et durent parfois 40 minutes.",
+      "infosVolontaires": [
+        "Épisodes récurrents de mouvements anormaux sans perte de connaissance vraie",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Détresse psychologique importante, stressé par des conflits personnels récents, se sent incompris des soignants."
+    },
+    "titre": "Épisodes récurrents de mouvements anormaux sans perte de connaissance vraie",
+    "itemR2C": "Item 105. Épilepsie. Item 70. Troubles somatoformes et fonctionnels.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Joe Williams, 27 ans, adressé après plusieurs passages aux urgences pour des crises spectaculaires de secousses prolongées résistantes aux anticonvulsivants.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Rechercher les éléments sémiologiques différentiels clés (yeux clos avec résistance à l'ouverture, mouvements de balancement du bassin, absence de morsure latérale de langue)",
+        "Noter la durée prolongée des crises (> 15-30 minutes) sans état de mal électrique",
+        "Vérifier la normalité de l'examen neurologique intercritique et des bilans biologiques",
+        "Annoncer le diagnostic de crise non épileptique psychogène (CNEP) avec bienveillance, sans rejet ni stigmatisation",
+        "Déprogrammer l'escalade médicamenteuse antiépileptique inutile et orienter vers une prise en charge psychothérapeutique"
+      ],
+      "interdits": [
+        "Ne pas dire au patient qu'il 'fait semblant' ou 'simule'",
+        "Ne pas injecter de benzodiazépines en continu risquant une dépression respiratoire iatrogène"
+      ],
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Stéthoscope",
+        "Tensiomètre"
+      ],
+      "lieu": "Box de consultation de neurologie"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Joe",
+        "nom": "Williams",
+        "age": 27,
+        "sexe": "M"
+      },
+      "personnalite": "Détresse psychologique importante, stressé par des conflits personnels récents, se sent incompris des soignants.",
+      "phraseOuverture": "Bonjour docteur... les médecins des urgences n'arrêtent pas de m'augmenter mes doses de médicaments contre l'épilepsie, mais mes crises continuent de plus belle et durent parfois 40 minutes.",
+      "infosVolontaires": [
+        "Épisodes récurrents de mouvements anormaux sans perte de connaissance vraie",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier des crises non épileptiques psychogènes (CNEP / trouble neurologique fonctionnel), confirmer par vidéo-EEG, annoncer le diagnostic positivement et sevrer les antiépileptiques.",
+      "erreursRedhibitoires": [
+        "Traiter les CNEP comme un état de mal épileptique avec intubation en réanimation",
+        "Rejeter le patient en affirmant qu'il n'a rien"
+      ],
+      "elementsAttendus": [
+        "Absence de stertor, yeux fermés avec résistance active",
+        "Mouvements asynchrones avec préservation de la réactivité",
+        "Normalité de l'EEG simultané pendant la crise",
+        "Alliance thérapeutique et orientation vers psychothérapie TCC/EMDR"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Absence de stertor, yeux fermés avec résistance active",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Mouvements asynchrones avec préservation de la réactivité",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Normalité de l'EEG simultané pendant la crise",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Alliance thérapeutique et orientation vers psychothérapie TCC/EMDR",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je reviens parce que j'ai encore eu un de ces épisodes… Mon corps fait des choses que je ne contrôle plus, et j'ai vraiment peur que ce soit de l'épilepsie.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise psychogène non épileptique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie capillaire",
+      "Ionogramme sanguin"
+    ],
+    "utiles": [
+      "EEG",
+      "IRM cérébrale"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers la distinction entre crise épileptique et crise psychogène non épileptique",
+    "Effectuer un examen neurologique complet",
+    "Proposer une stratégie diagnostique adaptée"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Épisodes récurrents de mouvements anormaux sans perte de connaissance vraie"
+}

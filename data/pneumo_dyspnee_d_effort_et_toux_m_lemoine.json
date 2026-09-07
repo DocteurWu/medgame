@@ -1,0 +1,436 @@
+{
+  "id": "pneumo_dyspnee_d_effort_et_toux_m_lemoine",
+  "patient": {
+    "nom": "Lemoine",
+    "prenom": "Robert",
+    "age": 72,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Essoufflement d'effort progressif avec toux nocturne et gonflement des chevilles",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "20 P/J",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2000"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Infarctus",
+          "age": "70"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Amlodipine",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "2 semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "symptomesAssocies": [
+        "Fatigue"
+      ],
+      "remarques": "Aucun"
+    },
+    "verbatim": "Bonjour docteur, je n'arrive plus à monter le moindre escalier sans être essoufflé comme un bœuf, et la nuit je dois dormir assis sinon j'étouffe et je tousse."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "140/90 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "20/min"
+    },
+    "aspectGeneral": "Pâleur",
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles crépitants"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radiographie thoracique",
+    "Gaz du sang artériel",
+    "Bilan sanguin complet",
+    "Bilan rénal",
+    "Bilan hépatique",
+    "Dosage des D-dimères",
+    "Dosage des BNP",
+    "Scanner thoracique",
+    "Dosage des IgE",
+    "Sérologie VIH",
+    "Test de Guthrie",
+    "Coproculture",
+    "Dosage des hormones sexuelles",
+    "IRM cérébrale",
+    "Test de Mantoux",
+    "Analyse du liquide synovial",
+    "Dosage des anticorps anti-nucléaires"
+  ],
+  "examResults": {
+    "ECG": "Tachycardie sinusale, présence d'ondes Q en territoire antérieur",
+    "Echographie": "Fraction d’éjection réduite à 40%, hypokinésie globale",
+    "Radiographie thoracique": "Cardiomégalie, signes de congestion pulmonaire",
+    "Gaz du sang artériel": "pH 7.35, pCO2 45 mmHg, pO2 60 mmHg, HCO3- 24 mmol/L",
+    "Bilan sanguin complet": "Hémoglobine 13 g/dL, hématocrite 40%, leucocytes 6,6G/L, plaquettes 250 G/L",
+    "Bilan rénal": "Créatinine 1.2 mg/dL, urée 40 mg/dL",
+    "Bilan hépatique": "ASAT 30 U/L, ALAT 25 U/L, bilirubine totale 1.0 mg/dL",
+    "Dosage des D-dimères": "1500 ng/mL (valeur normale < 500 ng/mL)",
+    "Dosage des BNP": "800 pg/mL (valeur normale < 100 pg/mL)",
+    "Scanner thoracique": "Absence de thrombus pulmonaire, présence de foyers de condensation alvéolaire",
+    "Dosage des IgE": "Normaux",
+    "Sérologie VIH": "Négatif",
+    "Test de Guthrie": "Non applicable",
+    "Coproculture": "Absence de germes pathogènes",
+    "Dosage des hormones sexuelles": "Testostérone : 4 ng/mL (valeur normale)",
+    "IRM cérébrale": "Aucune anomalie détectée",
+    "Test de Mantoux": "Négatif",
+    "Analyse du liquide synovial": "Non contributif",
+    "Dosage des anticorps anti-nucléaires": "Négatif",
+    "glycemie": "1.1 g/L"
+  },
+  "possibleDiagnostics": [
+    "Insuffisance cardiaque",
+    "Pneumonie",
+    "Embolie pulmonaire",
+    "Asthme"
+  ],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "feedback": {
+    "Insuffisance cardiaque": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Oxygénothérapie",
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)",
+    "Bêta-bloquants"
+  ],
+  "correctTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)"
+  ],
+  "correction": "# Insuffisance cardiaque\n\nDyspnée, crépitants, cardiomégalie, BNP élevés, FE réduite: IC.\n\n## Bonnes pratiques\n\n- Diurétiques pour décongestion, IEC pour le remodelage\n- Évaluer la FE et rechercher cause ischémique si indiqué\n- Éducation, suivi du poids, adaptation thérapeutique\n\n## Erreurs à éviter\n\n- Confondre avec pneumonie sans arguments infectieux\n- Ignorer l’optimisation du traitement de fond",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en pneumologie / médecine générale.",
+      "contexte": "Vous recevez M. Robert Lemoine, 72 ans, adressé pour une dyspnée d'effort devenue invalidante au moindre pas avec toux nocturne productive.",
+      "consignesAttendues": [
+        "Préciser la sémiologie de la dyspnée (stade NYHA, orthopnée, dyspnée paroxystique nocturne)",
+        "Distinguer l'origine respiratoire de l'origine cardiaque par l'examen clinique",
+        "Rechercher les signes de surcharge hydrosodée droite (turgescence jugulaire, reflux hépato-jugulaire, œdèmes des membres inférieurs) et gauche (râles crépitants)",
+        "Prescrire la radiographie thoracique de face, l'ECG et le dosage des peptides natriurétiques (BNP / NT-proBNP)",
+        "Initier le traitement déplétif par diurétiques de l'anse et programmer une échographie cardiaque transthoracique"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de corticoïdes oraux ou de bronchodilatateurs seuls sans avoir éliminé une cardiopathie sous-jacente",
+        "Ne pas perfuser de solutés salés"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Orthopnée à 3 oreillers",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Râles crépitants bilatéraux ascendants et œdèmes prenant le godet",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Radiographie thoracique montrant cardiomégalie et surcharge alvéolo-interstitielle",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prescription furosémide et échocardiographie",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je n'arrive plus à monter le moindre escalier sans être essoufflé comme un bœuf, et la nuit je dois dormir assis sinon j'étouffe et je tousse.",
+      "infosVolontaires": [
+        "Essoufflement d'effort progressif avec toux nocturne et gonflement des chevilles",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Essoufflé en parlant, dort avec trois oreillers depuis deux semaines, inquiet."
+    },
+    "titre": "Essoufflement d'effort progressif avec toux nocturne et gonflement des chevilles",
+    "itemR2C": "Item 234. Dyspnée aiguë et chronique. Item 232. Insuffisance cardiaque de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en pneumologie / médecine générale.",
+      "contexte": "Vous recevez M. Robert Lemoine, 72 ans, adressé pour une dyspnée d'effort devenue invalidante au moindre pas avec toux nocturne productive.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser la sémiologie de la dyspnée (stade NYHA, orthopnée, dyspnée paroxystique nocturne)",
+        "Distinguer l'origine respiratoire de l'origine cardiaque par l'examen clinique",
+        "Rechercher les signes de surcharge hydrosodée droite (turgescence jugulaire, reflux hépato-jugulaire, œdèmes des membres inférieurs) et gauche (râles crépitants)",
+        "Prescrire la radiographie thoracique de face, l'ECG et le dosage des peptides natriurétiques (BNP / NT-proBNP)",
+        "Initier le traitement déplétif par diurétiques de l'anse et programmer une échographie cardiaque transthoracique"
+      ],
+      "interdits": [
+        "Ne pas prescrire de corticoïdes oraux ou de bronchodilatateurs seuls sans avoir éliminé une cardiopathie sous-jacente",
+        "Ne pas perfuser de solutés salés"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Robert",
+        "nom": "Lemoine",
+        "age": 72,
+        "sexe": "M"
+      },
+      "personnalite": "Essoufflé en parlant, dort avec trois oreillers depuis deux semaines, inquiet.",
+      "phraseOuverture": "Bonjour docteur, je n'arrive plus à monter le moindre escalier sans être essoufflé comme un bœuf, et la nuit je dois dormir assis sinon j'étouffe et je tousse.",
+      "infosVolontaires": [
+        "Essoufflement d'effort progressif avec toux nocturne et gonflement des chevilles",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une décompensation cardiaque globale avec congestion pulmonaire et périphérique, prescrire BNP et radio thoracique, et instaurer un traitement diurétique d'urgence.",
+      "erreursRedhibitoires": [
+        "Confondre avec une simple bronchite ou exacerbation de BPCO sans examiner les jambes",
+        "Omettre la recherche d'orthopnée"
+      ],
+      "elementsAttendus": [
+        "Orthopnée à 3 oreillers",
+        "Râles crépitants bilatéraux ascendants et œdèmes prenant le godet",
+        "Radiographie thoracique montrant cardiomégalie et surcharge alvéolo-interstitielle",
+        "Prescription furosémide et échocardiographie"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Orthopnée à 3 oreillers",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Râles crépitants bilatéraux ascendants et œdèmes prenant le godet",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Radiographie thoracique montrant cardiomégalie et surcharge alvéolo-interstitielle",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prescription furosémide et échocardiographie",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis très essoufflé depuis deux semaines et mes jambes gonflent de plus en plus. Je m'inquiète un peu…",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie"
+    ],
+    "utiles": [
+      "Radiographie thoracique",
+      "Gaz du sang artériel",
+      "Bilan sanguin complet"
+    ],
+    "inutiles": [
+      "Bilan rénal",
+      "Bilan hépatique",
+      "Dosage des D-dimères"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient orienté vers la dyspnée et les signes d'insuffisance cardiaque",
+    "Réaliser un examen clinique cardiovasculaire et pulmonaire complet",
+    "Proposer un bilan paraclinique adapté (ECG, BNP/NT-proBNP, radiographie thoracique, échocardiographie)"
+  ],
+  "referentiel": "Collège de pneumologie (SPLF)",
+  "motif": "Essoufflement d'effort progressif avec toux nocturne et gonflement des chevilles"
+}

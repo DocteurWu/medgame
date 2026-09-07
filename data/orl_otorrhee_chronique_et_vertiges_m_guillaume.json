@@ -1,0 +1,417 @@
+{
+  "id": "orl_otorrhee_chronique_et_vertiges_m_guillaume",
+  "patient": {
+    "nom": "Mercier",
+    "prenom": "Guillaume",
+    "age": 46,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "82 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Écoulement d'oreille fétide et baisse d'audition avec vertiges",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Travail debout au bar, marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour"
+      },
+      "alcool": {
+        "quantite": "Consommation régulière (professionnelle)"
+      },
+      "alimentation": {
+        "regime": "Standard",
+        "particularites": "Repas irréguliers"
+      },
+      "emploi": {
+        "profession": "Barman",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Otites moyennes chroniques",
+          "traitement": "Antibiotiques intermittents"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "À 15 ans"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Surdité progressive",
+          "age": "50"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois",
+      "evolution": "Aggravation progressive avec épisodes vertigineux depuis 1 semaine",
+      "facteursDeclenchants": "Aucun — vertiges spontanés",
+      "symptomesAssocies": [
+        "Otorrhée purulente intermittente",
+        "Hypoacousie droite",
+        "Acouphènes",
+        "Sensation d’oreille pleine"
+      ],
+      "remarques": "Vertiges rotatoires brefs mais intenses, majorés en position tête penchée."
+    },
+    "verbatim": "Bonjour docteur, j'ai l'oreille droite qui coule jaune et qui sent mauvais depuis des mois. Mais depuis une semaine, dès que j'appuie sur mon oreille, tout tourne autour de moi."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "128/79 mmHg",
+      "pouls": "84 bpm",
+      "temperature": "37.3°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient fatigué, gêné par les vertiges",
+    "examenORL": {
+      "otoscopie": "Bourgeon inflammatoire + perforation marginale avec squames blanches (aspect de cholestéatome)",
+      "otorrhee": "Purulente",
+      "hypoacousie": "Présente à droite"
+    },
+    "examenVestibulaire": {
+      "nystagmus": "Spontané, horizontal, battant vers la gauche",
+      "headImpulseTest": "Anormal à droite",
+      "Romberg": "Romberg latéralisé à droite",
+      "Unterberger": "Déviation progressive droite"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "motricite": "Normale",
+      "coordination": "Ataxie légère en rapport avec le déficit vestibulaire"
+    }
+  },
+  "availableExams": [
+    "Audiogramme",
+    "TDM rochers",
+    "IRM cérébrale",
+    "Épreuves caloriques",
+    "Bandelette urinaire",
+    "Prise de sang (CRP, NFS)"
+  ],
+  "examResults": {
+    "Audiogramme": "Hypoacousie mixte droite",
+    "TDM rochers": "Lyse osseuse de l’attique + masse hyperdense évocatrice de cholestéatome",
+    "IRM cérébrale": "Hyposignal T1/T2 rétrotympanique compatible",
+    "Épreuves caloriques": "Déficit vestibulaire périphérique droit",
+    "Bandelette urinaire": "Normale",
+    "Prise de sang (CRP, NFS)": "CRP légèrement augmentée (18 mg/L)"
+  },
+  "possibleDiagnostics": [
+    "Neuronite vestibulaire",
+    "Otite moyenne aiguë suppurée",
+    "Maladie de Ménière",
+    "Cholestéatome compliqué",
+    "Vertige central"
+  ],
+  "correctDiagnostic": "Cholestéatome compliqué",
+  "feedback": {
+    "Cholestéatome compliqué": "Correct ! L’otorrhée fétide, la perforation marginale et les squames blanches orientent fortement vers un cholestéatome. Le nystagmus périphérique confirme un vertige d’origine labyrinthique.",
+    "default": "Ce n’est pas le bon diagnostic."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antibiotiques locaux",
+    "Aspiration des sécrétions + nettoyage sous microscope",
+    "Corticoïdes",
+    "Vestibulosuppresseurs",
+    "Chirurgie d’exérèse du cholestéatome",
+    "Hospitalisation ORL"
+  ],
+  "correctTreatments": [
+    "Antibiotiques locaux",
+    "Aspiration des sécrétions + nettoyage sous microscope",
+    "Chirurgie d’exérèse du cholestéatome",
+    "Hospitalisation ORL"
+  ],
+  "correction": "# Cholestéatome compliqué\n\nLe cholestéatome est une lésion épidermique invasive du rocher entraînant otorrhée fétide, douleurs, hypoacousie et vertiges lorsque l’oreille interne est atteinte.\n\n## Points clés\n\n- Perforation marginale + squames blanches = très évocateur.\n- Vertiges périphériques expliqués par l’extension au labyrinthe.\n- TDM des rochers indispensable.\n\n## Prise en charge\n\n- Nettoyage + antibiotiques locaux en première intention.\n- Traitement définitif : exérèse chirurgicale.\n- Surveillance audiométrique prolongée.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en ORL.",
+      "contexte": "Vous recevez M. Guillaume Mercier, 46 ans, adressé pour une otorrhée purulente droite récidivante malodorante associée à des vertiges lors du mouchage.",
+      "consignesAttendues": [
+        "Préciser l'ancienneté de l'otorrhée et son caractère fétide indolore",
+        "Réaliser un examen otoscopique bilatéral minutieux sous microscope ou optique",
+        "Rechercher le signe de la fistule (vertige provoqué par la pression du tragus)",
+        "Évaluer les complications endocrâniennes et périphériques (paralysie faciale)",
+        "Prescrire un scanner des rochers sans injection et programmer l'intervention chirurgicale d'éradication"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de gouttes auriculaires aminoglycosides en cas de suspicion de tympan ouvert",
+        "Ne pas temporiser devant des vertiges avec fistule labyrinthique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box de consultation ORL",
+      "materielDisponible": [
+        "Otoscope",
+        "Spéculums auriculaires",
+        "Diapason",
+        "Poire de Siegle"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Otoscopie montrant des squames épidermiques dans la pars flaccida",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Signe de la fistule positif",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Test au diapason (surdité de transmission ou mixte)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Scanner des rochers haute résolution en urgence",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, j'ai l'oreille droite qui coule jaune et qui sent mauvais depuis des mois. Mais depuis une semaine, dès que j'appuie sur mon oreille, tout tourne autour de moi.",
+      "infosVolontaires": [
+        "Écoulement d'oreille fétide et baisse d'audition avec vertiges",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Habitué aux otites depuis l'enfance mais inquiet de l'apparition des vertiges récents."
+    },
+    "titre": "Écoulement d'oreille fétide et baisse d'audition avec vertiges",
+    "itemR2C": "Item 88. Otalgie et otorrhée. Item 104. Vertige.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en ORL.",
+      "contexte": "Vous recevez M. Guillaume Mercier, 46 ans, adressé pour une otorrhée purulente droite récidivante malodorante associée à des vertiges lors du mouchage.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser l'ancienneté de l'otorrhée et son caractère fétide indolore",
+        "Réaliser un examen otoscopique bilatéral minutieux sous microscope ou optique",
+        "Rechercher le signe de la fistule (vertige provoqué par la pression du tragus)",
+        "Évaluer les complications endocrâniennes et périphériques (paralysie faciale)",
+        "Prescrire un scanner des rochers sans injection et programmer l'intervention chirurgicale d'éradication"
+      ],
+      "interdits": [
+        "Ne pas prescrire de gouttes auriculaires aminoglycosides en cas de suspicion de tympan ouvert",
+        "Ne pas temporiser devant des vertiges avec fistule labyrinthique"
+      ],
+      "materielDisponible": [
+        "Otoscope",
+        "Spéculums auriculaires",
+        "Diapason",
+        "Poire de Siegle"
+      ],
+      "lieu": "Box de consultation ORL"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Guillaume",
+        "nom": "Mercier",
+        "age": 46,
+        "sexe": "M"
+      },
+      "personnalite": "Habitué aux otites depuis l'enfance mais inquiet de l'apparition des vertiges récents.",
+      "phraseOuverture": "Bonjour docteur, j'ai l'oreille droite qui coule jaune et qui sent mauvais depuis des mois. Mais depuis une semaine, dès que j'appuie sur mon oreille, tout tourne autour de moi.",
+      "infosVolontaires": [
+        "Écoulement d'oreille fétide et baisse d'audition avec vertiges",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer un cholestéatome de l'oreille moyenne compliqué d'une fistule labyrinthique (signe de la fistule positif), prescrire un scanner des rochers et référer pour tympanoplastie chirurgicale.",
+      "erreursRedhibitoires": [
+        "Se contenter d'un simple traitement antibiotique local prolongé",
+        "Omettre de tester la motricité faciale"
+      ],
+      "elementsAttendus": [
+        "Otoscopie montrant des squames épidermiques dans la pars flaccida",
+        "Signe de la fistule positif",
+        "Test au diapason (surdité de transmission ou mixte)",
+        "Scanner des rochers haute résolution en urgence"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Otoscopie montrant des squames épidermiques dans la pars flaccida",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Signe de la fistule positif",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Test au diapason (surdité de transmission ou mixte)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Scanner des rochers haute résolution en urgence",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai des vertiges terribles depuis quelques jours et mon oreille droite coule depuis des mois...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Cholestéatome compliqué)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Audiogramme",
+      "TDM rochers"
+    ],
+    "utiles": [
+      "IRM cérébrale",
+      "Épreuves caloriques",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Prise de sang (CRP, NFS)"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté ORL et vestibulaire",
+    "Effectuer un examen clinique ORL et vestibulaire complet",
+    "Identifier les signes de cholestéatome à l'otoscopie"
+  ],
+  "referentiel": "Collège ORL / Barany Society",
+  "motif": "Écoulement d'oreille fétide et baisse d'audition avec vertiges"
+}

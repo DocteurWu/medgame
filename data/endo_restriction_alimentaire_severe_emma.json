@@ -1,0 +1,408 @@
+{
+  "id": "endo_restriction_alimentaire_severe_emma",
+  "patient": {
+    "nom": "Leroy",
+    "prenom": "Emma",
+    "age": 14,
+    "sexe": "F",
+    "taille": "155 cm",
+    "poids": "40 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Restriction alimentaire sévère sans distorsion corporelle",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Faible, fatigue rapide"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Très restrictif",
+        "particularites": "Refus de nombreux aliments par texture ou goût"
+      },
+      "emploi": {
+        "profession": "Collégienne",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Hypersensibilité sensorielle"
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Enfance",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Sensibilité aux textures alimentaires",
+      "symptomesAssocies": [
+        "Fatigue",
+        "Retard de croissance"
+      ],
+      "remarques": "Pas de désir de maigrir ni de dysmorphophobie."
+    },
+    "verbatim": "Bonjour... je viens parce que mes parents s'inquiètent. Je ne mange que certaines pâtes et du pain, le reste me dégoûte ou me fait peur."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/60 mmHg",
+      "pouls": "60 bpm",
+      "temperature": "36.5°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Mince, faible masse musculaire",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan nutritionnel",
+    "Évaluation psychologique",
+    "Test de tolérance alimentaire",
+    "Coloscopie",
+    "Dosage des anticorps anti-transglutaminase",
+    "Échographie thyroïdienne",
+    "Scanner crânien",
+    "Test de sudation",
+    "Analyse des gaz du sang",
+    "Bilan hormonal complet",
+    "Radiographie pulmonaire"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Carences vitaminiques",
+    "Bilan nutritionnel": "Déficit calorique important",
+    "Évaluation psychologique": "Évitement alimentaire sans dysmorphophobie",
+    "Test de tolérance alimentaire": "Rejet de textures spécifiques",
+    "Coloscopie": "Normale",
+    "Dosage des anticorps anti-transglutaminase": "Négatif (pas de maladie cœliaque)",
+    "Échographie thyroïdienne": "Normale",
+    "Scanner crânien": "Normale",
+    "Test de sudation": "Normal (pas de mucoviscidose)",
+    "Analyse des gaz du sang": "Normale",
+    "Bilan hormonal complet": "Normal",
+    "Radiographie pulmonaire": "Normale",
+    "Glycémie (contrôle)": "0.85 g/L"
+  },
+  "possibleDiagnostics": [
+    "ARFID",
+    "Anorexie mentale",
+    "Trouble anxieux",
+    "Maladie cœliaque"
+  ],
+  "correctDiagnostic": "ARFID",
+  "feedback": {
+    "ARFID": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Soutien nutritionnel",
+    "Thérapie d’exposition sensorielle",
+    "Antidépresseurs",
+    "Compléments alimentaires"
+  ],
+  "correctTreatments": [
+    "Soutien nutritionnel",
+    "Thérapie d’exposition sensorielle"
+  ],
+  "correction": "# ARFID\n\nRestriction liée aux caractéristiques sensorielles sans dysmorphophobie.\n\n## Bonnes pratiques\n\n- Soutien nutritionnel et correction des carences\n- Thérapie d’exposition graduée aux textures/aliments\n- Coordination avec famille/école\n\n## Erreurs à éviter\n\n- Confondre avec anorexie mentale (absence de désir de maigrir)\n- Stigmatiser les préférences sensorielles",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes pédiatre hospitalier.",
+      "contexte": "Vous recevez Emma, 14 ans, adressée par son médecin pour une limitation drastique du panel alimentaire entraînant un fléchissement staturo-pondéral.",
+      "consignesAttendues": [
+        "Distinguer l'évitement alimentaire sensoriel/phobique d'une préoccupation de minceur",
+        "Explorer les caractéristiques sensorielles des aliments rejetés (textures, odeurs, couleurs)",
+        "Rechercher un événement déclenchant traumatique (fausse route, étouffement)",
+        "Évaluer l'état nutritionnel et les carences en micronutriments",
+        "Proposer un plan de désensibilisation alimentaire progressive"
+      ],
+      "consignesInterdites": [
+        "Ne pas forcer l'ingestion d'aliments anxiogènes sous la contrainte",
+        "Ne pas poser de diagnostic erroné sans vérifier l'absence de dysmorphophobie"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation pédiatrique",
+      "materielDisponible": [
+        "Toise",
+        "Balance",
+        "Carnet de santé",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Absence de préoccupation corporelle",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Bilan biologique nutritionnel (fer, folates, B12, zinc)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prise en charge orthophonique sensorielle",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Suivi régulier du poids",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour... je viens parce que mes parents s'inquiètent. Je ne mange que certaines pâtes et du pain, le reste me dégoûte ou me fait peur.",
+      "infosVolontaires": [
+        "Restriction alimentaire sévère sans distorsion corporelle",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Timide, anxieuse face à la nouveauté alimentaire, ne cherche pas à maigrir mais a peur de s'étouffer."
+    },
+    "titre": "Restriction alimentaire sévère sans distorsion corporelle",
+    "itemR2C": "Item 70. Troubles du comportement alimentaire de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes pédiatre hospitalier.",
+      "contexte": "Vous recevez Emma, 14 ans, adressée par son médecin pour une limitation drastique du panel alimentaire entraînant un fléchissement staturo-pondéral.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Distinguer l'évitement alimentaire sensoriel/phobique d'une préoccupation de minceur",
+        "Explorer les caractéristiques sensorielles des aliments rejetés (textures, odeurs, couleurs)",
+        "Rechercher un événement déclenchant traumatique (fausse route, étouffement)",
+        "Évaluer l'état nutritionnel et les carences en micronutriments",
+        "Proposer un plan de désensibilisation alimentaire progressive"
+      ],
+      "interdits": [
+        "Ne pas forcer l'ingestion d'aliments anxiogènes sous la contrainte",
+        "Ne pas poser de diagnostic erroné sans vérifier l'absence de dysmorphophobie"
+      ],
+      "materielDisponible": [
+        "Toise",
+        "Balance",
+        "Carnet de santé",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation pédiatrique"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Emma",
+        "nom": "Leroy",
+        "age": 14,
+        "sexe": "F"
+      },
+      "personnalite": "Timide, anxieuse face à la nouveauté alimentaire, ne cherche pas à maigrir mais a peur de s'étouffer.",
+      "phraseOuverture": "Bonjour... je viens parce que mes parents s'inquiètent. Je ne mange que certaines pâtes et du pain, le reste me dégoûte ou me fait peur.",
+      "infosVolontaires": [
+        "Restriction alimentaire sévère sans distorsion corporelle",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic d'ARFID, éliminer une préoccupation de minceur et réhabiliter la sensorialité.",
+      "erreursRedhibitoires": [
+        "Confondre avec une anorexie mentale classique",
+        "Méconnaître des carences vitaminiques profondes"
+      ],
+      "elementsAttendus": [
+        "Absence de préoccupation corporelle",
+        "Bilan biologique nutritionnel (fer, folates, B12, zinc)",
+        "Prise en charge orthophonique sensorielle",
+        "Suivi régulier du poids"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Absence de préoccupation corporelle",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Bilan biologique nutritionnel (fer, folates, B12, zinc)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prise en charge orthophonique sensorielle",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Suivi régulier du poids",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour... je viens parce que mes parents s'inquiètent, je ne mange presque plus rien.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (ARFID)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan nutritionnel"
+    ],
+    "utiles": [
+      "Évaluation psychologique",
+      "Test de tolérance alimentaire",
+      "Coloscopie"
+    ],
+    "inutiles": [
+      "Dosage des anticorps anti-transglutaminase",
+      "Échographie thyroïdienne",
+      "Scanner crânien"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser l'interrogatoire pour préciser le trouble alimentaire",
+    "Éliminer une anorexie mentale (recherche de dysmorphophobie et désir de maigrir)",
+    "Proposer une stratégie diagnostique et une prise en charge initiale"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Restriction alimentaire sévère sans distorsion corporelle"
+}

@@ -1,0 +1,408 @@
+{
+  "id": "locomoteur_douleur_anterieure_epaule_mlle_lisa",
+  "redacteur": "diapo du prof",
+  "patient": {
+    "nom": "Cuddy",
+    "prenom": "Lisa",
+    "age": 39,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "57 kg",
+    "groupeSanguin": "0-",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur antéro-latérale de l'épaule droite lors des mouvements en élévation",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "Occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Ecrivaine",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 4 mois",
+      "evolution": "Aggravation",
+      "facteursDeclenchants": "La marche et la montée des escaliers",
+      "descriptionDouleur": "Douleur hanche gauche en regard du grand trochanter",
+      "symptomesAssocies": [
+        "/"
+      ],
+      "remarques": "La douleur ne réveille pas la nuit et pas de dérouillage matinal"
+    },
+    "verbatim": "Bonjour docteur, dès que je lève le bras pour smasher au volley ou pour attraper un objet en haut d'un placard, j'ai une pointe aiguë dans le haut de l'épaule droite."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/70 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Locomoteur": {
+      "palpation": "Reproduction de la douleur à la palpation du bord postéro-supérieur du grand trochanter ainsi qu'en fin de rotation interne et en abduction contrariée",
+      "appui monopodal": "Tenu",
+      "marche": "Boiterie d'esquive"
+    }
+  },
+  "availableExams": [
+    "Scanner pelvien",
+    "IRM pelvien",
+    "Echographie pelvienne"
+  ],
+  "examResults": {
+    "Scanner pelvien": "Non indiqué",
+    "IRM pelvien": "Non indiqué",
+    "Echographie pelvienne": "Non indiquée"
+  },
+  "possibleDiagnostics": [
+    "Ankylose",
+    "Arthrite du genou",
+    "Rupture tendineuse du moyen fessier gauche",
+    "Tendinopathie simple du moyen fessier gauche"
+  ],
+  "correctDiagnostic": "Tendinopathie simple du moyen fessier gauche",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Kinésithérapie",
+    "Traitement antalgique"
+  ],
+  "correctTreatments": [
+    "Kinésithérapie",
+    "Traitement antalgique"
+  ],
+  "correction": "# Tendinopathie simple du moyen fessier gauche\n\n## Points Importants\n- Triade tendineuse à rechercher",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "A partir des informations recueillies à l'interrogatoire, quel est le mécanisme à l'origine de la douleur ?",
+        "options": [
+          "Mécanique",
+          "Inflammatoire",
+          "On ne peut pas savoir"
+        ],
+        "correct_indices": [
+          0
+        ]
+      },
+      "feedback_error": "\"La douleur ne réveille pas la nuit et pas de dérouillage matinal\"...",
+      "id": "lock_1767807726703",
+      "target_fields": [
+        "examenClinique.Locomoteur"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en rhumatologie / médecine physique et réadaptation.",
+      "contexte": "Vous recevez Mlle Lisa Cuddy, 39 ans, pratiquante de volley-ball, se plaignant d'une douleur de l'épaule droite lors du smash et des mouvements au-dessus de la tête.",
+      "consignesAttendues": [
+        "Distinguer une épaule douloureuse simple (tendinopathie) d'une épaule gelée ou d'une rupture de coiffe",
+        "Vérifier la conservation totale des mobilités passives de l'épaule",
+        "Réaliser les manœuvres de conflit sous-acromial (Neer, Hawkins, Yocum)",
+        "Tester les différents tendons de la coiffe des rotateurs (Jobe pour le supra-épineux, Patte pour les rotateurs externes)",
+        "Prescrire une rééducation masso-kinésithérapique centrée sur le recentrage dynamique de la tête humérale"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'infiltration de corticoïdes en première intention chez la jeune sportive sans rééducation préalable",
+        "Ne pas prescrire d'emblée une IRM sans radiographies standard préalables"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Goniomètre",
+        "Stéthoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Mobilités passives strictement conservées",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Manœuvres de conflit positives (Neer, Hawkins)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Manœuvre de Jobe douloureuse mais sans déficit de force (tendinopathie non rompue)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prescription de rééducation de recentrage huméral",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, dès que je lève le bras pour smasher au volley ou pour attraper un objet en haut d'un placard, j'ai une pointe aiguë dans le haut de l'épaule droite.",
+      "infosVolontaires": [
+        "Douleur antéro-latérale de l'épaule droite lors des mouvements en élévation",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Sportive, frustrée de ne plus pouvoir jouer au volley-ball à son niveau habituel."
+    },
+    "titre": "Douleur antéro-latérale de l'épaule droite lors des mouvements en élévation",
+    "itemR2C": "Item 94. Douleur d'épaule.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en rhumatologie / médecine physique et réadaptation.",
+      "contexte": "Vous recevez Mlle Lisa Cuddy, 39 ans, pratiquante de volley-ball, se plaignant d'une douleur de l'épaule droite lors du smash et des mouvements au-dessus de la tête.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Distinguer une épaule douloureuse simple (tendinopathie) d'une épaule gelée ou d'une rupture de coiffe",
+        "Vérifier la conservation totale des mobilités passives de l'épaule",
+        "Réaliser les manœuvres de conflit sous-acromial (Neer, Hawkins, Yocum)",
+        "Tester les différents tendons de la coiffe des rotateurs (Jobe pour le supra-épineux, Patte pour les rotateurs externes)",
+        "Prescrire une rééducation masso-kinésithérapique centrée sur le recentrage dynamique de la tête humérale"
+      ],
+      "interdits": [
+        "Ne pas prescrire d'infiltration de corticoïdes en première intention chez la jeune sportive sans rééducation préalable",
+        "Ne pas prescrire d'emblée une IRM sans radiographies standard préalables"
+      ],
+      "materielDisponible": [
+        "Goniomètre",
+        "Stéthoscope"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Lisa",
+        "nom": "Cuddy",
+        "age": 39,
+        "sexe": "F"
+      },
+      "personnalite": "Sportive, frustrée de ne plus pouvoir jouer au volley-ball à son niveau habituel.",
+      "phraseOuverture": "Bonjour docteur, dès que je lève le bras pour smasher au volley ou pour attraper un objet en haut d'un placard, j'ai une pointe aiguë dans le haut de l'épaule droite.",
+      "infosVolontaires": [
+        "Douleur antéro-latérale de l'épaule droite lors des mouvements en élévation",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer un conflit sous-acromial avec tendinopathie du supra-épineux sur épaule mobile, prescrire une radiographie standard et une rééducation kinésithérapique ciblée.",
+      "erreursRedhibitoires": [
+        "Conclure à une capsulite rétractile sans tester les mobilités passives",
+        "Infiltrer d'emblée"
+      ],
+      "elementsAttendus": [
+        "Mobilités passives strictement conservées",
+        "Manœuvres de conflit positives (Neer, Hawkins)",
+        "Manœuvre de Jobe douloureuse mais sans déficit de force (tendinopathie non rompue)",
+        "Prescription de rééducation de recentrage huméral"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Mobilités passives strictement conservées",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Manœuvres de conflit positives (Neer, Hawkins)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Manœuvre de Jobe douloureuse mais sans déficit de force (tendinopathie non rompue)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prescription de rééducation de recentrage huméral",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal à la hanche gauche depuis quelques mois et ça commence à vraiment me gêner dans ma vie de tous les jours.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Tendinopathie simple du moyen fessier gauche)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Scanner pelvien",
+      "IRM pelvien"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": [
+      "Scanner pelvien",
+      "IRM pelvien",
+      "Echographie pelvienne"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « A partir des informations recueillies à l'interrogatoire, quel est le mécanisme à l'origine de la douleur ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la douleur de hanche gauche",
+    "Effectuer un examen clinique locomoteur ciblé de la hanche gauche",
+    "Proposer un diagnostic et argumenter"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Douleur antéro-latérale de l'épaule droite lors des mouvements en élévation"
+}

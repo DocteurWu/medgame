@@ -1,0 +1,380 @@
+{
+  "id": "neuro_crises_convulsives_repetees_mme_mary",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Bennett",
+    "prenom": "Mary",
+    "age": 29,
+    "sexe": "F",
+    "taille": "1,78 m",
+    "poids": "75 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Épisodes répétés de malaises avec perte de connaissance",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "occasionnel",
+        "duree": "10 ans"
+      },
+      "alcool": {
+        "quantite": "modérée"
+      },
+      "alimentation": {
+        "regime": "normal",
+        "particularites": ""
+      },
+      "emploi": {
+        "profession": "Employé",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Crises survenues brutalement au domicile",
+      "evolution": "Deux crises en 24 heures avec confusion post-critique",
+      "facteursDeclenchants": "Privation de sommeil et consommation d’alcool",
+      "descriptionDouleur": "Céphalées et myalgies post-critiques",
+      "symptomesAssocies": [
+        "Perte de connaissance",
+        "Morsure latérale de la langue",
+        "Incontinence urinaire",
+        "Confusion post-critique prolongée"
+      ],
+      "remarques": "Notion de récidive"
+    },
+    "verbatim": "Bonjour docteur, c'est la troisième fois en six mois que je m'effondre sans m'en rendre compte. Mon mari m'a vue trembler de tout mon corps la nuit dernière."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "125/80 mmHg",
+      "pouls": "100 bpm",
+      "temperature": "37°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient conscient, fatigué",
+    "Neurologique": {
+      "conscience": "Glasgow 14/15",
+      "deficitfocal": "absent"
+    }
+  },
+  "availableExams": [
+    "Ionogramme",
+    "Scanner cérébral",
+    "EEG"
+  ],
+  "examResults": {
+    "Ionogramme": "normal",
+    "Scanner cérébral": "normal",
+    "EEG": "anomalies épileptiformes généralisées"
+  },
+  "possibleDiagnostics": [
+    "Épilepsie généralisée avérée",
+    "Épilepsie généralisée",
+    "Crise isolée",
+    "Crise psychogène"
+  ],
+  "correctDiagnostic": "Épilepsie généralisée avérée",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antiépileptique de fond",
+    "Mesures hygiéno-diététiques"
+  ],
+  "correctTreatments": [
+    "Traitement antiépileptique de fond"
+  ],
+  "correction": "Points Importants\n\nCrises convulsives généralisées récidivantes, non provoquées\nAntécédent personnel et familial évocateur d’épilepsie\nFacteurs favorisants : privation de sommeil, alcool\nSémiologie typique : perte de connaissance, morsure de langue, confusion post-critique\nEEG pathologique avec anomalies épileptiformes généralisées\nDiagnostic retenu : épilepsie généralisée avérée\nIndication à un traitement antiépileptique de fond\nNécessité d’une éducation thérapeutique et de mesures hygiéno-diététiques\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Mary Bennett, 29 ans, qui présente un troisième épisode de perte de connaissance brutale avec amnésie et myalgies diffuses.",
+      "consignesAttendues": [
+        "Confirmer le diagnostic d'épilepsie maladie (au moins deux crises non provoquées espacées de plus de 24h)",
+        "Analyser l'électroencéphalogramme (pointes-ondes généralisées synchrones)",
+        "Discuter de l'instauration d'un traitement antiépileptique de fond en tenant compte du potentiel tératogène (contre-indication du valproate de sodium)",
+        "Informer sur la contraception adaptée (interactions avec les inducteurs enzymatiques)",
+        "Rappeler les règles d'hygiène de vie et la réglementation sur le permis de conduire"
+      ],
+      "consignesInterdites": [
+        "Ne jamais prescrire de valproate de sodium chez une femme en âge de procréer",
+        "Ne pas omettre les consignes de sécurité légale concernant la conduite"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation spécialisée",
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Tracé EEG papier",
+        "Ordonnancier"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Diagnostic d'épilepsie répondant à la définition ILAE",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Contre-indication absolue du valproate chez la femme jeune",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription de lamotrigine ou lévétiracétam avec titration lente",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Conseils d'hygiène (sommeil régulier, éviction des toxiques)",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, c'est la troisième fois en six mois que je m'effondre sans m'en rendre compte. Mon mari m'a vue trembler de tout mon corps la nuit dernière.",
+      "infosVolontaires": [
+        "Épisodes répétés de malaises avec perte de connaissance",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Inquiète de l'impact de la maladie sur son projet de grossesse et son travail."
+    },
+    "titre": "Épisodes répétés de malaises avec perte de connaissance",
+    "itemR2C": "Item 105. Épilepsie de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Mary Bennett, 29 ans, qui présente un troisième épisode de perte de connaissance brutale avec amnésie et myalgies diffuses.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Confirmer le diagnostic d'épilepsie maladie (au moins deux crises non provoquées espacées de plus de 24h)",
+        "Analyser l'électroencéphalogramme (pointes-ondes généralisées synchrones)",
+        "Discuter de l'instauration d'un traitement antiépileptique de fond en tenant compte du potentiel tératogène (contre-indication du valproate de sodium)",
+        "Informer sur la contraception adaptée (interactions avec les inducteurs enzymatiques)",
+        "Rappeler les règles d'hygiène de vie et la réglementation sur le permis de conduire"
+      ],
+      "interdits": [
+        "Ne jamais prescrire de valproate de sodium chez une femme en âge de procréer",
+        "Ne pas omettre les consignes de sécurité légale concernant la conduite"
+      ],
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Tracé EEG papier",
+        "Ordonnancier"
+      ],
+      "lieu": "Cabinet de consultation spécialisée"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Mary",
+        "nom": "Bennett",
+        "age": 29,
+        "sexe": "F"
+      },
+      "personnalite": "Inquiète de l'impact de la maladie sur son projet de grossesse et son travail.",
+      "phraseOuverture": "Bonjour docteur, c'est la troisième fois en six mois que je m'effondre sans m'en rendre compte. Mon mari m'a vue trembler de tout mon corps la nuit dernière.",
+      "infosVolontaires": [
+        "Épisodes répétés de malaises avec perte de connaissance",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic d'épilepsie généralisée de l'adulte jeune, choisir un traitement compatible avec la grossesse (ex. lamotrigine ou lévétiracétam) et bannir formellement la dépakine.",
+      "erreursRedhibitoires": [
+        "Prescrire du valproate de sodium à une femme jeune en âge de procréer",
+        "Omettre les consignes d'éviction des bains sans surveillance"
+      ],
+      "elementsAttendus": [
+        "Diagnostic d'épilepsie répondant à la définition ILAE",
+        "Contre-indication absolue du valproate chez la femme jeune",
+        "Prescription de lamotrigine ou lévétiracétam avec titration lente",
+        "Conseils d'hygiène (sommeil régulier, éviction des toxiques)"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Diagnostic d'épilepsie répondant à la définition ILAE",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Contre-indication absolue du valproate chez la femme jeune",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription de lamotrigine ou lévétiracétam avec titration lente",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Conseils d'hygiène (sommeil régulier, éviction des toxiques)",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, j'ai fait deux crises d'épilepsie en 24 heures, je ne comprends pas ce qui m'arrive...",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Épilepsie généralisée avérée)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Ionogramme",
+      "Scanner cérébral"
+    ],
+    "utiles": [
+      "EEG"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient sur ses crises convulsives",
+    "Rechercher les facteurs déclenchants et les circonstances de survenue",
+    "Effectuer un examen neurologique complet"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Épisodes répétés de malaises avec perte de connaissance"
+}

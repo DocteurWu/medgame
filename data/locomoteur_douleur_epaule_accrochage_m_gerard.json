@@ -1,0 +1,375 @@
+{
+  "id": "locomoteur_douleur_epaule_accrochage_m_gerard",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Klein",
+    "prenom": "Gérard",
+    "age": 52,
+    "sexe": "M",
+    "taille": "1,75 m",
+    "poids": "82 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur de l'épaule avec accrochage douloureux entre 60° et 120° d'abduction",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "travail manuel répétitif"
+      },
+      "tabac": {
+        "quantite": "oui",
+        "duree": "20 paquets-années"
+      },
+      "alcool": {
+        "quantite": "modérée"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Peintre en bâtiment",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive depuis plusieurs mois",
+      "evolution": "Douleur mécanique croissante",
+      "facteursDeclenchants": "Mouvements répétitifs au-dessus de la tête",
+      "descriptionDouleur": "Douleur latérale de l’épaule irradiant vers le bras",
+      "symptomesAssocies": [
+        "Douleur nocturne en décubitus",
+        "Diminution de la force à l’élévation"
+      ],
+      "remarques": "Tableau évocateur d’une atteinte de la coiffe des rotateurs"
+    },
+    "verbatim": "Bonjour docteur, peindre des plafonds devient un calvaire. Dès que je monte le bras au-dessus de l'horizontale, ça coince et ça me lance violemment dans l'épaule."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/80 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient en bon état général",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Force diminuée à l’abduction contre résistance",
+      "sensibilite": "Normale",
+      "sensibiliteprofonde": "Normale",
+      "reflexesosteotendineux": "Conservés",
+      "coordinationequilibre": "Normale",
+      "signesassocies": "Signe de Jobe positif,Arc douloureux entre 60 et 120 degrés"
+    }
+  },
+  "availableExams": [
+    "Échographie de l’épaule",
+    "IRM de l’épaule"
+  ],
+  "examResults": {
+    "Échographie de l’épaule": "Tendinopathie du sus-épineux sans rupture",
+    "IRM de l’épaule": "Pas de rupture transfixiante"
+  },
+  "possibleDiagnostics": [
+    "Tendinopathie du sus-épineux",
+    "Conflit sous-acromial"
+  ],
+  "correctDiagnostic": "Tendinopathie du sus-épineux",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Chirurgie réparatrice",
+    "Rééducation de l'épaule",
+    "Antalgiques"
+  ],
+  "correctTreatments": [
+    "Rééducation de l’épaule",
+    "Antalgiques"
+  ],
+  "correction": "Ce cas correspond à une tendinopathie de la coiffe des rotateurs, touchant le tendon du sus-épineux, favorisée par des mouvements répétés au-dessus de la tête. La douleur est mécanique, latéralisée à l’épaule, majorée à l’abduction, avec un arc douloureux et un signe de Jobe positif, sans limitation passive ni déficit neurologique. L’imagerie confirme l’absence de rupture, orientant vers une prise en charge fonctionnelle et rééducative.\n\nÉléments clés :\n\n·       Douleur mécanique de l’épaule\n\n·       Arc douloureux 60–120°\n\n·       Jobe positif\n\n·       Mobilité passive conservée\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. Gérard Klein, 52 ans, peintre en bâtiment, consultant pour des douleurs de l'épaule droite le gênant lors du travail bras en l'air.",
+      "consignesAttendues": [
+        "Rechercher un arc douloureux d'abduction entre 60 et 120°",
+        "Vérifier la liberté des mobilités passives et tester le supra-épineux par la manœuvre de Jobe",
+        "Tester les rotateurs externes (infra-épineux) par la manœuvre de Patte et le sous-scapulaire par le Lift-Off",
+        "Prescrire des radiographies comparatives de l'épaule",
+        "Proposer une adaptation des gestes professionnels et une rééducation adaptée"
+      ],
+      "consignesInterdites": [
+        "Ne pas négliger la déclaration en maladie professionnelle (tableau 57)",
+        "Ne pas infiltrer de manière répétée sans surveillance"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet médical",
+      "materielDisponible": [
+        "Goniomètre",
+        "Stéthoscope",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Arc douloureux caractéristique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Manœuvres de conflit sous-acromial positives",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription de radiographies et échographie de l'épaule",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Certificat médical initial de maladie professionnelle",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, peindre des plafonds devient un calvaire. Dès que je monte le bras au-dessus de l'horizontale, ça coince et ça me lance violemment dans l'épaule.",
+      "infosVolontaires": [
+        "Douleur de l'épaule avec accrochage douloureux entre 60° et 120° d'abduction",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Artisan courageux mais inquiet de ne plus pouvoir honorer ses chantiers de peinture."
+    },
+    "titre": "Douleur de l'épaule avec accrochage douloureux entre 60° et 120° d'abduction",
+    "itemR2C": "Item 94. Douleur d'épaule.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. Gérard Klein, 52 ans, peintre en bâtiment, consultant pour des douleurs de l'épaule droite le gênant lors du travail bras en l'air.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Rechercher un arc douloureux d'abduction entre 60 et 120°",
+        "Vérifier la liberté des mobilités passives et tester le supra-épineux par la manœuvre de Jobe",
+        "Tester les rotateurs externes (infra-épineux) par la manœuvre de Patte et le sous-scapulaire par le Lift-Off",
+        "Prescrire des radiographies comparatives de l'épaule",
+        "Proposer une adaptation des gestes professionnels et une rééducation adaptée"
+      ],
+      "interdits": [
+        "Ne pas négliger la déclaration en maladie professionnelle (tableau 57)",
+        "Ne pas infiltrer de manière répétée sans surveillance"
+      ],
+      "materielDisponible": [
+        "Goniomètre",
+        "Stéthoscope",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet médical"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Gérard",
+        "nom": "Klein",
+        "age": 52,
+        "sexe": "M"
+      },
+      "personnalite": "Artisan courageux mais inquiet de ne plus pouvoir honorer ses chantiers de peinture.",
+      "phraseOuverture": "Bonjour docteur, peindre des plafonds devient un calvaire. Dès que je monte le bras au-dessus de l'horizontale, ça coince et ça me lance violemment dans l'épaule.",
+      "infosVolontaires": [
+        "Douleur de l'épaule avec accrochage douloureux entre 60° et 120° d'abduction",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une tendinopathie de la coiffe des rotateurs liée au travail répétitif, bilan radiographique, rééducation et démarche de déclaration en maladie professionnelle.",
+      "erreursRedhibitoires": [
+        "Omettre d'évoquer la maladie professionnelle chez le peintre en bâtiment",
+        "Négliger le test de force musculaire"
+      ],
+      "elementsAttendus": [
+        "Arc douloureux caractéristique",
+        "Manœuvres de conflit sous-acromial positives",
+        "Prescription de radiographies et échographie de l'épaule",
+        "Certificat médical initial de maladie professionnelle"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Arc douloureux caractéristique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Manœuvres de conflit sous-acromial positives",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription de radiographies et échographie de l'épaule",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Certificat médical initial de maladie professionnelle",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal à l'épaule droite depuis plusieurs mois et ça empire. J'arrive plus à lever le bras comme avant et ça me gêne beaucoup pour mon travail.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Tendinopathie du sus-épineux)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Échographie de l’épaule",
+      "IRM de l’épaule"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la douleur de l'épaule et le retentissement fonctionnel",
+    "Effectuer un examen clinique ciblé de l'épaule droite",
+    "Proposer une stratégie diagnostique adaptée (examens complémentaires)"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Douleur de l'épaule avec accrochage douloureux entre 60° et 120° d'abduction"
+}

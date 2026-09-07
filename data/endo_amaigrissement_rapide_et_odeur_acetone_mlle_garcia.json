@@ -1,0 +1,422 @@
+{
+  "id": "endo_amaigrissement_rapide_et_odeur_acetone_mlle_garcia",
+  "patient": {
+    "nom": "Garcia",
+    "prenom": "Léa",
+    "age": 21,
+    "sexe": "F",
+    "taille": "175 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Amaigrissement rapide, soif intense et douleurs abdominales",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée, étudiant actif"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal avant symptômes",
+        "particularites": "Perte d’appétit récente"
+      },
+      "emploi": {
+        "profession": "Étudiant",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "3 semaines",
+      "evolution": "Explosive",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": [
+        "Polyurie",
+        "Polydipsie",
+        "Amaigrissement (5 kg)",
+        "Asthénie",
+        "Nausées",
+        "Douleurs abdominales"
+      ],
+      "remarques": "Symptômes rapidement aggravés, haleine fruitée rapportée."
+    },
+    "verbatim": "Bonjour docteur... je me sens très mal. J'ai tout le temps soif, j'ai perdu 7 kilos en 3 semaines et j'ai mal au ventre depuis ce matin."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "100 bpm",
+      "temperature": "37.1°C",
+      "saturationO2": "95%",
+      "frequenceRespiratoire": "22/min (dyspnée de Cheyne-Stokes)"
+    },
+    "aspectGeneral": "Amaigri, déshydraté, pâleur",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal, respiration rapide"
+    },
+    "examenAbdominal": {
+      "palpation": "Douleurs diffuses"
+    },
+    "examenNeurologique": {
+      "conscience": "Léthargique mais orienté"
+    }
+  },
+  "availableExams": [
+    "Glycémie capillaire",
+    "Dosage des anticorps anti-GAD",
+    "Bilan sanguin complet",
+    "Corps cétoniques urinaires",
+    "Gaz du sang artériel",
+    "Protéine C-réactive (CRP)",
+    "Hémoglobine glyquée (HbA1c)",
+    "Bilan lipidique",
+    "IRM cérébrale",
+    "Échographie abdominale",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Dosage des hormones thyroïdiennes",
+    "Électroencéphalogramme",
+    "Test de dépistage des allergènes",
+    "Scanner thoracique",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Glycémie capillaire": "350 mg/dL (hyperglycémie sévère)",
+    "Dosage des anticorps anti-GAD": "Positif (confirme auto-immunité)",
+    "Bilan sanguin complet": "Hyperglycémie, légère anémie",
+    "Corps cétoniques urinaires": "Positif (cétonurie marquée)",
+    "Gaz du sang artériel": "pH 7.25, acidose métabolique",
+    "Protéine C-réactive (CRP)": "Normale",
+    "Hémoglobine glyquée (HbA1c)": "9% (début récent)",
+    "Bilan lipidique": "Normale",
+    "IRM cérébrale": "Normale",
+    "Échographie abdominale": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Électroencéphalogramme": "Normale",
+    "Test de dépistage des allergènes": "Négatif",
+    "Scanner thoracique": "Normale",
+    "Coloscopie": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Diabète de type 1",
+    "Diabète de type 2",
+    "Hyperthyroïdie",
+    "Infection systémique",
+    "Cancer pancréatique"
+  ],
+  "correctDiagnostic": "Diabète de type 1",
+  "feedback": {
+    "Diabète de type 1": "Diagnostic correct ! Jeune sans surpoids, symptômes explosifs, insulinopénie auto-immune confirmée.",
+    "Diabète de type 2": "Incorrect. Pas de surpoids ni facteurs de risque métabolique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Insulinothérapie",
+    "Antibiotiques",
+    "Antithyroïdiens",
+    "Chimiothérapie",
+    "Supplémentation vitaminique"
+  ],
+  "correctTreatments": [
+    "Insulinothérapie"
+  ],
+  "correction": "# Diabète de type 1\n\nTableau clinique évocateur: hyperglycémie, cétonurie, acidose, anticorps anti‑GAD positifs.\n\n## Bonnes pratiques\n\n- Confirmer le diagnostic (anticorps, HbA1c, gaz du sang)\n- Initier l’insulinothérapie sans délai\n- Corriger les troubles hydro‑électrolytiques et éduquer le patient\n\n## Erreurs à éviter\n\n- Retarder l’insuline chez un sujet jeune avec cétose\n- Confondre avec DT2 en présence d’amaigrissement et auto‑immunité",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez Léa Garcia, 21 ans, étudiante, amenée pour altération aiguë de l'état général avec amaigrissement de 7 kg en 3 semaines, soif intense et nausées.",
+      "consignesAttendues": [
+        "Rechercher en urgence les signes de décompensation acidocétosique (Kussmaul, haleine cétonique, déshydratation)",
+        "Réaliser immédiatement une glycémie capillaire et une recherche de cétonémie / cétonurie",
+        "Évaluer les constantes vitales et les signes de gravité hémodynamique",
+        "Prescrire le bilan d'urgence (gaz du sang, ionogramme, réserve alcaline, ECG)",
+        "Mettre en route sans délai le protocole d'urgence (réhydratation saline et insulinothérapie IVSE)"
+      ],
+      "consignesInterdites": [
+        "Ne pas administrer d'insuline en bolus sans apport potassique adéquat",
+        "Ne pas renvoyer la patiente à domicile"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Salle d'accueil des urgences vitales (SAUV)",
+      "materielDisponible": [
+        "Lecteur glycémie / cétonémie capillaire",
+        "Bandelettes urinaires",
+        "Scope multiparamétrique",
+        "ECG 12D",
+        "Abord veineux"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Glycémie capillaire immédiate (> 3 g/L) et cétonémie (> 3 mmol/L)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Gaz du sang montrant une acidose métabolique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Pose voie veineuse et perfusion de NaCl 0.9%",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Insulinothérapie intraveineuse et soins continus",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape clé",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient de 18 ans, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce du diagnostic de diabète de type 1",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... je me sens très mal. J'ai tout le temps soif, j'ai perdu 7 kilos en 3 semaines et j'ai mal au ventre depuis ce matin.",
+      "infosVolontaires": [
+        "Amaigrissement rapide, soif intense et douleurs abdominales",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Fatiguée, polypnéique, répond lentement mais reste orientée, très soif."
+    },
+    "titre": "Amaigrissement rapide, soif intense et douleurs abdominales",
+    "itemR2C": "Item 247. Diabète sucré de types 1 et 2. Item 344. Acidocétose.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez Léa Garcia, 21 ans, étudiante, amenée pour altération aiguë de l'état général avec amaigrissement de 7 kg en 3 semaines, soif intense et nausées.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Rechercher en urgence les signes de décompensation acidocétosique (Kussmaul, haleine cétonique, déshydratation)",
+        "Réaliser immédiatement une glycémie capillaire et une recherche de cétonémie / cétonurie",
+        "Évaluer les constantes vitales et les signes de gravité hémodynamique",
+        "Prescrire le bilan d'urgence (gaz du sang, ionogramme, réserve alcaline, ECG)",
+        "Mettre en route sans délai le protocole d'urgence (réhydratation saline et insulinothérapie IVSE)"
+      ],
+      "interdits": [
+        "Ne pas administrer d'insuline en bolus sans apport potassique adéquat",
+        "Ne pas renvoyer la patiente à domicile"
+      ],
+      "materielDisponible": [
+        "Lecteur glycémie / cétonémie capillaire",
+        "Bandelettes urinaires",
+        "Scope multiparamétrique",
+        "ECG 12D",
+        "Abord veineux"
+      ],
+      "lieu": "Salle d'accueil des urgences vitales (SAUV)"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Léa",
+        "nom": "Garcia",
+        "age": 21,
+        "sexe": "F"
+      },
+      "personnalite": "Fatiguée, polypnéique, répond lentement mais reste orientée, très soif.",
+      "phraseOuverture": "Bonjour docteur... je me sens très mal. J'ai tout le temps soif, j'ai perdu 7 kilos en 3 semaines et j'ai mal au ventre depuis ce matin.",
+      "infosVolontaires": [
+        "Amaigrissement rapide, soif intense et douleurs abdominales",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer l'inauguration d'un diabète en acidocétose inaugurale, urgence thérapeutique vitale nécessitant réhydratation hydroélectrolytique et insulinothérapie IV.",
+      "erreursRedhibitoires": [
+        "Prendre les douleurs abdominales pour une urgence chirurgicale sans glycémie",
+        "Omettre la surveillance continue de la kaliémie"
+      ],
+      "elementsAttendus": [
+        "Glycémie capillaire immédiate (> 3 g/L) et cétonémie (> 3 mmol/L)",
+        "Gaz du sang montrant une acidose métabolique",
+        "Pose voie veineuse et perfusion de NaCl 0.9%",
+        "Insulinothérapie intraveineuse et soins continus"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Glycémie capillaire immédiate (> 3 g/L) et cétonémie (> 3 mmol/L)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Gaz du sang montrant une acidose métabolique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Pose voie veineuse et perfusion de NaCl 0.9%",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Insulinothérapie intraveineuse et soins continus",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis vraiment épuisé depuis quelques semaines, je n'arrête pas d'avoir soif et j'ai perdu beaucoup de poids sans comprendre pourquoi.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Diabète de type 1)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie capillaire",
+      "Dosage des anticorps anti-GAD"
+    ],
+    "utiles": [
+      "Bilan sanguin complet",
+      "Corps cétoniques urinaires",
+      "Gaz du sang artériel"
+    ],
+    "inutiles": [
+      "Protéine C-réactive (CRP)",
+      "Hémoglobine glyquée (HbA1c)",
+      "Bilan lipidique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient",
+    "Réaliser un examen clinique adapté",
+    "Identifier les signes de gravité et le diagnostic de diabète de type 1 avec suspicion d'acidocétose diabétique"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Amaigrissement rapide, soif intense et douleurs abdominales"
+}

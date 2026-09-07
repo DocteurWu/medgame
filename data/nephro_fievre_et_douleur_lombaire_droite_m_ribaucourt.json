@@ -1,0 +1,425 @@
+{
+  "id": "nephro_fievre_et_douleur_lombaire_droite_m_ribaucourt",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Ribaucourt",
+    "prenom": "Lucas",
+    "age": 32,
+    "sexe": "M",
+    "taille": "176 cm",
+    "poids": "88 kg",
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fièvre élevée et douleur lombaire unilatérale aiguë",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/j"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Employé de bureau",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Calculs rénaux récidivants",
+          "traitement": "Antalgiques lors des crises"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Aucune",
+          "date": "Jamais"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Lithiase rénale",
+          "age": "57"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures",
+      "evolution": "Douleur lombaire droite fébrile, aggravation progressive",
+      "facteursDeclenchants": "Antécédents de lithiase — suspicion de nouveau calcul",
+      "symptomesAssocies": [
+        "Frissons",
+        "Nausées",
+        "Mictions douloureuses"
+      ],
+      "remarques": "Température élevée non soulagée par paracétamol"
+    },
+    "verbatim": "Bonjour docteur, j'ai d'horribles douleurs dans le dos à droite et je tremble de froid avec presque 40 de fièvre..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "104/62 mmHg",
+      "pouls": "112 bpm",
+      "temperature": "39.4°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "22/min"
+    },
+    "aspectGeneral": "Patient fébrile, pâle, algique",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie régulière"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Douleur FID et angle costo-vertébral droit très sensible"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "NFS",
+    "CRP",
+    "Ionogramme sanguin",
+    "Urée",
+    "Créatininémie",
+    "Bandelette urinaire",
+    "ECBU",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Echographie appareil urinaire"
+  ],
+  "examResults": {
+    "Créatininémie": "165 µmol/L (modérément élevée)",
+    "Urée": "11 mmol/L (élevée)",
+    "Ionogramme sanguin": "Na+ 137 mmol/L, K+ 4.8 mmol/L",
+    "CRP": "Très élevée (185 mg/L)",
+    "Bandelette urinaire": "Nitrites +++, Leucocytes +++",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Dilatation pyélocalicielle droite + suspicion d'obstacle urétéral",
+    "Scanner abdomino-pelvien": "Calcul obstructif de l’uretère lombaire droit (6 mm) avec pyélonéphrite aiguë obstructive",
+    "Echographie appareil urinaire": "Confirme dilatation rénale droite",
+    "ECBU": "Non réalisé",
+    "NFS": "Non réalisé"
+  },
+  "possibleDiagnostics": [
+    "Pyélonéphrite aiguë simple",
+    "Pyélonéphrite obstructive",
+    "Colique néphrétique non compliquée",
+    "Infection urinaire basse"
+  ],
+  "correctDiagnostic": "Pyélonéphrite obstructive",
+  "feedback": {
+    "Pyélonéphrite obstructive": "Diagnostic correct ! Urgence urologique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antibiothérapie IV",
+    "Drainage par sonde JJ",
+    "Néphrostomie",
+    "Hydratation IV",
+    "Antipyrétiques"
+  ],
+  "correctTreatments": [
+    "Antibiothérapie IV",
+    "Drainage par sonde JJ",
+    "Néphrostomie"
+  ],
+  "correction": "# Pyélonéphrite obstructive\n\nLe patient présente une douleur lombaire fébrile, des frissons, une CRP très élevée et une BU infectée. Le scanner retrouve un calcul obstructif responsable d'une pyélonéphrite aiguë obstructive, ce qui constitue une urgence.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement un obstacle devant toute pyélonéphrite sévère ou fébrile\n- Réaliser un scanner injecté en urgence\n- Initier une antibiothérapie IV à large spectre dès l'admission\n- Lever l'obstacle rapidement : sonde JJ ou néphrostomie\n\n## Erreurs à éviter\n\n- Traiter comme une pyélonéphrite simple sans imagerie\n- Retarder le drainage en présence de sepsis\n- Oublier de surveiller la fonction rénale",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences médico-chirurgicales.",
+      "contexte": "Vous recevez Lucas Ribaucourt, 32 ans, se présentant pour une fièvre à 39.5°C avec frissons et douleur lombaire droite hyperalgique.",
+      "consignesAttendues": [
+        "Identifier les signes de gravité et de défaillance hémodynamique (sepsis)",
+        "Préciser les caractéristiques de la douleur lombaire et les antécédents lithiasiques",
+        "Réaliser un examen clinique complet avec palpation de l'angle costo-vertébral",
+        "Prescrire le bilan infectieux et l'imagerie en urgence",
+        "Organiser la prise en charge médico-chirurgicale urgente"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'AINS devant une infection urinaire fébrile",
+        "Ne pas retarder le drainage chirurgical en cas d'obstacle sur rein infecté"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box d'accueil des urgences",
+      "materielDisponible": [
+        "Thermomètre",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Bandelette urinaire",
+        "Abord veineux"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Recherche de signes de choc septique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Bandelette urinaire et ECBU immédiat",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Scanner abdomino-pelvien basse dose sans injection",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Appel de l'urologue de garde pour levée d'obstacle",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, j'ai d'horribles douleurs dans le dos à droite et je tremble de froid avec presque 40 de fièvre...",
+      "infosVolontaires": [
+        "Fièvre élevée et douleur lombaire unilatérale aiguë",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Anxieux, très algique, frissonne, coopératif malgré la souffrance."
+    },
+    "titre": "Fièvre élevée et douleur lombaire unilatérale aiguë",
+    "itemR2C": "Item 161. Infections urinaires de l'adulte. Item 348. Sepsis.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences médico-chirurgicales.",
+      "contexte": "Vous recevez Lucas Ribaucourt, 32 ans, se présentant pour une fièvre à 39.5°C avec frissons et douleur lombaire droite hyperalgique.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Identifier les signes de gravité et de défaillance hémodynamique (sepsis)",
+        "Préciser les caractéristiques de la douleur lombaire et les antécédents lithiasiques",
+        "Réaliser un examen clinique complet avec palpation de l'angle costo-vertébral",
+        "Prescrire le bilan infectieux et l'imagerie en urgence",
+        "Organiser la prise en charge médico-chirurgicale urgente"
+      ],
+      "interdits": [
+        "Ne pas prescrire d'AINS devant une infection urinaire fébrile",
+        "Ne pas retarder le drainage chirurgical en cas d'obstacle sur rein infecté"
+      ],
+      "materielDisponible": [
+        "Thermomètre",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Bandelette urinaire",
+        "Abord veineux"
+      ],
+      "lieu": "Box d'accueil des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Lucas",
+        "nom": "Ribaucourt",
+        "age": 32,
+        "sexe": "M"
+      },
+      "personnalite": "Anxieux, très algique, frissonne, coopératif malgré la souffrance.",
+      "phraseOuverture": "Bonjour docteur, j'ai d'horribles douleurs dans le dos à droite et je tremble de froid avec presque 40 de fièvre...",
+      "infosVolontaires": [
+        "Fièvre élevée et douleur lombaire unilatérale aiguë",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une pyélonéphrite aiguë obstructive, urgence médico-chirurgicale absolue imposant un drainage en urgence et antibiothérapie IV.",
+      "erreursRedhibitoires": [
+        "Donner des AINS",
+        "Retarder le drainage des urines purulentes sous pression"
+      ],
+      "elementsAttendus": [
+        "Recherche de signes de choc septique",
+        "Bandelette urinaire et ECBU immédiat",
+        "Scanner abdomino-pelvien basse dose sans injection",
+        "Appel de l'urologue de garde pour levée d'obstacle"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Recherche de signes de choc septique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Bandelette urinaire et ECBU immédiat",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Scanner abdomino-pelvien basse dose sans injection",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Appel de l'urologue de garde pour levée d'obstacle",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au dos à droite et j'ai beaucoup de fièvre. Je crois que c'est encore un calcul...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Pyélonéphrite obstructive)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "NFS",
+      "CRP"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "Urée",
+      "Créatininémie"
+    ],
+    "inutiles": [
+      "Bandelette urinaire",
+      "ECBU",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient",
+    "Effectuer un examen clinique ciblé",
+    "Identifier les signes de gravité et le diagnostic de pyélonéphrite obstructive"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Fièvre élevée et douleur lombaire unilatérale aiguë"
+}

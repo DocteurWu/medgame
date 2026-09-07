@@ -1,0 +1,384 @@
+{
+  "id": "locomoteur_traumatisme_epaule_signe_epaulette_m_lefevre",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Lefèvre",
+    "prenom": "Maxime",
+    "age": 24,
+    "sexe": "M",
+    "taille": "1,80 m",
+    "poids": "78 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Impotence fonctionnelle totale et déformation de l'épaule en coup de hache externe suite à une chute",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "sport intensif avec pratique du rugby"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "occasionnelle"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Étudiant en STAPS",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale lors d’un plaquage avec bras en abduction et rotation externe",
+      "evolution": "Douleur immédiate intense avec impossibilité de mobiliser le membre supérieur",
+      "facteursDeclenchants": "Traumatisme direct en position à risque",
+      "descriptionDouleur": "Douleur aiguë, vive, irradiant vers le bras",
+      "symptomesAssocies": [
+        "Impotence fonctionnelle complète",
+        "Déformation visible de l’épaule",
+        "Anxiété liée à la douleur"
+      ],
+      "remarques": "Tableau typique de luxation gléno-humérale antérieure"
+    },
+    "verbatim": "Docteur, ne me touchez pas le bras, j'ai l'épaule qui s'est déboîtée au rugby ! C'est tout déformé et je ne peux plus bouger d'un millimètre."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/85 mmHg",
+      "pouls": "92 bpm",
+      "temperature": "37.0°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient algique, attitude antalgique avec soutien du membre supérieur",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Impossibilité de toute mobilisation active de l’épaule",
+      "sensibilite": "Hypoesthésie discrète du moignon de l’épaule",
+      "sensibiliteprofonde": "Non testable du fait de la douleur",
+      "reflexesosteotendineux": "Conservés au coude et au poignet",
+      "coordinationequilibre": "Non évaluée",
+      "signesassocies": "Signe de l’épaulette,Comblement du sillon delto-pectoral,Douleur à la palpation antérieure"
+    }
+  },
+  "availableExams": [
+    "Radiographie de l’épaule avant réduction",
+    "Radiographie de contrôle après réduction",
+    "IRM de l’épaule à distance"
+  ],
+  "examResults": {
+    "Radiographie de l’épaule avant réduction": "Luxation antérieure gléno-humérale sans fracture associée",
+    "Radiographie de contrôle après réduction": "Bonne congruence articulaire",
+    "IRM de l’épaule à distance": "Encoche de Hill-Sachs sans lésion majeure de la coiffe"
+  },
+  "possibleDiagnostics": [
+    "Luxation antérieure de l’épaule droite",
+    "Subluxation gléno-humérale antérieure",
+    "Fracture-luxation de l’épaule"
+  ],
+  "correctDiagnostic": "Luxation antérieure de l’épaule droite",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Réduction orthopédique en urgence",
+    "Immobilisation temporaire",
+    "Antalgiques",
+    "Rééducation fonctionnelle secondaire"
+  ],
+  "correctTreatments": [
+    "Réduction orthopédique en urgence",
+    "Immobilisation temporaire",
+    "Rééducation fonctionnelle secondaire"
+  ],
+  "correction": "Le patient consulte pour une douleur aiguë post-traumatique de l’épaule avec impotence fonctionnelle totale et déformation visible. L’attitude antalgique et le signe de l’épaulette sont caractéristiques. La radiographie confirme une luxation antérieure de l’épaule. Il s’agit d’une urgence traumatologique nécessitant une réduction rapide suivie d’une immobilisation et d’une rééducation secondaire.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences traumatologiques.",
+      "contexte": "Vous recevez Maxime Lefèvre, 24 ans, amené après un plaquage au rugby, se tenant le bras droit en rotation externe avec déformation visible de l'épaule.",
+      "consignesAttendues": [
+        "Reconnaître l'attitude des traumatisés du membre supérieur (bras soutenu par la main saine)",
+        "Rechercher les signes physiques pathognomoniques : signe de l'épaulette, coup de hache externe, comblement du sillon delto-pectoral",
+        "Tester impérativement la sensibilité du moignon de l'épaule (nerf axillaire) et palper le pouls radial",
+        "Prescrire des radiographies de l'épaule face et profil avant toute tentative de réduction",
+        "Réaliser la réduction orthopédique précoce sous antalgiques suivie d'une immobilisation coude au corps"
+      ],
+      "consignesInterdites": [
+        "Ne jamais tenter de réduction sans avoir vérifié l'intégrité du nerf axillaire et sans contrôle radiologique préalable",
+        "Ne pas utiliser de manœuvre violente avec appui dans le creux axillaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box d'accueil des urgences",
+      "materielDisponible": [
+        "Attelle coude au corps (Dujarrier)",
+        "Écharpe",
+        "Glace",
+        "Voie veineuse antalgique"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Signe de l'épaulette et vacuité de la glène",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Testing de la sensibilité du galbe deltoïdien (nerf circonflexe)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Radiographie face + profil de Lamy",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Manœuvre de réduction douce et immobilisation 3 semaines",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Docteur, ne me touchez pas le bras, j'ai l'épaule qui s'est déboîtée au rugby ! C'est tout déformé et je ne peux plus bouger d'un millimètre.",
+      "infosVolontaires": [
+        "Impotence fonctionnelle totale et déformation de l'épaule en coup de hache externe suite à une chute",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Jeune sportif très algique, soutient précautionneusement son bras droit avec sa main gauche."
+    },
+    "titre": "Impotence fonctionnelle totale et déformation de l'épaule en coup de hache externe suite à une chute",
+    "itemR2C": "Item 358. Traumatismes des membres.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences traumatologiques.",
+      "contexte": "Vous recevez Maxime Lefèvre, 24 ans, amené après un plaquage au rugby, se tenant le bras droit en rotation externe avec déformation visible de l'épaule.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Reconnaître l'attitude des traumatisés du membre supérieur (bras soutenu par la main saine)",
+        "Rechercher les signes physiques pathognomoniques : signe de l'épaulette, coup de hache externe, comblement du sillon delto-pectoral",
+        "Tester impérativement la sensibilité du moignon de l'épaule (nerf axillaire) et palper le pouls radial",
+        "Prescrire des radiographies de l'épaule face et profil avant toute tentative de réduction",
+        "Réaliser la réduction orthopédique précoce sous antalgiques suivie d'une immobilisation coude au corps"
+      ],
+      "interdits": [
+        "Ne jamais tenter de réduction sans avoir vérifié l'intégrité du nerf axillaire et sans contrôle radiologique préalable",
+        "Ne pas utiliser de manœuvre violente avec appui dans le creux axillaire"
+      ],
+      "materielDisponible": [
+        "Attelle coude au corps (Dujarrier)",
+        "Écharpe",
+        "Glace",
+        "Voie veineuse antalgique"
+      ],
+      "lieu": "Box d'accueil des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Maxime",
+        "nom": "Lefèvre",
+        "age": 24,
+        "sexe": "M"
+      },
+      "personnalite": "Jeune sportif très algique, soutient précautionneusement son bras droit avec sa main gauche.",
+      "phraseOuverture": "Docteur, ne me touchez pas le bras, j'ai l'épaule qui s'est déboîtée au rugby ! C'est tout déformé et je ne peux plus bouger d'un millimètre.",
+      "infosVolontaires": [
+        "Impotence fonctionnelle totale et déformation de l'épaule en coup de hache externe suite à une chute",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une luxation gléno-humérale antéro-interne, éliminer une lésion du nerf axillaire, vérifier l'absence de fracture associée à la radiographie et réduire doucement.",
+      "erreursRedhibitoires": [
+        "Réduire sans radiographie préalable éliminant une fracture du col huméral",
+        "Omettre le testing du nerf axillaire avant et après réduction"
+      ],
+      "elementsAttendus": [
+        "Signe de l'épaulette et vacuité de la glène",
+        "Testing de la sensibilité du galbe deltoïdien (nerf circonflexe)",
+        "Radiographie face + profil de Lamy",
+        "Manœuvre de réduction douce et immobilisation 3 semaines"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Signe de l'épaulette et vacuité de la glène",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Testing de la sensibilité du galbe deltoïdien (nerf circonflexe)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Radiographie face + profil de Lamy",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Manœuvre de réduction douce et immobilisation 3 semaines",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je me suis fait un plaquage au rugby il y a une heure, j'ai très mal à l'épaule droite et je n'arrive plus du tout à bouger mon bras.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Luxation antérieure de l’épaule droite)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Radiographie de l’épaule avant réduction",
+      "Radiographie de contrôle après réduction"
+    ],
+    "utiles": [
+      "IRM de l’épaule à distance"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient",
+    "Effectuer un examen clinique de l'épaule et du membre supérieur droit",
+    "Identifier les signes cliniques évocateurs de luxation antérieure de l'épaule"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Impotence fonctionnelle totale et déformation de l'épaule en coup de hache externe suite à une chute"
+}

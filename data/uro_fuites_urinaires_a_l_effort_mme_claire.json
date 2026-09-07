@@ -1,0 +1,405 @@
+{
+  "id": "uro_fuites_urinaires_a_l_effort_mme_claire",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Dumont",
+    "prenom": "Claire",
+    "age": 34,
+    "sexe": "F",
+    "taille": "168 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fuites urinaires lors de la toux et du sport chez une jeune femme",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Course et cardio-training 3 fois/semaine"
+      },
+      "tabac": {
+        "quantite": "Non fumeuse"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Café 3/j"
+      },
+      "emploi": {
+        "profession": "Interne en chirurgie",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [
+        {
+          "intervention": "Salpingectomie droite par coelioscopie pour grossesse extra-utérine",
+          "date": "Il y a 3 mois"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Incontinence urinaire d'effort après grossesses",
+          "age": "62"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "2 mois",
+      "evolution": "Fuites urinaires à l'effort et pollakiurie croissantes",
+      "facteursDeclenchants": "Reprise du sport et du travail en chirurgie après GEU",
+      "symptomesAssocies": [
+        "Urgenturie modérée",
+        "Gêne lors des gardes prolongées"
+      ],
+      "remarques": "Pas de brûlures mictionnelles ni fièvre"
+    },
+    "verbatim": "Bonjour docteur... c'est embarrassant à mon âge, mais depuis la naissance de mon deuxième enfant, je perds de l'urine dès que je cours ou que j'éternue."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "118/72 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Patiente en bon état général",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple et indolore"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenUrologique": {
+      "testToux": "Fuite urinaire modérée observée",
+      "tonusPelvien": "Diminution du tonus du plancher pelvien",
+      "prolapsus": "Aucun"
+    }
+  },
+  "availableExams": [
+    "ECBU",
+    "Bandelette urinaire",
+    "Échographie abdomino-pelvienne",
+    "Bilan urodynamique",
+    "Pad-test 1h",
+    "Calendrier mictionnel (avec volumes)"
+  ],
+  "examResults": {
+    "ECBU": "Normal",
+    "Bandelette urinaire": "Négative",
+    "Échographie abdomino-pelvienne": "Appareil urinaire normal",
+    "Bilan urodynamique": "Pression urétrale diminuée + hyperactivité détrusorienne légère",
+    "Pad-test 1h": "Perte de 12 g (IUE légère à modérée)",
+    "Calendrier mictionnel (avec volumes)": "11 mictions/j dont 2 impérieuses ; volumes 120-190 mL ; diurèse totale 1.6 L/24h"
+  },
+  "possibleDiagnostics": [
+    "Incontinence urinaire d'effort (IUE) et Hyperactivité vésicale (HAV)",
+    "Incontinence urinaire d'effort (IUE)",
+    "Hyperactivité vésicale (HAV)",
+    "Infection urinaire",
+    "Trouble anxieux avec pollakiurie fonctionnelle"
+  ],
+  "correctDiagnostic": "Incontinence urinaire d'effort (IUE) et Hyperactivité vésicale (HAV)",
+  "feedback": {
+    "Incontinence urinaire d'effort (IUE) + Hyperactivité vésicale (HAV)": "Correct ! Les fuites à l'effort associées à la pollakiurie orientent vers IUE + HAV.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééducation périnéale",
+    "Mesures comportementales",
+    "Traitement anticholinergique",
+    "Bêta-3 agoniste",
+    "Bandelette sous-urétrale"
+  ],
+  "correctTreatments": [
+    "Rééducation périnéale",
+    "Mesures comportementales",
+    "Traitement anticholinergique"
+  ],
+  "correction": "# Troubles urinaires fonctionnels : IUE + HAV\n\nLa patiente présente des fuites urinaires typiquement déclenchées par l'effort (rire, sport, port de charges) associées à une pollakiurie avec urgenturie modérée, sans infection. Le bilan urodynamique confirme une diminution de la pression urétrale et une hyperactivité détrusorienne légère. Le pad-test montre une perte faible à modérée et le calendrier mictionnel confirme une pollakiurie diurne sans polyurie.\n\n## Bonnes pratiques\n\n- Dépister une IUE chez toute femme jeune sportive avec fuites à l'effort\n- Rechercher un HAV associé en cas de pollakiurie\n- Réaliser un calendrier mictionnel et un pad-test pour quantifier l'IUE\n- Proposer en première intention une rééducation périnéale\n- Limiter caféine et organiser un calendrier mictionnel\n\n## Erreurs à éviter\n\n- Traiter à tort comme une infection (ECBU normal)\n- Proposer trop tôt une chirurgie chez une femme jeune nullipare\n- Négliger l'évaluation du tonus périnéal",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en gynécologie ou urologie.",
+      "contexte": "Vous recevez Mme Claire Dumont, 34 ans, mère de deux enfants, gênée au quotidien par des fuites involontaires lors de la course à pied et des éternuements.",
+      "consignesAttendues": [
+        "Préciser le type d'incontinence (incontinence d'effort versus impériosités/urgence)",
+        "Rechercher les facteurs favorisants obstétricaux (accouchements par voie basse, gros bébé)",
+        "Faire tenir un calendrier mictionnel sur 3 jours",
+        "Éliminer une infection urinaire par une bandelette urinaire",
+        "Prescrire en première intention la rééducation périnéo-sphinctérienne par kinésithérapie ou sage-femme"
+      ],
+      "consignesInterdites": [
+        "Ne pas proposer de chirurgie en première intention chez la femme jeune sans rééducation",
+        "Ne pas prescrire d'anticholinergiques pour une incontinence d'effort pure"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Bandelette urinaire",
+        "Spéculum",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Calendrier mictionnel",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Recherche de prolapsus génital associé",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Bandelette urinaire négative",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prescription de rééducation périnéale",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la gêne exprimée",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... c'est embarrassant à mon âge, mais depuis la naissance de mon deuxième enfant, je perds de l'urine dès que je cours ou que j'éternue.",
+      "infosVolontaires": [
+        "Fuites urinaires lors de la toux et du sport chez une jeune femme",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Active, sportive, très complexée par ce problème qu'elle n'osait pas aborder."
+    },
+    "titre": "Fuites urinaires lors de la toux et du sport chez une jeune femme",
+    "itemR2C": "Item 123. Incontinence urinaire de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en gynécologie ou urologie.",
+      "contexte": "Vous recevez Mme Claire Dumont, 34 ans, mère de deux enfants, gênée au quotidien par des fuites involontaires lors de la course à pied et des éternuements.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser le type d'incontinence (incontinence d'effort versus impériosités/urgence)",
+        "Rechercher les facteurs favorisants obstétricaux (accouchements par voie basse, gros bébé)",
+        "Faire tenir un calendrier mictionnel sur 3 jours",
+        "Éliminer une infection urinaire par une bandelette urinaire",
+        "Prescrire en première intention la rééducation périnéo-sphinctérienne par kinésithérapie ou sage-femme"
+      ],
+      "interdits": [
+        "Ne pas proposer de chirurgie en première intention chez la femme jeune sans rééducation",
+        "Ne pas prescrire d'anticholinergiques pour une incontinence d'effort pure"
+      ],
+      "materielDisponible": [
+        "Bandelette urinaire",
+        "Spéculum",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Claire",
+        "nom": "Dumont",
+        "age": 34,
+        "sexe": "F"
+      },
+      "personnalite": "Active, sportive, très complexée par ce problème qu'elle n'osait pas aborder.",
+      "phraseOuverture": "Bonjour docteur... c'est embarrassant à mon âge, mais depuis la naissance de mon deuxième enfant, je perds de l'urine dès que je cours ou que j'éternue.",
+      "infosVolontaires": [
+        "Fuites urinaires lors de la toux et du sport chez une jeune femme",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une incontinence urinaire d'effort pure du post-partum, éliminer une infection urinaire et prescrire la rééducation périnéale en première ligne.",
+      "erreursRedhibitoires": [
+        "Proposer une chirurgie d'emblée sans rééducation",
+        "Prescrire des médicaments inefficaces dans l'effort"
+      ],
+      "elementsAttendus": [
+        "Calendrier mictionnel",
+        "Recherche de prolapsus génital associé",
+        "Bandelette urinaire négative",
+        "Prescription de rééducation périnéale"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Calendrier mictionnel",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Recherche de prolapsus génital associé",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Bandelette urinaire négative",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prescription de rééducation périnéale",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des fuites urinaires depuis quelques semaines, surtout quand je fais du sport ou quand je tousse. Ça commence à me gêner beaucoup, surtout au travail.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Incontinence urinaire d'effort (IUE),Hyperactivité vésicale (HAV))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECBU",
+      "Bandelette urinaire"
+    ],
+    "utiles": [
+      "Échographie abdomino-pelvienne",
+      "Bilan urodynamique",
+      "Pad-test 1h"
+    ],
+    "inutiles": [
+      "Calendrier mictionnel (avec volumes)"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les troubles mictionnels",
+    "Effectuer un examen clinique ciblé incluant un examen urogynécologique",
+    "Proposer un bilan diagnostique pertinent (BU, ECBU, calendrier mictionnel, bilan urodynamique)"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Fuites urinaires lors de la toux et du sport chez une jeune femme"
+}

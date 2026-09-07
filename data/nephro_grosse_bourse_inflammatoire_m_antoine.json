@@ -1,0 +1,422 @@
+{
+  "id": "nephro_grosse_bourse_inflammatoire_m_antoine",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Roussel",
+    "prenom": "Antoine",
+    "age": 31,
+    "sexe": "M",
+    "taille": "183 cm",
+    "poids": "76 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur scrotale progressive avec fièvre et brûlures urinaires",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Pratique du football en club"
+      },
+      "tabac": {
+        "quantite": "5 cigarettes/j"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Agent de sécurité",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Infections urinaires ponctuelles",
+          "traitement": "Antibiotiques selon épisodes"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Aucune",
+          "date": "Jamais"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Hypertension",
+          "age": "52"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "48 heures",
+      "evolution": "Douleur progressive et croissante",
+      "facteursDeclenchants": "Rapport sexuel récent non protégé",
+      "symptomesAssocies": [
+        "Fièvre modérée",
+        "Brûlures mictionnelles"
+      ],
+      "remarques": "Gêne à la marche"
+    },
+    "verbatim": "Bonjour docteur, ma bourse droite a doublé de volume depuis deux jours, c'est tout rouge, chaud, et ça me brûle quand je fais pipi."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "118/72 mmHg",
+      "pouls": "92 bpm",
+      "temperature": "38.2°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Patient algique mais non agité",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sensible en fosse iliaque droite"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Créatininémie",
+    "Urée",
+    "Ionogramme sanguin",
+    "CRP",
+    "Bandelette urinaire",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Echographie appareil urinaire",
+    "Échographie scrotale Doppler",
+    "Recherche Chlamydia/Gonocoque"
+  ],
+  "examResults": {
+    "Créatininémie": "RAS",
+    "Urée": "RAS",
+    "Ionogramme sanguin": "Normal",
+    "CRP": "Élevée (45 mg/L)",
+    "Bandelette urinaire": "Leucocytes +++, nitrites +",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Non réalisée",
+    "Scanner abdomino-pelvien": "Non indiqué",
+    "Echographie appareil urinaire": "Épididyme droit augmenté de volume, hypervascularisé, réaction hydrocèle modérée",
+    "Échographie scrotale Doppler": "Non réalisé",
+    "Recherche Chlamydia/Gonocoque": "Positif"
+  },
+  "possibleDiagnostics": [
+    "Orchi-épididymite",
+    "Torsion du cordon spermatique",
+    "Colique néphrétique",
+    "Hernie inguinale étranglée"
+  ],
+  "correctDiagnostic": "Orchi-épididymite",
+  "feedback": {
+    "Orchi-épididymite": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antibiothérapie",
+    "Antalgiques",
+    "Glace locale",
+    "Repos et port de suspensoir",
+    "Anti-inflammatoires"
+  ],
+  "correctTreatments": [
+    "Antibiothérapie",
+    "Antalgiques",
+    "Repos et port de suspensoir"
+  ],
+  "correction": "# Orchi-épididymite\n\nLe patient présente une douleur scrotale d'installation progressive, avec fièvre, brûlures urinaires et signes biologiques d'infection. L'échographie scrotale retrouve un épididyme hypervascularisé, typique d'une épididymite.\n\n## Bonnes pratiques\n\n- Faire un Doppler en cas de doute pour éliminer une torsion\n- Rechercher systématiquement une IST chez un homme jeune\n- Mettre en place une antibiothérapie adaptée (C3G + doxycycline si IST suspectée)\n- Repos, glaçage et suspensoir\n\n## Erreurs à éviter\n\n- Confondre avec une torsion (douleur plus brutale)\n- Arrêter l'antibiothérapie trop tôt\n- Négliger l'orientation vers un dépistage IST",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine d'urgence.",
+      "contexte": "Vous recevez M. Antoine Roussel, 31 ans, présentant depuis 48h une tuméfaction scrotale droite douloureuse progressive avec fièvre à 38.6°C.",
+      "consignesAttendues": [
+        "Distinguer la douleur progressive avec fièvre d'une torsion aiguë du cordon spermatique",
+        "Rechercher le signe de Prehn (soulagement lors du soulèvement de la bourse)",
+        "Explorer les facteurs de risque d'IST (chlamydia, gonocoque) et faire l'interrogatoire sexuel",
+        "Prescrire l'ECBU, le prélèvement urétral / PCR sur premier jet d'urine et l'échographie scrotale",
+        "Prescrire l'antibiothérapie probabiliste adaptée et le traitement de la partenaire"
+      ],
+      "consignesInterdites": [
+        "Ne pas éliminer formellement une torsion sans certitude",
+        "Ne pas omettre le traitement du ou des partenaires"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box des urgences",
+      "materielDisponible": [
+        "Bandelette urinaire",
+        "Thermomètre",
+        "Stéthoscope",
+        "Gants"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Signe de Prehn positif et conservation du réflexe crémastérien",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Bandelette urinaire et PCR urinaire premier jet",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Antibiothérapie probabiliste active sur les germes d'IST",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Port de suspensoir et éviction des rapports non protégés",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et la gêne du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, ma bourse droite a doublé de volume depuis deux jours, c'est tout rouge, chaud, et ça me brûle quand je fais pipi.",
+      "infosVolontaires": [
+        "Douleur scrotale progressive avec fièvre et brûlures urinaires",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Inconfortable, marche précautionneusement, gêné d'aborder sa vie intime."
+    },
+    "titre": "Douleur scrotale progressive avec fièvre et brûlures urinaires",
+    "itemR2C": "Item 161. Infections urinaires de l'adulte. Item 349. Pathologies scrotales.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine d'urgence.",
+      "contexte": "Vous recevez M. Antoine Roussel, 31 ans, présentant depuis 48h une tuméfaction scrotale droite douloureuse progressive avec fièvre à 38.6°C.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Distinguer la douleur progressive avec fièvre d'une torsion aiguë du cordon spermatique",
+        "Rechercher le signe de Prehn (soulagement lors du soulèvement de la bourse)",
+        "Explorer les facteurs de risque d'IST (chlamydia, gonocoque) et faire l'interrogatoire sexuel",
+        "Prescrire l'ECBU, le prélèvement urétral / PCR sur premier jet d'urine et l'échographie scrotale",
+        "Prescrire l'antibiothérapie probabiliste adaptée et le traitement de la partenaire"
+      ],
+      "interdits": [
+        "Ne pas éliminer formellement une torsion sans certitude",
+        "Ne pas omettre le traitement du ou des partenaires"
+      ],
+      "materielDisponible": [
+        "Bandelette urinaire",
+        "Thermomètre",
+        "Stéthoscope",
+        "Gants"
+      ],
+      "lieu": "Box des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Antoine",
+        "nom": "Roussel",
+        "age": 31,
+        "sexe": "M"
+      },
+      "personnalite": "Inconfortable, marche précautionneusement, gêné d'aborder sa vie intime.",
+      "phraseOuverture": "Bonjour docteur, ma bourse droite a doublé de volume depuis deux jours, c'est tout rouge, chaud, et ça me brûle quand je fais pipi.",
+      "infosVolontaires": [
+        "Douleur scrotale progressive avec fièvre et brûlures urinaires",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une orchi-épididymite aiguë chez un adulte jeune, éliminer la torsion, prescrire une antibiothérapie ciblée sur les IST et traiter les partenaires.",
+      "erreursRedhibitoires": [
+        "Omettre le prélèvement PCR premier jet pour Chlamydia/Gonocoque",
+        "Omettre le repos avec suspensoir et glaçage"
+      ],
+      "elementsAttendus": [
+        "Signe de Prehn positif et conservation du réflexe crémastérien",
+        "Bandelette urinaire et PCR urinaire premier jet",
+        "Antibiothérapie probabiliste active sur les germes d'IST",
+        "Port de suspensoir et éviction des rapports non protégés"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Signe de Prehn positif et conservation du réflexe crémastérien",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Bandelette urinaire et PCR urinaire premier jet",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Antibiothérapie probabiliste active sur les germes d'IST",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Port de suspensoir et éviction des rapports non protégés",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal à la bourse droite depuis deux jours, ça ne passe pas et j'ai de la fièvre.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Orchi-épididymite)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Créatininémie",
+      "Urée"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "CRP",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Protéinurie des 24h",
+      "Albuminurie",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": [
+      "Scanner abdomino-pelvien"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la douleur scrotale et les symptômes urinaires",
+    "Réaliser un examen clinique ciblé incluant l'examen des bourses et de la région inguino-scrotale",
+    "Évoquer les diagnostics différentiels (torsion du cordon spermatique, colique néphrétique, hernie inguinale étranglée)"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Douleur scrotale progressive avec fièvre et brûlures urinaires"
+}

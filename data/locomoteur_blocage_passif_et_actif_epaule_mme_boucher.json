@@ -1,0 +1,381 @@
+{
+  "id": "locomoteur_blocage_passif_et_actif_epaule_mme_boucher",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Boucher",
+    "prenom": "Sylvie",
+    "age": 54,
+    "sexe": "F",
+    "taille": "1,62 m",
+    "poids": "68 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Perte majeure et progressive des mobilités passive et active de l'épaule après une phase douloureuse",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "faible"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Secrétaire",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "",
+        "dose": "",
+        "frequence": ""
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation insidieuse",
+      "evolution": "Aggravation progressive de la raideur",
+      "facteursDeclenchants": "Aucun traumatisme",
+      "descriptionDouleur": "Douleur diffuse de l’épaule",
+      "symptomesAssocies": [
+        "Limitation globale des mouvements",
+        "Douleurs nocturnes"
+      ],
+      "remarques": "Raideur active et passive"
+    },
+    "verbatim": "Bonjour docteur, mon épaule a d'abord été affreusement douloureuse pendant deux mois jour et nuit. Maintenant la douleur a diminué, mais mon bras est totalement bloqué, je ne peux plus écarter le coude."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "125/75 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.5°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Patiente gênée dans les mouvements",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Limitation sévère active et passive",
+      "sensibilite": "Normale",
+      "sensibiliteprofonde": "Normale",
+      "reflexesosteotendineux": "Conservés",
+      "coordinationequilibre": "Normale",
+      "signesassocies": "Raideur globale de l’épaule"
+    }
+  },
+  "availableExams": [
+    "Radiographie de l’épaule",
+    "IRM de l'épaule"
+  ],
+  "examResults": {
+    "Radiographie de l’épaule": "Absence d’anomalie osseuse",
+    "IRM de l'épaule": "Epaississement de la capsule articulaire et du ligament coraco-huméral"
+  },
+  "possibleDiagnostics": [
+    "Capsulite rétractile",
+    "Tendinopathie de la coiffe des rotateurs"
+  ],
+  "correctDiagnostic": "Capsulite rétractile",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééducation prolongée",
+    "Antalgiques"
+  ],
+  "correctTreatments": [
+    "Rééducation prolongée"
+  ],
+  "correction": "La patiente présente une douleur diffuse de l’épaule associée à une raideur progressive, avec une limitation des mobilités actives et passives dans tous les plans. Le contexte de diabète et l’absence d’anomalie radiologique renforcent le diagnostic de capsulite rétractile. Ce tableau correspond à une atteinte capsulaire nécessitant une rééducation douce et prolongée, avec une évolution lente mais généralement favorable.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine physique / rhumatologie.",
+      "contexte": "Vous recevez Mme Sylvie Boucher, 54 ans, diabétique, qui présente depuis 4 mois un enraidissement très serré de l'épaule gauche ayant succédé à une phase très algique nocturne.",
+      "consignesAttendues": [
+        "Analyser la chronologie des symptômes et l'enraidissement articulaire en plusieurs phases",
+        "Objectiver la limitation symétrique des amplitudes actives ET passives, notamment de la rotation externe coude au corps (RE1 < 10°)",
+        "Rechercher les terrains favorisants (diabète sucré, dysthyroïdie, stress, traumatisme minime)",
+        "Rassurer sur l'évolution spontanément résolutive au bout de 12 à 24 mois",
+        "Prescrire une rééducation douce infra-douloureuse et discuter une arthro-distension si besoin"
+      ],
+      "consignesInterdites": [
+        "Ne jamais forcer en kinésithérapie sous peine d'aggraver la rétraction capsulaire",
+        "Ne pas proposer de chirurgie de la coiffe sur une épaule bloquée"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Goniomètre",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Perte quasi-totale de la rotation externe passive (RE1)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Radiographies standard strictement normales",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Rassurance sur la bénignité et la guérison lente",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Balnéothérapie et rééducation douce infra-douloureuse",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, mon épaule a d'abord été affreusement douloureuse pendant deux mois jour et nuit. Maintenant la douleur a diminué, mais mon bras est totalement bloqué, je ne peux plus écarter le coude.",
+      "infosVolontaires": [
+        "Perte majeure et progressive des mobilités passive et active de l'épaule après une phase douloureuse",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Déprimée par la durée des symptômes et le handicap pour s'habiller."
+    },
+    "titre": "Perte majeure et progressive des mobilités passive et active de l'épaule après une phase douloureuse",
+    "itemR2C": "Item 94. Douleur d'épaule.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine physique / rhumatologie.",
+      "contexte": "Vous recevez Mme Sylvie Boucher, 54 ans, diabétique, qui présente depuis 4 mois un enraidissement très serré de l'épaule gauche ayant succédé à une phase très algique nocturne.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Analyser la chronologie des symptômes et l'enraidissement articulaire en plusieurs phases",
+        "Objectiver la limitation symétrique des amplitudes actives ET passives, notamment de la rotation externe coude au corps (RE1 < 10°)",
+        "Rechercher les terrains favorisants (diabète sucré, dysthyroïdie, stress, traumatisme minime)",
+        "Rassurer sur l'évolution spontanément résolutive au bout de 12 à 24 mois",
+        "Prescrire une rééducation douce infra-douloureuse et discuter une arthro-distension si besoin"
+      ],
+      "interdits": [
+        "Ne jamais forcer en kinésithérapie sous peine d'aggraver la rétraction capsulaire",
+        "Ne pas proposer de chirurgie de la coiffe sur une épaule bloquée"
+      ],
+      "materielDisponible": [
+        "Goniomètre",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Sylvie",
+        "nom": "Boucher",
+        "age": 54,
+        "sexe": "F"
+      },
+      "personnalite": "Déprimée par la durée des symptômes et le handicap pour s'habiller.",
+      "phraseOuverture": "Bonjour docteur, mon épaule a d'abord été affreusement douloureuse pendant deux mois jour et nuit. Maintenant la douleur a diminué, mais mon bras est totalement bloqué, je ne peux plus écarter le coude.",
+      "infosVolontaires": [
+        "Perte majeure et progressive des mobilités passive et active de l'épaule après une phase douloureuse",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic clinique de capsulite rétractile sur la perte de rotation externe passive coude au corps, éliminer une omarthrose sur des radiographies normales, et prescrire une kinésithérapie douce sans douleur.",
+      "erreursRedhibitoires": [
+        "Prescrire une rééducation forcée douloureuse",
+        "Ignorer le diabète comme facteur favorisant majeur"
+      ],
+      "elementsAttendus": [
+        "Perte quasi-totale de la rotation externe passive (RE1)",
+        "Radiographies standard strictement normales",
+        "Rassurance sur la bénignité et la guérison lente",
+        "Balnéothérapie et rééducation douce infra-douloureuse"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Perte quasi-totale de la rotation externe passive (RE1)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Radiographies standard strictement normales",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Rassurance sur la bénignité et la guérison lente",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Balnéothérapie et rééducation douce infra-douloureuse",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai de plus en plus de mal à bouger mon épaule gauche, ça fait plusieurs semaines et ça ne s'arrange pas.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Capsulite rétractile)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Radiographie de l’épaule",
+      "IRM de l'épaule"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les douleurs de l'épaule",
+    "Effectuer un examen clinique de l'épaule",
+    "Proposer un diagnostic et une prise en charge adaptée"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Perte majeure et progressive des mobilités passive et active de l'épaule après une phase douloureuse"
+}

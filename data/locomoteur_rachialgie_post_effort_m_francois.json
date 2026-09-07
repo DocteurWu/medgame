@@ -1,0 +1,395 @@
+{
+  "id": "locomoteur_rachialgie_post_effort_m_francois",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "Perrin",
+    "prenom": "François",
+    "age": 37,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sport occasionnel"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Étudiant",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Paracétamol (automédication)",
+        "dose": "500mg",
+        "frequence": "Si douleurs"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Progressif, sans traumatisme",
+      "evolution": "Douleurs chroniques persistantes depuis 6 mois",
+      "facteursDeclenchants": "Aucun facteur mécanique",
+      "descriptionDouleur": "Douleur lombaire basse bilatérale, réveils nocturnes en deuxième partie de nuit",
+      "symptomesAssocies": [
+        "Raideur matinale supérieure à 30 minutes",
+        "Amélioration à l’activité physique",
+        "Fatigue"
+      ],
+      "remarques": "Pas de troubles sphinctériens, pas de fièvre"
+    },
+    "verbatim": "Bonjour docteur, je portais une armoire ce matin quand j'ai ressenti un coup de poignard entre les omoplates. Ça me bloque le dos dès que je respire fort."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/75 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.9°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Bon état général.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "palpation": "Pouls présents"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": [
+    "NFS-Plaquettes",
+    "CRP",
+    "VS",
+    "Radiographie du bassin (articulations sacro-iliaques)"
+  ],
+  "examResults": {
+    "NFS-Plaquettes": "Hb 13.8 g/dL, Leuco 7000/mm³, Plaquettes 280 000/mm³",
+    "CRP": "18 mg/L",
+    "VS": "35 mm à la 1ère heure",
+    "Radiographie du bassin (articulations sacro-iliaques)": "Flou des berges sacro-iliaques bilatérales évocateur de sacro-iliite débutante"
+  },
+  "possibleDiagnostics": [
+    "Lombalgie commune",
+    "Spondyloarthrite axiale débutante",
+    "Sciatique L5",
+    "Fracture vertébrale"
+  ],
+  "correctDiagnostic": "Spondyloarthrite axiale débutante",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "AINS en première intention",
+    "Repos strict prolongé",
+    "Antibiothérapie",
+    "Chirurgie urgente"
+  ],
+  "correctTreatments": [
+    "AINS en première intention"
+  ],
+  "correction": "# Rachialgie inflammatoire\n\n## Points Importants\n- Sujet jeune (< 40 ans)\n- Douleur chronique > 3 mois\n- Raideur matinale > 30 minutes\n- Réveil nocturne en deuxième partie de nuit\n- Amélioration à l’activité\n- Syndrome inflammatoire biologique\n- Sacro-iliite radiologique\n\nÉvoquer une spondyloarthrite devant toute lombalgie inflammatoire chez un sujet jeune.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. François Perrin, 37 ans, déménageur, se plaignant d'un point douloureux aigu entre les deux omoplates survenu en portant un meuble lourd.",
+      "consignesAttendues": [
+        "Éliminer une urgence cardiovasculaire ou pleuro-pulmonaire (dissection aortique, embolie, pneumothorax)",
+        "Palper les épineuses dorsales et les muscles paravertébraux (recherche de contracture en corde)",
+        "Vérifier l'absence de signe neurologique médullaire (ROT vifs, clonus, signe de Babinski)",
+        "Rassurer sur l'origine musculo-ligamentaire bénigne",
+        "Prescrire des antalgiques, décontracturants et séances de kinésithérapie"
+      ],
+      "consignesInterdites": [
+        "Ne pas négliger l'élimination des urgences vitales thoraciques devant une dorsalgie aiguë",
+        "Ne pas prescrire de scanner systématique"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Marteau réflexe"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Constantes vitales normales et auscultation normale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Palpation reproduisant la douleur sur le trapèze et muscles rhomboïdes",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Absence de signes de gravité neurologique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Antalgiques de palier 1 et décontracturant musculaire",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la chronicité des douleurs",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je portais une armoire ce matin quand j'ai ressenti un coup de poignard entre les omoplates. Ça me bloque le dos dès que je respire fort.",
+      "infosVolontaires": [
+        "Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Très contracturé, respire superficiellement par peur de déclencher la douleur dorsale."
+    },
+    "titre": "Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde",
+    "itemR2C": "Item 95. Rachialgies.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. François Perrin, 37 ans, déménageur, se plaignant d'un point douloureux aigu entre les deux omoplates survenu en portant un meuble lourd.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Éliminer une urgence cardiovasculaire ou pleuro-pulmonaire (dissection aortique, embolie, pneumothorax)",
+        "Palper les épineuses dorsales et les muscles paravertébraux (recherche de contracture en corde)",
+        "Vérifier l'absence de signe neurologique médullaire (ROT vifs, clonus, signe de Babinski)",
+        "Rassurer sur l'origine musculo-ligamentaire bénigne",
+        "Prescrire des antalgiques, décontracturants et séances de kinésithérapie"
+      ],
+      "interdits": [
+        "Ne pas négliger l'élimination des urgences vitales thoraciques devant une dorsalgie aiguë",
+        "Ne pas prescrire de scanner systématique"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Marteau réflexe"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "François",
+        "nom": "Perrin",
+        "age": 37,
+        "sexe": "M"
+      },
+      "personnalite": "Très contracturé, respire superficiellement par peur de déclencher la douleur dorsale.",
+      "phraseOuverture": "Bonjour docteur, je portais une armoire ce matin quand j'ai ressenti un coup de poignard entre les omoplates. Ça me bloque le dos dès que je respire fort.",
+      "infosVolontaires": [
+        "Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Distinguer une dorsalgie commune mécanique des urgences thoraciques viscérales graves, rassurer et traiter la contracture paravertébrale.",
+      "erreursRedhibitoires": [
+        "Ne pas prendre les constantes vitales",
+        "Omettre l'auscultation cardio-pulmonaire"
+      ],
+      "elementsAttendus": [
+        "Constantes vitales normales et auscultation normale",
+        "Palpation reproduisant la douleur sur le trapèze et muscles rhomboïdes",
+        "Absence de signes de gravité neurologique",
+        "Antalgiques de palier 1 et décontracturant musculaire"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Constantes vitales normales et auscultation normale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Palpation reproduisant la douleur sur le trapèze et muscles rhomboïdes",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Absence de signes de gravité neurologique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Antalgiques de palier 1 et décontracturant musculaire",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal au bas du dos depuis 6 mois et ça ne passe pas malgré le paracétamol. Mon médecin m'a envoyé ici pour qu'on cherche ce que j'ai.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Spondyloarthrite axiale débutante)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "NFS-Plaquettes",
+      "CRP"
+    ],
+    "utiles": [
+      "VS",
+      "Radiographie du bassin (articulations sacro-iliaques)"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une rachialgie inflammatoire",
+    "Rechercher les critères d'imputabilité inflammatoire (réveils nocturnes, raideur matinale, amélioration à l'effort)",
+    "Rechercher les antécédents familiaux de spondyloarthrite et les symptômes associés (uvéite, psoriasis, MICI, enthésites)"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde"
+}

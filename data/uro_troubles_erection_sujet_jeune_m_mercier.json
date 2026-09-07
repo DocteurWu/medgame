@@ -1,0 +1,431 @@
+{
+  "id": "uro_troubles_erection_sujet_jeune_m_mercier",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Mercier",
+    "prenom": "Alexandre",
+    "age": 33,
+    "sexe": "M",
+    "taille": "183 cm",
+    "poids": "86 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Difficultés érectiles récentes chez un militaire de retour de mission",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Entraînement militaire régulier"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "toujours"
+      },
+      "alcool": {
+        "quantite": "2-3 verres/semaine"
+      },
+      "alimentation": {
+        "regime": "Proteinée",
+        "particularites": "Repas irréguliers lors des missions"
+      },
+      "emploi": {
+        "profession": "Officier militaire – opérations extérieures",
+        "stress": "Très élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Hypertension artérielle débutante",
+          "traitement": "Amlodipine 5 mg/j"
+        },
+        {
+          "type": "Stress post-traumatique",
+          "traitement": "Suivi psychologique"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Laparotomie pour plaie abdominale en mission",
+          "date": "Il y a 5 ans"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Hypertension et cardiopathie ischémique",
+          "age": "72"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Amlodipine",
+        "dose": "5 mg",
+        "fréquence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Retour de mission, fatigue chronique",
+      "symptomesAssocies": [
+        "Baisse de libido",
+        "Sommeil perturbé",
+        "Misfires lors des rapports",
+        "Érections matinales moins fréquentes"
+      ],
+      "remarques": "Pas de douleurs, pas d'écoulement urétral"
+    },
+    "verbatim": "Bonjour docteur... c'est très difficile pour moi de venir. Depuis mon retour de mission il y a 4 mois, je n'arrive plus à avoir de rapports avec ma femme."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "138/84 mmHg",
+      "pouls": "74 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Fatigue accumulée, hypervigilance",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, RAS"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenUrologique": {
+      "testSensibilite": "Sensibilité périnéale normale",
+      "examenPenien": "Normal",
+      "testTrophicite": "Bonne trophicité"
+    }
+  },
+  "availableExams": [
+    "Bilan hormonal",
+    "Testostérone totale",
+    "Glycémie à jeun",
+    "HbA1c",
+    "Profil lipidique",
+    "Doppler pénien",
+    "Questionnaire IIEF-5"
+  ],
+  "examResults": {
+    "Bilan hormonal": "FSH/LH normaux",
+    "Testostérone totale": "3.4 ng/mL (bas-normale)",
+    "Glycémie à jeun": "1.12 g/L",
+    "HbA1c": "5.7%",
+    "Profil lipidique": "LDL légèrement élevé",
+    "Doppler pénien": "Flux cavernaux diminués (origine mixte vasculaire + psychogène)",
+    "Questionnaire IIEF-5": "Score 15/25 (dysfonction érectile modérée)"
+  },
+  "possibleDiagnostics": [
+    "Dysfonction érectile psychogène",
+    "Dysfonction érectile d’origine vasculaire",
+    "Hypogonadisme",
+    "Effet indésirable médicamenteux",
+    "Dysfonction érectile mixte (psychogène + vasculaire)"
+  ],
+  "correctDiagnostic": "Dysfonction érectile mixte (psychogène + vasculaire)",
+  "feedback": {
+    "Dysfonction érectile mixte (psychogène + vasculaire)": "Correct ! Facteurs vasculaires légers + stress post-traumatique + fatigue = DE mixte.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "IPPDE5 (ex : sildenafil)",
+    "Thérapie psychologique",
+    "Optimisation du traitement antihypertenseur",
+    "Hygiène de vie : sommeil, activité physique, réduction stress",
+    "Substitution en testostérone",
+    "Consultation andrologique spécialisée"
+  ],
+  "correctTreatments": [
+    "IPPDE5 (ex : sildenafil)",
+    "Thérapie psychologique",
+    "Optimisation du traitement antihypertenseur",
+    "Hygiène de vie : sommeil, activité physique, réduction stress"
+  ],
+  "correction": "# Dysfonction érectile mixte\n\nLe patient présente une DE progressive, avec facteurs psychogènes importants (stress post-traumatique, fatigue, troubles du sommeil) et début d’atteinte vasculaire (HTA légère, LDL élevé, flux doppler diminué). L’IIEF-5 confirme une DE modérée.\n\n## Bonnes pratiques\n\n- Rechercher systématiquement des facteurs cardiovasculaires\n- Évaluer la part psychogène via questionnaires et interrogatoire\n- IPPDE5 en 1re intention en cas d’absence de contre-indication\n- Prise en charge du stress et du sommeil\n\n## Erreurs à éviter\n\n- Mettre d’emblée un traitement hormonal sans hypogonadisme avéré\n- Oublier la dimension psychogène dans les DE post-traumatiques\n- Ignorer les facteurs cardio-vasculaires débutants",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale ou consultation d'andrologie.",
+      "contexte": "Vous recevez Alexandre Mercier, 33 ans, militaire, consultant avec pudeur pour des pannes sexuelles apparues au retour d'un déploiement opérationnel.",
+      "consignesAttendues": [
+        "Mener un entretien bienveillant et déculpabilisant sur les caractéristiques du trouble érectile",
+        "Distinguer une cause psychologique/réactionnelle d'une cause organique (présence d'érections matinales)",
+        "Dépister un état de stress post-traumatique (ESPT), des troubles anxio-dépressifs ou un abus de toxiques",
+        "Évaluer le risque cardiovasculaire et métabolique sous-jacent",
+        "Proposer une prise en charge combinée psychothérapeutique et symptomatique temporaire"
+      ],
+      "consignesInterdites": [
+        "Ne pas banaliser la souffrance masculine",
+        "Ne pas prescrire d'inhibiteurs de la PDE-5 en association avec des dérivés nitrés"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Ordonnancier"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Présence d'érections nocturnes et matinales conservées",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Dépistage des cauchemars et reviviscences traumatiques",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Examen clinique cardiovasculaire et urogénital normal",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Soutien psychologique spécialisé",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... c'est très difficile pour moi de venir. Depuis mon retour de mission il y a 4 mois, je n'arrive plus à avoir de rapports avec ma femme.",
+      "infosVolontaires": [
+        "Difficultés érectiles récentes chez un militaire de retour de mission",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Fermé au départ, pudique, craint pour sa virilité et son couple, hypervigilant."
+    },
+    "titre": "Difficultés érectiles récentes chez un militaire de retour de mission",
+    "itemR2C": "Item 124. Troubles de l'érection.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale ou consultation d'andrologie.",
+      "contexte": "Vous recevez Alexandre Mercier, 33 ans, militaire, consultant avec pudeur pour des pannes sexuelles apparues au retour d'un déploiement opérationnel.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Mener un entretien bienveillant et déculpabilisant sur les caractéristiques du trouble érectile",
+        "Distinguer une cause psychologique/réactionnelle d'une cause organique (présence d'érections matinales)",
+        "Dépister un état de stress post-traumatique (ESPT), des troubles anxio-dépressifs ou un abus de toxiques",
+        "Évaluer le risque cardiovasculaire et métabolique sous-jacent",
+        "Proposer une prise en charge combinée psychothérapeutique et symptomatique temporaire"
+      ],
+      "interdits": [
+        "Ne pas banaliser la souffrance masculine",
+        "Ne pas prescrire d'inhibiteurs de la PDE-5 en association avec des dérivés nitrés"
+      ],
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Ordonnancier"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Alexandre",
+        "nom": "Mercier",
+        "age": 33,
+        "sexe": "M"
+      },
+      "personnalite": "Fermé au départ, pudique, craint pour sa virilité et son couple, hypervigilant.",
+      "phraseOuverture": "Bonjour docteur... c'est très difficile pour moi de venir. Depuis mon retour de mission il y a 4 mois, je n'arrive plus à avoir de rapports avec ma femme.",
+      "infosVolontaires": [
+        "Difficultés érectiles récentes chez un militaire de retour de mission",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Reconnaître une dysfonction érectile psychogène/réactionnelle sur syndrome de stress post-traumatique, éliminer une cause organique et proposer un accompagnement adapté.",
+      "erreursRedhibitoires": [
+        "Réduire la consultation à une simple délivrance d'ordonnance sans écoute",
+        "Négliger le dépistage de l'ESPT chez le militaire"
+      ],
+      "elementsAttendus": [
+        "Présence d'érections nocturnes et matinales conservées",
+        "Dépistage des cauchemars et reviviscences traumatiques",
+        "Examen clinique cardiovasculaire et urogénital normal",
+        "Soutien psychologique spécialisé"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Présence d'érections nocturnes et matinales conservées",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Dépistage des cauchemars et reviviscences traumatiques",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Examen clinique cardiovasculaire et urogénital normal",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Soutien psychologique spécialisé",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, ça fait plusieurs mois que j'ai des problèmes... enfin, des difficultés au lit. C'est gênant, surtout que je suis jeune et en bonne santé.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Dysfonction érectile mixte (psychogène + vasculaire))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan hormonal",
+      "Testostérone totale"
+    ],
+    "utiles": [
+      "Glycémie à jeun",
+      "HbA1c",
+      "Profil lipidique"
+    ],
+    "inutiles": [
+      "Doppler pénien",
+      "Questionnaire IIEF-5"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien centré sur la dysfonction érectile avec une approche biopsychosociale",
+    "Rechercher les facteurs de risque vasculaires, psychologiques et médicamenteux",
+    "Réaliser un examen clinique ciblé (cardiovasculaire, urologique, neurologique)"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Difficultés érectiles récentes chez un militaire de retour de mission"
+}

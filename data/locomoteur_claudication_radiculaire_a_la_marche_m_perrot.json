@@ -1,0 +1,400 @@
+{
+  "id": "locomoteur_claudication_radiculaire_a_la_marche_m_perrot",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "Perrot",
+    "prenom": "Alain",
+    "age": 69,
+    "sexe": "M",
+    "taille": "170 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Engourdissement et lourdeur des deux jambes survenant après 200 mètres de marche",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche quotidienne limitée récemment"
+      },
+      "tabac": {
+        "quantite": "Ancien fumeur",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "1 verre/jour"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Arthrose lombaire",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Paracétamol",
+        "dose": "500mg",
+        "frequence": "3 fois/jour"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Progressif depuis 1 an",
+      "evolution": "Aggravation progressive",
+      "facteursDeclenchants": "Marche prolongée",
+      "descriptionDouleur": "Douleurs bilatérales des mollets irradiant vers les cuisses, obligeant à l’arrêt après 200 mètres",
+      "symptomesAssocies": [
+        "Paresthésies des pieds"
+      ],
+      "remarques": "Amélioration nette en position penchée en avant"
+    },
+    "verbatim": "Bonjour docteur, dès que je marche 200 mètres, mes deux jambes deviennent lourdes et gourdes comme du bois. Mais si je m'appuie sur mon caddie penché en avant, la douleur s'en va."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/80 mmHg",
+      "pouls": "75 bpm",
+      "temperature": "36.9°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "Pas d'œdèmes",
+      "palpation": "Pouls périphériques perçus et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": [
+    "NFS-Plaquettes",
+    "CRP",
+    "Radiographie lombaire",
+    "Écho-Doppler artériel des membres inférieurs",
+    "IRM lombaire"
+  ],
+  "examResults": {
+    "NFS-Plaquettes": "Hb 13.5 g/dL, Leuco 7200/mm³, Plaquettes 240 000/mm³",
+    "CRP": "< 5 mg/L",
+    "Radiographie lombaire": "Arthrose interapophysaire postérieure, pincement discal L3-L4 et L4-L5",
+    "Écho-Doppler artériel des membres inférieurs": "Perméabilité artérielle conservée, absence de sténose significative",
+    "IRM lombaire": "Rétrécissement du canal lombaire L3-L4 et L4-L5 avec hypertrophie des ligaments jaunes et conflit radiculaire bilatéral"
+  },
+  "possibleDiagnostics": [
+    "Claudication artérielle",
+    "Canal lombaire étroit",
+    "Sciatique aiguë"
+  ],
+  "correctDiagnostic": "Canal lombaire étroit",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééducation et antalgiques",
+    "Laminectomie de décompression",
+    "Antibiothérapie"
+  ],
+  "correctTreatments": [
+    "Laminectomie de décompression"
+  ],
+  "correction": "# Canal lombaire étroit\n\n## Points Importants\n- Claudication neurogène\n- Douleur bilatérale à la marche\n- Amélioration en flexion\n- Doppler normal éliminant cause vasculaire\n- IRM confirmatrice",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en rhumatologie / chirurgie du rachis.",
+      "contexte": "Vous recevez M. Alain Perrot, 69 ans, se plaignant d'une faiblesse et d'engourdissements bilatéraux des membres inférieurs apparaissant à l'effort de marche et soulagés en se penchant en avant.",
+      "consignesAttendues": [
+        "Différencier la claudication neurogène d'une claudication artérielle (pouls périphériques présents, soulagement par la position penchée en 'caddie de supermarché')",
+        "Préciser le périmètre de marche et le retentissement fonctionnel quotidien",
+        "Réaliser un examen vasculaire (palpation de tous les pouls des membres inférieurs) et neurologique",
+        "Prescrire l'IRM lombaire pour quantifier la sténose canalaire",
+        "Proposer la stratégie thérapeutique graduée (médicale, infiltrations épidurales, chirurgie de décompression)"
+      ],
+      "consignesInterdites": [
+        "Ne pas conclure à une AOMI sans avoir palpé les pouls périphériques",
+        "Ne pas opérer d'emblée sans échec d'un traitement médical bien conduit"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Marteau réflexe",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Signe du caddie présent",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Pouls distaux bien perçus et symétriques éliminant une AOMI",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription IRM lombaire",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Infiltration épidurale de corticoïdes sous guidage radiologique",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, dès que je marche 200 mètres, mes deux jambes deviennent lourdes et gourdes comme du bois. Mais si je m'appuie sur mon caddie penché en avant, la douleur s'en va.",
+      "infosVolontaires": [
+        "Engourdissement et lourdeur des deux jambes survenant après 200 mètres de marche",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Actif, aime promener son chien mais doit s'asseoir ou s'appuyer en avant après quelques minutes."
+    },
+    "titre": "Engourdissement et lourdeur des deux jambes survenant après 200 mètres de marche",
+    "itemR2C": "Item 95. Radiculalgie et syndrome rachidien.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en rhumatologie / chirurgie du rachis.",
+      "contexte": "Vous recevez M. Alain Perrot, 69 ans, se plaignant d'une faiblesse et d'engourdissements bilatéraux des membres inférieurs apparaissant à l'effort de marche et soulagés en se penchant en avant.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Différencier la claudication neurogène d'une claudication artérielle (pouls périphériques présents, soulagement par la position penchée en 'caddie de supermarché')",
+        "Préciser le périmètre de marche et le retentissement fonctionnel quotidien",
+        "Réaliser un examen vasculaire (palpation de tous les pouls des membres inférieurs) et neurologique",
+        "Prescrire l'IRM lombaire pour quantifier la sténose canalaire",
+        "Proposer la stratégie thérapeutique graduée (médicale, infiltrations épidurales, chirurgie de décompression)"
+      ],
+      "interdits": [
+        "Ne pas conclure à une AOMI sans avoir palpé les pouls périphériques",
+        "Ne pas opérer d'emblée sans échec d'un traitement médical bien conduit"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Marteau réflexe",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Alain",
+        "nom": "Perrot",
+        "age": 69,
+        "sexe": "M"
+      },
+      "personnalite": "Actif, aime promener son chien mais doit s'asseoir ou s'appuyer en avant après quelques minutes.",
+      "phraseOuverture": "Bonjour docteur, dès que je marche 200 mètres, mes deux jambes deviennent lourdes et gourdes comme du bois. Mais si je m'appuie sur mon caddie penché en avant, la douleur s'en va.",
+      "infosVolontaires": [
+        "Engourdissement et lourdeur des deux jambes survenant après 200 mètres de marche",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic de canal lombaire étroit (sténose canalaire lombaire) avec claudication neurogène caractéristique (signe du caddie), éliminer l'AOMI par les pouls et prescrire l'IRM lombaire.",
+      "erreursRedhibitoires": [
+        "Confondre claudication neurogène et vasculaire",
+        "Omettre la palpation des pouls fémoraux, poplités et tibiaux"
+      ],
+      "elementsAttendus": [
+        "Signe du caddie présent",
+        "Pouls distaux bien perçus et symétriques éliminant une AOMI",
+        "Prescription IRM lombaire",
+        "Infiltration épidurale de corticoïdes sous guidage radiologique"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Signe du caddie présent",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Pouls distaux bien perçus et symétriques éliminant une AOMI",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription IRM lombaire",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Infiltration épidurale de corticoïdes sous guidage radiologique",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal aux jambes quand je marche, ça fait un an que ça dure et ça empire.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Canal lombaire étroit)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "NFS-Plaquettes",
+      "CRP"
+    ],
+    "utiles": [
+      "Radiographie lombaire",
+      "Écho-Doppler artériel des membres inférieurs",
+      "IRM lombaire"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers les douleurs des membres inférieurs",
+    "Réaliser un examen clinique neurologique et vasculaire des membres inférieurs",
+    "Proposer un diagnostic différentiel argumenté"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Engourdissement et lourdeur des deux jambes survenant après 200 mètres de marche"
+}

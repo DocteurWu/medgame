@@ -1,0 +1,378 @@
+{
+  "id": "locomoteur_enraidissement_douloureux_epaule_mme_aubry",
+  "redacteur": "La team",
+  "patient": {
+    "nom": "Aubry",
+    "prenom": "Éliane",
+    "age": 71,
+    "sexe": "F",
+    "taille": "1,68 m",
+    "poids": "80 kg",
+    "groupeSanguin": "A-",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Enraidissement douloureux mécanique et craquements de l'épaule droite depuis plusieurs années",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "activité physique limitée par la douleur"
+      },
+      "tabac": {
+        "quantite": "ancien fumeur",
+        "duree": "sevré depuis 10 ans"
+      },
+      "alcool": {
+        "quantite": "faible"
+      },
+      "alimentation": {
+        "regime": "équilibré",
+        "particularites": "sans particularité"
+      },
+      "emploi": {
+        "profession": "Ancien ouvrier du bâtiment",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Évolution insidieuse depuis plusieurs années",
+      "evolution": "Aggravation progressive avec perte d’autonomie",
+      "facteursDeclenchants": "Utilisation prolongée du membre supérieur",
+      "descriptionDouleur": "Douleur mécanique profonde de l’épaule",
+      "symptomesAssocies": [
+        "Raideur matinale brève",
+        "Crépitations articulaires",
+        "Diminution progressive des amplitudes"
+      ],
+      "remarques": "Tableau évocateur d’une pathologie dégénérative articulaire"
+    },
+    "verbatim": "Bonjour docteur, mon épaule droite est complètement rouillée depuis des années. Ça craque dès que je la bouge et je ne peux plus lever le bras pour me coiffer."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/80 mmHg",
+      "pouls": "74 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient âgé avec limitation fonctionnelle de l’épaule",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Diminution globale des amplitudes actives et passives",
+      "sensibilite": "Normale",
+      "sensibiliteprofonde": "Normale",
+      "reflexesosteotendineux": "Conservés",
+      "coordinationequilibre": "Normale",
+      "signesassocies": "Crépitations à la mobilisation,Douleur en fin de course,Amyotrophie modérée de l’épaule"
+    }
+  },
+  "availableExams": [
+    "Radiographie de l’épaule",
+    "IRM de l’épaule"
+  ],
+  "examResults": {
+    "Radiographie de l’épaule": "Pincement articulaire gléno-huméral, ostéophytes",
+    "IRM de l’épaule": "Remaniements dégénératifs sans rupture massive de la coiffe"
+  },
+  "possibleDiagnostics": [
+    "Arthrose gléno-humérale droite",
+    "Omarthrose centrée",
+    "Pathologie dégénérative de l’épaule"
+  ],
+  "correctDiagnostic": "Arthrose gléno-humérale droite",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antalgiques",
+    "Anti-inflammatoires",
+    "Rééducation fonctionnelle",
+    "Infiltrations intra-articulaires"
+  ],
+  "correctTreatments": [
+    "Antalgiques",
+    "Rééducation fonctionnelle"
+  ],
+  "correction": "Ce cas est marqué par une douleur mécanique chronique de l’épaule, associée à une raideur progressive et des crépitations à la mobilisation. Le contexte d’âge avancé et les anomalies radiologiques (pincement articulaire) orientent vers une arthrose gléno-humérale. La prise en charge est symptomatique, reposant sur le traitement antalgique et la rééducation fonctionnelle",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en rhumatologie.",
+      "contexte": "Vous recevez Mme Éliane Aubry, 71 ans, consultant pour une limitation progressive douloureuse de tous les mouvements de l'épaule droite avec craquements auditifs.",
+      "consignesAttendues": [
+        "Constater la limitation globale des mobilités articulaires actives ET passives",
+        "Percevoir des craquements et crépitations lors de la mobilisation gléno-humérale",
+        "Distinguer l'omarthrose de la capsulite rétractile par la radiographie standard",
+        "Prescrire le bilan radiographique de l'épaule (face en 3 rotations et profil de Lamy)",
+        "Proposer une prise en charge médicale (antalgiques, rééducation douce, viscosupplémentation ou avis chirurgical prothétique)"
+      ],
+      "consignesInterdites": [
+        "Ne pas forcer la mobilisation passive lors des manœuvres",
+        "Ne pas prescrire d'AINS au long cours sans protection gastrique chez la femme de 71 ans"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Goniomètre",
+        "Stéthoscope",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Limitation passive de la rotation externe et de l'abduction",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Présence de bruits articulaires / craquements",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Radiographies de l'épaule montrant pincement, ostéophytes, condensation",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Kinésithérapie d'entretien des amplitudes et antalgiques adaptés",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, mon épaule droite est complètement rouillée depuis des années. Ça craque dès que je la bouge et je ne peux plus lever le bras pour me coiffer.",
+      "infosVolontaires": [
+        "Enraidissement douloureux mécanique et craquements de l'épaule droite depuis plusieurs années",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Patiente courageuse, gênée pour se coiffer et fermer son soutien-gorge."
+    },
+    "titre": "Enraidissement douloureux mécanique et craquements de l'épaule droite depuis plusieurs années",
+    "itemR2C": "Item 94. Douleur d'épaule. Item 195. Arthrose.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en rhumatologie.",
+      "contexte": "Vous recevez Mme Éliane Aubry, 71 ans, consultant pour une limitation progressive douloureuse de tous les mouvements de l'épaule droite avec craquements auditifs.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Constater la limitation globale des mobilités articulaires actives ET passives",
+        "Percevoir des craquements et crépitations lors de la mobilisation gléno-humérale",
+        "Distinguer l'omarthrose de la capsulite rétractile par la radiographie standard",
+        "Prescrire le bilan radiographique de l'épaule (face en 3 rotations et profil de Lamy)",
+        "Proposer une prise en charge médicale (antalgiques, rééducation douce, viscosupplémentation ou avis chirurgical prothétique)"
+      ],
+      "interdits": [
+        "Ne pas forcer la mobilisation passive lors des manœuvres",
+        "Ne pas prescrire d'AINS au long cours sans protection gastrique chez la femme de 71 ans"
+      ],
+      "materielDisponible": [
+        "Goniomètre",
+        "Stéthoscope",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Éliane",
+        "nom": "Aubry",
+        "age": 71,
+        "sexe": "F"
+      },
+      "personnalite": "Patiente courageuse, gênée pour se coiffer et fermer son soutien-gorge.",
+      "phraseOuverture": "Bonjour docteur, mon épaule droite est complètement rouillée depuis des années. Ça craque dès que je la bouge et je ne peux plus lever le bras pour me coiffer.",
+      "infosVolontaires": [
+        "Enraidissement douloureux mécanique et craquements de l'épaule droite depuis plusieurs années",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une omarthrose (primitive ou secondaire), confirmer par radiographies standard montrant le pincement gléno-huméral et les ostéophytes, et adapter la prise en charge médico-chirurgicale.",
+      "erreursRedhibitoires": [
+        "Ignorer la limitation passive",
+        "Négliger les radiographies standard simples au profit d'examens sophistiqués inutiles"
+      ],
+      "elementsAttendus": [
+        "Limitation passive de la rotation externe et de l'abduction",
+        "Présence de bruits articulaires / craquements",
+        "Radiographies de l'épaule montrant pincement, ostéophytes, condensation",
+        "Kinésithérapie d'entretien des amplitudes et antalgiques adaptés"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Limitation passive de la rotation externe et de l'abduction",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Présence de bruits articulaires / craquements",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Radiographies de l'épaule montrant pincement, ostéophytes, condensation",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Kinésithérapie d'entretien des amplitudes et antalgiques adaptés",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal à l'épaule droite depuis longtemps et ça empire. Je n'arrive plus à lever le bras correctement.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Arthrose gléno-humérale droite)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Radiographie de l’épaule",
+      "IRM de l’épaule"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient",
+    "Effectuer un examen clinique de l'épaule droite",
+    "Proposer un bilan complémentaire adapté"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Enraidissement douloureux mécanique et craquements de l'épaule droite depuis plusieurs années"
+}

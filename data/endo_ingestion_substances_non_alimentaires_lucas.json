@@ -1,0 +1,408 @@
+{
+  "id": "endo_ingestion_substances_non_alimentaires_lucas",
+  "patient": {
+    "nom": "Lemarchand",
+    "prenom": "Lucas",
+    "age": 8,
+    "sexe": "M",
+    "taille": "130 cm",
+    "poids": "25 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Ingestion répétée de substances non nutritives",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Activité limitée, jeux calmes"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Consomme terre et papier"
+      },
+      "emploi": {
+        "profession": "Écolier",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Trouble du spectre autistique"
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois",
+      "evolution": "Stable",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": [
+        "Douleurs abdominales occasionnelles"
+      ],
+      "remarques": "Comportement observé surtout en période de stress ou d'ennui."
+    },
+    "verbatim": "Bonjour docteur, nous venons parce que nous avons surpris Lucas en train de gratter et manger le plâtre du mur et la terre des pots de fleurs..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "80 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Enfant mince, comportement agité",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Légère douleur diffuse"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale, léger retard de développement"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Radiographie abdominale",
+    "Évaluation psychologique",
+    "Bilan nutritionnel",
+    "IRM cérébrale",
+    "Échographie cardiaque",
+    "Test de dépistage des allergènes",
+    "Dosage des hormones thyroïdiennes",
+    "Analyse urinaire",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Sérologie hépatite"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Anémie ferriprive",
+    "Radiographie abdominale": "Présence de corps étrangers non digestibles",
+    "Évaluation psychologique": "Confirme trouble neurodéveloppemental",
+    "Bilan nutritionnel": "Carence en fer",
+    "IRM cérébrale": "Normale",
+    "Échographie cardiaque": "Normale",
+    "Test de dépistage des allergènes": "Négatif",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Analyse urinaire": "Normale",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Sérologie hépatite": "Négative",
+    "Glycémie (contrôle)": "0.9 g/L"
+  },
+  "possibleDiagnostics": [
+    "PICA",
+    "Carence en fer",
+    "Trouble obsessionnel compulsif",
+    "Intoxication"
+  ],
+  "correctDiagnostic": "PICA",
+  "feedback": {
+    "PICA": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Thérapie comportementale",
+    "Supplémentation en fer",
+    "Surveillance parentale",
+    "Antidépresseurs"
+  ],
+  "correctTreatments": [
+    "Thérapie comportementale",
+    "Supplémentation en fer",
+    "Surveillance parentale"
+  ],
+  "correction": "# PICA\n\nIngestion répétée d’éléments non comestibles; souvent associé à carences et troubles neurodéveloppementaux.\n\n## Bonnes pratiques\n\n- Thérapies comportementales et aménagements environnementaux\n- Corriger les carences (fer)\n- Surveillance parentale et prévention des complications\n\n## Erreurs à éviter\n\n- Minimiser les risques digestifs/toxiques\n- Ignorer le dépistage et la correction des carences",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en pédiatrie.",
+      "contexte": "Vous recevez Lucas, 8 ans, amené par ses parents qui découvrent qu'il ingère de la craie, de la terre et des morceaux de plâtre depuis plusieurs semaines.",
+      "consignesAttendues": [
+        "Caractériser les substances ingérées et la fréquence des épisodes",
+        "Dépister une carence martiale profonde ou un saturnisme associé",
+        "Rechercher des complications digestives (occlusion, bézoard, parasitose)",
+        "Évaluer le développement neuro-développemental de l'enfant",
+        "Prescrire le bilan biologique approprié et rassurer les parents"
+      ],
+      "consignesInterdites": [
+        "Ne pas punir l'enfant sans bilan étiologique",
+        "Ne pas omettre le dosage du fer et du plomb"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box de consultation pédiatrique",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre pédiatrique",
+        "Toise",
+        "Balance"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "NFS, ferritinémie, plombémie en urgence",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Examen abdominal recherchant une masse",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Recherche de pâleur conjonctivale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Supplémentation martiale",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient et la mère terminer sans les interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension des parents",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, nous venons parce que nous avons surpris Lucas en train de gratter et manger le plâtre du mur et la terre des pots de fleurs...",
+      "infosVolontaires": [
+        "Ingestion répétée de substances non nutritives",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Enfant calme mais pâle, parents très inquiets et culpabilisés."
+    },
+    "titre": "Ingestion répétée de substances non nutritives",
+    "itemR2C": "Item 70. Troubles du comportement alimentaire. Item 274. Anémie.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en pédiatrie.",
+      "contexte": "Vous recevez Lucas, 8 ans, amené par ses parents qui découvrent qu'il ingère de la craie, de la terre et des morceaux de plâtre depuis plusieurs semaines.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser les substances ingérées et la fréquence des épisodes",
+        "Dépister une carence martiale profonde ou un saturnisme associé",
+        "Rechercher des complications digestives (occlusion, bézoard, parasitose)",
+        "Évaluer le développement neuro-développemental de l'enfant",
+        "Prescrire le bilan biologique approprié et rassurer les parents"
+      ],
+      "interdits": [
+        "Ne pas punir l'enfant sans bilan étiologique",
+        "Ne pas omettre le dosage du fer et du plomb"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre pédiatrique",
+        "Toise",
+        "Balance"
+      ],
+      "lieu": "Box de consultation pédiatrique"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Lucas",
+        "nom": "Lemarchand",
+        "age": 8,
+        "sexe": "M"
+      },
+      "personnalite": "Enfant calme mais pâle, parents très inquiets et culpabilisés.",
+      "phraseOuverture": "Bonjour docteur, nous venons parce que nous avons surpris Lucas en train de gratter et manger le plâtre du mur et la terre des pots de fleurs...",
+      "infosVolontaires": [
+        "Ingestion répétée de substances non nutritives",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier un comportement de pica révélateur d'une anémie ferriprive sévère, dépister une intoxication saturnine et prévenir le bézoard occlusif.",
+      "erreursRedhibitoires": [
+        "Omettre le dosage de la plombémie dans un habitat ancien",
+        "Négliger la recherche d'occlusion digestive"
+      ],
+      "elementsAttendus": [
+        "NFS, ferritinémie, plombémie en urgence",
+        "Examen abdominal recherchant une masse",
+        "Recherche de pâleur conjonctivale",
+        "Supplémentation martiale"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "NFS, ferritinémie, plombémie en urgence",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Examen abdominal recherchant une masse",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Recherche de pâleur conjonctivale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Supplémentation martiale",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, c'est pour Lucas, il mange des choses bizarres depuis quelques mois...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (PICA)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Radiographie abdominale"
+    ],
+    "utiles": [
+      "Évaluation psychologique",
+      "Bilan nutritionnel",
+      "IRM cérébrale"
+    ],
+    "inutiles": [
+      "Échographie cardiaque",
+      "Test de dépistage des allergènes",
+      "Dosage des hormones thyroïdiennes"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Conduire un interrogatoire adapté auprès de l'enfant et de sa mère",
+    "Rechercher les caractéristiques du comportement de pica (nature, fréquence, contexte)",
+    "Évaluer les complications potentielles (carence en fer, occlusion, intoxication)"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Ingestion répétée de substances non nutritives"
+}

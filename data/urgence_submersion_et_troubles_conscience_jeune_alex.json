@@ -1,0 +1,662 @@
+{
+  "id": "urgence_submersion_et_troubles_conscience_jeune_alex",
+  "title": "Noyade en Piscine — Inconscient qui Respire",
+  "specialty": "urgence",
+  "difficulty": 3,
+  "redacteur": "Clawd UE10",
+  "patient": {
+    "nom": "Morel",
+    "prenom": "Alex",
+    "age": 7,
+    "sexe": "M",
+    "taille": "170 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Enfant repêché inanimé au fond d'une piscine après submersion",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Nageur débutant"
+      },
+      "tabac": {
+        "quantite": "ND",
+        "duree": "ND"
+      },
+      "alcool": {
+        "quantite": "Aucune"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Vient de manger (repas copieux)"
+      },
+      "emploi": {
+        "profession": "Lycéen",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 5 minutes",
+      "evolution": "Aiguë",
+      "facteursDeclenchants": "Crampes en nageant, débutant en natation, vient de manger",
+      "descriptionDouleur": "Inconscient, pas de plainte",
+      "asymptomesAssocies": [
+        "Toux persistante",
+        "Difficulté respiratoire",
+        "Pâleur",
+        "Tremblements"
+      ],
+      "remarques": "Retiré de l'eau par un sauveteur après ~1 minute d'immersion"
+    },
+    "verbatim": "Il a coulé tout à coup, il toussait en sortant de l'eau puis s'est éteint..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/60 mmHg",
+      "pouls": "110 bpm",
+      "temperature": "35.5°C",
+      "saturationO2": "88%",
+      "frequenceRespiratoire": "24/min"
+    },
+    "aspectGeneral": "Inconscient mais respire. Pâle, cyanose des lèvres. Vêtements mouillés. Tremblements visibles (hypothermie). Toux faible intermittente. Écume rosée aux lèvres.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie",
+      "inspection": "Peau marbrée, cyanose",
+      "palpation": "Pouls rapide mais régulier"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles crépitants bilatéraux, sibilances",
+      "inspection": "Tirage intercostal",
+      "percussion": "Matité aux bases"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, légèrement distendu",
+      "auscultation": "ND"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Noyade avec inhalation d'eau — inconscient qui respire",
+    "Arrêt cardio-respiratoire post-noyade",
+    "Syndrome de détresse respiratoire aiguë",
+    "Hypothermie sévère isolée"
+  ],
+  "correctDiagnostic": "Noyade avec inhalation d'eau — inconscient qui respire",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Mettre en PLS (inconscient qui respire)",
+    "Retirer les vêtements mouillés et couvrir",
+    "Commencer le massage cardiaque (il respire !)",
+    "Lui taper dans le dos pour évacuer l'eau",
+    "Le mettre en position assise"
+  ],
+  "correctTreatments": [
+    "Mettre en PLS (inconscient qui respire)",
+    "Retirer les vêtements mouillés et couvrir"
+  ],
+  "fatalTreatments": [
+    "Lui taper dans le dos pour évacuer l'eau"
+  ],
+  "correction": "# Correction : Noyade — Inconscient qui Respire\n\n## Diagnostic\nInconscience + respiration persistante = **INCONSCIENT QUI RESPIRE**. Le patient a inhalé de l'eau (écume rosée, râles bilatéraux), mais son cœur bat encore.\n\n## Distinction cruciale AFGSU\n- **Inconscient QUI respire** → PLS\n- **Inconscient qui NE respire PAS** → ACR → MCE + DAE\n\n## Points clés\n- L'eau inhalée n'est généralement pas en quantité suffisante pour « vider les poumons »\n- Le tapage dans le dos sur un noyé qui respire est INUTILE et DANGEREUX\n- L'hypothermie est un facteur aggravant (rétrothermie)\n- Les vomissements sont fréquents → surveiller les voies aériennes\n\n## Conduite à tenir (AFGSU)\n1. Sortir la victime de l'eau (dégagement d'urgence)\n2. Évaluer conscience et respiration\n3. Si respire → **PLS** (sur le côté pour éviter l'inhalation de vomissements)\n4. Retirer vêtements mouillés, couvrir (lutte hypothermie)\n5. Alerte 15 immédiate\n6. Surveiller la respiration en continu (risque de dégradation vers ACR)\n\n## Piège classique\n**Pendre la victime la tête en bas** pour « vider l'eau » est un geste dangereux et inutile. L'eau dans les poumons est absorbée par la muqueuse pulmonaire. Ce geste retarde la prise en charge.",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Terminé."
+  },
+  "locks": [
+    {
+      "id": "lock_urg06_statut",
+      "type": "QCM",
+      "challenge": {
+        "question": "Maxime est inconscient mais respire (24/min). Est-ce un ACR ?",
+        "options": [
+          "Oui, car il est inconscient",
+          "Non, c'est un inconscient qui respire (à mettre en PLS)",
+          "Oui, car il a les lèvres bleues",
+          "Il faut commencer le massage par précaution"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "L'ACR = pas de conscience + PAS de respiration. Maxime respire encore → c'est un inconscient qui respire → PLS. Le massage cardiaque est INUTILE et DANGEREUX si le cœur bat.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_urg06_position",
+      "type": "QCM",
+      "challenge": {
+        "question": "Quelle est la bonne position pour Maxime (inconscient qui respire, noyé) ?",
+        "options": [
+          "Position assise pour faciliter la respiration",
+          "Sur le ventre pour évacuer l'eau",
+          "Tête en bas pour vider les poumons",
+          "Position latérale de sécurité (PLS)"
+        ],
+        "correct_indices": [
+          3
+        ]
+      },
+      "feedback_error": "PLS = position latérale de sécurité. Elle permet de protéger les voies aériennes (langue, vomissements) tout en maintenant la respiration. Aucune des autres positions n'est adaptée.",
+      "target_fields": [
+        "correctTreatments"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s1"
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Maxime, 15 ans, sort de la piscine sur le bord. Le maître-nageur l'a repêché après 1 minute sous l'eau. Maxime est au bord, tremblant, les yeux vitreux. Il tousse faiblement, a de l'écume rosée aux lèvres, et ne répond pas quand on l'appelle. Il respire mais de façon superficielle et rapide.",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "110",
+        "saturationO2": "88",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Vérifier la respiration : pencher l'oreille vers sa bouche, regarder le thorax",
+          "tempsExecutionSec": 10,
+          "feedback": "Vous constatez qu'il respire (24/min) mais faiblement. Il tousse par intermittence.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "Pendre Maxime la tête en bas pour évacuer l'eau des poumons",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR DANGEREUSE : ce geste ne sert à rien (l'eau est absorbée par les poumons) et retarde la prise en charge. De plus, il peut faire vomir et aspirer.",
+          "nextNode": "s_err_hang"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Maxime respire mais est inconscient. Les râles sont nets dans sa poitrine. Il frissonne (température 35.5°C). L'écume rosée aux lèvres indique un œdème pulmonaire débutant.",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "110",
+        "saturationO2": "88",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Mettre Maxime en PLS sur le côté (pas de crainte de lésion rachidienne ici)",
+          "tempsExecutionSec": 20,
+          "feedback": "PLS correctement positionnée. Sa respiration se stabilise un peu. Les voies aériennes sont protégées.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Débuter le massage cardiaque car il ne répond pas",
+          "tempsExecutionSec": 30,
+          "feedback": "ERREUR : il respire ! Le massage est inutile et peut arrêter un cœur qui bat. PLS, pas MCE.",
+          "nextNode": "s_err_mce"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "inconscient",
+        "couleurPeau": "pale",
+        "respiration": "bradypnea"
+      }
+    },
+    "s3": {
+      "id": "s3",
+      "descriptionClinique": "Maxime est en PLS. Ses vêtements sont trempés et il tremble violemment.",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "110",
+        "saturationO2": "88",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Retirer ses vêtements mouillés et le couvrir avec des couvertures sèches",
+          "tempsExecutionSec": 30,
+          "feedback": "Vêtements retirés, couvertures posées. L'hypothermie est combattue. Bon réflexe.",
+          "nextNode": "s4"
+        },
+        {
+          "label": "Le laisser avec ses vêtements pour ne pas le déshabiller",
+          "tempsExecutionSec": 10,
+          "feedback": "Les vêtements mouillés aggravent l'hypothermie. Il faut les retirer rapidement.",
+          "nextNode": "s3_cold"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
+    },
+    "s3_cold": {
+      "id": "s3_cold",
+      "descriptionClinique": "L'hypothermie s'aggrave. Maxime tremble de plus en plus et devient cyanosé.",
+      "constantesCibles": {
+        "tension": "90/55",
+        "pouls": "100",
+        "saturationO2": "82",
+        "temperature": "34",
+        "frequenceRespiratoire": "20"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Retirer les vêtements et couvrir en urgence",
+          "tempsExecutionSec": 20,
+          "feedback": "Vous rattrapez le temps perdu. Couvertures posées.",
+          "nextNode": "s4"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
+    },
+    "s4": {
+      "id": "s4",
+      "descriptionClinique": "PLS en place, couvertures. Le 15 est alerté.",
+      "constantesCibles": {
+        "tension": "100/60",
+        "pouls": "110",
+        "saturationO2": "88",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Surveiller la respiration en continu et vérifier qu'il ne s'aggrave pas",
+          "tempsExecutionSec": 60,
+          "feedback": "Surveillance active. La respiration reste présente. Le SMUR arrive.",
+          "nextNode": "s5_good"
+        },
+        {
+          "label": "Lui donner de l'eau chaude à boire",
+          "tempsExecutionSec": 15,
+          "feedback": "INTERDIT : il est inconscient ! Risque d'inhalation mortelle.",
+          "nextNode": "s_err_drink"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
+    },
+    "s5_good": {
+      "id": "s5_good",
+      "descriptionClinique": "Le SMUR oxygène Maxime et le transporte en réanimation pour surveillance d'œdème pulmonaire post-noyade. Réchauffement actif en cours. Votre PLS précoce et la lutte contre l'hypothermie ont été décisifs.",
+      "constantesCibles": {
+        "tension": "110/70",
+        "pouls": "100",
+        "saturationO2": "95",
+        "temperature": "36",
+        "frequenceRespiratoire": "18"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "pls",
+        "couleurPeau": "pale",
+        "respiration": "normal"
+      }
+    },
+    "s_err_hang": {
+      "id": "s_err_hang",
+      "descriptionClinique": "Le retournement tête en bas a provoqué des vomissements massifs. Maxime a aspiré le contenu gastrique. Arrêt respiratoire puis cardiaque.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s_err_mce": {
+      "id": "s_err_mce",
+      "descriptionClinique": "Les compressions thoraciques sur un cœur qui bat ont provoqué une arythmie. Maxime fait un arrêt cardiaque réel.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "35",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s_err_drink": {
+      "id": "s_err_drink",
+      "descriptionClinique": "L'eau chaude a été inhalée par Maxime (inconscient). Pneumopathie d'inhalation massive. Arrêt respiratoire.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "34",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin au SMUR.",
+      "contexte": "Alex, 7 ans, a été retrouvé au fond de la piscine familiale après un temps d'immersion estimé à 3 minutes, hypotherme et comateux.",
+      "consignesAttendues": [
+        "Reconnaître un stade 3 ou 4 de noyade (détresse respiratoire, troubles de la conscience, hypoxie)",
+        "Débuter par 5 insufflations de sauvetage avant le massage cardiaque si arrêt (spécificité de l'arrêt hypoxique)",
+        "Sécuriser l'axe tête-cou-tronc si plongeon ou traumatisme suspecté",
+        "Lutter activement contre l'hypothermie par réchauffement externe passif et actif",
+        "Poser l'indication de l'intubation trachéale avec ventilation en PEP"
+      ],
+      "consignesInterdites": [
+        "Ne pas tenter de vider l'eau des poumons par des compressions abdominales",
+        "Ne jamais déclarer un noyé hypotherme décédé avant réchauffement normotherme"
+      ],
+      "typeStation": "SANS_PS_PSS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Bord de piscine / SMUR",
+      "materielDisponible": [
+        "Respirateur de transport",
+        "Scope",
+        "Thermomètre œsophagien ou tympanique basse température",
+        "Couverture chauffante"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "5 insufflations premières au ballon",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Aspiration de l'écume buccale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Réchauffement progressif",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Hospitalisation obligatoire en réanimation pédiatrique",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "communication_equipe",
+        "label": "Commande clairement et calmement à l'équipe soignante (infirmier, aide-soignant)",
+        "max": 1
+      },
+      {
+        "id": "communication_samour",
+        "label": "Communique de manière structurée avec le SAMU (situation, antécédents, actions réalisées)",
+        "max": 1
+      },
+      {
+        "id": "calme_urgence",
+        "label": "Garde son calme et adopte un ton adapté malgré l'urgence de la situation",
+        "max": 1
+      },
+      {
+        "id": "information_proches",
+        "label": "S'informe auprès des proches/sauveteur sur les circonstances de la noyade",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Il a coulé tout à coup, il toussait en sortant de l'eau puis s'est éteint...",
+      "infosVolontaires": [
+        "Enfant repêché inanimé au fond d'une piscine après submersion",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Enfant inconscient, cyanosé, encombré de mousse blanchâtre trachéale."
+    },
+    "titre": "Enfant repêché inanimé au fond d'une piscine après submersion",
+    "itemR2C": "Item 334. Noyade.",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin au SMUR.",
+      "contexte": "Alex, 7 ans, a été retrouvé au fond de la piscine familiale après un temps d'immersion estimé à 3 minutes, hypotherme et comateux.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Reconnaître un stade 3 ou 4 de noyade (détresse respiratoire, troubles de la conscience, hypoxie)",
+        "Débuter par 5 insufflations de sauvetage avant le massage cardiaque si arrêt (spécificité de l'arrêt hypoxique)",
+        "Sécuriser l'axe tête-cou-tronc si plongeon ou traumatisme suspecté",
+        "Lutter activement contre l'hypothermie par réchauffement externe passif et actif",
+        "Poser l'indication de l'intubation trachéale avec ventilation en PEP"
+      ],
+      "interdits": [
+        "Ne pas tenter de vider l'eau des poumons par des compressions abdominales",
+        "Ne jamais déclarer un noyé hypotherme décédé avant réchauffement normotherme"
+      ],
+      "materielDisponible": [
+        "Respirateur de transport",
+        "Scope",
+        "Thermomètre œsophagien ou tympanique basse température",
+        "Couverture chauffante"
+      ],
+      "lieu": "Bord de piscine / SMUR"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Alex",
+        "nom": "Morel",
+        "age": 7,
+        "sexe": "M"
+      },
+      "personnalite": "Enfant inconscient, cyanosé, encombré de mousse blanchâtre trachéale.",
+      "phraseOuverture": "Il a coulé tout à coup, il toussait en sortant de l'eau puis s'est éteint...",
+      "infosVolontaires": [
+        "Enfant repêché inanimé au fond d'une piscine après submersion",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Dans l'arrêt sur noyade, l'hypoxie est première : priorité aux insufflations de sauvetage initiales et à la lutte contre l'hypothermie majeure.",
+      "erreursRedhibitoires": [
+        "Retarder la ventilation",
+        "Arrêter la réanimation chez un enfant en hypothermie profonde sans réchauffement"
+      ],
+      "elementsAttendus": [
+        "5 insufflations premières au ballon",
+        "Aspiration de l'écume buccale",
+        "Réchauffement progressif",
+        "Hospitalisation obligatoire en réanimation pédiatrique"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "5 insufflations premières au ballon",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Aspiration de l'écume buccale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Réchauffement progressif",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Hospitalisation obligatoire en réanimation pédiatrique",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens pour : Sorti de piscine inconscient après avoir coulé..",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Noyade avec inhalation d'eau — inconscient qui respire)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Maxime est inconscient mais respire (24/min). Est-ce un ACR ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Évaluer la sécurité de la scène et se protéger (gants)",
+    "Évaluer l'état de conscience du patient (score de Glasgow, réponse à la stimulation)",
+    "Mettre le patient en Position Latérale de Sécurité (PLS) car il est inconscient et respire"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)",
+  "motif": "Enfant repêché inanimé au fond d'une piscine après submersion"
+}

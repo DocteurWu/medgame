@@ -1,0 +1,754 @@
+{
+  "id": "urgence_plaie_arterielle_membre_inferieur_m_picard",
+  "title": "Choc Hémorragique par Plaie Artérielle du Membre Inférieur",
+  "specialty": "urgence",
+  "difficulty": 3,
+  "redacteur": "Clawd UE10",
+  "patient": {
+    "nom": "Picard",
+    "prenom": "David",
+    "age": 37,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "75 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Plaie profonde de la cuisse avec saignement rouge vif pulsatile",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Menuisier, activité physique régulière"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour",
+        "duree": "10 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Menuisier",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [
+        "Appendicectomie à 12 ans"
+      ],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 3 minutes",
+      "evolution": "Aiguë, brutale",
+      "facteursDeclenchants": "Tronçonneuse a glissé sur la cuisse gauche",
+      "descriptionDouleur": "Douleur vive à la cuisse",
+      "asymptomesAssocies": [
+        "Saignement abondant",
+        "Pâleur",
+        "Sueurs"
+      ],
+      "remarques": "Accident domestique en bricolage"
+    },
+    "verbatim": "Docteur, j'ai froid... j'ai tellement soif... la disqueuse m'a dérapé dans la cuisse..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "105 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "22/min"
+    },
+    "aspectGeneral": "Pâleur cutanée, sueurs, agitation. Lucas est conscient mais anxieux.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie, pas de souffle",
+      "inspection": "Plaie à la face antéro-interne de la cuisse gauche, sang rouge vif giclant en jets pulsatiles",
+      "palpation": "Pouls radial rapide mais perçu. Extrémités froides."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Pas d'anomalie",
+      "inspection": "Polypnée superficielle",
+      "percussion": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, non douloureux",
+      "auscultation": "Bruits normaux"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Plaie artérielle de la cuisse avec choc hémorragique débutant",
+    "Plaie veineuse simple",
+    "Plaie musculaire sans atteinte vasculaire"
+  ],
+  "correctDiagnostic": "Plaie artérielle de la cuisse avec choc hémorragique débutant",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Compression manuelle directe",
+    "Garrot posé 3 cm au-dessus de la plaie",
+    "Pansement compressif",
+    "Allonger, surélever les jambes, couvrir",
+    "Alerte 15"
+  ],
+  "correctTreatments": [
+    "Compression manuelle directe",
+    "Garrot posé 3 cm au-dessus de la plaie",
+    "Allonger, surélever les jambes, couvrir",
+    "Alerte 15"
+  ],
+  "fatalTreatments": [
+    "Pansement compressif seul"
+  ],
+  "correction": "# Correction : Choc Hémorragique par Plaie Artérielle\n\n## Diagnostic\nLe caractère du saignement est le signe clé : **sang rouge vif en jets pulsatiles** = artère sectionnée. Associé aux signes de début de choc (tachycardie, pâleur, sueurs), le tableau est celui d'une hémorragie artérielle menaçante.\n\n## Piège classique\nLe pansement compressif **seul** est insuffisant face à une section artérielle. Le flux est trop puissant. Il faut passer au **garrot** si la compression manuelle échoue.\n\n## Conduite à tenir (AFGSU)\n1. **Comprimer immédiatement** avec la main (gants)\n2. Si saignement incontrôlable : **poser un garrot** quelques cm au-dessus (JAMAIS sur une articulation)\n3. **Noter l'heure** de pose du garrot\n4. **Allonger**, jambes surélevées, couvrir (lutte état de choc + hypothermie)\n5. **NE JAMAIS** desserrer le garrot, ne pas donner à boire\n6. **Alerte 15** avec bilan précis",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Terminé."
+  },
+  "locks": [
+    {
+      "id": "lock_urg01_identification",
+      "type": "QCM",
+      "challenge": {
+        "question": "Le sang est rouge vif et gicle en jets pulsatiles. De quel type d'hémorragie s'agit-il ?",
+        "options": [
+          "Hémorragie capillaire",
+          "Hémorragie veineuse",
+          "Hémorragie artérielle",
+          "Hémorragie interne"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "Le sang rouge vif en jets pulsatiles est caractéristique d'une plaie artérielle. Le sang veineux est plus sombre et coule de façon continue.",
+      "target_fields": [
+        "correctDiagnostic"
+      ]
+    },
+    {
+      "id": "lock_urg01_garrot",
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Vous posez un garrot. Combien de centimètres au-dessus de la plaie doit-il être positionné ? (réponse en chiffre)",
+        "answer": "3",
+        "alternatives": [
+          "2",
+          "4",
+          "5",
+          "quelques"
+        ]
+      },
+      "feedback_error": "Le garrot doit être posé quelques centimètres au-dessus de la plaie (idéalement 3-5 cm). JAMAIS sur une articulation.",
+      "target_fields": [
+        "possibleTreatments"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "gameplayConfig": {
+    "startNode": "s1"
+  },
+  "nodes": {
+    "s1": {
+      "id": "s1",
+      "descriptionClinique": "Lucas, 32 ans, menuisier, s'est sectionné la cuisse gauche avec une tronçonneuse. Un flot de sang rouge vif gicle en jets pulsatiles. Il est pâle, couvert de sueurs, et dit : « ça saigne beaucoup, aidez-moi ! »",
+      "constantesCibles": {
+        "tension": "110/70",
+        "pouls": "105",
+        "saturationO2": "97",
+        "temperature": "36.8",
+        "frequenceRespiratoire": "22"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Comprimer immédiatement la plaie avec les mains (gants)",
+          "tempsExecutionSec": 15,
+          "feedback": "Vous mettez vos gants et plaquez vos mains sur la plaie. Le saignement ralentit mais continue par les interstices.",
+          "nextNode": "s2"
+        },
+        {
+          "label": "Chercher un garrot dans la trousse",
+          "tempsExecutionSec": 30,
+          "feedback": "Vous perdez 30 secondes précieuses. La flaque de sang s'agrandit au sol. Lucas commence à avoir des vertiges.",
+          "nextNode": "s_err_delay"
+        },
+        {
+          "label": "Poser un pansement compressif par-dessus la plaie",
+          "tempsExecutionSec": 20,
+          "feedback": "Le pansement est traversé instantanément par le flux artériel. C'est insuffisant face à une artère sectionnée.",
+          "nextNode": "s2_trap"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
+    },
+    "s2": {
+      "id": "s2",
+      "descriptionClinique": "Malgré votre compression, le sang percole toujours. Lucas pâlit davantage, son pouls devient filant à 120/min. La tension baisse : 95/60. Il vous regarde avec des yeux vitreux.",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "120",
+        "saturationO2": "95",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "26"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Poser un garrot quelques cm au-dessus de la plaie",
+          "tempsExecutionSec": 20,
+          "feedback": "Vous serrez le garrot sur le haut de la cuisse, au-dessus de la plaie. Le saignement s'arrête net.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Doubler la compression avec un 2ème pansement compressif",
+          "tempsExecutionSec": 25,
+          "feedback": "Le flux artériel traverse les deux pansements. Vous perdez un temps fatal.",
+          "nextNode": "s_err_shock"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
+    },
+    "s2_trap": {
+      "id": "s2_trap",
+      "descriptionClinique": "Le pansement est imbibé en quelques secondes. Le sang artériel sous pression traverse tout. Lucas devient confus et perd l'équilibre.",
+      "constantesCibles": {
+        "tension": "95/60",
+        "pouls": "115",
+        "saturationO2": "94",
+        "temperature": "36.5",
+        "frequenceRespiratoire": "24"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Retirer le pansement et poser un garrot",
+          "tempsExecutionSec": 20,
+          "feedback": "Dernière chance : vous retirez le pansement imbibé et posez le garrot. Le saignement cesse.",
+          "nextNode": "s3"
+        },
+        {
+          "label": "Appliquer un hémostatique par-dessus le pansement",
+          "tempsExecutionSec": 30,
+          "feedback": "Le temps passe, le sang continue. Lucas s'effondre en état de choc sévère.",
+          "nextNode": "s_err_shock"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
+    },
+    "s3": {
+      "id": "s3",
+      "descriptionClinique": "Le garrot est en place. Le saignement a totalement cessé. Lucas est livide, tremblant, assoiffé. Sa tension est à 85/55. Vous voyez qu'il voudrait boire.",
+      "constantesCibles": {
+        "tension": "85/55",
+        "pouls": "125",
+        "saturationO2": "93",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Noter l'heure de pose du garrot",
+          "tempsExecutionSec": 10,
+          "feedback": "Heure notée : 14h37. Information vitale transmise aux secours.",
+          "nextNode": "s4"
+        },
+        {
+          "label": "Desserrer le garrot pour vérifier si ça saigne encore",
+          "tempsExecutionSec": 15,
+          "feedback": "ERREUR FATALE : On ne desserre JAMAIS un garrot ! Relargage de toxines et reprise du saignement.",
+          "nextNode": "s_err_loosen"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "hemorragie",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea",
+        "sang": true
+      }
+    },
+    "s4": {
+      "id": "s4",
+      "descriptionClinique": "Garrot posé à 14h37. Lucas est allongé, prostré. Il gémit et demande de l'eau.",
+      "constantesCibles": {
+        "tension": "85/55",
+        "pouls": "125",
+        "saturationO2": "93",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Lui donner un verre d'eau (il a soif)",
+          "tempsExecutionSec": 15,
+          "feedback": "INTERDIT : risque d'inhalation gastrique lors de l'anesthésie au bloc. Vous aggravez la situation.",
+          "nextNode": "s_err_drink"
+        },
+        {
+          "label": "Allonger, surélever les jambes, couvrir avec une couverture",
+          "tempsExecutionSec": 20,
+          "feedback": "Parfait : position anti-choc, lutte contre l'hypothermie. Lucas cesse de trembler un peu.",
+          "nextNode": "s5"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
+    },
+    "s5": {
+      "id": "s5",
+      "descriptionClinique": "Lucas est en position anti-choc, couvert. Vous composez le 15.",
+      "constantesCibles": {
+        "tension": "85/55",
+        "pouls": "125",
+        "saturationO2": "93",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Donner le bilan au 15 : garrot posé, état de choc, mécanisme",
+          "tempsExecutionSec": 30,
+          "feedback": "Le régulateur envoie un SMUR pour déchoquage et prépare le bloc opératoire. Bravo.",
+          "nextNode": "s6_good"
+        },
+        {
+          "label": "Dire juste « il saigne, envoyez quelqu'un »",
+          "tempsExecutionSec": 20,
+          "feedback": "Bilan insuffisant. Le SMUR n'est pas envoyé en priorité. Délai mortel.",
+          "nextNode": "s_err_alert"
+        }
+      ],
+      "isEndState": false,
+      "success": true,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "choc",
+        "couleurPeau": "pale",
+        "respiration": "tachypnea"
+      }
+    },
+    "s6_good": {
+      "id": "s6_good",
+      "descriptionClinique": "Le SMUR arrive en 8 minutes. Lucas est déchoqué et transféré au bloc opératoire. L'heure de pose du garrot a permis aux chirurgiens d'évaluer le temps d'ischémie. Vous avez sauvé sa vie.",
+      "constantesCibles": {
+        "tension": "85/55",
+        "pouls": "125",
+        "saturationO2": "93",
+        "temperature": "36.2",
+        "frequenceRespiratoire": "28"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": true,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
+    },
+    "s_err_delay": {
+      "id": "s_err_delay",
+      "descriptionClinique": "30 secondes perdues = 500 mL de sang perdus. Lucas est en choc hémorragique irréversible. L'arrêt cardiaque survient avant l'arrivée du SAMU.",
+      "constantesCibles": {
+        "tension": "60/30",
+        "pouls": "140",
+        "saturationO2": "80",
+        "temperature": "35",
+        "frequenceRespiratoire": "30"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s_err_shock": {
+      "id": "s_err_shock",
+      "descriptionClinique": "Le retard au garrot a été fatal. Choc hémorragique irréversible, arrêt cardiaque.",
+      "constantesCibles": {
+        "tension": "50/20",
+        "pouls": "150",
+        "saturationO2": "70",
+        "temperature": "34",
+        "frequenceRespiratoire": "32"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s_err_loosen": {
+      "id": "s_err_loosen",
+      "descriptionClinique": "Le desserrage du garrot libère les métabolites toxiques accumulés dans le membre ischémie. Reprise massive du saignement et arrêt cardiaque par hyperkaliémie.",
+      "constantesCibles": {
+        "tension": "40/10",
+        "pouls": "0",
+        "saturationO2": "0",
+        "temperature": "34",
+        "frequenceRespiratoire": "0"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    },
+    "s_err_drink": {
+      "id": "s_err_drink",
+      "descriptionClinique": "Lucas vomit et aspire le contenu gastrique. L'intubation au bloc est compliquée par une pneumopathie d'inhalation.",
+      "constantesCibles": {
+        "tension": "70/40",
+        "pouls": "130",
+        "saturationO2": "85",
+        "temperature": "35.5",
+        "frequenceRespiratoire": "30"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
+    },
+    "s_err_alert": {
+      "id": "s_err_alert",
+      "descriptionClinique": "Alerte insuffisante = délai de prise en charge prolongé. L'équipe de garde n'est pas préparée. Lucas décède.",
+      "constantesCibles": {
+        "tension": "50/20",
+        "pouls": "145",
+        "saturationO2": "75",
+        "temperature": "34",
+        "frequenceRespiratoire": "35"
+      },
+      "actionsDisponibles": [],
+      "isEndState": true,
+      "success": false,
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
+    }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin au déchocage / SMUR.",
+      "contexte": "Vous recevez David Picard, 37 ans, victime d'un accident de disqueuse ayant sectionné l'artère fémorale superficielle, avec choc hémorragique compensé.",
+      "consignesAttendues": [
+        "Vérifier et maintenir l'hémostase mécanique (garrot ou pansement compressif)",
+        "Monitorer les constantes vitales et la pression artérielle pulsée",
+        "Mettre en place deux abords veineux de fort calibre et réchauffer",
+        "Déclencher le protocole de transfusion massive (CGR, PFC, plaquettes en ratio 1:1:1)",
+        "Acheminer en urgence au bloc opératoire pour hémostase et revascularisation vasculaire"
+      ],
+      "consignesInterdites": [
+        "Ne pas pratiquer un remplissage excessif qui désamorcerait le caillot (hypotension permissive visée : PAS 80-90 mmHg)",
+        "Ne pas retarder le geste chirurgical"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Salle de déchocage",
+      "materielDisponible": [
+        "Garrot tourniquet",
+        "Chauffe-solutés",
+        "Transfuseur rapide",
+        "Scope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Contrôle du garrot fémoral",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Stratégie de réanimation hémostatique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Hypotension permissive",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Avis chirurgical vasculaire immédiat",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient s'exprimer, ne l'interrompt pas de manière brutale même en contexte d'urgence",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour recueillir les informations",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension des informations données par le patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de calme et de bienveillance malgré l'urgence de la situation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Docteur, j'ai froid... j'ai tellement soif... la disqueuse m'a dérapé dans la cuisse...",
+      "infosVolontaires": [
+        "Plaie profonde de la cuisse avec saignement rouge vif pulsatile",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Pâle, soif intense, sueurs, tachycardie à 125 bpm."
+    },
+    "titre": "Plaie profonde de la cuisse avec saignement rouge vif pulsatile",
+    "itemR2C": "Item 338. Hémorragie aiguë et choc hémorragique.",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin au déchocage / SMUR.",
+      "contexte": "Vous recevez David Picard, 37 ans, victime d'un accident de disqueuse ayant sectionné l'artère fémorale superficielle, avec choc hémorragique compensé.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Vérifier et maintenir l'hémostase mécanique (garrot ou pansement compressif)",
+        "Monitorer les constantes vitales et la pression artérielle pulsée",
+        "Mettre en place deux abords veineux de fort calibre et réchauffer",
+        "Déclencher le protocole de transfusion massive (CGR, PFC, plaquettes en ratio 1:1:1)",
+        "Acheminer en urgence au bloc opératoire pour hémostase et revascularisation vasculaire"
+      ],
+      "interdits": [
+        "Ne pas pratiquer un remplissage excessif qui désamorcerait le caillot (hypotension permissive visée : PAS 80-90 mmHg)",
+        "Ne pas retarder le geste chirurgical"
+      ],
+      "materielDisponible": [
+        "Garrot tourniquet",
+        "Chauffe-solutés",
+        "Transfuseur rapide",
+        "Scope"
+      ],
+      "lieu": "Salle de déchocage"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "David",
+        "nom": "Picard",
+        "age": 37,
+        "sexe": "M"
+      },
+      "personnalite": "Pâle, soif intense, sueurs, tachycardie à 125 bpm.",
+      "phraseOuverture": "Docteur, j'ai froid... j'ai tellement soif... la disqueuse m'a dérapé dans la cuisse...",
+      "infosVolontaires": [
+        "Plaie profonde de la cuisse avec saignement rouge vif pulsatile",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Prise en charge du choc hémorragique traumatique par contrôle mécanique du saignement, hypotension permissive, réchauffement et transfusion équilibrée.",
+      "erreursRedhibitoires": [
+        "Normaliser brutalement la PA avant hémostase chirurgicale (rupture du caillot)",
+        "Négliger l'hypothermie"
+      ],
+      "elementsAttendus": [
+        "Contrôle du garrot fémoral",
+        "Stratégie de réanimation hémostatique",
+        "Hypotension permissive",
+        "Avis chirurgical vasculaire immédiat"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Contrôle du garrot fémoral",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Stratégie de réanimation hémostatique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Hypotension permissive",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Avis chirurgical vasculaire immédiat",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Aïe, aïe, aïe… Docteur, ça saigne beaucoup, j'ai peur… Ma tronçonneuse a glissé sur ma cuisse, je sais pas ce que j'ai mais ça gicle…",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.debutSymptomes"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Plaie artérielle de la cuisse avec choc hémorragique débutant)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Le sang est rouge vif et gicle en jets pulsatiles. De quel type d'hémorragie s'agit-il ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Accueillir le patient et se présenter",
+    "Réaliser un interrogatoire ciblé sur le mécanisme de l'accident et les symptômes actuels",
+    "Effectuer un examen clinique complet en priorisant l'évaluation hémodynamique"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)",
+  "motif": "Plaie profonde de la cuisse avec saignement rouge vif pulsatile"
+}

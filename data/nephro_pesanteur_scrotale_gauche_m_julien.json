@@ -1,0 +1,419 @@
+{
+  "id": "nephro_pesanteur_scrotale_gauche_m_julien",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Mercier",
+    "prenom": "Julien",
+    "age": 28,
+    "sexe": "M",
+    "taille": "181 cm",
+    "poids": "79 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Pesanteur scrotale gauche augmentant en fin de journée",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Course à pied et musculation"
+      },
+      "tabac": {
+        "quantite": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel (1-2 verres/semaine)"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Technicien en logistique",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Aucun",
+          "traitement": "Aucun"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2016"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Frère",
+          "pathologie": "Varicocèle opérée",
+          "age": "29"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs mois",
+      "evolution": "Pesanteur scrotale majorée en fin de journée",
+      "facteursDeclenchants": "Station debout prolongée, efforts physiques",
+      "symptomesAssocies": [
+        "Gêne à la marche",
+        "Disconfort à l’effort"
+      ],
+      "remarques": "Amélioration en position allongée"
+    },
+    "verbatim": "Bonjour docteur, depuis quelques mois j'ai comme une sensation de sac de vers ou de lourdeur dans la bourse à gauche, surtout le soir après mon travail."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "124/76 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Patient non fébrile, en bon état général",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sans anomalies"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Créatininémie",
+    "Urée",
+    "Ionogramme sanguin",
+    "CRP",
+    "Bandelette urinaire",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Echographie appareil urinaire",
+    "Spermogramme"
+  ],
+  "examResults": {
+    "Créatininémie": "Normale",
+    "Urée": "Normale",
+    "Ionogramme sanguin": "Normal",
+    "CRP": "Normale",
+    "Bandelette urinaire": "RAS",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Non réalisée",
+    "Scanner abdomino-pelvien": "Non indiqué",
+    "Echographie appareil urinaire": "Dilata­tion des veines du plexus pampiniforme gauche (>3 mm), reflux augmenté en Valsalva",
+    "Spermogramme": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Varicocèle",
+    "Hydrocèle",
+    "Orchi-épididymite",
+    "Hernie inguinale"
+  ],
+  "correctDiagnostic": "Varicocèle",
+  "feedback": {
+    "Varicocèle": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Contention scrotale",
+    "Antalgiques",
+    "Embolisation veineuse",
+    "Chirurgie type ligature veineuse",
+    "Repos et limitation des efforts"
+  ],
+  "correctTreatments": [
+    "Contention scrotale",
+    "Antalgiques",
+    "Embolisation veineuse"
+  ],
+  "correction": "# Varicocèle\n\nLe patient présente une douleur scrotale chronique et une sensation de pesanteur majorée en fin de journée. Le Doppler montre une dilatation veineuse du plexus pampiniforme gauche avec reflux, ce qui confirme la varicocèle grade II).\n\n## Bonnes pratiques\n\n- Évaluer l’impact sur la douleur, la fertilité et la qualité de vie\n- Proposer Doppler systématique pour la classification\n- Embolisation ou ligature veineuse si douleur persistante ou infertilité\n- Conseiller port de suspensoir, éviter efforts prolongés\n\n## Erreurs à éviter\n\n- Confondre avec une hydrocèle ou hernie inguinale\n- Sous-estimer les symptômes gênants\n- Négliger un spermogramme si désir de fertilité",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en urologie ou médecine générale.",
+      "contexte": "Vous recevez Julien Mercier, 28 ans, consultant pour une gêne testiculaire gauche d'aggravation progressive lors de la station debout prolongée.",
+      "consignesAttendues": [
+        "Préciser les circonstances de survenue et l'absence de caractère aigu brutal",
+        "Réaliser un examen scrotal comparatif debout et couché avec manœuvre de Valsalva",
+        "Vérifier le retentissement potentiel sur la fertilité masculine",
+        "Proposer l'écho-doppler scrotal de confirmation",
+        "Expliquer les options thérapeutiques (abstention vs embolisation / chirurgie)"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'antibiotiques sans signe infectieux",
+        "Ne pas méconnaître une varicocèle droite isolée"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Gants d'examen",
+        "Stéthoscope",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Palpation bilatérale debout et couché avec Valsalva",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Prescription d'un écho-doppler scrotal",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Spermogramme si projet parental",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Discussion des indications de traitement",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, depuis quelques mois j'ai comme une sensation de sac de vers ou de lourdeur dans la bourse à gauche, surtout le soir après mon travail.",
+      "infosVolontaires": [
+        "Pesanteur scrotale gauche augmentant en fin de journée",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Rassuré par l'absence de douleur aiguë mais inquiet pour sa fertilité future."
+    },
+    "titre": "Pesanteur scrotale gauche augmentant en fin de journée",
+    "itemR2C": "Item 42. Infertilité du couple. Item 349. Pathologies scrotales.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en urologie ou médecine générale.",
+      "contexte": "Vous recevez Julien Mercier, 28 ans, consultant pour une gêne testiculaire gauche d'aggravation progressive lors de la station debout prolongée.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser les circonstances de survenue et l'absence de caractère aigu brutal",
+        "Réaliser un examen scrotal comparatif debout et couché avec manœuvre de Valsalva",
+        "Vérifier le retentissement potentiel sur la fertilité masculine",
+        "Proposer l'écho-doppler scrotal de confirmation",
+        "Expliquer les options thérapeutiques (abstention vs embolisation / chirurgie)"
+      ],
+      "interdits": [
+        "Ne pas prescrire d'antibiotiques sans signe infectieux",
+        "Ne pas méconnaître une varicocèle droite isolée"
+      ],
+      "materielDisponible": [
+        "Gants d'examen",
+        "Stéthoscope",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Julien",
+        "nom": "Mercier",
+        "age": 28,
+        "sexe": "M"
+      },
+      "personnalite": "Rassuré par l'absence de douleur aiguë mais inquiet pour sa fertilité future.",
+      "phraseOuverture": "Bonjour docteur, depuis quelques mois j'ai comme une sensation de sac de vers ou de lourdeur dans la bourse à gauche, surtout le soir après mon travail.",
+      "infosVolontaires": [
+        "Pesanteur scrotale gauche augmentant en fin de journée",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une varicocèle gauche clinique (grade 3), confirmer par écho-doppler et évaluer la fertilité par spermogramme si désir de paternité.",
+      "erreursRedhibitoires": [
+        "Confondre avec une orchi-épididymite et donner des antibiotiques",
+        "Omettre la palpation abdominale"
+      ],
+      "elementsAttendus": [
+        "Palpation bilatérale debout et couché avec Valsalva",
+        "Prescription d'un écho-doppler scrotal",
+        "Spermogramme si projet parental",
+        "Discussion des indications de traitement"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Palpation bilatérale debout et couché avec Valsalva",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Prescription d'un écho-doppler scrotal",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Spermogramme si projet parental",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Discussion des indications de traitement",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai des douleurs au niveau des testicules à gauche depuis quelques mois. C'est surtout une pesanteur qui augmente dans la journée.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Varicocèle)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Créatininémie",
+      "Urée"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "CRP",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Protéinurie des 24h",
+      "Albuminurie",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": [
+      "Scanner abdomino-pelvien",
+      "Spermogramme"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la symptomatologie scrotale et les facteurs de risque",
+    "Effectuer un examen clinique ciblé de la région inguino-scrotale",
+    "Proposer un diagnostic différentiel et argumenter le diagnostic le plus probable"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Pesanteur scrotale gauche augmentant en fin de journée"
+}

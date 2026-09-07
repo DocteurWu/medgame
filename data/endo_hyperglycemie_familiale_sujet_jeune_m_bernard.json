@@ -1,0 +1,438 @@
+{
+  "id": "endo_hyperglycemie_familiale_sujet_jeune_m_bernard",
+  "patient": {
+    "nom": "Bernard",
+    "prenom": "Julien",
+    "age": 24,
+    "sexe": "M",
+    "taille": "165 cm",
+    "poids": "58 kg",
+    "groupeSanguin": "B-",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Découverte fortuite d'une hyperglycémie modérée chez un adulte jeune",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Régulière, yoga et marche"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Équilibré",
+        "particularites": "Pas de restriction"
+      },
+      "emploi": {
+        "profession": "Graphiste",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète diagnostiqué à 30 ans",
+          "age": "50"
+        },
+        {
+          "lien": "Grand-père maternel",
+          "pathologie": "Diabète diagnostiqué à 35 ans",
+          "age": "75"
+        },
+        {
+          "lien": "Arrière-grand-mère maternelle",
+          "pathologie": "Diabète diagnostiqué à 40 ans",
+          "age": "décédée"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": [
+        "Polydipsie",
+        "Polyurie",
+        "Fatigue modérée"
+      ],
+      "remarques": "Pas de perte de poids significative ni de symptômes cétoniques."
+    },
+    "verbatim": "Bonjour docteur, je viens pour ma prise de sang d'embauche. Mon taux de sucre est un peu haut à 1,35 g/L, pourtant je cours des marathons et je ne mange pas de sucre."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Poids normal, pas de signe de dénutrition ou d’obésité",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Glycémie à jeun",
+    "Hémoglobine glyquée (HbA1c)",
+    "Dosage des anticorps anti-GAD",
+    "Dosage des anticorps anti-IA2",
+    "Bilan sanguin complet",
+    "Test de tolérance au glucose",
+    "Corps cétoniques urinaires",
+    "Séquence génétique (MODY)",
+    "Bilan lipidique",
+    "IRM cérébrale",
+    "Échographie pancréatique",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Protéine C-réactive (CRP)",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Glycémie à jeun": "140 mg/dL (hyperglycémie modérée)",
+    "Hémoglobine glyquée (HbA1c)": "7.5% (contrôle glycémique altéré)",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "Dosage des anticorps anti-IA2": "Négatif",
+    "Bilan sanguin complet": "Normal",
+    "Test de tolérance au glucose": "Anormal (intolérance au glucose)",
+    "Corps cétoniques urinaires": "Négatif (pas de cétose)",
+    "Séquence génétique (MODY)": "Mutation HNF1A détectée (MODY 3)",
+    "Bilan lipidique": "Normale",
+    "IRM cérébrale": "Normale",
+    "Échographie pancréatique": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Protéine C-réactive (CRP)": "Normale",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Coloscopie": "Normale"
+  },
+  "possibleDiagnostics": [
+    "Diabète monogénique (MODY)",
+    "Diabète de type 1",
+    "Diabète de type 2",
+    "Hyperthyroïdie",
+    "Stress chronique"
+  ],
+  "correctDiagnostic": "Diabète monogénique (MODY)",
+  "feedback": {
+    "Diabète monogénique (MODY)": "Diagnostic correct ! Jeune sans surpoids, antécédents familiaux sur 3 générations, absence d’anticorps et de cétose.",
+    "Diabète de type 1": "Incorrect. Pas d’anticorps ni de cétose.",
+    "Diabète de type 2": "Incorrect. Pas de surpoids ni de résistance insulinique marquée.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Sulfonylurées",
+    "Insulinothérapie",
+    "Metformine",
+    "Antithyroïdiens",
+    "Gestion du stress",
+    "Régime hypocalorique"
+  ],
+  "correctTreatments": [
+    "Sulfonylurées"
+  ],
+  "correction": "# Diabète monogénique (MODY)\n\nDébut jeune, IMC normal, antécédents familiaux multiples, anticorps négatifs, mutation HNF1A.\n\n## Bonnes pratiques\n\n- Confirmer génétiquement (MODY)\n- Privilégier sulfonylurées chez MODY 3\n- Éducation thérapeutique et suivi glycémique\n\n## Erreurs à éviter\n\n- Classer à tort en DT1 et initier insuline d’emblée sans indication\n- Ignorer le dépistage familial",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en endocrinologie.",
+      "contexte": "Vous recevez Julien Bernard, 24 ans, sportif, sans surpoids, adressé pour une anomalie glycémique modérée découverte lors d'une visite d'embauche.",
+      "consignesAttendues": [
+        "Conduire un interrogatoire généalogique minutieux sur 3 générations (arbre généalogique)",
+        "Rechercher l'absence de syndrome cardinal franc et l'absence de surpoids",
+        "Évoquer un diabète monogénique et justifier les examens immunologiques et génétiques",
+        "Prescrire le dosage des auto-anticorps et le peptide C",
+        "Expliquer l'intérêt pronostique et thérapeutique de l'enquête génétique"
+      ],
+      "consignesInterdites": [
+        "Ne pas étiqueter automatiquement le patient sans dosage des auto-anticorps",
+        "Ne pas prescrire d'emblée une multi-insulinothérapie lourde"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation spécialisée",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Toise",
+        "Balance",
+        "Arbre généalogique papier"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Construction de l'arbre généalogique sur 3 générations",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Dosage anticorps anti-GAD/anti-IA2 et peptide C",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Consultation de génétique médicale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Information sur la sensibilité aux sulfamides",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, utilise des signes d'encouragement non verbaux",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance tout au long de la consultation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je viens pour ma prise de sang d'embauche. Mon taux de sucre est un peu haut à 1,35 g/L, pourtant je cours des marathons et je ne mange pas de sucre.",
+      "infosVolontaires": [
+        "Découverte fortuite d'une hyperglycémie modérée chez un adulte jeune",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Rassuré par sa bonne forme physique mais intrigué par les antécédents familiaux."
+    },
+    "titre": "Découverte fortuite d'une hyperglycémie modérée chez un adulte jeune",
+    "itemR2C": "Item 247. Diabète sucré de types 1 et 2.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en endocrinologie.",
+      "contexte": "Vous recevez Julien Bernard, 24 ans, sportif, sans surpoids, adressé pour une anomalie glycémique modérée découverte lors d'une visite d'embauche.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Conduire un interrogatoire généalogique minutieux sur 3 générations (arbre généalogique)",
+        "Rechercher l'absence de syndrome cardinal franc et l'absence de surpoids",
+        "Évoquer un diabète monogénique et justifier les examens immunologiques et génétiques",
+        "Prescrire le dosage des auto-anticorps et le peptide C",
+        "Expliquer l'intérêt pronostique et thérapeutique de l'enquête génétique"
+      ],
+      "interdits": [
+        "Ne pas étiqueter automatiquement le patient sans dosage des auto-anticorps",
+        "Ne pas prescrire d'emblée une multi-insulinothérapie lourde"
+      ],
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Toise",
+        "Balance",
+        "Arbre généalogique papier"
+      ],
+      "lieu": "Cabinet de consultation spécialisée"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Julien",
+        "nom": "Bernard",
+        "age": 24,
+        "sexe": "M"
+      },
+      "personnalite": "Rassuré par sa bonne forme physique mais intrigué par les antécédents familiaux.",
+      "phraseOuverture": "Bonjour docteur, je viens pour ma prise de sang d'embauche. Mon taux de sucre est un peu haut à 1,35 g/L, pourtant je cours des marathons et je ne mange pas de sucre.",
+      "infosVolontaires": [
+        "Découverte fortuite d'une hyperglycémie modérée chez un adulte jeune",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Évoquer un diabète monogénique MODY devant une anomalie glycémique chez un sujet jeune sans surpoids avec transmission autosomique dominante.",
+      "erreursRedhibitoires": [
+        "Poser à tort le diagnostic de DT1 et démarrer de l'insuline sans explorer les anticorps",
+        "Négliger la transmission autosomique dominante"
+      ],
+      "elementsAttendus": [
+        "Construction de l'arbre généalogique sur 3 générations",
+        "Dosage anticorps anti-GAD/anti-IA2 et peptide C",
+        "Consultation de génétique médicale",
+        "Information sur la sensibilité aux sulfamides"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Construction de l'arbre généalogique sur 3 générations",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Dosage anticorps anti-GAD/anti-IA2 et peptide C",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Consultation de génétique médicale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Information sur la sensibilité aux sulfamides",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai soif tout le temps depuis plusieurs mois, et je suis fatiguée. Ma mère m'a dit que ça pouvait être du diabète, comme dans ma famille.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "antecedents.familiaux",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Diabète monogénique (MODY))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie à jeun",
+      "Hémoglobine glyquée (HbA1c)"
+    ],
+    "utiles": [
+      "Dosage des anticorps anti-GAD",
+      "Dosage des anticorps anti-IA2",
+      "Bilan sanguin complet"
+    ],
+    "inutiles": [
+      "Test de tolérance au glucose",
+      "Corps cétoniques urinaires",
+      "Séquence génétique (MODY)"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une pathologie endocrinienne métabolique",
+    "Réaliser un examen clinique adapté",
+    "Proposer un bilan biologique initial pertinent"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Découverte fortuite d'une hyperglycémie modérée chez un adulte jeune"
+}

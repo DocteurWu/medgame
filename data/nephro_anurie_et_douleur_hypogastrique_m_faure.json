@@ -1,0 +1,435 @@
+{
+  "id": "nephro_anurie_et_douleur_hypogastrique_m_faure",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Faure",
+    "prenom": "Gérard",
+    "age": 72,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "82 kg",
+    "groupeSanguin": "0+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Absence d'émission d'urine depuis 24 heures et pesanteur pelvienne",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "10 PA",
+        "duree": "20 ans (arrêt il y a 10 ans)"
+      },
+      "alcool": {
+        "quantite": "1 verre de vin/jour"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "ARA2"
+        },
+        {
+          "type": "Lithiase urinaire",
+          "traitement": "Hydratation"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Hernie inguinale",
+          "date": "2010"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "IRC",
+          "age": "78"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Candesartan",
+        "dose": "8 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Ibuprofène (automédication)",
+        "dose": "400 mg",
+        "frequence": "1-2/j depuis 5 jours"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "5 jours",
+      "evolution": "Aggravation progressive",
+      "facteursDeclenchants": "Aucun",
+      "symptomesAssocies": [
+        "Nausées",
+        "Asthénie"
+      ],
+      "remarques": "Notion de coliques néphrétiques anciennes"
+    },
+    "verbatim": "Bonjour docteur... j'ai un poids énorme dans le bas du ventre, je n'arrive plus du tout à faire pipi depuis hier matin et j'ai des nausées."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "150/90 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37.2°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Fatigué",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sensibilité lombaire droite"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Créatininémie",
+    "Urée",
+    "Ionogramme sanguin",
+    "CRP",
+    "Bandelette urinaire",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Echographie appareil urinaire"
+  ],
+  "examResults": {
+    "Créatininémie": "320 µmol/L (N<100)",
+    "Urée": "15 mmol/L (élevée)",
+    "Ionogramme sanguin": "Na+ 138 mmol/L, K+ 5.2 mmol/L",
+    "CRP": "RAS",
+    "Bandelette urinaire": "Hématurie ++",
+    "Protéinurie des 24h": "Faible (0.3 g/j)",
+    "Albuminurie": "RAS",
+    "Échographie rénale et vésicale": "Dilatation pyélocalicielle droite + globe vésical",
+    "Scanner abdomino-pelvien": "Calcul obstructif de l’uretère distal droit (8 mm)",
+    "Echographie appareil urinaire": "Confirme la dilatation droite"
+  },
+  "possibleDiagnostics": [
+    "Insuffisance rénale aiguë fonctionnelle",
+    "Insuffisance rénale aiguë obstructive",
+    "Glomérulonéphrite aiguë",
+    "Néphropathie interstitielle aiguë"
+  ],
+  "correctDiagnostic": "Insuffisance rénale aiguë obstructive",
+  "feedback": {
+    "Insuffisance rénale aiguë obstructive": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Sonde vésicale",
+    "Drainage par sonde JJ",
+    "Hydratation IV",
+    "Arrêt des AINS",
+    "Corticothérapie"
+  ],
+  "correctTreatments": [
+    "Sonde vésicale",
+    "Drainage par sonde JJ",
+    "Arrêt des AINS"
+  ],
+  "correction": "# Insuffisance rénale aiguë obstructive\n\nLe patient présente une oligurie, des douleurs lombaires, une hématurie, une créatinine élevée et une dilatation pyélocalicielle en imagerie. Le scanner met en évidence un calcul obstructif de l’uretère.\n\n## Bonnes pratiques\n\n- Rechercher une cause obstructive devant toute IRA avec douleurs lombaires\n- Faire une échographie rénale en première intention\n- Lever l'obstacle rapidement : sonde vésicale si globe, drainage JJ ou néphrostomie\n- Arrêter les médicaments néphrotoxiques (AINS !)\n\n## Erreurs à éviter\n\n- Hydrater excessivement un patient avec globe vésical\n- Confondre IRA obstructive avec IRA fonctionnelle\n- Tarder la dérivation des urines",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez M. Gérard Faure, 72 ans, adressé pour anurie depuis 24 heures, agitation et découverte d'une créatinine à 450 µmol/L.",
+      "consignesAttendues": [
+        "Rechercher immédiatement un globe vésical par la palpation et percussion hypogastrique",
+        "Vérifier l'absence d'hyperkaliémie menaçante sur l'ECG immédiat",
+        "Poser l'indication urgente d'un drainage vésical par sondage urinaire ou cathéter sus-pubien",
+        "Surveiller le syndrome de levée d'obstacle (polyurie osmotique, hypotension, dyskaliémie)",
+        "Organiser l'échographie rénale et des voies urinaires"
+      ],
+      "consignesInterdites": [
+        "Ne pas poser de cathéter sus-pubien si suspicion de tumeur de vessie",
+        "Ne pas négliger la compensation volumique de la levée d'obstacle"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box des urgences",
+      "materielDisponible": [
+        "Sonde vésicale et poche collectrice",
+        "Bladder-scan",
+        "ECG",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Recherche clinique du globe vésical",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "ECG immédiat",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Sondage vésical aseptique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Surveillance horaire de la diurèse et compensation hydrique",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif et l'histoire de la maladie",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape clé",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, rassure le patient sur la prise en charge",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... j'ai un poids énorme dans le bas du ventre, je n'arrive plus du tout à faire pipi depuis hier matin et j'ai des nausées.",
+      "infosVolontaires": [
+        "Absence d'émission d'urine depuis 24 heures et pesanteur pelvienne",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Agité, douloureux, confus par l'urémie et la rétention urinaire aiguë."
+    },
+    "titre": "Absence d'émission d'urine depuis 24 heures et pesanteur pelvienne",
+    "itemR2C": "Item 258. Élévation de la créatininémie. Item 347. Rétention aiguë d'urine.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez M. Gérard Faure, 72 ans, adressé pour anurie depuis 24 heures, agitation et découverte d'une créatinine à 450 µmol/L.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Rechercher immédiatement un globe vésical par la palpation et percussion hypogastrique",
+        "Vérifier l'absence d'hyperkaliémie menaçante sur l'ECG immédiat",
+        "Poser l'indication urgente d'un drainage vésical par sondage urinaire ou cathéter sus-pubien",
+        "Surveiller le syndrome de levée d'obstacle (polyurie osmotique, hypotension, dyskaliémie)",
+        "Organiser l'échographie rénale et des voies urinaires"
+      ],
+      "interdits": [
+        "Ne pas poser de cathéter sus-pubien si suspicion de tumeur de vessie",
+        "Ne pas négliger la compensation volumique de la levée d'obstacle"
+      ],
+      "materielDisponible": [
+        "Sonde vésicale et poche collectrice",
+        "Bladder-scan",
+        "ECG",
+        "Tensiomètre"
+      ],
+      "lieu": "Box des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Gérard",
+        "nom": "Faure",
+        "age": 72,
+        "sexe": "M"
+      },
+      "personnalite": "Agité, douloureux, confus par l'urémie et la rétention urinaire aiguë.",
+      "phraseOuverture": "Bonjour docteur... j'ai un poids énorme dans le bas du ventre, je n'arrive plus du tout à faire pipi depuis hier matin et j'ai des nausées.",
+      "infosVolontaires": [
+        "Absence d'émission d'urine depuis 24 heures et pesanteur pelvienne",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une insuffisance rénale aiguë obstructive sur rétention aiguë d'urines, drainer en urgence et monitorer le syndrome de levée d'obstacle.",
+      "erreursRedhibitoires": [
+        "Hydrater massivement avant de drainer les urines",
+        "Omettre l'ECG devant une insuffisance rénale aiguë sévère"
+      ],
+      "elementsAttendus": [
+        "Recherche clinique du globe vésical",
+        "ECG immédiat",
+        "Sondage vésical aseptique",
+        "Surveillance horaire de la diurèse et compensation hydrique"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Recherche clinique du globe vésical",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "ECG immédiat",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Sondage vésical aseptique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Surveillance horaire de la diurèse et compensation hydrique",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au rein droit depuis 5 jours et je n'arrive presque plus à uriner. Ça ne va pas du tout.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance rénale aiguë obstructive)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Créatininémie",
+      "Urée"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "CRP",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Protéinurie des 24h",
+      "Albuminurie",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient orienté vers la pathologie rénale",
+    "Effectuer un examen clinique ciblé (abdomen, fosses lombaires, signes de surcharge)",
+    "Identifier les facteurs de risque et les étiologies possibles de l'insuffisance rénale aiguë"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Absence d'émission d'urine depuis 24 heures et pesanteur pelvienne"
+}

@@ -1,0 +1,427 @@
+{
+  "id": "infectio_fievre_alteration_etat_general_m_andre",
+  "patient": {
+    "nom": "André",
+    "prenom": "Julien",
+    "age": 34,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "68 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Fièvre prolongée, sueurs nocturnes et adénopathies",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée, randonnées occasionnelles"
+      },
+      "tabac": {
+        "quantite": "5 cigarettes/jour",
+        "duree": "10 ans"
+      },
+      "alcool": {
+        "quantite": "Social"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Perte d’appétit récente"
+      },
+      "emploi": {
+        "profession": "Serveur",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Épisode de fièvre prolongée il y a 3 mois"
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "2 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": [
+        "Fatigue",
+        "Perte de poids (6 kg)",
+        "Fièvre intermittente",
+        "Sueurs nocturnes",
+        "Ganglions palpables"
+      ],
+      "remarques": "Patient rapporte une grippe mal soignée récemment."
+    },
+    "verbatim": "Bonjour docteur, je suis inquiet. J'ai de la fièvre presque tous les soirs depuis un mois et demi, des sueurs, et j'ai des ganglions dans le cou qui ne partent pas."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "115/75 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37.8°C",
+      "saturationO2": "96%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Amaigri, pâleur, fatigue visible",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale, pas de masse"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenGanglionnaire": {
+      "observation": "Adénopathies cervicales et axillaires"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Sérologie VIH",
+    "Protéine C-réactive (CRP)",
+    "Hémoculture",
+    "Radiographie pulmonaire",
+    "Test de dépistage du paludisme",
+    "Bilan nutritionnel",
+    "Dosage des anticorps anti-GAD",
+    "IRM cérébrale",
+    "Échographie abdominale",
+    "Scanner thoracique",
+    "Bilan lipidique",
+    "Gaz du sang artériel",
+    "Électroencéphalogramme",
+    "Test de tolérance au glucose",
+    "Coloscopie",
+    "Dosage des hormones thyroïdiennes"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Lymphopénie, anémie légère",
+    "Sérologie VIH": "Positive (infection confirmée)",
+    "Protéine C-réactive (CRP)": "Élevée (inflammation chronique)",
+    "Hémoculture": "Négative",
+    "Radiographie pulmonaire": "Normale",
+    "Test de dépistage du paludisme": "Négatif",
+    "Bilan nutritionnel": "Déficit calorique modéré",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "IRM cérébrale": "Normale",
+    "Échographie abdominale": "Normale",
+    "Scanner thoracique": "Normale",
+    "Bilan lipidique": "Normale",
+    "Gaz du sang artériel": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Test de tolérance au glucose": "Normale",
+    "Coloscopie": "Normale",
+    "Dosage des hormones thyroïdiennes": "Normal"
+  },
+  "possibleDiagnostics": [
+    "Infection par le VIH",
+    "Tuberculose",
+    "Lymphome",
+    "Hyperthyroïdie",
+    "Infection bactérienne chronique"
+  ],
+  "correctDiagnostic": "Infection par le VIH",
+  "feedback": {
+    "Infection par le VIH": "Diagnostic correct ! Fatigue, perte de poids et adénopathies liés à une infection VIH non traitée.",
+    "Tuberculose": "Incorrect. Pas de signes pulmonaires à la radiographie.",
+    "Lymphome": "Incorrect. Pas de masse ou anomalie au scanner.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antirétroviral (TARV)",
+    "Antituberculeux",
+    "Chimiothérapie",
+    "Antibiotiques",
+    "Supplémentation vitaminique",
+    "Antithyroïdiens"
+  ],
+  "correctTreatments": [
+    "Traitement antirétroviral (TARV)"
+  ],
+  "correction": "# Infection par le VIH\n\nSymptômes généraux, perte de poids, adénopathies, sérologie positive.\n\n## Bonnes pratiques\n\n- Confirmer par tests de confirmation, bilan initial (CD4, charge virale)\n- Initier un TARV adapté et accompagner l’adhérence\n- Vaccinations et dépistage des co‑infections\n\n## Erreurs à éviter\n\n- Retarder la mise sous TARV sans raison valable\n- Oublier le suivi régulier et l’éducation thérapeutique",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en maladies infectieuses.",
+      "contexte": "Vous recevez M. Julien André, 34 ans, adressé pour une fébricule évoluant depuis 6 semaines avec sueurs nocturnes, perte de 5 kg et polyadénopathies.",
+      "consignesAttendues": [
+        "Conduire un interrogatoire rigoureux sur les facteurs d'exposition aux IST avec tact et confidentialité",
+        "Réaliser un examen clinique complet avec palpation des aires ganglionnaires et examen cutanéo-muqueux",
+        "Évoquer une infection virale et proposer le dépistage sérologique approprié",
+        "Expliquer avec pédagogie les modalités du test de dépistage combiné",
+        "Délivrer une information claire et rassurante sur l'efficacité des traitements antirétroviraux actuels"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser de test sérologique sans le consentement éclairé du patient",
+        "Ne pas porter de jugement moral sur la vie privée"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box de consultation hospitalière",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Abaisse-langue"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Consentement éclairé pour le test ELISA 4G",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Prescription sérologies associées (hépatites, syphilis)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Examen oropharyngé complet",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Information sur l'efficacité des trithérapies",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment lors de l'annonce du diagnostic",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je suis inquiet. J'ai de la fièvre presque tous les soirs depuis un mois et demi, des sueurs, et j'ai des ganglions dans le cou qui ne partent pas.",
+      "infosVolontaires": [
+        "Fièvre prolongée, sueurs nocturnes et adénopathies",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Anxieux, craint une maladie grave, gêné d'aborder sa vie intime."
+    },
+    "titre": "Fièvre prolongée, sueurs nocturnes et adénopathies",
+    "itemR2C": "Item 168. Infections à VIH.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en maladies infectieuses.",
+      "contexte": "Vous recevez M. Julien André, 34 ans, adressé pour une fébricule évoluant depuis 6 semaines avec sueurs nocturnes, perte de 5 kg et polyadénopathies.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Conduire un interrogatoire rigoureux sur les facteurs d'exposition aux IST avec tact et confidentialité",
+        "Réaliser un examen clinique complet avec palpation des aires ganglionnaires et examen cutanéo-muqueux",
+        "Évoquer une infection virale et proposer le dépistage sérologique approprié",
+        "Expliquer avec pédagogie les modalités du test de dépistage combiné",
+        "Délivrer une information claire et rassurante sur l'efficacité des traitements antirétroviraux actuels"
+      ],
+      "interdits": [
+        "Ne pas réaliser de test sérologique sans le consentement éclairé du patient",
+        "Ne pas porter de jugement moral sur la vie privée"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Thermomètre",
+        "Abaisse-langue"
+      ],
+      "lieu": "Box de consultation hospitalière"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Julien",
+        "nom": "André",
+        "age": 34,
+        "sexe": "M"
+      },
+      "personnalite": "Anxieux, craint une maladie grave, gêné d'aborder sa vie intime.",
+      "phraseOuverture": "Bonjour docteur, je suis inquiet. J'ai de la fièvre presque tous les soirs depuis un mois et demi, des sueurs, et j'ai des ganglions dans le cou qui ne partent pas.",
+      "infosVolontaires": [
+        "Fièvre prolongée, sueurs nocturnes et adénopathies",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier le tableau clinique fébrile avec adénopathies, obtenir le consentement pour le test ELISA combiné et dédramatiser grâce aux thérapies actuelles.",
+      "erreursRedhibitoires": [
+        "Omettre de proposer la sérologie adaptée devant des adénopathies fébriles",
+        "Omettre le dépistage des autres IST associées"
+      ],
+      "elementsAttendus": [
+        "Consentement éclairé pour le test ELISA 4G",
+        "Prescription sérologies associées (hépatites, syphilis)",
+        "Examen oropharyngé complet",
+        "Information sur l'efficacité des trithérapies"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Consentement éclairé pour le test ELISA 4G",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Prescription sérologies associées (hépatites, syphilis)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Examen oropharyngé complet",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Information sur l'efficacité des trithérapies",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis plusieurs semaines et j'ai perdu du poids sans raison. Je m'inquiète un peu.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Infection par le VIH)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Sérologie VIH"
+    ],
+    "utiles": [
+      "Protéine C-réactive (CRP)",
+      "Hémoculture",
+      "Radiographie pulmonaire"
+    ],
+    "inutiles": [
+      "Test de dépistage du paludisme",
+      "Bilan nutritionnel",
+      "Dosage des anticorps anti-GAD"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes actuels, les antécédents, le mode de vie et les facteurs de risque",
+    "Réaliser un examen clinique ciblé incluant l'examen ganglionnaire",
+    "Proposer une stratégie diagnostique pertinente incluant une sérologie VIH"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Fièvre prolongée, sueurs nocturnes et adénopathies"
+}
