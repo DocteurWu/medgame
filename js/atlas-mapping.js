@@ -65,4 +65,5 @@ export const CLINICAL_ZONE_MAP = {
 /** Cas d'exemple : angor stable → focus cœur + artères. Extensible par cas JSON plus tard. */
 export const CASE_ATLAS_PRESETS = {
     cardio_angor_stable: { systems: ['cardiac', 'arterial', 'skeletal'], focusMatch: ['heart', 'coronary'] },
+    cardio_douleur_thoracique_mme_bennet: { systems: ['cardiac', 'arterial', 'skeletal'], focusMatch: ['heart', 'coronary'] },
 };

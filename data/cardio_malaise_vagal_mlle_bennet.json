@@ -1,0 +1,616 @@
+{
+  "id": "cardio_malaise_vagal_mlle_bennet",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Bennet",
+    "prenom": "Elizabeth",
+    "age": 20,
+    "sexe": "F",
+    "taille": "160 cm",
+    "poids": "55 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Malaise",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Etudiante",
+        "stress": "Modérée"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Quelques minutes avant le malaise",
+      "evolution": "Prodrome puis brève perte de connaissance",
+      "facteursDeclenchants": "Station debout prolongée dans une salle chaud et bondée",
+      "symptomesAssocies": [
+        "Sueurs",
+        "Vision floue",
+        "Vertiges"
+      ],
+      "remarques": "Récupération rapide et complète"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/70 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": "Normal",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normal"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner",
+    "Tilt-test"
+  ],
+  "examResults": {
+    "ECG": "Normal",
+    "Echographie": "RAS",
+    "glycemie": "0,85 g/L",
+    "Radio thorax": {
+      "text": "Normal",
+      "image": "assets/images/MODIF_LE_NOM_ICI.jpg"
+    },
+    "Bilan sanguin": "RAS",
+    "Test d'effort": "Non réalisé",
+    "Holter ECG": "RAS",
+    "Coronarographie": "Non indiqué",
+    "IRM cardiaque": "RAS",
+    "Scanner cardiaque": "RAS",
+    "Angioscanner": "RAS"
+  },
+  "possibleDiagnostics": [
+    "Syncope vasovagale",
+    "Hypotension orthostatique",
+    "Trouble du rythme",
+    "Epilepsie"
+  ],
+  "correctDiagnostic": "Syncope vasovagale",
+  "feedback": {
+    "Syncope vasovagale": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Hydratation",
+    "Reconnaissance des prodromes",
+    "Manœuvres de contre-pression",
+    "Bêta-bloquants",
+    "Pacemaker"
+  ],
+  "correctTreatments": [
+    "Hydratation",
+    "Reconnaissance des prodromes",
+    "Manœuvres de contre-pression"
+  ],
+  "correction": "# Syncope vasovagale\n\nProdromes + déclenchement en station debout prolongée sont typiques.\n\n## Bonnes pratiques\n\n- Rassurer\n- Hydratation\n- Manœuvres de contre-pression (contracter jambes ou bras)\n\n## Erreurs à éviter\n\n- Examens inutiles si tableau typique",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.12,
+    "urgencyMultiplier": 3,
+    "aggravationTargets": {
+      "heartRate": 45,
+      "systolic": 75,
+      "diastolic": 45,
+      "spo2": 88,
+      "temperature": 37,
+      "respiratoryRate": 10
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "Lipothymie",
+    "Malaise vagal"
+  ],
+  "fatalTreatments": [
+    "Fludrocortisone à forte dose",
+    "Midodrine en 1ère intention"
+  ],
+  "secondLineTreatments": [
+    "Midodrine",
+    "Fludrocortisone"
+  ],
+  "relevantExams": [
+    "ECG",
+    "Tilt-test",
+    "Bilan sanguin",
+    "Holter ECG"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin généraliste ou médecin d'accueil aux urgences.",
+      "contexte": "Vous recevez Mlle Elizabeth Bennet, 20 ans, étudiante, amenée par des amis après un malaise survenu dans une rame de métro bondée et surchauffée.",
+      "consignesAttendues": [
+        "Rechercher les facteurs déclenchants et la séquence chronologique du malaise",
+        "Détailler les prodromes neurovégétatifs (sueurs, nausées, flou visuel, bâillements)",
+        "Vérifier l'absence de signe de gravité et d'antécédent cardiovasculaire personnel ou familial",
+        "Réaliser un examen clinique complet avec recherche d'hypotension orthostatique",
+        "Rassurer la patiente et lui expliquer les manœuvres physiques de contre-pression"
+      ],
+      "consignesInterdites": [
+        "Ne pas multiplier les examens complémentaires invasifs ou inutiles (scanner, coronarographie)",
+        "Ne pas prescrire de traitement médicamenteux inadapté"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "ECG 12 dérivations",
+        "Glycémie capillaire"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_circonstances",
+        "label": "Précise les circonstances de survenue du malaise (position, environnement, durée)",
+        "weight": 1,
+        "triggerKeywords": [
+          "debout",
+          "chaud",
+          "bondée",
+          "durée",
+          "combien de temps",
+          "position"
+        ]
+      },
+      {
+        "id": "interrogatoire_prodrome",
+        "label": "Recherche les signes prodromiques (sueurs, vision floue, vertiges, nausées)",
+        "weight": 1,
+        "triggerKeywords": [
+          "sueurs",
+          "vision",
+          "vertige",
+          "nausée",
+          "avant",
+          "prodrome",
+          "ressenti"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents personnels et familiaux (syncopes, mort subite, épilepsie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "parents",
+          "frère",
+          "sœur",
+          "mort subite",
+          "épilepsie",
+          "cardiaque"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitement",
+        "label": "Recherche un traitement en cours (cardio-vasculaire, psychotrope)",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "pilule",
+          "contraception",
+          "prise"
+        ]
+      },
+      {
+        "id": "interrogatoire_mode_vie",
+        "label": "Explore le mode de vie (hydratation, alcool, substances, stress)",
+        "weight": 1,
+        "triggerKeywords": [
+          "eau",
+          "hydratation",
+          "alcool",
+          "cannabis",
+          "drogue",
+          "stress",
+          "sommeil"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (auscultation cardiaque, pouls, TA couché/debout)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "cœur",
+          "pouls",
+          "tension",
+          "debout",
+          "couché",
+          "orthostatique"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Réalise un examen neurologique de base (conscience, motricité, sensibilité, réflexes)",
+        "weight": 1,
+        "triggerKeywords": [
+          "neurologique",
+          "conscience",
+          "motricité",
+          "réflexes",
+          "pupilles",
+          "coordination"
+        ]
+      },
+      {
+        "id": "ecg_realise",
+        "label": "Réalise ou demande un ECG 12 dérivations",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "électrocardiogramme",
+          "électrocardiogramme",
+          "12 dérivations"
+        ]
+      },
+      {
+        "id": "diagnostic_syncope_vasovagale",
+        "label": "Retient le diagnostic de syncope vasovagale",
+        "weight": 1,
+        "triggerKeywords": [
+          "vasovagale",
+          "vagale",
+          "neurocardiogénique",
+          "réflexe"
+        ]
+      },
+      {
+        "id": "diagnostics_differentiels",
+        "label": "Évoque les diagnostics différentiels pertinents (trouble du rythme, épilepsie, hypotension orthostatique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "rythmique",
+          "arythmie",
+          "épilepsie",
+          "orthostatique",
+          "différentiel"
+        ]
+      },
+      {
+        "id": "pec_hydratation",
+        "label": "Reconseille une hydratation abondante",
+        "weight": 1,
+        "triggerKeywords": [
+          "eau",
+          "hydratation",
+          "boire",
+          "litre",
+          "sel",
+          "salé"
+        ]
+      },
+      {
+        "id": "pec_reconnaissance_prodromes",
+        "label": "Explique la reconnaissance des prodromes et l'attitude à adopter (s'allonger, jambes surélevées)",
+        "weight": 1,
+        "triggerKeywords": [
+          "prodrome",
+          "allonger",
+          "jambes",
+          "s'asseoir",
+          "prévenir",
+          "signes"
+        ]
+      },
+      {
+        "id": "pec_manoeuvres_contre_pression",
+        "label": "Enseigne les manœuvres de contre-pression (croisement des jambes, poings serrés)",
+        "weight": 1,
+        "triggerKeywords": [
+          "manœuvre",
+          "contre-pression",
+          "jambes",
+          "poing",
+          "contracter",
+          "isométrique"
+        ]
+      },
+      {
+        "id": "explication_diagnostic",
+        "label": "Explique le diagnostic à la patiente avec des termes simples et la rassure",
+        "weight": 1,
+        "triggerKeywords": [
+          "bénin",
+          "grave",
+          "cerveau",
+          "cœur",
+          "normal",
+          "rassurer",
+          "expliquer"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, mes amis ont insisté pour m'emmener mais je vais très bien. J'ai juste eu un coup de chaud dans le métro bondé, j'ai vu tout noir et je me suis évanouie quelques secondes.",
+      "infosVolontaires": [
+        "Malaise après 45 minutes debout dans un métro bondé et très chaud",
+        "Prodromes nets : bouffée de chaleur, nausées, sueurs, vision trouble, jambes en coton",
+        "Perte de connaissance très brève (moins de 30 secondes), s'est réveillée dès qu'elle a été allongée"
+      ],
+      "infosSiDemandees": [
+        "Absence d'antécédent cardiaque ou de mort subite dans la famille",
+        "N'avait pas pris de petit déjeuner ce matin",
+        "A déjà fait un malaise similaire au lycée lors d'une prise de sang"
+      ],
+      "infosCachees": [
+        "A un examen universitaire important cet après-midi et est stressée"
+      ],
+      "reactions": {
+        "brutal": "Vous dites que c'est juste le nerf vague ? C'est dangereux pour mon cœur ?",
+        "silence": "Docteur, vous voulez que je me remette debout pour reprendre ma tension ?",
+        "jargon": "Pardon, qu'est-ce que vous voulez dire par « réflexe vagal » ?"
+      },
+      "personnalite": "Jeune femme vive, un peu agacée d'avoir été amenée aux urgences pour ce qu'elle pense être un simple coup de chaud."
+    },
+    "titre": "Malaise avec prodromes en station debout prolongée",
+    "itemR2C": "Item 236. Perte de connaissance de l'adulte. Syncope réflexe vaso-vagale.",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin généraliste ou médecin d'accueil aux urgences.",
+      "contexte": "Vous recevez Mlle Elizabeth Bennet, 20 ans, étudiante, amenée par des amis après un malaise survenu dans une rame de métro bondée et surchauffée.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Rechercher les facteurs déclenchants et la séquence chronologique du malaise",
+        "Détailler les prodromes neurovégétatifs (sueurs, nausées, flou visuel, bâillements)",
+        "Vérifier l'absence de signe de gravité et d'antécédent cardiovasculaire personnel ou familial",
+        "Réaliser un examen clinique complet avec recherche d'hypotension orthostatique",
+        "Rassurer la patiente et lui expliquer les manœuvres physiques de contre-pression"
+      ],
+      "interdits": [
+        "Ne pas multiplier les examens complémentaires invasifs ou inutiles (scanner, coronarographie)",
+        "Ne pas prescrire de traitement médicamenteux inadapté"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "ECG 12 dérivations",
+        "Glycémie capillaire"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Elizabeth",
+        "nom": "Bennet",
+        "age": 20,
+        "sexe": "F"
+      },
+      "personnalite": "Jeune femme vive, un peu agacée d'avoir été amenée aux urgences pour ce qu'elle pense être un simple coup de chaud.",
+      "phraseOuverture": "Bonjour docteur, mes amis ont insisté pour m'emmener mais je vais très bien. J'ai juste eu un coup de chaud dans le métro bondé, j'ai vu tout noir et je me suis évanouie quelques secondes.",
+      "infosVolontaires": [
+        "Malaise après 45 minutes debout dans un métro bondé et très chaud",
+        "Prodromes nets : bouffée de chaleur, nausées, sueurs, vision trouble, jambes en coton",
+        "Perte de connaissance très brève (moins de 30 secondes), s'est réveillée dès qu'elle a été allongée"
+      ],
+      "infosSiDemandees": [
+        "Absence d'antécédent cardiaque ou de mort subite dans la famille",
+        "N'avait pas pris de petit déjeuner ce matin",
+        "A déjà fait un malaise similaire au lycée lors d'une prise de sang"
+      ],
+      "infosCachees": [
+        "A un examen universitaire important cet après-midi et est stressée"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que j'ai une malformation cardiaque ou une tumeur au cerveau ?",
+        "Est-ce que je peux aller passer mes partiels cet après-midi ?"
+      ],
+      "reactions": {
+        "brutal": "Vous dites que c'est juste le nerf vague ? C'est dangereux pour mon cœur ?",
+        "silence": "Docteur, vous voulez que je me remette debout pour reprendre ma tension ?",
+        "jargon": "Pardon, qu'est-ce que vous voulez dire par « réflexe vagal » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaître le tableau typique de la syncope réflexe vaso-vagale (prodromes neurovégétatifs, facteur déclenchant évident, sujet jeune, réversibilité en décubitus), éliminer les diagnostics différentiels, réaliser l'ECG (normal) et éduquer aux manœuvres de contre-pression.",
+      "erreursRedhibitoires": [
+        "Prescrire une batterie d'examens d'imagerie cérébrale (TDM/IRM) devant une syncope réflexe typique",
+        "Omettre de vérifier l'absence d'antécédents de mort subite familiale",
+        "Oublier de vérifier l'ECG de repos"
+      ],
+      "elementsAttendus": [
+        "Identification des prodromes caractéristiques (sueurs, nausées, voile noir)",
+        "Contexte déclenchant typique (chaleur, station debout, confinement)",
+        "Recherche d'hypotension orthostatique (couché/debout)",
+        "Réalisation d'un ECG 12 dérivations pour éliminer un QT long ou syndrome de Brugada",
+        "Éducation thérapeutique : manœuvres de contre-pression (squat, croisement des jambes, contraction des fessiers), hydratation"
+      ],
+      "grille": [
+        {
+          "id": "eval_anamnese_vagale",
+          "label": "Identifie les circonstances déclenchantes et les prodromes neurovégétatifs typiques",
+          "weight": 1
+        },
+        {
+          "id": "eval_elimination_gravite",
+          "label": "Recherche les antécédents familiaux de mort subite et l'absence de traumatisme",
+          "weight": 1
+        },
+        {
+          "id": "eval_examen_ho",
+          "label": "Réalise la recherche d'hypotension orthostatique et l'examen clinique",
+          "weight": 1
+        },
+        {
+          "id": "eval_ecg_normal",
+          "label": "Réalise l'ECG 12 dérivations de sécurité (vérifie QT, PR, repolarisation)",
+          "weight": 1
+        },
+        {
+          "id": "eval_education_manoeuvres",
+          "label": "Rassure et enseigne les manœuvres physiques de contre-pression et mesures hygiéno-diététiques",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai fait un malaise cet après-midi, je me suis évanouie quelques secondes. J'ai très peur, est-ce que c'est grave ?",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (ECG, Tilt-test)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syncope vasovagale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Bilan sanguin",
+      "Holter ECG"
+    ],
+    "utiles": [
+      "Echographie",
+      "Radio thorax",
+      "Test d'effort"
+    ],
+    "inutiles": [
+      "IRM cardiaque",
+      "Scanner cardiaque",
+      "Angioscanner"
+    ],
+    "dangereux": [
+      "Coronarographie"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Tilt-test. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Syncope vasovagale vs Lipothymie. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Lipothymie",
+    "Malaise vagal"
+  ],
+  "objectifs": [
+    "Réalisez l'interrogatoire complet de la patiente",
+    "Pratiquez l'examen clinique cardiovasculaire et neurologique",
+    "Évoquez les diagnostics différentiels"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Malaise avec prodromes en station debout prolongée"
+}

@@ -1,0 +1,606 @@
+{
+  "id": "cardio_dyspnee_effort_mme_grey",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Grey",
+    "prenom": "Ellis",
+    "age": 62,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "A-",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée et confusion",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Très réduite"
+      },
+      "tabac": {
+        "quantite": "15 PA",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Hydratation insuffisante"
+      },
+      "emploi": {
+        "profession": "Chirurgienne à la retraite",
+        "stress": "Anciennement élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "Diurétique"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Hydrochlorothiazide",
+        "dose": "25 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 3 semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Infection récente",
+      "descriptionDouleur": "/",
+      "symptomesAssocies": [
+        "Fatigue",
+        "confusion"
+      ],
+      "remarques": "Terrain fragile"
+    },
+    "verbatim": "[Confus]"
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "150/85 mmHg",
+      "pouls": "96 bpm",
+      "temperature": "38°C",
+      "saturationO2": "92%",
+      "frequenceRespiratoire": "22/min"
+    },
+    "aspectGeneral": "Patient confus",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Crépitants",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Neurologique": {
+      "conscience": "Altérée"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Radio thoracique",
+    "Echographie cardiaque",
+    "Scintigraphie cardiaque",
+    "Test d'effort",
+    "BNP/NT-proBNP",
+    "Bilan sanguin ionogramme"
+  ],
+  "examResults": {
+    "ECG": "Pas interprétable",
+    "Radio thoracique": "Surcharge pulmonaire",
+    "Echographie cardiaque": "FE à 50 %, dysfonction diastolique",
+    "Scintigraphie cardiaque": "Non indiqué",
+    "Test d'effort": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "BPCO",
+    "Insuffisance cardiaque",
+    "Sepsis"
+  ],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Diurétique",
+    "Oxygénothérapie"
+  ],
+  "correctTreatments": [
+    "Diurétique"
+  ],
+  "correction": "&lt;h3&gt;Insuffisance cardiaque du sujet âgé&lt;/h3&gt;&lt;p&gt;Terrain fragile et dysfonction diastolique.&lt;/p&gt;",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.1,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 140,
+      "systolic": 85,
+      "diastolic": 55,
+      "spo2": 86,
+      "temperature": 37.2,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "IC à fraction d'éjection conservée",
+    "OAP"
+  ],
+  "fatalTreatments": [
+    "AINS",
+    "Bêtabloquants non cardiosélectifs",
+    "Thiazidiques seuls"
+  ],
+  "secondLineTreatments": [
+    "Sacubitril-valsartan",
+    "Ivabradine"
+  ],
+  "relevantExams": [
+    "BNP/NT-proBNP",
+    "ECG",
+    "Echographie cardiaque",
+    "Bilan sanguin ionogramme"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin généraliste ou cardiologue en consultation.",
+      "contexte": "Vous recevez Mme Ellis Grey, 62 ans, hypertendue et en surpoids, qui consulte pour une limitation progressive de ses activités quotidiennes en raison d'un essoufflement d'effort.",
+      "consignesAttendues": [
+        "Caractériser la dyspnée d'effort et évaluer l'impact sur l'autonomie",
+        "Rechercher les facteurs favorisants et comorbidités cardiovasculaires (HTA, surpoids, diabète, FA)",
+        "Réaliser un examen clinique complet (recherche de signes de surcharge veineuse)",
+        "Proposer les examens complémentaires (BNP/NT-proBNP, ETT avec doppler tissulaire)",
+        "Présenter la stratégie thérapeutique et les mesures de contrôle tensionnel et pondéral"
+      ],
+      "consignesInterdites": [
+        "Ne pas affirmer qu'une fraction d'éjection normale élimine une insuffisance cardiaque",
+        "Ne pas méconnaître l'indication des inhibiteurs du SGLT2 (gliflozines)"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "ECG 12 dérivations",
+        "Balance"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_motif",
+        "label": "Explore le motif de consultation : dyspnée (ancienneté, sévérité, NYHA)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "essoufflement",
+          "respiration",
+          "NYHA",
+          "effort"
+        ]
+      },
+      {
+        "id": "interrogatoire_confusion",
+        "label": "Explore la confusion (début, durée, signes associés, retentissement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "confusion",
+          "désorientée",
+          "mémoire",
+          "trouble",
+          "conscience"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_declenchants",
+        "label": "Recherche les facteurs déclenchants (infection récente, observance, régime)",
+        "weight": 1,
+        "triggerKeywords": [
+          "infection",
+          "fièvre",
+          "traitement",
+          "observance",
+          "sel",
+          "hydratation"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antécédents cardiovasculaires et facteurs de risque",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédent",
+          "HTA",
+          "cardiaque",
+          "tabac",
+          "diabète",
+          "cholestérol"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Fait l'inventaire des traitements en cours et de l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "diurétique",
+          "hydrochlorothiazide",
+          "prise"
+        ]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Prend et interprète les constantes (TA, FC, FR, SpO2, température)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "saturation",
+          "température",
+          "fréquence respiratoire"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet (JVP, œdèmes, auscultation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "cœur",
+          "souffle",
+          "turgescence jugulaire",
+          "œdème",
+          "OMI",
+          "pouls"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire (auscultation, recherche de crépitants)",
+        "weight": 1,
+        "triggerKeywords": [
+          "poumon",
+          "auscultation",
+          "crépitants",
+          "râles",
+          "clairance"
+        ]
+      },
+      {
+        "id": "examen_neurologique",
+        "label": "Évalue l'état de conscience (Glasgow, orientation temporo-spatiale)",
+        "weight": 1,
+        "triggerKeywords": [
+          "conscience",
+          "Glasgow",
+          "orientation",
+          "confusion",
+          "neurologique"
+        ]
+      },
+      {
+        "id": "hypotheses_diagnostiques",
+        "label": "Énonce au moins 3 hypothèses diagnostiques pertinentes",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "BPCO",
+          "pneumopathie",
+          "sepsis",
+          "embolie",
+          "hypoperfusion"
+        ]
+      },
+      {
+        "id": "diagnostic_pertinent",
+        "label": "Retient le diagnostic d'insuffisance cardiaque comme diagnostic principal",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "IC",
+          "décompensation",
+          "cardiogénique"
+        ]
+      },
+      {
+        "id": "examens_complementaires",
+        "label": "Propose des examens complémentaires pertinents (ECG, radio thorax, BNP, biologie, gazométrie)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "radiographie",
+          "BNP",
+          "NT-proBNP",
+          "biologie",
+          "gazométrie",
+          "créatinine",
+          "ionogramme"
+        ]
+      },
+      {
+        "id": "pec_initiale",
+        "label": "Propose une prise en charge initiale adaptée (oxygénothérapie, diurétique IV, traitement étiologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "oxygène",
+          "diurétique",
+          "furosémide",
+          "IV",
+          "position",
+          "traitement infection",
+          "surveillance"
+        ]
+      },
+      {
+        "id": "pec_dangereuse_evitee",
+        "label": "N'ordonne pas de traitement dangereux (AINS, bêtabloquants non cardiosélectifs, thiazidiques seuls)",
+        "weight": 1,
+        "triggerKeywords": [
+          "AINS",
+          "ibuprofène",
+          "bêtabloquant",
+          "carvédilol",
+          "propranolol"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la confusion et la fragilité de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, j'ai toujours été très active, mais depuis plusieurs mois, monter un étage est devenu un calvaire. Je suis essoufflée comme jamais.",
+      "infosVolontaires": [
+        "Dyspnée d'effort d'installation insidieuse depuis 6 mois",
+        "Prise de poids modérée mais persistante"
+      ],
+      "infosSiDemandees": [
+        "Hypertension artérielle ancienne traitée irrégulièrement",
+        "Surpoids (IMC 29 kg/m²)",
+        "Épisodes occasionnels de palpitations rapides"
+      ],
+      "infosCachees": [
+        "A arrêté son traitement antihypertenseur il y a 3 mois car elle se sentait bien"
+      ],
+      "reactions": {
+        "brutal": "Vous dites que mon cœur est rigide ? C'est irréversible ?",
+        "silence": "Docteur, vous avez l'air très concentré sur mon souffle au cœur...",
+        "jargon": "Pardon docteur, qu'est-ce qu'une « dysfonction diastolique » ?"
+      },
+      "personnalite": "Femme active, exigeante, frustrée de ne plus pouvoir accomplir ses tâches habituelles sans s'essouffler."
+    },
+    "titre": "Dyspnée d'effort d'aggravation progressive",
+    "itemR2C": "Item 234. Insuffisance cardiaque de l'adulte (FE préservée).",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin généraliste ou cardiologue en consultation.",
+      "contexte": "Vous recevez Mme Ellis Grey, 62 ans, hypertendue et en surpoids, qui consulte pour une limitation progressive de ses activités quotidiennes en raison d'un essoufflement d'effort.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser la dyspnée d'effort et évaluer l'impact sur l'autonomie",
+        "Rechercher les facteurs favorisants et comorbidités cardiovasculaires (HTA, surpoids, diabète, FA)",
+        "Réaliser un examen clinique complet (recherche de signes de surcharge veineuse)",
+        "Proposer les examens complémentaires (BNP/NT-proBNP, ETT avec doppler tissulaire)",
+        "Présenter la stratégie thérapeutique et les mesures de contrôle tensionnel et pondéral"
+      ],
+      "interdits": [
+        "Ne pas affirmer qu'une fraction d'éjection normale élimine une insuffisance cardiaque",
+        "Ne pas méconnaître l'indication des inhibiteurs du SGLT2 (gliflozines)"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "ECG 12 dérivations",
+        "Balance"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Ellis",
+        "nom": "Grey",
+        "age": 62,
+        "sexe": "F"
+      },
+      "personnalite": "Femme active, exigeante, frustrée de ne plus pouvoir accomplir ses tâches habituelles sans s'essouffler.",
+      "phraseOuverture": "Bonjour docteur, j'ai toujours été très active, mais depuis plusieurs mois, monter un étage est devenu un calvaire. Je suis essoufflée comme jamais.",
+      "infosVolontaires": [
+        "Dyspnée d'effort d'installation insidieuse depuis 6 mois",
+        "Prise de poids modérée mais persistante"
+      ],
+      "infosSiDemandees": [
+        "Hypertension artérielle ancienne traitée irrégulièrement",
+        "Surpoids (IMC 29 kg/m²)",
+        "Épisodes occasionnels de palpitations rapides"
+      ],
+      "infosCachees": [
+        "A arrêté son traitement antihypertenseur il y a 3 mois car elle se sentait bien"
+      ],
+      "questionsPieges": [
+        "Docteur, mon échographie cardiaque de l'an dernier disait que mon cœur pompait à 60%, comment puis-je être en insuffisance cardiaque ?",
+        "Est-ce que c'est juste mon surpoids et mon manque d'entraînement ?"
+      ],
+      "reactions": {
+        "brutal": "Vous dites que mon cœur est rigide ? C'est irréversible ?",
+        "silence": "Docteur, vous avez l'air très concentré sur mon souffle au cœur...",
+        "jargon": "Pardon docteur, qu'est-ce qu'une « dysfonction diastolique » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaître le profil typique d'une insuffisance cardiaque à fraction d'éjection préservée (HFpEF) chez une patiente hypertendue en surpoids, comprendre qu'une FE normale n'élimine pas l'IC, prescrire le dosage des peptides natriurétiques et l'ETT avec étude du flux mitral et doppler tissulaire, et poser l'indication des gliflozines (iSGLT2) et du contrôle de l'HTA.",
+      "erreursRedhibitoires": [
+        "Éliminer une insuffisance cardiaque au seul motif d'une fraction d'éjection ventriculaire gauche normale",
+        "Omettre de doser le BNP/NT-proBNP",
+        "Négliger le contrôle strict des chiffres tensionnels"
+      ],
+      "elementsAttendus": [
+        "Reconnaissance des symptômes d'insuffisance cardiaque (dyspnée d'effort)",
+        "Identification des comorbidités clés (HTA mal contrôlée, surpoids, âge)",
+        "Examen clinique : recherche de signes congestifs discrets, mesure PA aux deux bras",
+        "Prescription : NT-proBNP, ECG (recherche FA, HVG), ETT avec critères diastoliques (E/e', volume OG)",
+        "Traitement : diurétique si congestion, iSGLT2 (Empagliflozine/Dapagliflozine), réintroduction antihypertenseur"
+      ],
+      "grille": [
+        {
+          "id": "eval_semiologie_hfpef",
+          "label": "Caractérise la dyspnée et identifie le profil évocateur d'IC à FE préservée",
+          "weight": 1
+        },
+        {
+          "id": "eval_comorbidites",
+          "label": "Recherche et évalue les facteurs favorisants (HTA, surpoids, observance)",
+          "weight": 1
+        },
+        {
+          "id": "eval_examen_clinique",
+          "label": "Réalise la prise de pression artérielle et l'auscultation cardiopulmonaire",
+          "weight": 1
+        },
+        {
+          "id": "eval_paraclinique_diastole",
+          "label": "Prescrit le bilan biologique (NT-proBNP) et l'ETT centrée sur la fonction diastolique",
+          "weight": 1
+        },
+        {
+          "id": "eval_strategie_therapeutique",
+          "label": "Instaure la prise en charge adaptée (iSGLT2, diurétique, contrôle tensionnel strict)",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Je ne sais pas ce qui m'arrive… Je suis essoufflée, je n'arrive plus à respirer correctement, et je me sens perdue… Ma fille m'a dit qu'il fallait venir aux urgences.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (BNP/NT-proBNP, ECG)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie cardiaque"
+    ],
+    "utiles": [
+      "Radio thoracique"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Scintigraphie cardiaque",
+      "Test d'effort"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : BNP/NT-proBNP + ECG. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Insuffisance cardiaque vs IC à fraction d'éjection conservée. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "IC à fraction d'éjection conservée",
+    "OAP"
+  ],
+  "objectifs": [
+    "Réalisez l'interrogatoire de la patiente et/ou de son entourage",
+    "Réalisez l'examen clinique cardiovasculaire et pulmonaire",
+    "Énoncez vos hypothèses diagnostiques"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Dyspnée d'effort d'aggravation progressive"
+}

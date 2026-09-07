@@ -1,0 +1,590 @@
+{
+  "id": "cardio_jambes_lourdes_mme_dubois",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Dubois",
+    "prenom": "Monique",
+    "age": 55,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "73 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Jambes lourdes",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "Jamais"
+      },
+      "alcool": {
+        "quantite": "Jamais"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Pharmacienne",
+        "stress": "Moyen"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "varices connues depuis 10 ans"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Césarienne",
+          "date": "2005"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "jambes lourdes et douloureuses en fin de journée depuis plusieurs années, aggravées ces dernières semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Après une journée de travail debout",
+      "symptomesAssocies": [
+        "Apparition de taches brunes autour des chevilles, parfois des démangeaisons"
+      ],
+      "remarques": "Aucun"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/72 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "25/min"
+    },
+    "aspectGeneral": "RAS",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du coeur réguliers, sans souffles"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmures vésiculaires bilatéraux et symétriques, sans bruits surajoutés"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, dépressible et indolore. Pas de masse."
+    },
+    "examenDermatologique": {
+      "inspection": "varices visibles aux genoux, dermite ocre autour des chevilles, prédominant à gauche. Peau sèche, démangeaisons",
+      "palpation": "Pas de douleurs associées. Oedèmes légers bilatéraux ne prenant pas le godet. Pouls pédieux perçus."
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Échographie doppler des membres inférieurs",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Angioscanner des membres inférieurs",
+    "Écho-Doppler veineux",
+    "IPS",
+    "Bilan de coagulation"
+  ],
+  "examResults": {
+    "ECG": "Non indiqué : RAS",
+    "Radio thorax": "Non indiqué : RAS",
+    "Bilan sanguin": "Non indiqué : RAS",
+    "Angioscanner des membres inférieurs": "Non indiqué",
+    "Échographie doppler des membres inférieurs": "Reflux prolongé dans la veine saphène interne et ses collatérales, confirmant une insuffisance veineuse superficielle, sans signe de thrombose profonde."
+  },
+  "possibleDiagnostics": [
+    "Insuffisance veineuse chronique",
+    "Thrombose veineuse profonde",
+    "AOMI",
+    "Infection cutanée"
+  ],
+  "correctDiagnostic": "Insuffisance veineuse chronique",
+  "feedback": {
+    "Insuffisance veineuse chronique": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Anti-agrégant",
+    "Bas de contention",
+    "Diurétiques",
+    "Vasodilatateurs"
+  ],
+  "correctTreatments": [
+    "Bas de contention"
+  ],
+  "correction": "# Insuffisance veineuse chronique\n\nLe diagnostic d'une insuffisance veineuse chronique est surtout clinique : sensation de jambes lourdes, varices, ± dermite ocre, ulcère veineux… Il faut compléter le bilan par la réalisation d'une échographie doppler pour éliminer une thrombose veineuse profonde. L'échographie permet également de diriger la prise en charge en fonction de la sévérité. Chez cette patiente, on proposera des bas de contentions adaptés, marcher quotidiennement et une réévaluation des symptômes ultérieurement. Pas de prise en charge médicamenteuse. \n\n## Bonnes pratiques\n\n- Rechercher des facteurs de risque à l'interrogatoire : sexe féminin, station debout ou assise prolongée, sédentarité, antécédents familiaux et personnels… \n- Le traitement repose sur le port d'une compression adaptée et sur des mesures hygiéno-diététiques. \n- Toute dermite ocre doit alerter sur le risque d'ulcère veineux à moyen terme. Il convient de surveiller attentivement les jambes des patients et de retirer les bas de contention à chaque consultation. \n\n## Erreurs à éviter\n\n- Le port de bas de contention est contre-indiqué chez les patients présentant une artériopathie oblitérante sévère. Ainsi, chez un patient ayant des facteurs de risques cardio-vasculaires, il faut éliminer le risque d'AOMI.\n- Initier des diurétiques face aux oedèmes.\n- Négliger la recherche d'une cause ischémique en cas de suspicion.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.1,
+    "urgencyMultiplier": 2.5,
+    "aggravationTargets": {
+      "heartRate": 140,
+      "systolic": 85,
+      "diastolic": 55,
+      "spo2": 86,
+      "temperature": 37.2,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "Varices essentielles",
+    "Insuffisance veineuse superficielle"
+  ],
+  "fatalTreatments": [
+    "Héparine à dose curative",
+    "Thrombolyse",
+    "Chirurgie urgente"
+  ],
+  "secondLineTreatments": [
+    "Mousse sclérosante",
+    "Chirurgie de stripping"
+  ],
+  "relevantExams": [
+    "Écho-Doppler veineux",
+    "IPS",
+    "Bilan de coagulation"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin généraliste ou angiologue en consultation.",
+      "contexte": "Vous recevez Mme Monique Dubois, 55 ans, pharmacienne, qui consulte pour une sensation de jambes lourdes et l'apparition de varices visibles des membres inférieurs s'aggravant en fin de journée.",
+      "consignesAttendues": [
+        "Caractériser les symptômes fonctionnels d'insuffisance veineuse et le retentissement socioprofessionnel",
+        "Rechercher les facteurs favorisants (station debout prolongée, antécédents familiaux, surpoids)",
+        "Réaliser un examen clinique complet debout et couché avec inspection des trajets veineux et trophicité cutanée",
+        "Prescrire l'examen de référence (écho-Doppler veineux superficiel et profond)",
+        "Proposer les mesures préventives et thérapeutiques adaptées (compression médicale)"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de veinotoniques oraux en faisant croire à une efficacité sur les varices",
+        "Ne pas omettre la recherche d'antécédent de phlébite profonde"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Mètre ruban pour mesure des périmètres",
+        "Stéthoscope",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente, explique son rôle d'interne et installe la patiente confortablement",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "asseyez-vous"
+        ]
+      },
+      {
+        "id": "interrogatoire_oriente_symptomes",
+        "label": "Explore les caractéristiques des jambes lourdes : ancienneté, localisation, circonstances d'apparition, facteurs aggravants et soulageants",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis combien de temps",
+          "quand cela survient",
+          "position debout",
+          "soulagement",
+          "fin de journée"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire et veineux : sédentarité, antécédents familiaux, grossesses, profession debout",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "famille",
+          "profession",
+          "activité physique",
+          "grossesse",
+          "varices"
+        ]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les symptômes associés : douleurs, crampes nocturnes, démangeaisons, modifications cutanées, œdème",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur",
+          "démangeaisons",
+          "taches",
+          "œdème",
+          "crampes",
+          "peau"
+        ]
+      },
+      {
+        "id": "interrogatoire_signes_gravite",
+        "label": "Recherche les signes de gravité ou de complication : douleur brutale unilatérale, fièvre, ulcère, phlébite",
+        "weight": 1,
+        "triggerKeywords": [
+          "douleur brutale",
+          "fièvre",
+          "ulcère",
+          "jambe rouge",
+          "gonflement soudain"
+        ]
+      },
+      {
+        "id": "examen_clinique_inspection",
+        "label": "Réalise une inspection des membres inférieurs : varices, dermite ocre, œdème, trophisme cutané",
+        "weight": 1,
+        "triggerKeywords": [
+          "inspection",
+          "varises",
+          "taches brunes",
+          "dermite",
+          "œdème",
+          "peau sèche"
+        ]
+      },
+      {
+        "id": "examen_clinique_palpation",
+        "label": "Réalise une palpation adaptée : pouls périphériques (pédieux, tibiaux postérieurs), signe du godet, température cutanée",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls pédieux",
+          "pouls tibiaux",
+          "godet",
+          "palpation",
+          "température"
+        ]
+      },
+      {
+        "id": "examen_clinique_mesures",
+        "label": "Prend les constantes et mesure la tension artérielle, le pouls, la fréquence respiratoire",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "pouls",
+          "constantes",
+          "pression artérielle"
+        ]
+      },
+      {
+        "id": "diagnostic_argumente",
+        "label": "Évoque le diagnostic d'insuffisance veineuse chronique et l'argumente par les éléments cliniques",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance veineuse",
+          "chronique",
+          "diagnostic",
+          "varices",
+          "stase veineuse"
+        ]
+      },
+      {
+        "id": "diagnostic_differentiel",
+        "label": "Évoque les diagnostics différentiels pertinents : thrombose veineuse profonde, AOMI, infection cutanée",
+        "weight": 1,
+        "triggerKeywords": [
+          "thrombose",
+          "phlébite",
+          "AOMI",
+          "artérite",
+          "infection",
+          "différentiel"
+        ]
+      },
+      {
+        "id": "strategie_pec_hygieno_dietetique",
+        "label": "Propose des mesures hygiéno-diététiques adaptées : surélévation des jambes, marche, perte de poids si besoin, éviter la station debout prolongée",
+        "weight": 1,
+        "triggerKeywords": [
+          "surélever",
+          "marche",
+          "activité physique",
+          "éviter debout",
+          "jambes surélevées"
+        ]
+      },
+      {
+        "id": "strategie_pec_contention",
+        "label": "Prescrit une contention veineuse adaptée (bas de contention) et explique son utilisation",
+        "weight": 1,
+        "triggerKeywords": [
+          "bas de contention",
+          "contention",
+          "compression",
+          "bas élastiques",
+          "classe"
+        ]
+      },
+      {
+        "id": "strategie_pec_traitement_local",
+        "label": "Propose un traitement local adapté à la dermite ocre et aux lésions cutanées",
+        "weight": 1,
+        "triggerKeywords": [
+          "crème",
+          "dermocorticoïde",
+          "soins cutanés",
+          "hydratation",
+          "dermite ocre"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Éduque la patiente sur la pathologie, les facteurs de risque et les mesures de prévention de la récidive",
+        "weight": 1,
+        "triggerKeywords": [
+          "explication",
+          "éducation",
+          "prévention",
+          "comprendre",
+          "maladie veineuse"
+        ]
+      },
+      {
+        "id": "plan_suivi",
+        "label": "Propose un plan de suivi adapté avec consultation de contrôle et orientation si nécessaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "suivi",
+          "consultation",
+          "contrôle",
+          "angiologue",
+          "réévaluation"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse la patiente terminer sans l'interrompre et montre de l'attention",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer la plainte",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension de la patiente sur sa pathologie et le traitement proposé",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté, explique les termes médicaux et vérifie la compréhension",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la gêne fonctionnelle et esthétique de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, avec mon travail au comptoir de la pharmacie, j'ai les jambes très lourdes et gonflées en fin de journée, et mes varices deviennent douloureuses.",
+      "infosVolontaires": [
+        "Sensation de pesanteur et d'engourdissement bilatéral des membres inférieurs le soir",
+        "Soulagement net en surélevant les jambes ou sous la douche fraîche"
+      ],
+      "infosSiDemandees": [
+        "Station debout piétinante quotidienne de plus de 8 heures",
+        "Mère opérée de varices bilatérales",
+        "Absence de douleur aiguë brutale unilatérale"
+      ],
+      "infosCachees": [
+        "Ne porte jamais ses chaussettes de contention car elle les trouve difficiles à enfiler"
+      ],
+      "reactions": {
+        "brutal": "Vous voulez dire que je vais devoir porter des bas de contention toute ma vie ?",
+        "silence": "Docteur, pourquoi vous me demandez de me lever pour regarder mes jambes ?",
+        "jargon": "Pardon, qu'est-ce que vous entendez par « reflux saphénien » ?"
+      },
+      "personnalite": "Pharmacienne debout toute la journée, gênée esthétiquement et physiquement par ses jambes gonflées le soir."
+    },
+    "titre": "Lourdeur des membres inférieurs et varices",
+    "itemR2C": "Item 226. Maladie veineuse thromboembolique et insuffisance veineuse chronique.",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin généraliste ou angiologue en consultation.",
+      "contexte": "Vous recevez Mme Monique Dubois, 55 ans, pharmacienne, qui consulte pour une sensation de jambes lourdes et l'apparition de varices visibles des membres inférieurs s'aggravant en fin de journée.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser les symptômes fonctionnels d'insuffisance veineuse et le retentissement socioprofessionnel",
+        "Rechercher les facteurs favorisants (station debout prolongée, antécédents familiaux, surpoids)",
+        "Réaliser un examen clinique complet debout et couché avec inspection des trajets veineux et trophicité cutanée",
+        "Prescrire l'examen de référence (écho-Doppler veineux superficiel et profond)",
+        "Proposer les mesures préventives et thérapeutiques adaptées (compression médicale)"
+      ],
+      "interdits": [
+        "Ne pas prescrire de veinotoniques oraux en faisant croire à une efficacité sur les varices",
+        "Ne pas omettre la recherche d'antécédent de phlébite profonde"
+      ],
+      "materielDisponible": [
+        "Mètre ruban pour mesure des périmètres",
+        "Stéthoscope",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Monique",
+        "nom": "Dubois",
+        "age": 55,
+        "sexe": "F"
+      },
+      "personnalite": "Pharmacienne debout toute la journée, gênée esthétiquement et physiquement par ses jambes gonflées le soir.",
+      "phraseOuverture": "Bonjour docteur, avec mon travail au comptoir de la pharmacie, j'ai les jambes très lourdes et gonflées en fin de journée, et mes varices deviennent douloureuses.",
+      "infosVolontaires": [
+        "Sensation de pesanteur et d'engourdissement bilatéral des membres inférieurs le soir",
+        "Soulagement net en surélevant les jambes ou sous la douche fraîche"
+      ],
+      "infosSiDemandees": [
+        "Station debout piétinante quotidienne de plus de 8 heures",
+        "Mère opérée de varices bilatérales",
+        "Absence de douleur aiguë brutale unilatérale"
+      ],
+      "infosCachees": [
+        "Ne porte jamais ses chaussettes de contention car elle les trouve difficiles à enfiler"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que les crèmes ou gélules de vigne rouge que je vends à la pharmacie sont suffisantes ?",
+        "Est-ce que je risque de faire une embolie pulmonaire avec ces varices ?"
+      ],
+      "reactions": {
+        "brutal": "Vous voulez dire que je vais devoir porter des bas de contention toute ma vie ?",
+        "silence": "Docteur, pourquoi vous me demandez de me lever pour regarder mes jambes ?",
+        "jargon": "Pardon, qu'est-ce que vous entendez par « reflux saphénien » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaître une insuffisance veineuse chronique superficielle (classification CEAP), éliminer une TVP, prescrire un écho-Doppler veineux et poser l'indication d'une compression médicale de classe 2.",
+      "erreursRedhibitoires": [
+        "Ne pas examiner le patient debout pour évaluer le réseau variqueux",
+        "Oublier de vérifier l'intégrité cutanée (dermite ocre, atrophie blanche, ulcère)",
+        "Négliger la prescription de bas ou chaussettes de compression veineuse élastique"
+      ],
+      "elementsAttendus": [
+        "Recherche des signes d'insuffisance veineuse et élimination d'un tableau aigu (TVP)",
+        "Examen debout : varices, œdème malléolaire, troubles trophiques",
+        "Recherche des pouls périphériques avant compression",
+        "Prescription d'un écho-Doppler veineux des membres inférieurs",
+        "Mesures posturales (surélévation, marche) et compression veineuse classe 2"
+      ],
+      "grille": [
+        {
+          "id": "eval_interro_veineux",
+          "label": "Caractérise la symptomatologie veineuse et recherche les facteurs favorisants",
+          "weight": 1
+        },
+        {
+          "id": "eval_examen_debout",
+          "label": "Examine la patiente debout puis couchée, inspecte les varices et la peau",
+          "weight": 1
+        },
+        {
+          "id": "eval_pouls_ips",
+          "label": "Vérifie les pouls distaux pour éliminer une artériopathie associée avant compression",
+          "weight": 1
+        },
+        {
+          "id": "eval_echo_doppler",
+          "label": "Prescrit un écho-Doppler veineux superficiel et profond des membres inférieurs",
+          "weight": 1
+        },
+        {
+          "id": "eval_compression",
+          "label": "Prescrit une compression médicale de classe 2 et explique les règles hygiéno-diététiques",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai les jambes très lourdes le soir, ça fait des années mais c'est de pire en pire. Et j'ai vu apparaître des taches brunes autour des chevilles, ça m'inquiète un peu.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Écho-Doppler veineux, IPS)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance veineuse chronique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [
+      "Échographie doppler des membres inférieurs"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "ECG",
+      "Radio thorax",
+      "Bilan sanguin",
+      "Angioscanner des membres inférieurs"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler veineux + IPS. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Insuffisance veineuse chronique vs Varices essentielles. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Varices essentielles",
+    "Insuffisance veineuse superficielle"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la symptomatologie veineuse et les facteurs de risque cardiovasculaire",
+    "Effectuer un examen clinique ciblé des membres inférieurs incluant l'inspection et la palpation",
+    "Évoquer le diagnostic d'insuffisance veineuse chronique et argumenter"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Lourdeur des membres inférieurs et varices"
+}

@@ -19,3 +19,13 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
 * **Projet** : [Human Atlas](https://github.com/ashemag/human-atlas) par ashemag — code visionneuse sous [MIT](https://github.com/ashemag/human-atlas/blob/main/LICENSE), porté en vanilla JS dans `js/three-atlas-*.js`.
 * **Données anatomiques** : [BodyParts3D 4.0](https://lifesciencedb.jp/bp3d/), © The Database Center for Life Science (DBCLS), licenciées [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). Référence homme adulte, 2 234 meshes / 3 432 concepts / 15 systèmes, ~33 Mo streamés depuis `ATLAS_BASE_URL` (défaut : miroir jsDelivr du repo Human Atlas, CORS *), jamais copiés dans ce repo en V1.
 * **Usage** : explorateur éducatif uniquement, pas un outil diagnostique ou chirurgical. En cas de redistribution des géométries, conserver cette attribution + lien source.
+
+## 4. Dataset Auscultatoire HLS-CMDS (Stéthoscope Virtuel)
+* **Nom** : HLS-CMDS (Heart and Lung Sounds Captured from Clinical Manikin using Digital Stethoscope)
+* **Auteurs** : Y. Torabi, S. Shirani, J. P. Reilly (McMaster University)
+* **Publication** : IEEE Data Descriptions (2025)
+* **DOI** : [10.1109/IEEEDATA.2025.3566012](https://doi.org/10.1109/IEEEDATA.2025.3566012)
+* **Code & Données** : [GitHub Torabiy/HLS-CMDS](https://github.com/Torabiy/HLS-CMDS)
+* **Licence** : [MIT License](https://github.com/Torabiy/HLS-CMDS/blob/main/LICENSE)
+* **Ressources intégrées** : 100 enregistrements audio PCM WAV mono 16-bit 4000 Hz dans `assets/audio/auscultation/` (50 bruits cardiaques, 50 bruits respiratoires).
+

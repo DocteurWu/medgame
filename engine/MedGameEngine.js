@@ -90,6 +90,39 @@ function getLevenshteinDistance(a, b) {
     return matrix[b.length][a.length];
 }
 
+const LEGACY_CASE_ALIASES = {
+    'CARDIO_angor_stable.json': 'cardio_douleur_thoracique_mme_bennet.json',
+    'cardio_angor_stable.json': 'cardio_douleur_thoracique_mme_bennet.json',
+    'cardio_angor_stable': 'cardio_douleur_thoracique_mme_bennet.json',
+    'CARDIO_AOMI.json': 'cardio_claudication_intermittente_m_lambert.json',
+    'cardio_AOMI.json': 'cardio_claudication_intermittente_m_lambert.json',
+    'cardio_AOMI': 'cardio_claudication_intermittente_m_lambert.json',
+    'CARDIO_hta_secondaire_hyperaldosteronisme.json': 'cardio_hypertension_arterielle_m_wickham.json',
+    'cardio_hta_secondaire_hyperaldosteronisme.json': 'cardio_hypertension_arterielle_m_wickham.json',
+    'cardio_hta_secondaire_hyperaldosteronisme': 'cardio_hypertension_arterielle_m_wickham.json',
+    'CARDIO_insuffisance_veineuse_chronique.json': 'cardio_jambes_lourdes_mme_dubois.json',
+    'cardio_insuffisance_veineuse_chronique.json': 'cardio_jambes_lourdes_mme_dubois.json',
+    'cardio_Insuffisance_veineuse_chronique': 'cardio_jambes_lourdes_mme_dubois.json',
+    'CARDIO_retrecissement_aortique.json': 'cardio_malaise_effort_m_bingley.json',
+    'cardio_retrecissement_aortique.json': 'cardio_malaise_effort_m_bingley.json',
+    'cardio_retrecissement_aortique': 'cardio_malaise_effort_m_bingley.json',
+    'CARDIO_syncope_cardiaque.json': 'cardio_perte_de_connaissance_m_darcy.json',
+    'cardio_syncope_cardiaque.json': 'cardio_perte_de_connaissance_m_darcy.json',
+    'cardio_syncope_cardiaque': 'cardio_perte_de_connaissance_m_darcy.json',
+    'CARDIO_syncope_vaso_vagale.json': 'cardio_malaise_vagal_mlle_bennet.json',
+    'cardio_syncope_vaso_vagale.json': 'cardio_malaise_vagal_mlle_bennet.json',
+    'cardio_syncope_vaso_vagale': 'cardio_malaise_vagal_mlle_bennet.json',
+    'CARDIO_thrombose_veineuse_profonde_droite.json': 'cardio_grosse_jambe_rouge_m_ternes.json',
+    'cardio_thrombose_veineuse_profonde_droite.json': 'cardio_grosse_jambe_rouge_m_ternes.json',
+    'cardio_thrombose_veineuse_profonde_droite': 'cardio_grosse_jambe_rouge_m_ternes.json',
+    'cardio_1.json': 'cardio_dyspnee_oedemes_m_dupont.json',
+    'cardio_1': 'cardio_dyspnee_oedemes_m_dupont.json',
+    'cardio_insuffisancecardiaque_denny.json': 'cardio_dyspnee_fatigue_m_duquette.json',
+    'cardio_insuffisancecardiaque_denny': 'cardio_dyspnee_fatigue_m_duquette.json',
+    'cardio_insuffisancecardiaque_ellis.json': 'cardio_dyspnee_effort_mme_grey.json',
+    'cardio_insuffisancecardiaque_ellis': 'cardio_dyspnee_effort_mme_grey.json'
+};
+
 export class MedGameEngine {
     constructor(config = {}) {
         this.apiKey = config.apiKey || process.env.LLM_API_KEY || '';
@@ -115,14 +148,20 @@ export class MedGameEngine {
         this.chatHistory = [];
         this.isFinished = false;
         this.fatalErrorTriggered = false;
+        this.requestedCaseId = null;
 
         // Progress tracking (démarche)
         this.demarche = {
             interrogatoireAsked: new Set(),
             examsOrdered: [],
             clinicalGestures: new Set(),
+            interviewQuestionsDisclosed: new Set(),
+            clinicalExamsViewed: new Set(),
+            orderedExams: new Set(),
+            prescribedTreatments: new Set(),
             locksUnlocked: new Set()
         };
+
 
         // Semio lock attempts tracking
         this.lockAttempts = {};
@@ -141,15 +180,36 @@ export class MedGameEngine {
     async startCase(caseId) {
         this.resetState();
         
-        // Read case data from local JSON
+        // Read case data from local JSON (with alias fallback)
         const safeCaseId = path.basename(caseId); // prevent directory traversal
-        const casePath = path.join(process.cwd(), 'data', safeCaseId.endsWith('.json') ? safeCaseId : `${safeCaseId}.json`);
-        
+        let filename = safeCaseId.endsWith('.json') ? safeCaseId : `${safeCaseId}.json`;
+        if (LEGACY_CASE_ALIASES[safeCaseId]) {
+            this.requestedCaseId = safeCaseId.replace(/\.json$/i, '');
+            filename = LEGACY_CASE_ALIASES[safeCaseId];
+        } else if (LEGACY_CASE_ALIASES[filename]) {
+            this.requestedCaseId = safeCaseId.replace(/\.json$/i, '');
+            filename = LEGACY_CASE_ALIASES[filename];
+        }
+
+
+        let casePath = path.join(process.cwd(), 'data', filename);
         try {
             const data = await fs.readFile(casePath, 'utf-8');
             this.caseData = JSON.parse(data);
         } catch (err) {
-            throw new Error(`Failed to load case ${caseId} at path ${casePath}: ${err.message}`);
+            // If primary file read failed, try alias map as fallback
+            const alias = LEGACY_CASE_ALIASES[safeCaseId] || LEGACY_CASE_ALIASES[filename];
+            if (alias && alias !== filename) {
+                try {
+                    casePath = path.join(process.cwd(), 'data', alias);
+                    const data = await fs.readFile(casePath, 'utf-8');
+                    this.caseData = JSON.parse(data);
+                } catch (fallbackErr) {
+                    throw new Error(`Failed to load case ${caseId} at path ${casePath}: ${fallbackErr.message}`);
+                }
+            } else {
+                throw new Error(`Failed to load case ${caseId} at path ${casePath}: ${err.message}`);
+            }
         }
 
         this.startedAt = Date.now();
@@ -182,7 +242,7 @@ export class MedGameEngine {
         // Introduce the patient standard greeting in chat history
         const patient = this.caseData.patient || {};
         const nom = `${patient.prenom || ''} ${patient.nom || 'le patient'}`.trim();
-        const ecosData = this.caseData.ecos?.patientStandardise;
+        const ecosData = this.caseData.ecos?.consignesPatient || this.caseData.ecos?.patientStandardise;
         
         let intro = '';
         if (ecosData?.phraseOuverture) {
@@ -302,7 +362,10 @@ export class MedGameEngine {
         return {
             success: true,
             caseId: this.caseData.id,
-            caseTitle: this.caseData.titre || this.caseData.id,
+
+            caseTitle: this.caseData.motif || this.caseData.ecos?.titre || this.caseData.titre || this.caseData.id,
+
+            motif: this.caseData.motif || this.caseData.ecos?.titre || this.caseData.interrogatoire?.motifHospitalisation || '',
             specialty: this.caseData.specialite,
             difficulty: this.caseData.difficulty || 1,
             patient: {

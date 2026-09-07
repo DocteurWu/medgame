@@ -244,7 +244,7 @@ test('Scoring — Doing nothing yields 0 score in interrogatoire and demarche', 
         const scoringCode = fs.readFileSync(path.resolve('js/scoring.js'), 'utf8');
         vm.runInNewContext(scoringCode, context);
 
-        const caseData = JSON.parse(fs.readFileSync(path.resolve('data/CARDIO_thrombose_veineuse_profonde_droite.json'), 'utf8'));
+        const caseData = JSON.parse(fs.readFileSync(path.resolve('data/cardio_grosse_jambe_rouge_m_ternes.json'), 'utf8'));
 
         context.resetDemarche();
         const demScore = context.calculateDemarcheScore(caseData);

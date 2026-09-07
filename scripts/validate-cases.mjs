@@ -124,6 +124,26 @@ for (const file of files) {
         warn(file, `correction courte (${(json.correction || '').length} caractères < 100)`);
     }
 
+    // Non-divulgation du diagnostic avant la fin
+    if (typeof json.correctDiagnostic === 'string' && json.correctDiagnostic.length > 5) {
+        const diagLower = json.correctDiagnostic.toLowerCase();
+        if (json.motif && json.motif.toLowerCase().includes(diagLower)) {
+            warn(file, `motif divulgue le diagnostic ("${json.motif}")`);
+        }
+        if (json.ecos?.titre && json.ecos.titre.toLowerCase().includes(diagLower)) {
+            warn(file, `ecos.titre divulgue le diagnostic ("${json.ecos.titre}")`);
+        }
+        const studentConsignes = [
+            ...(json.ecos?.vignette?.consignesAttendues || []),
+            ...(json.ecos?.consignesEtudiant?.consignes || [])
+        ];
+        for (const c of studentConsignes) {
+            if (typeof c === 'string' && c.toLowerCase().includes(diagLower)) {
+                warn(file, `consigne étudiant divulgue le diagnostic ("${c}")`);
+            }
+        }
+    }
+
     // ── 3. Couverture mécaniques avancées ──
     const fb = json.feedback || {};
     const isRichFeedback = Object.keys(fb).some(k => k !== 'correct' && k !== 'default');

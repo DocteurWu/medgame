@@ -1,0 +1,588 @@
+{
+  "id": "cardio_dyspnee_oedemes_m_dupont",
+  "patient": {
+    "nom": "Dupont",
+    "prenom": "Jean",
+    "age": 65,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée et œdèmes",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "20 PA",
+        "duree": "30 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2000"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Infarctus",
+          "age": "70"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Amlodipine",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "2 semaines",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "symptomesAssocies": [
+        "Fatigue"
+      ],
+      "remarques": "Aucun"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "140/90 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "20/min"
+    },
+    "aspectGeneral": "Pâleur",
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Râles crépitants"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner"
+  ],
+  "examResults": {
+    "ECG": "Tachycardie sinusale",
+    "Echographie": "Fraction d’éjection réduite",
+    "glycemie": "1.0 g/L",
+    "Radio thorax": {
+      "text": "Infiltrat basal droit",
+      "image": "assets/images/default-patient.jpg"
+    },
+    "Bilan sanguin": "RAS",
+    "Test d'effort": "Positif",
+    "Holter ECG": "RAS",
+    "Coronarographie": "Sténose",
+    "IRM cardiaque": "RAS",
+    "Scanner cardiaque": "RAS",
+    "Angioscanner": "RAS"
+  },
+  "possibleDiagnostics": [
+    "Insuffisance cardiaque",
+    "Valvulopathie",
+    "Trouble du rythme",
+    "Angor stable"
+  ],
+  "correctDiagnostic": "Insuffisance cardiaque",
+  "feedback": {
+    "Insuffisance cardiaque": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)",
+    "Bêta-bloquants",
+    "Digitaliques"
+  ],
+  "correctTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)"
+  ],
+  "correction": "# Insuffisance cardiaque\n\nDyspnée, œdèmes, crépitants et FE réduite orientent vers une insuffisance cardiaque.\n\n## Bonnes pratiques\n\n- Évaluer la fraction d’éjection à l’échographie\n- Initier diurétiques et IEC en première intention\n- Surveiller le poids, la diurèse et l’ionogramme\n\n## Erreurs à éviter\n\n- Oublier l’adaptation des doses selon la fonction rénale\n- Négliger la recherche d’une cause ischémique en cas de suspicion",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en stage de cardiologie ou aux urgences.",
+      "contexte": "Vous recevez M. Jean Dupont, 65 ans, retraité, adressé pour une dyspnée d'aggravation progressive associée à une prise de poids de 4 kg et des œdèmes des membres inférieurs depuis 2 semaines.",
+      "consignesAttendues": [
+        "Caractériser la dyspnée (stade NYHA, orthopnée, dyspnée paroxystique nocturne) et l'évolution pondérale",
+        "Rechercher un facteur déclenchant de décompensation (écart de régime sans sel, arrêt de traitement, infection, FA)",
+        "Réaliser un examen clinique complet à la recherche des signes de congestion veineuse pulmonaire et périphérique",
+        "Proposer le bilan paraclinique de confirmation (peptides natriurétiques, radio de thorax, ECG, ETT)",
+        "Prescrire le traitement déplétif d'urgence et expliquer les mesures hygiéno-diététiques"
+      ],
+      "consignesInterdites": [
+        "Ne pas perfuser de soluté salé isotonique (aggravation de la surcharge)",
+        "Ne pas majorer les bêta-bloquants en phase aiguë congestive"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box des urgences",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Balance pèse-personne",
+        "ECG 12 dérivations"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Accueille le patient, se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "rôle"
+        ]
+      },
+      {
+        "id": "interrogatoire_dyspnee",
+        "label": "Explore la dyspnée : date d'apparition, circonstances, évolution, sévérité (NYHA)",
+        "weight": 1,
+        "triggerKeywords": [
+          "dyspnée",
+          "effort",
+          "NYHA",
+          "essoufflement",
+          "depuis quand"
+        ]
+      },
+      {
+        "id": "interrogatoire_oedemes",
+        "label": "Explore les œdèmes : localisation, signe du godet, prise de poids",
+        "weight": 1,
+        "triggerKeywords": [
+          "œdèmes",
+          "jambes",
+          "chevilles",
+          "godet",
+          "poids"
+        ]
+      },
+      {
+        "id": "recherche_symptomes_associes",
+        "label": "Recherche les symptômes associés : orthopnée, DPN, douleurs thoraciques, palpitations",
+        "weight": 1,
+        "triggerKeywords": [
+          "orthopnée",
+          "DPN",
+          "nocturne",
+          "douleur thoracique",
+          "palpitations"
+        ]
+      },
+      {
+        "id": "antecedents_cardiovasculaires",
+        "label": "Explore les antécédents cardiovasculaires personnels et familiaux",
+        "weight": 1,
+        "triggerKeywords": [
+          "antécédents",
+          "HTA",
+          "infarctus",
+          "cardiaque",
+          "famille"
+        ]
+      },
+      {
+        "id": "facteurs_risque",
+        "label": "Évalue les facteurs de risque cardiovasculaire (tabac, sédentarité, alimentation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "alimentation",
+          "cholestérol"
+        ]
+      },
+      {
+        "id": "traitements_en_cours",
+        "label": "Recherche les traitements en cours et l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicament",
+          "IEC",
+          "amlodipine",
+          "observance"
+        ]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Réalise un examen cardiovasculaire complet : auscultation cardiaque, pouls, TA, JVP",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "cœur",
+          "souffle",
+          "pouls",
+          "jugulaires"
+        ]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Réalise un examen pulmonaire : auscultation à la recherche de râles crépitants",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation pulmonaire",
+          "râles",
+          "crépitants",
+          "poumons"
+        ]
+      },
+      {
+        "id": "examen_oedemes",
+        "label": "Examine les œdèmes : localisation, godet, symétrie",
+        "weight": 1,
+        "triggerKeywords": [
+          "œdèmes",
+          "godet",
+          "membres inférieurs",
+          "pression"
+        ]
+      },
+      {
+        "id": "diagnostic_orientation",
+        "label": "Propose le diagnostic d'insuffisance cardiaque comme hypothèse principale",
+        "weight": 1,
+        "triggerKeywords": [
+          "insuffisance cardiaque",
+          "IC",
+          "diagnostic",
+          "hypothèse"
+        ]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Propose une stratégie diagnostique adaptée : ECG, radiographie thoracique, BNP/NT-proBNP, échocardiographie",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "radio thorax",
+          "BNP",
+          "échocardiographie",
+          "biologie"
+        ]
+      },
+      {
+        "id": "prise_en_charge_initiale",
+        "label": "Initie une prise en charge thérapeutique : diurétiques, IEC, conseils hygiéno-diététiques",
+        "weight": 1,
+        "triggerKeywords": [
+          "diurétique",
+          "IEC",
+          "régime sans sel",
+          "surveillance",
+          "traitement"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Éduque le patient sur sa maladie, les signes d'alerte et l'importance de l'observance",
+        "weight": 1,
+        "triggerKeywords": [
+          "éducation",
+          "signes d'alerte",
+          "poids quotidien",
+          "observance",
+          "conseils"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Réalise une synthèse structurée de la situation clinique",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "donc",
+          "synthèse",
+          "conclusion"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je n'arrive plus à respirer dès que je fais quelques pas, et depuis dix jours mes chevilles ont triplé de volume. Je n'arrive plus à dormir à plat.",
+      "infosVolontaires": [
+        "Dyspnée d'effort devenue de repos, orthopnée à 3 oreillers",
+        "Prise de poids rapide de 4 kilos en deux semaines avec œdèmes prenant le godet"
+      ],
+      "infosSiDemandees": [
+        "Hypertension artérielle ancienne traitée par IEC",
+        "A mangé de la choucroute et des charcuteries très salées lors d'un repas de famille récent",
+        "Absence de fièvre ou de douleur thoracique aiguë"
+      ],
+      "infosCachees": [
+        "A oublié de reprendre son diurétique il y a une semaine"
+      ],
+      "reactions": {
+        "brutal": "Vous dites que j'ai de l'eau dans les poumons ? C'est grave docteur ?",
+        "silence": "Docteur, je suis très essoufflé, pouvez-vous me relever le dossier du lit ?",
+        "jargon": "Pardon docteur, qu'est-ce que vous entendez par « fraction d'éjection » ?"
+      },
+      "personnalite": "Patient anxieux et essoufflé, obligé de dormir avec 3 oreillers depuis plusieurs nuits."
+    },
+    "titre": "Essoufflement progressif et gonflement des jambes",
+    "itemR2C": "Item 234. Insuffisance cardiaque de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en stage de cardiologie ou aux urgences.",
+      "contexte": "Vous recevez M. Jean Dupont, 65 ans, retraité, adressé pour une dyspnée d'aggravation progressive associée à une prise de poids de 4 kg et des œdèmes des membres inférieurs depuis 2 semaines.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser la dyspnée (stade NYHA, orthopnée, dyspnée paroxystique nocturne) et l'évolution pondérale",
+        "Rechercher un facteur déclenchant de décompensation (écart de régime sans sel, arrêt de traitement, infection, FA)",
+        "Réaliser un examen clinique complet à la recherche des signes de congestion veineuse pulmonaire et périphérique",
+        "Proposer le bilan paraclinique de confirmation (peptides natriurétiques, radio de thorax, ECG, ETT)",
+        "Prescrire le traitement déplétif d'urgence et expliquer les mesures hygiéno-diététiques"
+      ],
+      "interdits": [
+        "Ne pas perfuser de soluté salé isotonique (aggravation de la surcharge)",
+        "Ne pas majorer les bêta-bloquants en phase aiguë congestive"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Oxymètre de pouls",
+        "Balance pèse-personne",
+        "ECG 12 dérivations"
+      ],
+      "lieu": "Box des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Jean",
+        "nom": "Dupont",
+        "age": 65,
+        "sexe": "M"
+      },
+      "personnalite": "Patient anxieux et essoufflé, obligé de dormir avec 3 oreillers depuis plusieurs nuits.",
+      "phraseOuverture": "Bonjour docteur, je n'arrive plus à respirer dès que je fais quelques pas, et depuis dix jours mes chevilles ont triplé de volume. Je n'arrive plus à dormir à plat.",
+      "infosVolontaires": [
+        "Dyspnée d'effort devenue de repos, orthopnée à 3 oreillers",
+        "Prise de poids rapide de 4 kilos en deux semaines avec œdèmes prenant le godet"
+      ],
+      "infosSiDemandees": [
+        "Hypertension artérielle ancienne traitée par IEC",
+        "A mangé de la choucroute et des charcuteries très salées lors d'un repas de famille récent",
+        "Absence de fièvre ou de douleur thoracique aiguë"
+      ],
+      "infosCachees": [
+        "A oublié de reprendre son diurétique il y a une semaine"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que mon cœur est en train de lâcher définitivement ?",
+        "Pourquoi vous voulez que je me pèse tous les matins ?"
+      ],
+      "reactions": {
+        "brutal": "Vous dites que j'ai de l'eau dans les poumons ? C'est grave docteur ?",
+        "silence": "Docteur, je suis très essoufflé, pouvez-vous me relever le dossier du lit ?",
+        "jargon": "Pardon docteur, qu'est-ce que vous entendez par « fraction d'éjection » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaître une poussée d'insuffisance cardiaque globale à prédominance gauche congestive décompensée (OAP subaigu), identifier le facteur déclenchant (écart de sel/écart de traitement), ausculter les crépitants et prescrire diurétiques de l'anse et ETT.",
+      "erreursRedhibitoires": [
+        "Perfuser du sérum physiologique chez un insuffisant cardiaque congestif",
+        "Négliger la recherche du facteur déclenchant de décompensation",
+        "Omettre la surveillance de la fonction rénale et de la kaliémie sous diurétiques"
+      ],
+      "elementsAttendus": [
+        "Caractérisation des signes congestifs gauches (orthopnée, crépitants) et droits (oedèmes godet, TJ, RHJ)",
+        "Mise en évidence du facteur déclenchant (écart sodé, mauvaise observance)",
+        "Examens paracliniques : ECG, radiographie thoracique, BNP ou NT-proBNP, ETT",
+        "Prescription de Furosémide IV ou per os, restriction hydrosodée (< 4-6 g sel/j)",
+        "Éducation thérapeutique : autosurveillance quotidienne du poids, signes d'alerte EPOF"
+      ],
+      "grille": [
+        {
+          "id": "eval_congestif",
+          "label": "Recherche les signes congestifs gauches (orthopnée) et droits (œdèmes, RHJ)",
+          "weight": 1
+        },
+        {
+          "id": "eval_facteur_declenchant",
+          "label": "Identifie le facteur déclenchant (écart de régime sans sel, observance)",
+          "weight": 1
+        },
+        {
+          "id": "eval_auscultation_ic",
+          "label": "Ausculte les crépitants pulmonaires bilatéraux et recherche un galop B3",
+          "weight": 1
+        },
+        {
+          "id": "eval_bilan_ic",
+          "label": "Prescrit les examens complémentaires clés (BNP, radio thorax, ETT, ionogramme)",
+          "weight": 1
+        },
+        {
+          "id": "eval_traitement_depletif",
+          "label": "Instaure le traitement diurétique et explique les règles d'autosurveillance pondérale",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis essoufflé depuis deux semaines et mes jambes gonflent de plus en plus.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Insuffisance cardiaque)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Echographie"
+    ],
+    "utiles": [
+      "Radio thorax",
+      "Bilan sanguin",
+      "Test d'effort"
+    ],
+    "inutiles": [
+      "Holter ECG",
+      "Coronarographie",
+      "IRM cardiaque"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien clinique complet orienté vers la dyspnée et les œdèmes",
+    "Effectuer un examen clinique cardiovasculaire et pulmonaire ciblé",
+    "Proposer un diagnostic étiologique pertinent"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Essoufflement progressif et gonflement des jambes"
+}

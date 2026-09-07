@@ -1,0 +1,637 @@
+{
+  "id": "cardio_claudication_intermittente_m_lambert",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Lambert",
+    "prenom": "Martin",
+    "age": 72,
+    "sexe": "M",
+    "taille": "172 cm",
+    "poids": "86 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur au mollet",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "40 PA",
+        "duree": "40 ans"
+      },
+      "alcool": {
+        "quantite": "Hebdomadaire"
+      },
+      "alimentation": {
+        "regime": "Riche en graisse saturée et viande rouge",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        },
+        {
+          "type": "Dyslipidémie",
+          "traitement": "Statine"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Cholécystectomie",
+          "date": "2015"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "AVC",
+          "age": "78"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Ramipril",
+        "dose": "5 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Atorvastatine",
+        "dose": "20 mg",
+        "frequence": "1/j"
+      },
+      {
+        "nom": "Aspirine",
+        "dose": "75 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "depuis 3 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Après avoir marché environ 200m. Disparition de la douleur au repos.",
+      "descriptionDouleur": "Douleur à type de crampe, localisée au mollet droit, sans irradiation",
+      "symptomesAssocies": [
+        "Fatigue générale"
+      ],
+      "remarques": "Réduction du périmètre de marche depuis quelques semaines"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/85 mmHg",
+      "pouls": "86 bpm",
+      "temperature": "37.2°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "25/min"
+    },
+    "aspectGeneral": "Patient en surpoids",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du coeur réguliers, sans souffles",
+      "inspection": "Pieds et mollets légèrement pâles et froids",
+      "palpation": "pas d'oedème, temps de recoloration de 5 sec. À droite : pouls fémoral présent, poplité diminué, pédieux absent"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmures vésiculaires bilatéraux et symétriques, sans bruits surajoutés"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, dépressible et indolore. Pas de masse."
+    },
+    "examenNeurologique": {
+      "conscience": "Normale, pas de déficit moteur, pas de déficit sensitif"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie cardiaque",
+    "Echographie doppler des membres inférieurs",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test de marche",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner",
+    "IPS",
+    "Écho-Doppler artériel",
+    "IPS (Index de Pression Systolique)",
+    "Bilan lipidique"
+  ],
+  "examResults": {
+    "ECG": "Rythme sinusal normal",
+    "Echographie cardiaque": "Fraction d'éjection conservée",
+    "Radio thorax": "Non indiquée : RAS",
+    "Bilan sanguin": "Hypercholestérolémie : cholestérol total à 2,9 g/L, LDL à 1,9 g/L",
+    "Test de marche": "Le patient s'arrête après 4 minutes de marche en ayant parcouru 231 m.",
+    "Echographie doppler des membres inférieurs": "Sténose modérée de l'artère fémorale droite, sténose significative de l'artère poplitée droite, flux absent dans les artères tibiales et pédieuse droites, côté gauche normal.",
+    "IRM cardiaque": "Non indiqué",
+    "Scanner cardiaque": "Non indiqué",
+    "Angioscanner": "À réaliser en deuxième intention après l'échographie doppler, si indication à une revascularisation.",
+    "IPS": "IPS 0,6 à droite, 1,0 à gauche"
+  },
+  "possibleDiagnostics": [
+    "Insuffisance cardiaque droite",
+    "Artériopathie oblitérante des membres inférieurs (AOMI)",
+    "Insuffisance veineuse",
+    "Angor stable"
+  ],
+  "correctDiagnostic": "Artériopathie oblitérante des membres inférieurs (AOMI)",
+  "feedback": {
+    "Artériopathie oblitérante des membres inférieurs (AOMI)": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Diurétiques",
+    "Inhibiteurs de l'enzyme de conversion (IEC)",
+    "Aspirine",
+    "Statine",
+    "Amiodarone (anti-arythmique)",
+    "Reconditionnement à la marche"
+  ],
+  "correctTreatments": [
+    "Aspirine",
+    "Inhibiteurs de l'enzyme de conversion (IEC)",
+    "Statine",
+    "Reconditionnement à la marche"
+  ],
+  "correction": "# AOMI\n\nChez un patient qui présente des facteurs de risque cardiovasculaire, une douleur au mollet qui survient à la marche et disparaît au repos, on doit évoquer en priorité une AOMI. \n\n## Bonnes pratiques\n\n- Il convient d'évaluer en priorité la sévérité de l'atteinte, en précisant le périmètre de marche et en réalisant les examens complémentaires appropriés : échographie doppler et IPS en première intention. \n- Eliminer les diagnostics différentiels : atteinte neurologique, une réduction du périmètre de marche pour des douleurs rhumatologiques comme de l'arthrose…\n- Prendre en charge les facteurs de risque cardio-vasculaire, notamment arrêt du tabac, et rechercher un diabète associé. \n\n## Erreurs à éviter\n\n- Négliger l'interrogatoire, en ne précisant pas l'historique de la douleur, le périmètre de marche, les facteurs de risque cardiovasculaire et les antécédents médicaux pertinents. \n- Une atteinte sévère peut rester asymptomatique pendant longtemps. De même, le tableau peut se présenter comme une douleur persistante dans les formes avancées.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "Artérite des membres inférieurs",
+    "Claudication artérielle"
+  ],
+  "fatalTreatments": [
+    "Anticoagulants à dose pleine",
+    "Thrombolyse",
+    "Chirurgie urgente"
+  ],
+  "secondLineTreatments": [
+    "Cilostazol",
+    "Naftidrofuryl"
+  ],
+  "relevantExams": [
+    "Écho-Doppler artériel",
+    "IPS (Index de Pression Systolique)",
+    "Bilan lipidique",
+    "ECG"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en consultation de médecine vasculaire / cardiologie.",
+      "contexte": "Vous recevez M. Martin Lambert, 72 ans, qui consulte pour une crampe douloureuse du mollet droit survenant à la marche et cédant à l'arrêt.",
+      "consignesAttendues": [
+        "Préciser les caractéristiques sémiologiques de la douleur et mesurer le périmètre de marche",
+        "Rechercher les facteurs de risque d'athérosclérose et les autres localisations de la maladie athéromateuse",
+        "Réaliser un examen vasculaire des membres inférieurs",
+        "Proposer les examens complémentaires de première intention (mesure d'IPS, écho-Doppler)",
+        "Expliquer la démarche diagnostique et la prise en charge médicale"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de vasodilatateurs périphériques inefficaces",
+        "Ne pas proposer de revascularisation chirurgicale d'emblée sans bilan"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Sonde Doppler de poche pour mesure de pression de cheville",
+        "Écho-Doppler artériel"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "docteur"
+        ]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caractérise la douleur (siège, type, irradiations, facteurs déclenchants, soulagement au repos)",
+        "weight": 1,
+        "triggerKeywords": [
+          "mollet",
+          "crampe",
+          "marche",
+          "repos",
+          "200 mètres",
+          "périmètre de marche"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Recherche les facteurs de risque cardiovasculaire (tabac, HTA, dyslipidémie, diabète, sédentarité)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "40 paquets-années",
+          "hypertension",
+          "dyslipidémie",
+          "sédentaire",
+          "alcool"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Explore les antécédents personnels et familiaux cardiovasculaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "père",
+          "avc",
+          "cholécystectomie",
+          "traitement",
+          "ramipril",
+          "atorvastatine",
+          "aspirine"
+        ]
+      },
+      {
+        "id": "interrogatoire_retentissement",
+        "label": "Évalue le retentissement fonctionnel et l'évolution des symptômes",
+        "weight": 1,
+        "triggerKeywords": [
+          "fatigue",
+          "réduction périmètre",
+          "évolution",
+          "3 mois",
+          "progressif"
+        ]
+      },
+      {
+        "id": "examen_pouls_distaux",
+        "label": "Palpe les pouls périphériques des membres inférieurs (fémoral, poplité, tibial postérieur, pédieux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pouls fémoral",
+          "pouls poplité",
+          "pouls pédieux",
+          "pouls tibial",
+          "palpation"
+        ]
+      },
+      {
+        "id": "examen_trophicite",
+        "label": "Évalue l'aspect trophique des pieds (couleur, température, temps de recoloration)",
+        "weight": 1,
+        "triggerKeywords": [
+          "pâle",
+          "froid",
+          "recoloration",
+          "trophicité",
+          "peau",
+          "ongles"
+        ]
+      },
+      {
+        "id": "examen_auscultation_vasculaire",
+        "label": "Ausculte les trajets artériels à la recherche de souffles (fémoral, aorte, carotides)",
+        "weight": 1,
+        "triggerKeywords": [
+          "souffle",
+          "auscultation",
+          "fémoral",
+          "carotide",
+          "aorte"
+        ]
+      },
+      {
+        "id": "mesure_ips",
+        "label": "Mesure l'index de pression systolique (IPS) aux membres inférieurs",
+        "weight": 1,
+        "triggerKeywords": [
+          "ips",
+          "index pression",
+          "doppler",
+          "pression systolique",
+          "cheville"
+        ]
+      },
+      {
+        "id": "diagnostic_aomi",
+        "label": "Pose le diagnostic d'artériopathie oblitérante des membres inférieurs (AOMI)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aomi",
+          "artériopathie",
+          "claudication intermittente",
+          "ischémie chronique"
+        ]
+      },
+      {
+        "id": "bilan_complementaire",
+        "label": "Prescrit un bilan complémentaire approprié (bilan lipidique, glycémie, ECG, écho-doppler artériel)",
+        "weight": 1,
+        "triggerKeywords": [
+          "bilan lipidique",
+          "glycémie",
+          "ecg",
+          "écho-doppler",
+          "angioscanner",
+          "créatinine"
+        ]
+      },
+      {
+        "id": "pec_medicale",
+        "label": "Propose une prise en charge médicale adaptée (traitement de fond, sevrage tabagique, reconditionnement)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aspirine",
+          "statine",
+          "iec",
+          "sevrage tabagique",
+          "reconditionnement marche",
+          "rééducation"
+        ]
+      },
+      {
+        "id": "education_prevention",
+        "label": "Éduque le patient sur les facteurs de risque et les mesures de prévention cardiovasculaire",
+        "weight": 1,
+        "triggerKeywords": [
+          "arrêt tabac",
+          "alimentation",
+          "activité physique",
+          "prévention",
+          "éducation"
+        ]
+      },
+      {
+        "id": "surveillance",
+        "label": "Planifie une surveillance régulière et explique les signes d'alerte",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "consultation",
+          "signes d'alerte",
+          "douleur repos",
+          "nécrose",
+          "suivi"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, depuis quelques mois, quand je marche plus de 200 mètres, j'ai comme une crampe intense dans le mollet droit qui m'oblige à m'arrêter.",
+      "infosVolontaires": [
+        "Crampe au mollet droit à la marche pour un périmètre d'environ 200-300 mètres",
+        "Soulagement complet en 2 à 3 minutes après arrêt de la marche"
+      ],
+      "infosSiDemandees": [
+        "Tabagisme important évalué à 40 paquets-années",
+        "Hypertension artérielle et dyslipidémie traitées",
+        "Absence de douleur de décubitus nocturne pour le moment"
+      ],
+      "infosCachees": [
+        "A parfois du mal à lacer ses chaussures le matin à cause de raideurs"
+      ],
+      "reactions": {
+        "brutal": "Vous me parlez d'artères bouchées, c'est si grave que ça ?",
+        "silence": "Docteur, vous palpez mes pieds, vous sentez quelque chose ?",
+        "jargon": "Pardon docteur, qu'est-ce que vous appelez « IPS » ?"
+      },
+      "personnalite": "Patient calme, fumeur de longue date, banalisant sa gêne à la marche qu'il attribuait à l'âge."
+    },
+    "titre": "Douleur au mollet à la marche",
+    "itemR2C": "Item 225. Artériopathie oblitérante de l'aorte et des membres inférieurs.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en consultation de médecine vasculaire / cardiologie.",
+      "contexte": "Vous recevez M. Martin Lambert, 72 ans, qui consulte pour une crampe douloureuse du mollet droit survenant à la marche et cédant à l'arrêt.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser les caractéristiques sémiologiques de la douleur et mesurer le périmètre de marche",
+        "Rechercher les facteurs de risque d'athérosclérose et les autres localisations de la maladie athéromateuse",
+        "Réaliser un examen vasculaire des membres inférieurs",
+        "Proposer les examens complémentaires de première intention (mesure d'IPS, écho-Doppler)",
+        "Expliquer la démarche diagnostique et la prise en charge médicale"
+      ],
+      "interdits": [
+        "Ne pas prescrire de vasodilatateurs périphériques inefficaces",
+        "Ne pas proposer de revascularisation chirurgicale d'emblée sans bilan"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Sonde Doppler de poche pour mesure de pression de cheville",
+        "Écho-Doppler artériel"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Martin",
+        "nom": "Lambert",
+        "age": 72,
+        "sexe": "M"
+      },
+      "personnalite": "Patient calme, fumeur de longue date, banalisant sa gêne à la marche qu'il attribuait à l'âge.",
+      "phraseOuverture": "Bonjour docteur, depuis quelques mois, quand je marche plus de 200 mètres, j'ai comme une crampe intense dans le mollet droit qui m'oblige à m'arrêter.",
+      "infosVolontaires": [
+        "Crampe au mollet droit à la marche pour un périmètre d'environ 200-300 mètres",
+        "Soulagement complet en 2 à 3 minutes après arrêt de la marche"
+      ],
+      "infosSiDemandees": [
+        "Tabagisme important évalué à 40 paquets-années",
+        "Hypertension artérielle et dyslipidémie traitées",
+        "Absence de douleur de décubitus nocturne pour le moment"
+      ],
+      "infosCachees": [
+        "A parfois du mal à lacer ses chaussures le matin à cause de raideurs"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est une sciatique ou de l'arthrose du genou ?",
+        "Est-ce que je risque d'être amputé si je continue à marcher ?"
+      ],
+      "reactions": {
+        "brutal": "Vous me parlez d'artères bouchées, c'est si grave que ça ?",
+        "silence": "Docteur, vous palpez mes pieds, vous sentez quelque chose ?",
+        "jargon": "Pardon docteur, qu'est-ce que vous appelez « IPS » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaître une claudication intermittente artérielle typique (stade 2 de Leriche et Fontaine), palper tous les pouls et prescrire l'IPS et l'écho-Doppler artériel.",
+      "erreursRedhibitoires": [
+        "Ne pas palper l'ensemble des pouls des membres inférieurs (fémoraux, poplités, tibiaux postérieurs, pédieux)",
+        "Oublier l'arrêt impératif et définitif du tabac",
+        "Méconnaître la recherche des autres territoires athéromateux (coronaires, carotides, aorte)"
+      ],
+      "elementsAttendus": [
+        "Caractérisation du périmètre de marche et de la topographie de la claudication",
+        "Recherche des FDRCV majeurs (tabagisme 40 PA)",
+        "Palpation des pouls distaux et auscultation des trajets artériels",
+        "Prescription de l'IPS et écho-Doppler artériel des membres inférieurs",
+        "Mesures de prévention cardiovasculaire globale (arrêt tabac, statine, antiagrégant, marche quotidienne)"
+      ],
+      "grille": [
+        {
+          "id": "eval_claudication",
+          "label": "Caractérise la claudication intermittente et évalue le périmètre de marche",
+          "weight": 1
+        },
+        {
+          "id": "eval_pouls",
+          "label": "Palpe les pouls périphériques et recherche des souffles vasculaires",
+          "weight": 1
+        },
+        {
+          "id": "eval_ips_doppler",
+          "label": "Prescrit la mesure de l'IPS et un écho-Doppler artériel",
+          "weight": 1
+        },
+        {
+          "id": "eval_autres_territoires",
+          "label": "Recherche les atteintes cardiovasculaires associées (carotides, cœur)",
+          "weight": 1
+        },
+        {
+          "id": "eval_traitement_medical",
+          "label": "Pose l'indication de l'arrêt du tabac, statine, antiagrégant et marche régulière",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai mal au mollet droit quand je marche, ça fait quelques mois maintenant et c'est de plus en plus gênant.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Écho-Doppler artériel, IPS (Index de Pression Systolique))"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Artériopathie oblitérante des membres inférieurs (AOMI))",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG"
+    ],
+    "utiles": [
+      "Echographie cardiaque",
+      "Echographie doppler des membres inférieurs",
+      "Bilan sanguin"
+    ],
+    "inutiles": [
+      "Test de marche",
+      "Angioscanner",
+      "IPS"
+    ],
+    "dangereux": [
+      "Radio thorax",
+      "IRM cardiaque",
+      "Scanner cardiaque"
+    ]
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler artériel + IPS (Index de Pression Systolique). Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Artériopathie oblitérante des membres inférieurs (AOMI) vs Artérite des membres inférieurs. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Artérite des membres inférieurs",
+    "Claudication artérielle"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers une claudication intermittente",
+    "Effectuer un examen clinique cardiovasculaire des membres inférieurs",
+    "Proposer un diagnostic étiologique"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Douleur au mollet à la marche"
+}

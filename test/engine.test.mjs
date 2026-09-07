@@ -45,9 +45,9 @@ test('MedGameEngine — Case Management & Vitals', async (t) => {
     });
 
     await t.test('startCase should initialize case and shims', async () => {
-        const state = await engine.startCase('CARDIO_angor_stable.json');
+        const state = await engine.startCase('cardio_douleur_thoracique_mme_bennet.json');
         assert.equal(state.success, true);
-        assert.equal(state.caseId, 'cardio_angor_stable');
+        assert.equal(state.caseId, 'cardio_douleur_thoracique_mme_bennet');
         assert.equal(state.patient.nom, 'Bennet');
         assert.equal(state.patient.age, 58);
         assert.equal(state.vitals.heartRate, 78);
@@ -56,8 +56,15 @@ test('MedGameEngine — Case Management & Vitals', async (t) => {
         assert.equal(state.isFinished, false);
     });
 
+    await t.test('startCase backward compatibility alias resolves legacy case files', async () => {
+        const state = await engine.startCase('CARDIO_angor_stable.json');
+        assert.equal(state.success, true);
+        assert.equal(state.caseId, 'cardio_douleur_thoracique_mme_bennet');
+        assert.equal(state.patient.nom, 'Bennet');
+    });
+
     await t.test('updateVitals should follow dynamics and physiological changes', async () => {
-        await engine.startCase('CARDIO_angor_stable.json');
+        await engine.startCase('cardio_douleur_thoracique_mme_bennet.json');
         
         // Vitals before
         const hrBefore = engine.vitals.heartRate;
@@ -75,7 +82,7 @@ test('MedGameEngine — Case Management & Vitals', async (t) => {
 
 test('MedGameEngine — Semio Locks & Solving', async (t) => {
     const engine = new MedGameEngine();
-    await engine.startCase('CARDIO_angor_stable.json');
+    await engine.startCase('cardio_douleur_thoracique_mme_bennet.json');
 
     await t.test('locks should initially be locked and target fields obscured', async () => {
         // Order ECG to see results
@@ -101,7 +108,7 @@ test('MedGameEngine — Semio Locks & Solving', async (t) => {
 test('MedGameEngine — LLM Chat & GM Responses', async (t) => {
     const engine = new MedGameEngine();
     engine.apiKey = 'test-key'; // Activate LLM pathway
-    await engine.startCase('CARDIO_angor_stable.json');
+    await engine.startCase('cardio_douleur_thoracique_mme_bennet.json');
 
     await t.test('LLM chat should return relevant case responses', async () => {
         setupMockFetch("Bonjour docteur. J'ai une douleur thoracique...");
@@ -114,7 +121,7 @@ test('MedGameEngine — LLM Chat & GM Responses', async (t) => {
 
 test('MedGameEngine — Full Game Flow & Scoring', async (t) => {
     const engine = new MedGameEngine();
-    await engine.startCase('CARDIO_angor_stable.json');
+    await engine.startCase('cardio_douleur_thoracique_mme_bennet.json');
 
     await t.test('should prescribe, order exams, select diagnostic and submit for score', async () => {
         // Prescribe correct treatments
@@ -139,7 +146,7 @@ test('MedGameEngine — Full Game Flow & Scoring', async (t) => {
     await t.test('should auto-order exams and auto-prescribe treatments mentioned in chat via LLM output', async () => {
         const testEngine = new MedGameEngine();
         testEngine.apiKey = 'test-key'; // Activate LLM pathway
-        await testEngine.startCase('CARDIO_angor_stable.json');
+        await testEngine.startCase('cardio_douleur_thoracique_mme_bennet.json');
 
         // Check initial state
         assert.deepEqual(testEngine.activeExams, []);
@@ -161,7 +168,7 @@ test('MedGameEngine — Full Game Flow & Scoring', async (t) => {
 
     await t.test('should auto-submit the game when time runs out in getState()', async () => {
         const testEngine = new MedGameEngine();
-        await testEngine.startCase('CARDIO_angor_stable.json');
+        await testEngine.startCase('cardio_douleur_thoracique_mme_bennet.json');
         
         assert.equal(testEngine.isFinished, false);
         

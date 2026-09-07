@@ -664,7 +664,8 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             patientInitials.textContent = initials;
         }
 
-        displayValue(motifHospitalisation, currentCase.interrogatoire.motifHospitalisation, 'interrogatoire.motifHospitalisation');
+        const motifText = currentCase.motif || currentCase.ecos?.titre || currentCase.interrogatoire?.motifHospitalisation || '';
+        displayValue(motifHospitalisation, motifText, 'interrogatoire.motifHospitalisation');
 
         const llmMode = applyLLMModeUI();
         // Rendu IAO (toujours, mais visible via CSS seulement en llm-mode)
