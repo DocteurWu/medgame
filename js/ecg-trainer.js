@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elCasePatient = document.getElementById('case-patient');
     const elCaseCategory = document.getElementById('case-category');
     const elCaseDifficulty = document.getElementById('case-difficulty');
+    const elSignalSource = document.getElementById('case-signal-source');
     const elCaseSelect = document.getElementById('ecg-case-select');
     const elPickerGroup = document.getElementById('ecg-picker-group');
     
@@ -89,7 +90,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Callback pour mise à jour live de la réglette
+    function updateSignalBadge(signal, currentCase) {
+        if (!elSignalSource) return;
+        const c = currentCase || state.cases[state.currentCaseIndex];
+        if (!c) {
+            elSignalSource.style.display = 'none';
+            return;
+        }
+
+        if (signal || c.signalFile) {
+            elSignalSource.style.display = 'inline-flex';
+            elSignalSource.className = 'badge-diff real-ecg';
+            elSignalSource.innerHTML = '<i class="fas fa-wave-square"></i> PTB-XL (Tracé Réel)';
+            elSignalSource.title = c.signalSource || 'PhysioNet PTB-XL (CC-BY 4.0)';
+        } else {
+            elSignalSource.style.display = 'inline-flex';
+            elSignalSource.className = 'badge-diff sim-ecg';
+            elSignalSource.innerHTML = '<i class="fas fa-microchip"></i> Simulation';
+            elSignalSource.title = 'Modélisation vectorielle haute fidélité';
+        }
+    }
+
+    renderer.onSignalLoaded = (signal, currentCase) => {
+        if (state.mode === 'learn') {
+            updateSignalBadge(signal, currentCase);
+        }
+    };
+
+    // Callback pour mise à jour live de la réglette avec Bazett QTc
     renderer.onCaliperChange = (metrics) => {
         if (!caliperReadout) return;
         if (!metrics) {
@@ -99,8 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
         caliperReadout.innerHTML = `
             <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
                 <span><strong>Δt :</strong> ${metrics.durationMs} ms (${metrics.deltaMmT} mm)</span>
-                <span><strong>ΔV :</strong> ${metrics.voltageMv} mV</span>
+                <span><strong>ΔV :</strong> ${metrics.voltageMv} mV (${metrics.deltaMmV} mm)</span>
                 ${metrics.estimatedHr ? `<span style="color:#00f2fe;"><strong>FC estimée :</strong> ${metrics.estimatedHr} bpm</span>` : ''}
+                ${metrics.qtcBazett ? `<span style="color:#ffd700;"><strong>QTc (Bazett) :</strong> ${metrics.qtcBazett} ms</span>` : ''}
             </div>
         `;
     };
@@ -120,6 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
             elCaseDifficulty.textContent = c.difficulty.toUpperCase();
             elCaseDifficulty.className = `badge-diff ${c.difficulty}`;
         }
+
+        // Mettre à jour le badge de source (PTB-XL vs Simulation)
+        updateSignalBadge(renderer.currentSignal, c);
 
         // Mettre à jour le sélecteur déroulant
         renderCaseSelector();
@@ -292,6 +324,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elCaseDifficulty) {
             elCaseDifficulty.textContent = "ÉVALUATION";
             elCaseDifficulty.className = 'badge-diff urgence';
+        }
+        if (elSignalSource) {
+            elSignalSource.style.display = 'none';
         }
 
         renderer.setCase(c);

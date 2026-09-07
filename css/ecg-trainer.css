@@ -284,6 +284,8 @@ body {
 .badge-diff.intermediaire { background: rgba(241, 196, 15, 0.18); color: #f1c40f; border: 1px solid #f1c40f; }
 .badge-diff.urgence { background: rgba(255, 71, 87, 0.18); color: #ff4757; border: 1px solid #ff4757; }
 .badge-diff.expert { background: rgba(162, 155, 254, 0.18); color: #a29bfe; border: 1px solid #a29bfe; }
+.badge-diff.real-ecg { background: rgba(255, 215, 0, 0.16); color: #ffd700; border: 1px solid #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+.badge-diff.sim-ecg { background: rgba(149, 165, 166, 0.15); color: #bdc3c7; border: 1px solid rgba(149, 165, 166, 0.4); }
 
 /* ── Cadre Canvas ECG ───────────────────────────────────────────── */
 .ecg-canvas-wrapper {
