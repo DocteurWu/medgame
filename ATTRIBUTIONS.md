@@ -29,3 +29,25 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
 * **Licence** : [MIT License](https://github.com/Torabiy/HLS-CMDS/blob/main/LICENSE)
 * **Ressources intégrées** : 100 enregistrements audio PCM WAV mono 16-bit 4000 Hz dans `assets/audio/auscultation/` (50 bruits cardiaques, 50 bruits respiratoires).
 
+## 5. Dataset Électrocardiographique PTB-XL (ECG Academy 12 Dérivations)
+* **Nom** : PTB-XL, a large publicly available electrocardiography dataset
+* **Auteurs** : Patrick Wagner, Nils Strodthoff, Ralf-Dieter Bousseljot, Dieter Kreiseler, Fatima I. Lunze, Wojciech Samek, Tobias Schaeffter (Physikalisch-Technische Bundesanstalt & Charité Universitätsmedizin Berlin)
+* **Publication** : Scientific Data (Nature), 2020
+* **DOI** : [10.1038/s41597-020-0386-4](https://doi.org/10.1038/s41597-020-0386-4)
+* **Dépôt PhysioNet** : [PhysioNet PTB-XL v1.0.3](https://physionet.org/content/ptb-xl/1.0.3/)
+* **Licence** : [Creative Commons Attribution 4.0 International (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/)
+* **Ressources intégrées** : 12 tracés cliniques réels 12 dérivations convertis en JSON 100 Hz (10 secondes, amplitude en mV) dans `assets/data/ecg/` :
+  - `ecg_normal_sinus.json` (Record `00001_lr`)
+  - `ecg_stemi_ant.json` (Record `00184_lr`)
+  - `ecg_stemi_inf.json` (Record `00257_lr`)
+  - `ecg_afib.json` (Record `04117_lr`)
+  - `ecg_flutter.json` (Record `00018_lr`)
+  - `ecg_bav3.json` (Record `00959_lr`)
+  - `ecg_rbbb.json` (Record `00195_lr`)
+  - `ecg_lbbb.json` (Record `00180_lr`)
+  - `ecg_bav1.json` (Record `00102_lr`)
+  - `ecg_wpw.json` (Record `02145_lr`)
+  - `ecg_lvh.json` (Record `00138_lr`)
+  - `ecg_wellens.json` (Record `00260_lr`)
+
+

@@ -5,31 +5,42 @@
  * - Vitesse de défilement : 25 mm/s (1 petit carreau d'1 mm = 40 ms ; 1 grand carreau de 5 mm = 200 ms)
  * - Étalonnage en amplitude : 10 mm/mV (1 petit carreau d'1 mm = 0.1 mV ; 1 grand carreau de 5 mm = 0.5 mV)
  *
+ * Architecture hybride :
+ * - Signaux cliniques réels 12 dérivations (PhysioNet PTB-XL, CC-BY 4.0, 100 Hz)
+ * - Moteur de synthèse morphologique vectorielle haute fidélité (fallback offline complet)
+ *
  * Disposition 12 Dérivations :
- * - 4 colonnes x 3 lignes (DI-DII-DIII, aVR-aVL-aVF, V1-V2-V3, V4-V5-V6)
- * - 1 bande de rythme longue (DII long) en bas sur toute la largeur
+ * - 4 colonnes x 3 lignes (DI-DII-DIII, aVR-aVL-aVF, V1-V2-V3, V4-V5-V6) à 2.5s chacune
+ * - 1 bande de rythme continue (DII long 10s) en bas sur toute la largeur
  *
  * Outils interactifs :
  * - Réglette / Caliper de mesure temporelle (ms) et d'amplitude (mV)
+ * - Calcul automatique de l'intervalle QTc corrigé selon la formule de Bazett (QT / √RR)
  * - Calculateur instantané de Fréquence Cardiaque (FC)
- * - Loupe de zoom haute précision
+ * - Bascule thème papier millimétré classique (rose) / thème néon sombre
  */
 
 class ECGCanvasRenderer {
     constructor(canvas, options = {}) {
         this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
+        this.ctx = canvas ? canvas.getContext('2d') : null;
         this.options = Object.assign({
-            mmPx: 4, // 4 pixels = 1 mm standard (rétine/haute résolution possible)
+            mmPx: 4, // 4 pixels = 1 mm standard
             theme: 'classic', // 'classic' (papier rose) ou 'neon' (sombre MedGame)
             showGrid: true,
             showCaliper: false,
-            caliperMode: 'time' // 'time', 'voltage' ou 'both'
+            caliperMode: 'both' // 'time', 'voltage' ou 'both'
         }, options);
 
         this.currentCase = null;
+        this.currentSignal = null;
+        this.signalCache = new Map();
         this.timeOffset = 0;
         this.zoom = 1.0;
+
+        // Callbacks
+        this.onSignalLoaded = null;
+        this.onCaliperChange = null;
 
         // Caliper (coordonnées en pixels sur le canvas)
         this.caliper = {
@@ -41,11 +52,55 @@ class ECGCanvasRenderer {
             dragging: null // 't1', 't2', 'v1', 'v2'
         };
 
-        this._setupEvents();
+        if (this.canvas) {
+            this._setupEvents();
+        }
     }
 
     setCase(ecgCase) {
         this.currentCase = ecgCase;
+        this.currentSignal = null;
+
+        if (ecgCase && ecgCase.signalFile) {
+            if (this.signalCache.has(ecgCase.signalFile)) {
+                this.currentSignal = this.signalCache.get(ecgCase.signalFile);
+                this.render();
+                if (typeof this.onSignalLoaded === 'function') {
+                    this.onSignalLoaded(this.currentSignal, ecgCase);
+                }
+            } else if (typeof fetch !== 'undefined') {
+                fetch(ecgCase.signalFile)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        return res.json();
+                    })
+                    .then(signalData => {
+                        this.signalCache.set(ecgCase.signalFile, signalData);
+                        if (this.currentCase === ecgCase) {
+                            this.currentSignal = signalData;
+                            this.render();
+                            if (typeof this.onSignalLoaded === 'function') {
+                                this.onSignalLoaded(this.currentSignal, ecgCase);
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('Real ECG signal fetch failed, fallback to synthesis:', err.message);
+                        if (this.currentCase === ecgCase) {
+                            this.currentSignal = null;
+                            this.render();
+                            if (typeof this.onSignalLoaded === 'function') {
+                                this.onSignalLoaded(null, ecgCase);
+                            }
+                        }
+                    });
+            }
+        } else {
+            if (typeof this.onSignalLoaded === 'function') {
+                this.onSignalLoaded(null, ecgCase);
+            }
+        }
+
         this.render();
     }
 
@@ -73,20 +128,29 @@ class ECGCanvasRenderer {
         const durationMs = Math.round(deltaMmT * 40);
         // 1 mm = 0.1 mV (à 10 mm/mV)
         const voltageMv = +(deltaMmV * 0.1).toFixed(2);
-        // FC estimée si intervalle R-R mesuré
-        const estimatedHr = (durationMs > 100 && durationMs < 3000) ? Math.round(60000 / durationMs) : null;
+        // FC estimée si intervalle R-R mesuré (150 ms à 3000 ms)
+        const estimatedHr = (durationMs >= 150 && durationMs <= 3000) ? Math.round(60000 / durationMs) : null;
+
+        // Calcul automatique QTc selon la formule de Bazett : QTc = QT / sqrt(RR_sec)
+        let qtcBazett = null;
+        const currentHr = this.currentCase?.metrics?.heartRate || (estimatedHr || 75);
+        if (durationMs >= 180 && durationMs <= 750) {
+            const rrSec = 60 / currentHr;
+            qtcBazett = Math.round(durationMs / Math.sqrt(rrSec));
+        }
 
         return {
             durationMs,
             voltageMv,
             estimatedHr,
+            qtcBazett,
             deltaMmT: +deltaMmT.toFixed(1),
             deltaMmV: +deltaMmV.toFixed(1)
         };
     }
 
     render() {
-        if (!this.canvas) return;
+        if (!this.canvas || !this.ctx) return;
         const ctx = this.ctx;
         const w = this.canvas.width;
         const h = this.canvas.height;
@@ -158,7 +222,7 @@ class ECGCanvasRenderer {
         ctx.lineJoin = 'round';
         ctx.lineCap = 'round';
 
-        // Layout : 4 colonnes x 3 lignes pour le haut, + 1 bande DII long en bas
+        // Layout standard : 4 colonnes x 3 lignes (haut 70%), + 1 bande DII long (bas 30%)
         const colWidth = w / 4;
         const topMargin = 32 * this.zoom;
         const topSectionHeight = h * 0.70 - topMargin;
@@ -178,7 +242,7 @@ class ECGCanvasRenderer {
                 const leadName = leadMatrix[r][c];
                 const startX = c * colWidth;
                 const centerY = topMargin + r * leadRowHeight + leadRowHeight * 0.58;
-                const leadData = ecg.morphology.leads[leadName] || {};
+                const leadData = (ecg.morphology && ecg.morphology.leads && ecg.morphology.leads[leadName]) || {};
 
                 // Libellé de la dérivation avec fond discret
                 ctx.fillStyle = (this.options.theme === 'classic') ? '#c0392b' : '#ff7675';
@@ -191,20 +255,20 @@ class ECGCanvasRenderer {
                 // Tracé d'onde
                 const traceStartX = startX + 28 * this.zoom;
                 const traceWidth = colWidth - 32 * this.zoom;
-                this._drawLeadTrace(ctx, traceStartX, centerY, traceWidth, mm, leadData, ecg, leadName);
+                this._drawLeadTrace(ctx, traceStartX, centerY, traceWidth, mm, leadData, ecg, leadName, false, c);
             }
         }
 
-        // Dessiner la bande de rythme DII Long (sur toute la largeur)
+        // Dessiner la bande de rythme DII Long (sur toute la largeur, 10 secondes continues)
         ctx.fillStyle = (this.options.theme === 'classic') ? '#c0392b' : '#ff7675';
         ctx.font = `bold ${Math.round(13 * this.zoom)}px 'Outfit', sans-serif`;
-        ctx.fillText('DII (Rythme Continu)', 12 * this.zoom, rhythmY - rhythmHeight * 0.36);
+        ctx.fillText('DII (Rythme Continu 10s)', 12 * this.zoom, rhythmY - rhythmHeight * 0.36);
 
         this._drawCalibrationPulse(ctx, 12 * this.zoom, rhythmY, mm);
         const longStartX = 32 * this.zoom;
         const longWidth = w - 40 * this.zoom;
-        const d2Data = ecg.morphology.leads['DII'] || {};
-        this._drawLeadTrace(ctx, longStartX, rhythmY, longWidth, mm, d2Data, ecg, 'DII', true);
+        const d2Data = (ecg.morphology && ecg.morphology.leads && ecg.morphology.leads['DII']) || {};
+        this._drawLeadTrace(ctx, longStartX, rhythmY, longWidth, mm, d2Data, ecg, 'DII', true, 0);
 
         // Séparateurs de colonnes
         ctx.strokeStyle = (this.options.theme === 'classic') ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
@@ -239,8 +303,46 @@ class ECGCanvasRenderer {
         ctx.stroke();
     }
 
-    _drawLeadTrace(ctx, startX, baselineY, width, mm, lead, ecg, leadName, isLong = false) {
-        const hr = ecg.metrics.heartRate || 75;
+    _drawLeadTrace(ctx, startX, baselineY, width, mm, lead, ecg, leadName, isLong = false, colIndex = 0) {
+        // 1. Branche Tracé Réel si disponible
+        const realLeads = this.currentSignal && this.currentSignal.leads;
+        const realSamples = realLeads && realLeads[leadName];
+        if (realSamples && Array.isArray(realSamples) && realSamples.length > 0) {
+            const sampleRate = this.currentSignal.sampleRate || 100;
+            // 25 mm/s standard : 1 sample à 100 Hz = 0.01 s = 0.25 mm
+            const dx = (25 / sampleRate) * mm;
+
+            let startIdx = 0;
+            let endIdx = realSamples.length;
+
+            if (!isLong) {
+                // 4 colonnes de 2.5 secondes chacune (250 échantillons à 100 Hz)
+                const samplesPerCol = Math.round(2.5 * sampleRate);
+                startIdx = colIndex * samplesPerCol;
+                endIdx = Math.min(realSamples.length, startIdx + samplesPerCol);
+            } else {
+                startIdx = 0;
+                endIdx = Math.min(realSamples.length, Math.round(10.0 * sampleRate));
+            }
+
+            ctx.beginPath();
+            for (let i = startIdx; i < endIdx; i++) {
+                const px = startX + (i - startIdx) * dx;
+                if (px > startX + width) break;
+                // Étalonnage en amplitude standard : 10 mm / mV
+                const py = baselineY - (realSamples[i] * 10 * mm);
+                if (i === startIdx) {
+                    ctx.moveTo(px, py);
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+            ctx.stroke();
+            return;
+        }
+
+        // 2. Branche Synthèse Morphologique Vectorielle (Fallback offline de haute fidélité)
+        const hr = (ecg.metrics && ecg.metrics.heartRate) || 75;
         // 25 mm/s : 1 seconde = 25 mm. Cycle cardiaque en mm : (60 / HR) * 25 * mm
         const cycleMm = (60 / hr) * 25;
         const cyclePx = cycleMm * mm;
@@ -252,36 +354,53 @@ class ECGCanvasRenderer {
 
         for (let i = 0; i < numCycles; i++) {
             let cycleStartX = startX + i * cyclePx;
-            if (ecg.morphology.irregularity) {
-                // Irregularité aléatoire mais déterministe pour FA
-                const jitter = (Math.sin(i * 12.3 + leadName.charCodeAt(0)) * 0.35) * cyclePx;
+            const morph = ecg.morphology || {};
+
+            if (morph.irregularity) {
+                // Irregularité aléatoire mais déterministe pour FA / BAV
+                const jitter = (Math.sin(i * 12.3 + leadName.charCodeAt(0)) * morph.irregularity) * cyclePx;
                 cycleStartX += jitter;
             }
 
-            // Générer les points du cycle cardiaque P - Q - R - S - ST - T
-            this._generateCardiacCycle(ctx, cycleStartX, baselineY, cyclePx, mm, lead, ecg, first);
+            // Générer les points du cycle cardiaque
+            this._generateCardiacCycle(ctx, cycleStartX, baselineY, cyclePx, mm, lead, ecg, first, i);
             first = false;
         }
 
         ctx.stroke();
     }
 
-    _generateCardiacCycle(ctx, startX, baseY, cyclePx, mm, lead, ecg, isFirst) {
+    _generateCardiacCycle(ctx, startX, baseY, cyclePx, mm, lead, ecg, isFirst, cycleIndex = 0) {
         // Amplitude 1 mV = 10 mm * mm
         const mv = 10 * mm;
-        const morph = ecg.morphology;
+        const morph = ecg.morphology || {};
 
         // Paramètres de morphologie du cas
-        const pAmp = (lead.p !== undefined ? lead.p : morph.pAmp) * mv;
+        const pAmp = (lead.p !== undefined ? lead.p : (morph.pAmp || 0.15)) * mv;
         const qAmp = (lead.q !== undefined ? lead.q : -0.05) * mv;
         const rAmp = (lead.r !== undefined ? lead.r : 1.0) * mv;
         const sAmp = (lead.s !== undefined ? lead.s : -0.2) * mv;
-        const stElev = (lead.st !== undefined ? lead.st : morph.stElev) * mv;
-        const tAmp = (lead.t !== undefined ? lead.t : morph.tAmp) * mv;
+        const stElev = (lead.st !== undefined ? lead.st : (morph.stElev || 0)) * mv;
+        const tAmp = (lead.t !== undefined ? lead.t : (morph.tAmp || 0.35)) * mv;
         const pqDep = (lead.pq !== undefined ? lead.pq : 0) * mv;
 
         const pDur = (morph.pDur || 0.08) * 25 * mm;
-        const prDur = (morph.prDur || 0.16) * 25 * mm;
+        let prDur = (morph.prDur || 0.16) * 25 * mm;
+
+        // BAV 2 Mobitz 1 (Wenckebach) : allongement progressif du PR
+        if (morph.isWenckebach) {
+            const stepInCycle = cycleIndex % 4;
+            if (stepInCycle === 3) {
+                // Onde P bloquée sans QRS !
+                let x = startX;
+                if (isFirst) ctx.moveTo(x, baseY); else ctx.lineTo(x, baseY);
+                ctx.quadraticCurveTo(x + pDur / 2, baseY - pAmp, x + pDur, baseY);
+                ctx.lineTo(startX + cyclePx, baseY);
+                return;
+            }
+            prDur += stepInCycle * 0.04 * 25 * mm;
+        }
+
         const qrsDur = (morph.qrsDur || 0.085) * 25 * mm;
         const tDur = (morph.tDur || 0.18) * 25 * mm;
 
@@ -293,23 +412,23 @@ class ECGCanvasRenderer {
             ctx.lineTo(x, baseY);
         }
 
-        // Cas spécial Flutter (Ondes en dents de scie F)
+        // Cas spécial Flutter (Ondes en dents de scie F à 300 bpm)
         if (morph.isFlutter) {
-            const fCyclePx = (60 / 300) * 25 * mm; // 300 bpm
+            const fCyclePx = (60 / 300) * 25 * mm;
             for (let fx = 0; fx < cyclePx; fx += fCyclePx) {
                 ctx.lineTo(x + fx + fCyclePx * 0.6, baseY - 0.25 * mv * (lead.t < 0 ? -1 : 1));
                 ctx.lineTo(x + fx + fCyclePx, baseY);
             }
         }
 
-        // Cas spécial Fibrillation atriale (trémulation de base)
+        // Cas spécial Fibrillation atriale (trémulation de la ligne de base)
         if (morph.isAfib) {
             for (let step = 0; step < prDur; step += 3 * mm) {
                 const noise = (Math.sin(step * 15 + x) * 0.04) * mv;
                 ctx.lineTo(x + step, baseY + noise);
             }
         } else if (!morph.isVt && !morph.isTorsades) {
-            // 1. Onde P normale
+            // 1. Onde P
             const pCenter = x + pDur / 2;
             ctx.quadraticCurveTo(pCenter, baseY - pAmp, x + pDur, baseY);
 
@@ -321,25 +440,36 @@ class ECGCanvasRenderer {
 
         // 2. Complexe QRS
         if (morph.isVt) {
-            // QRS large bizarre de tachycardie ventriculaire
+            // QRS large et empâté de tachycardie ventriculaire
             ctx.bezierCurveTo(
                 x + qrsDur * 0.3, baseY - rAmp * 0.8,
                 x + qrsDur * 0.6, baseY - rAmp * 1.2,
                 x + qrsDur, baseY + sAmp
             );
         } else if (morph.isTorsades) {
-            // Torsade polymorphe
+            // Torsade polymorphe hélicoïdale
             const envelope = Math.sin(startX * 0.015) * 1.5;
             ctx.lineTo(x + qrsDur * 0.3, baseY - rAmp * envelope);
             ctx.lineTo(x + qrsDur * 0.7, baseY + rAmp * envelope);
             ctx.lineTo(x + qrsDur, baseY);
         } else if (morph.isLbbb) {
-            // BBG : Onde R large encochée
+            // BBG : Onde R large encochée en plateau
             ctx.lineTo(x + qrsDur * 0.15, baseY - qAmp);
             ctx.lineTo(x + qrsDur * 0.45, baseY - rAmp * 0.9);
             ctx.lineTo(x + qrsDur * 0.60, baseY - rAmp * 0.75); // Encochure
             ctx.lineTo(x + qrsDur * 0.80, baseY - rAmp);
             ctx.lineTo(x + qrsDur, baseY - sAmp);
+        } else if (morph.isRbbb) {
+            // BBD : rsR' en V1 (oreilles de lapin) ou onde S traînante
+            ctx.lineTo(x + qrsDur * 0.20, baseY - rAmp * 0.4);
+            ctx.lineTo(x + qrsDur * 0.40, baseY - sAmp * 0.5);
+            ctx.lineTo(x + qrsDur * 0.75, baseY - rAmp);
+            ctx.lineTo(x + qrsDur, baseY + sAmp);
+        } else if (morph.isWpw) {
+            // WPW : onde delta (empâtement initial)
+            ctx.lineTo(x + qrsDur * 0.40, baseY - rAmp * 0.35); // Onde delta
+            ctx.lineTo(x + qrsDur * 0.70, baseY - rAmp);
+            ctx.lineTo(x + qrsDur, baseY + sAmp);
         } else {
             // QRS standard
             ctx.lineTo(x + qrsDur * 0.15, baseY - qAmp);
@@ -358,7 +488,25 @@ class ECGCanvasRenderer {
         const tEnd = stEnd + tDur;
 
         if (morph.isHyperK) {
-            // Onde T en tente très pointue et symétrique
+            // Onde T en tente très pointue, haute et symétrique
+            ctx.lineTo(tCenter, baseY - tAmp);
+            ctx.lineTo(tEnd, baseY);
+        } else if (morph.isBrugada) {
+            // Brugada type 1 : ST en dôme convexe descendant vers T négative
+            ctx.bezierCurveTo(
+                stEnd + (tCenter - stEnd) * 0.5, baseY - stElev * 1.2,
+                tCenter, baseY - stElev * 0.8,
+                tEnd, baseY - tAmp
+            );
+            ctx.lineTo(tEnd + 0.05 * 25 * mm, baseY);
+        } else if (morph.isHypoK) {
+            // Hypokaliémie : T aplatie suivie d'une onde U proéminente
+            ctx.quadraticCurveTo(tCenter, baseY - tAmp, tEnd, baseY);
+            const uCenter = tEnd + 0.08 * 25 * mm;
+            const uEnd = tEnd + 0.16 * 25 * mm;
+            ctx.quadraticCurveTo(uCenter, baseY - 0.25 * mv, uEnd, baseY);
+        } else if (morph.isDeWinter) {
+            // de Winter : sous-décalage ascendant au point J se terminant par une T géante
             ctx.lineTo(tCenter, baseY - tAmp);
             ctx.lineTo(tEnd, baseY);
         } else {
@@ -421,29 +569,34 @@ class ECGCanvasRenderer {
 
         // Badge d'affichage des mesures en direct
         if (metrics) {
-            const badgeX = Math.min(Math.max((c.t1 + c.t2) / 2, 90), w - 90);
-            const badgeY = Math.max(midY - 30, 45);
+            const badgeW = metrics.qtcBazett ? 220 : 180;
+            const badgeX = Math.min(Math.max((c.t1 + c.t2) / 2, badgeW / 2 + 10), w - badgeW / 2 - 10);
+            const badgeY = Math.max(midY - 32, 45);
 
             ctx.fillStyle = 'rgba(10, 15, 35, 0.92)';
             ctx.strokeStyle = '#ffd700';
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.roundRect(badgeX - 85, badgeY - 22, 170, 44, 8);
+            ctx.roundRect(badgeX - badgeW / 2, badgeY - 24, badgeW, 48, 8);
             ctx.fill();
             ctx.stroke();
 
             ctx.fillStyle = '#ffd700';
             ctx.font = 'bold 12px "Outfit", sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText(`Δt = ${metrics.durationMs} ms (${metrics.deltaMmT} mm)`, badgeX, badgeY - 5);
+            let line1 = `Δt = ${metrics.durationMs} ms (${metrics.deltaMmT} mm)`;
+            if (metrics.qtcBazett) {
+                line1 += ` • QTc ≈ ${metrics.qtcBazett} ms`;
+            }
+            ctx.fillText(line1, badgeX, badgeY - 5);
 
             ctx.fillStyle = '#00f2fe';
             ctx.font = '11px "Inter", sans-serif';
-            let extra = `ΔV = ${metrics.voltageMv} mV`;
+            let extra = `ΔV = ${metrics.voltageMv} mV (${metrics.deltaMmV} mm)`;
             if (metrics.estimatedHr) {
                 extra += ` • FC ≈ ${metrics.estimatedHr} bpm`;
             }
-            ctx.fillText(extra, badgeX, badgeY + 12);
+            ctx.fillText(extra, badgeX, badgeY + 13);
         }
 
         ctx.restore();
@@ -486,7 +639,6 @@ class ECGCanvasRenderer {
             } else if (Math.abs(y - this.caliper.v2) < threshold) {
                 this.caliper.dragging = 'v2';
             } else {
-                // Placer le centre du caliper au clic
                 const dt = Math.abs(this.caliper.t2 - this.caliper.t1) / 2;
                 this.caliper.t1 = Math.max(10, x - dt);
                 this.caliper.t2 = Math.min(canvas.width - 10, x + dt);
@@ -525,4 +677,7 @@ class ECGCanvasRenderer {
 
 if (typeof window !== 'undefined') {
     window.ECGCanvasRenderer = ECGCanvasRenderer;
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { ECGCanvasRenderer };
 }
