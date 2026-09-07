@@ -22,14 +22,14 @@ const { ECGCanvasRenderer } = vmContextCanvas.module.exports;
 const LEAD_NAMES = ['DI', 'DII', 'DIII', 'aVR', 'aVL', 'aVF', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6'];
 
 test('ECG Database Structure & Integrity', async (t) => {
-    await t.test('database contains exactly 20 reference clinical cases', () => {
+    await t.test('database contains exclusively 16 real clinical PTB-XL cases', () => {
         assert.equal(Array.isArray(ECG_DATABASE), true);
-        assert.equal(ECG_DATABASE.length, 20, 'Must have exactly 20 ECG cases');
+        assert.equal(ECG_DATABASE.length, 16, 'Must have exactly 16 ECG cases');
 
         const realCases = ECG_DATABASE.filter(c => c.signalFile);
         const simCases = ECG_DATABASE.filter(c => !c.signalFile);
-        assert.equal(realCases.length, 12, 'Must have 12 cases with real PTB-XL signals');
-        assert.equal(simCases.length, 8, 'Must have 8 high-fidelity simulation cases');
+        assert.equal(realCases.length, 16, 'All 16 cases must have real PTB-XL signals');
+        assert.equal(simCases.length, 0, 'Must have 0 simulation cases (100% real clinical traces)');
     });
 
     await t.test('all cases have valid clinical metadata, metrics, and QCM data', () => {
