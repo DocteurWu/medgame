@@ -1,0 +1,378 @@
+{
+  "id": "neuro_perte_equilibre_dans_obscurite_mme_marie",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Curie",
+    "prenom": "Marie",
+    "age": 58,
+    "sexe": "F",
+    "taille": "1,65 m",
+    "poids": "62 kg",
+    "groupeSanguin": "O-",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Troubles de l'équilibre dans l'obscurité et maladresse des mains",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "modérée"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "faible"
+      },
+      "alimentation": {
+        "regime": "restrictif",
+        "particularites": "régime végétalien strict"
+      },
+      "emploi": {
+        "profession": "Bibliothécaire",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Installation progressive sur plusieurs mois",
+      "evolution": "Aggravation lente des troubles de la marche",
+      "facteursDeclenchants": "Carence nutritionnelle chronique",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": [
+        "Instabilité à la marche",
+        "Chutes à répétition",
+        "Paresthésies des membres inférieurs",
+        "Difficulté à percevoir la position des pieds"
+      ],
+      "remarques": "Tableau évocateur d’une atteinte de la sensibilité profonde"
+    },
+    "verbatim": "Bonjour docteur, je perds l'équilibre dès qu'il fait nuit dans mon couloir. Mes doigts ne sentent plus bien les objets fins, je ne peux plus enfiler d'aiguille."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/75 mmHg",
+      "pouls": "72 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Patiente vigilante, démarche instable et talonnante",
+    "Neurologique": {
+      "conscience": "Normale",
+      "motricite": "Force musculaire conservée",
+      "sensibilite": "Sensibilité superficielle conservée",
+      "sensibilite profonde": "Abolition de la sensibilité vibratoire et proprioceptive aux membres inférieurs",
+      "reflexes osteotendineux": "Présents et symétriques",
+      "coordination equilibre": "Ataxie sensitive marquée",
+      "signes associes": "Signe de Romberg positif, Marche talonnante"
+    }
+  },
+  "availableExams": [
+    "Dosage de la vitamine B12",
+    "IRM médullaire"
+  ],
+  "examResults": {
+    "Dosage de la vitamine B12": "Effondré",
+    "IRM médullaire": "Hypersignal des cordons postérieurs"
+  },
+  "possibleDiagnostics": [
+    "Myélopathie carentielle",
+    "Sclérose combinée de la moelle",
+    "Atteinte dégénérative des cordons postérieurs",
+    "Syndrome sensitif central par atteinte des cordons postérieurs secondaire à une carence en vitamine B12"
+  ],
+  "correctDiagnostic": "Syndrome sensitif central par atteinte des cordons postérieurs secondaire à une carence en vitamine B12",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Supplémentation en vitamine B12",
+    "Rééducation de l’équilibre",
+    "Suivi neurologique"
+  ],
+  "correctTreatments": [
+    "Supplémentation parentérale en vitamine B12"
+  ],
+  "correction": "·  Le syndrome sensitif central touche les voies sensitives centrales\n\n·  Sensibilité profonde atteinte, sensibilité superficielle souvent conservée\n\n·  Ataxie sensitive sans déficit moteur\n\n·  Romberg positif = signe clé\n\n·  IRM médullaire indispensable\n\n·  Carence en B12 = cause classique et réversible si traitée précocement\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Mme Marie Curie, 58 ans, consultant pour des troubles sensitifs profonds des quatre membres évoluant depuis 6 mois avec chutes nocturnes.",
+      "consignesAttendues": [
+        "Identifier les signes d'ataxie proprioceptive centrale et le signe de Romberg franc",
+        "Rechercher une glossite atrophique de Hunter et un syndrome anémique associé",
+        "Dépister les antécédents d'affection auto-immune (gastrite de Biermer, vitiligo)",
+        "Prescrire le dosage sérique de la vitamine B12, l'homocystéine et l'acide méthylmalonique",
+        "Mettre en route la supplémentation parentérale précoce pour stopper l'évolution médullaire"
+      ],
+      "consignesInterdites": [
+        "Ne pas attendre la survenue de paraparésie motrice irréversible pour traiter",
+        "Ne pas prescrire de folates isolés sans vitamine B12"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Diapason",
+        "Marteau réflexe",
+        "Abaisse-langue"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Perte du sens kinesthésique et de la pallesthésie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Signe de Romberg proprioceptif franc",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Dosage B12 effondré et anticorps anti-FI positifs",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Injections intramusculaires de vitamine B12",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face aux difficultés de la patiente",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je perds l'équilibre dès qu'il fait nuit dans mon couloir. Mes doigts ne sentent plus bien les objets fins, je ne peux plus enfiler d'aiguille.",
+      "infosVolontaires": [
+        "Troubles de l'équilibre dans l'obscurité et maladresse des mains",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Patiente rigoureuse, note chaque difficulté, gênée pour boutonner ses chemisiers."
+    },
+    "titre": "Troubles de l'équilibre dans l'obscurité et maladresse des mains",
+    "itemR2C": "Item 93. Déficit moteur et/ou sensitif. Item 274. Anémie et carence B12.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Mme Marie Curie, 58 ans, consultant pour des troubles sensitifs profonds des quatre membres évoluant depuis 6 mois avec chutes nocturnes.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Identifier les signes d'ataxie proprioceptive centrale et le signe de Romberg franc",
+        "Rechercher une glossite atrophique de Hunter et un syndrome anémique associé",
+        "Dépister les antécédents d'affection auto-immune (gastrite de Biermer, vitiligo)",
+        "Prescrire le dosage sérique de la vitamine B12, l'homocystéine et l'acide méthylmalonique",
+        "Mettre en route la supplémentation parentérale précoce pour stopper l'évolution médullaire"
+      ],
+      "interdits": [
+        "Ne pas attendre la survenue de paraparésie motrice irréversible pour traiter",
+        "Ne pas prescrire de folates isolés sans vitamine B12"
+      ],
+      "materielDisponible": [
+        "Diapason",
+        "Marteau réflexe",
+        "Abaisse-langue"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Marie",
+        "nom": "Curie",
+        "age": 58,
+        "sexe": "F"
+      },
+      "personnalite": "Patiente rigoureuse, note chaque difficulté, gênée pour boutonner ses chemisiers.",
+      "phraseOuverture": "Bonjour docteur, je perds l'équilibre dès qu'il fait nuit dans mon couloir. Mes doigts ne sentent plus bien les objets fins, je ne peux plus enfiler d'aiguille.",
+      "infosVolontaires": [
+        "Troubles de l'équilibre dans l'obscurité et maladresse des mains",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une sclérose combinée de la moelle par carence en vitamine B12 (maladie de Biermer), confirmer par biologie et traiter sans délai par B12 IM.",
+      "erreursRedhibitoires": [
+        "Traiter comme un vieillissement normal",
+        "Omettre la gastroscopie de dépistage du cancer gastrique sur Biermer"
+      ],
+      "elementsAttendus": [
+        "Perte du sens kinesthésique et de la pallesthésie",
+        "Signe de Romberg proprioceptif franc",
+        "Dosage B12 effondré et anticorps anti-FI positifs",
+        "Injections intramusculaires de vitamine B12"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Perte du sens kinesthésique et de la pallesthésie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Signe de Romberg proprioceptif franc",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Dosage B12 effondré et anticorps anti-FI positifs",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Injections intramusculaires de vitamine B12",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, je tombe souvent et je n'arrive plus à bien marcher. J'ai l'impression de ne plus savoir où sont mes pieds.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syndrome sensitif central par atteinte des cordons postérieurs secondaire à une carence en vitamine B12)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Dosage de la vitamine B12",
+      "IRM médullaire"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire orienté sur les troubles de l'équilibre et les facteurs de risque nutritionnels",
+    "Effectuer un examen neurologique ciblé sur la sensibilité profonde et la coordination",
+    "Identifier le syndrome sensitif central par atteinte des cordons postérieurs"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Troubles de l'équilibre dans l'obscurité et maladresse des mains"
+}

@@ -1,0 +1,547 @@
+{
+  "id": "urgence_detresse_respiratoire_post_piqure_m_colin",
+  "redacteur": "Dr. Urgence",
+  "patient": {
+    "nom": "Colin",
+    "prenom": "Thomas",
+    "age": 35,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "75 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "paniqué, dyspnéique, phrases de 2-3 mots",
+      "registre": "haletant, familier sous stress",
+      "loquacite": "reserve",
+      "style_parole": "souffle court audible, mots hachés, incapable de phrases longues (SpO2 basse), répond « oui/non » puis un détail",
+      "exemples_phrases": [
+        "J'étou... j'étouffe... la guêpe...",
+        "Ça gratte... partout... aidez-moi..."
+      ],
+      "anxiete": 95,
+      "confiance": 50
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Détresse respiratoire brutale avec œdème du visage après piqûre d'hyménoptère",
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 10 minutes",
+      "evolution": "Rapide",
+      "facteursDeclenchants": "Piqûre de guêpe présumée",
+      "descriptionDouleur": "Pas de douleur spécifique, gêne respiratoire",
+      "symptomesAssocies": [
+        "Sensation de malaise",
+        "Démangeaisons"
+      ],
+      "remarques": "Patient agité."
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": true,
+      "liste": [
+        {
+          "allergene": "Venin d'hyménoptères",
+          "reaction": "Choc anaphylactique (suspicion actuelle)"
+        }
+      ]
+    },
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sportif régulier"
+      },
+      "tabac": {
+        "quantite": "Non-fumeur",
+        "duree": ""
+      },
+      "alcool": {
+        "quantite": "Occasionnelle"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Jardinier",
+        "stress": "Faible"
+      }
+    },
+    "verbatim": "Docteur... piqué par une guêpe... ma gorge se ferme... je ne peux plus respirer..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/50",
+      "pouls": 115,
+      "temperature": 37.2,
+      "saturationO2": 92,
+      "frequenceRespiratoire": 28
+    },
+    "aspectGeneral": "Agité, couvert d'urticaire."
+  },
+  "gameplayConfig": {
+    "startNode": "etat_initial"
+  },
+  "nodes": {
+    "etat_initial": {
+      "id": "etat_initial",
+      "descriptionClinique": "Le patient est agité, couvert d'urticaire. Il respire avec un sifflement (wheezing) audible à distance. Sueurs profuses.",
+      "constantesCibles": {
+        "tension": "90/50",
+        "pouls": 115,
+        "saturationO2": 92,
+        "frequenceRespiratoire": 28
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 45,
+        "nextNode": "etat_degradation1",
+        "motif": "Le choc s'installe, la tension chute faute de traitement rapide."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter de l'Adrénaline 0.5 mg en Intramusculaire (IM) immédiatement",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_guerison",
+          "feedback": "Décision parfaite et prioritaire ! L'adrénaline en intramusculaire (face antéro-latérale de la cuisse) est le traitement de première intention absolue du choc anaphylactique. Elle restaure rapidement la tension artérielle et lève le bronchospasme."
+        },
+        {
+          "label": "Mettre sous Oxygène (Masque Haute Concentration à 15 L/min)",
+          "type": "soin",
+          "tempsExecutionSec": 5,
+          "nextNode": "etat_initial_O2",
+          "feedback": "Bonne action symptomatique pour corriger l'hypoxie, mais cela ne traite pas la cause sous-jacente du choc et de la vasodilatation. L'adrénaline reste le geste prioritaire indispensable."
+        },
+        {
+          "label": "Administrer des Corticoïdes (Méthylprednisolone 120 mg IVD) et Antihistaminiques PO",
+          "type": "erreur",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_degradation1",
+          "feedback": "C'est une perte de temps inacceptable en première intention ! Les corticoïdes et antihistaminiques n'agissent qu'en quelques heures et ne préviennent ni le bronchospasme aigu ni le collapsus cardio-vasculaire immédiat. Le patient continue de se dégrader."
+        },
+        {
+          "label": "Injecter du Propranolol (bêtabloquant) 1 mg IVD pour ralentir la tachycardie",
+          "type": "erreur_grave",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Erreur critique létale ! Les bêtabloquants sont strictement contre-indiqués : ils bloquent les récepteurs adrénergiques, empêchant toute réponse à l'adrénaline endogène ou exogène, et précipitent un arrêt cardiorespiratoire réfractaire sur bronchospasme et choc irréversibles."
+        }
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
+    },
+    "etat_initial_O2": {
+      "id": "etat_initial_O2",
+      "descriptionClinique": "Le patient a l'O2, la saturation remonte un peu, mais la tension continue de baisser et l'œdème gonfle.",
+      "constantesCibles": {
+        "tension": "85/45",
+        "pouls": 125,
+        "saturationO2": 97,
+        "frequenceRespiratoire": 26
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 30,
+        "nextNode": "etat_degradation1",
+        "motif": "L'oxygène ne suffit pas sans adrénaline. L'insuffisance circulatoire s'aggrave."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter de l'Adrénaline 0.5 mg en Intramusculaire (IM)",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_guerison",
+          "feedback": "Excellent ! L'adrénaline IM remonte la tension artérielle, réduit l'œdème des voies aériennes et lève le bronchospasme. C'est l'action salvatrice."
+        },
+        {
+          "label": "Poser une VVP et initier un Remplissage Vasculaire (NaCl 0.9% 500 mL rapide)",
+          "type": "soin",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_degradation1",
+          "feedback": "Le remplissage par cristalloïdes compense temporairement la perte de volume intravasculaire, mais ne résout pas la vasodilatation majeure ni le bronchospasme. Sans adrénaline, l'état se dégrade."
+        },
+        {
+          "label": "Injecter de l'Hydrocortisone 200 mg IVD",
+          "type": "erreur",
+          "tempsExecutionSec": 15,
+          "nextNode": "etat_degradation1",
+          "feedback": "Action inefficace dans l'immédiat. Les corticoïdes agissent tardivement (après 4 à 6 heures). L'absence d'adrénaline conduit à une aggravation rapide de l'insuffisance circulatoire."
+        },
+        {
+          "label": "Injecter de l'Adrénaline 1 mg en bolus intraveineux direct (IVD)",
+          "type": "erreur_grave",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Erreur dramatique ! L'adrénaline IV directe en bolus non dilué chez un patient ayant une activité cardiaque est extrêmement dangereuse et formellement proscrite (risque d'arythmie ventriculaire létale, d'ischémie myocardique ou d'hémorragie cérébrale). Le patient fait une fibrillation ventriculaire !"
+        }
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
+    },
+    "etat_degradation1": {
+      "id": "etat_degradation1",
+      "descriptionClinique": "Le patient devient somnolent. Cyanose des lèvres. L'œdème de Quincke obstrue les voies aériennes. Pouls filant.",
+      "constantesCibles": {
+        "tension": "60/30",
+        "pouls": 145,
+        "saturationO2": 84,
+        "frequenceRespiratoire": 35
+      },
+      "evolutionAuto": {
+        "delaiSecondes": 20,
+        "nextNode": "etat_arret_cardiaque",
+        "motif": "Arrêt respiratoire puis cardiaque."
+      },
+      "actionsDisponibles": [
+        {
+          "label": "Injecter immédiatement de l'Adrénaline 0.5 mg en IM",
+          "type": "traitement_cle",
+          "tempsExecutionSec": 5,
+          "nextNode": "etat_guerison",
+          "feedback": "Sauvetage in extremis ! L'adrénaline intramusculaire est absorbée rapidement, lève le bronchospasme et l'œdème laryngé juste avant l'arrêt complet."
+        },
+        {
+          "label": "Assister la ventilation au ballon auto-remplisseur (Ambu) avec O2 100%",
+          "type": "soin",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "L'insuffisance respiratoire et circulatoire est trop sévère et l'obstacle mécanique (œdème) empêche la ventilation efficace au masque. Sans adrénaline immédiate pour lever l'obstruction, l'arrêt cardiaque survient."
+        },
+        {
+          "label": "Tenter une Intubation Oro-Trachéale immédiate",
+          "type": "erreur",
+          "tempsExecutionSec": 20,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Échec catastrophique. L'œdème de Quincke rend les voies aériennes totalement invisibles et inaccessibles. Cette tentative infructueuse fait perdre le peu d'oxygène restant et précipite l'asphyxie et l'arrêt."
+        },
+        {
+          "label": "Injecter du Propofol (200 mg IVD) pour sédater le patient",
+          "type": "erreur_grave",
+          "tempsExecutionSec": 10,
+          "nextNode": "etat_arret_cardiaque",
+          "feedback": "Folie clinique ! Injecter un puissant vasodilatateur et dépresseur cardiaque comme le Propofol sur un patient en état de choc anaphylactique profond (TA 60/30) provoque instantanément un collapsus cardiovasculaire irréversible."
+        }
+      ],
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "cyanose",
+        "couleurPeau": "bleu",
+        "respiration": "dyspnea"
+      }
+    },
+    "etat_guerison": {
+      "id": "etat_guerison",
+      "isEndState": true,
+      "success": true,
+      "descriptionClinique": "L'urticaire régresse, la respiration s'apaise. La tension remonte. Le patient est sauvé et sera transféré en réanimation pour surveillance.",
+      "constantesCibles": {
+        "tension": "120/75",
+        "pouls": 90,
+        "saturationO2": 99,
+        "frequenceRespiratoire": 16
+      },
+      "patientVisuel": {
+        "position": "assis",
+        "expression": "normal",
+        "couleurPeau": "normal",
+        "respiration": "normal"
+      }
+    },
+    "etat_arret_cardiaque": {
+      "id": "etat_arret_cardiaque",
+      "isEndState": true,
+      "success": false,
+      "descriptionClinique": "Tracé plat sur l'ECG. Le patient est en arrêt cardiorespiratoire (asystolie). Les manoeuvres de réanimation débutent, mais l'issue est sombre.",
+      "constantesCibles": {
+        "tension": "0/0",
+        "pouls": 0,
+        "saturationO2": 0,
+        "frequenceRespiratoire": 0
+      },
+      "patientVisuel": {
+        "position": "allonge",
+        "expression": "acr",
+        "couleurPeau": "gris",
+        "respiration": "agonal"
+      }
+    }
+  },
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3.5,
+    "aggravationTargets": {
+      "heartRate": 150,
+      "systolic": 70,
+      "diastolic": 40,
+      "spo2": 80,
+      "temperature": 38.5,
+      "respiratoryRate": 32
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 3,
+  "alternativeDiagnostics": [
+    "Choc anaphylactoïde",
+    "Réaction allergique sévère"
+  ],
+  "fatalTreatments": [
+    "Bêtabloquants",
+    "AINS",
+    "IEP seuls sans adrénaline"
+  ],
+  "secondLineTreatments": [
+    "Corticoïdes IV",
+    "Anti-H2 IV"
+  ],
+  "relevantExams": [
+    "Bilan sanguin",
+    "Tryptase sérique"
+  ],
+  "correction": "## Choc anaphylactique\n\n### Diagnostic\nRéaction allergique systémique sévère avec hypotension, bronchospasme et/ou angio-oedème, survenue rapide après exposition à l'allergène.\n\n### Éléments clé\n- **Hypotension brutale** : TA effondrée, tachycardie réflexe\n- **Bronchospasme** : dyspnée sifflante, SpO2 effondrée\n- **Angio-oedème** : oedème visage, lèvres, langue\n- **Terrain atopique** ou allergie connue\n\n### Pièges\n- L'adrénaline IM est le TRAITEMENT DE PREMIERE INTENTION — pas les corticoïdes\n- Les bêtabloquants aggravent le choc (bloquent les récepteurs adrénaliniques)\n- Ne jamais attendre les examens complémentaires pour traiter\n\n### Traitement (urgence vitale)\n1. **Adrénaline IM** 0.3-0.5mg — traitement de 1ère intention\n2. **Remplissage vasculaire** : cristalloïdes en grand volume\n3. **Oxygénothérapie** haute concentration\n4. **Corticoïdes IV** (en 2ème ligne) : Hydrocortisone 200mg",
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes médecin urgentiste au SMUR / SAUV.",
+      "contexte": "Vous prenez en charge Thomas Colin, 35 ans, piqué par une guêpe il y a 15 minutes, présentant un œdème de Quincke, une dyspnée laryngée et une hypotension à 70/40 mmHg.",
+      "consignesAttendues": [
+        "Reconnaître immédiatement un choc anaphylactique de grade 3 (atteinte respiratoire et hémodynamique)",
+        "Injecter sans aucun délai l'adrénaline par voie intramusculaire (face antéro-latérale de la cuisse)",
+        "Assurer la liberté des voies aériennes et administrer de l'oxygène à haut débit",
+        "Mettre en place un remplissage vasculaire rapide par cristalloïdes sur VVP de gros calibre",
+        "Assurer une surveillance scopique continue en soins intensifs"
+      ],
+      "consignesInterdites": [
+        "Ne jamais différer l'injection d'adrénaline intramusculaire au profit des corticoïdes ou antihistaminiques",
+        "Ne pas injecter l'adrénaline en IV directe sans dilution préalable"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Salle d'accueil des urgences vitales",
+      "materielDisponible": [
+        "Stylo auto-injecteur / Ampoule d'Adrénaline 1 mg",
+        "Masque haute concentration",
+        "Scope",
+        "Voies veineuses"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Diagnostic d'anaphylaxie de grade 3",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Injection immédiate d'adrénaline IM (0.5 mg)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Oxygénothérapie au masque à haute concentration",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Remplissage par NaCl 0.9% 1000 mL",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient s'exprimer malgré l'urgence, ne l'interrompt pas brutalement",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées (« Que s'est-il passé ? » avant « Avez-vous des allergies ? »)",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient (« Si je comprends bien, vous avez été piqué par une guêpe il y a 10 minutes… »)",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté, rassurant et compréhensible (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, rassure le patient tout au long de la prise en charge",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Docteur... piqué par une guêpe... ma gorge se ferme... je ne peux plus respirer...",
+      "infosVolontaires": [
+        "Détresse respiratoire brutale avec œdème du visage après piqûre d'hyménoptère",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Angoissé, cyanose des lèvres, voix nasonnée avec stridor inspiratoire, polypnéique."
+    },
+    "titre": "Détresse respiratoire brutale avec œdème du visage après piqûre d'hyménoptère",
+    "itemR2C": "Item 337. Choc anaphylactique.",
+    "consignesEtudiant": {
+      "role": "Vous êtes médecin urgentiste au SMUR / SAUV.",
+      "contexte": "Vous prenez en charge Thomas Colin, 35 ans, piqué par une guêpe il y a 15 minutes, présentant un œdème de Quincke, une dyspnée laryngée et une hypotension à 70/40 mmHg.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Reconnaître immédiatement un choc anaphylactique de grade 3 (atteinte respiratoire et hémodynamique)",
+        "Injecter sans aucun délai l'adrénaline par voie intramusculaire (face antéro-latérale de la cuisse)",
+        "Assurer la liberté des voies aériennes et administrer de l'oxygène à haut débit",
+        "Mettre en place un remplissage vasculaire rapide par cristalloïdes sur VVP de gros calibre",
+        "Assurer une surveillance scopique continue en soins intensifs"
+      ],
+      "interdits": [
+        "Ne jamais différer l'injection d'adrénaline intramusculaire au profit des corticoïdes ou antihistaminiques",
+        "Ne pas injecter l'adrénaline en IV directe sans dilution préalable"
+      ],
+      "materielDisponible": [
+        "Stylo auto-injecteur / Ampoule d'Adrénaline 1 mg",
+        "Masque haute concentration",
+        "Scope",
+        "Voies veineuses"
+      ],
+      "lieu": "Salle d'accueil des urgences vitales"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Thomas",
+        "nom": "Colin",
+        "age": 35,
+        "sexe": "M"
+      },
+      "personnalite": "Angoissé, cyanose des lèvres, voix nasonnée avec stridor inspiratoire, polypnéique.",
+      "phraseOuverture": "Docteur... piqué par une guêpe... ma gorge se ferme... je ne peux plus respirer...",
+      "infosVolontaires": [
+        "Détresse respiratoire brutale avec œdème du visage après piqûre d'hyménoptère",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le traitement de première ligne salvateur absolu du choc anaphylactique est l'adrénaline intramusculaire immédiate (0.5 mg chez l'adulte) dans la cuisse.",
+      "erreursRedhibitoires": [
+        "Donner des corticoïdes avant l'adrénaline",
+        "Ne pas surveiller le risque de réaction biphasique"
+      ],
+      "elementsAttendus": [
+        "Diagnostic d'anaphylaxie de grade 3",
+        "Injection immédiate d'adrénaline IM (0.5 mg)",
+        "Oxygénothérapie au masque à haute concentration",
+        "Remplissage par NaCl 0.9% 1000 mL"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Diagnostic d'anaphylaxie de grade 3",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Injection immédiate d'adrénaline IM (0.5 mg)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Oxygénothérapie au masque à haute concentration",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Remplissage par NaCl 0.9% 1000 mL",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "[sifflement respiratoire] J'étouffe... guêpe... ça gratte partout...",
+    "objectifs_cles": [
+      "repérer la triade hypotension + bronchospasme + urticaire post-piqûre",
+      "retrouver l'allergène et le délai (minutes)",
+      "AGIR vite : adrénaline IM 0.5mg sans attendre le bilan"
+    ],
+    "spontane": [
+      "motifHospitalisation"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "🚨 Ici on ne bilanne pas d'abord : adrénaline 0.5mg IM immédiate, O2, perfusion, surveillance. Chaque minute compte (dégradation auto à 45s).",
+    "💡 Interro express : quoi (piqûre de guêpe ?) + quand (il y a combien de minutes ?) + atcd allergiques connus.",
+    "🎯 Après stabilisation : tryptase, bilan, éviction + trousse d'urgence (auto-injecteur) et éducation."
+  ],
+  "pieges": [
+    "Choc anaphylactoïde",
+    "Réaction allergique sévère"
+  ],
+  "objectifs": [
+    "Accueillir le patient et évaluer rapidement la gravité de la situation",
+    "Réaliser un interrogatoire ciblé (allergies, antécédents, chronologie des symptômes)",
+    "Effectuer un examen clinique complet orienté (constantes, auscultation pulmonaire, examen cutané, recherche d'un œdème de Quincke)"
+  ],
+  "referentiel": "Référentiels SFMU / ERC (urgences)",
+  "motif": "Détresse respiratoire brutale avec œdème du visage après piqûre d'hyménoptère"
+}

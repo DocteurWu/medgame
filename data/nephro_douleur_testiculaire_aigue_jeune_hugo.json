@@ -1,0 +1,420 @@
+{
+  "id": "nephro_douleur_testiculaire_aigue_jeune_hugo",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Dubois",
+    "prenom": "Hugo",
+    "age": 16,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "82 kg",
+    "groupeSanguin": "0+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur testiculaire brutale et intense chez un adolescent",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sportif (course à pied)"
+      },
+      "tabac": {
+        "quantite": "0"
+      },
+      "alcool": {
+        "quantite": "Ne boit pas"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Militaire",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Aucun",
+          "traitement": "Aucun"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Aucune",
+          "date": "Jamais"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "RAS",
+          "age": "45"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "3 heures",
+      "evolution": "Installation brutale au repos",
+      "facteursDeclenchants": "Aucun",
+      "symptomesAssocies": [
+        "Nausées",
+        "Vomissements"
+      ],
+      "remarques": "Douleur testiculaire droite intense, irradiant à l’aine"
+    },
+    "verbatim": "Docteur, j'ai une douleur insupportable dans les testicules depuis 6 heures du matin, je ne peux même plus marcher..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "122/74 mmHg",
+      "pouls": "98 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Visage crispé par la douleur, agitation",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, sans défense"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Créatininémie",
+    "Urée",
+    "Ionogramme sanguin",
+    "CRP",
+    "Bandelette urinaire",
+    "Protéinurie des 24h",
+    "Albuminurie",
+    "Échographie rénale et vésicale",
+    "Scanner abdomino-pelvien",
+    "Echographie appareil urinaire",
+    "Échographie scrotale Doppler"
+  ],
+  "examResults": {
+    "Créatininémie": "RAS",
+    "Urée": "RAS",
+    "Ionogramme sanguin": "Normal",
+    "CRP": "Normale",
+    "Bandelette urinaire": "RAS",
+    "Protéinurie des 24h": "Non réalisée",
+    "Albuminurie": "Non réalisée",
+    "Echographie rénale et vésicale": "Non réalisée",
+    "Scanner abdomino-pelvien": "Non indiqué",
+    "Echographie appareil urinaire": "Non réalisé",
+    "Échographie scrotale Doppler": "absence de flux artériel au testicule droit, augmentation de volume du testicule"
+  },
+  "possibleDiagnostics": [
+    "Torsion du cordon spermatique",
+    "Orchi-épididymite",
+    "Traumatisme testiculaire",
+    "Colique néphrétique"
+  ],
+  "correctDiagnostic": "Torsion du cordon spermatique",
+  "feedback": {
+    "Torsion du cordon spermatique": "Diagnostic correct ! Urgence absolue.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Détorsion chirurgicale en urgence",
+    "Orchidopéxie bilatérale",
+    "Antalgiques IV",
+    "Antibiotiques"
+  ],
+  "correctTreatments": [
+    "Détorsion chirurgicale en urgence",
+    "Orchidopéxie bilatérale",
+    "Antalgiques IV"
+  ],
+  "correction": "# Torsion du cordon spermatique\n\nLe patient présente une douleur testiculaire brutale, intense, avec nausées et vomissements. L'échographie Doppler montre une absence de flux artériel dans le testicule droit, ce qui confirme la torsion.\n\n## Bonnes pratiques\n\n- Toute douleur testiculaire aiguë est une torsion jusqu'à preuve du contraire\n- Faire un Doppler testiculaire en urgence si doute diagnostique\n- Intervention rapide : détorsion et orchidopéxie bilatérale\n- Informer sur la perte potentielle de fertilité si retard diagnostique\n\n## Erreurs à éviter\n\n- Retarder la prise en charge pour des examens inutiles\n- Confondre avec une orchi-épididymite (douleur plus progressive)\n- Ne pas fixer le testicule controlatéral",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences chirurgicales.",
+      "contexte": "Vous recevez Hugo, 16 ans, amené pour une douleur brutale atroce de la bourse droite apparue il y a 2 heures au réveil.",
+      "consignesAttendues": [
+        "Reconnaître le caractère d'extrême urgence chirurgicale (délai de 6 heures pour sauver le testicule)",
+        "Rechercher les signes physiques clés (testicule ascensionné, horizontalisé, réflexe crémastérien aboli)",
+        "Vérifier l'absence de signe de Prehn positif et l'absence de fièvre",
+        "Mettre le patient à jeun immédiatement et appeler l'urologue de garde",
+        "Ne pas perdre de temps avec une échographie si elle retarde l'exploration chirurgicale"
+      ],
+      "consignesInterdites": [
+        "Ne jamais retarder l'exploration chirurgicale pour attendre une échographie",
+        "Ne pas prescrire d'antalgiques oraux qui retarderaient l'anesthésie"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box des urgences",
+      "materielDisponible": [
+        "Gants d'examen",
+        "Voie veineuse",
+        "Antalgiques IV"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Palpation douce du testicule ascensionné et horizontalisé",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Abolition du réflexe crémastérien",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Patient mis à jeun immédiat",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Appel immédiat de l'urologue pour orchidopexie bilatérale",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur et l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Docteur, j'ai une douleur insupportable dans les testicules depuis 6 heures du matin, je ne peux même plus marcher...",
+      "infosVolontaires": [
+        "Douleur testiculaire brutale et intense chez un adolescent",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Prostré par la douleur, nauséeux, pâle, marche avec les jambes écartées."
+    },
+    "titre": "Douleur testiculaire brutale et intense chez un adolescent",
+    "itemR2C": "Item 349. Torsion du cordon spermatique.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences chirurgicales.",
+      "contexte": "Vous recevez Hugo, 16 ans, amené pour une douleur brutale atroce de la bourse droite apparue il y a 2 heures au réveil.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Reconnaître le caractère d'extrême urgence chirurgicale (délai de 6 heures pour sauver le testicule)",
+        "Rechercher les signes physiques clés (testicule ascensionné, horizontalisé, réflexe crémastérien aboli)",
+        "Vérifier l'absence de signe de Prehn positif et l'absence de fièvre",
+        "Mettre le patient à jeun immédiatement et appeler l'urologue de garde",
+        "Ne pas perdre de temps avec une échographie si elle retarde l'exploration chirurgicale"
+      ],
+      "interdits": [
+        "Ne jamais retarder l'exploration chirurgicale pour attendre une échographie",
+        "Ne pas prescrire d'antalgiques oraux qui retarderaient l'anesthésie"
+      ],
+      "materielDisponible": [
+        "Gants d'examen",
+        "Voie veineuse",
+        "Antalgiques IV"
+      ],
+      "lieu": "Box des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Hugo",
+        "nom": "Dubois",
+        "age": 16,
+        "sexe": "M"
+      },
+      "personnalite": "Prostré par la douleur, nauséeux, pâle, marche avec les jambes écartées.",
+      "phraseOuverture": "Docteur, j'ai une douleur insupportable dans les testicules depuis 6 heures du matin, je ne peux même plus marcher...",
+      "infosVolontaires": [
+        "Douleur testiculaire brutale et intense chez un adolescent",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Toute douleur testiculaire aiguë de l'enfant et de l'adulte jeune est une torsion du cordon spermatique jusqu'à preuve chirurgicale du contraire : bloc opératoire en urgence avant H6.",
+      "erreursRedhibitoires": [
+        "Attendre une échographie doppler en retardant la détorsion au-delà de 6 heures",
+        "Rassurer faussement sur une orchi-épididymite sans fièvre"
+      ],
+      "elementsAttendus": [
+        "Palpation douce du testicule ascensionné et horizontalisé",
+        "Abolition du réflexe crémastérien",
+        "Patient mis à jeun immédiat",
+        "Appel immédiat de l'urologue pour orchidopexie bilatérale"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Palpation douce du testicule ascensionné et horizontalisé",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Abolition du réflexe crémastérien",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Patient mis à jeun immédiat",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Appel immédiat de l'urologue pour orchidopexie bilatérale",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, j'ai une douleur terrible au testicule droit, ça fait 3 heures, j'ai même vomi...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Torsion du cordon spermatique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Créatininémie",
+      "Urée"
+    ],
+    "utiles": [
+      "Ionogramme sanguin",
+      "CRP",
+      "Bandelette urinaire"
+    ],
+    "inutiles": [
+      "Protéinurie des 24h",
+      "Albuminurie",
+      "Échographie rénale et vésicale"
+    ],
+    "dangereux": [
+      "Scanner abdomino-pelvien"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réalisez l'interrogatoire complet du patient",
+    "Réalisez l'examen clinique ciblé",
+    "Évoquez les diagnostics différentiels"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Douleur testiculaire brutale et intense chez un adolescent"
+}

@@ -1,0 +1,391 @@
+{
+  "id": "locomoteur_douleur_trajet_l5_externe_m_chevalier",
+  "redacteur": "TEAM",
+  "patient": {
+    "nom": "Chevalier",
+    "prenom": "Marc",
+    "age": 45,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "92 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur irradiant de la fesse à la face latérale de la cuisse et au gros orteil",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Hypercalorique",
+        "particularites": "Surpoids"
+      },
+      "emploi": {
+        "profession": "Magasinier",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "",
+          "traitement": ""
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "",
+        "dose": "",
+        "frequence": ""
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Après port de charge lourde",
+      "evolution": "Douleur persistante depuis 10 jours",
+      "facteursDeclenchants": "Effort de soulèvement",
+      "descriptionDouleur": "Douleur lombaire vive irradiant face postéro-latérale jambe droite jusqu’au pied",
+      "symptomesAssocies": [
+        "Paresthésies dos du pied"
+      ],
+      "remarques": "Douleur majorée à la toux"
+    },
+    "verbatim": "Bonjour docteur, la douleur part de mon dos, passe sur le côté de ma cuisse et descend jusqu'au-dessus de mon gros orteil. C'est comme une décharge électrique continue."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/85 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patient algique.",
+    "examenCardiovasculaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "palpation": "Pouls OK"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normale",
+      "inspection": "RAS",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple",
+      "auscultation": "Normale"
+    }
+  },
+  "availableExams": [
+    "IRM lombaire",
+    "Radiographie du rachis",
+    "NFS"
+  ],
+  "examResults": {
+    "IRM lombaire": "Hernie discale L4-L5 postéro-latérale droite avec conflit radiculaire L5",
+    "Radiographie du rachis": "Aucune anomalie",
+    "NFS": "Hb : 14 g/dLHématocrite : 42 %Leucocytes : 6 800 /mm³PNN : 4 000 /mm³Lymphocytes : 2 000 /mm³Plaquettes : 250 000 /mm³"
+  },
+  "possibleDiagnostics": [
+    "Lombalgie commune",
+    "Sciatique L5",
+    "Cruralgie"
+  ],
+  "correctDiagnostic": "Sciatique L5",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Repos et AINS",
+    "Infiltration épidurale",
+    "Chirurgie en urgence"
+  ],
+  "correctTreatments": [
+    "Repos et AINS"
+  ],
+  "correction": "# Sciatique L5\n\n## Points Importants\n- Douleur radiculaire trajet L5\n- Signe de Lasègue positif\n- Hernie discale L4-L5\n- Traitement médical en première intention",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en rhumatologie.",
+      "contexte": "Vous recevez M. Marc Chevalier, 45 ans, consultant pour une douleur lombaire basse irradiant à la face postéro-latérale de la cuisse, face latérale du genou, jambe externe et dos du pied jusqu'au gros orteil.",
+      "consignesAttendues": [
+        "Confirmer le trajet radiculaire L5 typique",
+        "Rechercher le signe de Lasègue et mesurer l'angle d'apparition de la douleur",
+        "Tester la force du muscle long extenseur de l'hallux (releveur du gros orteil) et releveurs du pied",
+        "Vérifier l'absence de déficit sensitif périnéal ou de trouble sphinctérien",
+        "Proposer une prise en charge médicale initiale associant repos relatif et antalgiques"
+      ],
+      "consignesInterdites": [
+        "Ne pas négliger un déficit moteur < 3/5 imposant un avis chirurgical en urgence (sciatique paralysante)",
+        "Ne pas prescrire d'emblée d'infiltration péridurale en phase très aiguë"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Mètre ruban",
+        "Pique-touche"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Trajet L5 typique passant par la malléole externe et le dos du pied",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Signe de Lasègue positif à 40°",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Testing moteur des releveurs normal (force 5/5)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Traitement médical associant paracétamol, AINS et décontracturant musculaire",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, la douleur part de mon dos, passe sur le côté de ma cuisse et descend jusqu'au-dessus de mon gros orteil. C'est comme une décharge électrique continue.",
+      "infosVolontaires": [
+        "Douleur irradiant de la fesse à la face latérale de la cuisse et au gros orteil",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Douleur intense, marche en boitant, soulagé par la position allongée jambes fléchies."
+    },
+    "titre": "Douleur irradiant de la fesse à la face latérale de la cuisse et au gros orteil",
+    "itemR2C": "Item 95. Radiculalgie et syndrome rachidien.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en rhumatologie.",
+      "contexte": "Vous recevez M. Marc Chevalier, 45 ans, consultant pour une douleur lombaire basse irradiant à la face postéro-latérale de la cuisse, face latérale du genou, jambe externe et dos du pied jusqu'au gros orteil.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Confirmer le trajet radiculaire L5 typique",
+        "Rechercher le signe de Lasègue et mesurer l'angle d'apparition de la douleur",
+        "Tester la force du muscle long extenseur de l'hallux (releveur du gros orteil) et releveurs du pied",
+        "Vérifier l'absence de déficit sensitif périnéal ou de trouble sphinctérien",
+        "Proposer une prise en charge médicale initiale associant repos relatif et antalgiques"
+      ],
+      "interdits": [
+        "Ne pas négliger un déficit moteur < 3/5 imposant un avis chirurgical en urgence (sciatique paralysante)",
+        "Ne pas prescrire d'emblée d'infiltration péridurale en phase très aiguë"
+      ],
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Mètre ruban",
+        "Pique-touche"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Marc",
+        "nom": "Chevalier",
+        "age": 45,
+        "sexe": "M"
+      },
+      "personnalite": "Douleur intense, marche en boitant, soulagé par la position allongée jambes fléchies.",
+      "phraseOuverture": "Bonjour docteur, la douleur part de mon dos, passe sur le côté de ma cuisse et descend jusqu'au-dessus de mon gros orteil. C'est comme une décharge électrique continue.",
+      "infosVolontaires": [
+        "Douleur irradiant de la fesse à la face latérale de la cuisse et au gros orteil",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Caractériser une lombosciatique L5 tronquée ou complète sans caractère paralysant, éliminer une sciatique hyperalgique rebelle ou syndrome de la queue de cheval, prise en charge médicale.",
+      "erreursRedhibitoires": [
+        "Méconnaître un déficit moteur du releveur du gros orteil",
+        "Omettre le test de Lasègue"
+      ],
+      "elementsAttendus": [
+        "Trajet L5 typique passant par la malléole externe et le dos du pied",
+        "Signe de Lasègue positif à 40°",
+        "Testing moteur des releveurs normal (force 5/5)",
+        "Traitement médical associant paracétamol, AINS et décontracturant musculaire"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Trajet L5 typique passant par la malléole externe et le dos du pied",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Signe de Lasègue positif à 40°",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Testing moteur des releveurs normal (force 5/5)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Traitement médical associant paracétamol, AINS et décontracturant musculaire",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au bas du dos et ça descend dans la jambe droite, ça fait 10 jours que je souffre.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Sciatique L5)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "IRM lombaire",
+      "Radiographie du rachis"
+    ],
+    "utiles": [
+      "NFS"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté rachialgie",
+    "Effectuer un examen neurologique du membre inférieur droit (Lasègue, force, réflexes, sensibilité)",
+    "Identifier le territoire L5 et les signes de gravité"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Douleur irradiant de la fesse à la face latérale de la cuisse et au gros orteil"
+}

@@ -1,0 +1,433 @@
+{
+  "id": "endo_faiblesse_musculaire_et_chutes_mme_roux",
+  "patient": {
+    "nom": "Roux",
+    "prenom": "Monique",
+    "age": 78,
+    "sexe": "F",
+    "taille": "170 cm",
+    "poids": "90 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Faiblesse musculaire et perte d'autonomie chez une patiente âgée",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire, employé de bureau"
+      },
+      "tabac": {
+        "quantite": "10 cigarettes/jour",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Modéré"
+      },
+      "alimentation": {
+        "regime": "Réduction drastique récente",
+        "particularites": "Prise alimentaire < 50% des besoins depuis 3 semaines"
+      },
+      "emploi": {
+        "profession": "Comptable",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Obésité (poids initial 100 kg il y a 6 mois)",
+        "Hypertension artérielle"
+      ],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Cancer colorectal",
+          "age": "70"
+        }
+      ]
+    },
+    "traitements": [
+      "Amlodipine 5 mg/jour (hypertension)"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Perte de 10 kg (10% du poids) en 6 mois",
+      "facteursDeclenchants": "Stress intense et perte d’appétit",
+      "symptomesAssocies": [
+        "Fatigue",
+        "Faiblesse musculaire",
+        "Nausées occasionnelles"
+      ],
+      "remarques": "Réduction alimentaire > 50% depuis plus de 2 semaines, antécédent d’obésité."
+    },
+    "verbatim": "Bonjour docteur, mes jambes ne me portent plus bien. Je suis tombée deux fois cette semaine en voulant me lever de mon fauteuil."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "130/85 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Obèse mais amaigri récemment, pâleur légère",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Tour de taille 102 cm, adiposité encore présente"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan nutritionnel",
+    "Mesure du tour de taille",
+    "Protéine C-réactive (CRP)",
+    "Dosage de l’albumine",
+    "Endoscopie digestive haute",
+    "Scanner abdominal",
+    "Bilan lipidique",
+    "Test de dépistage du diabète",
+    "IRM cérébrale",
+    "Échographie cardiaque",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Dosage des hormones thyroïdiennes",
+    "Électroencéphalogramme",
+    "Test de tolérance au glucose",
+    "Coloscopie"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Anémie légère, hypokaliémie",
+    "Bilan nutritionnel": "Apport calorique < 50% des besoins depuis 3 semaines, déficit protéique",
+    "Mesure du tour de taille": "102 cm (obésité abdominale persistante malgré amaigrissement)",
+    "Protéine C-réactive (CRP)": "Légèrement élevée (inflammation modérée)",
+    "Dosage de l’albumine": "Basse (32 g/L, signe de dénutrition)",
+    "Endoscopie digestive haute": "Gastrite légère, pas de lésion maligne",
+    "Scanner abdominal": "Normale, graisse viscérale encore présente",
+    "Bilan lipidique": "Cholestérol LDL modérément élevé",
+    "Test de dépistage du diabète": "Négatif",
+    "IRM cérébrale": "Normale",
+    "Échographie cardiaque": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Électroencéphalogramme": "Normale",
+    "Test de tolérance au glucose": "Normale",
+    "Coloscopie": "Normale",
+    "Glycémie (contrôle)": "0.9 g/L"
+  },
+  "possibleDiagnostics": [
+    "Dénutrition",
+    "Cancer digestif",
+    "Syndrome métabolique",
+    "Hyperthyroïdie",
+    "Dépression sévère"
+  ],
+  "correctDiagnostic": "Dénutrition",
+  "feedback": {
+    "Dénutrition": "Diagnostic correct ! Perte de 10% du poids en 6 mois et réduction alimentaire > 50% pendant plus de 2 semaines, malgré obésité résiduelle.",
+    "Cancer digestif": "Incorrect. Pas de signe malin à l’endoscopie ou au scanner.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Renutrition progressive",
+    "Thérapie cognitivo-comportementale",
+    "Antidépresseurs",
+    "Chimiothérapie",
+    "Supplémentation vitaminique",
+    "Régime hypercalorique",
+    "Antibiotiques"
+  ],
+  "correctTreatments": [
+    "Renutrition progressive",
+    "Supplémentation vitaminique"
+  ],
+  "correction": "# Dénutrition chez patient obèse\n\nPerte de poids significative et réduction des apports > 50% malgré obésité persistante.\n\n## Bonnes pratiques\n\n- Renutrition progressive avec objectifs réalistes\n- Supplémentation si carences (albumine basse, vitamines)\n- Suivi pluridisciplinaire et réévaluation des comorbidités\n\n## Erreurs à éviter\n\n- Confondre avec simple régime ou cancer sans preuves\n- Renutrition trop rapide sans surveillance",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes gériatre en consultation.",
+      "contexte": "Vous recevez Mme Monique Roux, 78 ans, présentant une faiblesse musculaire avec chutes répétées et perte d'autonomie récente.",
+      "consignesAttendues": [
+        "Évaluer le statut nutritionnel et la composition corporelle masquée par l'excès pondéral",
+        "Évaluer la force musculaire et le risque de chute (vitesse de marche, appui monopodal)",
+        "Analyser l'enquête alimentaire et les facteurs d'anorexie du sujet âgé (solitude, état bucco-dentaire)",
+        "Doser l'albuminémie et la CRP pour évaluer le statut nutritionnel",
+        "Prescrire une réhabilitation physique et un enrichissement nutritionnel adapté"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de régime amaigrissant restrictif",
+        "Ne pas écarter la dénutrition sous prétexte d'un IMC élevé"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation gériatrique",
+      "materielDisponible": [
+        "Dynamomètre de préhension",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Chronomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Diagnostic d'obésité sarcopénique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Dosage albuminémie et transthyrétinémie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Examen bucco-dentaire",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prescription d'enrichissement alimentaire et kinésithérapie",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, mes jambes ne me portent plus bien. Je suis tombée deux fois cette semaine en voulant me lever de mon fauteuil.",
+      "infosVolontaires": [
+        "Faiblesse musculaire et perte d'autonomie chez une patiente âgée",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Ralentie, vit seule depuis le décès de son époux, ne cuisine plus."
+    },
+    "titre": "Faiblesse musculaire et perte d'autonomie chez une patiente âgée",
+    "itemR2C": "Item 252. Dénutrition chez l'adulte et l'enfant. Item 131. Chute chez le sujet âgé.",
+    "consignesEtudiant": {
+      "role": "Vous êtes gériatre en consultation.",
+      "contexte": "Vous recevez Mme Monique Roux, 78 ans, présentant une faiblesse musculaire avec chutes répétées et perte d'autonomie récente.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Évaluer le statut nutritionnel et la composition corporelle masquée par l'excès pondéral",
+        "Évaluer la force musculaire et le risque de chute (vitesse de marche, appui monopodal)",
+        "Analyser l'enquête alimentaire et les facteurs d'anorexie du sujet âgé (solitude, état bucco-dentaire)",
+        "Doser l'albuminémie et la CRP pour évaluer le statut nutritionnel",
+        "Prescrire une réhabilitation physique et un enrichissement nutritionnel adapté"
+      ],
+      "interdits": [
+        "Ne pas prescrire de régime amaigrissant restrictif",
+        "Ne pas écarter la dénutrition sous prétexte d'un IMC élevé"
+      ],
+      "materielDisponible": [
+        "Dynamomètre de préhension",
+        "Tensiomètre",
+        "Stéthoscope",
+        "Chronomètre"
+      ],
+      "lieu": "Cabinet de consultation gériatrique"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Monique",
+        "nom": "Roux",
+        "age": 78,
+        "sexe": "F"
+      },
+      "personnalite": "Ralentie, vit seule depuis le décès de son époux, ne cuisine plus.",
+      "phraseOuverture": "Bonjour docteur, mes jambes ne me portent plus bien. Je suis tombée deux fois cette semaine en voulant me lever de mon fauteuil.",
+      "infosVolontaires": [
+        "Faiblesse musculaire et perte d'autonomie chez une patiente âgée",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Reconnaître une dénutrition sévère sur obésité sarcopénique chez la personne âgée et proscrire tout régime restrictif.",
+      "erreursRedhibitoires": [
+        "Valider la perte de poids chez une personne âgée fragile",
+        "Négliger l'évaluation de la force musculaire"
+      ],
+      "elementsAttendus": [
+        "Diagnostic d'obésité sarcopénique",
+        "Dosage albuminémie et transthyrétinémie",
+        "Examen bucco-dentaire",
+        "Prescription d'enrichissement alimentaire et kinésithérapie"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Diagnostic d'obésité sarcopénique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Dosage albuminémie et transthyrétinémie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Examen bucco-dentaire",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prescription d'enrichissement alimentaire et kinésithérapie",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis très fatigué depuis plusieurs mois et j'ai perdu beaucoup de poids sans vraiment comprendre pourquoi...",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Dénutrition)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan nutritionnel"
+    ],
+    "utiles": [
+      "Mesure du tour de taille",
+      "Protéine C-réactive (CRP)",
+      "Dosage de l’albumine"
+    ],
+    "inutiles": [
+      "Endoscopie digestive haute",
+      "Scanner abdominal",
+      "Bilan lipidique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers la dénutrition et ses causes",
+    "Effectuer un examen clinique ciblé (état nutritionnel, recherche de signes de gravité)",
+    "Proposer un bilan diagnostique initial pertinent"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Faiblesse musculaire et perte d'autonomie chez une patiente âgée"
+}

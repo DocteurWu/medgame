@@ -1,0 +1,429 @@
+{
+  "id": "endo_baisse_energie_et_troubles_digestifs_m_legrand",
+  "patient": {
+    "nom": "Legrand",
+    "prenom": "Théo",
+    "age": 26,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "65 kg",
+    "groupeSanguin": "A-",
+    "imc": "20.1 kg/m²",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Baisse d'énergie et troubles digestifs",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Pratique intensive de fitness",
+        "frequence": "6-7 fois par semaine, parfois 2 séances/jour"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Social, rare"
+      },
+      "alimentation": {
+        "regime": "Très contrôlé",
+        "particularites": "Évite strictement les matières grasses et glucides simples, compte les calories, pesée des aliments"
+      },
+      "emploi": {
+        "profession": "Comptable",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Surpoids",
+          "age": "60"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois environ",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Volonté d'améliorer sa condition physique après une rupture sentimentale",
+      "symptomesAssocies": [
+        "Fatigue chronique",
+        "Constipation",
+        "Sensation de froid permanent",
+        "Irritabilité"
+      ],
+      "remarques": "Se sent mal à l'aise en public lors des repas. Devient très anxieux s'il ne peut pas contrôler son alimentation. Vérifie son poids plusieurs fois par jour."
+    },
+    "verbatim": "Bonjour docteur, je viens parce que mes proches s'inquiètent pour rien. Je me sens juste un peu fatigué et ballonné après les repas."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/70 mmHg",
+      "pouls": "55 bpm",
+      "temperature": "36.4°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Apparence soignée, mince, légère fonte musculaire malgré l'exercice",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal, bradycardie sinusale"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Sensibilité abdominale diffuse, météorisme"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenCutane": {
+      "observation": "Peau sèche, lanugo discret au niveau des avant-bras"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet (NFS)",
+    "Ionogramme sanguin",
+    "Bilan thyroïdien (TSH, T4L)",
+    "Évaluation psychologique",
+    "ECG",
+    "Bilan hépatique",
+    "Glycémie à jeun",
+    "Albuminémie",
+    "Dosage des D-dimères",
+    "Sérologie VIH",
+    "Coproculture",
+    "Dosage des anticorps anti-nucléaires"
+  ],
+  "examResults": {
+    "Bilan sanguin complet (NFS)": "Anémie légère (Hb 11.5 g/dL), leucopénie modérée",
+    "Ionogramme sanguin": "Hypokaliémie (3.2 mmol/L), hypophosphorémie",
+    "Bilan thyroïdien (TSH, T4L)": "TSH normale, T4L limite basse (syndrome de basse T3)",
+    "Évaluation psychologique": "Préoccupations excessives concernant le poids et l'image corporelle, anxiété liée à l'alimentation, perfectionnisme",
+    "ECG": "Bradycardie sinusale à 52 bpm, QTc légèrement allongé",
+    "Bilan hépatique": "Transaminases légèrement élevées",
+    "Glycémie à jeun": "0.75 g/L (hypoglycémie modérée)",
+    "Albuminémie": "Normale",
+    "Dosage des D-dimères": "Normal",
+    "Sérologie VIH": "Négatif",
+    "Coproculture": "Absence de germes pathogènes",
+    "Dosage des anticorps anti-nucléaires": "Négatif"
+  },
+  "possibleDiagnostics": [
+    "Anorexie mentale",
+    "Troubles anxieux généralisés",
+    "Hypothyroïdie",
+    "Trouble du comportement alimentaire non spécifié",
+    "Syndrome dépressif"
+  ],
+  "correctDiagnostic": "Anorexie mentale",
+  "feedback": {
+    "Anorexie mentale": "Diagnostic correct ! Critères DSM-5 réunis : restriction alimentaire avec apports insuffisants, peur intense de prendre du poids malgré un IMC normal-bas, perturbation de la perception corporelle. Signes associés : bradycardie, hypokaliémie, hyperactivité physique compensatoire.",
+    "Troubles anxieux généralisés": "Incorrect. L'anxiété est présente mais elle est centrée sur l'alimentation et le poids, ce qui est caractéristique de l'anorexie mentale. L'anxiété généralisée concernerait de multiples domaines de la vie.",
+    "Hypothyroïdie": "Incorrect. Le bilan thyroïdien montre un syndrome de basse T3 (adaptation métabolique à la restriction calorique), pas une hypothyroïdie primaire. La TSH est normale.",
+    "Trouble du comportement alimentaire non spécifié": "Trop vague. Les critères complets d'anorexie mentale sont réunis ici : restriction, peur de grossir, dysmorphophobie, retentissement somatique.",
+    "Syndrome dépressif": "Incorrect. Il n'y a pas de tristesse de l'humeur, d'anhédonie ou d'idées suicidaires. La fatigue s'explique par la restriction calorique.",
+    "default": "Diagnostic incorrect. Recherchez les critères DSM-5 de l'anorexie mentale : restriction, peur de grossir, dysmorphophobie."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Prise en charge nutritionnelle progressive",
+    "Psychothérapie (TCC)",
+    "Suivi psychiatrique",
+    "Hospitalisation si critères de gravité",
+    "Antidépresseurs ISRS",
+    "Compléments alimentaires hyperprotéinés",
+    "Anxiolytiques"
+  ],
+  "correctTreatments": [
+    "Prise en charge nutritionnelle progressive",
+    "Psychothérapie (TCC)",
+    "Suivi psychiatrique"
+  ],
+  "correction": "# Anorexie mentale\n\nCas atypique : homme adulte. L'anorexie touche aussi les hommes (10-15% des cas), souvent sous-diagnostiquée.\n\n## Critères DSM-5\n\n- Restriction des apports énergétiques conduisant à un poids insuffisant\n- Peur intense de prendre du poids\n- Altération de la perception du poids ou de la forme corporelle\n\n## Signes de gravité à rechercher\n\n- IMC < 15 kg/m²\n- Bradycardie < 40 bpm\n- Hypokaliémie < 3 mmol/L\n- Hypoglycémie symptomatique\n- Allongement du QTc\n\n## Prise en charge\n\n- Équipe pluridisciplinaire : nutritionniste, psychiatre, psychologue\n- Contrat de soins et objectifs pondéraux réalistes\n- TCC recommandée chez l'adulte\n- Renutrition prudente (risque de syndrome de renutrition)\n\n## Erreurs à éviter\n\n- Sous-estimer car patient masculin ou IMC normal\n- Renutrition trop rapide sans surveillance électrolytique\n- Négliger le suivi cardiaque (ECG)",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Théo Legrand, 26 ans, venu consulter sur l'insistance de ses proches pour une asthénie majeure et des ballonnements persistants.",
+      "consignesAttendues": [
+        "Conduire un interrogatoire complet sur les habitudes alimentaires et les variations pondérales",
+        "Évaluer le retentissement somatique et psychologique",
+        "Réaliser un examen clinique complet avec recherche de signes de dénutrition",
+        "Prescrire le bilan biologique de retentissement",
+        "Établir une relation d'alliance thérapeutique sans confrontation brutale"
+      ],
+      "consignesInterdites": [
+        "Ne pas banaliser un IMC effondré",
+        "Ne pas prescrire de laxatifs ou de stimulants"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Balance",
+        "Toise",
+        "ECG"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Calcul de l'IMC et cinétique de perte pondérale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Recherche d'hypotension orthostatique et bradycardie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription ionogramme, glycémie, ECG",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Contrat de soin progressif",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je viens parce que mes proches s'inquiètent pour rien. Je me sens juste un peu fatigué et ballonné après les repas.",
+      "infosVolontaires": [
+        "Baisse d'énergie et troubles digestifs",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Réservé, sur la défensive, rationalise sa minceur par une recherche de performance sportive."
+    },
+    "titre": "Baisse d'énergie et troubles digestifs",
+    "itemR2C": "Item 70. Troubles du comportement alimentaire de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Théo Legrand, 26 ans, venu consulter sur l'insistance de ses proches pour une asthénie majeure et des ballonnements persistants.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Conduire un interrogatoire complet sur les habitudes alimentaires et les variations pondérales",
+        "Évaluer le retentissement somatique et psychologique",
+        "Réaliser un examen clinique complet avec recherche de signes de dénutrition",
+        "Prescrire le bilan biologique de retentissement",
+        "Établir une relation d'alliance thérapeutique sans confrontation brutale"
+      ],
+      "interdits": [
+        "Ne pas banaliser un IMC effondré",
+        "Ne pas prescrire de laxatifs ou de stimulants"
+      ],
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Balance",
+        "Toise",
+        "ECG"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Théo",
+        "nom": "Legrand",
+        "age": 26,
+        "sexe": "M"
+      },
+      "personnalite": "Réservé, sur la défensive, rationalise sa minceur par une recherche de performance sportive.",
+      "phraseOuverture": "Bonjour docteur, je viens parce que mes proches s'inquiètent pour rien. Je me sens juste un peu fatigué et ballonné après les repas.",
+      "infosVolontaires": [
+        "Baisse d'énergie et troubles digestifs",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier les critères cliniques de restriction alimentaire sévère, évaluer la sévérité somatique et nouer une alliance de soins.",
+      "erreursRedhibitoires": [
+        "Rassurer à tort sans peser le patient",
+        "Ne pas rechercher les signes de gravité imposant l'hospitalisation"
+      ],
+      "elementsAttendus": [
+        "Calcul de l'IMC et cinétique de perte pondérale",
+        "Recherche d'hypotension orthostatique et bradycardie",
+        "Prescription ionogramme, glycémie, ECG",
+        "Contrat de soin progressif"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Calcul de l'IMC et cinétique de perte pondérale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Recherche d'hypotension orthostatique et bradycardie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription ionogramme, glycémie, ECG",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Contrat de soin progressif",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques mois et j'ai des problèmes digestifs. Mon médecin m'a envoyé vous voir.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Anorexie mentale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet (NFS)",
+      "Ionogramme sanguin"
+    ],
+    "utiles": [
+      "Bilan thyroïdien (TSH, T4L)",
+      "Évaluation psychologique",
+      "ECG"
+    ],
+    "inutiles": [
+      "Bilan hépatique",
+      "Glycémie à jeun",
+      "Albuminémie"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien clinique structuré explorant les habitudes alimentaires, l'image corporelle et le rapport au corps",
+    "Évaluer les signes de dénutrition et les complications somatiques",
+    "Proposer une prise en charge adaptée incluant un suivi psychiatrique et nutritionnel"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Baisse d'énergie et troubles digestifs"
+}

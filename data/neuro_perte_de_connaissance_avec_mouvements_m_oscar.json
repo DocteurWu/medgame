@@ -1,0 +1,429 @@
+{
+  "id": "neuro_perte_de_connaissance_avec_mouvements_m_oscar",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Lefebvre",
+    "prenom": "Oscar",
+    "age": 19,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "confus et inquiet, amnésique de la crise",
+      "registre": "jeune, courant, hésitant",
+      "loquacite": "normal",
+      "style_parole": "cherche ses mots, « trou noir », céphalées post-critiques, se raccroche au récit des témoins",
+      "exemples_phrases": [
+        "Je me souviens plus... y a un trou noir, et après j'avais super mal à la tête.",
+        "On m'a dit que je tremblais partout, mais moi je m'en rappelle pas..."
+      ],
+      "anxiete": 75,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Perte de connaissance brutale avec secousses des quatre membres",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Equitation régulièrement"
+      },
+      "tabac": {
+        "quantite": "2 PA",
+        "duree": "4 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Directeur d'une scierie",
+        "stress": "Elevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Cousin épileptique",
+          "traitement": "/"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 épisode",
+      "evolution": "/",
+      "facteursDeclenchants": "Non connu",
+      "descriptionDouleur": "Cri bref initial, chute brutale, perte de connaissance, raideur généralisée puis secousses bilatérales, morsure latérale de la langue",
+      "symptomesAssocies": [
+        "Confusion et céphalées pendant 30 min après la reprise de connaissance"
+      ],
+      "remarques": "Pas de prodrome vagale, pas de déclenchement émotionnel"
+    },
+    "verbatim": "Bonjour docteur... je me réveille ici sans savoir pourquoi. J'ai mal à la langue sur le côté et mes muscles me font mal partout comme si j'avais couru un marathon."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/75 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    }
+  },
+  "availableExams": [
+    "EEG",
+    "IRM cérébrale",
+    "ECG",
+    "Scanner cérébral en urgence"
+  ],
+  "examResults": {
+    "EEG": "Normal",
+    "IRM cérébrale": "Normal",
+    "ECG": "Non indiqué",
+    "Scanner cérébral en urgence": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Syncope vaso-vagale",
+    "Absence typique",
+    "Crise épileptique généralisée tonico-clonique",
+    "Crise du lobe frontal"
+  ],
+  "correctDiagnostic": "Crise épileptique généralisée tonico-clonique",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement antiépileptique (valproate)",
+    "Mesures hygiéno-diététiques",
+    "Benzodiazépines"
+  ],
+  "correctTreatments": [
+    "Mesures hygiéno-diététiques"
+  ],
+  "correction": "# Crise épileptique généralisée tonico-cloniqueProbablement idiopathique (alcool et manque de sommeil)\n\n## Points Importants\n- Interrogatoire très important (et des proches aussi +++)\n- EEG utile pour différencier crise généralisée et focale mais peut-être normal même si l'épilepsie est vraie\n- Pas de traitement antiépileptique immédiat après une première crise isolée",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Qui doit-on interroger absolument pour avoir des informations sur cette perte de connaissance ?",
+        "options": [
+          "Le patient seul",
+          "Le patient et ses proches",
+          "Les proches seulement car le patient était confus"
+        ],
+        "correct_indices": [
+          1
+        ]
+      },
+      "feedback_error": "Erreur...",
+      "id": "lock_1767379474535",
+      "target_fields": [
+        "interrogatoire.histoireMaladie.descriptionDouleur"
+      ]
+    },
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Pour quel type de perte de connaissance suspectée doit-on réaliser un ECG ? (1 mot)",
+        "expected_keywords": [
+          "syncope",
+          "syncopes"
+        ]
+      },
+      "feedback_error": "La perte de connaissance de cause cardiaque",
+      "id": "lock_1767380279711",
+      "target_fields": [
+        "examResults.ECG"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez Oscar, étudiant de 19 ans, amené par les pompiers après une perte de connaissance survenue lors d'une soirée étudiante avec mouvements saccadés involontaires.",
+      "consignesAttendues": [
+        "Interroger les témoins pour reconstituer les phases de la crise (tonique, clonique, stertoreuse)",
+        "Rechercher les éléments diagnostiques clés (morsure latérale de langue, perte d'urine, confusion post-critique)",
+        "Identifier les facteurs déclenchants (dette de sommeil, alcool, stroboscopes)",
+        "Éliminer une cause aiguë symptomatique (glycémie, ionogramme, toxiques)",
+        "Délivrer les consignes de sécurité immédiates (conduite automobile, baignade) et organiser l'EEG"
+      ],
+      "consignesInterdites": [
+        "Ne pas débuter un traitement antiépileptique au long cours après une première crise non provoquée sans bilan complet",
+        "Ne pas autoriser la reprise de la conduite automobile"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box d'accueil des urgences",
+      "materielDisponible": [
+        "Lecteur glycémie",
+        "Stéthoscope",
+        "Tensiomètre",
+        "Marteau réflexes",
+        "Abaisse-langue"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Morsure du bord latéral de la langue",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Phase de confusion post-critique amnésique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Bilan métabolique d'urgence (glycémie, natrémie, calcémie)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prescription d'un EEG de veille et sommeil et IRM cérébrale",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur... je me réveille ici sans savoir pourquoi. J'ai mal à la langue sur le côté et mes muscles me font mal partout comme si j'avais couru un marathon.",
+      "infosVolontaires": [
+        "Perte de connaissance brutale avec secousses des quatre membres",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Somnolent, courbaturé, confus sur les événements récents, craint de perdre son permis."
+    },
+    "titre": "Perte de connaissance brutale avec secousses des quatre membres",
+    "itemR2C": "Item 105. Épilepsie de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez Oscar, étudiant de 19 ans, amené par les pompiers après une perte de connaissance survenue lors d'une soirée étudiante avec mouvements saccadés involontaires.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Interroger les témoins pour reconstituer les phases de la crise (tonique, clonique, stertoreuse)",
+        "Rechercher les éléments diagnostiques clés (morsure latérale de langue, perte d'urine, confusion post-critique)",
+        "Identifier les facteurs déclenchants (dette de sommeil, alcool, stroboscopes)",
+        "Éliminer une cause aiguë symptomatique (glycémie, ionogramme, toxiques)",
+        "Délivrer les consignes de sécurité immédiates (conduite automobile, baignade) et organiser l'EEG"
+      ],
+      "interdits": [
+        "Ne pas débuter un traitement antiépileptique au long cours après une première crise non provoquée sans bilan complet",
+        "Ne pas autoriser la reprise de la conduite automobile"
+      ],
+      "materielDisponible": [
+        "Lecteur glycémie",
+        "Stéthoscope",
+        "Tensiomètre",
+        "Marteau réflexes",
+        "Abaisse-langue"
+      ],
+      "lieu": "Box d'accueil des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Oscar",
+        "nom": "Lefebvre",
+        "age": 19,
+        "sexe": "M"
+      },
+      "personnalite": "Somnolent, courbaturé, confus sur les événements récents, craint de perdre son permis.",
+      "phraseOuverture": "Bonjour docteur... je me réveille ici sans savoir pourquoi. J'ai mal à la langue sur le côté et mes muscles me font mal partout comme si j'avais couru un marathon.",
+      "infosVolontaires": [
+        "Perte de connaissance brutale avec secousses des quatre membres",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Caractériser une crise épileptique généralisée tonico-clonique inaugurale, éliminer une crise symptomatique aiguë, informer sur l'interdiction de conduite et programmer l'EEG avec IRM cérébrale.",
+      "erreursRedhibitoires": [
+        "Confondre avec une syncope vaso-vagale en présence d'une morsure latérale de langue",
+        "Omettre l'interdiction temporaire de conduite automobile"
+      ],
+      "elementsAttendus": [
+        "Morsure du bord latéral de la langue",
+        "Phase de confusion post-critique amnésique",
+        "Bilan métabolique d'urgence (glycémie, natrémie, calcémie)",
+        "Prescription d'un EEG de veille et sommeil et IRM cérébrale"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Morsure du bord latéral de la langue",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Phase de confusion post-critique amnésique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Bilan métabolique d'urgence (glycémie, natrémie, calcémie)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prescription d'un EEG de veille et sommeil et IRM cérébrale",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur... je suis venu parce que j'ai fait un malaise ce matin, je me souviens plus de grand-chose, juste d'un trou noir...",
+    "objectifs_cles": [
+      "reconstituer la crise via témoins (cri, chute, secousses, morsure, confusion 30min)",
+      "éliminer diagnostics proches (syncope, crise psychogène) par la durée et les signes",
+      "justifier EEG + IRM (ECG et scanner non indiqués ici)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "antecedents.familiaux"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise épileptique généralisée tonico-clonique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "EEG",
+      "IRM cérébrale"
+    ],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": [
+      "ECG",
+      "Scanner cérébral en urgence"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Qui doit-on interroger absolument pour avoir des informations sur cette perte de connaissance ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient sur l'épisode de perte de connaissance",
+    "Rechercher les caractéristiques de la crise (prodrome, phase tonique, phase clonique, phase post-critique)",
+    "Rechercher les facteurs déclenchants et les antécédents personnels et familiaux d'épilepsie"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Perte de connaissance brutale avec secousses des quatre membres"
+}

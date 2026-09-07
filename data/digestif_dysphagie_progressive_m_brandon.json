@@ -1,0 +1,432 @@
+{
+  "id": "digestif_dysphagie_progressive_m_brandon",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Brandon",
+    "prenom": "Marc",
+    "age": 62,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "55",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Difficulté progressive à avaler les aliments solides",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Modérée"
+      },
+      "tabac": {
+        "quantite": "40 PA",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "..."
+      },
+      "emploi": {
+        "profession": "Colonel à la retraite",
+        "stress": "Anciennement élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Il y a 3 mois",
+      "evolution": "Aggravation progressive : difficulté à avaler des solides puis des liquides",
+      "facteursDeclenchants": "Manger",
+      "descriptionDouleur": "Blocage rétrosternal",
+      "symptomesAssocies": [
+        "Amaigrissement de 9 kg en 2 mois"
+      ],
+      "remarques": "Pas de pyrosis et pas de douleurs à la déglutition"
+    },
+    "verbatim": "Bonjour docteur, depuis deux mois, la viande et le pain restent bloqués quand j'avale, je dois boire beaucoup d'eau pour que ça passe."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "100/70 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Altération de l'état général, IMC en baisse",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse, pas d'adénopathies sus-claviculaire",
+      "auscultation": "Bruits hydro-aériques normaux."
+    }
+  },
+  "availableExams": [
+    "Endoscopie oeso-gastro-duodénale (EOGD)",
+    "Scanner thoraco-abdominal",
+    "Manométrie",
+    "Bilan sanguin",
+    "Transit oeso-gastro-duodénal",
+    "pH-métrie œsophagienne"
+  ],
+  "examResults": {
+    "Endoscopie oeso-gastro-duodénale (EOGD)": "Masse sténosante irrégulière de l'œsophage moyen avec muqueuse ulcéréeBiopsie en faveur d'une lésion cancéreuse",
+    "Scanner thoraco-abdominal": "Epaississement de l'œsophage sans métastases",
+    "Manométrie": "Pas indiqué en première intention",
+    "Bilan sanguin": "Dénutrition",
+    "Transit oeso-gastro-duodénal": "Non indiqué en première intention",
+    "pH-métrie œsophagienne": "Non indiqué"
+  },
+  "possibleDiagnostics": [
+    "Diverticule de l'œsophage",
+    "Cancer de l'œsophage",
+    "reflux acide gastro-œsophagien",
+    "Trouble fonctionnel de l'œsophage"
+  ],
+  "correctDiagnostic": "Cancer de l'œsophage",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "IPP",
+    "Traitement antispasmodique",
+    "Traitement oncologique",
+    "Antibiotiques"
+  ],
+  "correctTreatments": [
+    "Traitement oncologique"
+  ],
+  "correction": "# Cancer de l'œsophage \n\nPrincipale cause de sténose œsophagienne\n\n## Points Importants\n- Perte de poids\n- Aggravation du solide au liquide\n- Faire EOGD et biopsie en première intention",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "A quoi est systématiquement associé l'EOGD dans ce cas ?",
+        "expected_keywords": [
+          "Biopsie",
+          "biopsies",
+          "biopsies œsophagiennes",
+          "biopsie œsophagienne"
+        ]
+      },
+      "feedback_error": "Si on suspecte une masse dont on ne connaît pas la nature...",
+      "id": "lock_1767308137574",
+      "target_fields": [
+        "examResults.Endoscopie oeso-gastro-duodénale (EOGD)"
+      ]
+    },
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Le patient a",
+        "options": [
+          "un IMC normal",
+          "un surpoids",
+          "une insuffisance pondérale",
+          "une obésité"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "Faire le calcul de l'IMC",
+      "id": "lock_1767309006303",
+      "target_fields": [
+        "examenClinique.aspectGeneral"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en hépato-gastroentérologie.",
+      "contexte": "Vous recevez M. Marc Brandon, 62 ans, adressé pour une sensation d'accrochage alimentaire survenant lors de l'ingestion des solides depuis 2 mois.",
+      "consignesAttendues": [
+        "Caractériser la dysphagie (siège, sélectivité, caractère continu et progressif)",
+        "Rechercher les facteurs d'intoxication alcoolo-tabagique et signes de dénutrition",
+        "Réaliser un examen clinique complet avec palpation des aires ganglionnaires (Troisier)",
+        "Indiquer et justifier l'endoscopie œso-gastro-duodénale avec biopsies comme examen clé",
+        "Donner les premiers conseils d'adaptation texturale de l'alimentation"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de scanner thoracique sans endoscopie première",
+        "Ne pas minimiser l'accrochage alimentaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation hospitalière",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Abaisse-langue"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Caractérisation de la dysphagie organique aux solides",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Recherche ganglion sus-claviculaire gauche",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription EOGD avec biopsies multiples",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Évaluation nutritionnelle",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient sur ses symptômes",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué), adapte son discours au patient",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient et la gravité potentielle du diagnostic",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, depuis deux mois, la viande et le pain restent bloqués quand j'avale, je dois boire beaucoup d'eau pour que ça passe.",
+      "infosVolontaires": [
+        "Difficulté progressive à avaler les aliments solides",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Minimise ses symptômes, attribue la gêne à un manque de mastication."
+    },
+    "titre": "Difficulté progressive à avaler les aliments solides",
+    "itemR2C": "Item 308. Tumeurs de l'œsophage. Item 273. Dysphagie.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en hépato-gastroentérologie.",
+      "contexte": "Vous recevez M. Marc Brandon, 62 ans, adressé pour une sensation d'accrochage alimentaire survenant lors de l'ingestion des solides depuis 2 mois.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser la dysphagie (siège, sélectivité, caractère continu et progressif)",
+        "Rechercher les facteurs d'intoxication alcoolo-tabagique et signes de dénutrition",
+        "Réaliser un examen clinique complet avec palpation des aires ganglionnaires (Troisier)",
+        "Indiquer et justifier l'endoscopie œso-gastro-duodénale avec biopsies comme examen clé",
+        "Donner les premiers conseils d'adaptation texturale de l'alimentation"
+      ],
+      "interdits": [
+        "Ne pas prescrire de scanner thoracique sans endoscopie première",
+        "Ne pas minimiser l'accrochage alimentaire"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "Abaisse-langue"
+      ],
+      "lieu": "Cabinet de consultation hospitalière"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Marc",
+        "nom": "Brandon",
+        "age": 62,
+        "sexe": "M"
+      },
+      "personnalite": "Minimise ses symptômes, attribue la gêne à un manque de mastication.",
+      "phraseOuverture": "Bonjour docteur, depuis deux mois, la viande et le pain restent bloqués quand j'avale, je dois boire beaucoup d'eau pour que ça passe.",
+      "infosVolontaires": [
+        "Difficulté progressive à avaler les aliments solides",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une dysphagie organique progressive chez un fumeur/buveur, prescrire une EOGD avec biopsies en première intention et bilan nutritionnel.",
+      "erreursRedhibitoires": [
+        "Traiter comme un simple RGO par IPP",
+        "Omettre la recherche du ganglion de Troisier"
+      ],
+      "elementsAttendus": [
+        "Caractérisation de la dysphagie organique aux solides",
+        "Recherche ganglion sus-claviculaire gauche",
+        "Prescription EOGD avec biopsies multiples",
+        "Évaluation nutritionnelle"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Caractérisation de la dysphagie organique aux solides",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Recherche ganglion sus-claviculaire gauche",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription EOGD avec biopsies multiples",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Évaluation nutritionnelle",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, j'ai du mal à avaler depuis quelques mois et ça empire. J'ai perdu beaucoup de poids aussi.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Cancer de l'œsophage)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Endoscopie oeso-gastro-duodénale (EOGD)",
+      "Scanner thoraco-abdominal"
+    ],
+    "utiles": [
+      "Manométrie",
+      "Bilan sanguin"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Transit oeso-gastro-duodénal",
+      "pH-métrie œsophagienne"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « A quoi est systématiquement associé l'EOGD dans ce cas ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la dysphagie et les signes d'alerte",
+    "Rechercher les facteurs de risque de néoplasie œsophagienne (tabac, alcool, antécédents familiaux)",
+    "Réaliser un examen clinique ciblé (état général, auscultation pulmonaire, palpation abdominale, recherche d'adénopathies)"
+  ],
+  "referentiel": "Collège d'hépato-gastro-entérologie (SNFGE)",
+  "motif": "Difficulté progressive à avaler les aliments solides"
+}

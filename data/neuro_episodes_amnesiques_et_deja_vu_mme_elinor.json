@@ -1,0 +1,401 @@
+{
+  "id": "neuro_episodes_amnesiques_et_deja_vu_mme_elinor",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Dammert",
+    "prenom": "Elinor",
+    "age": 38,
+    "sexe": "F",
+    "taille": "159 cm",
+    "poids": "60 kg",
+    "groupeSanguin": "B-",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Sensations d'angoisse épigastrique ascendante avec impression de déjà-vu et amnésie",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Léger"
+      },
+      "tabac": {
+        "quantite": "2 PA",
+        "duree": "20 ans"
+      },
+      "alcool": {
+        "quantite": "Occasionnellement"
+      },
+      "alimentation": {
+        "regime": "Pescétarien (poisson)",
+        "particularites": "Equilibré"
+      },
+      "emploi": {
+        "profession": "Femme au foyer",
+        "stress": "Moyen"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "Ramipril",
+        "dose": "2 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Première crise il y a 6 mois",
+      "evolution": "Crises répétées",
+      "facteursDeclenchants": "Aucun",
+      "descriptionDouleur": "Sensation de déjà-vu, anxiété brutale, tachycardie, fixité du regard, mâchonnement, dure 1 à 2 minutes",
+      "symptomesAssocies": [
+        "Amnésie de l'épisode"
+      ],
+      "remarques": "Pas de chute, pas de convulsion"
+    },
+    "verbatim": "Bonjour docteur, j'ai des moments bizarres depuis 6 mois. J'ai une boule dans le ventre qui monte dans ma gorge, une sensation très forte d'avoir déjà vécu l'instant présent, et après mes collègues me disent que je mâchonne dans le vide sans leur répondre."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Neurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "EEG",
+    "ECG",
+    "Scanner cérébral",
+    "IRM cérébrale"
+  ],
+  "examResults": {
+    "EEG": "Présence de décharges paroxystiques à type de pointes et pointes-ondes, localisées à la région temporale droite",
+    "ECG": "Non indiqué",
+    "Scanner cérébral": "Non indiqué",
+    "IRM cérébrale": "lésion temporale droite"
+  },
+  "possibleDiagnostics": [
+    "Epilepsie temporale",
+    "Malaise vagale",
+    "Epilepsie généralisée",
+    "Trouble panique"
+  ],
+  "correctDiagnostic": "Epilepsie temporale",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antiépileptique focal",
+    "Benzodiazépines seules",
+    "Pas de traitements",
+    "Antidépresseur seul"
+  ],
+  "correctTreatments": [
+    "Antiépileptique focal"
+  ],
+  "correction": "# Epilepsie temporale\n\nCrise focale et non généralisée\n\n## Points Importants\n- Signes spécifiques à la région temporale\n- EEG et imagerie pour caractériser la crise (généralisée ou focale)\n- Traitement à donner car arguments pour une épilepsie vraie",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Mme Elinor Dammert, 38 ans, adressée pour des épisodes brefs récurrents caractérisés par une sensation d'angoisse gastrique qui monte, suivie d'une brève absence.",
+      "consignesAttendues": [
+        "Préciser la sémiologie stéréotypée de l'aura épigastrique ascendante et du vécu de déjà-vu / déjà-vécu",
+        "Interroger l'entourage sur d'éventuels automatismes gestuels ou masticatoires pendant l'épisode",
+        "Rechercher une amnésie lacunaire ou des troubles du langage post-critiques",
+        "Prescrire une IRM cérébrale avec coupes coronales fines hippocampiques (sclérose mésio-temporale)",
+        "Organiser un électroencéphalogramme (EEG) prolongé avec épreuves de sensibilisation"
+      ],
+      "consignesInterdites": [
+        "Ne pas étiqueter ces épisodes comme de simples crises d'angoisse ou attaques de panique sans bilan neurologique",
+        "Ne pas prescrire de scanner à la place de l'IRM pour l'exploration des hippocampes"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation de neurologie",
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Stéthoscope",
+        "Ordonnancier"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Sémiologie de la crise temporale interne (aura, rupture de contact, automatismes)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Prescription IRM cérébrale protocole épilepsie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Prescription EEG de veille et sommeil",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Mise en place d'un antiépileptique de première intention (ex. lamotrigine ou lévétiracétam)",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, j'ai des moments bizarres depuis 6 mois. J'ai une boule dans le ventre qui monte dans ma gorge, une sensation très forte d'avoir déjà vécu l'instant présent, et après mes collègues me disent que je mâchonne dans le vide sans leur répondre.",
+      "infosVolontaires": [
+        "Sensations d'angoisse épigastrique ascendante avec impression de déjà-vu et amnésie",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Déconcertée par ces sensations étranges, a peur de devenir folle ou d'avoir une tumeur."
+    },
+    "titre": "Sensations d'angoisse épigastrique ascendante avec impression de déjà-vu et amnésie",
+    "itemR2C": "Item 105. Épilepsie de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en neurologie.",
+      "contexte": "Vous recevez Mme Elinor Dammert, 38 ans, adressée pour des épisodes brefs récurrents caractérisés par une sensation d'angoisse gastrique qui monte, suivie d'une brève absence.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser la sémiologie stéréotypée de l'aura épigastrique ascendante et du vécu de déjà-vu / déjà-vécu",
+        "Interroger l'entourage sur d'éventuels automatismes gestuels ou masticatoires pendant l'épisode",
+        "Rechercher une amnésie lacunaire ou des troubles du langage post-critiques",
+        "Prescrire une IRM cérébrale avec coupes coronales fines hippocampiques (sclérose mésio-temporale)",
+        "Organiser un électroencéphalogramme (EEG) prolongé avec épreuves de sensibilisation"
+      ],
+      "interdits": [
+        "Ne pas étiqueter ces épisodes comme de simples crises d'angoisse ou attaques de panique sans bilan neurologique",
+        "Ne pas prescrire de scanner à la place de l'IRM pour l'exploration des hippocampes"
+      ],
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Stéthoscope",
+        "Ordonnancier"
+      ],
+      "lieu": "Cabinet de consultation de neurologie"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Elinor",
+        "nom": "Dammert",
+        "age": 38,
+        "sexe": "F"
+      },
+      "personnalite": "Déconcertée par ces sensations étranges, a peur de devenir folle ou d'avoir une tumeur.",
+      "phraseOuverture": "Bonjour docteur, j'ai des moments bizarres depuis 6 mois. J'ai une boule dans le ventre qui monte dans ma gorge, une sensation très forte d'avoir déjà vécu l'instant présent, et après mes collègues me disent que je mâchonne dans le vide sans leur répondre.",
+      "infosVolontaires": [
+        "Sensations d'angoisse épigastrique ascendante avec impression de déjà-vu et amnésie",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Reconnaître les crises focales avec altération de la conscience d'origine temporale interne (aura épigastrique ascendante, état de rêve, automatismes oro-alimentaires), prescrire IRM cérébrale et EEG.",
+      "erreursRedhibitoires": [
+        "Confondre avec un trouble panique en ignorant les automatismes masticatoires",
+        "Omettre l'IRM hippocampique"
+      ],
+      "elementsAttendus": [
+        "Sémiologie de la crise temporale interne (aura, rupture de contact, automatismes)",
+        "Prescription IRM cérébrale protocole épilepsie",
+        "Prescription EEG de veille et sommeil",
+        "Mise en place d'un antiépileptique de première intention (ex. lamotrigine ou lévétiracétam)"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Sémiologie de la crise temporale interne (aura, rupture de contact, automatismes)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Prescription IRM cérébrale protocole épilepsie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Prescription EEG de veille et sommeil",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Mise en place d'un antiépileptique de première intention (ex. lamotrigine ou lévétiracétam)",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des trous de mémoire bizarres qui reviennent depuis quelques mois. Ça m'inquiète beaucoup.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Epilepsie temporale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "EEG",
+      "ECG"
+    ],
+    "utiles": [
+      "IRM cérébrale"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "ECG",
+      "Scanner cérébral"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les épisodes amnésiques",
+    "Pratiquer un examen neurologique complet",
+    "Proposer un diagnostic étiologique"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Sensations d'angoisse épigastrique ascendante avec impression de déjà-vu et amnésie"
+}

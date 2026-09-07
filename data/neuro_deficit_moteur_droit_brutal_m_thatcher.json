@@ -1,0 +1,406 @@
+{
+  "id": "neuro_deficit_moteur_droit_brutal_m_thatcher",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Grey",
+    "prenom": "Thatcher",
+    "age": 67,
+    "sexe": "M",
+    "taille": "1,70 m",
+    "poids": "82 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Lâchage brutal d'un objet et asymétrie faciale droite chez un sujet hypertendu",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "oui",
+        "duree": "40 paquets-années"
+      },
+      "alcool": {
+        "quantite": "modérée"
+      },
+      "alimentation": {
+        "regime": "déséquilibré",
+        "particularites": "riche en sel et en graisses"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale au repos, sans traumatisme",
+      "evolution": "Déficit moteur stable depuis l’apparition",
+      "facteursDeclenchants": "Aucun facteur déclenchant identifié",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": [
+        "Faiblesse du bras et de la jambe droits",
+        "Difficulté à parler de façon articulée",
+        "Gêne à la marche",
+        "Chute sans perte de connaissance"
+      ],
+      "remarques": "Tableau évocateur d’un accident vasculaire cérébral aigu"
+    },
+    "verbatim": "Docteur... mon bras... ma tasse de café est tombée tout à coup ce matin à 8 heures... et mes mots ont du mal à sortir..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "170/95 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "17/min"
+    },
+    "aspectGeneral": "Patient conscient, coopérant, présentant une asymétrie posturale",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers",
+      "inspection": "Pas de signe d’insuffisance cardiaque",
+      "palpation": "Pouls périphériques présents"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire bien perçu",
+      "inspection": "Pas de détresse respiratoire",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple et indolore",
+      "auscultation": "Bruits hydro-aériques présents"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 15/15",
+      "fonctions superieures": "Pas de trouble cognitif majeur",
+      "paires craniennes": "Discrète paralysie faciale centrale droite",
+      "motricite": "Hémiparésie droite proportionnelle, force cotée à 3/5",
+      "sensibilite": "Conservée",
+      "reflexes osteotendineux": "Vifs à droite, normaux à gauche",
+      "coordination equilibre": "Marche difficile",
+      "signes pyramidaux": "Signe de Babinski positif à droite,Hypertonie spastique,Clonus discret"
+    }
+  },
+  "availableExams": [
+    "Scanner cérébral en urgence",
+    "IRM cérébrale",
+    "Bilan biologique",
+    "ECG"
+  ],
+  "examResults": {
+    "Scanner cérébral en urgence": "Absence d’hémorragie intracrânienne",
+    "IRM cérébrale": "Infarctus ischémique capsulo-lenticulaire gauche",
+    "Bilan biologique": "Hyperglycémie modérée",
+    "ECG": "Rythme sinusal"
+  },
+  "possibleDiagnostics": [
+    "Accident vasculaire cérébral ischémique",
+    "Hématome intracérébral",
+    "Crise comitiale avec déficit post-critique",
+    "Syndrome pyramidal secondaire à un AVC ischémique capsulo-lenticulaire gauche"
+  ],
+  "correctDiagnostic": "Syndrome pyramidal secondaire à un AVC ischémique capsulo-lenticulaire gauche",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Thrombolyse",
+    "Antiagrégant plaquettaire",
+    "Contrôle tensionnel",
+    "Rééducation motrice",
+    "Prise en charge des facteurs de risque"
+  ],
+  "correctTreatments": [
+    "Antiagrégant plaquettaire",
+    "Prise en charge des facteurs de risque",
+    "Rééducation motrice"
+  ],
+  "correction": "Syndrome pyramidal par AVC ischémique\n\n·       L’installation brutale d’un déficit moteur évoque en priorité un accident vasculaire cérébral.\n\n·       Le syndrome pyramidal associe :\n\no   Déficit moteur central (hémiparésie)\n\no   Hypertonie spastique\n\no   Hyperréflexie ostéo-tendineuse\n\no   Signe de Babinski positif\n\n·       Le déficit est controlatéral à la lésion cérébrale.\n\n·       L’atteinte capsulo-lenticulaire est une localisation classique responsable d’une hémiparésie proportionnelle.\n\n·       Les facteurs de risque vasculaires (HTA, diabète, dyslipidémie, tabagisme) sont déterminants.\n\n·       Le scanner cérébral en urgence élimine une hémorragie avant tout traitement.\n\n·       L’IRM cérébrale permet de confirmer l’AVC ischémique et sa topographie.\n\n·       Les diagnostics différentiels initiaux sont :\n\no   AVC hémorragique\n\no   Crise comitiale avec déficit post-critique\n\n·       La prise en charge repose sur :\n\no   Traitement antithrombotique adapté\n\no   Contrôle strict des facteurs de risque\n\no   Rééducation motrice précoce\n\n·       Le pronostic fonctionnel dépend de la rapidité de la prise en charge et de la localisation de la lésion.\n\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en unité neuro-vasculaire (UNV).",
+      "contexte": "Vous recevez M. Thatcher Grey, 67 ans, adressé par le SAMU pour un déficit moteur de l'hémicorps droit d'apparition brutale survenu il y a 90 minutes au petit-déjeuner.",
+      "consignesAttendues": [
+        "Préciser l'heure exacte de début des symptômes (dernière fois vu indemne)",
+        "Calculer le score NIHSS et rechercher les contre-indications à la thrombolyse",
+        "Vérifier la glycémie capillaire et la pression artérielle en urgence",
+        "Prescrire l'IRM cérébrale en filière AVC immédiate (diffusion, FLAIR, T2*, TOF)",
+        "Organiser la thrombolyse intraveineuse et/ou thrombectomie mécanique si les délais sont respectés"
+      ],
+      "consignesInterdites": [
+        "Ne pas faire baisser brutalement la pression artérielle si elle est < 220/120 mmHg (ou < 185/110 avant thrombolyse)",
+        "Ne pas retarder l'imagerie cérébrale"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Salle d'accueil des urgences neuro-vasculaires",
+      "materielDisponible": [
+        "Score NIHSS papier",
+        "Lecteur glycémie",
+        "Scope multiparamétrique",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Calcul du score NIHSS",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Glycémie capillaire normale éliminant une hypoglycémie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "IRM cérébrale confirmant l'ischémie capsulaire ou sylvienne",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Thrombolyse IV par rt-PA dans les 4h30",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer ses phrases sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant de recourir aux questions fermées pour explorer les symptômes",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué ou le définit clairement",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, de bienveillance et de rassurance face à l'inquiétude du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Docteur... mon bras... ma tasse de café est tombée tout à coup ce matin à 8 heures... et mes mots ont du mal à sortir...",
+      "infosVolontaires": [
+        "Lâchage brutal d'un objet et asymétrie faciale droite chez un sujet hypertendu",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Angoissé, aphasie motrice discrète, bouche déviée, hémiplégique droit."
+    },
+    "titre": "Lâchage brutal d'un objet et asymétrie faciale droite chez un sujet hypertendu",
+    "itemR2C": "Item 341. Accidents vasculaires cérébraux.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en unité neuro-vasculaire (UNV).",
+      "contexte": "Vous recevez M. Thatcher Grey, 67 ans, adressé par le SAMU pour un déficit moteur de l'hémicorps droit d'apparition brutale survenu il y a 90 minutes au petit-déjeuner.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser l'heure exacte de début des symptômes (dernière fois vu indemne)",
+        "Calculer le score NIHSS et rechercher les contre-indications à la thrombolyse",
+        "Vérifier la glycémie capillaire et la pression artérielle en urgence",
+        "Prescrire l'IRM cérébrale en filière AVC immédiate (diffusion, FLAIR, T2*, TOF)",
+        "Organiser la thrombolyse intraveineuse et/ou thrombectomie mécanique si les délais sont respectés"
+      ],
+      "interdits": [
+        "Ne pas faire baisser brutalement la pression artérielle si elle est < 220/120 mmHg (ou < 185/110 avant thrombolyse)",
+        "Ne pas retarder l'imagerie cérébrale"
+      ],
+      "materielDisponible": [
+        "Score NIHSS papier",
+        "Lecteur glycémie",
+        "Scope multiparamétrique",
+        "Tensiomètre"
+      ],
+      "lieu": "Salle d'accueil des urgences neuro-vasculaires"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Thatcher",
+        "nom": "Grey",
+        "age": 67,
+        "sexe": "M"
+      },
+      "personnalite": "Angoissé, aphasie motrice discrète, bouche déviée, hémiplégique droit.",
+      "phraseOuverture": "Docteur... mon bras... ma tasse de café est tombée tout à coup ce matin à 8 heures... et mes mots ont du mal à sortir...",
+      "infosVolontaires": [
+        "Lâchage brutal d'un objet et asymétrie faciale droite chez un sujet hypertendu",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier un AVC ischémique en phase hyperaiguë dans la fenêtre thérapeutique (< 4h30), acheminer vers l'IRM en urgence vitale et enclencher la revascularisation.",
+      "erreursRedhibitoires": [
+        "Banaliser le déficit brutal comme un malaise vagal",
+        "Faire baisser la pression artérielle de façon intempestive"
+      ],
+      "elementsAttendus": [
+        "Calcul du score NIHSS",
+        "Glycémie capillaire normale éliminant une hypoglycémie",
+        "IRM cérébrale confirmant l'ischémie capsulaire ou sylvienne",
+        "Thrombolyse IV par rt-PA dans les 4h30"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Calcul du score NIHSS",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Glycémie capillaire normale éliminant une hypoglycémie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "IRM cérébrale confirmant l'ischémie capsulaire ou sylvienne",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Thrombolyse IV par rt-PA dans les 4h30",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, je n'arrive plus à bouger mon côté droit, c'est arrivé d'un coup, et j'ai du mal à marcher…",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Syndrome pyramidal secondaire à un AVC ischémique capsulo-lenticulaire gauche)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Scanner cérébral en urgence",
+      "IRM cérébrale"
+    ],
+    "utiles": [
+      "Bilan biologique",
+      "ECG"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet du patient orienté vers la pathologie neurologique aiguë",
+    "Effectuer un examen neurologique ciblé incluant l'évaluation de la motricité, des paires crâniennes, de la sensibilité et des réflexes",
+    "Mesurer les constantes vitales et les communiquer"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Lâchage brutal d'un objet et asymétrie faciale droite chez un sujet hypertendu"
+}

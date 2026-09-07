@@ -1,0 +1,419 @@
+{
+  "id": "orl_vertiges_au_lever_mme_renaud",
+  "patient": {
+    "nom": "Renaud",
+    "prenom": "Françoise",
+    "age": 74,
+    "sexe": "F",
+    "taille": "183 cm",
+    "poids": "89 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Sensations vertigineuses brèves lors du passage à la position debout",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Entraînement pompier, course, port de charges"
+      },
+      "tabac": {
+        "quantite": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Hydratation parfois insuffisante"
+      },
+      "emploi": {
+        "profession": "Pompier",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Épisodes d'hypotension lors d'efforts prolongés",
+          "traitement": "Aucun"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Fracture du radius opérée",
+          "date": "5 ans"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Hypertension",
+          "age": "60"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Ibuprofène",
+        "dose": "400 mg",
+        "frequence": "Selon douleurs musculaires"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 semaine",
+      "evolution": "Vertiges en augmentation, surtout le matin",
+      "facteursDeclenchants": "Passage de la position couchée à debout",
+      "symptomesAssocies": [
+        "Vision floue transitoire",
+        "Sensation de tête légère",
+        "Fatigue post-gardes",
+        "Sueurs froides lors des épisodes"
+      ],
+      "remarques": "Décrit une sensation de 'bascule en avant' sans rotation de l'environnement."
+    },
+    "verbatim": "Bonjour docteur, dès que je me lève du lit ou de ma chaise, ma tête tourne et j'ai un voile noir devant les yeux. Je dois vite me rasseoir pour ne pas tomber."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "118/76 mmHg",
+      "pouls": "82 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bonne condition physique mais fatigue visible",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal",
+      "orthostatisme": "Chute tensionnelle significative : -25 mmHg systolique au lever"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "coordination": "Normale",
+      "romberg": "Négatif",
+      "index": "Sans dysmétrie"
+    },
+    "examenMarche": {
+      "polygoneSustentation": "Normal",
+      "instabilite": "Légère à l'initiation de la marche",
+      "commentaire": "Pas d'atteinte cérébelleuse ou vestibulaire"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Bilan sanguin",
+    "Ionogramme",
+    "Glycémie",
+    "Tilt test",
+    "Orthostatisme"
+  ],
+  "examResults": {
+    "ECG": "Rythme sinusal normal",
+    "Bilan sanguin": "Normal",
+    "Ionogramme": "Légère hyponatrémie (134 mmol/L)",
+    "Glycémie": "Normale",
+    "Tilt test": "Hypotension orthostatique confirmée",
+    "Orthostatisme": "Baisse de 25 mmHg systolique et 12 mmHg diastolique au lever"
+  },
+  "possibleDiagnostics": [
+    "Hypotension orthostatique",
+    "Neuronite vestibulaire",
+    "VPPB",
+    "AVC du tronc cérébral",
+    "Anémie ferriprive"
+  ],
+  "correctDiagnostic": "Hypotension orthostatique",
+  "feedback": {
+    "Hypotension orthostatique": "Correct ! Vertiges non rotatoires, déclenchés par le lever, chute tensionnelle mesurée.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Hydratation orale",
+    "Augmentation apport en sel",
+    "Bas de contention",
+    "Arrêt des AINS",
+    "Éducation au lever progressif",
+    "Treatment médicamenteux (fludrocortisone si persistant)"
+  ],
+  "correctTreatments": [
+    "Hydratation orale",
+    "Augmentation apport en sel",
+    "Éducation au lever progressif"
+  ],
+  "correction": "# Hypotension orthostatique\n\nLes vertiges déclenchés au lever, la vision floue, l'absence de nystagmus et la chute tensionnelle objectivée orientent clairement vers une hypotension orthostatique. L'atteinte vestibulaire est improbable.\n\n## Points clés\n\n- Vertiges non systématisés = origine centrale ou cardiovasculaire\n- Orthostatisme positif = diagnostic confirmé\n- Contexte de déshydratation et fortes dépenses physiques chez un pompier\n\n## Prise en charge\n\n- Réhydratation\n- Mesures physiques simples\n- Réévaluation si persistance",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Mme Françoise Renaud, 74 ans, hypertendue, se plaignant d'étourdissements et de voile noir chaque fois qu'elle se lève de son lit ou de son fauteuil.",
+      "consignesAttendues": [
+        "Différencier un faux vertige (lipothymie, instabilité) d'un vertige rotatoire vrai",
+        "Réaliser la manœuvre d'orthostatisme avec mesure de la PA et FC couché puis debout à 1 et 3 minutes",
+        "Passer en revue les ordonnances et identifier les médicaments hypotenseurs ou iatrogènes",
+        "Évaluer le risque de chute traumatique",
+        "Adapter le traitement antihypertenseur et donner les conseils posturaux de lever progressif"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'antivertigineux vestibulaires (Tanganil) pour une hypotension orthostatique",
+        "Ne pas négliger la déshydratation"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Tensiomètre manuel ou électronique",
+        "Stéthoscope"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Recherche du critère d'hypotension orthostatique (baisse PAS ≥ 20 mmHg ou PAD ≥ 10 mmHg)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Revue des thérapeutiques (diurétiques, bêtabloquants, IEC)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Conseils de lever en deux temps avec pause assis",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Port éventuel de bas de contention veineuse",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer ses explications sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant de recourir aux questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à plusieurs reprises",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance tout au long de la consultation",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, dès que je me lève du lit ou de ma chaise, ma tête tourne et j'ai un voile noir devant les yeux. Je dois vite me rasseoir pour ne pas tomber.",
+      "infosVolontaires": [
+        "Sensations vertigineuses brèves lors du passage à la position debout",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Patiente prudente, a peur de tomber et de se casser le col du fémur."
+    },
+    "titre": "Sensations vertigineuses brèves lors du passage à la position debout",
+    "itemR2C": "Item 221. Hypertension artérielle. Item 340. Malaise / perte de connaissance.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Mme Françoise Renaud, 74 ans, hypertendue, se plaignant d'étourdissements et de voile noir chaque fois qu'elle se lève de son lit ou de son fauteuil.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Différencier un faux vertige (lipothymie, instabilité) d'un vertige rotatoire vrai",
+        "Réaliser la manœuvre d'orthostatisme avec mesure de la PA et FC couché puis debout à 1 et 3 minutes",
+        "Passer en revue les ordonnances et identifier les médicaments hypotenseurs ou iatrogènes",
+        "Évaluer le risque de chute traumatique",
+        "Adapter le traitement antihypertenseur et donner les conseils posturaux de lever progressif"
+      ],
+      "interdits": [
+        "Ne pas prescrire d'antivertigineux vestibulaires (Tanganil) pour une hypotension orthostatique",
+        "Ne pas négliger la déshydratation"
+      ],
+      "materielDisponible": [
+        "Tensiomètre manuel ou électronique",
+        "Stéthoscope"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Françoise",
+        "nom": "Renaud",
+        "age": 74,
+        "sexe": "F"
+      },
+      "personnalite": "Patiente prudente, a peur de tomber et de se casser le col du fémur.",
+      "phraseOuverture": "Bonjour docteur, dès que je me lève du lit ou de ma chaise, ma tête tourne et j'ai un voile noir devant les yeux. Je dois vite me rasseoir pour ne pas tomber.",
+      "infosVolontaires": [
+        "Sensations vertigineuses brèves lors du passage à la position debout",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Diagnostiquer une hypotension orthostatique iatrogène chez un sujet âgé polymédiqué, ajuster les traitements antihypertenseurs et éduquer sur les transferts lents.",
+      "erreursRedhibitoires": [
+        "Prescrire un antivertigineux sédatif augmentant le risque de chute",
+        "Omettre la mesure de la pression artérielle debout"
+      ],
+      "elementsAttendus": [
+        "Recherche du critère d'hypotension orthostatique (baisse PAS ≥ 20 mmHg ou PAD ≥ 10 mmHg)",
+        "Revue des thérapeutiques (diurétiques, bêtabloquants, IEC)",
+        "Conseils de lever en deux temps avec pause assis",
+        "Port éventuel de bas de contention veineuse"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Recherche du critère d'hypotension orthostatique (baisse PAS ≥ 20 mmHg ou PAD ≥ 10 mmHg)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Revue des thérapeutiques (diurétiques, bêtabloquants, IEC)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Conseils de lever en deux temps avec pause assis",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Port éventuel de bas de contention veineuse",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, ça fait une semaine que j'ai des vertiges terribles quand je me lève, surtout le matin. J'ai peur que ce soit grave.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Hypotension orthostatique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Bilan sanguin"
+    ],
+    "utiles": [
+      "Ionogramme",
+      "Glycémie",
+      "Tilt test"
+    ],
+    "inutiles": [
+      "Orthostatisme"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les vertiges et les facteurs déclenchants",
+    "Effectuer un examen clinique adapté incluant la recherche d'un orthostatisme",
+    "Évoquer les principaux diagnostics différentiels devant des vertiges posturaux"
+  ],
+  "referentiel": "Collège ORL / Barany Society",
+  "motif": "Sensations vertigineuses brèves lors du passage à la position debout"
+}

@@ -1,0 +1,406 @@
+{
+  "id": "neuro_malaise_avec_confusion_et_crise_mlle_adele",
+  "redacteur": "Juliette Constant",
+  "patient": {
+    "nom": "Webber",
+    "prenom": "Adèle",
+    "age": 62,
+    "sexe": "F",
+    "taille": "1,62 m",
+    "poids": "70 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "sec et pressé",
+      "registre": "direct, sans détour",
+      "loquacite": "reserve",
+      "style_parole": "réponses brèves, s'agace des questions répétées",
+      "exemples_phrases": [
+        "Je vous l'ai déjà dit : ça fait mal ici, point.",
+        "On peut aller vite, j'ai pas que ça à faire..."
+      ],
+      "anxiete": 45,
+      "confiance": 40
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Malaise matinal avec confusion, sueurs et mouvements anormaux",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "faible"
+      },
+      "tabac": {
+        "quantite": "non",
+        "duree": "jamais"
+      },
+      "alcool": {
+        "quantite": "non"
+      },
+      "alimentation": {
+        "regime": "irrégulier",
+        "particularites": "repas sautés"
+      },
+      "emploi": {
+        "profession": "Retraitée",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "diabète de type 2 insulinorequérant depuis 12 ans",
+          "traitement": "Insuline basale-bolus (glargine + rapide)"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [
+      {
+        "nom": "insuline glargine",
+        "dose": "20 UI",
+        "frequence": "le soir"
+      },
+      {
+        "nom": "insuline rapide",
+        "dose": "6 UI/repas",
+        "frequence": "avant les repas"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Survenue brutale après injection d’insuline",
+      "evolution": "Amélioration rapide après correction métabolique",
+      "facteursDeclenchants": "Injection d’insuline sans prise alimentaire",
+      "descriptionDouleur": "Absence de douleur",
+      "symptomesAssocies": [
+        "Perte de connaissance",
+        "Sueurs profuses",
+        "Tremblements",
+        "Confusion"
+      ],
+      "remarques": "Crise symptomatique métabolique"
+    },
+    "verbatim": "Où suis-je ? J'ai chaud... j'ai sauté mon petit-déjeuner ce matin avant de prendre mes pilules pour le diabète..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "110/65 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.5°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patiente pâle, moite, asthénique, vigilance altérée à l’arrivée avec amélioration rapide après apport glucosé",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle",
+      "inspection": "Pas de signe de choc",
+      "palpation": "Pouls périphériques présents et symétriques"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de râles",
+      "inspection": "Pas de détresse respiratoire",
+      "percussion": "Normale"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, indolore",
+      "auscultation": "Bruits hydro-aériques présents"
+    },
+    "Neurologique": {
+      "conscience": "Glasgow 13/15 à l’admission puis 15/15 après correction",
+      "fonctionssuperieures": "Confusion transitoire rapidement réversible",
+      "pairescraniennes": "Normales",
+      "motricite": "Force conservée aux quatre membres",
+      "sensibilite": "Normale",
+      "reflexesosteotendineux": "Présents et symétriques, Babinski négatif",
+      "coordinationequilibre": "Normales après correction"
+    }
+  },
+  "availableExams": [
+    "Glycémie capillaire",
+    "Ionogramme sanguin",
+    "Scanner cérébral"
+  ],
+  "examResults": {
+    "Glycémie capillaire": "0.38 g/L",
+    "Ionogramme sanguin": "Normal",
+    "Scanner cérébral": "Absence d’anomalie intracrânienne aiguë"
+  },
+  "possibleDiagnostics": [
+    "Crise convulsive secondaire à une hypoglycémie",
+    "Épilepsie"
+  ],
+  "correctDiagnostic": "Crise convulsive secondaire à une hypoglycémie",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Glucose IV",
+    "Traitement antiépileptique"
+  ],
+  "correctTreatments": [
+    "Glucose IV"
+  ],
+  "correction": "Correction – Crise convulsive secondaire à une hypoglycémie\n\nPoints Importants\n\nPatiente diabétique de type 2 traitée par insuline\nSurvenue d’une crise convulsive aiguë dans un contexte de jeûne\nFacteur déclenchant identifié : injection d’insuline rapide sans prise alimentaire\nGlycémie capillaire très basse (0,38 g/L) à l’admission\nAbsence d’arguments pour une épilepsie (pas d’antécédent, imagerie normale)\nDiagnostic retenu : crise convulsive symptomatique hypoglycémique\nAmélioration rapide après apport de glucose IV\nAucune indication à un traitement antiépileptique\nImportance de la réévaluation du traitement insulinique et de l’éducation thérapeutique\n",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 1,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez Mme Adèle Webber, 62 ans, diabétique traitée par sulfamides, amenée par le SAMU pour un malaise avec agitation, sueurs froides profuses et brève crise clonique.",
+      "consignesAttendues": [
+        "Faire immédiatement une glycémie capillaire devant tout malaise ou crise convulsive",
+        "Identifier les signes neurovégétatifs (sueurs, tachycardie) et neuroglucopéniques (confusion, crise)",
+        "Administrer sans délai du resucrage adapté (G30% IV ou glucagon si accès difficile)",
+        "Identifier le médicament en cause (sulfamide hypoglycémiant à demi-vie longue)",
+        "Garder en observation au moins 24 à 48 heures en raison du risque de récidive de l'hypoglycémie sous sulfamides"
+      ],
+      "consignesInterdites": [
+        "Ne pas libérer la patiente dès la normalisation de la glycémie sous sulfamides hypoglycémiants (risque de rechute mortelle)",
+        "Ne pas injecter d'anticonvulsivants avant d'avoir vérifié la glycémie"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box d'accueil des urgences",
+      "materielDisponible": [
+        "Lecteur de glycémie capillaire",
+        "Ampoules de Glucosé à 30%",
+        "Voie veineuse"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Glycémie capillaire effondrée (< 2 mmol/L)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Resucrage immédiat par 2 à 3 ampoules de G30% IV",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Arrêt définitif du sulfamide en cause",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Hospitalisation obligatoire pour surveillance de 24-48h",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Où suis-je ? J'ai chaud... j'ai sauté mon petit-déjeuner ce matin avant de prendre mes pilules pour le diabète...",
+      "infosVolontaires": [
+        "Malaise matinal avec confusion, sueurs et mouvements anormaux",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Initialement obnubilée et transpirante, puis retrouve ses esprits quelques minutes après l'injection de sucre."
+    },
+    "titre": "Malaise matinal avec confusion, sueurs et mouvements anormaux",
+    "itemR2C": "Item 247. Diabète. Item 344. Hypoglycémie chez l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences médicales.",
+      "contexte": "Vous recevez Mme Adèle Webber, 62 ans, diabétique traitée par sulfamides, amenée par le SAMU pour un malaise avec agitation, sueurs froides profuses et brève crise clonique.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Faire immédiatement une glycémie capillaire devant tout malaise ou crise convulsive",
+        "Identifier les signes neurovégétatifs (sueurs, tachycardie) et neuroglucopéniques (confusion, crise)",
+        "Administrer sans délai du resucrage adapté (G30% IV ou glucagon si accès difficile)",
+        "Identifier le médicament en cause (sulfamide hypoglycémiant à demi-vie longue)",
+        "Garder en observation au moins 24 à 48 heures en raison du risque de récidive de l'hypoglycémie sous sulfamides"
+      ],
+      "interdits": [
+        "Ne pas libérer la patiente dès la normalisation de la glycémie sous sulfamides hypoglycémiants (risque de rechute mortelle)",
+        "Ne pas injecter d'anticonvulsivants avant d'avoir vérifié la glycémie"
+      ],
+      "materielDisponible": [
+        "Lecteur de glycémie capillaire",
+        "Ampoules de Glucosé à 30%",
+        "Voie veineuse"
+      ],
+      "lieu": "Box d'accueil des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Adèle",
+        "nom": "Webber",
+        "age": 62,
+        "sexe": "F"
+      },
+      "personnalite": "Initialement obnubilée et transpirante, puis retrouve ses esprits quelques minutes après l'injection de sucre.",
+      "phraseOuverture": "Où suis-je ? J'ai chaud... j'ai sauté mon petit-déjeuner ce matin avant de prendre mes pilules pour le diabète...",
+      "infosVolontaires": [
+        "Malaise matinal avec confusion, sueurs et mouvements anormaux",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Reconnaître une crise neuroglucopénique sur hypoglycémie sévère sous sulfamide, resucrer d'urgence par G30% IV et imposer une hospitalisation de 48h de surveillance.",
+      "erreursRedhibitoires": [
+        "Autoriser la sortie précoce après resucrage sous sulfamides",
+        "Considérer la patiente comme épileptique"
+      ],
+      "elementsAttendus": [
+        "Glycémie capillaire effondrée (< 2 mmol/L)",
+        "Resucrage immédiat par 2 à 3 ampoules de G30% IV",
+        "Arrêt définitif du sulfamide en cause",
+        "Hospitalisation obligatoire pour surveillance de 24-48h"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Glycémie capillaire effondrée (< 2 mmol/L)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Resucrage immédiat par 2 à 3 ampoules de G30% IV",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Arrêt définitif du sulfamide en cause",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Hospitalisation obligatoire pour surveillance de 24-48h",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, j'ai fait une crise terrible à la maison, je ne comprends pas ce qui m'est arrivé...",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Crise convulsive secondaire à une hypoglycémie)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie capillaire",
+      "Ionogramme sanguin"
+    ],
+    "utiles": [
+      "Scanner cérébral"
+    ],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Accueillir la patiente et se présenter",
+    "Réaliser un interrogatoire complet orienté sur l'épisode de crise convulsive et le contexte diabétique",
+    "Effectuer un examen clinique complet incluant un examen neurologique détaillé"
+  ],
+  "referentiel": "Collège de neurologie / ILAE",
+  "motif": "Malaise matinal avec confusion, sueurs et mouvements anormaux"
+}

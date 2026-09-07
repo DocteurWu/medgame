@@ -1,0 +1,401 @@
+{
+  "id": "endo_remontees_alimentaires_postprandiales_clara",
+  "patient": {
+    "nom": "Martin",
+    "prenom": "Clara",
+    "age": 19,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "55 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Régurgitations alimentaires répétées après les repas",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Régurgite et remastique volontairement"
+      },
+      "emploi": {
+        "profession": "Étudiante",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Un an",
+      "evolution": "Stable",
+      "facteursDeclenchants": "Après les repas",
+      "symptomesAssocies": [
+        "Sensation de plaisir lors des régurgitations"
+      ],
+      "remarques": "Cache ce comportement à son entourage."
+    },
+    "verbatim": "Bonjour docteur, c'est un peu embarrassant... après chaque repas, la nourriture remonte toute seule dans ma bouche, sans que j'aie la nausée, et je la remâche souvent."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "36.6°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Aspect normal, discrète pâleur",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Endoscopie digestive",
+    "Évaluation psychologique",
+    "pH-métrie œsophagienne",
+    "Scanner abdominal",
+    "Dosage des D-dimères",
+    "Échographie rénale",
+    "Test respiratoire à l’urée",
+    "Bilan lipidique",
+    "Électromyographie",
+    "IRM pelvienne",
+    "Sérologie VIH"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Normal",
+    "Endoscopie digestive": "Absence de reflux ou sténose",
+    "Évaluation psychologique": "Comportement volontaire, plaisir associé",
+    "pH-métrie œsophagienne": "Normal",
+    "Scanner abdominal": "Normale",
+    "Dosage des D-dimères": "Normal",
+    "Échographie rénale": "Normale",
+    "Test respiratoire à l’urée": "Négatif (pas d’H. pylori)",
+    "Bilan lipidique": "Normal",
+    "Électromyographie": "Normale",
+    "IRM pelvienne": "Normale",
+    "Sérologie VIH": "Négative",
+    "Glycémie (contrôle)": "0.95 g/L"
+  },
+  "possibleDiagnostics": [
+    "ARFID",
+    "Mérycisme",
+    "Reflux gastro-œsophagien",
+    "Trouble anxieux",
+    "Sténose pylorique"
+  ],
+  "correctDiagnostic": "Mérycisme",
+  "feedback": {
+    "Mérycisme": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Thérapie comportementale",
+    "Gestion du stress",
+    "Antiacides",
+    "Suivi psychologique"
+  ],
+  "correctTreatments": [
+    "Thérapie comportementale",
+    "Suivi psychologique"
+  ],
+  "correction": "# Mérycisme\n\nRégurgitations volontaires post‑prandiales avec remastication, sans lésion organique.\n\n## Bonnes pratiques\n\n- Thérapies comportementales ciblées\n- Évaluation et suivi psychologique\n- Éducation nutritionnelle\n\n## Erreurs à éviter\n\n- Confondre avec reflux/obstacle digestif sans preuve\n- Ignorer la composante comportementale",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en hépato-gastroentérologie.",
+      "contexte": "Vous recevez Clara Martin, 19 ans, adressée pour des régurgitations postprandiales indolores quotidiennes évoluant depuis 6 mois.",
+      "consignesAttendues": [
+        "Préciser la sémiologie des régurgitations (remontée sans effort de vomissement, remastication)",
+        "Différencier le trouble du reflux gastro-œsophagien et du mégaœsophage",
+        "Rechercher un retentissement sur le poids et l'état bucco-dentaire",
+        "Éliminer une cause organique par les examens appropriés si nécessaire",
+        "Expliquer le mécanisme du trouble et initier la rééducation par respiration diaphragmatique"
+      ],
+      "consignesInterdites": [
+        "Ne pas conclure d'emblée à un simple RGO résistant",
+        "Ne pas banaliser l'impact dentaire"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Abaisse-langue",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Caractérisation de la régurgitation sans nausée",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Examen des dents et de la muqueuse buccale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Respiration diaphragmatique postprandiale",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Rassurance de la patiente",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment sur un sujet potentiellement honteux",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, c'est un peu embarrassant... après chaque repas, la nourriture remonte toute seule dans ma bouche, sans que j'aie la nausée, et je la remâche souvent.",
+      "infosVolontaires": [
+        "Régurgitations alimentaires répétées après les repas",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Gênée par le sujet, craint d'être jugée dégoûtante."
+    },
+    "titre": "Régurgitations alimentaires répétées après les repas",
+    "itemR2C": "Item 70. Troubles du comportement alimentaire de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en hépato-gastroentérologie.",
+      "contexte": "Vous recevez Clara Martin, 19 ans, adressée pour des régurgitations postprandiales indolores quotidiennes évoluant depuis 6 mois.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Préciser la sémiologie des régurgitations (remontée sans effort de vomissement, remastication)",
+        "Différencier le trouble du reflux gastro-œsophagien et du mégaœsophage",
+        "Rechercher un retentissement sur le poids et l'état bucco-dentaire",
+        "Éliminer une cause organique par les examens appropriés si nécessaire",
+        "Expliquer le mécanisme du trouble et initier la rééducation par respiration diaphragmatique"
+      ],
+      "interdits": [
+        "Ne pas conclure d'emblée à un simple RGO résistant",
+        "Ne pas banaliser l'impact dentaire"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Abaisse-langue",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Clara",
+        "nom": "Martin",
+        "age": 19,
+        "sexe": "F"
+      },
+      "personnalite": "Gênée par le sujet, craint d'être jugée dégoûtante.",
+      "phraseOuverture": "Bonjour docteur, c'est un peu embarrassant... après chaque repas, la nourriture remonte toute seule dans ma bouche, sans que j'aie la nausée, et je la remâche souvent.",
+      "infosVolontaires": [
+        "Régurgitations alimentaires répétées après les repas",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Reconnaître le mérycisme, éliminer les causes œsophagiennes organiques et enseigner la respiration abdominale postprandiale.",
+      "erreursRedhibitoires": [
+        "Escalade inutile des doses d'IPP sans réévaluation",
+        "Négliger l'examen dentaire"
+      ],
+      "elementsAttendus": [
+        "Caractérisation de la régurgitation sans nausée",
+        "Examen des dents et de la muqueuse buccale",
+        "Respiration diaphragmatique postprandiale",
+        "Rassurance de la patiente"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Caractérisation de la régurgitation sans nausée",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Examen des dents et de la muqueuse buccale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Respiration diaphragmatique postprandiale",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Rassurance de la patiente",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, euh… c'est un peu gênant mais j'ai des problèmes de régurgitations après les repas. Ça fait un moment déjà.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Mérycisme)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Endoscopie digestive"
+    ],
+    "utiles": [
+      "Évaluation psychologique",
+      "pH-métrie œsophagienne",
+      "Scanner abdominal"
+    ],
+    "inutiles": [
+      "Dosage des D-dimères",
+      "Échographie rénale",
+      "Test respiratoire à l’urée"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers les troubles du comportement alimentaire",
+    "Rechercher les caractéristiques du mérycisme (régurgitation volontaire, remastication, sensation de plaisir)",
+    "Éliminer un diagnostic différentiel organique (RGO, sténose pylorique, ARFID)"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Régurgitations alimentaires répétées après les repas"
+}

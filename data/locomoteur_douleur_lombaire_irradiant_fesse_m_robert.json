@@ -1,0 +1,388 @@
+{
+  "id": "locomoteur_douleur_lombaire_irradiant_fesse_m_robert",
+  "redacteur": "diapo du prof",
+  "patient": {
+    "nom": "Lefèvre",
+    "prenom": "Robert",
+    "age": 42,
+    "sexe": "M",
+    "taille": "179 cm",
+    "poids": "84 kg",
+    "groupeSanguin": "B-",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Lombalgie aiguë irradiant dans la fesse droite après un effort de soulèvement",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Elevée (course)"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "0"
+      },
+      "alimentation": {
+        "regime": "Normale",
+        "particularites": "Equilibrée"
+      },
+      "emploi": {
+        "profession": "Directeur d'une société de vente de thé",
+        "stress": "Elevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": ".Apparition brutale le week-end dernier (EVA 7/10)",
+      "evolution": "/",
+      "facteursDeclenchants": "Douleur en portant un meuble lors d'un déménagement",
+      "descriptionDouleur": "Membre inférieur droit : douleur à type de décharge électrique, irradiant de la fesse à la face postéro-latérale de cuisse à la face antéro-externe du genou jusqu'au gros orteil",
+      "symptomesAssocies": [
+        "Douleur du membre inférieur droit"
+      ],
+      "remarques": "Douleurs cèdent au repos"
+    },
+    "verbatim": "Bonjour docteur, en soulevant un sac ce matin sur mon chantier, j'ai entendu un 'crac' dans le bas du dos et la douleur m'est descendue dans la fesse droite. Je suis complètement coincé."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "120/80 mmHg",
+      "pouls": "70 bpm",
+      "temperature": "37°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, indolore, pas de masse.",
+      "auscultation": "Bruits hydro-aériques normaux."
+    },
+    "Rhumatoide": {
+      "inspection": "Rachis raide en antéflexion avec une attitude vicieuse en latéroflexion gauche",
+      "palpation": "Douleur reproduite à la palpation de l'épineuse L5"
+    }
+  },
+  "availableExams": [],
+  "examResults": {},
+  "possibleDiagnostics": [
+    "Tumeur rachidienne",
+    "Arthrose",
+    "Lombo-radiculalgie L5 droite",
+    "Sténose du canal lombaire"
+  ],
+  "correctDiagnostic": "Lombo-radiculalgie L5 droite",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [],
+  "correctTreatments": [],
+  "correction": "# Lombo-radiculalgie L5 droite\n\n## Points Importants\n- trajet de la douleur au membre inférieur associé à L5",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "QCM",
+      "challenge": {
+        "question": "Selon la description de la douleur, quel nerf est en cause ici ?",
+        "options": [
+          "L3",
+          "L4",
+          "L5",
+          "S1"
+        ],
+        "correct_indices": [
+          2
+        ]
+      },
+      "feedback_error": "douleur du membre inférieur \"irradiant de la fesse à la face postéro-latérale de cuisse à la face antéro-externe du genou jusqu'au gros orteil\"...",
+      "id": "lock_1767810614077",
+      "target_fields": [
+        "examenClinique.Rhumatoide"
+      ]
+    }
+  ],
+  "postGameQuestions": [],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. Robert Lefèvre, 42 ans, artisan, qui s'est bloqué le dos ce matin en portant un sac de ciment, avec douleur irradiant dans la fesse droite.",
+      "consignesAttendues": [
+        "Rechercher immédiatement les signaux d'alerte (red flags) : syndrome de la queue de cheval, déficit moteur < 3/5, fièvre, altération de l'état général",
+        "Préciser le trajet de l'irradiation radiculaire (L5 ou S1)",
+        "Réaliser l'examen neurologique moteur (marche sur les pointes S1 et talons L5) et sensitif",
+        "Poser le principe du maintien de la mobilité sans alitement prolongé",
+        "Prescrire un traitement antalgique gradué de crise (paracétamol, AINS courts)"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'imagerie (IRM ou scanner) dans les 6 premières semaines en l'absence de signe de gravité (red flags)",
+        "Ne pas recommander le repos au lit strict"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Mètre ruban",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Vérification des mictions (absence de syndrome de la queue de cheval)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Testing moteur L5/S1 normal",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Absence d'indication d'imagerie en première intention",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prescription d'AINS courte durée et incitation au mouvement",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la douleur du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, en soulevant un sac ce matin sur mon chantier, j'ai entendu un 'crac' dans le bas du dos et la douleur m'est descendue dans la fesse droite. Je suis complètement coincé.",
+      "infosVolontaires": [
+        "Lombalgie aiguë irradiant dans la fesse droite après un effort de soulèvement",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Inquiet pour son travail d'artisan, très courbé, marche avec précaution."
+    },
+    "titre": "Lombalgie aiguë irradiant dans la fesse droite après un effort de soulèvement",
+    "itemR2C": "Item 95. Radiculalgie et syndrome rachidien.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. Robert Lefèvre, 42 ans, artisan, qui s'est bloqué le dos ce matin en portant un sac de ciment, avec douleur irradiant dans la fesse droite.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Rechercher immédiatement les signaux d'alerte (red flags) : syndrome de la queue de cheval, déficit moteur < 3/5, fièvre, altération de l'état général",
+        "Préciser le trajet de l'irradiation radiculaire (L5 ou S1)",
+        "Réaliser l'examen neurologique moteur (marche sur les pointes S1 et talons L5) et sensitif",
+        "Poser le principe du maintien de la mobilité sans alitement prolongé",
+        "Prescrire un traitement antalgique gradué de crise (paracétamol, AINS courts)"
+      ],
+      "interdits": [
+        "Ne pas prescrire d'imagerie (IRM ou scanner) dans les 6 premières semaines en l'absence de signe de gravité (red flags)",
+        "Ne pas recommander le repos au lit strict"
+      ],
+      "materielDisponible": [
+        "Marteau réflexe",
+        "Mètre ruban",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Robert",
+        "nom": "Lefèvre",
+        "age": 42,
+        "sexe": "M"
+      },
+      "personnalite": "Inquiet pour son travail d'artisan, très courbé, marche avec précaution.",
+      "phraseOuverture": "Bonjour docteur, en soulevant un sac ce matin sur mon chantier, j'ai entendu un 'crac' dans le bas du dos et la douleur m'est descendue dans la fesse droite. Je suis complètement coincé.",
+      "infosVolontaires": [
+        "Lombalgie aiguë irradiant dans la fesse droite après un effort de soulèvement",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une lombosciatique aiguë commune sans signe de gravité (absence de déficit moteur, miction normale), rassurer, encourager la mobilisation active et éviter les examens d'imagerie inutiles.",
+      "erreursRedhibitoires": [
+        "Prescrire une IRM en urgence sans signe d'alerte",
+        "Prescrire un repos strict au lit"
+      ],
+      "elementsAttendus": [
+        "Vérification des mictions (absence de syndrome de la queue de cheval)",
+        "Testing moteur L5/S1 normal",
+        "Absence d'indication d'imagerie en première intention",
+        "Prescription d'AINS courte durée et incitation au mouvement"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Vérification des mictions (absence de syndrome de la queue de cheval)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Testing moteur L5/S1 normal",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Absence d'indication d'imagerie en première intention",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prescription d'AINS courte durée et incitation au mouvement",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, j'ai très mal au bas du dos depuis samedir dernier, et ça descend jusque dans la jambe droite, c'est comme des décharges électriques, ça m'inquiète un peu.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Lombo-radiculalgie L5 droite)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [],
+    "utiles": [],
+    "inutiles": [],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Selon la description de la douleur, quel nerf est en cause ici ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la douleur lombaire et la radiculalgie",
+    "Rechercher des signes d'alerte (red flags) : syndrome de la queue de cheval, déficit neurologique, fièvre, amaigrissement, antécédent de cancer",
+    "Réaliser un examen clinique du rachis lombaire et un examen neurologique du membre inférieur droit (Lasègue, Leri, testing moteur L5, sensibilité L5, réflexes achilléen et rotulien)"
+  ],
+  "referentiel": "Collège de rhumatologie (SFR)",
+  "motif": "Lombalgie aiguë irradiant dans la fesse droite après un effort de soulèvement"
+}

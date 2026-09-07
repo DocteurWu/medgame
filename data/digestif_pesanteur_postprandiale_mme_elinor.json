@@ -1,0 +1,422 @@
+{
+  "id": "digestif_pesanteur_postprandiale_mme_elinor",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Dammert",
+    "prenom": "Elinor",
+    "age": 34,
+    "sexe": "F",
+    "taille": "164 cm",
+    "poids": "55 kg",
+    "groupeSanguin": "0-",
+    "persona": {
+      "ton": "bavard et anxieux",
+      "registre": "familier",
+      "loquacite": "bavard",
+      "style_parole": "digresse (travail, famille) puis revient au symptôme si on le recadre",
+      "exemples_phrases": [
+        "Attendez, je vous raconte, au boulot en ce moment c'est... enfin bref, la douleur quoi.",
+        "Mon conjoint m'a dit de venir, moi je voulais pas déranger..."
+      ],
+      "anxiete": 70,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Pesanteur et brûlure de l'estomac après les repas",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "30 min de course par jour"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "Jamais"
+      },
+      "alcool": {
+        "quantite": "Rarement"
+      },
+      "alimentation": {
+        "regime": "Equilibrée",
+        "particularites": "Vegan"
+      },
+      "emploi": {
+        "profession": "Ecrivaine",
+        "stress": "Léger"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Premier épisode il y a 5 mois",
+      "evolution": "Récurrent sans aggravation",
+      "facteursDeclenchants": "Les repas",
+      "descriptionDouleur": "Epigastrique à type de pesanteur",
+      "symptomesAssocies": [
+        "Sensation de digestion lente",
+        "ballonnements",
+        "nausées occasionnelles",
+        "satiété précoce"
+      ],
+      "remarques": "Pas de vomissements, d'amaigrissements ou de fièvre"
+    },
+    "verbatim": "Bonjour docteur, j'ai tout le temps l'estomac lourd et des brûlures après avoir déjeuné. Ça me réveille parfois en début de nuit."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/70 mmHg",
+      "pouls": "61 bpm",
+      "temperature": "37°C",
+      "saturationO2": "100%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Bon état général, patient conscient et orienté.",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du cœur réguliers, pas de souffle.",
+      "inspection": "Pas de signe de choc, pas d'OMI.",
+      "palpation": "Pouls périphériques perçus."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique, pas de bruit surajouté.",
+      "inspection": "Pas de signe de lutte.",
+      "percussion": "Normal."
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, sans défense mais sensibilité épigastrique modérée",
+      "auscultation": "Bruits hydro-aériques normaux."
+    }
+  },
+  "availableExams": [
+    "Endoscopie oeso-gastro-duodénale (EOGD)",
+    "Scanner abdominal",
+    "Scintigraphie de vidange gastrique au Technétium 99m",
+    "Test respiratoire à l’urée marquée"
+  ],
+  "examResults": {
+    "Endoscopie oeso-gastro-duodénale (EOGD)": "Non indiquée en première intention",
+    "Scanner abdominal": "Non indiqué",
+    "Scintigraphie de vidange gastrique au Technétium 99m": "Non indiqué",
+    "Test respiratoire à l’urée marquée": "Négatif pour Helicobacter pylori"
+  },
+  "possibleDiagnostics": [
+    "Ulcère gastrique",
+    "RGO",
+    "Lithiase biliaire",
+    "Dyspepsie fonctionnelle"
+  ],
+  "correctDiagnostic": "Dyspepsie fonctionnelle",
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Traitement symptomatique",
+    "Mesures hygiéno-diététiques",
+    "Antibiothérapie d’éradication d’Helicobacter pylori",
+    "Corticothérapie",
+    "Chirurgie gastrique"
+  ],
+  "correctTreatments": [
+    "Traitement symptomatique",
+    "Mesures hygiéno-diététiques"
+  ],
+  "correction": "# Dyspepsie fonctionnelleLa dyspepsie n’est pas un diagnostic mais un ensemble de signes cliniques rapportés au tube digestif haut et notamment à l’estomac.\n\n## Points Importants de diagnostic\n- Absence de signes d'alarme\n- Douleurs post-prandiales non spécifiques\n- Terrain jeune\n\n## Traitement\n- Traitement symptomatique si pas d'Helicobacter pylori\n- Mesures hygiéno-diététiques (repas fractionnés, adapter l'alimentation)",
+  "correctionImage": null,
+  "feedback": {
+    "default": "Diagnostic incorrect."
+  },
+  "locks": [
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Que recherche cet examen ?",
+        "expected_keywords": [
+          "Helicobacter pylori",
+          "H. Pylori"
+        ]
+      },
+      "feedback_error": "Une bactérie très répandue...",
+      "id": "lock_1767311529072",
+      "target_fields": [
+        "examResults.Test respiratoire à l’urée marquée"
+      ]
+    }
+  ],
+  "postGameQuestions": [
+    {
+      "type": "SAISIE",
+      "challenge": {
+        "question": "Si la patiente a 57 ans et se présente avec des signes d'alarme, quel examen faire en première intention ?",
+        "expected_keywords": [
+          "EOGD",
+          "endoscopie oeso-gastro-duodénale"
+        ]
+      },
+      "feedback_error": "Revoyez vos bases..."
+    }
+  ],
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Mme Elinor Dammert, 34 ans, consultant pour une gêne épigastrique postprandiale récurrente depuis 3 mois.",
+      "consignesAttendues": [
+        "Analyser la chronologie des douleurs et leur relation avec l'alimentation",
+        "Rechercher les signaux d'alarme (amaigrissement, anémie, dysphagie, âge > 50 ans)",
+        "Rechercher la prise d'AINS ou d'aspirine et le tabagisme",
+        "Proposer la stratégie diagnostique non invasive appropriée",
+        "Prescrire le traitement symptomatique de première intention et les conseils hygiéno-diététiques"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'emblée une endoscopie systématique sans signe d'alarme",
+        "Ne pas méconnaître l'automédication"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Caractérisation du syndrome dyspeptique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Absence de signes d'alarme justifiant l'abstention d'EOGD",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Arrêt immédiat des AINS",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Recherche non invasive d'H. pylori ou IPP 4 semaines",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, respecte les silences",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient sur ses symptômes et ses préoccupations",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inconfort chronique du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, j'ai tout le temps l'estomac lourd et des brûlures après avoir déjeuné. Ça me réveille parfois en début de nuit.",
+      "infosVolontaires": [
+        "Pesanteur et brûlure de l'estomac après les repas",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Anxieuse, très investie dans son travail, boit beaucoup de café."
+    },
+    "titre": "Pesanteur et brûlure de l'estomac après les repas",
+    "itemR2C": "Item 271. Douleur abdominale chez l'adulte. Item 272. Dyspepsie.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Mme Elinor Dammert, 34 ans, consultant pour une gêne épigastrique postprandiale récurrente depuis 3 mois.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Analyser la chronologie des douleurs et leur relation avec l'alimentation",
+        "Rechercher les signaux d'alarme (amaigrissement, anémie, dysphagie, âge > 50 ans)",
+        "Rechercher la prise d'AINS ou d'aspirine et le tabagisme",
+        "Proposer la stratégie diagnostique non invasive appropriée",
+        "Prescrire le traitement symptomatique de première intention et les conseils hygiéno-diététiques"
+      ],
+      "interdits": [
+        "Ne pas prescrire d'emblée une endoscopie systématique sans signe d'alarme",
+        "Ne pas méconnaître l'automédication"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Elinor",
+        "nom": "Dammert",
+        "age": 34,
+        "sexe": "F"
+      },
+      "personnalite": "Anxieuse, très investie dans son travail, boit beaucoup de café.",
+      "phraseOuverture": "Bonjour docteur, j'ai tout le temps l'estomac lourd et des brûlures après avoir déjeuné. Ça me réveille parfois en début de nuit.",
+      "infosVolontaires": [
+        "Pesanteur et brûlure de l'estomac après les repas",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic de dyspepsie non compliquée sans signe d'alarme, arrêter les AINS, tester/traiter Helicobacter pylori ou IPP.",
+      "erreursRedhibitoires": [
+        "Maintenir l'ibuprofène",
+        "Prescrire une endoscopie inutile chez une jeune femme sans alarme"
+      ],
+      "elementsAttendus": [
+        "Caractérisation du syndrome dyspeptique",
+        "Absence de signes d'alarme justifiant l'abstention d'EOGD",
+        "Arrêt immédiat des AINS",
+        "Recherche non invasive d'H. pylori ou IPP 4 semaines"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Caractérisation du syndrome dyspeptique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Absence de signes d'alarme justifiant l'abstention d'EOGD",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Arrêt immédiat des AINS",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Recherche non invasive d'H. pylori ou IPP 4 semaines",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'ai des douleurs au ventre, au niveau de l'estomac, qui reviennent depuis plusieurs mois. Ça me fait peur un peu parce que ça ne passe pas.",
+    "objectifs_cles": [
+      "caractérisation complète du symptôme (siège, type, irradiation, intensité, durée)",
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.descriptionDouleur",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Dyspepsie fonctionnelle)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Endoscopie oeso-gastro-duodénale (EOGD)",
+      "Scanner abdominal"
+    ],
+    "utiles": [
+      "Test respiratoire à l’urée marquée"
+    ],
+    "inutiles": [],
+    "dangereux": [
+      "Endoscopie oeso-gastro-duodénale (EOGD)",
+      "Scanner abdominal",
+      "Scintigraphie de vidange gastrique au Technétium 99m"
+    ]
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🔐 Défi à prévoir : « Que recherche cet examen ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la dyspepsie",
+    "Rechercher les signes d'alarme (amaigrissement, vomissements, dysphagie, anémie, hémorragie digestive)",
+    "Explorer les antécédents personnels et familiaux, le mode de vie et les traitements en cours"
+  ],
+  "referentiel": "Collège d'hépato-gastro-entérologie (SNFGE)",
+  "motif": "Pesanteur et brûlure de l'estomac après les repas"
+}

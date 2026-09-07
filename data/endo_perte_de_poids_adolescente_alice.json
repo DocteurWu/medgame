@@ -1,0 +1,414 @@
+{
+  "id": "endo_perte_de_poids_adolescente_alice",
+  "patient": {
+    "nom": "Hanouna",
+    "prenom": "Alice",
+    "age": 14,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "45 kg",
+    "groupeSanguin": "O+",
+    "persona": {
+      "ton": "angoissé hypocondriaque",
+      "registre": "courant, dramatise",
+      "loquacite": "normal",
+      "style_parole": "amplifie les symptômes, guette chaque réaction du médecin, vocabulaire jeune et relâché",
+      "exemples_phrases": [
+        "J'ai trop peur que ce soit quelque chose de grave...",
+        "Mon cœur bat super vite là, vous entendez ?"
+      ],
+      "anxiete": 85,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Perte de poids et aménorrhée chez une adolescente",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Activité physique modérée (marche occasionnelle)"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Négligeable"
+      },
+      "alimentation": {
+        "regime": " Très restrictif, évite les graisses et les sucres ",
+        "particularites": " Obsédée par le comptage des calories "
+      },
+      "reseauxSociaux": {
+        "utilisation": " Utilisation excessive de réseaux sociaux axés sur l'image corporelle ",
+        "influence": " Se compare constamment aux influenceurs et modèles "
+      },
+      "emploi": {
+        "profession": "Collégienne",
+        "stress": "Scolaire modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": " Antécédents de troubles anxieux ",
+          "age": "45"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": " Environ 6 mois ",
+      "evolution": "Progressive",
+      "facteursDeclenchants": " Pression sociale et exposition à des images corporelles idéalisées sur les réseaux sociaux ",
+      "symptomesAssocies": [
+        " Fatigue, aménorrhée, tristesse "
+      ],
+      "remarques": " Très préoccupée par son apparence, se sent mal à l'aise en public "
+    },
+    "verbatim": "Bonjour docteur, ma mère m'a obligée à venir. Moi je me sens très bien, j'ai juste adapté mon alimentation pour être en forme."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "90/60 mmHg",
+      "pouls": "50 bpm",
+      "temperature": "36.2°C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "14/min"
+    },
+    "aspectGeneral": " Apparence maigre, peau pâle ",
+    "examenCardiovasculaire": {
+      "auscultation": " Bradycardie "
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Non contributif"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan thyroïdien",
+    "Examen psychologique approfondi",
+    "Dosage des D-dimères",
+    "Sérologie VIH",
+    "Bilan hépatique",
+    "ECG",
+    "Mesure de l'impédancemétrie bioélectrique",
+    "Ostéodensitométrie",
+    "Évaluation de la composition corporelle par DEXA"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": " Anémie légère, hypokaliémie ",
+    "Bilan thyroïdien": "Normal",
+    "Examen psychologique approfondi": " Anxiété, troubles de l'image corporelle, préoccupations alimentaires ",
+    "Dosage des D-dimères": "Normal",
+    "Sérologie VIH": "Négatif",
+    "Bilan hépatique": "Normal",
+    "ECG": " Bradycardie sinusale ",
+    "Glycémie (contrôle)": "0.7 g/L",
+    "Mesure de l'impédancemétrie bioélectrique": "Masse grasse diminuée",
+    "Ostéodensitométrie": "Densité osseuse normale",
+    "Évaluation de la composition corporelle par DEXA": "Masse maigre diminuée"
+  },
+  "possibleDiagnostics": [
+    "Anorexie mentale",
+    "Troubles anxieux",
+    "Dépression"
+  ],
+  "correctDiagnostic": "Anorexie mentale",
+  "feedback": {
+    "Anorexie mentale": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Soutien nutritionnel",
+    "Thérapie familiale",
+    "Thérapie cognitivo-comportementale",
+    "Antidépresseurs",
+    "Canabis"
+  ],
+  "correctTreatments": [
+    "Soutien nutritionnel",
+    "Thérapie familiale",
+    "Thérapie cognitivo-comportementale"
+  ],
+  "correction": "# Anorexie mentale (adolescent)\n\nPerte de poids, aménorrhée, préoccupations corporelles, bradycardie.\n\n## Bonnes pratiques\n\n- Prise en charge multidisciplinaire incluant thérapie familiale\n- Renutrition progressive et surveillance cardiaque/biologique\n- Limiter l’exposition nocive aux réseaux sociaux\n\n## Erreurs à éviter\n\n- Objectifs de poids non sécurisés\n- Renutrition trop rapide ou non accompagnée",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes pédiatre en consultation hospitalière.",
+      "contexte": "Vous recevez Alice, 14 ans, accompagnée de sa mère qui s'alarme d'un amaigrissement important et de l'arrêt des règles depuis 4 mois.",
+      "consignesAttendues": [
+        "Réaliser un interrogatoire bienveillant en recevant l'adolescente avec et sans sa mère",
+        "Retracer la courbe de croissance staturo-pondérale dans le carnet de santé",
+        "Évaluer les signes cliniques de dénutrition aiguë et les critères d'hospitalisation",
+        "Proposer un bilan biologique et paraclinique de première intention",
+        "Expliquer les modalités d'une prise en charge pluridisciplinaire"
+      ],
+      "consignesInterdites": [
+        "Ne pas forcer un gavage immédiat sans surveillance",
+        "Ne pas culpabiliser l'adolescente ou les parents"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box de consultation pédiatrique",
+      "materielDisponible": [
+        "Balance médicale",
+        "Toise murale",
+        "Tensiomètre pédiatrique",
+        "Stéthoscope",
+        "Thermomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Tracé des courbes de croissance et calcul du z-score IMC",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Examen clinique complet avec recherche de lanugo et bradycardie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Recherche de critères d'hospitalisation",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Prise en charge conjointe somatique et pédopsychiatrique",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, ma mère m'a obligée à venir. Moi je me sens très bien, j'ai juste adapté mon alimentation pour être en forme.",
+      "infosVolontaires": [
+        "Perte de poids et aménorrhée chez une adolescente",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Anxieuse, perfectionniste, minimise l'amaigrissement et affirme se trouver encore 'trop grosse'."
+    },
+    "titre": "Perte de poids et aménorrhée chez une adolescente",
+    "itemR2C": "Item 70. Troubles du comportement alimentaire de l'enfant et de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes pédiatre en consultation hospitalière.",
+      "contexte": "Vous recevez Alice, 14 ans, accompagnée de sa mère qui s'alarme d'un amaigrissement important et de l'arrêt des règles depuis 4 mois.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Réaliser un interrogatoire bienveillant en recevant l'adolescente avec et sans sa mère",
+        "Retracer la courbe de croissance staturo-pondérale dans le carnet de santé",
+        "Évaluer les signes cliniques de dénutrition aiguë et les critères d'hospitalisation",
+        "Proposer un bilan biologique et paraclinique de première intention",
+        "Expliquer les modalités d'une prise en charge pluridisciplinaire"
+      ],
+      "interdits": [
+        "Ne pas forcer un gavage immédiat sans surveillance",
+        "Ne pas culpabiliser l'adolescente ou les parents"
+      ],
+      "materielDisponible": [
+        "Balance médicale",
+        "Toise murale",
+        "Tensiomètre pédiatrique",
+        "Stéthoscope",
+        "Thermomètre"
+      ],
+      "lieu": "Box de consultation pédiatrique"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Alice",
+        "nom": "Hanouna",
+        "age": 14,
+        "sexe": "F"
+      },
+      "personnalite": "Anxieuse, perfectionniste, minimise l'amaigrissement et affirme se trouver encore 'trop grosse'.",
+      "phraseOuverture": "Bonjour docteur, ma mère m'a obligée à venir. Moi je me sens très bien, j'ai juste adapté mon alimentation pour être en forme.",
+      "infosVolontaires": [
+        "Perte de poids et aménorrhée chez une adolescente",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Repérer les signes de restriction cognitive chez l'adolescente, tracer la rupture de corpulence et identifier les critères d'admission hospitalière.",
+      "erreursRedhibitoires": [
+        "Omettre le tracé de la courbe IMC sur le carnet de santé",
+        "Négliger le risque de syndrome de renutrition"
+      ],
+      "elementsAttendus": [
+        "Tracé des courbes de croissance et calcul du z-score IMC",
+        "Examen clinique complet avec recherche de lanugo et bradycardie",
+        "Recherche de critères d'hospitalisation",
+        "Prise en charge conjointe somatique et pédopsychiatrique"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Tracé des courbes de croissance et calcul du z-score IMC",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Examen clinique complet avec recherche de lanugo et bradycardie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Recherche de critères d'hospitalisation",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Prise en charge conjointe somatique et pédopsychiatrique",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venue parce que ma mère s'inquiète pour moi. Elle dit que je maigris trop, mais je me sens bien.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Anorexie mentale)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan thyroïdien"
+    ],
+    "utiles": [
+      "Examen psychologique approfondi",
+      "Dosage des D-dimères",
+      "Sérologie VIH"
+    ],
+    "inutiles": [
+      "Bilan hépatique",
+      "ECG",
+      "Mesure de l'impédancemétrie bioélectrique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un entretien avec l'adolescente et sa mère pour explorer les troubles du comportement alimentaire",
+    "Évaluer la sévérité de la dénutrition et les complications somatiques",
+    "Rechercher des comorbidités psychiatriques (anxiété, dépression, idées suicidaires)"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Perte de poids et aménorrhée chez une adolescente"
+}

@@ -1,0 +1,435 @@
+{
+  "id": "endo_prise_de_poids_progressive_mme_michel",
+  "patient": {
+    "nom": "Michel",
+    "prenom": "Nathalie",
+    "age": 44,
+    "sexe": "F",
+    "taille": "175 cm",
+    "poids": "120 kg",
+    "groupeSanguin": "AB+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Prise de poids progressive et essoufflement à l'effort",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire, joueur professionnel de League of Legends"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Hypercalorique",
+        "particularites": "Préférence pour snacks et boissons énergétiques"
+      },
+      "emploi": {
+        "profession": "Joueur pro e-sport (LoL)",
+        "stress": "Élevé en compétition"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Arthrose genou droit",
+        "Obésité depuis l’adolescence"
+      ],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2",
+          "age": "55"
+        }
+      ]
+    },
+    "traitements": [
+      "Paracétamol occasionnel pour arthrose"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "Plusieurs années",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Mode de vie sédentaire et alimentation riche",
+      "symptomesAssocies": [
+        "Fatigue",
+        "Douleurs articulaires",
+        "Essoufflement léger"
+      ],
+      "remarques": "Peu motivé pour changer son alimentation ou augmenter son activité physique."
+    },
+    "verbatim": "Bonjour docteur, je viens vous voir car je n'arrive plus à monter mes deux étages sans être essoufflée. J'ai pris 25 kg depuis mon dernier accouchement."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "140/90 mmHg",
+      "pouls": "85 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "96%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Obèse, démarche lente due à l’arthrose",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Tour de taille 110 cm, adiposité marquée"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    },
+    "examenOsteoarticulaire": {
+      "genouDroit": "Signes d’arthrose, douleur à la mobilisation"
+    }
+  },
+  "availableExams": [
+    "Bilan sanguin complet",
+    "Bilan lipidique",
+    "Mesure du tour de taille",
+    "Radiographie du genou",
+    "Dosage de la glycémie à jeun",
+    "Échographie hépatique",
+    "Test d’effort cardiaque",
+    "Bilan nutritionnel",
+    "IRM cérébrale",
+    "Coloscopie",
+    "Scanner thoracique",
+    "Analyse des gaz du sang",
+    "Sérologie VIH",
+    "Dosage des hormones thyroïdiennes",
+    "Électroencéphalogramme",
+    "Test de dépistage des allergènes",
+    "Échographie rénale"
+  ],
+  "examResults": {
+    "Bilan sanguin complet": "Hyperglycémie légère, carence en vitamine D",
+    "Bilan lipidique": "Cholestérol LDL élevé, triglycérides élevés",
+    "Mesure du tour de taille": "110 cm, obésité abdominale confirmée",
+    "Radiographie du genou": "Arthrose modérée du genou droit",
+    "Dosage de la glycémie à jeun": "110 mg/dL (pré-diabète)",
+    "Échographie hépatique": "Stéatose hépatique légère",
+    "Test d’effort cardiaque": "Normale",
+    "Bilan nutritionnel": "Apport calorique excessif, déficit en fibres",
+    "IRM cérébrale": "Normale",
+    "Coloscopie": "Normale",
+    "Scanner thoracique": "Normale",
+    "Analyse des gaz du sang": "Normale",
+    "Sérologie VIH": "Négative",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Électroencéphalogramme": "Normale",
+    "Test de dépistage des allergènes": "Négatif",
+    "Échographie rénale": "Normale",
+    "Glycémie (contrôle)": "1.15 g/L"
+  },
+  "possibleDiagnostics": [
+    "Obésité",
+    "Diabète type 2",
+    "Syndrome métabolique",
+    "Hypothyroïdie",
+    "Dépression"
+  ],
+  "correctDiagnostic": "Obésité",
+  "feedback": {
+    "Obésité": "Diagnostic correct ! Liée à un mode de vie sédentaire et une alimentation hypercalorique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Régime hypocalorique",
+    "Activité physique adaptée",
+    "Antalgiques pour arthrose",
+    "Statines",
+    "Antidépresseurs",
+    "Rééducation fonctionnelle",
+    "Metformine"
+  ],
+  "correctTreatments": [
+    "Régime hypocalorique",
+    "Activité physique adaptée",
+    "Antalgiques pour arthrose"
+  ],
+  "correction": "# Obésité\n\nIMC élevé, tour de taille important, douleurs articulaires et comorbidités associées.\n\n## Bonnes pratiques\n\n- Programme nutritionnel hypocalorique individualisé\n- Activité physique adaptée et progressivité\n- Prise en charge des comorbidités (arthrose, bilan métabolique)\n\n## Erreurs à éviter\n\n- Interventions médicamenteuses sans prise en charge du mode de vie\n- Objectifs irréalistes et non sécurisés",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Mme Nathalie Michel, 44 ans, qui consulte pour une prise de poids continue depuis 5 ans avec dyspnée d'effort croissante.",
+      "consignesAttendues": [
+        "Conduire une anamnèse pondérale chronologique (poids maximal, minimal, déclencheurs)",
+        "Calculer l'IMC et mesurer le tour de taille",
+        "Dépister les complications métaboliques, articulaires, respiratoires et hépatiques",
+        "Évaluer les troubles du comportement alimentaire et les facteurs psychologiques",
+        "Construire avec la patiente des objectifs personnalisés et gradués d'activité physique et d'alimentation"
+      ],
+      "consignesInterdites": [
+        "Ne pas culpabiliser la patiente ou tenir des propos stigmatisants",
+        "Ne pas proposer de chirurgie bariatrique sans démarche médicale préalable"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Pèse-personne adapté",
+        "Toise",
+        "Mètre ruban",
+        "Tensiomètre avec brassard large"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Calcul IMC et tour de taille",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Recherche de complications (HTA, apnées, gonarthrose)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Bilan biologique complet",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Orientation diététique bienveillante",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance, notamment sur les questions de poids et de mode de vie",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je viens vous voir car je n'arrive plus à monter mes deux étages sans être essoufflée. J'ai pris 25 kg depuis mon dernier accouchement.",
+      "infosVolontaires": [
+        "Prise de poids progressive et essoufflement à l'effort",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Dévalorisée, a enchaîné de multiples régimes yo-yo par le passé, en attente d'aide bienveillante."
+    },
+    "titre": "Prise de poids progressive et essoufflement à l'effort",
+    "itemR2C": "Item 253. Obésité de l'adulte et de l'enfant.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez Mme Nathalie Michel, 44 ans, qui consulte pour une prise de poids continue depuis 5 ans avec dyspnée d'effort croissante.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Conduire une anamnèse pondérale chronologique (poids maximal, minimal, déclencheurs)",
+        "Calculer l'IMC et mesurer le tour de taille",
+        "Dépister les complications métaboliques, articulaires, respiratoires et hépatiques",
+        "Évaluer les troubles du comportement alimentaire et les facteurs psychologiques",
+        "Construire avec la patiente des objectifs personnalisés et gradués d'activité physique et d'alimentation"
+      ],
+      "interdits": [
+        "Ne pas culpabiliser la patiente ou tenir des propos stigmatisants",
+        "Ne pas proposer de chirurgie bariatrique sans démarche médicale préalable"
+      ],
+      "materielDisponible": [
+        "Pèse-personne adapté",
+        "Toise",
+        "Mètre ruban",
+        "Tensiomètre avec brassard large"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Nathalie",
+        "nom": "Michel",
+        "age": 44,
+        "sexe": "F"
+      },
+      "personnalite": "Dévalorisée, a enchaîné de multiples régimes yo-yo par le passé, en attente d'aide bienveillante.",
+      "phraseOuverture": "Bonjour docteur, je viens vous voir car je n'arrive plus à monter mes deux étages sans être essoufflée. J'ai pris 25 kg depuis mon dernier accouchement.",
+      "infosVolontaires": [
+        "Prise de poids progressive et essoufflement à l'effort",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic d'obésité de classe 2, identifier le cercle vicieux des régimes restrictifs, évaluer le retentissement somatique et proposer un suivi pluridisciplinaire.",
+      "erreursRedhibitoires": [
+        "Prescrire un nouveau régime hypocalorique déséquilibré",
+        "Omettre de mesurer le tour de taille"
+      ],
+      "elementsAttendus": [
+        "Calcul IMC et tour de taille",
+        "Recherche de complications (HTA, apnées, gonarthrose)",
+        "Bilan biologique complet",
+        "Orientation diététique bienveillante"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Calcul IMC et tour de taille",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Recherche de complications (HTA, apnées, gonarthrose)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Bilan biologique complet",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Orientation diététique bienveillante",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis longtemps et j'ai mal au genou droit. Je sais que c'est peut-être à cause de mon poids mais je n'ai pas trop envie de changer ma façon de vivre.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Obésité)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Bilan sanguin complet",
+      "Bilan lipidique"
+    ],
+    "utiles": [
+      "Mesure du tour de taille",
+      "Radiographie du genou",
+      "Dosage de la glycémie à jeun"
+    ],
+    "inutiles": [
+      "Échographie hépatique",
+      "Test d’effort cardiaque",
+      "Bilan nutritionnel"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes, les antécédents, le mode de vie et les habitudes alimentaires",
+    "Réaliser un examen clinique adapté incluant la mesure du poids, de la taille, de l'IMC et du tour de taille",
+    "Identifier les facteurs de risque cardiovasculaire et métabolique du patient"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Prise de poids progressive et essoufflement à l'effort"
+}

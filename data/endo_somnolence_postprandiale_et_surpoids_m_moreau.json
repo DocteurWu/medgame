@@ -1,0 +1,442 @@
+{
+  "id": "endo_somnolence_postprandiale_et_surpoids_m_moreau",
+  "patient": {
+    "nom": "Moreau",
+    "prenom": "Alain",
+    "age": 56,
+    "sexe": "M",
+    "taille": "170 cm",
+    "poids": "95 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "fatigué et résigné",
+      "registre": "courant, phrases très courtes",
+      "loquacite": "reserve",
+      "style_parole": "minimaliste, souffle court, répond mot à mot",
+      "exemples_phrases": [
+        "Oui... c'est là que ça fait mal.",
+        "Ça va passer, je crois."
+      ],
+      "anxiete": 35,
+      "confiance": 55
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Somnolence postprandiale et découverte d'anomalies biologiques",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Sédentaire, peu d’exercice"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Modéré"
+      },
+      "alimentation": {
+        "regime": "Riche en sucres et graisses",
+        "particularites": "Préférence pour plats préparés"
+      },
+      "emploi": {
+        "profession": "Employé de bureau",
+        "stress": "Modéré"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        "Hypertension artérielle"
+      ],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2",
+          "age": "78"
+        },
+        {
+          "lien": "Grand-père paternel",
+          "pathologie": "Diabète",
+          "age": "décédé"
+        }
+      ]
+    },
+    "traitements": [
+      "Lisinopril 10 mg/jour (hypertension)"
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 an",
+      "evolution": "Lente",
+      "facteursDeclenchants": "Inconnus",
+      "symptomesAssocies": [
+        "Fatigue",
+        "Soif modérée",
+        "Vision floue par moments"
+      ],
+      "remarques": "Poids de naissance : 4,2 kg, mère avait un diabète gestationnel."
+    },
+    "verbatim": "Bonjour docteur, le médecin du travail m'envoie vous voir parce qu'il a trouvé du sucre dans mes urines. Moi je me sens bien, juste un peu somnolent après le déjeuner."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "145/90 mmHg",
+      "pouls": "78 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Surpoids marqué, obésité abdominale",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Tour de taille 108 cm, adiposité viscérale"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "Glycémie à jeun",
+    "Hémoglobine glyquée (HbA1c)",
+    "Bilan lipidique",
+    "Mesure du tour de taille",
+    "Bilan sanguin complet",
+    "Test de tolérance au glucose",
+    "Dosage des anticorps anti-GAD",
+    "Échographie hépatique",
+    "IRM cérébrale",
+    "Radiographie pulmonaire",
+    "Sérologie VIH",
+    "Protéine C-réactive (CRP)",
+    "Scanner thoracique",
+    "Électroencéphalogramme",
+    "Coloscopie",
+    "Dosage des hormones thyroïdiennes",
+    "Corps cétoniques urinaires"
+  ],
+  "examResults": {
+    "Glycémie à jeun": "145 mg/dL et 136mg/L (3h après)",
+    "Hémoglobine glyquée (HbA1c)": "7.2% (contrôle glycémique altéré)",
+    "Bilan lipidique": "Hypertriglycéridémie (200 mg/dL), HDL bas (35 mg/dL)",
+    "Mesure du tour de taille": "108 cm (syndrome métabolique)",
+    "Bilan sanguin complet": "Normale sauf légère élévation des transaminases",
+    "Test de tolérance au glucose": "Anormal (intolérance au glucose)",
+    "Dosage des anticorps anti-GAD": "Négatif",
+    "Échographie hépatique": "Stéatose hépatique modérée",
+    "IRM cérébrale": "Normale",
+    "Radiographie pulmonaire": "Normale",
+    "Sérologie VIH": "Négative",
+    "Protéine C-réactive (CRP)": "Légèrement élevée (inflammation chronique)",
+    "Scanner thoracique": "Normale",
+    "Électroencéphalogramme": "Normale",
+    "Coloscopie": "Normale",
+    "Dosage des hormones thyroïdiennes": "Normal",
+    "Corps cétoniques urinaires": "Négatif"
+  },
+  "possibleDiagnostics": [
+    "Diabète de type 2",
+    "Diabète de type 1",
+    "Diabète monogénique (MODY)",
+    "Syndrome métabolique isolé",
+    "Hyperthyroïdie"
+  ],
+  "correctDiagnostic": "Diabète de type 2",
+  "feedback": {
+    "Diabète de type 2": "Diagnostic correct ! Patient > 45 ans, surpoids abdominal, syndrome métabolique, antécédents familiaux.",
+    "Diabète de type 1": "Incorrect. Pas d’anticorps ni de cétose, âge trop élevé.",
+    "Diabète monogénique (MODY)": "Incorrect. Présence de surpoids et syndrome métabolique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Activité physique régulière",
+    "Régime alimentaire équilibré",
+    "Metformine",
+    "Insulinothérapie",
+    "Sulfonylurées",
+    "Antithyroïdiens",
+    "Statines"
+  ],
+  "correctTreatments": [
+    "Activité physique régulière",
+    "Régime alimentaire équilibré",
+    "Metformine",
+    "Statines"
+  ],
+  "correction": "# Diabète de type 2\n\nSurpoids abdominal, hyperglycémie, HbA1c élevée, anticorps négatifs: compatible DT2.\n\n## Bonnes pratiques\n\n- Mesures hygiéno‑diététiques structurées\n- Metformine si non contre‑indiquée\n- Prise en charge du risque cardio‑métabolique (statines, HTA)\n\n## Erreurs à éviter\n\n- Classer DT1 sans éléments (anticorps, cétose)\n- Négliger le suivi (HbA1c, complications micro/macrovasculaires)",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. Alain Moreau, 56 ans, chauffeur routier, adressé suite à une visite médicale ayant révélé une anomalie glycémique.",
+      "consignesAttendues": [
+        "Mener un interrogatoire sur les signes de dysmétabolisme et l'hygiène de vie professionnelle",
+        "Dépister un syndrome d'apnées du sommeil associé (somnolence diurne)",
+        "Évaluer le risque cardiovasculaire global et les complications micro/macrovasculaires",
+        "Prescrire le bilan biologique standardisé de confirmation et de retentissement",
+        "Aborder l'aptitude à la conduite professionnelle avec tact et rigueur"
+      ],
+      "consignesInterdites": [
+        "Ne pas délivrer une inaptitude brutale sans bilan",
+        "Ne pas prescrire de sulfamide hypoglycémiant sans consignes"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet médical",
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Lecteur glycémie",
+        "Monofilament",
+        "Mètre ruban"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Prescription glycémie à jeun et HbA1c",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Échelle d'Epworth et polygraphie",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Examen neurologique des pieds",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Règles hygiéno-diététiques adaptées",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'annonce d'un diagnostic chronique",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, le médecin du travail m'envoie vous voir parce qu'il a trouvé du sucre dans mes urines. Moi je me sens bien, juste un peu somnolent après le déjeuner.",
+      "infosVolontaires": [
+        "Somnolence postprandiale et découverte d'anomalies biologiques",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Bon vivant, craint pour son permis de conduire et minimise ses symptômes."
+    },
+    "titre": "Somnolence postprandiale et découverte d'anomalies biologiques",
+    "itemR2C": "Item 247. Diabète sucré de types 1 et 2. Item 222. Risque cardiovasculaire.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine générale.",
+      "contexte": "Vous recevez M. Alain Moreau, 56 ans, chauffeur routier, adressé suite à une visite médicale ayant révélé une anomalie glycémique.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Mener un interrogatoire sur les signes de dysmétabolisme et l'hygiène de vie professionnelle",
+        "Dépister un syndrome d'apnées du sommeil associé (somnolence diurne)",
+        "Évaluer le risque cardiovasculaire global et les complications micro/macrovasculaires",
+        "Prescrire le bilan biologique standardisé de confirmation et de retentissement",
+        "Aborder l'aptitude à la conduite professionnelle avec tact et rigueur"
+      ],
+      "interdits": [
+        "Ne pas délivrer une inaptitude brutale sans bilan",
+        "Ne pas prescrire de sulfamide hypoglycémiant sans consignes"
+      ],
+      "materielDisponible": [
+        "Tensiomètre",
+        "Stéthoscope",
+        "Lecteur glycémie",
+        "Monofilament",
+        "Mètre ruban"
+      ],
+      "lieu": "Cabinet médical"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Alain",
+        "nom": "Moreau",
+        "age": 56,
+        "sexe": "M"
+      },
+      "personnalite": "Bon vivant, craint pour son permis de conduire et minimise ses symptômes.",
+      "phraseOuverture": "Bonjour docteur, le médecin du travail m'envoie vous voir parce qu'il a trouvé du sucre dans mes urines. Moi je me sens bien, juste un peu somnolent après le déjeuner.",
+      "infosVolontaires": [
+        "Somnolence postprandiale et découverte d'anomalies biologiques",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Poser le diagnostic de diabète de type 2 dans le cadre d'un syndrome métabolique, évaluer le SAOS associé et sécuriser l'activité professionnelle.",
+      "erreursRedhibitoires": [
+        "Méconnaître le syndrome d'apnées du sommeil chez le chauffeur routier",
+        "Omettre l'examen des pieds au monofilament"
+      ],
+      "elementsAttendus": [
+        "Prescription glycémie à jeun et HbA1c",
+        "Échelle d'Epworth et polygraphie",
+        "Examen neurologique des pieds",
+        "Règles hygiéno-diététiques adaptées"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Prescription glycémie à jeun et HbA1c",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Échelle d'Epworth et polygraphie",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Examen neurologique des pieds",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Règles hygiéno-diététiques adaptées",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis fatigué depuis quelques temps et j'ai parfois la vision floue, surtout en fin de journée.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool",
+      "antecedents.familiaux",
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Diabète de type 2)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Glycémie à jeun",
+      "Hémoglobine glyquée (HbA1c)"
+    ],
+    "utiles": [
+      "Bilan lipidique",
+      "Mesure du tour de taille",
+      "Bilan sanguin complet"
+    ],
+    "inutiles": [
+      "Test de tolérance au glucose",
+      "Dosage des anticorps anti-GAD",
+      "Échographie hépatique"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur les symptômes actuels, les antécédents personnels et familiaux, le mode de vie et les traitements en cours",
+    "Réaliser un examen clinique ciblé incluant la mesure des constantes, l'évaluation du statut pondéral (IMC, tour de taille) et un examen des fonds d'œil ou orientation vers cet examen",
+    "Proposer un bilan biologique initial adapté incluant au minimum une glycémie à jeun et une HbA1c"
+  ],
+  "referentiel": "Collège d'endocrinologie-diabétologie-nutrition (SFD)",
+  "motif": "Somnolence postprandiale et découverte d'anomalies biologiques"
+}

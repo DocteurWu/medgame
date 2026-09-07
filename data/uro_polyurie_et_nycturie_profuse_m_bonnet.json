@@ -1,0 +1,440 @@
+{
+  "id": "uro_polyurie_et_nycturie_profuse_m_bonnet",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Bonnet",
+    "prenom": "Alain",
+    "age": 58,
+    "sexe": "M",
+    "taille": "178 cm",
+    "poids": "94 kg",
+    "groupeSanguin": "B+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Émission d'urines très abondante jour et nuit avec soif",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Faible, marche occasionnelle"
+      },
+      "tabac": {
+        "quantite": "Arrêt depuis 10 ans (20 PA)"
+      },
+      "alcool": {
+        "quantite": "1 verre de vin/j"
+      },
+      "alimentation": {
+        "regime": "Non contrôlé",
+        "particularites": "Apports sucrés élevés"
+      },
+      "emploi": {
+        "profession": "Chef de service hospitalier",
+        "stress": "Très élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Diabète de type 2",
+          "traitement": "Metformine + insuline",
+          "controle": "Mauvais"
+        },
+        {
+          "type": "Neuropathie diabétique périphérique",
+          "traitement": "Prégabaline"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "Il y a 20 ans"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Mère",
+          "pathologie": "Diabète type 2",
+          "age": "80"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Metformine",
+        "dose": "1000 mg",
+        "fréquence": "x2/j"
+      },
+      {
+        "nom": "Insuline basale",
+        "dose": "26 UI",
+        "fréquence": "le soir"
+      },
+      {
+        "nom": "Prégabaline",
+        "dose": "75 mg",
+        "fréquence": "x2/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "1 mois",
+      "evolution": "Polyurie aggravée",
+      "facteursDeclenchants": "Déséquilibre glycémique persistant",
+      "symptomesAssocies": [
+        "Polydipsie",
+        "Fatigue",
+        "Bouche sèche"
+      ],
+      "remarques": "Glycémies capillaires > 3 g/L fréquentes"
+    },
+    "verbatim": "Bonjour docteur, je passe ma journée et ma nuit aux toilettes. Je remplis des litres d'urine et j'ai la bouche sèche en permanence."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "132/78 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "36.7°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "15/min"
+    },
+    "aspectGeneral": "Fatigue marquée, traits tirés",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Souple, RAS"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "sensibilite": "Hypoesthésie pieds G> D"
+    },
+    "examenUrologique": {
+      "testToux": "Négatif",
+      "tonusPelvien": "Normal",
+      "prolapsus": "Non concerné"
+    }
+  },
+  "availableExams": [
+    "ECBU",
+    "Bandelette urinaire",
+    "Glycémie veineuse",
+    "HbA1c",
+    "Ionogramme sanguin",
+    "Pad-test (optionnel)",
+    "Calendrier mictionnel avec volumes"
+  ],
+  "examResults": {
+    "ECBU": "Normal",
+    "Bandelette urinaire": "Glycosurie +++, Cétonurie négative",
+    "Glycémie": "3.15 g/L",
+    "HbA1c": "10.4%",
+    "Ionogramme sanguin": "Na+ 138 mmol/L, K+ 4.6 mmol/L",
+    "PadTest24h": "5 g (absence de fuites urinaires)",
+    "CalendrierMictionnel": "Calendrier sur 3 jours : Jour 1 (14 mictions, 4200 mL, vol. moyen 300 mL, nycturie x3), Jour 2 (13 mictions, 3950 mL, vol. moyen 305 mL, nycturie x2), Jour 3 (15 mictions, 4500 mL, vol. moyen 300 mL, nycturie x3). Polyurie confirmée (>3L/j)"
+  },
+  "possibleDiagnostics": [
+    "Polyurie psychogène",
+    "Diabète insipide",
+    "Infection urinaire",
+    "Polyurie par diurèse osmotique due à hyperglycémie",
+    "Hyperplasie bénigne de la prostate"
+  ],
+  "correctDiagnostic": "Polyurie par diurèse osmotique due à hyperglycémie",
+  "feedback": {
+    "Polyurie par diurèse osmotique due à hyperglycémie": "Correct ! Glycosurie massive + polyurie + HbA1c élevée = diurèse osmotique.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Rééquilibrage insulinique",
+    "Hydratation orale contrôlée",
+    "Éducation thérapeutique",
+    "Adaptation du traitement antidiabétique",
+    "Prise en charge neuropathie diabétique"
+  ],
+  "correctTreatments": [
+    "Rééquilibrage insulinique",
+    "Hydratation orale contrôlée",
+    "Adaptation du traitement antidiabétique"
+  ],
+  "correction": "# Polyurie par diurèse osmotique chez diabétique déséquilibré\n\nLa polyurie est ici liée à la glycosurie massive provoquée par l’hyperglycémie. L’eau suit le glucose dans les urines, entraînant une diurèse osmotique. L'HbA1c très élevée, la glycosurie +++ et les volumes urinaires journaliers > 4 L sont typiques.\n\n## Bonnes pratiques\n\n- Toujours vérifier la glycémie et la glycosurie face à une polyurie\n- Réaliser un calendrier mictionnel pour mesurer les volumes\n- Rééquilibrer le diabète en urgence relative\n- Vérifier l'absence de cétonurie (risque d'acidocétose)\n\n## Erreurs à éviter\n\n- Confondre avec un diabète insipide (osmolarité urinaire ici élevée)\n- Prescrire des diurétiques\n- Négliger la neuropathie diabétique associée",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en néphrologie.",
+      "contexte": "Vous recevez M. Alain Bonnet, 58 ans, adressé pour une polyurie mesurée à plus de 4 litres par jour associée à une soif permanente.",
+      "consignesAttendues": [
+        "Quantifier la diurèse des 24 heures et distinguer polyurie vraie et pollakiurie",
+        "Rechercher une diurèse osmotique versus diabète insipide",
+        "Réaliser une bandelette urinaire et mesurer la glycémie capillaire immédiate",
+        "Prescrire le bilan hydro-électrolytique (osmolarité plasmatique et urinaire, ionogramme)",
+        "Mettre en place la prise en charge étiologique et surveiller l'état d'hydratation"
+      ],
+      "consignesInterdites": [
+        "Ne pas réaliser d'épreuve de restriction hydrique en présence d'une diurèse osmotique",
+        "Ne pas confondre avec un simple adénome de prostate"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation hospitalière",
+      "materielDisponible": [
+        "Bandelette urinaire",
+        "Lecteur glycémie",
+        "Tensiomètre",
+        "Balance"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Bandelette urinaire révélant glycosurie ++++",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Glycémie capillaire élevée (> 3 g/L)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Calcul de l'osmolarité plasmatique efficace",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Réhydratation adaptée et traitement hypoglycémiant",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la fatigue et au stress du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, je passe ma journée et ma nuit aux toilettes. Je remplis des litres d'urine et j'ai la bouche sèche en permanence.",
+      "infosVolontaires": [
+        "Émission d'urines très abondante jour et nuit avec soif",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Fatigué par les réveils nocturnes incessants, boit des bouteilles d'eau en continu."
+    },
+    "titre": "Émission d'urines très abondante jour et nuit avec soif",
+    "itemR2C": "Item 269. Polyurie-polydipsie de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en néphrologie.",
+      "contexte": "Vous recevez M. Alain Bonnet, 58 ans, adressé pour une polyurie mesurée à plus de 4 litres par jour associée à une soif permanente.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Quantifier la diurèse des 24 heures et distinguer polyurie vraie et pollakiurie",
+        "Rechercher une diurèse osmotique versus diabète insipide",
+        "Réaliser une bandelette urinaire et mesurer la glycémie capillaire immédiate",
+        "Prescrire le bilan hydro-électrolytique (osmolarité plasmatique et urinaire, ionogramme)",
+        "Mettre en place la prise en charge étiologique et surveiller l'état d'hydratation"
+      ],
+      "interdits": [
+        "Ne pas réaliser d'épreuve de restriction hydrique en présence d'une diurèse osmotique",
+        "Ne pas confondre avec un simple adénome de prostate"
+      ],
+      "materielDisponible": [
+        "Bandelette urinaire",
+        "Lecteur glycémie",
+        "Tensiomètre",
+        "Balance"
+      ],
+      "lieu": "Cabinet de consultation hospitalière"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Alain",
+        "nom": "Bonnet",
+        "age": 58,
+        "sexe": "M"
+      },
+      "personnalite": "Fatigué par les réveils nocturnes incessants, boit des bouteilles d'eau en continu.",
+      "phraseOuverture": "Bonjour docteur, je passe ma journée et ma nuit aux toilettes. Je remplis des litres d'urine et j'ai la bouche sèche en permanence.",
+      "infosVolontaires": [
+        "Émission d'urines très abondante jour et nuit avec soif",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier une polyurie osmotique secondaire à une glycosurie massive sur diabète méconnu, évaluer la déshydratation intracellulaire et rééquilibrer la glycémie.",
+      "erreursRedhibitoires": [
+        "Entreprendre un test de restriction hydrique chez un patient hyperglycémique",
+        "Négliger le risque de coma hyperosmolaire"
+      ],
+      "elementsAttendus": [
+        "Bandelette urinaire révélant glycosurie ++++",
+        "Glycémie capillaire élevée (> 3 g/L)",
+        "Calcul de l'osmolarité plasmatique efficace",
+        "Réhydratation adaptée et traitement hypoglycémiant"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Bandelette urinaire révélant glycosurie ++++",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Glycémie capillaire élevée (> 3 g/L)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Calcul de l'osmolarité plasmatique efficace",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Réhydratation adaptée et traitement hypoglycémiant",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens parce que j'urine énormément, jour et nuit, et je n'en peux plus. Je suis fatigué en permanence.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Polyurie par diurèse osmotique due à hyperglycémie)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECBU",
+      "Bandelette urinaire"
+    ],
+    "utiles": [
+      "Glycémie veineuse",
+      "HbA1c",
+      "Ionogramme sanguin"
+    ],
+    "inutiles": [
+      "Pad-test (optionnel)",
+      "Calendrier mictionnel avec volumes"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur la polyurie et le contexte diabétique",
+    "Effectuer un examen clinique adapté",
+    "Proposer un bilan diagnostique pertinent"
+  ],
+  "referentiel": "Collège d'urologie-néphrologie (AFU)",
+  "motif": "Émission d'urines très abondante jour et nuit avec soif"
+}

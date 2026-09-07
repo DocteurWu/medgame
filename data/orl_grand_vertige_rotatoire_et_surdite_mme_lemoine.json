@@ -1,0 +1,427 @@
+{
+  "id": "orl_grand_vertige_rotatoire_et_surdite_mme_lemoine",
+  "patient": {
+    "nom": "Lemoine",
+    "prenom": "Élise",
+    "age": 48,
+    "sexe": "F",
+    "taille": "169 cm",
+    "poids": "58 kg",
+    "groupeSanguin": "A-",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Grand vertige rotatoire aigu avec vomissements et acouphènes",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Course occasionnelle, yoga"
+      },
+      "tabac": {
+        "quantite": "0"
+      },
+      "alcool": {
+        "quantite": "Rare, occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Neurochirurgienne",
+        "stress": "Élevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Migraines",
+          "traitement": "Triptans si besoin"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Aucune",
+          "date": "Jamais"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Sœur",
+          "pathologie": "Surdité brusque idiopathique",
+          "age": "38"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures",
+      "evolution": "Installation brutale",
+      "facteursDeclenchants": "Aucun",
+      "symptomesAssocies": [
+        "Nausées",
+        "Vomissements",
+        "Hypoacousie droite",
+        "Acouphènes droits",
+        "Otalgie droite"
+      ],
+      "remarques": "La patiente décrit une sensation d’oreille bouchée depuis 48 heures et une fièvre modérée"
+    },
+    "verbatim": "Docteur, ne bougez pas le brancard s'il vous plaît... Toute la pièce tourne à toute vitesse autour de moi, j'ai vomi toute la nuit et mon oreille gauche bourdonne."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "112/67 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "38.1°C",
+      "saturationO2": "99%",
+      "frequenceRespiratoire": "17/min"
+    },
+    "aspectGeneral": "Patiente nauséeuse, très gênée par les vertiges",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale",
+      "nystagmus": "Nystagmus horizontal battant à gauche, inhibé par la fixation"
+    },
+    "examenORL": {
+      "otoscopie": "Tympan droit congestif et bombé",
+      "audition": "Hypoacousie droite perçue",
+      "equilibre": "Romberg positif, chute latéralisée à droite"
+    }
+  },
+  "availableExams": [
+    "Romberg",
+    "Test de Fukuda",
+    "Test des index",
+    "Head Impulse Test (HIT)",
+    "Épreuve calorique",
+    "Audiogramme tonal",
+    "Tympanogramme",
+    "IRM des rochers",
+    "Biologie standard"
+  ],
+  "examResults": {
+    "Romberg": "Romberg positif avec chute latéralisée à droite",
+    "Test de Fukuda": "Déviation progressive de plus de 45° vers la droite",
+    "Test des index": "Déviation des index à droite",
+    "Head Impulse Test (HIT)": "Rattrapage correctif du regard à droite, en faveur d’une atteinte vestibulaire périphérique",
+    "Épreuve calorique": "Hyporéflexie vestibulaire droite",
+    "Audiogramme tonal": "Hypoacousie neurosensorielle droite prédominant sur les aigus",
+    "Tympanogramme": "Courbe plate (type B) compatible avec otite moyenne aiguë",
+    "IRM des rochers": "Pas d’atteinte centrale, hypersignal du labyrinthe droit évoquant une labyrinthite",
+    "Biologie standard": "CRP modérément augmentée"
+  },
+  "possibleDiagnostics": [
+    "Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan",
+    "Syndrome vestibulaire central",
+    "Névrite vestibulaire",
+    "Syndrome de Ménière",
+    "Labyrinthite aiguë",
+    "Syndrome de Cogan débutant"
+  ],
+  "correctDiagnostic": "Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan",
+  "feedback": {
+    "Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan": "Correct ! L'association vertiges intenses, hypoacousie, tympan inflammatoire et hyporéflexie périphérique oriente vers une labyrinthite. L’atteinte audio-vestibulaire inflammatoire peut évoquer un début de syndrome de Cogan.",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Antibiothérapie adaptée",
+    "Corticothérapie courte",
+    "Antiémétiques",
+    "Repos strict en phase aiguë",
+    "Consultation ORL spécialisée",
+    "Traitement antalgique"
+  ],
+  "correctTreatments": [
+    "Antibiothérapie adaptée",
+    "Corticothérapie courte",
+    "Consultation ORL spécialisée"
+  ],
+  "correction": "# Labyrinthite aiguë sur otite moyenne — suspicion de syndrome de Cogan\n\nLa patiente présente un syndrome vestibulaire périphérique aigu (nystagmus inhibé par la fixation, Romberg positif, hyporéflexie calorique), une hypoacousie neurosensorielle droite et une otite moyenne aiguë. Le tableau est compatible avec une labyrinthite, pouvant être la première manifestation d’un syndrome de Cogan.\n\n## Points clés\n\n- Vertiges intenses + hypoacousie = atteinte audio-vestibulaire\n- Otoscope inflammatoire = étiologie otitique probable\n- Tests vestibulaires périphériques anormaux\n- IRM utile pour éliminer une atteinte centrale\n\n## Prise en charge\n\n- Antibiothérapie rapide\n- Corticoïdes si déficit cochléaire\n- Suivi ORL rapproché pour surveiller l'évolution auditive\n- Repos et traitement symptomatique",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.06,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 120,
+      "systolic": 90,
+      "diastolic": 55,
+      "spo2": 90,
+      "temperature": 38,
+      "respiratoryRate": 26
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine d'urgence / ORL.",
+      "contexte": "Vous recevez Mme Élise Lemoine, 48 ans, amenée pour un grand vertige rotatoire continu invalidant depuis 24h avec vomissements incoercibles et sensation d'oreille bouchée avec bourdonnements.",
+      "consignesAttendues": [
+        "Caractériser le grand vertige rotatoire (durée > 12h, illusions de mouvement)",
+        "Rechercher un nystagmus horizontalo-rotatoire battant vers l'oreille saine (syndrome vestibulaire harmonieux)",
+        "Réaliser l'épreuve de Romberg et la déviation des index",
+        "Rechercher les signes vestibulaires périphériques par le test d'impulsion céphalique (Halmagyi)",
+        "Prescrire un traitement symptomatique antiémétique et antivertigineux et organiser le bilan audiométrique"
+      ],
+      "consignesInterdites": [
+        "Ne pas négliger un test d'Halmagyi normal dans un vertige aigu qui doit faire craindre un AVC de fosse postérieure",
+        "Ne pas laisser la patiente se déshydrater"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Box des urgences",
+      "materielDisponible": [
+        "Lunettes de Frenzel",
+        "Otoscope",
+        "Perfusion pour réhydratation",
+        "Tensiomètre"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "eval_critere_1",
+        "label": "Syndrome vestibulaire harmonieux (déviations du côté de la lésion, nystagmus opposé)",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_2",
+        "label": "Test d'Halmagyi positif orientant vers une cause périphérique",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_3",
+        "label": "Réhydratation hydroélectrolytique et antiémétiques IV",
+        "weight": 1
+      },
+      {
+        "id": "eval_critere_4",
+        "label": "Audiogramme tonal et vocal",
+        "weight": 1
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre, reformule les plaintes principales",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées pour explorer le motif de consultation",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient à chaque étape clé (diagnostic, traitement, suivi)",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté au patient (évite le jargon médical non expliqué : labyrinthite, nystagmus, Weber, Rinne)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à la détresse du patient (vertiges intenses, nausées, anxiété)",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Docteur, ne bougez pas le brancard s'il vous plaît... Toute la pièce tourne à toute vitesse autour de moi, j'ai vomi toute la nuit et mon oreille gauche bourdonne.",
+      "infosVolontaires": [
+        "Grand vertige rotatoire aigu avec vomissements et acouphènes",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      },
+      "personnalite": "Prostrée dans le noir, yeux fermés, nauséeuse au moindre mouvement de la tête."
+    },
+    "titre": "Grand vertige rotatoire aigu avec vomissements et acouphènes",
+    "itemR2C": "Item 104. Vertige. Item 89. Déficit auditif.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine d'urgence / ORL.",
+      "contexte": "Vous recevez Mme Élise Lemoine, 48 ans, amenée pour un grand vertige rotatoire continu invalidant depuis 24h avec vomissements incoercibles et sensation d'oreille bouchée avec bourdonnements.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser le grand vertige rotatoire (durée > 12h, illusions de mouvement)",
+        "Rechercher un nystagmus horizontalo-rotatoire battant vers l'oreille saine (syndrome vestibulaire harmonieux)",
+        "Réaliser l'épreuve de Romberg et la déviation des index",
+        "Rechercher les signes vestibulaires périphériques par le test d'impulsion céphalique (Halmagyi)",
+        "Prescrire un traitement symptomatique antiémétique et antivertigineux et organiser le bilan audiométrique"
+      ],
+      "interdits": [
+        "Ne pas négliger un test d'Halmagyi normal dans un vertige aigu qui doit faire craindre un AVC de fosse postérieure",
+        "Ne pas laisser la patiente se déshydrater"
+      ],
+      "materielDisponible": [
+        "Lunettes de Frenzel",
+        "Otoscope",
+        "Perfusion pour réhydratation",
+        "Tensiomètre"
+      ],
+      "lieu": "Box des urgences"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Élise",
+        "nom": "Lemoine",
+        "age": 48,
+        "sexe": "F"
+      },
+      "personnalite": "Prostrée dans le noir, yeux fermés, nauséeuse au moindre mouvement de la tête.",
+      "phraseOuverture": "Docteur, ne bougez pas le brancard s'il vous plaît... Toute la pièce tourne à toute vitesse autour de moi, j'ai vomi toute la nuit et mon oreille gauche bourdonne.",
+      "infosVolontaires": [
+        "Grand vertige rotatoire aigu avec vomissements et acouphènes",
+        "Symptôme apparu de façon gênante motivant la consultation"
+      ],
+      "infosSiDemandees": [
+        "Pas d'antécédent similaire dans le passé",
+        "Traitements habituels bien suivis sans oubli majeur"
+      ],
+      "infosCachees": [
+        "Crainte sous-jacente d'une maladie grave ou invalidante"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est grave ?",
+        "Est-ce que je vais devoir être opéré ou hospitalisé ?"
+      ],
+      "reactions": {
+        "brutal": "Vous m'inquiétez beaucoup docteur...",
+        "silence": "Docteur, vous avez l'air inquiet, qu'est-ce qui se passe ?",
+        "jargon": "Je ne comprends pas ce terme médical, docteur."
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Identifier un syndrome vestibulaire périphérique harmonieux aigu (névrite vestibulaire ou labyrinthite aiguë), pratiquer le HINTS test pour éliminer un accident vasculaire central et réhydrater en urgence.",
+      "erreursRedhibitoires": [
+        "Méconnaître un nystagmus vertical central",
+        "Négliger le risque de fausse route lors des vomissements"
+      ],
+      "elementsAttendus": [
+        "Syndrome vestibulaire harmonieux (déviations du côté de la lésion, nystagmus opposé)",
+        "Test d'Halmagyi positif orientant vers une cause périphérique",
+        "Réhydratation hydroélectrolytique et antiémétiques IV",
+        "Audiogramme tonal et vocal"
+      ],
+      "grille": [
+        {
+          "id": "eval_critere_1",
+          "label": "Syndrome vestibulaire harmonieux (déviations du côté de la lésion, nystagmus opposé)",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_2",
+          "label": "Test d'Halmagyi positif orientant vers une cause périphérique",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_3",
+          "label": "Réhydratation hydroélectrolytique et antiémétiques IV",
+          "weight": 1
+        },
+        {
+          "id": "eval_critere_4",
+          "label": "Audiogramme tonal et vocal",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Docteur, ça fait 24 heures que j'ai des vertiges terribles, j'ai l'impression que la pièce tourne autour de moi, je vomis, et en plus j'ai l'oreille droite bouchée avec des sifflements. J'ai un peu peur, surtout que ma sœur a fait une surdité brusque il y a quelques années.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "choix pertinent des examens complémentaires"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (Labyrinthite aiguë sur otite moyenne, possible début de syndrome de Cogan)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Romberg",
+      "Test de Fukuda"
+    ],
+    "utiles": [
+      "Test des index",
+      "Head Impulse Test (HIT)",
+      "Épreuve calorique"
+    ],
+    "inutiles": [
+      "Audiogramme tonal",
+      "Tympanogramme",
+      "IRM des rochers"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté sur le syndrome labyrinthique",
+    "Effectuer un examen clinique ciblé incluant l'examen neurologique et l'examen ORL (otoscopie, épreuves d'équilibre, évaluation de l'audition)",
+    "Proposer un diagnostic différentiel argumenté parmi les causes centrales et périphériques de vertige aigu"
+  ],
+  "referentiel": "Collège ORL / Barany Society",
+  "motif": "Grand vertige rotatoire aigu avec vomissements et acouphènes"
+}
