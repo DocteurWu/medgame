@@ -2,9 +2,9 @@
  * atlas.js — UI page Atlas 3D MedGame (vanilla).
  * Recherche FR/EN (alias), filtres systèmes, presets, explode, isolate, fiche, deep-link.
  */
-import { fetchAtlasIndex, fetchAtlasBuffers } from './three-atlas-loader.js?v=4';
-import { ThreeAtlasViewer } from './three-atlas-scene.js?v=6';
-import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js?v=6';
+import { fetchAtlasIndex, fetchAtlasBuffers, ATLAS_SOURCES, getAtlasSource } from './three-atlas-loader.js?v=11';
+import { ThreeAtlasViewer } from './three-atlas-scene.js?v=11';
+import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js?v=11';
 
 const $ = (id) => document.getElementById(id);
 const viewport = $('atlas-viewport');
@@ -18,6 +18,8 @@ const viewer = new ThreeAtlasViewer(viewport, {
 let ATLAS = null;
 let partById = new Map();
 let conceptById = new Map();
+let currentModel = 'male';
+let currentAbort = null;
 
 function showError(msg) {
     $('atlas-error').innerHTML = `<div class="atlas-error">⚠️ ${msg}<br><button class="atlas-btn" onclick="location.reload()">Réessayer</button></div>`;
@@ -183,41 +185,118 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// ---------- boot ----------
-(async function boot() {
-    renderSystems();
+// ---------- changement de modèle anatomique (Homme / Femme) ----------
+async function loadModel(modelId, initialDeepLink = false) {
+    if (currentAbort) {
+        try { currentAbort.abort(); } catch {}
+    }
+    currentAbort = new AbortController();
+    const signal = currentAbort.signal;
+    currentModel = modelId === 'female' ? 'female' : 'male';
+    const isFemale = currentModel === 'female';
+    const src = getAtlasSource(currentModel);
+
+    // Mettre à jour l'état actif des boutons et la mention discrète
+    $('btn-model-male')?.classList.toggle('active', !isFemale);
+    $('btn-model-female')?.classList.toggle('active', isFemale);
+    const disclaimerEl = $('atlas-disclaimer-note');
+    if (disclaimerEl) {
+        disclaimerEl.textContent = isFemale 
+            ? "Comporte des inexactitudes" 
+            : "Peut comporter des inexactitudes";
+    }
+
+    // Mettre à jour l'écran de chargement
+    const loading = $('atlas-loading');
+    if (loading) {
+        loading.classList.remove('hidden');
+        const titleEl = loading.querySelector('div[style*="font-weight:700"]');
+        const noteEl = loading.querySelector('div[style*="opacity:0.6"]');
+        if (titleEl) {
+            titleEl.textContent = isFemale 
+                ? "Chargement de l'anatomie (♀)…" 
+                : "Chargement de l'anatomie (♂)…";
+        }
+        if (noteEl) {
+            noteEl.innerHTML = isFemale
+                ? `${src.approxSize}. Mis en cache ensuite. Comporte des inexactitudes.`
+                : `${src.approxSize}. Mis en cache ensuite. Peut comporter des inexactitudes.`;
+        }
+    }
+    setProgress(0, 1);
+
+    // Mettre à jour le footer avec les crédits et la mention discrète
+    const footerText = $('atlas-footer-text');
+    if (footerText) {
+        if (isFemale) {
+            footerText.innerHTML = `Données <a href="https://hubmapconsortium.org/" target="_blank" rel="noopener">HuBMAP</a> & <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D</a> © DBCLS — <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="${src.repoUrl}" target="_blank" rel="noopener">Female Atlas</a>.<br>Explorateur éducatif · Comporte des inexactitudes.`;
+        } else {
+            footerText.innerHTML = `Données <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D 4.0</a> © DBCLS — <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="${src.repoUrl}" target="_blank" rel="noopener">Human Atlas</a>.<br>Explorateur éducatif · Peut comporter des inexactitudes.`;
+        }
+    }
+
+    // Réinitialiser la recherche et la fiche
+    showDetail(null);
+    const resultsBox = $('atlas-results');
+    if (resultsBox) resultsBox.innerHTML = '';
+    const searchInput = $('atlas-search');
+    if (searchInput) searchInput.value = '';
+    const errorBox = $('atlas-error');
+    if (errorBox) errorBox.innerHTML = '';
+
     try {
-        const abort = new AbortController();
-        window.addEventListener('beforeunload', () => { try { viewer.dispose(); } catch {} });
-        const atlas = await fetchAtlasIndex(abort.signal);
+        const atlas = await fetchAtlasIndex(currentModel, signal);
+        if (signal.aborted) return;
         ATLAS = atlas;
+        partById.clear();
+        conceptById.clear();
         atlas.parts.forEach((p) => partById.set(p.id, p));
         (atlas.concepts || []).forEach((c) => conceptById.set(c.id, c));
         $('atlas-meta').textContent = `${atlas.parts.length} structures · ${atlas.concepts?.length || '?'} concepts · ${atlas.triangles?.toLocaleString('fr-FR') || ''} triangles`;
-        const buffers = await fetchAtlasBuffers(atlas, setProgress, abort.signal);
-        viewer.loadAtlas(atlas, buffers);
-        setProgress(1, 1);
-        $('atlas-loading')?.classList.add('hidden');
         renderSystems();
-        // deep-link ?system=cardiac&focus=heart&explode=0.6
-        const sys = params.get('system');
-        const focus = params.get('focus');
-        const explode = parseFloat(params.get('explode') || '0');
-        if (sys) viewer.setState({ visible: sys.split(',').map((s) => s.trim()).filter(Boolean) });
-        if (!Number.isNaN(explode) && explode > 0) {
-            viewer.setState({ explode: Math.min(1, explode) });
-            $('atlas-explode').value = Math.min(100, explode * 100);
-        }
-        if (focus) {
-            const hits = findMatches(focus, 5);
-            if (hits[0]) {
-                viewer.setState({ visible: [...new Set([...viewer.state.visible, hits[0].system])] });
-                renderSystems();
-                showDetail(hits[0].id);
+
+        const buffers = await fetchAtlasBuffers(atlas, setProgress, signal, currentModel);
+        if (signal.aborted) return;
+        await viewer.loadAtlas(atlas, buffers);
+        setProgress(1, 1);
+        loading?.classList.add('hidden');
+        renderSystems();
+
+        if (initialDeepLink) {
+            const sys = params.get('system');
+            const focus = params.get('focus');
+            const explode = parseFloat(params.get('explode') || '0');
+            if (sys) viewer.setState({ visible: sys.split(',').map((s) => s.trim()).filter(Boolean) });
+            if (!Number.isNaN(explode) && explode > 0) {
+                viewer.setState({ explode: Math.min(1, explode) });
+                $('atlas-explode').value = Math.min(100, explode * 100);
+            }
+            if (focus) {
+                const hits = findMatches(focus, 5);
+                if (hits[0]) {
+                    viewer.setState({ visible: [...new Set([...viewer.state.visible, hits[0].system])] });
+                    renderSystems();
+                    showDetail(hits[0].id);
+                }
             }
         }
     } catch (e) {
+        if (e.name === 'AbortError' || signal.aborted) return;
         console.error(e);
-        showError(e.message || 'Échec du chargement de l’atlas. Vérifie ta connexion / ATLAS_BASE_URL.');
+        showError(e.message || `Échec du chargement de l'atlas (${currentModel}). Vérifie ta connexion.`);
     }
+}
+
+$('btn-model-male')?.addEventListener('click', () => {
+    if (currentModel !== 'male') loadModel('male');
+});
+$('btn-model-female')?.addEventListener('click', () => {
+    if (currentModel !== 'female') loadModel('female');
+});
+
+// ---------- boot ----------
+(function boot() {
+    window.addEventListener('beforeunload', () => { try { viewer.dispose(); } catch {} });
+    const initModel = (params.get('model') || params.get('sex') || 'male').toLowerCase() === 'female' ? 'female' : 'male';
+    loadModel(initModel, true);
 })();

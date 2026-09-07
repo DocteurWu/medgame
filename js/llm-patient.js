@@ -807,17 +807,7 @@ ${appliedTreatmentsText}`.trim();
             if (err.name === 'AbortError') return;
             console.warn('[LLMPatient] Appel LLM échoué :', err.message);
 
-            // Secours robuste immédiat : utiliser les données cliniques du cas
-            if (window.llmFallback && this.caseData) {
-                console.info('[LLMPatient] Utilisation du moteur clinique local de secours.');
-                const fallbackAnswer = window.llmFallback.answer(cleanQuestion, this.caseData);
-                if (fallbackAnswer) {
-                    const safeResponse = this._applySafetyFilter(fallbackAnswer);
-                    this.history.push({ role: 'assistant', content: safeResponse });
-                    onComplete?.(safeResponse);
-                    return safeResponse;
-                }
-            }
+            // Strict mode : aucun fallback local rule-based autorisé (100% LLM)
 
             const endpointHint = this.endpoint || '(endpoint inconnu)';
             const modelHint = this.model || '(modèle inconnu)';

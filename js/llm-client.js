@@ -103,8 +103,17 @@ class LLMClient {
                         let bodyText = '';
                         try { bodyText = await response.text(); } catch (_) {}
                         let detail = bodyText.slice(0, 400);
-                        try { const j = JSON.parse(bodyText); if (j.error) detail = j.error; } catch (_) {}
-                        const hint = response.status === 500 && /LLM_API_KEY/.test(detail)
+                        try {
+                            const j = JSON.parse(bodyText);
+                            if (j.error) {
+                                detail = typeof j.error === 'object'
+                                    ? (j.error.message || JSON.stringify(j.error))
+                                    : String(j.error);
+                            }
+                        } catch (_) {}
+                        const hint = response.status === 401
+                            ? ' → Clé API invalide ou expirée (vérifiez LLM_API_KEY dans votre .env)'
+                            : response.status === 500 && /LLM_API_KEY/.test(detail)
                             ? ' → LLM_API_KEY manquante côté serveur (.env / Netlify env vars)'
                             : response.status === 403 ? ' → Origine non autorisée (ouvrez via http://localhost, pas file://)'
                             : response.status === 429 ? ' → Rate-limit proxy (attendez 1 min)'

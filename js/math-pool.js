@@ -1,4 +1,4 @@
-﻿/**
+/**
  * math-pool.js — Object pooling pour calculs 3D sans allocation
  * Supprime les déclenchements brutaux du Garbage Collector (GC pauses de 15-40ms)
  * en réutilisant les vecteurs, boîtes et matrices pendant les calculs d'animation et de rendu.

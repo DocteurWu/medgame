@@ -1,4 +1,4 @@
-﻿/**
+/**
  * task-scheduler.js — Ordonnanceur de tâches coopératif et Time-slicer (requestIdleCallback)
  * Permet de fractionner les initialisations lourdes (maillage, buffers, matériaux)
  * en tranches de temps strictes (< 8ms par frame) pour ne jamais geler l'affichage.
