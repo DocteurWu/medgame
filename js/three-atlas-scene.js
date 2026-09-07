@@ -7,8 +7,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { SYSTEMS } from './three-atlas-data.js?v=6';
-import { TaskScheduler } from './task-scheduler.js';
+import { SYSTEMS } from './three-atlas-data.js?v=10';
+import { TaskScheduler } from './task-scheduler.js?v=10';
 
 /** Layout "explosé" : grille compacte des pièces visibles (port simplifié de explosion-layout.ts). */
 function createExplosionLayout(visibleParts, aspect) {
@@ -141,8 +141,43 @@ export class ThreeAtlasViewer {
         animate();
     }
 
+    /** Nettoie et libère un atlas précédemment chargé sans détruire la scène/renderer. */
+    clearAtlas() {
+        this._ready = false;
+        if (this._batches) {
+            this._batches.forEach((mesh) => {
+                this.scene.remove(mesh);
+                mesh.geometry?.dispose?.();
+            });
+            this._batches = [];
+        }
+        if (this._geometries) {
+            this._geometries.forEach((g) => g.dispose?.());
+            this._geometries = [];
+        }
+        this._pickers = [];
+        if (this._materials) {
+            this._materials.forEach((m) => m.dispose?.());
+            this._materials = [];
+        }
+        this._mats?.clear?.();
+        this._partTexture?.dispose();
+        this._selTexture?.dispose();
+        this._partTexture = null;
+        this._selTexture = null;
+        this.atlas = null;
+        this._layoutKey = '';
+        this._offsets = [];
+        this._dirty = true;
+    }
+
     /** Charge atlas.json déjà fetché + buffers binaires. */
     async loadAtlas(atlas, buffers, onProgress) {
+        this.clearAtlas();
+        this._geometries = [];
+        this._materials = [];
+        this._pickers = [];
+        this._batches = [];
         this.atlas = atlas;
         const width = THREE.MathUtils.ceilPowerOfTwo(atlas.parts.length);
         this._texW = width;
@@ -179,8 +214,8 @@ export class ThreeAtlasViewer {
         };
         this._mats = new Map(SYSTEMS.map((s) => [s.id, materialFor(s.id)]));
 
-        // Fractionner la reconstruction des maillages par chunk pour garantir 60 FPS
-        const chunkTasks = atlas.chunks.map((chunk, ci) => () => {
+        // Reconstruction des maillages
+        atlas.chunks.forEach((chunk, ci) => {
             const buffer = buffers[ci];
             if (!buffer) return;
             const groups = new Map();
@@ -205,19 +240,18 @@ export class ThreeAtlasViewer {
                 const merged = mergeGeometries(gs, false);
                 if (!merged) return;
                 this._geometries.push(merged);
-                const mesh = new THREE.Mesh(merged, this._mats.get(system));
+                let mat = this._mats.get(system);
+                if (!mat) {
+                    mat = materialFor(system);
+                    this._mats.set(system, mat);
+                }
+                const mesh = new THREE.Mesh(merged, mat);
                 mesh.frustumCulled = false;
                 this.scene.add(mesh);
-                this._batches = this._batches || [];
                 this._batches.push(mesh);
             });
             try { onProgress?.(ci + 1, atlas.chunks.length); } catch {}
         });
-
-        await TaskScheduler.runBatched(chunkTasks, 8);
-
-        // Préchauffage GPU asynchrone des shaders pour éliminer le micro-stutter à l'affichage
-        await TaskScheduler.warmupShaders(this.renderer, this.scene, this.camera);
 
         this._ready = true;
         this._dirty = true;

@@ -20,14 +20,15 @@ export const SYSTEMS = [
     { id: 'urinary', name: 'Appareil urinaire', color: '#c08060', description: 'Reins (filtration, équilibre hydrique), uretères, vessie, urètre.' },
     { id: 'lymphatic', name: 'Lymphatique', color: '#879f7c', description: 'Drainage lymphatique et surveillance immunitaire (ganglions, organes lymphoïdes).' },
     { id: 'endocrine', name: 'Endocrine', color: '#c5a09a', description: 'Hormones dans le sang : métabolisme, croissance, stress, reproduction.' },
-    { id: 'reproductive', name: 'Reproducteur', color: '#bda098', description: 'Modèle masculin de référence : production et transport des spermatozoïdes, hormones sexuelles.' },
+    { id: 'reproductive', name: 'Reproducteur', color: '#bda098', description: 'Organes génitaux internes et externes, glandes mammaires, gamétogenèse et régulation hormonale.' },
+    { id: 'pregnancy', name: 'Gestation / Grossesse', color: '#f39c12', description: 'Structures fœto-maternelles : placenta, cordon ombilical, membrane amniotique.' },
     { id: 'integumentary', name: 'Surface corporelle', color: '#ba9b7d', description: 'Repère externe semi-transparent : barrière protectrice, sensation, thermorégulation.' },
     { id: 'connective', name: 'Tissu conjonctif', color: '#aec3bb', description: 'Cartilages, ligaments : soutien, liaison, stabilisation articulaire.' },
 ];
 
 export const SYSTEM_IDS = SYSTEMS.map((s) => s.id);
 
-export const DEFAULT_VISIBLE = ['cardiac', 'sensory', 'skeletal', 'muscular', 'arterial', 'venous', 'nervous', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine', 'reproductive', 'connective'];
+export const DEFAULT_VISIBLE = ['cardiac', 'sensory', 'skeletal', 'muscular', 'arterial', 'venous', 'nervous', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine', 'reproductive', 'pregnancy', 'connective'];
 
 export const EXPLANATIONS_FR = {
     heart: 'Pompe musculaire du thorax : côté droit vers les poumons, côté gauche vers tout le corps.',
@@ -96,6 +97,14 @@ export const SEARCH_ALIASES_FR = {
     oreille: ['ear', 'cochlea', 'ossicle'],
     peau: ['skin', 'integument'],
     coeur_valve: ['valve', 'mitral', 'aortic', 'tricuspid'],
+    uterus: ['uterus', 'uterine', 'endometrium', 'myometrium', 'cervix'],
+    ovaire: ['ovary', 'ovarian', 'follicle'],
+    trompe: ['fallopian', 'uterine tube', 'salpinx'],
+    vagin: ['vagina', 'vaginal', 'vulva', 'clitoris', 'labia'],
+    sein: ['breast', 'mammary', 'nipple', 'areola'],
+    mamelon: ['nipple', 'areola', 'tubercle'],
+    grossesse: ['pregnancy', 'placenta', 'umbilical', 'amnion', 'chorion'],
+    placenta: ['placenta', 'chorionic', 'basal plate'],
 };
 
 export function normalizeFr(s) {

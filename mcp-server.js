@@ -359,6 +359,7 @@ if (isMain) {
             req.on('data', chunk => { body += chunk; });
             req.on('end', async () => {
                 try {
+                    dotenv.config({ path: path.resolve(__dirname, '.env'), override: true });
                     const parsed = JSON.parse(body);
                     const apiKey = process.env.LLM_API_KEY;
                     const apiUrl = process.env.LLM_API_URL || 'https://api.deepseek.com/chat/completions';

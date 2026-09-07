@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/atlas.css?v=6">
+    <link rel="stylesheet" href="css/atlas.css?v=11">
     <script type="importmap">
     {
         "imports": {
@@ -26,6 +26,17 @@
             <div class="atlas-brand">
                 <a href="index.html" aria-label="Retour accueil">← Accueil</a>
                 <h1>ATLAS <span>3D</span></h1>
+            </div>
+            <div class="atlas-model-bar">
+                <div class="model-switch-pill" role="group" aria-label="Sujet anatomique">
+                    <button class="model-btn active" id="btn-model-male" data-model="male" type="button" title="Homme (♂)" aria-label="Homme">
+                        <i class="fas fa-mars"></i>
+                    </button>
+                    <button class="model-btn" id="btn-model-female" data-model="female" type="button" title="Femme (♀)" aria-label="Femme">
+                        <i class="fas fa-venus"></i>
+                    </button>
+                </div>
+                <span class="atlas-disclaimer-note" id="atlas-disclaimer-note">Peut comporter des inexactitudes</span>
             </div>
             <input id="atlas-search" class="atlas-search" type="search" placeholder="Rechercher : cœur, foie, poumon…" autocomplete="off" aria-label="Rechercher une structure">
             <div id="atlas-results" aria-live="polite"></div>
@@ -52,9 +63,9 @@
             <div class="atlas-section-title">Déplacement</div>
             <div class="atlas-hint" style="margin-bottom:0;">Commandes dans le bandeau de droite · clavier : <i>←→ orbite, ↑↓ monter/descendre, +/− zoom, R centre</i>.</div>
             <div id="atlas-error"></div>
-            <div class="atlas-footer">
+            <div class="atlas-footer" id="atlas-footer-text">
                 Données <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D 4.0</a> © DBCLS — <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="https://github.com/ashemag/human-atlas" target="_blank" rel="noopener">Human Atlas (MIT)</a>.<br>
-                Référence homme adulte. Explorateur éducatif, pas un outil diagnostique.
+                Explorateur éducatif · Peut comporter des inexactitudes.
             </div>
         </aside>
         <main id="atlas-viewport" aria-label="Visionneuse 3D">
@@ -64,7 +75,7 @@
                     <div style="font-weight:700;margin:8px 0;">Chargement de l'anatomie…</div>
                     <div class="ld-bar"><div class="ld-bar-fill" id="atlas-bar"></div></div>
                     <div id="atlas-pct" style="font-size:12px;color:#88ccff;">0%</div>
-                    <div style="font-size:11px;opacity:0.6;margin-top:8px;">~33 Mo la première fois, mis en cache ensuite. Référence homme adulte.</div>
+                    <div style="font-size:11px;opacity:0.6;margin-top:8px;">Mis en cache après le premier chargement. Peut comporter des inexactitudes.</div>
                 </div>
             </div>
         </main>
@@ -99,6 +110,6 @@
     </div>
     <script src="js/env.js?v=2"></script>
     <script src="js/config.js?v=3"></script>
-    <script type="module" src="js/atlas.js?v=6"></script>
+    <script type="module" src="js/atlas.js?v=12"></script>
 </body>
 </html>

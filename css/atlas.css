@@ -8,6 +8,7 @@
     --atlas-border: rgba(0, 242, 254, 0.25);
 }
 * { box-sizing: border-box; }
+.hidden { display: none !important; }
 body.atlas-body {
     margin: 0; background: radial-gradient(ellipse at 50% 30%, #0b1530 0%, var(--atlas-bg) 70%);
     color: var(--atlas-text); font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
@@ -72,6 +73,62 @@ input[type="range"].explode { width: 100%; accent-color: var(--atlas-neon); }
 .atlas-footer a { color: var(--atlas-neon); }
 .atlas-error { background: rgba(255,71,87,0.12); border: 1px solid rgba(255,71,87,0.5); padding: 10px; border-radius: 10px; font-size: 12px; margin-top: 10px; }
 .atlas-mobile-bar { display: none; }
+
+/* ── Sélecteur de modèle discret (♂ / ♀) ── */
+.atlas-model-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 2px 0;
+}
+.model-switch-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--atlas-border);
+    border-radius: 999px;
+    padding: 2px;
+    gap: 3px;
+}
+.model-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--atlas-muted);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.model-btn:hover {
+    color: var(--atlas-text);
+    background: rgba(255, 255, 255, 0.08);
+}
+.model-btn.active[data-model="male"] {
+    background: rgba(0, 242, 254, 0.18);
+    color: #00f2fe;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.35);
+}
+.model-btn.active[data-model="female"] {
+    background: rgba(244, 114, 182, 0.22);
+    color: #f472b6;
+    box-shadow: 0 0 10px rgba(244, 114, 182, 0.35);
+}
+.atlas-disclaimer-note {
+    font-size: 10.5px;
+    color: var(--atlas-muted);
+    opacity: 0.75;
+    font-style: italic;
+    text-align: right;
+    line-height: 1.25;
+}
+
 @media (max-width: 900px) {
     .atlas-layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; }
     .atlas-side { max-height: 32vh; border-right: none; border-bottom: 1px solid var(--atlas-border); }

@@ -561,14 +561,7 @@
         }
 
         fallback(question) {
-            // Conservé pour compatibilité, mais désormais le fallback local
-            // n'est plus utilisé silencieusement — les erreurs LLM affichent
-            // directement leur diagnostic. Ce chemin ne sert que si le LLM
-            // n'a jamais été instancié et qu'on veut une réponse locale.
-            if (window.llmFallback && this.caseData) {
-                return window.llmFallback.answer(question, this.caseData);
-            }
-            return `⚠️ [ERREUR LLM] Moteur de simulation du patient non disponible.\n→ Vérifiez : js/llm-patient.js chargé ? CONFIG.LLM_API_URL = ${window.CONFIG?.LLM_API_URL || '?'} | Ouvrez la console (F12)`;
+            return `⚠️ [ERREUR LLM] Fallback local désactivé (LLM obligatoire). Vérifiez le proxy local ou votre connexion.`;
         }
 
         stringifyPatient(value) {

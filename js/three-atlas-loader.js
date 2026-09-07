@@ -10,11 +10,42 @@
 
 import { offlineAssetCache } from './offline-asset-cache.js';
 
-const DEFAULT_ATLAS_URL = 'https://cdn.jsdelivr.net/gh/ashemag/human-atlas@main/public/models';
+export const ATLAS_SOURCES = {
+    male: {
+        id: 'male',
+        name: 'Homme (Standard)',
+        shortName: 'Homme',
+        icon: 'fa-mars',
+        sex: 'male',
+        isExperimental: false,
+        baseUrl: 'https://cdn.jsdelivr.net/gh/ashemag/human-atlas@main/public/models',
+        description: 'Référence anatomique masculine BodyParts3D 4.0 (2 234 structures, 15 systèmes). Modèle complet et stable.',
+        approxSize: '~33 Mo',
+        repoUrl: 'https://github.com/ashemag/human-atlas'
+    },
+    female: {
+        id: 'female',
+        name: 'Femme (Expérimental ⚠️)',
+        shortName: 'Femme ⚠️',
+        icon: 'fa-venus',
+        sex: 'female',
+        isExperimental: true,
+        baseUrl: 'https://cdn.jsdelivr.net/gh/HiMahendraBeniwal/female-atlas@main/public/models',
+        description: 'Modèle anatomique féminin v2.0 (3 004 structures, 16 systèmes incluant organes reproducteurs féminins et gestation). Attention : version expérimentale de recherche, certaines structures peuvent être incomplètes, imprécises ou comporter des artefacts visuels.',
+        approxSize: '~54 Mo',
+        repoUrl: 'https://github.com/HiMahendraBeniwal/female-atlas'
+    }
+};
 
-function getBaseUrl() {
+export function getAtlasSource(id = 'male') {
+    return ATLAS_SOURCES[id] || ATLAS_SOURCES.male;
+}
+
+export function getBaseUrl(modelId = 'male') {
     const cfg = (typeof window !== 'undefined' && window.CONFIG) || {};
-    return (cfg.ATLAS_BASE_URL || DEFAULT_ATLAS_URL).replace(/\/$/, '');
+    if (cfg.ATLAS_BASE_URL && modelId === 'male') return cfg.ATLAS_BASE_URL.replace(/\/$/, '');
+    const source = getAtlasSource(modelId);
+    return source.baseUrl.replace(/\/$/, '');
 }
 
 function useGzip() {
@@ -31,15 +62,22 @@ export function validateAtlas(atlas) {
     return atlas;
 }
 
-export async function fetchAtlasIndex(signal) {
-    const url = `${getBaseUrl()}/atlas.json`;
+export async function fetchAtlasIndex(modelIdOrSignal, maybeSignal) {
+    let modelId = 'male';
+    let signal = maybeSignal;
+    if (typeof modelIdOrSignal === 'string') {
+        modelId = modelIdOrSignal;
+    } else if (modelIdOrSignal && typeof modelIdOrSignal === 'object') {
+        signal = modelIdOrSignal;
+    }
+    const url = `${getBaseUrl(modelId)}/atlas.json`;
     try {
         const blob = await offlineAssetCache.getOrFetchBlob(url);
         const text = await blob.text();
         return validateAtlas(JSON.parse(text));
     } catch {
         const res = await fetch(url, { signal });
-        if (!res.ok) throw new Error(`atlas.json HTTP ${res.status} (${url}). Vérifiez ATLAS_BASE_URL / CORS.`);
+        if (!res.ok) throw new Error(`atlas.json HTTP ${res.status} (${url}). Vérifiez la source / CORS.`);
         return validateAtlas(await res.json());
     }
 }
@@ -50,43 +88,48 @@ export async function decodeModelResponse(response, expectedBytes, compressed) {
     if (typeof DecompressionStream === 'undefined') {
         throw new Error('Navigateur sans DecompressionStream : passez ATLAS_GZIP=false ou utilisez un navigateur récent.');
     }
-    const ds = new DecompressionStream('gzip');
-    const stream = response.body.pipeThrough(ds);
-    const buf = await new Response(stream).arrayBuffer();
-    if (expectedBytes && buf.byteLength !== expectedBytes) {
-        console.warn(`[Atlas] chunk ${buf.byteLength}o vs attendu ${expectedBytes}o (toléré).`);
+    try {
+        const ds = new DecompressionStream('gzip');
+        const stream = response.body.pipeThrough(ds);
+        const buf = await new Response(stream).arrayBuffer();
+        if (expectedBytes && buf.byteLength !== expectedBytes) {
+            console.warn(`[Atlas] chunk ${buf.byteLength}o vs attendu ${expectedBytes}o (toléré).`);
+        }
+        return buf;
+    } catch (err) {
+        console.warn('[Atlas] Fallback décompression gzip:', err);
+        return response.arrayBuffer();
     }
-    return buf;
 }
 
 function chunkFileName(path) {
     return String(path || '').split('/').pop();
 }
 
-async function fetchChunkBuffer(chunk, signal) {
-    const base = getBaseUrl();
+async function fetchChunkBuffer(chunk, modelId = 'male', signal) {
+    const base = getBaseUrl(modelId);
     const gzip = useGzip() && !!chunk.gzip;
     const file = chunkFileName(gzip ? chunk.gzip : chunk.url);
     const fallbackFile = chunkFileName(chunk.url);
     const url = base + '/' + file;
 
+    let res;
     try {
-        const blob = await offlineAssetCache.getOrFetchBlob(url);
-        const res = new Response(blob);
-        return decodeModelResponse(res, chunk.bytes, gzip);
-    } catch {
-        const res = await fetch(url, { signal });
-        if (!res.ok) {
-            // fallback .bin si le .gz manque
-            if (gzip && fallbackFile !== file) {
-                const fb = await fetch(base + '/' + fallbackFile, { signal });
-                if (!fb.ok) throw new Error(`Chunk HTTP ${res.status} : ${url}`);
-                return fb.arrayBuffer();
-            }
-            throw new Error(`Chunk HTTP ${res.status} : ${url}`);
+        res = await fetch(url, { signal });
+        if (!res.ok && gzip && fallbackFile !== file) {
+            res = await fetch(base + '/' + fallbackFile, { signal });
         }
-        return decodeModelResponse(res, chunk.bytes, gzip);
+    } catch (e) {
+        if (gzip && fallbackFile !== file) {
+            res = await fetch(base + '/' + fallbackFile, { signal });
+        } else {
+            throw e;
+        }
     }
+    if (!res || !res.ok) {
+        throw new Error(`Chunk HTTP ${res ? res.status : 'ERR'} : ${url}`);
+    }
+    return decodeModelResponse(res, chunk.bytes, gzip);
 }
 
 /**
@@ -94,9 +137,10 @@ async function fetchChunkBuffer(chunk, signal) {
  * @param {object} atlas - atlas.json validé
  * @param {(loaded:number,total:number)=>void} onProgress
  * @param {AbortSignal} signal
+ * @param {string} [modelId='male']
  * @returns {ArrayBuffer[]} buffers indexés par chunk
  */
-export async function fetchAtlasBuffers(atlas, onProgress, signal) {
+export async function fetchAtlasBuffers(atlas, onProgress, signal, modelId = 'male') {
     const total = atlas.chunks.length;
     const out = new Array(total);
     let done = 0;
@@ -105,7 +149,7 @@ export async function fetchAtlasBuffers(atlas, onProgress, signal) {
         while (cursor < total) {
             if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
             const i = cursor++;
-            out[i] = await fetchChunkBuffer(atlas.chunks[i], signal);
+            out[i] = await fetchChunkBuffer(atlas.chunks[i], modelId, signal);
             done++;
             try { onProgress?.(done, total); } catch {}
         }
@@ -114,6 +158,6 @@ export async function fetchAtlasBuffers(atlas, onProgress, signal) {
     return out;
 }
 
-export function getAtlasBaseUrl() {
-    return getBaseUrl();
+export function getAtlasBaseUrl(modelId = 'male') {
+    return getBaseUrl(modelId);
 }

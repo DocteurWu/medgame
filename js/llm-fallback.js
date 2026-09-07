@@ -176,7 +176,7 @@ class LLMFallback {
             const full = `${p.prenom || ''} ${p.nom || ''}`.trim();
             if (full) return `Je m'appelle ${full}.`;
         }
-        const isGreeting = /\b(bonjour|salut|coucou|hello|bonsoir|hey)\b/.test(cleanQ);
+        const isGreeting = /\b(bonjour|salut|coucou|cc|slt|bjr|bsr|hello|hi|bonsoir|hey|yo|salutations)\b/.test(cleanQ);
         const wordCount = cleanQ.split(/\s+/).filter(w => w.length > 1).length;
         const hasMedicalContent = /(douleur|mal\b|symptome|hopital|souffr|malade|fievre|nausee)/.test(cleanQ) || wordCount > 6;
         if (isGreeting && !hasMedicalContent) {
