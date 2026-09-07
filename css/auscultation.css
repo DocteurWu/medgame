@@ -239,6 +239,9 @@ body {
 .badge-diff.intermediaire { background: rgba(241, 196, 15, 0.18); color: #f1c40f; border: 1px solid #f1c40f; }
 .badge-diff.urgence { background: rgba(255, 71, 87, 0.18); color: #ff4757; border: 1px solid #ff4757; }
 .badge-diff.expert { background: rgba(162, 155, 254, 0.18); color: #a29bfe; border: 1px solid #a29bfe; }
+.badge-diff.real-audio { background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.4); display: inline-flex; align-items: center; gap: 6px; }
+.badge-diff.synth-audio { background: rgba(160, 174, 192, 0.15); color: #cbd5e1; border: 1px solid rgba(160, 174, 192, 0.35); display: inline-flex; align-items: center; gap: 6px; }
+
 
 /* ── Espace de Travail Torse & Audio ────────────────────────────── */
 .torso-workspace {

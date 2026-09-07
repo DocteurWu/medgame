@@ -1,0 +1,584 @@
+{
+  "id": "cardio_malaise_effort_m_bingley",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Bingley",
+    "prenom": "Charles",
+    "age": 72,
+    "sexe": "M",
+    "taille": "175 cm",
+    "poids": "80 kg",
+    "groupeSanguin": "A+",
+    "persona": {
+      "ton": "calme et coopératif",
+      "registre": "clair et posé",
+      "loquacite": "normal",
+      "style_parole": "répond précisément, dans l'ordre, sans jargon",
+      "exemples_phrases": [
+        "Ça a commencé il y a quelques mois, toujours dans la même situation.",
+        "Je prends bien mes médicaments, je vous assure."
+      ],
+      "anxiete": 30,
+      "confiance": 70
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Dyspnée d'effort et malaise à l'effort",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche quotidienne"
+      },
+      "tabac": {
+        "quantite": "0",
+        "duree": "0"
+      },
+      "alcool": {
+        "quantite": "Occasionnel"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Retraité",
+        "stress": "Faible"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "HTA",
+          "traitement": "IEC"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "intervention": "Appendicectomie",
+          "date": "2000"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Père",
+          "pathologie": "Mort subite",
+          "age": "75"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Enalapril (IEC)",
+        "dose": "10 mg",
+        "frequence": "1/j"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Progressive",
+      "facteursDeclenchants": "Effort",
+      "symptomesAssocies": [
+        "Angor à l'effort",
+        "Malaise"
+      ],
+      "remarques": "Episodes de chute de tension à l'effort"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/65 mmHg",
+      "pouls": "90 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "18/min"
+    },
+    "aspectGeneral": "Normal",
+    "examenCardiovasculaire": {
+      "auscultation": "Souffle systolique râpeux, max au foyer aortique, irradiation caotides",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normal"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Radio thorax",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner",
+    "Echographie cardiaque"
+  ],
+  "examResults": {
+    "ECG": "Hypertrophie ventriculaire gauche, Sokolow-Lyon à 45mm",
+    "Echographie": "Valve aortique calcifiée",
+    "glycemie": "1.0 g/L",
+    "Radio thorax": {
+      "text": "Coeur légèrement élargi",
+      "image": "assets/images/MODIF_LE_NOM_ICI.jpg"
+    },
+    "Bilan sanguin": "RAS",
+    "Test d'effort": "Limité par malaise",
+    "Holter ECG": "RAS",
+    "Coronarographie": "Sténose modérée non significative",
+    "IRM cardiaque": "RAS",
+    "Scanner cardiaque": "RAS",
+    "Angioscanner": "RAS"
+  },
+  "possibleDiagnostics": [
+    "Rétrécissement aortique",
+    "Insuffisance cardiaque",
+    "Arythmie",
+    "Angor stable"
+  ],
+  "correctDiagnostic": "Rétrécissement aortique",
+  "feedback": {
+    "Rétrécissement aortique": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "IEC",
+    "Diurétiques",
+    "Remplacement valvulaire aortique",
+    "Bêta-bloquants"
+  ],
+  "correctTreatments": [
+    "Remplacement valvulaire aortique"
+  ],
+  "correction": "# Rétrécissement aortique serré\n\nDyspnée, malaise à l'effort et souffle systolique irradiant carotides orientent vers un RA serré.\n\n## Bonnes pratiques\n\n- Confirmer par échocardiographie-Doppler (gradient, surface, HVG)\n- Surveiller la fonction ventriculaire gauche\n- Planifier remplacement valvulaire (chirurgie ou TAVI)\n\n## Erreurs à éviter\n\n- Omettre l'évaluation du gradient et de la surface valvulaire\n- Ne pas corriger les facteurs de risque cardiovasculaires associés",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.08,
+    "urgencyMultiplier": 2,
+    "aggravationTargets": {
+      "heartRate": 55,
+      "systolic": 105,
+      "diastolic": 65,
+      "spo2": 92,
+      "temperature": 37,
+      "respiratoryRate": 24
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "Rétrécissement aortique dégénératif",
+    "Sténose aortique"
+  ],
+  "fatalTreatments": [
+    "Vasodilatateurs",
+    "Bêtabloquants en cas de décompensation",
+    "Digitaliques"
+  ],
+  "secondLineTreatments": [
+    "Remplacement valvulaire percutané (TAVI)"
+  ],
+  "relevantExams": [
+    "ECG",
+    "Echographie cardiaque",
+    "Bilan sanguin",
+    "Coronarographie"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne aux urgences ou en cardiologie.",
+      "contexte": "Vous recevez M. Charles Bingley, 72 ans, accompagné de son épouse, pour un malaise survenu alors qu'il marchait d'un pas vif dans une côte.",
+      "consignesAttendues": [
+        "Caractériser les circonstances du malaise et rechercher les signes cardiovasculaires d'effort associés",
+        "Rechercher les antécédents cardiovasculaires et les facteurs de risque",
+        "Réaliser une auscultation cardiaque minutieuse aux différents foyers",
+        "Poser l'hypothèse diagnostique principale et proposer l'examen clé de confirmation",
+        "Expliquer la conduite à tenir immédiate et les précautions à respecter"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire de test d'effort devant une suspicion de rétrécissement aortique serré symptomatique (contre-indication absolue)",
+        "Ne pas prescrire de dérivés nitrés ou de vasodilatateurs puissants à l'aveugle"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "ECG 12 dérivations",
+        "Échocardiographe"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne"
+        ]
+      },
+      {
+        "id": "interrogatoire_complet",
+        "label": "Réalise un interrogatoire complet orienté cardiovasculaire (caractérisation des symptômes, facteurs de risque, antécédents)",
+        "weight": 1,
+        "triggerKeywords": [
+          "depuis quand",
+          "effort",
+          "douleur thoracique",
+          "malaise",
+          "syncope",
+          "antécédents",
+          "traitement",
+          "famille"
+        ]
+      },
+      {
+        "id": "examen_clinique_cardiovasculaire",
+        "label": "Réalise un examen clinique cardiovasculaire complet (inspection, palpation, auscultation cardiaque, pouls périphériques)",
+        "weight": 1,
+        "triggerKeywords": [
+          "auscultation",
+          "souffle",
+          "pouls",
+          "carotidien",
+          "foyer aortique"
+        ]
+      },
+      {
+        "id": "identification_signes_RA",
+        "label": "Identifie les signes évocateurs de rétrécissement aortique (souffle systolique râpeux, irradiation carotidiennes, pouls tardif)",
+        "weight": 1,
+        "triggerKeywords": [
+          "souffle systolique",
+          "aortique",
+          "irradiation",
+          "carotides",
+          "rétrécissement",
+          "sténose"
+        ]
+      },
+      {
+        "id": "bilan_diagnostique_adapte",
+        "label": "Propose un bilan diagnostique adapté (ECG, échocardiographie transthoracique, bilan biologique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "ECG",
+          "échocardiographie",
+          "échographie cardiaque",
+          "bilan",
+          "BNP",
+          "troponine"
+        ]
+      },
+      {
+        "id": "diagnostic_RA",
+        "label": "Évoque le diagnostic de rétrécissement aortique serré",
+        "weight": 1,
+        "triggerKeywords": [
+          "rétrécissement aortique",
+          "sténose aortique",
+          "valvulopathie",
+          "RA"
+        ]
+      },
+      {
+        "id": "PEC_chirurgicale",
+        "label": "Propose une prise en charge chirurgicale (remplacement valvulaire aortique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "chirurgie",
+          "remplacement",
+          "prothèse",
+          "TAVI",
+          "RVA",
+          "remplacement valvulaire"
+        ]
+      },
+      {
+        "id": "traitements_eviter",
+        "label": "Identifie les traitements contre-indiqués (vasodilatateurs, bêtabloquants en décompensation)",
+        "weight": 1,
+        "triggerKeywords": [
+          "contre-indication",
+          "vasodilatateur",
+          "IEC",
+          "bêtabloquant",
+          "éviter"
+        ]
+      },
+      {
+        "id": "surveillance_RA",
+        "label": "Explique la nécessité d'une surveillance rapprochée et d'un suivi cardiologique régulier",
+        "weight": 1,
+        "triggerKeywords": [
+          "surveillance",
+          "suivi",
+          "cardiologue",
+          "consultation",
+          "échocardiographie"
+        ]
+      },
+      {
+        "id": "conseils_hygieno_dietetiques",
+        "label": "Donne des conseils adaptés (éviter les efforts intenses, adapter l'activité physique)",
+        "weight": 1,
+        "triggerKeywords": [
+          "effort",
+          "activité physique",
+          "repos",
+          "conseils",
+          "éviter"
+        ]
+      },
+      {
+        "id": "annonce_diagnostic",
+        "label": "Annonce le diagnostic de manière claire et empathique au patient",
+        "weight": 1,
+        "triggerKeywords": [
+          "diagnostic",
+          "expliquer",
+          "comprendre",
+          "maladie",
+          "valve"
+        ]
+      },
+      {
+        "id": "orientation_specialiste",
+        "label": "Oriente le patient vers un cardiologue spécialisé pour la prise en charge définitive",
+        "weight": 1,
+        "triggerKeywords": [
+          "cardiologue",
+          "spécialiste",
+          "orientation",
+          "consultation spécialisée"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, tout à l'heure en marchant rapidement pour monter une petite côte, j'ai eu la tête qui tournait, mes jambes se sont dérobées et je me suis effondré quelques secondes.",
+      "infosVolontaires": [
+        "Malaise survenu en plein effort de marche en côte",
+        "Reprise immédiate de conscience sans confusion après quelques secondes allongé"
+      ],
+      "infosSiDemandees": [
+        "Essoufflement anormal à la marche depuis 6 mois qu'il mettait sur le compte de l'âge",
+        "Sensation occasionnelle de serrement dans la poitrine lors d'efforts intenses",
+        "Absence de perte de connaissance au repos"
+      ],
+      "infosCachees": [
+        "Son médecin lui avait parlé d'un petit souffle au cœur il y a 5 ans mais sans suivi"
+      ],
+      "reactions": {
+        "brutal": "Vous voulez dire que ma valve cardiaque est complètement bouchée ?",
+        "silence": "Docteur, pourquoi vous écoutez aussi mon cou avec le stéthoscope ?",
+        "jargon": "Pardon docteur, qu'est-ce qu'une « sténose aortique » ?"
+      },
+      "personnalite": "Patient coopératif, surpris par ce malaise qu'il n'avait jamais connu auparavant."
+    },
+    "titre": "Malaise d'effort et dyspnée d'effort",
+    "itemR2C": "Item 233. Rétrécissement aortique. Valvulopathies.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne aux urgences ou en cardiologie.",
+      "contexte": "Vous recevez M. Charles Bingley, 72 ans, accompagné de son épouse, pour un malaise survenu alors qu'il marchait d'un pas vif dans une côte.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Caractériser les circonstances du malaise et rechercher les signes cardiovasculaires d'effort associés",
+        "Rechercher les antécédents cardiovasculaires et les facteurs de risque",
+        "Réaliser une auscultation cardiaque minutieuse aux différents foyers",
+        "Poser l'hypothèse diagnostique principale et proposer l'examen clé de confirmation",
+        "Expliquer la conduite à tenir immédiate et les précautions à respecter"
+      ],
+      "interdits": [
+        "Ne pas prescrire de test d'effort devant une suspicion de rétrécissement aortique serré symptomatique (contre-indication absolue)",
+        "Ne pas prescrire de dérivés nitrés ou de vasodilatateurs puissants à l'aveugle"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre",
+        "ECG 12 dérivations",
+        "Échocardiographe"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "Charles",
+        "nom": "Bingley",
+        "age": 72,
+        "sexe": "M"
+      },
+      "personnalite": "Patient coopératif, surpris par ce malaise qu'il n'avait jamais connu auparavant.",
+      "phraseOuverture": "Bonjour docteur, tout à l'heure en marchant rapidement pour monter une petite côte, j'ai eu la tête qui tournait, mes jambes se sont dérobées et je me suis effondré quelques secondes.",
+      "infosVolontaires": [
+        "Malaise survenu en plein effort de marche en côte",
+        "Reprise immédiate de conscience sans confusion après quelques secondes allongé"
+      ],
+      "infosSiDemandees": [
+        "Essoufflement anormal à la marche depuis 6 mois qu'il mettait sur le compte de l'âge",
+        "Sensation occasionnelle de serrement dans la poitrine lors d'efforts intenses",
+        "Absence de perte de connaissance au repos"
+      ],
+      "infosCachees": [
+        "Son médecin lui avait parlé d'un petit souffle au cœur il y a 5 ans mais sans suivi"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que je peux refaire une épreuve d'effort sur tapis comme à la télé ?",
+        "Est-ce qu'on peut juste me prescrire un médicament pour que ça ne recommence pas ?"
+      ],
+      "reactions": {
+        "brutal": "Vous voulez dire que ma valve cardiaque est complètement bouchée ?",
+        "silence": "Docteur, pourquoi vous écoutez aussi mon cou avec le stéthoscope ?",
+        "jargon": "Pardon docteur, qu'est-ce qu'une « sténose aortique » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaître le maître symptôme de l'effort (syncope d'effort, dyspnée, angor) orientant vers un rétrécissement aortique serré, identifier le souffle éjectionnel au foyer aortique irradiant aux carotides, et prescrire l'échocardiographie transthoracique (ETT) en contre-indiquant formellement l'épreuve d'effort.",
+      "erreursRedhibitoires": [
+        "Prescrire ou envisager une épreuve d'effort (danger de mort subite)",
+        "Ne pas ausculter le foyer aortique et les trajets carotidiens",
+        "Méconnaître le caractère chirurgical/interventionnel urgent d'un RA serré symptomatique (TAVI ou remplacement valvulaire)"
+      ],
+      "elementsAttendus": [
+        "Identification du trépied fonctionnel du RA serré (dyspnée, angor, syncope d'effort)",
+        "Auscultation : souffle méso-systolique éjectionnel râpeux, max foyer aortique, irradiant aux carotides, abolition du B2",
+        "Réalisation ECG : recherche HVG électrique et troubles de conduction",
+        "Prescription urgente d'une échocardiographie transthoracique (ETT)",
+        "Contre-indication formelle à tout effort violent, arrêt des vasodilatateurs"
+      ],
+      "grille": [
+        {
+          "id": "eval_circonstances",
+          "label": "Caractérise la syncope d'effort et recherche le trépied fonctionnel",
+          "weight": 1
+        },
+        {
+          "id": "eval_auscultation",
+          "label": "Ausculte le foyer aortique et recherche l'irradiation aux carotides et l'atténuation du B2",
+          "weight": 1
+        },
+        {
+          "id": "eval_ecg",
+          "label": "Réalise un ECG 12 dérivations (recherche HVG, PR allongé)",
+          "weight": 1
+        },
+        {
+          "id": "eval_ett",
+          "label": "Pose l'indication formelle de l'ETT confirmatoire en urgence",
+          "weight": 1
+        },
+        {
+          "id": "eval_contre_indication",
+          "label": "Contre-indique l'épreuve d'effort et informe sur les options de prise en charge",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai du mal à respirer quand je fais des efforts et je fais des malaises.",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (ECG, Echographie cardiaque)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [],
+    "ne_jamais_reveler": [
+      "le diagnostic (Rétrécissement aortique)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Bilan sanguin",
+      "Coronarographie"
+    ],
+    "utiles": [
+      "Echographie",
+      "Radio thorax",
+      "Test d'effort"
+    ],
+    "inutiles": [
+      "Holter ECG",
+      "IRM cardiaque",
+      "Scanner cardiaque"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Echographie cardiaque. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : Rétrécissement aortique vs Rétrécissement aortique dégénératif. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "Rétrécissement aortique dégénératif",
+    "Sténose aortique"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté cardiovasculaire",
+    "Réaliser un examen clinique cardiovasculaire complet incluant l'auscultation cardiaque",
+    "Identifier les signes évocateurs d'un rétrécissement aortique"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Malaise d'effort et dyspnée d'effort"
+}

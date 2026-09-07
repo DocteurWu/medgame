@@ -1,0 +1,604 @@
+{
+  "id": "cardio_hypertension_arterielle_m_wickham",
+  "redacteur": "La TEAM",
+  "patient": {
+    "nom": "Wickham",
+    "prenom": "George",
+    "age": 42,
+    "sexe": "M",
+    "taille": "180 cm",
+    "poids": "90 kg",
+    "groupeSanguin": "0+",
+    "persona": {
+      "ton": "inquiet et poli",
+      "registre": "courant, phrases simples",
+      "loquacite": "normal",
+      "style_parole": "parlé spontané avec hésitations quand la douleur revient",
+      "exemples_phrases": [
+        "Ça me fait mal surtout quand je fais un effort...",
+        "Vous croyez que c'est grave, docteur ?"
+      ],
+      "anxiete": 65,
+      "confiance": 60
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "HTA sévère détectée lors bilan pré-opératoire",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche occasionnelle"
+      },
+      "tabac": {
+        "quantite": "5/jj",
+        "duree": "15 ans"
+      },
+      "alcool": {
+        "quantite": "3 verres/sem"
+      },
+      "alimentation": {
+        "regime": "Normal",
+        "particularites": "Aucune"
+      },
+      "emploi": {
+        "profession": "Informaticien",
+        "stress": "Elevé"
+      }
+    },
+    "antecedents": {
+      "medicaux": [],
+      "chirurgicaux": [],
+      "familiaux": []
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "HTA persistante malgré restriction sel",
+      "facteursDeclenchants": "Aucun",
+      "symptomesAssocies": [
+        "Crampes musculaires",
+        "Fatigue"
+      ],
+      "remarques": "Hypokaliémie récurrente"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "165/105 mmHg",
+      "pouls": "88 bpm",
+      "temperature": "36.8°C",
+      "saturationO2": "97%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Normal",
+    "examenCardiovasculaire": {
+      "auscultation": "Normal",
+      "inspection": "Normal"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Normal"
+    },
+    "examenAbdominal": {
+      "palpation": "Normal"
+    },
+    "examenNeurologique": {
+      "conscience": "Normale"
+    }
+  },
+  "availableExams": [
+    "ECG",
+    "Echographie",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Coronarographie",
+    "IRM cardiaque",
+    "Scanner cardiaque",
+    "Angioscanner",
+    "Ionogramme",
+    "Créatinine",
+    "Dosage aldostérone/plasma rénine",
+    "Scanner surrénalien",
+    "Ionogramme sanguin et urinaire",
+    "Aldostéronémie/Rénine"
+  ],
+  "examResults": {
+    "ECG": "Normal",
+    "Echographie": "RAS",
+    "glycemie": "1.0 g/L",
+    "Bilan sanguin": "RAS",
+    "Test d'effort": "Positif",
+    "Holter ECG": "RAS",
+    "Coronarographie": "RAS",
+    "IRM cardiaque": "RAS",
+    "Scanner cardiaque": "RAS",
+    "Angioscanner": "RAS",
+    "Ionogramme": "Na : 142 mmol/L, K : 2,9 mmol/L",
+    "Créatinine": "0.9 mg/dL, DFG 90 ml/min",
+    "Dosage aldostérone/plasma rénine": "Aldostérone élevée, rénine basse",
+    "Scanner surrénalien": "Adénome surrénalien droit 1.5 cm"
+  },
+  "possibleDiagnostics": [
+    "HTA essentielle",
+    "HTA secondaire par hyperaldostéronisme primaire",
+    "Coarctation aortique",
+    "Phéochromocytome"
+  ],
+  "correctDiagnostic": "HTA secondaire par hyperaldostéronisme primaire",
+  "feedback": {
+    "HTA secondaire par hyperaldostéronisme primaire": "Diagnostic correct !",
+    "default": "Diagnostic incorrect."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Spironolactone",
+    "IEC",
+    "Chirurgie surrénalienne",
+    "Bêta-bloquants"
+  ],
+  "correctTreatments": [
+    "Chirurgie surrénalienne"
+  ],
+  "correction": "# HTA secondaire : hyperaldostéronisme primaire\n\nHTA sévère, hypokaliémie, aldostérone élevée et rénine basse orientent vers un adénome surrénalien (syndrome de Conn).\n\n## Bonnes pratiques\n\n- Confirmation par dosage aldostérone/rénine\n- Scanner surrénalien pour localisation\n- Chirurgie (surrénalectomie) si unilatérale\n- Suivi tensionnel post-opératoire\n\n## Erreurs à éviter\n\n- Ne pas vérifier hypokaliémie\n- Confondre avec HTA essentielle et débuter traitement sans imagerie",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.05,
+    "urgencyMultiplier": 1.8,
+    "aggravationTargets": {
+      "heartRate": 100,
+      "systolic": 190,
+      "diastolic": 110,
+      "spo2": 96,
+      "temperature": 37,
+      "respiratoryRate": 20
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "difficulty": 2,
+  "alternativeDiagnostics": [
+    "HTA essentielle",
+    "Syndrome de Conn"
+  ],
+  "fatalTreatments": [
+    "AINS",
+    "Corticoides",
+    "IEC seuls sans surveillance"
+  ],
+  "secondLineTreatments": [
+    "Amiloride",
+    "Spironolactone à dose élevée"
+  ],
+  "relevantExams": [
+    "Ionogramme sanguin et urinaire",
+    "Aldostéronémie/Rénine",
+    "Scanner surrénalien",
+    "ECG"
+  ],
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne en médecine interne / cardiologie.",
+      "contexte": "Vous recevez M. George Wickham, 42 ans, adressé pour bilan d'une hypertension artérielle sévère (175/105 mmHg) découverte fortuitement lors d'un bilan pré-opératoire.",
+      "consignesAttendues": [
+        "Confirmer les chiffres tensionnels et rechercher les signes de retentissement",
+        "Rechercher les arguments en faveur d'une HTA secondaire chez un adulte jeune",
+        "Réaliser un examen physique orienté (auscultation des artères rénales, pouls fémoraux)",
+        "Proposer le bilan biologique initial et d'orientation étiologique",
+        "Expliquer la démarche diagnostique au patient"
+      ],
+      "consignesInterdites": [
+        "Ne pas initier de diurétique hypokaliémiant sans dosage préalable du potassium",
+        "Ne pas banaliser une HTA grade 3 chez un patient de 42 ans"
+      ],
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien/Interrogatoire",
+      "domaineSecondaire": "Stratégie pertinente de PEC",
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre manuel avec brassard adapté",
+        "Bandelette urinaire"
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se présente et explique son rôle d'interne",
+        "weight": 1,
+        "triggerKeywords": [
+          "bonjour",
+          "je suis interne",
+          "je m'appelle",
+          "interne en cardiologie"
+        ]
+      },
+      {
+        "id": "interrogatoire_hta_secondaire",
+        "label": "Recherche les signes évocateurs d'HTA secondaire (crampes, fatigue, nycturie, céphalées, sueurs, palpitations)",
+        "weight": 1,
+        "triggerKeywords": [
+          "crampes",
+          "fatigue",
+          "nycturie",
+          "céphalées",
+          "sueurs",
+          "palpitations",
+          "faiblesse musculaire"
+        ]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Explore les facteurs de risque cardiovasculaire (tabac, alcool, sédentarité, stress, antécédents familiaux)",
+        "weight": 1,
+        "triggerKeywords": [
+          "tabac",
+          "alcool",
+          "activité physique",
+          "stress",
+          "antécédents familiaux",
+          "père",
+          "mère"
+        ]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Recherche les traitements en cours et les traitements antihypertenseurs déjà essayés",
+        "weight": 1,
+        "triggerKeywords": [
+          "traitement",
+          "médicant",
+          "antihypertenseur",
+          "IEC",
+          "ARA2",
+          "diurétique",
+          "calcique"
+        ]
+      },
+      {
+        "id": "interrogatoire_regime_sel",
+        "label": "Évalue les apports en sel et les habitudes alimentaires",
+        "weight": 1,
+        "triggerKeywords": [
+          "sel",
+          "alimentation",
+          "régime",
+          "charcuterie",
+          "plats préparés"
+        ]
+      },
+      {
+        "id": "examen_clinique_complet",
+        "label": "Réalise un examen clinique complet incluant TA aux 2 bras, auscultation cardiaque, pulmonaire, abdominale (souffle rénal), pouls périphériques",
+        "weight": 1,
+        "triggerKeywords": [
+          "tension",
+          "auscultation",
+          "pouls fémoraux",
+          "souffle abdominal",
+          "2 bras"
+        ]
+      },
+      {
+        "id": "interpretation_biologie",
+        "label": "Interprète l'hypokaliémie et l'alcalose métabolique comme indices d'hyperaldostéronisme",
+        "weight": 1,
+        "triggerKeywords": [
+          "hypokaliémie",
+          "alcalose",
+          "kaliémie",
+          "3,0",
+          "aldostérone",
+          "rénine"
+        ]
+      },
+      {
+        "id": "demande_aldosterone_renine",
+        "label": "Demande le dosage de l'aldostérone et de la rénine (rapport aldostérone/rénine)",
+        "weight": 1,
+        "triggerKeywords": [
+          "aldostérone",
+          "rénine",
+          "rapport",
+          "ARR",
+          "dosage hormonal"
+        ]
+      },
+      {
+        "id": "diagnostic_hyperaldosteronisme",
+        "label": "Évoque le diagnostic d'hyperaldostéronisme primaire (syndrome de Conn)",
+        "weight": 1,
+        "triggerKeywords": [
+          "hyperaldostéronisme",
+          "Conn",
+          "surrénale",
+          "adénome",
+          "HTA secondaire"
+        ]
+      },
+      {
+        "id": "bilan_imagerie",
+        "label": "Propose une imagerie surrénalienne (scanner ou IRM surrénalien)",
+        "weight": 1,
+        "triggerKeywords": [
+          "scanner surrénalien",
+          "IRM surrénalien",
+          "imagerie",
+          "adénome",
+          "surrénale"
+        ]
+      },
+      {
+        "id": "strategie_pec_chirurgicale",
+        "label": "Évoque la possibilité d'une chirurgie surrénalienne (surrénalectomie) en cas d'adénome unilatéral",
+        "weight": 1,
+        "triggerKeywords": [
+          "chirurgie",
+          "surrénalectomie",
+          "traitement chirurgical",
+          "adénome"
+        ]
+      },
+      {
+        "id": "education_patient",
+        "label": "Explique au patient la nécessité de corriger l'hypokaliémie et de surveiller la TA",
+        "weight": 1,
+        "triggerKeywords": [
+          "expliquer",
+          "patient",
+          "comprendre",
+          "surveillance",
+          "potassium"
+        ]
+      },
+      {
+        "id": "eviter_traitements_dangereux",
+        "label": "Ne prescrit pas d'AINS, de corticoïdes ni d'IEC seul sans surveillance",
+        "weight": 1,
+        "triggerKeywords": [
+          "AINS",
+          "corticoïde",
+          "IEC seul",
+          "ibuprofène",
+          "prednisone"
+        ]
+      },
+      {
+        "id": "orientation_specialiste",
+        "label": "Oriente le patient vers un spécialiste (endocrinologue ou hypertensiologue) pour bilan spécialisé",
+        "weight": 1,
+        "triggerKeywords": [
+          "endocrinologue",
+          "spécialiste",
+          "hypertensiologue",
+          "orientation",
+          "avis spécialisé"
+        ]
+      },
+      {
+        "id": "synthese_clinique",
+        "label": "Résume la situation : HTA sévère + hypokaliémie = suspicion d'hyperaldostéronisme primaire, bilan à compléter",
+        "weight": 1,
+        "triggerKeywords": [
+          "en résumé",
+          "donc",
+          "hypothèse",
+          "bilan",
+          "prochaine étape"
+        ]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
+        "max": 1
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Pose des questions ouvertes avant les questions fermées",
+        "max": 1
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule ou vérifie la compréhension du patient",
+        "max": 1
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
+        "max": 1
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient",
+        "max": 1
+      }
+    ],
+    "patientStandardise": {
+      "phraseOuverture": "Bonjour docteur, l'anesthésiste a refusé de m'opérer de mon genou parce que ma tension était à plus de 17. Je n'avais jamais eu de problème avant.",
+      "infosVolontaires": [
+        "Tension mesurée à 175/105 mmHg lors de la consultation d'anesthésie",
+        "Absence de douleur thoracique ou de dyspnée"
+      ],
+      "infosSiDemandees": [
+        "Céphalées occipitales matinales occasionnelles",
+        "Faiblesse musculaire ou crampes occasionnelles sans cause évidente",
+        "Absence de prise de réglisse, toxiques, vasoconstricteurs ou AINS"
+      ],
+      "infosCachees": [
+        "A tendance à saler abondamment ses plats mais a restreint le sel depuis 15 jours"
+      ],
+      "reactions": {
+        "brutal": "Vous voulez dire que mes reins ou mes glandes fonctionnent mal ?",
+        "silence": "Docteur, pourquoi vous écoutez mon ventre avec le stéthoscope ?",
+        "jargon": "Pardon, qu'est-ce que vous entendez par « aldostérone » ?"
+      },
+      "personnalite": "Patient surpris par cette découverte, asymptomatique, ressent parfois de légères céphalées matinales."
+    },
+    "titre": "Élévation tensionnelle sévère chez l'adulte jeune",
+    "itemR2C": "Item 224. Hypertension artérielle de l'adulte.",
+    "consignesEtudiant": {
+      "role": "Vous êtes interne en médecine interne / cardiologie.",
+      "contexte": "Vous recevez M. George Wickham, 42 ans, adressé pour bilan d'une hypertension artérielle sévère (175/105 mmHg) découverte fortuitement lors d'un bilan pré-opératoire.",
+      "dureeMinutes": 8,
+      "consignes": [
+        "Confirmer les chiffres tensionnels et rechercher les signes de retentissement",
+        "Rechercher les arguments en faveur d'une HTA secondaire chez un adulte jeune",
+        "Réaliser un examen physique orienté (auscultation des artères rénales, pouls fémoraux)",
+        "Proposer le bilan biologique initial et d'orientation étiologique",
+        "Expliquer la démarche diagnostique au patient"
+      ],
+      "interdits": [
+        "Ne pas initier de diurétique hypokaliémiant sans dosage préalable du potassium",
+        "Ne pas banaliser une HTA grade 3 chez un patient de 42 ans"
+      ],
+      "materielDisponible": [
+        "Stéthoscope",
+        "Tensiomètre manuel avec brassard adapté",
+        "Bandelette urinaire"
+      ],
+      "lieu": "Cabinet de consultation"
+    },
+    "consignesPatient": {
+      "identite": {
+        "prenom": "George",
+        "nom": "Wickham",
+        "age": 42,
+        "sexe": "M"
+      },
+      "personnalite": "Patient surpris par cette découverte, asymptomatique, ressent parfois de légères céphalées matinales.",
+      "phraseOuverture": "Bonjour docteur, l'anesthésiste a refusé de m'opérer de mon genou parce que ma tension était à plus de 17. Je n'avais jamais eu de problème avant.",
+      "infosVolontaires": [
+        "Tension mesurée à 175/105 mmHg lors de la consultation d'anesthésie",
+        "Absence de douleur thoracique ou de dyspnée"
+      ],
+      "infosSiDemandees": [
+        "Céphalées occipitales matinales occasionnelles",
+        "Faiblesse musculaire ou crampes occasionnelles sans cause évidente",
+        "Absence de prise de réglisse, toxiques, vasoconstricteurs ou AINS"
+      ],
+      "infosCachees": [
+        "A tendance à saler abondamment ses plats mais a restreint le sel depuis 15 jours"
+      ],
+      "questionsPieges": [
+        "Docteur, est-ce que c'est juste le stress de l'opération qui a fait monter ma tension ?",
+        "Est-ce que je vais devoir prendre un traitement à vie ?"
+      ],
+      "reactions": {
+        "brutal": "Vous voulez dire que mes reins ou mes glandes fonctionnent mal ?",
+        "silence": "Docteur, pourquoi vous écoutez mon ventre avec le stéthoscope ?",
+        "jargon": "Pardon, qu'est-ce que vous entendez par « aldostérone » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit identifier une HTA sévère du sujet jeune justifiant la recherche d'une cause secondaire (hyperaldostéronisme primaire, sténose de l'artère rénale) avec dosage du potassium et ratio aldostérone/rénine.",
+      "erreursRedhibitoires": [
+        "Omettre le dosage de l'ionogramme sanguin (recherche d'hypokaliémie)",
+        "Ne pas rechercher de souffle abdominal ou de coarctation aortique (asymétrie tensionnelle)",
+        "Négliger le retentissement de l'HTA (ECG, créatinine, protéinurie)"
+      ],
+      "elementsAttendus": [
+        "Confirmation de l'HTA aux deux bras avec brassard adapté",
+        "Recherche des signes fonctionnels d'HTA et de retentissement",
+        "Prescription du bilan minimal OMS/ESH (iono, créat, DFG, glycémie, lipides, BU, ECG)",
+        "Orientation vers le bilan d'HTA secondaire (aldostérone/rénine, écho-Doppler des artères rénales)",
+        "Règles hygiéno-diététiques et surveillance"
+      ],
+      "grille": [
+        {
+          "id": "eval_mesure_hta",
+          "label": "Mesure rigoureusement la PA aux deux bras et évalue le grade d'HTA",
+          "weight": 1
+        },
+        {
+          "id": "eval_recherche_secondaire",
+          "label": "Interroge sur les prises médicamenteuses, toxiques et signes de cause secondaire",
+          "weight": 1
+        },
+        {
+          "id": "eval_examen_clinique",
+          "label": "Recherche un souffle lombaire/abdominal et palpe les pouls fémoraux",
+          "weight": 1
+        },
+        {
+          "id": "eval_bilan_retentissement",
+          "label": "Prescrit le bilan initial recommandé (iono avec kaliémie, créatinine, ECG)",
+          "weight": 1
+        },
+        {
+          "id": "eval_bilan_etiologique",
+          "label": "Propose le dosage du ratio aldostéronémie/rénine en conditions standardisées",
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, on m'a trouvé une tension trop haute lors de mon bilan pré-op, et mon médecin m'a envoyé ici en urgence. Je ne comprends pas, je ne me sens pas si mal que ça…",
+    "objectifs_cles": [
+      "facteurs déclenchants et calmants",
+      "antécédents et terrain à risque",
+      "justification des examens clés (Ionogramme sanguin et urinaire, Aldostéronémie/Rénine)"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.symptomesAssocies"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.facteursDeclenchants",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "modeDeVie.alcool"
+    ],
+    "ne_jamais_reveler": [
+      "le diagnostic (HTA secondaire par hyperaldostéronisme primaire)",
+      "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "Scanner surrénalien",
+      "ECG"
+    ],
+    "utiles": [
+      "Echographie",
+      "Bilan sanguin",
+      "Test d'effort"
+    ],
+    "inutiles": [
+      "Holter ECG",
+      "Coronarographie",
+      "IRM cardiaque"
+    ],
+    "dangereux": []
+  },
+  "hints": [
+    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Ionogramme sanguin et urinaire + Aldostéronémie/Rénine. Demande-les en priorité.",
+    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "🎯 Diagnostics proches à départager : HTA secondaire par hyperaldostéronisme primaire vs HTA essentielle. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+  ],
+  "pieges": [
+    "HTA essentielle",
+    "Syndrome de Conn"
+  ],
+  "objectifs": [
+    "Réaliser un interrogatoire complet orienté vers la recherche d'une HTA secondaire",
+    "Effectuer un examen clinique cardiovasculaire et général adapté",
+    "Proposer un bilan biologique orienté (ionogramme, aldostérone, rénine)"
+  ],
+  "referentiel": "ESC / Collège de cardiologie (SFC)",
+  "motif": "Élévation tensionnelle sévère chez l'adulte jeune"
+}

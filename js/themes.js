@@ -306,14 +306,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     return {
                         id: data.id,
                         file: dbCase.id,
-                        motif: data.interrogatoire?.motifHospitalisation || "Sans motif",
+                        motif: data.motif || data.ecos?.titre || data.interrogatoire?.motifHospitalisation || "Sans motif",
                         patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
                         redacteur: data.redacteur || '',
                         isPlayed: playedCases.includes(data.id),
                         isSupabase: true,
                         isEcos: !!data.ecos,
                         difficulty: data.difficulty || 2,
-                        vignette: (data.correction || '').slice(0, 110),
+                        vignette: (data.ecos?.consignesEtudiant?.contexte || data.ecos?.vignette?.contexte || data.motif || '').slice(0, 110),
                         examCount: (data.availableExams || []).length,
                         lockCount: (data.locks || []).length,
                         isUrgence: !!(data.gameplayConfig || (data.id || '').toLowerCase().includes('urgence'))
@@ -332,13 +332,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         return {
                             id: data.id,
                             file: fileOrId,
-                            motif: data.interrogatoire?.motifHospitalisation || "Sans motif",
+                            motif: data.motif || data.ecos?.titre || data.interrogatoire?.motifHospitalisation || "Sans motif",
                             patient: `${data.patient?.prenom || ''} ${data.patient?.nom || ''}`,
                             redacteur: data.redacteur || '',
                             isPlayed: playedCases.includes(data.id),
                             isEcos: !!data.ecos,
                             difficulty: data.difficulty || 2,
-                            vignette: (data.correction || '').slice(0, 110),
+                            vignette: (data.ecos?.consignesEtudiant?.contexte || data.ecos?.vignette?.contexte || data.motif || '').slice(0, 110),
                             examCount: (data.availableExams || []).length,
                             lockCount: (data.locks || []).length,
                             isUrgence: !!(data.gameplayConfig || (data.id || '').toLowerCase().includes('urgence'))

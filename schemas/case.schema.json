@@ -67,6 +67,7 @@
     "objectifs": { "type": "array", "items": { "type": "string" } },
     "referentiel": { "type": "string" },
 
+    "motif": { "type": "string", "description": "Motif clinique de consultation (titre joueur)" },
     "interrogatoire": { "type": "object" },
     "examenClinique": { "type": "object" },
     "correction": { "type": "string", "minLength": 1 },
@@ -74,9 +75,15 @@
     "ecos": {
       "type": "object",
       "properties": {
+        "titre": { "type": "string" },
+        "itemR2C": { "type": "string" },
+        "consignesEtudiant": { "type": "object" },
+        "consignesPatient": { "type": "object" },
+        "consignesEvaluateur": { "type": "object" },
         "vignette": { "type": "object" },
         "patientStandardise": { "type": "object" },
         "grilleAptitudes": { "type": "array" },
+        "grilleAptitudesCliniques": { "type": "array" },
         "grilleCommunication": { "type": "array" }
       }
     },

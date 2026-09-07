@@ -85,12 +85,12 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
     });
 
     await t.test('callTool start_case should launch angor stable case', async () => {
-        const response = await client.callTool({ name: 'start_case', arguments: { caseId: 'CARDIO_angor_stable.json' } });
+        const response = await client.callTool({ name: 'start_case', arguments: { caseId: 'cardio_douleur_thoracique_mme_bennet.json' } });
         assert.ok(!response.isError);
         
         const state = JSON.parse(response.content[0].text);
         assert.equal(state.success, true);
-        assert.equal(state.caseId, 'cardio_angor_stable');
+        assert.equal(state.caseId, 'cardio_douleur_thoracique_mme_bennet');
         assert.equal(state.patient.nom, 'Bennet');
         assert.equal(state.isFinished, false);
     });
@@ -119,7 +119,7 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
         const response = await client.callTool({
             name: 'submit_case_feedback',
             arguments: {
-                caseId: 'cardio_angor_stable',
+                caseId: 'cardio_douleur_thoracique_mme_bennet',
                 verdict: 'bon',
                 problemes: ['Dialogue un peu robotique sur les antécédents'],
                 suggestions: ['Ajouter un verrou sémiologique sur les facteurs de risque']
@@ -129,13 +129,13 @@ test('MedGame MCP Server — Tool Registration & Interaction', async (t) => {
 
         const result = JSON.parse(response.content[0].text);
         assert.equal(result.success, true);
-        assert.equal(result.caseId, 'cardio_angor_stable');
+        assert.equal(result.caseId, 'cardio_douleur_thoracique_mme_bennet');
         assert.equal(result.verdict, 'bon');
 
         const raw = await fs.readFile(tmpFile, 'utf-8');
         const lines = raw.trim().split('\n').map(l => JSON.parse(l));
         const last = lines[lines.length - 1];
-        assert.equal(last.caseId, 'cardio_angor_stable');
+        assert.equal(last.caseId, 'cardio_douleur_thoracique_mme_bennet');
         assert.equal(last.verdict, 'bon');
         assert.ok(Array.isArray(last.problemes));
         assert.ok(Array.isArray(last.suggestions));

@@ -45,8 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const elCasePatient = document.getElementById('case-patient');
     const elCaseType = document.getElementById('case-type');
     const elCaseDifficulty = document.getElementById('case-difficulty');
+    const elAudioSource = document.getElementById('case-audio-source');
     const elCaseList = document.getElementById('auscult-case-list');
     const elSemiologyText = document.getElementById('semiology-description');
+
+    audio.onAudioModeChange = (mode) => {
+        if (!elAudioSource || state.mode === 'quiz') return;
+        if (mode === 'real') {
+            elAudioSource.className = 'badge-diff real-audio';
+            elAudioSource.innerHTML = '<i class="fas fa-wave-square"></i> Son réel (mannequin)';
+            elAudioSource.title = 'Enregistrement stéthoscopique réel sur mannequin clinique (Dataset HLS-CMDS)';
+        } else {
+            elAudioSource.className = 'badge-diff synth-audio';
+            elAudioSource.innerHTML = '<i class="fas fa-sliders-h"></i> Simulation';
+            elAudioSource.title = 'Modélisation physique Web Audio temps réel';
+        }
+    };
 
     // Controls
     const btnPlayAudio = document.getElementById('btn-toggle-audio');
@@ -93,6 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
             elCaseDifficulty.textContent = c.difficulty.toUpperCase();
             elCaseDifficulty.className = `badge-diff ${c.difficulty}`;
         }
+        if (elAudioSource) {
+            elAudioSource.style.display = 'inline-flex';
+            const hasReal = audio.hasRealAudio(c);
+            if (hasReal) {
+                elAudioSource.className = 'badge-diff real-audio';
+                elAudioSource.innerHTML = '<i class="fas fa-wave-square"></i> Son réel (mannequin)';
+                elAudioSource.title = 'Enregistrement stéthoscopique réel sur mannequin clinique (Dataset HLS-CMDS)';
+            } else {
+                elAudioSource.className = 'badge-diff synth-audio';
+                elAudioSource.innerHTML = '<i class="fas fa-sliders-h"></i> Simulation';
+                elAudioSource.title = 'Modélisation physique Web Audio temps réel';
+            }
+        }
         if (elSemiologyText) {
             elSemiologyText.textContent = c.semiology;
         }
@@ -135,6 +162,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             caseSubset.forEach(c => {
                 const origIdx = state.cases.indexOf(c);
+                const hasReal = audio.hasRealAudio(c);
+                const audioBadge = hasReal
+                    ? '<span class="badge-mini" style="background:rgba(0,242,254,0.12); color:#00f2fe; border:1px solid rgba(0,242,254,0.3);" title="Audio réel issu du dataset mannequin"><i class="fas fa-wave-square"></i> Réel</span>'
+                    : '<span class="badge-mini" style="background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.6);" title="Synthèse physique temps réel"><i class="fas fa-sliders-h"></i> Synthèse</span>';
+
                 const btn = document.createElement('button');
                 btn.className = `case-select-btn ${origIdx === state.currentCaseIndex ? 'active' : ''} ${typeClass}`;
                 btn.innerHTML = `
@@ -142,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="case-item-title"><i class="fas ${icon}"></i> ${c.title}</span>
                         <div class="case-item-meta" style="display:flex; align-items:center; gap:6px; margin-top:2px;">
                             <span class="badge-mini ${typeClass}">${organBadge}</span>
+                            ${audioBadge}
                             <span class="case-item-sub">${c.difficulty}</span>
                         </div>
                     </div>
@@ -157,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sectionContainer.appendChild(group);
             elCaseList.appendChild(sectionContainer);
         };
+
 
         if (state.libraryFilter === 'all' || state.libraryFilter === 'cardiac') {
             renderSection('Auscultation Cardiaque', 'fa-heartbeat', 'cardiac', 'CŒUR', cardiacCases);
@@ -344,7 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elCasePatient) elCasePatient.textContent = c.patient;
         if (elCaseType) elCaseType.textContent = "TEST À L'AVEUGLE";
         if (elCaseDifficulty) elCaseDifficulty.textContent = "ÉVALUATION";
+        if (elAudioSource) elAudioSource.style.display = 'none';
         if (elSemiologyText) elSemiologyText.textContent = "🎧 Écoutez attentivement le son produit et identifiez la pathologie.";
+
 
         audio.setCase(c);
         selectHotspot(c.optimalHotspot || 'apex');

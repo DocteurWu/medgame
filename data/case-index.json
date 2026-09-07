@@ -1,18 +1,16 @@
 {
   "cardiologie": [
-    "cardio_insuffisancecardiaque_burke.json",
-    "cardio_insuffisancecardiaque_denny.json",
-    "cardio_insuffisancecardiaque_ellis.json",
-    "cardio_insuffisancecardiaque_webber.json",
-    "cardio_1.json",
-    "CARDIO_thrombose_veineuse_profonde_droite.json",
-    "CARDIO_insuffisance_veineuse_chronique.json",
-    "CARDIO_AOMI.json",
-    "CARDIO_syncope_vaso_vagale.json",
-    "CARDIO_syncope_cardiaque.json",
-    "CARDIO_retrecissement_aortique.json",
-    "CARDIO_hta_secondaire_hyperaldosteronisme.json",
-    "CARDIO_angor_stable.json"
+    "cardio_douleur_thoracique_mme_bennet.json",
+    "cardio_claudication_intermittente_m_lambert.json",
+    "cardio_hypertension_arterielle_m_wickham.json",
+    "cardio_jambes_lourdes_mme_dubois.json",
+    "cardio_malaise_effort_m_bingley.json",
+    "cardio_perte_de_connaissance_m_darcy.json",
+    "cardio_malaise_vagal_mlle_bennet.json",
+    "cardio_grosse_jambe_rouge_m_ternes.json",
+    "cardio_dyspnee_oedemes_m_dupont.json",
+    "cardio_dyspnee_fatigue_m_duquette.json",
+    "cardio_dyspnee_effort_mme_grey.json"
   ],
   "endocrinologie": [
     "EDN_diabetetype2_1.json",

@@ -49,12 +49,45 @@ const caseLoaderCache = {
     }
 };
 
+const LEGACY_CASE_ALIASES = {
+    'CARDIO_angor_stable.json': 'cardio_douleur_thoracique_mme_bennet.json',
+    'cardio_angor_stable.json': 'cardio_douleur_thoracique_mme_bennet.json',
+    'CARDIO_AOMI.json': 'cardio_claudication_intermittente_m_lambert.json',
+    'cardio_AOMI.json': 'cardio_claudication_intermittente_m_lambert.json',
+    'CARDIO_hta_secondaire_hyperaldosteronisme.json': 'cardio_hypertension_arterielle_m_wickham.json',
+    'cardio_hta_secondaire_hyperaldosteronisme.json': 'cardio_hypertension_arterielle_m_wickham.json',
+    'CARDIO_insuffisance_veineuse_chronique.json': 'cardio_jambes_lourdes_mme_dubois.json',
+    'cardio_insuffisance_veineuse_chronique.json': 'cardio_jambes_lourdes_mme_dubois.json',
+    'CARDIO_retrecissement_aortique.json': 'cardio_malaise_effort_m_bingley.json',
+    'cardio_retrecissement_aortique.json': 'cardio_malaise_effort_m_bingley.json',
+    'CARDIO_syncope_cardiaque.json': 'cardio_perte_de_connaissance_m_darcy.json',
+    'cardio_syncope_cardiaque.json': 'cardio_perte_de_connaissance_m_darcy.json',
+    'CARDIO_syncope_vaso_vagale.json': 'cardio_malaise_vagal_mlle_bennet.json',
+    'cardio_syncope_vaso_vagale.json': 'cardio_malaise_vagal_mlle_bennet.json',
+    'CARDIO_thrombose_veineuse_profonde_droite.json': 'cardio_grosse_jambe_rouge_m_ternes.json',
+    'cardio_thrombose_veineuse_profonde_droite.json': 'cardio_grosse_jambe_rouge_m_ternes.json',
+    'cardio_1.json': 'cardio_dyspnee_oedemes_m_dupont.json',
+    'cardio_insuffisancecardiaque_denny.json': 'cardio_dyspnee_fatigue_m_duquette.json',
+    'cardio_insuffisancecardiaque_ellis.json': 'cardio_dyspnee_effort_mme_grey.json'
+};
+
 function lazyLoadCase(file) {
-    const cacheKey = `case_${file}`;
+    const resolvedFile = LEGACY_CASE_ALIASES[file] || file;
+    const cacheKey = `case_${resolvedFile}`;
     const cached = caseLoaderCache.get(cacheKey) || caseLoaderCache.getFromLocalStorage(cacheKey);
     if (cached) return Promise.resolve(cached);
 
-    return fetch(`data/${file}`)
+    return fetch(`data/${resolvedFile}`)
+        .then(res => {
+            if (!res.ok) {
+                // If resolved file fails, try original file as fallback
+                if (resolvedFile !== file) {
+                    return fetch(`data/${file}`);
+                }
+                throw new Error(`Fichier ${resolvedFile} introuvable`);
+            }
+            return res;
+        })
         .then(res => {
             if (!res.ok) throw new Error(`Fichier ${file} introuvable`);
             return res.json();

@@ -238,22 +238,25 @@
     // ==================== VIGNETTE ====================
 
     function buildVignetteFromCase(caseData) {
-        const fallback = {
-            role: 'Vous êtes interne de garde.',
-            contexte: `${caseData.patient?.prenom || ''} ${caseData.patient?.nom || ''}, ${caseData.patient?.age || '?'} ans, ${caseData.patient?.sexe || '?'}, se présente pour ${caseData.interrogatoire?.motifHospitalisation || 'un motif médical'}.`,
-            consignesAttendues: [
+        const ce = caseData.ecos?.consignesEtudiant;
+        const v = caseData.ecos?.vignette;
+        const motif = caseData.motif || caseData.ecos?.titre || caseData.interrogatoire?.motifHospitalisation || 'un motif médical';
+        return {
+            role: ce?.role || v?.role || 'Vous êtes interne de garde.',
+            contexte: ce?.contexte || v?.contexte || `${caseData.patient?.prenom || ''} ${caseData.patient?.nom || ''}, ${caseData.patient?.age || '?'} ans, ${caseData.patient?.sexe || '?'}, se présente pour ${motif}.`,
+            consignesAttendues: ce?.consignes || v?.consignesAttendues || [
                 'Mener un interrogatoire ciblé',
                 'Réaliser un examen clinique pertinent',
                 'Proposer une stratégie diagnostique et thérapeutique'
             ],
-            consignesInterdites: [],
-            typeStation: 'AVEC_PS',
-            domainePrincipal: 'Entretien/Interrogatoire',
-            domaineSecondaire: 'Stratégie diagnostique',
-            lieu: 'Service d\'accueil des urgences',
-            materielDisponible: ['Stéthoscope', 'Tensiomètre', 'Ordinateur']
+            consignesInterdites: ce?.interdits || v?.consignesInterdites || [],
+            typeStation: v?.typeStation || 'AVEC_PS',
+            domainePrincipal: v?.domainePrincipal || 'Entretien/Interrogatoire',
+            domaineSecondaire: v?.domaineSecondaire || 'Stratégie diagnostique',
+            lieu: ce?.lieu || v?.lieu || 'Cabinet de consultation',
+            materielDisponible: ce?.materielDisponible || v?.materielDisponible || ['Stéthoscope', 'Tensiomètre', 'ECG 12 dérivations'],
+            dureeMinutes: ce?.dureeMinutes || 8
         };
-        return caseData.ecos?.vignette || fallback;
     }
 
     function showVignette(caseData) {
@@ -264,7 +267,7 @@
         const customDurationSetting = parseInt(localStorage.getItem('ecos_duration'));
         const stationDuration = (!isNaN(customDurationSetting) && customDurationSetting > 0) 
             ? customDurationSetting 
-            : ECOS_CONFIG.STATION_DURATION;
+            : (vignette.dureeMinutes ? vignette.dureeMinutes * 60 : ECOS_CONFIG.STATION_DURATION);
 
         const overlay = document.createElement('div');
         overlay.id = 'ecos-vignette';
@@ -371,11 +374,11 @@
         }
 
         ecosState.phase = 'station';
-        ecosState.grilleAptitudes = caseData.ecos?.grilleAptitudesCliniques || buildFallbackGrilleAptitudes(caseData);
+        ecosState.grilleAptitudes = caseData.ecos?.grilleAptitudesCliniques || caseData.ecos?.consignesEvaluateur?.grille || buildFallbackGrilleAptitudes(caseData);
         ecosState.grilleComm = caseData.ecos?.grilleCommunication || buildFallbackGrilleComm();
         
-        const fallbackMotif = caseData.interrogatoire?.motifHospitalisation || 'un motif médical';
-        ecosState.patientStandardise = caseData.ecos?.patientStandardise || {
+        const fallbackMotif = caseData.motif || caseData.ecos?.titre || caseData.interrogatoire?.motifHospitalisation || 'un motif médical';
+        ecosState.patientStandardise = caseData.ecos?.consignesPatient || caseData.ecos?.patientStandardise || {
             personnalite: 'Patient calme et coopératif.',
             phraseOuverture: caseData.interrogatoire?.verbatim || `Bonjour docteur, je viens pour ${fallbackMotif.toLowerCase()}.`,
             infosVolontaires: [fallbackMotif],
@@ -389,7 +392,7 @@
         const customDurationSetting = parseInt(localStorage.getItem('ecos_duration'));
         const stationDuration = (!isNaN(customDurationSetting) && customDurationSetting > 0) 
             ? customDurationSetting 
-            : ECOS_CONFIG.STATION_DURATION;
+            : ((ecosState.vignette?.dureeMinutes) ? ecosState.vignette.dureeMinutes * 60 : ECOS_CONFIG.STATION_DURATION);
         
         ecosState.startedAt = Date.now();
         ecosState.stationEndAt = Date.now() + stationDuration * 1000;
