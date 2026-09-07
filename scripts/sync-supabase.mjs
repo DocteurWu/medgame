@@ -168,6 +168,35 @@ async function run() {
         }
     }
 
+    // Archivage des anciens cas orphelins (pour éviter les doublons et les fuites de diagnostic)
+    console.log('\n🧹 Nettoyage des anciens cas orphelins dans Supabase...');
+    const { data: remoteCases, error: fetchErr } = await supabase
+        .from('cases')
+        .select('id, status');
+
+    if (!fetchErr && remoteCases) {
+        const activeIds = new Set(allCasesToSync.map(c => c.id));
+        const toArchive = remoteCases
+            .filter(c => !activeIds.has(c.id) && c.status !== 'archived')
+            .map(c => c.id);
+
+        if (toArchive.length > 0) {
+            console.log(`  📦 ${toArchive.length} anciens cas orphelins détectés, bascule vers status: 'archived'...`);
+            const { error: archiveErr } = await supabase
+                .from('cases')
+                .update({ status: 'archived' })
+                .in('id', toArchive);
+
+            if (archiveErr) {
+                console.warn('  ⚠️ Erreur lors de l\'archivage des anciens cas :', archiveErr.message);
+            } else {
+                console.log(`  ✅ ${toArchive.length} anciens cas archivés avec succès.`);
+            }
+        } else {
+            console.log('  ✨ Aucun ancien cas orphelin à archiver.');
+        }
+    }
+
     console.log('\n====================================================');
     if (failureCount === 0) {
         console.log(`🎉 SUCCÈS : ${successCount} cas synchronisés avec succès sur Supabase !`);
