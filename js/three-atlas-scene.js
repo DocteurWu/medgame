@@ -9,6 +9,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { SYSTEMS } from './three-atlas-data.js?v=10';
 import { TaskScheduler } from './task-scheduler.js?v=10';
+import { groupCardiacParts, heartPhase, heartMotion, ECGSynchronizer, HEART_PRESETS } from './atlas-heartbeat.js?v=1';
 
 /** Layout "explosé" : grille compacte des pièces visibles (port simplifié de explosion-layout.ts). */
 function createExplosionLayout(visibleParts, aspect) {
@@ -43,6 +44,19 @@ export class ThreeAtlasViewer {
         this._layoutKey = '';
         this._packingW = 1;
         this._packingH = 1;
+        this._explosionOffsets = [];
+
+        // Battement cardiaque & synchronisation ECG
+        this.heartbeatEnabled = opts.heartbeat !== undefined ? Boolean(opts.heartbeat) : true;
+        this.isHeartIsolated = false;
+        this.currentHeartPreset = opts.heartPreset || 'sinus';
+        this._heartMeshes = [];
+        this._heartPartIndices = new Set();
+        this._heartBounds = new THREE.Box3();
+        this._heartCenter = new THREE.Vector3();
+        this._heartSync = new ECGSynchronizer({ presetId: this.currentHeartPreset });
+        this._heartTime = 0;
+        this._heartThrottle = 0;
 
         this.state = {
             visible: [...(opts.visible || ['cardiac', 'sensory', 'skeletal', 'muscular', 'arterial', 'venous', 'nervous', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine', 'reproductive', 'connective'])],
@@ -111,6 +125,10 @@ export class ThreeAtlasViewer {
         this.scene.add(grid);
         this.ground = grid;
 
+        this._heartGroup = new THREE.Group();
+        this._heartGroup.name = 'heartGroup';
+        this.scene.add(this._heartGroup);
+
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector2();
         this._downPos = null;
@@ -144,6 +162,17 @@ export class ThreeAtlasViewer {
     /** Nettoie et libère un atlas précédemment chargé sans détruire la scène/renderer. */
     clearAtlas() {
         this._ready = false;
+        if (this._heartMeshes) {
+            this._heartMeshes.forEach((hm) => {
+                if (hm.mesh) this._heartGroup?.remove(hm.mesh);
+                hm.mesh?.geometry?.dispose?.();
+                hm.mat?.dispose?.();
+            });
+            this._heartMeshes = [];
+        }
+        this._heartPartIndices?.clear?.();
+        this._explosionOffsets = [];
+
         if (this._batches) {
             this._batches.forEach((mesh) => {
                 this.scene.remove(mesh);
@@ -214,6 +243,10 @@ export class ThreeAtlasViewer {
         };
         this._mats = new Map(SYSTEMS.map((s) => [s.id, materialFor(s.id)]));
 
+        const cardiacGrouping = groupCardiacParts(atlas.parts);
+        this._heartPartIndices = cardiacGrouping.partIndices;
+        this._heartMeshes = [];
+
         // Reconstruction des maillages
         atlas.chunks.forEach((chunk, ci) => {
             const buffer = buffers[ci];
@@ -232,9 +265,57 @@ export class ThreeAtlasViewer {
                 this._pickers[i] = pick;
                 this._geometries.push(g);
                 g.setAttribute('partIndex', new THREE.BufferAttribute(new Float32Array(p.vertexCount).fill(i), 1));
-                const list = groups.get(p.system) ?? [];
-                list.push(g);
-                groups.set(p.system, list);
+
+                const isCardiacPure = this._heartPartIndices.has(i);
+                if (isCardiacPure) {
+                    // Création du maillage cardiaque individuel pour animation locale et scale centré
+                    const meta = cardiacGrouping.partMeta.get(i);
+                    const hg = g.clone();
+                    hg.center();
+                    this._geometries.push(hg);
+
+                    let matColor = '#e06055';
+                    let roughness = 0.46;
+                    let metalness = 0.08;
+
+                    if (meta?.role?.includes('Valve')) {
+                        matColor = '#f0dcd8';
+                        roughness = 0.35;
+                    } else if (meta?.role === 'ventricleCavities' || meta?.role === 'atriumCavities') {
+                        matColor = '#c43d32';
+                    } else if (meta?.role === 'ventricleWall' || meta?.role === 'atriumWalls') {
+                        matColor = '#d95246';
+                    }
+
+                    const hMat = new THREE.MeshStandardMaterial({
+                        color: matColor,
+                        roughness,
+                        metalness,
+                        side: THREE.DoubleSide
+                    });
+                    this._materials.push(hMat);
+
+                    const hMesh = new THREE.Mesh(hg, hMat);
+                    hMesh.position.copy(this._centers[i]);
+                    hMesh.frustumCulled = false;
+                    this._heartGroup.add(hMesh);
+
+                    this._heartMeshes.push({
+                        mesh: hMesh,
+                        mat: hMat,
+                        baseColor: new THREE.Color(matColor),
+                        index: i,
+                        part: p,
+                        role: meta ? meta.role : 'other',
+                        key: meta ? meta.key : '',
+                        center: this._centers[i].clone()
+                    });
+                    // Ne PAS pousser g dans list pour éviter qu'il soit fusionné dans le batch statique
+                } else {
+                    const list = groups.get(p.system) ?? [];
+                    list.push(g);
+                    groups.set(p.system, list);
+                }
             });
             groups.forEach((gs, system) => {
                 const merged = mergeGeometries(gs, false);
@@ -251,6 +332,30 @@ export class ThreeAtlasViewer {
                 this._batches.push(mesh);
             });
             try { onProgress?.(ci + 1, atlas.chunks.length); } catch {}
+        });
+
+        // Calcul des limites et centre du cœur pour le cadrage
+        this._heartBounds.makeEmpty();
+        this._heartMeshes.forEach((hm) => {
+            const b = this._bounds[hm.index];
+            if (b) this._heartBounds.union(b);
+        });
+        if (!this._heartBounds.isEmpty()) {
+            this._heartBounds.getCenter(this._heartCenter);
+        }
+
+        // Calcul des directions d'ouverture centrifuge pour chaque groupe de valves
+        ['aorticValve', 'pulmonaryValve', 'mitralValve', 'tricuspidValve'].forEach((vRole) => {
+            const vMeshes = this._heartMeshes.filter((m) => m.role === vRole);
+            if (vMeshes.length > 0) {
+                const vCenter = new THREE.Vector3();
+                vMeshes.forEach((m) => vCenter.add(m.center));
+                vCenter.multiplyScalar(1 / vMeshes.length);
+                vMeshes.forEach((m) => {
+                    m.outwardDir = m.center.clone().sub(vCenter).normalize();
+                    if (m.outwardDir.lengthSq() < 0.001) m.outwardDir.set(0, 0, 1);
+                });
+            }
         });
 
         this._ready = true;
@@ -415,6 +520,7 @@ export class ThreeAtlasViewer {
                     dy = THREE.MathUtils.lerp((c.y - 0.85) * 0.28, dest.y - c.y, t);
                     dz = THREE.MathUtils.lerp(Math.cos(angle) * 0.48, -c.z, t);
                 }
+                this._explosionOffsets[i] = new THREE.Vector3(dx, dy, dz);
                 const selected = selection.has(p.id);
                 const vis = (s.isolate ? selected : visible.has(p.system) || selected) ? 1 : 0;
                 this._data.set([dx, dy, dz, vis], i * 4);
@@ -425,6 +531,97 @@ export class ThreeAtlasViewer {
             this._partTexture.needsUpdate = true;
             this._selTexture.needsUpdate = true;
         }
+
+        // Animation continue du battement cardiaque
+        if (this._ready && this._heartMeshes.length > 0) {
+            const selection = new Set(s.selected);
+            const isCardiacSysVis = s.visible.includes('cardiac');
+
+            if (this.heartbeatEnabled) {
+                this._heartTime += dt;
+                this._heartSync.update(dt);
+                const phase = this.isHeartIsolated
+                    ? this._heartSync.getCurrentPhase()
+                    : heartPhase(this._heartTime, 72);
+                const motion = heartMotion(phase, this.currentHeartPreset, this.isHeartIsolated, this._heartTime);
+
+                this._heartMeshes.forEach((hm) => {
+                    const isSel = selection.has(hm.part.id);
+                    const isVis = s.isolate
+                        ? (this.isHeartIsolated || isSel)
+                        : (isCardiacSysVis || isSel);
+                    hm.mesh.visible = isVis;
+                    if (!isVis) return;
+
+                    // Facteur d'échelle physiologique
+                    const sc = motion.scales[hm.role] || { x: 1, y: 1, z: 1 };
+                    hm.mesh.scale.set(sc.x, sc.y, sc.z);
+
+                    // Déplacement d'ouverture des valves
+                    const beatDisp = new THREE.Vector3();
+                    if (hm.role === 'aorticValve' && hm.outwardDir) {
+                        beatDisp.copy(hm.outwardDir).multiplyScalar(motion.valveOffsets.aortic);
+                    } else if (hm.role === 'pulmonaryValve' && hm.outwardDir) {
+                        beatDisp.copy(hm.outwardDir).multiplyScalar(motion.valveOffsets.pulmonary);
+                    } else if (hm.role === 'mitralValve' && hm.outwardDir) {
+                        beatDisp.copy(hm.outwardDir).multiplyScalar(motion.valveOffsets.mitral);
+                    } else if (hm.role === 'tricuspidValve' && hm.outwardDir) {
+                        beatDisp.copy(hm.outwardDir).multiplyScalar(motion.valveOffsets.tricuspid);
+                    }
+
+                    // Déplacement combiné : centre + explosion + battement
+                    const expOff = this._explosionOffsets[hm.index] || new THREE.Vector3();
+                    hm.mesh.position.copy(hm.center).add(expOff).add(beatDisp);
+
+                    // Surbrillance sélection
+                    if (isSel) {
+                        hm.mat.color.set('#00f2fe');
+                        hm.mat.emissive.set('#004455');
+                    } else {
+                        hm.mat.color.copy(hm.baseColor);
+                        hm.mat.emissive.set('#000000');
+                    }
+
+                    // Mise à jour de la position de détection
+                    const pick = this._pickers[hm.index];
+                    if (pick) {
+                        pick.position.copy(expOff).add(beatDisp);
+                        pick.updateMatrix();
+                        pick.updateMatrixWorld(true);
+                    }
+                });
+
+                this._dirty = true;
+            } else {
+                // État neutre (battement désactivé)
+                this._heartMeshes.forEach((hm) => {
+                    const isSel = selection.has(hm.part.id);
+                    const isVis = s.isolate
+                        ? (this.isHeartIsolated || isSel)
+                        : (isCardiacSysVis || isSel);
+                    hm.mesh.visible = isVis;
+                    hm.mesh.scale.set(1, 1, 1);
+                    const expOff = this._explosionOffsets[hm.index] || new THREE.Vector3();
+                    hm.mesh.position.copy(hm.center).add(expOff);
+
+                    if (isSel) {
+                        hm.mat.color.set('#00f2fe');
+                        hm.mat.emissive.set('#004455');
+                    } else {
+                        hm.mat.color.copy(hm.baseColor);
+                        hm.mat.emissive.set('#000000');
+                    }
+
+                    const pick = this._pickers[hm.index];
+                    if (pick) {
+                        pick.position.copy(expOff);
+                        pick.updateMatrix();
+                        pick.updateMatrixWorld(true);
+                    }
+                });
+            }
+        }
+
         this.controls.autoRotate = s.rotate && !s.isolate && this._amount < 0.4;
         if (this.controls.autoRotate) this._dirty = true;
         else this.controls.update();
@@ -436,6 +633,56 @@ export class ThreeAtlasViewer {
         }
     }
 
+    /** Active ou coupe le battement cardiaque en temps réel. */
+    setHeartbeat(enabled) {
+        this.heartbeatEnabled = Boolean(enabled);
+        if (this._heartSync) {
+            this._heartSync.paused = !this.heartbeatEnabled;
+        }
+        this._dirty = true;
+    }
+
+    /** Change le preset de pathologie cardiaque (sinus, ra, im, acfa). */
+    setHeartPreset(presetId) {
+        this.currentHeartPreset = presetId;
+        if (this._heartSync) {
+            this._heartSync.loadPreset(presetId);
+        }
+        this._dirty = true;
+    }
+
+    /** Bascule le mode cœur isolé avec cadrage et synchronisation ECG. */
+    isolateHeart(isolate = true, presetId = 'sinus') {
+        this.isHeartIsolated = isolate;
+        this.setState({ isolate });
+        if (isolate) {
+            this.setHeartPreset(presetId);
+            this.focusHeart();
+        } else {
+            this.resetView();
+        }
+        this._dirty = true;
+    }
+
+    /** Cadre automatiquement la caméra sur le cœur en vue rapprochée optimale. */
+    focusHeart() {
+        if (!this.controls || this._disposed) return;
+        const box = this._heartBounds;
+        const center = this._heartCenter;
+        if (!box || box.isEmpty()) return;
+
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z, 0.12);
+        const dist = maxDim * 2.5;
+
+        // Angle trois-quarts avant-gauche
+        const dir = new THREE.Vector3(0.35, 0.15, 0.92).normalize();
+        this.controls.target.copy(center);
+        this.camera.position.copy(center).addScaledVector(dir, dist);
+        this.controls.update();
+        this._dirty = true;
+    }
+
     /** Libération complète : cancel RAF, controls, géométries, matériaux, textures, renderer. */
     dispose() {
         this._disposed = true;
@@ -444,6 +691,13 @@ export class ThreeAtlasViewer {
         try { this.controls?.dispose(); } catch {}
         try { this._geometries?.forEach((g) => g.dispose()); } catch {}
         try { this._materials?.forEach((m) => m.dispose()); } catch {}
+        if (this._heartMeshes) {
+            this._heartMeshes.forEach((hm) => {
+                hm.mesh?.geometry?.dispose?.();
+                hm.mat?.dispose?.();
+            });
+            this._heartMeshes = [];
+        }
         try {
             this.scene?.traverse((o) => {
                 if (o.isMesh && o.geometry && !this._geometries?.includes(o.geometry)) o.geometry.dispose?.();

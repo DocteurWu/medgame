@@ -23,6 +23,8 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
   * **Projet** : [Female Atlas](https://github.com/HiMahendraBeniwal/female-atlas) par HiMahendraBeniwal — sous licence [MIT](https://github.com/HiMahendraBeniwal/female-atlas/blob/main/LICENSE).
   * **Données anatomiques** : Human Reference Atlas ([HuBMAP Consortium](https://hubmapconsortium.org/)) & [BodyParts3D](https://lifesciencedb.jp/bp3d/) (DBCLS), sous licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). 3 004 meshes / 2 557 concepts / 16 systèmes (incluant appareil reproducteur féminin et gestation), ~54 Mo streamés depuis miroir jsDelivr.
   * **Statut** : Prototype de recherche expérimental. Certaines structures géométriques peuvent être incomplètes ou comporter des approximations.
+* **Animation & Synchronisation ECG** :
+  * Le battement cardiaque physiologique de l'Atlas 3D en mode isolé est synchronisé avec les tracés cliniques réels du dataset [PhysioNet PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) (licence [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)), référencé en section 5 ci-dessous.
 * **Usage** : explorateur éducatif uniquement, pas un outil diagnostique ou chirurgical. En cas de redistribution des géométries, conserver cette attribution + lien source.
 
 ## 4. Dataset Auscultatoire HLS-CMDS (Stéthoscope Virtuel)

@@ -3,8 +3,9 @@
  * Recherche FR/EN (alias), filtres systèmes, presets, explode, isolate, fiche, deep-link.
  */
 import { fetchAtlasIndex, fetchAtlasBuffers, ATLAS_SOURCES, getAtlasSource } from './three-atlas-loader.js?v=11';
-import { ThreeAtlasViewer } from './three-atlas-scene.js?v=11';
+import { ThreeAtlasViewer } from './three-atlas-scene.js?v=12';
 import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js?v=11';
+import { HEART_PRESETS } from './atlas-heartbeat.js?v=1';
 
 const $ = (id) => document.getElementById(id);
 const viewport = $('atlas-viewport');
@@ -58,10 +59,10 @@ function renderSystems() {
     });
 }
 
-$('preset-all').onclick = () => { viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
-$('preset-skeleton').onclick = () => { viewer.setState({ visible: ['skeletal', 'connective'], isolate: false }); renderSystems(); };
-$('preset-organs').onclick = () => { viewer.setState({ visible: ['cardiac', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine'], isolate: false }); renderSystems(); };
-$('preset-vessels').onclick = () => { viewer.setState({ visible: ['arterial', 'venous', 'cardiac'], isolate: false }); renderSystems(); };
+$('preset-all').onclick = () => { closeHeartMode(); viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
+$('preset-skeleton').onclick = () => { closeHeartMode(); viewer.setState({ visible: ['skeletal', 'connective'], isolate: false }); renderSystems(); };
+$('preset-organs').onclick = () => { closeHeartMode(); viewer.setState({ visible: ['cardiac', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine'], isolate: false }); renderSystems(); };
+$('preset-vessels').onclick = () => { closeHeartMode(); viewer.setState({ visible: ['arterial', 'venous', 'cardiac'], isolate: false }); renderSystems(); };
 $('sys-all').onclick = () => { viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
 $('sys-none').onclick = () => { viewer.setState({ visible: [], isolate: false }); renderSystems(); };
 $('atlas-explode').oninput = (e) => viewer.setState({ explode: e.target.value / 100 });
@@ -71,13 +72,109 @@ $('btn-rotate').onclick = (e) => {
     e.target.classList.toggle('active', on);
 };
 $('btn-reset').onclick = () => {
+    closeHeartMode();
     viewer.setState({ visible: [...DEFAULT_VISIBLE], selected: [], isolate: false, explode: 0, view: 'three-quarter' });
     $('atlas-explode').value = 0;
     renderSystems();
     showDetail(null);
 };
 $('btn-isolate').onclick = () => { if (viewer.state.selected.length) viewer.setState({ isolate: true }); };
-$('btn-show').onclick = () => viewer.setState({ isolate: false });
+$('btn-show').onclick = () => {
+    closeHeartMode();
+    viewer.setState({ isolate: false });
+};
+
+// ---------- Mode Cœur Isolé & ECG Synchronisé ----------
+let ecgRafId = null;
+
+function updateHeartbeatUI() {
+    const on = viewer.heartbeatEnabled;
+    const btnMain = $('btn-heartbeat');
+    if (btnMain) {
+        btnMain.classList.toggle('active', on);
+        btnMain.innerHTML = on ? '<i class="fas fa-heart-pulse"></i> Battement : Actif' : '<i class="far fa-heart"></i> Battement : Coupé';
+    }
+    const btnPanel = $('btn-heartbeat-panel');
+    if (btnPanel) {
+        btnPanel.innerHTML = on ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+        btnPanel.title = on ? 'Suspendre le battement' : 'Relancer le battement';
+    }
+    const badge = $('heart-live-badge');
+    if (badge) {
+        badge.textContent = on ? '● SYNCHRO QRS' : '○ EN PAUSE';
+        badge.style.color = on ? '#00f2fe' : '#ff8577';
+    }
+}
+
+function selectHeartPreset(presetId) {
+    viewer.setHeartPreset(presetId);
+    const preset = HEART_PRESETS[presetId] || HEART_PRESETS.sinus;
+
+    document.querySelectorAll('.heart-preset-card').forEach((card) => {
+        card.classList.toggle('active', card.dataset.preset === presetId);
+    });
+
+    const titleEl = $('heart-edu-title');
+    if (titleEl) titleEl.textContent = preset.title;
+    const descEl = $('heart-edu-desc');
+    if (descEl) descEl.textContent = preset.description;
+    const hrEl = $('heart-hr-value');
+    if (hrEl) hrEl.textContent = `${preset.bpm} BPM`;
+}
+
+function startEcgLoop() {
+    if (ecgRafId) return;
+    const canvas = $('heart-ecg-canvas');
+    const step = () => {
+        if (!viewer.isHeartIsolated) {
+            ecgRafId = null;
+            return;
+        }
+        if (canvas && viewer._heartSync) {
+            viewer._heartSync.renderScope(canvas);
+        }
+        ecgRafId = requestAnimationFrame(step);
+    };
+    ecgRafId = requestAnimationFrame(step);
+}
+
+function openHeartMode(presetId = 'sinus') {
+    viewer.isolateHeart(true, presetId);
+    selectHeartPreset(presetId);
+    $('heart-mode-panel')?.classList.remove('hidden');
+    startEcgLoop();
+    updateHeartbeatUI();
+}
+
+function closeHeartMode() {
+    viewer.isolateHeart(false);
+    $('heart-mode-panel')?.classList.add('hidden');
+    if (ecgRafId) {
+        cancelAnimationFrame(ecgRafId);
+        ecgRafId = null;
+    }
+    renderSystems();
+}
+
+$('btn-heartbeat')?.addEventListener('click', () => {
+    viewer.setHeartbeat(!viewer.heartbeatEnabled);
+    updateHeartbeatUI();
+});
+
+$('btn-heartbeat-panel')?.addEventListener('click', () => {
+    viewer.setHeartbeat(!viewer.heartbeatEnabled);
+    updateHeartbeatUI();
+});
+
+$('btn-heart-mode')?.addEventListener('click', () => openHeartMode('sinus'));
+$('preset-heart')?.addEventListener('click', () => openHeartMode('sinus'));
+$('btn-heart-exit')?.addEventListener('click', closeHeartMode);
+
+document.querySelectorAll('.heart-preset-card').forEach((card) => {
+    card.addEventListener('click', () => {
+        selectHeartPreset(card.dataset.preset);
+    });
+});
 
 // ---------- recherche FR ----------
 function findMatches(query, limit = 30) {
@@ -148,8 +245,13 @@ function showDetail(partId) {
         ? `${en} · ${part.id}`
         : `${part.id} · <span style="opacity:0.7;">nom anatomique international</span>`;
     const desc = explanationFr(en);
-    box.innerHTML = `<div class="sys">${sys?.name || part.system}</div><h2>${title}</h2><div style="font-size:11px;opacity:0.55;margin-bottom:6px;">${subtitle}</div>${desc ? `<p>${desc}</p>` : ''}`;
+    const isCardiacPart = (part.system === 'cardiac') || (viewer._heartPartIndices && viewer._heartPartIndices.has(partById.get(part.id)?.index));
+    const heartActionBtn = isCardiacPart
+        ? `<div style="margin-top:10px;"><button class="atlas-btn" id="btn-cardiac-mode" style="width:100%;border-color:rgba(224,96,85,0.7);color:#ff8577;font-weight:700;"><i class="fas fa-heart-pulse"></i> Mode Cœur & ECG synchro</button></div>`
+        : '';
+    box.innerHTML = `<div class="sys">${sys?.name || part.system}</div><h2>${title}</h2><div style="font-size:11px;opacity:0.55;margin-bottom:6px;">${subtitle}</div>${desc ? `<p>${desc}</p>` : ''}${heartActionBtn}`;
     meta.textContent = `${concept ? concept.elements.length + ' fragment(s) · ' : ''}${part.vertexCount} sommets`;
+    $('btn-cardiac-mode')?.addEventListener('click', () => openHeartMode('sinus'));
 }
 
 // ---------- pavé tactile + clavier ----------
@@ -278,6 +380,13 @@ async function loadModel(modelId, initialDeepLink = false) {
                     renderSystems();
                     showDetail(hits[0].id);
                 }
+            }
+
+            const heartParam = params.get('heart') || params.get('cardio');
+            const presetParam = params.get('preset');
+            if (heartParam === '1' || heartParam === 'true' || params.get('mode') === 'heart' || presetParam) {
+                const targetPreset = presetParam && HEART_PRESETS[presetParam] ? presetParam : 'sinus';
+                openHeartMode(targetPreset);
             }
         }
     } catch (e) {
