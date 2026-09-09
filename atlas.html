@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/atlas.css?v=11">
+    <link rel="stylesheet" href="css/atlas.css?v=12">
     <script type="importmap">
     {
         "imports": {
@@ -53,6 +53,12 @@
                 <button class="atlas-btn" id="preset-skeleton">Squelette</button>
                 <button class="atlas-btn" id="preset-organs">Organes</button>
                 <button class="atlas-btn" id="preset-vessels">Vaisseaux</button>
+                <button class="atlas-btn" id="preset-heart" style="border-color: rgba(224,96,85,0.7); color: #ff8577;"><i class="fas fa-heart-pulse"></i> Cœur</button>
+            </div>
+            <div class="atlas-section-title">Animation</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+                <button class="atlas-btn active" id="btn-heartbeat" title="Activer ou suspendre le battement cardiaque"><i class="fas fa-heart-pulse"></i> Battement : Actif</button>
+                <button class="atlas-btn" id="btn-heart-mode" style="border-color: rgba(224,96,85,0.7); color: #ff8577;"><i class="fas fa-heart-pulse"></i> Mode Cœur</button>
             </div>
             <div class="atlas-section-title">Vue éclatée</div>
             <input type="range" class="explode" id="atlas-explode" min="0" max="100" value="0" aria-label="Niveau d'explosion">
@@ -80,13 +86,50 @@
             </div>
         </main>
         <aside class="atlas-side right" aria-label="Fiche structure">
+            <div id="heart-mode-panel" class="heart-panel hidden">
+                <div class="heart-panel-header">
+                    <div class="heart-panel-title"><i class="fas fa-heart-pulse"></i> Cœur & ECG</div>
+                    <button class="atlas-btn heart-btn-close" id="btn-heart-exit" title="Retour vue générale">✕ Quitter</button>
+                </div>
+                <div class="heart-scope-box">
+                    <canvas id="heart-ecg-canvas" width="260" height="100"></canvas>
+                </div>
+                <div class="heart-status-bar">
+                    <span class="heart-live-badge" id="heart-live-badge">● SYNCHRO QRS</span>
+                    <span class="heart-hr-value" id="heart-hr-value">72 BPM</span>
+                    <button class="atlas-btn heart-btn-toggle" id="btn-heartbeat-panel" title="Suspendre/relancer le battement">⏸</button>
+                </div>
+                <div class="atlas-section-title" style="margin:8px 0 4px;font-size:10px;">Presets Pathologies</div>
+                <div class="heart-presets-grid" id="heart-presets-grid">
+                    <button class="heart-preset-card active" data-preset="sinus" type="button">
+                        <div class="preset-name">Sinusal</div>
+                        <div class="preset-sub">Normal</div>
+                    </button>
+                    <button class="heart-preset-card" data-preset="ra" type="button">
+                        <div class="preset-name">RA</div>
+                        <div class="preset-sub">Sténose</div>
+                    </button>
+                    <button class="heart-preset-card" data-preset="im" type="button">
+                        <div class="preset-name">IM</div>
+                        <div class="preset-sub">Fuite</div>
+                    </button>
+                    <button class="heart-preset-card" data-preset="acfa" type="button">
+                        <div class="preset-name">ACFA</div>
+                        <div class="preset-sub">Arythmie</div>
+                    </button>
+                </div>
+                <div class="heart-edu-card" id="heart-edu-card">
+                    <div class="edu-title" id="heart-edu-title">Rythme sinusal physiologique</div>
+                    <p class="edu-desc" id="heart-edu-desc">Dépolarisation initiée par le nœud sinusal, conduction auriculo-ventriculaire synchrone. Contraction auriculaire suivie de la systole ventriculaire et de l'ouverture physiologique des valves.</p>
+                </div>
+            </div>
             <div class="atlas-section-title" style="margin-top:0;">Fiche structure</div>
             <div class="detail-card" id="atlas-detail">
                 <h2>Aucune sélection</h2>
                 <p>Clique sur une structure du corps, ou cherche <em>cœur</em>, <em>foie</em>, <em>poumon</em>…</p>
             </div>
             <div class="detail-meta" id="atlas-meta"></div>
-            <div style="display:flex;gap:6px;margin-top:12px;">
+            <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;">
                 <button class="atlas-btn" id="btn-isolate">Isoler</button>
                 <button class="atlas-btn" id="btn-show">Tout revoir</button>
             </div>
@@ -110,6 +153,6 @@
     </div>
     <script src="js/env.js?v=2"></script>
     <script src="js/config.js?v=3"></script>
-    <script type="module" src="js/atlas.js?v=12"></script>
+    <script type="module" src="js/atlas.js?v=14"></script>
 </body>
 </html>

@@ -62,4 +62,16 @@ export const DESCRIPTIONS_FR = {
     cartilage: 'Tissu souple et lisse : amortit les articulations et rigidifie nez, oreilles, trachée.',
     ligament: 'Bande fibreuse qui stabilise les articulations en reliant les os.',
     tendon: 'Câble qui transmet la force du muscle à l’os ; s’enflamme (tendinite).',
+
+    // Appareil cardiovasculaire & valves
+    valve: 'Dispositif anti-reflux assurant le sens unique de circulation du sang dans les cavités cardiaques.',
+    'aortic valve': 'Valve à trois sigmoïdes séparant le ventricule gauche de l\'aorte : s\'ouvre en systole pour éjecter le sang vers tout le corps.',
+    'mitral valve': 'Valve atrio-ventriculaire gauche à deux feuillets : empêche le reflux du sang vers l\'oreillette gauche pendant la contraction du ventricule.',
+    'tricuspid valve': 'Valve atrio-ventriculaire droite à trois feuillets : guide le flux sanguin de l\'oreillette droite vers le ventricule droit.',
+    'pulmonary valve': 'Valve sigmoïde séparant le ventricule droit de l\'artère pulmonaire : s\'ouvre en systole vers la petite circulation.',
+    'left ventricle': 'Chambre musculaire principale à haute pression : propulse le sang oxygéné dans l\'aorte et tout le système artériel.',
+    'right ventricle': 'Chambre musculaire propulsant le sang désoxygéné vers les poumons à travers l\'artère pulmonaire.',
+    'left atrium': 'Cavité recevant le sang oxygéné issu des quatre veines pulmonaires avant son passage dans le ventricule gauche.',
+    'right atrium': 'Cavité recevant le sang désoxygéné des veines caves supérieure et inférieure et du sinus coronaire.',
+    'interventricular septum': 'Épaisse cloison musculaire séparant les ventricules gauche et droit, essentielle à la synchronisation ventriculaire.'
 };
