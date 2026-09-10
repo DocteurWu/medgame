@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaz du Sang & Diagramme de Davenport - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/gds.css?v=1">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="gds-navbar">
+        <div class="nav-left">
+            <button class="back-btn" onclick="window.location.href='skills.html'">
+                <i class="fas fa-arrow-left"></i> Skill Lab
+            </button>
+            <div class="app-title-group">
+                <div class="app-logo-gds">
+                    <i class="fas fa-vial"></i>
+                </div>
+                <div>
+                    <h1>GAZ DU SANG & DAVENPORT</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab-btn active" id="tab-mode-learn">
+                <i class="fas fa-sliders-h"></i> Simulation & Curseurs
+            </button>
+            <button class="nav-tab-btn" id="tab-mode-quiz">
+                <i class="fas fa-user-md"></i> Cas Cliniques EDN
+            </button>
+        </div>
+
+        <div class="nav-stats">
+            <div>Validés : <span id="stat-gds-completed">0</span></div>
+            <div>Record : <span id="stat-gds-highscore">0%</span></div>
+        </div>
+    </header>
+
+    <!-- Conteneur Principal -->
+    <main class="gds-main-container">
+
+        <!-- Bandeau des Presets / Profils physiopathologiques rapides -->
+        <section class="presets-bar">
+            <span class="presets-label"><i class="fas fa-bolt"></i> Profils types :</span>
+            <button class="preset-chip" data-preset="normal">Équilibre normal</button>
+            <button class="preset-chip" data-preset="dka">Acidocétose diabétique</button>
+            <button class="preset-chip" data-preset="septic_shock">Choc septique (lactates)</button>
+            <button class="preset-chip" data-preset="copd_decomp">BPCO décompensée</button>
+            <button class="preset-chip" data-preset="salicylate">Salicylés (mixte)</button>
+            <button class="preset-chip" data-preset="pyloric_alkalosis">Alcalose (vomissements)</button>
+            <button class="preset-chip" data-preset="hyperventilation">Hyperventilation aiguë</button>
+            <button class="preset-chip" data-preset="diarrhea">Acidose à TA normal</button>
+            <button class="preset-chip random" data-preset="random"><i class="fas fa-dice"></i> Cas aléatoire</button>
+        </section>
+
+        <!-- Section Mode Cas Cliniques EDN (affichée en mode quiz) -->
+        <section class="edn-cases-section" id="sec-quiz-mode">
+            <div class="case-selection-bar" id="quiz-case-buttons">
+                <!-- Rendu dynamique des boutons de cas -->
+            </div>
+
+            <div class="quiz-container">
+                <div style="margin-bottom:18px;">
+                    <h2 id="quiz-case-title" style="font-family:'Outfit'; font-size:1.3rem; margin:0 0 8px 0; color:#fff;">Titre du cas</h2>
+                    <p id="quiz-case-context" style="font-size:0.92rem; line-height:1.55; color:var(--gds-text-dim); margin:0 0 10px 0;">Contexte clinique du cas...</p>
+                    <div id="quiz-case-vitals" style="font-size:0.82rem; color:var(--gds-cyan); background:rgba(0,242,254,0.08); padding:8px 14px; border-radius:10px; border:1px solid rgba(0,242,254,0.2);">Constantes vitales...</div>
+                </div>
+
+                <div id="quiz-questions-list">
+                    <!-- Questions générées dynamiquement -->
+                </div>
+
+                <button class="btn-validate-quiz" id="btn-validate-quiz">Valider mon interprétation</button>
+
+                <div id="quiz-diagnosis-box" style="display:none; margin-top:20px; background:rgba(0,0,0,0.35); border:1px solid var(--gds-card-border); border-radius:14px; padding:20px;"></div>
+            </div>
+        </section>
+
+        <!-- Grille Centrale : 2 Colonnes (Tableau de Bord interactif + Diagramme & Raisonnement) -->
+        <section class="gds-workspace-grid" id="sec-learn-mode">
+            
+            <!-- Colonne Gauche : Tableau de bord interactif à curseurs -->
+            <div class="left-workspace">
+                <div class="gds-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-sliders-h" style="color:var(--gds-cyan);"></i> Tableau de Bord Interactif</h2>
+                        <span style="font-size:0.75rem; color:var(--gds-text-dim);">Liaison dynamique Henderson-Hasselbalch</span>
+                    </div>
+
+                    <!-- Bar d'asservissement Henderson-Hasselbalch -->
+                    <div class="hh-derivation-bar">
+                        <span>Calcul automatique :</span>
+                        <div class="hh-derivation-options">
+                            <label><input type="radio" name="hh-derived" value="hco3" checked> HCO₃⁻ (Standard)</label>
+                            <label><input type="radio" name="hh-derived" value="paCO2"> PaCO₂</label>
+                            <label><input type="radio" name="hh-derived" value="pH"> pH</label>
+                        </div>
+                    </div>
+
+                    <!-- Tableau à double entrée des 11 paramètres -->
+                    <div class="gds-table-wrap">
+                        <table class="gds-table">
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Curseur & Valeur</th>
+                                    <th>Normale</th>
+                                    <th>Écart</th>
+                                    <th>État</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- pH -->
+                                <tr class="gds-row" id="row-pH">
+                                    <td class="td-param"><strong>pH</strong><small>Acidémie / Alcalémie</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-pH" min="6.80" max="7.80" step="0.01" value="7.40">
+                                            <input type="number" class="gds-num-input" id="num-pH" min="6.80" max="7.80" step="0.01" value="7.40">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">7,35 – 7,45</td>
+                                    <td class="td-delta" id="delta-pH">—</td>
+                                    <td class="td-status" id="status-pH"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- PaCO2 -->
+                                <tr class="gds-row" id="row-paCO2">
+                                    <td class="td-param"><strong>PaCO₂</strong><small>Composante respiratoire (mmHg)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-paCO2" min="10" max="120" step="1" value="40">
+                                            <input type="number" class="gds-num-input" id="num-paCO2" min="10" max="120" step="1" value="40">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">35 – 45 mmHg</td>
+                                    <td class="td-delta" id="delta-paCO2">—</td>
+                                    <td class="td-status" id="status-paCO2"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- HCO3 -->
+                                <tr class="gds-row derived" id="row-hco3">
+                                    <td class="td-param"><strong>HCO₃⁻</strong><small>Composante métabolique (mmol/L)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-hco3" min="3" max="55" step="0.5" value="24.0">
+                                            <input type="number" class="gds-num-input" id="num-hco3" min="3" max="55" step="0.5" value="24.0">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">22 – 26 mmol/L</td>
+                                    <td class="td-delta" id="delta-hco3">—</td>
+                                    <td class="td-status" id="status-hco3"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- PaO2 -->
+                                <tr class="gds-row" id="row-paO2">
+                                    <td class="td-param"><strong>PaO₂</strong><small>Pression d'O₂ (mmHg)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-paO2" min="20" max="200" step="1" value="95">
+                                            <input type="number" class="gds-num-input" id="num-paO2" min="20" max="200" step="1" value="95">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">75 – 100 mmHg</td>
+                                    <td class="td-delta" id="delta-paO2">—</td>
+                                    <td class="td-status" id="status-paO2"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- SaO2 -->
+                                <tr class="gds-row" id="row-saO2">
+                                    <td class="td-param"><strong>SaO₂</strong><small>Saturation artérielle (%)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-saO2" min="50" max="100" step="1" value="98">
+                                            <input type="number" class="gds-num-input" id="num-saO2" min="50" max="100" step="1" value="98">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">95 – 100 %</td>
+                                    <td class="td-delta" id="delta-saO2">—</td>
+                                    <td class="td-status" id="status-saO2"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- FiO2 -->
+                                <tr class="gds-row" id="row-fiO2">
+                                    <td class="td-param"><strong>FiO₂</strong><small>Fraction inspirée (%)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-fiO2" min="21" max="100" step="1" value="21">
+                                            <input type="number" class="gds-num-input" id="num-fiO2" min="21" max="100" step="1" value="21">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">21 % (Air)</td>
+                                    <td class="td-delta" id="delta-fiO2">—</td>
+                                    <td class="td-status" id="status-fiO2"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- Lactates -->
+                                <tr class="gds-row" id="row-lactates">
+                                    <td class="td-param"><strong>Lactates</strong><small>Perfusion tissulaire (mmol/L)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-lactates" min="0.3" max="20.0" step="0.1" value="1.0">
+                                            <input type="number" class="gds-num-input" id="num-lactates" min="0.3" max="20.0" step="0.1" value="1.0">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">0,5 – 2,0 mmol/L</td>
+                                    <td class="td-delta" id="delta-lactates">—</td>
+                                    <td class="td-status" id="status-lactates"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- Na+ -->
+                                <tr class="gds-row" id="row-na">
+                                    <td class="td-param"><strong>Na⁺</strong><small>Natrémie (mmol/L)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-na" min="110" max="170" step="1" value="140">
+                                            <input type="number" class="gds-num-input" id="num-na" min="110" max="170" step="1" value="140">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">135 – 145 mmol/L</td>
+                                    <td class="td-delta" id="delta-na">—</td>
+                                    <td class="td-status" id="status-na"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- Cl- -->
+                                <tr class="gds-row" id="row-cl">
+                                    <td class="td-param"><strong>Cl⁻</strong><small>Chlorémie (mmol/L)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-cl" min="65" max="135" step="1" value="104">
+                                            <input type="number" class="gds-num-input" id="num-cl" min="65" max="135" step="1" value="104">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">95 – 105 mmol/L</td>
+                                    <td class="td-delta" id="delta-cl">—</td>
+                                    <td class="td-status" id="status-cl"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- K+ -->
+                                <tr class="gds-row" id="row-k">
+                                    <td class="td-param"><strong>K⁺</strong><small>Kaliémie (mmol/L)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-k" min="1.5" max="8.5" step="0.1" value="4.0">
+                                            <input type="number" class="gds-num-input" id="num-k" min="1.5" max="8.5" step="0.1" value="4.0">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">3,5 – 5,0 mmol/L</td>
+                                    <td class="td-delta" id="delta-k">—</td>
+                                    <td class="td-status" id="status-k"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+
+                                <!-- Albumine -->
+                                <tr class="gds-row" id="row-albumin">
+                                    <td class="td-param"><strong>Albumine</strong><small>Pour correction du TA (g/L)</small></td>
+                                    <td>
+                                        <div class="td-slider-wrap">
+                                            <input type="range" class="gds-slider" id="slider-albumin" min="10" max="60" step="1" value="40">
+                                            <input type="number" class="gds-num-input" id="num-albumin" min="10" max="60" step="1" value="40">
+                                        </div>
+                                    </td>
+                                    <td class="td-ref">35 – 45 g/L</td>
+                                    <td class="td-delta" id="delta-albumin">—</td>
+                                    <td class="td-status" id="status-albumin"><span class="status-badge normal">Normal</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Cartes d'indices calculés instantanés -->
+                    <div class="indices-grid">
+                        <div class="index-card">
+                            <span class="index-title">Trou Anionique (TA)</span>
+                            <span class="index-val" id="index-ta-val">12 mmol/L</span>
+                            <span class="index-desc" id="index-ta-desc">Réf : 8 – 12 mmol/L</span>
+                        </div>
+
+                        <div class="index-card">
+                            <span class="index-title">Compensation Attendue</span>
+                            <span class="index-val" id="index-comp-val">Non requise</span>
+                            <span class="index-desc" id="index-comp-desc">Cibles de Winter ou respiratoires</span>
+                        </div>
+
+                        <div class="index-card">
+                            <span class="index-title">Delta-Ratio (Δ/Δ)</span>
+                            <span class="index-val" id="index-delta-val">N/A</span>
+                            <span class="index-desc" id="index-delta-desc">Rapport des écarts TA/HCO₃⁻</span>
+                        </div>
+
+                        <div class="index-card">
+                            <span class="index-title">Horovitz (PaO₂/FiO₂)</span>
+                            <span class="index-val" id="index-pf-val">452 mmHg</span>
+                            <span class="index-desc" id="index-pf-desc">Oxygénation normale (> 400)</span>
+                        </div>
+
+                        <div class="index-card">
+                            <span class="index-title">Base Excess (SBE)</span>
+                            <span class="index-val" id="index-sbe-val">-0.8 mmol/L</span>
+                            <span class="index-desc" id="index-sbe-desc">Réf : -2 à +2 mmol/L</span>
+                        </div>
+
+                        <div class="index-card">
+                            <span class="index-title">Diagnostic Synthétique</span>
+                            <span class="index-val" id="index-diag-val" style="font-size:1.05rem;">Normal</span>
+                            <span class="index-desc" id="index-diag-desc">Équilibre physiologique</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colonne Droite : Diagramme Canvas + Raisonnement Pas à Pas -->
+            <div class="right-workspace">
+                
+                <!-- Diagramme de Davenport interactif -->
+                <div class="gds-card diagram-card">
+                    <div class="canvas-tabs-bar">
+                        <div class="canvas-mode-toggle">
+                            <button class="canvas-mode-btn active" id="btn-diag-davenport">Diagramme de Davenport</button>
+                            <button class="canvas-mode-btn" id="btn-diag-siggaard">Siggaard-Andersen</button>
+                        </div>
+                        <div class="canvas-hint">
+                            <i class="fas fa-hand-pointer"></i> Glissez le point sur le graphe
+                        </div>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas id="gds-canvas" width="640" height="420"></canvas>
+                    </div>
+                </div>
+
+                <!-- Panneau Raisonnement Pas à Pas -->
+                <div class="gds-card reasoning-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-brain" style="color:var(--gds-cyan);"></i> Raisonnement Clinique Pas à Pas</h2>
+                        <span style="font-size:0.75rem; color:var(--gds-text-dim);">Méthode d'interprétation EDN</span>
+                    </div>
+
+                    <div class="reasoning-steps">
+                        <!-- Étape 1 : pH -->
+                        <div class="step-item">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <div class="step-title" id="step-1-title">Évaluation du pH</div>
+                                <p class="step-desc" id="step-1-desc">Équilibre du pH dans les limites physiologiques (7,35 - 7,45).</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 2 : Trouble primaire -->
+                        <div class="step-item">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <div class="step-title" id="step-2-title">Trouble primaire</div>
+                                <p class="step-desc" id="step-2-desc">Absence de trouble acido-basique manifeste.</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 3 : Compensation -->
+                        <div class="step-item">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <div class="step-title" id="step-3-title">Évaluation de la compensation</div>
+                                <p class="step-desc" id="step-3-desc">Non requise pour un équilibre acido-basique normal.</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 4 : Trou Anionique -->
+                        <div class="step-item">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <div class="step-title" id="step-4-title">Trou anionique & Delta-Ratio</div>
+                                <p class="step-desc" id="step-4-desc">Trou anionique normal (12 mmol/L, réf 8-12).</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 5 : Oxygénation & Métabolisme -->
+                        <div class="step-item">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <div class="step-title" id="step-5-title">Oxygénation & Métabolisme</div>
+                                <p class="step-desc" id="step-5-desc">Oxygénation normale (PaO₂/FiO₂ > 400 mmHg). Lactates normaux. Kaliémie normale.</p>
+                            </div>
+                        </div>
+
+                        <!-- Étape 6 : Synthèse & Position Davenport -->
+                        <div class="step-item">
+                            <div class="step-num">6</div>
+                            <div class="step-content">
+                                <div class="step-title" id="step-6-title">Synthèse & Diagramme de Davenport</div>
+                                <p class="step-desc" id="step-6-desc">Point situé dans la zone physiologique normale (7,40 ; 24).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Avertissement pédagogique légal -->
+        <footer class="legal-warning">
+            Outil d'apprentissage pédagogique destiné aux étudiants en médecine (MedGame Skill Lab) — Ne remplace pas un avis médical ni une décision clinique réelle.
+        </footer>
+
+    </main>
+
+    <!-- Scripts de l'application -->
+    <script src="js/badges.js"></script>
+    <script src="data/gds-cases.js"></script>
+    <script src="js/gds.js"></script>
+    <script src="js/gds-diagram.js"></script>
+    <script src="js/gds-ui.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+</html>

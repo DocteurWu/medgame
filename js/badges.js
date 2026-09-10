@@ -45,16 +45,19 @@ const BadgeSystem = (() => {
                 return found.length >= 3;
             }},
 
-            // Skill Lab (ECG & Auscultation)
+            // Skill Lab (ECG, Auscultation & Gaz du Sang)
             { id: 'ecg_cadet', name: 'Lecteur d\'ECG', desc: 'Valider 3 tracés dans l\'ECG Academy', icon: 'fa-heart-pulse', color: '#ff7675', condition: () => (_getSkillStats().ecgCompleted || 0) >= 3, progress: () => `${_getSkillStats().ecgCompleted || 0}/3 tracés` },
             { id: 'ecg_expert', name: 'Rythmologue de Bichat', desc: 'Obtenir ≥ 80% au Test ECG 12 Dérivations', icon: 'fa-wave-square', color: '#00f2fe', condition: () => (_getSkillStats().ecgHighScore || 0) >= 80, progress: () => `${_getSkillStats().ecgHighScore || 0}% / 80%` },
             { id: 'ecg_master', name: 'Maître de l\'Électrode', desc: 'Réaliser un sans-faute (100%) au Test ECG', icon: 'fa-bolt-lightning', color: '#f9ca24', condition: () => (_getSkillStats().ecgHighScore || 0) >= 100 },
             { id: 'auscult_cadet', name: 'Oreille Médicale', desc: 'Valider 3 cas au Stéthoscope Lab', icon: 'fa-headphones', color: '#a29bfe', condition: () => (_getSkillStats().auscultCompleted || 0) >= 3, progress: () => `${_getSkillStats().auscultCompleted || 0}/3 cas` },
             { id: 'auscult_expert', name: 'Stéthoscope d\'Or', desc: 'Obtenir ≥ 80% au Test d\'Auscultation à l\'aveugle', icon: 'fa-lungs', color: '#55efc4', condition: () => (_getSkillStats().auscultHighScore || 0) >= 80, progress: () => `${_getSkillStats().auscultHighScore || 0}% / 80%` },
             { id: 'auscult_master', name: 'Grand Clinicien', desc: 'Réaliser un sans-faute (100%) au Test d\'Auscultation', icon: 'fa-medal', color: '#ffd700', condition: () => (_getSkillStats().auscultHighScore || 0) >= 100 },
-            { id: 'skill_master', name: 'Major du Skill Lab', desc: 'Débloquer tous les badges ECG & Auscultation', icon: 'fa-certificate', color: '#fd79a8', condition: () => {
+            { id: 'gds_cadet', name: 'Analyste des Gaz', desc: 'Valider 3 cas de gazométrie artérielle', icon: 'fa-vial', color: '#00f2fe', condition: () => (_getSkillStats().gdsCompleted || 0) >= 3, progress: () => `${_getSkillStats().gdsCompleted || 0}/3 cas` },
+            { id: 'gds_expert', name: 'Maître de Davenport', desc: 'Obtenir ≥ 80% au Quiz Gaz du Sang EDN', icon: 'fa-sliders-h', color: '#ffd700', condition: () => (_getSkillStats().gdsHighScore || 0) >= 80, progress: () => `${_getSkillStats().gdsHighScore || 0}% / 80%` },
+            { id: 'gds_master', name: 'Réanimateur d\'Élite', desc: 'Réaliser un sans-faute (100%) au Quiz Gaz du Sang', icon: 'fa-shield-heart', color: '#ff4757', condition: () => (_getSkillStats().gdsHighScore || 0) >= 100 },
+            { id: 'skill_master', name: 'Major du Skill Lab', desc: 'Exceller dans les 3 modules (ECG, Auscultation & Gaz du Sang)', icon: 'fa-certificate', color: '#fd79a8', condition: () => {
                 const s = _getSkillStats();
-                return (s.ecgCompleted >= 3) && (s.ecgHighScore >= 80) && (s.auscultCompleted >= 3) && (s.auscultHighScore >= 80);
+                return (s.ecgCompleted >= 3) && (s.ecgHighScore >= 80) && (s.auscultCompleted >= 3) && (s.auscultHighScore >= 80) && (s.gdsCompleted >= 3) && (s.gdsHighScore >= 80);
             }},
 
             // Compétition
@@ -101,6 +104,10 @@ const BadgeSystem = (() => {
             stats.auscultCompleted = (stats.auscultCompleted || 0) + 1;
             stats.auscultHighScore = Math.max(stats.auscultHighScore || 0, score);
             if (score === 100) stats.auscultPerfectCount = (stats.auscultPerfectCount || 0) + 1;
+        } else if (type === 'gds') {
+            stats.gdsCompleted = (stats.gdsCompleted || 0) + 1;
+            stats.gdsHighScore = Math.max(stats.gdsHighScore || 0, score);
+            if (score === 100) stats.gdsPerfectCount = (stats.gdsPerfectCount || 0) + 1;
         }
         _saveSkillStats(stats);
         

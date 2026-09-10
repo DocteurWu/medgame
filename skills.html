@@ -38,10 +38,10 @@
     <!-- Titre Hero -->
     <div class="skills-hero">
         <h1>SALLE D'ENTRAÎNEMENT CLINIQUE</h1>
-        <p>Développez vos réflexes d'interne : analysez les tracés électrocardiographiques et affûtez votre oreille stéthoscopique avant de partir en garde.</p>
+        <p>Développez vos réflexes d'interne : analysez les tracés électrocardiographiques, affûtez votre oreille stéthoscopique et maîtrisez les gaz du sang sur le diagramme de Davenport avant de partir en garde.</p>
     </div>
 
-    <!-- Grille des 2 Modules Principaux -->
+    <!-- Grille des Modules Principaux -->
     <main class="skills-grid">
         
         <!-- Carte 1 : ECG Academy 12 Dérivations -->
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <p class="card-desc">
-                    Écoutez les souffles cardiaques et les bruits pulmonaires sur un torse interactif, commutez entre cloche et membrane, observez le phonocardiogramme synchrone et passez le test à l'aveugle.
+                    Écoutez les souffles cardiaques et les bruits pulmonaires sur un torse interactif, observez le phonocardiogramme synchrone et entraînez-vous au dépistage normal / anormal sur 120 phonocardiogrammes cliniques réels (PhysioNet).
                 </p>
             </div>
 
@@ -106,8 +106,47 @@
                         <span class="stat-val" id="hub-auscult-highscore">0%</span>
                     </div>
                 </div>
-                <a href="auscultation.html" class="btn-launch auscult">
-                    <span>Lancer le Stéthoscope Lab</span> <i class="fas fa-arrow-right"></i>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <a href="auscultation.html" class="btn-launch auscult" style="flex:1; min-width:140px;">
+                        <span>Stéthoscope Lab</span> <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="auscultation-pcg.html" class="btn-launch auscult" style="flex:1; min-width:140px; background:rgba(0,242,254,0.12); border:1px solid rgba(0,242,254,0.4);">
+                        <span>Dépistage PCG Réel</span> <i class="fas fa-wave-square"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carte 3 : Gaz du Sang & Diagramme de Davenport -->
+        <div class="skill-card gds">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon gds">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <div class="card-title-wrap">
+                        <h2>Gaz du Sang & Davenport</h2>
+                        <span class="card-badge" style="color:#00f2fe;">Équilibre Acido-Basique &bull; Curseur Interactif</span>
+                    </div>
+                </div>
+                <p class="card-desc">
+                    Explorez l'équilibre acido-basique en manipulant les curseurs (Henderson-Hasselbalch), observez le déplacement en direct sur le diagramme de Davenport, calculez les compensations et résolvez les cas cliniques EDN.
+                </p>
+            </div>
+
+            <div>
+                <div class="card-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Gazométries</span>
+                        <span class="stat-val" id="hub-gds-completed">0 cas</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Meilleur Score</span>
+                        <span class="stat-val" id="hub-gds-highscore">0%</span>
+                    </div>
+                </div>
+                <a href="skills-gds.html" class="btn-launch gds">
+                    <span>Lancer le Lab Gaz du Sang</span> <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>

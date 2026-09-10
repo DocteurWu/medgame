@@ -47,3 +47,4 @@ graphify-out/
 .ruff_cache/
 .skillkit/
 scratch/
+.tmp-chrome*

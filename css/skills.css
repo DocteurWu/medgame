@@ -136,6 +136,17 @@ body {
     pointer-events: none;
 }
 
+.skill-card.gds::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+}
+
 .card-top {
     display: flex;
     align-items: center;
@@ -155,6 +166,7 @@ body {
 }
 .card-icon.ecg { background: linear-gradient(135deg, #ff4757, #ff6b81); color: #fff; }
 .card-icon.auscult { background: linear-gradient(135deg, #10b981, #00f2fe); color: #0a0f28; }
+.card-icon.gds { background: linear-gradient(135deg, #00f2fe, #3b82f6); color: #0a0f28; }
 
 .card-title-wrap h2 {
     font-family: 'Outfit', sans-serif;
@@ -238,6 +250,10 @@ body {
 
 .btn-launch.auscult {
     background: linear-gradient(135deg, #10b981, #00f2fe);
+}
+
+.btn-launch.gds {
+    background: linear-gradient(135deg, #00f2fe, #3b82f6);
 }
 
 /* Vitrine des Badges */
