@@ -22,10 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elAuscultCompleted) elAuscultCompleted.textContent = `${stats.auscultCompleted || 0} cas`;
         if (elAuscultHighScore) elAuscultHighScore.textContent = `${stats.auscultHighScore || 0}%`;
 
-        // 3. Vitrine des badges Skill Lab
+        // 3. Mettre à jour les statistiques Gaz du sang
+        const elGdsCompleted = document.getElementById('hub-gds-completed');
+        const elGdsHighScore = document.getElementById('hub-gds-highscore');
+        if (elGdsCompleted) elGdsCompleted.textContent = `${stats.gdsCompleted || 0} cas`;
+        if (elGdsHighScore) elGdsHighScore.textContent = `${stats.gdsHighScore || 0}%`;
+
+        // 4. Vitrine des badges Skill Lab
         const skillBadgeIds = [
             'ecg_cadet', 'ecg_expert', 'ecg_master',
             'auscult_cadet', 'auscult_expert', 'auscult_master',
+            'gds_cadet', 'gds_expert', 'gds_master',
             'skill_master'
         ];
 
