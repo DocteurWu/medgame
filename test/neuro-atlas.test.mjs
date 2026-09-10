@@ -135,4 +135,22 @@ test('Atlas Système Nerveux — Intégrité des fichiers statiques déployés',
     assert.ok(bundleJs.includes('Tout plier'), 'Le bouton Tout plier doit être présent dans le bundle');
     assert.ok(!bundleJs.includes('English (US)'), 'Les options de traduction anglaise/espagnole doivent être retirées du viewer');
   });
+
+  await t.test('Sécurité CSP et X-Frame-Options : autorise l’intégration iframe interne (SAMEORIGIN)', () => {
+    const netlifyPath = path.join(ROOT, 'netlify.toml');
+    assert.ok(fs.existsSync(netlifyPath), 'netlify.toml doit exister');
+    const netlifyToml = fs.readFileSync(netlifyPath, 'utf8');
+
+    assert.match(netlifyToml, /X-Frame-Options\s*=\s*"SAMEORIGIN"/, 'netlify.toml doit utiliser SAMEORIGIN (et non DENY) pour permettre l’iframe neuro');
+    assert.match(netlifyToml, /frame-ancestors 'self'/, 'netlify.toml doit autoriser frame-ancestors \'self\' (et non \'none\')');
+    assert.match(netlifyToml, /frame-src 'self' blob:/, 'netlify.toml doit autoriser frame-src \'self\' blob:');
+
+    const nginxPath = path.join(ROOT, 'nginx.conf');
+    assert.ok(fs.existsSync(nginxPath), 'nginx.conf doit exister');
+    const nginxConf = fs.readFileSync(nginxPath, 'utf8');
+
+    assert.match(nginxConf, /X-Frame-Options\s+"SAMEORIGIN"/, 'nginx.conf doit utiliser SAMEORIGIN pour permettre l’iframe neuro');
+    assert.match(nginxConf, /frame-ancestors 'self'/, 'nginx.conf doit autoriser frame-ancestors \'self\'');
+    assert.match(nginxConf, /frame-src 'self' blob:/, 'nginx.conf doit autoriser frame-src \'self\' blob:');
+  });
 });
