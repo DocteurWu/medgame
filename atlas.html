@@ -30,6 +30,7 @@
             <div class="atlas-module-bar" role="group" aria-label="Module d'exploration anatomique">
                 <button class="atlas-module-btn active" id="btn-module-body" type="button" title="Corps entier 3D">Corps entier</button>
                 <button class="atlas-module-btn" id="btn-module-heart" type="button" title="Mode Cœur & ECG synchrone"><i class="fas fa-heart-pulse"></i> Cœur</button>
+                <button class="atlas-module-btn" id="btn-module-kidney" type="button" title="Mode Rein détaillé 3D"><i class="fas fa-filter"></i> Rein</button>
                 <button class="atlas-module-btn" id="btn-module-neuro" type="button" title="Atlas Système Nerveux 3D & IRM"><i class="fas fa-brain"></i> Système nerveux</button>
             </div>
             <div class="atlas-model-bar">
@@ -59,6 +60,7 @@
                 <button class="atlas-btn" id="preset-organs">Organes</button>
                 <button class="atlas-btn" id="preset-vessels">Vaisseaux</button>
                 <button class="atlas-btn" id="preset-heart" style="border-color: rgba(224,96,85,0.7); color: #ff8577;"><i class="fas fa-heart-pulse"></i> Cœur</button>
+                <button class="atlas-btn" id="preset-kidney" style="border-color: rgba(217,130,123,0.7); color: #e28880;"><i class="fas fa-filter"></i> Rein</button>
                 <button class="atlas-btn" id="preset-neuro" style="border-color: rgba(216,181,101,0.7); color: #d8b565;"><i class="fas fa-brain"></i> Neuro</button>
             </div>
             <div class="atlas-section-title">Animation</div>
@@ -129,6 +131,102 @@
                     <p class="edu-desc" id="heart-edu-desc">Dépolarisation initiée par le nœud sinusal, conduction auriculo-ventriculaire synchrone. Contraction auriculaire suivie de la systole ventriculaire et de l'ouverture physiologique des valves.</p>
                 </div>
             </div>
+            <div id="kidney-mode-panel" class="kidney-panel hidden">
+                <div class="kidney-panel-header">
+                    <div class="kidney-panel-title"><i class="fas fa-filter"></i> Rein Détaillé 3D</div>
+                    <button class="atlas-btn heart-btn-close" id="btn-kidney-exit" title="Retour vue générale">✕ Quitter</button>
+                </div>
+
+                <!-- Toggles Côté et Sexe -->
+                <div class="kidney-ctrl-group">
+                    <div class="kidney-ctrl-label">Latéralité</div>
+                    <div class="kidney-btn-group" role="group" aria-label="Choix du rein">
+                        <button class="atlas-btn kidney-toggle-btn active" id="btn-kidney-left" data-side="left" type="button">Gauche (G)</button>
+                        <button class="atlas-btn kidney-toggle-btn" id="btn-kidney-right" data-side="right" type="button">Droit (D)</button>
+                    </div>
+                </div>
+
+                <div class="kidney-ctrl-group">
+                    <div class="kidney-ctrl-label">Sujet anatomique</div>
+                    <div class="kidney-btn-group" role="group" aria-label="Sujet anatomique">
+                        <button class="atlas-btn kidney-toggle-btn active" id="btn-kidney-male" data-sex="male" type="button"><i class="fas fa-mars"></i> Homme</button>
+                        <button class="atlas-btn kidney-toggle-btn" id="btn-kidney-female" data-sex="female" type="button"><i class="fas fa-venus"></i> Femme</button>
+                    </div>
+                </div>
+
+                <!-- Mode d'affichage : Rein entier vs Vue en coupe -->
+                <div class="kidney-ctrl-group">
+                    <div class="kidney-ctrl-label">Affichage</div>
+                    <div class="kidney-btn-group" role="group" aria-label="Mode d'affichage">
+                        <button class="atlas-btn kidney-toggle-btn active" id="btn-kidney-view-full" type="button" title="Afficher le rein complet dans son intégrité">
+                            <i class="fas fa-cube"></i> Rein entier
+                        </button>
+                        <button class="atlas-btn kidney-toggle-btn" id="btn-kidney-view-cut" type="button" title="Activer la coupe coronale pour observer l'intérieur">
+                            <i class="fas fa-layer-group"></i> Vue en coupe
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Coupe Coronale (Frontale) progressive -->
+                <div class="kidney-ctrl-group">
+                    <div class="kidney-ctrl-header">
+                        <span class="kidney-ctrl-label">Curseur de coupe (Section)</span>
+                        <button class="atlas-btn kidney-sub-btn" id="btn-kidney-clip-toggle" type="button">Désactivée</button>
+                    </div>
+                    <div class="kidney-slider-wrap" style="margin-top:6px;">
+                        <div class="kidney-slider-header" style="display:flex;justify-content:space-between;font-size:11px;color:var(--atlas-muted);margin-bottom:4px;">
+                            <span>Niveau de section</span>
+                            <span id="kidney-clip-val" style="color:var(--atlas-primary);font-weight:600;">Rein entier (0%)</span>
+                        </div>
+                        <input type="range" class="kidney-range" id="kidney-clip-slider" min="0" max="100" value="0" aria-label="Niveau de coupe frontale" style="width:100%;accent-color:var(--atlas-primary);cursor:pointer;">
+                        <div style="display:flex;justify-content:space-between;font-size:9.5px;color:var(--atlas-muted);margin-top:3px;opacity:0.75;">
+                            <span>Rein entier (0%)</span>
+                            <span>Médian (50%)</span>
+                            <span>Profond (100%)</span>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:6px;margin-top:8px;">
+                        <button class="atlas-btn" id="btn-kidney-clip-invert" type="button" style="flex:1;font-size:11px;" title="Inverser le sens de coupe antéro-postérieur">
+                            <i class="fas fa-repeat"></i> Inverser face
+                        </button>
+                        <button class="atlas-btn" id="btn-kidney-capsule-toggle" type="button" style="flex:1;font-size:11px;" title="Changer l'opacité de la capsule rénale">
+                            Capsule : Opaque
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Complément schématique pyélocaliciel -->
+                <div class="kidney-edu-card" id="kidney-pyelo-card">
+                    <div class="edu-title"><i class="fas fa-diagram-project"></i> Voie excrétrice (Schéma pyélocaliciel)</div>
+                    <p class="edu-desc" style="margin-bottom:8px;">
+                        Architecture collectrice non modélisée dans le maillage brut Visible Human :
+                    </p>
+                    <div class="pyelo-diagram">
+                        <div class="pyelo-node" data-pyelo="papilla">1. Papilles rénales (area cribrosa)</div>
+                        <div class="pyelo-arrow">↓</div>
+                        <div class="pyelo-node" data-pyelo="minor">2. Calices mineurs (8 à 12 entonnoirs)</div>
+                        <div class="pyelo-arrow">↓</div>
+                        <div class="pyelo-node" data-pyelo="major">3. Calices majeurs (supérieur, moyen, inférieur)</div>
+                        <div class="pyelo-arrow">↓</div>
+                        <div class="pyelo-node" data-pyelo="pelvis">4. Bassinet (pelvis rénal dans le hile)</div>
+                        <div class="pyelo-arrow">↓</div>
+                        <div class="pyelo-node" data-pyelo="ureter">5. Jonction pyélo-urétérale → Uretère</div>
+                    </div>
+                    <div class="pyelo-disclaimer">
+                        Note pédagogique : Le maillage 3D CCF/HRA présente un sinus rénal ouvert sans volume de la lumière pyélocalicielle. Ce tracé synthétise la circulation urinaire.
+                    </div>
+                </div>
+
+                <!-- Cas ECOS Associé -->
+                <div class="kidney-ecos-card">
+                    <div class="ecos-badge">Cas ECOS associé</div>
+                    <div class="ecos-case-title">Pyélonéphrite aiguë obstructive (calcul)</div>
+                    <p class="ecos-case-desc">Obstacle lithiasique à la jonction pyélo-urétérale avec dilatation d'amont et sepsis urologique.</p>
+                    <a href="game.html?case=nephro_fievre_et_douleur_lombaire_droite_m_ribaucourt" class="atlas-btn kidney-ecos-btn" title="Jouer le cas clinique ECOS">
+                        <i class="fas fa-play"></i> Lancer le cas clinique
+                    </a>
+                </div>
+            </div>
             <div class="atlas-section-title" style="margin-top:0;">Fiche structure</div>
             <div class="detail-card" id="atlas-detail">
                 <h2>Aucune sélection</h2>
@@ -168,6 +266,7 @@
             <div class="neuro-module-bar" role="group" aria-label="Navigation des modules">
                 <button class="atlas-module-btn" id="btn-neuro-nav-body" type="button" title="Retour au corps entier"><i class="fas fa-person"></i> Corps entier</button>
                 <button class="atlas-module-btn" id="btn-neuro-nav-heart" type="button" title="Mode Cœur & ECG synchrone"><i class="fas fa-heart-pulse"></i> Cœur</button>
+                <button class="atlas-module-btn" id="btn-neuro-nav-kidney" type="button" title="Mode Rein détaillé 3D"><i class="fas fa-filter"></i> Rein</button>
                 <button class="atlas-module-btn active" id="btn-neuro-nav-neuro" type="button" title="Système nerveux actif"><i class="fas fa-brain"></i> Système nerveux</button>
             </div>
             <div class="neuro-actions">

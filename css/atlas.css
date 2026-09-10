@@ -352,10 +352,181 @@ input[type="range"].explode { width: 100%; accent-color: var(--atlas-neon); }
     color: #ff8577;
     box-shadow: 0 0 10px rgba(224, 96, 85, 0.35);
 }
+.atlas-module-btn#btn-module-kidney.active {
+    background: rgba(217, 130, 123, 0.2);
+    color: #e28880;
+    box-shadow: 0 0 10px rgba(217, 130, 123, 0.35);
+}
 .atlas-module-btn#btn-module-neuro.active {
     background: rgba(216, 181, 101, 0.2);
     color: #d8b565;
     box-shadow: 0 0 10px rgba(216, 181, 101, 0.35);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MODE REIN DÉTAILLÉ 3D (HuBMAP / Visible Human v1.2)
+   ══════════════════════════════════════════════════════════════════════════════ */
+.kidney-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(217, 130, 123, 0.25);
+    border-radius: 12px;
+    padding: 10px;
+}
+.kidney-panel.hidden {
+    display: none !important;
+}
+.kidney-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.kidney-panel-title {
+    font-weight: 700;
+    font-size: 12.5px;
+    color: #e28880;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.kidney-ctrl-group {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 8px;
+}
+.kidney-ctrl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.kidney-ctrl-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--atlas-muted);
+    font-weight: 700;
+}
+.kidney-btn-group {
+    display: flex;
+    gap: 4px;
+    margin-top: 5px;
+}
+.kidney-toggle-btn {
+    flex: 1;
+    padding: 5px 4px;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 6px;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+}
+.kidney-toggle-btn.active {
+    background: rgba(217, 130, 123, 0.25);
+    border-color: #e28880;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(217, 130, 123, 0.3);
+}
+.kidney-sub-btn {
+    padding: 2px 8px;
+    font-size: 10px;
+    border-radius: 4px;
+}
+.kidney-sub-btn.active {
+    background: rgba(0, 242, 254, 0.2);
+    border-color: #00f2fe;
+    color: #00f2fe;
+}
+.kidney-edu-card {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px;
+}
+.pyelo-diagram {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin: 6px 0;
+}
+.pyelo-node {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 10.5px;
+    color: rgba(224, 232, 244, 0.9);
+    transition: all 0.15s ease;
+}
+.pyelo-node:hover {
+    background: rgba(217, 130, 123, 0.15);
+    border-color: rgba(217, 130, 123, 0.4);
+    color: #fff;
+}
+.pyelo-arrow {
+    text-align: center;
+    font-size: 9px;
+    color: var(--atlas-muted);
+    line-height: 1;
+}
+.pyelo-disclaimer {
+    font-size: 9.5px;
+    font-style: italic;
+    color: var(--atlas-muted);
+    line-height: 1.35;
+    margin-top: 6px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    padding-top: 5px;
+}
+.kidney-ecos-card {
+    background: linear-gradient(135deg, rgba(224, 96, 85, 0.12), rgba(0, 242, 254, 0.05));
+    border: 1px solid rgba(224, 96, 85, 0.35);
+    border-radius: 8px;
+    padding: 9px;
+}
+.ecos-badge {
+    display: inline-block;
+    font-size: 9.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(224, 96, 85, 0.25);
+    color: #ff8577;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+.ecos-case-title {
+    font-weight: 700;
+    font-size: 11.5px;
+    color: #fff;
+    margin-bottom: 3px;
+}
+.ecos-case-desc {
+    font-size: 10.5px;
+    color: var(--atlas-muted);
+    line-height: 1.35;
+    margin: 0 0 8px;
+}
+.kidney-ecos-btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 11px;
+    padding: 6px 10px;
+    background: rgba(224, 96, 85, 0.2);
+    border-color: rgba(224, 96, 85, 0.6);
+    color: #ff8577;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.kidney-ecos-btn:hover {
+    background: rgba(224, 96, 85, 0.35);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(224, 96, 85, 0.4);
 }
 
 /* ── Conteneur plein écran du viewer neuro embarqué ── */
@@ -477,6 +648,9 @@ input[type="range"].explode { width: 100%; accent-color: var(--atlas-neon); }
     border: none;
     background: #050814;
 }
+
+
+
 
 
 

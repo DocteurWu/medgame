@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dépistage PCG Réel (PhysioNet) - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/auscultation.css?v=4">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="auscult-navbar">
+        <div class="nav-left">
+            <button class="back-btn" onclick="window.location.href='auscultation.html'">
+                <i class="fas fa-arrow-left"></i> Stéthoscope Lab
+            </button>
+            <div class="app-title-group">
+                <div class="app-logo-auscult">
+                    <i class="fas fa-wave-square" style="color:#0a0f24;"></i>
+                </div>
+                <div>
+                    <h1>DÉPISTAGE PCG CLINIQUE</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab-btn" onclick="window.location.href='auscultation.html'">
+                <i class="fas fa-stethoscope"></i> Exploration Libre
+            </button>
+            <button class="nav-tab-btn" onclick="window.location.href='auscultation.html?mode=quiz'">
+                <i class="fas fa-volume-up"></i> Test à l'Aveugle
+            </button>
+            <button class="nav-tab-btn active" id="tab-mode-pcg">
+                <i class="fas fa-heart-pulse"></i> Dépistage PCG (PhysioNet)
+            </button>
+        </div>
+
+        <div class="nav-stats">
+            <div>Score : <span id="pcg-stat-accuracy">0%</span></div>
+            <div>Validés : <span id="pcg-stat-count">0 / 0</span></div>
+        </div>
+    </header>
+
+    <!-- Conteneur Principal -->
+    <main class="auscult-container pcg-mode-container" id="pcg-trainer-container">
+        
+        <!-- Section Centrale : Phonocardiogramme, Audio & Décision -->
+        <section class="auscult-main-section">
+            
+            <!-- Carte Info Clinique -->
+            <div class="meta-card">
+                <div class="case-info">
+                    <h2 id="pcg-case-record" style="font-family:'Outfit',sans-serif; margin:0 0 4px 0;">Chargement du clip PCG...</h2>
+                    <p id="pcg-case-patient" style="margin:0; font-size:0.88rem; color:rgba(255,255,255,0.7);">Contexte clinique en cours de chargement...</p>
+                </div>
+                <div class="case-tags" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <span class="badge-diff real-audio"><i class="fas fa-hospital-user"></i> Enregistrement clinique réel</span>
+                    <span class="badge-diff debutant" id="pcg-case-set">PhysioNet CinC 2016</span>
+                    <span class="badge-diff urgence"><i class="fas fa-shield-alt"></i> Décision de référence</span>
+                </div>
+            </div>
+
+            <!-- Espace Phonocardiogramme & Lecture Audio -->
+            <div class="audio-visual-panel pcg-player-panel">
+                
+                <div class="hotspot-status-header">
+                    <span class="hotspot-current-title" id="pcg-case-site">
+                        <i class="fas fa-map-pin" style="color:var(--auscult-cyan);"></i> Précorde standard
+                    </span>
+                    <div class="filter-switch-group">
+                        <button class="filter-btn active" id="btn-pcg-filter-diaphragm">
+                            <i class="fas fa-circle"></i> Membrane
+                        </button>
+                        <button class="filter-btn" id="btn-pcg-filter-bell">
+                            <i class="fas fa-bell"></i> Cloche
+                        </button>
+                        <button class="filter-btn active" id="btn-pcg-toggle-markers" title="Afficher ou masquer les marqueurs B1 et B2">
+                            <i class="fas fa-tags"></i> Repères B1-B2
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Phonocardiogramme Canvas -->
+                <div class="phono-canvas-wrapper pcg-canvas-wrapper">
+                    <div class="phono-overlay-labels">PHONOCARDIOGRAMME RÉEL (FRÉQUENCE CARDIAQUE & SOUFFLES)</div>
+                    <div class="phono-time-markers">Vitesse 25 mm/s &bull; Filtre actif &bull; Amplitude normalisée</div>
+                    <canvas id="pcg-phonocardiogram-canvas"></canvas>
+                </div>
+
+                <!-- Barre de repères B1 - B2 -->
+                <div class="pcg-markers-bar" id="pcg-markers-bar">
+                    <!-- Généré dynamiquement -->
+                </div>
+
+                <!-- Contrôles Audio & Volume -->
+                <div class="audio-controls-bar pcg-controls-bar">
+                    <button class="btn-audio-play" id="btn-pcg-play">
+                        <i class="fas fa-play"></i> Écouter au stéthoscope
+                    </button>
+                    <div class="pcg-volume-container">
+                        <i class="fas fa-volume-up" style="color:rgba(255,255,255,0.7);"></i>
+                        <input type="range" id="pcg-volume-slider" min="0" max="1.5" step="0.05" value="0.85">
+                        <span id="pcg-volume-value" style="font-size:0.8rem; color:var(--auscult-cyan); width:38px;">85%</span>
+                    </div>
+                    <div class="audio-hint">
+                        <i class="fas fa-headphones" style="color:var(--auscult-cyan);"></i> Utilisez des écouteurs pour percevoir les basses fréquences
+                    </div>
+                </div>
+
+                <!-- Zone de Décision Clinique : Normal vs Anormal -->
+                <div class="pcg-decision-zone">
+                    <div class="pcg-decision-prompt">
+                        <h3>DÉCISION CLINIQUE DE PREMIER RECOURS</h3>
+                        <p>Ce phonocardiogramme présente-t-il des anomalies justifiant une orientation vers un cardiologue ?</p>
+                    </div>
+                    <div class="pcg-decision-buttons">
+                        <button class="btn-pcg-action normal" id="btn-pcg-normal">
+                            <i class="fas fa-check"></i>
+                            <span class="btn-title">NORMAL</span>
+                            <span class="btn-sub">Bruits physiologiques purs &bull; Pas d'orientation</span>
+                        </button>
+                        <button class="btn-pcg-action abnormal" id="btn-pcg-abnormal">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span class="btn-title">ANORMAL</span>
+                            <span class="btn-sub">Souffle ou bruit suspect &bull; Référer au cardiologue</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Boîte de Feedback Médical -->
+                <div class="pcg-feedback-box" id="pcg-feedback-box" style="display:none;">
+                    <div class="pcg-feedback-header">
+                        <h4 id="pcg-feedback-title">Résultat</h4>
+                        <button class="tool-btn btn-pcg-next" id="btn-pcg-next" style="display:none;">
+                            Clip Suivant <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="pcg-feedback-content">
+                        <div class="pcg-feedback-diag" id="pcg-feedback-diag"></div>
+                        <p class="pcg-feedback-explanation" id="pcg-feedback-explanation"></p>
+                        <div class="pcg-feedback-decision" id="pcg-feedback-decision"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Colonne Droite : Métriques Cliniques & Attribution Légale -->
+        <aside class="auscult-sidebar">
+            
+            <div class="sidebar-card">
+                <div class="semiology-header">
+                    <h3><i class="fas fa-chart-line"></i> Performance au Dépistage</h3>
+                </div>
+                <div class="pcg-stats-grid">
+                    <div class="pcg-stat-tile">
+                        <span class="tile-val" id="pcg-stat-sensitivity">0%</span>
+                        <span class="tile-label">Sensibilité (Pathologique détecté)</span>
+                    </div>
+                    <div class="pcg-stat-tile">
+                        <span class="tile-val" id="pcg-stat-specificity">0%</span>
+                        <span class="tile-label">Spécificité (Témoin sain identifié)</span>
+                    </div>
+                </div>
+                <p style="font-size:0.8rem; color:rgba(255,255,255,0.6); margin-top:12px; line-height:1.4;">
+                    Dans la pratique clinique, un dépistage cardiologique efficace privilégie une haute sensibilité pour ne manquer aucune valvulopathie significative.
+                </p>
+            </div>
+
+            <div class="sidebar-card">
+                <div class="semiology-header">
+                    <h3><i class="fas fa-book-medical"></i> Objectif Pédagogique</h3>
+                </div>
+                <p style="font-size:0.84rem; color:rgba(255,255,255,0.8); line-height:1.45; margin-bottom:10px;">
+                    Contrairement aux enregistrements de mannequin clinique HLS-CMDS, ces tracés proviennent d'actes ambulatoires réels avec bruits respiratoires et de contact.
+                </p>
+                <div class="pcg-hint-list">
+                    <div><i class="fas fa-info-circle" style="color:var(--auscult-cyan);"></i> Repérez l'intervalle entre B1 et B2 (systole) et entre B2 et le B1 suivant (diastole).</div>
+                    <div><i class="fas fa-info-circle" style="color:var(--auscult-cyan);"></i> Tout souffle méso- ou télésystolique continu doit être référé.</div>
+                    <div><i class="fas fa-info-circle" style="color:var(--auscult-cyan);"></i> Activez les repères B1-B2 pour vérifier le calage temporel des bruits.</div>
+                </div>
+            </div>
+
+            <!-- Attribution ODC-BY 1.0 légale -->
+            <div class="sidebar-card pcg-attribution-card">
+                <div class="semiology-header">
+                    <h3><i class="fas fa-balance-scale"></i> Attribution Source (ODC-BY)</h3>
+                </div>
+                <p style="font-size:0.75rem; color:rgba(255,255,255,0.65); line-height:1.4;">
+                    Données issues du projet <strong>PhysioNet / CinC Challenge 2016</strong> (Liu C, Springer D, et al., <em>Physiol Meas 2016</em>).
+                    Distribué sous licence libre <strong>Open Data Commons Attribution License v1.0 (ODC-BY)</strong>.
+                </p>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/audio.js"></script>
+    <script src="js/badges.js"></script>
+    <script src="data/pcg-trainer-database.js"></script>
+    <script src="js/auscultation-audio.js"></script>
+    <script src="js/auscultation-pcg.js"></script>
+    <script src="js/footer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const engine = new AuscultationAudioEngine();
+            window.auscultationAudio = engine;
+            PCGTrainer.init(engine);
+        });
+    </script>
+</body>
+</html>

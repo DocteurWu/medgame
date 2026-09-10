@@ -58,6 +58,12 @@ export class ThreeAtlasViewer {
         this._heartTime = 0;
         this._heartThrottle = 0;
 
+        // Module Rein Détaillé
+        this.isKidneyMode = false;
+        this.onSelectKidney = opts.onSelectKidney || null;
+        this._kidneyBounds = new THREE.Box3();
+        this._kidneyCenter = new THREE.Vector3(0, 0.85, 0);
+
         this.state = {
             visible: [...(opts.visible || ['cardiac', 'sensory', 'skeletal', 'muscular', 'arterial', 'venous', 'nervous', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine', 'reproductive', 'connective'])],
             selected: [],
@@ -83,6 +89,7 @@ export class ThreeAtlasViewer {
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.05;
+        this.renderer.localClippingEnabled = true;
         // DA MedGame : fond sombre au lieu du gris #f2f3f3 d'origine
         this.renderer.setClearColor('#070c18');
         this.renderer.domElement.style.width = '100%';
@@ -128,6 +135,11 @@ export class ThreeAtlasViewer {
         this._heartGroup = new THREE.Group();
         this._heartGroup.name = 'heartGroup';
         this.scene.add(this._heartGroup);
+
+        this._kidneyGroup = new THREE.Group();
+        this._kidneyGroup.name = 'kidneyGroup';
+        this._kidneyGroup.visible = false;
+        this.scene.add(this._kidneyGroup);
 
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector2();
@@ -194,6 +206,13 @@ export class ThreeAtlasViewer {
         this._selTexture?.dispose();
         this._partTexture = null;
         this._selTexture = null;
+        if (this._kidneyGroup) {
+            while (this._kidneyGroup.children.length > 0) {
+                const child = this._kidneyGroup.children[0];
+                this._kidneyGroup.remove(child);
+            }
+            this._kidneyGroup.visible = false;
+        }
         this.atlas = null;
         this._layoutKey = '';
         this._offsets = [];
@@ -427,11 +446,25 @@ export class ThreeAtlasViewer {
     }
 
     _onTap(e) {
-        if (!this._ready || this._disposed) return;
+        if (this._disposed) return;
         if (this._downPos && Math.hypot(e.clientX - this._downPos.x, e.clientY - this._downPos.y) > 8) return;
         const rect = this.renderer.domElement.getBoundingClientRect();
         this.pointer.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
         this.raycaster.setFromCamera(this.pointer, this.camera);
+
+        if (this.isKidneyMode) {
+            const hits = this.raycaster.intersectObjects(this._kidneyGroup.children, true);
+            const hit = hits.find((h) => h.object.isMesh && h.object.visible);
+            if (hit) {
+                const item = hit.object.userData?.kidneyItem;
+                if (item && typeof this.onSelectKidney === 'function') {
+                    this.onSelectKidney(item);
+                }
+            }
+            return;
+        }
+
+        if (!this._ready) return;
         const box = new THREE.Box3();
         const hit = new THREE.Vector3();
         let nearest = Infinity;
@@ -485,7 +518,7 @@ export class ThreeAtlasViewer {
             this._amount = THREE.MathUtils.damp(this._amount, s.explode, 8, dt);
             this._dirty = true;
         }
-        if (this._ready && (this._dirty || moving)) {
+        if (!this.isKidneyMode && this._ready && (this._dirty || moving)) {
             const visible = new Set(s.visible);
             const selection = new Set(s.selected);
             const visibleParts = this.atlas.parts.filter((p) => (s.isolate ? selection.has(p.id) : visible.has(p.system) || selection.has(p.id)));
@@ -533,7 +566,7 @@ export class ThreeAtlasViewer {
         }
 
         // Animation continue du battement cardiaque
-        if (this._ready && this._heartMeshes.length > 0) {
+        if (!this.isKidneyMode && this._ready && this._heartMeshes.length > 0) {
             const selection = new Set(s.selected);
             const isCardiacSysVis = s.visible.includes('cardiac');
 
@@ -622,11 +655,11 @@ export class ThreeAtlasViewer {
             }
         }
 
-        this.controls.autoRotate = s.rotate && !s.isolate && this._amount < 0.4;
+        this.controls.autoRotate = !this.isKidneyMode && s.rotate && !s.isolate && this._amount < 0.4;
         if (this.controls.autoRotate) this._dirty = true;
         else this.controls.update();
-        if (this.ground) this.ground.visible = this._amount < 0.5 && !s.isolate;
-        // Rendu on-demand : on ne rend que si dirty (caméra, explosion, sélection)
+        if (this.ground) this.ground.visible = !this.isKidneyMode && this._amount < 0.5 && !s.isolate;
+        // Rendu on-demand : on ne rend que si dirty (caméra, explosion, sélection, battement)
         if (this._dirty && !this._disposed) {
             this.renderer.render(this.scene, this.camera);
             this._dirty = false;
@@ -683,6 +716,77 @@ export class ThreeAtlasViewer {
         this._dirty = true;
     }
 
+    // ==========================================
+    // MÉTHODES DU REIN DÉTAILLÉ (HuBMAP v1.2)
+    // ==========================================
+
+    /**
+     * Attache la hiérarchie 3D du rein à la scène.
+     * @param {THREE.Group} group
+     * @param {THREE.Box3} bounds
+     * @param {THREE.Vector3} center
+     */
+    attachKidneyScene(group, bounds, center) {
+        if (!this._kidneyGroup) return;
+        while (this._kidneyGroup.children.length > 0) {
+            this._kidneyGroup.remove(this._kidneyGroup.children[0]);
+        }
+        this._kidneyGroup.add(group);
+        this._kidneyBounds = bounds;
+        this._kidneyCenter = center;
+        this._kidneyGroup.visible = this.isKidneyMode;
+        if (this.isKidneyMode) {
+            this.focusKidney();
+        }
+        this._dirty = true;
+    }
+
+    /**
+     * Bascule le mode Rein isolé.
+     * @param {boolean} active
+     */
+    setKidneyMode(active = true) {
+        this.isKidneyMode = Boolean(active);
+        if (this._kidneyGroup) {
+            this._kidneyGroup.visible = this.isKidneyMode;
+        }
+        if (this.isKidneyMode) {
+            if (this._batches) {
+                this._batches.forEach((b) => { b.visible = false; });
+            }
+            if (this._heartMeshes) {
+                this._heartMeshes.forEach((hm) => { hm.mesh.visible = false; });
+            }
+            if (this.ground) {
+                this.ground.visible = false;
+            }
+            this.focusKidney();
+        } else {
+            if (this._batches) {
+                this._batches.forEach((b) => { b.visible = true; });
+            }
+            if (this.ground) {
+                this.ground.visible = this._amount < 0.5 && !this.state.isolate;
+            }
+            this.resetView();
+        }
+        this._dirty = true;
+    }
+
+    /**
+     * Cadre la caméra sur le rein en vue rapprochée optimale.
+     */
+    focusKidney() {
+        if (!this.controls || this._disposed) return;
+        const target = this._kidneyCenter || new THREE.Vector3(0, 0.85, 0);
+        const dist = 0.52;
+        const dir = new THREE.Vector3(0.18, 0.12, 0.95).normalize();
+        this.controls.target.copy(target);
+        this.camera.position.copy(target).addScaledVector(dir, dist);
+        this.controls.update();
+        this._dirty = true;
+    }
+
     /** Libération complète : cancel RAF, controls, géométries, matériaux, textures, renderer. */
     dispose() {
         this._disposed = true;
@@ -697,6 +801,13 @@ export class ThreeAtlasViewer {
                 hm.mat?.dispose?.();
             });
             this._heartMeshes = [];
+        }
+        if (this._kidneyGroup) {
+            this.scene?.remove(this._kidneyGroup);
+            while (this._kidneyGroup.children.length > 0) {
+                const child = this._kidneyGroup.children[0];
+                this._kidneyGroup.remove(child);
+            }
         }
         try {
             this.scene?.traverse((o) => {
