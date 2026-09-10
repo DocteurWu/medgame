@@ -1,0 +1,1948 @@
+{
+  "entries": {
+    "syn-aca-infarct": {
+      "name": "Infarctus de l'artère cérébrale antérieure",
+      "presentation": "Déficit moteur et sensitif à prédominance crurale controlatérale, face presque épargnée, avec troubles frontaux (aboulie, apathie, grasping), incontinence urinaire par atteinte du lobule paracentral et, si bilatéral, mutisme akinétique. Aphasie motrice transcorticale transitoire si hémisphère dominant.",
+      "deficits": [
+        "Déficit moteur de type central du membre inférieur controlatéral, face épargnée, signe de Babinski",
+        "Trouble sensitif cortical du membre inférieur",
+        "Aboulie, apathie, persévérations, grasping (syndrome frontal)",
+        "Incontinence urinaire par atteinte de l'aire mictionnelle paracentrale"
+      ],
+      "etiologies": [
+        "Vasospasme après rupture d'anévrisme de la communicante antérieure",
+        "Embolie d'origine cardiaque",
+        "Dissection ou athérosclérose de l'artère cérébrale antérieure",
+        "Engagement sous-falciforme comprimant l'artère contre la faux"
+      ]
+    },
+    "syn-accessory-palsy": {
+      "name": "Paralysie du nerf spinal accessoire (XI)",
+      "presentation": "Après chirurgie cervicale (curage, biopsie ganglionnaire du triangle postérieur) : scapula basse et décollée, difficulté à lever le bras au-dessus de l'horizontale, amyotrophie du trapèze supérieur et faiblesse de l'élévation de l'épaule. La rotation contrariée de la tête est conservée (branche du sterno-cléido-mastoïdien née plus haut).",
+      "deficits": [
+        "Amyotrophie du trapèze supérieur, épaule tombante",
+        "Scapula alata latérale majorée à l'abduction",
+        "Faiblesse de l'élévation du moignon de l'épaule",
+        "Rotation de la tête conservée"
+      ],
+      "etiologies": [
+        "Biopsie ganglionnaire ou curage cervical",
+        "Endartériectomie carotidienne, chirurgie cervicale",
+        "Traumatisme direct ou étirement",
+        "Tumeur du foramen jugulaire",
+        "Radiothérapie"
+      ]
+    },
+    "syn-adie-tonic-pupil": {
+      "name": "Pupille tonique d'Adie",
+      "presentation": "Sujet jeune, le plus souvent femme : anisocorie avec mydriase unilatérale réagissant lentement et faiblement à la lumière, constriction tonique prolongée en vision de près puis mydriase de ré-illumination lente. Accommodation gênée en vision de près, réflexes ostéo-tendineux abolis (syndrome de Holmes-Adie). Ni ptosis, ni diplopie, ni céphalée.",
+      "deficits": [
+        "Mydriase unilatérale aréactive à la lumière, constriction tonique de près",
+        "Mydriase de ré-illumination lente",
+        "Trouble de l'accommodation de près",
+        "Aréflexie ostéo-tendineuse diffuse"
+      ],
+      "etiologies": [
+        "Idiopathique (femme jeune)",
+        "Ganglionite virale",
+        "Traumatisme ou chirurgie orbitaire",
+        "Neuropathie dysautonomique (diabète, amylose, Sjögren)",
+        "Neuropathie paranéoplasique"
+      ]
+    },
+    "syn-aica-lateral-pontine": {
+      "name": "Syndrome pontique latéral (infarctus du territoire de l'AICA)",
+      "presentation": "Début brutal : grand vertige rotatoire avec vomissements, surdité unilatérale, paralysie faciale périphérique homolatérale et hémisyndrome cérébelleux homolatéral, associés à une anesthésie thermo-algique de l'hémiface homolatérale et de l'hémicorps controlatéral, parfois syndrome de Claude Bernard-Horner. Pas de déficit moteur : c'est un Wallenberg remonté d'un étage, avec les nerfs VII et VIII.",
+      "deficits": [
+        "Vertige rotatoire, vomissements, nystagmus",
+        "Surdité de perception unilatérale",
+        "Paralysie faciale périphérique homolatérale",
+        "Hémisyndrome cérébelleux homolatéral",
+        "Anesthésie thermo-algique faciale homolatérale et corporelle controlatérale"
+      ],
+      "etiologies": [
+        "Athérosclérose du tronc basilaire occluant l'origine de l'AICA",
+        "Embolie d'origine cardiaque",
+        "Dissection vertébro-basilaire"
+      ]
+    },
+    "syn-alexia-without-agraphia": {
+      "name": "Alexie sans agraphie",
+      "presentation": "Le patient écrit une phrase sous dictée puis, une minute plus tard, est incapable de la relire, alors qu'il épelle à voix haute, comprend le langage oral et copie les lettres trait par trait. S'y associent une hémianopsie latérale homonyme droite et souvent une anomie des couleurs, après infarctus de l'artère cérébrale postérieure gauche incluant le splénium du corps calleux.",
+      "deficits": [
+        "Alexie avec écriture conservée",
+        "Hémianopsie latérale homonyme droite",
+        "Anomie des couleurs",
+        "Compréhension orale et épellation conservées"
+      ],
+      "etiologies": [
+        "Infarctus de l'artère cérébrale postérieure gauche",
+        "Hémorragie ou tumeur du splénium",
+        "Atrophie corticale postérieure"
+      ]
+    },
+    "syn-als-pattern": {
+      "name": "Sclérose latérale amyotrophique (maladie de Charcot)",
+      "presentation": "Adulte après 50 ans : faiblesse et amyotrophie d'évolution ascendante débutant à une main, avec fasciculations, puis extension aux autres membres et à la sphère bulbaire (dysarthrie, dysphagie, rire et pleurer spasmodiques). Réflexes vifs sur muscles amyotrophiés, signe de Babinski, sans trouble sensitif ni sphinctérien, oculomotricité respectée jusqu'au bout.",
+      "deficits": [
+        "Déficit moteur et amyotrophie avec fasciculations (atteinte spinale)",
+        "Hyperréflexie, signe de Babinski, jaw jerk exagéré (atteinte centrale)",
+        "Atteinte bulbaire : dysarthrie, dysphagie, abolition du voile",
+        "Ni trouble sensitif, ni trouble sphinctérien, ni ophtalmoplégie"
+      ],
+      "etiologies": [
+        "SLA sporadique",
+        "SLA familiale (C9orf72, SOD1)",
+        "Variantes : amyotrophie spinale progressive (spinale pure), sclérose latérale primitive (centrale pure)"
+      ]
+    },
+    "syn-anosmia": {
+      "name": "Anosmie et localisation olfactive",
+      "presentation": "Perte de l'odorat avec aliments fades, à tester narine par narine avec des odeurs familières non irritantes : après traumatisme crânien postérieur (cisaillement des filets olfactifs), ou anosmie unilatérale inaperçue avec œdème papillaire controlatéral (syndrome de Foster-Kennedy du méningiome de la gouttière olfactive). L'ammoniaque, perçue par le trijumeau, reste détectée et démasque une plainte fonctionnelle.",
+      "deficits": [
+        "Anosmie uni- ou bilatérale aux odeurs non irritantes",
+        "Perception trigéminale (ammoniaque) conservée",
+        "Trouble du goût secondaire (flaveur)",
+        "Signes associés : œdème papillaire, syndrome frontal"
+      ],
+      "etiologies": [
+        "Infection virale respiratoire haute (dont Covid-19)",
+        "Rhinosinusite chronique et polypose",
+        "Traumatisme crânien",
+        "Méningiome de la gouttière olfactive",
+        "Maladies de Parkinson et d'Alzheimer (signe précoce)",
+        "Syndrome de Kallmann (avec hypogonadisme)",
+        "Tabac, toxiques, vieillissement"
+      ]
+    },
+    "syn-anterior-choroidal-infarct": {
+      "name": "Infarctus de l'artère choroïdienne antérieure",
+      "presentation": "Triade motrice, sensitive et visuelle controlatérale (hémiparésie facio-brachio-crurale, hémianesthésie, hémianopsie latérale homonyme) sans aucun signe cortical : ni aphasie, ni négligence, vigilance conservée. Certains tableaux sont lacunaires purs (moteur pur, sensitivo-moteur) ; le champ visuel peut n'être amputé que d'un secteur avec respect d'un coin horizontal.",
+      "deficits": [
+        "Hémiparésie controlatérale facio-brachio-crurale",
+        "Hémianesthésie controlatérale",
+        "Hémianopsie latérale homonyme (parfois sectorielle)",
+        "Aucun signe cortical, vigilance normale"
+      ],
+      "etiologies": [
+        "Microangiopathie (lipohyalinose)",
+        "Embolie carotidienne athéromateuse",
+        "Clippage ou embolisation d'anévrisme de voisinage",
+        "Embolie d'origine cardiaque"
+      ]
+    },
+    "syn-anterior-cord": {
+      "name": "Syndrome de l'artère spinale antérieure (syndrome cordonal antérieur)",
+      "presentation": "Paraplégie flasque puis spastique d'installation brutale (post-chirurgie aortique, dissection aortique avec rachialgies), avec anesthésie thermo-algique bilatérale sous-lésionnelle, rétention urinaire, mais conservation de la sensibilité proprioceptive et vibratoire (cordons postérieurs épargnés). Phase initiale de choc spinal aréflexique.",
+      "deficits": [
+        "Paraplégie bilatérale, d'abord flasque puis spastique",
+        "Anesthésie thermo-algique sous-lésionnelle bilatérale",
+        "Troubles sphinctériens (rétention urinaire)",
+        "Sensibilité profonde (proprioception, pallesthésie) conservée"
+      ],
+      "etiologies": [
+        "Dissection aortique, clampe ou prothèse aortique",
+        "Hypotension profonde",
+        "Occlusion athéromateuse ou embolique d'une artère radiculaire",
+        "Embolie fibrocartilagineuse",
+        "Dissection vertébrale (formes cervicales)",
+        "Hernie discale ou fracture-tassement comprimant la moelle antérieure"
+      ]
+    },
+    "syn-anton": {
+      "name": "Syndrome d'Anton (cécité corticale avec anosognosie)",
+      "presentation": "Après infarctus bi-occipitaux (embolie du tronc basilaire, arrêt cardiaque), le patient se cogne aux meubles et décrit des objets imaginaires tout en affirmant qu'il voit, incriminant la lumière ou ses lunettes. Pupilles et fonds d'œil normaux, pas de clignement à la menace : les fabulations trahissent l'anosognosie de la cécité.",
+      "deficits": [
+        "Cécité bilatérale sans clignement à la menace",
+        "Anosognosie avec fabulations visuelles",
+        "Réflexes photomoteurs et fonds d'œil normaux"
+      ],
+      "etiologies": [
+        "Embolie du sommet du tronc basilaire avec occlusion bilatérale des ACP",
+        "Hypoperfusion après arrêt cardiaque",
+        "Encéphalopathie postérieure réversible",
+        "Traumatisme bi-occipital"
+      ]
+    },
+    "syn-aphasia-broca": {
+      "name": "Aphasie de Broca (expressive, non fluente)",
+      "presentation": "Discours non fluent, laborieux, réduit à quelques mots informatifs sans grammaire (« aller… hôpital… femme »), répétition aussi altérée que l'expression, compréhension conversationnelle conservée (hormis les phrases grammaticalement complexes), écriture aussi touchée que l'oral. S'y associent classiquement une parésie facio-brachiale droite et une conscience frustrée du trouble.",
+      "deficits": [
+        "Expression non fluente, agrammatique, manque du mot",
+        "Répétition altérée",
+        "Compréhension conservée",
+        "Parésie facio-brachiale droite fréquente"
+      ],
+      "etiologies": [
+        "Infarctus de la division supérieure de l'ACM gauche",
+        "Hémorragie frontale gauche",
+        "Tumeur ou abcès de l'opercule frontal gauche",
+        "Aphasie progressive primaire (variante agrammatique)"
+      ]
+    },
+    "syn-aphasia-conduction-global": {
+      "name": "Aphasies de conduction et globale",
+      "presentation": "Aphasie de conduction : discours fluent émaillé de paraphasies phonémiques autocorrigées, compréhension conservée, mais répétition impossible même des phrases courtes — signe pathognomonique. Aphasie globale : après volumineux infarctus sylvien gauche, réduction à quelques stéréotypies, compréhension quasi nulle, répétition impossible, dense hémiplégie droite avec hémianopsie.",
+      "deficits": [
+        "Conduction : répétition impossible, compréhension conservée, conduit d'approche",
+        "Globale : expression réduite aux stéréotypies, compréhension abolie",
+        "Globale : hémiplégie droite dense avec hémianopsie"
+      ],
+      "etiologies": [
+        "Embolie d'une branche sylvienne gauche (conduction)",
+        "Occlusion du tronc de l'ACM gauche (globale)",
+        "Hémorragie périsylvienne gauche"
+      ]
+    },
+    "syn-aphasia-wernicke": {
+      "name": "Aphasie de Wernicke (réceptive, fluente)",
+      "presentation": "Discours fluent, bien articulé mais vide, jargonophasique avec paraphasies et néologismes ; le patient ne suit pas les consignes, ne répète pas et n'a pas conscience du trouble, parfois irrité de n'être pas compris — piège diagnostique (confusion, psychose). Force normale ; chercher une quadranopsie supérieure droite associée.",
+      "deficits": [
+        "Discours fluent, paraphasique, logorrhée vide",
+        "Compréhension orale altérée, répétition impossible",
+        "Anosognosie du trouble du langage",
+        "Quadranopsie supérieure droite possible"
+      ],
+      "etiologies": [
+        "Infarctus embolique de la division inférieure de l'ACM gauche",
+        "Hémorragie temporale gauche",
+        "Encéphalite herpétique",
+        "Tumeur temporale",
+        "Aphasie progressive primaire (variantes logopénique, sémantique)"
+      ]
+    },
+    "syn-argyll-robertson": {
+      "name": "Pupilles d'Argyll Robertson",
+      "presentation": "Pupilles petites, irrégulières, aréactives à la lumière même vive, mais se contractant à la convergence de près puis se redilatant lentement (dissociation lumière-convergence). Vision normale, pas de ptosis. Contexte classique de tabès (abolition des réflexes achilléens, douleurs fulgurantes, ataxie sensitive) : signe tardif de neurosyphilis imposant les sérologies.",
+      "deficits": [
+        "Myosis irrégulier bilatéral aréactif à la lumière",
+        "Constriction conservée en vision de près (dissociation lumière-convergence)",
+        "Signes de tabès associés : aréflexie, douleurs fulgurantes, ataxie"
+      ],
+      "etiologies": [
+        "Neurosyphilis (tabès, paralysie générale)",
+        "Neuropathie dysautonomique diabétique (pseudo-Argyll Robertson)",
+        "Lésion médio-mésencéphalique dorsale",
+        "Alcoolisme chronique, sarcoïdose, Lyme (rare)"
+      ]
+    },
+    "syn-axillary-neuropathy": {
+      "name": "Paralysie du nerf axillaire (circonflexe)",
+      "presentation": "Après luxation antérieure de l'épaule ou fracture du col chirurgical de l'humérus : impossibilité d'abduction au-delà des premiers degrés (supra-épineux intact), effacement du galbe deltoïdien avec amyotrophie, hypoesthésie en pastille de la face externe du moignon de l'épaule. Rotation externe discrètement faible (teres minor). Compression sur dossier de chaise ou béquille : même tableau.",
+      "deficits": [
+        "Déficit de l'abduction (deltoïde), contour de l'épaule effacé",
+        "Hypoesthésie du moignon de l'épaule (nerf cutané latéral supérieur)",
+        "Faiblesse modérée de la rotation externe"
+      ],
+      "etiologies": [
+        "Luxation antérieure de l'épaule",
+        "Fracture du col chirurgical de l'humérus",
+        "Chirurgie de l'épaule, injection intramusculaire",
+        "Compression (béquille, sommeil)",
+        "Syndrome de l'espace quadrilatère (sportif)",
+        "Amyotrophie névralgique"
+      ]
+    },
+    "syn-balint": {
+      "name": "Syndrome de Balint",
+      "presentation": "Le patient lit les lettres mais pas le mot (simultagnosie), ne décrit qu'un objet d'une scène, ne peut saisir une tasse qu'il voit (ataxie optique) ni déplacer volontairement le regard vers une cible alors que les mouvements oculaires aléatoires sont libres (apraxie oculomotrice). Acuité conservée, parfois amputation quadranopique inférieure. Classique des infarctus frontières bilatéraux hypotensifs ou de l'atrophie corticale postérieure.",
+      "deficits": [
+        "Simultagnosie",
+        "Ataxie optique",
+        "Apraxie oculomotrice (paralysie psychique du regard)",
+        "Déficits quadranopiques inférieurs possibles"
+      ],
+      "etiologies": [
+        "Infarctus frontières bilatéraux après hypotension",
+        "Atrophie corticale postérieure (maladie d'Alzheimer)",
+        "Encéphalopathie postérieure réversible",
+        "Embolies frontières ACP-ACM bilatérales"
+      ]
+    },
+    "syn-basilar-occlusion": {
+      "name": "Occlusion du tronc basilaire",
+      "presentation": "Prodromes vertigineux, diplopie, dysarthrie, faiblesses à bascule sur des heures ou jours, puis tétraparésie, troubles de conscience, myosis punctiforme réactif, abolition de l'oculomotricité horizontale, paralysie faciale et bobbing oculaire. Le patient peut rester pleinement conscient, ne bougeant que les yeux verticalement : locked-in syndrome.",
+      "deficits": [
+        "Tétraparésie avec Babinski bilatéraux",
+        "Myosis punctiforme réactif, bobbing oculaire",
+        "Ophtalmoplégie horizontale bilatérale",
+        "Troubles de conscience ou locked-in syndrome"
+      ],
+      "etiologies": [
+        "Thrombose sur athérosclérose vertébro-basilaire",
+        "Embolie d'origine cardiaque",
+        "Dissection vertébrale"
+      ]
+    },
+    "syn-benedikt": {
+      "name": "Syndrome de Benedikt (tegmentum mésencéphalique avec noyau rouge)",
+      "presentation": "Paralysie du III homolatérale associée à un tremblement controlatéral grossier présent au repos, majoré en posture et s'exacerbant en action, avec ataxie, mouvements choréo-athétosiques et parfois discrète parésie. Cette association paralysie oculomotrice-mouvements anormaux croisés signe une lésion du tegmentum mésencéphalique incluant le noyau rouge.",
+      "deficits": [
+        "Paralysie du nerf oculomoteur homolatérale",
+        "Tremblement rubrique controlatéral (repos, posture, action)",
+        "Ataxie et choréo-athétose controlatérales"
+      ],
+      "etiologies": [
+        "Infarctus d'une perforante de l'artère cérébrale postérieure",
+        "Hémorragie mésencéphalique",
+        "Cavernome",
+        "Tumeur"
+      ]
+    },
+    "syn-bppv": {
+      "name": "Vertige paroxystique positionnel bénin (VPPB)",
+      "presentation": "Au lever, en se retournant dans le lit ou en regardant en l'air : grand vertige rotatoire de moins d'une minute, sans surdité ni vertige à l'immobilité. La manœuvre de Dix-Hallpike côté atteint reproduit après quelques secondes de latence vertige et nystagmus torsionnel géotrope s'épuisant et s'inversant au redressement.",
+      "deficits": [
+        "Vertige rotatoire bref déclenché par les changements de position",
+        "Nystagmus positionnel torsionnel avec latence, épuisable",
+        "Examen normal entre les crises, pas de surdité"
+      ],
+      "etiologies": [
+        "Dégénérescence otolithique idiopathique (âge)",
+        "Traumatisme crânien",
+        "Séquelle de névrite vestibulaire ou d'alitement prolongé",
+        "Maladie de Ménière (forme secondaire)"
+      ]
+    },
+    "syn-brown-sequard": {
+      "name": "Syndrome de Brown-Séquard (hémi-section médullaire)",
+      "presentation": "Après plaie par arme blanche, hernie discale latérale ou tumeur : parésie spastique homolatérale sous-lésionnelle avec abolition du sens vibratoire et proprioceptif du même côté, et anesthésie thermo-algique controlatérale débutant deux étages sous la lésion. À l'étage lésionnel : bande étroite d'anesthésie complète et parésie flasque homolatérales.",
+      "deficits": [
+        "Syndrome pyramidal homolatéral sous-lésionnel",
+        "Atteinte cordonale postérieure homolatérale",
+        "Anesthésie thermo-algique controlatérale à début suspendu",
+        "Niveau lésionnel : anesthésie en bande et atteinte radiculaire homolatérales"
+      ],
+      "etiologies": [
+        "Traumatisme pénétrant",
+        "Hernie discale cervicale latérale ou cervicarthrose",
+        "Tumeur extramédullaire (méningiome, schwannome)",
+        "Sclérose en plaques (forme partielle)",
+        "Myélopathie radique, infarctus hémi-médullaire"
+      ]
+    },
+    "syn-bulbar-vs-pseudobulbar": {
+      "name": "Paralysies bulbaire et pseudo-bulbaire",
+      "presentation": "Deux patients ne déglutissent ni n'articulent : le premier a une langue flasque, amyotrophiée, fasciculante, voix nasonnée, nauséeux et massétérin abolis — paralysie bulbaire (atteinte des noyaux du bulbe). Le second a une langue petite, spastique, non protusible, parole lente étranglée, nauséeux et massétérin exagérés, rire et pleurer spasmodiques sans émotion — paralysie pseudo-bulbaire (atteinte bilatérale du faisceau cortico-bulbaire).",
+      "deficits": [
+        "Bulbaire : langue amyotrophiée fasciculante, réflexes abolis",
+        "Pseudo-bulbaire : langue spastique, réflexes exagérés",
+        "Pseudo-bulbaire : rire et pleurer spasmodiques",
+        "Dysphagie, dysarthrie et voix nasonnée dans les deux"
+      ],
+      "etiologies": [
+        "Maladie du motoneurone (les deux)",
+        "Accidents vasculaires bilatéraux (pseudo-bulbaire)",
+        "Sclérose en plaques (pseudo-bulbaire)",
+        "Tumeur du tronc, syringobulbie, Guillain-Barré, myasthénie, polio (bulbaire)"
+      ]
+    },
+    "syn-callosal-disconnection": {
+      "name": "Syndrome de déconnexion calleuse",
+      "presentation": "Après callosotomie, infarctus ou tumeur du corps calleux, chez un droitier : objets nommés dans la main droite mais pas dans la gauche, impossibilité d'écrire de la main gauche ou de copier un dessin de la droite, main gauche défaisant ce que fait la droite (main capricieuse), alexie de l'hémichamp gauche. Au quotidien, déficits subtils révélés seulement en testant chaque hémisphère séparément.",
+      "deficits": [
+        "Anomie tactile gauche, apraxie constructive",
+        "Agraphie de la main gauche, main étrangère",
+        "Alexie de l'hémichamp visuel gauche"
+      ],
+      "etiologies": [
+        "Callosotomie pour épilepsie",
+        "Infarctus de l'artère péricalleuse",
+        "Glioblastome ou lymphome du corps calleux",
+        "Maladie de Marchiafava-Bignami",
+        "Sclérose en plaques",
+        "Agénésie calleuse (le plus souvent compensée)"
+      ]
+    },
+    "syn-carpal-tunnel": {
+      "name": "Syndrome du canal carpien",
+      "presentation": "Femme d'âge moyen : acroparesthésies nocturnes des trois premiers doigts réveillant et soulagées en secouant la main, maladresse diurne, respect du cinquième doigt et de la paume (branche cutanée palmaire née en amont). Formes évoluées : amyotrophie thénarienne et déficit de l'abduction du pouce. Tinel et Phalen positifs.",
+      "deficits": [
+        "Paresthésies des doigts I-II-III et moitié radiale du IV, paume épargnée",
+        "Amyotrophie thénarienne, déficit de l'abduction du pouce",
+        "Signes de Tinel et de Phalen positifs"
+      ],
+      "etiologies": [
+        "Idiopathique (souvent bilatéral, femme d'âge moyen)",
+        "Grossesse, hypothyroïdie, diabète, acromégalie, polyarthrite rhumatoïde",
+        "Gestes répétitifs du poignet",
+        "Amylose, dialyse",
+        "Fracture du poignet"
+      ]
+    },
+    "syn-cavernous-sinus-thrombosis": {
+      "name": "Thrombophlébite septique du sinus caverneux",
+      "presentation": "Après furoncle de la lèvre supérieure ou sinusite : fièvre élevée, céphalée intense, œil rouge tuméfié exophtalme avec ptosis, rapidement ophtalmoplégie complète, anesthésie frontale, stase veineuse rétinienne puis atteinte de l'œil controlatéral par passage de la ligne médiane. Sans traitement : méningite, AVC carotidien, décès en quelques jours ; traitée tôt (antibiotiques, anticoagulation), le plus souvent curable.",
+      "deficits": [
+        "Exophtalmie inflammatoire unilatérale puis bilatérale",
+        "Ophtalmoplégie complète, ptosis, mydriase",
+        "Anesthésie du territoire ophtalmique (V1)",
+        "Fièvre, stase veineuse rétinienne, signes méningés"
+      ],
+      "etiologies": [
+        "Furoncle ou cellulite du triangle dangereux de la face",
+        "Sinusite sphénoïdale ou ethmoïdale",
+        "Infection dentaire",
+        "Cellulite orbitaire",
+        "Otite et mastoïdite (via les sinus pétreux)",
+        "Sinusite fongique invasive (diabétique, immunodéprimé)"
+      ]
+    },
+    "syn-cavernous-sinus": {
+      "name": "Syndrome du sinus caverneux",
+      "presentation": "Œil douloureux, rouge, tuméfié, ptosé et fixé dans toutes les directions, avec anesthésie fronto-malaire homolatérale et parfois myosis. Un diabétique fébrile avec escarre nasale noire est une urgence chirurgicale (mucormycose) ; un adénome hypophysaire donne le même tableau lentement ; un jeune traumatisé avec œil pulsatile et souffle : fistule carotido-caverneuse.",
+      "deficits": [
+        "Ophtalmoplégie douloureuse uni- puis bilatéralisable (III, IV, VI)",
+        "Anesthésie V1-V2 homolatérale, abolition du réflexe cornéen",
+        "Exophtalmie, chémosis, ptosis, myosis ou mydriase"
+      ],
+      "etiologies": [
+        "Thrombose septique (face, sinus, dent)",
+        "Sinusite fongique invasive (mucormycose) chez le diabétique et l'immunodéprimé",
+        "Adénome hypophysaire, apoplexie, méningiome, carcinome du cavum, métastase",
+        "Fistule carotido-caverneuse post-traumatique ou par rupture anévrismale",
+        "Inflammation granulomateuse idiopathique (Tolosa-Hunt)"
+      ]
+    },
+    "syn-central-cord-syringomyelia": {
+      "name": "Syndrome centromédullaire et syringomyélie",
+      "presentation": "Adulte jeune : brûlures et coupures indolores des doigts, puis faiblesse et amyotrophie des mains ; anesthésie thermo-algique suspendue « en cape » (épaules, bras, haut du thorax) avec tact fin, pallesthésie et proprioception conservés au même niveau, aréflexie des membres supérieurs, puis paraparésie spastique. Chez le sujet âgé, traumatisme cervical en hyperextension : version aiguë, bras bien plus touchés que les jambes.",
+      "deficits": [
+        "Anesthésie thermo-algique suspendue en cape, sensibilité profonde conservée (dissociation syringomyélique)",
+        "Amyotrophie et aréflexie des membres supérieurs",
+        "Paraparésie spastique d'évolution tardive"
+      ],
+      "etiologies": [
+        "Malformation de Chiari I avec syringomyélie",
+        "Syrinx post-traumatique ou post-inflammatoire",
+        "Tumeur intramédullaire",
+        "Traumatisme en hyperextension sur rachis cervicarthrosique (forme aiguë)"
+      ]
+    },
+    "syn-central-transtentorial-herniation": {
+      "name": "Engagement transtentoriel central (descendant)",
+      "presentation": "Œdème cérébral diffus ou masse médiane : troubles de conscience d'aggravation rostro-caudale sans mydriase initiale — somnolence à petites pupilles réactives, soupirs et bâillements, flexion à la douleur ; puis rythme de Cheyne-Stokes, pupilles moyennes fixes, abolition des réflexes oculo-céphaliques, extension ; enfin polypnée puis respiration irrégulière, mydriase, hypotonie. La succession des stades signe la marche rostro-caudale.",
+      "deficits": [
+        "Troubles de conscience progressifs sans mydriase unilatérale initiale",
+        "Décortication puis décérébration",
+        "Cheyne-Stokes puis respiration irrégulière, pupilles moyennes fixes"
+      ],
+      "etiologies": [
+        "Œdème cérébral diffus (traumatisme, anoxie, insuffisance hépatique, hyponatrémie)",
+        "Masse bilatérale ou médiane",
+        "Hydrocéphalie",
+        "Volumineuse masse hémisphérique à un stade tardif"
+      ]
+    },
+    "syn-central-vs-peripheral-vertigo": {
+      "name": "Vertige central versus périphérique",
+      "presentation": "Vertige aigu avec vomissements et nystagmus : labyrinthe ou tronc cérébral ? Trois tests de lit valent mieux qu'un scanner précoce (HINTS) : épreuve d'impulsion céphalique, direction du nystagmus dans le regard latéral, recherche d'une déviation oblique (skew). Atteinte périphérique : impulsion anormale, nystagmus unidirectionnel, pas de skew ; un seul élément inverse (impulsion normale, nystagmus changeant de direction, skew) = central.",
+      "deficits": [
+        "Périphérique : HIT anormal, nystagmus unidirectionnel, pas de skew",
+        "Central : HIT normal, nystagmus multidirectionnel ou skew présents",
+        "Signes d'accompagnement centraux : dysarthrie, ataxie, diplopie"
+      ],
+      "etiologies": [
+        "Périphériques : névrite vestibulaire, VPPB, Ménière, labyrinthite",
+        "Centrales : infarctus cérébelleux ou bulbaires latéral, dissection vertébro-basilaire, SEP, hémorragie cérébelleuse, migraine vestibulaire"
+      ]
+    },
+    "syn-cerebellar-hemispheric": {
+      "name": "Syndrome cérébelleux hémisphérique",
+      "presentation": "Maladresse homolatérale du membre supérieur et du membre inférieur : dysmétrie avec tremblement d'action, adiadococinésie, talon-genou chutant, rebond du membre supérieur tendu relâché, parole scandée, nystagmus plus marqué du côté atteint, marche déviant de ce côté. Force, sensibilité normales, réflexes pendulaires.",
+      "deficits": [
+        "Dysmétrie, tremblement intentionnel, adiadococinésie homolatéraux",
+        "Parole scandée, nystagmus unilatéral",
+        "Marche pseudo-ébrieuse déviée du côté atteint",
+        "Hypotonie, réflexes pendulaires"
+      ],
+      "etiologies": [
+        "Infarctus ou hémorragie cérébelleuse",
+        "Métastase ou tumeur primitive",
+        "Abcès",
+        "Sclérose en plaques"
+      ]
+    },
+    "syn-cerebellar-vermian-midline": {
+      "name": "Syndrome vermien (médian)",
+      "presentation": "Ataxie statique et de la marche au premier plan (élargissement du polygone, chutes multidirectionnelles, titubation de la tête et du tronc assis) alors que doigt-nez et talon-genou couché sont presque normaux. Enfant : tumeur médiane avec céphalées matinales, vomissements, démarche ébrieuse ; adulte alcoolique : ataxie de marche d'installation progressive, membres supérieurs longtemps épargnés.",
+      "deficits": [
+        "Ataxie du tronc et de la marche, station impossible",
+        "Épreuves cinétiques des membres presque normales",
+        "Titubation, danse du tronc en position assise"
+      ],
+      "etiologies": [
+        "Médulloblastome ou épendymome chez l'enfant",
+        "Dégénérescence cérébelleuse alcoolique",
+        "Dégénérescence paranéoplasique",
+        "Infarctus ou hémorragie du vermis",
+        "Intoxication à la phénytoïne"
+      ]
+    },
+    "syn-cerebellopontine-angle": {
+      "name": "Syndrome de l'angle ponto-cérébelleux",
+      "presentation": "Surdité de perception unilatérale progressive avec acouphènes, puis troubles de l'équilibre (plus qu'un vrai vertige), hypoesthésie de l'hémiface avec abolition du réflexe cornéen, puis paralysie faciale, hémisyndrome cérébelleux homolatéral et, pour les grosses tumeurs, hypertension intracrânienne. La séquence VIII, V, VII puis cervelet raconte une masse à croissance lente.",
+      "deficits": [
+        "Surdité de perception unilatérale, acouphène",
+        "Hypoesthésie faciale homolatérale, réflexe cornéen aboli",
+        "Paralysie faciale périphérique tardive",
+        "Hémisyndrome cérébelleux homolatéral"
+      ],
+      "etiologies": [
+        "Schwannome vestibulaire (neurinome de l'acoustique)",
+        "Méningiome",
+        "Kyste épidermoïde",
+        "Métastase ou lymphome",
+        "Neurofibromatose de type 2 (bilatéral)"
+      ]
+    },
+    "syn-cerebral-venous-sinus-thrombosis": {
+      "name": "Thrombose veineuse cérébrale",
+      "presentation": "Femme en post-partum ou sous œstroprogestatifs : céphalée d'installation progressive majorée en décubitus, puis crise focale et déficit crural, œdème papillaire. Le scanner montre une lésion hémorragique ne respectant aucun territoire artériel près du vertex ; l'angioscanner veineux objective le défect endoluminal du sinus sagittal supérieur. Thrombose profonde : tuméfaction bithalamique et coma ; sinus caverneux : ophtalmoplégie douloureuse avec exophtalmie.",
+      "deficits": [
+        "Céphalées, hypertension intracrânienne, œdème papillaire",
+        "Crises focales, déficit sans systématisation artérielle",
+        "Forme profonde : coma bithalamique ; sinus caverneux : exophtalmie douloureuse"
+      ],
+      "etiologies": [
+        "Grossesse et post-partum, contraception œstroprogestative",
+        "Thrombophilie (facteur V Leiden, antiphospholipides)",
+        "Déshydratation, cancer, maladie inflammatoire intestinale",
+        "Infection locale (otite, mastoïdite, sinusite)",
+        "Traumatisme, ponction lombaire"
+      ]
+    },
+    "syn-cervical-spondylotic-myelopathy": {
+      "name": "Myélopathie cervicarthrosique",
+      "presentation": "Sujet âgé : mains malhabiles (boutons, écriture), marche raide et instable remarquée par l'entourage. Amyotrophie des intrinsèques de la main avec réflexe aboli ou inversé à un étage cervical, vivacité sous-lésionnelle avec clonus, Babinski, Hoffmann, baisse pallesthésique des pieds ; raideur cervicale douloureuse inconstante.",
+      "deficits": [
+        "Niveau lésionnel : amyotrophie, aréflexie ou réflexe inversé",
+        "Syndrome pyramidal sous-lésionnel : vivacité, clonus, Babinski, Hoffmann",
+        "Atteinte cordonale postérieure des membres inférieurs",
+        "Marche spastique, mains malhabiles"
+      ],
+      "etiologies": [
+        "Cervicarthrose dégénérative",
+        "Ossification du ligament longitudinal postérieur",
+        "Canal cervical étroit constitutionnel",
+        "Luxation atloïdo-axoïdienne rhumatoïde",
+        "Hernie discale"
+      ]
+    },
+    "syn-chiari-tonsillar-ectopia": {
+      "name": "Malformation de Chiari I et ectopie tonsillaire",
+      "presentation": "Adulte jeune : céphalées occipitales déclenchées par la toux, l'effort ou le rire, durant secondes à minutes ; puis anesthésie thermique des mains avec brûlures indolores (syrinx en cape associé). Possibles nystagmus battant vers le bas, paralysie des derniers nerfs crâniens, ataxie, paraparésie spastique. Bien des cas sont de découverte IRM fortuite.",
+      "deficits": [
+        "Céphalées occipitales de Valsalva",
+        "Anesthésie thermo-algique en cape (syrinx associé)",
+        "Nystagmus downbeat, atteinte des IX-X-XI, ataxie"
+      ],
+      "etiologies": [
+        "Petite fosse postérieure congénitale",
+        "Hypotension intracrânienne (descente acquise réversible)",
+        "Hypertension intracrânienne par masse (acquise, urgence)",
+        "Dérivation lombopéritonéale"
+      ]
+    },
+    "syn-chiasmal-bitemporal": {
+      "name": "Syndrome chiasmatique (hémianopsie bitemporale)",
+      "presentation": "Le patient se cogne aux embrasures et a cessé de conduire (véhicules surgissant des deux côtés) mais lit normalement : amputation des deux hémichamps temporaux respectant le méridien vertical, à prédominance quadranopique supérieure. Signes endocriniens associés (aménorrhée, galactorrhée, acromégalie, insuffisance antéhypophysaire). Céphalée brutale avec effondrement visuel et ophtalmoplégie = apoplexie hypophysaire.",
+      "deficits": [
+        "Hémianopsie bitemporale respectant le méridien vertical",
+        "Acuité centrale longtemps conservée",
+        "Syndrome endocrinien antéhypophysaire associé"
+      ],
+      "etiologies": [
+        "Adénome hypophysaire",
+        "Craniopharyngiome",
+        "Méningiome suprasellaire",
+        "Anévrisme carotidien ou de la communicante antérieure",
+        "Gliome du chiasma (neurofibromatose de type 1)",
+        "Névrite chiasmatique, sarcoïdose"
+      ]
+    },
+    "syn-claude": {
+      "name": "Syndrome de Claude (tegmentum mésencéphalique dorsal)",
+      "presentation": "Paralysie du III homolatérale avec syndrome cérébelleux controlatéral (dysmétrie, tremblement intentionnel du membre supérieur et du membre inférieur), sans faiblesse. L'association paralysie oculomotrice-hémisyndrome cérébelleux croisé localise au tegmentum mésencéphalique, où les fibres du III croisent la décussation du pédoncule cérébelleux supérieur et le noyau rouge.",
+      "deficits": [
+        "Paralysie du III homolatérale",
+        "Hémisyndrome cérébelleux controlatéral sans déficit moteur"
+      ],
+      "etiologies": [
+        "Infarctus d'une perforante de l'artère cérébrale postérieure ou du tronc basilaire",
+        "Hémorragie ou cavernome mésencéphalique",
+        "Démyélinisation"
+      ]
+    },
+    "syn-cn3-palsy": {
+      "name": "Paralysie du nerf oculomoteur (III) : à pupille atteinte ou épargnée",
+      "presentation": "Ptosis ; paupière relevée : œil en bas et en dehors, diplopie, impossibilité de regarder en haut, en bas et en dedans. Deux versions : pupille dilatée aréactive avec céphalée sévère = anévrisme jusqu'à preuve du contraire (urgence) ; chez un diabétique ou hypertendu avec douleur périorbitaire, pupille normale et récupération en quelques semaines = ischémie microvasculaire.",
+      "deficits": [
+        "Ptosis, œil en bas et en dehors, diplopie",
+        "Atteinte pupillaire : mydriase aréactive (compression anévrismale)",
+        "Pupille épargnée : ischémie microvasculaire"
+      ],
+      "etiologies": [
+        "Anévrisme de la communicante postérieure (pupille atteinte)",
+        "Ischémie microvasculaire diabétique ou hypertensive (pupille épargnée)",
+        "Engagement temporal",
+        "Lésion du sinus caverneux",
+        "Infarctus ou tumeur mésencéphalique",
+        "Artérite à cellules géantes chez le sujet âgé"
+      ]
+    },
+    "syn-cn4-palsy": {
+      "name": "Paralysie du nerf trochléaire (IV)",
+      "presentation": "Après traumatisme crânien même mineur, ou sans antécédent : diplopie verticale maximale en lecture et dans les escaliers, torticolis compensateur (tête penchée du côté opposé). L'œil atteint est discretement hypertrope, l'hypertropie augmentant en adduction et à l'inclinaison céphalique homolatérale (Bielschowsky). De vieilles photos montrent parfois un torticolis ancien (forme congénitale décompensée).",
+      "deficits": [
+        "Diplopie verticale, torticolis controlatéral",
+        "Hypertropie majorée en adduction et au head-tilt homolatéral",
+        "Gêne en lecture et à la descente des escaliers"
+      ],
+      "etiologies": [
+        "Traumatisme crânien fermé (souvent bilatéral)",
+        "Forme congénitale décompensée à l'âge adulte",
+        "Ischémie microvasculaire (diabète, hypertension)",
+        "Lésion médio-mésencéphalique dorsale",
+        "Atteinte du sinus caverneux"
+      ]
+    },
+    "syn-cn6-palsy": {
+      "name": "Paralysie du nerf abducens (VI) et sa valeur de fausse localisation",
+      "presentation": "Diplopie horizontale homonyme maximale en version latérale homolatérale et au loin, torticolis du même côté, œil ne franchissant pas la ligne médiane en abduction. Chez un diabétique : ischémie microvasculaire régressive ; avec céphalées et œdème papillaire : hypertension intracrânienne dont la tumeur est loin de la protubérance — le VI est le nerf de la fausse localisation.",
+      "deficits": [
+        "Déficit isolé de l'abduction, diplopie horizontale",
+        "Torticolis homolatéral compensateur",
+        "Signes d'hypertension intracrânienne à rechercher (œdème papillaire)"
+      ],
+      "etiologies": [
+        "Ischémie microvasculaire (diabète, hypertension)",
+        "Hypertension intracrânienne de toute cause",
+        "Traumatisme",
+        "Tumeur du clivus, carcinome du cavum, sinus caverneux",
+        "Pétrosite (Gradenigo)",
+        "Sclérose en plaques (sujet jeune)"
+      ]
+    },
+    "syn-complete-transection-spinal-shock": {
+      "name": "Section médullaire complète et choc spinal",
+      "presentation": "Après chute ou accident : plus aucun mouvement ni sensation sous le niveau lésionnel. Phase de choc spinal (jours à semaines) : membres flasques, aréflexie sous-lésionnelle, globe vésical indolore, iléus, hypotension à bradycardie et peau chaude si cervical. Puis retour exagéré des réflexes : spasticité, spasmes en flexion, miction réflexe impérieuse.",
+      "deficits": [
+        "Niveau sensitivo-moteur complet",
+        "Phase initiale : flaccidité, aréflexie, globe, iléus, choc neurogénique",
+        "Phase secondaire : spasticité, hyperréflexie, automatisme vésical"
+      ],
+      "etiologies": [
+        "Fracture-luxation vertébrale",
+        "Plaie pénétrante",
+        "Compression épidurale métastatique",
+        "Abcès ou hématome épidural",
+        "Myélite transverse",
+        "Infarctus médullaire"
+      ]
+    },
+    "syn-conus-vs-cauda-equina": {
+      "name": "Syndrome du cône terminal versus queue de cheval",
+      "presentation": "Volumineuse hernie discale lombaire médiane : lombosciatalgies, hypoesthésie en selle, parésie des membres inférieurs, rétention urinaire. Queue de cheval : douleurs vives asymétriques, déficit flasque asymétrique à aréflexie achilléenne, vessie tardive ; cône : début brutal, anesthésie en selle et troubles sphinctériens précoces et symétriques, douleurs modestes, rotuliens parfois vifs. Les deux sont des urgences chirurgicales.",
+      "deficits": [
+        "Anesthésie en selle, troubles sphinctériens",
+        "Queue de cheval : tableau radiculaire flasque asymétrique douloureux",
+        "Cône : tableau symétrique précoce, douleurs modestes"
+      ],
+      "etiologies": [
+        "Hernie discale lombaire médiane volumineuse",
+        "Canal lombaire étroit, traumatisme, abcès ou hématome épidural",
+        "Métastase ou tumeur primitive (queue : schwannome, épendymome myxopapillaire ; cône : épendymome, métastase)",
+        "Spondylarthrite ankylosante, arachnoïdite",
+        "Infarctus du cône"
+      ]
+    },
+    "syn-cubital-tunnel": {
+      "name": "Neuropathie ulnaire au coude (tunnel cubital)",
+      "presentation": "Appui prolongé sur le coude ou séquelle de fracture : hypoesthésie du cinquième doigt et de la moitié ulnaire de l'annulaire sur les deux faces, faiblesse de l'écartement des doigts, amyotrophie du premier interosseux dorsal, griffe des deux derniers doigts, signe de Froment au pincement. La percussion rétro-épicondylienne irradie au cinquième doigt (Tinel).",
+      "deficits": [
+        "Hypoesthésie du V et de la moitié ulnaire du IV (faces palmaire et dorsale)",
+        "Amyotrophie interosseuse, griffe ulnaire, Froment positif",
+        "Tinel rétro-épicondylien"
+      ],
+      "etiologies": [
+        "Appui ou flexion prolongée du coude (habitude, profession, périopératoire)",
+        "Séquelle de fracture du coude (paralysie ulnaire tardive)",
+        "Arthrose, kyste synovial",
+        "Nerf ulnaire instable"
+      ]
+    },
+    "syn-dejerine-medial-medullary": {
+      "name": "Syndrome bulbaire médian (Dejerine)",
+      "presentation": "Hémiplégie controlatérale épargnant la face, avec perte de la sensibilité proprioceptive et vibratoire du même côté faible, et langue déviant du côté opposé à l'hémiplégie à la protraction (paralysie homolatérale du XII). Sensibilité thermo-algique normale. Cette hémiplégie à langue croisée est un syndrome alterne classique.",
+      "deficits": [
+        "Hémiplégie controlatérale épargnant la face",
+        "Atteinte lemniscale homolatérale à l'hémiplégie (proprioception, pallesthésie)",
+        "Paralysie linguale homolatérale à la lésion (XII)"
+      ],
+      "etiologies": [
+        "Athérosclérose vertébrale intéressant les branches paramédianes",
+        "Occlusion de l'artère spinale antérieure",
+        "Dissection vertébrale"
+      ]
+    },
+    "syn-epidural-hematoma": {
+      "name": "Hématome extradural",
+      "presentation": "Jeune traumatisé : perte de connaissance brève, intervalle libre avec reprise du contact, puis céphalée croissante, vomissements, somnolence, mydriase homolatérale aréactive et hémiparésie controlatérale. Fracture temporale croisant le sillon de l'artère méningée moyenne et lentille biconvexe hyperdense refoulant le cerveau : tableau neurochirurgical d'urgence.",
+      "deficits": [
+        "Intervalle libre puis troubles de conscience",
+        "Mydriase homolatérale, hémiparésie controlatérale",
+        "Lentille biconvexe au scanner"
+      ],
+      "etiologies": [
+        "Fracture temporale déchirant l'artère méningée moyenne",
+        "Déchirure d'un sinus veineux dural (fosse postérieure, vertex)",
+        "Anticoagulation avec traumatisme mineur"
+      ]
+    },
+    "syn-erb-duchenne": {
+      "name": "Paralysie du plexus brachial supérieur (Erb-Duchenne, C5-C6)",
+      "presentation": "Après dystocie des épaules ou traumatisme en traction (moto, épaule abaissée et tête opposée) : bras pendant le long du corps en rotation interne, coude étendu, avant-bras en pronation, poignet et doigts fléchis (« main du serveur »), préhension conservée. Hypoesthésie du moignon et de la face externe de l'avant-bras, bicipital et stylo-radial abolis.",
+      "deficits": [
+        "Attitude en « main du serveur » (C5-C6)",
+        "Déficit de l'abduction, rotation externe, flexion du coude, supination",
+        "Hypoesthésie deltoïdienne et radiale externe, aréflexie bicipitale"
+      ],
+      "etiologies": [
+        "Dystocie obstétricale des épaules",
+        "Traumatisme en traction (moto)",
+        "Paralysie du porteur de sac (rucksack)",
+        "Plexite radique du tronc supérieur",
+        "Névrite brachiale"
+      ]
+    },
+    "syn-facial-palsy-peripheral-vs-central": {
+      "name": "Paralysie faciale : périphérique (Bell) versus centrale",
+      "presentation": "Face tombante unilatérale au réveil : si le front est lisse et l'œil ne se ferme pas, avec trouble du goût et hyperacousie, tout le nerf a lâché depuis son noyau — Bell. Si le front se ride et l'œil se ferme alors que la bouche chute, avec parésie du membre supérieur homolatéral — AVC controlatéral. Le front tranche.",
+      "deficits": [
+        "Périphérique : tout l'hémiface dont le frontal, signe de Charles Bell",
+        "Centrale : moitié inférieure seule, frontal épargné",
+        "Signes associés : goût et hyperacousie (périphérique), parésie du membre (centrale)"
+      ],
+      "etiologies": [
+        "Paralysie de Bell (idiopathique, présumée herpétique)",
+        "Zona (Ramsay Hunt)",
+        "Lyme (bilatérale en zone d'endémie)",
+        "AVC (centrale)",
+        "Tumeur parotidienne, fracture du rocher",
+        "Sarcoïdose, Guillain-Barré (bilatérales)"
+      ]
+    },
+    "syn-femoral-neuropathy": {
+      "name": "Neuropathie fémorale (crurale)",
+      "presentation": "Après chirurgie en position gynécologique ou hématome rétropéritonéal sous anticoagulants : impossibilité d'extension du genou (dérobement dans les escaliers), amyotrophie quadricipitale, rotulien aboli, hypoesthésie de la face antérieure de la cuisse et interne de la jambe jusqu'à la cheville. Adduction de hanche normale, ce qui sépare des racines L3-L4 et du plexus lombaire.",
+      "deficits": [
+        "Déficit du quadriceps, rotulien aboli",
+        "Hypoesthésie crurale antérieure et saphène interne",
+        "Adduction conservée"
+      ],
+      "etiologies": [
+        "Hématome rétropéritonéal ou du psoas-iliaque",
+        "Position gynécologique, chirurgie de hanche ou pelvienne",
+        "Radiculoplexopathie diabétique",
+        "Tumeur ou abcès pelvien",
+        "Cathétérisme fémoral"
+      ]
+    },
+    "syn-foville": {
+      "name": "Syndrome de Foville (protubérance dorsale caudale)",
+      "presentation": "Impossibilité de porter les deux yeux du côté de la lésion (paralysie oculogyre, non surmontée par la manœuvre oculo-céphalique), paralysie faciale périphérique homolatérale complète et hémiparésie controlatérale, parfois hémianesthésie controlatérale. À la différence d'une paralysie du VI, les deux yeux échouent vers la lésion.",
+      "deficits": [
+        "Paralysie de la latéralité homolatérale (les deux yeux)",
+        "Paralysie faciale périphérique homolatérale",
+        "Hémiparésie controlatérale"
+      ],
+      "etiologies": [
+        "Infarctus paramédian protubérantiel",
+        "Hémorragie protubérantielle",
+        "Sclérose en plaques",
+        "Gliome pontique"
+      ]
+    },
+    "syn-gerstmann": {
+      "name": "Syndrome de Gerstmann",
+      "presentation": "Chez un droitier : acalculie, agraphie, agnosie digitale, indistinction droite-gauche sur soi et sur l'examinateur, langage fluent et compréhension conservés, parfois alexie et apraxie constructive. La tétrade signe le gyrus angulaire dominant.",
+      "deficits": [
+        "Acalculie, agraphie, agnosie des doigts, confusion droite-gauche",
+        "Langage oral et compréhension conservés"
+      ],
+      "etiologies": [
+        "Infarctus de la branche angulaire de l'ACM gauche",
+        "Tumeur pariétale gauche",
+        "Atrophie corticale postérieure"
+      ]
+    },
+    "syn-guillain-barre": {
+      "name": "Syndrome de Guillain-Barré",
+      "presentation": "Deux semaines après une gastro-entérite, paresthésies des extrémités puis faiblesse ascendante des jambes vers les bras et la face, aréflexie, troubles sensitifs modestes, dysautonomie (oscillations tensionnelles et cardiaques), diparésie faciale fréquente. La capacité vitale se surveille toutes les quelques heures : risque d'atteinte respiratoire. L'hyperprotéinorachie sans cellules confirme.",
+      "deficits": [
+        "Déficit moteur ascendant symétrique avec aréflexie",
+        "Dipalésie faciale fréquente",
+        "Dysautonomie, troubles respiratoires",
+        "Dissociation albuminocytologique du LCS"
+      ],
+      "etiologies": [
+        "Post-infectieux (Campylobacter, CMV, EBV, Mycoplasma, Zika)",
+        "Post-vaccinal (rare)",
+        "Post-chirurgical",
+        "Idiopathique"
+      ]
+    },
+    "syn-hearing-loss": {
+      "name": "Surdité de transmission versus de perception",
+      "presentation": "Surdité unilatérale : le diapason sur le front est mieux entendu du côté atteint si le problème est conductif (conduit, tympan, osselets), du côté sain si cochlée ou nerf (Weber) ; mastoïde puis conduit : conduction osseuse > aérienne en surdité de transmission, l'inverse en perception (Rinne). Toute surdité de perception unilatérale impose une IRM ; toute surdité de transmission, un otoscope.",
+      "deficits": [
+        "Weber latéralisé (atteint : transmission ; sain : perception)",
+        "Rinne : osseuse > aérienne (transmission), aérienne > osseuse (perception)",
+        "Acouphène et recrutement selon l'étiologie"
+      ],
+      "etiologies": [
+        "Transmission : bouchon de cérumen, otite séromuqueuse, perforation, otospongiose, cholestéatome",
+        "Perception : presbyacousie, bruit, ototoxiques, Ménière, surdité brusque, schwannome, infarctus AICA, méningite"
+      ]
+    },
+    "syn-hemiballismus": {
+      "name": "Hémibalisme",
+      "presentation": "Sujet âgé hypertendu ou diabétique déséquilibré : mouvements amples, violents, incontrôlables d'hémicorps à prédominance proximale (lancer), permanents à l'éveil, épuisants et traumatisants, cessant dans le sommeil. Force, sensibilité et cognition normales. Le ballisme s'atténue en quelques semaines vers une chorée puis disparaît.",
+      "deficits": [
+        "Mouvements de lancer proximaux unilatéraux, amples et incessants à l'éveil",
+        "Arrêt dans le sommeil, examen par ailleurs normal"
+      ],
+      "etiologies": [
+        "Infarctus lacunaire du noyau sous-thalamique",
+        "Petit hématome hypertensif",
+        "Hyperglycémie sans cétose",
+        "Infarctus striatal ou thalamique",
+        "Tumeur, démyélinisation, toxoplasmose VIH (uni- ou bilatéral)"
+      ]
+    },
+    "syn-hemineglect": {
+      "name": "Héminégligence spatiale unilatérale",
+      "presentation": "Après AVC hémisphérique droit : le patient ignore la moitié gauche de l'espace (assiette à moitié mangée, visage rasé à moitié, lignes bissectées à droite, horloge aux chiffres tassés à droite), nie l'hémiplégie et l'appartenance du bras gauche (anosognosie, asomatognosie), n'éteint que la stimulation droite en double stimulation. Tête et yeux déviés à droite.",
+      "deficits": [
+        "Négligence visuo-spatiale gauche (bissections, barrage, horloge)",
+        "Anosognosie, asomatognosie, extinction sensitive gauche",
+        "Déviation conjuguée tête-yeux vers la droite"
+      ],
+      "etiologies": [
+        "Infarctus sylvien droit (tronc ou division inférieure)",
+        "Hémorragie pariétale droite",
+        "Infarctus frontal ou thalamique droit (formes frustes)",
+        "Tumeur pariétale droite"
+      ]
+    },
+    "syn-homonymous-hemianopia": {
+      "name": "Hémianopsie latérale homonyme et ses variantes",
+      "presentation": "Le patient ne voit plus d'un côté, ne lit qu'une demi-ligne, se cogne : amputation du même hémichamp des deux yeux à la confrontation. La congruence, le caractère quadranopique ou hémianopique, l'épargne maculaire et un déficit pupillaire afférent relatif disent ensemble où siège la lésion sur la voie rétrochiasmatique.",
+      "deficits": [
+        "Amputation homonyme congruente ou non d'un hémichamp",
+        "Quadranopsie (radiations) ou hémianopsie avec épargne maculaire (pôle occipital)",
+        "Déficit pupillaire afférent si bandelette optique"
+      ],
+      "etiologies": [
+        "Infarctus de l'artère cérébrale postérieure",
+        "Infarctus sylvien touchant les radiations",
+        "Hémorragie intracérébrale",
+        "Tumeur",
+        "Lobectomie temporale (quadranopsie supérieure)",
+        "Démyélinisation"
+      ]
+    },
+    "syn-horizontal-gaze-palsy-pontine": {
+      "name": "Paralysie pontique de la latéralité",
+      "presentation": "Après AVC pontique : impossibilité de porter les deux yeux du côté de la lésion, yeux déviant au repos du côté opposé, vers l'hémiparésie éventuelle. C'est l'inverse du schéma hémisphérique (yeux vers la lésion, fuyant les membres faibles). Distinguer les deux, c'est distinguer au lit un AVC pontique d'un AVC hémisphérique.",
+      "deficits": [
+        "Paralysie bilatérale du regard vers la lésion",
+        "Déviation de repos vers l'hémiparésie (fuit la lésion)"
+      ],
+      "etiologies": [
+        "Infarctus paramédian protubérantiel",
+        "Hémorragie protubérantielle",
+        "Sclérose en plaques",
+        "Gliome pontique"
+      ]
+    },
+    "syn-horner": {
+      "name": "Syndrome de Claude Bernard-Horner",
+      "presentation": "Myosis avec anisocorie majorée dans l'obscurité, ptosis de 1-2 mm avec discrète ascension de la paupière inférieure (faux énophtalmie), anhidrose faciale homolatérale. Selon la cause : cervicalgies (dissection carotidienne), dysphonie, amyotrophie de la main (Pancoast), syndrome alterne bulbaires ; chez l'enfant, iris plus clair du côté atteint = lésion congénitale.",
+      "deficits": [
+        "Myosis, anisocorie majorée à l'obscurité",
+        "Ptosis partiel, énophtalmie apparente",
+        "Anhidrose faciale homolatérale"
+      ],
+      "etiologies": [
+        "Dissection carotidienne interne",
+        "Infarctus bulbaire latéral",
+        "Tumeur de l'apex pulmonaire",
+        "Traumatisme ou chirurgie du cou",
+        "Lésion du sinus caverneux",
+        "Algie vasculaire (transitoire)",
+        "Congénital et traumatisme obstétrical"
+      ]
+    },
+    "syn-huntington-chorea": {
+      "name": "Maladie de Huntington et chorées",
+      "presentation": "Vers 40 ans, contexte familial psychiatrique : irritabilité, dépression, puis maladresse et impatiences devenant des mouvements choréiques continus des membres, du tronc et de la face, marche festinante et instable, regard saccadé ne tenant pas la fixation, déclin du jugement et de la mémoire. Langue non tenue protruse, poigne « trayant » l'examinateur ; tardivement rigidité et dystonie remplacent la chorée.",
+      "deficits": [
+        "Chorée généralisée, impatiences motrices, dysarthrie choréique",
+        "Troubles oculomoteurs (saccades), marche dansante",
+        "Syndrome frontal et démence sous-corticale"
+      ],
+      "etiologies": [
+        "Maladie de Huntington (expansion CAG autosomique dominante)",
+        "Phénocopies (C9orf72, HDL2), neuroacanthocytose, ataxies spinocérébelleuses",
+        "Chorée de Sydenham, lupus et antiphospholipides",
+        "Médicaments (lévodopa, neuroleptiques, anticonvulsivants, œstroprogestatifs)",
+        "Thyréotoxicose, polyglobulie, hyperglycémie, chorée gravidique",
+        "AVC striatal ou sous-thalamique (hémichorée)"
+      ]
+    },
+    "syn-hydrocephalus": {
+      "name": "Hydrocéphalie : obstructive versus communicante",
+      "presentation": "Enfant : macrocéphalie, fontanelle bombée, regard en coucher de soleil ; adulte : céphalée matinale réveillant, vomissements, baisse visuelle par œdème papillaire, diplopie par paralysie du VI. Scanner : troisième et latéraux dilatés avec V4 normal = bloc de l'aqueduc ; quatre ventricules dilatés = bloc extra-ventriculaire (citernes, granulations) après méningite ou hémorragie méningée.",
+      "deficits": [
+        "Syndrome d'hypertension intracrânienne (céphalées, vomissements, œdème papillaire)",
+        "Paralysie du VI (fausse localisation)",
+        "Macrocéphalie et regard en coucher de soleil chez l'enfant"
+      ],
+      "etiologies": [
+        "Sténose de l'aqueduc (congénitale, tumeur tectale)",
+        "Tumeur de la fosse postérieure, Chiari",
+        "Kyste colloïde du V3",
+        "Hémorragie méningée, méningite, carcinose (communicante)",
+        "Hémorragie intraventriculaire du prématuré"
+      ]
+    },
+    "syn-hypoglossal-palsy": {
+      "name": "Paralysie du nerf hypoglosse (XII)",
+      "presentation": "Langue déviant du côté atteint à la protraction, avec amyotrophie et fasciculations de l'hémi-langue ; discrète lourdeur des linguales et gêne pour malaxer les aliments. Chez un jeune avec cervicalgie et Horner : dissection carotidienne comprimant le nerf ; chez un sujet âgé : tumeur de la base ; bilatérale avec massétérin vif : maladie du motoneurone.",
+      "deficits": [
+        "Déviation linguale vers la lésion, amyotrophie et fasciculations",
+        "Dysarthrie linguale modérée"
+      ],
+      "etiologies": [
+        "Dissection carotidienne interne",
+        "Tumeur ou métastase de la base du crâne",
+        "Endartériectomie ou chirurgie cervicale",
+        "Infarctus bulbaire médian",
+        "Maladie du motoneurone (bilatérale)",
+        "Radiothérapie cervicale"
+      ]
+    },
+    "syn-hypothalamic-syndromes": {
+      "name": "Syndromes hypothalamiques",
+      "presentation": "Enfant avec tumeur suprasellaire : arrêt de croissance, diabète insipide avec polyuro-polydipsie, troubles du sommeil et de l'appétit (cachexie ou obésité boulimique). Adulte : thermorégulation instable sans infection, hypotension orthostatique, adipsie, apathie ou colère explosive. S'y associent déficit quadranopique bitemporal (chiasma voisin) et insuffisance hypophysaire.",
+      "deficits": [
+        "Diabète insipide central, troubles de la soif",
+        "Dysrégulation thermique, dysautonomie",
+        "Obésité ou cachexie hypothalamique, troubles du sommeil",
+        "Puberté précoce ou retard pubertaire (hamartome, tumeur)"
+      ],
+      "etiologies": [
+        "Craniopharyngiome",
+        "Gliome hypothalamique ou des voies optiques (NF1)",
+        "Tumeur germinale",
+        "Sarcoïdose, histiocytose langerhansienne, hypophysite",
+        "Séquelle chirurgicale, radique, méningée ou traumatique",
+        "Encéphalopathie de Gayet-Wernicke",
+        "Hamartome hypothalamique (crises gélastiques, puberté précoce)"
+      ]
+    },
+    "syn-idiopathic-intracranial-hypertension": {
+      "name": "Hypertension intracrânienne idiopathique",
+      "presentation": "Femme jeune en surpoids : céphalées quotidiennes matinales majorées à l'effort et en décubitus, acouphène pulsatile, éclipses visuelles à l'orthostatisme, diplopie horizontale. Œdème papillaire bilatéral, tache aveugle élargie, paralysie du VI isolée, examen par ailleurs normal, IRM sans masse à petits ventricules, pression d'ouverture lombaire à 35 cm d'eau à LCS normal.",
+      "deficits": [
+        "Œdème papillaire bilatéral, éclipses, élargissement de la tache aveugle",
+        "Paralysie du VI uni- ou bilatérale",
+        "Céphalées et acouphène pulsatile, examen normal par ailleurs"
+      ],
+      "etiologies": [
+        "Idiopathique, associée à l'obésité et à une prise de poids récente",
+        "Médicaments : cyclines, rétinoïdes, hormone de croissance, sevrage corticoïde",
+        "Secondaires à exclure : thrombose veineuse, apnées, anémie, endocrinopathie"
+      ]
+    },
+    "syn-ino": {
+      "name": "Ophtalmoplégie internucléaire (INO)",
+      "presentation": "Jeune femme : diplopie en version latérale ; en regard à droite, l'œil gauche reste en dedans ou adducte lentement tandis que l'œil droit abducte avec nystagmus saccadé ; en regard à gauche, tout est normal. La convergence sur un crayon rapproché est conservée, prouvant que le droit médial fonctionne : la lésion est dans le faisceau longitudinal médial, pas le nerf. Chez le sujet âgé : petit AVC pontique.",
+      "deficits": [
+        "Déficit de l'adduction en version avec nystagmus de l'œil abducteur",
+        "Convergence conservée",
+        "Bilatérale : SEP du sujet jeune ; unilatérale : ischémie du sujet âgé"
+      ],
+      "etiologies": [
+        "Sclérose en plaques (jeune, souvent bilatérale)",
+        "Infarctus paramédian pontique (âgé)",
+        "Tumeur ou hémorragie du tronc",
+        "Encéphalopathie de Gayet-Wernicke"
+      ]
+    },
+    "syn-jugular-foramen-vernet": {
+      "name": "Syndrome du foramen jugulaire (Vernet, IX-X-XI)",
+      "presentation": "Enrouement, fausses routes aux liquides, épaule tombante : voile ne se relevant que d'un côté avec luette attirée du côté sain, nauséeux aboli du côté atteint, sterno-cléido-mastoïdien et trapèze amyotrophiés, agueusie du tiers postérieur de la langue. Acouphène pulsatile et masse rouge rétro-tympanique = tumeur glomique.",
+      "deficits": [
+        "Paralysie vélo-pharyngo-laryngée unilatérale (IX-X)",
+        "Déficit du XI (sterno-cléido-mastoïdien, trapèze)",
+        "Agueusie du tiers postérieur, nauséeux aboli"
+      ],
+      "etiologies": [
+        "Tumeur glomique jugulaire",
+        "Schwannome des IX, X ou XI",
+        "Méningiome",
+        "Métastase de la base ou carcinome du cavum",
+        "Thrombose jugulaire, dissection carotidienne",
+        "Fracture de la base"
+      ]
+    },
+    "syn-klumpke": {
+      "name": "Paralysie du plexus brachial inférieur (Klumpke, C8-T1)",
+      "presentation": "Après traction bras en abduction (chute rattrapée à une branche) ou accouchement bras levé : main en griffe, impossibilité d'écarter et rapprocher les doigts, amyotrophie des intrinsèques, poigne faible, épaule et coude normaux. Anesthésie du bord interne de l'avant-bras et de l'auriculaire. Ptosis-myosis homolatéral = arrachement de T1 (Horner par atteinte sympathique).",
+      "deficits": [
+        "Main cubitale : intrinsèques déficitaires, griffe",
+        "Hypoesthésie cubitale interne avant-bras et auriculaire",
+        "Horner homolatéral si arrachement T1"
+      ],
+      "etiologies": [
+        "Traumatisme en traction bras en abduction",
+        "Traumatisme obstétrical (rare, souvent plexus total)",
+        "Tumeur de Pancoast",
+        "Côte cervicale et défilé thoraco-brachial",
+        "Infiltration métastatique"
+      ]
+    },
+    "syn-kluver-bucy": {
+      "name": "Syndrome de Klüver-Bucy",
+      "presentation": "Après encéphalite herpétique, démence fronto-temporale ou lésion bitemporale : placidité paradoxale, exploration orale de tout objet, hyperphagie jusqu'aux aliments non comestibles, désinhibition sexuelle, agnosie visuelle des visages et objets familiers, hypermétamorphose tactile, le plus souvent avec amnésie sévère.",
+      "deficits": [
+        "Agnosie visuelle, hyperoralité, hyperphagie",
+        "Désinhibition sexuelle, placidité, hypermétamorphose",
+        "Amnésie antérograde fréquente"
+      ],
+      "etiologies": [
+        "Encéphalite herpétique",
+        "Démence fronto-temporale (variante sémantique) et Pick",
+        "Traumatisme, hypoxie ou chirurgie bitemporale",
+        "Encéphalite limbique paranéoplasique ou auto-immune",
+        "Maladie d'Alzheimer évoluée"
+      ]
+    },
+    "syn-lacunar-ataxic-hemiparesis": {
+      "name": "Hémiparésie ataxique (lacune)",
+      "presentation": "Discrète hémiparésie à prédominance crurale, mais incoordination homolatérale disproportionnée : talon-genou maladroit, bras dépassant la cible, marche instable du côté faible. Sensibilité et langage normaux : l'association de signes pyramidaux et cérébelleux d'un même hémicorps signe une petite lésion profonde (pont, couronne rayonnante, capsule).",
+      "deficits": [
+        "Hémiparésie légère à prédominance crurale",
+        "Ataxie homolatérale disproportionnée",
+        "Ni trouble sensitif, ni cortical"
+      ],
+      "etiologies": [
+        "Lipohyalinose hypertensive d'une perforante unique",
+        "Micro-athérome à l'origine de la perforante"
+      ]
+    },
+    "syn-lacunar-dysarthria-clumsy-hand": {
+      "name": "Dysarthrie et main malhabile (lacune)",
+      "presentation": "Voix empâtée et main devenue malhabile : écriture dégradée, gestes fins manqués, force presque normale. Parésie faciale inférieure, déviation linguale, discrète faiblesse de la main avec vivacité et maladresse, parfois Babinski ; sensibilité intacte.",
+      "deficits": [
+        "Dysarthrie, parésie faciale inférieure",
+        "Maladresse de la main avec force quasi normale",
+        "Hyperréflexie, parfois Babinski"
+      ],
+      "etiologies": [
+        "Lipohyalinose hypertensive d'une perforante unique",
+        "Micro-athérome à l'origine de la perforante"
+      ]
+    },
+    "syn-lacunar-pure-motor": {
+      "name": "Accident lacunaire moteur pur",
+      "presentation": "Hypertendu se réveillant avec faiblesse de la face, du bras et de la jambe d'un côté, touchés à peu près également, et rien d'autre : sensibilité, vision, contenu du langage et vigilance normaux (la parole peut être empâtée par la parésie faciale). Pas de céphalée, patient parfaitement alerte ; le déficit peut s'installer par à-coups en quelques heures.",
+      "deficits": [
+        "Hémiplégie facio-brachio-crurale proportionnée",
+        "Aucun signe sensitif, visuel ou cortical",
+        "Vigilance normale"
+      ],
+      "etiologies": [
+        "Lipohyalinose hypertensive d'une perforante unique",
+        "Micro-athérome à l'origine de la perforante"
+      ]
+    },
+    "syn-lacunar-pure-sensory": {
+      "name": "Accident lacunaire sensitif pur",
+      "presentation": "Engourdissements et fourmillements d'installation rapide touchant face, bras, tronc et jambe d'un côté, parfois coupant exactement la ligne médiane. Force, coordination, vision et langage intacts ; l'examen retrouve parfois étonnamment peu face à la plainte, ou au contraire une hypoesthésie franche de tout l'hémicorps.",
+      "deficits": [
+        "Hémianesthésie facio-brachio-crurale subjective ou objective",
+        "Ni déficit moteur, ni signe cortical"
+      ],
+      "etiologies": [
+        "Lipohyalinose hypertensive d'une perforante unique",
+        "Micro-athérome à l'origine de la perforante"
+      ]
+    },
+    "syn-lacunar-sensorimotor": {
+      "name": "Accident lacunaire sensitivo-moteur",
+      "presentation": "Faiblesse et engourdissement de la face, du bras et de la jambe d'un côté chez un patient alerte parlant et voyant normalement : l'image d'un gros AVC hémisphérique sans aucun signe cortical, scanner normal ou petite lésion profonde. C'est la lacune la plus souvent explorée à tort pour une cause corticale.",
+      "deficits": [
+        "Hémiparésie et hémianesthésie proportionnées",
+        "Aucun signe cortical (langage, négligence, champ visuel)"
+      ],
+      "etiologies": [
+        "Lipohyalinose hypertensive d'une perforante unique",
+        "Micro-athérome à l'origine de la perforante"
+      ]
+    },
+    "syn-lambert-eaton": {
+      "name": "Syndrome myasthénique de Lambert-Eaton",
+      "presentation": "Fumeur : faiblesse des ceintures (relevé de chaise, escaliers), myalgies, sécheresse buccale, impuissance ; faiblesse maximale après repos s'améliorant brièvement à l'effort répété (facilitation), réflexes d'abord abolis réapparaissant après contraction soutenue de dix secondes. Ptosis et diplopie discrets, déglutition le plus souvent préservée. Cancer bronchique à petites cellules retrouvé une fois sur deux, parfois des années plus tard.",
+      "deficits": [
+        "Déficit proximal avec facilitation à l'effort",
+        "Aréflexie réversible après contraction soutenue",
+        "Dysautonomie (sécheresse, impuissance), signes oculaires discrets"
+      ],
+      "etiologies": [
+        "Paranéoplasique (cancer bronchique à petites cellules)",
+        "Auto-immun non paranéoplasique (souvent thyroïdite ou diabète de type 1)"
+      ]
+    },
+    "syn-length-dependent-polyneuropathy": {
+      "name": "Polyneuropathie sensitivo-motrice longueur-dépendante",
+      "presentation": "Diabétique : engourdissements et brûlures des pieds débutant aux orteils et remontant aux chevilles en un ou deux ans, instabilité dans l'obscurité. Achilléens abolis, pallesthésie abolie aux orteils, hypoesthésie thermo-algique « en chaussettes » ; atteinte des mains quand celle des jambes atteint les genoux (« en gants »). Discrète faiblesse des extenseurs des orteils, pieds secs et glabres.",
+      "deficits": [
+        "Hypoesthésie distale symétrique en chaussettes puis en gants",
+        "Aréflexie achilléenne, apallesthésie des orteils",
+        "Déficit moteur distal tardif et modéré, troubles trophiques"
+      ],
+      "etiologies": [
+        "Diabète",
+        "Alcool et carences (B12, thiamine ; excès de B6)",
+        "Chimiothérapies (platines, taxanes, vincristine)",
+        "Insuffisance rénale chronique",
+        "Héréditaire (Charcot-Marie-Tooth)",
+        "Gammapathie, amylose, VIH, hypothyroïdie",
+        "Idiopathique du sujet âgé"
+      ]
+    },
+    "syn-locked-in": {
+      "name": "Locked-in syndrome",
+      "presentation": "Patient immobile et muet après AVC du tronc, tenu pour comateux, jusqu'à ce qu'on remarque qu'il cligne sur commande et regarde en haut et en bas : tétraplégie, mutisme et anarthrie, abolition de la latéralité du regard, mais audition, vision, sensibilité et compréhension intactes. Toujours tester les mouvements oculaires verticaux avant de conclure à l'inconscience devant des signes pontiques bilatéraux.",
+      "deficits": [
+        "Tétraplégie et anarthrie avec vigilance et compréhension conservées",
+        "Seuls persistent clignement et verticalité du regard",
+        "Abolition de la latéralité, réflexes de la mimique conservés"
+      ],
+      "etiologies": [
+        "Thrombose ou embolie du tronc basilaire",
+        "Hémorragie protubérantielle",
+        "Myélinolyse centropontine",
+        "Traumatisme ou tumeur ventrale du pont"
+      ]
+    },
+    "syn-lumbar-stenosis": {
+      "name": "Canal lombaire étroit (claudication neurogène)",
+      "presentation": "Sujet âgé : marche déclenchant douleurs, lourdeurs et fourmillements fessiers et des membres inférieurs imposant l'arrêt après quelques centaines de mètres, soulagés en minutes assis ou penché sur un caddie ; montée et vélo plus faciles que la descente. Examen de repos presque normal, pouls distaux présents. Le périmètre de marche se réduit au fil des ans.",
+      "deficits": [
+        "Claudication neurogène posture-dépendante (soulagée assis, penché en avant)",
+        "Examen de repos quasi normal",
+        "Pouls périphériques présents (diagnostic différentiel artériel)"
+      ],
+      "etiologies": [
+        "Arthrose avec hypertrophie facettaire et du ligament jaune",
+        "Spondylolisthésis dégénératif",
+        "Canal étroit constitutionnel",
+        "Lipomatose épidurale",
+        "Spondylarthrite ankylosante, Paget"
+      ]
+    },
+    "syn-lumbosacral-plexopathy": {
+      "name": "Plexopathie lombo-sacrée",
+      "presentation": "Diabétique de 60 ans : douleur vive d'une cuisse suivie en semaines d'une faiblesse et amyotrophie du quadriceps et des fléchisseurs de hanche, rotulien aboli, amaigrissement marqué, parfois bilatéralisation. En contexte néoplasique pelvien ou radique : faiblesse douloureuse ou non chevauchant territoires fémoral et sciatique — trop large pour un tronc, trop inhomogène pour la moelle.",
+      "deficits": [
+        "Déficit pluri-tronculaire du membre inférieur (fémoral + sciatique)",
+        "Amyotrophie, aréflexie rotulienne, douleurs (formes inflammatoires)",
+        "Amaigrissement (amyotrophie diabétique)"
+      ],
+      "etiologies": [
+        "Radiculoplexopathie diabétique (amyotrophie de Garland)",
+        "Cancer pelvien (col, prostate, colorectal, lymphome, sarcome)",
+        "Plexite radique",
+        "Hématome rétropéritonéal ou du psoas (anticoagulants), abcès",
+        "Fracture ou chirurgie pelvienne, compression obstétricale",
+        "Plexite inflammatoire idiopathique"
+      ]
+    },
+    "syn-mca-inferior-division": {
+      "name": "Infarctus de la division inférieure de l'artère cérébrale moyenne",
+      "presentation": "Patient amené parlant fluemment mais incohérent, sans conscience du trouble, parfois tenu pour confus ou psychotique : quadranopsie supérieure ou hémianopsie, et à l'hémisphère dominant troubles de la compréhension et de la répétition avec discours paraphasique ; à l'hémisphère mineur, négligence, apraxie constructive et aprosodie. Faiblesse absente ou minime : l'AVC passe facilement inaperçu.",
+      "deficits": [
+        "Aphasie de Wernicke (dominant) ou négligence et aprosodie (mineur)",
+        "Quadranopsie supérieure ou hémianopsie controlatérale",
+        "Pas de déficit moteur notable"
+      ],
+      "etiologies": [
+        "Embolie d'origine cardiaque",
+        "Embolie athéromateuse carotidienne"
+      ]
+    },
+    "syn-mca-stem-infarct": {
+      "name": "Infarctus sylvien total (tronc de l’artère cérébrale moyenne)",
+      "presentation": "Hémiplégie massive proportionnelle controlatérale à prédominance brachio-faciale, associée à une hémianesthésie controlatérale et une hémianopsie latérale homonyme (HLH). Déviation conjuguée de la tête et des yeux vers la lésion (le patient 'regarde sa lésion'). Si atteinte de l'hémisphère dominant (gauche) : aphasie globale (motrice et sensorielle). Si hémisphère mineur (droit) : syndrome d'héminégligence majeure avec anosognosie et asomatognosie.",
+      "deficits": [
+        "Hémiplégie massive controlatérale à prédominance brachio-faciale",
+        "Hémianesthésie controlatérale",
+        "Hémianopsie latérale homonyme",
+        "Déviation oculo-céphalique vers la lésion",
+        "Aphasie globale (hémisphère dominant) ou héminégligence avec anosognosie (hémisphère mineur)",
+        "Œdème malin avec risque d'engagement (J2-J3)"
+      ],
+      "etiologies": [
+        "Embolie d'origine cardiaque (fibrillation atriale)",
+        "Athérosclérose carotidienne interne avec embolie artério-artérielle",
+        "Dissection carotidienne (sujet jeune)",
+        "Athérosclérose intracrânienne"
+      ]
+    },
+    "syn-mca-superior-division": {
+      "name": "Infarctus de la division supérieure de l'artère cérébrale moyenne",
+      "presentation": "Faiblesse et engourdissement de la face et du bras d'installation brutale, jambe relativement épargnée, yeux tournés vers l'infarctus le premier jour. À l'hémisphère dominant : compréhension conservée mais expression laborieuse et télégraphique, répétition altérée, souvent apraxie de la main non paralysée. Pas d'hémianopsie : hémiparésie brachio-faciale avec aphasie de Broca.",
+      "deficits": [
+        "Hémiparésie brachio-faciale épargnant relativement la jambe",
+        "Aphasie de Broca (hémisphère dominant)",
+        "Déviation oculo-céphalique vers la lésion, transitoire"
+      ],
+      "etiologies": [
+        "Embolie d'origine cardiaque",
+        "Embolie artério-artérielle sur plaque carotidienne",
+        "Micro-emboles post-procédures cardiaques"
+      ]
+    },
+    "syn-meniere": {
+      "name": "Maladie de Ménière",
+      "presentation": "Adulte d'âge moyen : crises de grand vertige rotatoire de vingt minutes à plusieurs heures, précédées de plénitude d'une oreille, acouphène grave et surdité fluctuante, avec vomissements. Entre les crises, la surdité de perception de l'oreille atteinte s'aggrave, d'abord sur les graves. Au fil des ans, le vertige s'éteint avec la destruction labyrinthique, laissant une oreille sourde et parfois des crises otolithiques de Tumarkin.",
+      "deficits": [
+        "Crises vertigineuses avec plénitude, acouphène et surdité unilatéraux",
+        "Surdité de perception fluctuante puis permanente (graves d'abord)",
+        "Examen normal entre les crises (début)"
+      ],
+      "etiologies": [
+        "Hydrops endolymphatique idiopathique",
+        "Hydrops post-traumatique ou post-infectieux",
+        "Atteinte auto-immune de l'oreille interne",
+        "Otosclérose, syphilis (formes secondaires rares)"
+      ]
+    },
+    "syn-meralgia-paresthetica": {
+      "name": "Méralgie paresthésique",
+      "presentation": "Patient en surpoids, ceinture serrée ou amaigrissement récent : brûlures, fourmillements et engourdissement d'une pastille ovale de la face antéro-externe de la cuisse, majorés debout et à la marche, soulagés assis. Ni faiblesse, ni rotulien aboli, anesthésie strictement limitée au territoire fémoro-cutané au-dessus du genou ; la pression en dedans de l'épine iliaque antéro-supérieure reproduit la gêne.",
+      "deficits": [
+        "Hypoesthésie de la face antéro-externe de la cuisse, sans déficit moteur",
+        "Douleur neuropathique debout, soulagée assis"
+      ],
+      "etiologies": [
+        "Obésité, grossesse, vêtements et ceintures serrés",
+        "Diabète",
+        "Extension prolongée de hanche, décubitus ventral",
+        "Chirurgie pelvienne, prélèvement de crête iliaque, cure de hernie",
+        "Masse rétropéritonéale (rare)"
+      ]
+    },
+    "syn-millard-gubler": {
+      "name": "Syndrome de Millard-Gubler (protubérance ventrale)",
+      "presentation": "Paralysie faciale périphérique complète unilatérale (front compris) avec hémiparésie controlatérale du bras et de la jambe ; souvent l'œil du côté facial ne peut abducter (diplopie horizontale). Sensibilité conservée ou diminuée du côté faible. Cette faiblesse faciale et des membres croisée localise à la protubérance ventrale.",
+      "deficits": [
+        "Paralysie faciale périphérique homolatérale",
+        "Hémiparésie controlatérale",
+        "Paralysie du VI homolatérale fréquente"
+      ],
+      "etiologies": [
+        "Infarctus d'une branche paramédiane protubérantielle (tronc basilaire)",
+        "Hémorragie protubérantielle",
+        "Cavernome",
+        "Gliome pontique",
+        "Plaque de sclérose en plaques"
+      ]
+    },
+    "syn-mononeuritis-multiplex": {
+      "name": "Multinévrite (mononeuritis multiplex)",
+      "presentation": "Patient avec altération de l'état général, fièvre, rash ou connectivite connue : steppage douloureux brutal, puis semaines plus tard hypoesthésie et déficit cubital de la main opposée, puis paralysie du radial. Chaque épisode est l'infarctus douloureux d'un tronc nommé, et l'accumulation asymétrique et aléatoire signe une vascularite des nerfs — urgence immunosuppressive.",
+      "deficits": [
+        "Atteintes tronculaires douloureuses successives, asymétriques et aléatoires",
+        "Stepages et déficits sensitivo-moteurs étagés",
+        "Signes systémiques (fièvre, amaigrissement, purpura)"
+      ],
+      "etiologies": [
+        "Périartérite noueuse",
+        "Vascularites à ANCA (granulomatose avec polyangéite, polyangéite microscopique, granulomatose éosinophilique)",
+        "Vascularites lupique, rhumatoïde, Sjögren ; cryoglobulinémie (hépatite C)",
+        "Vascularite non systémique du nerf",
+        "Diabète, lèpre, sarcoïdose, VIH, lymphome",
+        "Neuropathie héréditaire avec hypersensibilité à la pression (indolore)"
+      ]
+    },
+    "syn-multiple-sclerosis-pattern": {
+      "name": "Sclérose en plaques : dissémination spatiale et temporelle",
+      "presentation": "Femme de 20 ans : névrite optique douloureuse régressive il y a trois ans, paresthésies et raideur des jambes un mois l'an dernier, aujourd'hui diplopie en version latérale et ceinture de fourmillements thoraciques majorées après un bain chaud (Uhthoff). Disque optique pâle, INO, vivacité avec Babinski, apallesthésie des chevilles : des poussées séparées dans le temps et des lésions séparées dans l'espace chez un adulte jeune définissent la maladie.",
+      "deficits": [
+        "Névrite optique, INO, syndrome pyramidal, ataxie, troubles sensitifs étagés",
+        "Phénomène d'Uhthoff, signe de Lhermitte",
+        "Dissémination spatiale et temporelle"
+      ],
+      "etiologies": [
+        "Sclérose en plaques (rémittente, secondairement ou primitivement progressive)",
+        "Syndrome cliniquement isolé (première poussée)",
+        "Syndrome radiologiquement isolé"
+      ]
+    },
+    "syn-myasthenia-gravis": {
+      "name": "Myasthénie auto-immune (myasthénia gravis)",
+      "presentation": "Jeune femme ou homme après 60 ans : le soir paupières tombantes et diplopie, mastication épuisée à mi-repas, voix nasonnée et murmurante au téléphone, bras ne tenant pas au séchage des cheveux ; tout va mieux le matin. Ptosis fatigable au regard soutenu, ophtalmoplégie variable ne respectant aucun nerf, faiblesse de l'occlusion oculaire et de la flexion du cou, réflexes, sensibilité et pupilles normaux.",
+      "deficits": [
+        "Fatigabilité musculaire à l'effort répété, récupération au repos",
+        "Ptosis et diplopie variables, dysarthrie et dysphagie vespérales",
+        "Réflexes et sensibilité normaux, pupilles normales"
+      ],
+      "etiologies": [
+        "Auto-immune à anticorps anti-récepteurs de l'acétylcholine",
+        "Myasthénie à anti-MuSK",
+        "Associée au thymome",
+        "Induite (pénicillamine, immunothérapies anti-checkpoint)",
+        "Syndromes myasthéniques congénitaux"
+      ]
+    },
+    "syn-myopathy-pattern": {
+      "name": "Myopathie : le patron musculaire",
+      "presentation": "Impossibilité de se relever d'une chaise basse sans les bras, escaliers marche par marche, bras ne montant plus au shampoing, alors que boutons, écriture et marche à plat sont normaux : faiblesse symétrique proximale, muscles non amyotrophiés au début et parfois douloureux, réflexes conservés jusqu'à un stade avancé, sensibilité normale, pas de fasciculations. Urines foncées, rash des jointures et paupières, ou histoire familiale orientent.",
+      "deficits": [
+        "Déficit proximal symétrique sans amyotrophie précoce",
+        "Réflexes conservés, pas de fasciculations, sensibilité normale",
+        "Myalgies, myoglobinurie, signes cutanés ou familiaux selon la cause"
+      ],
+      "etiologies": [
+        "Inflammatoires : dermatomyosite, polymyosite, myopathie nécrosante auto-immune, myosite à inclusions",
+        "Endocriniennes et toxiques : hypothyroïdie, Cushing et corticoïdes, statines, alcool, colchicine",
+        "Dystrophies (Duchenne, Becker, ceintures, facio-scapulo-humérale, myotonique)",
+        "Métaboliques : glycogénoses, lipidoses, mitochondriopathies, paralysies périodiques",
+        "Myopathie de réanimation"
+      ]
+    },
+    "syn-neurogenic-thoracic-outlet": {
+      "name": "Syndrome du défilé thoraco-brachial neurogène",
+      "presentation": "Adulte jeune long cou : amyotrophie lentement progressive de la loge thénarienne externe, douleurs de la face interne de l'avant-bras, paresthésies des deux derniers doigts majorées bras levé. Main de Gilliatt-Sumner : court abducteur du pouce très amyotrophié, hypothénar et interosseux moins touchés, hypoesthésie cubitale interne de l'avant-bras. La radio du cou montre une côte cervicale ou une apophyse transverse de C7 allongée.",
+      "deficits": [
+        "Main de Gilliatt-Sumner (thénar externe > hypothénar)",
+        "Paresthésies cubitales majorées bras levé",
+        "Côte cervicale ou mégapophyse C7"
+      ],
+      "etiologies": [
+        "Côte cervicale avec bride fibreuse",
+        "Mégapophyse transverse de C7 avec bride",
+        "Anomalie des scalènes",
+        "Cal vicieux de fracture claviculaire"
+      ]
+    },
+    "syn-normal-pressure-hydrocephalus": {
+      "name": "Hydrocéphalie à pression normale",
+      "presentation": "Sujet âgé traînant des pieds comme collés au sol, demi-tours en plusieurs petits pas, famille décrivant des mois d'oublis et de lenteur puis une urgenturie avec souillures. Ni tremblement, ni perte du ballant des bras. Scanner : ventricules bien plus larges que les sillons ; après soustraction de 50 mL de LCS, la marche s'améliore quelques jours (tap-test).",
+      "deficits": [
+        "Troubles de la marche (apraxie, petits pas, demi-tours)",
+        "Syndrome démentiel sous-cortico-frontal",
+        "Troubles sphinctériens urinaires précoces"
+      ],
+      "etiologies": [
+        "Idiopathique (sujet âgé)",
+        "Séquelle d'hémorragie méningée",
+        "Séquelle de méningite",
+        "Traumatisme crânien"
+      ]
+    },
+    "syn-one-and-a-half": {
+      "name": "Syndrome du un-et-demi",
+      "presentation": "Dans le plan horizontal, un seul mouvement oculaire persiste : l'abduction de l'œil opposé à la lésion, avec nystagmus. Regard vers la lésion impossible des deux yeux ; en regard controlatéral, l'œil du côté lésionnel n'adducte pas. Verticalité et convergence conservées ; souvent paralysie faciale homolatérale associée.",
+      "deficits": [
+        "Paralysie de la latéralité homolatérale + INO homolatérale (un-et-demi)",
+        "Seule l'abduction controlatérale persiste, avec nystagmus",
+        "Verticalité et convergence conservées"
+      ],
+      "etiologies": [
+        "Infarctus paramédian pontique",
+        "Sclérose en plaques",
+        "Hémorragie ou tumeur protubérantielle"
+      ]
+    },
+    "syn-optic-neuritis": {
+      "name": "Névrite optique rétrobulbaire",
+      "presentation": "Jeune femme : vision floue et terne d'un œil en deux-trois jours, couleurs délavées, douleur à la mobilisation oculaire. Acuité abaissée, scotome central, déficit pupillaire afférent relatif, fond d'œil normal deux fois sur trois ou discrètement œdémateux. Récupération en semaines ; l'épisode peut inaugurer une sclérose en plaques.",
+      "deficits": [
+        "Baisse visuelle unilatérale avec dyschromatopsie et scotome central",
+        "Douleur à la mobilisation, déficit pupillaire afférent",
+        "Fond d'œil normal ou œdème papillaire modéré"
+      ],
+      "etiologies": [
+        "Sclérose en plaques et syndrome cliniquement isolé",
+        "Spectre neuromyélite optique (anti-aquaporine 4)",
+        "Maladie à anti-MOG",
+        "Infectieuses et post-infectieuses (syphilis, Lyme, virales)",
+        "Sarcoïdose"
+      ]
+    },
+    "syn-parinaud-dorsal-midbrain": {
+      "name": "Syndrome de Parinaud (mésencéphale dorsal)",
+      "presentation": "Jeune patient : diplopie et flou en regard vers le haut, céphalées. Les deux yeux ne regardent pas en haut, paupières rétractées (regard étonné, signe de Collier), pupilles larges réagissant de près mais pas à la lumière (dissociation), et au regard vers le haut les yeux convergent et se rétractent (nystagmus de convergence-rétraction). Regard vers le bas ultérieurement pris ; œdème papillaire fréquent par compression de l'aqueduc.",
+      "deficits": [
+        "Paralysie de la verticalité vers le haut, signe de Collier",
+        "Dissociation lumière-convergence",
+        "Nystagmus de convergence-rétraction"
+      ],
+      "etiologies": [
+        "Tumeur pinéale (germinome, pinéaloblastome) chez le jeune",
+        "Hydrocéphalie obstructive",
+        "Infarctus du sommet du basilaire ou hémorragie mésencéphalique chez l'âgé",
+        "Sclérose en plaques"
+      ]
+    },
+    "syn-parkinsonism": {
+      "name": "Syndrome parkinsonien",
+      "presentation": "Après 60 ans : tremblement de repos d'une main cessant en action, micrographie, visage figé et voix affaiblie. Tremblement à 4-6 Hz, rigidité à roue dentée démasquée par la synkinésie controlatérale, tapping décrémentant lent, posture voûtée, marche à petits pas sans ballant du côté atteint, rétropulsion au tirage. L'asymétrie du début et la chimiosensibilité orientent vers Parkinson idiopathique.",
+      "deficits": [
+        "Tremblement de repos, rigidité extrapyramidale, akinésie avec décrément",
+        "Troubles posturaux (camptocormie, festination, rétropulsion)",
+        "Signes non moteurs : hyposmie, constipation, troubles du sommeil paradoxal"
+      ],
+      "etiologies": [
+        "Maladie de Parkinson (corps de Lewy)",
+        "Induit (neuroleptiques, métoclopramide, valproate)",
+        "Parkinson plus : AMS, PSP, DCL, dégénérescence cortico-basale",
+        "Parkinsonisme vasculaire",
+        "Hydrocéphalie chronique, Wilson (jeune), intoxication CO ou manganèse"
+      ]
+    },
+    "syn-parsonage-turner": {
+      "name": "Amyotrophie névralgique (Parsonage-Turner)",
+      "presentation": "Adulte jeune se réveillant avec une douleur atroce d'une épaule durant jours à deux semaines, insensible aux antalgiques usuels ; à sa résolution apparaissent faiblesse et amyotrophie rapides de la ceinture (dentelé antérieur, supra- et infra-épineux, deltoïde) avec scapula alata. Perte sensitive mineure (pastille deltoïdienne). Le déficit chevauche plusieurs nerfs et racines. Récupération en mois à années.",
+      "deficits": [
+        "Douleur initiale intense puis déficit multifocal de la ceinture scapulaire",
+        "Scapula alata, amyotrophie rapide",
+        "Hypoesthésie modeste"
+      ],
+      "etiologies": [
+        "Idiopathique (post-infectieuse, post-chirurgicale, post-partum)",
+        "Amyotrophie névralgique héréditaire (SEPT9)",
+        "Vaccination",
+        "Effort intense"
+      ]
+    },
+    "syn-pca-infarct": {
+      "name": "Infarctus de l'artère cérébrale postérieure",
+      "presentation": "Le patient remarque que la moitié du monde a disparu, se cognant d'un côté, parfois avec céphalée : hémianopsie latérale homonyme congruente avec épargne maculaire, pupilles intactes, force normale. Côté dominant : alexie sans agraphie et anomie des couleurs ; atteinte temporale interne : amnésie transitoire. Si l'artère proximale est occluse, l'infarctus thalamique ajoute hémianesthésie puis douleurs thalamiques.",
+      "deficits": [
+        "Hémianopsie latérale homonyme congruente avec épargne maculaire",
+        "Ni déficit moteur, ni aphasie expressive",
+        "Alexie, anomie des couleurs, amnésie (formes dominantes et temporales)"
+      ],
+      "etiologies": [
+        "Embolie d'origine cardiaque",
+        "Embolie athéromateuse vertébro-basilaire",
+        "Dissection vertébrale",
+        "Compression lors d'un engagement transtentoriel"
+      ]
+    },
+    "syn-peroneal-palsy-foot-drop": {
+      "name": "Paralysie du nerf fibulaire commun (steppage)",
+      "presentation": "Patient amaigri, jambes croisées ou appui du membre contre un barreau : pied qui accroche avec fauchage et steppage. Ni dorsiflexion ni éversion du pied, extension des orteils impossible, mais inversion et flexion plantaire fortes, achilléen normal, hypoesthésie du dos du pied et de la face externe de jambe. La percussion au col du péroné irradie au pied (Tinel).",
+      "deficits": [
+        "Steppage : déficit des releveurs et éverseurs, épargnant inversion et flexion plantaire",
+        "Hypoesthésie du dos du pied et face externe de jambe",
+        "Tinel au col fibulaire"
+      ],
+      "etiologies": [
+        "Jambes croisées, accroupissement, amaigrissement",
+        "Compression peropératoire ou dans le coma",
+        "Plâtre ou bandage serré",
+        "Fracture du col fibulaire, luxation du genou",
+        "Kyste intraneural",
+        "Vascularite, diabète, neuropathie héréditaire à la pression (récidivante)"
+      ]
+    },
+    "syn-physiologic-anisocoria": {
+      "name": "Anisocorie physiologique et conduite devant des pupilles inégales",
+      "presentation": "Anisocorie remarquée par le patient ou un soignant : différence de moins d'un millimètre, identique à la lumière et à l'obscurité, pupilles vives, paupières symétriques, asymétrie retrouvée sur de vieilles photos — anisocorie physiologique, présente chez un cinquième des sujets sains. Si la différence s'accentue dans le noir, la petite pupille est en faute (Horner) ; si à la lumière, la grande (III, Adie, pharmacologique).",
+      "deficits": [
+        "Anisocorie < 1 mm stable à la lumière et à l'obscurité, pupilles réactives",
+        "Photos anciennes identiques, examen par ailleurs normal"
+      ],
+      "etiologies": [
+        "Physiologique (20 % de la population)",
+        "Horner",
+        "Paralysie du III",
+        "Pupille d'Adie",
+        "Pharmacologique (patch de scopolamine, ipratropium nébulisé, alcaloïdes végétaux)",
+        "Traumatisme irien, synéchies, glaucome aigu"
+      ]
+    },
+    "syn-pica-cerebellar-infarct": {
+      "name": "Infarctus cérébelleux du territoire de la PICA avec effet de masse",
+      "presentation": "Vertige, vomissements, céphalée et marche instable déviant d'un côté, nystagmus et dysmétrie homolatéraux — d'abord étiqueté labyrinthite. En un à trois jours, somnolence, paralysie du VI, puis hypertension et respiration irrégulière : le cervelet inférieur œdématié comprime le bulbe et bouche le V4. Toute ataxie aiguë avec céphalée impose le scanner.",
+      "deficits": [
+        "Hémisyndrome cérébelleux aigu avec vertige et céphalée",
+        "Signes d'hypertension intracrânienne retardés (VI, troubles de conscience)",
+        "Hydrocéphalie obstructive par compression du V4"
+      ],
+      "etiologies": [
+        "Athérothrombose ou dissection vertébrale",
+        "Embolie d'origine cardiaque"
+      ]
+    },
+    "syn-pituitary-mass": {
+      "name": "Lésion de la région hypophysaire",
+      "presentation": "Syndrome hormonal, perte visuelle ou incidentalome : jeune femme avec aménorrhée-galactorrhée (prolactine), homme d'âge moyen dont bagues et chaussures ne vont plus (acromégalie), patient fatigué et frileux perdant sa pilosité (compression antéhypophysaire). Au chiasma les champs temporaux tombent ; au sinus caverneux l'oculomotricité lâche. Céphalée brutale avec effondrement visuel et ophtalmoplégie = apoplexie.",
+      "deficits": [
+        "Syndromes d'hypersécrétion ou d'insuffisance antéhypophysaire",
+        "Hémianopsie bitemporale puis ophtalmoplégie",
+        "Apoplexie : céphalée brutale, cécité, ophtalmoplégie"
+      ],
+      "etiologies": [
+        "Adénome hypophysaire (prolactinome, non fonctionnel, somatotrope, corticotrope)",
+        "Craniopharyngiome",
+        "Kyste de la poche de Rathke",
+        "Méningiome, métastase, hypophysite lymphocytaire",
+        "Apoplexie hypophysaire (Sheehan en post-partum)"
+      ]
+    },
+    "syn-poliomyelitis": {
+      "name": "Poliomyélite et atteinte de la corne antérieure",
+      "presentation": "Enfant non vacciné ou en épidémie : syndrome fébrile avec céphalée et raideur de nuque puis, en un jour ou deux, faiblesse focale asymétrique à prédominance crurale, douloureuse, avec fasciculations. Membres faibles flasques et aréflexiques, sensibilité normale, vessie vite récupérée. Des décennies plus tard, certains déclinent à nouveau dans les mêmes muscles (post-polio). Entérovirus et West Nile donnent le même tableau.",
+      "deficits": [
+        "Déficit moteur asymétrique flasque et aréflexique sans trouble sensitif",
+        "Prédominance proximale crurale, fasciculations",
+        "Syndrome post-polio tardif"
+      ],
+      "etiologies": [
+        "Poliovirus 1-3 (sauvage ou vaccinal dérivé)",
+        "Entérovirus non polio (EV-D68, EV-A71) : myélite flasque aiguë",
+        "Virus West Nile",
+        "Amyotrophie spinale génétique (symétrique)"
+      ]
+    },
+    "syn-pontine-hemorrhage": {
+      "name": "Hémorragie protubérantielle",
+      "presentation": "Hypertendu s'effondrant en coma profond en minutes : myosis punctiforme encore réactif à la loupe, quadriplégie avec Babinski bilatéraux, abolition des mouvements horizontaux même aux manœuvres oculo-céphaliques et caloriques, bobbing oculaire, hyperthermie et respiration irrégulière. Petits hématomes du tegmentum ou du pied : tableaux survivables (pontique latéral, moteur pur).",
+      "deficits": [
+        "Coma brutal, myosis punctiforme, quadriplégie",
+        "Abolition de l'oculomotricité horizontale, bobbing",
+        "Hyperthermia, dysrégulation végétative"
+      ],
+      "etiologies": [
+        "Rupture hypertensive des perforantes paramédianes basilaires",
+        "Cavernome",
+        "Malformation artério-veineuse",
+        "Anticoagulation",
+        "Transformation hémorragique d'un infarctus pontique"
+      ]
+    },
+    "syn-posterior-cord-subacute-combined": {
+      "name": "Syndrome cordonal postérieur et sclérose combinée de la moelle",
+      "presentation": "Gastrectomisé, végétalien, metformine ou protoxyde d'azote : fourmillements des pieds, instabilité dans le noir. Abolition du sens vibratoire et arthrokinétique des pieds avec Romberg positif, rotuliens vifs et achilléens abolis, Babinski, marche talonnante ; décharge électrique à la flexion du cou (Lhermitte). Sans traitement : paraparésie spastique et démence.",
+      "deficits": [
+        "Atteinte proprioceptive et pallesthésique des membres inférieurs, Romberg positif",
+        "Paraparésie spastique, Babinski, Lhermitte",
+        "Macrocytose et troubles cognitifs associés"
+      ],
+      "etiologies": [
+        "Carence en B12 (Biermer, gastrectomie, végétalisme, metformine, protoxyde)",
+        "Carence en cuivre (excès de zinc, chirurgie bariatrique)",
+        "Tabès",
+        "Myélopathie vacuolaire du VIH",
+        "Friedreich",
+        "Infarctus spinal postérieur"
+      ]
+    },
+    "syn-radial-neuropathy": {
+      "name": "Paralysie du nerf radial (paralysie du samedi soir)",
+      "presentation": "Réveil après nuit d'ivresse, bras sur un dossier : poignet et doigts pendants — ni extension du poignet, ni des doigts aux métacarpo-phalangiennes, ni du pouce. La poigne paraît faible car le poignet ne se stabilise pas, mais soutenu par l'examinateur elle est forte. Triceps épargné, petite pastille insensible au dos de la main entre pouce et index.",
+      "deficits": [
+        "Main tombante : déficit des extenseurs poignet-doigts-pouce",
+        "Poigne restaurée poignet soutenu, triceps normal",
+        "Hypoesthésie dorsale du premier espace"
+      ],
+      "etiologies": [
+        "Compression dans la gouttière spirale (sommeil, ivresse)",
+        "Fracture de la diaphyse humérale",
+        "Compression axillaire (béquille)",
+        "Compression du interosseux postérieur au supinateur (doigts sans poignet)",
+        "Saturnisme, vascularite (bilatéral)"
+      ]
+    },
+    "syn-radiculopathy-cervical": {
+      "name": "Névralgie cervico-brachiale (C5-C8)",
+      "presentation": "Cervicalgie irradiant au bras en bande, majorée tête tournée et penchée du côté atteint (Spurling), avec fourmillements précis : pouce pour C6, médius pour C7, auriculaire pour C8. Réflexe correspondant aboli (bicipital et stylo-radial pour C6, tricipital pour C7), un groupe musculaire faible (deltoïde-biceps C5, extenseurs du poignet C6, triceps et extenseurs des doigts C7, fléchisseurs et intrinsèques C8). Soulagement main sur la tête caractéristique.",
+      "deficits": [
+        "Douleur radiculaire systématisée avec paresthésies digitales précises",
+        "Aréflexie et déficit moteur monoradiculaire concordants",
+        "Spurling positif, soulagement main sur la tête"
+      ],
+      "etiologies": [
+        "Hernie discale cervicale (jeune)",
+        "Sténose foraminale arthrosique (âgé)",
+        "Zona",
+        "Schwannome radiculaire",
+        "Traumatisme en traction",
+        "Radiculite diabétique ou inflammatoire"
+      ]
+    },
+    "syn-radiculopathy-lumbosacral": {
+      "name": "Sciatique et cruralgie radiculaires (L4, L5, S1)",
+      "presentation": "Après effort de soulèvement : douleur lombaire fusant à la face postérieure du membre jusqu'au pied, majorée à la toux, assise et penchée, avec paresthésies du gros orteil ou du petit orteil. Lasègue reproduit la douleur à 30 degrés. L'examen donne la racine : releveurs du pied faibles et dos du pied insensible pour L5, achilléen aboli avec fléchisseurs plantaires faibles et bord externe insensible pour S1, quadriceps faible avec rotulien diminué et face interne insensible pour L4.",
+      "deficits": [
+        "Douleur radiculaire impulsive, Lasègue positif",
+        "Correspondances L4-L5-S1 (réflexe, moteur, sensitif)",
+        "Troubles sphinctériens et selle = drapeau rouge (queue de cheval)"
+      ],
+      "etiologies": [
+        "Hernie discale lombaire",
+        "Sténose foraminale dégénérative, spondylolisthésis",
+        "Kyste synovial",
+        "Zona",
+        "Radiculoplexopathie diabétique",
+        "Métastase, schwannome"
+      ]
+    },
+    "syn-ramsay-hunt": {
+      "name": "Syndrome de Ramsay Hunt (zona auriculaire)",
+      "presentation": "Douleur vive dans et autour d'une oreille, suivie en jours d'une paralysie faciale périphérique complète homolatérale et d'un bouquet de vésicules du conduit, du tympan ou du voile. Agueusie antérieure, hyperacousie douloureuse ; souvent vertige, acouphène et surdité par inflammation du VIII associée. Récupération plus lente et moins complète que Bell, douleurs post-zostériennes fréquentes.",
+      "deficits": [
+        "Paralysie faciale périphérique complète douloureuse",
+        "Vésicules auriculaires ou vélaires, agueusie, hyperacousie",
+        "Atteinte cochléo-vestibulaire associée fréquente"
+      ],
+      "etiologies": [
+        "Réactivation du virus varicelle-zona dans le ganglion géniculé",
+        "Immunodépression, âge, VIH"
+      ]
+    },
+    "syn-rapd": {
+      "name": "Déficit pupillaire afférent relatif (Marcus Gunn)",
+      "presentation": "Pupilles égales se contractant à l'éclairement de chaque œil, mais au balancement rapide du faisceau du bon œil vers le mauvais, la pupille du mauvais œil se dilate paradoxalement au lieu de rester petite, et se recontracte au retour : déficit pupillaire afférent relatif, signe objectif le plus fiable d'une lésion unilatérale ou asymétrique du nerf optique, présent même à acuité normale.",
+      "deficits": [
+        "Dilatation paradoxale au swinging flashlight test",
+        "Asymétrie de la conduction afférente visuelle"
+      ],
+      "etiologies": [
+        "Névrite optique",
+        "Neuropathie optique ischémique",
+        "Compression du nerf optique",
+        "Glaucome asymétrique",
+        "Décollement étendu, occlusion vasculaire rétinienne",
+        "Lésion de la bandelette optique"
+      ]
+    },
+    "syn-raymond": {
+      "name": "Syndrome de Raymond (protubérance ventrale, VI)",
+      "presentation": "Impossibilité isolée d'abducter un œil avec diplopie horizontale, et hémiparésie controlatérale du bras et de la jambe, sans paralysie faciale. Ce croisement paralysie du VI-hémiplégie controlatérale place la lésion dans le pont ventral caudal, où le faisceau de l'abducens croise le faisceau cortico-spinal, en dedans du foyer de Millard-Gubler.",
+      "deficits": [
+        "Paralysie isolée de l'abduction homolatérale",
+        "Hémiparésie controlatérale sans atteinte faciale"
+      ],
+      "etiologies": [
+        "Infarctus d'une perforante basilaire",
+        "Hémorragie protubérantielle",
+        "Cavernome",
+        "Démyélinisation",
+        "Gliome pontique"
+      ]
+    },
+    "syn-sca-infarct": {
+      "name": "Infarctus du territoire de l'artère cérébelleuse supérieure",
+      "presentation": "Incapacité brutale de marcher, vomissements, dysarthrie, maladresse homolatérale du membre supérieur ; possibles Horner homolatéral et anesthésie thermo-algique controlatérale du corps, sans atteinte faciale. En deux jours, somnolence possible par compression du tronc et du V4 par le cervelet supérieur œdématié.",
+      "deficits": [
+        "Hémisyndrome cérébelleux aigu à prédominance crurale et axiale",
+        "Horner homolatéral, spinothalamique controlatérale possibles",
+        "Hydrocéphalie obstructive retardée"
+      ],
+      "etiologies": [
+        "Embolie d'origine cardiaque (la SCA est la plus emboligène des cérébelleuses)",
+        "Athérosclérose basilaire",
+        "Dissection vertébro-basilaire"
+      ]
+    },
+    "syn-sciatic-neuropathy": {
+      "name": "Neuropathie sciatique (grand sciatique)",
+      "presentation": "Après prothèse de hanche, luxation postérieure ou injection fessière : pied ballant ne relevant ni ne fléchissant (ni dorsiflexion ni flexion plantaire), flexion du genou faible, anesthésie de tout le pied et de la face externe de jambe épargnant la face interne. Achilléen aboli, rotulien normal. La division fibulaire souffrant plus que la tibiale, le tableau mime un steppage haut situé jusqu'à l'examen des fléchisseurs plantaires.",
+      "deficits": [
+        "Déficit des deux divisions (releveurs ET fléchisseurs plantaires)",
+        "Hypoesthésie du pied entier et face externe de jambe",
+        "Achilléen aboli, rotulien normal"
+      ],
+      "etiologies": [
+        "Arthroplastie de hanche, luxation postérieure",
+        "Injection intramusculaire fessière",
+        "Compression prolongée (coma, chirurgie, station assise)",
+        "Hématome fessier ou de cuisse",
+        "Tumeur du nerf ou de voisinage",
+        "Syndrome du piriforme (discuté)"
+      ]
+    },
+    "syn-subarachnoid-hemorrhage": {
+      "name": "Hémorragie sous-arachnoïdienne anévrismale et vasospasme",
+      "presentation": "Pire céphalée de la vie, maximale en secondes, avec vomissements, raideur de nuque et photophobie ; certains perdent brièvement connaissance. Une paralysie du III avec mydriase désigne un anévrisme de la communicante postérieure. Survivant aux premiers jours, tout déficit focal ou confusion entre J4 et J14 = vasospasme, toute somnolence avec dilatation ventriculaire = hydrocéphalie.",
+      "deficits": [
+        "Céphalée en coup de tonnerre avec syndrome méningé",
+        "Paralysie du III (anévrisme communicant postérieur)",
+        "Vasospasme retardé (J4-J14), hydrocéphalie aiguë"
+      ],
+      "etiologies": [
+        "Rupture d'anévrisme sacciforme (85 %)",
+        "Hémorragie périmésencéphalique non anévrismale",
+        "Malformation artério-veineuse",
+        "Traumatisme",
+        "Syndrome de vasoconstriction réversible, dissection"
+      ]
+    },
+    "syn-subdural-hematoma": {
+      "name": "Hématome sous-dural",
+      "presentation": "Sujet âgé sous AVK ou alcoolique atrophique : confusion, instabilité et somnolence sur des jours à semaines, parfois sans traumatisme remémoré, vigilance fluctuante, céphalée, discrète hémiparésie. Scanner : croissant sanguin hémisphérique, hypodense si chronique, hétérogène si resaignement. Chez le jeune après choc violent : même croissant en heures, hyperdense, avec contusion-œdème et pronostic sombre.",
+      "deficits": [
+        "Troubles de conscience fluctuants, hémiparésie discrète",
+        "Croissant extra-axial au scanner (densité selon l'âge)",
+        "Anisocorie et engagement en cas d'effet de masse"
+      ],
+      "etiologies": [
+        "Traumatisme crânien, souvent minime chez l'âgé",
+        "Anticoagulants et antiagrégants",
+        "Atrophie cérébrale (âge, alcool)",
+        "Hypotension intracrânienne (spontanée, post-ponction)",
+        "Bébé secoué"
+      ]
+    },
+    "syn-subfalcine-herniation": {
+      "name": "Engagement sous-falciforme (cingulaire)",
+      "presentation": "Volumineuse masse frontale ou pariétale : céphalée, somnolence, scanner montrant septum pellucidum et ventricules antérieurs refoulés au-delà de la ligne médiane sous la faux. Si l'hémisphère déplacé pince son artère cérébrale antérieure contre la faux rigide, une parésie crurale controlatérale s'ajoute au déficit de la masse. Le ventricule controlatéral se dilate par coudure de son foramen de Monro.",
+      "deficits": [
+        "Déviation médiane, refoulement sous-falciforme au scanner",
+        "Parésie crurale controlatérale par compression de l'ACA",
+        "Dilatation ventriculaire controlatérale"
+      ],
+      "etiologies": [
+        "Volumineux infarctus hémisphérique avec œdème",
+        "Hématome sous-dural ou intracérébral",
+        "Tumeur avec œdème",
+        "Abcès"
+      ]
+    },
+    "syn-superior-orbital-fissure": {
+      "name": "Syndromes de la fente sphénoïdale et de l'apex orbitaire",
+      "presentation": "Après fracture faciale, tumeur ou inflammation postérieure de l'orbite : œil fixé et ptosé ne bougeant dans aucune direction, mydriase, anesthésie frontale et palpébrale supérieure avec abolition du réflexe cornéen, exophtalmie congestive. Si la vision chute avec déficit pupillaire afférent, la lésion gagne médialement le canal optique : syndrome de l'apex.",
+      "deficits": [
+        "Ophtalmoplégie complète douloureuse (III, IV, VI, sympathique)",
+        "Anesthésie V1, réflexe cornéen aboli, exophtalmie",
+        "Apex : baisse visuelle avec déficit afférent associé"
+      ],
+      "etiologies": [
+        "Traumatisme cranio-facial avec fracture sphénoïdale",
+        "Méningiome de la petite aile du sphénoïde",
+        "Métastase, lymphome, carcinome du cavum",
+        "Sinusite fongique invasive, cellulite orbitaire",
+        "Tolosa-Hunt, maladie à IgG4",
+        "Zona ophtalmique"
+      ]
+    },
+    "syn-tarsal-tunnel": {
+      "name": "Syndrome du tunnel tarsien",
+      "presentation": "Brûlures et fourmillements plantaires et des orteils, majorés par la station debout ou la marche prolongée et parfois nocturnes, soulagés au repos et chaussures retirées. Hypoesthésie plantaire possible, dos du pied et talon normaux ; formes anciennes : amyotrophie plantaire et orteils en griffe. La percussion rétro-malléolaire interne reproduit les paresthésies (Tinel).",
+      "deficits": [
+        "Paresthésies plantaires posture-dépendantes",
+        "Hypoesthésie plantaire, talon et dos épargnés",
+        "Tinel rétro-malléolaire interne"
+      ],
+      "etiologies": [
+        "Idiopathique avec déformation de l'arrière-pied",
+        "Kyste, varices, ténosynovite",
+        "Fracture ou entorse de cheville",
+        "Polyarthrite, diabète, hypothyroïdie",
+        "Lipome, tumeur des gaines"
+      ]
+    },
+    "syn-thalamic-dejerine-roussy": {
+      "name": "Syndrome thalamique (Dejerine-Roussy)",
+      "presentation": "Après un petit AVC postérieur ayant aboli l'hémisensibilité, apparaissent semaines ou mois plus tard des douleurs brûlantes spontanées du même hémicorps, exacerbées au tact léger, au froid et à l'émotion. Hypoesthésie de tous les modes du même côté, parfois discrète hémiparésie, choréo-athétose ou « main thalamique » (métacarpo-phalangiennes fléchies, interphalangiennes étendues).",
+      "deficits": [
+        "Douleurs neuropathiques hémicorporelles retardées (allodynie, brûlures)",
+        "Hémihypoesthésie de tous les modes",
+        "Main thalamique, choréo-athétose possibles"
+      ],
+      "etiologies": [
+        "Infarctus lacunaire de l'artère thalamogéniculée",
+        "Hématome thalamique hypertensif",
+        "Embolie de l'artère cérébrale postérieure"
+      ]
+    },
+    "syn-tonsillar-herniation": {
+      "name": "Engagement tonsillaire (cône de pression)",
+      "presentation": "Masse de la fosse postérieure, ou hypertendu ponctionné : raideur de nuque, tête penchée, vomissements, puis brutalement apnée avec bradycardie et hypertension. Pupilles d'abord petites puis dilatées, extension des membres. Sans décompression en minutes, l'arrêt respiratoire définitif survient cœur battant.",
+      "deficits": [
+        "Raideur méningée, attitude penchée, vomissements",
+        "Apnée brutale avec bradycardie et hypertension",
+        "Mydriase bilatérale, extension, aréactivité"
+      ],
+      "etiologies": [
+        "Hémorragie ou infarctus cérébelleux avec œdème",
+        "Tumeur de la fosse postérieure",
+        "Ponction lombaire sur hypertension intracrânienne",
+        "Œdème diffus terminal d'un engagement central"
+      ]
+    },
+    "syn-top-of-basilar": {
+      "name": "Syndrome du sommet du tronc basilaire",
+      "presentation": "Somnolence brutale ou perte de contact brève puis, au réveil : paralysie de la verticalité, pupilles petites ou inégales peu réactives, parfois skew, amputation du champ visuel jusqu'à la cécité corticale. Certains hallucinent des scènes vives ou fabulent avec euphorie. Faiblesse des membres étonnamment discrète pour un tableau si bruyant : l'embole logé à la bifurcation a épargné le pont.",
+      "deficits": [
+        "Troubles de conscience transitoires, amnésie",
+        "Paralysie de la verticalité, troubles pupillaires",
+        "Cécité corticale ou quadranopsies, hallucinations visuelles",
+        "Déficit moteur paradoxalement modeste"
+      ],
+      "etiologies": [
+        "Embolie d'origine cardiaque",
+        "Athérosclérose vertébro-basilaire",
+        "Dissection vertébrale"
+      ]
+    },
+    "syn-transverse-myelitis": {
+      "name": "Myélite transverse",
+      "presentation": "En heures à quelques jours chez un adulte bien portant : rachialgies, engourdissements remontant des pieds vers un niveau thoracique, faiblesse des deux jambes, rétention urinaire. Niveau sensitif franc au tact piquant, paraparésie d'abord flasque puis spastique. IRM : segment médullaire tuméfié en hypersignal T2 ; sa longueur et l'état du cerveau et des nerfs optiques tranchent entre SEP, spectre NMO et cause post-infectieuse ou systémique.",
+      "deficits": [
+        "Niveau sensitif, paraparésie bilatérale, troubles sphinctériens",
+        "Phase flasque puis spastique",
+        "Lésion intramédullaire T2 étendue à l'IRM"
+      ],
+      "etiologies": [
+        "Sclérose en plaques",
+        "Spectre neuromyélite optique (anti-aquaporine 4)",
+        "Maladie à anti-MOG",
+        "Post-infectieuse et post-vaccinale",
+        "Lupus, Sjögren, sarcoïdose, Behçet",
+        "Myélite virale (entérovirus, herpès, VIH), Lyme, syphilis",
+        "Idiopathique"
+      ]
+    },
+    "syn-trigeminal-neuralgia": {
+      "name": "Névralgie du trijumeau",
+      "presentation": "Sujet âgé : décharges électriques de la joue et de la mâchoire durant une à deux secondes, en salves, déclenchées par la mastication, le brossage, l'air froid ou l'effleurement d'une zone gâchette. Entre les crises, ni douleur ni anomalie d'examen. Chez une jeune femme, douleur bilatérale ou continue, hypoesthésie ou autres nerfs crâniens : chercher SEP ou tumeur.",
+      "deficits": [
+        "Douleur fulgurante unilatérale V2-V3 en salves avec zone gâchette",
+        "Examen normal entre les crises (forme essentielle)"
+      ],
+      "etiologies": [
+        "Conflit neurovasculaire (artère cérébelleuse supérieure)",
+        "Sclérose en plaques",
+        "Tumeur de l'angle ponto-cérébelleux",
+        "Zona (post-zostérienne, continue plutôt que paroxystique)"
+      ]
+    },
+    "syn-uncal-herniation": {
+      "name": "Engagement temporal (uncal, transtentoriel latéral)",
+      "presentation": "Hématome temporal expansif : somnolence, puis mydriase homolatérale aréactive avec œil en bas et en dehors, puis hémiparésie controlatérale à Babinski. Sans traitement : coma, mydriase bilatérale, décérébration, irrégularité respiratoire. Parfois la faiblesse siège du même côté que la masse (pédoncule controlatéral écrasé contre le bord tentoriel : bosse de Kernohan).",
+      "deficits": [
+        "Mydriase unilatérale aréactive puis ophtalmoplégie du III",
+        "Hémiparésie controlatérale (ou paradoxale de Kernohan)",
+        "Coma, décérébration, mydriase bilatérale"
+      ],
+      "etiologies": [
+        "Hématome extradural ou sous-dural",
+        "Contusion ou hémorragie temporale",
+        "Volumineux infarctus sylvien avec œdème",
+        "Tumeur ou abcès temporal"
+      ]
+    },
+    "syn-vagal-palsy": {
+      "name": "Paralysie du nerf vague (X)",
+      "presentation": "Voix soufflée et enrouée, toux faible, reflux nasal des liquides. Au « ah », le voile ne se relève que d'un côté et la luette bascule du côté sain ; la laryngoscopie montre une corde vocale immobile en position paramédiane. Une paralysie isolée du récurrent épargne voile et pharynx et désigne le thorax ou la thyroïde.",
+      "deficits": [
+        "Dysphonie soufflée, toux inefficace, fausses routes nasales",
+        "Signe du rideau, luette attirée du côté sain",
+        "Corde vocale paramédiane à la laryngoscopie"
+      ],
+      "etiologies": [
+        "Infarctus bulbaire latéral",
+        "Tumeur du foramen jugulaire",
+        "Dissection ou chirurgie carotidienne",
+        "Chirurgie thyroïdienne, tumeur médiastinale ou pulmonaire (récurrent)",
+        "Guillain-Barré, diphtérie (bilatérales)"
+      ]
+    },
+    "syn-vestibular-neuritis": {
+      "name": "Névrite vestibulaire",
+      "presentation": "En quelques heures chez un adulte bien portant : grand vertige rotatoire continu avec vomissements, s'aggravant à tout mouvement de tête. Ni surdité, ni céphalée, ni autre signe. Nystagmus horizontal-torsionnel battant du côté sain, majoré en regardant la phase rapide et inhibé par la fixation, avec rattrapage saccadé à l'impulsion vers l'oreille atteinte. Guérison en jours à semaines.",
+      "deficits": [
+        "Grand vertige continu positionnel-aggravé sans surdité",
+        "Nystagmus unidirectionnel inhibé par la fixation",
+        "HIT anormal du côté atteint"
+      ],
+      "etiologies": [
+        "Inflammation présumée virale du nerf vestibulaire (réactivation herpétique)",
+        "Post-virale",
+        "Ischémie labyrinthique chez le vasculopathe (avec surdité)"
+      ]
+    },
+    "syn-wallenberg-lateral-medullary": {
+      "name": "Syndrome de Wallenberg (syndrome alterne rétro-olivaire)",
+      "presentation": "Début brutal par un grand vertige rotatoire avec vomissements, nystagmus et ataxie cérébelleuse homolatérale. S'y associent du côté de la lésion un syndrome de Claude Bernard-Horner, une anesthésie thermo-algique de l'hémiface, des troubles de déglutition et de phonation par paralysie vélo-pharyngo-laryngée (nerfs IX et X), et du côté opposé une hémianesthésie thermo-algique épargnant la face.",
+      "deficits": [
+        "Anesthésie thermo-algique trigéminale homolatérale avec abolition du réflexe cornéen",
+        "Anesthésie thermo-algique controlatérale respectant la face (atteinte spino-thalamique croisée)",
+        "Ataxie cérébelleuse statique et cinétique homolatérale",
+        "Syndrome de Claude Bernard-Horner homolatéral (ptôsis, myosis, anhydrose)",
+        "Paralysie vélo-pharyngo-laryngée homolatérale (IX, X) : dysphagie, dysphonie",
+        "Vertige rotatoire, nystagmus, hoquet (atteinte vestibulaire et ambiguë)"
+      ],
+      "etiologies": [
+        "Athérothrombose vertébrale",
+        "Dissection vertébrale (sujet jeune, cervicalgie)",
+        "Embolie de l'artère cérébelleuse postéro-inférieure"
+      ]
+    },
+    "syn-watershed-infarct": {
+      "name": "Infarctus des zones frontières (watershed)",
+      "presentation": "Après hypotension, arrêt cardiaque ou sténose carotidienne serrée : faiblesse proximale des bras et cuisses épargnant mains et pieds (« homme dans un tonneau ») si bilatéral. Côté dominant : aphasie transcorticale à répétition remarquablement conservée ; postérieur : troubles visuels corticaux (Balint).",
+      "deficits": [
+        "Déficit proximal brachio-crural (« homme dans un tonneau »)",
+        "Aphasie transcorticale à répétition conservée (dominant)",
+        "Syndrome de Balint (formes postérieures bilatérales)"
+      ],
+      "etiologies": [
+        "Arrêt cardiaque et hypoperfusion globale",
+        "Sténose carotidienne serrée avec épisode hypotensif",
+        "Chirurgie cardiaque et hypotension prolongée"
+      ]
+    },
+    "syn-weber": {
+      "name": "Syndrome de Weber (mésencéphale ventral)",
+      "presentation": "Ptosis avec mydriase fixe et œil en bas et en dehors d'un côté, avec faiblesse de la face, du bras et de la jambe controlatéraux. Cette paralysie du III à hémiplégie croisée est le syndrome ventral mésencéphalique classique, le plus souvent par petit infarctus des perforantes de l'artère cérébrale postérieure.",
+      "deficits": [
+        "Paralysie du III homolatérale (ptosis, mydriase, œil en bas et en dehors)",
+        "Hémiplégie facio-brachio-crurale controlatérale"
+      ],
+      "etiologies": [
+        "Infarctus d'une perforante de l'artère cérébrale postérieure ou du tronc basilaire",
+        "Hémorragie mésencéphalique",
+        "Engagement temporal",
+        "Tumeur mésencéphalique, anévrisme de l'artère cérébrale postérieure"
+      ]
+    },
+    "syn-wernicke-korsakoff": {
+      "name": "Encéphalopathie de Gayet-Wernicke et syndrome de Korsakoff",
+      "presentation": "Alcoolique dénutri, chirurgie bariatrique ou hyperémèse : confusion, instabilité, nystagmus et impossibilité d'abducter les yeux. Le glucose sans thiamine aggrave la confusion. Après traitement, l'ophtalmoplégie cède en heures et la marche s'améliore en semaines, mais le patient reste incapable de mémoriser, comble les lacunes par des fabulations et s'en montre indifférent : psychose de Korsakoff. Triade inconstante : seuls 1/3 ont confusion-ataxie-ophtalmoplégie.",
+      "deficits": [
+        "Confusion, ataxie, ophtalmoplégie (triade souvent incomplète)",
+        "Nystagmus, paralysie du VI bilatérale",
+        "Korsakoff : amnésie antérograde, fabulations, fausse reconnaissance"
+      ],
+      "etiologies": [
+        "Alcoolisme chronique avec dénutrition",
+        "Chirurgie bariatrique, vomissements prolongés, jeûne",
+        "Nutrition parentérale ou glucose sans thiamine",
+        "Malabsorption, dialyse, cancer"
+      ]
+    }
+  }
+}

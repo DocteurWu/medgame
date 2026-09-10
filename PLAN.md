@@ -77,3 +77,48 @@
 - Achievements/badges (premier diagnostic, 3 étoiles, streak 7j)
 - Cas aléatoires (générateur procédural)
 - Mode Arena multijoueur (déjà présent mais à enrichir)
+
+## Module Atlas Système Nerveux (`neuro-atlas/`)
+
+### Architecture & Intégration
+- **Emplacement** : `/neuro-atlas/` (bundle statique autonome compilé avec Vite, servi directement par Nginx / Netlify sans build step à la racine de MedGame).
+- **Intégration UI** : Embarqué via un iframe paresseux (`#neuro-atlas-frame`) dans `atlas.html`, contrôlé par `js/atlas.js` avec synchronisation mutuellement exclusive vis-à-vis du mode Cœur battant (`openNeuroMode()`, `closeNeuroMode()`, deep link `?module=neuro` et hash routing `#neuro`).
+- **Support multilingue** : Français (activé par défaut sur navigateur FR), Anglais, Turc, avec commutateur `FR | EN | TR` dans la barre d'outils.
+
+### Procédure de Rebuild si `nervous-system-atlas` est mis à jour
+1. Cloner ou mettre à jour le dépôt upstream :
+   ```bash
+   git clone https://github.com/aycibatuhan/nervous-system-atlas.git $TEMP/nervous-system-atlas
+   cd $TEMP/nervous-system-atlas
+   npm install
+   ```
+2. Télécharger les assets de données publiques :
+   ```bash
+   curl -L -o atlas-data.tar.gz https://github.com/aycibatuhan/nervous-system-atlas/releases/download/v1.0.0/atlas-data-v1.0.0.tar.gz
+   tar -xzf atlas-data.tar.gz -C public/data/
+   ```
+3. Reporter les extensions de MedGame dans les sources de l'atlas :
+   - Traduction UI : `src/i18n/fr.ts` et enregistrement dans `src/i18n/index.ts` + `src/ui/Toolbar.ts`.
+   - Modèle de contenu FR : `content/i18n/fr/` (fiches anatomiques et cliniques traduites).
+   - Script de bundling : `scripts/content/build.ts` étendu pour générer `content.fr.json`.
+4. Compiler le bundle de contenu et l'application Vite :
+   ```bash
+   npx tsx scripts/content/build.ts
+   npx vite build --outDir dist
+   ```
+5. Déployer les artefacts compilés vers MedGame :
+   - Copier `dist/*` vers `medgame/neuro-atlas/`.
+   - S'assurer que `neuro-atlas/data/content.fr.json` et les volumes/maillages publics sont bien présents.
+
+### Ajout de Nouvelles Fiches Cliniques en Français
+1. Les notices anatomiques et cliniques sont localisées dans `content/i18n/fr/{collection}/{id}.md` (ou directement assemblées dans `neuro-atlas/data/content.fr.json`).
+2. Pour chaque fiche clinique (ex. nouveau syndrome neurologique EDN) :
+   - Définir `name` (nom français officiel), `synonyms` (termes de recherche alternatifs).
+   - Spécifier le `clinical` (symptomatologie, localisation lésionnelle, étiologies fréquentes, pièges diagnostiques R2C).
+   - Re-générer `content.fr.json` et `search-index.json`.
+
+### Règles d'Étanchéité des Licences
+- **Code applicatif MedGame** : GPL-3.0.
+- **Code visionneuse neuro** : Apache-2.0 (conserver `NOTICE` et `LICENSE`).
+- **Données et contenus neuro** : CC BY-SA 4.0.
+- **Règle d'or** : Ne pas importer directement de texte CC BY-SA dans les fichiers sources JS/HTML du moteur MedGame, et réciproquement. La communication entre `atlas.html` et `neuro-atlas/` se fait exclusivement par les frontières du navigateur (iframe / postMessage / URL param).

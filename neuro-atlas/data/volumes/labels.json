@@ -1,0 +1,3560 @@
+{
+ "volumes": {
+  "labels_anat": {
+   "file": "volumes/labels_anat.u16.bin",
+   "dtype": "uint16",
+   "shape": [
+    193,
+    229,
+    193
+   ],
+   "bytes_raw": 17060042,
+   "bytes_gz": 275230
+  },
+  "labels_tract": {
+   "file": "volumes/labels_tract.u8.bin",
+   "dtype": "uint8",
+   "shape": [
+    193,
+    229,
+    193
+   ],
+   "bytes_raw": 8530021,
+   "bytes_gz": 322337
+  },
+  "labels_vascular": {
+   "file": "volumes/labels_vascular.u8.bin",
+   "dtype": "uint8",
+   "shape": [
+    193,
+    229,
+    193
+   ],
+   "bytes_raw": 8530021,
+   "bytes_gz": 131614
+  },
+  "labels_vascular2": {
+   "file": "volumes/labels_vascular2.u8.bin",
+   "dtype": "uint8",
+   "shape": [
+    193,
+    229,
+    193
+   ],
+   "bytes_raw": 8530021,
+   "bytes_gz": 109053
+  }
+ },
+ "lut": {
+  "anat": {
+   "1": {
+    "meshId": "ventricle-lateral-l",
+    "structureId": "ventricle-lateral",
+    "name": "Lateral ventricle (L)",
+    "colour": "#7FB3D5",
+    "system": "ventricles-csf",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     4
+    ]
+   },
+   "2": {
+    "meshId": "ventricle-lateral-r",
+    "structureId": "ventricle-lateral",
+    "name": "Lateral ventricle (R)",
+    "colour": "#7FB3D5",
+    "system": "ventricles-csf",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     43
+    ]
+   },
+   "3": {
+    "meshId": "ventricle-lateral-inferior-horn-l",
+    "structureId": "ventricle-lateral-inferior-horn",
+    "name": "Lateral ventricle, inferior (temporal) horn (L)",
+    "colour": "#8CC0E0",
+    "system": "ventricles-csf",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     5
+    ]
+   },
+   "4": {
+    "meshId": "ventricle-lateral-inferior-horn-r",
+    "structureId": "ventricle-lateral-inferior-horn",
+    "name": "Lateral ventricle, inferior (temporal) horn (R)",
+    "colour": "#8CC0E0",
+    "system": "ventricles-csf",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     44
+    ]
+   },
+   "5": {
+    "meshId": "ventricle-third",
+    "structureId": "ventricle-third",
+    "name": "Third ventricle",
+    "colour": "#6FA8D0",
+    "system": "ventricles-csf",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     14
+    ]
+   },
+   "6": {
+    "meshId": "ventricle-fourth",
+    "structureId": "ventricle-fourth",
+    "name": "Fourth ventricle",
+    "colour": "#5F9CC8",
+    "system": "ventricles-csf",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     15
+    ]
+   },
+   "7": {
+    "meshId": "brainstem",
+    "structureId": "brainstem",
+    "name": "Brainstem",
+    "colour": "#B9A0C9",
+    "system": "brainstem",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     16
+    ]
+   },
+   "8": {
+    "meshId": "cerebellar-hemisphere-l",
+    "structureId": "cerebellar-hemisphere",
+    "name": "Cerebellar hemisphere (cortex) (L)",
+    "colour": "#9BC49B",
+    "system": "cerebellum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     8
+    ]
+   },
+   "9": {
+    "meshId": "cerebellar-hemisphere-r",
+    "structureId": "cerebellar-hemisphere",
+    "name": "Cerebellar hemisphere (cortex) (R)",
+    "colour": "#9BC49B",
+    "system": "cerebellum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     47
+    ]
+   },
+   "10": {
+    "meshId": "cerebellar-white-matter-l",
+    "structureId": "cerebellar-white-matter",
+    "name": "Cerebellar white matter (L)",
+    "colour": "#D5E8D0",
+    "system": "cerebellum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     7
+    ]
+   },
+   "11": {
+    "meshId": "cerebellar-white-matter-r",
+    "structureId": "cerebellar-white-matter",
+    "name": "Cerebellar white matter (R)",
+    "colour": "#D5E8D0",
+    "system": "cerebellum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     46
+    ]
+   },
+   "12": {
+    "meshId": "hippocampus-l",
+    "structureId": "hippocampus",
+    "name": "Hippocampus (L)",
+    "colour": "#E8A0B8",
+    "system": "cerebrum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     17
+    ]
+   },
+   "13": {
+    "meshId": "hippocampus-r",
+    "structureId": "hippocampus",
+    "name": "Hippocampus (R)",
+    "colour": "#E8A0B8",
+    "system": "cerebrum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     53
+    ]
+   },
+   "14": {
+    "meshId": "cerebral-white-matter-l",
+    "structureId": "cerebral-white-matter",
+    "name": "Cerebral white matter (L)",
+    "colour": "#F3EEE6",
+    "system": "cerebrum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     2
+    ]
+   },
+   "15": {
+    "meshId": "cerebral-white-matter-r",
+    "structureId": "cerebral-white-matter",
+    "name": "Cerebral white matter (R)",
+    "colour": "#F3EEE6",
+    "system": "cerebrum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     41
+    ]
+   },
+   "16": {
+    "meshId": "corpus-callosum",
+    "structureId": "corpus-callosum",
+    "name": "Corpus callosum",
+    "colour": "#F5F0E8",
+    "system": "cerebrum",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     251,
+     252,
+     253,
+     254,
+     255
+    ]
+   },
+   "17": {
+    "meshId": "ventral-diencephalon-l",
+    "structureId": "ventral-diencephalon",
+    "name": "Ventral diencephalon (FreeSurfer) (L)",
+    "colour": "#D9A066",
+    "system": "diencephalon",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     28
+    ]
+   },
+   "18": {
+    "meshId": "ventral-diencephalon-r",
+    "structureId": "ventral-diencephalon",
+    "name": "Ventral diencephalon (FreeSurfer) (R)",
+    "colour": "#D9A066",
+    "system": "diencephalon",
+    "atlas": "mni_aseg",
+    "atlasLabels": [
+     60
+    ]
+   },
+   "149": {
+    "meshId": "mammillary-body-l",
+    "structureId": "mammillary-body",
+    "name": "Mammillary body (L)",
+    "colour": "#ebcc94",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     10
+    ]
+   },
+   "150": {
+    "meshId": "mammillary-body-r",
+    "structureId": "mammillary-body",
+    "name": "Mammillary body (R)",
+    "colour": "#ebcc94",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     9
+    ]
+   },
+   "151": {
+    "meshId": "hypothalamus-medial-preoptic-l",
+    "structureId": "hypothalamus-medial-preoptic",
+    "name": "Medial preoptic nucleus (L)",
+    "colour": "#dcb145",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     20
+    ]
+   },
+   "152": {
+    "meshId": "hypothalamus-medial-preoptic-r",
+    "structureId": "hypothalamus-medial-preoptic",
+    "name": "Medial preoptic nucleus (R)",
+    "colour": "#dcb145",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     19
+    ]
+   },
+   "153": {
+    "meshId": "hypothalamus-paraventricular-l",
+    "structureId": "hypothalamus-paraventricular",
+    "name": "Paraventricular nucleus (L)",
+    "colour": "#e1cb60",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     22
+    ]
+   },
+   "154": {
+    "meshId": "hypothalamus-paraventricular-r",
+    "structureId": "hypothalamus-paraventricular",
+    "name": "Paraventricular nucleus (R)",
+    "colour": "#e1cb60",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     21
+    ]
+   },
+   "155": {
+    "meshId": "hypothalamus-lateral-l",
+    "structureId": "hypothalamus-lateral",
+    "name": "Lateral hypothalamic area (L)",
+    "colour": "#f2e5b8",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     26
+    ]
+   },
+   "156": {
+    "meshId": "hypothalamus-lateral-r",
+    "structureId": "hypothalamus-lateral",
+    "name": "Lateral hypothalamic area (R)",
+    "colour": "#f2e5b8",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     25
+    ]
+   },
+   "157": {
+    "meshId": "hypothalamus-ventromedial-l",
+    "structureId": "hypothalamus-ventromedial",
+    "name": "Ventromedial nucleus (L)",
+    "colour": "#f2d4b8",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     28
+    ]
+   },
+   "158": {
+    "meshId": "hypothalamus-ventromedial-r",
+    "structureId": "hypothalamus-ventromedial",
+    "name": "Ventromedial nucleus (R)",
+    "colour": "#f2d4b8",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     27
+    ]
+   },
+   "159": {
+    "meshId": "hypothalamus-arcuate-l",
+    "structureId": "hypothalamus-arcuate",
+    "name": "Arcuate nucleus (L)",
+    "colour": "#e8ce84",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     30
+    ]
+   },
+   "160": {
+    "meshId": "hypothalamus-arcuate-r",
+    "structureId": "hypothalamus-arcuate",
+    "name": "Arcuate nucleus (R)",
+    "colour": "#e8ce84",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     29
+    ]
+   },
+   "161": {
+    "meshId": "bed-nucleus-stria-terminalis-l",
+    "structureId": "bed-nucleus-stria-terminalis",
+    "name": "Bed nucleus of the stria terminalis (L)",
+    "colour": "#eb9b94",
+    "system": "cerebrum",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     34
+    ]
+   },
+   "162": {
+    "meshId": "bed-nucleus-stria-terminalis-r",
+    "structureId": "bed-nucleus-stria-terminalis",
+    "name": "Bed nucleus of the stria terminalis (R)",
+    "colour": "#eb9b94",
+    "system": "cerebrum",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     33
+    ]
+   },
+   "163": {
+    "meshId": "nucleus-basalis-meynert-l",
+    "structureId": "nucleus-basalis-meynert",
+    "name": "Nucleus basalis of Meynert (L)",
+    "colour": "#eeefac",
+    "system": "cerebrum",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     36
+    ]
+   },
+   "164": {
+    "meshId": "nucleus-basalis-meynert-r",
+    "structureId": "nucleus-basalis-meynert",
+    "name": "Nucleus basalis of Meynert (R)",
+    "colour": "#eeefac",
+    "system": "cerebrum",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     35
+    ]
+   },
+   "165": {
+    "meshId": "hypothalamus-dorsomedial-l",
+    "structureId": "hypothalamus-dorsomedial",
+    "name": "Dorsomedial nucleus (L)",
+    "colour": "#dae15f",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     38
+    ]
+   },
+   "166": {
+    "meshId": "hypothalamus-dorsomedial-r",
+    "structureId": "hypothalamus-dorsomedial",
+    "name": "Dorsomedial nucleus (R)",
+    "colour": "#dae15f",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     37
+    ]
+   },
+   "167": {
+    "meshId": "zona-incerta-l",
+    "structureId": "zona-incerta",
+    "name": "Zona incerta (L)",
+    "colour": "#dba040",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     42
+    ]
+   },
+   "168": {
+    "meshId": "zona-incerta-r",
+    "structureId": "zona-incerta",
+    "name": "Zona incerta (R)",
+    "colour": "#dba040",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     41
+    ]
+   },
+   "169": {
+    "meshId": "hypothalamus-supraoptic-l",
+    "structureId": "hypothalamus-supraoptic",
+    "name": "Supraoptic nucleus (L)",
+    "colour": "#e8db83",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     46
+    ]
+   },
+   "170": {
+    "meshId": "hypothalamus-supraoptic-r",
+    "structureId": "hypothalamus-supraoptic",
+    "name": "Supraoptic nucleus (R)",
+    "colour": "#e8db83",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     45
+    ]
+   },
+   "171": {
+    "meshId": "hypothalamus-suprachiasmatic-l",
+    "structureId": "hypothalamus-suprachiasmatic",
+    "name": "Suprachiasmatic nucleus (L)",
+    "colour": "#efccab",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     48
+    ]
+   },
+   "172": {
+    "meshId": "hypothalamus-suprachiasmatic-r",
+    "structureId": "hypothalamus-suprachiasmatic",
+    "name": "Suprachiasmatic nucleus (R)",
+    "colour": "#efccab",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     47
+    ]
+   },
+   "173": {
+    "meshId": "hypothalamus-tuberomammillary-l",
+    "structureId": "hypothalamus-tuberomammillary",
+    "name": "Tuberomammillary nucleus (L)",
+    "colour": "#db573d",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     50
+    ]
+   },
+   "174": {
+    "meshId": "hypothalamus-tuberomammillary-r",
+    "structureId": "hypothalamus-tuberomammillary",
+    "name": "Tuberomammillary nucleus (R)",
+    "colour": "#db573d",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     49
+    ]
+   },
+   "175": {
+    "meshId": "hypothalamus-posterior-l",
+    "structureId": "hypothalamus-posterior",
+    "name": "Posterior hypothalamic nucleus (L)",
+    "colour": "#e4e272",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     52
+    ]
+   },
+   "176": {
+    "meshId": "hypothalamus-posterior-r",
+    "structureId": "hypothalamus-posterior",
+    "name": "Posterior hypothalamic nucleus (R)",
+    "colour": "#e4e272",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     51
+    ]
+   },
+   "177": {
+    "meshId": "hypothalamus-anterior-area-l",
+    "structureId": "hypothalamus-anterior-area",
+    "name": "Anterior hypothalamic area (L)",
+    "colour": "#eab68f",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     54
+    ]
+   },
+   "178": {
+    "meshId": "hypothalamus-anterior-area-r",
+    "structureId": "hypothalamus-anterior-area",
+    "name": "Anterior hypothalamic area (R)",
+    "colour": "#eab68f",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     53
+    ]
+   },
+   "179": {
+    "meshId": "mammillothalamic-tract-l",
+    "structureId": "mammillothalamic-tract",
+    "name": "Mammillothalamic tract (L)",
+    "colour": "#e5c875",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     8
+    ]
+   },
+   "180": {
+    "meshId": "mammillothalamic-tract-r",
+    "structureId": "mammillothalamic-tract",
+    "name": "Mammillothalamic tract (R)",
+    "colour": "#e5c875",
+    "system": "diencephalon",
+    "atlas": "hypothalamus_neudorfer",
+    "atlasLabels": [
+     7
+    ]
+   },
+   "181": {
+    "meshId": "substantia-nigra-pars-compacta-l",
+    "structureId": "substantia-nigra-pars-compacta",
+    "name": "Substantia nigra, pars compacta (L)",
+    "colour": "#4A2E4A",
+    "system": "brainstem",
+    "atlas": "cit168",
+    "atlasLabels": [
+     6
+    ]
+   },
+   "182": {
+    "meshId": "substantia-nigra-pars-compacta-r",
+    "structureId": "substantia-nigra-pars-compacta",
+    "name": "Substantia nigra, pars compacta (R)",
+    "colour": "#4A2E4A",
+    "system": "brainstem",
+    "atlas": "cit168",
+    "atlasLabels": [
+     6
+    ]
+   },
+   "183": {
+    "meshId": "substantia-nigra-pars-reticulata-l",
+    "structureId": "substantia-nigra-pars-reticulata",
+    "name": "Substantia nigra, pars reticulata (L)",
+    "colour": "#6A4E6A",
+    "system": "brainstem",
+    "atlas": "cit168",
+    "atlasLabels": [
+     8
+    ]
+   },
+   "184": {
+    "meshId": "substantia-nigra-pars-reticulata-r",
+    "structureId": "substantia-nigra-pars-reticulata",
+    "name": "Substantia nigra, pars reticulata (R)",
+    "colour": "#6A4E6A",
+    "system": "brainstem",
+    "atlas": "cit168",
+    "atlasLabels": [
+     8
+    ]
+   },
+   "185": {
+    "meshId": "thalamus-pulvinar-l",
+    "structureId": "thalamus-pulvinar",
+    "name": "Pulvinar (L)",
+    "colour": "#d3e991",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     1
+    ]
+   },
+   "186": {
+    "meshId": "thalamus-pulvinar-r",
+    "structureId": "thalamus-pulvinar",
+    "name": "Pulvinar (R)",
+    "colour": "#d3e991",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     8
+    ]
+   },
+   "187": {
+    "meshId": "thalamus-ventral-anterior-l",
+    "structureId": "thalamus-ventral-anterior",
+    "name": "Ventral anterior nucleus (L)",
+    "colour": "#cde26b",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     2
+    ]
+   },
+   "188": {
+    "meshId": "thalamus-ventral-anterior-r",
+    "structureId": "thalamus-ventral-anterior",
+    "name": "Ventral anterior nucleus (R)",
+    "colour": "#cde26b",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     9
+    ]
+   },
+   "189": {
+    "meshId": "thalamus-mediodorsal-l",
+    "structureId": "thalamus-mediodorsal",
+    "name": "Mediodorsal nucleus (L)",
+    "colour": "#e6d07d",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     3
+    ]
+   },
+   "190": {
+    "meshId": "thalamus-mediodorsal-r",
+    "structureId": "thalamus-mediodorsal",
+    "name": "Mediodorsal nucleus (R)",
+    "colour": "#e6d07d",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     10
+    ]
+   },
+   "191": {
+    "meshId": "thalamus-lateral-posterior-ventral-posterior-l",
+    "structureId": "thalamus-lateral-posterior-ventral-posterior",
+    "name": "Lateral posterior / ventral posterior group (L)",
+    "colour": "#e7cd85",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     4
+    ]
+   },
+   "192": {
+    "meshId": "thalamus-lateral-posterior-ventral-posterior-r",
+    "structureId": "thalamus-lateral-posterior-ventral-posterior",
+    "name": "Lateral posterior / ventral posterior group (R)",
+    "colour": "#e7cd85",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     11
+    ]
+   },
+   "193": {
+    "meshId": "thalamus-pulvinar-medial-centrolateral-l",
+    "structureId": "thalamus-pulvinar-medial-centrolateral",
+    "name": "Medial pulvinar / centrolateral group (L)",
+    "colour": "#d85f37",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     5
+    ]
+   },
+   "194": {
+    "meshId": "thalamus-pulvinar-medial-centrolateral-r",
+    "structureId": "thalamus-pulvinar-medial-centrolateral",
+    "name": "Medial pulvinar / centrolateral group (R)",
+    "colour": "#d85f37",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     12
+    ]
+   },
+   "195": {
+    "meshId": "thalamus-ventrolateral-l",
+    "structureId": "thalamus-ventrolateral",
+    "name": "Ventrolateral nucleus (L)",
+    "colour": "#d65d2e",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     6
+    ]
+   },
+   "196": {
+    "meshId": "thalamus-ventrolateral-r",
+    "structureId": "thalamus-ventrolateral",
+    "name": "Ventrolateral nucleus (R)",
+    "colour": "#d65d2e",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     13
+    ]
+   },
+   "197": {
+    "meshId": "thalamus-ventral-posterior-ventrolateral-l",
+    "structureId": "thalamus-ventral-posterior-ventrolateral",
+    "name": "Ventral posterior / ventrolateral group (VPL/VPM) (L)",
+    "colour": "#da5241",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     7
+    ]
+   },
+   "198": {
+    "meshId": "thalamus-ventral-posterior-ventrolateral-r",
+    "structureId": "thalamus-ventral-posterior-ventrolateral",
+    "name": "Ventral posterior / ventrolateral group (VPL/VPM) (R)",
+    "colour": "#da5241",
+    "system": "diencephalon",
+    "atlas": "mial_thalamus",
+    "atlasLabels": [
+     14
+    ]
+   },
+   "199": {
+    "meshId": "caudate-nucleus-l",
+    "structureId": "caudate-nucleus",
+    "name": "Caudate nucleus (L)",
+    "colour": "#C97B84",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     1
+    ]
+   },
+   "200": {
+    "meshId": "caudate-nucleus-r",
+    "structureId": "caudate-nucleus",
+    "name": "Caudate nucleus (R)",
+    "colour": "#C97B84",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     2
+    ]
+   },
+   "201": {
+    "meshId": "subthalamic-nucleus-l",
+    "structureId": "subthalamic-nucleus",
+    "name": "Subthalamic nucleus (L)",
+    "colour": "#B05A7A",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     3
+    ]
+   },
+   "202": {
+    "meshId": "subthalamic-nucleus-r",
+    "structureId": "subthalamic-nucleus",
+    "name": "Subthalamic nucleus (R)",
+    "colour": "#B05A7A",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     4
+    ]
+   },
+   "203": {
+    "meshId": "substantia-nigra-l",
+    "structureId": "substantia-nigra",
+    "name": "Substantia nigra (L)",
+    "colour": "#5A3E5A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     5
+    ]
+   },
+   "204": {
+    "meshId": "substantia-nigra-r",
+    "structureId": "substantia-nigra",
+    "name": "Substantia nigra (R)",
+    "colour": "#5A3E5A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     6
+    ]
+   },
+   "205": {
+    "meshId": "red-nucleus-l",
+    "structureId": "red-nucleus",
+    "name": "Red nucleus (L)",
+    "colour": "#D04040",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     7
+    ]
+   },
+   "206": {
+    "meshId": "red-nucleus-r",
+    "structureId": "red-nucleus",
+    "name": "Red nucleus (R)",
+    "colour": "#D04040",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     8
+    ]
+   },
+   "207": {
+    "meshId": "globus-pallidus-internus-l",
+    "structureId": "globus-pallidus-internus",
+    "name": "Globus pallidus, internal segment (L)",
+    "colour": "#A86070",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     9
+    ]
+   },
+   "208": {
+    "meshId": "globus-pallidus-internus-r",
+    "structureId": "globus-pallidus-internus",
+    "name": "Globus pallidus, internal segment (R)",
+    "colour": "#A86070",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     10
+    ]
+   },
+   "209": {
+    "meshId": "globus-pallidus-externus-l",
+    "structureId": "globus-pallidus-externus",
+    "name": "Globus pallidus, external segment (L)",
+    "colour": "#BF7A8A",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     11
+    ]
+   },
+   "210": {
+    "meshId": "globus-pallidus-externus-r",
+    "structureId": "globus-pallidus-externus",
+    "name": "Globus pallidus, external segment (R)",
+    "colour": "#BF7A8A",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     12
+    ]
+   },
+   "211": {
+    "meshId": "thalamus-l",
+    "structureId": "thalamus",
+    "name": "Thalamus (L)",
+    "colour": "#D9A066",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     13
+    ]
+   },
+   "212": {
+    "meshId": "thalamus-r",
+    "structureId": "thalamus",
+    "name": "Thalamus (R)",
+    "colour": "#D9A066",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     14
+    ]
+   },
+   "213": {
+    "meshId": "amygdala-l",
+    "structureId": "amygdala",
+    "name": "Amygdala (L)",
+    "colour": "#D08090",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     19
+    ]
+   },
+   "214": {
+    "meshId": "amygdala-r",
+    "structureId": "amygdala",
+    "name": "Amygdala (R)",
+    "colour": "#D08090",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     20
+    ]
+   },
+   "215": {
+    "meshId": "internal-capsule-l",
+    "structureId": "internal-capsule",
+    "name": "Internal capsule (L)",
+    "colour": "#EFE6D8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     21
+    ]
+   },
+   "216": {
+    "meshId": "internal-capsule-r",
+    "structureId": "internal-capsule",
+    "name": "Internal capsule (R)",
+    "colour": "#EFE6D8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     22
+    ]
+   },
+   "217": {
+    "meshId": "ventral-tegmental-area-l",
+    "structureId": "ventral-tegmental-area",
+    "name": "Ventral tegmental area (L)",
+    "colour": "#7A5A8A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     23
+    ]
+   },
+   "218": {
+    "meshId": "ventral-tegmental-area-r",
+    "structureId": "ventral-tegmental-area",
+    "name": "Ventral tegmental area (R)",
+    "colour": "#7A5A8A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     24
+    ]
+   },
+   "219": {
+    "meshId": "fornix",
+    "structureId": "fornix",
+    "name": "Fornix",
+    "colour": "#F0DCC0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     25
+    ]
+   },
+   "220": {
+    "meshId": "periaqueductal-grey-l",
+    "structureId": "periaqueductal-grey",
+    "name": "Periaqueductal grey (L)",
+    "colour": "#8A7A9A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     26
+    ]
+   },
+   "221": {
+    "meshId": "periaqueductal-grey-r",
+    "structureId": "periaqueductal-grey",
+    "name": "Periaqueductal grey (R)",
+    "colour": "#8A7A9A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     27
+    ]
+   },
+   "222": {
+    "meshId": "pedunculopontine-nucleus-l",
+    "structureId": "pedunculopontine-nucleus",
+    "name": "Pedunculopontine nucleus (L)",
+    "colour": "#9A8AAA",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     28
+    ]
+   },
+   "223": {
+    "meshId": "pedunculopontine-nucleus-r",
+    "structureId": "pedunculopontine-nucleus",
+    "name": "Pedunculopontine nucleus (R)",
+    "colour": "#9A8AAA",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     29
+    ]
+   },
+   "224": {
+    "meshId": "claustrum-l",
+    "structureId": "claustrum",
+    "name": "Claustrum (L)",
+    "colour": "#D8A0A8",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     30
+    ]
+   },
+   "225": {
+    "meshId": "claustrum-r",
+    "structureId": "claustrum",
+    "name": "Claustrum (R)",
+    "colour": "#D8A0A8",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     31
+    ]
+   },
+   "226": {
+    "meshId": "inferior-colliculus-l",
+    "structureId": "inferior-colliculus",
+    "name": "Inferior colliculus (L)",
+    "colour": "#A080B0",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     32
+    ]
+   },
+   "227": {
+    "meshId": "inferior-colliculus-r",
+    "structureId": "inferior-colliculus",
+    "name": "Inferior colliculus (R)",
+    "colour": "#A080B0",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     33
+    ]
+   },
+   "228": {
+    "meshId": "superior-colliculus-l",
+    "structureId": "superior-colliculus",
+    "name": "Superior colliculus (L)",
+    "colour": "#B090C0",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     34
+    ]
+   },
+   "229": {
+    "meshId": "superior-colliculus-r",
+    "structureId": "superior-colliculus",
+    "name": "Superior colliculus (R)",
+    "colour": "#B090C0",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     35
+    ]
+   },
+   "230": {
+    "meshId": "habenula-l",
+    "structureId": "habenula",
+    "name": "Lateral habenula (L)",
+    "colour": "#C8A070",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     36
+    ]
+   },
+   "231": {
+    "meshId": "habenula-r",
+    "structureId": "habenula",
+    "name": "Lateral habenula (R)",
+    "colour": "#C8A070",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     37
+    ]
+   },
+   "232": {
+    "meshId": "putamen-l",
+    "structureId": "putamen",
+    "name": "Putamen (L)",
+    "colour": "#D48C8C",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     38
+    ]
+   },
+   "233": {
+    "meshId": "putamen-r",
+    "structureId": "putamen",
+    "name": "Putamen (R)",
+    "colour": "#D48C8C",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     39
+    ]
+   },
+   "234": {
+    "meshId": "nucleus-accumbens-l",
+    "structureId": "nucleus-accumbens",
+    "name": "Nucleus accumbens (L)",
+    "colour": "#E0A0A0",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     40
+    ]
+   },
+   "235": {
+    "meshId": "nucleus-accumbens-r",
+    "structureId": "nucleus-accumbens",
+    "name": "Nucleus accumbens (R)",
+    "colour": "#E0A0A0",
+    "system": "basal-ganglia",
+    "atlas": "massp",
+    "atlasLabels": [
+     41
+    ]
+   },
+   "236": {
+    "meshId": "hippocampus-ca1-l",
+    "structureId": "hippocampus-ca1",
+    "name": "Hippocampus CA1 (L)",
+    "colour": "#E8A8C0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     42
+    ]
+   },
+   "237": {
+    "meshId": "hippocampus-ca1-r",
+    "structureId": "hippocampus-ca1",
+    "name": "Hippocampus CA1 (R)",
+    "colour": "#E8A8C0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     43
+    ]
+   },
+   "238": {
+    "meshId": "hippocampus-ca23-l",
+    "structureId": "hippocampus-ca23",
+    "name": "Hippocampus CA2/CA3 (L)",
+    "colour": "#E098B8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     44
+    ]
+   },
+   "239": {
+    "meshId": "hippocampus-ca23-r",
+    "structureId": "hippocampus-ca23",
+    "name": "Hippocampus CA2/CA3 (R)",
+    "colour": "#E098B8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     45
+    ]
+   },
+   "240": {
+    "meshId": "dentate-gyrus-l",
+    "structureId": "dentate-gyrus",
+    "name": "Dentate gyrus (L)",
+    "colour": "#D888B0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     46
+    ]
+   },
+   "241": {
+    "meshId": "dentate-gyrus-r",
+    "structureId": "dentate-gyrus",
+    "name": "Dentate gyrus (R)",
+    "colour": "#D888B0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     47
+    ]
+   },
+   "242": {
+    "meshId": "presubiculum-l",
+    "structureId": "presubiculum",
+    "name": "Presubiculum (L)",
+    "colour": "#F0B8C8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     48
+    ]
+   },
+   "243": {
+    "meshId": "presubiculum-r",
+    "structureId": "presubiculum",
+    "name": "Presubiculum (R)",
+    "colour": "#F0B8C8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     49
+    ]
+   },
+   "244": {
+    "meshId": "subiculum-l",
+    "structureId": "subiculum",
+    "name": "Subiculum (L)",
+    "colour": "#F0C0D0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     50
+    ]
+   },
+   "245": {
+    "meshId": "subiculum-r",
+    "structureId": "subiculum",
+    "name": "Subiculum (R)",
+    "colour": "#F0C0D0",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     51
+    ]
+   },
+   "246": {
+    "meshId": "uncus-l",
+    "structureId": "uncus",
+    "name": "Uncus (L)",
+    "colour": "#E8B0B8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     52
+    ]
+   },
+   "247": {
+    "meshId": "uncus-r",
+    "structureId": "uncus",
+    "name": "Uncus (R)",
+    "colour": "#E8B0B8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     53
+    ]
+   },
+   "248": {
+    "meshId": "anterior-commissure",
+    "structureId": "anterior-commissure",
+    "name": "Anterior commissure",
+    "colour": "#F5EAD8",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     54
+    ]
+   },
+   "249": {
+    "meshId": "posterior-commissure",
+    "structureId": "posterior-commissure",
+    "name": "Posterior commissure",
+    "colour": "#F5EAD8",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     55
+    ]
+   },
+   "250": {
+    "meshId": "basal-forebrain-cholinergic-l",
+    "structureId": "basal-forebrain-cholinergic",
+    "name": "Basal forebrain cholinergic nuclei (L)",
+    "colour": "#D8B890",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     56
+    ]
+   },
+   "251": {
+    "meshId": "basal-forebrain-cholinergic-r",
+    "structureId": "basal-forebrain-cholinergic",
+    "name": "Basal forebrain cholinergic nuclei (R)",
+    "colour": "#D8B890",
+    "system": "cerebrum",
+    "atlas": "massp",
+    "atlasLabels": [
+     57
+    ]
+   },
+   "252": {
+    "meshId": "raphe-dorsal",
+    "structureId": "raphe-dorsal",
+    "name": "Dorsal raphe nucleus",
+    "colour": "#8A6A9A",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     58
+    ]
+   },
+   "253": {
+    "meshId": "raphe-median",
+    "structureId": "raphe-median",
+    "name": "Median raphe nucleus",
+    "colour": "#9A7AAA",
+    "system": "brainstem",
+    "atlas": "massp",
+    "atlasLabels": [
+     59
+    ]
+   },
+   "254": {
+    "meshId": "lateral-geniculate-nucleus-l",
+    "structureId": "lateral-geniculate-nucleus",
+    "name": "Lateral geniculate nucleus (L)",
+    "colour": "#E0B070",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     60
+    ]
+   },
+   "255": {
+    "meshId": "lateral-geniculate-nucleus-r",
+    "structureId": "lateral-geniculate-nucleus",
+    "name": "Lateral geniculate nucleus (R)",
+    "colour": "#E0B070",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     61
+    ]
+   },
+   "256": {
+    "meshId": "medial-geniculate-nucleus-l",
+    "structureId": "medial-geniculate-nucleus",
+    "name": "Medial geniculate nucleus (L)",
+    "colour": "#D0A060",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     62
+    ]
+   },
+   "257": {
+    "meshId": "medial-geniculate-nucleus-r",
+    "structureId": "medial-geniculate-nucleus",
+    "name": "Medial geniculate nucleus (R)",
+    "colour": "#D0A060",
+    "system": "diencephalon",
+    "atlas": "massp",
+    "atlasLabels": [
+     63
+    ]
+   }
+  },
+  "tract": {
+   "1": {
+    "meshId": "cn-02-optic-l",
+    "structureId": "cn-02-optic",
+    "name": "Optic nerve / tract (CN II) (L)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNII_L"
+   },
+   "2": {
+    "meshId": "cn-02-optic-r",
+    "structureId": "cn-02-optic",
+    "name": "Optic nerve / tract (CN II) (R)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNII_R"
+   },
+   "3": {
+    "meshId": "cn-03-oculomotor-l",
+    "structureId": "cn-03-oculomotor",
+    "name": "Oculomotor nerve (CN III), cisternal (L)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNIII_L"
+   },
+   "4": {
+    "meshId": "cn-03-oculomotor-r",
+    "structureId": "cn-03-oculomotor",
+    "name": "Oculomotor nerve (CN III), cisternal (R)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNIII_R"
+   },
+   "5": {
+    "meshId": "cn-05-trigeminal-l",
+    "structureId": "cn-05-trigeminal",
+    "name": "Trigeminal nerve (CN V), cisternal (L)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNV_L"
+   },
+   "6": {
+    "meshId": "cn-05-trigeminal-r",
+    "structureId": "cn-05-trigeminal",
+    "name": "Trigeminal nerve (CN V), cisternal (R)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNV_R"
+   },
+   "7": {
+    "meshId": "cn-07-facial-l",
+    "structureId": "cn-07-facial",
+    "name": "Facial nerve (CN VII), cisternal (L)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNVII_L"
+   },
+   "8": {
+    "meshId": "cn-07-facial-r",
+    "structureId": "cn-07-facial",
+    "name": "Facial nerve (CN VII), cisternal (R)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNVII_R"
+   },
+   "9": {
+    "meshId": "cn-08-vestibulocochlear-l",
+    "structureId": "cn-08-vestibulocochlear",
+    "name": "Vestibulocochlear nerve (CN VIII), cisternal (L)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNVIII_L"
+   },
+   "10": {
+    "meshId": "cn-08-vestibulocochlear-r",
+    "structureId": "cn-08-vestibulocochlear",
+    "name": "Vestibulocochlear nerve (CN VIII), cisternal (R)",
+    "colour": "#F2E394",
+    "system": "cranial-nerves",
+    "atlas": "hcp1065_tracts",
+    "file": "cranial nerve/CNVIII_R"
+   },
+   "11": {
+    "meshId": "tract-corticospinal-l",
+    "structureId": "tract-corticospinal",
+    "name": "Corticospinal tract (L)",
+    "colour": "#f3ece2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CST_L"
+   },
+   "12": {
+    "meshId": "tract-corticospinal-r",
+    "structureId": "tract-corticospinal",
+    "name": "Corticospinal tract (R)",
+    "colour": "#f3ece2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CST_R"
+   },
+   "13": {
+    "meshId": "tract-corticobulbar-l",
+    "structureId": "tract-corticobulbar",
+    "name": "Corticobulbar tract (L)",
+    "colour": "#f3e8e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CBT_L"
+   },
+   "14": {
+    "meshId": "tract-corticobulbar-r",
+    "structureId": "tract-corticobulbar",
+    "name": "Corticobulbar tract (R)",
+    "colour": "#f3e8e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CBT_R"
+   },
+   "15": {
+    "meshId": "tract-medial-lemniscus-l",
+    "structureId": "tract-medial-lemniscus",
+    "name": "Medial lemniscus (L)",
+    "colour": "#f3f3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/ML_L"
+   },
+   "16": {
+    "meshId": "tract-medial-lemniscus-r",
+    "structureId": "tract-medial-lemniscus",
+    "name": "Medial lemniscus (R)",
+    "colour": "#f3f3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/ML_R"
+   },
+   "17": {
+    "meshId": "tract-dentatorubrothalamic-l",
+    "structureId": "tract-dentatorubrothalamic",
+    "name": "Dentatorubrothalamic tract (L)",
+    "colour": "#d1dca8",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/DRTT_L"
+   },
+   "18": {
+    "meshId": "tract-dentatorubrothalamic-r",
+    "structureId": "tract-dentatorubrothalamic",
+    "name": "Dentatorubrothalamic tract (R)",
+    "colour": "#d1dca8",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/DRTT_R"
+   },
+   "19": {
+    "meshId": "tract-reticulospinal-l",
+    "structureId": "tract-reticulospinal",
+    "name": "Reticulospinal tract (L)",
+    "colour": "#bfdfb0",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/RST_L"
+   },
+   "20": {
+    "meshId": "tract-reticulospinal-r",
+    "structureId": "tract-reticulospinal",
+    "name": "Reticulospinal tract (R)",
+    "colour": "#bfdfb0",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/RST_R"
+   },
+   "21": {
+    "meshId": "tract-optic-radiation-l",
+    "structureId": "tract-optic-radiation",
+    "name": "Optic radiation (L)",
+    "colour": "#dcd9a7",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/OR_L"
+   },
+   "22": {
+    "meshId": "tract-optic-radiation-r",
+    "structureId": "tract-optic-radiation",
+    "name": "Optic radiation (R)",
+    "colour": "#dcd9a7",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/OR_R"
+   },
+   "23": {
+    "meshId": "tract-acoustic-radiation-l",
+    "structureId": "tract-acoustic-radiation",
+    "name": "Acoustic radiation (L)",
+    "colour": "#d4daa3",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/AR_L"
+   },
+   "24": {
+    "meshId": "tract-acoustic-radiation-r",
+    "structureId": "tract-acoustic-radiation",
+    "name": "Acoustic radiation (R)",
+    "colour": "#d4daa3",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/AR_R"
+   },
+   "25": {
+    "meshId": "tract-fornix-l",
+    "structureId": "tract-fornix",
+    "name": "Fornix (HCP) (L)",
+    "colour": "#f3e3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/F_L"
+   },
+   "26": {
+    "meshId": "tract-fornix-r",
+    "structureId": "tract-fornix",
+    "name": "Fornix (HCP) (R)",
+    "colour": "#f3e3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/F_R"
+   },
+   "27": {
+    "meshId": "tract-thalamic-radiation-anterior-l",
+    "structureId": "tract-thalamic-radiation-anterior",
+    "name": "Anterior thalamic radiation (L)",
+    "colour": "#ebe6cc",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/TR_A_L"
+   },
+   "28": {
+    "meshId": "tract-thalamic-radiation-anterior-r",
+    "structureId": "tract-thalamic-radiation-anterior",
+    "name": "Anterior thalamic radiation (R)",
+    "colour": "#ebe6cc",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/TR_A_R"
+   },
+   "29": {
+    "meshId": "tract-thalamic-radiation-posterior-l",
+    "structureId": "tract-thalamic-radiation-posterior",
+    "name": "Posterior thalamic radiation (L)",
+    "colour": "#f1f3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/TR_P_L"
+   },
+   "30": {
+    "meshId": "tract-thalamic-radiation-posterior-r",
+    "structureId": "tract-thalamic-radiation-posterior",
+    "name": "Posterior thalamic radiation (R)",
+    "colour": "#f1f3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/TR_P_R"
+   },
+   "31": {
+    "meshId": "tract-thalamic-radiation-superior-l",
+    "structureId": "tract-thalamic-radiation-superior",
+    "name": "Superior thalamic radiation (L)",
+    "colour": "#f3f3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/TR_S_L"
+   },
+   "32": {
+    "meshId": "tract-thalamic-radiation-superior-r",
+    "structureId": "tract-thalamic-radiation-superior",
+    "name": "Superior thalamic radiation (R)",
+    "colour": "#f3f3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/TR_S_R"
+   },
+   "33": {
+    "meshId": "tract-corticopontine-frontal-l",
+    "structureId": "tract-corticopontine-frontal",
+    "name": "Frontopontine tract (L)",
+    "colour": "#ebdece",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CPT_F_L"
+   },
+   "34": {
+    "meshId": "tract-corticopontine-frontal-r",
+    "structureId": "tract-corticopontine-frontal",
+    "name": "Frontopontine tract (R)",
+    "colour": "#ebdece",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CPT_F_R"
+   },
+   "35": {
+    "meshId": "tract-corticopontine-parietal-l",
+    "structureId": "tract-corticopontine-parietal",
+    "name": "Parietopontine tract (L)",
+    "colour": "#e6c8c0",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CPT_P_L"
+   },
+   "36": {
+    "meshId": "tract-corticopontine-parietal-r",
+    "structureId": "tract-corticopontine-parietal",
+    "name": "Parietopontine tract (R)",
+    "colour": "#e6c8c0",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CPT_P_R"
+   },
+   "37": {
+    "meshId": "tract-corticopontine-occipital-l",
+    "structureId": "tract-corticopontine-occipital",
+    "name": "Occipitopontine tract (L)",
+    "colour": "#f3e2e8",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CPT_O_L"
+   },
+   "38": {
+    "meshId": "tract-corticopontine-occipital-r",
+    "structureId": "tract-corticopontine-occipital",
+    "name": "Occipitopontine tract (R)",
+    "colour": "#f3e2e8",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CPT_O_R"
+   },
+   "39": {
+    "meshId": "tract-corticostriatal-anterior-l",
+    "structureId": "tract-corticostriatal-anterior",
+    "name": "Corticostriatal tract, anterior (L)",
+    "colour": "#e7d1c4",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CS_A_L"
+   },
+   "40": {
+    "meshId": "tract-corticostriatal-anterior-r",
+    "structureId": "tract-corticostriatal-anterior",
+    "name": "Corticostriatal tract, anterior (R)",
+    "colour": "#e7d1c4",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CS_A_R"
+   },
+   "41": {
+    "meshId": "tract-corticostriatal-posterior-l",
+    "structureId": "tract-corticostriatal-posterior",
+    "name": "Corticostriatal tract, posterior (L)",
+    "colour": "#eff3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CS_P_L"
+   },
+   "42": {
+    "meshId": "tract-corticostriatal-posterior-r",
+    "structureId": "tract-corticostriatal-posterior",
+    "name": "Corticostriatal tract, posterior (R)",
+    "colour": "#eff3e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CS_P_R"
+   },
+   "43": {
+    "meshId": "tract-corticostriatal-superior-l",
+    "structureId": "tract-corticostriatal-superior",
+    "name": "Corticostriatal tract, superior (L)",
+    "colour": "#f3e2e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CS_S_L"
+   },
+   "44": {
+    "meshId": "tract-corticostriatal-superior-r",
+    "structureId": "tract-corticostriatal-superior",
+    "name": "Corticostriatal tract, superior (R)",
+    "colour": "#f3e2e2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "projection/CS_S_R"
+   },
+   "45": {
+    "meshId": "inferior-cerebellar-peduncle-l",
+    "structureId": "inferior-cerebellar-peduncle",
+    "name": "Inferior cerebellar peduncle (L)",
+    "colour": "#d8b59e",
+    "system": "cerebellum",
+    "atlas": "hcp1065_tracts",
+    "file": "cerebellum/ICP_L"
+   },
+   "46": {
+    "meshId": "inferior-cerebellar-peduncle-r",
+    "structureId": "inferior-cerebellar-peduncle",
+    "name": "Inferior cerebellar peduncle (R)",
+    "colour": "#d8b59e",
+    "system": "cerebellum",
+    "atlas": "hcp1065_tracts",
+    "file": "cerebellum/ICP_R"
+   },
+   "47": {
+    "meshId": "middle-cerebellar-peduncle",
+    "structureId": "middle-cerebellar-peduncle",
+    "name": "Middle cerebellar peduncle",
+    "colour": "#f3eae2",
+    "system": "cerebellum",
+    "atlas": "hcp1065_tracts",
+    "file": "cerebellum/MCP"
+   },
+   "48": {
+    "meshId": "superior-cerebellar-peduncle",
+    "structureId": "superior-cerebellar-peduncle",
+    "name": "Superior cerebellar peduncle",
+    "colour": "#dda9af",
+    "system": "cerebellum",
+    "atlas": "hcp1065_tracts",
+    "file": "cerebellum/SCP"
+   },
+   "49": {
+    "meshId": "tract-anterior-commissure",
+    "structureId": "tract-anterior-commissure",
+    "name": "Anterior commissure (HCP)",
+    "colour": "#deacb3",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "commissural/AC"
+   },
+   "50": {
+    "meshId": "tract-corpus-callosum",
+    "structureId": "tract-corpus-callosum",
+    "name": "Corpus callosum fibres (HCP)",
+    "colour": "#d4d093",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "commissural/CC"
+   },
+   "51": {
+    "meshId": "tract-arcuate-fasciculus-l",
+    "structureId": "tract-arcuate-fasciculus",
+    "name": "Arcuate fasciculus (L)",
+    "colour": "#ddd4a9",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/AF_L"
+   },
+   "52": {
+    "meshId": "tract-arcuate-fasciculus-r",
+    "structureId": "tract-arcuate-fasciculus",
+    "name": "Arcuate fasciculus (R)",
+    "colour": "#ddd4a9",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/AF_R"
+   },
+   "53": {
+    "meshId": "tract-inferior-fronto-occipital-fasciculus-l",
+    "structureId": "tract-inferior-fronto-occipital-fasciculus",
+    "name": "Inferior fronto-occipital fasciculus (L)",
+    "colour": "#e2b7c0",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/IFOF_L"
+   },
+   "54": {
+    "meshId": "tract-inferior-fronto-occipital-fasciculus-r",
+    "structureId": "tract-inferior-fronto-occipital-fasciculus",
+    "name": "Inferior fronto-occipital fasciculus (R)",
+    "colour": "#e2b7c0",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/IFOF_R"
+   },
+   "55": {
+    "meshId": "tract-inferior-longitudinal-fasciculus-l",
+    "structureId": "tract-inferior-longitudinal-fasciculus",
+    "name": "Inferior longitudinal fasciculus (L)",
+    "colour": "#b3d89d",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/ILF_L"
+   },
+   "56": {
+    "meshId": "tract-inferior-longitudinal-fasciculus-r",
+    "structureId": "tract-inferior-longitudinal-fasciculus",
+    "name": "Inferior longitudinal fasciculus (R)",
+    "colour": "#b3d89d",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/ILF_R"
+   },
+   "57": {
+    "meshId": "tract-uncinate-fasciculus-l",
+    "structureId": "tract-uncinate-fasciculus",
+    "name": "Uncinate fasciculus (L)",
+    "colour": "#f1e0dd",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/UF_L"
+   },
+   "58": {
+    "meshId": "tract-uncinate-fasciculus-r",
+    "structureId": "tract-uncinate-fasciculus",
+    "name": "Uncinate fasciculus (R)",
+    "colour": "#f1e0dd",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/UF_R"
+   },
+   "59": {
+    "meshId": "tract-superior-longitudinal-fasciculus-i-l",
+    "structureId": "tract-superior-longitudinal-fasciculus-i",
+    "name": "Superior longitudinal fasciculus I (L)",
+    "colour": "#ce8490",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/SLF1_L"
+   },
+   "60": {
+    "meshId": "tract-superior-longitudinal-fasciculus-i-r",
+    "structureId": "tract-superior-longitudinal-fasciculus-i",
+    "name": "Superior longitudinal fasciculus I (R)",
+    "colour": "#ce8490",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/SLF1_R"
+   },
+   "61": {
+    "meshId": "tract-superior-longitudinal-fasciculus-ii-l",
+    "structureId": "tract-superior-longitudinal-fasciculus-ii",
+    "name": "Superior longitudinal fasciculus II (L)",
+    "colour": "#f3eee2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/SLF2_L"
+   },
+   "62": {
+    "meshId": "tract-superior-longitudinal-fasciculus-ii-r",
+    "structureId": "tract-superior-longitudinal-fasciculus-ii",
+    "name": "Superior longitudinal fasciculus II (R)",
+    "colour": "#f3eee2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/SLF2_R"
+   },
+   "63": {
+    "meshId": "tract-superior-longitudinal-fasciculus-iii-l",
+    "structureId": "tract-superior-longitudinal-fasciculus-iii",
+    "name": "Superior longitudinal fasciculus III (L)",
+    "colour": "#cf8899",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/SLF3_L"
+   },
+   "64": {
+    "meshId": "tract-superior-longitudinal-fasciculus-iii-r",
+    "structureId": "tract-superior-longitudinal-fasciculus-iii",
+    "name": "Superior longitudinal fasciculus III (R)",
+    "colour": "#cf8899",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/SLF3_R"
+   },
+   "65": {
+    "meshId": "tract-middle-longitudinal-fasciculus-l",
+    "structureId": "tract-middle-longitudinal-fasciculus",
+    "name": "Middle longitudinal fasciculus (L)",
+    "colour": "#f3e2e8",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/MdLF_L"
+   },
+   "66": {
+    "meshId": "tract-middle-longitudinal-fasciculus-r",
+    "structureId": "tract-middle-longitudinal-fasciculus",
+    "name": "Middle longitudinal fasciculus (R)",
+    "colour": "#f3e2e8",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/MdLF_R"
+   },
+   "67": {
+    "meshId": "tract-frontal-aslant-l",
+    "structureId": "tract-frontal-aslant",
+    "name": "Frontal aslant tract (L)",
+    "colour": "#b8d595",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/FAT_L"
+   },
+   "68": {
+    "meshId": "tract-frontal-aslant-r",
+    "structureId": "tract-frontal-aslant",
+    "name": "Frontal aslant tract (R)",
+    "colour": "#b8d595",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/FAT_R"
+   },
+   "69": {
+    "meshId": "tract-cingulum-frontoparietal-l",
+    "structureId": "tract-cingulum-frontoparietal",
+    "name": "Cingulum, fronto-parietal (L)",
+    "colour": "#d1e0b1",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/C_FP_L"
+   },
+   "70": {
+    "meshId": "tract-cingulum-frontoparietal-r",
+    "structureId": "tract-cingulum-frontoparietal",
+    "name": "Cingulum, fronto-parietal (R)",
+    "colour": "#d1e0b1",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/C_FP_R"
+   },
+   "71": {
+    "meshId": "tract-cingulum-parahippocampal-l",
+    "structureId": "tract-cingulum-parahippocampal",
+    "name": "Cingulum, parahippocampal (L)",
+    "colour": "#f3ece2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/C_PH_L"
+   },
+   "72": {
+    "meshId": "tract-cingulum-parahippocampal-r",
+    "structureId": "tract-cingulum-parahippocampal",
+    "name": "Cingulum, parahippocampal (R)",
+    "colour": "#f3ece2",
+    "system": "tracts",
+    "atlas": "hcp1065_tracts",
+    "file": "association/C_PH_R"
+   }
+  },
+  "vascular": {
+   "1": {
+    "meshId": "territory-aca-l",
+    "structureId": "territory-aca",
+    "name": "ACA territory (L)",
+    "colour": "#f4b150",
+    "system": "arterial-territories"
+   },
+   "2": {
+    "meshId": "territory-aca-r",
+    "structureId": "territory-aca",
+    "name": "ACA territory (R)",
+    "colour": "#f4b150",
+    "system": "arterial-territories"
+   },
+   "3": {
+    "meshId": "territory-medial-lenticulostriate-l",
+    "structureId": "territory-medial-lenticulostriate",
+    "name": "Medial lenticulostriate territory (L)",
+    "colour": "#f0ca6a",
+    "system": "arterial-territories"
+   },
+   "4": {
+    "meshId": "territory-medial-lenticulostriate-r",
+    "structureId": "territory-medial-lenticulostriate",
+    "name": "Medial lenticulostriate territory (R)",
+    "colour": "#f0ca6a",
+    "system": "arterial-territories"
+   },
+   "5": {
+    "meshId": "territory-lateral-lenticulostriate-l",
+    "structureId": "territory-lateral-lenticulostriate",
+    "name": "Lateral lenticulostriate territory (L)",
+    "colour": "#eed855",
+    "system": "arterial-territories"
+   },
+   "6": {
+    "meshId": "territory-lateral-lenticulostriate-r",
+    "structureId": "territory-lateral-lenticulostriate",
+    "name": "Lateral lenticulostriate territory (R)",
+    "colour": "#eed855",
+    "system": "arterial-territories"
+   },
+   "7": {
+    "meshId": "territory-mca-frontal-l",
+    "structureId": "territory-mca-frontal",
+    "name": "MCA territory, frontal (L)",
+    "colour": "#e08050",
+    "system": "arterial-territories"
+   },
+   "8": {
+    "meshId": "territory-mca-frontal-r",
+    "structureId": "territory-mca-frontal",
+    "name": "MCA territory, frontal (R)",
+    "colour": "#e08050",
+    "system": "arterial-territories"
+   },
+   "9": {
+    "meshId": "territory-mca-parietal-l",
+    "structureId": "territory-mca-parietal",
+    "name": "MCA territory, parietal (L)",
+    "colour": "#e6708f",
+    "system": "arterial-territories"
+   },
+   "10": {
+    "meshId": "territory-mca-parietal-r",
+    "structureId": "territory-mca-parietal",
+    "name": "MCA territory, parietal (R)",
+    "colour": "#e6708f",
+    "system": "arterial-territories"
+   },
+   "11": {
+    "meshId": "territory-mca-temporal-l",
+    "structureId": "territory-mca-temporal",
+    "name": "MCA territory, temporal (L)",
+    "colour": "#e78b77",
+    "system": "arterial-territories"
+   },
+   "12": {
+    "meshId": "territory-mca-temporal-r",
+    "structureId": "territory-mca-temporal",
+    "name": "MCA territory, temporal (R)",
+    "colour": "#e78b77",
+    "system": "arterial-territories"
+   },
+   "13": {
+    "meshId": "territory-mca-occipital-l",
+    "structureId": "territory-mca-occipital",
+    "name": "MCA territory, occipital (L)",
+    "colour": "#e15589",
+    "system": "arterial-territories"
+   },
+   "14": {
+    "meshId": "territory-mca-occipital-r",
+    "structureId": "territory-mca-occipital",
+    "name": "MCA territory, occipital (R)",
+    "colour": "#e15589",
+    "system": "arterial-territories"
+   },
+   "15": {
+    "meshId": "territory-mca-insular-l",
+    "structureId": "territory-mca-insular",
+    "name": "MCA territory, insular (L)",
+    "colour": "#e04f7e",
+    "system": "arterial-territories"
+   },
+   "16": {
+    "meshId": "territory-mca-insular-r",
+    "structureId": "territory-mca-insular",
+    "name": "MCA territory, insular (R)",
+    "colour": "#e04f7e",
+    "system": "arterial-territories"
+   },
+   "17": {
+    "meshId": "territory-pca-temporal-l",
+    "structureId": "territory-pca-temporal",
+    "name": "PCA territory, temporal (L)",
+    "colour": "#69adb0",
+    "system": "arterial-territories"
+   },
+   "18": {
+    "meshId": "territory-pca-temporal-r",
+    "structureId": "territory-pca-temporal",
+    "name": "PCA territory, temporal (R)",
+    "colour": "#69adb0",
+    "system": "arterial-territories"
+   },
+   "19": {
+    "meshId": "territory-pca-occipital-l",
+    "structureId": "territory-pca-occipital",
+    "name": "PCA territory, occipital (L)",
+    "colour": "#5ba0a9",
+    "system": "arterial-territories"
+   },
+   "20": {
+    "meshId": "territory-pca-occipital-r",
+    "structureId": "territory-pca-occipital",
+    "name": "PCA territory, occipital (R)",
+    "colour": "#5ba0a9",
+    "system": "arterial-territories"
+   },
+   "21": {
+    "meshId": "territory-posterior-choroidal-thalamoperforating-l",
+    "structureId": "territory-posterior-choroidal-thalamoperforating",
+    "name": "Posterior choroidal & thalamoperforating territory (L)",
+    "colour": "#bd90b0",
+    "system": "arterial-territories"
+   },
+   "22": {
+    "meshId": "territory-posterior-choroidal-thalamoperforating-r",
+    "structureId": "territory-posterior-choroidal-thalamoperforating",
+    "name": "Posterior choroidal & thalamoperforating territory (R)",
+    "colour": "#bd90b0",
+    "system": "arterial-territories"
+   },
+   "23": {
+    "meshId": "territory-anterior-choroidal-thalamoperforating-l",
+    "structureId": "territory-anterior-choroidal-thalamoperforating",
+    "name": "Anterior choroidal & thalamoperforating territory (L)",
+    "colour": "#a16190",
+    "system": "arterial-territories"
+   },
+   "24": {
+    "meshId": "territory-anterior-choroidal-thalamoperforating-r",
+    "structureId": "territory-anterior-choroidal-thalamoperforating",
+    "name": "Anterior choroidal & thalamoperforating territory (R)",
+    "colour": "#a16190",
+    "system": "arterial-territories"
+   },
+   "25": {
+    "meshId": "territory-basilar-l",
+    "structureId": "territory-basilar",
+    "name": "Basilar (pontine) territory (L)",
+    "colour": "#649449",
+    "system": "arterial-territories"
+   },
+   "26": {
+    "meshId": "territory-basilar-r",
+    "structureId": "territory-basilar",
+    "name": "Basilar (pontine) territory (R)",
+    "colour": "#649449",
+    "system": "arterial-territories"
+   },
+   "27": {
+    "meshId": "territory-superior-cerebellar-l",
+    "structureId": "territory-superior-cerebellar",
+    "name": "Superior cerebellar artery territory (L)",
+    "colour": "#4b8e46",
+    "system": "arterial-territories"
+   },
+   "28": {
+    "meshId": "territory-superior-cerebellar-r",
+    "structureId": "territory-superior-cerebellar",
+    "name": "Superior cerebellar artery territory (R)",
+    "colour": "#4b8e46",
+    "system": "arterial-territories"
+   },
+   "29": {
+    "meshId": "territory-inferior-cerebellar-l",
+    "structureId": "territory-inferior-cerebellar",
+    "name": "Inferior cerebellar (PICA/AICA) territory (L)",
+    "colour": "#6bad57",
+    "system": "arterial-territories"
+   },
+   "30": {
+    "meshId": "territory-inferior-cerebellar-r",
+    "structureId": "territory-inferior-cerebellar",
+    "name": "Inferior cerebellar (PICA/AICA) territory (R)",
+    "colour": "#6bad57",
+    "system": "arterial-territories"
+   }
+  },
+  "vascular2": {
+   "1": {
+    "meshId": "territory-aca-major-l",
+    "structureId": "territory-aca-major",
+    "name": "ACA major territory (L)",
+    "colour": "#ef7e0f",
+    "system": "arterial-territories"
+   },
+   "2": {
+    "meshId": "territory-aca-major-r",
+    "structureId": "territory-aca-major",
+    "name": "ACA major territory (R)",
+    "colour": "#ef7e0f",
+    "system": "arterial-territories"
+   },
+   "3": {
+    "meshId": "territory-mca-major-l",
+    "structureId": "territory-mca-major",
+    "name": "MCA major territory (L)",
+    "colour": "#dc3b51",
+    "system": "arterial-territories"
+   },
+   "4": {
+    "meshId": "territory-mca-major-r",
+    "structureId": "territory-mca-major",
+    "name": "MCA major territory (R)",
+    "colour": "#dc3b51",
+    "system": "arterial-territories"
+   },
+   "5": {
+    "meshId": "territory-pca-major-l",
+    "structureId": "territory-pca-major",
+    "name": "PCA major territory (L)",
+    "colour": "#8cc0c3",
+    "system": "arterial-territories"
+   },
+   "6": {
+    "meshId": "territory-pca-major-r",
+    "structureId": "territory-pca-major",
+    "name": "PCA major territory (R)",
+    "colour": "#8cc0c3",
+    "system": "arterial-territories"
+   },
+   "7": {
+    "meshId": "territory-vertebrobasilar-major-l",
+    "structureId": "territory-vertebrobasilar-major",
+    "name": "Vertebrobasilar major territory (L)",
+    "colour": "#668c45",
+    "system": "arterial-territories"
+   },
+   "8": {
+    "meshId": "territory-vertebrobasilar-major-r",
+    "structureId": "territory-vertebrobasilar-major",
+    "name": "Vertebrobasilar major territory (R)",
+    "colour": "#668c45",
+    "system": "arterial-territories"
+   }
+  }
+ },
+ "byMesh": {
+  "ventricle-lateral-l": {
+   "anat": [
+    1
+   ]
+  },
+  "ventricle-lateral-r": {
+   "anat": [
+    2
+   ]
+  },
+  "ventricle-lateral-inferior-horn-l": {
+   "anat": [
+    3
+   ]
+  },
+  "ventricle-lateral-inferior-horn-r": {
+   "anat": [
+    4
+   ]
+  },
+  "ventricle-third": {
+   "anat": [
+    5
+   ]
+  },
+  "ventricle-fourth": {
+   "anat": [
+    6
+   ]
+  },
+  "brainstem": {
+   "anat": [
+    7
+   ]
+  },
+  "cerebellar-hemisphere-l": {
+   "anat": [
+    8
+   ]
+  },
+  "cerebellar-hemisphere-r": {
+   "anat": [
+    9
+   ]
+  },
+  "cerebellar-white-matter-l": {
+   "anat": [
+    10
+   ]
+  },
+  "cerebellar-white-matter-r": {
+   "anat": [
+    11
+   ]
+  },
+  "hippocampus-l": {
+   "anat": [
+    12
+   ]
+  },
+  "hippocampus-r": {
+   "anat": [
+    13
+   ]
+  },
+  "cerebral-white-matter-l": {
+   "anat": [
+    14
+   ]
+  },
+  "cerebral-white-matter-r": {
+   "anat": [
+    15
+   ]
+  },
+  "corpus-callosum": {
+   "anat": [
+    16
+   ]
+  },
+  "ventral-diencephalon-l": {
+   "anat": [
+    17
+   ]
+  },
+  "ventral-diencephalon-r": {
+   "anat": [
+    18
+   ]
+  },
+  "territory-aca-major-l": {
+   "vascular2": [
+    1
+   ]
+  },
+  "territory-aca-major-r": {
+   "vascular2": [
+    2
+   ]
+  },
+  "territory-mca-major-l": {
+   "vascular2": [
+    3
+   ]
+  },
+  "territory-mca-major-r": {
+   "vascular2": [
+    4
+   ]
+  },
+  "territory-pca-major-l": {
+   "vascular2": [
+    5
+   ]
+  },
+  "territory-pca-major-r": {
+   "vascular2": [
+    6
+   ]
+  },
+  "territory-vertebrobasilar-major-l": {
+   "vascular2": [
+    7
+   ]
+  },
+  "territory-vertebrobasilar-major-r": {
+   "vascular2": [
+    8
+   ]
+  },
+  "cn-02-optic-l": {
+   "tract": [
+    1
+   ]
+  },
+  "cn-02-optic-r": {
+   "tract": [
+    2
+   ]
+  },
+  "cn-03-oculomotor-l": {
+   "tract": [
+    3
+   ]
+  },
+  "cn-03-oculomotor-r": {
+   "tract": [
+    4
+   ]
+  },
+  "cn-05-trigeminal-l": {
+   "tract": [
+    5
+   ]
+  },
+  "cn-05-trigeminal-r": {
+   "tract": [
+    6
+   ]
+  },
+  "cn-07-facial-l": {
+   "tract": [
+    7
+   ]
+  },
+  "cn-07-facial-r": {
+   "tract": [
+    8
+   ]
+  },
+  "cn-08-vestibulocochlear-l": {
+   "tract": [
+    9
+   ]
+  },
+  "cn-08-vestibulocochlear-r": {
+   "tract": [
+    10
+   ]
+  },
+  "tract-corticospinal-l": {
+   "tract": [
+    11
+   ]
+  },
+  "tract-corticospinal-r": {
+   "tract": [
+    12
+   ]
+  },
+  "tract-corticobulbar-l": {
+   "tract": [
+    13
+   ]
+  },
+  "tract-corticobulbar-r": {
+   "tract": [
+    14
+   ]
+  },
+  "tract-medial-lemniscus-l": {
+   "tract": [
+    15
+   ]
+  },
+  "tract-medial-lemniscus-r": {
+   "tract": [
+    16
+   ]
+  },
+  "tract-dentatorubrothalamic-l": {
+   "tract": [
+    17
+   ]
+  },
+  "tract-dentatorubrothalamic-r": {
+   "tract": [
+    18
+   ]
+  },
+  "tract-reticulospinal-l": {
+   "tract": [
+    19
+   ]
+  },
+  "tract-reticulospinal-r": {
+   "tract": [
+    20
+   ]
+  },
+  "tract-optic-radiation-l": {
+   "tract": [
+    21
+   ]
+  },
+  "tract-optic-radiation-r": {
+   "tract": [
+    22
+   ]
+  },
+  "tract-acoustic-radiation-l": {
+   "tract": [
+    23
+   ]
+  },
+  "tract-acoustic-radiation-r": {
+   "tract": [
+    24
+   ]
+  },
+  "tract-fornix-l": {
+   "tract": [
+    25
+   ]
+  },
+  "tract-fornix-r": {
+   "tract": [
+    26
+   ]
+  },
+  "tract-thalamic-radiation-anterior-l": {
+   "tract": [
+    27
+   ]
+  },
+  "tract-thalamic-radiation-anterior-r": {
+   "tract": [
+    28
+   ]
+  },
+  "tract-thalamic-radiation-posterior-l": {
+   "tract": [
+    29
+   ]
+  },
+  "tract-thalamic-radiation-posterior-r": {
+   "tract": [
+    30
+   ]
+  },
+  "tract-thalamic-radiation-superior-l": {
+   "tract": [
+    31
+   ]
+  },
+  "tract-thalamic-radiation-superior-r": {
+   "tract": [
+    32
+   ]
+  },
+  "tract-corticopontine-frontal-l": {
+   "tract": [
+    33
+   ]
+  },
+  "tract-corticopontine-frontal-r": {
+   "tract": [
+    34
+   ]
+  },
+  "tract-corticopontine-parietal-l": {
+   "tract": [
+    35
+   ]
+  },
+  "tract-corticopontine-parietal-r": {
+   "tract": [
+    36
+   ]
+  },
+  "tract-corticopontine-occipital-l": {
+   "tract": [
+    37
+   ]
+  },
+  "tract-corticopontine-occipital-r": {
+   "tract": [
+    38
+   ]
+  },
+  "tract-corticostriatal-anterior-l": {
+   "tract": [
+    39
+   ]
+  },
+  "tract-corticostriatal-anterior-r": {
+   "tract": [
+    40
+   ]
+  },
+  "tract-corticostriatal-posterior-l": {
+   "tract": [
+    41
+   ]
+  },
+  "tract-corticostriatal-posterior-r": {
+   "tract": [
+    42
+   ]
+  },
+  "tract-corticostriatal-superior-l": {
+   "tract": [
+    43
+   ]
+  },
+  "tract-corticostriatal-superior-r": {
+   "tract": [
+    44
+   ]
+  },
+  "inferior-cerebellar-peduncle-l": {
+   "tract": [
+    45
+   ]
+  },
+  "inferior-cerebellar-peduncle-r": {
+   "tract": [
+    46
+   ]
+  },
+  "middle-cerebellar-peduncle": {
+   "tract": [
+    47
+   ]
+  },
+  "superior-cerebellar-peduncle": {
+   "tract": [
+    48
+   ]
+  },
+  "tract-anterior-commissure": {
+   "tract": [
+    49
+   ]
+  },
+  "tract-corpus-callosum": {
+   "tract": [
+    50
+   ]
+  },
+  "tract-arcuate-fasciculus-l": {
+   "tract": [
+    51
+   ]
+  },
+  "tract-arcuate-fasciculus-r": {
+   "tract": [
+    52
+   ]
+  },
+  "tract-inferior-fronto-occipital-fasciculus-l": {
+   "tract": [
+    53
+   ]
+  },
+  "tract-inferior-fronto-occipital-fasciculus-r": {
+   "tract": [
+    54
+   ]
+  },
+  "tract-inferior-longitudinal-fasciculus-l": {
+   "tract": [
+    55
+   ]
+  },
+  "tract-inferior-longitudinal-fasciculus-r": {
+   "tract": [
+    56
+   ]
+  },
+  "tract-uncinate-fasciculus-l": {
+   "tract": [
+    57
+   ]
+  },
+  "tract-uncinate-fasciculus-r": {
+   "tract": [
+    58
+   ]
+  },
+  "tract-superior-longitudinal-fasciculus-i-l": {
+   "tract": [
+    59
+   ]
+  },
+  "tract-superior-longitudinal-fasciculus-i-r": {
+   "tract": [
+    60
+   ]
+  },
+  "tract-superior-longitudinal-fasciculus-ii-l": {
+   "tract": [
+    61
+   ]
+  },
+  "tract-superior-longitudinal-fasciculus-ii-r": {
+   "tract": [
+    62
+   ]
+  },
+  "tract-superior-longitudinal-fasciculus-iii-l": {
+   "tract": [
+    63
+   ]
+  },
+  "tract-superior-longitudinal-fasciculus-iii-r": {
+   "tract": [
+    64
+   ]
+  },
+  "tract-middle-longitudinal-fasciculus-l": {
+   "tract": [
+    65
+   ]
+  },
+  "tract-middle-longitudinal-fasciculus-r": {
+   "tract": [
+    66
+   ]
+  },
+  "tract-frontal-aslant-l": {
+   "tract": [
+    67
+   ]
+  },
+  "tract-frontal-aslant-r": {
+   "tract": [
+    68
+   ]
+  },
+  "tract-cingulum-frontoparietal-l": {
+   "tract": [
+    69
+   ]
+  },
+  "tract-cingulum-frontoparietal-r": {
+   "tract": [
+    70
+   ]
+  },
+  "tract-cingulum-parahippocampal-l": {
+   "tract": [
+    71
+   ]
+  },
+  "tract-cingulum-parahippocampal-r": {
+   "tract": [
+    72
+   ]
+  },
+  "territory-aca-l": {
+   "vascular": [
+    1
+   ]
+  },
+  "territory-aca-r": {
+   "vascular": [
+    2
+   ]
+  },
+  "territory-medial-lenticulostriate-l": {
+   "vascular": [
+    3
+   ]
+  },
+  "territory-medial-lenticulostriate-r": {
+   "vascular": [
+    4
+   ]
+  },
+  "territory-lateral-lenticulostriate-l": {
+   "vascular": [
+    5
+   ]
+  },
+  "territory-lateral-lenticulostriate-r": {
+   "vascular": [
+    6
+   ]
+  },
+  "territory-mca-frontal-l": {
+   "vascular": [
+    7
+   ]
+  },
+  "territory-mca-frontal-r": {
+   "vascular": [
+    8
+   ]
+  },
+  "territory-mca-parietal-l": {
+   "vascular": [
+    9
+   ]
+  },
+  "territory-mca-parietal-r": {
+   "vascular": [
+    10
+   ]
+  },
+  "territory-mca-temporal-l": {
+   "vascular": [
+    11
+   ]
+  },
+  "territory-mca-temporal-r": {
+   "vascular": [
+    12
+   ]
+  },
+  "territory-mca-occipital-l": {
+   "vascular": [
+    13
+   ]
+  },
+  "territory-mca-occipital-r": {
+   "vascular": [
+    14
+   ]
+  },
+  "territory-mca-insular-l": {
+   "vascular": [
+    15
+   ]
+  },
+  "territory-mca-insular-r": {
+   "vascular": [
+    16
+   ]
+  },
+  "territory-pca-temporal-l": {
+   "vascular": [
+    17
+   ]
+  },
+  "territory-pca-temporal-r": {
+   "vascular": [
+    18
+   ]
+  },
+  "territory-pca-occipital-l": {
+   "vascular": [
+    19
+   ]
+  },
+  "territory-pca-occipital-r": {
+   "vascular": [
+    20
+   ]
+  },
+  "territory-posterior-choroidal-thalamoperforating-l": {
+   "vascular": [
+    21
+   ]
+  },
+  "territory-posterior-choroidal-thalamoperforating-r": {
+   "vascular": [
+    22
+   ]
+  },
+  "territory-anterior-choroidal-thalamoperforating-l": {
+   "vascular": [
+    23
+   ]
+  },
+  "territory-anterior-choroidal-thalamoperforating-r": {
+   "vascular": [
+    24
+   ]
+  },
+  "territory-basilar-l": {
+   "vascular": [
+    25
+   ]
+  },
+  "territory-basilar-r": {
+   "vascular": [
+    26
+   ]
+  },
+  "territory-superior-cerebellar-l": {
+   "vascular": [
+    27
+   ]
+  },
+  "territory-superior-cerebellar-r": {
+   "vascular": [
+    28
+   ]
+  },
+  "territory-inferior-cerebellar-l": {
+   "vascular": [
+    29
+   ]
+  },
+  "territory-inferior-cerebellar-r": {
+   "vascular": [
+    30
+   ]
+  },
+  "mammillary-body-l": {
+   "anat": [
+    149
+   ]
+  },
+  "mammillary-body-r": {
+   "anat": [
+    150
+   ]
+  },
+  "hypothalamus-medial-preoptic-l": {
+   "anat": [
+    151
+   ]
+  },
+  "hypothalamus-medial-preoptic-r": {
+   "anat": [
+    152
+   ]
+  },
+  "hypothalamus-paraventricular-l": {
+   "anat": [
+    153
+   ]
+  },
+  "hypothalamus-paraventricular-r": {
+   "anat": [
+    154
+   ]
+  },
+  "hypothalamus-lateral-l": {
+   "anat": [
+    155
+   ]
+  },
+  "hypothalamus-lateral-r": {
+   "anat": [
+    156
+   ]
+  },
+  "hypothalamus-ventromedial-l": {
+   "anat": [
+    157
+   ]
+  },
+  "hypothalamus-ventromedial-r": {
+   "anat": [
+    158
+   ]
+  },
+  "hypothalamus-arcuate-l": {
+   "anat": [
+    159
+   ]
+  },
+  "hypothalamus-arcuate-r": {
+   "anat": [
+    160
+   ]
+  },
+  "bed-nucleus-stria-terminalis-l": {
+   "anat": [
+    161
+   ]
+  },
+  "bed-nucleus-stria-terminalis-r": {
+   "anat": [
+    162
+   ]
+  },
+  "nucleus-basalis-meynert-l": {
+   "anat": [
+    163
+   ]
+  },
+  "nucleus-basalis-meynert-r": {
+   "anat": [
+    164
+   ]
+  },
+  "hypothalamus-dorsomedial-l": {
+   "anat": [
+    165
+   ]
+  },
+  "hypothalamus-dorsomedial-r": {
+   "anat": [
+    166
+   ]
+  },
+  "zona-incerta-l": {
+   "anat": [
+    167
+   ]
+  },
+  "zona-incerta-r": {
+   "anat": [
+    168
+   ]
+  },
+  "hypothalamus-supraoptic-l": {
+   "anat": [
+    169
+   ]
+  },
+  "hypothalamus-supraoptic-r": {
+   "anat": [
+    170
+   ]
+  },
+  "hypothalamus-suprachiasmatic-l": {
+   "anat": [
+    171
+   ]
+  },
+  "hypothalamus-suprachiasmatic-r": {
+   "anat": [
+    172
+   ]
+  },
+  "hypothalamus-tuberomammillary-l": {
+   "anat": [
+    173
+   ]
+  },
+  "hypothalamus-tuberomammillary-r": {
+   "anat": [
+    174
+   ]
+  },
+  "hypothalamus-posterior-l": {
+   "anat": [
+    175
+   ]
+  },
+  "hypothalamus-posterior-r": {
+   "anat": [
+    176
+   ]
+  },
+  "hypothalamus-anterior-area-l": {
+   "anat": [
+    177
+   ]
+  },
+  "hypothalamus-anterior-area-r": {
+   "anat": [
+    178
+   ]
+  },
+  "mammillothalamic-tract-l": {
+   "anat": [
+    179
+   ]
+  },
+  "mammillothalamic-tract-r": {
+   "anat": [
+    180
+   ]
+  },
+  "substantia-nigra-pars-compacta-l": {
+   "anat": [
+    181
+   ]
+  },
+  "substantia-nigra-pars-compacta-r": {
+   "anat": [
+    182
+   ]
+  },
+  "substantia-nigra-pars-reticulata-l": {
+   "anat": [
+    183
+   ]
+  },
+  "substantia-nigra-pars-reticulata-r": {
+   "anat": [
+    184
+   ]
+  },
+  "thalamus-pulvinar-l": {
+   "anat": [
+    185
+   ]
+  },
+  "thalamus-pulvinar-r": {
+   "anat": [
+    186
+   ]
+  },
+  "thalamus-ventral-anterior-l": {
+   "anat": [
+    187
+   ]
+  },
+  "thalamus-ventral-anterior-r": {
+   "anat": [
+    188
+   ]
+  },
+  "thalamus-mediodorsal-l": {
+   "anat": [
+    189
+   ]
+  },
+  "thalamus-mediodorsal-r": {
+   "anat": [
+    190
+   ]
+  },
+  "thalamus-lateral-posterior-ventral-posterior-l": {
+   "anat": [
+    191
+   ]
+  },
+  "thalamus-lateral-posterior-ventral-posterior-r": {
+   "anat": [
+    192
+   ]
+  },
+  "thalamus-pulvinar-medial-centrolateral-l": {
+   "anat": [
+    193
+   ]
+  },
+  "thalamus-pulvinar-medial-centrolateral-r": {
+   "anat": [
+    194
+   ]
+  },
+  "thalamus-ventrolateral-l": {
+   "anat": [
+    195
+   ]
+  },
+  "thalamus-ventrolateral-r": {
+   "anat": [
+    196
+   ]
+  },
+  "thalamus-ventral-posterior-ventrolateral-l": {
+   "anat": [
+    197
+   ]
+  },
+  "thalamus-ventral-posterior-ventrolateral-r": {
+   "anat": [
+    198
+   ]
+  },
+  "caudate-nucleus-l": {
+   "anat": [
+    199
+   ]
+  },
+  "caudate-nucleus-r": {
+   "anat": [
+    200
+   ]
+  },
+  "subthalamic-nucleus-l": {
+   "anat": [
+    201
+   ]
+  },
+  "subthalamic-nucleus-r": {
+   "anat": [
+    202
+   ]
+  },
+  "substantia-nigra-l": {
+   "anat": [
+    203
+   ]
+  },
+  "substantia-nigra-r": {
+   "anat": [
+    204
+   ]
+  },
+  "red-nucleus-l": {
+   "anat": [
+    205
+   ]
+  },
+  "red-nucleus-r": {
+   "anat": [
+    206
+   ]
+  },
+  "globus-pallidus-internus-l": {
+   "anat": [
+    207
+   ]
+  },
+  "globus-pallidus-internus-r": {
+   "anat": [
+    208
+   ]
+  },
+  "globus-pallidus-externus-l": {
+   "anat": [
+    209
+   ]
+  },
+  "globus-pallidus-externus-r": {
+   "anat": [
+    210
+   ]
+  },
+  "thalamus-l": {
+   "anat": [
+    211
+   ]
+  },
+  "thalamus-r": {
+   "anat": [
+    212
+   ]
+  },
+  "amygdala-l": {
+   "anat": [
+    213
+   ]
+  },
+  "amygdala-r": {
+   "anat": [
+    214
+   ]
+  },
+  "internal-capsule-l": {
+   "anat": [
+    215
+   ]
+  },
+  "internal-capsule-r": {
+   "anat": [
+    216
+   ]
+  },
+  "ventral-tegmental-area-l": {
+   "anat": [
+    217
+   ]
+  },
+  "ventral-tegmental-area-r": {
+   "anat": [
+    218
+   ]
+  },
+  "fornix": {
+   "anat": [
+    219
+   ]
+  },
+  "periaqueductal-grey-l": {
+   "anat": [
+    220
+   ]
+  },
+  "periaqueductal-grey-r": {
+   "anat": [
+    221
+   ]
+  },
+  "pedunculopontine-nucleus-l": {
+   "anat": [
+    222
+   ]
+  },
+  "pedunculopontine-nucleus-r": {
+   "anat": [
+    223
+   ]
+  },
+  "claustrum-l": {
+   "anat": [
+    224
+   ]
+  },
+  "claustrum-r": {
+   "anat": [
+    225
+   ]
+  },
+  "inferior-colliculus-l": {
+   "anat": [
+    226
+   ]
+  },
+  "inferior-colliculus-r": {
+   "anat": [
+    227
+   ]
+  },
+  "superior-colliculus-l": {
+   "anat": [
+    228
+   ]
+  },
+  "superior-colliculus-r": {
+   "anat": [
+    229
+   ]
+  },
+  "habenula-l": {
+   "anat": [
+    230
+   ]
+  },
+  "habenula-r": {
+   "anat": [
+    231
+   ]
+  },
+  "putamen-l": {
+   "anat": [
+    232
+   ]
+  },
+  "putamen-r": {
+   "anat": [
+    233
+   ]
+  },
+  "nucleus-accumbens-l": {
+   "anat": [
+    234
+   ]
+  },
+  "nucleus-accumbens-r": {
+   "anat": [
+    235
+   ]
+  },
+  "hippocampus-ca1-l": {
+   "anat": [
+    236
+   ]
+  },
+  "hippocampus-ca1-r": {
+   "anat": [
+    237
+   ]
+  },
+  "hippocampus-ca23-l": {
+   "anat": [
+    238
+   ]
+  },
+  "hippocampus-ca23-r": {
+   "anat": [
+    239
+   ]
+  },
+  "dentate-gyrus-l": {
+   "anat": [
+    240
+   ]
+  },
+  "dentate-gyrus-r": {
+   "anat": [
+    241
+   ]
+  },
+  "presubiculum-l": {
+   "anat": [
+    242
+   ]
+  },
+  "presubiculum-r": {
+   "anat": [
+    243
+   ]
+  },
+  "subiculum-l": {
+   "anat": [
+    244
+   ]
+  },
+  "subiculum-r": {
+   "anat": [
+    245
+   ]
+  },
+  "uncus-l": {
+   "anat": [
+    246
+   ]
+  },
+  "uncus-r": {
+   "anat": [
+    247
+   ]
+  },
+  "anterior-commissure": {
+   "anat": [
+    248
+   ]
+  },
+  "posterior-commissure": {
+   "anat": [
+    249
+   ]
+  },
+  "basal-forebrain-cholinergic-l": {
+   "anat": [
+    250
+   ]
+  },
+  "basal-forebrain-cholinergic-r": {
+   "anat": [
+    251
+   ]
+  },
+  "raphe-dorsal": {
+   "anat": [
+    252
+   ]
+  },
+  "raphe-median": {
+   "anat": [
+    253
+   ]
+  },
+  "lateral-geniculate-nucleus-l": {
+   "anat": [
+    254
+   ]
+  },
+  "lateral-geniculate-nucleus-r": {
+   "anat": [
+    255
+   ]
+  },
+  "medial-geniculate-nucleus-l": {
+   "anat": [
+    256
+   ]
+  },
+  "medial-geniculate-nucleus-r": {
+   "anat": [
+    257
+   ]
+  }
+ }
+}

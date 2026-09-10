@@ -7,16 +7,23 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Tutoriel - MedGame</title>
+    <meta name="description" content="Comment jouer à MedGame - Guide clinique et règles du jeu">
+    <title>Comment Jouer ? - MedGame</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
+
+    <!-- Styles & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index.css?v=2">
-    <link rel="stylesheet" href="css/device-check.css?v=2">
+    <link rel="stylesheet" href="css/index.css?v=3.6">
+    <link rel="stylesheet" href="css/tutorial.css?v=3">
+
+    <!-- Three.js pour le fond 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script type="importmap">
     {
@@ -26,450 +33,142 @@
         }
     }
     </script>
-    <style>
-        /* Premium Static Design Overrides */
-        body {
-            overflow: hidden;
-            /* Ensure no scrollbars */
-            background-color: var(--dark-bg);
-        }
-
-        .scene-overlay {
-            perspective: none;
-            /* Remove 3D perspective */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100vh;
-            z-index: 10;
-        }
-
-        .glass-card {
-            /* Static positioning, no transform */
-            transform: none !important;
-            width: 95%;
-            max-width: 1200px;
-            /* Wider for better horizontal layout */
-            background: rgba(10, 15, 30, 0.65);
-            /* Darker, more premium glass */
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            box-shadow:
-                0 15px 35px rgba(0, 0, 0, 0.5),
-                inset 0 0 20px rgba(0, 242, 254, 0.05);
-            border-radius: 20px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* Header Styling */
-        .tutorial-header {
-            text-align: center;
-            position: relative;
-        }
-
-        .tutorial-header::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            margin: 1rem auto 0;
-            opacity: 0.7;
-        }
-
-        .tutorial-title {
-            font-family: var(--font-title);
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            color: #ffffff;
-            margin: 0;
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
-            text-transform: uppercase;
-        }
-
-        .tutorial-subtitle {
-            font-family: var(--font-main);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 0.5rem;
-        }
-
-        /* Steps Grid */
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 1rem;
-        }
-
-        .step-card {
-            background: rgba(10, 15, 30, 0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .step-card:hover {
-            background: rgba(15, 20, 40, 0.6);
-            border-color: rgba(0, 242, 254, 0.4);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 242, 254, 0.1);
-        }
-
-        .step-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--secondary), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .step-card:hover::before {
-            opacity: 1;
-        }
-
-        .step-icon {
-            font-size: 2rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 10px rgba(79, 172, 254, 0.4));
-        }
-
-        .step-title {
-            font-family: var(--font-title);
-            font-size: 1rem;
-            color: #fff;
-            margin-bottom: 0.5rem;
-            letter-spacing: 1px;
-        }
-
-        .step-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Conseils Section */
-        .conseils-bar {
-            background: linear-gradient(90deg, rgba(0, 242, 254, 0.08) 0%, rgba(179, 136, 255, 0.08) 100%);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .conseils-title {
-            font-family: var(--font-title);
-            font-size: 1.1rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            min-width: 150px;
-        }
-
-        .conseils-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            flex-grow: 1;
-            margin-left: 2rem;
-        }
-
-        .conseil-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            font-size: 0.8rem;
-            color: var(--text-main);
-        }
-
-        .conseil-item i {
-            color: #43e97b;
-            font-size: 0.9rem;
-        }
-
-        /* Footer & Button */
-        .footer-actions {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .btn-premium {
-            background: rgba(0, 242, 254, 0.1);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            font-family: var(--font-title);
-            font-size: 0.9rem;
-            padding: 0.8rem 2.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
-        }
-
-        .btn-premium:hover {
-            background: var(--primary);
-            color: #000;
-            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
-            transform: translateY(-2px);
-            font-weight: 700;
-        }
-
-        .version-text {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.2);
-            letter-spacing: 1px;
-        }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 900px) {
-            .glass-card {
-                max-width: 100%;
-                padding: 1rem;
-            }
-
-            .steps-container {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.8rem;
-            }
-
-            .step-card {
-                padding: 1rem;
-            }
-
-            .step-title {
-                font-size: 0.9rem;
-            }
-
-            .step-desc {
-                font-size: 0.7rem;
-            }
-
-            .conseils-bar {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-
-            .conseils-grid {
-                grid-template-columns: repeat(2, 1fr);
-                margin-left: 0;
-                gap: 0.8rem;
-            }
-
-            .tutorial-title {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                overflow-y: auto;
-            }
-
-            .scene-overlay {
-                height: auto;
-                min-height: 100vh;
-                padding: 15px 10px 50px 10px;
-                /* Increased bottom padding */
-            }
-
-            .glass-card {
-                padding: 1rem 0.8rem;
-                gap: 1rem;
-                margin-bottom: 20px;
-            }
-
-            .steps-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.5rem;
-            }
-
-            .step-card {
-                padding: 0.8rem;
-            }
-
-            .step-icon {
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .step-title {
-                font-size: 0.8rem;
-            }
-
-            .step-desc {
-                font-size: 0.65rem;
-                line-height: 1.3;
-            }
-
-            .conseils-bar {
-                padding: 0.8rem;
-            }
-
-            .conseils-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.5rem;
-            }
-
-            .conseil-item {
-                font-size: 0.7rem;
-            }
-
-            .tutorial-title {
-                font-size: 1.5rem;
-                letter-spacing: 2px;
-            }
-
-            .tutorial-subtitle {
-                font-size: 0.75rem;
-            }
-
-            .btn-premium {
-                padding: 0.7rem 1.8rem;
-                font-size: 0.85rem;
-                min-height: 44px;
-            }
-        }
-    </style>
 </head>
 
 <body>
-    <div id="canvas-container"></div>
-    <script src="js/env.js?v=2"></script>
-    <script src="js/config.js?v=2"></script>
+    <div id="canvas-container" aria-hidden="true"></div>
+    <div id="page-veil" aria-hidden="true"></div>
 
-    <div class="scene-overlay">
-        <div class="glass-card" id="tutorial-card">
+    <div class="tutorial-overlay">
+        <main class="tutorial-card" role="main">
 
-            <div class="tutorial-header">
-                <h1 class="tutorial-title">TUTORIEL</h1>
-                <p class="tutorial-subtitle">Guide du MedGame - Simulation de Bichat</p>
-            </div>
-
-            <div class="steps-container">
-                <div class="step-card">
-                    <i class="fas fa-user-md step-icon"></i>
-                    <h3 class="step-title">1. Présentation</h3>
-                    <p class="step-desc">Patient virtuel avec informations complètes : âge, sexe, antécédents et motif
-                        de consultation.</p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-stethoscope step-icon"></i>
-                    <h3 class="step-title">2. Interrogatoire</h3>
-                    <p class="step-desc">Posez les bonnes questions au patient pour recueillir l'anamnèse complète.</p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-flask step-icon"></i>
-                    <h3 class="step-title">3. Examens</h3>
-                    <p class="step-desc">Commandez analyses, imagerie et ECG. Chaque résultat affinera votre hypothèse
-                        diagnostique.</p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-diagnoses step-icon"></i>
-                    <h3 class="step-title">4. Diagnostic</h3>
-                    <p class="step-desc">Analysez les données recueillies pour formuler un diagnostic précis et
-                        justifié.</p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-pills step-icon"></i>
-                    <h3 class="step-title">5. Traitement</h3>
-                    <p class="step-desc">Proposez la stratégie thérapeutique la plus adaptée pour soigner votre patient.
-                    </p>
-                </div>
-                <div class="step-card">
-                    <i class="fas fa-user-md step-icon" style="color:#e74c3c;"></i>
-                    <h3 class="step-title">6. Mode ECOS</h3>
-                    <p class="step-desc">Station 8 min : vignette, chat libre LLM, grille de notation dichotomique,
-                        annonce, debrief. Format R2C officiel.</p>
-                </div>
-            </div>
-
-            <div class="conseils-bar">
-                <div class="conseils-title">
-                    <i class="fas fa-lightbulb"></i>
-                    <span>CONSEILS</span>
-                </div>
-                <div class="conseils-grid">
-                    <div class="conseil-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Lisez tout attentivement</span>
-                    </div>
-                    <div class="conseil-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Consultez les réf</span>
-                    </div>
-                    <div class="conseil-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Réfléchissez bien</span>
-                    </div>
-                    <div class="conseil-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Apprenez de vos erreurs</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-actions">
-                <button class="btn-premium" onclick="startDemoCase()" style="background:linear-gradient(135deg,#00f2fe,#4facfe);color:#0a0f28;font-weight:800;">
-                    <i class="fas fa-bolt"></i> Lancer le cas démo (2 min)
-                </button>
-                <a href="index.html" class="btn-premium" onclick="transitionTo('index.html'); return false;">
-                    <i class="fas fa-home"></i> Retour à l'accueil
+            <!-- Barre supérieure & En-tête -->
+            <header class="tutorial-top-bar">
+                <a href="index.html" class="tut-nav-btn" onclick="transitionTo('index.html'); return false;">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Accueil
                 </a>
-                <span class="version-text">VERSION 3.0 • SIMULATION ÉDUCATIVE — Conseil : 1 Parler → 2 Examiner → 3 Prescrire → 4 Valider</span>
+                <div class="tut-header-title">
+                    <h1>COMMENT JOUER ?</h1>
+                    <p>Déroulement d'un cas clinique en 5 étapes clés</p>
+                </div>
+                <span class="tut-badge">
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i> Station ECOS
+                </span>
+            </header>
+
+            <!-- Les 5 Étapes du Cas Clinique (sur une seule rangée) -->
+            <section class="tut-steps-section" aria-label="Les 5 étapes de la conduite clinique">
+                <div class="tut-steps-grid">
+                    <!-- Étape 1 -->
+                    <article class="tut-step-card step-1">
+                        <div class="step-card-head">
+                            <span class="step-number">1</span>
+                            <div class="step-icon-wrap" aria-hidden="true"><i class="fas fa-comments"></i></div>
+                        </div>
+                        <h3>Interrogatoire</h3>
+                        <p>Échangez avec le patient IA : motif, anamnèse, antécédents et terrain.</p>
+                        <span class="step-key-tip"><i class="fas fa-check" aria-hidden="true"></i> Dialogue naturel</span>
+                    </article>
+
+                    <!-- Étape 2 -->
+                    <article class="tut-step-card step-2">
+                        <div class="step-card-head">
+                            <span class="step-number">2</span>
+                            <div class="step-icon-wrap" aria-hidden="true"><i class="fas fa-stethoscope"></i></div>
+                        </div>
+                        <h3>Examen Clinique</h3>
+                        <p>Contrôlez les constantes et auscultez cœur et poumons au stéthoscope.</p>
+                        <span class="step-key-tip"><i class="fas fa-check" aria-hidden="true"></i> Stéthoscope interactif</span>
+                    </article>
+
+                    <!-- Étape 3 -->
+                    <article class="tut-step-card step-3">
+                        <div class="step-card-head">
+                            <span class="step-number">3</span>
+                            <div class="step-icon-wrap" aria-hidden="true"><i class="fas fa-file-medical-alt"></i></div>
+                        </div>
+                        <h3>Paraclinique</h3>
+                        <p>Prescrivez bilans sanguins, ECG 12D et imagerie selon vos hypothèses.</p>
+                        <span class="step-key-tip"><i class="fas fa-check" aria-hidden="true"></i> Bilans justifiés</span>
+                    </article>
+
+                    <!-- Étape 4 -->
+                    <article class="tut-step-card step-4">
+                        <div class="step-card-head">
+                            <span class="step-number">4</span>
+                            <div class="step-icon-wrap" aria-hidden="true"><i class="fas fa-pills"></i></div>
+                        </div>
+                        <h3>Diagnostic &amp; Ttt</h3>
+                        <p>Posez le diagnostic principal, éliminez les urgences et traitez le patient.</p>
+                        <span class="step-key-tip"><i class="fas fa-check" aria-hidden="true"></i> Décision immédiate</span>
+                    </article>
+
+                    <!-- Étape 5 -->
+                    <article class="tut-step-card step-5">
+                        <div class="step-card-head">
+                            <span class="step-number">5</span>
+                            <div class="step-icon-wrap" aria-hidden="true"><i class="fas fa-clipboard-check"></i></div>
+                        </div>
+                        <h3>Débriefing ECOS</h3>
+                        <p>Clôturez pour obtenir votre note sur 100, la grille R2C et l'analyse.</p>
+                        <span class="step-key-tip"><i class="fas fa-check" aria-hidden="true"></i> Grille critériée</span>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Bandeau horizontal compact : 4 Réflexes Clés -->
+            <section class="tut-tips-strip" aria-label="Conseils pratiques de prise en charge">
+                <div class="tut-tip-mini">
+                    <i class="fas fa-stopwatch" aria-hidden="true"></i>
+                    <span><strong>Chrono :</strong> 8 à 10 min par station ECOS</span>
+                </div>
+                <div class="tut-tip-mini">
+                    <i class="fas fa-bullseye" aria-hidden="true"></i>
+                    <span><strong>Prescriptions :</strong> Ciblées et justifiées</span>
+                </div>
+                <div class="tut-tip-mini">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    <span><strong>Urgences :</strong> Sécurisez les fonctions vitales (ABCDE)</span>
+                </div>
+                <div class="tut-tip-mini">
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                    <span><strong>Débriefing :</strong> Analysez vos écarts pour progresser</span>
+                </div>
+            </section>
+
+            <!-- Actions au bas du guide -->
+            <div class="tut-actions-row">
+                <a href="themes.html" class="tut-btn-action primary" onclick="transitionTo('themes.html'); return false;">
+                    <i class="fas fa-play" aria-hidden="true"></i> Choisir un cas clinique
+                </a>
+                <a href="index.html" class="tut-btn-action tertiary" onclick="transitionTo('index.html'); return false;">
+                    <i class="fas fa-home" aria-hidden="true"></i> Retour au menu
+                </a>
             </div>
 
-        </div>
+            <!-- Pied de page discret -->
+            <footer class="tut-card-footer">
+                Simulation à but éducatif uniquement &bull; MedGame &bull;
+                <a href="credits.html" onclick="transitionTo('credits.html'); return false;" style="color:rgba(255,255,255,0.55); text-decoration:none;">
+                    Crédits &amp; Mentions Légales
+                </a>
+            </footer>
+
+        </main>
     </div>
 
     <!-- Three.js Background Module -->
     <script type="module" src="js/three-background.js?v=2"></script>
+    <script src="js/env.js?v=2"></script>
+    <script src="js/config.js?v=2"></script>
+    <script src="js/footer.js"></script>
 
     <script>
-        // Transition
         function transitionTo(url) {
-            document.body.style.opacity = 0;
-            setTimeout(() => window.location.href = url, 500);
-        }
-        // P0 : onboarding jouable — cas démo court sans inscription
-        function startDemoCase() {
-            try {
-                localStorage.setItem('ecos_practice_mode', 'true');
-                localStorage.setItem('selectedCaseFiles', JSON.stringify(['urgence_demo_malaise.json']));
-                localStorage.removeItem('selectedCaseFile');
-            } catch (e) {}
-            transitionTo('game.html');
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                window.location.href = url;
+            }, 350);
         }
     </script>
 </body>

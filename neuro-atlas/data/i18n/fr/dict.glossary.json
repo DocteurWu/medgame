@@ -1,0 +1,824 @@
+{
+  "entries": {
+    "g-absence-seizure": {
+      "term": "Crise d'absence",
+      "definition": "Brève crise généralisée de l'enfant : regard vide, flutter palpébral, reprise immédiate, sur pointes-ondes à 3 Hz des circuits thalamo-corticaux, provoquée par l'hyperpnée ; certains antiépileptiques des focales l'aggravent."
+    },
+    "g-abulia": {
+      "term": "Aboulie",
+      "definition": "Perte de l'initiative, de la parole et des mouvements spontanés avec réponses conservées à la sollicitation, par lésion frontale médiale bilatérale, cingulaire antérieure, caudée ou thalamique antérieure ; sa forme extrême est le mutisme akinétique."
+    },
+    "g-achromatopsia-cerebral": {
+      "term": "Achromatopsie cérébrale",
+      "definition": "Perte de la vision des couleurs à cônes normaux, par lésion du cortex occipito-temporal ventral (aire V4) ; unilatérale, elle donne une hémi-achromatopsie controlatérale méconnue sans test des couleurs par hémichamp."
+    },
+    "g-agnosia": {
+      "term": "Agnosie",
+      "definition": "Impossibilité de reconnaître objets, visages ou sons malgré une perception élémentaire intacte, par lésion du cortex associatif : visuelle (occipito-temporale), prosopagnosie (fusiforme), astéréognosie (pariétale)."
+    },
+    "g-akinetic-mutism": {
+      "term": "Mutisme akinétique",
+      "definition": "Éveil les yeux ouverts avec poursuite visuelle mais sans mouvement ni parole spontanés, après lésion cingulaire antérieure et frontale médiale bilatérale ou thalamique paramédiane bilatérale ; s'en distingue du coma par l'air alerte, du locked-in par l'absence de communication oculaire."
+    },
+    "g-akinetopsia": {
+      "term": "Akinétopsie",
+      "definition": "Perte de la perception du mouvement visuel (les objets mobiles apparaissent en images fixes successives) après lésion bilatérale de l'aire temporo-occipitale du mouvement (MT/V5). Acuité, couleurs et formes intactes."
+    },
+    "g-alexia-without-agraphia": {
+      "term": "Alexie sans agraphie",
+      "definition": "Perte de la lecture à écriture conservée après infarctus occipital gauche coupant aussi le splénium : l'information visuelle du cortex visuel droit intact ne rejoint plus le cortex du langage gauche. Le patient écrit une phrase sans pouvoir la relire."
+    },
+    "g-alpha-rhythm": {
+      "term": "Rythme alpha",
+      "definition": "Rythme EEG postérieur à 8-13 Hz de l'éveil calme yeux fermés, s'atténuant à l'ouverture des yeux ; son ralentissement ou sa disparition signe une encéphalopathie."
+    },
+    "g-amyloid-angiopathy": {
+      "term": "Angiopathie amyloïde cérébrale",
+      "definition": "Dépôts d'amyloïde-bêta dans les parois des artères corticales et leptoméningées du sujet âgé, source d'hémorragies lobaires, microsaignements et sidérose superficielle en imagerie de susceptibilité, et d'épisodes neurologiques focaux transitoires ; contre-indique l'anticoagulation si sévère."
+    },
+    "g-amyloid-plaque": {
+      "term": "Plaque amyloïde",
+      "definition": "Dépôt extracellulaire d'amyloïde-bêta dans le néocortex, accumulé des années avant les symptômes dans la maladie d'Alzheimer ; détecté en TEP amyloïde et par la baisse de l'amyloïde-bêta 42 dans le LCS."
+    },
+    "g-anisocoria": {
+      "term": "Anisocorie",
+      "definition": "Inégalité pupillaire. Majorée dans le noir : sympathique (Horner) du côté de la petite pupille ; majorée à la lumière : parasympathique du côté de la grande ; identique des deux côtés : physiologique."
+    },
+    "g-anosognosia": {
+      "term": "Anosognosie",
+      "definition": "Méconnaissance ou déni d'un déficit, classiquement de l'hémiplégie gauche après AVC pariétal droit ou de la cécité dans l'Anton ; elle empêche le patient de se plaindre et d'adhérer à la rééducation."
+    },
+    "g-anticholinergic-toxicity": {
+      "term": "Toxidrome anticholinergique",
+      "definition": "Délire avec mydriase, peau sèche, rétention urinaire, tachycardie et hyperthermie par blocage muscarinique ; cause réversible fréquente de confusion chez l'âgé sous traitements vésicaux, hypnotiques et antihistaminiques."
+    },
+    "g-aphasia": {
+      "term": "Aphasie",
+      "definition": "Trouble du langage (et non de la mécanique de la parole) par lésion de l'hémisphère dominant (le plus souvent gauche). Classée selon fluence, compréhension et répétition : Broca (non fluente, compréhension conservée), Wernicke (fluente, compréhension altérée), conduction (répétition altérée), globale et transcorticales (répétition conservée)."
+    },
+    "g-apperceptive-agnosia": {
+      "term": "Agnosie aperceptive",
+      "definition": "Échec de reconnaissance parce que la forme ne s'assemble pas depuis l'entrée visuelle ; le patient ne peut ni copier ni apparier l'objet. Lésions occipitales latérales et occipito-temporales, souvent bilatérales après hypoxie."
+    },
+    "g-apraxia-of-speech": {
+      "term": "Apraxie de la parole",
+      "definition": "Trouble de la planification des mouvements articulatoires (tâtonnements, erreurs inconstantes, parole laborieuse) à force musculaire normale ; signe de lésion frontale inférieure gauche, insulaire ou operculaire, et de la variante non fluente d'aphasie progressive primaire."
+    },
+    "g-apraxia": {
+      "term": "Apraxie",
+      "definition": "Impossibilité d'exécuter sur commande un geste appris malgré force, sensibilité et compréhension intactes, par lésion pariétale dominante ou de ses connexions prémotrices."
+    },
+    "g-aprosodia": {
+      "term": "Aprosodie",
+      "definition": "Perte de la mélodie, du rythme et de l'intonation émotionnelle du discours (expressive) ou de sa compréhension (réceptive), par lésion droite homologue des aires du langage. Les mots sont justes mais plats ; ironie et colère passent inaperçues."
+    },
+    "g-arterial-territory": {
+      "term": "Territoire artériel",
+      "definition": "Région encéphalique vascularisée par une artère. Les infarctus suivent les territoires, et les cartes territoriales de cet atlas sont des moyennes de population variant entre individus, surtout aux frontières."
+    },
+    "g-artery-of-percheron": {
+      "term": "Artère de Percheron",
+      "definition": "Variante où une seule artère paramédiane issue d'un segment P1 vascularise les deux thalami médiaux et le mésencéphale rostral ; son occlusion donne des infarctus paramédians bilatéraux avec coma ou hypersomnie brutale, paralysie de la verticalité et amnésie."
+    },
+    "g-ascending-arousal-system": {
+      "term": "Système activateur ascendant (FRAA)",
+      "definition": "Projections cholinergiques, monoaminergiques, orexinergiques et glutamatergiques du haut tronc et de l'hypothalamus vers thalamus et cortex, entretenant l'éveil ; leur lésion paramédiane pontique haute et mésencéphalique, ou bithalamique, produit le coma."
+    },
+    "g-asomatognosia": {
+      "term": "Asomatognosie",
+      "definition": "Non-reconnaissance d'un membre comme sien, typiquement le bras gauche après lésion pariétale postérieure droite ; le patient l'attribue à autrui ou se plaint d'un bras étranger dans son lit."
+    },
+    "g-aspects": {
+      "term": "Score ASPECTS",
+      "definition": "Score scannographique de l'AVC sylvien : dix régions du territoire de l'ACM sur deux coupes, un point retiré par région ischémiée précocement ; un score bas prédit mauvais pronostic et hémorragie après reperfusion."
+    },
+    "g-association-fibers": {
+      "term": "Fibres d'association",
+      "definition": "Axones de substance blanche reliant les aires corticales d'un même hémisphère : courtes fibres en U entre gyri voisins et longs faisceaux (arqué et longitudinal supérieur, longitudinal inférieur, fronto-occipital inférieur, unciné, cingulum) reliant les lobes en réseaux."
+    },
+    "g-associative-agnosia": {
+      "term": "Agnosie associative",
+      "definition": "Échec de reconnaissance d'un objet dont la forme est normalement perçue : le patient le copie et l'apparie mais ne dit ni ce qu'il est ni à quoi il sert. Traduction d'une déconnexion des aires visuelles de la forme et du système sémantique temporal antérieur."
+    },
+    "g-ataxia": {
+      "term": "Ataxie",
+      "definition": "Incoordination motrice : ataxie cérébelleuse (dysmétrie, tremblement intentionnel, adiadococinésie, non aggravée yeux fermés) ou ataxie sensitive par perte proprioceptive (aggravée yeux fermés, Romberg positif)."
+    },
+    "g-aura": {
+      "term": "Aura",
+      "definition": "Premier symptôme subjectif d'une crise focale, produit par la décharge du cortex d'origine donc le plus localisateur : ascension épigastrique et peur pour le temporal médial, formes colorées pour l'occipital, fourmillements pour le pariétal. L'aura migraineuse est un événement cortical propagé de minutes, non de secondes."
+    },
+    "g-autonomic-dysreflexia": {
+      "term": "Dysréflexie autonome",
+      "definition": "Poussée hypertensive avec céphalée, sueurs et bradycardie déclenchée par un stimulus nociceptif (classiquement distension vésicale) sous une lésion médullaire au-dessus de T6, par décharge sympathique non modulée."
+    },
+    "g-axonotmesis": {
+      "term": "Axonotmésis",
+      "definition": "Lésion nerveuse où les axones sont interrompus mais les tubes conjonctifs persistent, si bien que la dégénérescence wallérienne est suivie d'une repousse le long des tubes à environ un millimètre par jour ; typique des tractions et écrasements."
+    },
+    "g-babinski-sign": {
+      "term": "Signe de Babinski (réflexe cutané plantaire en extension)",
+      "definition": "Extension du gros orteil avec éventail des autres à la stimulation du bord externe de la plante, témoignant d'une lésion cortico-spinale (motoneurone central). Normal chez le nourrisson avant myélinisation du faisceau cortico-spinal."
+    },
+    "g-ballismus": {
+      "term": "Balisme",
+      "definition": "Mouvements amples et violents de lancer des membres proximaux, le plus souvent unilatéraux (hémibalisme), par lésion du noyau sous-thalamique controlatéral."
+    },
+    "g-blood-brain-barrier": {
+      "term": "Barrière hémato-encéphalique",
+      "definition": "Endothélium capillaire à jonctions serrées, pieds astrocytaires et péricytes, excluant protéines, plupart des médicaments et molécules hydrophiles ; absente dans les organes circumventriculaires, rompue dans tumeur, infection, inflammation et infarctus — c'est ce que montre le rehaussement après contraste."
+    },
+    "g-bradykinesia": {
+      "term": "Bradykinésie",
+      "definition": "Lenteur avec réduction progressive de l'amplitude des mouvements répétés, signe cardinal du parkinsonisme, traduisant la sous-activation du cortex moteur par la boucle ganglions de la base-thalamus."
+    },
+    "g-brain-death": {
+      "term": "Mort encéphalique",
+      "definition": "Perte irréversible de toute fonction du tronc cérébral : coma profond de cause irréversible connue sans facteur confondant, abolition des réflexes pupillaires, cornéens, oculo-céphaliques, caloriques, nauséeux et de toux, aucune réponse motrice crânienne, apnée au test formalisé ; des réflexes spinaux peuvent persister."
+    },
+    "g-burst-suppression": {
+      "term": "Burst-suppression",
+      "definition": "Tracé EEG alternant salves d'activité et phases plates, sous anesthésie profonde, hypothermie et agression anoxique sévère ; signe de mauvais pronostic après arrêt cardiaque."
+    },
+    "g-butterfly-glioma": {
+      "term": "Gliome en papillon",
+      "definition": "Glioblastome (ou lymphome) franchissant le corps calleux pour envahir les deux lobes frontaux en aile de papillon."
+    },
+    "g-cataplexy": {
+      "term": "Cataplexie",
+      "definition": "Perte brutale du tonus déclenchée par l'émotion, surtout le rire, à conscience conservée ; intrusion de l'atonie du sommeil paradoxal dans l'éveil, pathognomonique de la narcolepsie par déficit en orexine."
+    },
+    "g-cauda-equina": {
+      "term": "Queue de cheval",
+      "definition": "Faisceau des racines lombaires et sacrées descendant dans le cul-de-sac dural sous le cône (L1-L2). Sa compression donne un tableau radiculaire périphérique avec anesthésie en selle et troubles sphinctériens tardifs : urgence chirurgicale."
+    },
+    "g-charcot-bouchard-aneurysm": {
+      "term": "Micro-anévrisme de Charcot-Bouchard",
+      "definition": "Petite dilatation d'une artère perforante (lenticulo-striées, thalamoperforantes, pontiques) fragilisée par l'hypertension chronique ; sa rupture produit les hémorragies hypertensives profondes du putamen, du thalamus, du pont et du cervelet."
+    },
+    "g-cheyne-stokes-respiration": {
+      "term": "Respiration de Cheyne-Stokes",
+      "definition": "Rythme respiratoire crescendo-decrescendo avec pauses apnéiques, par dysfonction bi-hémisphérique ou diencéphalique ou insuffisance cardiaque ; hyperventilation neurogène centrale, respirations apneustique puis ataxique marquent des niveaux bulbaires de plus en plus bas."
+    },
+    "g-chorea": {
+      "term": "Chorée",
+      "definition": "Mouvements involontaires irréguliers, fluents et imprévisibles passant d'une partie du corps à l'autre, par dysfonction striatale et de la voie indirecte (Huntington, Sydenham, médicaments)."
+    },
+    "g-chromatolysis": {
+      "term": "Chromatolyse",
+      "definition": "Réaction d'un neurone dont l'axone est sectionné : gonflement du corps cellulaire, dispersion de la substance de Nissl, refoulement périphérique du noyau, la cellule passant de la transmission à la régénération."
+    },
+    "g-circumventricular-organs": {
+      "term": "Organes circumventriculaires",
+      "definition": "Structures médianes périventriculaires dépourvues de barrière hémato-encéphalique, sentant ou sécrétant dans le sang : area postrema, éminence médiane, organe vasculaire, organe subfornical, pinéale et posthypophyse. Ils rehaussent normalement après contraste."
+    },
+    "g-clonus": {
+      "term": "Clonus",
+      "definition": "Contractions involontaires rythmiques déclenchées par un étirement soudain soutenu, typiquement de cheville, témoignant d'une hyperexcitabilité des réflexes d'étirement après lésion centrale. Au-delà de quelques battements, anormal."
+    },
+    "g-commissural-fibers": {
+      "term": "Fibres commissurales",
+      "definition": "Axones croisant entre hémisphères : corps calleux, commissure antérieure (temporale et olfactive), commissure hippocampique et commissure postérieure (fibres prétectales et de la verticalité)."
+    },
+    "g-conduction-aphasia": {
+      "term": "Aphasie de conduction",
+      "definition": "Discours fluent à compréhension conservée mais répétition disproportionnellement altérée, avec paraphasies phonémiques autocorrigées, par lésion du faisceau arqué ou du gyrus supramarginal déconnectant les aires temporales postérieures des aires frontales."
+    },
+    "g-confabulation": {
+      "term": "Fabulation",
+      "definition": "Production de faux souvenirs sans intention de tromper, comblant les lacunes mnésiques ; propre aux amnésies diencéphaliques et basales antérieures (Korsakoff, rupture anévrismale communicante antérieure) et aux dysfonctions frontales plutôt qu'à l'amnésie hippocampique pure."
+    },
+    "g-contralateral": {
+      "term": "Controlatéral",
+      "definition": "Du côté opposé à la lésion. Faiblesse cortico-spinale, perte spinothalamique et trouble sensitif cortical sont controlatéraux aux lésions situées au-dessus du croisement de leurs fibres."
+    },
+    "g-conus-medullaris": {
+      "term": "Cône terminal",
+      "definition": "Extrémité effilée de la moelle en L1-L2 contenant les segments sacrés ; ses lésions donnent une anesthésie en selle précoce et symétrique avec troubles sphinctériens et peu de faiblesse des jambes."
+    },
+    "g-core-penumbra-mismatch": {
+      "term": "Discordance cœur-pénombre",
+      "definition": "Différence entre le cœur infarci irréversible (bas volume sanguin ou diffusion restreinte) et la pénombre hypoperfusée mais viable en imagerie de perfusion ; une large discordance désigne les patients bénéficiant d'une thrombectomie tardive."
+    },
+    "g-cortical-magnification": {
+      "term": "Magnification corticale",
+      "definition": "Surreprésentation corticale des régions à haute densité réceptorielle (mains, visage, fovéa) sur les cartes sensitives et motrices ; elle explique la finesse discriminative de ces territoires."
+    },
+    "g-cortical-ribbon-sign": {
+      "term": "Signe du ruban cortical",
+      "definition": "Hypersignal DWI du ruban cortical en anoxie, encéphalite ou Creutzfeldt-Jakob, traduisant l'œdème cytotoxique des couches corticales."
+    },
+    "g-cortical-spreading-depression": {
+      "term": "Dépression corticale envahissante",
+      "definition": "Vague lente de dépolarisation neuronale et gliale se propageant dans le cortex à quelques millimètres par minute, substrat de l'aura migraineuse et des lésions secondaires post-traumatiques."
+    },
+    "g-corticobasal-syndrome": {
+      "term": "Syndrome cortico-basal",
+      "definition": "Syndrome parkinsonien asymétrique avec apraxie, main étrangère, myoclonies et dystonie, par dégénérescence fronto-pariétale et des ganglions de la base ; diagnostic différentiel des Parkinson-plus."
+    },
+    "g-cremasteric-reflex": {
+      "term": "Réflexe crémastérien",
+      "definition": "Ascension testiculaire à la stimulation de la face interne de la cuisse (L1-L2) ; aboli dans la torsion testiculaire et les lésions hautes, exagéré dans les lésions centrales."
+    },
+    "g-crossed-cerebellar-diaschisis": {
+      "term": "Diaschisis cérébelleux croisé",
+      "definition": "Hypométabolisme de l'hémisphère cérébelleux controlatéral à une lésion hémisphérique cérébrale, par désafférentation de la voie cortico-ponto-cérébelleuse ; visible en TEP et en IRM fonctionnelle."
+    },
+    "g-crossed-syndrome": {
+      "term": "Syndrome alterne",
+      "definition": "Association d'une atteinte d'un nerf crânien homolatéral et d'un déficit des membres controlatéral, signature d'une lésion du tronc cérébral (Weber, Millard-Gubler, Foville, Wallenberg, Dejerine)."
+    },
+    "g-cushing-response": {
+      "term": "Réponse de Cushing",
+      "definition": "Triade hypertension, bradycardie et respiration irrégulière face à une hypertension intracrânienne menaçante, par compression du tronc cérébral ; signe d'engagement imminent."
+    },
+    "g-dandy-walker-malformation": {
+      "term": "Malformation de Dandy-Walker",
+      "definition": "Agenesie du vermis inférieur avec kyste du V4 et fosse postérieure élargie, hydrocéphalie fréquente ; diagnostic anténatal ou retard psychomoteur et ataxie du nourrisson."
+    },
+    "g-dawson-fingers": {
+      "term": "Doigts de Dawson",
+      "definition": "Lésions démyélinisantes périveinulaires perpendiculaires aux ventricules en IRM (sagittal FLAIR), typiques de la sclérose en plaques."
+    },
+    "g-decerebrate-posturing": {
+      "term": "Rigidité de décérébration",
+      "definition": "Extension-adduction des quatre membres à la douleur, lésion sous le noyau rouge (mésencéphale bas, pont) ; marque une souffrance plus basse que la décortication."
+    },
+    "g-decorticate-posturing": {
+      "term": "Rigidité de décortication",
+      "definition": "Flexion des membres supérieurs et extension des inférieurs à la douleur, lésion au-dessus du noyau rouge (hémisphères, diencéphale) ; son passage à la décérébration signe la marche rostro-caudale."
+    },
+    "g-decussation": {
+      "term": "Décussation",
+      "definition": "Croisement de la ligne médiane par un faisceau : décussation pyramidale (jonction bulbo-médullaire), lemniscale, des pédoncules cérébelleux supérieurs ; elle explique la controlatéralité des déficits."
+    },
+    "g-default-mode-network": {
+      "term": "Réseau du mode par défaut",
+      "definition": "Réseau cérébral actif au repos (précunéus, cingulaire postérieur, préfrontal médial, pariétal inférieur), suspendu pendant les tâches ; altéré précocement dans la maladie d'Alzheimer."
+    },
+    "g-dermatome": {
+      "term": "Dermatome",
+      "definition": "Bande cutanée innervée par une racine dorsale unique ; la carte des dermatomes localise les compressions radiculaires et le niveau sensitif médullaire."
+    },
+    "g-disconnection-syndrome": {
+      "term": "Syndrome de déconnexion",
+      "definition": "Déficit par interruption des fibres reliant des aires intactes (corps calleux, faisceau arqué) : les modules fonctionnent mais ne communiquent plus ; modèle de l'alexie sans agraphie et de l'aphasie de conduction."
+    },
+    "g-dissociated-sensory-loss": {
+      "term": "Dissociation sensitive",
+      "definition": "Perte de la thermo-algie à tact fin conservé (syringomyélie, Wallenberg) ou l'inverse ; elle sépare les voies spinothalamiques des voies lemniscales."
+    },
+    "g-dopamine-transporter-imaging": {
+      "term": "TEP/TEMP des transporteurs dopaminergiques (DaTscan)",
+      "definition": "Scintigraphie des transporteurs présynaptiques de la dopamine : anormale dans Parkinson et démence à corps de Lewy, normale dans le tremblement essentiel et le parkinsonisme médicamenteux."
+    },
+    "g-dorsal-stream": {
+      "term": "Voie visuelle dorsale",
+      "definition": "Voie occipito-pariétale du « où » et du « comment » (localisation, guidage du geste) ; sa lésion donne ataxie optique et simultagnosie (Balint)."
+    },
+    "g-dural-tail": {
+      "term": "Queue de comète durale",
+      "definition": "Épaississement et rehaussement dural effilé au contact d'un méningiome, très évocateur sans être spécifique (lymphome, sarcoïdose)."
+    },
+    "g-duret-hemorrhage": {
+      "term": "Hémorragie de Duret",
+      "definition": "Hémorragie linéaire du tegmentum protubérantiel et mésencéphalique par étirement des perforantes lors d'un engagement transtentoriel descendant ; signe de gravité terminale."
+    },
+    "g-dwi": {
+      "term": "Imagerie de diffusion (DWI)",
+      "definition": "Séquence IRM sensible à la mobilité de l'eau : hypersignal avec ADC abaissé = œdème cytotoxique (ischémie aiguë en minutes, abcès, Creutzfeldt-Jakob, état de mal)."
+    },
+    "g-dysarthria": {
+      "term": "Dysarthrie",
+      "definition": "Trouble de l'articulation par atteinte des effecteurs (bulbaire, pseudo-bulbaire, cérébelleuse scandée, parkinsonienne, choréique), à langage intact ; à distinguer de l'aphasie et de l'apraxie de la parole."
+    },
+    "g-dysexecutive-syndrome": {
+      "term": "Syndrome dysexécutif",
+      "definition": "Déficit des fonctions frontales : planification, flexibilité, inhibition, mémoire de travail et fluences, à mémoire et langage élémentaires conservés ; source de perte d'autonomie et de troubles du comportement."
+    },
+    "g-dysmetria": {
+      "term": "Dysmétrie",
+      "definition": "Erreur de mesure du mouvement (dépassement de la cible) avec tremblement intentionnel, signe cérébelleux révélé par le doigt-nez et le talon-genou."
+    },
+    "g-dystonia": {
+      "term": "Dystonie",
+      "definition": "Contractions musculaires soutenues en torsion avec postures anormales, déclenchées par l'action et soulagées par un geste antagoniste ; focale (torticolis, crampe de l'écrivain), généralisée (DYT) ou tardive sous neuroleptiques."
+    },
+    "g-empty-delta-sign": {
+      "term": "Signe du delta vide",
+      "definition": "Défect triangulaire non rehaussé du sinus sagittal supérieur entouré de contraste en scanner injecté, typique de la thrombose veineuse (à distance du début, faux positifs : granulations de Pacchioni)."
+    },
+    "g-excitotoxicity": {
+      "term": "Excitotoxicité",
+      "definition": "Mort neuronale par afflux calcique via les récepteurs glutamatergiques suractivés (NMDA) lors d'ischémie, état de mal et traumatisme ; cible des stratégies neuroprotectrices."
+    },
+    "g-extinction": {
+      "term": "Extinction sensitive",
+      "definition": "Non-perception d'un stimulus controlatéral uniquement en double stimulation simultanée, signe de négligence pariétale ; en stimulation simple, chaque côté est perçu."
+    },
+    "g-eye-of-the-tiger-sign": {
+      "term": "Signe de l'œil du tigre",
+      "definition": "Hyposignal du globus pallidus centré d'un hypersignal en T2 (neurodégénérescence avec surcharge en fer, PKAN) ; image en œil de tigre."
+    },
+    "g-false-localizing-sign": {
+      "term": "Signe de fausse localisation",
+      "definition": "Déficit trompant sur le siège lésionnel : paralysie du VI ou du III dans l'hypertension intracrânienne, hémiparésie homolatérale à la masse (Kernohan) ; la lésion est à distance du déficit."
+    },
+    "g-fasciculation": {
+      "term": "Fasciculation",
+      "definition": "Contraction visible d'un faisceau musculaire par décharge spontanée d'une unité motrice, signe d'atteinte du motoneurone périphérique (SLA) ; bénignes si isolées, sans faiblesse ni amyotrophie."
+    },
+    "g-febrile-seizure": {
+      "term": "Convulsion fébrile",
+      "definition": "Crise généralisée du nourrisson (6 mois-5 ans) lors d'une fièvre sans infection neuroméningée : simple (brève, unique, généralisée, bon pronostic) ou complexe (focale, prolongée, répétée, risque d'épilepsie temporale)."
+    },
+    "g-flair": {
+      "term": "FLAIR",
+      "definition": "Séquence IRM annulant le signal du LCS : les hypersignaux périventriculaires et corticaux (SEP, ischémie, méningite, hémorragie méningée) deviennent conspicus."
+    },
+    "g-floppy-infant": {
+      "term": "Nourrisson hypotonique",
+      "definition": "Bébé mou : hypotonie centrale (alerte, réflexes vifs, causes cérébrales et génétiques) ou périphérique (peu mobile, aréflexie, causes neuromusculaires : SMA, myopathies, myasthénie, botulisme)."
+    },
+    "g-focal-cortical-dysplasia": {
+      "term": "Dysplasie corticale focale",
+      "definition": "Malformation corticale (désorganisation laminaire, neurones dysmorphiques, cellules en ballon) cause fréquente d'épilepsie pharmacorésistante de l'enfant ; discrète en IRM (épaississement, flou jonctionnel, signe transmantle)."
+    },
+    "g-forehead-sparing": {
+      "term": "Conservation du front",
+      "definition": "Front ridé et œil fermant dans une paralysie faciale de la bouche : l'atteinte est centrale (innervation bilatérale du frontal supérieur) ; tout l'hémiface pris = périphérique."
+    },
+    "g-frontal-release-signs": {
+      "term": "Réflexes archaïques (frontaux)",
+      "definition": "Grasping, sucking, palmomentonnier, glabellaire inépuisable : réflexes primitifs réapparaissant dans les atteintes frontales diffuses (démences, hydrocéphalie) ; le grasping unilatéral localise controlatéralement."
+    },
+    "g-fusiform-face-area": {
+      "term": "Aire fusiforme des visages",
+      "definition": "Région du gyrus fusiforme droit spécialisée dans la reconnaissance des visages ; sa lésion donne la prosopagnosie."
+    },
+    "g-glasgow-coma-scale": {
+      "term": "Score de Glasgow",
+      "definition": "Évaluation de la conscience de 3 à 15 (yeux 1-4, verbal 1-5, moteur 1-6) ; ≤ 8 = coma, intubation à discuter. Le FOUR ajoute réflexes du tronc et respiration."
+    },
+    "g-glymphatic-system": {
+      "term": "Système glymphatique",
+      "definition": "Clairance périvasculaire astrocytaire des déchets interstitiels (dont l'amyloïde) pendant le sommeil ; son altération est impliquée dans Alzheimer et l'œdème."
+    },
+    "g-herniation": {
+      "term": "Engagement cérébral",
+      "definition": "Déplacement du parenchyme sous une structure rigide (faux : sous-falciforme ; tente : uncal et central ; trou occipital : tonsillaire) par gradient de pression ; chacun a ses signes pupillaires, moteurs et respiratoires."
+    },
+    "g-heteroplasmy": {
+      "term": "Hétéroplasmie",
+      "definition": "Coexistence d'ADN mitochondrial normal et muté dans une cellule ; le taux de mutation conditionne la sévérité et la transmission maternelle variable des mitochondriopathies."
+    },
+    "g-heterotopia": {
+      "term": "Hétérotopie",
+      "definition": "Neurones restés en position anormale après migration (nodulaire périventriculaire, en bande) ; cause d'épilepsie et de retard, visible en IRM (nodules isocorticaux)."
+    },
+    "g-hints": {
+      "term": "Examen HINTS",
+      "definition": "Triade au lit du vertige aigu : impulsion céphalique, nystagmus, skew. Impulsion normale, nystagmus changeant de direction ou skew = central (plus sensible que l'IRM précoce) ; l'inverse = périphérique."
+    },
+    "g-holmes-tremor": {
+      "term": "Tremblement de Holmes (rubrique)",
+      "definition": "Tremblement grossier présent au repos, en posture et en action, par lésion rubro-olivo-cérébelleuse (Benedikt) ; de basse fréquence, d'installation retardée après la lésion."
+    },
+    "g-holoprosencephaly": {
+      "term": "Holoprosencéphalie",
+      "definition": "Défaut de clivage du prosencéphale (alobaire à lobaire) avec anomalie médiane faciale ; trisomie 13, diabète maternel ; pronostic selon le degré de fusion."
+    },
+    "g-homonymous-hemianopia": {
+      "term": "Hémianopsie latérale homonyme",
+      "definition": "Amputation du même hémichamp des deux yeux par lésion rétrochiasmatique controlatérale ; congruente (occipitale), quadranopique (radiations), avec épargne maculaire (pôle) ou avec RAPD (bandelette)."
+    },
+    "g-homunculus": {
+      "term": "Homunculus",
+      "definition": "Carte somatotopique du cortex moteur et sensitif primaire (Penfield) : face et main énormes, jambe médiale, organes génitaux paracentraux ; elle prédit la distribution des déficits vasculaires."
+    },
+    "g-hoover-sign": {
+      "term": "Signe de Hoover",
+      "definition": "Au lit d'une parésie fonctionnelle de hanche : la « paralysée » pousse en bas quand on teste la flexion contrariée de l'autre côté — la force existe, l'activation volontaire fait défaut."
+    },
+    "g-horner-syndrome": {
+      "term": "Syndrome de Horner",
+      "definition": "Voir syndrome de Claude Bernard-Horner : ptosis-myosis-anhidrose par interruption sympathique oculaire à un des trois neurones (central, pré- ou post-ganglionnaire)."
+    },
+    "g-hot-cross-bun-sign": {
+      "term": "Signe du petit pain chaud (hot cross bun)",
+      "definition": "Hypersignal cruciforme du pont en T2 dans l'atrophie multisystématisée (forme cérébelleuse), par dégénérescence pontocérébelleuse."
+    },
+    "g-hummingbird-sign": {
+      "term": "Signe du colibri",
+      "definition": "Atrophie mésencéphalique (tegmentum) avec pont conservé en sagittal, en colibri, dans la paralysie supranucléaire progressive."
+    },
+    "g-hydrocephalus": {
+      "term": "Hydrocéphalie",
+      "definition": "Dilatation ventriculaire par trouble de la circulation du LCS : obstructive (en amont du bloc : aqueduc, V4, Monro) ou communicante (résorption : post-méningée, post-hémorragique) ; à pression normale chez l'âgé (triade marche-démence-sphincters)."
+    },
+    "g-hyperdense-artery-sign": {
+      "term": "Signe de l'artère hyperdense",
+      "definition": "Hyperdensité spontanée de l'ACM au scanner sans injection = thrombus frais ; très spécifique d'occlusion proximale, indication à la thrombectomie."
+    },
+    "g-hypsarrhythmia": {
+      "term": "Hypsarythmie",
+      "definition": "Tracé EEG chaotique de grande amplitude du syndrome de West (spasmes infantiles) ; urgence thérapeutique (vigabatrin, corticoïdes) pour le développement."
+    },
+    "g-ideomotor-apraxia": {
+      "term": "Apraxie idéomotrice",
+      "definition": "Gestes maladroits sur commande et imitation (saluer, visser) alors que l'utilisation spontanée des objets reste possible ; lésion pariétale dominante ou calleuse."
+    },
+    "g-infantile-spasms": {
+      "term": "Spasmes infantiles (West)",
+      "definition": "Salves de flexions brèves du nourrisson au réveil avec régression et hypsarythmie ; causes : sclérose tubéreuse, malformations, métaboliques ; traiter vite."
+    },
+    "g-insular-ribbon-sign": {
+      "term": "Signe du ruban insulaire",
+      "definition": "Effacement et hypodensité du ruban cortical insulaire au scanner précoce de l'AVC sylvien, première zone ischémiée (perfusion terminale)."
+    },
+    "g-internal-capsule": {
+      "term": "Capsule interne",
+      "definition": "Carrefour de substance blanche entre thalamus-caudé et lenticulaire : bras antérieur (fronto-pontique), genou (cortico-bulbaire), bras postérieur (cortico-spinal, sensitif, visuel, auditif) ; une lacune y donne un tableau proportionné sans signe cortical."
+    },
+    "g-internuclear-ophthalmoplegia": {
+      "term": "Ophtalmoplégie internucléaire (INO)",
+      "definition": "Déficit d'adduction en version avec nystagmus de l'œil abducteur, convergence conservée, par lésion du faisceau longitudinal médial ; bilatérale du jeune (SEP), unilatérale de l'âgé (ischémie)."
+    },
+    "g-ipsilateral": {
+      "term": "Homolatéral",
+      "definition": "Du même côté que la lésion. Nerfs crâniens et syndrome cérébelleux sont homolatéraux aux lésions du tronc et du cervelet."
+    },
+    "g-jacksonian-march": {
+      "term": "Marche jacksonienne",
+      "definition": "Propagation ordonnée de la crise focale motrice le long de l'homonculus (main → bras → face), témoignant d'une décharge du cortex moteur primaire ; état de mal focal à traiter."
+    },
+    "g-kernicterus": {
+      "term": "Kernictère",
+      "definition": "Encéphalopathie bilirubinique du nouveau-né : dépôts dans les noyaux gris et le tronc, athétose, surdité, paralysie du regard vers le haut ; prévention par photothérapie et exsanguino-transfusion."
+    },
+    "g-kernohan-notch": {
+      "term": "Encoche de Kernohan",
+      "definition": "Compression du pédoncule controlatéral contre le bord tentoriel lors d'un engagement : hémiparésie paradoxalement homolatérale à la masse, avec mydriase homolatérale — le « faux » localisateur de l'uncal."
+    },
+    "g-lacune": {
+      "term": "Lacune",
+      "definition": "Petit infarctus profond (< 15 mm) par occlusion d'une perforante (lipohyalinose hypertensive) : tableaux moteurs purs, sensitifs purs, sensitivo-moteurs, ataxiques ou dysarthrie-main malhabile, sans signe cortical."
+    },
+    "g-leukodystrophy": {
+      "term": "Leucodystrophie",
+      "definition": "Atteinte génétique diffuse de la substance blanche (adrénoleucodystrophie, métachromatique, Krabbe, Alexander, vanishing white matter) : régression, spasticité, ataxie ; IRM de topographie évocatrice, diagnostic enzymatique et génétique."
+    },
+    "g-lewy-body": {
+      "term": "Corps de Lewy",
+      "definition": "Inclusion intraneuronale d'alpha-synucléine de la maladie de Parkinson et de la démence à corps de Lewy (fluctuations, hallucinations visuelles précoces, hypersensibilité aux neuroleptiques, trouble du sommeil paradoxal)."
+    },
+    "g-lhermitte-sign": {
+      "term": "Signe de Lhermitte",
+      "definition": "Décharge électrique descendant le rachis à la flexion du cou, par irritation des cordons postérieurs cervicaux (SEP, sclérose combinée, compression) ; électrique, bref, non douloureux au sens radiculaire."
+    },
+    "g-light-near-dissociation": {
+      "term": "Dissociation lumière-convergence",
+      "definition": "Pupille aréactive à la lumière mais se contractant de près : Argyll Robertson (syphilis), Parinaud (mésencéphale dorsal), Adie (tonique) ; elle sépare les voies afférentes et efférentes pupillaires."
+    },
+    "g-lissencephaly": {
+      "term": "Lissencéphalie",
+      "definition": "Cortex lisse par défaut de migration (pachy- et agyrie, LIS1, DCX) : retard sévère, épilepsie, microcéphalie ; spectre avec hétérotopies en bande."
+    },
+    "g-locked-in-state": {
+      "term": "Locked-in state",
+      "definition": "Conscience et cognition intactes dans un corps tétraplégique et anarthrique (lésion ventrale du pont) ; seule la verticalité du regard et le clignement communiquent. À ne pas confondre avec le coma ni le mutisme akinétique."
+    },
+    "g-logopenic-aphasia": {
+      "term": "Aphasie logopénique",
+      "definition": "Manque du mot avec pauses, répétition des phrases altérée à mots isolés conservés, sans agrammatisme ni trouble articulatoire ; variante d'aphasie progressive primaire annonçant Alzheimer."
+    },
+    "g-long-term-potentiation": {
+      "term": "Potentialisation à long terme",
+      "definition": "Renforcement durable des synapses hippocampiques après stimulation répétée (récepteurs NMDA), modèle cellulaire de la mémoire ; sa défaillance ouvre la maladie d'Alzheimer."
+    },
+    "g-lower-motor-neuron": {
+      "term": "Motoneurone périphérique",
+      "definition": "Neurone de la corne antérieure et son axone jusqu'au muscle : son atteinte donne déficit flasque, amyotrophie, fasciculations et aréflexie dans son territoire (radiculaire, tronculaire ou diffus)."
+    },
+    "g-macular-sparing": {
+      "term": "Épargne maculaire",
+      "definition": "Conservation de la vision centrale dans une hémianopsie par lésion du pôle occipital (double vascularisation : ACM et ACP) ou par large représentation corticale fovéale."
+    },
+    "g-malignant-mca-infarct": {
+      "term": "Infarctus sylvien malin",
+      "definition": "Volumineux infarctus du tronc de l'ACM avec œdème menaçant à J2-J3 (déviation, engagement) ; hémicrânecomie précoce sauve la vie et le devenir chez le sujet jeune."
+    },
+    "g-mesolimbic-pathway": {
+      "term": "Voies mésolimbique et mésocorticale",
+      "definition": "Projections dopaminergiques tegmento-ventrales vers nucleus accumbens (récompense, addiction, symptômes positifs) et cortex préfrontal (cognition, symptômes négatifs) ; cibles des antipsychotiques et des drogues."
+    },
+    "g-meyer-loop": {
+      "term": "Boucle de Meyer",
+      "definition": "Fibres temporales des radiations optiques contournant la corne temporale : leur lésion (lobectomie, AVC) donne une quadranopsie supérieure controlatérale « en tarte »."
+    },
+    "g-mni-space": {
+      "term": "Espace MNI",
+      "definition": "Référentiel stéréotaxique standard (Montréal) pour superposer cerveaux et lésions en neuro-imagerie et atlas ; coordonnées x (gauche-droite), y (arrière-avant), z (bas-haut)."
+    },
+    "g-mononeuropathy": {
+      "term": "Mononeuropathie",
+      "definition": "Atteinte d'un seul tronc nerveux (compression, traumatisme, infarctus) : déficit sensitivo-moteur limité à son territoire, à distinguer de la multinévrite (plusieurs troncs) et de la polyneuropathie (symétrique distale)."
+    },
+    "g-monro-kellie-doctrine": {
+      "term": "Doctrine de Monro-Kellie",
+      "definition": "Boîte crânienne inextensible : sang, LCS et parenchyme s'équilibrent à volume constant ; toute masse se compense d'abord par chassée veineuse et liquidienne, puis la pression monte et l'engagement menace."
+    },
+    "g-motor-unit": {
+      "term": "Unité motrice",
+      "definition": "Motoneurone et les fibres qu'il innerve : sa perte (SLA, polio) donne fasciculations puis amyotrophie ; sa réinnervation collatérale donne gros potentiels remaniés à l'EMG."
+    },
+    "g-myotome": {
+      "term": "Myotome",
+      "definition": "Groupe musculaire innervé par une racine unique ; sa systématisation (deltoïde C5, biceps C6, triceps C7, intrinsèques C8, quadriceps L4, releveurs L5, gastrocnémiens S1) localise les radiculopathies."
+    },
+    "g-neglect": {
+      "term": "Héminégligence",
+      "definition": "Ignorance de l'hémiespace controlatéral après lésion pariétale droite (AVC sylvien inférieur) : assiette à moitié mangée, lignes bissectées à droite, extinction, anosognosie ; la rééducation exploite l'indiçage et le prismatique."
+    },
+    "g-neurapraxia": {
+      "term": "Neurapraxie",
+      "definition": "Bloc de conduction sans lésion axonale (compression brève) : déficit complet mais récupération en semaines sans dégénérescence wallérienne ; le meilleur pronostic des traumatismes nerveux."
+    },
+    "g-neurofibrillary-tangle": {
+      "term": "Dégénérescence neurofibrillaire",
+      "definition": "Agrégats intraneuronaux de protéine tau hyperphosphorylée de la maladie d'Alzheimer (et des tauopathies : PSP, DCF) ; leur extension de l'entorhinal au néocortex suit le déclin."
+    },
+    "g-neurotmesis": {
+      "term": "Neurotmésis",
+      "definition": "Section complète du nerf (tubes compris) : aucune repousse spontanée utile, réparation chirurgicale indispensable ; le plus grave des traumatismes nerveux."
+    },
+    "g-neurulation": {
+      "term": "Neurulation",
+      "definition": "Formation du tube neural au premier mois (fermeture vers J28) ; son défaut donne anencéphalie et spina bifida — d'où l'acide folique préconceptionnel."
+    },
+    "g-nigrostriatal-pathway": {
+      "term": "Voie nigrostriatée",
+      "definition": "Projection dopaminergique de la substance noire compacte vers le striatum, moteur de l'initiation du mouvement ; sa dégénérescence produit le parkinsonisme."
+    },
+    "g-nmda-receptor": {
+      "term": "Récepteur NMDA",
+      "definition": "Récepteur glutamatergique au glutamate voltage-dépendant (magnésium), support de la plasticité, de la mémoire et de l'excitotoxicité ; bloqué par la kétamine, auto-anticorps dans l'encéphalite à anti-NMDA."
+    },
+    "g-nystagmus": {
+      "term": "Nystagmus",
+      "definition": "Oscillation oculaire rythmique avec phase lente pathologique et saccade de rappel : périphérique (unidirectionnel, inhibé par la fixation), central (changeant de direction, vertical, downbeat), congénital ou médicamenteux."
+    },
+    "g-oligoclonal-bands": {
+      "term": "Bandes oligoclonales",
+      "definition": "Immunoglobulines clonales du LCS absentes du sérum, témoins d'une synthèse intrathécale (SEP, infections chroniques) ; argument de dissémination pour McDonald."
+    },
+    "g-optic-ataxia": {
+      "term": "Ataxie optique",
+      "definition": "Impossibilité de guider la main vers un objet vu (Balint) par lésion pariétale postérieure ; la vision et la force sont normales, c'est le couplage visuo-moteur qui manque."
+    },
+    "g-orexin": {
+      "term": "Orexine (hypocrétine)",
+      "definition": "Neuropeptide hypothalamique stabilisant l'éveil ; sa perte donne la narcolepsie avec cataplexie ; les antagonistes (suvorexant) traitent l'insomnie."
+    },
+    "g-pancoast-tumor": {
+      "term": "Tumeur de Pancoast",
+      "definition": "Cancer de l'apex pulmonaire envahissant plexus brachial inférieur, sympathique (Horner) et côtes : douleur d'épaule, main de Klumpke, Horner homolatéral ; fumeurs."
+    },
+    "g-papez-circuit": {
+      "term": "Circuit de Papez",
+      "definition": "Boucle hippocampe-fornix-mamillaire-thalamus antérieur-cingulaire de la mémoire et de l'émotion ; sa lésion (Korsakoff, chirurgie) donne l'amnésie antérograde."
+    },
+    "g-papilledema": {
+      "term": "Œdème papillaire",
+      "definition": "Tuméfaction du disque optique par hypertension intracrânienne (bilatéral, fonction conservée au début, éclipses) ; à distinguer de la névrite optique (baisse visuelle précoce, unilatérale) et des drusen."
+    },
+    "g-paraphasia": {
+      "term": "Paraphasie",
+      "definition": "Substitution erronée : phonémique (mot approché), verbale (autre mot) ou néologique (mot inventé) ; elle émaille les aphasies fluentes et la conduction."
+    },
+    "g-penumbra": {
+      "term": "Pénombre ischémique",
+      "definition": "Couronne hypoperfusée mais viable autour du cœur infarci, sauvable par reperfusion rapide ; sa taille en perfusion conditionne la thrombectomie tardive."
+    },
+    "g-periodic-discharges": {
+      "term": "Décharges périodiques",
+      "definition": "Anomalies EEG rythmées (PLEDs, GPEDs) des encéphalites, Creutzfeldt-Jakob et lésions aiguës ; à la frontière de l'état de mal, traitées si retentissement clinique."
+    },
+    "g-periventricular-leukomalacia": {
+      "term": "Leucomalacie périventriculaire",
+      "definition": "Nécrose de la substance blanche périventriculaire du prématuré (hypoxie-ischémie, infection) : diplegie spastique, troubles visuels et cognitifs ; principale cause d'infirmité motrice cérébrale."
+    },
+    "g-plexopathy": {
+      "term": "Plexopathie",
+      "definition": "Atteinte d'un plexus (brachial, lombosacré) : déficit pluri-tronculaire chevauchant nerfs et racines — trop large pour un tronc, trop inhomogène pour la moelle ; traumatique, tumorale, radique, diabétique ou inflammatoire."
+    },
+    "g-polymicrogyria": {
+      "term": "Polymicrogyrie",
+      "definition": "Cortex à petits gyri excessifs périsylviens bilatéraux (congénital, CMV, ischémique) : épilepsie, retard, atteinte bulbaire (bavage, dysarthrie)."
+    },
+    "g-polyneuropathy": {
+      "term": "Polyneuropathie",
+      "definition": "Atteinte symétrique distale longueur-dépendante (diabète, alcool, chimio, paranéoplasique) : paresthésies en chaussettes puis gants, aréflexie achilléenne, apallesthésie ; l'ENMG en précise le type axonal ou démyélinisant."
+    },
+    "g-posterior-cortical-atrophy": {
+      "term": "Atrophie corticale postérieure",
+      "definition": "Variante visuelle d'Alzheimer : Balint, Gerstmann partiel, apraxie, alexie, débutant par la plainte visuelle (« je ne vois plus, pourtant mes yeux vont bien ») ; atrophie occipito-pariétale."
+    },
+    "g-projection-fibers": {
+      "term": "Fibres de projection",
+      "definition": "Axones reliant le cortex aux structures sous-corticales (capsule interne, corona radiata) : cortico-spinales, thalamo-corticales, cortico-pontiques ; leur lésion donne des tableaux proportionnés."
+    },
+    "g-prosopagnosia": {
+      "term": "Prosopagnosie",
+      "definition": "Impossibilité de reconnaître les visages familiers (dont le sien en miroir) à vision normale, par lésion fusiforme droite ; compensée par la voix et le contexte. Congénitale possible."
+    },
+    "g-pseudobulbar-palsy": {
+      "term": "Paralysie pseudo-bulbaire",
+      "definition": "Atteinte bilatérale du faisceau cortico-bulbaire : langue petite spastique, parole étranglée, nauséeux et massétérin vifs, rire et pleurer spasmodiques ; à opposer à la bulbaire (amyotrophie, aréflexie)."
+    },
+    "g-quadrantanopia": {
+      "term": "Quadranopsie",
+      "definition": "Amputation d'un quadrant : supérieure controlatérale (boucle de Meyer temporale), inférieure (radiations pariétales), congruente ou non selon la proximité du cortex."
+    },
+    "g-radiculopathy": {
+      "term": "Radiculopathie",
+      "definition": "Souffrance d'une racine (hernie, arthrose foraminale, zona, tumeur) : douleur impulsive systématisée au dermatome, paresthésies, déficit du myotome et aréflexie concordants, Lasègue ou Spurling positifs."
+    },
+    "g-ragged-red-fibers": {
+      "term": "Fibres rouges déchiquetées",
+      "definition": "Fibres musculaires à accumulation mitochondriale sous-sarcolemmique au trichrome de Gomori, marqueur des mitochondriopathies (MERRF, MELAS, Kearns-Sayre)."
+    },
+    "g-rapd": {
+      "term": "Déficit pupillaire afférent relatif (RAPD)",
+      "definition": "Dilatation paradoxale au balancement du faisceau vers l'œil atteint, signe objectif de lésion asymétrique du nerf optique (névrite, ischémie, compression), même à acuité normale."
+    },
+    "g-rem-sleep-behavior-disorder": {
+      "term": "Trouble du comportement en sommeil paradoxal",
+      "definition": "Rêves agis violents par perte de l'atonie du sommeil paradoxal ; prodrome des synucléinopathies (Parkinson, DCL) des années à l'avance ; clonazépam et mélatonine efficaces."
+    },
+    "g-retinotopy": {
+      "term": "Rétinotopie",
+      "definition": "Projection ordonnée de la rétine sur le cortex calcarin (lèvre supérieure : champ inférieur, lèvre inférieure : champ supérieur, pôle : macula) ; elle explique les quadranopsies et l'épargne maculaire."
+    },
+    "g-rigidity": {
+      "term": "Rigidité extrapyramidale",
+      "definition": "Hypertonie plastique cédant par à-coups (roue dentée) dans le parkinsonisme, indépendante de la vitesse ; à distinguer de la spasticité (lame de canif, vitesse-dépendante, centrale pyramidale)."
+    },
+    "g-ring-enhancement": {
+      "term": "Rehaussement annulaire",
+      "definition": "Prise de contraste en couronne (abcès à paroi fine et régulière, glioblastome à paroi épaisse et irrégulière, toxoplasmose, tuberculome, démyélinisation) ; la diffusion et le contexte tranchent."
+    },
+    "g-romberg-sign": {
+      "term": "Signe de Romberg",
+      "definition": "Instabilité n'apparaissant qu'yeux fermés, par perte proprioceptive (neuropathie, sclérose combinée, tabès) ; l'ataxie cérébelleuse existe yeux ouverts."
+    },
+    "g-semantic-dementia": {
+      "term": "Démence sémantique",
+      "definition": "Perte du sens des mots et des objets (quoi ?) à fluence conservée, par atrophie temporale antérieure gauche ; variante de dégénérescence fronto-temporale, puis prosopagnosie et troubles du comportement."
+    },
+    "g-sensory-level": {
+      "term": "Niveau sensitif",
+      "definition": "Limite supérieure de l'anesthésie sur le tronc, localisant la lésion médullaire (le niveau clinique dépasse de 1-2 étages le niveau lésionnel par les fibres de Lissauer) ; sa remontée signe une compression évolutive."
+    },
+    "g-serotonin-syndrome": {
+      "term": "Syndrome sérotoninergique",
+      "definition": "Excès sérotoninergique (association d'antidépresseurs, tramadol, IMAO) : confusion, myoclonies et clonus, hyperréflexie des membres inférieurs, hyperthermie, diarrhée ; urgence par arrêt et sédation, à distinguer du neuroleptique malin (rigidité plastique, bradykinésie)."
+    },
+    "g-simultanagnosia": {
+      "term": "Simultagnosie",
+      "definition": "Incapacité à percevoir simultanément plusieurs objets (on lit les lettres, pas le mot), élément du Balint par lésion pariétale postérieure bilatérale."
+    },
+    "g-sleep-spindle": {
+      "term": "Fuseau du sommeil",
+      "definition": "Bouffée EEG à 12-14 Hz du stade N2, générée par le thalamus réticulé ; sa raréfaction signe les encéphalopathies et les lésions thalamiques."
+    },
+    "g-somatotopy": {
+      "term": "Somatotopie",
+      "definition": "Carte ordonnée du corps sur une structure (cortex, moelle, thalamus) ; sa connaissance prédit la distribution des déficits (main-bouche corticale, jambe paracentrale, thermo-algie croisée)."
+    },
+    "g-spasticity": {
+      "term": "Spasticité",
+      "definition": "Hypertonie vitesse-dépendante en lame de canif avec hyperréflexie, clonus et Babinski après lésion pyramidale ; elle succède à la phase flasque du choc spinal et complique la marche."
+    },
+    "g-spinal-shock": {
+      "term": "Choc spinal",
+      "definition": "Sidération réflexe sous une lésion médullaire aiguë (jours à semaines) : flaccidité, aréflexie, globe et iléus ; sa levée (réflexes, spasticité, automatisme) ne signe pas la récupération."
+    },
+    "g-spot-sign": {
+      "term": "Signe du spot",
+      "definition": "Point de contraste actif au sein d'un hématome en angioscanner, prédisant l'expansion ; argument d'hémostase et de chirurgie précoces."
+    },
+    "g-status-epilepticus": {
+      "term": "État de mal épileptique",
+      "definition": "Crise de plus de 5 minutes ou crises sans reprise de conscience : urgence (benzodiazépine, puis fosphénytoïne/lévétiracétam, anesthésie) car la souffrance neuronale croît avec la durée."
+    },
+    "g-swallow-tail-sign": {
+      "term": "Signe de la queue d'hirondelle",
+      "definition": "Disparition en imagerie de susceptibilité de l'hypersignal nigrosomal-1 de la substance noire dans Parkinson ; signe diagnostique précoce et simple."
+    },
+    "g-synkinesis": {
+      "term": "Syncinésie",
+      "definition": "Contraction involontaire associée (œil se fermant en souriant après Bell, syncinésies d'imitation) ; séquelle de repousse aberrante, traitée par toxine botulique et rééducation."
+    },
+    "g-syrinx": {
+      "term": "Syrinx (syringomyélie)",
+      "definition": "Cavité liquidienne centromédullaire (Chiari, post-traumatique, tumorale) : dissociation thermo-algique en cape, amyotrophie et aréflexie des membres supérieurs, paraparésie spastique tardive."
+    },
+    "g-tethered-cord": {
+      "term": "Moelle attachée basse",
+      "definition": "Cône anormalement bas et filum tendu (spina bifida occulta, lipome) : troubles sphinctériens, déformation des pieds, fossette sacrée pileuse ; libération chirurgicale avant la puberté."
+    },
+    "g-thunderclap-headache": {
+      "term": "Céphalée en coup de tonnerre",
+      "definition": "Pire céphalée de la vie maximale en secondes : hémorragie méningée jusqu'à preuve du contraire (scanner puis ponction lombaire, angioscanner) ; diagnostics différentiels : vasoconstriction réversible, dissection, thrombose veineuse."
+    },
+    "g-tinel-sign": {
+      "term": "Signe de Tinel",
+      "definition": "Fourmillements irradiés à la percussion d'un tronc (canal carpien, cubital, fibulaire, tarsien) ; signe d'irritation et de repousse, utile au lit et au suivi."
+    },
+    "g-todd-paresis": {
+      "term": "Parésie de Todd",
+      "definition": "Déficit focal transitoire post-critique (minutes à heures) mimant un AVC ; le contexte comitial, la normalité de l'imagerie et la résolution rapide redressent le diagnostic."
+    },
+    "g-top-of-basilar-syndrome": {
+      "term": "Syndrome du sommet du basilaire",
+      "definition": "Embolie de la bifurcation basilaire épargnant le pont : troubles de conscience transitoires, verticalité, pupilles, cécité corticale et hallucinations, déficit moteur modeste."
+    },
+    "g-transcortical-aphasia": {
+      "term": "Aphasie transcorticale",
+      "definition": "Aphasie motrice ou sensorielle à répétition conservée (lésion excentrée épargnant l'arche périsylvienne) : le patient répète sans comprendre ni produire ; motrice (frontale, non fluente), sensorielle (temporo-pariétale, fluente), mixte (frontières, mutisme avec écholalie)."
+    },
+    "g-transependymal-edema": {
+      "term": "Œdème transependymaire",
+      "definition": "Hypersignal FLAIR périventriculaire par transsudation du LCS sous pression (hydrocéphalie aiguë) ; il s'efface après dérivation, à distinguer de la démyélinisation chronique."
+    },
+    "g-tremor": {
+      "term": "Tremblement",
+      "definition": "Oscillation rythmique : repos (Parkinson), posture-action (essentiel, exagéré physiologique), intention (cérébelleux), rubrique (Holmes), orthostatique, médicamenteux ; l'axe fréquence-circonstance donne l'étiologie."
+    },
+    "g-trendelenburg-sign": {
+      "term": "Signe de Trendelenburg",
+      "definition": "Chute du bassin du côté oscillant à l'appui unipodal, par faiblesse du moyen fessier controlatéral (L5, fessier supérieur) ; marche dandinante des myopathies des ceintures."
+    },
+    "g-trigeminal-autonomic-cephalalgia": {
+      "term": "Céphalée trigémino-autonomique",
+      "definition": "Céphalées unilatérales brèves et intenses avec larmoiement, rhinorrhée et Horner partiel (cluster, hémicrânie paroxystique, SUNCT) ; l'indométacine distingue l'hémicrânie, l'oxygène et le vérapamil traitent le cluster."
+    },
+    "g-trigeminocervical-complex": {
+      "term": "Complexe trigémino-cervical",
+      "definition": "Convergence des afférences trigéminales et cervicales hautes dans la corne dorsale : la migraine naît cervicale et la cervicalgie irradie frontale ; cible des blocs et de la stimulation occipitale."
+    },
+    "g-triphasic-waves": {
+      "term": "Ondes triphasiques",
+      "definition": "Grapho-éléments EEG diffus à prédominance frontale des encéphalopathies métaboliques (hépatique, rénale) ; d'allure périodique, ils n'imposent pas d'antiépileptiques sans corrélation clinique."
+    },
+    "g-u-fibers": {
+      "term": "Fibres en U",
+      "definition": "Courtes fibres d'association sous-corticales reliant deux gyri voisins ; épargnées dans la SEP (hypersignaux périventriculaires à bords nets) et atteintes dans les leucodystrophies et l'encéphalite herpétique."
+    },
+    "g-uhthoff-phenomenon": {
+      "term": "Phénomène d'Uhthoff",
+      "definition": "Aggravation transitoire des symptômes démyélinisés par la chaleur (bain chaud, fièvre, effort) ; il révèle la névrite optique et oriente vers la SEP sans être une poussée."
+    },
+    "g-upper-motor-neuron": {
+      "term": "Motoneurone central",
+      "definition": "Neurone cortico-spinal : son atteinte donne déficit sans amyotrophie (sauf amyotrophie d'inutilisation), hypertonie spastique, hyperréflexie diffuse, clonus et Babinski, déficit en nappes."
+    },
+    "g-vasogenic-edema": {
+      "term": "Œdème vasogénique",
+      "definition": "Œdème par rupture de la barrière hémato-encéphalique (tumeur, abcès, PRES) en doigts de gant de la substance blanche, sans restriction de diffusion ; corticosensibles, à opposer à l'œdème cytotoxique ischémique."
+    },
+    "g-vegetative-state": {
+      "term": "État végétatif (éveil non répondant)",
+      "definition": "Éveil (yeux ouverts, cycles veille-sommeil) sans conscience ni communication après coma ; persistant au-delà d'un an (traumatique) ou de 3-6 mois (anoxique), il devient permanent ; l'IRM fonctionnelle détecte parfois une conscience cachée."
+    },
+    "g-ventral-stream": {
+      "term": "Voie visuelle ventrale",
+      "definition": "Voie occipito-temporale du « quoi » (formes, couleurs, visages, mots) ; sa lésion donne agnosies, prosopagnosie, achromatopsie et alexie."
+    },
+    "g-vestibulo-ocular-reflex": {
+      "term": "Réflexe vestibulo-oculaire (VOR)",
+      "definition": "Stabilisation du regard lors des rotations céphaliques (canaux semi-circulaires → noyaux vestibulaires → oculomoteurs) ; testé par l'impulsion céphalique (HIT), aboli côté névrite, normal côté central."
+    },
+    "g-visual-word-form-area": {
+      "term": "Aire visuelle de la forme des mots",
+      "definition": "Région occipito-temporale gauche de la lecture experte ; sa déconnexion (splénium) produit l'alexie sans agraphie."
+    },
+    "g-wallerian-degeneration": {
+      "term": "Dégénérescence wallérienne",
+      "definition": "Dégénérescence de l'axone distal après section, suivie de la repousse proximale à 1 mm/jour ; sa rapidité à l'IRM et à l'ENMG date la lésion nerveuse."
+    },
+    "g-wartenberg-syndrome": {
+      "term": "Syndrome de Wartenberg (chiralgie paresthésique)",
+      "definition": "Compression de la branche sensitive du radial au poignet (menottes, montre serrée) : pastille insensible du dos du pouce sans déficit moteur ; à distinguer du De Quervain (douloureux, moteur intact aussi mais test de Finkelstein)."
+    },
+    "g-watershed": {
+      "term": "Zone frontière (watershed)",
+      "definition": "Jonction entre territoires artériels (ACM-ACA, ACM-ACP), vulnérable aux hypoperfusions : infarctus en chapelet à déficit proximal (« homme dans un tonneau »), aphasie transcorticale, Balint."
+    },
+    "g-xanthochromia": {
+      "term": "Xanthochromie",
+      "definition": "LCS jaune après hémorragie méningée (hémoglobine dégradée en bilirubine en 6-12 h), recherchée à l'œil et en spectrophotométrie quand le scanner est normal ; elle persiste deux semaines."
+    }
+  }
+}

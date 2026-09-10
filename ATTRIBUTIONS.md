@@ -61,4 +61,29 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
   - `ecg_wellens.json` (Record `00260_lr`)
   - `ecg_pacemaker.json` (Record `00144_lr`)
 
+## 6. Atlas Système Nerveux 3D (page Atlas 3D, module Système Nerveux)
+* **Nom du projet** : Atlas Système Nerveux (Clinical Neuroanatomy Atlas / `nervous-system-atlas` v1.0.0)
+* **Auteur original** : Batuhan Ayci (2026)
+* **Dépôt source** : [GitHub nervous-system-atlas](https://github.com/aycibatuhan/nervous-system-atlas)
+* **Code applicatif** : [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+  ```
+  Clinical Neuroanatomy Atlas
+  Copyright 2026 Batuhan Ayci
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  ```
+* **Contenu et Données anatomiques** : [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.fr)
+* **Clause ShareAlike (Partage dans les Mêmes Conditions)** : Les traductions françaises, notices cliniques enrichies et cas cliniques EDN/R2C intégrés par MedGame dans `neuro-atlas/data/content.fr.json` sont distribués sous cette même licence CC BY-SA 4.0.
+* **Datasets sources de neuro-imagerie et géométrie 3D (Édition publique)** :
+  - **MNI152NLin2009cAsym** : Template IRM T1w/T2w & segmentation FreeSurfer aseg, (c) Louis Collins, McGill University (Fonov et al. 2011).
+  - **VENAT (Veins and Arteries Template)** : Modèles vasculaires cérébraux haute résolution (Bazin et al., Max Planck Institute).
+  - **HCP1065 (Human Connectome Project)** : Faisceaux de substance blanche et tractographie (Yeh et al., CMU / HCP).
+  - **BodyParts3D 4.0** : Nerfs périphériques, moelle spinale et méninges, © The Database Center for Life Science (DBCLS), licence CC BY 4.0.
+  - **Z-Anatomy** : Éléments squelettiques et crâniens de repère, sous licence CC BY-SA 4.0.
+  - **Terminologies** : Terminologia Anatomica (TA2, FIPAT 2019), Terminologia Neuroanatomica (TNA, FIPAT 2017) dans le domaine public ; alignements Wikidata (CC0) et Wikipédia (CC BY-SA 4.0).
+* **Usage & Périmètre de licence** : Outil interactif à vocation éducative et pédagogique médicale (EDN/R2C). Le code de MedGame reste sous GPL-3.0, la visionneuse neuro sous Apache-2.0, et le corpus de données/contenus neuro sous CC BY-SA 4.0 sans contamination croisée.
+
+
 

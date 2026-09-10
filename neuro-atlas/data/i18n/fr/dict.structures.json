@@ -1,0 +1,3175 @@
+{
+ "entries": {
+  "abducens-nucleus": {
+   "name": "Noyau abducens",
+   "synonyms": [
+    "noyau du VI",
+    "noyau de l'abducens"
+   ],
+   "latin": "Nucleus nervi abducentis"
+  },
+  "amygdala": {
+   "name": "Amygdale (complexe amygdalien)",
+   "synonyms": [
+    "corps amygdaloïde",
+    "complexe amygdalien",
+    "amygdala",
+    "noyau amygdalien"
+   ],
+   "latin": "Corpus amygdaloideum"
+  },
+  "anterior-commissure": {
+   "name": "Commissure antérieure",
+   "synonyms": [
+    "commissure blanche antérieure"
+   ],
+   "latin": "Commissura anterior"
+  },
+  "anterior-spinal-artery": {
+   "latin": "Arteria spinalis anterior",
+   "name": "Artère spinale antérieure",
+   "synonyms": [
+    "ASA",
+    "Anterior spinal artery",
+    "artère spinale antérieure médiane"
+   ]
+  },
+  "area-broca": {
+   "name": "Aire de Broca",
+   "synonyms": [
+    "aire motrice du langage",
+    "Brodmann 44-45",
+    "Broca",
+    "Broca's area"
+   ],
+   "latin": "Area Broca"
+  },
+  "area-postrema": {
+   "name": "Area postrema",
+   "synonyms": [
+    "zone gâchette chémoréceptrice"
+   ],
+   "latin": "Area postrema"
+  },
+  "area-wernicke": {
+   "name": "Aire de Wernicke",
+   "synonyms": [
+    "aire sensitive du langage",
+    "Wernicke",
+    "Wernicke's area"
+   ],
+   "latin": "Area Wernicke"
+  },
+  "arteries-lenticulostriate": {
+   "latin": "Arteriae lenticulostriatae",
+   "name": "Artères lenticulostriées",
+   "synonyms": [
+    "Lenticulostriate arteries",
+    "lateral striate arteries",
+    "artères striées latérales",
+    "artères de l'hémorragie cérébrale"
+   ]
+  },
+  "arteries-mra-atlas": {
+   "name": "Artères cérébrales (atlas vasculaire MRA)",
+   "synonyms": [
+    "Cerebral arteries (MRA atlas iso-surface)",
+    "intracranial arterial tree",
+    "MRA average vessel map",
+    "arbre artériel intracrânien"
+   ]
+  },
+  "arteries-pontine": {
+   "latin": "Arteriae pontis",
+   "name": "Artères pontiques",
+   "synonyms": [
+    "Pontine arteries",
+    "paramedian pontine arteries",
+    "short and long circumferential arteries",
+    "artères paramédianes du pont"
+   ]
+  },
+  "arteries-thalamoperforating": {
+   "name": "Artères thalamoperforantes et thalamogéniculées",
+   "synonyms": [
+    "Thalamoperforating and thalamogeniculate arteries",
+    "thalamic perforators",
+    "paramedian thalamic arteries",
+    "artery of Percheron",
+    "artère de Percheron",
+    "perforantes thalamiques"
+   ]
+  },
+  "artery-aca": {
+   "latin": "Arteria cerebri anterior",
+   "name": "Artère cérébrale antérieure (ACA)",
+   "synonyms": [
+    "ACA",
+    "Anterior cerebral artery"
+   ]
+  },
+  "artery-acom": {
+   "latin": "Arteria communicans anterior",
+   "name": "Artère communicante antérieure",
+   "synonyms": [
+    "ACom",
+    "AComm",
+    "ACoA",
+    "Anterior communicating artery"
+   ]
+  },
+  "artery-adamkiewicz": {
+   "latin": "Arteria radicularis magna",
+   "name": "Artère d'Adamkiewicz",
+   "synonyms": [
+    "Artery of Adamkiewicz",
+    "arteria radicularis magna",
+    "great anterior radiculomedullary artery",
+    "grande artère radiculomédullaire antérieure"
+   ]
+  },
+  "artery-aica": {
+   "latin": "Arteria cerebelli inferior anterior",
+   "name": "Artère cérébelleuse antéro-inférieure (AICA)",
+   "synonyms": [
+    "AICA",
+    "Anterior inferior cerebellar artery"
+   ]
+  },
+  "artery-anterior-choroidal": {
+   "latin": "Arteria choroidea anterior",
+   "name": "Artère choroïdienne antérieure",
+   "synonyms": [
+    "AChA",
+    "Anterior choroidal artery"
+   ]
+  },
+  "artery-basilar": {
+   "latin": "Arteria basilaris",
+   "name": "Artère basilaire",
+   "synonyms": [
+    "Basilar artery",
+    "tronc basilaire"
+   ]
+  },
+  "artery-internal-carotid": {
+   "latin": "Arteria carotis interna",
+   "name": "Artère carotide interne",
+   "synonyms": [
+    "ICA",
+    "ACI",
+    "Internal carotid artery",
+    "carotide interne"
+   ]
+  },
+  "artery-labyrinthine": {
+   "latin": "Arteria labyrinthi",
+   "name": "Artère labyrinthique (auditive interne)",
+   "synonyms": [
+    "Labyrinthine artery",
+    "internal auditory artery",
+    "Internal auditory artery",
+    "artère auditive interne"
+   ]
+  },
+  "artery-mca": {
+   "latin": "Arteria cerebri media",
+   "name": "Artère cérébrale moyenne (ACM)",
+   "synonyms": [
+    "MCA",
+    "ACM",
+    "Middle cerebral artery",
+    "artère sylvienne"
+   ]
+  },
+  "artery-mca-inferior-division": {
+   "name": "Artère cérébrale moyenne, division inférieure",
+   "synonyms": [
+    "Middle cerebral artery, inferior division",
+    "lower division of the MCA",
+    "M2 inferior trunk",
+    "division temporale de la sylvienne"
+   ]
+  },
+  "artery-mca-superior-division": {
+   "name": "Artère cérébrale moyenne, division supérieure",
+   "synonyms": [
+    "Middle cerebral artery, superior division",
+    "upper division of the MCA",
+    "M2 superior trunk",
+    "division frontale de la sylvienne"
+   ]
+  },
+  "artery-ophthalmic": {
+   "latin": "Arteria ophthalmica",
+   "name": "Artère ophtalmique",
+   "synonyms": [
+    "Ophthalmic artery"
+   ]
+  },
+  "artery-pca": {
+   "latin": "Arteria cerebri posterior",
+   "name": "Artère cérébrale postérieure (ACP)",
+   "synonyms": [
+    "PCA",
+    "ACP",
+    "Posterior cerebral artery"
+   ]
+  },
+  "artery-pcom": {
+   "latin": "Arteria communicans posterior",
+   "name": "Artère communicante postérieure",
+   "synonyms": [
+    "PCom",
+    "PComm",
+    "PCoA",
+    "Posterior communicating artery"
+   ]
+  },
+  "artery-pica": {
+   "latin": "Arteria cerebelli inferior posterior",
+   "name": "Artère cérébelleuse postéro-inférieure (PICA)",
+   "synonyms": [
+    "PICA",
+    "Posterior inferior cerebellar artery"
+   ]
+  },
+  "artery-sca": {
+   "latin": "Arteria cerebelli superior",
+   "name": "Artère cérébelleuse supérieure (SCA)",
+   "synonyms": [
+    "SCA",
+    "Superior cerebellar artery"
+   ]
+  },
+  "artery-vertebral": {
+   "latin": "Arteria vertebralis",
+   "name": "Artère vertébrale",
+   "synonyms": [
+    "Vertebral artery",
+    "VA"
+   ]
+  },
+  "basal-forebrain-cholinergic": {
+   "name": "Noyaux cholinergiques du prosencéphale basal",
+   "synonyms": [
+    "prosencéphale basal",
+    "basal forebrain",
+    "substance innominée"
+   ],
+   "latin": "Substantia innominata"
+  },
+  "bed-nucleus-stria-terminalis": {
+   "name": "Noyau du lit de la strie terminale",
+   "synonyms": [
+    "BNST",
+    "bed nucleus of the stria terminalis",
+    "noyau interstitiel de la strie terminale"
+   ],
+   "latin": "Nucleus interstitialis striae terminalis"
+  },
+  "brainstem": {
+   "name": "Tronc cérébral",
+   "synonyms": [
+    "tronc cérébral (mésencéphale, pont, bulbe)"
+   ],
+   "latin": "Truncus encephali"
+  },
+  "caudate-nucleus": {
+   "name": "Noyau caudé",
+   "synonyms": [
+    "caudé",
+    "caudate nucleus",
+    "striatum dorsal",
+    "corps strié"
+   ],
+   "latin": "Nucleus caudatus"
+  },
+  "cerebellar-cortex-layers": {
+   "name": "Cortex cérébelleux : couches et circuit",
+   "synonyms": [
+    "cortex cérébelleux",
+    "folia"
+   ],
+   "latin": ""
+  },
+  "cerebellar-hemisphere": {
+   "name": "Hémisphères cérébelleux (zone latérale)",
+   "synonyms": [
+    "hémisphère cérébelleux"
+   ],
+   "latin": "Hemispherium cerebelli"
+  },
+  "cerebellar-lobule-crus-i": {
+   "name": "Crus I",
+   "synonyms": [
+    "lobule semi-lunaire supérieur",
+    "crus I du lobule ansiforme"
+   ],
+   "latin": "Lobulus semilunaris superior"
+  },
+  "cerebellar-lobule-crus-ii": {
+   "name": "Crus II",
+   "synonyms": [
+    "lobule semi-lunaire inférieur",
+    "crus II du lobule ansiforme"
+   ],
+   "latin": "Lobulus semilunaris inferior"
+  },
+  "cerebellar-lobule-i-iv": {
+   "name": "Lobules I à IV",
+   "synonyms": [
+    "lobe antérieur (partie rostrale)",
+    "lingula, lobule central et culmen"
+   ],
+   "latin": ""
+  },
+  "cerebellar-lobule-ix": {
+   "name": "Lobule IX",
+   "synonyms": [
+    "uvula",
+    "vestibulocervelet (avec le nodulus)"
+   ],
+   "latin": ""
+  },
+  "cerebellar-lobule-v": {
+   "name": "Lobule V",
+   "synonyms": [
+    "culmen (partie postérieure)",
+    "lobule quadrangulaire antérieur"
+   ],
+   "latin": "Lobulus V"
+  },
+  "cerebellar-lobule-vi": {
+   "name": "Lobule VI",
+   "synonyms": [
+    "declive et lobule simplex",
+    "lobule quadrangulaire postérieur"
+   ],
+   "latin": ""
+  },
+  "cerebellar-lobule-viib": {
+   "name": "Lobule VIIB",
+   "synonyms": [
+    "lobule gracile",
+    "lobule VIIB avec le tuber vermien"
+   ],
+   "latin": ""
+  },
+  "cerebellar-lobule-viiia": {
+   "name": "Lobule VIIIA",
+   "synonyms": [
+    "lobule biventre (partie haute)",
+    "pyramis (vermis)"
+   ],
+   "latin": "Lobulus VIIIA"
+  },
+  "cerebellar-lobule-viiib": {
+   "name": "Lobule VIIIB",
+   "synonyms": [
+    "lobule biventre (partie basse)"
+   ],
+   "latin": "Lobulus VIIIB"
+  },
+  "cerebellar-lobule-x": {
+   "name": "Lobule X (flocculonodulaire)",
+   "synonyms": [
+    "lobe flocculonodulaire",
+    "archicervelet",
+    "vestibulocervelet"
+   ],
+   "latin": ""
+  },
+  "cerebellar-tonsil": {
+   "name": "Tonsille cérébelleuse",
+   "synonyms": [
+    "amygdale cérébelleuse"
+   ],
+   "latin": "Tonsilla cerebelli"
+  },
+  "cerebellar-vermis": {
+   "name": "Vermis",
+   "synonyms": [
+    "vermis cérébelleux"
+   ],
+   "latin": "Vermis cerebelli"
+  },
+  "cerebellar-white-matter": {
+   "name": "Substance blanche cérébelleuse",
+   "synonyms": [
+    "arbre de vie",
+    "centre médullaire cérébelleux"
+   ],
+   "latin": "Arbor vitae"
+  },
+  "cerebellum": {
+   "name": "Cervelet",
+   "synonyms": [],
+   "latin": "Cerebellum"
+  },
+  "cerebral-peduncle-crus": {
+   "name": "Bras du pédoncule cérébral",
+   "synonyms": [
+    "crus cerebri",
+    "basis pedunculi",
+    "pédoncule cérébral"
+   ],
+   "latin": "Crus cerebri"
+  },
+  "cerebral-white-matter": {
+   "name": "Substance blanche du cerveau",
+   "synonyms": [
+    "substance blanche cérébrale",
+    "centre semi-ovale",
+    "cerebral white matter"
+   ],
+   "latin": "Substantia alba cerebri"
+  },
+  "circle-of-willis": {
+   "latin": "Circulus arteriosus cerebri",
+   "name": "Polygone de Willis",
+   "synonyms": [
+    "Circle of Willis",
+    "cercle artériel du cerveau",
+    "circulus arteriosus cerebri",
+    "cercle de Willis",
+    "arterial circle"
+   ]
+  },
+  "claustrum": {
+   "name": "Claustrum",
+   "synonyms": [
+    "avant-mur",
+    "claustrum"
+   ],
+   "latin": "Claustrum"
+  },
+  "cochlear-nuclei": {
+   "name": "Noyaux cochléaires",
+   "synonyms": [
+    "noyaux cochléaires dorsal et ventral"
+   ],
+   "latin": "Nuclei cochleares"
+  },
+  "corona-radiata": {
+   "name": "Couronne rayonnante",
+   "synonyms": [
+    "corona radiata"
+   ],
+   "latin": "Corona radiata"
+  },
+  "corpus-callosum": {
+   "name": "Corps calleux",
+   "synonyms": [
+    "grande commissure interhémisphérique"
+   ],
+   "latin": "Corpus callosum"
+  },
+  "cortex-calcarine": {
+   "name": "Cortex calcarin (cortex visuel primaire)",
+   "synonyms": [
+    "V1",
+    "aire 17 de Brodmann",
+    "calcarine cortex",
+    "cortex strié occipital"
+   ],
+   "latin": "Cortex calcarinus"
+  },
+  "cortex-central-operculum": {
+   "name": "Opercule central",
+   "synonyms": [
+    "central opercular cortex",
+    "opercule rolandique"
+   ],
+   "latin": "Operculum centrale"
+  },
+  "cortex-frontal-medial": {
+   "name": "Cortex frontal médial",
+   "synonyms": [
+    "frontal medial cortex"
+   ],
+   "latin": "Cortex frontalis medialis"
+  },
+  "cortex-frontal-operculum": {
+   "name": "Opercule frontal",
+   "synonyms": [
+    "frontal operculum cortex",
+    "opercule frontal"
+   ],
+   "latin": "Operculum frontale"
+  },
+  "cortex-intracalcarine": {
+   "name": "Cortex intracalcarin",
+   "synonyms": [
+    "intracalcarine cortex",
+    "scissure calcarine"
+   ],
+   "latin": "Cortex intracalcarinus"
+  },
+  "cortex-lateral-occipital-inferior": {
+   "name": "Cortex occipital latéral, partie inférieure",
+   "synonyms": [
+    "lateral occipital cortex inferior",
+    "cortex occipital latéral inférieur"
+   ],
+   "latin": "Cortex occipitalis lateralis inferior"
+  },
+  "cortex-lateral-occipital-superior": {
+   "name": "Cortex occipital latéral, partie supérieure",
+   "synonyms": [
+    "lateral occipital cortex superior",
+    "cortex occipital latéral supérieur"
+   ],
+   "latin": "Cortex occipitalis lateralis superior"
+  },
+  "cortex-orbitofrontal": {
+   "name": "Cortex orbitofrontal",
+   "synonyms": [
+    "frontal orbital cortex",
+    "cortex orbitaire",
+    "OFC"
+   ],
+   "latin": "Cortex orbitofrontalis"
+  },
+  "cortex-parietal-operculum": {
+   "name": "Opercule pariétal",
+   "synonyms": [
+    "parietal operculum cortex",
+    "SII",
+    "opercule pariétal"
+   ],
+   "latin": "Operculum parietale"
+  },
+  "cortex-prefrontal": {
+   "name": "Cortex préfrontal",
+   "synonyms": [
+    "prefrontal cortex",
+    "PFC"
+   ],
+   "latin": "Cortex praefrontalis"
+  },
+  "cortex-premotor-sma": {
+   "name": "Cortex prémoteur et aire motrice supplémentaire",
+   "synonyms": [
+    "premotor cortex",
+    "SMA",
+    "aire 6 de Brodmann"
+   ],
+   "latin": "Cortex premotorius"
+  },
+  "cortex-subcallosal": {
+   "name": "Cortex sous-calleux",
+   "synonyms": [
+    "subcallosal cortex",
+    "aire sous-calleuse",
+    "subgénual"
+   ],
+   "latin": "Cortex subcallosus"
+  },
+  "cortex-supplementary-motor": {
+   "name": "Aire motrice supplémentaire",
+   "synonyms": [
+    "SMA",
+    "supplementary motor area",
+    "lobule juxtapositionnel"
+   ],
+   "latin": "Area supplementaria motoria"
+  },
+  "cortex-supracalcarine": {
+   "name": "Cortex supracalcarin",
+   "synonyms": [
+    "supracalcarine cortex"
+   ],
+   "latin": "Cortex supracalcarinus"
+  },
+  "cortex-temporal-fusiform-anterior": {
+   "name": "Cortex fusiforme temporal, partie antérieure",
+   "synonyms": [
+    "temporal fusiform anterior",
+    "cortex fusiforme antérieur"
+   ],
+   "latin": "Cortex fusiformis temporalis anterior"
+  },
+  "cortex-temporal-fusiform-posterior": {
+   "name": "Cortex fusiforme temporal, partie postérieure",
+   "synonyms": [
+    "temporal fusiform posterior",
+    "cortex fusiforme postérieur"
+   ],
+   "latin": "Cortex fusiformis temporalis posterior"
+  },
+  "cortex-temporo-occipital-fusiform": {
+   "name": "Cortex fusiforme temporo-occipital",
+   "synonyms": [
+    "temporal occipital fusiform cortex",
+    "cortex fusiforme temporo-occipital"
+   ],
+   "latin": "Cortex fusiformis temporo-occipitalis"
+  },
+  "cuneus": {
+   "name": "Cunéus",
+   "synonyms": [
+    "cuneus",
+    "lobule cunéen"
+   ],
+   "latin": "Cuneus"
+  },
+  "dentate-gyrus": {
+   "name": "Gyrus denté",
+   "synonyms": [
+    "dentate gyrus",
+    "fascia dentata"
+   ],
+   "latin": "Gyrus dentatus"
+  },
+  "dentate-nucleus": {
+   "name": "Noyau denté",
+   "synonyms": [
+    "noyau dentelé"
+   ],
+   "latin": "Nucleus dentatus"
+  },
+  "dorsal-motor-nucleus-vagus": {
+   "name": "Noyau dorsal moteur du vague",
+   "synonyms": [
+    "noyau dorsal du X"
+   ],
+   "latin": "Nucleus dorsalis nervi vagi"
+  },
+  "facial-motor-nucleus": {
+   "name": "Noyau moteur du facial",
+   "synonyms": [
+    "noyau du VII"
+   ],
+   "latin": "Nucleus nervi facialis"
+  },
+  "fastigial-nucleus": {
+   "name": "Noyau fastigial",
+   "synonyms": [
+    "noyau du toit"
+   ],
+   "latin": "Nucleus fastigii"
+  },
+  "flocculonodular-lobe": {
+   "name": "Lobe flocculonodulaire",
+   "synonyms": [
+    "vestibulocervelet",
+    "archicervelet"
+   ],
+   "latin": "Lobus flocculonodularis"
+  },
+  "fornix": {
+   "name": "Fornix",
+   "synonyms": [
+    "trigone"
+   ],
+   "latin": "Fornix"
+  },
+  "frontal-eye-field": {
+   "name": "Champ oculomoteur frontal",
+   "synonyms": [
+    "FEF",
+    "frontal eye field",
+    "aire 8 de Brodmann"
+   ],
+   "latin": "Area frontalis oculomotoria"
+  },
+  "frontal-pole": {
+   "name": "Pôle frontal",
+   "synonyms": [
+    "frontal pole"
+   ],
+   "latin": "Polus frontalis"
+  },
+  "globus-pallidus": {
+   "name": "Globus pallidus",
+   "synonyms": [
+    "pallidum",
+    "globus pallidus"
+   ],
+   "latin": "Globus pallidus"
+  },
+  "globus-pallidus-externus": {
+   "name": "Globus pallidus externe",
+   "synonyms": [
+    "GPe",
+    "pallidum externe",
+    "globus pallidus external segment"
+   ],
+   "latin": "Globus pallidus externus"
+  },
+  "globus-pallidus-internus": {
+   "name": "Globus pallidus interne",
+   "synonyms": [
+    "GPi",
+    "pallidum interne",
+    "globus pallidus internal segment"
+   ],
+   "latin": "Globus pallidus internus"
+  },
+  "gyrus-angular": {
+   "name": "Gyrus angulaire",
+   "synonyms": [
+    "angular gyrus",
+    "aire 39 de Brodmann",
+    "pli courbe"
+   ],
+   "latin": "Gyrus angularis"
+  },
+  "gyrus-cingulate": {
+   "name": "Gyrus cingulaire",
+   "synonyms": [
+    "cingulate gyrus",
+    "circonvolution cingulaire"
+   ],
+   "latin": "Gyrus cinguli"
+  },
+  "gyrus-cingulate-anterior": {
+   "name": "Gyrus cingulaire antérieur",
+   "synonyms": [
+    "anterior cingulate",
+    "ACC",
+    "CCA"
+   ],
+   "latin": "Gyrus cinguli anterior"
+  },
+  "gyrus-cingulate-posterior": {
+   "name": "Gyrus cingulaire postérieur",
+   "synonyms": [
+    "posterior cingulate",
+    "PCC",
+    "CCP"
+   ],
+   "latin": "Gyrus cinguli posterior"
+  },
+  "gyrus-heschl": {
+   "name": "Gyrus de Heschl (cortex auditif primaire)",
+   "synonyms": [
+    "Heschl",
+    "A1",
+    "aires 41-42 de Brodmann",
+    "cortex auditif primaire",
+    "gyrus temporal transverse"
+   ],
+   "latin": "Gyrus temporalis transversus"
+  },
+  "gyrus-inferior-frontal-opercularis": {
+   "name": "Gyrus frontal inférieur, pars opercularis",
+   "synonyms": [
+    "pars opercularis",
+    "Brodmann 44",
+    "inferior frontal opercularis"
+   ],
+   "latin": "Gyrus frontalis inferior pars opercularis"
+  },
+  "gyrus-inferior-frontal-triangularis": {
+   "name": "Gyrus frontal inférieur, pars triangularis",
+   "synonyms": [
+    "pars triangularis",
+    "Brodmann 45"
+   ],
+   "latin": "Gyrus frontalis inferior pars triangularis"
+  },
+  "gyrus-inferior-temporal-anterior": {
+   "name": "Gyrus temporal inférieur, partie antérieure",
+   "synonyms": [
+    "inferior temporal anterior",
+    "T3 antérieur"
+   ],
+   "latin": "Gyrus temporalis inferior anterior"
+  },
+  "gyrus-inferior-temporal-posterior": {
+   "name": "Gyrus temporal inférieur, partie postérieure",
+   "synonyms": [
+    "inferior temporal posterior"
+   ],
+   "latin": "Gyrus temporalis inferior posterior"
+  },
+  "gyrus-inferior-temporal-temporooccipital": {
+   "name": "Gyrus temporal inférieur, partie temporo-occipitale",
+   "synonyms": [
+    "inferior temporal temporo-occipital"
+   ],
+   "latin": "Gyrus temporalis inferior pars temporo-occipitalis"
+  },
+  "gyrus-lingual": {
+   "name": "Gyrus lingual",
+   "synonyms": [
+    "lingual gyrus",
+    "lobule lingual"
+   ],
+   "latin": "Gyrus lingualis"
+  },
+  "gyrus-middle-frontal": {
+   "name": "Gyrus frontal moyen",
+   "synonyms": [
+    "middle frontal gyrus",
+    "F2"
+   ],
+   "latin": "Gyrus frontalis medius"
+  },
+  "gyrus-middle-temporal-anterior": {
+   "name": "Gyrus temporal moyen, partie antérieure",
+   "synonyms": [
+    "middle temporal anterior"
+   ],
+   "latin": "Gyrus temporalis medius anterior"
+  },
+  "gyrus-middle-temporal-posterior": {
+   "name": "Gyrus temporal moyen, partie postérieure",
+   "synonyms": [
+    "middle temporal posterior"
+   ],
+   "latin": "Gyrus temporalis medius posterior"
+  },
+  "gyrus-middle-temporal-temporooccipital": {
+   "name": "Gyrus temporal moyen, partie temporo-occipitale",
+   "synonyms": [
+    "middle temporal temporo-occipital"
+   ],
+   "latin": "Gyrus temporalis medius pars temporo-occipitalis"
+  },
+  "gyrus-occipital-fusiform": {
+   "name": "Gyrus fusiforme occipital",
+   "synonyms": [
+    "occipital fusiform gyrus"
+   ],
+   "latin": "Gyrus fusiformis occipitalis"
+  },
+  "gyrus-paracingulate": {
+   "name": "Gyrus paracingulaire",
+   "synonyms": [
+    "paracingulate gyrus"
+   ],
+   "latin": "Gyrus paracingularis"
+  },
+  "gyrus-parahippocampal-anterior": {
+   "name": "Gyrus parahippocampique antérieur",
+   "synonyms": [
+    "parahippocampal anterior",
+    "T3 antérieur"
+   ],
+   "latin": "Gyrus parahippocampalis anterior"
+  },
+  "gyrus-parahippocampal-posterior": {
+   "name": "Gyrus parahippocampique postérieur",
+   "synonyms": [
+    "parahippocampal posterior"
+   ],
+   "latin": "Gyrus parahippocampalis posterior"
+  },
+  "gyrus-parahippocampal-uncus": {
+   "name": "Gyrus parahippocampique et uncus",
+   "synonyms": [
+    "parahippocampal uncus",
+    "uncus"
+   ],
+   "latin": "Gyrus parahippocampalis et uncus"
+  },
+  "gyrus-postcentral": {
+   "name": "Gyrus postcentral (cortex somatosensoriel primaire)",
+   "synonyms": [
+    "postcentral gyrus",
+    "S1",
+    "aires 3-1-2",
+    "circonvolution pariétale ascendante"
+   ],
+   "latin": "Gyrus postcentralis"
+  },
+  "gyrus-precentral": {
+   "name": "Gyrus précentral (cortex moteur primaire)",
+   "synonyms": [
+    "precentral gyrus",
+    "M1",
+    "aire 4",
+    "circonvolution frontale ascendante"
+   ],
+   "latin": "Gyrus precentralis"
+  },
+  "gyrus-superior-frontal": {
+   "name": "Gyrus frontal supérieur",
+   "synonyms": [
+    "superior frontal gyrus",
+    "F1"
+   ],
+   "latin": "Gyrus frontalis superior"
+  },
+  "gyrus-superior-temporal-anterior": {
+   "name": "Gyrus temporal supérieur, partie antérieure",
+   "synonyms": [
+    "superior temporal anterior",
+    "T1 antérieur"
+   ],
+   "latin": "Gyrus temporalis superior anterior"
+  },
+  "gyrus-superior-temporal-posterior": {
+   "name": "Gyrus temporal supérieur, partie postérieure",
+   "synonyms": [
+    "superior temporal posterior"
+   ],
+   "latin": "Gyrus temporalis superior posterior"
+  },
+  "gyrus-supramarginal": {
+   "name": "Gyrus supramarginal",
+   "synonyms": [
+    "supramarginal gyrus",
+    "aire 40",
+    "lobule du pli courbe"
+   ],
+   "latin": "Gyrus supramarginalis"
+  },
+  "gyrus-supramarginal-anterior": {
+   "name": "Gyrus supramarginal antérieur",
+   "synonyms": [
+    "supramarginal anterior"
+   ],
+   "latin": "Gyrus supramarginalis anterior"
+  },
+  "gyrus-supramarginal-posterior": {
+   "name": "Gyrus supramarginal postérieur",
+   "synonyms": [
+    "supramarginal posterior"
+   ],
+   "latin": "Gyrus supramarginalis posterior"
+  },
+  "habenula": {
+   "name": "Habénula",
+   "synonyms": [
+    "habenula",
+    "noyaux habénulaires"
+   ],
+   "latin": "Habenula"
+  },
+  "hippocampus": {
+   "name": "Hippocampe",
+   "synonyms": [
+    "hippocampus",
+    "corne d'Ammon"
+   ],
+   "latin": "Hippocampus"
+  },
+  "hippocampus-ca1": {
+   "name": "Hippocampe, secteur CA1",
+   "synonyms": [
+    "CA1",
+    "corne d'Ammon 1",
+    "hippocampus CA1"
+   ],
+   "latin": "Cornu ammonis 1"
+  },
+  "hippocampus-ca23": {
+   "name": "Hippocampe, secteurs CA2-CA3",
+   "synonyms": [
+    "CA2",
+    "CA3",
+    "hippocampus CA2/CA3"
+   ],
+   "latin": "Cornu ammonis 2-3"
+  },
+  "hypoglossal-nucleus": {
+   "name": "Noyau de l'hypoglosse",
+   "synonyms": [
+    "noyau du XII"
+   ],
+   "latin": "Nucleus nervi hypoglossi"
+  },
+  "hypothalamus": {
+   "name": "Hypothalamus",
+   "synonyms": [
+    "hypothalamus"
+   ],
+   "latin": "Hypothalamus"
+  },
+  "hypothalamus-anterior-area": {
+   "name": "Aire hypothalamique antérieure",
+   "synonyms": [
+    "anterior hypothalamic area"
+   ],
+   "latin": "Area hypothalamica anterior"
+  },
+  "hypothalamus-arcuate": {
+   "name": "Noyau arqué (infundibulaire)",
+   "synonyms": [
+    "arcuate nucleus",
+    "noyau infundibulaire",
+    "ARC"
+   ],
+   "latin": "Nucleus arcuatus"
+  },
+  "hypothalamus-dorsomedial": {
+   "name": "Noyau dorsomédial de l'hypothalamus",
+   "synonyms": [
+    "DMH",
+    "dorsomedial nucleus"
+   ],
+   "latin": "Nucleus dorsomedialis hypothalami"
+  },
+  "hypothalamus-lateral": {
+   "name": "Aire hypothalamique latérale",
+   "synonyms": [
+    "lateral hypothalamic area",
+    "LHA"
+   ],
+   "latin": "Area hypothalamica lateralis"
+  },
+  "hypothalamus-medial-preoptic": {
+   "name": "Noyau préoptique médial",
+   "synonyms": [
+    "medial preoptic nucleus",
+    "MPN"
+   ],
+   "latin": "Nucleus preopticus medialis"
+  },
+  "hypothalamus-paraventricular": {
+   "name": "Noyau paraventriculaire",
+   "synonyms": [
+    "PVN",
+    "paraventricular nucleus"
+   ],
+   "latin": "Nucleus paraventricularis"
+  },
+  "hypothalamus-posterior": {
+   "name": "Noyau postérieur de l'hypothalamus",
+   "synonyms": [
+    "posterior hypothalamic nucleus"
+   ],
+   "latin": "Nucleus posterior hypothalami"
+  },
+  "hypothalamus-suprachiasmatic": {
+   "name": "Noyau suprachiasmatique",
+   "synonyms": [
+    "suprachiasmatic nucleus",
+    "SCN",
+    "horloge circadienne"
+   ],
+   "latin": "Nucleus suprachiasmaticus"
+  },
+  "hypothalamus-supraoptic": {
+   "name": "Noyau supraoptique",
+   "synonyms": [
+    "SON",
+    "supraoptic nucleus"
+   ],
+   "latin": "Nucleus supraopticus"
+  },
+  "hypothalamus-tuberomammillary": {
+   "name": "Noyau tubéromamillaire",
+   "synonyms": [
+    "TMN",
+    "tuberomammillary nucleus"
+   ],
+   "latin": "Nucleus tuberomamillaris"
+  },
+  "hypothalamus-ventromedial": {
+   "name": "Noyau ventromédial de l'hypothalamus",
+   "synonyms": [
+    "VMH",
+    "ventromedial nucleus",
+    "centre de la satiété"
+   ],
+   "latin": "Nucleus ventromedialis hypothalami"
+  },
+  "inferior-cerebellar-peduncle": {
+   "name": "Pédoncule cérébelleux inférieur",
+   "synonyms": [
+    "corps restiforme"
+   ],
+   "latin": "Pedunculus cerebellaris inferior"
+  },
+  "inferior-colliculus": {
+   "name": "Colliculus inférieur",
+   "synonyms": [
+    "tubercule quadrijumeau postérieur"
+   ],
+   "latin": "Colliculus inferior"
+  },
+  "inferior-olivary-nucleus": {
+   "name": "Noyau olivaire inférieur",
+   "synonyms": [
+    "olive inférieure",
+    "olive bulbaire"
+   ],
+   "latin": "Nucleus olivaris inferior"
+  },
+  "insula": {
+   "name": "Insula",
+   "synonyms": [
+    "insula",
+    "cortex insulaire",
+    "lobe de l'insula",
+    "5e lobe"
+   ],
+   "latin": "Insula"
+  },
+  "internal-capsule": {
+   "name": "Capsule interne",
+   "synonyms": [
+    "bras antérieur et postérieur de la capsule interne",
+    "genou de la capsule interne"
+   ],
+   "latin": "Capsula interna"
+  },
+  "interposed-nucleus": {
+   "name": "Noyaux interposés (emboliforme et globuleux)",
+   "synonyms": [
+    "noyau emboliforme",
+    "noyau globuleux"
+   ],
+   "latin": "Nucleus emboliformis ; nucleus globosus"
+  },
+  "lateral-geniculate-nucleus": {
+   "name": "Corps genouillé latéral",
+   "synonyms": [
+    "CGL",
+    "LGN",
+    "lateral geniculate nucleus",
+    "noyau genouillé latéral"
+   ],
+   "latin": "Corpus geniculatum laterale"
+  },
+  "level-medulla-olive": {
+   "name": "Bulbe : coupe de l'olive inférieure",
+   "synonyms": [
+    "coupe bulbaire de l'olive"
+   ],
+   "latin": ""
+  },
+  "level-medulla-pyramidal-decussation": {
+   "name": "Bulbe : coupe de la décussation pyramidale",
+   "synonyms": [
+    "décussation des pyramides"
+   ],
+   "latin": ""
+  },
+  "level-medulla-sensory-decussation": {
+   "name": "Bulbe : coupe de la décussation sensitive (lemniscale)",
+   "synonyms": [
+    "décussation sensitive"
+   ],
+   "latin": ""
+  },
+  "level-midbrain-inferior-colliculus": {
+   "name": "Mésencéphale : coupe du colliculus inférieur",
+   "synonyms": [
+    "coupe mésencéphalique inférieure"
+   ],
+   "latin": ""
+  },
+  "level-midbrain-superior-colliculus": {
+   "name": "Mésencéphale : coupe du colliculus supérieur",
+   "synonyms": [
+    "coupe mésencéphalique supérieure"
+   ],
+   "latin": ""
+  },
+  "level-pons-caudal": {
+   "name": "Pont caudal (coupe du colliculus facial)",
+   "synonyms": [
+    "coupe protubérantielle caudale"
+   ],
+   "latin": ""
+  },
+  "level-pons-rostral": {
+   "name": "Pont rostral",
+   "synonyms": [
+    "coupe protubérantielle rostrale"
+   ],
+   "latin": ""
+  },
+  "lobe-frontal": {
+   "name": "Lobe frontal",
+   "synonyms": [
+    "frontal lobe"
+   ],
+   "latin": "Lobus frontalis"
+  },
+  "lobe-occipital": {
+   "name": "Lobe occipital",
+   "synonyms": [
+    "occipital lobe"
+   ],
+   "latin": "Lobus occipitalis"
+  },
+  "lobe-parietal": {
+   "name": "Lobe pariétal",
+   "synonyms": [
+    "parietal lobe"
+   ],
+   "latin": "Lobus parietalis"
+  },
+  "lobe-temporal": {
+   "name": "Lobe temporal",
+   "synonyms": [
+    "temporal lobe"
+   ],
+   "latin": "Lobus temporalis"
+  },
+  "lobule-superior-parietal": {
+   "name": "Lobule pariétal supérieur",
+   "synonyms": [
+    "superior parietal lobule",
+    "P1"
+   ],
+   "latin": "Lobulus parietalis superior"
+  },
+  "locus-coeruleus": {
+   "name": "Locus cœruleus",
+   "synonyms": [
+    "locus coeruleus",
+    "groupe noradrénergique A6"
+   ],
+   "latin": "Locus caeruleus"
+  },
+  "mammillary-body": {
+   "name": "Corps mamillaires",
+   "synonyms": [
+    "mammillary bodies",
+    "tubercules mamillaires"
+   ],
+   "latin": "Corpus mamillare"
+  },
+  "mammillothalamic-tract": {
+   "name": "Faisceau mamillothalamique",
+   "synonyms": [
+    "mammillothalamic tract",
+    "faisceau de Vicq d'Azyr"
+   ],
+   "latin": "Fasciculus mamillothalamicus"
+  },
+  "medial-geniculate-nucleus": {
+   "name": "Corps genouillé médial",
+   "synonyms": [
+    "CGM",
+    "MGN",
+    "medial geniculate nucleus"
+   ],
+   "latin": "Corpus geniculatum mediale"
+  },
+  "medial-lemniscus": {
+   "name": "Lemniscus médial",
+   "synonyms": [
+    "ruban de Reil médian"
+   ],
+   "latin": "Lemniscus medialis"
+  },
+  "medial-longitudinal-fasciculus": {
+   "name": "Faisceau longitudinal médial",
+   "synonyms": [
+    "FLM",
+    "MLF"
+   ],
+   "latin": "Fasciculus longitudinalis medialis"
+  },
+  "middle-cerebellar-peduncle": {
+   "name": "Pédoncule cérébelleux moyen",
+   "synonyms": [
+    "brachium pontis"
+   ],
+   "latin": "Pedunculus cerebellaris medius"
+  },
+  "nuclei-viscero-sensory-motor": {
+   "name": "Complexe viscéro-sensitivo-moteur",
+   "synonyms": [
+    "complexe VSM"
+   ],
+   "latin": ""
+  },
+  "nucleus-accumbens": {
+   "name": "Noyau accumbens",
+   "synonyms": [
+    "accumbens",
+    "nucleus accumbens",
+    "striatum ventral"
+   ],
+   "latin": "Nucleus accumbens"
+  },
+  "nucleus-ambiguus": {
+   "name": "Noyau ambigu",
+   "synonyms": [],
+   "latin": "Nucleus ambiguus"
+  },
+  "nucleus-basalis-meynert": {
+   "name": "Noyau basal de Meynert",
+   "synonyms": [
+    "nucleus basalis",
+    "NBM",
+    "Ch4",
+    "noyau basal magnocellulaire"
+   ],
+   "latin": "Nucleus basalis telencephali"
+  },
+  "nucleus-cuneiform": {
+   "name": "Noyau cunéiforme",
+   "synonyms": [
+    "CnF",
+    "région locomotrice mésencéphalique (avec le noyau pédonculopontin)"
+   ],
+   "latin": "Nucleus cuneiformis"
+  },
+  "nucleus-gracilis-cuneatus": {
+   "name": "Noyaux gracile et cunéiforme",
+   "synonyms": [
+    "noyaux des colonnes dorsales",
+    "noyau de Goll",
+    "noyau de Burdach"
+   ],
+   "latin": ""
+  },
+  "nucleus-laterodorsal-tegmental": {
+   "name": "Noyau tegmental latérodorsal et gris central du pont",
+   "synonyms": [
+    "LDTg",
+    "groupe cholinergique Ch6"
+   ],
+   "latin": ""
+  },
+  "nucleus-microcellular-tegmental-parabigeminal": {
+   "name": "Noyaux tegmental microcellulaire et parabigéminal",
+   "synonyms": [
+    "MiTg",
+    "PBG",
+    "noyau parabigéminal"
+   ],
+   "latin": ""
+  },
+  "nucleus-parabrachial-lateral": {
+   "name": "Noyau parabrachial latéral",
+   "synonyms": [
+    "LPB"
+   ],
+   "latin": "Nucleus parabrachialis lateralis"
+  },
+  "nucleus-parabrachial-medial": {
+   "name": "Noyau parabrachial médial",
+   "synonyms": [
+    "MPB",
+    "centre pneumotaxique (avec le noyau de Kölliker-Fuse)"
+   ],
+   "latin": "Nucleus parabrachialis medialis"
+  },
+  "nucleus-parvicellular-reticular-alpha": {
+   "name": "Noyau réticulaire parvicellulaire, partie alpha",
+   "synonyms": [
+    "PCRtA"
+   ],
+   "latin": ""
+  },
+  "nucleus-solitarius": {
+   "name": "Noyau du tractus solitaire",
+   "synonyms": [
+    "noyau solitaire",
+    "NTS"
+   ],
+   "latin": "Nucleus tractus solitarii"
+  },
+  "nucleus-subcoeruleus": {
+   "name": "Noyau subcœruleus",
+   "synonyms": [
+    "SubC",
+    "noyau sublatérodorsal"
+   ],
+   "latin": ""
+  },
+  "occipital-pole": {
+   "name": "Pôle occipital",
+   "synonyms": [
+    "occipital pole"
+   ],
+   "latin": "Polus occipitalis"
+  },
+  "oculomotor-nucleus": {
+   "name": "Noyaux oculomoteur et d'Edinger-Westphal",
+   "synonyms": [
+    "noyau du III",
+    "complexe nucléaire oculomoteur"
+   ],
+   "latin": "Nucleus nervi oculomotorii ; nucleus accessorius nervi oculomotorii"
+  },
+  "optic-chiasm": {
+   "name": "Chiasma optique",
+   "synonyms": [
+    "optic chiasm",
+    "chiasma des nerfs optiques"
+   ],
+   "latin": "Chiasma opticum"
+  },
+  "pedunculopontine-nucleus": {
+   "name": "Noyau pédonculopontin",
+   "synonyms": [
+    "PPN",
+    "région locomotrice mésencéphalique"
+   ],
+   "latin": ""
+  },
+  "periaqueductal-grey": {
+   "name": "Substance grise périaqueducale",
+   "synonyms": [
+    "PAG",
+    "gris central"
+   ],
+   "latin": "Substantia grisea centralis"
+  },
+  "pineal-gland": {
+   "name": "Glande pinéale",
+   "synonyms": [
+    "pineal gland",
+    "épiphyse"
+   ],
+   "latin": "Glandula pinealis"
+  },
+  "pituitary-infundibulum": {
+   "name": "Hypophyse et tige pituitaire",
+   "synonyms": [
+    "pituitary",
+    "infundibulum",
+    "tige pituitaire",
+    "glande pituitaire"
+   ],
+   "latin": "Hypophysis et infundibulum"
+  },
+  "planum-polare": {
+   "name": "Planum polare",
+   "synonyms": [
+    "planum polare"
+   ],
+   "latin": "Planum polare"
+  },
+  "planum-temporale": {
+   "name": "Planum temporal",
+   "synonyms": [
+    "planum temporale"
+   ],
+   "latin": "Planum temporale"
+  },
+  "pontine-nuclei": {
+   "name": "Noyaux du pont et fibres pontiques transverses",
+   "synonyms": [
+    "noyaux pontiques"
+   ],
+   "latin": "Nuclei pontis"
+  },
+  "posterior-commissure": {
+   "name": "Commissure postérieure",
+   "synonyms": [
+    "commissure épithalamique"
+   ],
+   "latin": "Commissura posterior"
+  },
+  "posterior-spinal-arteries": {
+   "latin": "Arteriae spinales posteriores",
+   "name": "Artères spinales postérieures",
+   "synonyms": [
+    "Posterior spinal arteries"
+   ]
+  },
+  "pprf": {
+   "name": "Formation réticulée pontique paramédiane",
+   "synonyms": [
+    "PPRF",
+    "centre pontique du regard horizontal"
+   ],
+   "latin": "Formatio reticularis pontis paramedianus"
+  },
+  "precuneus": {
+   "name": "Précunéus",
+   "synonyms": [
+    "precuneus",
+    "avant-coin"
+   ],
+   "latin": "Precuneus"
+  },
+  "presubiculum": {
+   "name": "Présubiculum",
+   "synonyms": [
+    "presubiculum"
+   ],
+   "latin": "Presubiculum"
+  },
+  "pretectal-area": {
+   "name": "Aire prétectale",
+   "synonyms": [
+    "noyaux prétectaux",
+    "noyau prétectal olivaire"
+   ],
+   "latin": "Area pretectalis"
+  },
+  "putamen": {
+   "name": "Putamen",
+   "synonyms": [
+    "putamen",
+    "striatum dorsal",
+    "corps strié",
+    "striatum"
+   ],
+   "latin": "Putamen"
+  },
+  "pyramid": {
+   "name": "Pyramide bulbaire et décussation pyramidale",
+   "synonyms": [
+    "pyramide du bulbe",
+    "faisceau cortico-spinal dans le bulbe"
+   ],
+   "latin": ""
+  },
+  "raphe-dorsal": {
+   "name": "Noyau du raphé dorsal",
+   "synonyms": [
+    "groupe B7"
+   ],
+   "latin": "Nucleus raphes dorsalis"
+  },
+  "raphe-linear-caudal-rostral": {
+   "name": "Complexe linéaire caudal-rostral du raphé",
+   "synonyms": [
+    "noyaux linéaires caudal et rostral",
+    "CLi",
+    "RLi",
+    "groupe B8"
+   ],
+   "latin": ""
+  },
+  "raphe-magnus": {
+   "name": "Noyau du raphé magnus",
+   "synonyms": [
+    "RMg",
+    "groupe B3"
+   ],
+   "latin": "Nucleus raphes magnus"
+  },
+  "raphe-median": {
+   "name": "Noyau du raphé médian",
+   "synonyms": [
+    "noyau central supérieur",
+    "groupe B8"
+   ],
+   "latin": "Nucleus raphes medianus"
+  },
+  "raphe-nuclei": {
+   "name": "Noyaux du raphé",
+   "synonyms": [
+    "noyaux sérotoninergiques",
+    "groupes cellulaires B1 à B9"
+   ],
+   "latin": ""
+  },
+  "raphe-obscurus": {
+   "name": "Noyau du raphé obscurus",
+   "synonyms": [
+    "ROb",
+    "groupe B2"
+   ],
+   "latin": "Nucleus raphes obscurus"
+  },
+  "raphe-pallidus": {
+   "name": "Noyau du raphé pallidus",
+   "synonyms": [
+    "RPa",
+    "groupe B1"
+   ],
+   "latin": "Nucleus raphes pallidus"
+  },
+  "raphe-paramedian": {
+   "name": "Noyau du raphé paramédian",
+   "synonyms": [
+    "PMnR",
+    "noyau paramédian"
+   ],
+   "latin": ""
+  },
+  "red-nucleus": {
+   "name": "Noyau rouge",
+   "synonyms": [],
+   "latin": "Nucleus ruber"
+  },
+  "reticular-formation": {
+   "name": "Formation réticulée",
+   "synonyms": [],
+   "latin": "Formatio reticularis"
+  },
+  "reticular-formation-isthmic": {
+   "name": "Formation réticulée isthmique",
+   "synonyms": [
+    "isRt"
+   ],
+   "latin": ""
+  },
+  "reticular-formation-medullary-inferior": {
+   "name": "Formation réticulée bulbaire inférieure",
+   "synonyms": [
+    "iMRt",
+    "formation réticulée bulbaire caudale"
+   ],
+   "latin": ""
+  },
+  "reticular-formation-medullary-superior": {
+   "name": "Formation réticulée bulbaire supérieure",
+   "synonyms": [
+    "sMRt",
+    "noyau réticulaire gigantocellulaire"
+   ],
+   "latin": "Nucleus gigantocellularis"
+  },
+  "reticular-formation-mesencephalic": {
+   "name": "Formation réticulée mésencéphalique",
+   "synonyms": [
+    "mRt",
+    "formation réticulée du mésencéphale"
+   ],
+   "latin": "Formatio reticularis mesencephali"
+  },
+  "reticular-formation-pontine": {
+   "name": "Noyau réticulé pontique, parties orale et caudale",
+   "synonyms": [
+    "PnO",
+    "PnC",
+    "centre pontique du regard"
+   ],
+   "latin": ""
+  },
+  "rimlf": {
+   "name": "Noyau rostral interstitiel du FLM (centre du regard vertical)",
+   "synonyms": [
+    "riMLF",
+    "générateur des saccades verticales"
+   ],
+   "latin": ""
+  },
+  "septal-area": {
+   "name": "Aire septale",
+   "synonyms": [
+    "septal area",
+    "septum",
+    "noyaux septaux"
+   ],
+   "latin": "Area septalis"
+  },
+  "sinus-cavernous": {
+   "latin": "Sinus cavernosus",
+   "name": "Sinus caverneux",
+   "synonyms": [
+    "Cavernous sinus"
+   ]
+  },
+  "sinus-petrosal": {
+   "latin": "Sinus petrosus superior et inferior",
+   "name": "Sinus pétreux supérieur et inférieur",
+   "synonyms": [
+    "Superior and inferior petrosal sinuses",
+    "sinus pétreux"
+   ]
+  },
+  "sinus-straight": {
+   "latin": "Sinus rectus",
+   "name": "Sinus droit et sinus sagittal inférieur",
+   "synonyms": [
+    "Straight sinus and inferior sagittal sinus",
+    "sinus droit"
+   ]
+  },
+  "sinus-superior-sagittal": {
+   "latin": "Sinus sagittalis superior",
+   "name": "Sinus sagittal supérieur",
+   "synonyms": [
+    "Superior sagittal sinus",
+    "sinus longitudinal supérieur"
+   ]
+  },
+  "sinus-transverse-sigmoid": {
+   "latin": "Sinus transversus; sinus sigmoideus",
+   "name": "Sinus transverse et sinus sigmoïde",
+   "synonyms": [
+    "Transverse and sigmoid sinuses",
+    "lateral sinuses",
+    "sinus latéraux"
+   ]
+  },
+  "spinal-trigeminal-nucleus-tract": {
+   "name": "Noyau et tractus spinal du trijumeau",
+   "synonyms": [
+    "noyau spinal du V"
+   ],
+   "latin": "Nucleus et tractus spinalis nervi trigemini"
+  },
+  "subiculum": {
+   "name": "Subiculum",
+   "synonyms": [
+    "subiculum"
+   ],
+   "latin": "Subiculum"
+  },
+  "substantia-nigra": {
+   "name": "Substance noire",
+   "synonyms": [
+    "locus niger"
+   ],
+   "latin": "Substantia nigra"
+  },
+  "substantia-nigra-pars-compacta": {
+   "name": "Substance noire, pars compacta",
+   "synonyms": [
+    "SNc",
+    "groupe dopaminergique A9"
+   ],
+   "latin": ""
+  },
+  "substantia-nigra-pars-reticulata": {
+   "name": "Substance noire, pars reticulata",
+   "synonyms": [
+    "SNr"
+   ],
+   "latin": ""
+  },
+  "subthalamic-nucleus": {
+   "name": "Noyau sous-thalamique",
+   "synonyms": [
+    "NST",
+    "STN",
+    "noyau subthalamique",
+    "corps de Luys",
+    "subthalamic nucleus"
+   ],
+   "latin": "Nucleus subthalamicus"
+  },
+  "superior-cerebellar-peduncle": {
+   "name": "Pédoncule cérébelleux supérieur",
+   "synonyms": [
+    "brachium conjunctivum"
+   ],
+   "latin": "Pedunculus cerebellaris superior"
+  },
+  "superior-colliculus": {
+   "name": "Colliculus supérieur",
+   "synonyms": [
+    "tectum optique",
+    "tubercule quadrijumeau antérieur"
+   ],
+   "latin": "Colliculus superior"
+  },
+  "superior-olivary-complex": {
+   "name": "Complexe olivaire supérieur et lemniscus latéral",
+   "synonyms": [
+    "olive supérieure",
+    "corps trapézoïde"
+   ],
+   "latin": ""
+  },
+  "temporal-pole": {
+   "name": "Pôle temporal",
+   "synonyms": [
+    "temporal pole"
+   ],
+   "latin": "Polus temporalis"
+  },
+  "territory-aca": {
+   "name": "Territoire de l'ACA",
+   "synonyms": [
+    "ACA territory",
+    "territoire cérébral antérieur"
+   ]
+  },
+  "territory-aca-major": {
+   "name": "Territoire majeur de l'ACA",
+   "synonyms": [
+    "ACA major territory",
+    "anterior cerebral artery domain"
+   ]
+  },
+  "territory-aica": {
+   "name": "Territoire de l'AICA",
+   "synonyms": [
+    "AICA territory",
+    "territoire cérébelleux antéro-inférieur"
+   ]
+  },
+  "territory-anterior-choroidal": {
+   "name": "Territoire choroïdien antérieur",
+   "synonyms": [
+    "Anterior choroidal territory"
+   ]
+  },
+  "territory-anterior-choroidal-thalamoperforating": {
+   "name": "Territoire choroïdien antérieur et thalamoperforant",
+   "synonyms": [
+    "Anterior choroidal and thalamoperforating territory",
+    "territoire tuberothalamique"
+   ]
+  },
+  "territory-basilar": {
+   "name": "Territoire basilaire (pontique)",
+   "synonyms": [
+    "Basilar territory",
+    "pontine territory",
+    "Basilar (pontine) territory"
+   ]
+  },
+  "territory-basilar-paramedian": {
+   "name": "Territoire paramédian du tronc basilaire (pont)",
+   "synonyms": [
+    "Basilar paramedian territory",
+    "Basilar paramedian (pontine) territory"
+   ]
+  },
+  "territory-inferior-cerebellar": {
+   "name": "Territoire cérébelleux inférieur (PICA/AICA)",
+   "synonyms": [
+    "Inferior cerebellar territory",
+    "Inferior cerebellar (PICA/AICA) territory",
+    "PICA/AICA territory"
+   ]
+  },
+  "territory-lateral-lenticulostriate": {
+   "name": "Territoire lenticulostrié latéral",
+   "synonyms": [
+    "Lateral lenticulostriate territory",
+    "lateral striate artery territory",
+    "territoire striatocapsulaire"
+   ]
+  },
+  "territory-lenticulostriate": {
+   "name": "Territoire lenticulostrié (ACM profonde)",
+   "synonyms": [
+    "Lenticulostriate territory",
+    "Lenticulostriate (deep MCA) territory",
+    "deep MCA territory"
+   ]
+  },
+  "territory-mca": {
+   "name": "Territoire sylvien superficiel (ACM)",
+   "synonyms": [
+    "MCA territory",
+    "territoire de l'ACM",
+    "territoire de la cérébrale moyenne",
+    "territoire sylvien"
+   ]
+  },
+  "territory-mca-frontal": {
+   "name": "Territoire sylvien frontal",
+   "synonyms": [
+    "MCA territory, frontal",
+    "superior division MCA territory",
+    "frontal MCA domain"
+   ]
+  },
+  "territory-mca-insular": {
+   "name": "Territoire sylvien insulaire",
+   "synonyms": [
+    "MCA territory, insular",
+    "insular MCA domain"
+   ]
+  },
+  "territory-mca-major": {
+   "name": "Territoire sylvien majeur (ACM)",
+   "synonyms": [
+    "MCA major territory",
+    "middle cerebral artery domain"
+   ]
+  },
+  "territory-mca-occipital": {
+   "name": "Territoire sylvien occipital",
+   "synonyms": [
+    "MCA territory, occipital",
+    "temporo-occipital artery territory"
+   ]
+  },
+  "territory-mca-parietal": {
+   "name": "Territoire sylvien pariétal",
+   "synonyms": [
+    "MCA territory, parietal",
+    "parietal MCA domain",
+    "angular artery territory"
+   ]
+  },
+  "territory-mca-temporal": {
+   "name": "Territoire sylvien temporal",
+   "synonyms": [
+    "MCA territory, temporal",
+    "inferior division MCA territory",
+    "temporal MCA domain"
+   ]
+  },
+  "territory-medial-lenticulostriate": {
+   "name": "Territoire lenticulostrié médial (artère récurrente d'Heubner)",
+   "synonyms": [
+    "Medial lenticulostriate territory",
+    "medial striate artery territory",
+    "recurrent artery of Heubner territory",
+    "artère d'Heubner"
+   ]
+  },
+  "territory-pca": {
+   "name": "Territoire de l'ACP",
+   "synonyms": [
+    "PCA territory",
+    "territoire cérébral postérieur"
+   ]
+  },
+  "territory-pca-major": {
+   "name": "Territoire majeur de l'ACP",
+   "synonyms": [
+    "PCA major territory",
+    "posterior cerebral artery domain"
+   ]
+  },
+  "territory-pca-occipital": {
+   "name": "Territoire de l'ACP, occipital (calcarin)",
+   "synonyms": [
+    "PCA territory, occipital",
+    "calcarine and parieto-occipital artery territory",
+    "territoire calcarin"
+   ]
+  },
+  "territory-pca-temporal": {
+   "name": "Territoire de l'ACP, temporal",
+   "synonyms": [
+    "PCA territory, temporal",
+    "anterior and posterior temporal artery territory"
+   ]
+  },
+  "territory-pica-lateral-medulla": {
+   "name": "Territoire de la PICA et bulbaire latéral (Wallenberg)",
+   "synonyms": [
+    "PICA and lateral medullary territory",
+    "territoire de Wallenberg",
+    "lateral medullary territory"
+   ]
+  },
+  "territory-posterior-choroidal-thalamoperforating": {
+   "name": "Territoire choroïdien postérieur et thalamoperforant",
+   "synonyms": [
+    "Posterior choroidal and thalamoperforating territory",
+    "paramedian thalamic territory",
+    "thalamogeniculate territory",
+    "posterior choroidal territory"
+   ]
+  },
+  "territory-sca": {
+   "name": "Territoire de la SCA",
+   "synonyms": [
+    "SCA territory",
+    "territoire cérébelleux supérieur"
+   ]
+  },
+  "territory-superior-cerebellar": {
+   "name": "Territoire cérébelleux supérieur (SCA)",
+   "synonyms": [
+    "Superior cerebellar artery territory",
+    "SCA territory",
+    "superior cerebellar domain"
+   ]
+  },
+  "territory-vertebrobasilar-major": {
+   "name": "Territoire vertébrobasilaire majeur",
+   "synonyms": [
+    "Vertebrobasilar major territory",
+    "posterior circulation territory",
+    "vertebrobasilar domain",
+    "territoire de la circulation postérieure"
+   ]
+  },
+  "territory-watershed": {
+   "name": "Territoires jonctionnels (watershed)",
+   "synonyms": [
+    "Watershed territories",
+    "Watershed (borderzone) territories",
+    "borderzone territories",
+    "zones jonctionnelles",
+    "territoires frontières"
+   ]
+  },
+  "thalamus": {
+   "name": "Thalamus",
+   "synonyms": [
+    "thalamus",
+    "couche optique"
+   ],
+   "latin": "Thalamus"
+  },
+  "thalamus-anterior-nuclei": {
+   "name": "Noyaux antérieurs du thalamus",
+   "synonyms": [
+    "anterior thalamic nuclei",
+    "ATN"
+   ],
+   "latin": "Nuclei anteriores thalami"
+  },
+  "thalamus-lateral-posterior-ventral-posterior": {
+   "name": "Groupe latéral postérieur / ventral postérieur du thalamus",
+   "synonyms": [
+    "LP",
+    "ventral posterior",
+    "lateral posterior",
+    "VP"
+   ],
+   "latin": "Nuclei laterales posteriores thalami"
+  },
+  "thalamus-mediodorsal": {
+   "name": "Noyau médiodorsal du thalamus",
+   "synonyms": [
+    "MD",
+    "mediodorsal nucleus"
+   ],
+   "latin": "Nucleus mediodorsalis thalami"
+  },
+  "thalamus-pulvinar": {
+   "name": "Pulvinar",
+   "synonyms": [
+    "pulvinar"
+   ],
+   "latin": "Pulvinar thalami"
+  },
+  "thalamus-pulvinar-medial-centrolateral": {
+   "name": "Pulvinar médial / groupe centrolatéral",
+   "synonyms": [
+    "medial pulvinar",
+    "centrolatéral",
+    "CL"
+   ],
+   "latin": "Pulvinar medialis"
+  },
+  "thalamus-va-vl": {
+   "name": "Noyaux ventral antérieur et ventral latéral (VA/VL)",
+   "synonyms": [
+    "VA",
+    "VL",
+    "ventral anterior",
+    "ventral lateral"
+   ],
+   "latin": "Nuclei ventralis anterior et ventralis lateralis"
+  },
+  "thalamus-ventral-anterior": {
+   "name": "Noyau ventral antérieur du thalamus",
+   "synonyms": [
+    "VA",
+    "ventral anterior nucleus"
+   ],
+   "latin": "Nucleus ventralis anterior thalami"
+  },
+  "thalamus-ventral-posterior-ventrolateral": {
+   "name": "Groupe ventral postérieur / ventrolatéral (VPL/VPM)",
+   "synonyms": [
+    "VPL",
+    "VPM",
+    "ventral posterior",
+    "ventrolatéral"
+   ],
+   "latin": "Nuclei ventrales posteriores thalami"
+  },
+  "thalamus-ventrolateral": {
+   "name": "Noyau ventrolatéral du thalamus",
+   "synonyms": [
+    "VL",
+    "ventrolateral nucleus"
+   ],
+   "latin": "Nucleus ventrolateralis thalami"
+  },
+  "thalamus-vpl": {
+   "name": "Noyau ventral postérolatéral (VPL)",
+   "synonyms": [
+    "VPL",
+    "ventral posterolateral nucleus"
+   ],
+   "latin": "Nucleus ventralis posterolateralis"
+  },
+  "thalamus-vpm": {
+   "name": "Noyau ventral postéromédial (VPM)",
+   "synonyms": [
+    "VPM",
+    "ventral posteromedial nucleus"
+   ],
+   "latin": "Nucleus ventralis posteromedialis"
+  },
+  "tract-acoustic-radiation": {
+   "name": "Radiation acoustique",
+   "synonyms": [
+    "radiation auditive",
+    "faisceau géniculo-temporal"
+   ],
+   "latin": "Radiatio acustica"
+  },
+  "tract-arcuate-fasciculus": {
+   "name": "Faisceau arqué",
+   "synonyms": [
+    "voie dorsale du langage"
+   ],
+   "latin": "Fasciculus arcuatus"
+  },
+  "tract-cingulum-frontoparietal": {
+   "name": "Cingulum fronto-pariétal",
+   "synonyms": [
+    "cingulum dorsal",
+    "faisceau du cingulum"
+   ],
+   "latin": ""
+  },
+  "tract-cingulum-parahippocampal": {
+   "name": "Cingulum parahippocampique",
+   "synonyms": [
+    "cingulum ventral"
+   ],
+   "latin": ""
+  },
+  "tract-corticobulbar": {
+   "name": "Faisceau cortico-bulbaire",
+   "synonyms": [
+    "faisceau corticonucléaire",
+    "TCB"
+   ],
+   "latin": ""
+  },
+  "tract-corticopontine-frontal": {
+   "name": "Faisceau fronto-pontique",
+   "synonyms": [
+    "fibres fronto-pontiques"
+   ],
+   "latin": "Tractus frontopontinus"
+  },
+  "tract-corticopontine-occipital": {
+   "name": "Faisceau occipito-pontique",
+   "synonyms": [
+    "faisceau de Türck",
+    "faisceau temporo-pontique"
+   ],
+   "latin": ""
+  },
+  "tract-corticopontine-parietal": {
+   "name": "Faisceau pariéto-pontique",
+   "synonyms": [
+    "fibres pariéto-pontiques"
+   ],
+   "latin": "Fibrae parietopontinae"
+  },
+  "tract-corticospinal": {
+   "name": "Faisceau cortico-spinal",
+   "synonyms": [
+    "faisceau pyramidal",
+    "TCS"
+   ],
+   "latin": "Tractus pyramidalis"
+  },
+  "tract-corticostriatal-anterior": {
+   "name": "Faisceau cortico-strié antérieur",
+   "synonyms": [
+    "fibres cortico-striées préfrontales"
+   ],
+   "latin": ""
+  },
+  "tract-corticostriatal-posterior": {
+   "name": "Faisceau cortico-strié postérieur",
+   "synonyms": [
+    "fibres cortico-striées pariéto-temporo-occipitales"
+   ],
+   "latin": ""
+  },
+  "tract-corticostriatal-superior": {
+   "name": "Faisceau cortico-strié supérieur",
+   "synonyms": [
+    "fibres cortico-striées sensorimotrices"
+   ],
+   "latin": ""
+  },
+  "tract-dentatorubrothalamic": {
+   "name": "Faisceau dentato-rubro-thalamique",
+   "synonyms": [
+    "faisceau cérébello-thalamique"
+   ],
+   "latin": ""
+  },
+  "tract-frontal-aslant": {
+   "name": "Faisceau frontal oblique",
+   "synonyms": [
+    "FAT"
+   ],
+   "latin": "Fasciculus frontalis obliquus"
+  },
+  "tract-inferior-fronto-occipital-fasciculus": {
+   "name": "Faisceau fronto-occipital inférieur",
+   "synonyms": [
+    "IFOF",
+    "voie sémantique ventrale"
+   ],
+   "latin": ""
+  },
+  "tract-inferior-longitudinal-fasciculus": {
+   "name": "Faisceau longitudinal inférieur",
+   "synonyms": [
+    "ILF",
+    "faisceau occipito-temporal"
+   ],
+   "latin": "Fasciculus longitudinalis inferior"
+  },
+  "tract-middle-longitudinal-fasciculus": {
+   "name": "Faisceau longitudinal moyen",
+   "synonyms": [
+    "MdLF",
+    "faisceau temporo-pariétal"
+   ],
+   "latin": ""
+  },
+  "tract-optic-radiation": {
+   "name": "Radiation optique",
+   "synonyms": [
+    "faisceau géniculo-calcarin",
+    "boucle de Meyer (partie antérieure)"
+   ],
+   "latin": "Radiatio optica"
+  },
+  "tract-reticulospinal": {
+   "name": "Faisceau réticulo-spinal",
+   "synonyms": [
+    "faisceaux réticulo-spinaux médial et latéral"
+   ],
+   "latin": "Tractus reticulospinales"
+  },
+  "tract-superior-longitudinal-fasciculus-i": {
+   "name": "Faisceau longitudinal supérieur I",
+   "synonyms": [
+    "SLF I dorsal"
+   ],
+   "latin": ""
+  },
+  "tract-superior-longitudinal-fasciculus-ii": {
+   "name": "Faisceau longitudinal supérieur II",
+   "synonyms": [
+    "SLF II",
+    "faisceau fronto-pariétal de l'attention"
+   ],
+   "latin": ""
+  },
+  "tract-superior-longitudinal-fasciculus-iii": {
+   "name": "Faisceau longitudinal supérieur III",
+   "synonyms": [
+    "SLF III"
+   ],
+   "latin": ""
+  },
+  "tract-thalamic-radiation-anterior": {
+   "name": "Radiation thalamique antérieure",
+   "synonyms": [
+    "radiation fronto-thalamique"
+   ],
+   "latin": "Radiatio anterior thalami"
+  },
+  "tract-thalamic-radiation-posterior": {
+   "name": "Radiation thalamique postérieure",
+   "synonyms": [
+    "radiation du pulvinar"
+   ],
+   "latin": ""
+  },
+  "tract-thalamic-radiation-superior": {
+   "name": "Radiation thalamique supérieure",
+   "synonyms": [
+    "radiation thalamocorticale sensorimotrice"
+   ],
+   "latin": ""
+  },
+  "tract-uncinate-fasciculus": {
+   "name": "Faisceau unciné",
+   "synonyms": [
+    "faisceau temporo-orbitofrontal"
+   ],
+   "latin": "Fasciculus uncinatus"
+  },
+  "trigeminal-nuclei": {
+   "name": "Noyaux sensitifs et moteur du trijumeau",
+   "synonyms": [
+    "noyau sensitif principal du V",
+    "noyau moteur du V",
+    "noyau mésencéphalique du V"
+   ],
+   "latin": ""
+  },
+  "trochlear-nucleus": {
+   "name": "Noyau trochléaire",
+   "synonyms": [
+    "noyau du IV"
+   ],
+   "latin": "Nucleus nervi trochlearis"
+  },
+  "uncus": {
+   "name": "Uncus",
+   "synonyms": [
+    "uncus",
+    "crochet hippocampique"
+   ],
+   "latin": "Uncus"
+  },
+  "vein-basal": {
+   "latin": "Vena basalis (Rosenthal)",
+   "name": "Veine basale de Rosenthal",
+   "synonyms": [
+    "BVR",
+    "basal vein of Rosenthal",
+    "Basal vein (of Rosenthal)",
+    "vena basalis",
+    "veine basale"
+   ]
+  },
+  "vein-great-cerebral": {
+   "latin": "Vena magna cerebri (Galeni)",
+   "name": "Veine de Galien (grande veine cérébrale)",
+   "synonyms": [
+    "vein of Galen",
+    "great cerebral vein",
+    "Great cerebral vein and deep venous system",
+    "internal cerebral veins",
+    "grande veine cérébrale"
+   ]
+  },
+  "vein-internal-cerebral": {
+   "latin": "Vena cerebri interna",
+   "name": "Veine cérébrale interne",
+   "synonyms": [
+    "ICV",
+    "Internal cerebral vein",
+    "vena interna cerebri"
+   ]
+  },
+  "veins-deep-cerebral": {
+   "latin": "Venae cerebri profundae",
+   "name": "Veines cérébrales profondes",
+   "synonyms": [
+    "Deep cerebral veins",
+    "internal cerebral veins",
+    "basal veins of Rosenthal",
+    "vein of Galen system",
+    "système de Galien"
+   ]
+  },
+  "veins-superficial-cerebral": {
+   "latin": "Venae superficiales cerebri",
+   "name": "Veines cérébrales superficielles (pont)",
+   "synonyms": [
+    "Superficial cerebral veins",
+    "Superficial cerebral (bridging) veins",
+    "bridging veins",
+    "cortical veins",
+    "vein of Trolard",
+    "vein of Labbé",
+    "superficial middle cerebral vein",
+    "veine de Trolard",
+    "veine de Labbé",
+    "veines corticales"
+   ]
+  },
+  "veins-venat-atlas": {
+   "name": "Veines et sinus cérébraux (atlas veineux VENAT)",
+   "synonyms": [
+    "Cerebral veins and sinuses (VENAT atlas iso-surface)",
+    "VENAT venous atlas",
+    "average intracranial venous tree",
+    "arbre veineux intracrânien"
+   ]
+  },
+  "ventral-diencephalon": {
+   "name": "Diencéphale ventral",
+   "synonyms": [
+    "ventral diencephalon"
+   ],
+   "latin": "Diencephalon ventrale"
+  },
+  "ventral-tegmental-area": {
+   "name": "Aire tegmentale ventrale",
+   "synonyms": [
+    "ATV",
+    "VTA",
+    "groupe dopaminergique A10"
+   ],
+   "latin": ""
+  },
+  "vestibular-nuclei": {
+   "name": "Noyaux vestibulaires",
+   "synonyms": [
+    "noyaux vestibulaires supérieur, latéral (de Deiters), médial et inférieur"
+   ],
+   "latin": "Nuclei vestibulares"
+  },
+  "zona-incerta": {
+   "name": "Zona incerta",
+   "synonyms": [
+    "zona incerta"
+   ],
+   "latin": "Zona incerta"
+  },
+  "arachnoid-granulations": {
+   "name": "Granulations arachnoïdiennes (de Pacchioni)",
+   "synonyms": [
+    "Arachnoid granulations",
+    "Pacchioni"
+   ],
+   "latin": "Granulationes arachnoideae"
+  },
+  "arachnoid-mater": {
+   "name": "Arachnoïde",
+   "synonyms": [
+    "Arachnoid mater",
+    "arachnoid"
+   ],
+   "latin": "Arachnoidea mater"
+  },
+  "autonomic-cranial-parasympathetic": {
+   "name": "Parasympathique crânien (III, VII, IX, X)",
+   "synonyms": [
+    "Cranial parasympathetic outflow",
+    "cranial parasympathetic"
+   ],
+   "latin": "Pars parasympathica: nervi craniales III, VII, IX, X"
+  },
+  "autonomic-sacral-parasympathetic": {
+   "name": "Parasympathique sacré (S2–S4)",
+   "synonyms": [
+    "Sacral parasympathetic outflow and bladder control",
+    "nervi erigentes"
+   ],
+   "latin": "Nervi splanchnici pelvici (S2–S4)"
+  },
+  "cauda-equina": {
+   "name": "Queue de cheval",
+   "synonyms": [
+    "Cauda equina",
+    "cauda equina"
+   ],
+   "latin": "Cauda equina"
+  },
+  "cerebral-aqueduct": {
+   "name": "Aqueduc du mésencéphale (de Sylvius)",
+   "synonyms": [
+    "Cerebral aqueduct",
+    "aqueduct of Sylvius"
+   ],
+   "latin": "Aqueductus cerebri"
+  },
+  "cervical-enlargement": {
+   "name": "Renflement cervical",
+   "synonyms": [
+    "Cervical and lumbosacral enlargements",
+    "cervical enlargement"
+   ],
+   "latin": "Intumescentia cervicalis"
+  },
+  "cervical-sympathetic-chain": {
+   "name": "Chaîne sympathique cervicale",
+   "synonyms": [
+    "Cervical sympathetic chain and stellate ganglion",
+    "stellate ganglion"
+   ],
+   "latin": "Ganglia cervicalia; ganglion cervicothoracicum"
+  },
+  "choroid-plexus": {
+   "name": "Plexus choroïde",
+   "synonyms": [
+    "Choroid plexus and CSF production",
+    "choroid plexus"
+   ],
+   "latin": "Plexus choroideus"
+  },
+  "conus-medullaris": {
+   "name": "Cône médullaire",
+   "synonyms": [
+    "Conus medullaris",
+    "conus"
+   ],
+   "latin": "Conus medullaris"
+  },
+  "dorsal-root-ganglion": {
+   "name": "Ganglion spinal (rachidien)",
+   "synonyms": [
+    "Dorsal root ganglion",
+    "DRG",
+    "ganglion spinal"
+   ],
+   "latin": "Ganglion spinale"
+  },
+  "dura-mater": {
+   "name": "Dure-mère",
+   "synonyms": [
+    "Dura mater",
+    "dura"
+   ],
+   "latin": "Dura mater"
+  },
+  "falx-cerebri": {
+   "name": "Faux du cerveau",
+   "synonyms": [
+    "Falx cerebri",
+    "falx"
+   ],
+   "latin": "Falx cerebri"
+  },
+  "filum-terminale": {
+   "name": "Filum terminal",
+   "synonyms": [
+    "Filum terminale",
+    "filum terminale"
+   ],
+   "latin": "Filum terminale"
+  },
+  "ganglion-ciliary": {
+   "name": "Ganglion ciliaire",
+   "synonyms": [
+    "Ciliary ganglion",
+    "ciliary ganglion"
+   ],
+   "latin": "Ganglion ciliare"
+  },
+  "ganglion-geniculate": {
+   "name": "Ganglion géniculé",
+   "synonyms": [
+    "Geniculate ganglion",
+    "geniculate ganglion"
+   ],
+   "latin": "Ganglion geniculi"
+  },
+  "ganglion-otic": {
+   "name": "Ganglion otique",
+   "synonyms": [
+    "Otic ganglion",
+    "otic ganglion"
+   ],
+   "latin": "Ganglion oticum"
+  },
+  "ganglion-pterygopalatine": {
+   "name": "Ganglion ptérygo-palatin",
+   "synonyms": [
+    "Pterygopalatine ganglion",
+    "sphenopalatine ganglion"
+   ],
+   "latin": "Ganglion pterygopalatinum"
+  },
+  "ganglion-submandibular": {
+   "name": "Ganglion sous-mandibulaire",
+   "synonyms": [
+    "Submandibular ganglion",
+    "submandibular ganglion"
+   ],
+   "latin": "Ganglion submandibulare"
+  },
+  "ganglion-superior-cervical": {
+   "name": "Ganglion cervical supérieur",
+   "synonyms": [
+    "Superior cervical ganglion",
+    "SCG"
+   ],
+   "latin": "Ganglion cervicale superius"
+  },
+  "ganglion-trigeminal": {
+   "name": "Ganglion trigéminal (de Gasser)",
+   "synonyms": [
+    "Trigeminal ganglion",
+    "Gasser",
+    "semilunar ganglion"
+   ],
+   "latin": "Ganglion trigeminale"
+  },
+  "intermediolateral-column": {
+   "name": "Colonne intermédio-latérale",
+   "synonyms": [
+    "Intermediolateral cell column",
+    "IML"
+   ],
+   "latin": "Columna intermediolateralis"
+  },
+  "lumbosacral-trunk": {
+   "name": "Tronc lombo-sacré",
+   "synonyms": [
+    "Lumbosacral trunk",
+    "lumbosacral trunk"
+   ],
+   "latin": "Truncus lumbosacralis"
+  },
+  "meningeal-spaces": {
+   "name": "Espaces méningés",
+   "synonyms": [
+    "Epidural, subdural and subarachnoid spaces",
+    "epi/subdural"
+   ],
+   "latin": ""
+  },
+  "motor-unit": {
+   "name": "Unité motrice",
+   "synonyms": [
+    "Motor unit and skeletal muscle",
+    "motor unit"
+   ],
+   "latin": ""
+  },
+  "nerve-axillary": {
+   "name": "Nerf axillaire",
+   "synonyms": [
+    "Axillary nerve",
+    "Axillary"
+   ],
+   "latin": "Nervus axillaris"
+  },
+  "nerve-common-peroneal": {
+   "name": "Nerf fibulaire commun",
+   "synonyms": [
+    "Common (and deep/superficial) peroneal nerve",
+    "Common (and deep/superficial) peroneal"
+   ],
+   "latin": "Nervus fibularis communis"
+  },
+  "nerve-dorsal-scapular": {
+   "name": "Nerf dorsal de la scapula",
+   "synonyms": [
+    "Dorsal scapular nerve",
+    "Dorsal scapular"
+   ],
+   "latin": "Nervus dorsalis scapulae"
+  },
+  "nerve-femoral": {
+   "name": "Nerf fémoral",
+   "synonyms": [
+    "Femoral nerve",
+    "Femoral"
+   ],
+   "latin": "Nervus femoralis"
+  },
+  "nerve-genitofemoral": {
+   "name": "Nerf génito-fémoral",
+   "synonyms": [
+    "Genitofemoral nerve",
+    "Genitofemoral"
+   ],
+   "latin": "Nervus genitofemoralis"
+  },
+  "nerve-iliohypogastric": {
+   "name": "Nerf ilio-hypogastrique",
+   "synonyms": [
+    "Iliohypogastric nerve",
+    "Iliohypogastric"
+   ],
+   "latin": "Nervus iliohypogastricus"
+  },
+  "nerve-ilioinguinal": {
+   "name": "Nerf ilio-inguinal",
+   "synonyms": [
+    "Ilioinguinal nerve",
+    "Ilioinguinal"
+   ],
+   "latin": "Nervus ilioinguinalis"
+  },
+  "nerve-lateral-antebrachial-cutaneous": {
+   "name": "Nerf cutané latéral de l’avant-bras",
+   "synonyms": [
+    "Lateral antebrachial cutaneous nerve",
+    "Lateral antebrachial cutaneous"
+   ],
+   "latin": "Nervus cutaneus antebrachii lateralis"
+  },
+  "nerve-lateral-femoral-cutaneous": {
+   "name": "Nerf cutané latéral de la cuisse",
+   "synonyms": [
+    "Lateral femoral cutaneous nerve",
+    "Lateral femoral cutaneous"
+   ],
+   "latin": "Nervus cutaneus femoris lateralis"
+  },
+  "nerve-long-thoracic": {
+   "name": "Nerf long thoracique",
+   "synonyms": [
+    "Long thoracic nerve",
+    "Long thoracic"
+   ],
+   "latin": "Nervus thoracicus longus"
+  },
+  "nerve-medial-antebrachial-cutaneous": {
+   "name": "Nerf cutané médial de l’avant-bras",
+   "synonyms": [
+    "Medial antebrachial cutaneous nerve",
+    "Medial antebrachial cutaneous"
+   ],
+   "latin": "Nervus cutaneus antebrachii medialis"
+  },
+  "nerve-medial-brachial-cutaneous": {
+   "name": "Nerf cutané médial du bras",
+   "synonyms": [
+    "Medial brachial cutaneous nerve",
+    "Medial brachial cutaneous"
+   ],
+   "latin": ""
+  },
+  "nerve-median": {
+   "name": "Nerf médian",
+   "synonyms": [
+    "Median nerve",
+    "Median"
+   ],
+   "latin": "Nervus medianus"
+  },
+  "nerve-musculocutaneous": {
+   "name": "Nerf musculo-cutané",
+   "synonyms": [
+    "Musculocutaneous nerve",
+    "Musculocutaneous"
+   ],
+   "latin": "Nervus musculocutaneus"
+  },
+  "nerve-obturator": {
+   "name": "Nerf obturateur",
+   "synonyms": [
+    "Obturator nerve",
+    "Obturator"
+   ],
+   "latin": "Nervus obturatorius"
+  },
+  "nerve-phrenic": {
+   "name": "Nerf phrénique",
+   "synonyms": [
+    "Phrenic nerve",
+    "Phrenic"
+   ],
+   "latin": "Nervus phrenicus"
+  },
+  "nerve-posterior-antebrachial-cutaneous": {
+   "name": "Nerf cutané postérieur de l’avant-bras",
+   "synonyms": [
+    "Posterior antebrachial cutaneous nerve",
+    "Posterior antebrachial cutaneous"
+   ],
+   "latin": ""
+  },
+  "nerve-posterior-femoral-cutaneous": {
+   "name": "Nerf cutané postérieur de la cuisse",
+   "synonyms": [
+    "Posterior femoral cutaneous nerve",
+    "Posterior femoral cutaneous"
+   ],
+   "latin": "Nervus cutaneus femoris posterior"
+  },
+  "nerve-pudendal": {
+   "name": "Nerf pudendal",
+   "synonyms": [
+    "Pudendal nerve",
+    "Pudendal"
+   ],
+   "latin": "Nervus pudendus"
+  },
+  "nerve-radial": {
+   "name": "Nerf radial",
+   "synonyms": [
+    "Radial nerve",
+    "Radial"
+   ],
+   "latin": "Nervus radialis"
+  },
+  "nerve-sciatic": {
+   "name": "Nerf sciatique",
+   "synonyms": [
+    "Sciatic nerve",
+    "Sciatic"
+   ],
+   "latin": "Nervus ischiadicus"
+  },
+  "nerve-superficial-radial": {
+   "name": "Nerf radial superficiel",
+   "synonyms": [
+    "Superficial branch of the radial nerve",
+    "Superficial branch of the radial"
+   ],
+   "latin": ""
+  },
+  "nerve-superior-gluteal": {
+   "name": "Nerf glutéal supérieur",
+   "synonyms": [
+    "Superior gluteal nerve",
+    "Superior gluteal"
+   ],
+   "latin": "Nervus gluteus superior"
+  },
+  "nerve-suprascapular": {
+   "name": "Nerf supra-scapulaire",
+   "synonyms": [
+    "Suprascapular nerve",
+    "Suprascapular"
+   ],
+   "latin": "Nervus suprascapularis"
+  },
+  "nerve-sural": {
+   "name": "Nerf sural",
+   "synonyms": [
+    "Sural nerve",
+    "Sural"
+   ],
+   "latin": "Nervus suralis"
+  },
+  "nerve-thoracodorsal": {
+   "name": "Nerf thoraco-dorsal",
+   "synonyms": [
+    "Thoracodorsal nerve",
+    "Thoracodorsal"
+   ],
+   "latin": "Nervus thoracodorsalis"
+  },
+  "nerve-tibial": {
+   "name": "Nerf tibial",
+   "synonyms": [
+    "Tibial nerve",
+    "Tibial"
+   ],
+   "latin": "Nervus tibialis"
+  },
+  "nerve-ulnar": {
+   "name": "Nerf ulnaire",
+   "synonyms": [
+    "Ulnar nerve",
+    "Ulnar"
+   ],
+   "latin": "Nervus ulnaris"
+  },
+  "nerves-dorsal-cutaneous-foot": {
+   "name": "Nerfs cutanés dorsaux du pied",
+   "synonyms": [
+    "Dorsal cutaneous nerves of the foot",
+    "Dorsal cutaneouss of the foot"
+   ],
+   "latin": ""
+  },
+  "nerves-pectoral": {
+   "name": "Nerfs pectoraux",
+   "synonyms": [
+    "Medial and lateral pectoral nerves",
+    "Medial and lateral pectorals"
+   ],
+   "latin": ""
+  },
+  "neuromuscular-junction": {
+   "name": "Jonction neuromusculaire",
+   "synonyms": [
+    "Neuromuscular junction",
+    "NMJ",
+    "plaque motrice"
+   ],
+   "latin": "Junctio neuromuscularis"
+  },
+  "pia-mater": {
+   "name": "Pie-mère",
+   "synonyms": [
+    "Pia mater",
+    "pia"
+   ],
+   "latin": "Pia mater"
+  },
+  "plexus-brachial": {
+   "name": "Plexus brachial",
+   "synonyms": [
+    "Brachial plexus",
+    "brachial plexus"
+   ],
+   "latin": "Plexus brachialis"
+  },
+  "plexus-lumbosacral": {
+   "name": "Plexus lombo-sacré",
+   "synonyms": [
+    "Lumbar and sacral plexuses",
+    "lumbosacral plexus"
+   ],
+   "latin": "Plexus lumbosacralis"
+  },
+  "roots-c5-t1": {
+   "name": "Racines C5–T1 (plexus brachial)",
+   "synonyms": [
+    "Cervical roots C5–T1",
+    "C5-T1"
+   ],
+   "latin": "Radices C5–T1"
+  },
+  "roots-l2-s1": {
+   "name": "Racines L2–S1 (plexus lombo-sacré)",
+   "synonyms": [
+    "Lumbosacral roots L2–S1",
+    "L2-S1"
+   ],
+   "latin": "Radices L2–S1"
+  },
+  "segment-vertebral-levels": {
+   "name": "Correspondance segments / vertèbres",
+   "synonyms": [
+    "Spinal segments versus vertebral levels",
+    "neurological level"
+   ],
+   "latin": ""
+  },
+  "spinal-cord": {
+   "name": "Moelle épinière",
+   "synonyms": [
+    "Spinal cord",
+    "spinal cord"
+   ],
+   "latin": "Medulla spinalis"
+  },
+  "spinal-grey-anterior-horn": {
+   "name": "Corne antérieure (motrice)",
+   "synonyms": [
+    "Anterior (ventral) horn",
+    "anterior horn"
+   ],
+   "latin": "Cornu anterius"
+  },
+  "spinal-grey-posterior-horn": {
+   "name": "Corne postérieure (sensitive)",
+   "synonyms": [
+    "Posterior (dorsal) horn",
+    "posterior horn"
+   ],
+   "latin": "Cornu posterius"
+  },
+  "spinal-nerve-root-dermatome": {
+   "name": "Racine spinale et dermatome",
+   "synonyms": [
+    "Spinal nerve roots and dermatomes",
+    "dermatome"
+   ],
+   "latin": "Radix spinalis"
+  },
+  "spinal-segment-cervical": {
+   "name": "Moelle cervicale (C1–C8)",
+   "synonyms": [
+    "Cervical spinal cord (C1-C8)",
+    "cervical cord"
+   ],
+   "latin": "Pars cervicalis medullae spinalis"
+  },
+  "spinal-segment-lumbar": {
+   "name": "Moelle lombaire (L1–L5)",
+   "synonyms": [
+    "Lumbar spinal cord (L1-L5)",
+    "lumbar cord"
+   ],
+   "latin": "Pars lumbalis medullae spinalis"
+  },
+  "spinal-segment-sacral": {
+   "name": "Moelle sacrée et cône (S1–S5)",
+   "synonyms": [
+    "Sacral and coccygeal spinal cord (S1-S5, Co)",
+    "sacral cord"
+   ],
+   "latin": ""
+  },
+  "spinal-segment-thoracic": {
+   "name": "Moelle thoracique (T1–T12)",
+   "synonyms": [
+    "Thoracic spinal cord (T1-T12)",
+    "thoracic cord"
+   ],
+   "latin": "Pars thoracica medullae spinalis"
+  },
+  "spinal-white-columns": {
+   "name": "Cordons blancs de la moelle",
+   "synonyms": [
+    "White columns of the spinal cord",
+    "white columns",
+    "funiculi"
+   ],
+   "latin": "Funiculi medullae spinalis"
+  },
+  "splanchnic-nerves": {
+   "name": "Nerfs splanchniques",
+   "synonyms": [
+    "Splanchnic nerves",
+    "splanchnic"
+   ],
+   "latin": "Nervi splanchnici"
+  },
+  "subarachnoid-space-cisterns": {
+   "name": "Citernes sous-arachnoïdiennes",
+   "synonyms": [
+    "Subarachnoid space and basal cisterns",
+    "cisterns"
+   ],
+   "latin": "Spatium subarachnoideum; cisternae subarachnoideae"
+  },
+  "sympathetic-trunk": {
+   "name": "Tronc sympathique et ganglions",
+   "synonyms": [
+    "Sympathetic trunk and ganglia",
+    "sympathetic chain"
+   ],
+   "latin": "Truncus sympathicus"
+  },
+  "tentorium-cerebelli": {
+   "name": "Tente du cervelet",
+   "synonyms": [
+    "Tentorium cerebelli and incisura",
+    "tentorium"
+   ],
+   "latin": "Tentorium cerebelli"
+  },
+  "ventricle-fourth": {
+   "name": "Quatrième ventricule (V4)",
+   "synonyms": [
+    "Fourth ventricle",
+    "V4",
+    "fourth ventricle"
+   ],
+   "latin": "Ventriculus quartus"
+  },
+  "ventricle-lateral-inferior-horn": {
+   "name": "Corne temporale du ventricule latéral",
+   "synonyms": [
+    "Lateral ventricle, inferior (temporal) horn",
+    "temporal horn"
+   ],
+   "latin": "Cornu temporale"
+  },
+  "ventricle-lateral": {
+   "name": "Ventricule latéral",
+   "synonyms": [
+    "Lateral ventricles",
+    "lateral ventricle"
+   ],
+   "latin": "Ventriculus lateralis"
+  },
+  "ventricle-third": {
+   "name": "Troisième ventricule (V3)",
+   "synonyms": [
+    "Third ventricle",
+    "V3",
+    "third ventricle"
+   ],
+   "latin": "Ventriculus tertius"
+  },
+  "cn-01-olfactory": {
+   "name": "Nerf olfactif (CN I)",
+   "synonyms": [
+    "Olfactory nerve (CN I)",
+    "CN I",
+    "I",
+    "olfactory nerve"
+   ],
+   "latin": "Nervus olfactorius"
+  },
+  "cn-02-optic": {
+   "name": "Nerf optique (CN II)",
+   "synonyms": [
+    "Optic nerve (CN II)",
+    "CN II",
+    "II",
+    "optic nerve"
+   ],
+   "latin": "Nervus opticus"
+  },
+  "cn-03-oculomotor": {
+   "name": "Nerf oculomoteur (CN III)",
+   "synonyms": [
+    "Oculomotor nerve (CN III)",
+    "CN III",
+    "III",
+    "oculomotor nerve"
+   ],
+   "latin": "Nervus oculomotorius"
+  },
+  "cn-04-trochlear": {
+   "name": "Nerf trochléaire (CN IV)",
+   "synonyms": [
+    "Trochlear nerve (CN IV)",
+    "CN IV",
+    "IV",
+    "trochlear nerve",
+    "nerf pathétique"
+   ],
+   "latin": "Nervus trochlearis"
+  },
+  "cn-05-trigeminal": {
+   "name": "Nerf trijumeau (CN V)",
+   "synonyms": [
+    "Trigeminal nerve (CN V)",
+    "CN V",
+    "V",
+    "trigeminal nerve"
+   ],
+   "latin": "Nervus trigeminus"
+  },
+  "cn-06-abducens": {
+   "name": "Nerf abducens (CN VI)",
+   "synonyms": [
+    "Abducens nerve (CN VI)",
+    "CN VI",
+    "VI",
+    "abducens nerve",
+    "nerf oculomoteur externe"
+   ],
+   "latin": "Nervus abducens"
+  },
+  "cn-07-facial": {
+   "name": "Nerf facial (CN VII)",
+   "synonyms": [
+    "Facial nerve (CN VII)",
+    "CN VII",
+    "VII",
+    "facial nerve"
+   ],
+   "latin": "Nervus facialis"
+  },
+  "cn-08-vestibulocochlear": {
+   "name": "Nerf vestibulocochléaire (CN VIII)",
+   "synonyms": [
+    "Vestibulocochlear nerve (CN VIII)",
+    "CN VIII",
+    "VIII",
+    "vestibulocochlear nerve",
+    "nerf auditif"
+   ],
+   "latin": "Nervus vestibulocochlearis"
+  },
+  "cn-09-glossopharyngeal": {
+   "name": "Nerf glosso-pharyngien (CN IX)",
+   "synonyms": [
+    "Glossopharyngeal nerve (CN IX)",
+    "CN IX",
+    "IX",
+    "glossopharyngeal nerve"
+   ],
+   "latin": "Nervus glossopharyngeus"
+  },
+  "cn-10-vagus": {
+   "name": "Nerf vague (CN X)",
+   "synonyms": [
+    "Vagus nerve (CN X)",
+    "CN X",
+    "X",
+    "vagus nerve",
+    "nerf pneumogastrique"
+   ],
+   "latin": "Nervus vagus"
+  },
+  "cn-11-accessory": {
+   "name": "Nerf accessoire (CN XI)",
+   "synonyms": [
+    "Accessory nerve (CN XI)",
+    "CN XI",
+    "XI",
+    "accessory nerve",
+    "nerf spinal"
+   ],
+   "latin": "Nervus accessorius"
+  },
+  "cn-12-hypoglossal": {
+   "name": "Nerf hypoglosse (CN XII)",
+   "synonyms": [
+    "Hypoglossal nerve (CN XII)",
+    "CN XII",
+    "XII",
+    "hypoglossal nerve",
+    "grand hypoglosse"
+   ],
+   "latin": "Nervus hypoglossus"
+  },
+  "bp3d-brain": {
+   "name": "Encéphale (modèle BodyParts3D)",
+   "synonyms": [
+    "Brain (BodyParts3D)",
+    "encéphale"
+   ],
+   "latin": "Encephalon"
+  },
+  "brain-envelope": {
+   "name": "Surface cérébrale (masque du template)",
+   "synonyms": [
+    "Brain surface (template mask)",
+    "enveloppe cérébrale"
+   ],
+   "latin": ""
+  }
+ }
+}

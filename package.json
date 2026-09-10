@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs test/auscultation.test.mjs test/ecg.test.mjs test/heartbeat.test.mjs",
+    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs test/auscultation.test.mjs test/ecg.test.mjs test/heartbeat.test.mjs test/neuro-atlas.test.mjs test/neuro-atlas-fr.test.mjs test/credits.test.mjs",
 
     "mcp": "node mcp-server.js",
     "validate:cases": "node scripts/validate-cases.mjs",
@@ -20,7 +20,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/DocteurWu/medgame/issues"
   },
