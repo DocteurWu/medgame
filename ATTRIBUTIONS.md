@@ -25,6 +25,10 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
   * **Statut** : Prototype de recherche expérimental. Certaines structures géométriques peuvent être incomplètes ou comporter des approximations.
 * **Animation & Synchronisation ECG** :
   * Le battement cardiaque physiologique de l'Atlas 3D en mode isolé est synchronisé avec les tracés cliniques réels du dataset [PhysioNet PTB-XL](https://physionet.org/content/ptb-xl/1.0.3/) (licence [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)), référencé en section 5 ci-dessous.
+* **Module Rein Détaillé 3D** :
+  * **Projet & Données** : [HuBMAP Human Reference Atlas (HRA)](https://hubmapconsortium.org/) — CCF 3D Reference Object Library v1.2 (Visible Human Project, National Library of Medicine).
+  * **Licence** : [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.fr).
+  * **Ressources intégrées** : 4 modèles 3D GLB locaux dans `assets/models/rein/` (`VH_M_Kidney_L.glb`, `VH_M_Kidney_R.glb`, `VH_F_Kidney_L.glb`, `VH_F_Kidney_R.glb`), modélisant capsule rénale, cortex, hile, colonnes de Bertin, médullaire, pyramides de Malpighi et papilles rénales.
 * **Usage** : explorateur éducatif uniquement, pas un outil diagnostique ou chirurgical. En cas de redistribution des géométries, conserver cette attribution + lien source.
 
 ## 4. Dataset Auscultatoire HLS-CMDS (Stéthoscope Virtuel)

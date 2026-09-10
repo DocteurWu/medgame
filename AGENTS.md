@@ -35,3 +35,4 @@ Les modèles de patients sont des fichiers GLB (glTF binaires) situés dans `ass
 
 Les licences d'utilisation et attributions de ces modèles ainsi que du mobilier 3D importé sont listées dans [ATTRIBUTIONS.md](file:///c:/Users/Louaï/Desktop/medgame-main/ATTRIBUTIONS.md).
 
+

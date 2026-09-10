@@ -428,19 +428,53 @@ document.addEventListener('DOMContentLoaded', () => {
         state.mode = newMode;
         document.getElementById('tab-mode-learn')?.classList.toggle('active', newMode === 'learn');
         document.getElementById('tab-mode-quiz')?.classList.toggle('active', newMode === 'quiz');
+        document.getElementById('tab-mode-pcg')?.classList.toggle('active', newMode === 'pcg');
 
         const elLearnSidebar = document.getElementById('learn-view-sidebar');
         const elQuizPanel = document.getElementById('auscult-quiz-panel');
+        const elPcgSidebar = document.getElementById('pcg-sidebar-panel');
+        const elTorsoWorkspace = document.querySelector('.torso-workspace:not(.pcg-workspace)');
+        const elPcgWorkspace = document.getElementById('pcg-workspace');
         const elExitEval = document.getElementById('btn-exit-eval');
 
-        if (newMode === 'quiz') {
+        // Arrêter toute lecture en cours lors du changement d'onglet
+        audio.stop();
+        updatePlayButton(false);
+
+        if (newMode === 'pcg') {
+            if (elTorsoWorkspace) elTorsoWorkspace.style.display = 'none';
+            if (elPcgWorkspace) elPcgWorkspace.style.display = 'flex';
+            elLearnSidebar?.classList.add('hidden');
+            elQuizPanel?.classList.add('hidden');
+            elPcgSidebar?.classList.remove('hidden');
+
+            if (elCaseTitle) elCaseTitle.textContent = "Dépistage PCG Réel (PhysioNet CinC 2016)";
+            if (elCasePatient) elCasePatient.textContent = "Discrimination binaire : bruits physiologiques normaux vs pathologiques à référer.";
+            if (elCaseType) elCaseType.textContent = "DÉPISTAGE RÉEL";
+            if (elCaseDifficulty) elCaseDifficulty.textContent = "CLINIQUE";
+            if (elAudioSource) {
+                elAudioSource.style.display = 'inline-flex';
+                elAudioSource.className = 'badge-diff real-audio';
+                elAudioSource.innerHTML = '<i class="fas fa-hospital-user"></i> Tracé clinique réel';
+            }
+
+            if (window.PCGTrainer && typeof window.PCGTrainer.init === 'function') {
+                window.PCGTrainer.init(audio);
+            }
+        } else if (newMode === 'quiz') {
+            if (elTorsoWorkspace) elTorsoWorkspace.style.display = 'flex';
+            if (elPcgWorkspace) elPcgWorkspace.style.display = 'none';
             elLearnSidebar?.classList.add('hidden');
             elQuizPanel?.classList.remove('hidden');
+            elPcgSidebar?.classList.add('hidden');
             elExitEval?.classList.add('hidden');
             startQuizMode();
         } else {
+            if (elTorsoWorkspace) elTorsoWorkspace.style.display = 'flex';
+            if (elPcgWorkspace) elPcgWorkspace.style.display = 'none';
             elLearnSidebar?.classList.remove('hidden');
             elQuizPanel?.classList.add('hidden');
+            elPcgSidebar?.classList.add('hidden');
             document.getElementById('quiz-view-header')?.classList.add('hidden');
             loadCase(state.currentCaseIndex);
         }
@@ -514,6 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('tab-mode-learn')?.addEventListener('click', () => switchMode('learn'));
     document.getElementById('tab-mode-quiz')?.addEventListener('click', () => switchMode('quiz'));
+    document.getElementById('tab-mode-pcg')?.addEventListener('click', () => switchMode('pcg'));
 
     // 8. Animation boucle Phonocardiogramme synchrone
     function drawPhonocardiogram() {
@@ -562,5 +597,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Démarrage initial
     updateHeaderStats();
-    loadCase(0);
+    
+    // Détection éventuelle du mode dans les paramètres d'URL (?mode=pcg ou ?mode=quiz)
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialMode = urlParams.get('mode');
+    if (initialMode === 'pcg') {
+        switchMode('pcg');
+    } else if (initialMode === 'quiz') {
+        switchMode('quiz');
+    } else {
+        loadCase(0);
+    }
 });

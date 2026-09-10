@@ -6,6 +6,7 @@ import { fetchAtlasIndex, fetchAtlasBuffers, ATLAS_SOURCES, getAtlasSource } fro
 import { ThreeAtlasViewer } from './three-atlas-scene.js?v=12';
 import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js?v=11';
 import { HEART_PRESETS } from './atlas-heartbeat.js?v=1';
+import { KidneyModelManager } from './atlas-kidney.js?v=1';
 
 const $ = (id) => document.getElementById(id);
 const viewport = $('atlas-viewport');
@@ -14,6 +15,7 @@ const params = new URLSearchParams(location.search);
 const viewer = new ThreeAtlasViewer(viewport, {
     onSelect: (id, part) => showDetail(id),
     onError: (msg) => showError(typeof msg === 'string' ? msg : msg?.message || msg),
+    onSelectKidney: (item) => showKidneyDetail(item),
 });
 
 let ATLAS = null;
@@ -59,10 +61,10 @@ function renderSystems() {
     });
 }
 
-$('preset-all').onclick = () => { closeHeartMode(); viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
-$('preset-skeleton').onclick = () => { closeHeartMode(); viewer.setState({ visible: ['skeletal', 'connective'], isolate: false }); renderSystems(); };
-$('preset-organs').onclick = () => { closeHeartMode(); viewer.setState({ visible: ['cardiac', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine'], isolate: false }); renderSystems(); };
-$('preset-vessels').onclick = () => { closeHeartMode(); viewer.setState({ visible: ['arterial', 'venous', 'cardiac'], isolate: false }); renderSystems(); };
+$('preset-all').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
+$('preset-skeleton').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: ['skeletal', 'connective'], isolate: false }); renderSystems(); };
+$('preset-organs').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: ['cardiac', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine'], isolate: false }); renderSystems(); };
+$('preset-vessels').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: ['arterial', 'venous', 'cardiac'], isolate: false }); renderSystems(); };
 $('sys-all').onclick = () => { viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
 $('sys-none').onclick = () => { viewer.setState({ visible: [], isolate: false }); renderSystems(); };
 $('atlas-explode').oninput = (e) => viewer.setState({ explode: e.target.value / 100 });
@@ -73,14 +75,27 @@ $('btn-rotate').onclick = (e) => {
 };
 $('btn-reset').onclick = () => {
     closeHeartMode();
+    closeKidneyMode();
     viewer.setState({ visible: [...DEFAULT_VISIBLE], selected: [], isolate: false, explode: 0, view: 'three-quarter' });
     $('atlas-explode').value = 0;
     renderSystems();
     showDetail(null);
 };
-$('btn-isolate').onclick = () => { if (viewer.state.selected.length) viewer.setState({ isolate: true }); };
+$('btn-isolate').onclick = () => {
+    if (currentModule === 'kidney' && selectedKidneyItem) {
+        kidneyManager.setIsolate(selectedKidneyItem.mesh.name, true);
+        viewer._dirty = true;
+        return;
+    }
+    if (viewer.state.selected.length) viewer.setState({ isolate: true });
+};
 $('btn-show').onclick = () => {
     closeHeartMode();
+    if (currentModule === 'kidney') {
+        kidneyManager.setIsolate(null, false);
+        viewer._dirty = true;
+        return;
+    }
     viewer.setState({ isolate: false });
 };
 
@@ -138,20 +153,23 @@ function startEcgLoop() {
     ecgRafId = requestAnimationFrame(step);
 }
 
-let currentModule = 'body'; // 'body' | 'heart' | 'neuro'
+let currentModule = 'body'; // 'body' | 'heart' | 'neuro' | 'kidney'
 
 function setModuleUI(module) {
     currentModule = module;
     $('btn-module-body')?.classList.toggle('active', module === 'body');
     $('btn-module-heart')?.classList.toggle('active', module === 'heart');
+    $('btn-module-kidney')?.classList.toggle('active', module === 'kidney');
     $('btn-module-neuro')?.classList.toggle('active', module === 'neuro');
     $('btn-neuro-nav-body')?.classList.toggle('active', module === 'body');
     $('btn-neuro-nav-heart')?.classList.toggle('active', module === 'heart');
+    $('btn-neuro-nav-kidney')?.classList.toggle('active', module === 'kidney');
     $('btn-neuro-nav-neuro')?.classList.toggle('active', module === 'neuro');
 }
 
 function openHeartMode(presetId = 'sinus') {
     if (currentModule === 'neuro') closeNeuroMode(false);
+    if (currentModule === 'kidney') closeKidneyMode(false);
     viewer.isolateHeart(true, presetId);
     selectHeartPreset(presetId);
     $('heart-mode-panel')?.classList.remove('hidden');
@@ -175,6 +193,7 @@ function closeHeartMode(restoreModule = true) {
 
 function openNeuroMode(subHash = '') {
     if (currentModule === 'heart') closeHeartMode(false);
+    if (currentModule === 'kidney') closeKidneyMode(false);
     const container = $('neuro-atlas-container');
     const iframe = $('neuro-atlas-frame');
     const layout = document.querySelector('.atlas-layout');
@@ -221,6 +240,164 @@ function closeNeuroMode(restoreModule = true) {
     }
 }
 
+// ---------- Mode Rein Détaillé 3D (HuBMAP / Visible Human v1.2) ----------
+const kidneyManager = new KidneyModelManager();
+let currentKidneySide = 'left';
+let currentKidneySex = 'male';
+let selectedKidneyItem = null;
+
+async function openKidneyMode(opts = {}) {
+    if (currentModule === 'heart') closeHeartMode(false);
+    if (currentModule === 'neuro') closeNeuroMode(false);
+
+    currentKidneySide = opts.side || currentKidneySide || 'left';
+    currentKidneySex = opts.sex || currentModel || 'male';
+
+    setModuleUI('kidney');
+    updateKidneyTogglesUI();
+
+    const panel = $('kidney-mode-panel');
+    if (panel) panel.classList.remove('hidden');
+
+    const loading = $('atlas-loading');
+    if (loading) {
+        loading.classList.remove('hidden');
+        const titleEl = loading.querySelector('div[style*="font-weight:700"]');
+        if (titleEl) titleEl.textContent = 'Chargement du Rein Détaillé 3D…';
+    }
+
+    try {
+        const res = await kidneyManager.load(currentKidneySex, currentKidneySide);
+        viewer.attachKidneyScene(res.root, res.bounds, res.center);
+        viewer.setKidneyMode(true);
+        loading?.classList.add('hidden');
+
+        updateKidneyFooter();
+        updateKidneyClipUI(Math.round(kidneyManager.clipDepthRatio * 100));
+        selectedKidneyItem = null;
+        showKidneyDetail(null);
+    } catch (err) {
+        loading?.classList.add('hidden');
+        console.error(err);
+        showError("Impossible de charger le modèle de rein 3D.");
+    }
+}
+
+function closeKidneyMode(restoreModule = true) {
+    viewer.setKidneyMode(false);
+    $('kidney-mode-panel')?.classList.add('hidden');
+    selectedKidneyItem = null;
+    showDetail(null);
+
+    // Restaurer le footer d'origine
+    const isFemale = currentModel === 'female';
+    const src = getAtlasSource(currentModel);
+    const footerText = $('atlas-footer-text');
+    if (footerText) {
+        if (isFemale) {
+            footerText.innerHTML = `Données <a href="https://hubmapconsortium.org/" target="_blank" rel="noopener">HuBMAP</a> & <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D</a> © DBCLS — <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="${src.repoUrl}" target="_blank" rel="noopener">Female Atlas</a>.<br>Explorateur éducatif · Comporte des inexactitudes.`;
+        } else {
+            footerText.innerHTML = `Données <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D 4.0</a> © DBCLS — <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="${src.repoUrl}" target="_blank" rel="noopener">Human Atlas</a>.<br>Explorateur éducatif · Peut comporter des inexactitudes.`;
+        }
+    }
+
+    if (restoreModule && currentModule === 'kidney') {
+        setModuleUI('body');
+    }
+}
+
+function updateKidneyFooter() {
+    const footerText = $('atlas-footer-text');
+    if (footerText) {
+        footerText.innerHTML = `Données rein : <a href="https://hubmapconsortium.org/" target="_blank" rel="noopener">HuBMAP Human Reference Atlas</a> (CCF 3D Reference Object Library v1.2, <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>) — Visible Human Project.<br>Explorateur éducatif · Les cavités pyélocalicielles sont représentées en schéma complémentaire.`;
+    }
+}
+
+function updateKidneyTogglesUI() {
+    $('btn-kidney-left')?.classList.toggle('active', currentKidneySide === 'left');
+    $('btn-kidney-right')?.classList.toggle('active', currentKidneySide === 'right');
+    $('btn-kidney-male')?.classList.toggle('active', currentKidneySex === 'male');
+    $('btn-kidney-female')?.classList.toggle('active', currentKidneySex === 'female');
+}
+
+async function switchKidneySide(side) {
+    if (currentKidneySide === side) return;
+    currentKidneySide = side;
+    updateKidneyTogglesUI();
+    await openKidneyMode({ side: currentKidneySide, sex: currentKidneySex });
+}
+
+async function switchKidneySex(sex) {
+    if (currentKidneySex === sex) return;
+    currentKidneySex = sex;
+    updateKidneyTogglesUI();
+    await openKidneyMode({ side: currentKidneySide, sex: currentKidneySex });
+}
+
+function updateKidneyClipUI(val) {
+    const isFull = val <= 0;
+    const btnFull = $('btn-kidney-view-full');
+    const btnCut = $('btn-kidney-view-cut');
+    const btnToggle = $('btn-kidney-clip-toggle');
+    const lbl = $('kidney-clip-val');
+    const slider = $('kidney-clip-slider');
+
+    if (slider && parseInt(slider.value, 10) !== val) {
+        slider.value = val;
+    }
+
+    if (btnFull) btnFull.classList.toggle('active', isFull);
+    if (btnCut) btnCut.classList.toggle('active', !isFull);
+    if (btnToggle) {
+        btnToggle.classList.toggle('active', !isFull);
+        btnToggle.textContent = isFull ? 'Désactivée' : 'Active';
+    }
+
+    if (lbl) {
+        if (isFull) {
+            lbl.textContent = 'Rein entier (0%)';
+        } else if (val <= 35) {
+            lbl.textContent = `Coupe superficielle (${val}%)`;
+        } else if (val === 50) {
+            lbl.textContent = 'Coupe médiane (50%)';
+        } else if (val <= 65) {
+            lbl.textContent = `Coupe médiane (${val}%)`;
+        } else {
+            lbl.textContent = `Coupe profonde (${val}%)`;
+        }
+    }
+}
+
+function showKidneyDetail(item) {
+    selectedKidneyItem = item;
+    const box = $('atlas-detail');
+    const meta = $('atlas-meta');
+    if (!item) {
+        box.innerHTML = `
+            <h2>Rein Détaillé</h2>
+            <div style="font-size:11px;opacity:0.6;margin-bottom:8px;">Morphologie externe & anatomie interne 3D</div>
+            <p>Le rein est actuellement affiché <strong>en entier</strong> dans sa morphologie physiologique externe complète.</p>
+            <p style="margin-top:6px;">Fais glisser le <strong>curseur de coupe</strong> à gauche ou clique sur <strong>Vue en coupe</strong> pour réaliser une section coronale progressive et explorer l'architecture interne (cortex, colonnes de Bertin, pyramides de Malpighi, papilles rénales).</p>
+        `;
+        meta.textContent = `${kidneyManager.currentMeshList.length} structures modélisées · Visible Human v1.2`;
+        kidneyManager.select(null);
+        viewer._dirty = true;
+        return;
+    }
+
+    const { info, mesh } = item;
+    kidneyManager.select(mesh.name);
+    viewer._dirty = true;
+
+    box.innerHTML = `
+        <div class="sys">${info.subgroup || 'Rein'}</div>
+        <h2>${info.nameFr}</h2>
+        <div style="font-size:11px;opacity:0.55;margin-bottom:6px;">${info.nameEn} · ${mesh.name}</div>
+        <p>${info.desc}</p>
+    `;
+    meta.textContent = `${mesh.geometry?.attributes?.position?.count || '?'} sommets · Visible Human v1.2`;
+}
+
 $('btn-heartbeat')?.addEventListener('click', () => {
     viewer.setHeartbeat(!viewer.heartbeatEnabled);
     updateHeartbeatUI();
@@ -234,9 +411,120 @@ $('btn-heartbeat-panel')?.addEventListener('click', () => {
 $('btn-module-body')?.addEventListener('click', () => {
     if (currentModule === 'heart') closeHeartMode(false);
     if (currentModule === 'neuro') closeNeuroMode(false);
+    if (currentModule === 'kidney') closeKidneyMode(false);
     setModuleUI('body');
 });
 $('btn-module-heart')?.addEventListener('click', () => openHeartMode('sinus'));
+$('btn-module-kidney')?.addEventListener('click', () => openKidneyMode());
+$('preset-kidney')?.addEventListener('click', () => openKidneyMode());
+$('btn-kidney-exit')?.addEventListener('click', () => closeKidneyMode(true));
+
+$('btn-kidney-left')?.addEventListener('click', () => switchKidneySide('left'));
+$('btn-kidney-right')?.addEventListener('click', () => switchKidneySide('right'));
+$('btn-kidney-male')?.addEventListener('click', () => switchKidneySex('male'));
+$('btn-kidney-female')?.addEventListener('click', () => switchKidneySex('female'));
+
+// Contrôles de coupe et capsule
+$('btn-kidney-view-full')?.addEventListener('click', () => {
+    kidneyManager.setClipDepthRatio(0);
+    kidneyManager.setClippingEnabled(false);
+    updateKidneyClipUI(0);
+    viewer._dirty = true;
+});
+
+$('btn-kidney-view-cut')?.addEventListener('click', () => {
+    const slider = $('kidney-clip-slider');
+    const currentVal = slider ? parseInt(slider.value, 10) : 0;
+    const targetVal = currentVal > 0 ? currentVal : 50;
+    kidneyManager.setClippingEnabled(true);
+    kidneyManager.setClipDepthRatio(targetVal / 100);
+    updateKidneyClipUI(targetVal);
+    viewer._dirty = true;
+});
+
+$('btn-kidney-clip-toggle')?.addEventListener('click', () => {
+    const slider = $('kidney-clip-slider');
+    const currentVal = slider ? parseInt(slider.value, 10) : 0;
+    if (kidneyManager.clippingEnabled && currentVal > 0) {
+        // Désactiver la coupe -> retour au rein entier
+        kidneyManager.setClipDepthRatio(0);
+        kidneyManager.setClippingEnabled(false);
+        updateKidneyClipUI(0);
+    } else {
+        // Activer la coupe coronale médiane (50%)
+        kidneyManager.setClippingEnabled(true);
+        kidneyManager.setClipDepthRatio(0.5);
+        updateKidneyClipUI(50);
+    }
+    viewer._dirty = true;
+});
+
+$('kidney-clip-slider')?.addEventListener('input', (e) => {
+    const val = parseInt(e.target.value, 10);
+    kidneyManager.setClipDepthRatio(val / 100);
+    updateKidneyClipUI(val);
+    viewer._dirty = true;
+});
+
+$('btn-kidney-clip-invert')?.addEventListener('click', () => {
+    kidneyManager.toggleClipInversion();
+    viewer._dirty = true;
+});
+
+const CAPSULE_MODES = ['opaque', 'translucent', 'hidden'];
+const CAPSULE_LABELS = {
+    opaque: 'Capsule : Opaque',
+    translucent: 'Capsule : Translucide',
+    hidden: 'Capsule : Masquée'
+};
+let capsuleModeIdx = 0;
+$('btn-kidney-capsule-toggle')?.addEventListener('click', (e) => {
+    capsuleModeIdx = (capsuleModeIdx + 1) % CAPSULE_MODES.length;
+    const mode = CAPSULE_MODES[capsuleModeIdx];
+    kidneyManager.setCapsuleAlpha(mode);
+    e.currentTarget.textContent = CAPSULE_LABELS[mode];
+    viewer._dirty = true;
+});
+
+// Clics sur le schéma pyélocaliciel
+document.querySelectorAll('.pyelo-node').forEach((node) => {
+    node.addEventListener('click', () => {
+        const type = node.dataset.pyelo;
+        const descriptions = {
+            papilla: {
+                title: 'Papilles rénales (area cribrosa)',
+                desc: 'Sommet des pyramides de Malpighi où confluent les canaux collecteurs de Bellini. C\'est le point de transition où l\'urine quitte le parenchyme rénal pour pénétrer dans les voies excrétrices.'
+            },
+            minor: {
+                title: 'Calices mineurs',
+                desc: 'Petits conduits musculo-membraneux en forme d\'entonnoirs (8 à 12 par rein). Chaque calice mineur coiffe une ou deux papilles rénales pour collecter l\'urine émise.'
+            },
+            major: {
+                title: 'Calices majeurs',
+                desc: 'Conduits formés par la réunion de plusieurs calices mineurs (généralement 3 : calice supérieur, calice moyen et calice inférieur). Ils convergent directement vers le bassinet.'
+            },
+            pelvis: {
+                title: 'Bassinet (Pelvis rénal)',
+                desc: 'Réservoir en entonnoir situé au niveau du hile rénal dans le sinus. Il recueille l\'urine des calices majeurs avant de la propulser vers l\'uretère par des contractions péristaltiques.'
+            },
+            ureter: {
+                title: 'Jonction pyélo-urétérale & Uretère',
+                desc: 'Rétrécissement physiologique marquant la sortie du bassinet vers l\'uretère. C\'est un site d\'enclavement fréquent des calculs urinaires, provoquant colique néphrétique et pyélonéphrite obstructive.'
+            }
+        };
+        const info = descriptions[type];
+        if (info) {
+            const box = $('atlas-detail');
+            box.innerHTML = `
+                <div class="sys">Voie excrétrice (Schématique)</div>
+                <h2>${info.title}</h2>
+                <div style="font-size:11px;opacity:0.55;margin-bottom:6px;">Système collecteur pyélocaliciel</div>
+                <p>${info.desc}</p>
+            `;
+        }
+    });
+});
+
 $('btn-module-neuro')?.addEventListener('click', () => openNeuroMode());
 $('preset-neuro')?.addEventListener('click', () => openNeuroMode());
 $('btn-neuro-exit')?.addEventListener('click', () => closeNeuroMode(true));
@@ -247,6 +535,10 @@ $('btn-neuro-nav-body')?.addEventListener('click', () => {
 $('btn-neuro-nav-heart')?.addEventListener('click', () => {
     closeNeuroMode(false);
     openHeartMode('sinus');
+});
+$('btn-neuro-nav-kidney')?.addEventListener('click', () => {
+    closeNeuroMode(false);
+    openKidneyMode();
 });
 $('btn-neuro-nav-neuro')?.addEventListener('click', () => {
     // Déjà dans le module neuro
@@ -332,12 +624,20 @@ function showDetail(partId) {
         : `${part.id} · <span style="opacity:0.7;">nom anatomique international</span>`;
     const desc = explanationFr(en);
     const isCardiacPart = (part.system === 'cardiac') || (viewer._heartPartIndices && viewer._heartPartIndices.has(partById.get(part.id)?.index));
+    const isKidneyPart = (part.system === 'urinary' && (part.id.toLowerCase().includes('kidney') || en.toLowerCase().includes('kidney')));
     const heartActionBtn = isCardiacPart
         ? `<div style="margin-top:10px;"><button class="atlas-btn" id="btn-cardiac-mode" style="width:100%;border-color:rgba(224,96,85,0.7);color:#ff8577;font-weight:700;"><i class="fas fa-heart-pulse"></i> Mode Cœur & ECG synchro</button></div>`
         : '';
-    box.innerHTML = `<div class="sys">${sys?.name || part.system}</div><h2>${title}</h2><div style="font-size:11px;opacity:0.55;margin-bottom:6px;">${subtitle}</div>${desc ? `<p>${desc}</p>` : ''}${heartActionBtn}`;
+    const kidneyActionBtn = isKidneyPart
+        ? `<div style="margin-top:10px;"><button class="atlas-btn" id="btn-open-kidney-module" style="width:100%;border-color:rgba(217,130,123,0.7);color:#e28880;font-weight:700;"><i class="fas fa-filter"></i> Mode Rein Détaillé (Coupe 3D)</button></div>`
+        : '';
+    box.innerHTML = `<div class="sys">${sys?.name || part.system}</div><h2>${title}</h2><div style="font-size:11px;opacity:0.55;margin-bottom:6px;">${subtitle}</div>${desc ? `<p>${desc}</p>` : ''}${heartActionBtn}${kidneyActionBtn}`;
     meta.textContent = `${concept ? concept.elements.length + ' fragment(s) · ' : ''}${part.vertexCount} sommets`;
     $('btn-cardiac-mode')?.addEventListener('click', () => openHeartMode('sinus'));
+    $('btn-open-kidney-module')?.addEventListener('click', () => {
+        const side = part.id.toLowerCase().includes('right') || en.toLowerCase().includes('right') ? 'right' : 'left';
+        openKidneyMode({ side });
+    });
 }
 
 // ---------- pavé tactile + clavier ----------
@@ -473,6 +773,10 @@ async function loadModel(modelId, initialDeepLink = false) {
                 const rawHash = location.hash || '';
                 const neuroHash = rawHash.startsWith('#/') ? rawHash : (params.get('target') ? `#/${params.get('target')}` : '');
                 openNeuroMode(neuroHash);
+            } else if (moduleParam === 'kidney' || moduleParam === 'rein' || params.get('kidney') === '1' || params.get('rein') === '1') {
+                const side = params.get('side') || 'left';
+                const sex = (params.get('sex') || currentModel || 'male').toLowerCase() === 'female' ? 'female' : 'male';
+                openKidneyMode({ side, sex });
             } else {
                 const heartParam = params.get('heart') || params.get('cardio');
                 const presetParam = params.get('preset');

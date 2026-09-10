@@ -98,6 +98,20 @@ class AuscultationAudioEngine {
         this._updateFilter();
     }
 
+    setVolume(value) {
+        if (this.masterGain && this.ctx) {
+            const clamped = Math.max(0, Math.min(1.5, Number(value) || 0.85));
+            this.masterGain.gain.setValueAtTime(clamped, this.ctx.currentTime);
+        }
+    }
+
+    playFile(url) {
+        this._initContext();
+        this._playRequestId++;
+        this.isPlaying = true;
+        this._startRealAudio(url, this._playRequestId);
+    }
+
     setCase(caseData) {
         this.currentCase = caseData;
         if (this.isPlaying) {
