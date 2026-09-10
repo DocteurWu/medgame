@@ -1,0 +1,3 @@
+MNI/McGill template licence; the labels are a FreeSurfer segmentation for which no licence is stated
+https://templateflow.s3.amazonaws.com/tpl-MNI152NLin2009cAsym/LICENSE
+FreeSurfer aseg segmentation of the MNI152NLin2009cAsym template, distributed by TemplateFlow, which states no separate licence for this file. Template (c) Louis Collins, McGill University (Fonov et al. 2011); the segmentation was produced with FreeSurfer (Fischl et al. 2002), whose licence permits use, derivative works and redistribution and is silent on the outputs of running it.

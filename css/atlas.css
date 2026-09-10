@@ -14,12 +14,50 @@ body.atlas-body {
     color: var(--atlas-text); font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
     height: 100vh; overflow: hidden;
 }
-.atlas-layout { display: grid; grid-template-columns: 300px 1fr 215px; height: 100vh; }
-.atlas-side {
-    background: var(--atlas-panel); border-right: 1px solid var(--atlas-border);
-    backdrop-filter: blur(10px); padding: 14px; overflow-y: auto; z-index: 5;
+.atlas-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr 215px;
+    height: 100vh;
+    transition: opacity 0.4s ease;
 }
-.atlas-side.right { border-right: none; border-left: 1px solid var(--atlas-border); padding: 12px; font-size: 12px; }
+.atlas-side {
+    background: var(--atlas-panel);
+    border-right: 1px solid var(--atlas-border);
+    backdrop-filter: blur(10px);
+    padding: 14px;
+    overflow-y: auto;
+    z-index: 5;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+.atlas-side.right {
+    border-right: none;
+    border-left: 1px solid var(--atlas-border);
+    padding: 12px;
+    font-size: 12px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+#atlas-viewport {
+    position: relative;
+    min-width: 0;
+    transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+/* ── Animation de transition vers le mode Neuro (l'Atlas Corps entier s'efface proprement) ── */
+.atlas-layout.neuro-mode-active .atlas-side.left {
+    transform: translateX(-105%);
+    opacity: 0;
+    pointer-events: none;
+}
+.atlas-layout.neuro-mode-active .atlas-side.right {
+    transform: translateX(105%);
+    opacity: 0;
+    pointer-events: none;
+}
+.atlas-layout.neuro-mode-active #atlas-viewport {
+    opacity: 0.05;
+    filter: blur(8px);
+    pointer-events: none;
+}
 .atlas-side.right .detail-card h2 { font-size: 15px; }
 .atlas-side.right .detail-card p { font-size: 12px; }
 .nav-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 220px; margin-top: 4px; }
@@ -272,4 +310,173 @@ input[type="range"].explode { width: 100%; accent-color: var(--atlas-neon); }
     color: rgba(224, 232, 244, 0.85);
     margin: 0;
 }
+
+/* ── Sélecteur de modules (Corps entier / Cœur / Système nerveux) ── */
+.atlas-module-bar {
+    display: flex;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--atlas-border);
+    border-radius: 12px;
+    padding: 3px;
+    margin-bottom: 12px;
+}
+.atlas-module-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--atlas-muted);
+    padding: 6px 4px;
+    border-radius: 9px;
+    font-size: 10.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-align: center;
+}
+.atlas-module-btn:hover {
+    color: var(--atlas-text);
+    background: rgba(255, 255, 255, 0.06);
+}
+.atlas-module-btn.active {
+    background: rgba(0, 242, 254, 0.16);
+    color: var(--atlas-neon);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.25);
+}
+.atlas-module-btn#btn-module-heart.active {
+    background: rgba(224, 96, 85, 0.2);
+    color: #ff8577;
+    box-shadow: 0 0 10px rgba(224, 96, 85, 0.35);
+}
+.atlas-module-btn#btn-module-neuro.active {
+    background: rgba(216, 181, 101, 0.2);
+    color: #d8b565;
+    box-shadow: 0 0 10px rgba(216, 181, 101, 0.35);
+}
+
+/* ── Conteneur plein écran du viewer neuro embarqué ── */
+.neuro-atlas-container {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    background: #050814;
+    opacity: 0;
+    transform: scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.neuro-atlas-container.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+.neuro-atlas-container.hidden {
+    display: none !important;
+}
+.neuro-atlas-header {
+    height: 52px;
+    background: rgba(8, 14, 32, 0.94);
+    border-bottom: 1px solid var(--atlas-border);
+    backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+    z-index: 20;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+.neuro-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.neuro-back-home {
+    color: var(--atlas-muted);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.2s;
+}
+.neuro-back-home:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+.neuro-brand-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+}
+.neuro-brand-title span {
+    color: var(--atlas-neon);
+}
+.neuro-badge {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #d8b565;
+    letter-spacing: 0.5px;
+    background: rgba(216, 181, 101, 0.12);
+    border: 1px solid rgba(216, 181, 101, 0.35);
+    padding: 4px 12px;
+    border-radius: 99px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.neuro-module-bar {
+    display: inline-flex;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--atlas-border);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 3px;
+}
+.neuro-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.neuro-btn-back {
+    padding: 7px 16px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border-color: rgba(216, 181, 101, 0.5);
+    color: #d8b565;
+    background: rgba(216, 181, 101, 0.12);
+    box-shadow: 0 0 12px rgba(216, 181, 101, 0.25);
+    border-radius: 99px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.neuro-btn-back:hover {
+    background: rgba(216, 181, 101, 0.25);
+    border-color: #d8b565;
+    color: #fff;
+    box-shadow: 0 0 18px rgba(216, 181, 101, 0.45);
+    transform: translateY(-1px);
+}
+.neuro-atlas-frame {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #050814;
+}
+
+
 

@@ -1,0 +1,75 @@
+/* ==========================================================================
+   css/footer.css — Styles du pied de page discret et des liens de credits
+   ========================================================================== */
+
+.medgame-footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 0.75rem;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+    user-select: none;
+}
+
+.medgame-footer-link:hover {
+    color: #00f2fe;
+    text-decoration: none;
+}
+
+.medgame-footer-link i {
+    font-size: 0.7rem;
+}
+
+.medgame-floating-footer {
+    position: fixed;
+    bottom: 12px;
+    right: 16px;
+    z-index: 900;
+    background: rgba(10, 15, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.medgame-floating-footer a {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.72rem;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.medgame-floating-footer a:hover {
+    color: #00f2fe;
+}
+
+.medgame-global-page-footer {
+    width: 100%;
+    text-align: center;
+    padding: 16px 20px;
+    margin-top: auto;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.medgame-global-page-footer a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    margin: 0 4px;
+    transition: color 0.2s;
+}
+
+.medgame-global-page-footer a:hover {
+    color: #00f2fe;
+}

@@ -1,0 +1,690 @@
+/* ==========================================================================
+   css/credits.css — Styles condenses pour la page de credits MedGame
+   ========================================================================== */
+
+:root {
+    --bg-dark: #050714;
+    --card-bg: rgba(10, 15, 30, 0.72);
+    --card-border: rgba(0, 242, 254, 0.18);
+    --card-hover-border: rgba(0, 242, 254, 0.45);
+    --primary: #00f2fe;
+    --primary-blue: #4facfe;
+    --text-light: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --text-faint: rgba(255, 255, 255, 0.4);
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-title: 'Outfit', 'Inter', sans-serif;
+    --glass-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(circle at 50% 10%, rgba(79, 172, 254, 0.1) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(0, 242, 254, 0.06) 0%, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-light);
+    font-family: var(--font-main);
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 40px;
+    overflow-x: hidden;
+    transition: opacity 0.4s ease;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Barre superieure ───────────────────────────────────────────────────── */
+.credits-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--text-light);
+    font-family: var(--font-title);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateX(-3px);
+}
+
+.btn-roll-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    border: none;
+    color: #050714;
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(0, 242, 254, 0.35);
+    transition: all 0.2s ease;
+}
+
+.btn-roll-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0, 242, 254, 0.55);
+}
+
+/* ── Conteneur compact ──────────────────────────────────────────────────── */
+.credits-container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── En-tete discret ────────────────────────────────────────────────────── */
+.credits-hero {
+    text-align: center;
+    padding: 6px 0 10px;
+}
+
+.credits-title {
+    font-family: var(--font-title);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, #ffffff 40%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 4px;
+}
+
+.credits-subtitle {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+}
+
+/* ── Carte vitree commune condensee ─────────────────────────────────────── */
+.glass-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 22px 26px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: var(--glass-shadow);
+    transition: border-color 0.25s ease;
+}
+
+.glass-panel:hover {
+    border-color: var(--card-hover-border);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding-bottom: 8px;
+}
+
+.section-icon {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+.section-title {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-light);
+    letter-spacing: 0.3px;
+}
+
+/* ── Section Createur (P0 compacte et percutante) ───────────────────────── */
+.creator-panel {
+    border-color: rgba(0, 242, 254, 0.4);
+    background: linear-gradient(145deg, rgba(12, 24, 52, 0.85) 0%, rgba(6, 12, 28, 0.8) 100%);
+}
+
+.creator-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.creator-avatar-wrap {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.35));
+    border: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    color: var(--primary);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+}
+
+.creator-details {
+    flex: 1;
+}
+
+.creator-header-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.creator-name {
+    font-family: var(--font-title);
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.creator-role-tag {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    background: rgba(0, 242, 254, 0.12);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: var(--font-title);
+}
+
+.creator-curriculum {
+    color: var(--primary-blue);
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+/* ── Grille Contributeurs & Technos (2 colonnes) ────────────────────────── */
+.compact-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.contrib-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.contrib-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.contrib-name {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #ffffff;
+}
+
+.contrib-role {
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-family: var(--font-title);
+}
+
+.contrib-note {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    margin-top: 1px;
+}
+
+/* ── Badges Technologies & Ressources ───────────────────────────────────── */
+.chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.chip-tech {
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.82rem;
+    font-family: var(--font-title);
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.resources-list-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.res-item-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.83rem;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.res-item-compact .res-name {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.res-item-compact .res-desc {
+    color: var(--text-faint);
+    font-size: 0.78rem;
+}
+
+.attributions-compact-link {
+    margin-top: 10px;
+    display: inline-block;
+    color: var(--primary);
+    font-size: 0.8rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.attributions-compact-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Section Contact (Bugs, retours, collab) ────────────────────────────── */
+.contact-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 22px;
+}
+
+.contact-text {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.contact-email-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: rgba(0, 242, 254, 0.1);
+    border: 1px solid var(--primary);
+    color: var(--text-light);
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.contact-email-badge:hover {
+    background: var(--primary);
+    color: #050714;
+}
+
+/* ── Code source & Licence (Tout petit, gris, en italique) ───────────────── */
+.legal-tiny-italic {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.74rem;
+    color: #6b7280;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+.legal-tiny-italic a {
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.legal-tiny-italic a:hover {
+    color: var(--primary);
+}
+
+/* ==========================================================================
+   Generique defilant plein ecran (« Credits Roll »)
+   ========================================================================== */
+.credits-roll-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: #03050c;
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(10, 25, 55, 0.8) 0%, #03050c 80%);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    overflow: hidden;
+}
+
+.credits-roll-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+.credits-roll-viewport {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+.credits-roll-track {
+    width: 90%;
+    max-width: 720px;
+    text-align: center;
+    padding: 0 20px;
+    transform: translateY(100vh);
+    will-change: transform;
+}
+
+.credits-roll-overlay.animating .credits-roll-track {
+    animation: rollAnimation var(--roll-duration, 48s) linear forwards;
+}
+
+.credits-roll-overlay.paused .credits-roll-track {
+    animation-play-state: paused !important;
+}
+
+@keyframes rollAnimation {
+    0% {
+        transform: translateY(100vh);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.roll-logo {
+    margin-bottom: 24px;
+}
+
+.roll-logo h1 {
+    font-family: var(--font-title);
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: #ffffff;
+    text-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+}
+
+.roll-logo p {
+    font-family: var(--font-title);
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-top: 4px;
+}
+
+.roll-section {
+    margin: 45px 0;
+}
+
+.roll-section-title {
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+
+.roll-entry {
+    margin-bottom: 18px;
+}
+
+.roll-name {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.roll-sub {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.roll-note {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    max-width: 520px;
+    margin: 4px auto 0;
+    line-height: 1.45;
+}
+
+.roll-final-card {
+    margin: 60px 0 90px;
+    padding: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.roll-final-card p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.roll-hud {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.roll-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 15px;
+    border-radius: 30px;
+    background: rgba(10, 15, 30, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-family: var(--font-title);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+}
+
+.roll-btn:hover {
+    background: rgba(0, 242, 254, 0.2);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.roll-btn.close {
+    border-color: rgba(255, 71, 87, 0.4);
+    color: #ff6b81;
+}
+
+.roll-btn.close:hover {
+    background: rgba(255, 71, 87, 0.2);
+    border-color: #ff4757;
+    color: #ffffff;
+}
+
+.roll-hint-bottom {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+}
+
+/* ── Modal d'attributions ───────────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(3, 5, 12, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: #080d22;
+    border: 1px solid rgba(0, 242, 254, 0.3);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 640px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-title {
+    font-family: var(--font-title);
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.modal-body h3 {
+    color: var(--primary);
+    font-size: 0.95rem;
+    margin: 14px 0 6px;
+}
+
+.modal-body h3:first-child {
+    margin-top: 0;
+}
+
+/* ── Accessibilite : prefers-reduced-motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .credits-roll-overlay.animating .credits-roll-track {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    .credits-roll-viewport {
+        overflow-y: auto !important;
+        mask-image: none !important;
+        -webkit-mask-image: none !important;
+    }
+
+    .credits-roll-track {
+        padding: 60px 20px;
+    }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 680px) {
+    .compact-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .creator-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .creator-header-row {
+        justify-content: center;
+    }
+
+    .contact-panel {
+        flex-direction: column;
+        text-align: center;
+    }
+}

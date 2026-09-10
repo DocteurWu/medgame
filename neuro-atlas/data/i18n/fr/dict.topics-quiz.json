@@ -1,0 +1,2175 @@
+{
+  "entries": {
+    "topic-brain-tumor-localization": {
+      "name": "Tumeurs cérébrales : localisation et profils",
+      "summary": "Les tumeurs intracrâniennes s'expriment par trois mécanismes : déficit focal ou crise du cortex ou du faisceau envahi ou comprimé, hypertension intracrânienne par la masse, l'œdème ou l'hydrocéphalie induite, et syndromes endocriniens ou des nerfs crâniens par leur position à la base. La présentation localise la tumeur et la localisation prédit l'histologie : gliomes infiltrant la substance blanche des hémisphères, méningiomes posés sur la dure-mère, métastases à la jonction substance grise-blanche, adénomes et craniopharyngiomes sellaires et suprasellaires, schwannomes vestibulaires de l'angle ponto-cérébelleux, médulloblastomes et épendymomes du V4 chez l'enfant.",
+      "sections": [
+        {
+          "heading": "Tumeurs hémisphériques",
+          "body": "Gliomes diffus (astrocytomes, oligodendrogliomes, classés IDH et 1p/19q) infiltrant la substance blanche fronto-temporale : crises si bas grade, déficit focal progressif, céphalées et changement de personnalité si haut grade ; le glioblastome se rehausse irrégulièrement autour d'une nécrose et franchit le corps calleux en papillon. Métastases (poumon, sein, mélanome, rein, côlon) à la jonction cortico-sous-corticale, souvent multiples et rondes avec œdème disproportionné. Lymphome primitif périventriculaire profond se rehaussant homogènement et fondant aux corticoïdes. Méningiomes comprimant sans envahir : convexité, faux, aile sphénoïdale, gouttière olfactive, tuberculum sellae."
+        },
+        {
+          "heading": "Tumeurs sellaires, suprasellaires et de la base",
+          "body": "Adénomes hypophysaires : hypersécrétion (prolactine, GH, ACTH) ou insuffisance par compression ; au chiasma, hémianopsie bitemporale ; au sinus caverneux, ophtalmoplégie ; apoplexie : céphalée brutale avec effondrement visuel. Craniopharyngiomes de l'enfant, méningiomes du tuberculum, chordomes du clivus, carcinomes du cavum et paragangliomes jugulaires complètent la base."
+        },
+        {
+          "heading": "Fosse postérieure et tumeurs intraventriculaires",
+          "body": "Enfant : médulloblastome et épendymome du V4 (céphalées matinales, vomissements, ataxie, hydrocéphalie) ; astrocytome pilocytique cérébelleux kystique à nodule mural. Adulte : hémangioblastome (VHL), métastases, lymphome. Intraventriculaires : épendymome, papillome des plexus, kyste colloïde du V3 (hydrocéphalie brutale), méningiome du trigone."
+        },
+        {
+          "heading": "Effet de masse, œdème et logique thérapeutique",
+          "body": "Œdème vasogénique en doigts de gant corticosensible, engagement (sous-falciforme, temporal, tonsillaire), hydrocéphalie obstructive : l'urgence se lit au scanner avant l'histologie. Chirurgie maximale respectant les zones éloquentes (cartographie, tractographie), radiothérapie et chimiothérapie selon l'histologie et la biologie moléculaire ; corticoïdes et antiépileptiques symptomatiques. Devant un lymphome possible, imager avant toute corticothérapie qui l'efface."
+        }
+      ],
+      "keyPoints": [
+        "La localisation prédit l'histologie : gliomes de la substance blanche, méningiomes duraux, métastases jonctionnelles, lymphome périventriculaire, adénomes sellaires, schwannomes de l'angle, médulloblastomes du V4",
+        "Des crises évoquent une tumeur corticale souvent de bas grade ; un déficit rapide, glioblastome ou métastase",
+        "Une hémianopsie bitemporale est une masse sellaire jusqu'à l'IRM ; une tumeur de l'angle débute par l'audition",
+        "Céphalées matinales, vomissements et paralysie du VI : hypertension, non localisation",
+        "Lésions rondes multiples à gros œdème à la jonction cortico-sous-corticale : métastases ; chercher le primitif (poumon, sein)"
+      ]
+    },
+    "topic-cns-infections-localization": {
+      "name": "Infections du système nerveux par compartiment",
+      "summary": "Les infections neurologiques se localisent par le compartiment occupé : espace sous-arachnoïdien et méninges (méningite), parenchyme (encéphalite, abcès), espaces épi- et sous-duraux (empyème, abcès épidural spinal), ventricules (ventriculite), moelle (myélite), racines et nerfs (radiculite, névrite). Chaque compartiment a sa signature clinique, son LCS et son imagerie, et chacun impose son urgence : antibiotiques avant le scanner si la méningite est probable, aciclovir avant la PCR si l'herpès est suspect, chirurgie le jour même si l'épidural comprime.",
+      "sections": [
+        {
+          "heading": "Méningites : le compartiment sous-arachnoïdien",
+          "body": "Syndrome méningé (céphalée, photophobie, raideur, Kernig-Brudzinski) avec LCS trouble à polynucléaires et hypoglycorachie = bactérienne (pneumocoque, méningocoque : ceftriaxone + amoxicilline + dexaméthasone sans attendre) ; lymphocytaire à hypoglycorachie = tuberculeuse, fongique ou carcinose ; lymphocytaire à glycorachie normale = virale. Purpura, troubles de conscience et signes focaux orientent vers la gravité et les diagnostics différentiels."
+        },
+        {
+          "heading": "Encéphalites et abcès : le compartiment parenchymateux",
+          "body": "Confusion fébrile avec crises et signes focaux = encéphalite : l'herpès aime le temporal médial et l'insula en épargnant le putamen (aciclovir immédiat) ; les auto-immunes (anti-NMDA, LGI1) miment sans fièvre. L'abcès se rehausse en anneau avec diffusion restreinte centrale : il se draine, il ne se biopsie pas. Toxoplasmose du séropositif, listéria rhombencéphalique, CMV et cryptococcose complètent le tableau."
+        },
+        {
+          "heading": "Empyèmes, infections spinales et racines",
+          "body": "Empyème sous-dural : foyer ORL avec déficit et crises, collection en croissant rehaussée. Abcès épidural spinal : dorsalgie, fièvre, déficit ascendant avec niveau — IRM et chirurgie le jour même. Myélites virales et post-infectieuses, radiculites zostériennes et à CMV, tétanos et botulisme (jonction) : chaque étage a sa porte d'entrée et son traitement."
+        },
+        {
+          "heading": "Formes chroniques et pièges curables",
+          "body": "Tuberculose (méningite basale, tuberculomes), neuroborréliose (paralysie faciale, méningoradiculite), neurosyphilis (tabès, Argyll Robertson), Whipple, cysticercose : des diagnostics curables derrière des tableaux chroniques. Tout syndrome inflammatoire inexpliqué impose VIH, sérologies et biopsie raisonnée ; tout anneau chez l'immunodéprimé discute toxoplasmose, lymphome et abcès (diffusion et réponse au traitement)."
+        }
+      ],
+      "keyPoints": [
+        "Le méningisme désigne l'espace sous-arachnoïdien ; confusion avec crises et signes focaux, le parenchyme ; dorsalgie avec niveau, l'espace épidural",
+        "Polynucléaires et glucose bas : bactérien ; lymphocytes et glucose bas : tuberculose, champignon ou cancer ; lymphocytes et glucose normal : viral",
+        "L'herpès vit dans le temporal médial et l'insula en épargnant le putamen : aciclovir avant la PCR",
+        "Un abcès se rehausse en anneau avec diffusion centrale restreinte : il se draine",
+        "Abcès épidural spinal (dorsalgie, fièvre, déficit ascendant) : IRM et chirurgie le jour même"
+      ]
+    },
+    "topic-consciousness-coma-brain-death": {
+      "name": "Troubles de la conscience, coma et mort encéphalique",
+      "summary": "Le coma est défini par une abolition prolongée de la conscience et de la réactivité, caractérisé par l'absence d'ouverture spontanée des yeux et d'éveil aux stimulations. Il résulte d'une atteinte bilatérale des hémisphères cérébraux ou d'une lésion de la formation réticulée activatrice ascendante (FRAA) du tronc cérébral.",
+      "sections": [
+        {
+          "heading": "Anatomie de l'éveil",
+          "body": "L'éveil exige la formation réticulée pontique haute et mésencéphalique paramédiane, les deux thalami et au moins un hémisphère : un seul hémisphère ne produit un coma que par engagement. Vigilance (FRAA) et conscience du contenu (cortex) se testent séparément."
+        },
+        {
+          "heading": "Examen du comateux",
+          "body": "Niveau (Glasgow ou FOUR), puis tronc de haut en bas : pupilles (symétriques et réactives = métabolique ; asymétriques ou fixes = structurel), oculo-céphaliques et caloriques, cornée, nauséeux, toux, réponses motrices (décortication au-dessus du noyau rouge, décérébration en dessous). Glycémie, naloxone et thiamine d'emblée ; EEG (état de mal non convulsif) et scanner sans attendre."
+        },
+        {
+          "heading": "Engagements et marche rostro-caudale",
+          "body": "Masse supratentorielle : sous-falciforme (ACA), temporal (III), puis central descendant (Cheyne-Stokes, pupilles moyennes, décérébration) ; fosse postérieure : tonsillaire (apnée brutale). La pupille prévient avant la respiration : l'examiner tous les quarts d'heure."
+        },
+        {
+          "heading": "Pronostic, états de conscience altérée et mort encéphalique",
+          "body": "Après arrêt cardiaque : aréactivité pupillaire et cornéenne à 72 h, potentiels évoqués, EEG malin et NSE datent le pronostic. États végétatif, pauci-relationnel et mutisme akinétique se distinguent par l'éveil et la communication. La mort encéphalique est un diagnostic clinique du tronc (aréactivité complète + apnée), à cause connue et sans confondants."
+        }
+      ],
+      "keyPoints": [
+        "Le coma exige le haut tronc paramédian, les deux thalami ou les deux hémisphères ; un hémisphère seul ne donne un coma que par engagement",
+        "Pupilles réactives et coma profond : métabolique ou toxique ; pupille asymétrique ou fixe : structurel",
+        "Décortication au-dessus du noyau rouge, décérébration en dessous ; le passage marque la marche de l'engagement",
+        "Le locked-in est éveillé : demander un clignement ou un regard vers le haut avant de parler de coma",
+        "La mort encéphalique est un diagnostic clinique du tronc, à cause connue et confondants exclus"
+      ]
+    },
+    "topic-cortical-layers-organization": {
+      "name": "Cortex : couches, colonnes et aires fonctionnelles",
+      "summary": "Le cortex est une lame de substance grise de 2 à 4 mm plissée en gyri, organisée en six couches d'épaisseur variable selon la fonction : le cortex sensoriel granulaire a une couche IV d'entrée épaisse, le moteur agranulaire des grandes cellules de sortie en V et presque pas de IV, l'associatif est intermédiaire. Les couches sont traversées de colonnes verticales partageant une propriété, et les aires se cartographient (homunculus, rétinotopie, tonotopie) : lire une lésion corticale, c'est lire la carte.",
+      "sections": [
+        {
+          "heading": "Les six couches et les deux types cellulaires",
+          "body": "Pyramidaux (sortie glutamatergique) et interneurones (GABA) : la IV reçoit du thalamus, la III projette vers d'autres cortex, la V vers tronc et moelle, la VI retourne au thalamus. Granulaire (sensoriel), agranulaire (moteur), associatif : le type laminaire prédit la fonction et la vulnérabilité (nécrose laminaire, tangles, dysplasies)."
+        },
+        {
+          "heading": "Types corticaux et aires fonctionnelles",
+          "body": "Allocortex (hippocampe, olfactif), mésocortex (cingulaire, insulaire) et isocortex : aires primaires (17, 1-2-3, 41-42, 4), unimodales puis hétéromodales (préfrontal, temporal inférieur, pariétal inférieur). Les aires de Brodmann sont cytoarchitectoniques, les gyri des plis : coïncidence approximative, langage variable à cartographier."
+        },
+        {
+          "heading": "Colonnes, cartes et plasticité",
+          "body": "Colonnes de dominance oculaire et d'orientation, cartes ordonnées du corps et du monde : la réorganisation après lésion fonde la rééducation et explique le membre fantôme. La strie de Gennari marque le V1 à l'œil nu et en IRM haute résolution."
+        },
+        {
+          "heading": "Corrélats cliniques de l'architecture",
+          "body": "Rubans DWI (cortex mourant couche par couche : hypoxie, crises, prions), dysplasies épileptogènes, dégénérescences par couches : l'imagerie laminaire lit la pathologie. Le sillon central place le moteur ; le langage se cartographie chez chacun."
+        }
+      ],
+      "keyPoints": [
+        "Le cortex granulaire reçoit (IV), l'agranulaire envoie (V) : sensoriel granulaire, moteur agranulaire",
+        "La III projette vers d'autres cortex, la V vers tronc et moelle, la VI vers le thalamus",
+        "Les colonnes partagent une propriété, les aires une carte ; l'homonculus est la carte des gyri centraux",
+        "Nécrose laminaire, tangles alzheimériens et dysplasies choisissent chacun leurs couches",
+        "Les cartes bougent : la plasticité fonde la rééducation et explique le membre fantôme"
+      ]
+    },
+    "topic-csf-physiology-blood-brain-barrier": {
+      "name": "LCS et barrière hémato-encéphalique",
+      "summary": "Le LCS est sécrété par les plexus choroïdes à environ 0,5 mL/min, circule des ventricules vers les espaces sous-arachnoïdiens par les foramens du V4 et se résorbe dans les sinus veineux par les granulations arachnoïdiennes et les gaines des nerfs : 150 mL renouvelés trois à quatre fois par jour. C'est la résorption, non la production, qui règle la pression. La barrière hémato-encéphalique (endothélium à jonctions serrées, pieds astrocytaires, péricytes) exclut protéines et hydrophiles ; son ouverture (tumeur, inflammation, infection, infarctus subaigu) fait le rehaussement.",
+      "sections": [
+        {
+          "heading": "Production, circulation, résorption",
+          "body": "Plexus → ventricules → foramens de Magendie et Luschka → citernes → convexités → granulations de Pacchioni et gaines nerveuses. Tout blocage dilate l'amont : foramens de Monro, aqueduc, V4, citernes basales."
+        },
+        {
+          "heading": "Hydrocéphalie et pression intracrânienne",
+          "body": "Non communicante (bloc ventriculaire : sténose de l'aqueduc, tumeur du V4, kyste colloïde) ; communicante (granulations : post-méningée, post-hémorragique) ; les deux arrondissent d'abord les cornes temporales. Monro-Kellie : tout millilitre ajouté est pris à un autre ; vomissements, œdème papillaire, VI et engagement en sont les cadrans."
+        },
+        {
+          "heading": "Composition et ponction lombaire",
+          "body": "Protéines basses, glucose à 60 % de la glycémie, pas de cellules : polynucléaires et glucose bas = bactérien ; lymphocytes et glucose bas = tuberculose, champignon, cancer. Mesurer la pression d'ouverture à chaque ponction ; ne jamais ponctionner sous un obstacle non imagé."
+        },
+        {
+          "heading": "Les barrières et leurs faillites",
+          "body": "Barrière hémato-encéphalique, hématoméningée et organes circumventriculaires (sans barrière, rehaussant normalement) : le contraste ne passe qu'ouverte. Acétazolamide (plexus) contre l'hypertension ; corticoïdes refermant la barrière contre l'œdème vasogénique."
+        }
+      ],
+      "keyPoints": [
+        "Le LCS est produit à 0,5 mL/min et renouvelé 3-4 fois par jour ; la résorption, non la production, règle la pression",
+        "Hydrocéphalie non communicante (bloc ventriculaire) ou communicante (granulations) ; les deux arrondissent d'abord les cornes temporales",
+        "Le rehaussement signifie barrière ouverte : tumeur, inflammation, infection, infarctus subaigu",
+        "Polynucléaires et glucose bas : bactérien ; lymphocytes et glucose bas : tuberculose, champignon, cancer",
+        "Monro-Kellie : chaque millilitre ajouté dans le crâne est pris à un autre"
+      ]
+    },
+    "topic-dementia-patterns": {
+      "name": "Démences : patrons anatomiques du déclin",
+      "summary": "Chaque démence dégénérative attaque un réseau dans un ordre propre, si bien que les premiers symptômes et l'atrophie à l'IRM localisent la maladie avant tout biomarqueur : Alzheimer débute entorhinal et hippocampique puis gagne le cingulaire postérieur et le pariétal (amnésie d'abord) ; la fronto-temporale débute orbito-frontale et temporale antérieure (comportement ou langage d'abord) ; les corps de Lewy fluctuent avec hallucinations visuelles précoces et parkinsonisme ; la vasculaire ralentit et fait chuter. Les rapidités (prion, auto-immune, métabolique) et les curables (médicaments, hydrocéphalie, carences) se traquent en parallèle.",
+      "sections": [
+        {
+          "heading": "Alzheimer : le patron temporo-médial et pariétal",
+          "body": "Oubli épisodique récent avec défaut de stockage (indiçage inefficace), désorientation temporo-spatiale, puis aphasie, apraxie, agnosie ; atrophie hippocampique coronale, hypométabolisme cingulaire postérieur. LCR (Aβ42 bas, tau hautes), TEP amyloïde et tau : le diagnostic est biologique, la clinique reste première."
+        },
+        {
+          "heading": "Dégénérescence fronto-temporale : le patron antérieur",
+          "body": "Variante comportementale (désinhibition, apathie, compulsions, hyperoralité) frontale ; sémantique (perte du sens des mots) temporale antérieure gauche ; non fluente (agrammatisme, apraxie de la parole) frontale inférieure gauche. Empathie perdue tôt, mémoire épargnée longtemps ; atrophie en couteau."
+        },
+        {
+          "heading": "Corps de Lewy et atteinte vasculaire",
+          "body": "Démence à corps de Lewy : fluctuations, hallucinations visuelles précoces, parkinsonisme, hypersensibilité aux neuroleptiques, trouble du sommeil paradoxal ; DaTscan anormal. Vasculaire : ralentissement, troubles de la marche et sphinctériens, atteinte exécutive en marches, hypersignaux confluents et lacunes."
+        },
+        {
+          "heading": "Démences rapides et curables",
+          "body": "Semaines à mois : Creutzfeldt-Jakob (myoclonies, DWI cortical et striatal, 14-3-3), encéphalites auto-immunes, métaboliques ; curables : médicaments (anticholinergiques), hydrocéphalie chronique (marche d'abord, tap-test), hématome, hypothyroïdie, B12, dépression du sujet âgé (pseudo-démence attentionnelle réversible)."
+        }
+      ],
+      "keyPoints": [
+        "Demander quel domaine a lâché d'abord : mémoire (Alzheimer), comportement ou langage (fronto-temporale), attention et vision avec hallucinations (Lewy), vitesse et marche (vasculaire)",
+        "L'atrophie temporale médiale coronale signe Alzheimer ; frontale et temporale antérieure, la fronto-temporale",
+        "L'indiçage sauve la récupération des démences sous-corticales et frontales, pas le défaut de stockage alzheimérien",
+        "La démence à corps de Lewy fluctue, hallucine et bouge mal : jamais de neuroleptique",
+        "Une démence en semaines ou mois est à prion, auto-immune ou métabolique jusqu'à preuve du contraire"
+      ]
+    },
+    "topic-epilepsy-localization": {
+      "name": "Épilepsies et sémiologie des crises",
+      "summary": "Une crise d'épilepsie est la manifestation clinique d'une décharge synchrone excessive et transitoire d'une population neuronale corticale. La sémiologie initiale de la crise reflète la zone épileptogène responsable, permettant une localisation anatomique précise.",
+      "sections": [
+        {
+          "heading": "Crises temporales",
+          "body": "Les plus fréquentes de l'adulte : ascension épigastrique, peur, déjà-vu, odeur ou goût (médiales), automatismes oro-alimentaires et gestuels avec amnésie, dystonie controlatérale et automatismes homolatéraux ; sclérose hippocampique en FLAIR coronal, curable chirurgicalement. Confusion post-critique et parésie de Todd localisent."
+        },
+        {
+          "heading": "Crises frontales",
+          "body": "Brèves, fréquentes, nocturnes et bizarres : aire motrice supplémentaire (posture d'escrime tonique, vocalisation, conscience conservée, EEG souvent normal), frontale dorsolatérale (agitation, version), operculaire (salivation, troubles du langage). À distinguer des parasomnies et des psychogènes (vidéo-EEG)."
+        },
+        {
+          "heading": "Crises pariétales, occipitales, insulaires et généralisées",
+          "body": "Pariétales : fourmillements, douleur, membre fantôme, vertige ; occipitales : formes colorées élémentaires ; insulaires : laryngées et viscérales trompeuses. Généralisées : absences (3 Hz, hyperpnée), myocloniques, tonico-cloniques — aggravées par certains anti-focaux (carbamazépine, phénytoïne)."
+        },
+        {
+          "heading": "Localiser le foyer pour traiter",
+          "body": "L'histoire donne l'aura et la marche, l'EEG intercritique les pointes (temporales antérieures), l'IRM le substrat (hippocampe, dysplasie, cavernome), la TEP et la stéréo-EEG l'étendue. Première crise après 25 ans : focale jusqu'à preuve du contraire, imager ; chirurgie quand foyer unique résécable et zone éloquente cartographiée."
+        }
+      ],
+      "keyPoints": [
+        "L'aura est l'adresse : épigastrique et peur pour le temporal médial, formes colorées pour l'occipital, posture d'escrime pour l'aire motrice supplémentaire",
+        "La dystonie d'une main pendant la crise pointe l'hémisphère opposé ; les automatismes, le même côté",
+        "Les crises frontales sont brèves, nocturnes et étranges, à EEG souvent normal",
+        "La sclérose hippocampique est l'épilepsie chirurgicalement curable la plus fréquente : regarder les hippocampes en FLAIR coronal",
+        "Absences et myocloniques sont généralisées et aggravées par certains anti-focaux"
+      ]
+    },
+    "topic-headache-localization": {
+      "name": "Céphalées : structures douloureuses et localisation",
+      "summary": "Le cerveau est insensible ; la douleur naît de la dure-mère et de ses artères, des sinus veineux, des grosses artères de la base, du périoste, du scalp et du rachis cervical, tous innervés par le trijumeau au-dessus de la tente et les racines cervicales hautes en dessous, convergeant vers le complexe trigémino-cervical bulbaire. Supratentoriel : œil et front ; infratentoriel : occiput et cou. Primaires (migraine, tension, cluster) et secondaires (drapeaux rouges, tonnerre, positionnelles, du sujet âgé) se séparent à l'interrogatoire avant tout scanner.",
+      "sections": [
+        {
+          "heading": "Anatomie de la douleur crânienne",
+          "body": "Dure-mère (tente : V ; fosse postérieure : C2-C3), artères et sinus, scalp et muscles : toute céphalée se projette selon son nerf. Le complexe trigémino-cervical explique que la migraine naisse cervicale et que la cervicalgie irradie frontale."
+        },
+        {
+          "heading": "Céphalées primaires et leurs générateurs",
+          "body": "Migraine : événement cortical (aura qui marche) puis trigémino-vasculaire pulsatile avec nausées, traitée (triptans, anti-CGRP) ; tension : en étau bilatérale ; cluster : horaire hypothalamique, œil rouge et larmoyant avec Horner partiel (oxygène, vérapamil)."
+        },
+        {
+          "heading": "Céphalées secondaires et drapeaux rouges",
+          "body": "Tonnerre (méningée : scanner < 6 h puis PL à 12 h), positionnelle (haute couchée, basse debout), fébrile (méningite), après 50 ans inflammatoire (Horton : VS-CRP, cécité à prévenir, corticoïdes avant biopsie), sinusienne et hypertensive : âge, vitesse d'installation, fièvre, signes focaux et terrain décident."
+        },
+        {
+          "heading": "Rapporter la douleur à une structure",
+          "body": "Œil-front unilatéral bref intense et autonome : trigémino-autonomiques (indométacine pour l'hémicrânie) ; occiput-cou : cervicale et fosse postérieure ; diffuse matinale avec œdème : pression ; en casque vespérale : tension. L'examen (pouls temporal, œil, raideur, neuro) et le fond d'œil ferment la localisation."
+        }
+      ],
+      "keyPoints": [
+        "Le cerveau ne fait pas mal ; la dure-mère, les vaisseaux et le cou si, tous via le complexe trigémino-cervical",
+        "Douleur supratentorielle : œil et front ; infratentorielle : occiput et cou",
+        "Le tonnerre est une hémorragie méningée jusqu'à preuve du contraire : règle du scanner à 6 heures",
+        "Le cluster garde l'heure hypothalamique, avec œil rouge larmoyant et ptosis",
+        "Une céphalée nouvelle après 50 ans avec VS élevée : Horton ; traiter avant la biopsie"
+      ]
+    },
+    "topic-leukodystrophies-mitochondrial": {
+      "name": "Leucodystrophies et maladies mitochondriales",
+      "summary": "Les leucodystrophies sont des maladies génétiques de la myéline donnant une atteinte symétrique et confluente de la substance blanche avec spasticité, ataxie, baisse visuelle et déclin cognitifs progressifs — à l'opposé des lésions asymétriques en plaques de la SEP et du vasculaire. La topographie IRM nomme la maladie (pariéto-occipitale, frontale, périventriculaire épargnant ou non les U, avec ou sans rehaussement), et les mitochondriopathies (hérédité maternelle, surdité, diabète, petite taille, myopathie, lactates) miment les AVC en ignorant les territoires. Plusieurs se traitent tôt : reconnaître le patron avant le déficit fixé.",
+      "sections": [
+        {
+          "heading": "Les principales leucodystrophies",
+          "body": "Adrénoleucodystrophie (garçon, pariéto-occipitale avec rehaussement, surrénales), métachromatique (périventriculaire épargnant les U, neuropathie), Krabbe (nourrisson irritable, nerfs épais), Alexander (frontale), vanishing white matter, Canavan, Pelizaeus-Merzbacher : enzyme et gène confirment, greffe et thérapie génique précoces changent l'histoire."
+        },
+        {
+          "heading": "Lire le patron de substance blanche",
+          "body": "Symétrique confluente : génétique, toxique, métabolique ; asymétrique en plaques : vasculaire ou inflammatoire. La région qui mène nomme : pariéto-occipitale (ALd), frontale (Alexander), périventriculaire sans U (métachromatique), avec kystes temporaux (vanishing), tigroïde (Pelizaeus-Merzbacher)."
+        },
+        {
+          "heading": "Maladies mitochondriales",
+          "body": "MELAS (pseudo-AVC migrants ignorant les territoires, diabète, surdité), MERRF (myoclonies, fibres rouges), Kearns-Sayre (ophtalmoplégie, rétinite, bloc), Leigh (nécrose striatale du nourrisson), POLG (valproate interdit, mortel) : hétéroplasmie, lactates, biopsie musculaire et ADN mitochondrial."
+        },
+        {
+          "heading": "Conduite clinique et traitements",
+          "body": "Régression des acquisitions : jamais comportementale — métabolique, dégénérative ou épileptique ; IRM datée de la myélinisation, bilan (lactates, acides organiques, enzymes lysosomales, génétique), corticoïdes surrénaliens, régimes, cofacteurs et greffe selon la maladie. Dépister la fratrie et conseiller."
+        }
+      ],
+      "keyPoints": [
+        "Une maladie confluente symétrique est génétique, toxique ou métabolique ; en plaques asymétriques, vasculaire ou inflammatoire",
+        "La région qui mène nomme la leucodystrophie : pariéto-occipitale (adrénoleuco), frontale (Alexander), périventriculaire sans U (métachromatique)",
+        "Des pseudo-AVC ignorant les territoires et migrants : MELAS",
+        "Hérédité maternelle avec surdité, diabète, petite taille et myopathie : mitochondrie",
+        "Plusieurs leucodystrophies se traitent tôt : reconnaître le patron avant le déficit fixé"
+      ]
+    },
+    "topic-localization-approach-exam": {
+      "name": "Localisation : l'examen neurologique comme carte",
+      "summary": "Le diagnostic neurologique répond à deux questions dans l'ordre — où est la lésion, puis qu'est-elle — et la première se lit sur l'examen rapporté à l'anatomie : l'étage (cortex, substance blanche, ganglions, thalamus, tronc, cervelet, moelle, racine, plexus, nerf, jonction, muscle), le côté (voies croisées ou non) et le nombre (unique, multiple, diffus), puis le tempo (brutal vasculaire, progressif tumoral, rémittent démyélinisant). Signes corticaux = cortex ; faiblesse proportionnée sans eux = capsule ; croisés = tronc ; niveau = moelle ; ataxie homolatérale = cervelet. Si une lésion n'explique pas tout, en chercher plusieurs ou une diffuse.",
+      "sections": [
+        {
+          "heading": "L'étage : à quel niveau de l'immeuble",
+          "body": "Cortex (signes corticaux : aphasie, négligence, apraxie, hémianopsie), sous-cortical (proportionné), thalamus (sensitif puis douleurs), tronc (alterne), cervelet (ataxie homolatérale), moelle (niveau + sphincters), racine (dermatome-myotome), plexus (pluri-tronculaire), nerf (tronculaire), jonction (fatigable), muscle (proximal) : chaque étage a sa grammaire."
+        },
+        {
+          "heading": "Le côté : les croisements",
+          "body": "Pyramidal (bulbe), lemniscal (bulbe), spinothalamique (étage d'entrée), cérébelleux (double croisement = homolatéral), optique (chiasma) : suivre chaque voie jusqu'à son croisement pour imputer le côté. Le front et la pupille tranchent (facial, III), le plantaire tranche le motoneurone."
+        },
+        {
+          "heading": "Le nombre et le tempo",
+          "body": "Unique (vasculaire, tumoral), multiple disséminée (SEP, embolies, métastases), diffuse (métabolique, dégénérative) ; brutale maximale d'emblée (vasculaire), progressive en semaines (masse), rémittente (démyélinisation), transitoire stéréotypée (comitiale). Le tempo est le second localisateur."
+        },
+        {
+          "heading": "L'examen comme contrôle systématique",
+          "body": "Marche d'abord (crible de tout le système en dix pas), paires crâniennes, moteur-sensitif-réflexes, coordination, langage et cognition : examiner avant d'imager, surtout le tronc où le premier scanner est souvent normal. Signes positifs fonctionnels (Hoover, faiblesse cédante, incohérence) : diagnostic positif, non d'élimination."
+        }
+      ],
+      "keyPoints": [
+        "Où avant quoi : étage, côté et nombre, puis tempo",
+        "Les signes corticaux placent au cortex ; une faiblesse proportionnée sans eux, à la capsule",
+        "Croisés : tronc ; niveau sensitif : moelle ; ataxie homolatérale : cervelet",
+        "Brutal maximal d'emblée : vasculaire ; progressif en semaines : masse ; rémittent : démyélinisation",
+        "Si une lésion n'explique pas tout, chercher un processus multifocal ou diffus"
+      ]
+    },
+    "topic-movement-disorder-circuits": {
+      "name": "Mouvements anormaux et circuits des ganglions de la base",
+      "summary": "Les mouvements anormaux sont des maladies des circuits des ganglions de la base et du cervelet, non du faisceau cortico-spinal : trop peu de mouvement (parkinsonisme) ou trop (tremblement, chorée, balisme, dystonie, myoclonies, tics), sans faiblesse. Les boucles cortex-striatum-pallidum-sous-thalamique-noir-thalamus sélectionnent et calibrent le mouvement ; la dopamine les règle, le glutamate et le GABA les câblent. Asymétrie, tremblement de repos et dopasensibilité : Parkinson ; symétrie, chutes, verticalité ou dysautonomie : atypique ; tout mouvement anormal avant 40 ans avec foie : Wilson.",
+      "sections": [
+        {
+          "heading": "Les boucles et leur pharmacologie",
+          "body": "Voies directe (facilite), indirecte (freine) et hyperdirecte (stoppe) : la dopamine excite la directe (D1) et inhibe l'indirecte (D2). Neuroleptiques (parkinsonisme, dystonie, dyskinésies tardives), lévodopa (fluctuations, dyskinésies), anticholinergiques et amantadine : chaque médicament se lit sur la boucle."
+        },
+        {
+          "heading": "Hypokinésies",
+          "body": "Parkinson (asymétrique, repos, décrément, hyposmie, RBD, constipation annonciateurs, DaTscan anormal) ; AMS (dysautonomie, stridor), PSP (chutes précoces, verticalité, colibri), DCL (fluctuations, hallucinations), cortico-basale (apraxie, main étrangère) ; vasculaire (marche à petits pas sans tremblement), médicamenteux (réversible), Wilson (jeune, hépatique, Kayser-Fleischer)."
+        },
+        {
+          "heading": "Hyperkinésies",
+          "body": "Tremblement essentiel (posture-action familial, thalamus Vim chirurgical) ; chorées (Huntington, Sydenham, gravidique, sénile vasculaire) ; hémibalisme (sous-thalamique controlatéral) ; dystonies (focales, DYT, tardives) ; myoclonies (corticales, post-anoxiques) ; tics (Gilles de la Tourette). Chaque topographie désigne son noyau."
+        },
+        {
+          "heading": "Examen et localisation",
+          "body": "Regarder entrer (ballant, pas, demi-tour), tapping décrémentant, rigidité à la synkinésie, posture et tirage : le diagnostic se fait debout. RBD, hyposmie et constipation datent la synucléinopathie des années avant le tremblement ; foie, céruloplasmine et cuivres devant tout tableau jeune."
+        }
+      ],
+      "keyPoints": [
+        "Trop peu de mouvement : perte dopaminergique nigrée ; trop : désinhibition striatale, sous-thalamique ou pallidale ; la faiblesse n'est ni l'un ni l'autre",
+        "Début asymétrique avec tremblement de repos dopasensible : Parkinson ; symétrique, chutes, verticalité ou dysautonomie : atypique",
+        "Hémibalisme : sous-thalamique controlatéral ; hémichorée et hémidystonie : striatales ou pallidales controlatérales",
+        "Le tremblement essentiel est cérébello-thalamique : le Vim est sa cible chirurgicale",
+        "Tout mouvement anormal avant 40 ans avec foie : Wilson jusqu'au dosage du cuivre"
+      ]
+    },
+    "topic-nerve-injury-regeneration": {
+      "name": "Lésion nerveuse, dégénérescence et régénération",
+      "summary": "Un nerf est un faisceau d'axones gainés de Schwann, groupés en fascicules par le périnèvre dans l'épinèvre, et sa réponse à la lésion suit des règles fixes : en aval d'une section, l'axone et sa myéline dégénèrent en jours (wallérienne) tandis que les cellules de Schwann survivent, prolifèrent et forment des tubes guidant les repousses proximales à environ un millimètre par jour. Neurapraxie (bloc sans lésion, semaines), axonotmésis (tubes conservés, 1 mm/jour), neurotmésis (chirurgien) : l'ENMG date, le Tinel suit le front, les erreurs (syncinésies, larmes de crocodile) trahissent les fausses routes. Le système central dégénère pareil mais ne repousse pas : sa récupération est plasticité, non repousse.",
+      "sections": [
+        {
+          "heading": "Structure du nerf et types de lésion",
+          "body": "Endonèvre, périnèvre (barrière), épinèvre : la travée conjonctive décide de l'avenir. Neurapraxie (conduction bloquée, axones intacts), axonotmésis (axones coupés, tubes intacts), neurotmésis (tout coupé) : trois pronostics, trois conduites (attendre, dater, opérer)."
+        },
+        {
+          "heading": "Dégénérescence et réponse du corps cellulaire",
+          "body": "Wallérienne distale, chromatolyse proximale (gonflement, Nissl dispersé, noyau refoulé) : le neurone passe en mode régénération. La réponse distale persiste une semaine à l'ENMG après section (faux rassurante), les fibrillations signent à trois semaines la plainte du muscle dénervé."
+        },
+        {
+          "heading": "Régénération, réinnervation et leurs erreurs",
+          "body": "1 mm/jour le long des tubes de Schwann : compter les millimètres jusqu'au muscle, suivre le Tinel, opérer avant deux ans (tubes fermés, muscle mort). Fausses routes : syncinésies faciales, larmes de crocodile, sueurs gustatives — toxine et rééducation."
+        },
+        {
+          "heading": "Évaluation clinique et électrophysiologique",
+          "body": "Déficit tronculaire daté, Tinel, trophicité, ENMG à J7 puis EMG à J21 : normale distale une semaine après section = axones intacts (bonne nouvelle). Ne pas faire attendre un nerf sectionné ; ne pas sous-estimer une lésion axonale sur une ENMG trop précoce."
+        }
+      ],
+      "keyPoints": [
+        "La neurapraxie conduit en distal et guérit en semaines ; l'axonotmésis repousse à 1 mm/jour ; le neurotmésis veut un chirurgien",
+        "L'ENMG est normale les premiers jours après section : la refaire à une semaine, l'EMG à trois",
+        "Le Tinel marque le front de repousse : compter les millimètres jusqu'au muscle",
+        "La repousse aberrante donne syncinésies et larmes de crocodile après atteinte faciale",
+        "Le système central dégénère pareil mais ne repousse pas : sa récupération est plasticité, non repousse"
+      ]
+    },
+    "topic-neural-development-malformations": {
+      "name": "Développement neural et malformations",
+      "summary": "Le système nerveux naît de la plaque neurale par neurulation, segmentation du tube en vésicules primaires puis secondaires, prolifération ventriculaire, migration radiale bâtissant le cortex, puis synaptogenèse et myélinisation se prolongeant à l'âge adulte. Chaque étape a sa faillite datée : fermeture (spina, anencéphalie, folates), prolifération (microcéphalie), migration (lissencéphalie, hétérotopies), organisation (polymicrogyrie), fosse postérieure (Chiari, Dandy-Walker), moelle attachée et myélinisation. Le patron malformatif date l'agression ; la substance grise dans la blanche suit le signal gris sur toutes les séquences.",
+      "sections": [
+        {
+          "heading": "Neurulation et tube neural",
+          "body": "Fermeture vers J28 : anencéphalie en avant, spina bifida en arrière — folates préconceptionnels. Tout dos ouvert a un cerveau atteint (hydrocéphalie, Chiari II) ; ponction selon la hauteur du cône (L1-L2 adulte, L3 nouveau-né)."
+        },
+        {
+          "heading": "Vésicules, courbures et système ventriculaire",
+          "body": "Prosencéphale, mésencéphale, rhombencéphale puis télencéphale et diencéphale : l'holoprosencéphalie est un défaut de clivage médian (souvent faciès médian, trisomie 13). Les kystes et sténoses (aqueduc, Monro, V4) annoncent l'hydrocéphalie."
+        },
+        {
+          "heading": "Prolifération et migration corticales",
+          "body": "Microcéphalies (prolifération), lissencéphalies et hétérotopies (migration, LIS1, DCX), polymicrogyries (organisation, CMV, ischémie) : des maladies épileptiques à chercher sur toute IRM d'épilepsie réfractaire de l'enfant. Substance grise ectopique = signal gris partout, sans rehaussement."
+        },
+        {
+          "heading": "Fosse postérieure, moelle et myélinisation",
+          "body": "Chiari I (petite fosse postérieure de l'adulte, syrinx), Chiari II (myéloméningocèle), Dandy-Walker (vermis, V4) : céphalées de Valsalva, ataxie, hydrocéphalie. Moelle attachée (croissance : faiblesse, pieds, vessie), myélinisation inachevée (T2 brillant normal du nourrisson, à confronter à l'âge)."
+        }
+      ],
+      "keyPoints": [
+        "La fermeture échoue à la 4e semaine : anencéphalie en avant, spina en arrière, prévenues par les folates",
+        "Le patron date l'agression : prolifération (microcéphalie), migration (lissencéphalie, hétérotopies), organisation (polymicrogyrie)",
+        "L'holoprosencéphalie est un défaut de clivage médian, souvent avec faciès médian",
+        "Le Chiari II accompagne le myéloméningocèle ; le Chiari I est une petite fosse postérieure de l'adulte",
+        "La moelle attachée se révèle avec la croissance : faiblesse, pieds et vessie quand l'enfant grandit"
+      ]
+    },
+    "topic-neuroimaging-basics": {
+      "name": "Neuro-imagerie : lire TDM et IRM sur l'atlas",
+      "summary": "Le scanner cartographie l'atténuation X (os et sang aigu brillants, œdème, infarctus et air sombres) et tranche en minutes les urgences — sang, effet de masse, hydrocéphalie, fracture. L'IRM cartographie le proton sous pondérations (T1 anatomique, T2-FLAIR œdème et démyélinisation, diffusion restreinte de l'ischémie aiguë et de l'abcès, susceptibilité du sang et du calcium, gadolinium de la barrière ouverte). Les infarctus artériels respectent les territoires ; veineux, tumeurs et infections non. Symétrique : métabolique, toxique, hypoxique, génétique ; asymétrique : vasculaire, tumoral, inflammatoire. Lire après l'examen, jamais à sa place.",
+      "sections": [
+        {
+          "heading": "TDM : densités et questions aiguës",
+          "body": "Hyperdense : sang aigu, calcifications ; hypodense : œdème, ischémie constituée ; effet de masse, déviation, hydrocéphalie : l'urgence se lit sans injection. Artère hyperdense (thrombus M1), delta vide (thrombose veineuse), lentille (extradural), croissant (sous-dural) : quatre images qui opèrent."
+        },
+        {
+          "heading": "IRM : les séquences comme des questions",
+          "body": "Diffusion : AVC aigu et abcès ; FLAIR : SEP et périventriculaire ; T2* : sang et calcium ; T1 gado : barrière ouverte ; angio : tronc et anévrisme ; perfusion : cœur-pénombre. Chaque séquence répond à une question posée par l'examen."
+        },
+        {
+          "heading": "Patrons qui localisent",
+          "body": "Territoires (artériel), anneau à diffusion centrale (abcès), anneau ouvert fin (démyélinisation), papillon calleux (glioblastome, lymphome), ruban cortical (hypoxie, crises, prion), doigts de Dawson (SEP), croix pontique (AMS), colibri (PSP) : la bibliothèque des images."
+        },
+        {
+          "heading": "Rachis, vaisseaux et pièges",
+          "body": "Rachis : niveau, signal, rehaussement, parties molles ; vaisseaux : dissection, vasospasme, vascularite. Pièges : rehaussement de l'infarctus subaigu (tumoral), DWI précoce normale du tronc et des lacunes (répéter), substance blanche du nourrisson (myélinisation), rehaussement normal des circumventriculaires."
+        }
+      ],
+      "keyPoints": [
+        "La TDM pour le sang, l'os et la première heure ; l'IRM pour tout le reste",
+        "Diffusion : AVC aigu et abcès ; FLAIR : démyélinisation ; susceptibilité : sang et calcium ; gadolinium : barrière ouverte",
+        "Les infarctus artériels respectent les territoires ; veineux, tumeurs et infections non",
+        "Anneau à diffusion centrale : abcès ; anneau fin ouvert : démyélinisation",
+        "Lire le scanner après l'examen, pas à sa place"
+      ]
+    },
+    "topic-neuromuscular-patterns": {
+      "name": "Patrons neuromusculaires : nerf, racine, plexus, jonction, muscle",
+      "summary": "Une faiblesse à cerveau et moelle normaux vient d'un de cinq étages — corne antérieure, racine ou plexus, nerf périphérique, jonction neuromusculaire, muscle — et chaque étage a sa signature : distribution, sensibilité, réflexes, amyotrophie et fasciculations, fatigabilité, électrophysiologie. Perte sensitive : jamais corne, jonction ni muscle ; potentiels sensitifs normaux dans un territoire engourdi : racine en amont du ganglion ; ptosis fatigable à réflexes normaux : myasthénie ; faiblesse proximale s'améliorant à l'effort avec retour des réflexes : Lambert-Eaton ; chaussettes-gants aréflexiques : polyneuropathie ; amyotrophie asymétrique à réflexes vifs : motoneurone ; proximale symétrique indolore à CPK hautes : muscle.",
+      "sections": [
+        {
+          "heading": "Corne antérieure et racine",
+          "body": "Motoneurone (SLA, polio, SMA) : amyotrophie, fasciculations, aréflexie ou mixte central-périphérique, jamais de sensitif. Racine (hernie, zona, tumeur) : douleur impulsive au dermatome, déficit du myotome, aréflexie concordante, potentiels sensitifs normaux (lésion pré-ganglionnaire) — la clef ENMG."
+        },
+        {
+          "heading": "Plexus et nerf périphérique",
+          "body": "Plexus : pluri-tronculaire chevauchant nerfs et racines (traumatique, Pancoast, radique, Parsonage, diabétique). Nerf : tronculaire systématisé (canalaires, compression, vascularite) ; multinévrite : troncs aléatoires douloureux (vascularite, urgence) ; polyneuropathie : distale symétrique longueur-dépendante, axonale ou démyélinisante à l'ENMG."
+        },
+        {
+          "heading": "Jonction et muscle",
+          "body": "Myasthénie (postsynaptique : fatigable, pupilles et réflexes normaux, décrément), Lambert-Eaton (présynaptique : facilitation, dysautonomie), botulisme ; muscle (proximale symétrique, CPK, EMG myogène, biopsie) : inflammatoires, toxiques, dystrophiques, métaboliques. Statines : doser les CPK avant d'incriminer."
+        },
+        {
+          "heading": "Examen et électrophysiologie",
+          "body": "Langue, mains (amyotrophie thénar-hypothénar, split hand), marche (steppage) avant le marteau ; capacité vitale devant toute faiblesse ascendante aréflexique (Guillain-Barré). L'ENMG date et classe : attention aux précoces (distal persistant une semaine), à la jonction (décrément-incrément) et au muscle (potentiels petits polyphasiques)."
+        }
+      ],
+      "keyPoints": [
+        "La perte sensitive exclut corne, jonction et muscle ; son absence avec signes périphériques les désigne",
+        "Un potentiel sensitif normal dans un dermatome engourdi : lésion radiculaire en amont du ganglion",
+        "Ptosis fatigable à réflexes normaux : myasthénie ; faiblesse proximale s'améliorant à l'effort avec retour des réflexes : Lambert-Eaton",
+        "Perte distale symétrique aréflexique : polyneuropathie ; amyotrophie asymétrique à réflexes vifs : motoneurone",
+        "Faiblesse proximale symétrique indolore à sensibilité normale et CPK élevées : muscle"
+      ]
+    },
+    "topic-neurotransmitter-systems": {
+      "name": "Systèmes de neurotransmetteurs",
+      "summary": "Le cerveau use de peu de transmetteurs en deux organisations : les synapses point à point du glutamate (excitateur) et du GABA et de la glycine (inhibiteurs), qui portent les signaux de toutes les voies de l'atlas, et les systèmes modulateurs diffus (dopamine, noradrénaline, sérotonine, acétylcholine, histamine) issus de petits noyaux du tronc et du prosencéphale basal, qui règlent l'état de l'ensemble. Parkinson (dopamine basse), psychose (dopamine haute), délire anticholinergique, sérotoninergique et malin des neuroleptiques : urgences de transmetteurs mimant l'infection. La jonction neuromusculaire est la synapse accessible (Lambert-Eaton présynaptique, botulisme vésiculaire, myasthénie postsynaptique) ; le NMDA couple dépolarisation et calcium : plasticité brève, mort prolongée.",
+      "sections": [
+        {
+          "heading": "Transmission rapide : glutamate, GABA, glycine",
+          "body": "Glutamate (AMPA, NMDA voltage-dépendant, kaïnate) excite, GABA-A/C et glycine inhibent : tout signe focal naît de leur déséquilibre (épilepsie, spasticité). Benzodiazépines et baclofène renforcent l'inhibition ; kétamine bloque le NMDA."
+        },
+        {
+          "heading": "Dopamine et noradrénaline",
+          "body": "Nigrostriée (mouvement), mésolimbique (récompense, positifs), mésocorticale (cognition, négatifs), tubéro-infundibulaire (prolactine) : Parkinson contre psychose, mêmes médicaments en balance. Locus cœruleus (vigilance, attention,ptomanie du sevrage) : clonidine et alpha-2."
+        },
+        {
+          "heading": "Sérotonine, acétylcholine, histamine",
+          "body": "Raphés (humeur, douleur, nausées), prosencéphale basal (attention, mémoire : inhibiteurs de la cholinestérase), tuberomammillaire (éveil : antihistaminiques sédatifs) : trois systèmes, trois délires (anticholinergique sec et mydriatique, sérotoninergique clonique et fébrile, malin rigide et akinétique)."
+        },
+        {
+          "heading": "Les transmetteurs au lit du malade",
+          "body": "Toute ordonnance se lit en transmetteurs avant d'incriminer le cerveau ; deux sérotoninergiques avec clonus et fièvre : sérotoninergique jusqu'à preuve du contraire ; DaTscan normal chez un parkinsonien : aval (médicament, vasculaire, fonctionnel), non nigre. Encéphalite à anti-NMDA : la synapse devenue antigène."
+        }
+      ],
+      "keyPoints": [
+        "Glutamate et GABA portent le signal ; monoamines et acétylcholine règlent l'état",
+        "Le parkinsonisme est une perte dopaminergique, la psychose un excès, et les mêmes médicaments font passer de l'un à l'autre",
+        "Délire anticholinergique, sérotoninergique et malin : urgences de transmetteurs mimant l'infection",
+        "La jonction est la synapse accessible : canaux calciques (Lambert-Eaton), vésicules (botulisme), récepteurs (myasthénie)",
+        "Le NMDA couple dépolarisation et calcium : plasticité brève, mort prolongée"
+      ]
+    },
+    "topic-pediatric-neurological-syndromes": {
+      "name": "Syndromes neurologiques de l'enfant",
+      "summary": "Le système nerveux de l'enfant diffère par sa myélinisation inachevée, ses sutures ouvertes, ses réflexes immatures et ses jalons comme mesure de la fonction : même anatomie, tableaux différents — lésion hémisphérique = infirmité motrice cérébrale hémiplégique plutôt que syndrome d'AVC, hypertension = fontanelle bombée et macrocéphalie, yeux en coucher de soleil = Parinaud par étirement commissural. Régression : jamais comportementale (métabolique, dégénérative, épileptique) ; hypotonie faible = périphérique, forte = centrale ; diplégie spastique = prématurité périventriculaire ; spasmes = EEG et peau à la lampe de Wood aujourd'hui. Le périmètre crânien est le carnet de pression intracrânienne.",
+      "sections": [
+        {
+          "heading": "L'examen en développement",
+          "body": "Jalons, tonus (floppy faible ou fort), réflexes archaïques persistants, périmètre crânien à chaque visite : la courbe vaut monitoring. Myéline brillante en T2 normale du nourrisson à confronter à l'âge, jamais œdème ni leucodystrophie."
+        },
+        {
+          "heading": "Infirmité motrice, hydrocéphalie et fosse postérieure",
+          "body": "Diplégie spastique périventriculaire du prématuré, hémiplégie périnatale, dyskinésie ictérique ; hydrocéphalie (fontanelle, sutures, regard) et tumeurs du V4 (vomissements matinaux, torticolis) ; moelle attachée révélée par la croissance."
+        },
+        {
+          "heading": "Crises et syndromes neurocutanés",
+          "body": "Spasmes (hypsarythmie, sclérose tubéreuse : peau et Wood), absences et myocloniques de l'enfant, Dravet et fièvres prolongées ; Sturge-Weber (angiome, glaucome, calcifications), NF1-2, Bourneville : la peau signe le cerveau."
+        },
+        {
+          "heading": "Métaboliques, dégénératives et acquises",
+          "body": "Régression + viscères + ORL : lysosomales et peroxysomales ; intoxications (plomb, valproate sur POLG), carences, post-infectieuses ; maltraitance (hémorragies rétiniennes + sous-dural) : diagnostic à prouver rigoureusement. Dépister, vacciner, supplémenter (folates, B12, vitamine K)."
+        }
+      ],
+      "keyPoints": [
+        "Une régression des acquisitions n'est jamais comportementale : métabolique, dégénérative ou épileptique",
+        "Un nourrisson hypotonique faible est périphérique ; fort, central",
+        "La diplégie spastique signe la prématurité car les fibres des jambes longent les ventricules",
+        "Des yeux en coucher de soleil chez un nourrisson : Parinaud par hydrocéphalie étirant la commissure postérieure",
+        "Des spasmes infantiles veulent un EEG et un examen cutané à la lampe de Wood aujourd'hui, pas le mois prochain"
+      ]
+    },
+    "topic-sleep-eeg-basics": {
+      "name": "Sommeil, éveil et bases de l'EEG",
+      "summary": "L'éveil est entretenu par le système activateur ascendant du tronc et de l'hypothalamus (cholinergique, monoaminergique, orexinergique) via thalamus et cortex ; le sommeil est imposé par l'hypothalamus préoptique qui éteint ces systèmes, le paradoxal naissant du pont. L'EEG enregistre les courants synaptiques sommés des pyramidaux, rythmés par le thalamus : alpha postérieur bloqué à l'ouverture des yeux (normal), fuseaux N2, ondes lentes, pointes, triphasiques, décharges périodiques et burst-suppression — chaque grapho-élément raconte l'encéphalopathie, le foyer ou la catastrophe. Narcolepsie (orexine perdue : accès, cataplexie, intrusions paradoxales), RBD pontique annonçant les synucléinopathies, apnées du ronfleur : interroger les rêves agis devant tout parkinsonisme et toute démence.",
+      "sections": [
+        {
+          "heading": "Le système activateur ascendant",
+          "body": "Tegmentum pontique et mésencéphalique, hypothalamus postérieur, thalamus intramalaire : cholinergique (éveil paradoxal), monoaminergique (vigilance), orexinergique (stabilité) ; sa lésion paramédiane ou bithalamique = coma. Sédatifs et antihistaminiques agissent sur ces mêmes noyaux qui produisent le délire de l'âgé."
+        },
+        {
+          "heading": "L'interrupteur du sommeil et le cycle",
+          "body": "Préoptique (GABA, galanine) éteignant l'éveil, pont (paradoxal : atonie, rêves) : cycles de 90 minutes, lent profond réparateur, paradoxal mnésique. Apnées (obstructives du ronfleur : somnolence diurne, polygraphie), narcolepsie, hypersomnies, parasomnies : chaque plainte a son enregistrement."
+        },
+        {
+          "heading": "Lire l'EEG",
+          "body": "Alpha bloqué (normal), fuseaux (N2 thalamique), ralentissement (encéphalopathie, sans dire laquelle), pointes (foyer), triphasiques (métabolique), PLEDs (lésion corticale aiguë), burst-suppression (catastrophe) : l'histoire et la métabolique disent laquelle, jamais le tracé seul."
+        },
+        {
+          "heading": "Troubles cliniques du sommeil et de l'éveil",
+          "body": "RBD (rêves agis violents : clonazépam, mélatonine), cataplexie (rire : orexine), jambes sans repos, apnées : traiter la cause, protéger la vigilance (conduite, travail). Devant une démence fluctuante hallucinée : chercher le RBD, haute valeur de synucléinopathie."
+        }
+      ],
+      "keyPoints": [
+        "Le coma exige le haut tronc paramédian ou les deux hémisphères ; un seul hémisphère ne suffit pas sans engagement",
+        "La narcolepsie est une perte d'orexine : accès de sommeil, cataplexie et intrusions paradoxales",
+        "Le RBD est un signe pontique annonçant la maladie à synucléine des années avant le parkinsonisme",
+        "L'alpha postérieur bloqué à l'ouverture des yeux est la première chose à trouver sur un EEG normal",
+        "Triphasiques, décharges périodiques et burst-suppression racontent trois histoires : métabolique, lésion corticale focale, catastrophe"
+      ]
+    },
+    "topic-stroke-mechanisms-hemorrhage": {
+      "name": "AVC : mécanismes ischémiques et hémorragies",
+      "summary": "Un AVC est un déficit focal brutal vasculaire, ischémique quatre fois sur cinq, hémorragique sinon, et son mécanisme conditionne patron lésionnel et traitement : athérosclérose des gros troncs, cardio-embolie, microangiopathie, dissection et causes rares pour l'ischémie dans les territoires de l'atlas ; hypertension (profonde : putamen, thalamus, pont, cervelet), amylose (lobaire), anévrisme (cisternes), vascularite et thrombose veineuse (trans-territoriale saignante, traitée par anticoagulation) pour l'hémorragie. Le territoire nomme l'artère, le patient le mécanisme, le mécanisme la prévention ; la pénombre est un phénomène collatéral qui achète du temps à la thrombectomie ; le cervelet de plus de 3 cm va au bloc.",
+      "sections": [
+        {
+          "heading": "Mécanismes ischémiques et leurs signatures",
+          "body": "Multi-territoires corticaux : embolique jusqu'à preuve du contraire ; petit profond unique : microangiopathie ; jeune avec cervicalgie : dissection ; âges extrêmes et contextes (post-partum, cancer, drogues) : causes rares. ECG, Holter, écho, TSA, bilan (glycémie, lipides, thrombophilie ciblée) : chaque mécanisme a sa prévention (antiagrégant, anticoagulant, statine, endartériectomie, thrombectomie)."
+        },
+        {
+          "heading": "AVC ischémique aigu : temps, cœur et pénombre",
+          "body": "Chaque minute d'occlusion proximale coûte deux millions de neurones : thrombolyse IV < 4h30, thrombectomie < 6 h (jusqu'à 24 h sur discordance cœur-pénombre en perfusion-diffusion). ASPECTS bas, NIHSS, collatérales : trier vite, imager (TDM-CTA ou IRM-diffusion), reperfuser, surveiller (transformation hémorragique, œdème malin, récidive)."
+        },
+        {
+          "heading": "Hémorragies intracérébrale et méningée",
+          "body": "Profonde hypertensive (putaminée des lenticulo-striées à angle droit, Charcot-Bouchard) contre lobaire amyloïde (sujets âgés, microsaignements SWI, anticoagulation proscrite) ; tonnerre + III : communicante postérieure (CTA immédiat) ; vasospasme J4-J14, hydrocéphalie, resaignement : réanimation neurovasculaire, exclusion anévrismale (clip, coil)."
+        },
+        {
+          "heading": "Thrombose veineuse et hémorragies extra-axiales",
+          "body": "Céphalée posturale, crises, déficit non artériel saignant : delta vide, IRM veineuse — anticoaguler même hémorragique. Extradural (lentille, méningée moyenne, intervalle libre), sous-dural (croissant, bridging, âgé anticoagulé), sous-arachnoïdien traumatique : chacun sa vitesse et son geste."
+        }
+      ],
+      "keyPoints": [
+        "Le territoire nomme l'artère ; le patient nomme le mécanisme ; le mécanisme choisit la prévention",
+        "Des infarctus corticaux multi-territoires : emboliques ; petits profonds : microangiopathie",
+        "La pénombre est collatérale : de bonnes collatérales achètent du temps à la thrombectomie",
+        "L'hypertension saigne profond (putamen, thalamus, pont, cervelet) ; l'amylose lobaire ; l'anévrisme dans les citernes",
+        "Les infarctus veineux franchissent les territoires et saignent : leur traitement est l'anticoagulation"
+      ]
+    },
+    "qz-01": {
+      "vignette": "Homme de 68 ans en fibrillation atriale, trouvé affaissé au petit-déjeuner. Il ne parle ni n'exécute les consignes, yeux tournés à gauche, face droite tombante sous l'œil, bras et jambe droits immobiles. Pas de clignement à la menace venant de droite.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Capsule interne gauche (lacune)"
+        },
+        {
+          "key": "B",
+          "text": "Territoire du tronc de l'artère cérébrale moyenne gauche"
+        },
+        {
+          "key": "C",
+          "text": "Pont gauche"
+        },
+        {
+          "key": "D",
+          "text": "Thalamus gauche"
+        },
+        {
+          "key": "E",
+          "text": "Lobe frontal droit"
+        }
+      ],
+      "explanation": "Aphasie globale, déviation vers la lésion, hémianopsie droite et hémiplégie facio-brachio-crurale exigent tout le territoire sylvien gauche (langage, oculomotricité, radiations, capsule). Une lacune ne donne ni aphasie ni champ ; un pont tournerait les yeux du côté faible avec faciale périphérique."
+    },
+    "qz-02": {
+      "vignette": "Femme de 55 ans, vertige et vomissements brutaux, voix enrouée, impossible d'avaler sa salive. Paupière droite un peu tombante, pupille droite plus petite. Tact piquant émoussé à l'hémiface droite et au membre supérieur et inférieur gauches. Force normale partout.",
+      "stem": "Quelle lésion unique explique tout ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Bulbe latéral droit"
+        },
+        {
+          "key": "B",
+          "text": "Bulbe latéral gauche"
+        },
+        {
+          "key": "C",
+          "text": "Bulbe médian droit"
+        },
+        {
+          "key": "D",
+          "text": "Pont latéral droit"
+        },
+        {
+          "key": "E",
+          "text": "Thalamus gauche"
+        }
+      ],
+      "explanation": "Thermo-algie faciale homolatérale (trijumeau spinal), corporelle controlatérale (spinothalamique croisé), Horner et paralysie bulbaire homolatéraux à force conservée : Wallenberg du côté des signes faciaux. Le pont latéral ajouterait VII et VIII."
+    },
+    "qz-03": {
+      "vignette": "Homme de 30 ans poignardé dans le dos à l'étage thoracique bas. Faiblesse de la jambe droite avec rotulien vif et Babinski, diapason non perçu à la cheville droite, piqûre non sentie à la jambe gauche sous l'aine.",
+      "stem": "Quelle voie explique le signe gauche ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Faisceau cortico-spinal droit"
+        },
+        {
+          "key": "B",
+          "text": "Cordon postérieur droit"
+        },
+        {
+          "key": "C",
+          "text": "Faisceau spinothalamique droit"
+        },
+        {
+          "key": "D",
+          "text": "Faisceau spinothalamique gauche"
+        },
+        {
+          "key": "E",
+          "text": "Cordon postérieur gauche"
+        }
+      ],
+      "explanation": "Les fibres thermo-algiques croisent dans la commissure blanche en un ou deux étages : le spinothalamique droit porte la douleur de la jambe gauche. Hémi-moelle droite = Brown-Séquard (faiblesse et proprioception homolatérales, thermo-algie controlatérale)."
+    },
+    "qz-04": {
+      "vignette": "Femme hypertendue de 72 ans se réveillant avec faiblesse de l'hémiface, du bras et de la jambe gauches, également touchés. Sensibilité, champs, langage et vigilance normaux. Scanner normal.",
+      "stem": "Le siège le plus probable est :",
+      "options": [
+        {
+          "key": "A",
+          "text": "Gyrus précentral droit"
+        },
+        {
+          "key": "B",
+          "text": "Bras postérieur de la capsule interne droite"
+        },
+        {
+          "key": "C",
+          "text": "Thalamus droit"
+        },
+        {
+          "key": "D",
+          "text": "Bulbe latéral droit"
+        },
+        {
+          "key": "E",
+          "text": "Cervelet gauche"
+        }
+      ],
+      "explanation": "Hémiparésie motrice pure proportionnée sans signe cortical ni sensitif : lacune du bras postérieur capsulaire (ou du pied pontique), où cortico-spinal et cortico-bulbaire voyagent groupés, le sensitif juste derrière."
+    },
+    "qz-05": {
+      "vignette": "Femme de 45 ans : en regard à droite, l'œil gauche reste au milieu tandis que le droit va au bout avec saccades. Un crayon rapproché fait converger normalement les deux yeux.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Faisceau longitudinal médial gauche"
+        },
+        {
+          "key": "B",
+          "text": "Faisceau longitudinal médial droit"
+        },
+        {
+          "key": "C",
+          "text": "Nerf oculomoteur gauche"
+        },
+        {
+          "key": "D",
+          "text": "Noyau de l'abducens droit"
+        },
+        {
+          "key": "E",
+          "text": "Champ oculomoteur frontal gauche"
+        }
+      ],
+      "explanation": "Déficit d'adduction gauche en version droite avec nystagmus de l'abducteur et convergence conservée : INO gauche. Le FLM gauche porte les axones croisés du noyau du VI droit vers le sous-noyau du droit médial gauche."
+    },
+    "qz-06": {
+      "vignette": "Homme de 60 ans, ptosis complet droit ; paupière relevée : œil en bas et en dehors, pupille à 7 mm aréactive. Céphalée sévère.",
+      "stem": "Quel diagnostic urgent écarter ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Paralysie microvasculaire diabétique du III"
+        },
+        {
+          "key": "B",
+          "text": "Anévrisme de la communicante postérieure"
+        },
+        {
+          "key": "C",
+          "text": "Myasthénie"
+        },
+        {
+          "key": "D",
+          "text": "Infarctus mésencéphalique"
+        },
+        {
+          "key": "E",
+          "text": "Horner"
+        }
+      ],
+      "explanation": "Paralysie douloureuse du III à pupille dilatée fixe = compression des fibres pupillaires superficielles, classiquement anévrisme communicant postérieur ; la microvasculaire épargne la pupille. Angioscanner en urgence."
+    },
+    "qz-07": {
+      "vignette": "Femme de 25 ans, flou visuel gauche depuis trois jours avec douleur à la mobilisation. Acuité 3/10 à gauche, couleurs délavées, pupille gauche se dilatant au balancement depuis l'œil droit. Fond d'œil normal.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Rétine gauche"
+        },
+        {
+          "key": "B",
+          "text": "Nerf optique gauche"
+        },
+        {
+          "key": "C",
+          "text": "Chiasma"
+        },
+        {
+          "key": "D",
+          "text": "Bandelette optique droite"
+        },
+        {
+          "key": "E",
+          "text": "Cortex occipital gauche"
+        }
+      ],
+      "explanation": "Baisse monoculaire avec dyschromatopsie, douleur mobilisatrice, RAPD et disque normal : névrite optique rétrobulbaire. Chiasma et rétrochiasma donnent des déficits bilatéraux ou homonymes."
+    },
+    "qz-08": {
+      "vignette": "Homme de 40 ans se cognant aux embrasures des deux côtés, ayant cessé de conduire. À la confrontation, moitié temporale de chaque œil amputée. Acuité normale, mains et visage récemment grandis.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Les deux nerfs optiques"
+        },
+        {
+          "key": "B",
+          "text": "Chiasma optique"
+        },
+        {
+          "key": "C",
+          "text": "Bandelette optique gauche"
+        },
+        {
+          "key": "D",
+          "text": "Les deux lobes occipitaux"
+        },
+        {
+          "key": "E",
+          "text": "Lobe pariétal droit"
+        }
+      ],
+      "explanation": "Hémianopsie bitemporale = chiasma (fibres nasales croisées des deux yeux) ; l'acromégalie désigne un macroadénome comprimant par en dessous."
+    },
+    "qz-09": {
+      "vignette": "Homme de 70 ans ignorant la nourriture à gauche de l'assiette, ne rasant que la droite du visage, niant la faiblesse de son bras gauche qu'il ne lève pas. Horloge aux chiffres tassés à droite.",
+      "stem": "La lésion siège le plus probablement dans :",
+      "options": [
+        {
+          "key": "A",
+          "text": "Lobe pariétal gauche"
+        },
+        {
+          "key": "B",
+          "text": "Lobe pariétal droit"
+        },
+        {
+          "key": "C",
+          "text": "Lobe occipital droit"
+        },
+        {
+          "key": "D",
+          "text": "Lobe frontal gauche"
+        },
+        {
+          "key": "E",
+          "text": "Thalamus droit"
+        }
+      ],
+      "explanation": "Négligence gauche avec anosognosie : pariétal inférieur droit ; l'hémisphère droit surveille les deux hémiespaces, sa perte laisse la gauche inexplorée. Un champ seul ne nierait ni ne dessinerait ainsi."
+    },
+    "qz-10": {
+      "vignette": "Femme de 50 ans, volumineuse tumeur frontale droite, somnolente en une heure. Pupille droite dilatée aréactive. Bras et jambe droits faibles avec Babinski.",
+      "stem": "Pourquoi la faiblesse est-elle du côté de la tumeur ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "La tumeur a gagné l'hémisphère gauche"
+        },
+        {
+          "key": "B",
+          "text": "Le pédoncule droit est comprimé par l'uncus"
+        },
+        {
+          "key": "C",
+          "text": "Le pédoncule gauche est écrasé contre le bord tentoriel"
+        },
+        {
+          "key": "D",
+          "text": "Le cortico-spinal n'a pas croisé à ce niveau"
+        },
+        {
+          "key": "E",
+          "text": "Parésie post-critique de Todd"
+        }
+      ],
+      "explanation": "L'uncal écrase normalement le pédoncule homolatéral (faiblesse controlatérale) ; poussé, le mésencéphale encocho le pédoncule opposé contre la tente (Kernohan) : la faiblesse paraît homolatérale à la masse. La pupille, non la faiblesse, localise."
+    },
+    "qz-11": {
+      "vignette": "Femme de 35 ans, ptosis droit de 1-2 mm, pupille droite plus petite, différence majorée dans le noir. Cervicalgie droite depuis un yoga il y a deux jours.",
+      "stem": "Quelle est la conduite la plus importante ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Rassurer : anisocorie physiologique"
+        },
+        {
+          "key": "B",
+          "text": "IRM cérébrale (hypophyse)"
+        },
+        {
+          "key": "C",
+          "text": "Angioscanner cervical (dissection carotidienne)"
+        },
+        {
+          "key": "D",
+          "text": "Radio thoracique (apex)"
+        },
+        {
+          "key": "E",
+          "text": "Test au Tensilon"
+        }
+      ],
+      "explanation": "Horner (anisocorie majorée dans le noir, ptosis discret) avec cervicalgie récente = dissection carotidienne interne jusqu'à preuve du contraire (plexus sympathique sur la paroi). Imagerie vasculaire urgente (risque d'AVC)."
+    },
+    "qz-12": {
+      "vignette": "Homme de 62 ans, faiblesse du bras et de la jambe droits épargnant la face, perte vibratoire et proprioceptive des mêmes membres. Langue déviant à gauche à la protraction, hémi-langue gauche amyotrophiée.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Bulbe médian gauche"
+        },
+        {
+          "key": "B",
+          "text": "Bulbe médian droit"
+        },
+        {
+          "key": "C",
+          "text": "Bulbe latéral gauche"
+        },
+        {
+          "key": "D",
+          "text": "Capsule interne gauche"
+        },
+        {
+          "key": "E",
+          "text": "Pont gauche"
+        }
+      ],
+      "explanation": "Paralysie linguale périphérique (déviation vers la lésion, amyotrophie) avec hémiplégie et lemnisque controlatéraux, face épargnée : Dejerine du côté de la langue (pyramide et lemnisque servant le côté opposé, XII l'homolatéral)."
+    },
+    "qz-13": {
+      "vignette": "Motard de 20 ans, bras pendant en rotation interne coude étendu après choc de l'épaule. Doigts normaux. Hypoesthésie du moignon et de l'avant-bras externe.",
+      "stem": "Quelles racines sont lésées ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "C5-C6"
+        },
+        {
+          "key": "B",
+          "text": "C7"
+        },
+        {
+          "key": "C",
+          "text": "C8-T1"
+        },
+        {
+          "key": "D",
+          "text": "T1 seule"
+        },
+        {
+          "key": "E",
+          "text": "C4"
+        }
+      ],
+      "explanation": "Main du serveur à main respectée avec anesthésie delto-radiale : plexus supérieur (Erb) par traction C5-C6 (abducteurs, rotateurs externes, fléchisseurs du coude, supinateur perdus)."
+    },
+    "qz-14": {
+      "vignette": "Femme de 58 ans trébuchant sur le pied droit. Ni dorsiflexion ni éversion droites, mais inversion et flexion plantaire fortes, achilléen normal. Hypoesthésie du dos du pied. Amaigrissement récent de 15 kg.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Racine L5"
+        },
+        {
+          "key": "B",
+          "text": "Sciatique à la hanche"
+        },
+        {
+          "key": "C",
+          "text": "Fibular commun au col"
+        },
+        {
+          "key": "D",
+          "text": "Tibial"
+        },
+        {
+          "key": "E",
+          "text": "Cornes antérieures"
+        }
+      ],
+      "explanation": "Steppage avec éversion faible mais inversion conservée (tibial postérieur, L5 via le tibial) et achilléen normal : fibulaire commun ; une L5 affaiblirait aussi inversion et abduction de hanche. L'amaigrissement déprotège le nerf au col."
+    },
+    "qz-15": {
+      "vignette": "Alcoolique de 45 ans, confus et instable. Ni œil n'abducte, nystagmus grossier. Un interne perfuse du glucose : somnolence aggravée.",
+      "stem": "Qu'aurait-il fallu donner d'abord, et quelles structures souffrent ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Naloxone ; le pont"
+        },
+        {
+          "key": "B",
+          "text": "Thiamine ; corps mamillaires et région périaqueducale"
+        },
+        {
+          "key": "C",
+          "text": "Le glucose suffit ; le cervelet"
+        },
+        {
+          "key": "D",
+          "text": "Antibiotiques ; les méninges"
+        },
+        {
+          "key": "E",
+          "text": "Lorazépam ; l'hippocampe"
+        }
+      ],
+      "explanation": "Confusion, ophtalmoplégie et ataxie du dénutri : Gayet-Wernicke, lésion thiamino-dépendante des structures périventriculaires (V3, V4, aqueduc) ; le glucose sans thiamine la précipite, et les mamillaires laissent un Korsakoff."
+    },
+    "qz-16": {
+      "vignette": "Homme de 66 ans, décharges électriques de la joue et de la mâchoire droites durant une seconde, déclenchées par la mastication et un point narinaire. Entre les crises, ni douleur ni anomalie, réflexe cornéen normal.",
+      "stem": "Quels territoires et quelle cause habituelle ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "V1 ; zona"
+        },
+        {
+          "key": "B",
+          "text": "V2-V3 ; compression vasculaire du trijumeau"
+        },
+        {
+          "key": "C",
+          "text": "V3 seul ; abcès dentaire"
+        },
+        {
+          "key": "D",
+          "text": "VII ; Bell"
+        },
+        {
+          "key": "E",
+          "text": "IX ; névralgie glossopharyngée"
+        }
+      ],
+      "explanation": "Douleur paroxystique à zones gâchettes en V2-V3 à examen normal : névralgie essentielle, classiquement boucle de l'artère cérébelleuse supérieure sur la zone d'entrée radiculaire."
+    },
+    "qz-17": {
+      "vignette": "Femme de 55 ans, marche spastique, langue petite et raide non protusible, parole lente étranglée, pleurs incontrôlés aux questions familiales. Massétérin très vif. Ni amyotrophie ni fasciculations linguales.",
+      "stem": "Le tableau est :",
+      "options": [
+        {
+          "key": "A",
+          "text": "Atteinte bilatérale périphérique des IX-XII (bulbaire)"
+        },
+        {
+          "key": "B",
+          "text": "Atteinte bilatérale des faisceaux cortico-bulbaires (pseudo-bulbaire)"
+        },
+        {
+          "key": "C",
+          "text": "Infarctus capsulaire unilatéral"
+        },
+        {
+          "key": "D",
+          "text": "Myasthénie"
+        },
+        {
+          "key": "E",
+          "text": "Dégénérescence cérébelleuse"
+        }
+      ],
+      "explanation": "Dysarthrie spastique, langue spastique sans amyotrophie, massétérin vif et labilité : pseudo-bulbaire (motoneurones centraux bilatéraux) ; la bulbaire montrerait langue amyotrophiée fasciculante et massétérin aboli."
+    },
+    "qz-18": {
+      "vignette": "Femme de 78 ans sous warfarine, confusion et instabilité depuis trois semaines, discrète hémiparésie gauche. Scanner : croissant hémisphérique droit un peu moins dense que le cerveau, franchissant la suture coronale.",
+      "stem": "Quel diagnostic ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Hématome extradural aigu"
+        },
+        {
+          "key": "B",
+          "text": "Hématome sous-dural chronique"
+        },
+        {
+          "key": "C",
+          "text": "Hémorragie méningée"
+        },
+        {
+          "key": "D",
+          "text": "Infarctus cortical"
+        },
+        {
+          "key": "E",
+          "text": "Méningiome"
+        }
+      ],
+      "explanation": "Collection extra-axiale en croissant hypodense franchissant les sutures, âgée anticoagulée, évolution subaiguë : sous-dural chronique des veines ponts ; l'extradural est biconvexe hyperdense ne franchissant pas les sutures."
+    },
+    "qz-19": {
+      "vignette": "Femme de 30 ans, marche instable à large base, tandem impossible, mais doigt-nez et talon-genou presque normaux couchée. Céphalées matinales, vomissements. Œdème papillaire.",
+      "stem": "Quelle partie du cervelet est en cause ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Hémisphère gauche"
+        },
+        {
+          "key": "B",
+          "text": "Hémisphère droit"
+        },
+        {
+          "key": "C",
+          "text": "Vermis"
+        },
+        {
+          "key": "D",
+          "text": "Noyau dentelé"
+        },
+        {
+          "key": "E",
+          "text": "Pédoncule cérébelleux supérieur"
+        }
+      ],
+      "explanation": "Ataxie tronculaire et de la marche à coordination des membres épargnée : vermien médian ; une masse médiane sur le V4 bloque aussi le LCS (céphalées, vomissements, œdème)."
+    },
+    "qz-20": {
+      "vignette": "Homme de 64 ans, hémianopsie droite. Il écrit une phrase mais ne peut la relire une minute plus tard, épelle à voix haute, reconnaît les mots épelés. Il ne nomme pas les couleurs mais les apparie. Il nomme et parle normalement.",
+      "stem": "Quelles deux structures sont lésées ensemble ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Gyrus angulaire et Wernicke gauches"
+        },
+        {
+          "key": "B",
+          "text": "Calcarine gauche et splénium du corps calleux"
+        },
+        {
+          "key": "C",
+          "text": "Calcarine droite et angulaire gauche"
+        },
+        {
+          "key": "D",
+          "text": "Bandelette optique et corps genouillé gauches"
+        },
+        {
+          "key": "E",
+          "text": "Les deux lobes occipitaux"
+        }
+      ],
+      "explanation": "Alexie sans agraphie : calcarine gauche détruite (hémianopsie droite) plus splénium coupant le cortex visuel droit voyant du langage gauche ; les mots sont vus sans être lus, l'écriture (sans entrée visuelle) survit."
+    },
+    "qz-21": {
+      "vignette": "Femme de 28 ans, diplopie et ptosis le soir, mieux le matin. Pupilles normales. Mastication épuisée à mi-repas. Réflexes et sensibilité normaux.",
+      "stem": "Quel est le siège du trouble ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Nerf oculomoteur"
+        },
+        {
+          "key": "B",
+          "text": "Jonction neuromusculaire (postsynaptique)"
+        },
+        {
+          "key": "C",
+          "text": "Jonction neuromusculaire (présynaptique)"
+        },
+        {
+          "key": "D",
+          "text": "Muscles oculomoteurs"
+        },
+        {
+          "key": "E",
+          "text": "Noyaux mésencéphaliques"
+        }
+      ],
+      "explanation": "Ptosis et diplopie fatigables sans systématisation, fatigue bulbaire à pupilles, réflexes et sensibilité normaux : myasthénie (antirécepteurs postsynaptiques) ; le Lambert-Eaton (présynaptique) donne faiblesse proximale aréflexique et dysautonomie."
+    },
+    "qz-22": {
+      "vignette": "Homme de 40 ans s'étant brûlé les doigts sans sentir. Piqûre et température abolis aux épaules, bras et haut du thorax, mais diapason et sens articulaire normaux au même niveau. Petits muscles des mains amyotrophiés, réflexes des bras abolis.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Les deux nerfs médians"
+        },
+        {
+          "key": "B",
+          "text": "Cordons postérieurs cervicaux"
+        },
+        {
+          "key": "C",
+          "text": "Moelle cervicale centrale (syrinx)"
+        },
+        {
+          "key": "D",
+          "text": "Les deux plexus brachiaux"
+        },
+        {
+          "key": "E",
+          "text": "Bulbe latéral"
+        }
+      ],
+      "explanation": "Dissociation en cape bilatérale (thermo-algie perdue, proprioception gardée) plus signes périphériques des bras : moelle centrale détruisant les spinothalamiques croisés et les cornes antérieures — syringomyélie."
+    },
+    "qz-23": {
+      "vignette": "Femme de 70 ans, vertige rotatoire et vomissements depuis six heures, nystagmus battant à droite en regard à droite et à gauche en regard à gauche. Rotation céphalique rapide sans saccade de rattrapage, des deux côtés. Station impossible sans aide.",
+      "stem": "Que montre l'examen ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Névrite vestibulaire droite"
+        },
+        {
+          "key": "B",
+          "text": "Névrite vestibulaire gauche"
+        },
+        {
+          "key": "C",
+          "text": "VPPB"
+        },
+        {
+          "key": "D",
+          "text": "Lésion centrale (tronc ou cervelet)"
+        },
+        {
+          "key": "E",
+          "text": "Ménière"
+        }
+      ],
+      "explanation": "Nystagmus changeant de direction, impulsion normale et station impossible : HINTS central ; le périphérique donne nystagmus unidirectionnel avec impulsion anormale vers l'oreille atteinte."
+    },
+    "qz-24": {
+      "vignette": "Femme de 45 ans, surdité gauche lentement aggravée depuis deux ans avec acouphène. Discrimination bien pire que la perte tonale. Réflexe cornéen gauche aboli, discrète parésie faciale gauche.",
+      "stem": "La lésion la plus probable est :",
+      "options": [
+        {
+          "key": "A",
+          "text": "Otospongiose cochléaire gauche"
+        },
+        {
+          "key": "B",
+          "text": "Tumeur de l'angle ponto-cérébelleux gauche"
+        },
+        {
+          "key": "C",
+          "text": "Infarctus pontique latéral gauche"
+        },
+        {
+          "key": "D",
+          "text": "Ménière"
+        },
+        {
+          "key": "E",
+          "text": "Gliome temporal gauche"
+        }
+      ],
+      "explanation": "Surdité rétrocochléaire progressive puis V puis VII : séquence d'une masse de l'angle (schwannome vestibulaire) étirant les nerfs voisins en grandissant."
+    },
+    "qz-25": {
+      "vignette": "Homme de 22 ans tétraplégique après plongeon (C5). À J3 : flush et sueurs au-dessus du cou, céphalée, TA à 220/120, pouls à 48. Globe vésical.",
+      "stem": "Que se passe-t-il ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Embolie pulmonaire"
+        },
+        {
+          "key": "B",
+          "text": "Dysréflexie autonome sur globe"
+        },
+        {
+          "key": "C",
+          "text": "Choc neurogénique"
+        },
+        {
+          "key": "D",
+          "text": "AVC hémorragique"
+        },
+        {
+          "key": "E",
+          "text": "Choc spinal"
+        }
+      ],
+      "explanation": "Stimulus nociceptif sous une lésion au-dessus de T6 : décharge sympathique splanchnique déconnectée (hypertension, bradycardie réflexe, flush sus-lésionnel) — dysréflexie. Vider la vessie traite."
+    },
+    "qz-26": {
+      "vignette": "Homme de 60 ans, tremblement de repos de la main droite disparaissant en action, micrographie, ballant réduit à droite. Visage figé.",
+      "stem": "Quelle structure a dégénéré, et de quel côté ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Substance noire droite"
+        },
+        {
+          "key": "B",
+          "text": "Substance noire gauche"
+        },
+        {
+          "key": "C",
+          "text": "Cervelet droit"
+        },
+        {
+          "key": "D",
+          "text": "Noyau sous-thalamique gauche"
+        },
+        {
+          "key": "E",
+          "text": "Les deux caudés"
+        }
+      ],
+      "explanation": "Le parkinsonisme asymétrique traduit la perte dopaminergique nigrée controlatérale aux membres atteints, chaque boucle agissant sur l'hémicorps opposé via le cortico-spinal croisé."
+    },
+    "qz-27": {
+      "vignette": "Femme de 50 ans, pire céphalée de sa vie maximale en secondes, avec vomissements et raideur. Scanner à deux heures normal.",
+      "stem": "Quelle est la prochaine étape ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Sortie avec antalgiques"
+        },
+        {
+          "key": "B",
+          "text": "Ponction lombaire à 12 heures (xanthochromie)"
+        },
+        {
+          "key": "C",
+          "text": "IRM de routine"
+        },
+        {
+          "key": "D",
+          "text": "Prophylaxie antimigraineuse"
+        },
+        {
+          "key": "E",
+          "text": "Refaire le scanner à une semaine"
+        }
+      ],
+      "explanation": "Tonnerre : exclure la méningée ; le scanner est très sensible avant 6 h, mais si normal et histoire typique, ponction à 12 h (bilirubine de la xanthochromie) puis imagerie vasculaire si positive."
+    },
+    "qz-28": {
+      "vignette": "Femme de 35 ans, mains engourdies la réveillant, secouées pour soulager. Pouce, index et médius touchés, auriculaire épargné, thénar un peu amyotrophié. Sensibilité de la paume à la base du pouce normale.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Racine C6"
+        },
+        {
+          "key": "B",
+          "text": "Médian au canal carpien"
+        },
+        {
+          "key": "C",
+          "text": "Médian au coude"
+        },
+        {
+          "key": "D",
+          "text": "Ulnaire au poignet"
+        },
+        {
+          "key": "E",
+          "text": "Tronc inférieur du plexus"
+        }
+      ],
+      "explanation": "Paresthésies nocturnes des trois doigts et demi externes avec thénar faible et paume thénarienne épargnée (cutané palmaire né en amont) : canal carpien ; une C6 prendrait l'avant-bras et les réflexes."
+    },
+    "qz-29": {
+      "vignette": "Homme de 58 ans ne pouvant regarder en haut. Pupilles larges aréactives à la lumière mais se contractant au nez, et au regard vers le haut les yeux convergent en se rétractant. Céphalées depuis un mois.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Les deux nerfs oculomoteurs"
+        },
+        {
+          "key": "B",
+          "text": "Mésencéphale dorsal (prétectum, commissure postérieure)"
+        },
+        {
+          "key": "C",
+          "text": "Pont"
+        },
+        {
+          "key": "D",
+          "text": "Sinus caverneux"
+        },
+        {
+          "key": "E",
+          "text": "Champs oculomoteurs frontaux"
+        }
+      ],
+      "explanation": "Paralysie de l'élévation, dissociation lumière-convergence, rétraction palpébrale et nystagmus de convergence-rétraction : Parinaud dorsal (prétectum, commissure postérieure), classiquement pinéale ou hydrocéphalie."
+    },
+    "qz-30": {
+      "vignette": "Femme de 66 ans amenée pour faiblesse brutale de la jambe droite bien pire que le bras, face épargnée. Lente à répondre, grasping de la main droite, incontinence urinaire. Langage conservé.",
+      "stem": "Quelle artère est occluse ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ACM gauche, division supérieure"
+        },
+        {
+          "key": "B",
+          "text": "Artère cérébrale antérieure gauche"
+        },
+        {
+          "key": "C",
+          "text": "Artère cérébrale postérieure gauche"
+        },
+        {
+          "key": "D",
+          "text": "Artère lenticulo-striée gauche"
+        },
+        {
+          "key": "E",
+          "text": "Tronc basilaire"
+        }
+      ],
+      "explanation": "Faiblesse crurale avec aboulie, grasping et incontinence : face médiale frontale et lobule paracentral (jambe à l'homonculus), territoire de la cérébrale antérieure."
+    },
+    "qz-31": {
+      "vignette": "Femme droitière de 62 ans parlant fluemment mais en mots erronés inaperçus, ne suivant pas une double consigne, répétant en charabia. Force normale. Doigts manqués en quadran supérieur droit.",
+      "stem": "Quelle région corticale est lésée ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pars opercularis gauche"
+        },
+        {
+          "key": "B",
+          "text": "Gyrus temporal supérieur postérieur gauche"
+        },
+        {
+          "key": "C",
+          "text": "Supramarginal gauche seul"
+        },
+        {
+          "key": "D",
+          "text": "Angulaire gauche"
+        },
+        {
+          "key": "E",
+          "text": "Temporal supérieur postérieur droit"
+        }
+      ],
+      "explanation": "Discours fluent paraphasique avec compréhension et répétition altérées : Wernicke (temporal supérieur postérieur dominant) ; la quadranopsie supérieure vient de la boucle de Meyer sous-jacente, la force normale épargne le précentral."
+    },
+    "qz-32": {
+      "vignette": "Homme de 70 ans ne reconnaissant plus sa femme ni ses enfants par le visage, mais d'emblée par la voix. Lecture et dénomination normales, quadranopsie supérieure gauche.",
+      "stem": "Quel côté et quelle structure ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Gyrus fusiforme postérieur droit"
+        },
+        {
+          "key": "B",
+          "text": "Gyrus fusiforme postérieur gauche"
+        },
+        {
+          "key": "C",
+          "text": "Amygdale droite"
+        },
+        {
+          "key": "D",
+          "text": "Angulaire gauche"
+        },
+        {
+          "key": "E",
+          "text": "Les deux pôles occipitaux"
+        }
+      ],
+      "explanation": "Prosopagnosie à lecture et dénomination conservées : aire fusiforme des visages droite ; la quadranopsie supérieure gauche place en occipito-temporal droit (berge calcarine inférieure et radiations voisines). À gauche, la lecture tomberait (alexie)."
+    },
+    "qz-33": {
+      "vignette": "Femme droitière de 58 ans, petit AVC. Force et sensibilité normales, mais incapable de montrer l'usage d'une clef ou de se brosser les dents des deux mains, ni de copier des postures. Comprend, décrit l'action.",
+      "stem": "Quelle structure est lésée ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Supramarginal droit"
+        },
+        {
+          "key": "B",
+          "text": "Supramarginal gauche"
+        },
+        {
+          "key": "C",
+          "text": "Précentral droit"
+        },
+        {
+          "key": "D",
+          "text": "Corps du corps calleux"
+        },
+        {
+          "key": "E",
+          "text": "Opercule frontal gauche"
+        }
+      ],
+      "explanation": "Apraxie idéomotrice des deux mains à compréhension et force intactes : pariétal inférieur dominant gauche (formules gestuelles), que le droit reçoit via le calleux ; une lésion calleuse épargnerait la droite, une droite ne ferait pas ce tableau."
+    },
+    "qz-34": {
+      "vignette": "Homme de 66 ans se réveillant incapable de lire le journal, mais écrivant un mot à sa femme qu'il ne peut ensuite relire. Dénomination et langage normaux. Hémianopsie droite.",
+      "stem": "Quelles deux structures sont lésées ensemble ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Angulaire et arqué gauches"
+        },
+        {
+          "key": "B",
+          "text": "Calcarine gauche et splénium du corps calleux"
+        },
+        {
+          "key": "C",
+          "text": "Triangulaire et insula gauches"
+        },
+        {
+          "key": "D",
+          "text": "Calcarine droite et genou du corps calleux"
+        },
+        {
+          "key": "E",
+          "text": "Planum et Heschl gauches"
+        }
+      ],
+      "explanation": "Alexie sans agraphie par déconnexion : calcarine gauche détruite (hémianopsie droite) plus splénium coupant le visuel droit voyant du langage gauche ; les mots sont vus sans être lus, l'écriture (sans entrée visuelle) survit."
+    },
+    "qz-35": {
+      "vignette": "Femme de 74 ans, après arrêt cardiaque, lisant les lettres isolées mais pas les mots, dépassant les objets visés, décrivant une cuisine objet par objet sans la scène. Acuité normale.",
+      "stem": "Où sont les lésions ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Cortex occipital médial bilatéral"
+        },
+        {
+          "key": "B",
+          "text": "Zones frontières pariéto-occipitales bilatérales"
+        },
+        {
+          "key": "C",
+          "text": "Les deux hippocampes"
+        },
+        {
+          "key": "D",
+          "text": "Angulaire gauche"
+        },
+        {
+          "key": "E",
+          "text": "Les deux fusiformes"
+        }
+      ],
+      "explanation": "Simultagnosie, ataxie optique, apraxie oculaire : Balint dorsal pariéto-occipital bilatéral ; après arrêt, zones frontières ACM-ACP (occipital latéral supérieur, pariétal supérieur)."
+    },
+    "qz-36": {
+      "vignette": "Homme de 55 ans, faiblesse brutale de la jambe gauche, bras et face normaux. Apathique, lent, incontinent depuis l'événement. Grasping à gauche.",
+      "stem": "Quelle artère est occluse ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ACM droite, division supérieure"
+        },
+        {
+          "key": "B",
+          "text": "Artère cérébrale antérieure droite"
+        },
+        {
+          "key": "C",
+          "text": "Artère cérébrale postérieure droite"
+        },
+        {
+          "key": "D",
+          "text": "Lenticulo-striée droite"
+        },
+        {
+          "key": "E",
+          "text": "Tronc basilaire"
+        }
+      ],
+      "explanation": "Faiblesse crurale avec aboulie, incontinence et grasping : cérébrale antérieure (lobule paracentral pour la jambe, frontal médial pour motivation-miction, cingulaire). Une sylvienne toucherait face et bras."
+    },
+    "qz-37": {
+      "vignette": "Femme de 48 ans, brèves crises nocturnes depuis des ans : redressement brusque, bras droit levé en abduction, tête tournée vers lui, cri, vingt secondes, souvenirs conservés. Deux EEG normaux, crises dites psychologiques.",
+      "stem": "D'où naissent ces crises ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Temporal médial gauche"
+        },
+        {
+          "key": "B",
+          "text": "Aire motrice supplémentaire gauche"
+        },
+        {
+          "key": "C",
+          "text": "Aire motrice supplémentaire droite"
+        },
+        {
+          "key": "D",
+          "text": "Occipital gauche"
+        },
+        {
+          "key": "E",
+          "text": "Insula gauche"
+        }
+      ],
+      "explanation": "Crise tonique nocturne brève en posture d'escrime (bras controlatéral levé, tête vers lui), vocalisation, conscience gardée : aire motrice supplémentaire ; foyer interhémisphérique = EEG de scalp souvent normal ; la posture désigne la SMA gauche."
+    },
+    "qz-38": {
+      "vignette": "Femme épileptique de 30 ans, chaque crise débutant par une ascension épigastrique et un déjà-vu, puis mâchonnements et tripotage de la main droite tandis que la gauche se fige en griffe. Confusion de dix minutes ensuite.",
+      "stem": "Quel côté et quelle structure ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Hippocampe et amygdale gauches"
+        },
+        {
+          "key": "B",
+          "text": "Hippocampe et amygdale droits"
+        },
+        {
+          "key": "C",
+          "text": "Opercule frontal gauche"
+        },
+        {
+          "key": "D",
+          "text": "Temporal supérieur droit"
+        },
+        {
+          "key": "E",
+          "text": "Cingulaire gauche"
+        }
+      ],
+      "explanation": "Aura épigastrique et déjà-vu : temporal médial ; dystonie controlatérale (gauche = foyer gauche), automatismes homolatéraux, aphasie post-critique (dominant) : épilepsie temporale mésiale gauche."
+    },
+    "qz-39": {
+      "vignette": "Homme de 45 ans, épilepsie pharmacorésistante du type ci-dessus. IRM FLAIR coronale : petit hippocampe gauche hyperintense, architecture interne perdue, corne temporale dilatée.",
+      "stem": "Quelle est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Gliome de bas grade"
+        },
+        {
+          "key": "B",
+          "text": "Sclérose temporale mésiale"
+        },
+        {
+          "key": "C",
+          "text": "Encéphalite herpétique"
+        },
+        {
+          "key": "D",
+          "text": "Cavernome"
+        },
+        {
+          "key": "E",
+          "text": "Dysplasie corticale focale"
+        }
+      ],
+      "explanation": "Petit hippocampe en hypersignal FLAIR à digitations perdues avec corne dilatée : sclérose mésiale, la plus chirurgicalement curable ; une tumeur grossirait l'hippocampe, l'herpès serait aigu et fébrile."
+    },
+    "qz-40": {
+      "vignette": "Femme de 68 ans, somnolence profonde brutale. Réveillée, elle ne regarde pas en haut, a oublié sa matinée et se rendort. Pupilles paresseuses. Force et sensibilité normales.",
+      "stem": "Quelle structure vasculaire est en cause ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "ACM droite"
+        },
+        {
+          "key": "B",
+          "text": "Artère de Percheron (thalamique paramédiane)"
+        },
+        {
+          "key": "C",
+          "text": "PICA gauche"
+        },
+        {
+          "key": "D",
+          "text": "Communicante antérieure"
+        },
+        {
+          "key": "E",
+          "text": "Sinus sagittal supérieur"
+        }
+      ],
+      "explanation": "Hypersomnie avec verticalité et amnésie sans signe de faisceau : infarctus paramédians bilatéraux thalamo-mésencéphaliques, territoire d'une Percheron unique née d'un P1."
+    },
+    "qz-41": {
+      "vignette": "Homme de 60 ans, faiblesse de l'hémiface, du bras et de la jambe droits, perte de toute sensibilité à droite et hémianopsie droite en une heure. Il parle normalement, suit les consignes, conscient de ses déficits. Scanner sans atteinte corticale.",
+      "stem": "Quelle artère est le plus probablement occluse ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Tronc de l'ACM gauche"
+        },
+        {
+          "key": "B",
+          "text": "Artère choroïdienne antérieure gauche"
+        },
+        {
+          "key": "C",
+          "text": "Artère cérébrale postérieure gauche"
+        },
+        {
+          "key": "D",
+          "text": "Artère lenticulo-striée gauche"
+        },
+        {
+          "key": "E",
+          "text": "Artère cérébelleuse supérieure gauche"
+        }
+      ],
+      "explanation": "Hémiparésie, hémianesthésie et hémianopsie sans aphasie ni négligence : triade choroïdienne antérieure (bras postérieur capsulaire moteur et sensitif, tractus et genouillé) ; un tronc sylvien ajouterait des signes corticaux."
+    },
+    "qz-42": {
+      "vignette": "Homme hypertendu de 72 ans, faiblesse brutale du bras et de la jambe gauches avec ataxie des mêmes membres disproportionnée ; sensibilité, langage et vision normaux.",
+      "stem": "Quelle structure explique le mieux l'association ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Hémisphère cérébelleux gauche"
+        },
+        {
+          "key": "B",
+          "text": "Bras postérieur capsulaire droit avec fibres corticopontiques"
+        },
+        {
+          "key": "C",
+          "text": "Thalamus droit"
+        },
+        {
+          "key": "D",
+          "text": "Pont gauche"
+        },
+        {
+          "key": "E",
+          "text": "Hémisphère cérébelleux droit"
+        }
+      ],
+      "explanation": "Hémiparésie ataxique : lacune du bras postérieur (ou du pied pontique) coupant cortico-spinal et corticopontiques ensemble ; l'entrée corticopontique croise au pont et la sortie cérébelleuse recroise, si bien que l'ataxie tombe du côté faible. Un cervelet donnerait une ataxie homolatérale à la lésion."
+    },
+    "qz-43": {
+      "vignette": "Homme de 35 ans, petit infarctus du supramarginal droit après embol cardiaque. Quel déficit persistant est le plus probable ?",
+      "stem": "Choisir la meilleure réponse.",
+      "options": [
+        {
+          "key": "A",
+          "text": "Hémianopsie droite"
+        },
+        {
+          "key": "B",
+          "text": "Extinction et négligence gauches"
+        },
+        {
+          "key": "C",
+          "text": "Aphasie expressive"
+        },
+        {
+          "key": "D",
+          "text": "Apraxie de la main droite"
+        },
+        {
+          "key": "E",
+          "text": "Faiblesse de la jambe gauche"
+        }
+      ],
+      "explanation": "Le pariétal inférieur droit est le hub ventral de l'attention ; sa lésion donne négligence et extinction gauches, durables car le longitudinal supérieur II sous-jacent est coupé. Aphasie et apraxie bilatérale sont gauches."
+    },
+    "qz-44": {
+      "vignette": "Femme de 54 ans, après une chute, ne sentant plus le café. En mois, la famille note tact perdu, plaisanteries graveleuses, dépenses impulsives. Mémoire normale aux tests.",
+      "stem": "Quelle région imager d'abord ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Les deux hippocampes"
+        },
+        {
+          "key": "B",
+          "text": "Cortex orbitofrontal et tractus olfactifs"
+        },
+        {
+          "key": "C",
+          "text": "Pôle temporal gauche"
+        },
+        {
+          "key": "D",
+          "text": "Préfrontal dorsolatéral"
+        },
+        {
+          "key": "E",
+          "text": "Cingulaires antérieurs"
+        }
+      ],
+      "explanation": "Anosmie avec désinhibition à mémoire conservée : syndrome orbitofrontal (gyri droits et orbital sur le plancher, à côté des olfactifs, contus dans les chutes ou comprimés par un méningiome de la gouttière). Le dorsolatéral donnerait un dysexécutif."
+    },
+    "qz-45": {
+      "vignette": "Homme de 63 ans devenu apathique depuis un AVC il y a deux semaines, assis toute la journée, monosyllabes. Orienté, sans faiblesse. IRM : petit infarctus de la tête du caudé et du bras antérieur capsulaire.",
+      "stem": "Quelle connexion est interrompue ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Faisceau cortico-spinal"
+        },
+        {
+          "key": "B",
+          "text": "Radiation thalamique antérieure et boucle préfronto-striatale"
+        },
+        {
+          "key": "C",
+          "text": "Radiations optiques"
+        },
+        {
+          "key": "D",
+          "text": "Faisceau arqué"
+        },
+        {
+          "key": "E",
+          "text": "Faisceau dentato-rubro-thalamique"
+        }
+      ],
+      "explanation": "Le bras antérieur porte la radiation thalamique antérieure (thalamus antéro-médiodorsal vers préfrontal) et la tête du caudé est le relais striatal de la boucle préfrontale ; leur coupure donne l'aboulie sans faiblesse (lenticulo-striées médiales)."
+    },
+    "qz-46": {
+      "vignette": "Homme de 58 ans en fibrillation atriale, après un AVC, incapable de répéter les phrases, parlant fluemment et comprenant tout ; substitutions de sons autocorrigées. IRM : petit infarctus supramarginal gauche de la substance blanche.",
+      "stem": "Quel faisceau est interrompu ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Faisceau unciné"
+        },
+        {
+          "key": "B",
+          "text": "Faisceau arqué"
+        },
+        {
+          "key": "C",
+          "text": "Longitudinal inférieur"
+        },
+        {
+          "key": "D",
+          "text": "Frontal aslant"
+        },
+        {
+          "key": "E",
+          "text": "Cingulum"
+        }
+      ],
+      "explanation": "Aphasie de conduction (fluente, compréhensive, sans répétition, erreurs phonémiques autocorrigées) : déconnexion du temporal postérieur et du frontal via l'arqué, courant sous le supramarginal."
+    },
+    "qz-47": {
+      "vignette": "Après exérèse d'une tumeur frontale médiane, femme de 40 ans muette et bras droit immobile une semaine, puis récupération complète en un mois. La répétition, dès la reprise, était normale.",
+      "stem": "Quelle explication ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Aphasie de Broca (operculaire)"
+        },
+        {
+          "key": "B",
+          "text": "Syndrome de l'aire motrice supplémentaire avec déconnexion du frontal aslant"
+        },
+        {
+          "key": "C",
+          "text": "Infarctus cortico-spinal"
+        },
+        {
+          "key": "D",
+          "text": "Aphasie de conduction"
+        },
+        {
+          "key": "E",
+          "text": "Infarctus ACA du lobule paracentral"
+        }
+      ],
+      "explanation": "Mutisme et akinésie controlatérale transitoires après chirurgie frontale médiane, à répétition conservée et récupération en semaines : SMA et son frontal aslant vers le frontal inférieur initient parole et mouvement, le cortex latéral prenant le relais."
+    },
+    "qz-48": {
+      "vignette": "Homme de 70 ans, après un AVC, ne voyant rien du champ droit mais reconnaissant les visages et lisant lentement. Pupilles normales. Aux champs, un îlot central survit à droite.",
+      "stem": "Où est la lésion et pourquoi le centre est épargné ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Bandelette droite ; représentation maculaire bilatérale"
+        },
+        {
+          "key": "B",
+          "text": "Calcarine gauche ; le pôle occipital reçoit aussi des collatérales de l'ACM"
+        },
+        {
+          "key": "C",
+          "text": "Radiations gauches ; les fibres maculaires courent à part"
+        },
+        {
+          "key": "D",
+          "text": "Genouillé gauche ; la macula projette au pulvinar"
+        },
+        {
+          "key": "E",
+          "text": "Calcarine droite ; déficit fonctionnel"
+        }
+      ],
+      "explanation": "Hémianopsie droite congruente à pupilles normales : calcarine gauche (ACP), et l'îlot central est l'épargne maculaire (cortex maculaire du pôle aussi vascularisé par des terminales sylviennes)."
+    },
+    "qz-49": {
+      "vignette": "Femme de 52 ans, moitié gauche de la pièce délavée, en noir et blanc, moitié droite colorée. Acuité normale, discrète quadranopsie supérieure gauche.",
+      "stem": "Quelle région corticale est atteinte ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Cortex occipito-temporal ventral droit (lingual, fusiforme)"
+        },
+        {
+          "key": "B",
+          "text": "Cunéus droit"
+        },
+        {
+          "key": "C",
+          "text": "Cunéus gauche"
+        },
+        {
+          "key": "D",
+          "text": "Genouillé latéral droit"
+        },
+        {
+          "key": "E",
+          "text": "Fusiforme gauche"
+        }
+      ],
+      "explanation": "Hémi-achromatopsie gauche avec quadranopsie supérieure : occipito-temporal ventral droit sous la calcarine, où V4 (lingual, fusiforme) voisine la berge calcarine inférieure du champ supérieur."
+    },
+    "qz-50": {
+      "vignette": "Homme de 45 ans, surdité droite progressive et acouphène, puis engourdissement facial droit, puis instabilité avec tremblement intentionnel droit. IRM : masse de l'angle ponto-cérébelleux droit gagnant le conduit auditif interne.",
+      "stem": "Quelle structure cérébelleuse explique les derniers symptômes ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Flocculus et hémisphère droits (lobule VI, Crus I)"
+        },
+        {
+          "key": "B",
+          "text": "Dentelé gauche"
+        },
+        {
+          "key": "C",
+          "text": "Vermis VI-VII"
+        },
+        {
+          "key": "D",
+          "text": "Lobule X droit seul"
+        },
+        {
+          "key": "E",
+          "text": "Flocculus gauche"
+        }
+      ],
+      "explanation": "Le schwannome comprime le VIII, puis le V, puis le flocculus et l'hémisphère antérieur près du pédoncule moyen : ataxie homolatérale et nystagmus évoqué ; les signes cérébelleux sont homolatéraux car la sortie recroise."
+    },
+    "qz-51": {
+      "vignette": "Homme hypertendu de 66 ans, vertige et vomissements brutaux, station impossible. Impulsion normale, nystagmus changeant de direction. Ni faiblesse, ni surdité, ni engourdissement facial.",
+      "stem": "Quel territoire artériel est le plus probablement en cause ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Artère cérébelleuse antéro-inférieure"
+        },
+        {
+          "key": "B",
+          "text": "Branche médiane de la PICA (nodulus, uvula)"
+        },
+        {
+          "key": "C",
+          "text": "Artère cérébelleuse supérieure"
+        },
+        {
+          "key": "D",
+          "text": "Territoire paramédian pontique"
+        },
+        {
+          "key": "E",
+          "text": "Artère labyrinthique"
+        }
+      ],
+      "explanation": "Vertige aigu à impulsion normale, nystagmus multidirectionnel, station impossible : vestibulaire central, le plus souvent PICA médiane (nodulus-uvula, lobules IX-X) ; l'AICA ajouterait surdité et faciale, le bulbaire latéral des signes croisés."
+    },
+    "qz-52": {
+      "vignette": "Femme de 60 ans, AVC du cervelet droit. Examen : discrète instabilité de marche, mais désorganisation, planification impossible, réponses plates et désinhibées selon le mari.",
+      "stem": "Quels lobules sont le plus probablement infarcis ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Lobe antérieur (I-V)"
+        },
+        {
+          "key": "B",
+          "text": "Crus I et II du lobe postérieur"
+        },
+        {
+          "key": "C",
+          "text": "Nodulus et flocculus"
+        },
+        {
+          "key": "D",
+          "text": "Vermis VI-VII"
+        },
+        {
+          "key": "E",
+          "text": "Lobules VIII"
+        }
+      ],
+      "explanation": "Lésion cérébelleuse à troubles exécutifs et affectifs sans ataxie : hémisphères du lobe postérieur (Crus I-II), cervelet cognitif lié au préfrontal ; lobe antérieur et VIII portent les cartes corporelles (ataxie)."
+    },
+    "qz-53": {
+      "vignette": "Femme de 25 ans, tremblement grossier lent du bras droit présent au repos, majoré tendu, sauvage en action. Début trois mois après une hémorragie mésencéphalique.",
+      "stem": "Quelle voie est responsable ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Cortico-spinal droit"
+        },
+        {
+          "key": "B",
+          "text": "Faisceau dentato-rubro-thalamique gauche avec fibres nigrostriées mésencéphaliques"
+        },
+        {
+          "key": "C",
+          "text": "Lemnisque médial droit"
+        },
+        {
+          "key": "D",
+          "text": "Dentelé droit"
+        },
+        {
+          "key": "E",
+          "text": "Cortico-spinal gauche"
+        }
+      ],
+      "explanation": "Tremblement retardé repos-posture-action après lésion mésencéphalique : Holmes (rubrique), double atteinte cérébello-thalamique via le noyau rouge et nigrostriée ; controlatéral (mésencéphale gauche) car le dentato-rubro-thalamique a déjà croisé."
+    },
+    "qz-54": {
+      "vignette": "Femme de 78 ans, volumineux hématome putaminal gauche récent avec hémiparésie droite transitoire. Quel fait anatomique explique la prédilection hypertensive de ce siège ?",
+      "stem": "Choisir la meilleure réponse.",
+      "options": [
+        {
+          "key": "A",
+          "text": "Le putamen a la plus riche vascularisation corticale"
+        },
+        {
+          "key": "B",
+          "text": "Les lenticulo-striées latérales naissent à angle droit du M1 à haute pression, sans collatérales"
+        },
+        {
+          "key": "C",
+          "text": "Le putamen est une zone frontière"
+        },
+        {
+          "key": "D",
+          "text": "La capsule interne n'a pas de barrière"
+        },
+        {
+          "key": "E",
+          "text": "Le putamen se draine par la grande veine cérébrale"
+        }
+      ],
+      "explanation": "Les perforantes lenticulo-striées quittent le M1 à angle droit en pleine pression sans collatérales : l'hypertension y fait lipohyalinose et micro-anévrismes de Charcot-Bouchard ; leur rupture fait l'hématome putaminal, leur occlusion la lacune capsulaire."
+    },
+    "qz-55": {
+      "vignette": "Femme de 33 ans, après un travail prolongé : abduction de hanche et dorsiflexion droites faibles avec dos du pied insensible. Achilléen conservé. Conduction : potentiel sensitif fibulaire superficiel normal.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Fibular commun au col"
+        },
+        {
+          "key": "B",
+          "text": "Racine L5 ou plexus lombo-sacré"
+        },
+        {
+          "key": "C",
+          "text": "Sciatique à la cuisse"
+        },
+        {
+          "key": "D",
+          "text": "Fibular superficiel"
+        },
+        {
+          "key": "E",
+          "text": "Tibial"
+        }
+      ],
+      "explanation": "Steppage avec abduction de hanche faible (glutéal supérieur) : pas un fibulaire ; un potentiel sensitif normal malgré un dos engourdi place en amont du ganglion ou dans le plexus : racine L5 ou tronc lombo-sacré comprimé par la tête fœtale."
+    },
+    "qz-56": {
+      "vignette": "Homme de 40 ans endormi bras sur une chaise, se réveillant en main tombante. Triceps fort, brachio-radial faible, dos de la main et de l'avant-bras insensibles.",
+      "stem": "À quel niveau le radial est-il lésé ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Aisselle"
+        },
+        {
+          "key": "B",
+          "text": "Gouttière spirale de l'humérus"
+        },
+        {
+          "key": "C",
+          "text": "Coude (interosseux postérieur)"
+        },
+        {
+          "key": "D",
+          "text": "Poignet (branche sensitive)"
+        },
+        {
+          "key": "E",
+          "text": "Faisceau postérieur du plexus"
+        }
+      ],
+      "explanation": "Triceps épargné avec brachio-radial et extenseurs faibles : gouttière spirale, sous les branches tricipitales ; l'anesthésie postérieure de l'avant-bras (cutané postérieur né dans la gouttière) exclut l'atteinte sous le coude (doigts sans poignet)."
+    },
+    "qz-57": {
+      "vignette": "Femme de 50 ans, auriculaire engourdi, amyotrophie de la main, face interne de l'avant-bras insensible jusqu'au coude. Conduction : potentiel sensitif cutané antébrachial médial absent.",
+      "stem": "Où est la lésion ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Ulnaire au coude"
+        },
+        {
+          "key": "B",
+          "text": "Ulnaire au poignet"
+        },
+        {
+          "key": "C",
+          "text": "Tronc inférieur ou faisceau médial du plexus"
+        },
+        {
+          "key": "D",
+          "text": "Racine C6"
+        },
+        {
+          "key": "E",
+          "text": "Médian au canal carpien"
+        }
+      ],
+      "explanation": "L'ulnaire n'innerve aucune peau d'avant-bras ; l'atteinte cutanée antébrachiale médiale avec potentiel aboli prouve le faisceau médial ou le tronc inférieur (défilé, Pancoast, Klumpke), jamais le coude."
+    },
+    "qz-58": {
+      "vignette": "Rugbyman de 19 ans, traumatisme d'épaule. Ensuite ni abduction ni flexion du coude, hypoesthésie du bras et de l'avant-bras externes, scapula alata latérale en bras croisés. EMG : dénervation des rhomboïdes.",
+      "stem": "Quel est le siège le plus probable ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Tronc supérieur du plexus"
+        },
+        {
+          "key": "B",
+          "text": "Racines C5-C6 (préganglionnaire)"
+        },
+        {
+          "key": "C",
+          "text": "Nerf musculo-cutané"
+        },
+        {
+          "key": "D",
+          "text": "Nerf axillaire"
+        },
+        {
+          "key": "E",
+          "text": "Faisceau latéral"
+        }
+      ],
+      "explanation": "Tableau d'Erb supérieur, mais les rhomboïdes (nerf dorsal scapulaire né de C5 avant le tronc) dénoncent les racines : avulsion préganglionnaire de pronostic sombre changeant la chirurgie."
+    },
+    "qz-59": {
+      "vignette": "Ex-prématuré de 4 mois, jambes raides en ciseaux au porteur, bras relativement normaux. Échographie néonatale : kystes périventriculaires.",
+      "stem": "Pourquoi les jambes plus que les bras ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "La jambe corticale dépend de l'ACA"
+        },
+        {
+          "key": "B",
+          "text": "Les fibres cortico-spinales des jambes longent les ventricules, blessées par la leucomalacie périventriculaire"
+        },
+        {
+          "key": "C",
+          "text": "La moelle est plus vulnérable en prématurité"
+        },
+        {
+          "key": "D",
+          "text": "Les fibres des bras croisent plus tôt"
+        },
+        {
+          "key": "E",
+          "text": "Le cervelet commande les bras"
+        }
+      ],
+      "explanation": "Diplégie spastique du prématuré = leucomalacie périventriculaire : les fibres des jambes descendent périventriculaires dans la zone frontière du cerveau immature, bras et face courent plus latéraux et sont épargnés."
+    },
+    "qz-60": {
+      "vignette": "Femme de 24 ans, céphalée depuis deux semaines pire couchée, éclipses visuelles, œdème papillaire et paralysie du VI. Scanner normal. Veinographie : flux absent du sinus transverse droit.",
+      "stem": "Quel diagnostic et quel mécanisme pour le VI ?",
+      "options": [
+        {
+          "key": "A",
+          "text": "HTIC idiopathique ; compression dans le sinus caverneux"
+        },
+        {
+          "key": "B",
+          "text": "Thrombose veineuse avec hypertension ; le VI étiré sur l'arête pétreuse (fausse localisation)"
+        },
+        {
+          "key": "C",
+          "text": "Gliome pontique ; infiltration du noyau"
+        },
+        {
+          "key": "D",
+          "text": "Migraine ; migraine ophtalmoplégique"
+        },
+        {
+          "key": "E",
+          "text": "Méningite ; inflammation sous-arachnoïdienne"
+        }
+      ],
+      "explanation": "Céphalée, œdème et VI à scanner normal : hypertension intracrânienne, et le sinus bouché en fait une thrombose veineuse ; le long trajet de l'abducens sur l'apex pétreux l'étire (fausse localisation classique)."
+    }
+  }
+}

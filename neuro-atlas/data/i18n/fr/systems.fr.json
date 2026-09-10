@@ -1,0 +1,101 @@
+{
+ "generated": "2026-09-10T09:26:13.898Z",
+ "systems": [
+  {
+   "id": "cerebrum",
+   "name": "Cerveau",
+   "colour": "#D0AB9E",
+   "defaultVisible": true
+  },
+  {
+   "id": "basal-ganglia",
+   "name": "Noyaux gris centraux",
+   "colour": "#C4948C",
+   "defaultVisible": true
+  },
+  {
+   "id": "diencephalon",
+   "name": "Diencéphale",
+   "colour": "#C9A27E",
+   "defaultVisible": true
+  },
+  {
+   "id": "brainstem",
+   "name": "Tronc cérébral",
+   "colour": "#D2B79A",
+   "defaultVisible": true
+  },
+  {
+   "id": "cerebellum",
+   "name": "Cervelet",
+   "colour": "#B89C86",
+   "defaultVisible": true
+  },
+  {
+   "id": "cranial-nerves",
+   "name": "Nerfs crâniens",
+   "colour": "#EFE3A8",
+   "defaultVisible": true
+  },
+  {
+   "id": "spinal-cord",
+   "name": "Moelle épinière",
+   "colour": "#D6BFA2",
+   "defaultVisible": false
+  },
+  {
+   "id": "peripheral",
+   "name": "Nerfs périphériques",
+   "colour": "#F0E4B0",
+   "defaultVisible": false
+  },
+  {
+   "id": "autonomic",
+   "name": "Système autonome",
+   "colour": "#E8D9A0",
+   "defaultVisible": false
+  },
+  {
+   "id": "ventricles-csf",
+   "name": "Ventricules & LCS",
+   "colour": "#9CC8E6",
+   "defaultVisible": true
+  },
+  {
+   "id": "meninges",
+   "name": "Méninges",
+   "colour": "#B9BCC2",
+   "defaultVisible": false
+  },
+  {
+   "id": "arteries",
+   "name": "Artères",
+   "colour": "#C42B2B",
+   "defaultVisible": true
+  },
+  {
+   "id": "arterial-territories",
+   "name": "Territoires artériels",
+   "colour": "#E07B5A",
+   "defaultVisible": false
+  },
+  {
+   "id": "venous",
+   "name": "Veines / sinus veineux",
+   "colour": "#2F4C8F",
+   "defaultVisible": false
+  },
+  {
+   "id": "tracts",
+   "name": "Faisceaux de substance blanche",
+   "colour": "#EDE3D2",
+   "defaultVisible": false
+  },
+  {
+   "id": "envelope",
+   "name": "Surface cérébrale",
+   "colour": "#DCBFAE",
+   "defaultVisible": true
+  }
+ ]
+}

@@ -1,0 +1,377 @@
+/* ── CSS/TUTORIAL.CSS — Guide MedGame & Comment Jouer (Format Compact 1 Écran) ── */
+
+:root {
+    --tut-primary: #00f2fe;
+    --tut-secondary: #8e4fe0;
+    --tut-emerald: #10b981;
+    --tut-coral: #fb7185;
+    --tut-cobalt: #3b82f6;
+    --tut-violet: #a855f7;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: var(--dark-bg, #060919);
+    color: var(--text-main, #ffffff);
+    font-family: var(--font-main, 'Inter', sans-serif);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Conteneur principal plein écran */
+.tutorial-overlay {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(10px, 1.8vh, 24px) 16px;
+    box-sizing: border-box;
+}
+
+/* Carte vitrée MedGame ultra-compacte */
+.tutorial-card {
+    position: relative;
+    width: 100%;
+    max-width: 1060px;
+    background: rgba(10, 15, 36, 0.78);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 242, 254, 0.1);
+    border-radius: 20px;
+    padding: clamp(12px, 1.8vh, 18px) clamp(16px, 2.2vw, 24px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 13px);
+}
+
+/* Barre supérieure & En-tête */
+.tutorial-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 8px;
+}
+
+.tut-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-title, 'Outfit', sans-serif);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.tut-nav-btn:hover {
+    background: rgba(0, 242, 254, 0.16);
+    border-color: #00f2fe;
+    color: #00f2fe;
+    transform: translateX(-2px);
+    box-shadow: 0 0 14px rgba(0, 242, 254, 0.28);
+}
+
+.tut-header-title {
+    text-align: center;
+}
+
+.tut-header-title h1 {
+    font-family: var(--font-title, 'Outfit', sans-serif);
+    font-size: clamp(1.2rem, 2vh, 1.55rem);
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 0;
+    background: linear-gradient(135deg, #ffffff 40%, #00f2fe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.tut-header-title p {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 2px 0 0 0;
+}
+
+.tut-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #00f2fe;
+    background: rgba(0, 242, 254, 0.1);
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* Grille des 5 Étapes du Cas Clinique (sur 1 rangée sur desktop) */
+.tut-steps-section {
+    width: 100%;
+}
+
+.tut-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.tut-step-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 10px 10px 12px 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: all 0.25s ease;
+    overflow: hidden;
+}
+
+.tut-step-card:hover {
+    background: rgba(255, 255, 255, 0.055);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+}
+
+.tut-step-card.step-1 { border-left: 3px solid #00f2fe; }
+.tut-step-card.step-1:hover { border-color: rgba(0, 242, 254, 0.5); box-shadow: 0 8px 20px -6px rgba(0, 242, 254, 0.3); }
+
+.tut-step-card.step-2 { border-left: 3px solid #10b981; }
+.tut-step-card.step-2:hover { border-color: rgba(16, 185, 129, 0.5); box-shadow: 0 8px 20px -6px rgba(16, 185, 129, 0.3); }
+
+.tut-step-card.step-3 { border-left: 3px solid #3b82f6; }
+.tut-step-card.step-3:hover { border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 8px 20px -6px rgba(59, 130, 246, 0.3); }
+
+.tut-step-card.step-4 { border-left: 3px solid #fb7185; }
+.tut-step-card.step-4:hover { border-color: rgba(251, 113, 133, 0.5); box-shadow: 0 8px 20px -6px rgba(251, 113, 133, 0.3); }
+
+.tut-step-card.step-5 { border-left: 3px solid #a855f7; }
+.tut-step-card.step-5:hover { border-color: rgba(168, 85, 247, 0.5); box-shadow: 0 8px 20px -6px rgba(168, 85, 247, 0.3); }
+
+.step-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.step-number {
+    font-family: var(--font-title, 'Outfit', sans-serif);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    padding: 2px 7px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.step-icon-wrap {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+.step-1 .step-icon-wrap { background: rgba(0, 242, 254, 0.15); color: #00f2fe; }
+.step-2 .step-icon-wrap { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+.step-3 .step-icon-wrap { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.step-4 .step-icon-wrap { background: rgba(251, 113, 133, 0.15); color: #fb7185; }
+.step-5 .step-icon-wrap { background: rgba(168, 85, 247, 0.15); color: #a855f7; }
+
+.tut-step-card h3 {
+    font-family: var(--font-title, 'Outfit', sans-serif);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tut-step-card p {
+    font-size: 0.73rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.35;
+    margin: 0;
+    min-height: 2.7em;
+}
+
+.step-key-tip {
+    font-size: 0.67rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 3px 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Bandeau Réflexes Clés (1 ligne horizontale sur desktop) */
+.tut-tips-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 7px 14px;
+    border-radius: 12px;
+    background: rgba(0, 242, 254, 0.035);
+    border: 1px solid rgba(0, 242, 254, 0.16);
+    box-sizing: border-box;
+}
+
+.tut-tip-mini {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.3;
+}
+
+.tut-tip-mini i {
+    color: #00f2fe;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* Actions au bas du guide */
+.tut-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 2px;
+}
+
+.tut-btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 24px;
+    border-radius: 12px;
+    font-family: var(--font-title, 'Outfit', sans-serif);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+
+.tut-btn-action.primary {
+    background: linear-gradient(90deg, #0284c7, #00f2fe);
+    border: 1px solid rgba(0, 242, 254, 0.4);
+    color: #04101c;
+    box-shadow: 0 4px 16px rgba(0, 242, 254, 0.3);
+}
+
+.tut-btn-action.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 242, 254, 0.45);
+    border-color: #00f2fe;
+    color: #04101c;
+}
+
+.tut-btn-action.tertiary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.tut-btn-action.tertiary:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+}
+
+/* Pied de carte */
+.tut-card-footer {
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 6px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.tut-card-footer a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.tut-card-footer a:hover {
+    color: #00f2fe;
+}
+
+/* Responsive Mobile & Tablette */
+@media (max-width: 860px) {
+    .tutorial-overlay {
+        height: auto;
+        min-height: 100vh;
+        align-items: flex-start;
+        padding: 12px 10px 50px 10px;
+    }
+    .tutorial-card {
+        padding: 14px;
+        gap: 12px;
+    }
+    .tut-steps-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .tut-tips-strip {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .tutorial-top-bar {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .tut-steps-grid {
+        grid-template-columns: 1fr;
+    }
+    .tut-tips-strip {
+        grid-template-columns: 1fr;
+    }
+    .tut-actions-row {
+        flex-direction: column;
+        width: 100%;
+    }
+    .tut-btn-action {
+        width: 100%;
+    }
+}

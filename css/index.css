@@ -395,10 +395,10 @@ body {
     position: absolute;
     inset: 0;
     z-index: 1;
-    opacity: 0.85;
+    opacity: 0;
     background: linear-gradient(90deg, var(--secondary), var(--primary));
-    transform: translateX(-101%) skewX(-8deg) scaleX(1.1);
-    transition: transform 0.5s var(--ease-out);
+    transform: translateX(-101%) skewX(-8deg);
+    transition: transform 0.45s var(--ease-out), opacity 0.35s ease;
 }
 
 .btn-3d:hover {
@@ -408,7 +408,8 @@ body {
 }
 
 .btn-3d:hover .btn-layer {
-    transform: translateX(0) skewX(0) scaleX(1);
+    opacity: 0.85;
+    transform: translateX(0) skewX(0);
 }
 
 .btn-3d:active {
@@ -443,6 +444,281 @@ body {
 
 .btn-3d.tertiary:hover .btn-content {
     color: #04101c;
+}
+
+/* ── Palette Distincte par Bouton MedGame ───────────────────────── */
+
+/* ── Palette Distincte et Subtile par Bouton MedGame ─────────────── */
+
+/* 1. Tester un cas (1 clic) : Indigo feutré discret */
+#quick-play-button {
+    border: 1px solid rgba(99, 102, 241, 0.22);
+    border-left: 3.5px solid #6366f1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+#quick-play-button .btn-layer {
+    background: linear-gradient(90deg, rgba(79, 70, 229, 0.85), rgba(99, 102, 241, 0.85));
+}
+#quick-play-button .btn-content i {
+    color: #818cf8;
+    filter: drop-shadow(0 0 4px rgba(129, 140, 248, 0.4));
+}
+#quick-play-button:hover {
+    border-color: rgba(129, 140, 248, 0.65);
+    border-left-color: #818cf8;
+    box-shadow: 0 10px 25px -6px rgba(99, 102, 241, 0.35);
+}
+#quick-play-button:hover .btn-content {
+    color: #ffffff;
+}
+
+/* 2. Commencer ma garde (auth-only) : Saphir / Menthe Clinique */
+#play-button {
+    border: 1px solid rgba(13, 148, 136, 0.25);
+    border-left: 3.5px solid #0d9488;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+#play-button .btn-layer {
+    background: linear-gradient(90deg, rgba(13, 148, 136, 0.85), rgba(20, 184, 166, 0.85));
+}
+#play-button .btn-content i {
+    color: #2dd4bf;
+    filter: drop-shadow(0 0 4px rgba(45, 212, 191, 0.4));
+}
+#play-button:hover {
+    border-color: rgba(45, 212, 191, 0.65);
+    border-left-color: #2dd4bf;
+    box-shadow: 0 10px 25px -6px rgba(13, 148, 136, 0.35);
+}
+#play-button:hover .btn-content {
+    color: #ffffff;
+}
+
+/* 3. Connexion / Inscription : Cyan Bichat sobre */
+#login-nav-button {
+    border: 1px solid rgba(2, 132, 199, 0.22);
+    border-left: 3.5px solid #0284c7;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+#login-nav-button .btn-layer {
+    background: linear-gradient(90deg, rgba(2, 132, 199, 0.85), rgba(0, 242, 254, 0.85));
+}
+#login-nav-button .btn-content i {
+    color: #38bdf8;
+    filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.4));
+}
+#login-nav-button:hover {
+    border-color: rgba(0, 242, 254, 0.65);
+    border-left-color: #00f2fe;
+    box-shadow: 0 10px 25px -6px rgba(2, 132, 199, 0.35);
+}
+#login-nav-button:hover .btn-content {
+    color: #ffffff;
+}
+
+/* 4. Comment jouer ? : Corail / Rubis discret */
+#tutorial-button {
+    border: 1px solid rgba(225, 29, 72, 0.22);
+    border-left: 3.5px solid #e11d48;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+#tutorial-button .btn-layer {
+    background: linear-gradient(90deg, rgba(190, 18, 60, 0.85), rgba(225, 29, 72, 0.85));
+}
+#tutorial-button .btn-content i {
+    color: #fb7185;
+    filter: drop-shadow(0 0 4px rgba(251, 113, 133, 0.4));
+}
+#tutorial-button:hover {
+    border-color: rgba(251, 113, 133, 0.65);
+    border-left-color: #fb7185;
+    box-shadow: 0 10px 25px -6px rgba(225, 29, 72, 0.35);
+}
+#tutorial-button:hover .btn-content {
+    color: #ffffff;
+}
+
+/* 5. Réglages (auth-only) : Ardoise Titane */
+#settings-button {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-left: 3.5px solid #64748b;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+#settings-button .btn-layer {
+    background: linear-gradient(90deg, rgba(71, 85, 105, 0.85), rgba(148, 163, 184, 0.85));
+}
+#settings-button:hover {
+    border-color: #94a3b8;
+    border-left-color: #cbd5e1;
+    box-shadow: 0 10px 25px -6px rgba(100, 116, 139, 0.35);
+}
+
+/* 6. Créer / Améliorer un cas (auth-only) : Fuchsia Électrique */
+#editor-button {
+    border: 1px solid rgba(192, 38, 211, 0.22);
+    border-left: 3.5px solid #c026d3;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+#editor-button .btn-layer {
+    background: linear-gradient(90deg, rgba(162, 28, 175, 0.85), rgba(217, 70, 239, 0.85));
+}
+#editor-button:hover {
+    border-color: #f472b6;
+    border-left-color: #f472b6;
+    box-shadow: 0 10px 25px -6px rgba(192, 38, 211, 0.35);
+}
+
+/* ── Bouton Partagé : Skill Lab (3/4) & Atlas 3D (1/4) sur la même ligne ── */
+.btn-split-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.btn-split-row .btn-3d {
+    margin: 0;
+    min-width: 0;
+}
+
+/* 3/4 de la ligne : Skill Lab */
+.btn-split-row .btn-split-main {
+    flex: 3 1 0% !important;
+    width: 75%;
+    border: 1px solid rgba(16, 185, 129, 0.22);
+    border-left: 3.5px solid #059669;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    padding-left: clamp(0.5rem, 1.1vw, 1rem);
+    padding-right: clamp(0.5rem, 1.1vw, 1rem);
+}
+
+.btn-split-row .btn-split-main .btn-layer {
+    background: linear-gradient(90deg, rgba(5, 150, 105, 0.85), rgba(16, 185, 129, 0.85));
+}
+
+.btn-split-row .btn-split-main:hover {
+    border-color: rgba(16, 185, 129, 0.65);
+    border-left-color: #10b981;
+    box-shadow: 0 10px 25px -6px rgba(16, 185, 129, 0.35);
+}
+
+.btn-split-row .btn-split-main .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(5px, 0.8vw, 8px);
+    width: 100%;
+    white-space: nowrap;
+}
+
+.btn-split-row .btn-split-main .btn-content i {
+    color: #10b981;
+    filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+    flex-shrink: 0;
+}
+
+.btn-split-row .btn-split-main .split-title {
+    font-weight: 700;
+    letter-spacing: 1.1px;
+    font-size: clamp(0.78rem, 1.2vh, 0.9rem);
+    white-space: nowrap;
+}
+
+.btn-split-row .btn-split-main .split-subtag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0.95;
+    transition: all 0.3s ease;
+}
+
+.btn-split-row .btn-split-main:hover .split-subtag {
+    background: rgba(16, 185, 129, 0.28);
+    border-color: #34d399;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+}
+
+/* 1/4 de la ligne : Atlas 3D (couleur unifiée avec Skill Lab) */
+.btn-split-row .btn-split-side {
+    flex: 1 1 0% !important;
+    width: 25%;
+    border: 1px solid rgba(16, 185, 129, 0.22);
+    border-left: 3.5px solid #059669;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    padding-left: clamp(0.35rem, 0.8vw, 0.8rem);
+    padding-right: clamp(0.35rem, 0.8vw, 0.8rem);
+}
+
+.btn-split-row .btn-split-side .btn-layer {
+    background: linear-gradient(90deg, rgba(5, 150, 105, 0.85), rgba(16, 185, 129, 0.85));
+}
+
+.btn-split-row .btn-split-side:hover {
+    border-color: rgba(16, 185, 129, 0.65);
+    border-left-color: #10b981;
+    box-shadow: 0 10px 25px -6px rgba(16, 185, 129, 0.35);
+}
+
+.btn-split-row .btn-split-side .btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.btn-split-row .btn-split-side .btn-content i {
+    color: #10b981;
+    filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.4));
+    flex-shrink: 0;
+}
+
+.btn-split-row .btn-split-side .split-title {
+    font-weight: 700;
+    letter-spacing: 0.9px;
+    font-size: clamp(0.74rem, 1.15vh, 0.86rem);
+    white-space: nowrap;
+    color: #f1f5f9;
+}
+
+.btn-split-row .btn-split-main:hover .btn-content i,
+.btn-split-row .btn-split-side:hover .btn-content i {
+    color: #ffffff;
+    filter: drop-shadow(0 0 8px #ffffff);
+}
+
+@media (max-width: 520px) {
+    .btn-split-row {
+        gap: 6px;
+    }
+    .btn-split-row .btn-split-main .split-subtag {
+        display: none;
+    }
+    .btn-split-row .btn-split-main,
+    .btn-split-row .btn-split-side {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    .btn-split-row .btn-split-main .split-title,
+    .btn-split-row .btn-split-side .split-title {
+        font-size: 0.76rem;
+        letter-spacing: 0.5px;
+    }
 }
 
 .disclaimer {

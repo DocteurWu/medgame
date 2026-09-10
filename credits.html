@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="description" content="Crédits et contributeurs de MedGame">
+    <title>Crédits - MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/credits.css?v=2">
+</head>
+
+<body>
+
+    <!-- Barre de navigation -->
+    <header class="credits-navbar">
+        <a href="index.html" class="back-btn" onclick="transitionTo('index.html'); return false;">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i> Retour au menu
+        </a>
+
+        <button class="btn-roll-trigger" id="btn-launch-roll" aria-label="Relancer le générique défilant">
+            <i class="fas fa-film" aria-hidden="true"></i> Relancer le générique
+        </button>
+    </header>
+
+    <!-- Conteneur principal condensé -->
+    <main class="credits-container">
+
+        <!-- En-tête -->
+        <section class="credits-hero">
+            <h1 class="credits-title">CRÉDITS MEDGAME</h1>
+            <p class="credits-subtitle">Coulisses, conception et contributeurs du projet</p>
+        </section>
+
+        <!-- 1. Le Créateur -->
+        <section class="glass-panel creator-panel" aria-labelledby="creator-title">
+            <div class="section-header">
+                <i class="fas fa-user-tie section-icon" aria-hidden="true"></i>
+                <h2 class="section-title" id="creator-title">Conception &amp; Développement</h2>
+            </div>
+            <div id="creator-container">
+                <!-- Rendu dynamique via data/credits.js -->
+            </div>
+        </section>
+
+        <!-- 2. Grille 2 colonnes : Contributeurs & Technologies/Ressources -->
+        <div class="compact-columns">
+            <!-- Colonne 1 : Contributeurs -->
+            <section class="glass-panel" aria-labelledby="contrib-title">
+                <div class="section-header">
+                    <i class="fas fa-hands-helping section-icon" aria-hidden="true"></i>
+                    <h2 class="section-title" id="contrib-title">Contributeurs</h2>
+                </div>
+                <div id="contributors-container">
+                    <!-- Rendu dynamique -->
+                </div>
+            </section>
+
+            <!-- Colonne 2 : Technologies & Ressources -->
+            <section class="glass-panel" aria-labelledby="tech-res-title">
+                <div class="section-header">
+                    <i class="fas fa-cube section-icon" aria-hidden="true"></i>
+                    <h2 class="section-title" id="tech-res-title">Technologies &amp; Données</h2>
+                </div>
+                <div id="technologies-container">
+                    <!-- Badges technologies -->
+                </div>
+                <div id="resources-container" style="margin-top: 10px;">
+                    <!-- Liste des ressources -->
+                </div>
+                <a href="#" class="attributions-compact-link" id="btn-open-attributions">
+                    <i class="fas fa-file-contract" aria-hidden="true"></i> Voir les attributions détaillées
+                </a>
+            </section>
+        </div>
+
+        <!-- 3. Contact & Collaborations -->
+        <section class="glass-panel contact-panel" id="contact-container" aria-label="Contact et collaborations">
+            <!-- Rendu dynamique -->
+        </section>
+
+        <!-- 4. Mention légale & Code source (discret, tout petit, en italique) -->
+        <footer class="legal-tiny-italic" id="legal-notice">
+            MedGame est un projet éducatif sous licence GPL-3.0. Code source disponible sur demande : hamlat.louai@gmail.com. Ne remplace pas un avis médical.
+        </footer>
+
+    </main>
+
+    <!-- Overlay Générique Défilant (« Credits Roll ») -->
+    <div class="credits-roll-overlay" id="credits-roll-overlay" role="dialog" aria-modal="true" aria-label="Générique défilant de MedGame">
+        <div class="roll-hud">
+            <button class="roll-btn" id="btn-speed-roll" title="Changer la vitesse de défilement">
+                <i class="fas fa-forward" aria-hidden="true"></i> Vitesse 1x
+            </button>
+            <button class="roll-btn" id="btn-pause-roll" title="Mettre en pause ou reprendre">
+                <i class="fas fa-pause" aria-hidden="true"></i> Pause
+            </button>
+            <button class="roll-btn close" id="btn-close-roll" title="Quitter le générique (Échap)">
+                <i class="fas fa-times" aria-hidden="true"></i> Quitter
+            </button>
+        </div>
+
+        <div class="credits-roll-viewport">
+            <div class="credits-roll-track" id="credits-roll-track">
+                <!-- Rendu dynamique du générique -->
+            </div>
+        </div>
+
+        <div class="roll-hint-bottom">
+            Appuyez sur Échap ou cliquez pour quitter &bull; Espace pour mettre en pause
+        </div>
+    </div>
+
+    <!-- Modal d'attributions détaillées -->
+    <div class="modal-overlay" id="attributions-modal" role="dialog" aria-modal="true" aria-labelledby="modal-attributions-title">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-attributions-title"><i class="fas fa-book-open" aria-hidden="true"></i> Attributions et Licences</h3>
+                <button class="modal-close-btn" id="btn-close-attributions" aria-label="Fermer"><i class="fas fa-times" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-body">
+                <h3>1. Modèles de Personnages 3D (Patients)</h3>
+                <p>Kenney (Mini Characters Pack) &bull; Licence CC0 1.0 Universal.</p>
+
+                <h3>2. Mobilier et Décoration 3D</h3>
+                <p>majesticmaje (Coffeehouse Lounge Pack via Poly Pizza) &bull; Licence CC-BY.</p>
+
+                <h3>3. Atlas Anatomique 3D</h3>
+                <p>BodyParts3D 4.0 © DBCLS (CC BY 4.0) via Human Atlas et Female Atlas (MIT).</p>
+
+                <h3>4. Dataset Auscultatoire HLS-CMDS</h3>
+                <p>Torabi et al. (McMaster University, IEEE Data Descriptions 2025) &bull; 100 enregistrements audio sous licence MIT.</p>
+
+                <h3>5. Dataset ECG PTB-XL</h3>
+                <p>Wagner et al. (PTB &amp; Charité Berlin, Nature Scientific Data 2020) &bull; Tracés réels 12 dérivations sous licence CC-BY 4.0.</p>
+
+                <h3>6. Atlas Système Nerveux 3D</h3>
+                <p>Batuhan Ayci (2026) &bull; Visionneuse sous Apache 2.0, données sous CC BY-SA 4.0.</p>
+
+                <p style="margin-top: 14px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+                    Consultez <code>ATTRIBUTIONS.md</code> à la racine du projet pour les clauses exhaustives.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de données et logique -->
+    <script type="module" src="data/credits.js"></script>
+    <script type="module" src="js/credits.js"></script>
+
+</body>
+
+</html>

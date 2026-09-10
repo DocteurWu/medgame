@@ -1,0 +1,201 @@
+{
+  "entries": {
+    "pathway-anterior-corticospinal": {
+      "name": "Faisceau cortico-spinal antérieur",
+      "synonyms": [
+        "faisceau cortico-spinal ventral",
+        "faisceau pyramidal direct"
+      ],
+      "modality": "Commande des muscles axiaux et proximaux",
+      "summary": "Les 10 à 15 % de fibres pyramidales qui ne décussent pas dans le bulbe descendent dans le cordon antérieur : c'est le faisceau cortico-spinal ventral. La plupart croisent au niveau de chaque segment et se terminent souvent des deux côtés sur les motoneurones du tronc et des ceintures, d'où un contrôle cortical bilatéral de l'axe. Retenir : le tronc et le cou sont relativement épargnés dans une hémiplégie ; il faut une lésion bilatérale pour paralyser l'axe."
+    },
+    "pathway-anterior-spinocerebellar": {
+      "name": "Faisceau spino-cérébelleux antérieur",
+      "synonyms": [
+        "faisceau spino-cérébelleux ventral",
+        "faisceau de Gowers"
+      ],
+      "modality": "Rétrocontrôle proprioceptif et interneuronal du membre inférieur",
+      "summary": "Issu de la corne dorsale et de la zone intermédiaire lombosacrée, il croise dans la commissure blanche antérieure puis monte dans le cordon antérolatéral et entre dans le cervelet par le pédoncule cérébelleux supérieur, où la plupart des fibres recroisent. Il renseigne moins sur la proprioception pure que sur l'activité des interneurones spinaux, c'est-à-dire sur ce que les circuits médullaires font des ordres descendants. Clinique : ataxie sans trouble sensitif conscient, versant cervelet homolatéral au membre concerné."
+    },
+    "pathway-anterior-spinothalamic": {
+      "name": "Faisceau spino-thalamique antérieur",
+      "synonyms": [
+        "faisceau spino-thalamique ventral"
+      ],
+      "modality": "Toucher grossier (non discriminatif) et pression",
+      "summary": "Les fibres du tact léger et de la pression relayent dans la corne dorsale, croisent dans la commissure blanche antérieure et montent dans le cordon antérieur avant de rejoindre le lemnisque spinal dans le tronc cérébral. Comme le toucher grossier emprunte aussi les cordons postérieurs, il est rarement aboli par une seule lésion médullaire. Retenir : en sémiologie médullaire, ce sont la douleur-température d'un côté et la vibration-position de l'autre qui localisent, pas le tact grossier."
+    },
+    "pathway-auditory": {
+      "name": "Voie auditive",
+      "synonyms": [
+        "voie cochléaire centrale"
+      ],
+      "modality": "Audition",
+      "summary": "Des cellules ciliées de l'organe de Corti aux noyaux cochléaires, la voie devient presque immédiatement bilatérale : croisements dans le corps trapézoïde vers le complexe olivaire supérieur et le lemniscus latéral, puis relais obligé au colliculus inférieur, au corps genouillé médial et enfin au gyrus de Heschl par la radiation acoustique. Conséquence clinique majeure : une lésion centrale unilatérale ne rend jamais sourd ; une surdité unilatérale signe toujours la cochlée, le nerf ou les noyaux cochléaires."
+    },
+    "pathway-basal-ganglia-loops": {
+      "name": "Boucles directe et indirecte des ganglions de la base",
+      "synonyms": [
+        "voies directe et indirecte striato-pallidales"
+      ],
+      "modality": "Sélection et calibration du mouvement",
+      "summary": "La voie directe (cortex → striatum → pallidum interne / SNr) lève l'inhibition du thalamus et facilite le mouvement ; la voie indirecte (via pallidum externe et noyau subthalamique) renforce l'inhibition thalamique et freine le mouvement. La dopamine de la pars compacta excite la voie directe (D1) et inhibe l'indirecte (D2). Retenir : sa perte bascule vers l'akinésie (parkinsonisme), la perte des neurones striataux indirects (Huntington) ou du subthalamique (hémiballisme) vers l'hyperkinésie."
+    },
+    "pathway-cerebellar-circuits": {
+      "name": "Circuits afférents et efférents cérébelleux",
+      "synonyms": [
+        "boucles ponto-cérébello-thalamo-corticales"
+      ],
+      "modality": "Coordination, minutage et apprentissage moteur",
+      "summary": "Fibres moussues (pontiques, spinales, vestibulaires) et grimpantes (olive inférieure controlatérale) convergent vers les cellules de Purkinje, qui inhibent les noyaux profonds, seule sortie du cervelet. L'hémisphère latéral dialogue avec le denté puis le thalamus ventrolatéral et le cortex moteur ; le vermis avec le fastigial et les noyaux vestibulaires et réticulés. Comme la sortie croise au mésencéphale et le faisceau cortico-spinal au bulbe, le cervelet contrôle le même côté du corps, mais travaille avec le cortex opposé via le pont."
+    },
+    "pathway-corticobulbar": {
+      "name": "Faisceau cortico-bulbaire",
+      "synonyms": [
+        "faisceau corticonucléaire"
+      ],
+      "modality": "Commande volontaire de la face, de la langue, de la mâchoire, du voile, du pharynx et du larynx",
+      "summary": "Issu des aires corticales de la face et de la bouche, il descend avec le faisceau cortico-spinal par le genou de la capsule interne puis le crus, et se distribue dans le tronc aux noyaux moteurs du V, VII, IX, X, XI et XII. La projection est bilatérale sauf vers le sous-noyau facial inférieur et l'hypoglosse (génioglosse), à prédominance controlatérale. Retenir : un AVC hémisphérique donne une parésie faciale inférieure à front épargné avec langue déviée du côté opposé à la lésion ; une lésion bilatérale donne un syndrome pseudobulbaire (rire et pleurer spasmodiques, réflexe massétérin vif, dysarthrie, dysphagie)."
+    },
+    "pathway-dcml": {
+      "name": "Voie des colonnes dorsales et du lemniscus médial",
+      "synonyms": [
+        "voie lemniscale",
+        "voie des cordons postérieurs"
+      ],
+      "modality": "Toucher discriminatif, vibration, proprioception consciente",
+      "summary": "Les grosses fibres myélinisées montent sans croiser dans les cordons postérieurs (faisceau gracile pour le membre inférieur, cunéiforme pour le supérieur) jusqu'aux noyaux gracile et cunéiforme du bulbe caudal. Les fibres arquées internes croisent (décussation sensitive) pour former le lemniscus médial, qui gagne le noyau ventropostérolatéral du thalamus puis le gyrus postcentral via le bras postérieur de la capsule interne. Le croisement bulbaire explique tout : lésion médullaire = trouble homolatéral, lésion du tronc = trouble controlatéral, et la séparation d'avec le spino-thalamique explique les dissociations sensitives."
+    },
+    "pathway-gustatory": {
+      "name": "Voie gustative",
+      "synonyms": [],
+      "modality": "Goût",
+      "summary": "Les deux tiers antérieurs de la langue signalent via la corde du tympan (VII), le tiers postérieur via le IX, l'épiglotte et le pharynx via le X, avec relais commun dans la partie rostrale du noyau du tractus solitaire. Les fibres de deuxième ordre montent surtout sans croiser jusqu'au noyau ventropostéromédial du thalamus puis au cortex gustatif (opercule frontal, insula antérieure), avec projection orbitofrontale où goût et odorat fusionnent en flaveur. Retenir : une agueusie localise bien plus souvent les nerfs périphériques que l'encéphale."
+    },
+    "pathway-horizontal-gaze": {
+      "name": "Voie du regard horizontal",
+      "synonyms": [
+        "regard latéral conjugué"
+      ],
+      "modality": "Mouvements oculaires horizontaux conjugués",
+      "summary": "Regarder à gauche exige le droit externe gauche et le droit interne droit ensemble. L'ordre part du champ oculomoteur frontal droit (saccades) ou du cortex pariéto-occipital (poursuite) vers la PPRF gauche, qui active le noyau abducens gauche : ses motoneurones commandent le droit externe homolatéral et ses interneurones gagnent via le FLM droit le sous-noyau du droit interne controlatéral. Chaque étage a sa signature : champ frontal, PPRF, noyau du VI et FLM (ophtalmoplégie internucléaire) donnent des tableaux localisateurs caractéristiques."
+    },
+    "pathway-lateral-corticospinal": {
+      "name": "Faisceau cortico-spinal latéral",
+      "synonyms": [
+        "faisceau pyramidal croisé"
+      ],
+      "modality": "Motricité volontaire fine des membres",
+      "summary": "Principale voie motrice volontaire : des neurones pyramidaux corticaux via la couronne rayonnante, le bras postérieur de la capsule interne, le crus et le pont jusqu'à la pyramide bulbaire, où 85 à 90 % des fibres décussent pour descendre dans le cordon latéral jusqu'aux interneurones et, pour la main, directement aux motoneurones. Comme le croisement siège à la jonction cervicobulbaire, toute lésion au-dessus affaiblit le côté opposé et toute lésion en dessous le même côté ; les signes d'accompagnement (face, nerfs crâniens, sensibilité) donnent l'étage."
+    },
+    "pathway-lateral-spinothalamic": {
+      "name": "Faisceau spino-thalamique latéral",
+      "synonyms": [
+        "système antérolatéral",
+        "lemniscus spinal"
+      ],
+      "modality": "Douleur et température",
+      "summary": "Les petites fibres nociceptives et thermiques relayent dans la corne dorsale (lames I, II, V) puis croisent dans la commissure blanche antérieure sur un à deux segments et montent dans le cordon antérolatéral jusqu'au thalamus ventropostérolatéral puis au cortex somatosensoriel et à l'insula. Le croisement précoce est la clé : une lésion médullaire donne un trouble controlatéral débutant un à deux segments sous la lésion, et une lésion centro-médullaire intercepte les fibres commissurales des deux côtés (dissociation suspendue en cape)."
+    },
+    "pathway-oculosympathetic": {
+      "name": "Voie oculosympathique",
+      "synonyms": [
+        "voie sympathique à destinée oculaire"
+      ],
+      "modality": "Dilatation pupillaire, ouverture palpébrale, sudation faciale",
+      "summary": "Chaîne à trois neurones au très long trajet : hypothalamus → tegmentum et moelle cervicale latérale jusqu'au centre ciliospinal (C8-T2) ; sortie par la racine T1 au-dessus de l'apex pulmonaire puis remontée cervicale jusqu'au ganglion cervical supérieur ; enfin trajet le long de la carotide interne et du sinus caverneux jusqu'au dilatateur de l'iris et au muscle de Müller. Toute interruption donne un Claude Bernard-Horner, et les signes associés (tronc cérébral, main, douleurs cervicales, sinus caverneux) plus le territoire sudoral localisent la lésion."
+    },
+    "pathway-olfactory": {
+      "name": "Voie olfactive",
+      "synonyms": [],
+      "modality": "Odorat",
+      "summary": "Les neurones récepteurs de l'épithélium nasal traversent la lame criblée et synapsent dans les glomérules du bulbe olfactif sur les cellules mitrales et à panache, dont les axones forment le tractus olfactif. À la substance perforée antérieure, la strie latérale gagne le cortex olfactif primaire de l'uncus (piriforme), l'amygdale et l'entorhinal, la strie médiale le septum et, via la commissure antérieure, le bulbe opposé. Seul sens sans relais thalamique et largement homolatéral, avec des stations temporales médiales expliquant les auras olfactives de l'épilepsie temporale."
+    },
+    "pathway-papez-limbic": {
+      "name": "Circuit de Papez et connexions limbiques",
+      "synonyms": [
+        "boucle hippocampo-mamillo-thalamo-cingulaire"
+      ],
+      "modality": "Mémoire déclarative et émotion",
+      "summary": "Le circuit mnésique classique va de l'hippocampe par le fornix aux corps mamillaires, puis par le faisceau mamillothalamique aux noyaux thalamiques antérieurs, au gyrus cingulaire, et revient par le cingulum et le cortex entorhinal à l'hippocampe. Chaque relais est une cause d'amnésie : hippocampe (Alzheimer, anoxie, herpès), fornix (chirurgie), mamillaires (carence en thiamine), thalamus antérieur (AVC). En parallèle, amygdale, orbitofrontal et thalamus médiodorsal forment la boucle des émotions et du comportement social."
+    },
+    "pathway-posterior-spinocerebellar": {
+      "name": "Faisceau spino-cérébelleux postérieur",
+      "synonyms": [
+        "faisceau spino-cérébelleux dorsal",
+        "faisceau de Flechsig"
+      ],
+      "modality": "Proprioception inconsciente du membre inférieur et du tronc bas",
+      "summary": "Les afférences proprioceptives du membre inférieur relayent dans la colonne de Clarke (C8-L3) ; ses axones montent sans croiser dans le cordon latéral puis le pédoncule cérébelleux inférieur jusqu'au vermis et au paravermis. L'équivalent du membre supérieur est le faisceau cunéo-cérébelleux issu du noyau cunéiforme accessoire. Voie non croisée au service du même côté du corps : sa lésion donne une ataxie homolatérale sans trouble sensitif conscient."
+    },
+    "pathway-pupillary-light-reflex": {
+      "name": "Voie du réflexe photomoteur",
+      "synonyms": [
+        "réflexe pupillaire à la lumière"
+      ],
+      "modality": "Constriction pupillaire à la lumière",
+      "summary": "L'éclairement d'un œil resserre les deux pupilles car la voie est bilatérale à deux niveaux : les axones rétiniens quittent le tractus optique avant le corps genouillé pour les noyaux prétectaux des deux côtés (via le bras du colliculus supérieur et la commissure postérieure), chaque prétectum projette vers les deux noyaux d'Edinger-Westphal, et chaque noyau envoie via le III des fibres préganglionnaires au ganglion ciliaire puis au sphincter de l'iris. Lésion afférente asymétrique = déficit pupillaire afférent relatif, lésion efférente = mydriase aréactive, lésion prétectale = dissociation lumière-convergence."
+    },
+    "pathway-reticulospinal": {
+      "name": "Faisceaux réticulo-spinaux",
+      "synonyms": [
+        "voies réticulospinales pontique et bulbaire"
+      ],
+      "modality": "Posture, locomotion, tonus et modulation végétative",
+      "summary": "Le faisceau pontique (médial), non croisé dans le cordon antérieur, facilite les extenseurs et les muscles axiaux ; le faisceau bulbaire (latéral), partiellement croisé, inhibe le tonus extenseur et module réflexes et douleur. Pilotés par le cortex, ils portent les ajustements posturaux anticipés et les commandes locomotrices. Leur déséquilibre après lésion du motoneurone central (perte de la commande corticale du freinateur bulbaire) contribue à la spasticité plus que la perte du cortico-spinal lui-même."
+    },
+    "pathway-rubrospinal": {
+      "name": "Faisceau rubro-spinal",
+      "synonyms": [],
+      "modality": "Facilitation des fléchisseurs du membre supérieur",
+      "summary": "Issu du noyau rouge magnocellulaire, il croise aussitôt dans la décussation tegmentale ventrale du mésencéphale et descend dans le cordon latéral juste devant le cortico-spinal latéral, pour exciter les fléchisseurs (surtout du bras) via les interneurones. Modeste chez l'homme, il compte en clinique à deux titres : les lésions rubriques et cérébelleuses perturbent la motricité du membre, et son épargne explique la posture de décortication (lésion au-dessus du noyau rouge, flexion des bras) par opposition à la décérébration (lésion en dessous, extension)."
+    },
+    "pathway-tectospinal": {
+      "name": "Faisceau tecto-spinal",
+      "synonyms": [],
+      "modality": "Orientation réflexe de la tête vers les stimuli",
+      "summary": "Les couches profondes du colliculus supérieur croisent dans la décussation tegmentale dorsale sous la substance grise périaqueducale, descendent près du FLM et se terminent dans la moelle cervicale sur les motoneurones du cou pour tourner la tête vers un stimulus visuel, auditif ou somatosensoriel. C'est le versant spinal de la réponse d'orientation, couplé aux fibres tectobulbaires qui déplacent les yeux vers la même cible : regard et tête arrivent ensemble pour amener la fovéa sur l'objet d'intérêt."
+    },
+    "pathway-trigeminothalamic": {
+      "name": "Voies trigéminothalamiques",
+      "synonyms": [
+        "lemniscus trigéminal",
+        "faisceaux trigéminothalamiques ventral et dorsal"
+      ],
+      "modality": "Toucher, douleur, température et proprioception de la face",
+      "summary": "Même logique que pour le corps, avec les noyaux trigéminés en relais : le tact dans le noyau sensitif principal (pont), la douleur-température dans le noyau spinal (bulbe et moelle cervicale haute) après trajet descendant, la proprioception mandibulaire dans le noyau mésencéphalique. Les axones de deuxième ordre croisent pour former le lemniscus trigéminal, qui monte à côté du lemniscus médial jusqu'au noyau ventropostéromédial puis à la face du gyrus postcentral. Le long tractus descendant explique l'atteinte douloureuse homolatérale de la face dans le Wallenberg latéral."
+    },
+    "pathway-vertical-gaze": {
+      "name": "Voie du regard vertical",
+      "synonyms": [
+        "regard vertical conjugué"
+      ],
+      "modality": "Mouvements oculaires verticaux conjugués",
+      "summary": "Les saccades verticales naissent dans le noyau rostral interstitiel du FLM (riMLF) au mésencéphale rostral, qui commande les noyaux du III et du IV des deux côtés ; les ordres du regard vers le haut croisent par la commissure postérieure, d'où l'abolition première du regard vers le haut en cas de compression dorsale (Parinaud). Le noyau interstitiel de Cajal maintient la position, et les afférences vestibulaires des canaux antérieur et postérieur empruntent le FLM. Comme la voie vestibulaire contourne le riMLF, la manœuvre oculocéphalique surmonte une paralysie supranucléaire (PSP, Parinaud)."
+    },
+    "pathway-vestibular-vor": {
+      "name": "Voies vestibulaires et réflexe vestibulo-oculaire",
+      "synonyms": [
+        "VOR"
+      ],
+      "modality": "Équilibre, orientation spatiale et stabilisation du regard",
+      "summary": "Canaux semi-circulaires et otolithes excitent le ganglion vestibulaire puis les quatre noyaux vestibulaires et directement le lobe flocculonodulaire. Les noyaux projettent via le FLM vers les noyaux du VI, du IV et du III pour le réflexe vestibulo-oculaire qui déplace les yeux à l'opposé de la rotation céphalique en quelques millisecondes, descendent vers la moelle pour la posture et montent via le thalamus au cortex vestibulaire (insula postérieure, jonction temporopariétale). Les deux labyrinthes étant équilibrés, une perte unilatérale crée un biais interprété comme rotation (vertige) avec nystagmus battant du côté opposé à la lésion."
+    },
+    "pathway-vestibulospinal": {
+      "name": "Faisceaux vestibulo-spinaux",
+      "synonyms": [],
+      "modality": "Tonus postural et équilibre",
+      "summary": "Le faisceau latéral (noyau de Deiters) descend sans croiser sur toute la moelle dans le cordon antérieur et excite les motoneurones extenseurs antigravitaires, sous commande otolithique et cérébelleuse (vermis, fastigial) ; le faisceau médial descend dans le FLM jusqu'à la moelle cervicale, des deux côtés, pour coordonner tête et cou avec les yeux. Avec les réticulo-spinaux, ils forment le système descendant ventromédial de la posture, et leur commande extensitrice sans opposition produit la rigidité de décérébration."
+    },
+    "pathway-visual": {
+      "name": "Voie visuelle",
+      "synonyms": [
+        "voie rétino-géniculo-calcarine",
+        "voie géniculostriée"
+      ],
+      "modality": "Vision",
+      "summary": "Rétine (photorécepteurs, bipolaires, ganglionnaires) puis nerf optique ; au chiasma, les fibres de l'hémirétine nasale (champ temporal) croisent, si bien que chaque tractus optique porte l'hémichamp opposé des deux yeux jusqu'au corps genouillé latéral. La radiation optique projette au cortex calcarin : les fibres du champ supérieur bouclent en avant dans le temporal (boucle de Meyer), celles du champ inférieur passent par le pariétal, macula au pôle. C'est la voie la plus localisatrice de la neurologie : forme et congruence du déficit, épargne maculaire et pupilles donnent l'étage."
+    }
+  }
+}

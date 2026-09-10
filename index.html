@@ -40,7 +40,7 @@
 
     <!-- Icons & Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/index.css?v=3.2">
+    <link rel="stylesheet" href="css/index.css?v=3.6">
     <link rel="stylesheet" href="css/device-check.css?v=2">
     <link rel="stylesheet" href="css/arena.css?v=2">
     <link rel="stylesheet" href="css/immersive.css?v=2">
@@ -105,13 +105,13 @@
 
             <div class="button-container" role="group" aria-label="Actions principales">
                 <!-- Tester un cas en 1 clic (Accès direct sans inscription - pour invités seulement) -->
-                <button class="btn-3d primary guest-only" id="quick-play-button" onclick="startQuickTest()" aria-label="Tester un cas clinique sans inscription">
+                <button class="btn-3d guest-only" id="quick-play-button" onclick="startQuickTest()" aria-label="Tester un cas clinique sans inscription">
                     <span class="btn-content"><i class="fas fa-bolt" aria-hidden="true"></i> Tester un cas (1 clic)</span>
                     <div class="btn-layer"></div>
                 </button>
 
                 <!-- Boutons réservés aux utilisateurs connectés -->
-                <button class="btn-3d primary auth-only" id="play-button" onclick="transitionTo('themes.html')"
+                <button class="btn-3d auth-only" id="play-button" onclick="transitionTo('themes.html')"
                     style="display:none;" aria-label="Commencer une partie">
                     <span class="btn-content"><i class="fas fa-play" aria-hidden="true"></i> Commencer ma garde</span>
                     <div class="btn-layer"></div>
@@ -120,30 +120,43 @@
                 <!-- Section auth: login ou déconnexion -->
                 <div id="auth-section" style="display: flex; flex-direction: column; gap: 10px;">
                     <button class="btn-3d" id="login-nav-button" onclick="transitionTo('login.html')"
-                        style="border-color: rgba(0, 242, 254, 0.4);" aria-label="Se connecter ou créer un compte">
+                        aria-label="Se connecter ou créer un compte">
                         <span class="btn-content"><i class="fas fa-user-md" aria-hidden="true"></i> Connexion / Inscription</span>
-                        <div class="btn-layer" style="background: linear-gradient(90deg, #4facfe, #00f2fe);"></div>
+                        <div class="btn-layer"></div>
                     </button>
                 </div>
 
                 <!-- Toujours visible -->
-                <button class="btn-3d secondary" id="tutorial-button" onclick="transitionTo('tutorial.html')" aria-label="Comment jouer au jeu">
+                <button class="btn-3d" id="tutorial-button" onclick="transitionTo('tutorial.html')" aria-label="Comment jouer au jeu">
                     <span class="btn-content"><i class="fas fa-book-medical" aria-hidden="true"></i> Comment jouer ?</span>
                     <div class="btn-layer"></div>
                 </button>
 
-                <button class="btn-3d secondary" id="atlas-button" onclick="transitionTo('atlas.html')" aria-label="Explorer l'atlas anatomique 3D">
-                    <span class="btn-content"><i class="fas fa-brain" aria-hidden="true"></i> Atlas 3D 🧠</span>
-                    <div class="btn-layer"></div>
-                </button>
-
-                <button class="btn-3d secondary" id="skills-button" onclick="transitionTo('skills.html')" aria-label="Salle d'entraînement ECG et Auscultation">
-                    <span class="btn-content"><i class="fas fa-heartbeat" aria-hidden="true"></i> Skill Lab (ECG & Auscultation) 🎯</span>
-                    <div class="btn-layer" style="background: linear-gradient(90deg, #10b981, #00f2fe);"></div>
-                </button>
+                <!-- Bouton partagé Skill Lab (3/4) & Atlas 3D (1/4) sur la même ligne -->
+                <div class="btn-split-row" role="group" aria-label="Skill Lab et Atlas 3D">
+                    <button class="btn-3d btn-split-main" id="skills-button" onclick="transitionTo('skills.html')"
+                        aria-label="Salle d'entraînement ECG et Auscultation"
+                        title="Skill Lab - Entraînement clinique ECG & Auscultation">
+                        <span class="btn-content">
+                            <i class="fas fa-heartbeat" aria-hidden="true"></i>
+                            <span class="split-title">Skill Lab</span>
+                            <span class="split-subtag">ECG &bull; Stétho</span>
+                        </span>
+                        <div class="btn-layer"></div>
+                    </button>
+                    <button class="btn-3d btn-split-side" id="atlas-button" onclick="transitionTo('atlas.html')"
+                        aria-label="Explorer l'atlas anatomique 3D"
+                        title="Atlas Anatomique 3D">
+                        <span class="btn-content">
+                            <i class="fas fa-person" aria-hidden="true"></i>
+                            <span class="split-title">Atlas 3D</span>
+                        </span>
+                        <div class="btn-layer"></div>
+                    </button>
+                </div>
 
                 <!-- Boutons réservés aux utilisateurs connectés -->
-                <button class="btn-3d tertiary auth-only" id="settings-button" style="display:none;" aria-label="Ouvrir les réglages">
+                <button class="btn-3d auth-only" id="settings-button" style="display:none;" aria-label="Ouvrir les réglages">
                     <span class="btn-content"><i class="fas fa-sliders-h" aria-hidden="true"></i> Réglages</span>
                     <div class="btn-layer"></div>
                 </button>
@@ -151,12 +164,17 @@
                 <button class="btn-3d auth-only" id="editor-button" onclick="transitionTo('editor.html')"
                     style="display:none; border-color: rgba(255, 255, 255, 0.2);" aria-label="Créer ou améliorer un cas clinique">
                     <span class="btn-content"><i class="fas fa-edit" aria-hidden="true"></i> Créer / Améliorer un Cas</span>
-                    <div class="btn-layer" style="background: linear-gradient(90deg, #ff9a9e, #fecfef);"></div>
+                    <div class="btn-layer"></div>
                 </button>
 
             </div>
 
             <p class="disclaimer">Simulation à but éducatif uniquement (logique)</p>
+            <div style="margin-top: 4px; text-align: center;">
+                <a href="credits.html" class="medgame-footer-link" onclick="transitionTo('credits.html'); return false;" style="font-size: 0.75rem; color: rgba(255,255,255,0.45); text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-award" aria-hidden="true"></i> Crédits &amp; Mentions Légales
+                </a>
+            </div>
         </div>
     </div>
 
@@ -829,6 +847,7 @@
 
         document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
     </script>
+    <script src="js/footer.js"></script>
 </body>
 
 </html>

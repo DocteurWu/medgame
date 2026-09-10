@@ -138,15 +138,29 @@ function startEcgLoop() {
     ecgRafId = requestAnimationFrame(step);
 }
 
+let currentModule = 'body'; // 'body' | 'heart' | 'neuro'
+
+function setModuleUI(module) {
+    currentModule = module;
+    $('btn-module-body')?.classList.toggle('active', module === 'body');
+    $('btn-module-heart')?.classList.toggle('active', module === 'heart');
+    $('btn-module-neuro')?.classList.toggle('active', module === 'neuro');
+    $('btn-neuro-nav-body')?.classList.toggle('active', module === 'body');
+    $('btn-neuro-nav-heart')?.classList.toggle('active', module === 'heart');
+    $('btn-neuro-nav-neuro')?.classList.toggle('active', module === 'neuro');
+}
+
 function openHeartMode(presetId = 'sinus') {
+    if (currentModule === 'neuro') closeNeuroMode(false);
     viewer.isolateHeart(true, presetId);
     selectHeartPreset(presetId);
     $('heart-mode-panel')?.classList.remove('hidden');
     startEcgLoop();
     updateHeartbeatUI();
+    setModuleUI('heart');
 }
 
-function closeHeartMode() {
+function closeHeartMode(restoreModule = true) {
     viewer.isolateHeart(false);
     $('heart-mode-panel')?.classList.add('hidden');
     if (ecgRafId) {
@@ -154,6 +168,57 @@ function closeHeartMode() {
         ecgRafId = null;
     }
     renderSystems();
+    if (restoreModule && currentModule === 'heart') {
+        setModuleUI('body');
+    }
+}
+
+function openNeuroMode(subHash = '') {
+    if (currentModule === 'heart') closeHeartMode(false);
+    const container = $('neuro-atlas-container');
+    const iframe = $('neuro-atlas-frame');
+    const layout = document.querySelector('.atlas-layout');
+    if (container && iframe) {
+        container.classList.remove('hidden');
+        // Forcer le reflow pour que la transition CSS opère avec fluidité
+        void container.offsetWidth;
+        container.classList.add('active');
+        if (layout) layout.classList.add('neuro-mode-active');
+        let targetSrc = 'neuro-atlas/index.html';
+        if (subHash) {
+            targetSrc += subHash.startsWith('#') ? subHash : `#${subHash}`;
+        }
+        const currentSrc = iframe.getAttribute('src');
+        if (!currentSrc || currentSrc === 'about:blank') {
+            iframe.src = targetSrc;
+        } else if (subHash && iframe.contentWindow) {
+            try {
+                iframe.contentWindow.location.hash = subHash.startsWith('#') ? subHash : `#${subHash}`;
+            } catch {
+                iframe.src = targetSrc;
+            }
+        }
+    }
+    setModuleUI('neuro');
+}
+
+function closeNeuroMode(restoreModule = true) {
+    const container = $('neuro-atlas-container');
+    const layout = document.querySelector('.atlas-layout');
+    if (container) {
+        container.classList.remove('active');
+        setTimeout(() => {
+            if (!container.classList.contains('active')) {
+                container.classList.add('hidden');
+            }
+        }, 350);
+    }
+    if (layout) {
+        layout.classList.remove('neuro-mode-active');
+    }
+    if (restoreModule) {
+        setModuleUI('body');
+    }
 }
 
 $('btn-heartbeat')?.addEventListener('click', () => {
@@ -166,9 +231,30 @@ $('btn-heartbeat-panel')?.addEventListener('click', () => {
     updateHeartbeatUI();
 });
 
+$('btn-module-body')?.addEventListener('click', () => {
+    if (currentModule === 'heart') closeHeartMode(false);
+    if (currentModule === 'neuro') closeNeuroMode(false);
+    setModuleUI('body');
+});
+$('btn-module-heart')?.addEventListener('click', () => openHeartMode('sinus'));
+$('btn-module-neuro')?.addEventListener('click', () => openNeuroMode());
+$('preset-neuro')?.addEventListener('click', () => openNeuroMode());
+$('btn-neuro-exit')?.addEventListener('click', () => closeNeuroMode(true));
+
+$('btn-neuro-nav-body')?.addEventListener('click', () => {
+    closeNeuroMode(true);
+});
+$('btn-neuro-nav-heart')?.addEventListener('click', () => {
+    closeNeuroMode(false);
+    openHeartMode('sinus');
+});
+$('btn-neuro-nav-neuro')?.addEventListener('click', () => {
+    // Déjà dans le module neuro
+});
+
 $('btn-heart-mode')?.addEventListener('click', () => openHeartMode('sinus'));
 $('preset-heart')?.addEventListener('click', () => openHeartMode('sinus'));
-$('btn-heart-exit')?.addEventListener('click', closeHeartMode);
+$('btn-heart-exit')?.addEventListener('click', () => closeHeartMode(true));
 
 document.querySelectorAll('.heart-preset-card').forEach((card) => {
     card.addEventListener('click', () => {
@@ -382,11 +468,18 @@ async function loadModel(modelId, initialDeepLink = false) {
                 }
             }
 
-            const heartParam = params.get('heart') || params.get('cardio');
-            const presetParam = params.get('preset');
-            if (heartParam === '1' || heartParam === 'true' || params.get('mode') === 'heart' || presetParam) {
-                const targetPreset = presetParam && HEART_PRESETS[presetParam] ? presetParam : 'sinus';
-                openHeartMode(targetPreset);
+            const moduleParam = params.get('module') || params.get('mode');
+            if (moduleParam === 'neuro' || params.get('neuro') === '1' || params.get('neuro') === 'true') {
+                const rawHash = location.hash || '';
+                const neuroHash = rawHash.startsWith('#/') ? rawHash : (params.get('target') ? `#/${params.get('target')}` : '');
+                openNeuroMode(neuroHash);
+            } else {
+                const heartParam = params.get('heart') || params.get('cardio');
+                const presetParam = params.get('preset');
+                if (heartParam === '1' || heartParam === 'true' || params.get('mode') === 'heart' || presetParam) {
+                    const targetPreset = presetParam && HEART_PRESETS[presetParam] ? presetParam : 'sinus';
+                    openHeartMode(targetPreset);
+                }
             }
         }
     } catch (e) {

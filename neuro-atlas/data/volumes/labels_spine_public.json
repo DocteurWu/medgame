@@ -1,0 +1,773 @@
+{
+ "space": "MNI152NLin2009cAsym",
+ "volume": "labels_spine_public",
+ "source": "spine_generic",
+ "note": "Spinal levels of the public edition's composed cord MRI (atlas-cord-public). Levels the nerve rootlets of a template measured are carried onto our cord centreline by the curved reformat; levels marked `estimated` are placed by the classical cord-segment-to-vertebra rule on the Z-Anatomy vertebral column instead, and the app names them \"<level> (vertebral rule)\". ids are the same 1 = C1 ... 30 = S5 ids the private volume uses, as they appear in volumes/labels_spine_public.u8.bin. meshId is the cord segment block that contains the level, so selecting a level and selecting its 3D block are the same selection.",
+ "regions": {
+  "cervical": {
+   "name": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "levels": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8"
+   ],
+   "colour": "#123E6E"
+  },
+  "thoracic": {
+   "name": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "levels": [
+    "T1",
+    "T2",
+    "T3",
+    "T4",
+    "T5",
+    "T6",
+    "T7",
+    "T8",
+    "T9",
+    "T10",
+    "T11",
+    "T12"
+   ],
+   "colour": "#1B5E2B"
+  },
+  "lumbar": {
+   "name": "Lumbar cord (L1-L5)",
+   "meshId": "spinal-segment-lumbar-vert",
+   "structureId": "spinal-segment-lumbar-vert",
+   "system": "spinal-cord",
+   "levels": [
+    "L1",
+    "L2",
+    "L3",
+    "L4",
+    "L5"
+   ],
+   "colour": "#B4530A"
+  },
+  "sacral": {
+   "name": "Sacral and coccygeal cord (S1-S5, Co)",
+   "meshId": "spinal-segment-sacral-vert",
+   "structureId": "spinal-segment-sacral-vert",
+   "system": "spinal-cord",
+   "levels": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5"
+   ],
+   "colour": "#8C2118"
+  }
+ },
+ "lut": {
+  "1": {
+   "name": "C1",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#A9D2F2"
+  },
+  "2": {
+   "name": "C2",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#93BDDF",
+   "zMm": [
+    -91.07,
+    -76.82
+   ],
+   "arcMm": [
+    8.48,
+    22.93
+   ]
+  },
+  "3": {
+   "name": "C3",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#7EA8CC",
+   "zMm": [
+    -107.62,
+    -91.07
+   ],
+   "arcMm": [
+    22.93,
+    39.68
+   ]
+  },
+  "4": {
+   "name": "C4",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#6893B9",
+   "zMm": [
+    -120.86,
+    -107.62
+   ],
+   "arcMm": [
+    39.68,
+    53.55
+   ]
+  },
+  "5": {
+   "name": "C5",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#537DA7",
+   "zMm": [
+    -134.94,
+    -120.86
+   ],
+   "arcMm": [
+    53.55,
+    68.86
+   ]
+  },
+  "6": {
+   "name": "C6",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#3D6894",
+   "zMm": [
+    -148.42,
+    -134.94
+   ],
+   "arcMm": [
+    68.86,
+    84.6
+   ]
+  },
+  "7": {
+   "name": "C7",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#285381",
+   "zMm": [
+    -159.14,
+    -148.42
+   ],
+   "arcMm": [
+    84.6,
+    98.36
+   ]
+  },
+  "8": {
+   "name": "C8",
+   "region": "cervical",
+   "regionName": "Cervical cord (C1-C8)",
+   "meshId": "spinal-segment-cervical-vert",
+   "structureId": "spinal-segment-cervical-vert",
+   "system": "spinal-cord",
+   "colour": "#123E6E",
+   "zMm": [
+    -169.84,
+    -159.14
+   ],
+   "arcMm": [
+    98.36,
+    112.79
+   ]
+  },
+  "9": {
+   "name": "T1",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#B9E4B2",
+   "zMm": [
+    -181.41,
+    -169.84
+   ],
+   "arcMm": [
+    112.79,
+    128.64
+   ]
+  },
+  "10": {
+   "name": "T2",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#ABD8A6",
+   "zMm": [
+    -197.74,
+    -181.41
+   ],
+   "arcMm": [
+    128.64,
+    151.02
+   ],
+   "estimated": true
+  },
+  "11": {
+   "name": "T3",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#9CCC99",
+   "zMm": [
+    -214.16,
+    -197.74
+   ],
+   "arcMm": [
+    151.02,
+    173.4
+   ],
+   "estimated": true
+  },
+  "12": {
+   "name": "T4",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#8EBF8D",
+   "zMm": [
+    -231.3,
+    -214.16
+   ],
+   "arcMm": [
+    173.4,
+    195.78
+   ],
+   "estimated": true
+  },
+  "13": {
+   "name": "T5",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#80B381",
+   "zMm": [
+    -249.83,
+    -231.3
+   ],
+   "arcMm": [
+    195.78,
+    218.16
+   ],
+   "estimated": true
+  },
+  "14": {
+   "name": "T6",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#71A775",
+   "zMm": [
+    -269.56,
+    -249.83
+   ],
+   "arcMm": [
+    218.16,
+    240.54
+   ],
+   "estimated": true
+  },
+  "15": {
+   "name": "T7",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#639B68",
+   "zMm": [
+    -289.77,
+    -269.56
+   ],
+   "arcMm": [
+    240.54,
+    262.92
+   ],
+   "estimated": true
+  },
+  "16": {
+   "name": "T8",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#548F5C",
+   "zMm": [
+    -310.42,
+    -289.77
+   ],
+   "arcMm": [
+    262.92,
+    285.3
+   ],
+   "estimated": true
+  },
+  "17": {
+   "name": "T9",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#468350",
+   "zMm": [
+    -331.52,
+    -310.42
+   ],
+   "arcMm": [
+    285.3,
+    307.68
+   ],
+   "estimated": true
+  },
+  "18": {
+   "name": "T10",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#387644",
+   "zMm": [
+    -353.01,
+    -331.52
+   ],
+   "arcMm": [
+    307.68,
+    330.06
+   ],
+   "estimated": true
+  },
+  "19": {
+   "name": "T11",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#296A37",
+   "zMm": [
+    -374.71,
+    -353.01
+   ],
+   "arcMm": [
+    330.06,
+    352.44
+   ],
+   "estimated": true
+  },
+  "20": {
+   "name": "T12",
+   "region": "thoracic",
+   "regionName": "Thoracic cord (T1-T12)",
+   "meshId": "spinal-segment-thoracic-vert",
+   "structureId": "spinal-segment-thoracic-vert",
+   "system": "spinal-cord",
+   "colour": "#1B5E2B",
+   "zMm": [
+    -396.51,
+    -374.71
+   ],
+   "arcMm": [
+    352.44,
+    374.83
+   ],
+   "estimated": true
+  },
+  "21": {
+   "name": "L1",
+   "region": "lumbar",
+   "regionName": "Lumbar cord (L1-L5)",
+   "meshId": "spinal-segment-lumbar-vert",
+   "structureId": "spinal-segment-lumbar-vert",
+   "system": "spinal-cord",
+   "colour": "#FBD9A5",
+   "zMm": [
+    -415.4,
+    -396.51
+   ],
+   "arcMm": [
+    374.83,
+    394.1
+   ],
+   "estimated": true
+  },
+  "22": {
+   "name": "L2",
+   "region": "lumbar",
+   "regionName": "Lumbar cord (L1-L5)",
+   "meshId": "spinal-segment-lumbar-vert",
+   "structureId": "spinal-segment-lumbar-vert",
+   "system": "spinal-cord",
+   "colour": "#E9B87E",
+   "zMm": [
+    -434.41,
+    -415.4
+   ],
+   "arcMm": [
+    394.1,
+    413.38
+   ],
+   "estimated": true
+  },
+  "23": {
+   "name": "L3",
+   "region": "lumbar",
+   "regionName": "Lumbar cord (L1-L5)",
+   "meshId": "spinal-segment-lumbar-vert",
+   "structureId": "spinal-segment-lumbar-vert",
+   "system": "spinal-cord",
+   "colour": "#D89658",
+   "zMm": [
+    -453.53,
+    -434.41
+   ],
+   "arcMm": [
+    413.38,
+    432.65
+   ],
+   "estimated": true
+  },
+  "24": {
+   "name": "L4",
+   "region": "lumbar",
+   "regionName": "Lumbar cord (L1-L5)",
+   "meshId": "spinal-segment-lumbar-vert",
+   "structureId": "spinal-segment-lumbar-vert",
+   "system": "spinal-cord",
+   "colour": "#C67431",
+   "zMm": [
+    -472.71,
+    -453.53
+   ],
+   "arcMm": [
+    432.65,
+    451.93
+   ],
+   "estimated": true
+  },
+  "25": {
+   "name": "L5",
+   "region": "lumbar",
+   "regionName": "Lumbar cord (L1-L5)",
+   "meshId": "spinal-segment-lumbar-vert",
+   "structureId": "spinal-segment-lumbar-vert",
+   "system": "spinal-cord",
+   "colour": "#B4530A",
+   "zMm": [
+    -491.91,
+    -472.71
+   ],
+   "arcMm": [
+    451.93,
+    471.2
+   ],
+   "estimated": true
+  },
+  "26": {
+   "name": "S1",
+   "region": "sacral",
+   "regionName": "Sacral and coccygeal cord (S1-S5, Co)",
+   "meshId": "spinal-segment-sacral-vert",
+   "structureId": "spinal-segment-sacral-vert",
+   "system": "spinal-cord",
+   "colour": "#F3B4AE",
+   "zMm": [
+    -501.99,
+    -491.91
+   ],
+   "arcMm": [
+    471.2,
+    481.32
+   ],
+   "estimated": true
+  },
+  "27": {
+   "name": "S2",
+   "region": "sacral",
+   "regionName": "Sacral and coccygeal cord (S1-S5, Co)",
+   "meshId": "spinal-segment-sacral-vert",
+   "structureId": "spinal-segment-sacral-vert",
+   "system": "spinal-cord",
+   "colour": "#D98F88",
+   "zMm": [
+    -512.06,
+    -501.99
+   ],
+   "arcMm": [
+    481.32,
+    491.43
+   ],
+   "estimated": true
+  },
+  "28": {
+   "name": "S3",
+   "region": "sacral",
+   "regionName": "Sacral and coccygeal cord (S1-S5, Co)",
+   "meshId": "spinal-segment-sacral-vert",
+   "structureId": "spinal-segment-sacral-vert",
+   "system": "spinal-cord",
+   "colour": "#C06A63",
+   "zMm": [
+    -522.1,
+    -512.06
+   ],
+   "arcMm": [
+    491.43,
+    501.55
+   ],
+   "estimated": true
+  },
+  "29": {
+   "name": "S4",
+   "region": "sacral",
+   "regionName": "Sacral and coccygeal cord (S1-S5, Co)",
+   "meshId": "spinal-segment-sacral-vert",
+   "structureId": "spinal-segment-sacral-vert",
+   "system": "spinal-cord",
+   "colour": "#A6463E",
+   "zMm": [
+    -532.1,
+    -522.1
+   ],
+   "arcMm": [
+    501.55,
+    511.66
+   ],
+   "estimated": true
+  },
+  "30": {
+   "name": "S5",
+   "region": "sacral",
+   "regionName": "Sacral and coccygeal cord (S1-S5, Co)",
+   "meshId": "spinal-segment-sacral-vert",
+   "structureId": "spinal-segment-sacral-vert",
+   "system": "spinal-cord",
+   "colour": "#8C2118",
+   "zMm": [
+    -542.06,
+    -532.1
+   ],
+   "arcMm": [
+    511.66,
+    521.78
+   ],
+   "estimated": true
+  }
+ },
+ "coverage": {
+  "z_mm": [
+   -718.15,
+   -52.15
+  ],
+  "vertebral_levels": [
+   "C1",
+   "L5"
+  ],
+  "spinal_levels": [
+   "C2",
+   "C3",
+   "C4",
+   "C5",
+   "C6",
+   "C7",
+   "C8",
+   "T1",
+   "T2",
+   "T3",
+   "T4",
+   "T5",
+   "T6",
+   "T7",
+   "T8",
+   "T9",
+   "T10",
+   "T11",
+   "T12",
+   "L1",
+   "L2",
+   "L3",
+   "L4",
+   "L5",
+   "S1",
+   "S2",
+   "S3",
+   "S4",
+   "S5"
+  ],
+  "note": "composed from spine_generic_t2, fudan_t2; the cord is covered to the conus. Levels C2, C3, C4, C5, C6, C7, C8, T1 are measured on the nerve rootlets; levels T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, L1, L2, L3, L4, L5, S1, S2, S3, S4, S5 below them are estimated from the classical cord-segment-to-vertebra rule and the Z-Anatomy vertebral column, not from the image"
+ },
+ "levelMethod": {
+  "measured": [
+   "C3",
+   "C4",
+   "C5",
+   "C6",
+   "C7",
+   "C8"
+  ],
+  "extrapolated": [
+   "C2",
+   "T1"
+  ],
+  "estimated": [
+   "T2",
+   "T3",
+   "T4",
+   "T5",
+   "T6",
+   "T7",
+   "T8",
+   "T9",
+   "T10",
+   "T11",
+   "T12",
+   "L1",
+   "L2",
+   "L3",
+   "L4",
+   "L5",
+   "S1",
+   "S2",
+   "S3",
+   "S4",
+   "S5"
+  ],
+  "estimated_rule": "below the last measured level the ids are ESTIMATED from the classical cord-segment-to-vertebra rule and the Z-Anatomy vertebral column alone, not from any image: C8 ends at the C7/T1 intervertebral disc, T12 at the T9/T10 disc, L5 at the mid-body of the T12 vertebra and S5 at the tip of the conus medullaris, put at the middle of the L1-L2 disc -- the same four landmarks derived.py cuts the public cord segment blocks at -- with each block divided equally among the levels it holds, starting where the measured T1 ends.  They say which vertebra a level lies opposite, not where the rootlets actually leave the cord.",
+  "estimated_blocks": [
+   {
+    "block": "thoracic",
+    "levels": [
+     "T2",
+     "T3",
+     "T4",
+     "T5",
+     "T6",
+     "T7",
+     "T8",
+     "T9",
+     "T10",
+     "T11",
+     "T12"
+    ],
+    "landmark": "Intervertebral disc T9-T10",
+    "arc_mm": [
+     128.64,
+     374.83
+    ],
+    "level_mm": 22.38
+   },
+   {
+    "block": "lumbar",
+    "levels": [
+     "L1",
+     "L2",
+     "L3",
+     "L4",
+     "L5"
+    ],
+    "landmark": "Vertebra T12",
+    "arc_mm": [
+     374.83,
+     471.2
+    ],
+    "level_mm": 19.28
+   },
+   {
+    "block": "sacral",
+    "levels": [
+     "S1",
+     "S2",
+     "S3",
+     "S4",
+     "S5"
+    ],
+    "landmark": "Intervertebral disc L1-L2",
+    "arc_mm": [
+     471.2,
+     521.78
+    ],
+    "level_mm": 10.12
+   }
+  ],
+  "measuredBy": {
+   "C2": "spine_generic_t2",
+   "C3": "spine_generic_t2",
+   "C4": "spine_generic_t2",
+   "C5": "spine_generic_t2",
+   "C6": "spine_generic_t2",
+   "C7": "spine_generic_t2",
+   "C8": "spine_generic_t2",
+   "T1": "spine_generic_t2"
+  },
+  "templates": {
+   "spine_generic_t2": {
+    "measured": [
+     "C3",
+     "C4",
+     "C5",
+     "C6",
+     "C7",
+     "C8"
+    ],
+    "extrapolated": [
+     "C2",
+     "T1"
+    ],
+    "rootlet_rostral_sd_mm": {
+     "C2": 3.64,
+     "C3": 3.5,
+     "C4": 3.03,
+     "C5": 4.56,
+     "C6": 5.75,
+     "C7": 6.49,
+     "C8": 7.77,
+     "T1": 9.42
+    },
+    "boundary_rule": "midpoint between the caudal end of the rootlets of segment n and the rostral end of those of segment n+1, averaged over the subjects",
+    "outer_boundary_rule": "the rostral edge of C2 and the caudal edge of T1 have no rootlet group beyond them, so they are set 2.14 mm above and 2.14 mm below the outermost rootlet tip -- the median of the measured boundaries"
+   }
+  }
+ }
+}
