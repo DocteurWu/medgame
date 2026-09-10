@@ -80,6 +80,10 @@ describe('Credits MedGame — Verification de conformite', () => {
         assert.ok(indexHtml.includes("transitionTo('credits.html')"), 'Le lien doit appeler transitionTo(credits.html)');
         assert.ok(indexHtml.includes('credits.html'), 'Le lien direct vers credits.html doit figurer dans index.html');
         assert.ok(indexHtml.includes('medgame-footer-link'), 'La classe medgame-footer-link doit etre presente');
+
+        // Unicite : exactement un seul lien <a> vers credits.html dans index.html
+        const matches = indexHtml.match(/<a\s+[^>]*credits\.html/gi) || [];
+        assert.equal(matches.length, 1, 'index.html doit comporter exactement un seul lien vers credits.html (aucun dedoublement)');
     });
 
     test('Aucun lien GitHub dans credits.html, data/credits.js, js/credits.js, js/footer.js', () => {
