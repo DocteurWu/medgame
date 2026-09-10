@@ -226,8 +226,10 @@ async function run() {
         await sleep(1000);
 
         const indexFooterLink = await client.eval('!!document.querySelector("a[href=\'credits.html\']")');
-        console.log(`[UI Test] Lien footer discret sur index.html: ${indexFooterLink}`);
+        const indexCreditsCount = await client.eval('document.querySelectorAll("a[href*=\'credits.html\']").length');
+        console.log(`[UI Test] Lien footer discret sur index.html: ${indexFooterLink} (total: ${indexCreditsCount})`);
         if (!indexFooterLink) throw new Error('Lien footer discret absent sur index.html');
+        if (indexCreditsCount !== 1) throw new Error(`Doublon detecte : ${indexCreditsCount} liens credits trouves sur index.html`);
 
         // 5. Test presence lien footer sur game.html
         console.log('[UI Test] Navigation vers game.html pour verifier le footer sidebar...');
@@ -241,9 +243,11 @@ async function run() {
         console.log('[UI Test] Navigation vers tutorial.html pour verifier footer-actions...');
         await client.send('Page.navigate', { url: `http://localhost:${SERVER_PORT}/tutorial.html` });
         await sleep(800);
-        const tutorialLink = await client.eval('!!document.querySelector(".footer-actions a[href=\'credits.html\']")');
-        console.log(`[UI Test] Lien footer sur tutorial.html: ${tutorialLink}`);
+        const tutorialLink = await client.eval('!!document.querySelector("a[href*=\'credits.html\']")');
+        const tutorialCreditsCount = await client.eval('document.querySelectorAll("a[href*=\'credits.html\']").length');
+        console.log(`[UI Test] Lien footer sur tutorial.html: ${tutorialLink} (total: ${tutorialCreditsCount})`);
         if (!tutorialLink) throw new Error('Lien footer absent sur tutorial.html');
+        if (tutorialCreditsCount !== 1) throw new Error(`Doublon detecte sur tutorial.html: ${tutorialCreditsCount} liens trouves`);
 
         client.close();
         console.log('\n========================================');

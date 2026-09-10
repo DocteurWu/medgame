@@ -14,7 +14,10 @@
         }
 
         // Si la page contient deja un lien vers les credits, ne rien injecter
-        if (document.querySelector('a[href="credits.html"], a[href="./credits.html"]')) {
+        if (
+            document.querySelector('a[href*="credits.html"]') ||
+            document.querySelector('.medgame-footer-link')
+        ) {
             return;
         }
 
@@ -27,6 +30,9 @@
         // 1. Page de jeu (game.html) -> Integration dans la barre laterale
         const sidebarFooter = document.querySelector('.sidebar-footer');
         if (sidebarFooter) {
+            if (sidebarFooter.querySelector('a[href*="credits.html"], .medgame-footer-link')) {
+                return;
+            }
             const linkDiv = document.createElement('div');
             linkDiv.style.cssText = 'margin-top: 8px; text-align: center; width: 100%;';
             linkDiv.innerHTML = `
@@ -41,6 +47,9 @@
         // 2. Page d'accueil (index.html) -> Integration sous le disclaimer
         const disclaimer = document.querySelector('.glass-card .disclaimer');
         if (disclaimer) {
+            if (disclaimer.parentElement && disclaimer.parentElement.querySelector('a[href*="credits.html"], .medgame-footer-link')) {
+                return;
+            }
             const indexLink = document.createElement('div');
             indexLink.style.cssText = 'margin-top: 6px; text-align: center;';
             indexLink.innerHTML = `
@@ -55,6 +64,9 @@
         // 3. Page Tutoriel (tutorial.html) -> Integration dans les actions de bas de page
         const tutorialFooter = document.querySelector('.footer-actions');
         if (tutorialFooter) {
+            if (document.querySelector('a[href*="credits.html"], .medgame-footer-link')) {
+                return;
+            }
             const tutorialLink = document.createElement('a');
             tutorialLink.href = 'credits.html';
             tutorialLink.className = 'btn-premium';
