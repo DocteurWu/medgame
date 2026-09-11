@@ -139,10 +139,12 @@ export class ThreeScene {
             powerPreference: 'high-performance',
             stencil: false,
         });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
         this.renderer.setSize(...this._size());
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMap.autoUpdate = false;
+        this.renderer.shadowMap.needsUpdate = true;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.05;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -151,8 +153,7 @@ export class ThreeScene {
         this.renderer.domElement.tabIndex = 0;
         this.renderer.domElement.setAttribute('aria-label', 'Salle d\'examen 3D interactive');
 
-        // Environnement PBR (Reflets réalistes chrome, verre, instruments)
-        this._setupEnvironmentMap();
+        // Garde contre la perte de contexte WebGL (l'environnement IBL est configure par ThreeLightingAgent)
         this._setupContextLossGuard(signal);
 
         // Orbit Controls
@@ -226,22 +227,10 @@ export class ThreeScene {
     }
 
     /**
-     * Environment map procédurale (RoomEnvironment + PMREM)
+     * Environment map procédurale (déléguée à ThreeLightingAgent pour éviter une double passe PMREM)
      */
     _setupEnvironmentMap() {
-        try {
-            const pmrem = new THREE.PMREMGenerator(this.renderer);
-            const envScene = new RoomEnvironment();
-            this._envRT = pmrem.fromScene(envScene, 0.04);
-            this.scene.environment = this._envRT.texture;
-            if ('environmentIntensity' in this.scene) {
-                this.scene.environmentIntensity = 0.65;
-            }
-            envScene.traverse?.(o => o.geometry?.dispose?.());
-            pmrem.dispose();
-        } catch (e) {
-            console.warn('[ThreeScene] RoomEnvironment non disponible:', e);
-        }
+        // Géré de manière centralisée par ThreeLightingAgent.setupLighting()
     }
 
     _setupContextLossGuard(signal) {
@@ -435,7 +424,7 @@ export class ThreeScene {
         this._raycastAccum = 0;
 
         const fps = !!this.fpsController?.enabled;
-        if (this.overlays.visible) {
+        if (this.overlays.visible || this.director?.isAnimating) {
             this.highlighter.set(null);
             this.tooltip.hide();
             return;
@@ -847,6 +836,13 @@ export class ThreeScene {
         this.director.beginFrame();
         if (!this.fpsController?.enabled) this.controls.update();
         this.director.endFrame(dt);
+
+        // Throttling du calcul d'ombres pour soulager le GPU (inutile de recalculer chaque micro-frame)
+        this._shadowTimer = (this._shadowTimer || 0) + dt;
+        if (this._shadowTimer >= 0.04 || this.characterController?.isMoving) {
+            this.renderer.shadowMap.needsUpdate = true;
+            this._shadowTimer = 0;
+        }
 
         // Rendu final
         if (!this.lightingAgent?.render?.()) {

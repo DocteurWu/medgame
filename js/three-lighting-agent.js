@@ -37,7 +37,7 @@ export class ThreeLightingAgent {
             msaa: 4,
             gtao: true,
             bloom: true,
-            shadowSize: 2048,
+            shadowSize: 1024,
             gtaoRadius: 0.6,
             gtaoSamples: 12
         };
@@ -117,16 +117,14 @@ export class ThreeLightingAgent {
         this.renderer.toneMappingExposure = 1.05;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-        // Environnement IBL : c'est lui qui donne du "réel" aux métaux, vernis et céramiques
+        // Environnement IBL procédural local (rapide, sans latence réseau, sans recompilation shader à chaud)
         this._setupEnvironment();
-        // Puis tentative de chargement d'une vraie HDRI (meilleures réflexions)
-        this._loadHDRI();
     }
 
     /**
      * Génère un environnement IBL procédural (RoomEnvironment + PMREM).
      * Fournit des réflexions PBR crédibles sur tous les matériaux standard/physical.
-     * Sert de fallback immédiat si la HDRI distante n'est pas (encore) disponible.
+     * Rapide, prédictible et sans requête réseau externe.
      */
     _setupEnvironment() {
         try {
@@ -134,10 +132,11 @@ export class ThreeLightingAgent {
             const envScene = new RoomEnvironment();
             this._envTexture = pmrem.fromScene(envScene, 0.04).texture;
             this.scene.environment = this._envTexture;
-            // Intensité globale (three >= r163) — ignorée silencieusement sur versions antérieures
+            // Intensité globale (three >= r163) — calibrée pour la salle clinique
             if ('environmentIntensity' in this.scene) {
-                this.scene.environmentIntensity = this.theme === 'light' ? 0.4 : 0.25;
+                this.scene.environmentIntensity = 0.65;
             }
+            envScene.traverse?.(o => o.geometry?.dispose?.());
             pmrem.dispose();
         } catch (e) {
             console.warn('[LightingAgent] Environnement IBL non disponible:', e);

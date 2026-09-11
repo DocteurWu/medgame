@@ -854,9 +854,16 @@ export class ECGScreenAnimator {
 
         this._scanX = 0;
         this._ecgHistory = new Float32Array(this.canvasWidth).fill(0);
+        this._lastElapsed = 0;
     }
 
     update(elapsed) {
+        // Throttling à 25 FPS (40ms) pour économiser la rasterisation CPU canvas et les transferts GPU texSubImage2D
+        if (this._lastElapsed !== undefined && (elapsed - this._lastElapsed) < 0.04) {
+            return;
+        }
+        this._lastElapsed = elapsed;
+
         const ctx = this.ctx;
         const w = this.canvasWidth;
         const h = this.canvasHeight;

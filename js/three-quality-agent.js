@@ -12,7 +12,7 @@ export const QUALITY_ORDER = ['low', 'medium', 'high', 'ultra'];
 export const QUALITY_PRESETS = {
     low: {
         label: 'Basse',
-        pixelRatio: 1.25,
+        pixelRatio: 1.0,
         msaa: 0,
         gtao: false,
         bloom: false,
@@ -23,14 +23,14 @@ export const QUALITY_PRESETS = {
     },
     medium: {
         label: 'Moyenne',
-        pixelRatio: 1.5,
-        msaa: 4,
+        pixelRatio: 1.35,
+        msaa: 2,
         gtao: true,
         bloom: true,
-        shadowSize: 2048,
-        dust: true,
-        gtaoRadius: 0.6,
-        gtaoSamples: 10
+        shadowSize: 1024,
+        dust: false,
+        gtaoRadius: 0.5,
+        gtaoSamples: 8
     },
     high: {
         label: 'Haute',
@@ -38,10 +38,10 @@ export const QUALITY_PRESETS = {
         msaa: 4,
         gtao: true,
         bloom: true,
-        shadowSize: 2048,
+        shadowSize: 1024,
         dust: true,
-        gtaoRadius: 0.8,
-        gtaoSamples: 14
+        gtaoRadius: 0.6,
+        gtaoSamples: 10
     },
     ultra: {
         label: 'Ultra',
@@ -51,8 +51,8 @@ export const QUALITY_PRESETS = {
         bloom: true,
         shadowSize: 2048,
         dust: true,
-        gtaoRadius: 1.0,
-        gtaoSamples: 20
+        gtaoRadius: 0.8,
+        gtaoSamples: 14
     }
 };
 
@@ -64,7 +64,7 @@ export class ThreeQualityAgent {
         this.scene3d = scene3d;
         this.presetName = 'medium';
         this.resScale = 1;              // multiplicateur dynamique 0.65 → 1
-        this.basePixelRatio = 1.5;
+        this.basePixelRatio = 1.35;
         this._fpsEma = 60;
         this._lastAdjust = 0;
         this._goodSince = 0;
@@ -77,18 +77,16 @@ export class ThreeQualityAgent {
 
     /**
      * Heuristique de capacité GPU/CPU pour choisir le preset initial.
-     * Ultra exige un vrai GPU + écran haute densité (jamais auto sur iGPU/batterie).
+     * Ultra reste réservé au choix utilisateur manuel pour préserver la fluidité.
      */
     detectTier() {
         try {
             const isWebGL2 = this.scene3d.renderer.capabilities.isWebGL2;
             const cores = navigator.hardwareConcurrency || 4;
             const mem = navigator.deviceMemory || 4; // Go (Chrome/Edge, plafonné à 8)
-            const dpr = window.devicePixelRatio || 1;
 
-            if (!isWebGL2 || cores <= 4) return 'medium';
-            if (cores >= 8 && mem >= 8 && dpr >= 2) return 'ultra';
-            if (cores >= 6) return 'high';
+            if (!isWebGL2 || cores <= 4 || mem < 4) return 'low';
+            if (cores >= 8 && mem >= 8) return 'high';
             return 'medium';
         } catch (e) {
             return 'medium';
@@ -97,13 +95,16 @@ export class ThreeQualityAgent {
 
     /**
      * Initialise l'agent : preset sauvegardé sinon auto-détecté,
-     * puis construit le pipeline post-processing correspondant.
+     * puis construit le pipeline post-processing de manière fluide.
      */
     async init() {
         const saved = localStorage.getItem(STORAGE_KEY);
         this.apply(saved && QUALITY_PRESETS[saved] ? saved : this.detectTier());
-        await this.scene3d.lightingAgent.setupPostProcessing();
-        this._bindHUD();
+        // Laisser le premier affichage se stabiliser avant de compiler le post-processing
+        requestAnimationFrame(async () => {
+            await this.scene3d.lightingAgent.setupPostProcessing();
+            this._bindHUD();
+        });
     }
 
     /**
@@ -200,7 +201,7 @@ export class ThreeQualityAgent {
                 this._goodSince = 0;
             } else if (this._degradeLevel < 2) {
                 this._degradeLevel = 2;
-                la?.setQualitySettings({ shadowSize: 1024, bloom: false });
+                la?.setQualitySettings({ shadowSize: 512, bloom: false });
                 this._lastAdjust = now;
                 this._goodSince = 0;
             }

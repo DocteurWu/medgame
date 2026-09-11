@@ -211,10 +211,10 @@ export function createMaterial(color, opts = {}) {
     return new THREE.MeshStandardMaterial(params);
 }
 
-export function box(scene, size, position, material, name, interactive = false) {
+export function box(scene, size, position, material, name, interactive = false, castShadow = true) {
     const mesh = new THREE.Mesh(new THREE.BoxGeometry(size.x, size.y, size.z), material);
     mesh.position.set(position.x, position.y, position.z);
-    mesh.castShadow = true;
+    mesh.castShadow = castShadow;
     mesh.receiveShadow = true;
     if (name) {
         mesh.name = name;
@@ -275,7 +275,7 @@ export function buildRoom(scene) {
         clearcoatRoughness: 0.22,
         envMapIntensity: 0.55 // Reflets mesurés, adaptés à un sol clinique
     });
-    box(scene, { x: roomWidth + 0.2, y: 0.05, z: roomLength + 0.2 }, { x: 0, y: 0, z: 0 }, floorMat, 'Sol');
+    box(scene, { x: roomWidth + 0.2, y: 0.05, z: roomLength + 0.2 }, { x: 0, y: 0, z: 0 }, floorMat, 'Sol', false, false);
 
     // B. BACK WALL (z = -5)
     // Peinture clinique satinée : micro-grain en bump + très léger clearcoat
@@ -290,14 +290,14 @@ export function buildRoom(scene) {
         clearcoatRoughness: 0.7,
         envMapIntensity: 0.25
     });
-    box(scene, { x: roomWidth, y: roomHeight, z: 0.1 }, { x: 0, y: roomHeight / 2, z: -roomLength / 2 }, wallMat, 'Mur du fond');
+    box(scene, { x: roomWidth, y: roomHeight, z: 0.1 }, { x: 0, y: roomHeight / 2, z: -roomLength / 2 }, wallMat, 'Mur du fond', false, false);
 
     // D. RIGHT WALL (x = 5.5) — Completely Solid plaster to match the screenshot
-    box(scene, { x: 0.1, y: roomHeight, z: roomLength }, { x: roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur droit');
+    box(scene, { x: 0.1, y: roomHeight, z: roomLength }, { x: roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur droit', false, false);
 
     // C. LEFT WALL (x = -5.5) — ferme la pièce côté bureau/lavabo.
     // Sans lui la caméra voyait le vide dès qu'on orbitait vers l'ouest.
-    box(scene, { x: 0.1, y: roomHeight, z: roomLength }, { x: -roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur gauche');
+    box(scene, { x: 0.1, y: roomHeight, z: roomLength }, { x: -roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur gauche', false, false);
 
     // E. CEILING (y = 5) — dalle acoustique claire, reçoit les dalles LED.
     // La face avant (z = +5) reste ouverte façon "dollhouse" pour la caméra room.
@@ -308,7 +308,7 @@ export function buildRoom(scene) {
         bumpScale: 0.05,
         envMapIntensity: 0.15
     });
-    box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight, z: 0 }, ceilMat, 'Plafond');
+    box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight, z: 0 }, ceilMat, 'Plafond', false, false);
 
     // Molding/Trim along top of the walls (from the screenshot)
     // Finition laquée satinée pour capter un léger reflet sous le plafond
@@ -319,9 +319,9 @@ export function buildRoom(scene) {
         clearcoatRoughness: 0.35,
         envMapIntensity: 0.5
     });
-    box(scene, { x: roomWidth, y: 0.22, z: 0.12 }, { x: 0, y: roomHeight - 0.11, z: -roomLength / 2 + 0.05 }, moldingMat, 'Moulure fond');
-    box(scene, { x: 0.12, y: 0.22, z: roomLength }, { x: roomWidth / 2 - 0.05, y: roomHeight - 0.11, z: 0 }, moldingMat, 'Moulure droite');
-    box(scene, { x: 0.12, y: 0.22, z: roomLength }, { x: -roomWidth / 2 + 0.05, y: roomHeight - 0.11, z: 0 }, moldingMat, 'Moulure gauche');
+    box(scene, { x: roomWidth, y: 0.22, z: 0.12 }, { x: 0, y: roomHeight - 0.11, z: -roomLength / 2 + 0.05 }, moldingMat, 'Moulure fond', false, false);
+    box(scene, { x: 0.12, y: 0.22, z: roomLength }, { x: roomWidth / 2 - 0.05, y: roomHeight - 0.11, z: 0 }, moldingMat, 'Moulure droite', false, false);
+    box(scene, { x: 0.12, y: 0.22, z: roomLength }, { x: -roomWidth / 2 + 0.05, y: roomHeight - 0.11, z: 0 }, moldingMat, 'Moulure gauche', false, false);
 
     // H. Sleek dark floating sink cabinet (Meuble Evier)
     // Laque noire biseautée — les arêtes adoucies accrochent la lumière

@@ -655,6 +655,265 @@ const AUSCULTATION_DATABASE = [
         ],
         correctIndex: 0,
         explanation: "Le frottement pleural naît de l'attrition et du frottement réciproque des feuillets pariétal et viscéral de la plèvre rendus rugueux par un dépôt de fibrine (pleurésie sèche ou phase initiale d'un épanchement). Il s'entend aux deux temps (inspiration et expiration). Dès que le patient bloque sa respiration en apnée complète, la ventilation cesse, les feuillets s'immobilisent et le bruit disparaît instantanément (alors qu'un frottement péricardique persiste)."
+    },
+
+    // =========================================================================
+    // NOUVEAUX CAS PEDIATRIQUES REELS ISSUS DU DATASET SPRSound (SJTU / SCMC)
+    // =========================================================================
+    {
+        id: 'auscult_ped_bronchiolite',
+        type: 'pulmonary',
+        title: 'Bronchiolite Aiguë du Nourrisson (VRS)',
+        difficulty: 'intermediaire',
+        patient: 'Nourrisson de 8 mois, rhinorrhée depuis 3 jours puis toux et sifflements, difficultés alimentaires, tirage sous-costal, fréquence respiratoire à 58/min.',
+        optimalHotspot: 'poumon_base_droite',
+        secondaryHotspots: ['poumon_base_gauche', 'poumon_apex_droit', 'poumon_apex_gauche', 'poumon_champs_moyen'],
+        audioFiles: {
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_65118898_0.7_0_p3_4159.wav',
+            'poumon_base_gauche': 'assets/audio/auscultation/lung/SPRS_65118898_0.7_0_p1_4162.wav',
+            'poumon_apex_droit': 'assets/audio/auscultation/lung/SPRS_65118898_0.7_0_p4_4160.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_65118898_0.7_0_p2_4161.wav',
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_65118898_0.7_0_p2_4161.wav'
+        },
+        semiology: 'Râles sibilants diffus prédominant à l\'expiration avec allongement du temps expiratoire et freinage expiratoire, râles sous-crépitants d\'encombrement associés. Enregistrement pédiatrique réel (nourrisson de 8 mois, VRS).',
+        audioParams: {
+            respiratoryRate: 50,
+            vesicularVolume: 0.45,
+            crackles: 0.4,
+            cracklesDensity: 12,
+            cracklesPitch: 900,
+            wheezing: 0.85,
+            wheezingPitches: [520, 780, 1100],
+            rhonchi: 0.3,
+            pleuralRub: 0,
+            stridor: 0
+        },
+        question: "Quelle est l'anomalie auscultatoire majeure chez ce nourrisson et quel signe clinique impose l'hospitalisation ?",
+        options: [
+            "Des râles sibilants expiratoires diffus avec freinage expiratoire ; une prise alimentaire inférieure à 50% des rations habituelles",
+            "Un stridor inspiratoire isolé avec toux quinteuse ; une fièvre modérée isolée à 38,2 °C",
+            "Des râles crépitants unilatéraux télé-inspiratoires purs ; un encombrement nasal antérieur isolé",
+            "Un silence auscultatoire bilatéral d'emblée ; un âge civil strictement supérieur à 6 mois"
+        ],
+        correctIndex: 0,
+        explanation: "La bronchiolite aiguë du nourrisson (due au VRS dans la majorité des cas) associe à l'auscultation des râles sibilants expiratoires diffus, une expiration prolongée et freinée, ainsi que des râles sous-crépitants d'encombrement. Le diagnostic est purement clinique. Selon les recommandations de la HAS, les critères d'hospitalisation comprennent l'altération de l'état général, les difficultés alimentaires avec prise inférieure à 50% des biberons sur 3 repas consécutifs, une fréquence respiratoire supérieure à 60/min, un tirage important, des apnées, une SpO2 inférieure à 92% ou un âge inférieur à 2 mois."
+    },
+    {
+        id: 'auscult_ped_asthme',
+        type: 'pulmonary',
+        title: 'Crise d\'Asthme Aiguë de l\'Enfant',
+        difficulty: 'intermediaire',
+        patient: 'Fillette de 9 ans et demi, asthmatique connue, dyspnée sifflante brutale déclenchée par la course, toux sèche, FR à 32/min, DEP diminué à 60% de la théorique.',
+        optimalHotspot: 'poumon_champs_moyen',
+        secondaryHotspots: ['poumon_apex_gauche', 'poumon_apex_droit', 'poumon_base_droite', 'poumon_base_gauche'],
+        audioFiles: {
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_66239166_9.6_1_p2_4331.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_66239166_9.6_1_p2_4331.wav',
+            'poumon_apex_droit': 'assets/audio/auscultation/lung/SPRS_66239166_9.6_1_p4_4326.wav',
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_66239166_9.6_1_p3_4332.wav',
+            'poumon_base_gauche': 'assets/audio/auscultation/lung/SPRS_66239166_9.6_1_p1_4330.wav'
+        },
+        semiology: 'Râles sibilants polyphoniques diffus bilatéraux, aigus et musicaux, audibles lors d\'une expiration prolongée et active, contrastant avec une diminution globale du murmure vésiculaire.',
+        audioParams: {
+            respiratoryRate: 30,
+            vesicularVolume: 0.35,
+            crackles: 0,
+            wheezing: 0.95,
+            wheezingPitches: [480, 680, 920, 1200],
+            rhonchi: 0,
+            pleuralRub: 0,
+            stridor: 0
+        },
+        question: "Quel mécanisme acoustique explique ces sibilants polyphoniques et quel est le traitement de première ligne ?",
+        options: [
+            "Le bronchospasme et l'œdème rétrécissant les bronches distales lors de l'expiration ; bronchodilatateurs bêta-2 mimétiques inhalés",
+            "L'obstruction laryngo-trachéale par faux croup ; nébulisation systématique d'adrénaline pure",
+            "L'inondation alvéolaire d'origine hémodynamique ; diurétiques de l'anse intraveineux à forte dose",
+            "La présence d'un épanchement liquidien pleural libre ; ponction pleurale évacuatrice en urgence"
+        ],
+        correctIndex: 0,
+        explanation: "La crise d'asthme chez l'enfant se caractérise par une inflammation bronchique, un bronchospasme et une hypersécrétion de mucus réduisant la lumière bronchiolaire. Lors de l'expiration, l'augmentation de pression pleurale accentue le collapsus des voies aériennes, produisant des râles sibilants continus polyphoniques de timbre aigu. Le traitement immédiat repose sur les bronchodilatateurs de courte durée d'action (salbutamol) inhalés à la chambre d'inhalation, associés si nécessaire à une corticothérapie orale en cas de crise modérée à sévère."
+    },
+    {
+        id: 'auscult_ped_stridor',
+        type: 'pulmonary',
+        title: 'Stridor Laryngé du Nourrisson (Obstruction Haute)',
+        difficulty: 'expert',
+        patient: 'Nourrisson de 6 mois, bruit respiratoire aigu permanent prédominant à l\'inspiration, majoré aux pleurs et atténué en décubitus ventral, sans fièvre.',
+        optimalHotspot: 'trachee',
+        secondaryHotspots: ['poumon_apex_gauche', 'poumon_apex_droit', 'poumon_base_droite', 'poumon_champs_moyen'],
+        audioFiles: {
+            'trachee': 'assets/audio/auscultation/lung/SPRS_41273150_0.5_0_p2_4092.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_41273150_0.5_0_p2_4092.wav',
+            'poumon_apex_droit': 'assets/audio/auscultation/lung/SPRS_41273150_0.5_0_p4_4082.wav',
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_41273150_0.5_0_p3_4093.wav',
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_41273150_0.5_0_p2_4092.wav'
+        },
+        semiology: 'Bruit adventice aigu, musical ou rude, prédominant de manière stricte sur le temps inspiratoire, d\'origine laryngée ou trachéale extra-thoracique. Choix pédagogique : écoute optimale sur le foyer trachéal/laryngé (enregistrement latéral p2 assigné au hotspot trachee).',
+        audioParams: {
+            respiratoryRate: 36,
+            vesicularVolume: 0.4,
+            crackles: 0,
+            wheezing: 0,
+            rhonchi: 0,
+            pleuralRub: 0,
+            stridor: 0.95,
+            stridorPitch: 850
+        },
+        question: "Quelle distinction sémiologique fondamentale oppose le stridor laryngé aux sibilants bronchiques ?",
+        options: [
+            "Le stridor est un bruit inspiratoire lié à une obstruction des voies aériennes supérieures, alors que les sibilants sont expiratoires et d'origine bronchiolaire",
+            "Le stridor est un bruit expiratoire d'origine alvéolaire, alors que les sibilants sont exclusivement perçus à l'inspiration",
+            "Le stridor s'accompagne systématiquement de râles crépitants fins aux deux bases pulmonaires",
+            "Le stridor est un bruit intermittent modifié par l'effort de toux, contrairement aux sibilants qui sont fixes"
+        ],
+        correctIndex: 0,
+        explanation: "Le stridor est un bruit respiratoire anormal, aigu et musical, survenant typiquement au cours de l'inspiration en raison d'une sténose ou d'une anomalie dynamique des voies aériennes supérieures extra-thoraciques (laryngomalacie chez le nourrisson, laryngite sous-glottique, épiglottite ou inhalation de corps étranger). Il s'oppose radicalement aux râles sibilants de l'asthme et de la bronchiolite qui sont des bruits expiratoires issus des voies aériennes inférieures intra-thoraciques. L'apparition d'un tirage sus-sternal ou sous-mandibulaire signale une détresse respiratoire obstructive haute."
+    },
+    {
+        id: 'auscult_ped_encombrement',
+        type: 'pulmonary',
+        title: 'Encombrement Bronchique et Rhonchi (Jeune Enfant)',
+        difficulty: 'debutant',
+        patient: 'Enfant de 2 ans, épisode de rhinopharyngite avec toux grasse productive, bruits de ronflements audibles à distance modifiés lorsque l\'enfant tousse.',
+        optimalHotspot: 'poumon_champs_moyen',
+        secondaryHotspots: ['poumon_apex_gauche', 'poumon_apex_droit', 'poumon_base_droite', 'poumon_base_gauche'],
+        audioFiles: {
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_66236931_2.0_1_p2_5262.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_66236931_2.0_1_p2_5262.wav',
+            'poumon_apex_droit': 'assets/audio/auscultation/lung/SPRS_66236931_2.0_1_p4_5264.wav',
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_66236931_2.0_1_p3_5263.wav',
+            'poumon_base_gauche': 'assets/audio/auscultation/lung/SPRS_66236931_2.0_1_p1_5261.wav'
+        },
+        semiology: 'Râles bronchiques (ronchus ou rhonchi), bruits continus graves, ronflants ou râpeux, perçus aux deux temps de la respiration avec prédominance expiratoire, typiquement déplacés ou atténués par la toux.',
+        audioParams: {
+            respiratoryRate: 24,
+            vesicularVolume: 0.5,
+            crackles: 0,
+            wheezing: 0,
+            rhonchi: 0.85,
+            pleuralRub: 0,
+            stridor: 0
+        },
+        question: "Quelle caractéristique sémiologique permet d'affirmer qu'un bruit anormal correspond à des râles bronchiques (rhonchi) ?",
+        options: [
+            "Leur timbre grave ronflant aux deux temps respiratoires et leur modification ou déplacement net après la toux",
+            "Leur tonalité aiguë purement inspiratoire persistant sans aucun changement après la toux",
+            "Leur sonorité sèche en velcro apparaissant uniquement à la toute fin de l'inspiration",
+            "Leur disparition immédiate lorsque l'enfant se met en décubitus dorsal strict"
+        ],
+        correctIndex: 0,
+        explanation: "Les rhonchi (ou ronchus / râles bronchiques) sont générés par les vibrations de sécrétions muqueuses ou mucopurulentes dans la lumière des bronches de gros et moyen calibre au passage du flux aérien. Bruits continus et graves (son de corne de brume ou de ronflement), ils s'entendent à l'inspiration et à l'expiration. Leur caractère mobile, modulable ou réductible par la toux permet de les différencier avec certitude des râles crépitants parenchymateux (qui restent strictement fixes après la toux)."
+    },
+    {
+        id: 'auscult_ped_crackles_fins',
+        type: 'pulmonary',
+        title: 'Crépitants Fins Télé-Inspiratoires Pédiatriques',
+        difficulty: 'intermediaire',
+        patient: 'Enfant de 23 mois (1,9 an), fièvre à 39 °C, toux sèche puis productive, polypnée à 42/min avec abattement et foyer auscultatoire basi-thoracique droit.',
+        optimalHotspot: 'poumon_base_droite',
+        secondaryHotspots: ['poumon_base_gauche', 'poumon_apex_droit', 'poumon_apex_gauche', 'poumon_champs_moyen'],
+        audioFiles: {
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_41130419_1.9_0_p3_4585.wav',
+            'poumon_base_gauche': 'assets/audio/auscultation/lung/SPRS_41130419_1.9_0_p1_4604.wav',
+            'poumon_apex_droit': 'assets/audio/auscultation/lung/SPRS_41130419_1.9_0_p4_4576.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_41130419_1.9_0_p2_4584.wav',
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_41130419_1.9_0_p2_4584.wav'
+        },
+        semiology: 'Râles crépitants fins (sonorité en bruit de velcro ou froissement de mèche de cheveux), discontinus, brefs, survenant en fin d\'inspiration (télé-inspiratoires), non modifiés par la toux, prédominant à la base droite.',
+        audioParams: {
+            respiratoryRate: 40,
+            vesicularVolume: 0.5,
+            crackles: 0.9,
+            cracklesDensity: 22,
+            cracklesPitch: 1150,
+            wheezing: 0,
+            rhonchi: 0,
+            pleuralRub: 0,
+            stridor: 0
+        },
+        question: "Quel mécanisme physique sous-tend la production des râles crépitants fins et comment réagissent-ils à la toux ?",
+        options: [
+            "L'ouverture explosive alvéolaire en fin d'inspiration de territoires atélectasiés ou exsudatifs, restant insensibles à la toux",
+            "La mobilisation de sécrétions épaisses intra-trachéales, disparaissant immédiatement après la toux",
+            "Le rétrécissement dynamique du calibre sous-glottique provoqué par un effort inspiratoire intense",
+            "Le glissement frictionnel de deux feuillets séreux inflammatoires disparaissant lors de l'apnée"
+        ],
+        correctIndex: 0,
+        explanation: "Les crépitants fins sont des bruits adventices discontinus produits par l'ouverture explosive télé-inspiratoire de petites voies aériennes distales et d'alvéoles collées par de l'exsudat (pneumopathie infectieuse à pneumocoque ou mycoplasme) ou par du liquide interstitiel. Bruits de haute fréquence comparés au décollement du Velcro, ils se concentrent en fin d'inspiration et sont totalement insensibles à la toux, ce qui permet de les distinguer des râles bronchiques de sécrétion."
+    },
+    {
+        id: 'auscult_ped_crackles_grossiers',
+        type: 'pulmonary',
+        title: 'Crépitants Grossiers / Râles Bulleux (Bronchectasies)',
+        difficulty: 'intermediaire',
+        patient: 'Fillette de 2 ans et 2 mois, suivie pour bronchorrhée chronique purulente, toux grasse quotidienne et dilatation des bronches suspectée.',
+        optimalHotspot: 'poumon_base_droite',
+        secondaryHotspots: ['poumon_base_gauche', 'poumon_apex_gauche', 'poumon_champs_moyen'],
+        audioFiles: {
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_64973610_2.2_1_p3_7138.wav',
+            'poumon_base_gauche': 'assets/audio/auscultation/lung/SPRS_64973610_2.2_1_p1_6819.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_64973610_2.2_1_p2_6756.wav',
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_64973610_2.2_1_p2_6756.wav'
+        },
+        semiology: 'Râles crépitants grossiers (ou râles sous-crépitants bulleux), bruits discontinus plus graves et humides (« gargouillis de bulles qui éclatent »), débutant dès le début de l\'inspiration et pouvant persister à l\'expiration, modifiés par la toux.',
+        audioParams: {
+            respiratoryRate: 26,
+            vesicularVolume: 0.55,
+            crackles: 0.85,
+            cracklesDensity: 12,
+            cracklesPitch: 420,
+            wheezing: 0,
+            rhonchi: 0.3,
+            pleuralRub: 0,
+            stridor: 0
+        },
+        question: "Quelle divergence sémiologique majeure permet d'opposer les crépitants grossiers aux crépitants fins ?",
+        options: [
+            "Les crépitants grossiers sont de plus basse fréquence, de timbre bulleux, présents plus tôt dans l'inspiration et modifiés par la toux",
+            "Les crépitants grossiers sont des sifflements musicaux continus perçus exclusivement lors de l'expiration forcée",
+            "Les crépitants grossiers sont cantonnés au creux sus-claviculaire et disparaissent à l'orthostatisme",
+            "Les crépitants grossiers sont toujours associés à une onde de choc cardiaque perçue à la palpation"
+        ],
+        correctIndex: 0,
+        explanation: "Les crépitants grossiers (autrefois qualifiés de sous-crépitants ou de râles bulleux) naissent dans les bronches de moyen calibre encombrées ou dilatées (dilatation des bronches, mucoviscidose, infections suppuratives récurrentes). Contrairement aux crépitants fins alvéolaires de haute fréquence et strictement télé-inspiratoires, les crépitants grossiers sont plus graves, ont une tonalité liquide de bulles rompues, surviennent plus tôt dans le cycle inspiratoire (voire au début de l'expiration) et sont mobilisés par la toux."
+    },
+    {
+        id: 'auscult_ped_mixte_foyers',
+        type: 'pulmonary',
+        title: 'Auscultation Comparative Multi-Foyers (Rhonchi et Crépitants)',
+        difficulty: 'expert',
+        patient: 'Garçon de 3 ans et demi, antécédent d\'infections respiratoires récidivantes, encombrement bronchique asymétrique et polypnée modérée.',
+        optimalHotspot: 'poumon_base_droite',
+        secondaryHotspots: ['poumon_base_gauche', 'poumon_apex_droit', 'poumon_apex_gauche', 'poumon_champs_moyen'],
+        audioFiles: {
+            'poumon_base_droite': 'assets/audio/auscultation/lung/SPRS_41090976_3.7_0_p3_7401.wav',
+            'poumon_apex_droit': 'assets/audio/auscultation/lung/SPRS_41090976_3.7_0_p4_6964.wav',
+            'poumon_base_gauche': 'assets/audio/auscultation/lung/SPRS_41090976_3.7_0_p1_6963.wav',
+            'poumon_apex_gauche': 'assets/audio/auscultation/lung/SPRS_41090976_3.7_0_p2_6962.wav',
+            'poumon_champs_moyen': 'assets/audio/auscultation/lung/SPRS_41090976_3.7_0_p2_6962.wav'
+        },
+        semiology: 'Dissociation acoustique topographique chez un même patient pédiatrique : présence de rhonchi (râles bronchiques graves) prédominant nettement à l\'hémithorax gauche (foyers p1 et p2), contrastant avec des crépitants grossiers bulleux à l\'hémithorax droit (foyers p3 et p4).',
+        audioParams: {
+            respiratoryRate: 28,
+            vesicularVolume: 0.5,
+            crackles: 0.75,
+            cracklesDensity: 14,
+            cracklesPitch: 500,
+            wheezing: 0,
+            rhonchi: 0.75,
+            pleuralRub: 0,
+            stridor: 0
+        },
+        question: "En comparant l'auscultation du poumon gauche et du poumon droit chez cet enfant, quelle interprétation clinique est correcte ?",
+        options: [
+            "Une atteinte bronchique hétérogène associant des sécrétions des gros troncs à gauche (rhonchi) et des sécrétions fluides des bronches moyennes à droite (crépitants grossiers)",
+            "Un pneumothorax complet sous tension du côté gauche responsable d'un silence auscultatoire controlatéral",
+            "Un rétrécissement mitral congénital responsable d'un roulement diastolique propagé au sommet pulmonaire",
+            "Un examen strictement normal traduisant une simple variabilité physiologique des flux aériens chez l'enfant"
+        ],
+        correctIndex: 0,
+        explanation: "L'examen auscultatoire pulmonaire pédiatrique doit obligatoirement être comparatif, méthodique et symétrique. Chez ce patient réel de 3,7 ans du dataset SPRSound, l'écoute démontre l'hétérogénéité des lésions : encombrement proximal prédominant à gauche sous forme de rhonchi ronflants (positions p1 et p2) associé à une composante distale plus fluide de crépitants grossiers à droite (positions p3 et p4). Cela illustre qu'un seul foyer ne suffit jamais à caractériser la clinique respiratoire d'un patient."
     }
 ];
 

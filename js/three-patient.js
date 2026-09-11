@@ -15,7 +15,7 @@ THREE.Cache.enabled = true;
  * Version améliorée : géométries organiques, matériaux PBR, anatomie réaliste.
  */
 export class ThreePatient {
-    constructor(scene) {
+    constructor(scene, initialCaseData = null) {
         this.scene = scene;
         this.group = new THREE.Group();
         this.scene.add(this.group);
@@ -37,7 +37,9 @@ export class ThreePatient {
         this._currentSkinColor = 0xd7a87a;
         this._currentEmissiveColor = 0x1a0800;
         this._currentEmissiveIntensity = 0.04;
-        this.loadCase({ patient: { position3D: 'allonge', tenue: 'bleu', expression: 'normal' } });
+        if (initialCaseData) {
+            this.loadCase(initialCaseData);
+        }
     }
 
     loadCase(caseData) {
