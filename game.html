@@ -108,92 +108,16 @@
                     <div class="hud-vital-item"><span class="hud-label">FR</span> <span class="hud-value" id="hud-fr">--</span></div>
                     <div class="hud-vital-item"><span class="hud-label">Gly</span> <span class="hud-value" id="hud-gly">--</span></div>
                 </div>
-                <div class="hud-telemetry-container" title="Moniteur Physiologique Clinique">
-                    <canvas id="hud-telemetry-canvas" width="280" height="42"></canvas>
-                </div>
                 <div class="hud-actions">
                     <button data-camera="room" class="hud-btn" title="Vue salle (1)"><i class="fas fa-eye"></i></button>
                     <button data-camera="patient" class="hud-btn" title="Vue patient (2)"><i class="fas fa-user"></i></button>
                     <button data-camera="desk" class="hud-btn" title="Vue bureau (3)"><i class="fas fa-desktop"></i></button>
                     <button data-camera="fps" class="hud-btn" title="Mode FPS Immersif (F)"><i class="fas fa-walking"></i></button>
                 </div>
-                <div class="hud-nav">
-                    <button class="hud-nav-btn" id="hud-btn-chat" title="Discuter avec le patient (P)"><i class="fas fa-comments"></i></button>
-                    <button class="hud-nav-btn" id="hud-btn-pc" title="Dossier médical (R)"><i class="fas fa-laptop"></i></button>
-                    <button class="hud-nav-btn" id="hud-btn-sound" title="Son du Scope (Bip ECG)"><i class="fas fa-volume-up"></i></button>
-                </div>
                 <div class="hud-timer" id="hud-timer">--:--</div>
             </div>
-            <!-- Panneau de progression démarche 2D↔3D -->
-            <div id="hud-progress" class="hud-progress">
-                <div class="hud-progress-header">
-                    <span class="hud-progress-title"><i class="fas fa-clipboard-check"></i> Démarche</span>
-                    <span class="hud-score" id="hud-score">0%</span>
-                </div>
-                <div class="hud-score-bar">
-                    <div class="hud-score-fill" id="hud-score-fill"></div>
-                </div>
-                <ul class="hud-checklist" id="hud-checklist">
-                    <li id="hud-check-interrogatoire" class="hud-check-item">
-                        <i class="fas fa-circle hud-check-icon"></i>
-                        <span>Interrogatoire</span>
-                        <span class="hud-check-detail" id="hud-detail-interrogatoire">—</span>
-                    </li>
-                    <li id="hud-check-examen" class="hud-check-item">
-                        <i class="fas fa-circle hud-check-icon"></i>
-                        <span>Examen clinique</span>
-                        <span class="hud-check-detail" id="hud-detail-examen">—</span>
-                    </li>
-                    <li id="hud-check-examens" class="hud-check-item">
-                        <i class="fas fa-circle hud-check-icon"></i>
-                        <span>Examens compl.</span>
-                        <span class="hud-check-detail" id="hud-detail-examens">—</span>
-                    </li>
-                    <li id="hud-check-locks" class="hud-check-item">
-                        <i class="fas fa-circle hud-check-icon"></i>
-                        <span>Défis sémiologiques</span>
-                        <span class="hud-check-detail" id="hud-detail-locks">—</span>
-                    </li>
-                </ul>
-            </div>
-            <div id="hud-context-card" class="hud-context-card" aria-live="polite">
-                <span class="hud-context-kbd">Clic</span>
-                <div>
-                    <strong id="hud-context-title">Explorez la salle</strong>
-                    <span id="hud-context-detail">Survolez un objet pour voir l'action disponible.</span>
-                </div>
-            </div>
-            <div id="hud-quick-actions" class="hud-quick-actions" aria-label="Actions rapides 3D">
-                <button class="hud-action-chip" data-action="patient" title="Aller au patient (P)">
-                    <i class="fas fa-user-injured"></i><span>Patient</span><kbd>P</kbd>
-                </button>
-                <button class="hud-action-chip" data-action="vitals" title="Effectuer les mesures rapides (V)">
-                    <i class="fas fa-heart-pulse"></i><span>Mesures</span><kbd>V</kbd>
-                </button>
-                <button class="hud-action-chip" data-action="pc" title="Ouvrir le dossier médical (R)">
-                    <i class="fas fa-laptop-medical"></i><span>Dossier</span><kbd>R</kbd>
-                </button>
-                <button class="hud-action-chip" data-action="armoire" title="Ouvrir l'armoire de soins (T)">
-                    <i class="fas fa-pills"></i><span>Traitements</span><kbd>T</kbd>
-                </button>
-                <button class="hud-action-chip" data-action="tablet" title="Tablette — Diagnostic & Annonce (3)">
-                    <i class="fas fa-tablet-alt"></i><span>Tablette</span><kbd>3</kbd>
-                </button>
-                <button class="hud-action-chip" data-action="evier" title="Se laver les mains (H)" id="hud-btn-hygiene" style="position:relative;">
-                    <i class="fas fa-hands-wash"></i><span>Hygiène</span><kbd>H</kbd>
-                    <span id="hud-hygiene-indicator" style="
-                        position: absolute;
-                        top: 4px; right: 4px;
-                        width: 8px; height: 8px;
-                        border-radius: 50%;
-                        background: #ff4757;
-                        box-shadow: 0 0 6px rgba(255,71,87,0.8);
-                        transition: all 0.4s;
-                    "></span>
-                </button>
-            </div>
-            <div id="hud-crosshair" class="hud-crosshair" aria-hidden="true"></div>
 
+            <div id="hud-crosshair" class="hud-crosshair" aria-hidden="true"></div>
             <div id="three-tooltip" class="three-tooltip"></div>
         </div>
     </div>

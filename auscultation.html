@@ -268,19 +268,53 @@
                         </button>
                     </div>
                     <p id="semiology-description">Description sémiologique du souffle...</p>
+                    <div id="semiology-hotspots-bar" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08); display:none;">
+                        <div style="font-size:0.74rem; font-weight:700; color:rgba(255,255,255,0.75); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                            <i class="fas fa-stethoscope" style="color:var(--auscult-cyan);"></i> Foyers d'écoute disponibles :
+                        </div>
+                        <div id="semiology-hotspots-list" style="display:flex; flex-wrap:wrap; gap:5px;"></div>
+                    </div>
                 </div>
 
                 <div class="sidebar-card library-card">
                     <div class="library-card-header">
-                        <h3><i class="fas fa-list-ul"></i> Bibliothèque Auscultatoire</h3>
-                        <div class="lib-filter-tabs">
-                            <button class="lib-filter-btn" data-lib-filter="cardiac"><i class="fas fa-heartbeat" style="color:#ff4757;"></i> Cœur (<span id="lib-count-cardiac">6</span>)</button>
-                            <button class="lib-filter-btn" data-lib-filter="pulmonary"><i class="fas fa-lungs" style="color:#10b981;"></i> Poumons (<span id="lib-count-pulmonary">4</span>)</button>
-                            <button class="lib-filter-btn active" data-lib-filter="all">Tous (<span id="lib-count-all">10</span>)</button>
+                        <div class="lib-header-row" style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:8px;">
+                            <h3><i class="fas fa-list-ul"></i> Bibliothèque Auscultatoire</h3>
+                            <div class="lib-mode-switch" style="display:inline-flex; background:rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:2px; gap:2px;">
+                                <button class="lib-mode-btn active" id="btn-lib-mode-cases" title="Cas cliniques interactifs avec fiches et évaluation" style="border:none; border-radius:14px; padding:4px 8px; font-size:0.72rem; font-weight:700; cursor:pointer; background:rgba(0,242,254,0.25); color:var(--auscult-cyan); transition:all 0.2s ease;">
+                                    <i class="fas fa-folder-open"></i> Cas (<span id="lib-count-cases">25</span>)
+                                </button>
+                                <button class="lib-mode-btn" id="btn-lib-mode-sounds" title="Pathologies sonores réelles avec écoute multi-foyers" style="border:none; border-radius:14px; padding:4px 8px; font-size:0.72rem; font-weight:700; cursor:pointer; background:transparent; color:rgba(255,255,255,0.6); transition:all 0.2s ease;">
+                                    <i class="fas fa-music"></i> Sons Réels (<span id="lib-count-all-sounds">23</span>)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Filtres mode Cas Cliniques -->
+                        <div class="lib-filter-tabs" id="lib-filter-tabs-cases">
+                            <button class="lib-filter-btn" data-lib-filter="cardiac"><i class="fas fa-heartbeat" style="color:#ff4757;"></i> Cœur (<span id="lib-count-cardiac">11</span>)</button>
+                            <button class="lib-filter-btn" data-lib-filter="pulmonary"><i class="fas fa-lungs" style="color:#10b981;"></i> Poumons (<span id="lib-count-pulmonary">14</span>)</button>
+                            <button class="lib-filter-btn active" data-lib-filter="all">Tous (<span id="lib-count-all">25</span>)</button>
+                        </div>
+
+                        <!-- Filtres mode Sons Réels (23 profils regroupés) -->
+                        <div class="lib-filter-tabs hidden" id="lib-filter-tabs-sounds">
+                            <button class="lib-filter-btn active" data-sound-filter="all">Tous (<span id="count-sounds-all">23</span>)</button>
+                            <button class="lib-filter-btn" data-sound-filter="cardiac"><i class="fas fa-heartbeat" style="color:#ff4757;"></i> Cœur (<span id="count-sounds-cardiac">10</span>)</button>
+                            <button class="lib-filter-btn" data-sound-filter="pulmonary"><i class="fas fa-lungs" style="color:#10b981;"></i> Poumons (<span id="count-sounds-pulmonary">6</span>)</button>
+                            <button class="lib-filter-btn" data-sound-filter="pediatric"><i class="fas fa-child" style="color:#00f2fe;"></i> Pédiatrie (<span id="count-sounds-pediatric">7</span>)</button>
+                        </div>
+
+                        <!-- Champ de recherche instantané pour le mode Sons Réels -->
+                        <div class="lib-search-bar hidden" id="lib-sounds-search-bar" style="margin-top:4px;">
+                            <div style="position:relative; display:flex; align-items:center;">
+                                <i class="fas fa-search" style="position:absolute; left:10px; color:rgba(255,255,255,0.4); font-size:0.75rem;"></i>
+                                <input type="text" id="lib-sounds-search-input" placeholder="Rechercher un son ou un foyer (ex: ACFA, crépitants, apex)..." style="width:100%; padding:5px 10px 5px 28px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#fff; font-size:0.76rem; outline:none; font-family:inherit;">
+                            </div>
                         </div>
                     </div>
                     <div class="case-selector-list" id="auscult-case-list">
-                        <!-- Liste des cas groupés et séparés -->
+                        <!-- Liste des cas ou des profils de sons réels -->
                     </div>
                 </div>
             </div>
@@ -347,6 +381,7 @@
     <script src="js/audio.js"></script>
     <script src="js/badges.js"></script>
     <script src="data/auscultation-database.js"></script>
+    <script src="data/auscultation-sounds.js"></script>
     <script src="data/pcg-trainer-database.js"></script>
     <script src="js/auscultation-audio.js"></script>
     <script src="js/auscultation.js"></script>

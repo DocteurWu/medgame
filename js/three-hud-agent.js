@@ -338,6 +338,7 @@ export class ThreeHUD {
      */
     _startProgressSync() {
         this._stopProgressSync();
+        if (!document.getElementById('hud-progress')) return;
         // Mise à jour initiale immédiate
         this._syncProgress();
         // Puis polling toutes les 1 seconde pour capturer les changements incrémentaux

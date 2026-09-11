@@ -32,6 +32,7 @@ export const CREDITS = {
         { name: 'BodyParts3D & HuBMAP', desc: 'Atlas 3D (CC BY 4.0 / MIT)' },
         { name: 'PhysioNet PTB-XL', desc: 'Tracés ECG réels (CC BY 4.0)' },
         { name: 'HLS-CMDS (McMaster)', desc: 'Sons auscultatoires (MIT)' },
+        { name: 'SPRSound (SJTU)', desc: 'Sons respiratoires pédiatriques réels (CC BY 4.0)' },
         { name: 'Nervous System Atlas', desc: 'Neuroanatomie 3D (Apache-2.0 / CC BY-SA 4.0)' }
     ],
 

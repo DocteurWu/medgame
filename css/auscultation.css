@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   MEDGAME — Stéthoscope Virtuel & Auscultation Lab (Next-Gen UI)
+   MEDGAME : Stéthoscope Virtuel & Auscultation Lab (Next-Gen UI)
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
@@ -407,6 +407,41 @@ body {
     100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 0 0 rgba(255, 215, 0, 0); }
 }
 
+/* Foyers avec enregistrement direct dédié pour le cas ou profil en cours */
+.torso-hotspot.has-direct-recording:not(.active) {
+    box-shadow: 0 0 16px rgba(0, 242, 254, 0.75), 0 0 0 2px rgba(0, 242, 254, 0.5);
+    border-color: #00f2fe !important;
+}
+
+.semiology-hotspot-pill {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 3px 8px;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.semiology-hotspot-pill:hover {
+    background: rgba(0, 242, 254, 0.15);
+    border-color: rgba(0, 242, 254, 0.4);
+    color: #ffffff;
+}
+
+.semiology-hotspot-pill.active {
+    background: rgba(0, 242, 254, 0.25);
+    border-color: #00f2fe;
+    color: #00f2fe;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
 /* Positions Spacieuses et Réalistes (360x440) */
 .spot-trachee     { top: 13%; left: 50%; }
 .spot-carotide    { top: 14%; left: 34%; }
@@ -801,27 +836,42 @@ body {
     background: rgba(0, 0, 0, 0.45);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    padding: 3px;
-    gap: 4px;
+    padding: 2px;
+    gap: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
 }
 
 .lib-filter-btn {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;
     background: transparent;
     border: none;
     color: rgba(255, 255, 255, 0.65);
-    padding: 5px 8px;
+    padding: 5px 3px;
     border-radius: 14px;
-    font-size: 0.73rem;
+    font-size: clamp(0.64rem, 0.8vw, 0.70rem);
     font-weight: 700;
     font-family: var(--font-title);
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 3px;
     white-space: nowrap;
+    outline: none;
+}
+
+.lib-filter-btn i {
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
+.lib-filter-btn:hover:not(.active) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .lib-filter-btn.active {
@@ -830,16 +880,24 @@ body {
     box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
 }
 
-.lib-filter-btn[data-lib-filter="cardiac"].active {
+.lib-filter-btn[data-lib-filter="cardiac"].active,
+.lib-filter-btn[data-sound-filter="cardiac"].active {
     background: rgba(255, 71, 87, 0.25);
     color: #ff6b81;
     box-shadow: 0 0 12px rgba(255, 71, 87, 0.35);
 }
 
-.lib-filter-btn[data-lib-filter="pulmonary"].active {
+.lib-filter-btn[data-lib-filter="pulmonary"].active,
+.lib-filter-btn[data-sound-filter="pulmonary"].active {
     background: rgba(16, 185, 129, 0.25);
     color: #34d399;
     box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+.lib-filter-btn[data-sound-filter="pediatric"].active {
+    background: rgba(0, 242, 254, 0.25);
+    color: #00f2fe;
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.35);
 }
 
 .case-category-section {

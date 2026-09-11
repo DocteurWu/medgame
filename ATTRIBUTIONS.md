@@ -89,5 +89,21 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
   - **Terminologies** : Terminologia Anatomica (TA2, FIPAT 2019), Terminologia Neuroanatomica (TNA, FIPAT 2017) dans le domaine public ; alignements Wikidata (CC0) et Wikipédia (CC BY-SA 4.0).
 * **Usage & Périmètre de licence** : Outil interactif à vocation éducative et pédagogique médicale (EDN/R2C). Le code de MedGame reste sous GPL-3.0, la visionneuse neuro sous Apache-2.0, et le corpus de données/contenus neuro sous CC BY-SA 4.0 sans contamination croisée.
 
+## 7. Dataset Respiratoire Pédiatrique SPRSound (Stéthoscope Lab)
+* **Nom** : SPRSound (Open-Source Sputum Sound and Respiratory Sound Database for Children)
+* **Auteurs** : Shanghai Jiao Tong University (SJTU) & Shanghai Children's Medical Center (SCMC)
+* **Publication** : IEEE Transactions on Biomedical Circuits and Systems (BioCAS)
+* **Dépôt source** : [GitHub SJTU-YONGFU-RESEARCH-GRP/SPRSound](https://github.com/SJTU-YONGFU-RESEARCH-GRP/SPRSound)
+* **Licence** : [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.fr)
+* **Ressources intégrées** : 26 enregistrements audio PCM WAV mono 16-bit 8000 Hz dans `assets/audio/auscultation/lung/` préfixés par `SPRS_` :
+  - Patient `65118898_0.7_0` (0,7 an, M, bronchiolite) : `SPRS_65118898_0.7_0_p1_4162.wav`, `SPRS_65118898_0.7_0_p2_4161.wav`, `SPRS_65118898_0.7_0_p3_4159.wav`, `SPRS_65118898_0.7_0_p4_4160.wav`
+  - Patient `66239166_9.6_1` (9,6 ans, F, asthme) : `SPRS_66239166_9.6_1_p1_4330.wav`, `SPRS_66239166_9.6_1_p2_4331.wav`, `SPRS_66239166_9.6_1_p3_4332.wav`, `SPRS_66239166_9.6_1_p4_4326.wav`
+  - Patient `41273150_0.5_0` (0,5 an, M, stridor) : `SPRS_41273150_0.5_0_p2_4092.wav`, `SPRS_41273150_0.5_0_p3_4093.wav`, `SPRS_41273150_0.5_0_p4_4082.wav`
+  - Patient `66236931_2.0_1` (2,0 ans, F, rhonchi) : `SPRS_66236931_2.0_1_p1_5261.wav`, `SPRS_66236931_2.0_1_p2_5262.wav`, `SPRS_66236931_2.0_1_p3_5263.wav`, `SPRS_66236931_2.0_1_p4_5264.wav`
+  - Patient `41130419_1.9_0` (1,9 an, M, crépitants fins) : `SPRS_41130419_1.9_0_p1_4604.wav`, `SPRS_41130419_1.9_0_p2_4584.wav`, `SPRS_41130419_1.9_0_p3_4585.wav`, `SPRS_41130419_1.9_0_p4_4576.wav`
+  - Patient `64973610_2.2_1` (2,2 ans, F, crépitants grossiers) : `SPRS_64973610_2.2_1_p1_6819.wav`, `SPRS_64973610_2.2_1_p2_6756.wav`, `SPRS_64973610_2.2_1_p3_7138.wav`
+  - Patient `41090976_3.7_0` (3,7 ans, M, mixte multi-foyers) : `SPRS_41090976_3.7_0_p1_6963.wav`, `SPRS_41090976_3.7_0_p2_6962.wav`, `SPRS_41090976_3.7_0_p3_7401.wav`, `SPRS_41090976_3.7_0_p4_6964.wav`
+
+
 
 

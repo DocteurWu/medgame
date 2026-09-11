@@ -2111,6 +2111,11 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             if (btn) btn.click();
         } else if (e.key === 'Escape') {
             // Close any open overlay/modal (priority: topmost z-index first)
+            if (typeof NurseIntro !== 'undefined' && NurseIntro.isVisible && NurseIntro.isVisible()) {
+                e.preventDefault();
+                NurseIntro.hide();
+                return;
+            }
             const ciModal = document.getElementById('contre-indication-modal');
             if (ciModal) {
                 ciModal.remove();
@@ -2187,6 +2192,11 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             return;
         }
         if (e.key === 'Escape' && window.threeManager?.enabled) {
+            if (typeof NurseIntro !== 'undefined' && NurseIntro.isVisible && NurseIntro.isVisible()) {
+                e.preventDefault();
+                NurseIntro.hide();
+                return;
+            }
             e.preventDefault();
             deactivate3DMode();
         }

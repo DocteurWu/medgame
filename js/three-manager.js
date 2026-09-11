@@ -338,6 +338,9 @@ class ThreeManager {
 
             switch (e.key.toLowerCase()) {
                 case 'escape':
+                    if (typeof NurseIntro !== 'undefined' && NurseIntro.isVisible && NurseIntro.isVisible()) {
+                        return;
+                    }
                     this.disable3D();
                     break;
                 case 'p':

@@ -6,11 +6,14 @@
  */
 const NurseIntro = (() => {
     let overlayEl = null;
+    let containerEl = null;
     let npcWrapperEl = null;
     let bubbleTextEl = null;
     let progressBarEl = null;
     let statusLedEl = null;
     let channelTitleEl = null;
+    let hudChannelTextEl = null;
+    let _keyListenerAttached = false;
 
     let onDismissCallback = null;
     let autoDismissTimer = null;
@@ -438,9 +441,43 @@ const NurseIntro = (() => {
     }
 
     /**
+     * Verifie si l'overlay est actuellement visible
+     */
+    function isVisible() {
+        return Boolean(overlayEl && overlayEl.classList.contains('visible'));
+    }
+
+    /**
+     * Gestionnaire clavier securise (intercepte Echap, Espace, Entree au niveau capture)
+     */
+    function _handleKeyDown(e) {
+        if (!isVisible()) return;
+
+        const isEscape = e.key === 'Escape' || e.key === 'Esc' || e.code === 'Escape';
+        const isSpace = e.key === ' ' || e.key === 'Spacebar' || e.code === 'Space';
+        const isEnter = e.key === 'Enter' || e.code === 'Enter' || e.code === 'NumpadEnter';
+
+        if (isEscape || isSpace || isEnter) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            hide();
+        }
+    }
+
+    function _attachKeyHandler() {
+        if (!_keyListenerAttached && typeof window !== 'undefined') {
+            window.addEventListener('keydown', _handleKeyDown, true);
+            _keyListenerAttached = true;
+        }
+    }
+
+    /**
      * Injection du template HTML dans le DOM
      */
     function init() {
+        _attachKeyHandler();
+
         if (document.getElementById('nurse-overlay')) {
             _bindElements();
             return;
@@ -497,16 +534,6 @@ const NurseIntro = (() => {
                 hide();
             });
         }
-
-        // Raccourcis clavier (Échap, Espace, Entrée)
-        window.addEventListener('keydown', (e) => {
-            if (overlayEl && overlayEl.classList.contains('visible')) {
-                if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
-                    e.preventDefault();
-                    hide();
-                }
-            }
-        });
     }
 
     // Initialisation immédiate ou sur DOM ready
@@ -613,6 +640,8 @@ const NurseIntro = (() => {
 
         overlayEl.classList.add('visible');
         overlayEl.setAttribute('aria-hidden', 'false');
+        overlayEl.setAttribute('tabindex', '-1');
+        try { overlayEl.focus(); } catch (e) {}
 
         // Fermeture automatique
         autoDismissTimer = setTimeout(() => {
@@ -663,6 +692,7 @@ const NurseIntro = (() => {
         hide,
         speak,
         setMood,
-        configure
+        configure,
+        isVisible
     };
 })();
