@@ -152,5 +152,11 @@ test('Atlas Système Nerveux — Intégrité des fichiers statiques déployés',
     assert.match(nginxConf, /X-Frame-Options\s+"SAMEORIGIN"/, 'nginx.conf doit utiliser SAMEORIGIN pour permettre l’iframe neuro');
     assert.match(nginxConf, /frame-ancestors 'self'/, 'nginx.conf doit autoriser frame-ancestors \'self\'');
     assert.match(nginxConf, /frame-src 'self' blob:/, 'nginx.conf doit autoriser frame-src \'self\' blob:');
+
+    const headersPath = path.join(ROOT, '_headers');
+    assert.ok(fs.existsSync(headersPath), '_headers doit exister pour Netlify CDN');
+    const headersContent = fs.readFileSync(headersPath, 'utf8');
+    assert.match(headersContent, /X-Frame-Options:\s*SAMEORIGIN/, '_headers doit spécifier SAMEORIGIN');
+    assert.match(headersContent, /frame-ancestors 'self'/, '_headers doit autoriser frame-ancestors \'self\'');
   });
 });
