@@ -85,18 +85,19 @@
             if (messagesEl) messagesEl.innerHTML = '';
             this.isAsking = false;
 
-            // Re-enable UI inputs
+            // Re-enable UI inputs (sauf verrou quota actif)
             const input = document.getElementById('dialogue-input');
             const submitBtn = document.querySelector('#dialogue-form button[type="submit"]');
             if (input) input.disabled = false;
             if (submitBtn) submitBtn.disabled = false;
+            if (window.QuotaGuard?.reapplyLock) window.QuotaGuard.reapplyLock();
 
             this._llm = null;
             if (window.LLMPatient) {
                 try {
                     this._llm = new window.LLMPatient(caseData);
                 } catch (e) {
-                    console.warn('[PatientChat] LLMPatient init failed, using fallback:', e);
+                    console.warn('[PatientChat] LLMPatient init failed:', e);
                 }
             }
         }
@@ -475,6 +476,18 @@
 
                 } catch (err) {
                     console.error('[PatientChat] MedicalGameManager error:', err);
+                    // Quota épuisé → verrou tablette + bannière/modale (pas d'erreur technique)
+                    if (window.QuotaGuard?.isQuotaError?.(err)) {
+                        window.QuotaGuard.lockTablet({
+                            reason: err.reason || 'quota',
+                            remaining_day: err.remaining_day ?? null,
+                            remaining_week: err.remaining_week ?? null
+                        });
+                        loading.removeAttribute('data-is-typing');
+                        loading.remove();
+                        this.isAsking = false; // libérer le guard SANS réactiver les inputs (verrou quota)
+                        return;
+                    }
                     const errMsg = err?.message || String(err);
                     // Plus de fallback silencieux : afficher l'erreur technique
                     const errorAnswer = `⚠️ [ERREUR LLM] ${errMsg}\n→ Vérifiez : proxy LLM démarré ? .env → LLM_API_KEY / LLM_API_URL ? Console (F12) → Network`;
@@ -529,6 +542,18 @@
                     });
                 } catch (err) {
                     console.error('[PatientChat] LLMPatient error:', err);
+                    // Quota épuisé → verrou tablette + bannière/modale (pas d'erreur technique)
+                    if (window.QuotaGuard?.isQuotaError?.(err)) {
+                        window.QuotaGuard.lockTablet({
+                            reason: err.reason || 'quota',
+                            remaining_day: err.remaining_day ?? null,
+                            remaining_week: err.remaining_week ?? null
+                        });
+                        loading.removeAttribute('data-is-typing');
+                        loading.remove();
+                        this.isAsking = false; // libérer le guard SANS réactiver les inputs
+                        return;
+                    }
                     const errMsg = err?.message || String(err);
                     const errorAnswer = errMsg.includes('⚠️ [ERREUR LLM]')
                         ? errMsg

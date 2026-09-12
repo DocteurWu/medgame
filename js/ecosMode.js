@@ -198,8 +198,10 @@
     /**
      * Appel LLM non-streaming pour les évaluateurs ECOS (classification, examen, annonce, feedback).
      * Délègue à window.LLMClient pour bénéficier du retry backoff et de la cascade de modèles.
+     * @param {string} [opts.quotaKind] 'dialogue' (défaut, compté) ou 'correction'
+     *   (évaluation finale : vrai LLM garanti même à quota épuisé).
      */
-    async function llmChat(messages, { temperature = 0.1, maxTokens = 300, timeoutMs = 8000, retries = 2 } = {}) {
+    async function llmChat(messages, { temperature = 0.1, maxTokens = 300, timeoutMs = 8000, retries = 2, quotaKind = 'dialogue' } = {}) {
         if (!window.LLMClient) {
             // Fallback minimal si LLMClient n'est pas encore chargé
             const ctrl = new AbortController();
@@ -207,12 +209,18 @@
             try {
                 const resp = await fetch(window.CONFIG?.LLM_API_URL || '/api/llm/chat/completions', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(window.QuotaGuard?.getUserTokenSync?.()
+                            ? { 'X-User-Token': window.QuotaGuard.getUserTokenSync() }
+                            : {})
+                    },
                     body: JSON.stringify({
                         model: window.CONFIG?.LLM_MODEL,
                         messages,
                         temperature,
-                        max_tokens: maxTokens
+                        max_tokens: maxTokens,
+                        meta: { kind: quotaKind }
                     }),
                     signal: ctrl.signal
                 });
@@ -231,7 +239,8 @@
             maxTokens,
             timeoutMs,
             maxRetries: retries,
-            stream: false
+            stream: false,
+            quotaKind
         });
     }
 
@@ -1470,7 +1479,8 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
             ], {
                 temperature: ECOS_CONFIG.LLM_TEMP.eval,
                 maxTokens: ECOS_CONFIG.LLM_MAX_TOKENS.eval,
-                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.eval
+                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.eval,
+                quotaKind: 'correction' // évaluation finale : vrai LLM garanti
             });
             const json = extractJsonSafe(text);
             ecosState.commScores = json.scores || {};
@@ -1889,7 +1899,8 @@ FORMAT : 2-3 phrases courtes en français, ton pédagogique universitaire, profe
             ], {
                 temperature: ECOS_CONFIG.LLM_TEMP.feedback,
                 maxTokens: ECOS_CONFIG.LLM_MAX_TOKENS.feedback,
-                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.feedback
+                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.feedback,
+                quotaKind: 'correction' // correction finale : vrai LLM garanti
             });
             return escapeHtml(text || '').replace(/\n/g, '<br>');
         } catch (e) {

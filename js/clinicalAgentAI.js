@@ -573,7 +573,10 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {})
+                ...(apiKey ? { 'Authorization': `Bearer ${apiKey}` } : {}),
+                ...(window.QuotaGuard?.getUserTokenSync?.()
+                    ? { 'X-User-Token': window.QuotaGuard.getUserTokenSync() }
+                    : {})
             },
             body: JSON.stringify({
                 model,
@@ -585,11 +588,27 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
                 ],
                 stream: false,
                 temperature: 0.1, // Basse température pour forcer la structure JSON
-                max_tokens: 450
+                max_tokens: 450,
+                // Classe quota : action de jeu = dialogue (compté). Strippé par le proxy.
+                meta: { kind: 'dialogue' }
             })
         });
 
         if (!response.ok) {
+            let quotaInfo = null;
+            try {
+                const j = await response.clone().json();
+                if (j && j.code === 'QUOTA_EXCEEDED') quotaInfo = j;
+            } catch (_) {}
+            if (quotaInfo) {
+                const err = new Error('Quota de messages épuisé.');
+                err.code = 'QUOTA_EXCEEDED';
+                err.reason = quotaInfo.reason || 'quota';
+                err.remaining_day = quotaInfo.remaining_day ?? null;
+                err.remaining_week = quotaInfo.remaining_week ?? null;
+                err.contactEmail = quotaInfo.email || null;
+                throw err;
+            }
             throw new Error(`HTTP ${response.status}`);
         }
 

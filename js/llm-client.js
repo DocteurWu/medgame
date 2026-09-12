@@ -23,6 +23,8 @@ class LLMClient {
      * @param {function(string): void} [params.onToken] - Callback pour chaque token (en mode stream)
      * @param {number} [params.timeoutMs=30000] - Timeout global de la requête en ms
      * @param {number} [params.maxRetries=2] - Nombre max de retries par modèle
+     * @param {string} [params.quotaKind='dialogue'] - Classe quota : 'dialogue' (compté)
+     *   ou 'correction' (exempté du quota dialogue, budget propre, vrai LLM garanti)
      * @returns {Promise<string>} La réponse textuelle complète du LLM
      */
     static async request({
@@ -35,7 +37,8 @@ class LLMClient {
         onToken,
         timeoutMs = 30000,
         maxRetries = 2,
-        responseFormat = null
+        responseFormat = null,
+        quotaKind = 'dialogue'
     }) {
         const endpoint = window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy';
         const apiKey = window.CONFIG?.LLM_API_KEY || '';
@@ -47,7 +50,25 @@ class LLMClient {
             requestedModel
         ].filter((m, idx, self) => self.indexOf(m) === idx);
 
+        // Classe quota : 'dialogue' (compté au quota) ou 'correction' (vrai LLM
+        // garanti même à quota épuisé, budget propre côté serveur).
+        const kind = quotaKind === 'correction' ? 'correction' : 'dialogue';
+
         let lastError = null;
+
+        // Pré-contrôle local (cookie 14j, zéro coût API) pour le dialogue anonyme.
+        // Le serveur reste l'autorité finale ; ceci évite juste un appel condamné.
+        if (kind === 'dialogue') {
+            const pre = window.QuotaGuard?.preCheckSync?.();
+            if (pre && pre.blocked) {
+                const err = new Error('Quota de messages épuisé (contrôle local).');
+                err.code = 'QUOTA_EXCEEDED';
+                err.reason = pre.reason || 'anon_window';
+                err.kind = kind;
+                err.localOnly = true;
+                throw err;
+            }
+        }
 
         for (const currentModel of modelsToTry) {
             let attempt = 0;
@@ -58,9 +79,9 @@ class LLMClient {
                 }
 
                 try {
-                    // Sécurité : aucun fallback clé-embarquée. Tout passe par le proxy
+                    // Sécurité : aucun appel direct. Tout passe par le proxy
                     // (Netlify en prod, MCP local en dev). Si le proxy est down,
-                    // les modules appelants basculent sur leur mode dégradé (llm-fallback).
+                    // l'erreur est affichée explicitement (pas de fausse réponse locale).
                     const targetUrl = endpoint;
                     const targetKey = apiKey;
                     const targetModel = currentModel;
@@ -80,7 +101,10 @@ class LLMClient {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            ...(targetKey ? { 'Authorization': `Bearer ${targetKey}` } : {})
+                            ...(targetKey ? { 'Authorization': `Bearer ${targetKey}` } : {}),
+                            ...(window.QuotaGuard?.getUserTokenSync?.()
+                                ? { 'X-User-Token': window.QuotaGuard.getUserTokenSync() }
+                                : {})
                             // Pas de headers custom (HTTP-Referer/X-Title) : ils déclenchent
                             // un preflight CORS que le proxy local n'autorisait pas.
                         },
@@ -92,6 +116,8 @@ class LLMClient {
                             max_tokens: Math.min(Math.max(maxTokens || 300, 50), 4000),
                             temperature,
                             top_p: 0.95,
+                            // Classe quota lue par le proxy (strippée avant forward upstream)
+                            meta: { kind },
                             ...(responseFormat ? { response_format: responseFormat } : {})
                         }),
                         signal: combinedSignal
@@ -99,10 +125,14 @@ class LLMClient {
 
                     clearTimeout(timeoutId);
 
+                    // Synchro des compteurs locaux depuis les headers du proxy
+                    try { window.QuotaGuard?.syncFromHeaders?.(response.headers, kind); } catch (_) {}
+
                     if (!response.ok) {
                         let bodyText = '';
                         try { bodyText = await response.text(); } catch (_) {}
                         let detail = bodyText.slice(0, 400);
+                        let quotaInfo = null;
                         try {
                             const j = JSON.parse(bodyText);
                             if (j.error) {
@@ -110,16 +140,37 @@ class LLMClient {
                                     ? (j.error.message || JSON.stringify(j.error))
                                     : String(j.error);
                             }
+                            if (j.code === 'QUOTA_EXCEEDED') {
+                                quotaInfo = {
+                                    reason: j.reason || 'quota',
+                                    kind: j.kind || kind,
+                                    limit: j.limit ?? null,
+                                    remaining_day: j.remaining_day ?? null,
+                                    remaining_week: j.remaining_week ?? null,
+                                    email: j.email || null
+                                };
+                            }
                         } catch (_) {}
                         const hint = response.status === 401
                             ? ' → Clé API invalide ou expirée (vérifiez LLM_API_KEY dans votre .env)'
                             : response.status === 500 && /LLM_API_KEY/.test(detail)
                             ? ' → LLM_API_KEY manquante côté serveur (.env / Netlify env vars)'
                             : response.status === 403 ? ' → Origine non autorisée (ouvrez via http://localhost, pas file://)'
-                            : response.status === 429 ? ' → Rate-limit proxy (attendez 1 min)'
+                            : response.status === 429 ? ' → Pic de charge (réessayez dans 1 min)'
+                            : response.status === 402 && quotaInfo ? ' → Quota de messages épuisé'
                             : response.status === 400 && /whitelist/i.test(detail) ? ` → Modèle non whitelisté (${detail})`
                             : '';
-                        throw new Error(`HTTP ${response.status} ${response.statusText}${detail ? ` — ${detail}` : ''}${hint} [endpoint: ${targetUrl}]`);
+                        const err = new Error(`HTTP ${response.status} ${response.statusText}${detail ? ` — ${detail}` : ''}${hint} [endpoint: ${targetUrl}]`);
+                        if (quotaInfo) {
+                            // Quota épuisé : erreur typée, JAMAIS retryée (voir catch ci-dessous).
+                            err.code = 'QUOTA_EXCEEDED';
+                            err.reason = quotaInfo.reason;
+                            err.kind = quotaInfo.kind;
+                            err.remaining_day = quotaInfo.remaining_day;
+                            err.remaining_week = quotaInfo.remaining_week;
+                            err.contactEmail = quotaInfo.email;
+                        }
+                        throw err;
                     }
 
                     let fullText = '';
@@ -155,7 +206,10 @@ class LLMClient {
 
                     lastError = err;
                     // Échec immédiat sans retry sur erreur d'authentification (401/403)
-                    if (err.message && (err.message.includes('401') || err.message.includes('403'))) {
+                    // ou quota épuisé (402/QUOTA_EXCEEDED : réessayer ne servirait à rien
+                    // et consommerait du budget ; la modale quota prend le relais).
+                    if (err.code === 'QUOTA_EXCEEDED'
+                        || (err.message && (err.message.includes('401') || err.message.includes('403')))) {
                         throw err;
                     }
                     attempt++;
