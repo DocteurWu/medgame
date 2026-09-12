@@ -84,3 +84,27 @@ await supabase.from('play_sessions').insert([{ user_id, case_id, score }]);
 1. Allez dans le **SQL Editor** de Supabase.
 2. Exécutez : `UPDATE profiles SET role = 'admin' WHERE id = 'VOTRE_UUID_SUPABASE';`
 3. Vous pouvez trouver votre UUID dans l'onglet **Authentication** ou dans la table `profiles`.
+
+---
+
+## 🛡 6. Quotas API anti-fuite (`sql/003_llm_quotas.sql`)
+
+### Mise en route (une fois)
+1. Dans le **SQL Editor** Supabase, exécutez `sql/003_llm_quotas.sql` (idempotent).
+   Crée : `llm_usage_log`, `llm_global_window`, RPC `llm_gate` + `log_llm_usage`,
+   vue `v_llm_top_consumers` (conso à vie par compte = stats abus, sans blocage).
+2. Dans **Netlify → Environment variables**, ajoutez (jamais côté client) :
+   - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (gate + log, service_role uniquement)
+   - `QUOTA_SALT` (chaîne aléatoire longue — sel du hash IP, aucune IP en clair stockée)
+   - `QUOTA_CONTACT_EMAIL` (= `hamlat.louai@gmail.com`, affiché à quota épuisé)
+
+### Règles appliquées par le proxy (`netlify/functions/llm-proxy.js`)
+- **Anonyme** : 5 messages dialogue / 14 jours glissants par IP hashée (+ cookie local 14j, 2ᵉ couche).
+- **Connecté** (JWT via `X-User-Token`) : 20 / jour + 50 / semaine par compte.
+- **Corrections** (`meta.kind='correction'`, ex. fin de cas) : exemptées du quota dialogue,
+  budget propre (3/j/IP anonyme, 10/j/compte) — la correction reste un vrai LLM.
+- **Garde-fou absolu** : 50 req/min tous utilisateurs (corrections incluses) → `429` retryable.
+- Quota épuisé → `402 QUOTA_EXCEEDED` (non retryé) → tablette verrouillée + modale
+  (login pour les anonymes, `mailto:` pour les connectés). Le dev local (`mcp-server.js`) reste illimité.
+- Maintenance : `DELETE FROM llm_usage_log WHERE created_at < now() - interval '30 days';`
+  (la règle 14j des anonymes est une fenêtre glissante, aucun cron requis).

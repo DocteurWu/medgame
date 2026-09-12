@@ -309,7 +309,7 @@ Déroulé réel de la prise en charge (mémoire du Game Master) :
 ${gmHistory}
 Traitements réellement administrés : ${administered}.
 Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ PRÉCIS : ce que le joueur a fait et ce qui a tué, l'antidote qui aurait sauvé (sans le spoiler pendant le jeu), et le rappel posologique adapté à SON erreur. Reste didactique, sans jargon inutile.`;
-                const txt = await window.LLMClient.request({ messages: [{role:'system', content:'Tu es un réanimateur pédagogue. Réponds en français, 4-6 lignes max.'},{role:'user', content:corrPrompt}], temperature:0.7, maxTokens:400, timeoutMs:12000, maxRetries:0, stream:false });
+                const txt = await window.LLMClient.request({ messages: [{role:'system', content:'Tu es un réanimateur pédagogue. Réponds en français, 4-6 lignes max.'},{role:'user', content:corrPrompt}], temperature:0.7, maxTokens:400, timeoutMs:12000, maxRetries:0, stream:false, quotaKind:'correction' });
                 if (txt && txt.trim()) personalized = txt.trim();
             } catch (e) { console.warn('[Death] correction LLM failed', e); }
         }
