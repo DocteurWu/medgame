@@ -315,11 +315,17 @@ class ClinicalAgentAI {
                 break; // Réussite !
             } catch (err) {
                 console.warn(`[ClinicalAgentAI] Échec de l'action avec ${modelToTry} :`, err.message);
+                // Quota épuisé : ne pas essayer d'autres modèles, propager l'erreur typée
+                if (err?.code === 'QUOTA_EXCEEDED' || window.QuotaGuard?.isQuotaError?.(err)) throw err;
                 lastError = err;
             }
         }
 
         if (!responseJson) {
+            // Quota épuisé : propager l'erreur pour afficher la modale login/mailto
+            if (lastError && (lastError.code === 'QUOTA_EXCEEDED' || window.QuotaGuard?.isQuotaError?.(lastError))) {
+                throw lastError;
+            }
             console.error('[ClinicalAgentAI] Tous les modèles d\'analyse clinique ont échoué.');
             responseJson = {
                 isAction: true,
