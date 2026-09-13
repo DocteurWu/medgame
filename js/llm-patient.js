@@ -807,6 +807,13 @@ ${appliedTreatmentsText}`.trim();
             if (err.name === 'AbortError') return;
             console.warn('[LLMPatient] Appel LLM échoué :', err.message);
 
+            // Quota épuisé : propager l'erreur typée telle quelle pour que
+            // patientChat affiche la modale (login / mailto) au lieu du diagnostic technique.
+            if (typeof window !== 'undefined' && window.QuotaGuard?.isQuotaError?.(err)) {
+                onError?.(err);
+                throw err;
+            }
+
             // Strict mode : aucun fallback local rule-based autorisé (100% LLM)
 
             const endpointHint = this.endpoint || '(endpoint inconnu)';

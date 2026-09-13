@@ -537,7 +537,7 @@
                                 this.messages.push({ role: 'assistant', content: fullText });
                                 resolve();
                             },
-                            (err) => reject(new Error(err))
+                            (err) => reject(err instanceof Error ? err : new Error(err))
                         );
                     });
                 } catch (err) {

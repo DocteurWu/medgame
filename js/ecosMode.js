@@ -824,6 +824,19 @@
                 return;
             } catch (err) {
                 console.error('[ECOS] MedicalGameManager error:', err);
+                // Quota épuisé → même modale que le chat (login anonyme / mailto connecté), pas d'erreur technique.
+                if (window.QuotaGuard?.isQuotaError?.(err)) {
+                    window.QuotaGuard.lockTablet({
+                        reason: err.reason || 'quota',
+                        remaining_day: err.remaining_day ?? null,
+                        remaining_week: err.remaining_week ?? null
+                    });
+                    const textElQ = placeholder?.querySelector('.ecos-msg-text');
+                    if (textElQ) textElQ.textContent = '🔒 Quota de messages épuisé — connectez-vous ou demandez des crédits, puis rédigez le diagnostic.';
+                    placeholder?.classList.add('error');
+                    placeholder?.classList.remove('thinking');
+                    return;
+                }
                 const msg = err?.message || String(err);
                 const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg} | Vérifiez proxy .env LLM_API_KEY`;
                 // Afficher l'erreur au lieu de retirer silencieusement
@@ -865,7 +878,7 @@
                         if (el) el.innerHTML = formatClinicalText(res);
                         resolve();
                     },
-                    (err) => reject(new Error(err))
+                    (err) => reject(err instanceof Error ? err : new Error(err))
                 );
             });
             placeholder.classList.remove('thinking');
@@ -880,6 +893,20 @@
             const finalAnswer = fullAnswer || placeholder.querySelector('.ecos-msg-text').textContent;
             await classifyAndCheck(question, finalAnswer);
         } catch (err) {
+            // Quota épuisé → modale login/mailto (pas d'erreur technique dans la conversation).
+            if (window.QuotaGuard?.isQuotaError?.(err)) {
+                window.QuotaGuard.lockTablet({
+                    reason: err.reason || 'quota',
+                    remaining_day: err.remaining_day ?? null,
+                    remaining_week: err.remaining_week ?? null
+                });
+                const textElQ = placeholder.querySelector('.ecos-msg-text');
+                if (textElQ) textElQ.textContent = '🔒 Quota de messages épuisé — connectez-vous ou demandez des crédits, puis rédigez le diagnostic.';
+                placeholder.classList.add('error');
+                placeholder.classList.remove('thinking');
+                console.warn('[ECOS] Quota épuisé, tablette verrouillée.');
+                return;
+            }
             const textEl = placeholder.querySelector('.ecos-msg-text');
             const msg = err?.message || String(err);
             const errorAnswer = msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — ECOS] ${msg}\n→ Endpoint: ${window.CONFIG?.LLM_API_URL || '?'} | F12 → Network llm-proxy`;
