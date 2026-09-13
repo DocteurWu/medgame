@@ -29,7 +29,8 @@ function loadModules() {
             import('./three-transition-agent.js?v=20260906-v2'),
             import('./three-lock-agent.js?v=20260906-v2'),
             import('./three-urgence-agent.js?v=20260906-v2'),
-            import('./three-clinical-agent.js?v=20260906-v2')
+            import('./three-clinical-agent.js?v=20260906-v2'),
+            import('./three-tablet.js?v=20260906-v2')
         ]).then(([three, scene, hud, transition, lockAgent, urgenceAgent, clinical]) => {
             _THREE = three;
             _mods = {

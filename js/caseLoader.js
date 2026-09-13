@@ -9,7 +9,8 @@
 const caseLoaderCache = {
     memory: new Map(),
     localStorageKey: 'medgame_case_cache',
-    ttl: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 0 : 10 * 60 * 1000,
+    ttl: 5 * 60 * 1000, // 5 minutes (enables fast memory caching during gameplay)
+    _pendingSave: false,
 
     get(key) {
         const cached = this.memory.get(key);
@@ -22,18 +23,31 @@ const caseLoaderCache = {
 
     set(key, data) {
         this.memory.set(key, { data, timestamp: Date.now() });
-        this.saveToLocalStorage(key, data);
+        this._scheduleSaveToLocalStorage();
     },
 
-    saveToLocalStorage(key, data) {
-        try {
-            const storage = JSON.parse(localStorage.getItem(this.localStorageKey) || '{}');
-            storage[key] = { data, timestamp: Date.now() };
-            Object.keys(storage).forEach(k => {
-                if (Date.now() - storage[k].timestamp > this.ttl) delete storage[k];
-            });
-            localStorage.setItem(this.localStorageKey, JSON.stringify(storage));
-        } catch (e) { console.warn('Cache localStorage failed', e); }
+    _scheduleSaveToLocalStorage() {
+        if (this._pendingSave) return;
+        this._pendingSave = true;
+        // Batch localStorage writes — don't block the main thread during parallel case loads
+        const doSave = () => {
+            this._pendingSave = false;
+            try {
+                const storage = {};
+                const now = Date.now();
+                for (const [k, v] of this.memory) {
+                    if (now - v.timestamp < this.ttl) {
+                        storage[k] = v;
+                    }
+                }
+                localStorage.setItem(this.localStorageKey, JSON.stringify(storage));
+            } catch (e) { console.warn('Cache localStorage failed', e); }
+        };
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(doSave, { timeout: 3000 });
+        } else {
+            setTimeout(doSave, 200);
+        }
     },
 
     getFromLocalStorage(key) {

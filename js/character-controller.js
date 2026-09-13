@@ -13,10 +13,8 @@ export class CharacterController {
         this.group.position.set(0, 0, 2.6);
         this.scene.add(this.group);
 
-        // Procedural doctor (instant fallback)
-        this.proceduralGroup = this.createDoctor();
-        this.group.add(this.proceduralGroup);
-        this.group.userData.armR = this.proceduralGroup.userData.armR;
+        // Procedural doctor (lazy fallback only if GLB fails)
+        this.proceduralGroup = null;
 
         this.isMoving = false;
         this.animator = new DoctorAnimator(this.group);
@@ -161,7 +159,13 @@ export class CharacterController {
             },
             undefined,
             (err) => {
-                console.error('[CharacterController] Erreur chargement GLB docteur :', modelPath, err);
+                console.warn('[CharacterController] Modèle GLB docteur non chargé, fallback procédural :', modelPath, err);
+                if (!this.proceduralGroup && !this.activeModel) {
+                    this.proceduralGroup = this.createDoctor();
+                    this.group.add(this.proceduralGroup);
+                    this.group.userData.armR = this.proceduralGroup.userData.armR;
+                    if (this.animator) this.animator._resolved = false;
+                }
             }
         );
     }

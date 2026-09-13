@@ -60,14 +60,9 @@ function animateSectionTransition(fromSection, toSection) {
 function animateCards(container) {
     if (!container) return;
     const cards = container.querySelectorAll('.medical-card');
-    cards.forEach((card, i) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        setTimeout(() => {
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, 80 + i * 100);
+    cards.forEach(card => card.classList.remove('card-visible'));
+    requestAnimationFrame(() => {
+        cards.forEach(card => card.classList.add('card-visible'));
     });
 }
 
@@ -554,9 +549,15 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             respiratoryRate: parseNum(text.resp) || 16
         };
 
+        // Reuse existing monitor if possible (avoid costly canvas destroy/recreate)
         if (gameState.vitalMonitorInstance) {
-            gameState.vitalMonitorInstance.stopVitalUpdates();
-            mountPoint.innerHTML = '';
+            Object.assign(gameState.vitalMonitorInstance.props, monitorProps);
+            Object.assign(gameState.vitalMonitorInstance.baseValues, monitorProps);
+            gameState.vitalMonitorInstance.calculateVariationRanges();
+            if (typeof gameState.vitalMonitorInstance.updateDisplay === 'function') {
+                gameState.vitalMonitorInstance.updateDisplay();
+            }
+            return;
         }
 
         const ecgH = 70;
@@ -946,7 +947,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         } else {
         const examDetailsGrid = document.querySelector('.exam-details-grid');
         if (examDetailsGrid) {
-            examDetailsGrid.innerHTML = ''; // Clear previous content
+            let examHtml = ''; // Build all HTML at once (avoids innerHTML += layout thrashing)
             const examenClinique = currentCase.examenClinique || {};
             const skipKeys = ['constantes', 'aspectGeneral']; // These are handled elsewhere
 
@@ -959,17 +960,18 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         const info = getFieldLockInfo(path);
                         const lockPlaceholderHtml = renderLockPlaceholder(path, currentCase, info);
                         const iconClass = info.blockedByPrereqs ? 'fas fa-lock' : 'fas fa-lock lock-icon';
-                        examDetailsGrid.innerHTML += `
+                        examHtml += `
                             <div class="exam-item">
                                 <h4><i class="${iconClass}"></i> ${key}</h4>
                                 ${lockPlaceholderHtml}
                             </div>
                         `;
                     } else {
-                        examDetailsGrid.innerHTML += renderExamSection(key, examData);
+                        examHtml += renderExamSection(key, examData);
                     }
                 }
             }
+            examDetailsGrid.innerHTML = examHtml;
         }
         } // fin else llmMode (examDetailsGrid visible uniquement hors LLM)
 
@@ -1087,12 +1089,16 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         }
 
         if (!isPartialRefresh) {
-            gsap.from(".medical-card", {
-                duration: 1,
-                y: 50,
-                opacity: 0,
-                stagger: 0.2,
-                ease: "power2.out"
+            // CSS-only card entrance animation (replaces GSAP for perf)
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.medical-card').forEach(card => {
+                    card.classList.remove('card-visible');
+                });
+                requestAnimationFrame(() => {
+                    document.querySelectorAll('.medical-card').forEach(card => {
+                        card.classList.add('card-visible');
+                    });
+                });
             });
         }
 
@@ -1827,11 +1833,17 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             playSound('reveal');
             loadCase();
 
-            // Auto-activer le mode 3D par défaut ou si déjà actif en session
+            // Auto-activer le mode 3D APRÈS le premier paint (ne bloque plus le TTI)
             const wantsTextMode = localStorage.getItem('medgame_text_mode_default') === 'true';
             const wasIn3D = sessionStorage.getItem('use3D') === 'true';
             if (!wantsTextMode && (wasIn3D || window.innerWidth >= 768)) {
-                activate3DMode();
+                // requestIdleCallback diffère l'init 3D au prochain creux CPU
+                const deferredInit = () => activate3DMode();
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(deferredInit, { timeout: 2000 });
+                } else {
+                    setTimeout(deferredInit, 100);
+                }
             }
         }
         displayTime(timerState.timeLeft);

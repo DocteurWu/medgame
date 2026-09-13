@@ -31,7 +31,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    /* background-attachment: fixed removed — disables GPU scroll acceleration */
     color: var(--text-main);
     height: 100vh;
     overflow: hidden;
@@ -748,24 +748,26 @@ body::before {
     transform: translateY(0);
 }
 
-/* Animation d'entrée pour les éléments de section */
-.game-section.active .medical-card {
+/* Animation d'entrée pour les cartes médicales — GPU-composited via classes */
+.medical-card {
     opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(25px);
+    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
 }
 
-/* Staggered animation pour les cartes */
-.game-section.active .medical-card:nth-child(1) { transition-delay: 0.05s; }
-.game-section.active .medical-card:nth-child(2) { transition-delay: 0.1s; }
-.game-section.active .medical-card:nth-child(3) { transition-delay: 0.15s; }
-.game-section.active .medical-card:nth-child(4) { transition-delay: 0.2s; }
-.game-section.active .medical-card:nth-child(5) { transition-delay: 0.25s; }
-.game-section.active .medical-card:nth-child(6) { transition-delay: 0.3s; }
-.game-section.active .medical-card:nth-child(n+7) { transition-delay: 0.35s; }
+/* Staggered animation pour les cartes (délai via nth-child) */
+.medical-card:nth-child(1) { transition-delay: 0.03s; }
+.medical-card:nth-child(2) { transition-delay: 0.08s; }
+.medical-card:nth-child(3) { transition-delay: 0.13s; }
+.medical-card:nth-child(4) { transition-delay: 0.18s; }
+.medical-card:nth-child(5) { transition-delay: 0.22s; }
+.medical-card:nth-child(6) { transition-delay: 0.26s; }
+.medical-card:nth-child(n+7) { transition-delay: 0.30s; }
 
-.game-section.active .medical-card {
+/* État visible — appliqué par JS via classList.add('card-visible') */
+.medical-card.card-visible {
     opacity: 1;
     transform: translateY(0);
 }
