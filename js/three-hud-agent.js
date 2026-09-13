@@ -1450,12 +1450,31 @@ export class ThreeHUD {
                         // Callback en cas d'erreur (Ollama absent, réseau coupé, etc.)
                         (errorMsg) => {
                             this._hideThinkingIndicator();
+                            // Quota épuisé → modale login/mailto (pas d'erreur technique dans le dialogue).
+                            const err = typeof errorMsg === 'string' ? new Error(errorMsg) : errorMsg;
+                            if (window.QuotaGuard?.isQuotaError?.(err)) {
+                                window.QuotaGuard.lockTablet({
+                                    reason: err?.reason || 'quota',
+                                    remaining_day: err?.remaining_day ?? null,
+                                    remaining_week: err?.remaining_week ?? null
+                                });
+                                return;
+                            }
                             console.warn('[3D Chat] Erreur de flux LLM, affichage direct dans le dialogue.');
                             pushMessage('Patient', typeof errorMsg === 'string' ? errorMsg : 'Le patient ne répond pas.', null);
                         }
                     );
                 } catch (err) {
                     this._hideThinkingIndicator();
+                    // Quota épuisé → modale login/mailto (pas d'erreur technique dans le dialogue).
+                    if (window.QuotaGuard?.isQuotaError?.(err)) {
+                        window.QuotaGuard.lockTablet({
+                            reason: err?.reason || 'quota',
+                            remaining_day: err?.remaining_day ?? null,
+                            remaining_week: err?.remaining_week ?? null
+                        });
+                        return;
+                    }
                     console.error('[3D Chat] Erreur critique dans la gestion du chat:', err);
                     pushMessage('Patient', `⚠️ Erreur : ${err?.message || 'Erreur lors de la réponse du patient.'}`, null);
                 }
