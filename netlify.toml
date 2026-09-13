@@ -1,6 +1,10 @@
 [build]
   publish = "."
 
+[build.environment]
+  # Exempter l'email de contact et l'URL Supabase publique du scanner de secrets Netlify
+  SECRETS_SCAN_OMIT_KEYS = "QUOTA_CONTACT_EMAIL,SUPABASE_URL"
+
 # Proxy LLM — la fonction est appelée directement par le client via
 # /.netlify/functions/llm-proxy (aucune clé API côté client).
 # Redirection d'alias propre :
