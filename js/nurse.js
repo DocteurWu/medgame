@@ -66,14 +66,25 @@ const NurseIntro = (() => {
         `Dossier ECOS prêt : {patient}, {age} ans. Bon courage Docteur !`
     ];
 
+    let _sharedAudioCtx = null;
+    function _getAudioCtx() {
+        if (!_sharedAudioCtx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) _sharedAudioCtx = new AudioCtx();
+        }
+        if (_sharedAudioCtx && _sharedAudioCtx.state === 'suspended') {
+            _sharedAudioCtx.resume().catch(() => {});
+        }
+        return _sharedAudioCtx;
+    }
+
     /**
      * Synthétiseur de bip radio/intercom d'urgence (Web Audio API - zéro fichier externe)
      */
     function _playHospitalBeep(isUrgent = false) {
         try {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (!AudioCtx) return;
-            const ctx = new AudioCtx();
+            const ctx = _getAudioCtx();
+            if (!ctx) return;
 
             const now = ctx.currentTime;
             const osc = ctx.createOscillator();
@@ -561,11 +572,12 @@ const NurseIntro = (() => {
         _playHospitalBeep(isUrgent);
         _startSpeakingAnimation(Math.min(duration - 500, 5000));
 
-        // Animation de la barre de progression
+        // Animation de la barre de progression (sans layout thrashing synchrone)
         if (progressBarEl) {
             progressBarEl.style.animation = 'none';
-            progressBarEl.offsetHeight; // Force reflow
-            progressBarEl.style.animation = `progressShrink ${duration}ms linear forwards`;
+            requestAnimationFrame(() => {
+                if (progressBarEl) progressBarEl.style.animation = `progressShrink ${duration}ms linear forwards`;
+            });
         }
 
         overlayEl.classList.add('visible');
@@ -624,11 +636,12 @@ const NurseIntro = (() => {
         // Animation labiale phonétique synchronisée
         _startSpeakingAnimation(4200);
 
-        // Réinitialisation de la barre de progression
+        // Réinitialisation de la barre de progression (sans layout thrashing synchrone)
         if (progressBarEl) {
             progressBarEl.style.animation = 'none';
-            progressBarEl.offsetHeight; // Force reflow
-            progressBarEl.style.animation = `progressShrink ${AUTO_DISMISS_DURATION}ms linear forwards`;
+            requestAnimationFrame(() => {
+                if (progressBarEl) progressBarEl.style.animation = `progressShrink ${AUTO_DISMISS_DURATION}ms linear forwards`;
+            });
         }
 
         // Masquer éléments parasites d'UI pendant l'intro

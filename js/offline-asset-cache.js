@@ -13,6 +13,7 @@ export class OfflineAssetCache {
             return null;
         }) : Promise.resolve(null);
         this._inFlight = new Map();
+        this._objectUrls = new Map();
     }
 
     /**
@@ -112,8 +113,13 @@ export class OfflineAssetCache {
     }
 
     async getOrFetchUrl(url, onProgress = null) {
+        if (this._objectUrls.has(url)) {
+            return this._objectUrls.get(url);
+        }
         const blob = await this.getOrFetchBlob(url, onProgress);
-        return URL.createObjectURL(blob);
+        const objUrl = URL.createObjectURL(blob);
+        this._objectUrls.set(url, objUrl);
+        return objUrl;
     }
 
     async getOrFetchBuffer(url, onProgress = null) {
@@ -122,6 +128,12 @@ export class OfflineAssetCache {
     }
 
     async clear() {
+        // Libérer les Object URLs allouées en mémoire
+        for (const objUrl of this._objectUrls.values()) {
+            try { URL.revokeObjectURL(objUrl); } catch (_) {}
+        }
+        this._objectUrls.clear();
+
         if (!this._isSupported) return;
         try {
             await caches.delete(this.cacheName);

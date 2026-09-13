@@ -99,20 +99,8 @@ export class ThreePatient {
         this.group.add(this.bodyGroup);
 
         this.rootGroup = this.group;
-        // Rediriger temporairement this.group vers this.bodyGroup pour la construction procédurale
-        this.group = this.bodyGroup;
 
-        if (position === 'allonge') this.buildLying(this.skinMat, this.clothMat);
-        else this.buildSitting(this.skinMat, this.clothMat);
-
-        // Restaurer this.group
-        this.group = this.rootGroup;
-
-        this._buildSweatDrops(position);
-        this._buildBloodSplotches(position);
-        this.applyExpression(patient.expression || 'normal');
-
-        // Charger asynchronement le modèle GLB Kenney
+        // Charger asynchronement le modèle GLB Kenney (procédural uniquement en fallback d'erreur)
         this._loadKenneyModel(patient, position);
     }
 
@@ -1149,8 +1137,19 @@ export class ThreePatient {
             // Déclencher un événement de mise à jour pour que le PatientAnimator et la scène se réinitialisent
             document.dispatchEvent(new CustomEvent('patient-model-changed'));
         }, undefined, (error) => {
-            console.error('Erreur lors du chargement du modèle GLB du patient:', error);
+            console.warn('Modèle GLB patient non chargé, activation fallback procédural:', error);
+            this._buildProceduralFallback(patient, position);
         });
+    }
+
+    _buildProceduralFallback(patient, position) {
+        this.group = this.bodyGroup;
+        if (position === 'allonge') this.buildLying(this.skinMat, this.clothMat);
+        else this.buildSitting(this.skinMat, this.clothMat);
+        this.group = this.rootGroup;
+        this._buildSweatDrops(position);
+        this._buildBloodSplotches(position);
+        this.applyExpression(patient.expression || 'normal');
     }
 
     _updateSkinMaterial(color, emissiveColor, emissiveIntensity) {

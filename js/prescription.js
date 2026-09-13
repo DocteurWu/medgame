@@ -7,13 +7,30 @@
         }
 
         async init() {
-            try {
-                const response = await fetch('data/drugs.json');
-                this.drugs = await response.json();
-            } catch {
-                this.drugs = [];
-            }
             this.bind();
+            // Préchargement non-bloquant en période creuse
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => this.ensureDrugsLoaded(), { timeout: 4000 });
+            }
+        }
+
+        async ensureDrugsLoaded() {
+            if (this.drugs && this.drugs.length > 0) return this.drugs;
+            if (this._loadingDrugs) return this._loadingDrugs;
+            this._loadingDrugs = fetch('data/drugs.json')
+                .then(r => r.json())
+                .then(data => {
+                    this.drugs = data || [];
+                    return this.drugs;
+                })
+                .catch(() => {
+                    this.drugs = [];
+                    return this.drugs;
+                })
+                .finally(() => {
+                    this._loadingDrugs = null;
+                });
+            return this._loadingDrugs;
         }
 
         bind() {
@@ -38,7 +55,7 @@
             this.renderResults('');
         }
 
-        open() {
+        async open() {
             const modal = document.getElementById('prescription-modal');
             if (!modal) return;
             // Nettoyer toute modale de contre-indication orpheline
@@ -49,6 +66,7 @@
             modal.setAttribute('aria-hidden', 'false');
             const input = document.getElementById('drug-search');
             if (input) input.focus();
+            await this.ensureDrugsLoaded();
             this.renderResults(input?.value || '');
         }
 
