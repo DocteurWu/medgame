@@ -141,6 +141,11 @@ export class ThreeAtlasViewer {
         this._kidneyGroup.visible = false;
         this.scene.add(this._kidneyGroup);
 
+        this._lungGroup = new THREE.Group();
+        this._lungGroup.name = 'lungGroup';
+        this._lungGroup.visible = false;
+        this.scene.add(this._lungGroup);
+
         this.raycaster = new THREE.Raycaster();
         this.pointer = new THREE.Vector2();
         this._downPos = null;
@@ -212,6 +217,13 @@ export class ThreeAtlasViewer {
                 this._kidneyGroup.remove(child);
             }
             this._kidneyGroup.visible = false;
+        }
+        if (this._lungGroup) {
+            while (this._lungGroup.children.length > 0) {
+                const child = this._lungGroup.children[0];
+                this._lungGroup.remove(child);
+            }
+            this._lungGroup.visible = false;
         }
         this.atlas = null;
         this._layoutKey = '';
@@ -459,6 +471,18 @@ export class ThreeAtlasViewer {
                 const item = hit.object.userData?.kidneyItem;
                 if (item && typeof this.onSelectKidney === 'function') {
                     this.onSelectKidney(item);
+                }
+            }
+            return;
+        }
+
+        if (this.isLungMode) {
+            const hits = this.raycaster.intersectObjects(this._lungGroup.children, true);
+            const hit = hits.find((h) => h.object.isMesh && h.object.visible);
+            if (hit) {
+                const item = hit.object.userData?.lungItem;
+                if (item && typeof this.onSelectLung === 'function') {
+                    this.onSelectLung(item);
                 }
             }
             return;
@@ -757,6 +781,9 @@ export class ThreeAtlasViewer {
             if (this._heartMeshes) {
                 this._heartMeshes.forEach((hm) => { hm.mesh.visible = false; });
             }
+            if (this._lungGroup) {
+                this._lungGroup.visible = false;
+            }
             if (this.ground) {
                 this.ground.visible = false;
             }
@@ -787,6 +814,80 @@ export class ThreeAtlasViewer {
         this._dirty = true;
     }
 
+    // ==========================================
+    // MÉTHODES DU POUMON DÉTAILLÉ (HuBMAP v1.2)
+    // ==========================================
+
+    /**
+     * Attache la hiérarchie 3D du poumon à la scène.
+     * @param {THREE.Group} group
+     * @param {THREE.Box3} bounds
+     * @param {THREE.Vector3} center
+     */
+    attachLungScene(group, bounds, center) {
+        if (!this._lungGroup) return;
+        while (this._lungGroup.children.length > 0) {
+            this._lungGroup.remove(this._lungGroup.children[0]);
+        }
+        this._lungGroup.add(group);
+        this._lungBounds = bounds;
+        this._lungCenter = center;
+        this._lungGroup.visible = this.isLungMode;
+        if (this.isLungMode) {
+            this.focusLung();
+        }
+        this._dirty = true;
+    }
+
+    /**
+     * Bascule le mode Poumon isolé.
+     * @param {boolean} active
+     */
+    setLungMode(active = true) {
+        this.isLungMode = Boolean(active);
+        if (this._lungGroup) {
+            this._lungGroup.visible = this.isLungMode;
+        }
+        if (this.isLungMode) {
+            if (this._batches) {
+                this._batches.forEach((b) => { b.visible = false; });
+            }
+            if (this._heartMeshes) {
+                this._heartMeshes.forEach((hm) => { hm.mesh.visible = false; });
+            }
+            if (this._kidneyGroup) {
+                this._kidneyGroup.visible = false;
+            }
+            if (this.ground) {
+                this.ground.visible = false;
+            }
+            this.focusLung();
+        } else {
+            if (this._batches) {
+                this._batches.forEach((b) => { b.visible = true; });
+            }
+            if (this.ground) {
+                this.ground.visible = this._amount < 0.5 && !this.state.isolate;
+            }
+            this.resetView();
+        }
+        this._dirty = true;
+    }
+
+    /**
+     * Cadre la caméra sur les poumons en vue rapprochée optimale.
+     */
+    focusLung() {
+        if (!this.controls || this._disposed) return;
+        const target = this._lungCenter || new THREE.Vector3(0, 0.85, 0);
+        const dist = 0.65;
+        const dir = new THREE.Vector3(0.0, 0.05, 1.0).normalize();
+        this.controls.target.copy(target);
+        this.camera.position.copy(target).addScaledVector(dir, dist);
+        this.controls.update();
+        this._dirty = true;
+    }
+
     /** Libération complète : cancel RAF, controls, géométries, matériaux, textures, renderer. */
     dispose() {
         this._disposed = true;
@@ -807,6 +908,13 @@ export class ThreeAtlasViewer {
             while (this._kidneyGroup.children.length > 0) {
                 const child = this._kidneyGroup.children[0];
                 this._kidneyGroup.remove(child);
+            }
+        }
+        if (this._lungGroup) {
+            this.scene?.remove(this._lungGroup);
+            while (this._lungGroup.children.length > 0) {
+                const child = this._lungGroup.children[0];
+                this._lungGroup.remove(child);
             }
         }
         try {
