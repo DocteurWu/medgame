@@ -7,6 +7,7 @@ import { ThreeAtlasViewer } from './three-atlas-scene.js?v=12';
 import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js?v=11';
 import { HEART_PRESETS } from './atlas-heartbeat.js?v=1';
 import { KidneyModelManager } from './atlas-kidney.js?v=1';
+import { LungModelManager } from './atlas-lung.js?v=1';
 
 const $ = (id) => document.getElementById(id);
 const viewport = $('atlas-viewport');
@@ -16,6 +17,7 @@ const viewer = new ThreeAtlasViewer(viewport, {
     onSelect: (id, part) => showDetail(id),
     onError: (msg) => showError(typeof msg === 'string' ? msg : msg?.message || msg),
     onSelectKidney: (item) => showKidneyDetail(item),
+    onSelectLung: (item) => showLungDetail(item),
 });
 
 let ATLAS = null;
@@ -61,10 +63,10 @@ function renderSystems() {
     });
 }
 
-$('preset-all').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
-$('preset-skeleton').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: ['skeletal', 'connective'], isolate: false }); renderSystems(); };
-$('preset-organs').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: ['cardiac', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine'], isolate: false }); renderSystems(); };
-$('preset-vessels').onclick = () => { closeHeartMode(); closeKidneyMode(); viewer.setState({ visible: ['arterial', 'venous', 'cardiac'], isolate: false }); renderSystems(); };
+$('preset-all').onclick = () => { closeHeartMode(); closeKidneyMode(); closeLungMode(); viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
+$('preset-skeleton').onclick = () => { closeHeartMode(); closeKidneyMode(); closeLungMode(); viewer.setState({ visible: ['skeletal', 'connective'], isolate: false }); renderSystems(); };
+$('preset-organs').onclick = () => { closeHeartMode(); closeKidneyMode(); closeLungMode(); viewer.setState({ visible: ['cardiac', 'respiratory', 'digestive', 'urinary', 'lymphatic', 'endocrine'], isolate: false }); renderSystems(); };
+$('preset-vessels').onclick = () => { closeHeartMode(); closeKidneyMode(); closeLungMode(); viewer.setState({ visible: ['arterial', 'venous', 'cardiac'], isolate: false }); renderSystems(); };
 $('sys-all').onclick = () => { viewer.setState({ visible: SYSTEMS.map((s) => s.id), isolate: false }); renderSystems(); };
 $('sys-none').onclick = () => { viewer.setState({ visible: [], isolate: false }); renderSystems(); };
 $('atlas-explode').oninput = (e) => viewer.setState({ explode: e.target.value / 100 });
@@ -76,6 +78,7 @@ $('btn-rotate').onclick = (e) => {
 $('btn-reset').onclick = () => {
     closeHeartMode();
     closeKidneyMode();
+    closeLungMode();
     viewer.setState({ visible: [...DEFAULT_VISIBLE], selected: [], isolate: false, explode: 0, view: 'three-quarter' });
     $('atlas-explode').value = 0;
     renderSystems();
@@ -87,12 +90,22 @@ $('btn-isolate').onclick = () => {
         viewer._dirty = true;
         return;
     }
+    if (currentModule === 'lung' && selectedLungItem) {
+        lungManager.setIsolate(selectedLungItem.mesh.name, true);
+        viewer._dirty = true;
+        return;
+    }
     if (viewer.state.selected.length) viewer.setState({ isolate: true });
 };
 $('btn-show').onclick = () => {
     closeHeartMode();
     if (currentModule === 'kidney') {
         kidneyManager.setIsolate(null, false);
+        viewer._dirty = true;
+        return;
+    }
+    if (currentModule === 'lung') {
+        lungManager.setIsolate(null, false);
         viewer._dirty = true;
         return;
     }
@@ -153,16 +166,18 @@ function startEcgLoop() {
     ecgRafId = requestAnimationFrame(step);
 }
 
-let currentModule = 'body'; // 'body' | 'heart' | 'neuro' | 'kidney'
+let currentModule = 'body'; // 'body' | 'heart' | 'neuro' | 'kidney' | 'lung'
 
 function setModuleUI(module) {
     currentModule = module;
     $('btn-module-body')?.classList.toggle('active', module === 'body');
     $('btn-module-heart')?.classList.toggle('active', module === 'heart');
+    $('btn-module-lung')?.classList.toggle('active', module === 'lung');
     $('btn-module-kidney')?.classList.toggle('active', module === 'kidney');
     $('btn-module-neuro')?.classList.toggle('active', module === 'neuro');
     $('btn-neuro-nav-body')?.classList.toggle('active', module === 'body');
     $('btn-neuro-nav-heart')?.classList.toggle('active', module === 'heart');
+    $('btn-neuro-nav-lung')?.classList.toggle('active', module === 'lung');
     $('btn-neuro-nav-kidney')?.classList.toggle('active', module === 'kidney');
     $('btn-neuro-nav-neuro')?.classList.toggle('active', module === 'neuro');
 }
@@ -170,6 +185,7 @@ function setModuleUI(module) {
 function openHeartMode(presetId = 'sinus') {
     if (currentModule === 'neuro') closeNeuroMode(false);
     if (currentModule === 'kidney') closeKidneyMode(false);
+    if (currentModule === 'lung') closeLungMode(false);
     viewer.isolateHeart(true, presetId);
     selectHeartPreset(presetId);
     $('heart-mode-panel')?.classList.remove('hidden');
@@ -194,6 +210,7 @@ function closeHeartMode(restoreModule = true) {
 function openNeuroMode(subHash = '') {
     if (currentModule === 'heart') closeHeartMode(false);
     if (currentModule === 'kidney') closeKidneyMode(false);
+    if (currentModule === 'lung') closeLungMode(false);
     const container = $('neuro-atlas-container');
     const iframe = $('neuro-atlas-frame');
     const layout = document.querySelector('.atlas-layout');
@@ -249,6 +266,7 @@ let selectedKidneyItem = null;
 async function openKidneyMode(opts = {}) {
     if (currentModule === 'heart') closeHeartMode(false);
     if (currentModule === 'neuro') closeNeuroMode(false);
+    if (currentModule === 'lung') closeLungMode(false);
 
     currentKidneySide = opts.side || currentKidneySide || 'left';
     currentKidneySex = opts.sex || currentModel || 'male';
@@ -398,6 +416,149 @@ function showKidneyDetail(item) {
     meta.textContent = `${mesh.geometry?.attributes?.position?.count || '?'} sommets · Visible Human v1.2`;
 }
 
+// ---------- Mode Poumon Détaillé 3D (HuBMAP / Visible Human v1.2) ----------
+const lungManager = new LungModelManager();
+let selectedLungItem = null;
+
+async function openLungMode() {
+    if (currentModule === 'heart') closeHeartMode(false);
+    if (currentModule === 'neuro') closeNeuroMode(false);
+    if (currentModule === 'kidney') closeKidneyMode(false);
+
+    setModuleUI('lung');
+
+    const panel = $('lung-mode-panel');
+    if (panel) panel.classList.remove('hidden');
+
+    const loading = $('atlas-loading');
+    if (loading) {
+        loading.classList.remove('hidden');
+        const titleEl = loading.querySelector('div[style*="font-weight:700"]');
+        if (titleEl) titleEl.textContent = 'Chargement du Poumon Détaillé 3D…';
+    }
+
+    try {
+        const res = await lungManager.load('female', (progress) => {
+            const pct = Math.round(progress * 100);
+            const bar = $('atlas-bar');
+            const pctEl = $('atlas-pct');
+            if (bar) bar.style.width = `${pct}%`;
+            if (pctEl) pctEl.textContent = `${pct}%`;
+        });
+        viewer.attachLungScene(res.root, res.bounds, res.center);
+        viewer.setLungMode(true);
+        loading?.classList.add('hidden');
+
+        updateLungFooter();
+        updateLungClipUI(Math.round(lungManager.clipDepthRatio * 100));
+        selectedLungItem = null;
+        showLungDetail(null);
+    } catch (err) {
+        loading?.classList.add('hidden');
+        console.error(err);
+        showError("Impossible de charger le modèle de poumon 3D.");
+    }
+}
+
+function closeLungMode(restoreModule = true) {
+    viewer.setLungMode(false);
+    $('lung-mode-panel')?.classList.add('hidden');
+    selectedLungItem = null;
+    showDetail(null);
+
+    // Restaurer le footer d'origine
+    const isFemale = currentModel === 'female';
+    const src = getAtlasSource(currentModel);
+    const footerText = $('atlas-footer-text');
+    if (footerText) {
+        if (isFemale) {
+            footerText.innerHTML = `Données <a href="https://hubmapconsortium.org/" target="_blank" rel="noopener">HuBMAP</a> & <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D</a> © DBCLS - <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="${src.repoUrl}" target="_blank" rel="noopener">Female Atlas</a>.<br>Explorateur éducatif · Comporte des inexactitudes.`;
+        } else {
+            footerText.innerHTML = `Données <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D 4.0</a> © DBCLS - <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>, via <a href="${src.repoUrl}" target="_blank" rel="noopener">Human Atlas</a>.<br>Explorateur éducatif · Peut comporter des inexactitudes.`;
+        }
+    }
+
+    if (restoreModule && currentModule === 'lung') {
+        setModuleUI('body');
+    }
+}
+
+function updateLungFooter() {
+    const footerText = $('atlas-footer-text');
+    if (footerText) {
+        footerText.innerHTML = `Données poumon : <a href="https://hubmapconsortium.org/" target="_blank" rel="noopener">HuBMAP Human Reference Atlas</a> (CCF 3D Reference Object Library v1.2, <a href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">CC BY 4.0</a>) - Visible Human Project.<br>Explorateur éducatif · Segments bronchopulmonaires et arbre trachéobronchique.`;
+    }
+}
+
+function updateLungClipUI(val) {
+    const isFull = val <= 0;
+    const btnFull = $('btn-lung-view-full');
+    const btnCut = $('btn-lung-view-cut');
+    const btnToggle = $('btn-lung-clip-toggle');
+    const lbl = $('lung-clip-val');
+    const slider = $('lung-clip-slider');
+
+    if (slider && parseInt(slider.value, 10) !== val) {
+        slider.value = val;
+    }
+
+    if (btnFull) btnFull.classList.toggle('active', isFull);
+    if (btnCut) btnCut.classList.toggle('active', !isFull);
+    if (btnToggle) {
+        btnToggle.classList.toggle('active', !isFull);
+        btnToggle.textContent = isFull ? 'Désactivée' : 'Active';
+    }
+
+    if (lbl) {
+        if (isFull) {
+            lbl.textContent = 'Poumons entiers (0%)';
+        } else if (val <= 35) {
+            lbl.textContent = `Coupe superficielle (${val}%)`;
+        } else if (val === 50) {
+            lbl.textContent = 'Coupe médiane (50%)';
+        } else if (val <= 65) {
+            lbl.textContent = `Coupe médiane (${val}%)`;
+        } else {
+            lbl.textContent = `Coupe profonde (${val}%)`;
+        }
+    }
+}
+
+function showLungDetail(item) {
+    selectedLungItem = item;
+    const box = $('atlas-detail');
+    const meta = $('atlas-meta');
+    if (!item) {
+        box.innerHTML = `
+            <h2>Poumon Détaillé</h2>
+            <div style="font-size:11px;opacity:0.6;margin-bottom:8px;">Système respiratoire & anatomie bronchopulmonaire 3D</div>
+            <p>Les poumons sont actuellement affichés <strong>en entier</strong> dans leur conformation physiologique externe.</p>
+            <p style="margin-top:6px;">Fais glisser le <strong>curseur de section</strong> ou clique sur <strong>Vue en coupe</strong> pour révéler l'arbre bronchique, la carène et les bronches segmentaires internes.</p>
+            <p style="margin-top:6px;">Utilise les boutons <strong>Exploration par Lobe</strong> pour identifier les 20 segments bronchopulmonaires constitutifs.</p>
+        `;
+        meta.textContent = `${lungManager.currentMeshList.length} structures modélisées · Visible Human v1.2`;
+        lungManager.select(null);
+        viewer._dirty = true;
+        return;
+    }
+
+    const { info, mesh } = item;
+    lungManager.select(mesh.name);
+    viewer._dirty = true;
+
+    const segmentBadge = info.segmentNumber ? `<span class="badge" style="background:#0284c7;color:#fff;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;margin-left:6px;">${info.segmentNumber}</span>` : '';
+    const lobeBadge = info.lobe ? `<div style="font-size:11px;color:#38bdf8;font-weight:600;margin-top:2px;">Lobe : ${info.lobe}</div>` : '';
+
+    box.innerHTML = `
+        <div class="sys">${info.subgroup || 'Système respiratoire'}</div>
+        <h2>${info.nameFr} ${segmentBadge}</h2>
+        <div style="font-size:11px;opacity:0.55;margin-bottom:4px;">${info.nameEn} · ${mesh.name}</div>
+        ${lobeBadge}
+        <p style="margin-top:8px;">${info.desc}</p>
+    `;
+    meta.textContent = `${mesh.geometry?.attributes?.position?.count || '?'} sommets · Visible Human v1.2`;
+}
+
 $('btn-heartbeat')?.addEventListener('click', () => {
     viewer.setHeartbeat(!viewer.heartbeatEnabled);
     updateHeartbeatUI();
@@ -412,9 +573,69 @@ $('btn-module-body')?.addEventListener('click', () => {
     if (currentModule === 'heart') closeHeartMode(false);
     if (currentModule === 'neuro') closeNeuroMode(false);
     if (currentModule === 'kidney') closeKidneyMode(false);
+    if (currentModule === 'lung') closeLungMode(false);
     setModuleUI('body');
 });
 $('btn-module-heart')?.addEventListener('click', () => openHeartMode('sinus'));
+$('btn-module-lung')?.addEventListener('click', () => openLungMode());
+$('preset-lung')?.addEventListener('click', () => openLungMode());
+$('btn-lung-exit')?.addEventListener('click', () => closeLungMode(true));
+
+// Contrôles de coupe et lobes poumon
+$('btn-lung-view-full')?.addEventListener('click', () => {
+    lungManager.setClipDepthRatio(0);
+    lungManager.setClippingEnabled(false);
+    updateLungClipUI(0);
+    viewer._dirty = true;
+});
+
+$('btn-lung-view-cut')?.addEventListener('click', () => {
+    const slider = $('lung-clip-slider');
+    const currentVal = slider ? parseInt(slider.value, 10) : 0;
+    const targetVal = currentVal > 0 ? currentVal : 50;
+    lungManager.setClippingEnabled(true);
+    lungManager.setClipDepthRatio(targetVal / 100);
+    updateLungClipUI(targetVal);
+    viewer._dirty = true;
+});
+
+$('btn-lung-clip-toggle')?.addEventListener('click', () => {
+    const slider = $('lung-clip-slider');
+    const currentVal = slider ? parseInt(slider.value, 10) : 0;
+    if (lungManager.clippingEnabled && currentVal > 0) {
+        lungManager.setClipDepthRatio(0);
+        lungManager.setClippingEnabled(false);
+        updateLungClipUI(0);
+    } else {
+        lungManager.setClippingEnabled(true);
+        lungManager.setClipDepthRatio(0.5);
+        updateLungClipUI(50);
+    }
+    viewer._dirty = true;
+});
+
+$('lung-clip-slider')?.addEventListener('input', (e) => {
+    const val = parseInt(e.target.value, 10);
+    lungManager.setClipDepthRatio(val / 100);
+    updateLungClipUI(val);
+    viewer._dirty = true;
+});
+
+$('btn-lung-clip-invert')?.addEventListener('click', () => {
+    lungManager.toggleClipInversion();
+    viewer._dirty = true;
+});
+
+document.querySelectorAll('.lung-lobe-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.lung-lobe-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const lobe = btn.dataset.lobe === 'all' ? null : btn.dataset.lobe;
+        lungManager.selectLobe(lobe);
+        viewer._dirty = true;
+    });
+});
+
 $('btn-module-kidney')?.addEventListener('click', () => openKidneyMode());
 $('preset-kidney')?.addEventListener('click', () => openKidneyMode());
 $('btn-kidney-exit')?.addEventListener('click', () => closeKidneyMode(true));
@@ -539,6 +760,10 @@ $('btn-neuro-nav-heart')?.addEventListener('click', () => {
 $('btn-neuro-nav-kidney')?.addEventListener('click', () => {
     closeNeuroMode(false);
     openKidneyMode();
+});
+$('btn-neuro-nav-lung')?.addEventListener('click', () => {
+    closeNeuroMode(false);
+    openLungMode();
 });
 $('btn-neuro-nav-neuro')?.addEventListener('click', () => {
     // Déjà dans le module neuro
@@ -777,6 +1002,8 @@ async function loadModel(modelId, initialDeepLink = false) {
                 const side = params.get('side') || 'left';
                 const sex = (params.get('sex') || currentModel || 'male').toLowerCase() === 'female' ? 'female' : 'male';
                 openKidneyMode({ side, sex });
+            } else if (moduleParam === 'lung' || moduleParam === 'poumon' || params.get('lung') === '1' || params.get('poumon') === '1') {
+                openLungMode();
             } else {
                 const heartParam = params.get('heart') || params.get('cardio');
                 const presetParam = params.get('preset');

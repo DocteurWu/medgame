@@ -29,6 +29,10 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
   * **Projet & Données** : [HuBMAP Human Reference Atlas (HRA)](https://hubmapconsortium.org/) — CCF 3D Reference Object Library v1.2 (Visible Human Project, National Library of Medicine).
   * **Licence** : [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.fr).
   * **Ressources intégrées** : 4 modèles 3D GLB locaux dans `assets/models/rein/` (`VH_M_Kidney_L.glb`, `VH_M_Kidney_R.glb`, `VH_F_Kidney_L.glb`, `VH_F_Kidney_R.glb`), modélisant capsule rénale, cortex, hile, colonnes de Bertin, médullaire, pyramides de Malpighi et papilles rénales.
+* **Module Poumon Détaillé 3D** :
+  * **Projet & Données** : [HuBMAP Human Reference Atlas (HRA)](https://hubmapconsortium.org/) - CCF 3D Reference Object Library v1.2 (Visible Human Project, National Library of Medicine).
+  * **Licence** : [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.fr).
+  * **Ressources intégrées** : 2 modèles 3D GLB locaux dans `assets/models/poumon/` (`VH_M_Lung.glb` et `VH_F_Lung.glb`), modélisant l'arbre trachéobronchique complet, les cartilages laryngés, la carène, les bronches lobaires et segmentaires, ainsi que les 20 segments bronchopulmonaires parenchymateux.
 * **Usage** : explorateur éducatif uniquement, pas un outil diagnostique ou chirurgical. En cas de redistribution des géométries, conserver cette attribution + lien source.
 
 ## 4. Dataset Auscultatoire HLS-CMDS (Stéthoscope Virtuel)
