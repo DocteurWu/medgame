@@ -151,6 +151,29 @@ test('QuotaGuard — logique locale pure', async (t) => {
         assert.equal(QG.isQuotaError(null), false);
     });
 
+    await t.test('isQuotaError : messages FR + localOnly + wrappés (non-régression modale)', () => {
+        // Contrôle local LLMClient (js/llm-client.js) : message FR sans code HTTP
+        assert.equal(QG.isQuotaError(new Error('Quota de messages épuisé (contrôle local).')), true);
+        const localErr = new Error('Quota de messages épuisé (contrôle local).');
+        localErr.code = 'QUOTA_EXCEEDED'; localErr.localOnly = true;
+        assert.equal(QG.isQuotaError(localErr), true);
+        // Anciens messages wrappés (avant fix) doivent quand même ouvrir la modale
+        assert.equal(QG.isQuotaError(new Error('⚠️ [ERREUR LLM] Quota de messages épuisé (contrôle local).\n→ Endpoint: /.netlify/functions/llm-proxy')), true);
+        assert.equal(QG.isQuotaError(new Error('⚠️ [ERREUR LLM — GameManager] Quota de messages épuisé. | Endpoint: /.netlify/functions/llm-proxy')), true);
+        // Vraies erreurs techniques : toujours pas des quotas
+        assert.equal(QG.isQuotaError(new Error('HTTP 500 Internal Server Error')), false);
+        assert.equal(QG.isQuotaError(new Error('Timeout atteint')), false);
+    });
+
+    await t.test('wrappers préservent le quota (llm-patient / GameManager / ecosMode)', () => {
+        const lp = fs.readFileSync(path.join(ROOT, 'js', 'llm-patient.js'), 'utf8');
+        assert.match(lp, /isQuotaError/, 'llm-patient.js délègue au QuotaGuard avant diagnostic technique');
+        const gm = fs.readFileSync(path.join(ROOT, 'js', 'MedicalGameManager.js'), 'utf8');
+        assert.match(gm, /QUOTA_EXCEEDED/, 'MedicalGameManager.js propage le quota sans wrapping');
+        const eco = fs.readFileSync(path.join(ROOT, 'js', 'ecosMode.js'), 'utf8');
+        assert.match(eco, /lockTablet/, 'ecosMode.js verrouille la tablette à quota épuisé');
+    });
+
     await t.test('mailto contient le contact', () => {
         assert.match(QG._mailtoHref('daily'), /hamlat\.louai@gmail\.com/);
     });

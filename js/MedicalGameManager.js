@@ -213,6 +213,8 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
         } catch (err) {
             // Ne propager que les vraies erreurs réseau/timeout ; le salvage ci-dessus a déjà évité le fallback silencieux
             console.error("[MedicalGameManager] Échec LLM — propagation de l'erreur au chat :", err);
+            // Quota épuisé : propager l'erreur typée telle quelle (modale login/mailto, pas de diagnostic technique).
+            if (err?.code === 'QUOTA_EXCEEDED' || window.QuotaGuard?.isQuotaError?.(err)) throw err;
             const msg = err?.message || String(err);
             // Ajouter un diagnostic technique clair (cause visible dans le chat au lieu de "Je ne comprends pas...")
             throw new Error(msg.includes('⚠️ [ERREUR LLM]') ? msg : `⚠️ [ERREUR LLM — GameManager] ${msg} | Endpoint: ${window.CONFIG?.LLM_API_URL || '/.netlify/functions/llm-proxy'} | Vérifiez mcp-server (npm run mcp) + .env LLM_API_KEY | F12 Network`);

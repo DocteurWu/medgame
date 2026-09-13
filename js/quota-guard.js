@@ -188,8 +188,11 @@
     function isQuotaError(err) {
         if (!err) return false;
         if (err.code === 'QUOTA_EXCEEDED') return true;
+        if (err.localOnly === true && /quota/i.test(String((err && err.message) || err))) return true;
         var msg = String((err && err.message) || err);
-        return msg.indexOf('QUOTA_EXCEEDED') !== -1 || msg.indexOf('HTTP 402') !== -1;
+        return msg.indexOf('QUOTA_EXCEEDED') !== -1
+            || msg.indexOf('HTTP 402') !== -1
+            || /quota de messages épuisé/i.test(msg);
     }
 
     // ── Verrou tablette ──────────────────────────────────────────────────
