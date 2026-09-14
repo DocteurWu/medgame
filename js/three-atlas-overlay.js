@@ -4,17 +4,42 @@
  * sans quitter la partie (timer/score préservés). dispose() complet à la fermeture.
  * Usage depuis three-clinical-agent.js : document.dispatchEvent(new CustomEvent('medgame:open-atlas', { detail: {...} }))
  */
-import { fetchAtlasIndex, fetchAtlasBuffers } from './three-atlas-loader.js?v=4';
-import { ThreeAtlasViewer } from './three-atlas-scene.js?v=6';
-import { expandQuery, frenchLabel } from './three-atlas-data.js?v=6';
-
 let viewer = null;
 let ATLAS = null;
 let buffers = null;
 let overlayEl = null;
-let loading = null;
+
+let _ThreeAtlasViewer = null;
+let _fetchAtlasIndex = null;
+let _fetchAtlasBuffers = null;
+let _expandQuery = null;
+let _frenchLabel = null;
+
+async function loadOverlayDependencies() {
+    if (_ThreeAtlasViewer) return;
+    const [loader, scene, data] = await Promise.all([
+        import('./three-atlas-loader.js?v=12'),
+        import('./three-atlas-scene.js?v=13'),
+        import('./three-atlas-data.js?v=11')
+    ]);
+    _fetchAtlasIndex = loader.fetchAtlasIndex;
+    _fetchAtlasBuffers = loader.fetchAtlasBuffers;
+    _ThreeAtlasViewer = scene.ThreeAtlasViewer;
+    _expandQuery = data.expandQuery;
+    _frenchLabel = data.frenchLabel;
+}
+
+function ensureAtlasCSS() {
+    if (!document.querySelector('link[href*="atlas.css"]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'css/atlas.css?v=6';
+        document.head.appendChild(link);
+    }
+}
 
 function ensureOverlayDOM() {
+    ensureAtlasCSS();
     if (overlayEl) return overlayEl;
     overlayEl = document.createElement('div');
     overlayEl.id = 'atlas-overlay';
@@ -45,8 +70,8 @@ function ensureOverlayDOM() {
 }
 
 function findBestPart(focus) {
-    if (!ATLAS || !focus) return null;
-    const tokens = expandQuery(focus);
+    if (!ATLAS || !focus || !_expandQuery) return null;
+    const tokens = _expandQuery(focus);
     let best = null;
     let bestScore = -1;
     for (const p of ATLAS.parts) {
@@ -69,12 +94,13 @@ export async function openAtlasOverlay({ focus = 'heart', systems = null, label 
     const view = overlayEl.querySelector('#atlas-overlay-view');
     try {
         loadEl.style.display = 'flex';
-        if (!ATLAS) ATLAS = await fetchAtlasIndex();
-        if (!buffers) buffers = await fetchAtlasBuffers(ATLAS, () => {}, null);
+        await loadOverlayDependencies();
+        if (!ATLAS) ATLAS = await _fetchAtlasIndex();
+        if (!buffers) buffers = await _fetchAtlasBuffers(ATLAS, () => {}, null);
         if (!viewer) {
-            viewer = new ThreeAtlasViewer(view, {
+            viewer = new _ThreeAtlasViewer(view, {
                 onSelect: (id, part) => {
-                    const fr = frenchLabel(part.name);
+                    const fr = _frenchLabel ? _frenchLabel(part.name) : part.name;
                     overlayEl.querySelector('#atlas-overlay-detail').innerHTML = `<b>${fr || part.name}</b><br><span style="opacity:0.6">${fr ? part.name + ' · ' : ''}${part.system}</span>`;
                 },
             });
@@ -86,7 +112,7 @@ export async function openAtlasOverlay({ focus = 'heart', systems = null, label 
         if (part) {
             viewer.setState({ selected: [part.id], isolate: true });
             viewer.select(part.id);
-            const fr = frenchLabel(part.name);
+            const fr = _frenchLabel ? _frenchLabel(part.name) : part.name;
             overlayEl.querySelector('#atlas-overlay-detail').innerHTML = `<b>${fr || part.name}</b><br><span style="opacity:0.6">${fr ? part.name + ' · ' : ''}${part.system}</span>`;
         }
     } catch (e) {

@@ -394,12 +394,16 @@ export class ThreeAtlasViewer {
     }
 
     setState(patch) {
+        if (patch.visible !== undefined || patch.selected !== undefined || patch.isolate !== undefined) {
+            this._layoutDirty = true;
+        }
         Object.assign(this.state, patch);
         this._dirty = true;
     }
 
     select(id) {
         this.state.selected = id ? [id] : [];
+        this._layoutDirty = true;
         this._dirty = true;
     }
 
@@ -531,7 +535,7 @@ export class ThreeAtlasViewer {
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);
-        this._layoutKey = '';
+        this._layoutDirty = true;
         this._dirty = true;
     }
 
@@ -545,17 +549,22 @@ export class ThreeAtlasViewer {
         if (!this.isKidneyMode && this._ready && (this._dirty || moving)) {
             const visible = new Set(s.visible);
             const selection = new Set(s.selected);
-            const visibleParts = this.atlas.parts.filter((p) => (s.isolate ? selection.has(p.id) : visible.has(p.system) || selection.has(p.id)));
-            const key = visibleParts.map((p) => p.id).join(',') + ':' + this.camera.aspect.toFixed(3);
-            if (key !== this._layoutKey) {
+            if (this._layoutDirty || !this._layoutKey) {
+                const visibleParts = this.atlas.parts.filter((p) => (s.isolate ? selection.has(p.id) : visible.has(p.system) || selection.has(p.id)));
                 const layout = createExplosionLayout(visibleParts, this.camera.aspect);
                 this._packingW = layout.width;
                 this._packingH = layout.height;
                 this.atlas.parts.forEach((p, i) => {
                     const cell = layout.cells.get(p.id);
-                    this._offsets[i] = cell ? new THREE.Vector3(cell.x, cell.y + 0.85, 0) : this._centers[i].clone();
+                    if (!this._offsets[i]) this._offsets[i] = new THREE.Vector3();
+                    if (cell) {
+                        this._offsets[i].set(cell.x, cell.y + 0.85, 0);
+                    } else {
+                        this._offsets[i].copy(this._centers[i]);
+                    }
                 });
-                this._layoutKey = key;
+                this._layoutDirty = false;
+                this._layoutKey = 'valid';
             }
             const amount = this._amount;
             this.atlas.parts.forEach((p, i) => {
@@ -577,7 +586,11 @@ export class ThreeAtlasViewer {
                     dy = THREE.MathUtils.lerp((c.y - 0.85) * 0.28, dest.y - c.y, t);
                     dz = THREE.MathUtils.lerp(Math.cos(angle) * 0.48, -c.z, t);
                 }
-                this._explosionOffsets[i] = new THREE.Vector3(dx, dy, dz);
+                if (!this._explosionOffsets[i]) {
+                    this._explosionOffsets[i] = new THREE.Vector3(dx, dy, dz);
+                } else {
+                    this._explosionOffsets[i].set(dx, dy, dz);
+                }
                 const selected = selection.has(p.id);
                 const vis = (s.isolate ? selected : visible.has(p.system) || selected) ? 1 : 0;
                 this._data.set([dx, dy, dz, vis], i * 4);
