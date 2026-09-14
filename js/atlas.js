@@ -804,27 +804,35 @@ function findMatches(query, limit = 30) {
     return out;
 }
 
+let searchDebounceTimer = null;
 $('atlas-search').addEventListener('input', (e) => {
     const q = e.target.value.trim();
     const box = $('atlas-results');
-    if (q.length < 2) { box.innerHTML = ''; return; }
-    const hits = findMatches(q, 12);
-    box.innerHTML = '';
-    if (!hits.length) { box.innerHTML = '<div style="font-size:12px;opacity:0.6;">Aucun résultat. Essaie : coeur, foie, poumon, rein.</div>'; return; }
-    hits.forEach((p) => {
-        const c = conceptById.get(p.conceptId);
-        const en = c?.name || p.name;
-        const fr = frenchLabel(en);
-        const d = document.createElement('div');
-        d.className = 'sys-row';
-        d.innerHTML = `<span>🔎</span><span>${fr || en}${fr ? ` <span style="opacity:0.5;font-size:11px;">(${en})</span>` : ''}</span>`;
-        d.onclick = () => {
-            viewer.setState({ visible: [...new Set([...viewer.state.visible, p.system])], isolate: false });
-            showDetail(p.id);
-            renderSystems();
-        };
-        box.appendChild(d);
-    });
+    if (q.length < 2) { 
+        if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+        box.innerHTML = ''; 
+        return; 
+    }
+    if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+    searchDebounceTimer = setTimeout(() => {
+        const hits = findMatches(q, 12);
+        box.innerHTML = '';
+        if (!hits.length) { box.innerHTML = '<div style="font-size:12px;opacity:0.6;">Aucun résultat. Essaie : coeur, foie, poumon, rein.</div>'; return; }
+        hits.forEach((p) => {
+            const c = conceptById.get(p.conceptId);
+            const en = c?.name || p.name;
+            const fr = frenchLabel(en);
+            const d = document.createElement('div');
+            d.className = 'sys-row';
+            d.innerHTML = `<span>🔎</span><span>${fr || en}${fr ? ` <span style="opacity:0.5;font-size:11px;">(${en})</span>` : ''}</span>`;
+            d.onclick = () => {
+                viewer.setState({ visible: [...new Set([...viewer.state.visible, p.system])], isolate: false });
+                showDetail(p.id);
+                renderSystems();
+            };
+            box.appendChild(d);
+        });
+    }, 120);
 });
 
 // ---------- fiche ----------

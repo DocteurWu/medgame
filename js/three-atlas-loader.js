@@ -113,23 +113,21 @@ async function fetchChunkBuffer(chunk, modelId = 'male', signal) {
     const fallbackFile = chunkFileName(chunk.url);
     const url = base + '/' + file;
 
-    let res;
+    let blob;
     try {
-        res = await fetch(url, { signal });
-        if (!res.ok && gzip && fallbackFile !== file) {
-            res = await fetch(base + '/' + fallbackFile, { signal });
-        }
+        blob = await offlineAssetCache.getOrFetchBlob(url);
     } catch (e) {
         if (gzip && fallbackFile !== file) {
-            res = await fetch(base + '/' + fallbackFile, { signal });
+            blob = await offlineAssetCache.getOrFetchBlob(base + '/' + fallbackFile);
         } else {
             throw e;
         }
     }
-    if (!res || !res.ok) {
-        throw new Error(`Chunk HTTP ${res ? res.status : 'ERR'} : ${url}`);
+    if (!blob) {
+        throw new Error(`Chunk introuvable : ${url}`);
     }
-    return decodeModelResponse(res, chunk.bytes, gzip);
+    const response = new Response(blob);
+    return decodeModelResponse(response, chunk.bytes, gzip);
 }
 
 /**
