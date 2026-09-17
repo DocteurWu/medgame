@@ -341,3 +341,144 @@ test('16. Proxy local mcp-server.js : route /jev-proxy presente avec headers et 
     assert.ok(mcpCode.includes('80'), 'mcp-server.js doit limiter le nombre de questions');
 });
 
+test('17. Routage mixte (dialogue + imagerie) : toPatient reste vrai et acte_imagerie est detecte avec role Radiologue', async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({
+            decisions: [
+                { id: 'vers_patient', type: 'noul', probability: 0.45 },
+                { id: 'dest_patient', type: 'noul', probability: 0.45 },
+                { id: 'acte_imagerie', type: 'noul', probability: 0.97 },
+                { id: 'dest_radiologue', type: 'noul', probability: 0.97 },
+                { id: 'acte_biologie', type: 'noul', probability: 0.02 },
+                { id: 'dest_biologiste', type: 'noul', probability: 0.02 },
+                { id: 'acte_medicament', type: 'noul', probability: 0.03 },
+                { id: 'dest_infirmier', type: 'noul', probability: 0.03 },
+                { id: 'acte_type', type: 'choice', value: 'acte_imagerie' }
+            ]
+        })
+    });
+
+    try {
+        const route = await routeMessage('Bonjour Monsieur, je vais vous prescrire une radio');
+        assert.equal(route.toPatient, true, 'Le patient doit entendre le message et repondre');
+        assert.ok(route.clinicalActions.includes('acte_imagerie'), 'L acte imagerie doit etre declenche');
+        const imgAction = route.actions.find(a => a.type === 'acte_imagerie');
+        assert.ok(imgAction, 'L action imagerie doit etre presente');
+        assert.equal(imgAction.role, 'Radiologue', 'Le role associe doit etre Radiologue');
+        assert.equal(route.fallback, false);
+        assert.equal(route.fallbackApplied, false);
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('18. Routage dialogue pur : toPatient vrai, aucune action clinique, fallbackApplied faux', async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({
+            decisions: [
+                { id: 'vers_patient', type: 'noul', probability: 0.91 },
+                { id: 'dest_patient', type: 'noul', probability: 0.91 },
+                { id: 'acte_imagerie', type: 'noul', probability: 0.03 },
+                { id: 'dest_radiologue', type: 'noul', probability: 0.03 },
+                { id: 'acte_biologie', type: 'noul', probability: 0.03 },
+                { id: 'dest_biologiste', type: 'noul', probability: 0.03 },
+                { id: 'acte_medicament', type: 'noul', probability: 0.03 },
+                { id: 'dest_infirmier', type: 'noul', probability: 0.03 },
+                { id: 'acte_type', type: 'choice', value: 'aucun' }
+            ]
+        })
+    });
+
+    try {
+        const route = await routeMessage('Bonjour Madame, comment allez-vous ?');
+        assert.equal(route.toPatient, true, 'Le patient doit etre destinataire');
+        assert.equal(route.actions.length, 0, 'Aucune action ne doit etre declenchee');
+        assert.equal(route.clinicalActions.length, 0);
+        assert.equal(route.fallback, false);
+        assert.equal(route.fallbackApplied, false);
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('19. Routage action pure sans salutation : toPatient vrai car l acte implique la parole, acte_biologie present', async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({
+            decisions: [
+                { id: 'vers_patient', type: 'noul', probability: 0.20 },
+                { id: 'dest_patient', type: 'noul', probability: 0.20 },
+                { id: 'acte_imagerie', type: 'noul', probability: 0.01 },
+                { id: 'dest_radiologue', type: 'noul', probability: 0.01 },
+                { id: 'acte_biologie', type: 'noul', probability: 0.95 },
+                { id: 'dest_biologiste', type: 'noul', probability: 0.95 },
+                { id: 'acte_medicament', type: 'noul', probability: 0.02 },
+                { id: 'dest_infirmier', type: 'noul', probability: 0.02 },
+                { id: 'acte_type', type: 'choice', value: 'acte_biologie' }
+            ]
+        })
+    });
+
+    try {
+        const route = await routeMessage('Je demande un bilan sanguin complet');
+        assert.equal(route.toPatient, true, 'L acte implique la presence et l ecoute du patient');
+        assert.ok(route.clinicalActions.includes('acte_biologie'), 'L action biologie doit etre detectee');
+        const bioAction = route.actions.find(a => a.type === 'acte_biologie');
+        assert.ok(bioAction);
+        assert.equal(bioAction.role, 'Biologiste');
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+test('20. Routage message vide : repli transparent vers le patient inchange', async () => {
+    const routeEmpty = await routeMessage('');
+    assert.equal(routeEmpty.toPatient, true);
+    assert.equal(routeEmpty.actions.length, 0);
+    assert.equal(routeEmpty.fallback, true);
+    assert.equal(routeEmpty.fallbackApplied, true);
+
+    const routeSpaces = await routeMessage('   ');
+    assert.equal(routeSpaces.toPatient, true);
+    assert.equal(routeSpaces.actions.length, 0);
+    assert.equal(routeSpaces.fallback, true);
+    assert.equal(routeSpaces.fallbackApplied, true);
+});
+
+test('21. Routage sans aucune destination au-dessus du seuil : repli vers le patient avec fallbackApplied vrai', async () => {
+    const originalFetch = globalThis.fetch;
+    globalThis.fetch = async () => ({
+        ok: true,
+        json: async () => ({
+            decisions: [
+                { id: 'vers_patient', type: 'noul', probability: 0.35 },
+                { id: 'dest_patient', type: 'noul', probability: 0.35 },
+                { id: 'acte_imagerie', type: 'noul', probability: 0.12 },
+                { id: 'dest_radiologue', type: 'noul', probability: 0.12 },
+                { id: 'acte_biologie', type: 'noul', probability: 0.08 },
+                { id: 'dest_biologiste', type: 'noul', probability: 0.08 },
+                { id: 'acte_medicament', type: 'noul', probability: 0.15 },
+                { id: 'dest_infirmier', type: 'noul', probability: 0.15 },
+                { id: 'acte_type', type: 'choice', value: 'aucun' }
+            ]
+        })
+    });
+
+    try {
+        const route = await routeMessage('Hum...');
+        assert.equal(route.toPatient, true, 'Repli vers le patient quand aucune destination n atteint le seuil');
+        assert.equal(route.actions.length, 0, 'Aucun acte declenche');
+        assert.equal(route.clinicalActions.length, 0);
+        assert.equal(route.fallback, true);
+        assert.equal(route.fallbackApplied, true);
+    } finally {
+        globalThis.fetch = originalFetch;
+    }
+});
+
+

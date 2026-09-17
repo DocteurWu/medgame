@@ -304,13 +304,19 @@ export async function routeMessage(messageText, context = {}, options = {}) {
     }
 
     // 2. Destination patient
+    // Un acte est toujours adresse ou communique au patient en situation clinique : il doit l'entendre et pouvoir reagir.
+    // Justification clinique : il n'existe aucune situation clinique ou un etudiant demande un examen,
+    // prescrit un medicament ou pose un geste sans s'adresser au patient. L'acte et la parole coexistent toujours.
+    // La probabilite patient plus basse sur un message mixte ne signifie pas "le patient ne repond pas",
+    // elle signifie que le message n'est pas purement une question. Les deux questions sont independantes :
+    // actions et toPatient ne sont pas mutuellement exclusifs, et le code reflete cette independance.
     const patientProb = Math.max(
         getNoulProbability(decisions.vers_patient),
         getNoulProbability(decisions.dest_patient)
     );
-    let toPatient = patientProb >= ROUTING_CONFIDENCE_THRESHOLD;
+    let toPatient = patientProb >= ROUTING_CONFIDENCE_THRESHOLD || actions.length > 0;
 
-    // 3. Repli transparent : si rien n'a depasse le seuil, router vers le patient
+    // 3. Repli transparent : si rien n'a depasse le seuil et aucun acte detecte, router vers le patient
     let fallbackApplied = false;
     if (!toPatient && actions.length === 0) {
         toPatient = true;
