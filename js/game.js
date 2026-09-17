@@ -171,8 +171,122 @@ onDomReady(async () => {
     // Use gameState for centralized state management
     // Variables moved to gameState: cases, currentCaseIndex, currentCase, score, activeExams, vitalMonitorInstance
     
-    // selectedTreatments & attempts now in scoringState (scoring.js)
-    // timeLeft & timerInterval now in timerState (timer.js)
+    // ==================== ÉTAT DE SUIVI DU CAS (scoringState) ====================
+    // Maintient la trace des actions cliniques effectuées par l'étudiant pour Jev
+    const scoringState = {
+        currentCase: null,
+        attempts: 0,
+        selectedTreatments: [],
+        selectedDiagnostic: '',
+        caseFinalized: false,
+        demarche: {
+            interrogatoireAsked: new Set(),
+            examsOrdered: [],
+            examSectionsViewed: new Set(),
+            locksUnlocked: new Set(),
+            startedAt: null
+        }
+    };
+    window.scoringState = scoringState;
+
+    function resetDemarche() {
+        scoringState.demarche = {
+            interrogatoireAsked: new Set(),
+            examsOrdered: [],
+            examSectionsViewed: new Set(),
+            locksUnlocked: new Set(),
+            startedAt: Date.now()
+        };
+        scoringState.selectedTreatments = [];
+        scoringState.selectedDiagnostic = '';
+        scoringState.caseFinalized = false;
+    }
+    window.resetDemarche = resetDemarche;
+
+    function trackInterrogatoire(fieldPath) {
+        if (fieldPath) {
+            scoringState.demarche.interrogatoireAsked.add(fieldPath);
+            if (window.EcosMode && typeof window.EcosMode.checkItemByFieldPath === 'function') {
+                window.EcosMode.checkItemByFieldPath(fieldPath);
+            }
+        }
+    }
+    window.trackInterrogatoire = trackInterrogatoire;
+
+    function trackExamSectionViewed(sectionId) {
+        if (sectionId) scoringState.demarche.examSectionsViewed.add(sectionId);
+    }
+    window.trackExamSectionViewed = trackExamSectionViewed;
+
+    function trackLockUnlocked(lockId) {
+        if (lockId) scoringState.demarche.locksUnlocked.add(lockId);
+    }
+    window.trackLockUnlocked = trackLockUnlocked;
+
+    function trackExamsOrdered(exams) {
+        scoringState.demarche.examsOrdered = exams || [];
+        if (window.EcosMode && typeof window.EcosMode.checkItemByExamName === 'function') {
+            (exams || []).forEach(ex => {
+                window.EcosMode.checkItemByExamName(ex);
+            });
+        }
+    }
+    window.trackExamsOrdered = trackExamsOrdered;
+
+    function handleTraitementClick(event) {
+        const traitement = event.target.dataset.traitement;
+        if (!traitement) return;
+        if (scoringState.selectedTreatments.includes(traitement)) {
+            scoringState.selectedTreatments = scoringState.selectedTreatments.filter(t => t !== traitement);
+            event.target.classList.remove('selected');
+            event.target.setAttribute('aria-selected', 'false');
+        } else {
+            scoringState.selectedTreatments.push(traitement);
+            event.target.classList.add('selected');
+            event.target.setAttribute('aria-selected', 'true');
+        }
+    }
+    window.handleTraitementClick = handleTraitementClick;
+
+    function calculateXpEarned(scoreOn100) {
+        const currentCase = scoringState.currentCase || gameState.currentCase || {};
+        const caseId = currentCase.id || 'default_case';
+        const caseAttemptsKey = `case_attempts_${caseId}`;
+        const caseAttemptsAtKey = `case_attempts_at_${caseId}`;
+        let caseAttempts = parseInt(localStorage.getItem(caseAttemptsKey), 10) || 0;
+
+        const ATTEMPT_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 jours
+        const lastAttemptAt = parseInt(localStorage.getItem(caseAttemptsAtKey), 10) || 0;
+        if (lastAttemptAt && (Date.now() - lastAttemptAt) > ATTEMPT_EXPIRY_MS) {
+            caseAttempts = 0;
+        }
+
+        caseAttempts++;
+        localStorage.setItem(caseAttemptsKey, caseAttempts.toString());
+        localStorage.setItem(caseAttemptsAtKey, Date.now().toString());
+
+        let xpEarned = 0;
+        let xpMessage = '';
+        const safeScore = Math.max(0, parseInt(scoreOn100, 10) || 0);
+
+        if (caseAttempts === 1) {
+            xpEarned = safeScore;
+            xpMessage = 'Première tentative - XP complet';
+        } else if (caseAttempts === 2) {
+            const previousScoreKey = `case_score_${caseId}`;
+            const previousScore = parseInt(localStorage.getItem(previousScoreKey), 10) || safeScore;
+            const averageScore = Math.round((previousScore + safeScore) / 2);
+            xpEarned = averageScore;
+            xpMessage = `Deuxième tentative - Moyenne: ${averageScore}%`;
+        } else {
+            xpEarned = 0;
+            xpMessage = `Tentative #${caseAttempts} - Pas d'XP`;
+        }
+
+        localStorage.setItem(`case_score_${caseId}`, safeScore.toString());
+        return { xpEarned, xpMessage, caseAttempts };
+    }
+    window.calculateXpEarned = calculateXpEarned;
 
     /**
      * Fin de temps (mode classique uniquement).
@@ -1211,139 +1325,62 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         }
     }
 
-    // calculateScore, handleTraitementClick, calculateDetailedScore, calculateXpEarned moved to js/scoring.js
-
     /**
      * Pipeline complet de clôture d'un cas (validation manuelle OU fin de temps).
-     * Machine à états : un cas ne peut être scoré qu'UNE SEULE FOIS
-     * (scoringState.caseFinalized) — plus aucune re-validation ni brute-force du score.
+     * Machine à états : un cas ne peut être validé qu'UNE SEULE FOIS (scoringState.caseFinalized).
+     *
+     * Décision d'architecture (Prompt 9) :
+     * Le mode classique (immersionMode === 'classique') utilise désormais la notation Jev unique,
+     * tout comme le mode immersif ECOS. Aucun score composite maison ni calcul concurrent :
+     * Jev est l'unique source de vérité pour la notation sur 20.
      */
-    function processCaseValidation(opts = {}) {
+    async function processCaseValidation(opts = {}) {
         const timedOut = !!opts.timedOut;
 
-        // --- Verrou anti re-validation ---
+        // Verrou anti re-validation
         if (scoringState.caseFinalized) return;
 
         const currentCase = gameState.currentCase;
+        if (!currentCase) return;
+
         scoringState.attempts++;
         const attempts = scoringState.attempts;
-        const selectedTreatments = scoringState.selectedTreatments;
-        // Capture du diagnostic dans l'état (le scoring ne lit plus le DOM)
+        const selectedTreatments = [...scoringState.selectedTreatments];
         const selectedDiagnostic = (document.getElementById('diagnostic-select') || {}).value || '';
         scoringState.selectedDiagnostic = selectedDiagnostic;
-        const correctDiagnostic = currentCase.correctDiagnostic;
+        const correctDiagnostic = currentCase.correctDiagnostic || '';
 
-        if (timedOut && typeof feedbackTimeline !== 'undefined') {
-            feedbackTimeline.log('section', '⏱️ Temps écoulé — cas clôturé automatiquement');
-        }
-
-        // --- Timeline feedback : enregistrement du diagnostic et traitement ---
-        if (typeof feedbackTimeline !== 'undefined') {
-            feedbackTimeline.log('diagnostic', `Diagnostic sélectionné : ${selectedDiagnostic || '(aucun)'}`);
-            if (selectedTreatments.length > 0) {
-                feedbackTimeline.log('traitement', `Traitements prescrits : ${selectedTreatments.join(', ')}`);
-            } else {
-                feedbackTimeline.log('traitement', 'Aucun traitement prescrit');
-            }
-        }
-
-        // ========================================
-        // SCORING COMPOSITE AVANCÉ — source unique de vérité
-        // Remplace la logique binaire obsolète par le scoring progressif
-        // Démarche 40% · Diagnostic 30% · Traitement 20% · Vitesse 10%
-        // ========================================
-        const compositeResult = calculateCompositeScore();
-        // Verrou posé dès que le score est calculé : plus aucun re-clic possible.
+        // Verrou posé dès la validation : aucun re-clic possible
         scoringState.caseFinalized = true;
-        const diagScore = compositeResult.diagnosticScore;
-        const treatScore = compositeResult.traitementScore;
 
-        // --- Feedback immédiat progressif (basé sur le scoring composite) ---
-        if (diagScore >= 80) {
-            feedbackDisplay.textContent = '✅ Diagnostic correct — excellent !';
-            addVisualFeedback(feedbackDisplay, 'correct');
-            playSound('correct');
-        } else if (diagScore >= 60) {
-            feedbackDisplay.textContent = '🟡 Diagnostic proche — bonne direction';
-            addVisualFeedback(feedbackDisplay, 'correct');
-        } else if (diagScore >= 30) {
-            feedbackDisplay.textContent = '🟠 Diagnostic partiel — spécialité identifiée';
-            addVisualFeedback(feedbackDisplay, 'incorrect');
-            playSound('incorrect');
-        } else if (diagScore > 0) {
-            feedbackDisplay.textContent = '🔴 Diagnostic éloigné du résultat attendu';
-            addVisualFeedback(feedbackDisplay, 'incorrect');
-            playSound('incorrect');
-        } else {
-            feedbackDisplay.textContent = '❌ Diagnostic incorrect';
-            addVisualFeedback(feedbackDisplay, 'incorrect');
-            playSound('incorrect');
-        }
+        // Arrêter le timer
+        if (timerState.timerInterval) clearInterval(timerState.timerInterval);
 
-        // Feedback traitement progressif
-        const treatFeedbackEl = document.getElementById('treatment-feedback');
-        if (treatFeedbackEl) {
-            if (compositeResult.hasFatalError) {
-                treatFeedbackEl.textContent = '☠️ Erreur fatale : traitement contre-indiqué prescrit ! Score traitement annulé.';
-            } else if (treatScore >= 80) {
-                treatFeedbackEl.textContent = '✅ Traitement bien ciblé.';
-            } else if (treatScore >= 40) {
-                treatFeedbackEl.textContent = '⚠️ Traitement partiellement correct.';
-            } else {
-                treatFeedbackEl.textContent = '❌ Traitement inadapté.';
-            }
-        }
-
-        // Score composite comme score final (unique source de vérité)
-        gameState.setScore(compositeResult.compositeScore);
-        scoreDisplay.textContent = `Score final: ${compositeResult.compositeScore}%`;
-        scoreDisplay.classList.add(compositeResult.compositeScore >= 40 ? 'score-up' : 'score-down');
-        showScorePopup(scoreDisplay, compositeResult.compositeScore, compositeResult.compositeScore >= 40);
-
-        // Son de feedback : succès ou erreur
-        if (window.medicalAudio) {
-            if (compositeResult.compositeScore >= 40) {
-                window.medicalAudio.playSuccessSound();
-            } else {
-                window.medicalAudio.playErrorSound();
-            }
-        }
-
-        // Arrêter les fireworks s'ils sont actifs
+        // Arrêter les fireworks et la musique
         if (uiState.fireworksInstance) {
             try { uiState.fireworksInstance.stop(); } catch(e) {}
         }
-        // Arrêter la musique
         const backgroundMusic = document.querySelector('audio');
         if (backgroundMusic) backgroundMusic.pause();
 
-        // Appliquer l'impact des traitements corrects sur les constantes vitales
+        // Appliquer l'impact des traitements sur les constantes vitales
         if (gameState.vitalMonitorInstance && typeof gameState.vitalMonitorInstance.applyTreatmentImpact === 'function') {
             selectedTreatments.forEach(t => gameState.vitalMonitorInstance.applyTreatmentImpact(t));
         }
 
-        // --- Gestion des classes CSS pour les boutons de traitement (stagger) ---
-        // Utilise les treatmentDetails du composite pour un codage couleur précis
-        const td = compositeResult.treatmentDetails || {};
-        const firstLineSet = new Set(td.firstLineHit || []);
-        const secondLineSet = new Set(td.secondLineHit || []);
-        const unnecessarySet = new Set(td.unnecessary || []);
-
+        // Coloration des boutons de traitement
+        const correctTreatments = currentCase.correctTreatments || [];
+        const fatalTreatments = currentCase.fatalTreatments || [];
         const treatmentButtons = document.querySelectorAll('#availableTreatments button');
         treatmentButtons.forEach((button, idx) => {
-            const traitement = button.dataset.traitement;
+            const t = button.dataset.traitement;
             button.classList.remove('correct-treatment', 'incorrect-treatment');
-
-            if (firstLineSet.has(traitement)) {
+            if (correctTreatments.includes(t)) {
                 setTimeout(() => {
                     button.classList.add('correct-treatment');
                     if (idx === 0) playSound('correct');
                 }, idx * 80);
-            } else if (secondLineSet.has(traitement)) {
-                setTimeout(() => {
-                    button.classList.add('correct-treatment');
-                }, idx * 80);
-            } else if (unnecessarySet.has(traitement)) {
+            } else if (fatalTreatments.includes(t) || selectedTreatments.includes(t)) {
                 setTimeout(() => {
                     button.classList.add('incorrect-treatment');
                     if (idx === 0) playSound('incorrect');
@@ -1351,48 +1388,233 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             }
         });
 
-        const percentageScore = compositeResult.compositeScore;
-        const hasFatalError = compositeResult.hasFatalError;
-        const selectedFatalTreatments = compositeResult.selectedFatalTreatments;
-        const stars = compositeResult.stars;
+        // Feedback visuel immédiat sur le diagnostic
+        const isDiagExact = selectedDiagnostic && correctDiagnostic &&
+            selectedDiagnostic.trim().toLowerCase() === correctDiagnostic.trim().toLowerCase();
+        if (isDiagExact) {
+            feedbackDisplay.textContent = 'Diagnostic correct !';
+            addVisualFeedback(feedbackDisplay, 'correct');
+            playSound('correct');
+        } else if (selectedDiagnostic) {
+            feedbackDisplay.textContent = 'Diagnostic sélectionné : ' + selectedDiagnostic;
+            addVisualFeedback(feedbackDisplay, 'incorrect');
+        } else {
+            feedbackDisplay.textContent = timedOut ? 'Temps écoulé' : 'Aucun diagnostic sélectionné';
+            addVisualFeedback(feedbackDisplay, 'incorrect');
+        }
 
-        // Arrêter le timer
-        if (timerState.timerInterval) clearInterval(timerState.timerInterval);
+        // ==================== CONSTRUCTION DU TRANSCRIPT UNIFIÉ ====================
+        const events = [];
+        const startedAt = scoringState.demarche.startedAt || (Date.now() - 300000);
 
-        // --- ANTI-FARM: Calculate XP based on attempt number ---
-        const xpResult = calculateXpEarned(percentageScore, compositeResult.vitesseScore);
+        // Actions d'interrogatoire
+        scoringState.demarche.interrogatoireAsked.forEach(p => {
+            events.push({
+                elapsed: 10,
+                speaker: 'ETUDIANT',
+                origin: 'interface',
+                text: `interroge sur : ${p}`
+            });
+        });
+
+        // Historique du chat
+        (gameState.chatHistory || []).forEach(msg => {
+            events.push({
+                elapsed: typeof msg.elapsed === 'number' ? msg.elapsed : 20,
+                speaker: (msg.sender === 'user' || msg.speaker === 'user' || msg.sender === 'Vous') ? 'ETUDIANT' : 'PATIENT',
+                origin: 'chat',
+                text: msg.text || msg.content || ''
+            });
+        });
+
+        // Examens complémentaires demandés
+        (scoringState.demarche.examsOrdered || []).forEach(ex => {
+            events.push({
+                elapsed: 60,
+                speaker: 'ETUDIANT',
+                origin: 'interface',
+                text: `prescrit examen : ${ex}`
+            });
+        });
+
+        // Traitements prescrits
+        selectedTreatments.forEach(t => {
+            events.push({
+                elapsed: 120,
+                speaker: 'ETUDIANT',
+                origin: 'interface',
+                text: `prescrit traitement : ${t}`
+            });
+        });
+
+        // Diagnostic proposé
+        if (selectedDiagnostic) {
+            events.push({
+                elapsed: 150,
+                speaker: 'ETUDIANT',
+                origin: 'interface',
+                text: `propose diagnostic : ${selectedDiagnostic}`
+            });
+        }
+
+        const transcript = window.JevClient
+            ? window.JevClient.buildUnifiedTranscript(events)
+            : "";
+
+        // ==================== NOTATION UNIQUE PAR JEV ====================
+        let jevEvaluation = {
+            success: false,
+            unrated: true,
+            message: "Station non notée, réessayez plus tard."
+        };
+
+        if (window.JevClient && typeof window.JevClient.evaluateStation === 'function') {
+            try {
+                jevEvaluation = await window.JevClient.evaluateStation(
+                    currentCase,
+                    transcript,
+                    {
+                        diagSubmitted: selectedDiagnostic,
+                        duration: (Date.now() - startedAt) / 1000
+                    }
+                );
+            } catch (err) {
+                console.error('[Jev] Échec notation en mode classique :', err);
+            }
+        }
+
+        const isUnrated = jevEvaluation.unrated || !jevEvaluation.success;
+        const globalScore20 = (typeof jevEvaluation.globalScore20 === 'number') ? jevEvaluation.globalScore20 : 0;
+        const passed = !isUnrated && !!jevEvaluation.passed;
+
+        gameState.setScore(globalScore20);
+
+        if (isUnrated) {
+            scoreDisplay.textContent = 'Note ECOS : non notée';
+            scoreDisplay.classList.add('score-down');
+        } else {
+            scoreDisplay.textContent = `Note ECOS : ${globalScore20.toFixed(1)}/20`;
+            scoreDisplay.classList.add(passed ? 'score-up' : 'score-down');
+            showScorePopup(scoreDisplay, globalScore20, passed);
+        }
+
+        // Son de feedback
+        if (window.medicalAudio) {
+            if (passed) {
+                window.medicalAudio.playSuccessSound();
+            } else {
+                window.medicalAudio.playErrorSound();
+            }
+        }
+
+        // XP calculé à partir de la note Jev sur 20 ramenée sur 100
+        const score100 = Math.round((globalScore20 / 20) * 100);
+        const xpResult = calculateXpEarned(score100);
         const xpEarned = xpResult.xpEarned;
         const xpMessage = xpResult.xpMessage;
         const caseAttempts = xpResult.caseAttempts;
 
-        // Build color-coded comparison HTML
-        const diagnosticCorrect = (diagScore >= 80);
-        const diagnosticUserStyle = diagnosticCorrect
-            ? 'background: rgba(46, 204, 113, 0.3); padding: 5px; border-radius: 4px;'
-            : diagScore >= 30
-                ? 'background: rgba(243, 156, 18, 0.3); padding: 5px; border-radius: 4px;'
-                : 'background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;';
+        // ==================== PANNEAU DE DEBRIEFING JEV ====================
+        let debriefHtml = '';
 
-        // Build treatments list with color coding (using composite treatmentDetails)
-        let userTreatmentsHtml = '';
-        if (selectedTreatments.length === 0) {
-            userTreatmentsHtml = '<span style="background: rgba(231, 76, 60, 0.3); padding: 5px; border-radius: 4px;">Aucun</span>';
+        if (isUnrated) {
+            debriefHtml = `
+                <div style="background:rgba(243,156,18,0.12); border:1px solid #f39c12; border-radius:8px; padding:15px; margin-bottom:15px; text-align:center;">
+                    <h3 style="margin:0; color:#f39c12;">Station non notée</h3>
+                    <p style="margin:6px 0 0; color:rgba(255,255,255,0.7); font-size:0.85rem;">
+                        ${escapeHtml(jevEvaluation.message || 'Échec de la notation par Jev. Réessayez plus tard.')}
+                    </p>
+                </div>
+            `;
         } else {
-            userTreatmentsHtml = selectedTreatments.map(t => {
-                const isFirstLine = firstLineSet.has(t);
-                const isSecondLine = secondLineSet.has(t);
-                const style = isFirstLine
-                    ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
-                    : isSecondLine
-                        ? 'background: rgba(243, 156, 18, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
-                        : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
-                return `<span style="${style}">${escapeHtml(t)}</span>`;
-            }).join(' ');
+            const scoreColor = passed ? '#2ecc71' : '#e74c3c';
+            const passBadge = passed
+                ? '<span style="background:rgba(46,204,113,0.2); color:#2ecc71; border:1px solid #2ecc71; padding:3px 10px; border-radius:4px; font-weight:700; font-size:0.85rem;">Station validée (seuil CNG ≥ 10/20)</span>'
+                : '<span style="background:rgba(231,76,60,0.2); color:#e74c3c; border:1px solid #e74c3c; padding:3px 10px; border-radius:4px; font-weight:700; font-size:0.85rem;">Station non validée (< 10/20)</span>';
+
+            let redhibAlert = '';
+            if (jevEvaluation.hasRedhibitoryError && Array.isArray(jevEvaluation.redhibitoryHits) && jevEvaluation.redhibitoryHits.length > 0) {
+                redhibAlert = `
+                    <div style="background:rgba(231,76,60,0.18); border:2px solid #e74c3c; border-radius:8px; padding:12px; margin-bottom:15px; color:#ff7675;">
+                        <div style="font-weight:700; margin-bottom:4px;"><i class="fas fa-skull-crossbones"></i> Erreur(s) rédhibitoire(s) détectée(s) :</div>
+                        <ul style="margin:4px 0 0 18px; padding:0;">
+                            ${jevEvaluation.redhibitoryHits.map(h => `<li>${escapeHtml(h.label)}</li>`).join('')}
+                        </ul>
+                        <div style="font-size:0.80rem; margin-top:6px; color:rgba(255,255,255,0.7);">
+                            Conformément aux règles ECOS officielles du CNG, toute erreur rédhibitoire invalide la station (note ramenée à 0/20).
+                        </div>
+                    </div>
+                `;
+            }
+
+            const apt = jevEvaluation.sections?.aptitudes || { points: 0, maxPoints: 0, score20: 0, items: [] };
+            const comm = jevEvaluation.sections?.communication || { points: 0, maxPoints: 0, score20: 0, items: [] };
+            const perf = jevEvaluation.sections?.performance || { points: 0, maxPoints: 0, score20: 0, items: [] };
+
+            function renderSection(title, weightPct, sec) {
+                const secScore = typeof sec.score20 === 'number' ? sec.score20.toFixed(2) : '0';
+                const color = sec.score20 >= 14 ? '#2ecc71' : sec.score20 >= 10 ? '#f39c12' : '#e74c3c';
+                const pct = sec.maxPoints > 0 ? Math.round((sec.points / sec.maxPoints) * 100) : 0;
+                return `
+                    <div style="margin-bottom:14px; padding:10px 12px; background:rgba(255,255,255,0.04); border-radius:6px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
+                            <span style="font-weight:700; color:#fff; font-size:0.9rem;">${escapeHtml(title)} (${weightPct}%)</span>
+                            <span style="font-weight:700; color:${color}; font-size:0.95rem;">${secScore}/20 (${sec.points.toFixed(1)} / ${sec.maxPoints} pts)</span>
+                        </div>
+                        <div style="width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+                            <div style="width:${pct}%; height:100%; background:${color};"></div>
+                        </div>
+                        <ul style="list-style:none; padding:0; margin:8px 0 0; font-size:0.80rem;">
+                            ${(sec.items || []).map(item => {
+                                const badgeStyle = item.status === 'fait'
+                                    ? 'background:rgba(46,204,113,0.25); color:#2ecc71; border:1px solid #2ecc71;'
+                                    : item.status === 'en_partie'
+                                        ? 'background:rgba(243,156,18,0.25); color:#f39c12; border:1px solid #f39c12;'
+                                        : 'background:rgba(231,76,60,0.25); color:#e74c3c; border:1px solid #e74c3c;';
+                                const statusLabel = item.status === 'fait' ? 'Fait (1 pt)' : item.status === 'en_partie' ? 'En partie (0.5 pt)' : 'Non fait (0 pt)';
+                                return `
+                                    <li style="display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+                                        <span style="flex:1; margin-right:8px; color:rgba(255,255,255,0.85);">${escapeHtml(item.label || '')}</span>
+                                        <span style="padding:1px 5px; border-radius:3px; font-size:0.75rem; white-space:nowrap; ${badgeStyle}">${statusLabel}</span>
+                                    </li>
+                                `;
+                            }).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            debriefHtml = `
+                <div style="text-align:center; padding:15px; margin-bottom:15px; background:rgba(0,0,0,0.25); border-radius:8px;">
+                    <div style="font-size:0.80rem; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1px;">Note finale ECOS</div>
+                    <div style="font-size:2.8rem; font-weight:800; color:${scoreColor}; margin:5px 0;">
+                        ${globalScore20.toFixed(2)}<span style="font-size:1.2rem; color:rgba(255,255,255,0.5);">/20</span>
+                    </div>
+                    <div>${passBadge}</div>
+                </div>
+                ${redhibAlert}
+                ${renderSection("Aptitudes cliniques et techniques", 50, apt)}
+                ${renderSection("Communication et attitudes", 25, comm)}
+                ${renderSection("Performance et démarche", 25, perf)}
+            `;
         }
 
-        // Build expected treatments with highlighting for what was selected
-        const refTreatments = currentCase.correctTreatments || [];
-        let expectedTreatmentsHtml = refTreatments.map(t => {
+        // Comparaison Diagnostic et Traitements
+        const diagnosticUserStyle = isDiagExact
+            ? 'background: rgba(46, 204, 113, 0.3); padding: 4px 8px; border-radius: 4px;'
+            : 'background: rgba(231, 76, 60, 0.3); padding: 4px 8px; border-radius: 4px;';
+
+        const userTreatmentsHtml = selectedTreatments.length === 0
+            ? '<span style="background: rgba(231, 76, 60, 0.3); padding: 4px 8px; border-radius: 4px;">Aucun</span>'
+            : selectedTreatments.map(t => {
+                const isCorrect = correctTreatments.includes(t);
+                const style = isCorrect
+                    ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
+                    : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
+                return `<span style="${style}">${escapeHtml(t)}</span>`;
+            }).join(' ');
+
+        const expectedTreatmentsHtml = correctTreatments.map(t => {
             const wasSelected = selectedTreatments.includes(t);
             const style = wasSelected
                 ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
@@ -1400,55 +1622,34 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             return `<span style="${style}">${escapeHtml(t)}</span>`;
         }).join(' ');
 
-        // Build fatal error banner if applicable
-        const fatalBanner = hasFatalError ? `
-            <div style="background: rgba(231,76,60,0.15); border: 2px solid #e74c3c; border-radius: 10px; padding: 15px; margin-bottom: 15px; text-align: center;">
-                <div style="color: #e74c3c; font-size: 1.4em; font-weight: bold; margin-bottom: 6px;"><i class="fas fa-skull-crossbones"></i> ERREUR FATALE COMMISE</div>
-                <p style="color: rgba(255,255,255,0.85); margin: 0;">Les traitements suivants sont contre-indiqués ou dangereux : <strong style="color:#e74c3c;">${escapeHtml(selectedFatalTreatments.join(', '))}</strong></p>
-                <p style="color: rgba(255,255,255,0.6); font-size: 0.85em; margin-top: 6px;">Score de traitement annulé. En médecine, prescrire un soin contre-indiqué peut mettre la vie du patient en danger.</p>
-            </div>
-        ` : '';
-
-        // Composite score panel + comparison HTML
-        const compositePanelHtml = renderCompositeScorePanel(compositeResult);
-
-        // Build detailed feedback (timeline, strengths/weaknesses, pedagogy, comparison)
-        let detailedFeedbackHtml = '';
-        if (typeof renderDetailedFeedback === 'function') {
-            detailedFeedbackHtml = renderDetailedFeedback(compositeResult, currentCase);
-        }
-
         const comparisonHtml = `
-            ${fatalBanner}
             <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-                ${compositePanelHtml}
-                <div style="margin-bottom: 10px;">
+                ${debriefHtml}
+                <div style="margin-top: 15px; margin-bottom: 10px;">
                     <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
                     <p><strong>Diagnostic:</strong> <span style="${diagnosticUserStyle}">${escapeHtml(selectedDiagnostic || 'Aucun')}</span></p>
                     <p><strong>Traitements:</strong> ${userTreatmentsHtml}</p>
                 </div>
                 <div>
                     <h4 style="color: #2ecc71; margin-bottom: 5px;">Réponse Attendue</h4>
-                    <p><strong>Diagnostic:</strong> ${escapeHtml(correctDiagnostic)}</p>
+                    <p><strong>Diagnostic:</strong> ${escapeHtml(correctDiagnostic || 'Non spécifié')}</p>
                     <p><strong>Traitements:</strong> ${expectedTreatmentsHtml}</p>
-                    <p style="font-size: 0.9em; color: #aaa; margin-top: 5px;">
+                    <p style="font-size: 0.85em; color: #aaa; margin-top: 5px;">
                         <span style="background: rgba(46, 204, 113, 0.3); padding: 2px 6px; border-radius: 3px;">Vert</span> = Correct | 
                         <span style="background: rgba(255, 193, 7, 0.3); padding: 2px 6px; border-radius: 3px;">Jaune</span> = Manquant | 
                         <span style="background: rgba(231, 76, 60, 0.3); padding: 2px 6px; border-radius: 3px;">Rouge</span> = Incorrect
                     </p>
                 </div>
-                <div style="text-align:center; margin-top:8px;">
+                <div style="text-align:center; margin-top:12px;">
                     <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
                     <p style="color: ${caseAttempts > 2 ? '#e74c3c' : 'rgba(255,255,255,0.5)'}; font-size:0.75em; margin-top: 5px;">
                         <i class="fas fa-info-circle"></i> ${escapeHtml(xpMessage)}
                     </p>
                 </div>
             </div>
-            ${detailedFeedbackHtml}
             <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
         `;
 
-        // ALWAYS show correction and update cookie
         playSound('complete');
         startPostGameQuiz(comparisonHtml);
 
@@ -1460,12 +1661,12 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             setCookie('playedCases', playedCases.join(','), 365);
         }
 
-        // Sauvegarde centralisée des XP (local + Supabase)
+        // Sauvegarde centralisée des XP
         if (typeof addXp === 'function') {
             addXp(xpEarned).catch(err => console.warn("Erreur lors de l'incrémentation XP :", err));
         }
 
-        // ── Badges : évaluation + notification en jeu au moment du déblocage ──
+        // Badges : évaluation avec note Jev sur 20
         if (window.BadgeSystem && typeof window.BadgeSystem.evaluateAndPersist === 'function') {
             try {
                 const localSessions = [
@@ -1474,7 +1675,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 ].map(s => ({ case_id: s.case_id, score: s.score, mode: s.mode || 'ecos' }));
                 localSessions.push({
                     case_id: currentCase.id,
-                    score: percentageScore,
+                    score: globalScore20,
                     mode: 'classique'
                 });
                 const fresh = window.BadgeSystem.evaluateAndPersist(localSessions, null);
@@ -1482,7 +1683,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             } catch (e) { console.warn('[Badges] Évaluation en jeu échouée :', e); }
         }
 
-        // SUPABASE: Sauvegarde de la session de jeu
+        // Supabase : sauvegarde de la session avec la note Jev sur 20
         if (typeof supabase !== 'undefined' && supabase.auth) {
             supabase.auth.getUser().then(async ({ data: { user } }) => {
                 if (user) {
@@ -1493,16 +1694,13 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         const stats = {
                             attempts: attempts,
                             caseAttempts: caseAttempts,
-                            diagnosticCorrect: diagnosticCorrect,
+                            diagnosticCorrect: isDiagExact,
                             selectedTreatments: selectedTreatments,
-                            hasFatalError: hasFatalError,
+                            hasFatalError: !!jevEvaluation.hasRedhibitoryError,
                             xpEarned: xpEarned,
-                            compositeScore: percentageScore,
-                            demarcheScore: compositeResult.demarcheScore,
-                            diagnosticScore: compositeResult.diagnosticScore,
-                            traitementScore: compositeResult.traitementScore,
-                            vitesseScore: compositeResult.vitesseScore,
-                            stars: stars
+                            globalScore20: globalScore20,
+                            passed: passed,
+                            sections: jevEvaluation.sections || null
                         };
 
                         await supabase
@@ -1511,7 +1709,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                                 {
                                     user_id: user.id,
                                     case_id: currentCase.id,
-                                    score: percentageScore,
+                                    score: globalScore20,
                                     stats: stats,
                                     duration_seconds: durationSeconds
                                 }
@@ -1523,14 +1721,13 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             });
         }
 
-        // --- Verrouillage de l'interface : plus aucune modification après validation ---
+        // Verrouillage de l'interface
         const diagSelectEl = document.getElementById('diagnostic-select');
         if (diagSelectEl) diagSelectEl.disabled = true;
         document.querySelectorAll('#availableTreatments button').forEach(b => { b.disabled = true; b.style.pointerEvents = 'none'; });
         const validateExamsBtn = document.getElementById('validate-exams');
         if (validateExamsBtn) validateExamsBtn.disabled = true;
 
-        // Cas clôturé : le snapshot de reprise n'a plus de raison d'être
         if (window.SessionSnapshot) window.SessionSnapshot.clear();
     }
 

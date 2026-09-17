@@ -343,7 +343,7 @@ if (isMain) {
             res.setHeader('Vary', 'Origin');
         }
         res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, HTTP-Referer, X-Title');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, HTTP-Referer, X-Title, X-User-Token');
 
         if (req.method === 'OPTIONS') {
             res.writeHead(200);
@@ -351,10 +351,12 @@ if (isMain) {
             return;
         }
 
-        if (req.url === '/health') {
+        const pathname = req.url.split('?')[0];
+
+        if (pathname === '/health') {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ status: 'ok', viewersConnected: viewers.size, activeCase: engine.caseData?.id || null }));
-        } else if (req.url === '/llm-proxy' && req.method === 'POST') {
+        } else if (pathname === '/llm-proxy' && req.method === 'POST') {
             let body = '';
             req.on('data', chunk => { body += chunk; });
             req.on('end', async () => {
@@ -405,6 +407,90 @@ if (isMain) {
                     res.end();
                 } catch (err) {
                     console.error('[MCP Proxy] Request failed:', err);
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: err.message }));
+                }
+            });
+        } else if (pathname === '/jev-proxy' && req.method === 'POST') {
+            let body = '';
+            req.on('data', chunk => { body += chunk; });
+            req.on('end', async () => {
+                try {
+                    dotenv.config({ path: path.resolve(__dirname, '.env'), override: true });
+                    const apiKey = process.env.TYPESAFE_API_KEY;
+                    const jevUrl = process.env.JEV_API_URL || 'https://api.typesafe.ai/v1/systemone';
+
+                    if (!apiKey) {
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "TYPESAFE_API_KEY is not configured in .env" }));
+                        return;
+                    }
+
+                    let parsed;
+                    try {
+                        parsed = JSON.parse(body);
+                    } catch {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "Invalid JSON body" }));
+                        return;
+                    }
+
+                    if (typeof parsed !== 'object' || parsed === null) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "Request body must be an object" }));
+                        return;
+                    }
+
+                    const state = typeof parsed.state === 'string' ? parsed.state : '';
+                    if (state.length > 60000) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "State length exceeds 60000 characters limit" }));
+                        return;
+                    }
+
+                    const questions = parsed.questions;
+                    if (!questions || typeof questions !== 'object' || Array.isArray(questions)) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "questions must be an object" }));
+                        return;
+                    }
+
+                    const questionKeys = Object.keys(questions);
+                    if (questionKeys.length === 0) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "questions object cannot be empty" }));
+                        return;
+                    }
+                    if (questionKeys.length > 80) {
+                        res.writeHead(400, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: "questions count exceeds 80 limit" }));
+                        return;
+                    }
+
+                    const model = typeof parsed.model === 'string' && parsed.model.trim() ? parsed.model.trim() : 'jev-latest';
+
+                    console.error(`[MCP Jev-Proxy] Forwarding request to TypeSafe System One (questions: ${questionKeys.length})...`);
+                    const response = await fetch(jevUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`,
+                            'X-Title': 'MedGame'
+                        },
+                        body: JSON.stringify({
+                            model,
+                            state,
+                            questions
+                        })
+                    });
+
+                    const respText = await response.text();
+                    res.writeHead(response.status, {
+                        'Content-Type': response.headers.get('Content-Type') || 'application/json'
+                    });
+                    res.end(respText);
+                } catch (err) {
+                    console.error('[MCP Jev-Proxy] Request failed:', err);
                     res.writeHead(500, { 'Content-Type': 'application/json' });
                     res.end(JSON.stringify({ error: err.message }));
                 }
