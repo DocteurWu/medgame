@@ -65,7 +65,7 @@
       "debutSymptomes": "Brutal, il y a 1 minute",
       "evolution": "Aiguë",
       "facteursDeclenchants": "Effort intense lors d'un match de handball",
-      "descriptionDouleur": "Aucune plainte — elle ne répond pas",
+      "descriptionDouleur": "Aucune plainte - elle ne répond pas",
       "asymptomesAssocies": [
         "Inconscience",
         "Absence de mouvement",
@@ -491,49 +491,268 @@
       {
         "id": "eval_critere_1",
         "label": "Alerte et demande du DAE",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Donne des consignes de securite explicites : signes d'alerte a surveiller, conduite a tenir et recours aux urgences (appel au 15) si aggravation.",
+          "en_partie": "Donne une consigne d'alerte vague sans conduite pratique ni recours precise.",
+          "non_fait": "Ne donne aucune consigne de securite ni aucun signe d'alerte."
+        },
+        "triggerKeywords": [
+          "alerte",
+          "demande",
+          "dae",
+          "arrêt",
+          "cardio",
+          "respiratoire"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "Massage cardiaque continu immédiat",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Massage cardiaque continu immédiat) selon les regles de l'art, en lien avec (Arrêt cardio-respiratoire (probable fibrillation ventriculaire)) et le motif (Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport).",
+          "en_partie": "Realise partiellement l'etape (Massage cardiaque continu immédiat), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Massage cardiaque continu immédiat) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "massage",
+          "cardiaque",
+          "continu",
+          "immédiat",
+          "arrêt",
+          "cardio",
+          "respiratoire"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "Délivrance rapide du premier choc",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Délivrance rapide du premier choc) selon les regles de l'art, en lien avec (Arrêt cardio-respiratoire (probable fibrillation ventriculaire)) et le motif (Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport).",
+          "en_partie": "Realise partiellement l'etape (Délivrance rapide du premier choc), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Délivrance rapide du premier choc) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "délivrance",
+          "rapide",
+          "premier",
+          "choc",
+          "arrêt",
+          "cardio",
+          "respiratoire"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Enquête étiologique ultérieure (cardiomyopathie, canalopathie)",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        },
+        "triggerKeywords": [
+          "enquête",
+          "étiologique",
+          "ultérieure",
+          "cardiomyopathie",
+          "canalopathie",
+          "arrêt",
+          "cardio",
+          "respiratoire"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "arrêt"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Effondrement inopiné d'une sportive de 22 ans sur un terrain de sport) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Arrêt cardio-respiratoire (probable fibrillation ventriculaire)).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "effondrement",
+          "inopiné",
+          "sportive",
+          "ans",
+          "terrain"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "arrêt"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "arrêt",
+          "cardio"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "communication_non_verbale",
         "label": "Utilise une communication non verbale appropriée (contact, posture)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Utilise une communication non verbale appropriée (contact, posture)) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Utilise une communication non verbale appropriée (contact, posture)) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Utilise une communication non verbale appropriée (contact, posture)) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "clarte_ordres",
         "label": "Donne des ordres clairs et concis à l'équipe",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Donne des ordres clairs et concis à l'équipe) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Donne des ordres clairs et concis à l'équipe) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Donne des ordres clairs et concis à l'équipe) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "calme_urgence",
         "label": "Garde son calme et sa concentration malgré l'urgence",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Garde son calme et sa concentration malgré l'urgence) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Garde son calme et sa concentration malgré l'urgence) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Garde son calme et sa concentration malgré l'urgence) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "coordination_equipe",
         "label": "Coordonne efficacement les actions de l'équipe",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Coordonne efficacement les actions de l'équipe) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Coordonne efficacement les actions de l'équipe) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Coordonne efficacement les actions de l'équipe) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "information_proches",
         "label": "Pense à informer ou faire informer les proches présents",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Pense à informer ou faire informer les proches présents) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Pense à informer ou faire informer les proches présents) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Pense à informer ou faire informer les proches présents) absente ou manifestement inadaptee."
+        }
+      },
+      {
+        "id": "ecoute_active",
+        "label": "Ecoute active : laisse s'exprimer le patient sans l'interrompre lors de l'expose initial",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Utilise des questions ouvertes avant de resserrer par des questions ciblees",
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule regulierement et verifie la bonne comprehension du patient",
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Adopte un vocabulaire clair, adapte au patient et depourvu de jargon non explique",
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, valide les inquietudes et adopte une posture rassurante",
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -644,7 +863,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je viens pour : Perte de connaissance brutale sur terrain de sport..",
@@ -671,22 +925,35 @@
       "modeDeVie.alcool",
       "modeDeVie.emploi"
     ],
-    "si_insiste": [],
+    "si_insiste": [
+      "histoireMaladie.remarques",
+      "Detail cache ou embarrassant avoue seulement si le medecin insiste avec tact"
+    ],
     "ne_jamais_reveler": [
       "le diagnostic (Arrêt cardio-respiratoire (probable fibrillation ventriculaire))",
       "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
     ]
   },
   "examGradation": {
-    "parfaits": [],
-    "utiles": [],
-    "inutiles": [],
-    "dangereux": []
+    "parfaits": [
+      "ECG 12 dérivations",
+      "Bilan sanguin",
+      "Echographie cardiaque au lit"
+    ],
+    "utiles": [
+      "Bilan complementaire oriente selon l'evolution clinique"
+    ],
+    "inutiles": [
+      "Examen sans lien demontre avec le motif de consultation"
+    ],
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG 12 dérivations + Bilan sanguin. Demande-les en priorité.",
-    "🔐 Défi à prévoir : « Elena ne répond pas, ne respire pas et n'a pas de pouls carotidien. Quel est le diagnostic ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
-    "🎯 Diagnostics proches à départager : Arrêt cardio-respiratoire (probable fibrillation ventriculaire) vs Arrêt cardiaque récupéré. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : ECG 12 dérivations + Bilan sanguin. Demande-les en priorité.",
+    "Défi à prévoir : « Elena ne répond pas, ne respire pas et n'a pas de pouls carotidien. Quel est le diagnostic ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire - relis avant de valider.",
+    "Diagnostics proches à départager : Arrêt cardio-respiratoire (probable fibrillation ventriculaire) vs Arrêt cardiaque récupéré. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "Arrêt cardiaque récupéré",

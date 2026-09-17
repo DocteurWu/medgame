@@ -10,7 +10,9 @@ window.__ENV__ = {
   // Production Netlify (aucune clé requise côté client)
   LLM_API_URL: '/.netlify/functions/llm-proxy',
   LLM_MODEL: 'llama-3.3-70b-versatile',
+  JEV_API_URL: '/.netlify/functions/jev-proxy',
 
   // Développement local : décommenter pour utiliser le proxy MCP local
   // LLM_API_URL: 'http://127.0.0.1:8081/llm-proxy',
+  // JEV_API_URL: 'http://127.0.0.1:8081/jev-proxy',
 };

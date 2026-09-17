@@ -20,5 +20,10 @@
 
         // DeepSeek (le proxy sert de relais avec la clé côté serveur)
         LLM_MODEL: 'deepseek-chat',
+
+        // Proxy TypeSafe Jev selon l'environnement (auto-détecté)
+        JEV_API_URL: isLocal
+            ? 'http://127.0.0.1:8081/jev-proxy'
+            : '/.netlify/functions/jev-proxy',
     };
 })();

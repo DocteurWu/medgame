@@ -70,7 +70,7 @@
         startedAt: 0,
         stationEndAt: 0,
         gridChecked: new Set(),        // ids des items cochés (aptitudes)
-        commScores: {},                // { id: 0|0.25|0.5|0.75|1 }
+        commScores: {},
         questionsAsked: 0,             // compteur d'échanges
         conversationLog: [],           // [{ speaker, text, t, kind }]
         lastUserActivityAt: 0,
@@ -1464,9 +1464,74 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
         ecosState.diagSubmitted = document.getElementById('ecos-diag-input').value.trim();
         ecosState.announceSubmitted = document.getElementById('ecos-announce-input').value.trim();
 
-        // Lancer l'évaluation LLM de l'annonce
-        showInStationToast('Évaluation LLM en cours…', 'info');
-        await evaluateAnnounce();
+        // 1. Construire le transcript unifie incluant l'historique et l'annonce
+        const events = [];
+
+        if (Array.isArray(ecosState.conversationLog)) {
+            ecosState.conversationLog.forEach(log => {
+                events.push({
+                    elapsed: typeof log.t === 'number' ? Math.round(log.t / 1000) : 0,
+                    speaker: log.speaker === 'Vous' ? 'ETUDIANT' : log.speaker === 'PS' ? 'PATIENT' : log.speaker,
+                    origin: log.speaker === 'Vous' ? 'chat' : '',
+                    text: log.text
+                });
+            });
+        }
+
+        if (window.feedbackTimeline && Array.isArray(window.feedbackTimeline.events)) {
+            window.feedbackTimeline.events.forEach(ev => {
+                events.push({
+                    elapsed: typeof ev.elapsed === 'number' ? ev.elapsed : 0,
+                    speaker: 'ETUDIANT',
+                    origin: 'interface',
+                    text: ev.detail || ''
+                });
+            });
+        }
+
+        const currentElapsed = Math.round((Date.now() - (ecosState.startedAt || Date.now())) / 1000);
+        if (ecosState.announceSubmitted) {
+            events.push({
+                elapsed: currentElapsed,
+                speaker: 'ETUDIANT',
+                origin: 'chat',
+                text: `Annonce au patient : ${ecosState.announceSubmitted}`
+            });
+        }
+        if (ecosState.diagSubmitted) {
+            events.push({
+                elapsed: currentElapsed,
+                speaker: 'ETUDIANT',
+                origin: 'interface',
+                text: `propose diagnostic ${ecosState.diagSubmitted}`
+            });
+        }
+
+        const transcript = window.JevClient
+            ? window.JevClient.buildUnifiedTranscript(events)
+            : "";
+        ecosState.unifiedTranscript = transcript;
+
+        // 2. Lancer l'evaluation Jev de la station (seul moteur de decision)
+        showInStationToast('Notation ECOS par Jev en cours…', 'info');
+        if (window.JevClient && typeof window.JevClient.evaluateStation === 'function') {
+            ecosState.jevEvaluation = await window.JevClient.evaluateStation(
+                ecosState.caseData,
+                transcript,
+                {
+                    diagSubmitted: ecosState.diagSubmitted,
+                    announceSubmitted: ecosState.announceSubmitted,
+                    duration: (Date.now() - ecosState.startedAt) / 1000
+                }
+            );
+        } else {
+            // Regle absolue : Jev ou rien. Aucun repli heuristique ni LLM.
+            ecosState.jevEvaluation = {
+                success: false,
+                unrated: true,
+                message: "Station non notée, réessayez plus tard."
+            };
+        }
 
         document.getElementById('ecos-announce-overlay').style.display = 'none';
         
@@ -1475,99 +1540,7 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
         showDebrief();
     }
 
-    async function evaluateAnnounce() {
-        const grilleComm = ecosState.grilleComm;
-        if (!window.CONFIG?.LLM_API_URL || !ecosState.announceSubmitted || grilleComm.length === 0) {
-            // Fallback heuristique local si le LLM n'est pas disponible
-            ecosState.commScores = {};
-            const textLower = normalizeString(ecosState.announceSubmitted);
-            if (textLower.includes('bonjour') || textLower.includes('monsieur') || textLower.includes('madame')) {
-                ecosState.commScores['vocabulaire_adapte'] = 1;
-            }
-            if (textLower.includes('desole') || textLower.includes('comprends') || textLower.includes('soutenir') || textLower.includes('accompagner')) {
-                ecosState.commScores['empathie'] = 1;
-            }
-            return;
-        }
-
-        const prompt = `Tu es un évaluateur ECOS. Un étudiant doit annoncer son diagnostic à un patient. Évalue la QUALITÉ de l'annonce sur 5 dimensions (0, 0.25, 0.5, 0.75 ou 1 pour chacune).
-
-ANNONCE DE L'ÉTUDIANT : ${ecosState.announceSubmitted}
-
-GRILLE DE COMMUNICATION :
-${grilleComm.map(g => `- ${g.id} : ${g.label} (max 1)`).join('\n')}
-
-Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
-
-        try {
-            const text = await llmChat([
-                { role: 'system', content: 'Tu es un évaluateur ECOS. Tu renvoies UNIQUEMENT du JSON.' },
-                { role: 'user', content: prompt }
-            ], {
-                temperature: ECOS_CONFIG.LLM_TEMP.eval,
-                maxTokens: ECOS_CONFIG.LLM_MAX_TOKENS.eval,
-                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.eval,
-                quotaKind: 'correction' // évaluation finale : vrai LLM garanti
-            });
-            const json = extractJsonSafe(text);
-            ecosState.commScores = json.scores || {};
-        } catch (e) {
-            console.warn('[ECOS] Évaluation annonce échouée', e);
-            ecosState.commScores = {};
-            const textLower = normalizeString(ecosState.announceSubmitted);
-            if (textLower.includes('bonjour') || textLower.includes('monsieur') || textLower.includes('madame')) {
-                ecosState.commScores['vocabulaire_adapte'] = 0.75;
-            }
-            if (textLower.includes('desole') || textLower.includes('comprends') || textLower.includes('soutenir') || textLower.includes('accompagner')) {
-                ecosState.commScores['empathie'] = 0.75;
-            }
-        }
-    }
-
     // ==================== LOCAL STORAGE STATS ====================
-
-    /**
-     * SOURCE UNIQUE du barème ECOS (doc = sauvegarde = affichage) :
-     *   Aptitudes cliniques 50 % · Communication 20 % · Diagnostic 30 %
-     *   + bonus vitesse max +5 pts (≤40 % du temps utilisé : 5 pts, ≤60 % : 3,
-     *   ≤80 % : 1, sinon 0).
-     * @param {string} diag — diagnostic soumis
-     */
-    function computeEcosScores(diag) {
-        const totalApt = ecosState.grilleAptitudes.length;
-        const checkedApt = ecosState.gridChecked.size;
-        const aptitudePct = totalApt > 0 ? Math.round((checkedApt / totalApt) * 100) : 0;
-
-        const commTotal = ecosState.grilleComm.reduce((s, g) => s + (g.max || 1), 0);
-        let commSum = 0;
-        ecosState.grilleComm.forEach(g => {
-            const val = ecosState.commScores[g.id];
-            if (typeof val === 'number') {
-                commSum += Math.max(0, Math.min(g.max || 1, val));
-            }
-        });
-        const commPct = commTotal > 0 ? Math.round((commSum / commTotal) * 100) : 0;
-
-        const diagScore = window.calculateDiagnosticScore
-            ? window.calculateDiagnosticScore(diag, ecosState.caseData.correctDiagnostic)
-            : (diag ? 50 : 0);
-
-        const totalDurationMs = ECOS_CONFIG.STATION_DURATION * 1000;
-        const usedMs = Date.now() - (ecosState.startedAt || Date.now());
-        const timeRatio = Math.max(0, Math.min(1, usedMs / totalDurationMs));
-        const hasParticipated = checkedApt > 0 || (diag && diagScore > 0) || (ecosState.questionsAsked > 0);
-        const vitesseBonus = hasParticipated ? (
-            timeRatio <= 0.4 ? 5
-            : timeRatio <= 0.6 ? 3
-            : timeRatio <= 0.8 ? 1
-            : 0
-        ) : 0;
-
-        const baseScore = Math.round(aptitudePct * 0.5 + commPct * 0.2 + diagScore * 0.3);
-        const finalScore = Math.min(100, baseScore + vitesseBonus);
-
-        return { aptitudePct, commPct, diagScore, vitesseBonus, baseScore, finalScore };
-    }
 
     function saveSessionToLocalStorage(diag, announce) {
         const STORAGE_KEY = 'medgame_ecos_sessions';
@@ -1576,21 +1549,17 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
             const caseId = ecosState.caseData?.id || 'unknown';
             if (!sessions[caseId]) sessions[caseId] = [];
 
-            // Barème unifié : identique à l'affichage du debrief
-            const scores = computeEcosScores(diag);
-            const { aptitudePct, commPct, diagScore } = scores;
-            const finalScore = scores.finalScore;
+            const jev = ecosState.jevEvaluation || {};
 
             sessions[caseId].push({
                 date: new Date().toISOString(),
-                finalScore,
-                aptitudePct,
-                commPct,
-                diagScore,
-                vitesseBonus: scores.vitesseBonus,
+                unrated: !!jev.unrated,
+                globalScore20: typeof jev.globalScore20 === 'number' ? jev.globalScore20 : null,
+                passed: !!jev.passed,
+                hasRedhibitoryError: !!jev.hasRedhibitoryError,
+                sections: jev.sections || null,
                 diagSubmitted: diag,
                 announceSubmitted: announce,
-                gridChecked: Array.from(ecosState.gridChecked),
                 questionsAsked: ecosState.questionsAsked,
                 duration: (Date.now() - ecosState.startedAt) / 1000
             });
@@ -1614,97 +1583,120 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         ecosState.phase = 'debrief';
         destroyStationLayout();
 
-        // Barème unifié (source unique : computeEcosScores — 50/20/30 + bonus vitesse)
-        const totalApt = ecosState.grilleAptitudes.length;
-        const checkedApt = ecosState.gridChecked.size;
-        const scores = computeEcosScores(ecosState.diagSubmitted);
-        const { aptitudePct, commPct, diagScore, vitesseBonus } = scores;
-        const finalScore = scores.finalScore;
+        const jev = ecosState.jevEvaluation || { unrated: true, message: 'Station non notée, réessayez plus tard.' };
 
-        // Étoiles basées sur les seuils configurés
-        const stars = finalScore >= ECOS_CONFIG.STARS_THRESHOLDS[0] ? 3 
-            : finalScore >= ECOS_CONFIG.STARS_THRESHOLDS[1] ? 2 
-            : finalScore >= ECOS_CONFIG.STARS_THRESHOLDS[2] ? 1 
-            : 0;
+        let debriefBodyHtml = '';
 
-        const overlay = document.createElement('div');
-        overlay.id = 'ecos-debrief-overlay';
-        overlay.className = 'ecos-debrief-overlay';
-        overlay.innerHTML = `
-            <div class="ecos-debrief-card">
+        if (jev.unrated || !jev.success) {
+            debriefBodyHtml = `
                 <header class="ecos-debrief-header">
-                    <h1>🏁 Fin de la station</h1>
-                    <div class="ecos-debrief-stars">
-                        ${[1, 2, 3].map(i => `<span class="ecos-star ${i <= stars ? 'lit' : ''}">★</span>`).join('')}
+                    <h1>Station non notée</h1>
+                    <div style="font-size:1rem; color:#f39c12; margin-top:8px;">
+                        ${escapeHtml(jev.message || 'Échec de la notation par Jev. Réessayez plus tard.')}
                     </div>
-                    <div class="ecos-debrief-score">${finalScore}<span>/100</span></div>
+                    <div style="font-size:0.80rem; color:rgba(255,255,255,0.5); margin-top:6px;">
+                        Le transcript complet de la station a été conservé et peut être exporté ci-dessous.
+                    </div>
+                </header>
+            `;
+        } else {
+            const score20 = typeof jev.globalScore20 === 'number' ? jev.globalScore20.toFixed(2) : '—';
+            const isPassed = !!jev.passed;
+            const scoreColor = isPassed ? '#2ecc71' : '#e74c3c';
+
+            const apt = jev.sections?.aptitudes || { points: 0, maxPoints: 0, score20: 0, items: [] };
+            const comm = jev.sections?.communication || { points: 0, maxPoints: 0, score20: 0, items: [] };
+            const perf = jev.sections?.performance || { points: 0, maxPoints: 0, score20: 0, items: [] };
+
+            let redhibitoryAlertHtml = '';
+            if (jev.hasRedhibitoryError && Array.isArray(jev.redhibitoryHits) && jev.redhibitoryHits.length > 0) {
+                redhibitoryAlertHtml = `
+                    <div style="background:rgba(231,76,60,0.18); border:1px solid #e74c3c; border-radius:10px; padding:12px 14px; margin-bottom:14px; color:#ff7675;">
+                        <div style="font-weight:700; margin-bottom:4px;">Erreur(s) rédhibitoire(s) détectée(s) :</div>
+                        <ul style="margin:4px 0 0 18px; padding:0;">
+                            ${jev.redhibitoryHits.map(h => `<li>${escapeHtml(h.label)}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            function renderSectionHtml(title, weightPct, sec) {
+                const secScore = typeof sec.score20 === 'number' ? sec.score20.toFixed(2) : '0';
+                const color = sec.score20 >= 14 ? '#2ecc71' : sec.score20 >= 10 ? '#f39c12' : '#e74c3c';
+                const pct = sec.maxPoints > 0 ? Math.round((sec.points / sec.maxPoints) * 100) : 0;
+                return `
+                    <section class="ecos-debrief-section">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                            <h3 style="margin:0;">${title} (${weightPct}%)</h3>
+                            <span style="font-weight:700; color:${color}; font-size:1.05rem;">${secScore}/20 (${sec.points.toFixed(1)} / ${sec.maxPoints} pts)</span>
+                        </div>
+                        <div class="ecos-debrief-bar">
+                            <div class="ecos-debrief-bar-fill" style="width:${pct}%; background:${color};"></div>
+                        </div>
+                        <ul class="ecos-debrief-grille" style="margin-top:10px;">
+                            ${(sec.items || []).map(item => {
+                                const badgeClass = item.status === 'fait' ? 'badge-ok' : item.status === 'en_partie' ? 'badge-warn' : item.status === 'penalite' ? 'badge-err' : 'badge-err';
+                                const statusLabel = item.status === 'fait' ? 'Fait (1 pt)' : item.status === 'en_partie' ? 'En partie (0.5 pt)' : item.status === 'penalite' ? 'Pénalité (-0.5 pt)' : 'Non fait (0 pt)';
+                                return `
+                                    <li style="display:flex; align-items:center; justify-content:space-between; padding:6px 8px; border-bottom:1px solid rgba(255,255,255,0.06);">
+                                        <span style="flex:1; margin-right:8px;">${escapeHtml(item.label)}</span>
+                                        <span class="corr-badge ${badgeClass}" style="white-space:nowrap;">${statusLabel}</span>
+                                    </li>
+                                `;
+                            }).join('')}
+                        </ul>
+                    </section>
+                `;
+            }
+
+            debriefBodyHtml = `
+                <header class="ecos-debrief-header">
+                    <h1>Fin de la station ECOS</h1>
+                    <div class="ecos-debrief-score" style="color:${scoreColor}; font-size:2.8rem; font-weight:800; margin:10px 0;">
+                        ${score20}<span>/20</span>
+                    </div>
+                    <div style="margin-top:4px;">
+                        <span class="corr-badge ${isPassed ? 'badge-ok' : 'badge-err'}" style="font-size:0.9rem; padding:4px 12px;">
+                            ${isPassed ? 'Station validée (seuil CNG ≥ 10/20)' : 'Station non validée (< 10/20)'}
+                        </span>
+                    </div>
                 </header>
 
-                <section class="ecos-debrief-section">
-                    <h3>🩺 Aptitudes cliniques (50%)</h3>
-                    <div class="ecos-debrief-bar"><div class="ecos-debrief-bar-fill" style="width:${aptitudePct}%;background:${aptitudePct >= 80 ? '#2ecc71' : aptitudePct >= 50 ? '#f39c12' : '#e74c3c'};"></div></div>
-                    <div class="ecos-debrief-bar-label">${checkedApt} / ${totalApt} items validés (${aptitudePct}%)${vitesseBonus > 0 ? ` · ⚡ Bonus vitesse : +${vitesseBonus} pts` : ''}</div>
-                    <ul class="ecos-debrief-grille">
-                        ${ecosState.grilleAptitudes.map(g => `
-                            <li class="${ecosState.gridChecked.has(g.id) ? 'checked' : 'missed'}">
-                                <span class="ecos-check">${ecosState.gridChecked.has(g.id) ? '✓' : '✗'}</span>
-                                ${escapeHtml(g.label)}
-                            </li>
-                        `).join('')}
-                    </ul>
-                </section>
+                ${redhibitoryAlertHtml}
+
+                ${renderSectionHtml("Aptitudes cliniques et techniques", 50, apt)}
+                ${renderSectionHtml("Communication et attitudes", 25, comm)}
+                ${renderSectionHtml("Performance et gestion", 25, perf)}
 
                 <section class="ecos-debrief-section">
-                    <h3>💬 Communication (20%)</h3>
-                    <div class="ecos-debrief-bar"><div class="ecos-debrief-bar-fill" style="width:${commPct}%;background:${commPct >= 80 ? '#2ecc71' : commPct >= 50 ? '#f39c12' : '#e74c3c'};"></div></div>
-                    <div class="ecos-debrief-bar-label">${commPct}%</div>
-                    <ul class="ecos-debrief-grille">
-                        ${ecosState.grilleComm.map(g => {
-                            const score = ecosState.commScores[g.id];
-                            return `<li class="${score !== undefined && score >= 0.5 ? 'checked' : score !== undefined ? 'partial' : 'missed'}">
-                                <span class="ecos-check">${score !== undefined ? score.toFixed(2) : '—'}</span>
-                                ${escapeHtml(g.label)}
-                            </li>`;
-                        }).join('')}
-                    </ul>
-                </section>
-
-                <section class="ecos-debrief-section">
-                    <h3>🎯 Diagnostic (30%)</h3>
-                    <div class="ecos-debrief-bar"><div class="ecos-debrief-bar-fill" style="width:${diagScore}%;background:${diagScore >= 80 ? '#2ecc71' : diagScore >= 50 ? '#f39c12' : '#e74c3c'};"></div></div>
-                    <div class="ecos-debrief-bar-label">Score Diagnostic : ${diagScore}%</div>
-                    <div style="margin-top: 10px; font-size: 0.9rem;">
+                    <h3>Diagnostic</h3>
+                    <div style="font-size: 0.9rem;">
                         <p>Vous : <strong>${escapeHtml(ecosState.diagSubmitted || '(aucun)')}</strong></p>
                         <p>Attendu : <strong>${escapeHtml(ecosState.caseData.correctDiagnostic || '—')}</strong></p>
                     </div>
                 </section>
 
                 <section class="ecos-debrief-section">
-                    <h3>📊 Résumé</h3>
+                    <h3>Résumé</h3>
                     <ul>
                         <li>Questions posées : <strong>${ecosState.questionsAsked}</strong></li>
                         <li>Durée effective : <strong>${formatDuration((Date.now() - ecosState.startedAt) / 1000)}</strong></li>
-                        <li>Items validés : <strong>${checkedApt}/${totalApt}</strong></li>
-                        ${vitesseBonus > 0 ? `<li>⚡ Bonus vitesse : <strong style="color:#2ecc71">+${vitesseBonus} pts</strong></li>` : ''}
                     </ul>
-                    <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:8px;">
-                        Pondération : Aptitudes 45% · Communication 20% · Diagnostic 30% · Vitesse 5%
-                    </div>
                 </section>
+            `;
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = 'ecos-debrief-overlay';
+        overlay.className = 'ecos-debrief-overlay';
+        overlay.innerHTML = `
+            <div class="ecos-debrief-card">
+                ${debriefBodyHtml}
 
                 <!-- Timeline des actions -->
                 <section class="ecos-debrief-section">
                     <div id="ecos-debrief-timeline"></div>
                 </section>
-
-                <!-- Comparaison anonyme -->
-                <section class="ecos-debrief-section">
-                    <div id="ecos-debrief-comparison"></div>
-                </section>
-
-                <div id="ecos-debrief-feedback" class="ecos-debrief-feedback">
-                    <div class="ecos-loading-spinner"><i class="fas fa-spinner fa-spin"></i> Génération du feedback narratif par le LLM…</div>
-                </div>
 
                 <footer class="ecos-debrief-footer">
                     <button id="ecos-debrief-replay" class="ecos-btn-secondary"><i class="fas fa-redo"></i> Rejouer</button>
@@ -1750,7 +1742,7 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         });
 
         document.getElementById('ecos-debrief-export').addEventListener('click', () => {
-            const transcript = ecosState.conversationLog.map(log => {
+            const transcript = ecosState.unifiedTranscript || ecosState.conversationLog.map(log => {
                 const time = formatDuration(log.t / 1000);
                 return `[${time}] ${log.speaker}: ${log.text}`;
             }).join('\n');
@@ -1765,32 +1757,35 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
             URL.revokeObjectURL(url);
         });
 
-        // Lancer la génération du feedback narratif en arrière-plan
-        generateFeedbackNarrative().then(narrative => {
-            const fbEl = document.getElementById('ecos-debrief-feedback');
-            if (fbEl) fbEl.innerHTML = `<h3>📝 Feedback</h3>${narrative}`;
-        }).catch(err => {
-            const fbEl = document.getElementById('ecos-debrief-feedback');
-            if (fbEl) fbEl.innerHTML = '<h3>📝 Feedback</h3><p>⚠️ Feedback indisponible.</p>';
-        });
-
         // Rendre la timeline des actions (si feedback.js chargé)
         if (window.renderTimeline) {
             const timelineEl = document.getElementById('ecos-debrief-timeline');
             if (timelineEl) timelineEl.innerHTML = window.renderTimeline();
         }
 
-        // Comparaison anonyme (si feedback.js chargé)
+        // Comparaison anonyme (si feedback.js charge)
+        const score20 = typeof jev.globalScore20 === 'number' ? jev.globalScore20 : 0;
+        const normalizedScore100 = Math.round((score20 / 20) * 100);
+        const aptScore20 = jev.sections?.aptitudes?.score20 ?? 0;
+        const commScore20 = jev.sections?.communication?.score20 ?? 0;
+        const perfScore20 = jev.sections?.performance?.score20 ?? 0;
+        const stars = score20 >= 16 ? 3 : score20 >= 13 ? 2 : score20 >= 10 ? 1 : 0;
+
         if (window.getAnonymousComparison && window.feedbackTimeline?.events?.length > 0) {
             const compEl = document.getElementById('ecos-debrief-comparison');
             if (compEl) {
                 const fakeComposite = {
-                    compositeScore: finalScore,
-                    demarcheScore: aptitudePct,
-                    diagnosticScore: diagScore,
+                    compositeScore: normalizedScore100,
+                    demarcheScore: Math.round((aptScore20 / 20) * 100),
+                    diagnosticScore: Math.round((perfScore20 / 20) * 100),
                     traitementScore: 0,
                     stars,
-                    breakdown: { demarche: { score: aptitudePct }, diagnostic: { score: diagScore }, traitement: { score: 0 }, vitesse: { score: 100 } }
+                    breakdown: {
+                        demarche: { score: Math.round((aptScore20 / 20) * 100) },
+                        diagnostic: { score: Math.round((perfScore20 / 20) * 100) },
+                        traitement: { score: 0 },
+                        vitesse: { score: 100 }
+                    }
                 };
                 const comp = window.getAnonymousComparison(fakeComposite, ecosState.caseData?.id || 'unknown', 'ecos');
                 if (comp.total > 1) {
@@ -1798,7 +1793,7 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
                         <div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px; margin-top:10px;">
                             <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
                                 <span style="font-weight:700;">📊 Comparaison anonyme</span>
-                                <span style="font-size:0.75rem; color:rgba(255,255,255,0.4);">(${comp.total} sessions sur ce cas)</span>
+                                <span style="font-size:12px; color:rgba(255,255,255,0.4);">(${comp.total} sessions sur ce cas)</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:12px;">
                                 <div style="text-align:center;">
@@ -1813,7 +1808,7 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:rgba(255,255,255,0.5); margin-top:8px;">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;">
                                 <span>Score moyen : <strong style="color:rgba(255,255,255,0.8);">${comp.avgScore}%</strong></span>
                                 <span>Rang : <strong style="color:${comp.percentile >= 75 ? '#2ecc71' : comp.percentile >= 50 ? '#f39c12' : '#e74c3c'};">#${comp.rank}/${comp.total}</strong></span>
                             </div>
@@ -1828,14 +1823,14 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
         const ecosSessionStats = {
             mode: 'ecos',
             case_id: ecosState.caseData?.id || 'unknown',
-            score: finalScore,
+            score: normalizedScore100,
+            score20,
+            unrated: !!jev.unrated,
             stars,
-            aptitudePct,
-            commPct,
-            diagScore,
+            aptitudesScore20: aptScore20,
+            communicationScore20: commScore20,
+            performanceScore20: perfScore20,
             questionsAsked: ecosState.questionsAsked,
-            itemsChecked: checkedApt,
-            itemsTotal: totalApt,
             diagSubmitted: ecosState.diagSubmitted || '',
             durationSeconds: Math.round((Date.now() - (ecosState.startedAt || Date.now())) / 1000)
         };
@@ -1849,12 +1844,12 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
             localStorage.setItem('ecos_sessions', JSON.stringify(stored));
         } catch (e) { console.warn('[ECOS] localStorage write failed:', e); }
 
-        // Supabase si utilisateur connecté
+        // Supabase si utilisateur connecte
         if (typeof addXp === 'function') {
-            addXp(finalScore).catch(err => console.warn('[ECOS] XP update failed:', err));
+            addXp(normalizedScore100).catch(err => console.warn('[ECOS] XP update failed:', err));
         }
 
-        // ── Badges : évaluation + notification au debrief ECOS ──
+        // ── Badges : evaluation + notification au debrief ECOS ──
         if (window.BadgeSystem && typeof window.BadgeSystem.evaluateAndPersist === 'function') {
             try {
                 const localSessions = JSON.parse(localStorage.getItem('ecos_sessions') || '[]')
@@ -1871,75 +1866,13 @@ Réponds UNIQUEMENT par un JSON : { "scores": { "id1": 0.5, "id2": 1 } }`;
                     await supabase.from('play_sessions').insert([{
                         user_id: user.id,
                         case_id: ecosSessionStats.case_id,
-                        score: finalScore,
+                        score: normalizedScore100,
                         stats: ecosSessionStats,
                         duration_seconds: ecosSessionStats.durationSeconds,
                         mode: 'ecos'
                     }]);
                 } catch (e) { console.warn('[ECOS] Supabase session save failed:', e); }
             }).catch(() => {});
-        }
-    }
-
-    async function generateFeedbackNarrative() {
-        const missed = ecosState.grilleAptitudes.filter(g => !ecosState.gridChecked.has(g.id));
-        const checked = ecosState.grilleAptitudes.filter(g => ecosState.gridChecked.has(g.id));
-        const questionsAsked = ecosState.questionsAsked || 0;
-
-        // Cas où l'étudiant n'a absolument rien fait
-        if (checked.length === 0 && questionsAsked === 0) {
-            return '<p><strong>Aucune démarche clinique réalisée.</strong> Vous n\'avez posé aucune question au patient et aucun examen clinique n\'a été pratiqué. En station ECOS, il est impératif d\'initier activement l\'interrogatoire (présentation, motif de consultation, anamnèse) dès le début de l\'épreuve.</p>';
-        }
-
-        if (!window.CONFIG?.LLM_API_URL) {
-            if (checked.length === 0) {
-                return '<p><strong>Aucune démarche clinique réalisée.</strong> Vous n\'avez posé aucune question au patient et aucun examen clinique n\'a été réalisé. Veillez à interroger le patient dès le début de la station.</p>';
-            }
-            if (missed.length === 0) {
-                return '<p>Félicitations, vous avez validé l\'ensemble de la démarche clinique ! Votre prise en charge a été rigoureuse.</p>';
-            } else {
-                return `<p>Prise en charge clinique partielle (${checked.length}/${ecosState.grilleAptitudes.length} items validés). Points clés manqués : ${missed.slice(0, 3).map(g => g.label).join(', ')}. Veillez à couvrir tous les aspects de l'anamnèse.</p>`;
-            }
-        }
-        
-        const prompt = `Tu es un enseignant et évaluateur universitaire de médecine lors d'une station ECOS.
-Donne un feedback PÉDAGOGIQUE direct, factuel et constructif à l'étudiant.
-
-RÈGLE ABSOLUE : Base-toi STRICTEMENT sur les faits objectifs ci-dessous. N'invente JAMAIS d'actions non réalisées.
-INTERDICTION FORMELLE d'écrire "vous avez bien commencé" ou de faire des éloges non méritées si l'étudiant a posé très peu ou pas de questions. Sois juste et précis.
-
-CAS : ${ecosState.caseData.id} — ${ecosState.caseData.interrogatoire?.motifHospitalisation || ''}
-DIAGNOSTIC ATTENDU : ${ecosState.caseData.correctDiagnostic}
-DIAGNOSTIC PROPOSÉ : ${ecosState.diagSubmitted || '(aucun diagnostic formulé)'}
-ANNONCE AU PATIENT : ${ecosState.announceSubmitted || '(aucune annonce formulée)'}
-NOMBRE DE QUESTIONS POSÉES : ${questionsAsked}
-
-ITEMS DE LA GRILLE VALIDÉS (${checked.length}) : ${checked.map(g => g.label).join(', ') || '(aucun item validé)'}
-ITEMS MANQUÉS (${missed.length}) : ${missed.map(g => g.label).join(', ') || '(tous couverts)'}
-
-FORMAT : 2-3 phrases courtes en français, ton pédagogique universitaire, professionnel et constructif. Pas de markdown, pas de titres.`;
-
-        try {
-            const text = await llmChat([
-                { role: 'system', content: 'Tu es un enseignant de médecine universitaire rigoureux, juste et constructif.' },
-                { role: 'user', content: prompt }
-            ], {
-                temperature: ECOS_CONFIG.LLM_TEMP.feedback,
-                maxTokens: ECOS_CONFIG.LLM_MAX_TOKENS.feedback,
-                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.feedback,
-                quotaKind: 'correction' // correction finale : vrai LLM garanti
-            });
-            return escapeHtml(text || '').replace(/\n/g, '<br>');
-        } catch (e) {
-            console.warn('[ECOS] generateFeedbackNarrative failed:', e);
-            if (checked.length === 0) {
-                return '<p><strong>Aucune démarche clinique réalisée.</strong> Vous n\'avez posé aucune question au patient et aucun examen clinique n\'a été réalisé. Veillez à interroger le patient dès le début de la station.</p>';
-            }
-            if (missed.length === 0) {
-                return '<p>Félicitations, vous avez validé l\'ensemble de la démarche clinique ! Votre prise en charge a été rigoureuse.</p>';
-            } else {
-                return `<p>Prise en charge clinique partielle (${checked.length}/${ecosState.grilleAptitudes.length} items validés). Points clés manqués : ${missed.slice(0, 3).map(g => g.label).join(', ')}. Veillez à couvrir tous les aspects de l'anamnèse.</p>`;
-            }
         }
     }
 

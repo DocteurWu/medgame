@@ -706,49 +706,244 @@
       {
         "id": "eval_critere_1",
         "label": "Calcul du score de Glasgow",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        },
+        "triggerKeywords": [
+          "calcul",
+          "score",
+          "glasgow",
+          "diagnostic",
+          "retenu",
+          "personne"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "Mise en PLS",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Mise en PLS) selon les regles de l'art, en lien avec (le diagnostic retenu) et le motif (Personne retrouvée allongée inerte sur le trottoir).",
+          "en_partie": "Realise partiellement l'etape (Mise en PLS), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Mise en PLS) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "mise",
+          "pls",
+          "diagnostic",
+          "retenu",
+          "personne"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "Glycémie capillaire immédiate",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Glycémie capillaire immédiate) selon les regles de l'art, en lien avec (le diagnostic retenu) et le motif (Personne retrouvée allongée inerte sur le trottoir).",
+          "en_partie": "Realise partiellement l'etape (Glycémie capillaire immédiate), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Glycémie capillaire immédiate) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "glycémie",
+          "capillaire",
+          "immédiate",
+          "diagnostic",
+          "retenu",
+          "personne"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Surveillance neurologique et transport médicalisé",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        },
+        "triggerKeywords": [
+          "surveillance",
+          "neurologique",
+          "transport",
+          "médicalisé",
+          "diagnostic",
+          "retenu",
+          "personne"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "diagnostic"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Personne retrouvée allongée inerte sur le trottoir)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Personne retrouvée allongée inerte sur le trottoir) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (le diagnostic retenu).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "personne",
+          "retrouvée",
+          "allongée",
+          "inerte",
+          "trottoir"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "diagnostic"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "diagnostic",
+          "retenu"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "communication_secouristes",
         "label": "Communique clairement avec les secouristes pour recueillir l'anamnèse",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Communique clairement avec les secouristes pour recueillir l'anamnèse) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Communique clairement avec les secouristes pour recueillir l'anamnèse) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Communique clairement avec les secouristes pour recueillir l'anamnèse) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "communication_equipe",
         "label": "Commande de manière structurée et hiérarchisée à l'équipe soignante",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Commande de manière structurée et hiérarchisée à l'équipe soignante) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Commande de manière structurée et hiérarchisée à l'équipe soignante) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Commande de manière structurée et hiérarchisée à l'équipe soignante) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "calme_urgence",
         "label": "Garde son calme et son efficacité malgré le contexte d'urgence",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Garde son calme et son efficacité malgré le contexte d'urgence) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Garde son calme et son efficacité malgré le contexte d'urgence) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Garde son calme et son efficacité malgré le contexte d'urgence) absente ou manifestement inadaptee."
+        }
       },
       {
-        "id": "vocabulaire_technique",
+        "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire technique approprié avec l'équipe médicale",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
-        "id": "empathie_proche",
+        "id": "empathie",
         "label": "Fait preuve d'empathie envers les proches/témoins présents",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
+      },
+      {
+        "id": "ecoute_active",
+        "label": "Ecoute active : laisse s'exprimer le patient sans l'interrompre lors de l'expose initial",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Utilise des questions ouvertes avant de resserrer par des questions ciblees",
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule regulierement et verifie la bonne comprehension du patient",
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       }
     ],
     "patientStandardise": {
@@ -860,7 +1055,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je viens pour : Inconscience et PLS.",
@@ -894,15 +1124,23 @@
     ]
   },
   "examGradation": {
-    "parfaits": [],
-    "utiles": [],
-    "inutiles": [],
-    "dangereux": []
+    "parfaits": [
+      "Examen clinique cible et constantes"
+    ],
+    "utiles": [
+      "Bilan complementaire oriente selon l'evolution clinique"
+    ],
+    "inutiles": [
+      "Examen sans lien demontre avec le motif de consultation"
+    ],
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+    "Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
   ],
   "objectifs": [
     "Réaliser l'évaluation initiale du patient inconscient selon l'ABCDE",

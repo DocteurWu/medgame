@@ -214,7 +214,13 @@
           "je suis interne",
           "je m'appelle",
           "interne en cardiologie"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        }
       },
       {
         "id": "interrogatoire_hta_secondaire",
@@ -228,7 +234,13 @@
           "sueurs",
           "palpitations",
           "faiblesse musculaire"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        }
       },
       {
         "id": "interrogatoire_facteurs_risque",
@@ -242,7 +254,13 @@
           "antécédents familiaux",
           "père",
           "mère"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        }
       },
       {
         "id": "interrogatoire_traitements",
@@ -256,7 +274,13 @@
           "ARA2",
           "diurétique",
           "calcique"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Propose un plan therapeutique adapte a (HTA secondaire par hyperaldostéronisme primaire) incluant (Chirurgie surrénalienne), en precisant posologie, duree et contre-indications verifiees.",
+          "en_partie": "Evoque un traitement sans precision de posologie, de duree ni de contre-indications.",
+          "non_fait": "Ne propose aucune prise en charge therapeutique ou propose un traitement contre-indique."
+        }
       },
       {
         "id": "interrogatoire_regime_sel",
@@ -268,7 +292,13 @@
           "régime",
           "charcuterie",
           "plats préparés"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Realise completement l'etape (Évalue les apports en sel et les habitudes alimentaires) selon les regles de l'art, en lien avec (HTA secondaire par hyperaldostéronisme primaire) et le motif (Élévation tensionnelle sévère chez l'adulte jeune).",
+          "en_partie": "Realise partiellement l'etape (Évalue les apports en sel et les habitudes alimentaires), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Évalue les apports en sel et les habitudes alimentaires) ou suit une demarche erronee."
+        }
       },
       {
         "id": "examen_clinique_complet",
@@ -280,7 +310,13 @@
           "pouls fémoraux",
           "souffle abdominal",
           "2 bras"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise une auscultation pulmonaire bilaterale et symetrique et recherche les bruits surajoutes en lien avec le motif.",
+          "en_partie": "Auscultation rapide ou incomplete sans comparaison des deux champs.",
+          "non_fait": "Omet completement l'auscultation pulmonaire."
+        }
       },
       {
         "id": "interpretation_biologie",
@@ -293,7 +329,13 @@
           "3,0",
           "aldostérone",
           "rénine"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Interprète l'hypokaliémie et l'alcalose métabolique comme indices d'hyperaldostéronisme) selon les regles de l'art, en lien avec (HTA secondaire par hyperaldostéronisme primaire) et le motif (Élévation tensionnelle sévère chez l'adulte jeune).",
+          "en_partie": "Realise partiellement l'etape (Interprète l'hypokaliémie et l'alcalose métabolique comme indices d'hyperaldostéronisme), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Interprète l'hypokaliémie et l'alcalose métabolique comme indices d'hyperaldostéronisme) ou suit une demarche erronee."
+        }
       },
       {
         "id": "demande_aldosterone_renine",
@@ -305,7 +347,13 @@
           "rapport",
           "ARR",
           "dosage hormonal"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Demande le dosage de l'aldostérone et de la rénine (rapport aldostérone/rénine)) selon les regles de l'art, en lien avec (HTA secondaire par hyperaldostéronisme primaire) et le motif (Élévation tensionnelle sévère chez l'adulte jeune).",
+          "en_partie": "Realise partiellement l'etape (Demande le dosage de l'aldostérone et de la rénine (rapport aldostérone/rénine)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Demande le dosage de l'aldostérone et de la rénine (rapport aldostérone/rénine)) ou suit une demarche erronee."
+        }
       },
       {
         "id": "diagnostic_hyperaldosteronisme",
@@ -317,7 +365,13 @@
           "surrénale",
           "adénome",
           "HTA secondaire"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (HTA secondaire par hyperaldostéronisme primaire), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "bilan_imagerie",
@@ -329,7 +383,13 @@
           "imagerie",
           "adénome",
           "surrénale"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (HTA secondaire par hyperaldostéronisme primaire) : (Ionogramme sanguin et urinaire, Aldostéronémie/Rénine, Scanner surrénalien), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       },
       {
         "id": "strategie_pec_chirurgicale",
@@ -340,7 +400,13 @@
           "surrénalectomie",
           "traitement chirurgical",
           "adénome"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (HTA secondaire par hyperaldostéronisme primaire) : (Ionogramme sanguin et urinaire, Aldostéronémie/Rénine, Scanner surrénalien), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       },
       {
         "id": "education_patient",
@@ -352,7 +418,13 @@
           "comprendre",
           "surveillance",
           "potassium"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Donne des consignes de securite explicites : signes d'alerte a surveiller, conduite a tenir et recours aux urgences (appel au 15) si aggravation.",
+          "en_partie": "Donne une consigne d'alerte vague sans conduite pratique ni recours precise.",
+          "non_fait": "Ne donne aucune consigne de securite ni aucun signe d'alerte."
+        }
       },
       {
         "id": "eviter_traitements_dangereux",
@@ -364,7 +436,13 @@
           "IEC seul",
           "ibuprofène",
           "prednisone"
-        ]
+        ],
+        "category": "traitement",
+        "criteria": {
+          "fait": "Propose un plan therapeutique adapte a (HTA secondaire par hyperaldostéronisme primaire) incluant (Chirurgie surrénalienne), en precisant posologie, duree et contre-indications verifiees.",
+          "en_partie": "Evoque un traitement sans precision de posologie, de duree ni de contre-indications.",
+          "non_fait": "Ne propose aucune prise en charge therapeutique ou propose un traitement contre-indique."
+        }
       },
       {
         "id": "orientation_specialiste",
@@ -376,7 +454,13 @@
           "hypertensiologue",
           "orientation",
           "avis spécialisé"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (HTA secondaire par hyperaldostéronisme primaire) : (Ionogramme sanguin et urinaire, Aldostéronémie/Rénine, Scanner surrénalien), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       },
       {
         "id": "synthese_clinique",
@@ -388,34 +472,65 @@
           "hypothèse",
           "bilan",
           "prochaine étape"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (HTA secondaire par hyperaldostéronisme primaire) : (Ionogramme sanguin et urinaire, Aldostéronémie/Rénine, Scanner surrénalien), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
-        "max": 1
+        "label": "Écoute active - laisse le patient terminer sans l'interrompre",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Pose des questions ouvertes avant les questions fermées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule ou vérifie la compréhension du patient",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
         "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude du patient",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -535,7 +650,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, on m'a trouvé une tension trop haute lors de mon bilan pré-op, et mon médecin m'a envoyé ici en urgence. Je ne comprends pas, je ne me sens pas si mal que ça…",
@@ -583,12 +733,14 @@
       "Coronarographie",
       "IRM cardiaque"
     ],
-    "dangereux": []
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Ionogramme sanguin et urinaire + Aldostéronémie/Rénine. Demande-les en priorité.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Diagnostics proches à départager : HTA secondaire par hyperaldostéronisme primaire vs HTA essentielle. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : Ionogramme sanguin et urinaire + Aldostéronémie/Rénine. Demande-les en priorité.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Diagnostics proches à départager : HTA secondaire par hyperaldostéronisme primaire vs HTA essentielle. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "HTA essentielle",

@@ -1318,19 +1318,33 @@ export class ThreeHUD {
                     return;
                 }
 
-                const isAction = window.clinicalAgentAI && window.clinicalAgentAI.isClinicalAction(question);
-                
-                if (isAction) {
-                    // 1. Exécuter d'abord les conséquences cliniques (constantes, score, perf, etc.)
-                    // On indique à processClinicalAction3D de NE PAS générer son propre verbatim patient
-                    await window.clinicalAgentAI.processClinicalAction3D(question, this, { skipVerbatim: true });
-                } else {
-                    // Sinon on l'append manuellement (processClinicalAction3D va déjà l'append pour les actions)
-                    chat.append('Vous', question);
-                    chat.messages.push({ role: 'user', content: question });
+                let routing = { toPatient: true, actions: [] };
+                if (window.JevClient && typeof window.JevClient.routeMessage === 'function') {
+                    routing = await window.JevClient.routeMessage(question);
                 }
-                
+
+                if (routing.actions && routing.actions.length > 0) {
+                    for (const action of routing.actions) {
+                        if (window.clinicalAgentAI) {
+                            await window.clinicalAgentAI.processClinicalAction3D(question, this, {
+                                skipVerbatim: true,
+                                role: action.role,
+                                actionType: action.type,
+                                discipline: action.discipline,
+                                skipUserAppend: true
+                            });
+                        }
+                    }
+                }
+
+                chat.append('Vous', question);
+                chat.messages.push({ role: 'user', content: question });
+
                 if (window.scoringState) window.scoringState.hasAskedPatient = true;
+
+                if (!routing.toPatient) {
+                    return;
+                }
 
                 // 2. Afficher l'indicateur de réflexion
                 this._showThinkingIndicator();

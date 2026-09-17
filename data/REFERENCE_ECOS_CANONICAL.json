@@ -1,0 +1,626 @@
+{
+  "id": "reference_ecos_canonical",
+  "redacteur": "Conseil Scientifique MedGame",
+  "titre": "Angor d'effort stable chez une patiente diabetique",
+  "itemR2C": "Item 222. Facteurs de risque cardiovasculaire et prevention. Item 232. Douleur thoracique aigue et chronique.",
+  "difficulty": 2,
+  "motif": "Douleur thoracique a l'effort",
+  "referentiel": "ESC / College de cardiologie (SFC)",
+  "patient": {
+    "nom": "Bennet",
+    "prenom": "Kitty",
+    "age": 58,
+    "sexe": "F",
+    "taille": "165 cm",
+    "poids": "70 kg",
+    "groupeSanguin": "B+",
+    "profession": "Secretaire administrative",
+    "situationFamiliale": "Mariee, deux enfants",
+    "persona": {
+      "ton": "polie mais minimisante (« c'est rien, ca va passer »)",
+      "registre": "courant, precis sur les faits sans jargon medical",
+      "loquacite": "normal",
+      "style_parole": "decrit bien la gene d'effort quand on le demande, minimise la gravite, mentionne la trinitrine seulement si on interroge sur les medicaments",
+      "exemples_phrases": [
+        "Bonjour docteur, quand je monte les escaliers pour rentrer chez moi, j'ai comme une barre qui me serre la poitrine, mais des que je m'arrete deux minutes, ca disparait completement.",
+        "Mon mari s'inquiete pour rien, je me dis que c'est juste le manque d'exercice ou la fatigue du travail.",
+        "J'ai un spray dans mon sac que mon generaliste m'avait prescrit, une bouffee sous la langue et la douleur s'en va en deux minutes."
+      ],
+      "anxiete": 55,
+      "confiance": 65
+    }
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur thoracique a l'effort d'evolution stable depuis 6 mois",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche reguliere 30 minutes par jour"
+      },
+      "tabac": {
+        "quantite": "0 paquet-annee",
+        "duree": "Non fumeuse"
+      },
+      "alcool": {
+        "quantite": "Occasionnel (un verre le week-end)"
+      },
+      "alimentation": {
+        "regime": "Omnivore type mediterraneen",
+        "particularites": "Aucune restriction stricte"
+      },
+      "emploi": {
+        "profession": "Secretaire administrative",
+        "stress": "Modere"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Diabete de type 2",
+          "depuis": "5 ans",
+          "traitement": "Metformine"
+        }
+      ],
+      "chirurgicaux": [
+        {
+          "type": "Appendicectomie",
+          "age": "18 ans"
+        }
+      ],
+      "familiaux": [
+        {
+          "lien": "Pere",
+          "pathologie": "Infarctus du myocarde",
+          "age": "65 ans"
+        }
+      ]
+    },
+    "traitements": [
+      {
+        "nom": "Metformine",
+        "dose": "850 mg",
+        "frequence": "2 fois par jour"
+      },
+      {
+        "nom": "Trinitrine sublinguale spray",
+        "dose": "0.4 mg/dose",
+        "frequence": "Au besoin en cas de douleur thoracique"
+      }
+    ],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "6 mois",
+      "evolution": "Stable (aucune acceleration de frequence ni crise au repos)",
+      "facteursDeclenchants": "Effort d'intensite moderee (montee de deux etages d'escaliers, marche rapide)",
+      "symptomesAssocies": [
+        "Leger essoufflement d'effort concomitant",
+        "Absence de sueurs froides, de palpitations ou de syncope"
+      ],
+      "remarques": "Douleur retrosternale constrictive breve de 3 a 5 minutes, soulagee completement au repos ou sous trinitrine sublinguale"
+    }
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "135/85 mmHg",
+      "pouls": "76 bpm",
+      "temperature": "36.7 C",
+      "saturationO2": "98%",
+      "frequenceRespiratoire": "16/min"
+    },
+    "aspectGeneral": "Patiente calme, bien orientee, eutrophique, eupnéique au repos",
+    "examenCardiovasculaire": {
+      "auscultation": "Bruits du coeur reguliers B1 B2 bien frappes, absence de souffle, absence de galop ou de frottement pericardique",
+      "inspection": "Pas de turgescence jugulaire, pas de reflux hepato-jugulaire, pas d'oedeme des membres inferieurs",
+      "poulsPeripheriques": "Tous les pouls peripheriques presents et symetriques (radiaux, femoraux, tibiaux posterieurs, pedieux)"
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vesiculaire pur et symetrique, pas de rales crepitants ni de sibilants"
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple et indolore, pas d'hepatomegalie ni de masse palpable"
+    },
+    "examenNeurologique": {
+      "conscience": "Score de Glasgow 15, paires craniennes intactes, absence de deficit sensitivomoteur"
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Bonjour docteur, je viens vous voir car mon medecin traitant m'a dit de faire un point. Depuis plusieurs mois, j'ai une gene qui me serre la poitrine des que je monte les escaliers.",
+    "objectifs_cles": [
+      "Caracterisation semiologique PQRST de la douleur (constriction retrosternale, effort, soulagement repos/trinitrine)",
+      "Depistage exhaustif des FDRCV majeurs (diabete type 2, heredite coronarienne precoce au premier degre)",
+      "Prescription conjointe d'un ECG 12 derivations de repos et d'un test d'ischemie fonctionnel",
+      "Information claire et consigne de securite formelle d'appel du SAMU centre 15"
+    ],
+    "spontane": [
+      "motifHospitalisation",
+      "histoireMaladie.facteursDeclenchants"
+    ],
+    "si_question": [
+      "histoireMaladie.debutSymptomes",
+      "histoireMaladie.evolution",
+      "histoireMaladie.symptomesAssocies",
+      "antecedents.medicaux",
+      "antecedents.familiaux",
+      "traitements",
+      "allergies",
+      "modeDeVie.tabac",
+      "modeDeVie.alcool",
+      "modeDeVie.emploi"
+    ],
+    "si_insiste": [
+      "histoireMaladie.remarques",
+      "Utilisation ponctuelle du spray de trinitrine conserve dans son sac",
+      "Oubli occasionnel de la metformine lors des periodes de rush au travail"
+    ],
+    "ne_jamais_reveler": [
+      "Le diagnostic medical formel (« angor stable » ou « stenose circonflexe »)",
+      "Les resultats precis des examens complementaires a venir"
+    ]
+  },
+  "examGradation": {
+    "parfaits": [
+      "ECG",
+      "Test d'effort",
+      "Scintigraphie myocardique",
+      "Echographie de stress",
+      "Bilan sanguin"
+    ],
+    "utiles": [
+      "Echocardiographie",
+      "Holter ECG",
+      "Bilan lipidique et glycemique a jeun"
+    ],
+    "inutiles": [
+      "Radiographie du rachis lombaire",
+      "Fibroscopie oeso-gastro-duodenale d'emblee"
+    ],
+    "dangereux": [
+      "IRM cardiaque sans verification prealable",
+      "Coronarographie invasive en urgence sans test prealable"
+    ]
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous etes cardiologue en consultation hospitaliere ou de ville.",
+      "contexte": "Vous recevez en consultation externe Mme Kitty Bennet, 58 ans, adressee par son medecin traitant en raison de sensations de serrement thoracique d'effort apparues il y a 6 mois.",
+      "dureeMinutes": 8,
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Entretien / Interrogatoire",
+      "domaineSecondaire": "Strategie pertinente de prise en charge",
+      "lieu": "Cabinet de consultation cardiologique",
+      "materielDisponible": [
+        "Stethoscope",
+        "Tensiometre brassard adulte",
+        "Oxymetre de pouls",
+        "Appareil ECG 12 derivations",
+        "Spray de trinitrine sublinguale de demonstration"
+      ],
+      "consignesAttendues": [
+        "Realiser un interrogatoire semiologique complet centre sur la douleur thoracique",
+        "Rechercher et hierarchiser les facteurs de risque cardiovasculaire",
+        "Effectuer un examen clinique cardiovasculaire oriente",
+        "Proposer et justifier la strategie diagnostique de premiere intention",
+        "Informer la patiente et lui expliquer les regles de securite therapeutique"
+      ],
+      "consignesInterdites": [
+        "Ne pas prescrire d'adrenaline ni de sympathomimetique",
+        "Ne pas transferer en reanimation sans signe de gravite de repos"
+      ]
+    },
+    "consignesEtudiant": {
+      "role": "Vous etes cardiologue en consultation hospitaliere ou de ville.",
+      "contexte": "Vous recevez Mme Kitty Bennet, 58 ans, pour une gene thoracique survenant lors de la montee d'escaliers depuis 6 mois.",
+      "dureeMinutes": 8,
+      "lieu": "Cabinet de consultation",
+      "materielDisponible": [
+        "Stethoscope",
+        "Tensiometre",
+        "Oxymetre de pouls",
+        "ECG 12 derivations"
+      ],
+      "consignes": [
+        "Mener un interrogatoire structure sur la douleur thoracique",
+        "Rechercher les facteurs de risque cardiovasculaire",
+        "Realiser un examen clinique oriente",
+        "Exposer la strategie diagnostique",
+        "Expliquer l'usage du traitement de crise et les signes d'alerte"
+      ],
+      "interdits": [
+        "Ne pas employer de jargon medical obscur sans l'expliquer",
+        "Ne pas omettre les consignes d'appel d'urgence"
+      ]
+    },
+    "consignesPatient": {
+      "identite": {
+        "nom": "Bennet",
+        "prenom": "Kitty",
+        "age": 58,
+        "sexe": "F"
+      },
+      "personnalite": "Patiente cooperative, polie et soignee, qui minimise ses plaintes par discretion et apprehende l'arret de ses activites physiques.",
+      "phraseOuverture": "Bonjour docteur, je viens vous voir car mon medecin traitant m'a dit de faire un point. Depuis plusieurs mois, j'ai une gene qui me serre la poitrine des que je monte les escaliers.",
+      "infosVolontaires": [
+        "Sensation d'oppression ou d'etau au milieu de la poitrine survenant exclusivement a l'effort",
+        "Disparition complete de la douleur en moins de 3 a 5 minutes des l'arret de la marche"
+      ],
+      "infosSiDemandees": [
+        "Diabete de type 2 sous metformine depuis 5 ans",
+        "Pere decede d'un infarctus du myocarde a 65 ans",
+        "Spray de trinitrine prescrit auparavant, utilise parfois avec soulagement en 2 minutes"
+      ],
+      "infosCachees": [
+        "Oubli intermittent de la metformine lors de deplacements professionnels",
+        "Peur d'une intervention chirurgicale lourde"
+      ],
+      "questionsPieges": [
+        "Docteur, je peux continuer a faire ma randonnee en montagne ce week-end ?",
+        "Ce ne serait pas seulement un probleme de digestion ou de stress au bureau ?"
+      ],
+      "reactions": {
+        "brutal": "Vous me faites un peu peur docteur... vous voulez dire que mes arteres sont bouchees comme mon pere ?",
+        "silence": "Docteur ? Tout va bien ? Vous avez l'air tres preoccupe par mes resultats.",
+        "jargon": "Pardon docteur, qu'est-ce que vous voulez dire exactement par « ischemie myocardique » ?"
+      }
+    },
+    "consignesEvaluateur": {
+      "pointCle": "Le candidat doit reconnaitre un angor d'effort stable typique chez une patiente diabetique a haut risque cardiovasculaire, organiser une confirmation fonctionnelle et poser les regles d'alerte vitale.",
+      "erreursRedhibitoires": [
+        "Affirmer qu'un ECG de repos normal elimine le diagnostic de cardiopathie ischemique",
+        "Prescrire de l'adrenaline ou un medicament inotrope positif",
+        "Omettre de donner la consigne formelle d'appeler le 15 (SAMU) en cas de douleur thoracique prolongee superieure a 15 minutes au repos"
+      ],
+      "elementsAttendus": [
+        "Caracterisation complete PQRST de la douleur angineuse",
+        "Recherche systematique des facteurs de risque coronariens",
+        "Examen cardiovasculaire avec constantes et auscultation",
+        "Prescription conjointe d'un ECG de repos et d'un test d'ischemie myocardique",
+        "Explication du traitement de fond et consignes d'utilisation du spray de trinitrine assis"
+      ],
+      "grille": [
+        {
+          "id": "eval_caracterisation",
+          "label": "Caracterise la douleur thoracique (siege, type constrictif, effort, repos/trinitrine)",
+          "weight": 1
+        },
+        {
+          "id": "eval_fdrcv",
+          "label": "Recherche les facteurs de risque cardiovasculaire majeurs",
+          "weight": 1
+        },
+        {
+          "id": "eval_examen",
+          "label": "Realise la prise des constantes et l'examen cardiovasculaire",
+          "weight": 1
+        },
+        {
+          "id": "eval_paraclinique",
+          "label": "Propose une strategie diagnostique conforme (ECG + test d'ischemie)",
+          "weight": 1
+        },
+        {
+          "id": "eval_education",
+          "label": "Donne les consignes de securite et d'appel au 15 en cas de crise prolongee",
+          "weight": 1
+        }
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement la patiente",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue la patiente avec courtoisie, donne son nom et son statut medical, et veille a son installation confortable.",
+          "en_partie": "Salue la patiente mais omet de donner son nom ou son statut medical.",
+          "non_fait": "Entame l'interrogatoire sans salutation ni presentation prealable."
+        },
+        "triggerKeywords": ["bonjour", "je suis interne", "je m'appelle", "docteur", "installez-vous"]
+      },
+      {
+        "id": "interrogatoire_douleur",
+        "label": "Caracterise precisement la douleur thoracique selon les criteres semiologiques de l'angor",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement les 5 parametres de l'angor : siege retrosternal, sensation de serrement/constriction, declenchement par l'effort, duree breve et soulagement rapide au repos ou sous trinitrine.",
+          "en_partie": "Aborde le siege et l'effort mais omet le caractere constrictif ou le delai de soulagement.",
+          "non_fait": "Se contente d'une question vague sans caracteriser les elements semiologiques cles."
+        },
+        "triggerKeywords": ["ou", "siege", "type", "serre", "oppression", "effort", "escalier", "duree", "repos", "trinitrine"]
+      },
+      {
+        "id": "interrogatoire_facteurs_risque",
+        "label": "Evalue l'ensemble des facteurs de risque cardiovasculaire",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Recherche activement les 5 FDRCV majeurs : diabete de type 2 (anciennete, equilibre), tabagisme actuel ou passe, hypertension arterielle, dyslipidemie et antecedents familiaux coronariens precoces au 1er degre.",
+          "en_partie": "Recherche 1 ou 2 facteurs (ex: diabete) sans explorer la famille ni les autres facteurs cardiovasculaires.",
+          "non_fait": "Aucune recherche des facteurs de risque cardiovasculaire."
+        },
+        "triggerKeywords": ["diabete", "sucre", "tabac", "fumer", "hypertension", "tension", "cholesterol", "famille", "pere", "infarctus"]
+      },
+      {
+        "id": "interrogatoire_symptomes_associes",
+        "label": "Recherche les signes d'accompagnement et les criteres d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement la survenue de douleurs au repos, une dyspnee d'effort ou de decubitus, des palpitations, des malaises ou des sueurs froides.",
+          "en_partie": "Interroge sur le souffle court mais ne verifie pas la presence de douleurs au repos.",
+          "non_fait": "Ne recherche aucun symptome associe ni critere d'instabilite."
+        },
+        "triggerKeywords": ["au repos", "essoufflement", "dyspnee", "palpitations", "malaise", "sueurs", "vertige"]
+      },
+      {
+        "id": "interrogatoire_traitements",
+        "label": "Recueille les traitements en cours, l'observance et le statut allergique",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Identifie la metformine, interroge sur l'observance reelle, fait preciser l'usage du spray de trinitrine et verifie l'absence d'allergie medicamenteuse.",
+          "en_partie": "Cite la metformine sans investiguer l'observance ni verifier les allergies.",
+          "non_fait": "Ne pose aucune question sur les medicaments pris au quotidien."
+        },
+        "triggerKeywords": ["traitement", "medicament", "metformine", "spray", "trinitrine", "allergie", "ordonnance"]
+      },
+      {
+        "id": "examen_constantes",
+        "label": "Prend et consigne les constantes vitales de securite",
+        "category": "examen_physique",
+        "weight": 1,
+        "criteria": {
+          "fait": "Mesure la pression arterielle, la frequence cardiaque, la saturation en O2 et la frequence respiratoire.",
+          "en_partie": "Prend uniquement la tension sans controler le pouls ni l'oxygenation.",
+          "non_fait": "N'effectue aucune prise de constantes vitales."
+        },
+        "triggerKeywords": ["tension", "pression arterielle", "pouls", "frequence cardiaque", "saturation", "spo2"]
+      },
+      {
+        "id": "examen_cardiovasculaire",
+        "label": "Realise un examen physique cardiovasculaire cible",
+        "category": "examen_physique",
+        "weight": 1,
+        "criteria": {
+          "fait": "Ausculte les foyers cardiaques (bruits, souffles), palpe les pouls peripheriques et recherche des signes d'insuffisance cardiaque (oedemes, turgescence jugulaire).",
+          "en_partie": "Ausculte le coeur mais omet l'examen vasculaire peripherique et la recherche d'oedemes.",
+          "non_fait": "Aucun examen physique cardiovasculaire realise."
+        },
+        "triggerKeywords": ["auscultation", "souffle", "pouls", "carotides", "femoraux", "pedieux", "oedeme", "jambes", "turgescence"]
+      },
+      {
+        "id": "examen_pulmonaire",
+        "label": "Effectue une auscultation pleuro-pulmonaire bilaterale",
+        "category": "examen_physique",
+        "weight": 1,
+        "criteria": {
+          "fait": "Ausculte les deux champs pulmonaires a la recherche de rales crepitants d'insuffisance cardiaque gauche.",
+          "en_partie": "Auscultation rapide incomplete sans recherche specifique de crepitants.",
+          "non_fait": "Omet completement l'auscultation pulmonaire."
+        },
+        "triggerKeywords": ["poumons", "crepitants", "murmure", "pulmonaire", "stethoscope"]
+      },
+      {
+        "id": "strategie_diagnostique",
+        "label": "Prescrit l'ECG 12 derivations de repos et un test d'ischemie fonctionnel",
+        "category": "strategie_diagnostique",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Prescrit un ECG 12 derivations de repos et planifie un test d'ischemie non invasif adapte (epreuve d'effort, scintigraphie ou echographie de stress).",
+          "en_partie": "Prescrit l'ECG de repos seul sans planifier d'evaluation d'ischemie fonctionnelle.",
+          "non_fait": "Ne prescrit pas d'ECG ou indique a tort une coronarographie d'emblee en l'absence de critere de gravite."
+        },
+        "triggerKeywords": ["ECG", "electrocardiogramme", "test d'effort", "epreuve d'effort", "scintigraphie", "echographie de stress", "coroscanner"]
+      },
+      {
+        "id": "diagnostic_angor",
+        "label": "Enonce et explique clairement l'hypothese d'angor d'effort stable",
+        "category": "education",
+        "weight": 1,
+        "criteria": {
+          "fait": "Explique avec pedagogie que la douleur correspond a un manque d'oxygenation du muscle cardiaque a l'effort (angine de poitrine stable).",
+          "en_partie": "Mentionne un probleme cardiaque sans pedagogie ou alarme inutilement la patiente.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou attribue a tort les douleurs a des rhumatismes."
+        },
+        "triggerKeywords": ["angine de poitrine", "angor", "arteres", "manque d'oxygene", "coeur", "ischemie"]
+      },
+      {
+        "id": "traitement_initial",
+        "label": "Propose le traitement anti-angineux de fond et protecteur cardiovasculaire",
+        "category": "traitement",
+        "weight": 1,
+        "criteria": {
+          "fait": "Evoque la mise en route d'un traitement de fond (beta-bloquant), d'une statine, de l'aspirine a faible dose et de trinitrine pour les crises.",
+          "en_partie": "Parle de la trinitrine mais omet le traitement de fond anti-ischemique et cardioprotecteur.",
+          "non_fait": "Ne propose aucun axe de prise en charge therapeutique."
+        },
+        "triggerKeywords": ["beta-bloquant", "aspirine", "statine", "trinitrine", "traitement", "ordonnance"]
+      },
+      {
+        "id": "education_patient",
+        "label": "Enseigne l'utilisation correcte de la trinitrine et les regles d'alerte vitale 15",
+        "category": "education",
+        "weight": 1,
+        "criteria": {
+          "fait": "Explique la prise du spray de trinitrine en position assise (prevention des malaises) et enjoint d'appeler le SAMU 15 sans delai si la douleur persiste plus de 15 minutes malgre le spray.",
+          "en_partie": "Conseille d'appeler le 15 mais omet la consigne de prise de la trinitrine en position assise.",
+          "non_fait": "Ne donne aucune consigne d'alerte vitale ni consigne d'utilisation du traitement de crise."
+        },
+        "triggerKeywords": ["position assise", "15", "SAMU", "urgence", "15 minutes", "chute de tension", "alerte"]
+      },
+      {
+        "id": "prevention_facteurs_risque",
+        "label": "Aborde les regles hygieno-dietetiques et la prevention secondaire",
+        "category": "education",
+        "weight": 0.5,
+        "criteria": {
+          "fait": "Conseille l'adaptation de l'activite physique au resultat du test d'effort, le suivi strict du diabete et les regles d'hygiene de vie.",
+          "en_partie": "Mentionne le diabete de maniere formelle sans conseil concret sur le mode de vie.",
+          "non_fait": "Aucun conseil sur les facteurs de risque ou la prevention cardiovasculaire."
+        },
+        "triggerKeywords": ["regime", "activite physique", "marche", "diabete", "glycemie", "prevention"]
+      }
+    ],
+    "grilleCommunication": [
+      {
+        "id": "ecoute_active",
+        "label": "Ecoute active : laisse s'exprimer la patiente sans l'interrompre lors de l'expose initial",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse la patiente decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement la patiente ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif agressif sans aucun temps d'expression spontanee laisse a la patiente."
+        }
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Utilise des questions ouvertes avant de resserrer par des questions ciblees",
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas a la patiente d'exprimer son vecu."
+        }
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule regulierement et verifie la bonne comprehension de la patiente",
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension de la patiente.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Adopte un vocabulaire clair, adapte a la patiente et depourvu de jargon non explique",
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, valide les inquietudes et adopte une posture rassurante",
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete de la patiente avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
+      }
+    ],
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil -> interrogatoire -> examen physique -> examens complementaires -> explication/traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte le syndrome coronarien aigu de repos et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de crise au repos, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de douleur actuelle sans verifier l'evolution recente ni les criteres de repos.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable versus instable de l'angor."
+        }
+      }
+    ]
+  },
+  "availableExams": [
+    "ECG",
+    "Echocardiographie",
+    "Bilan sanguin",
+    "Test d'effort",
+    "Holter ECG",
+    "Angiographie coronarienne",
+    "IRM cardiaque",
+    "Scintigraphie myocardique"
+  ],
+  "examResults": {
+    "ECG": "Rythme sinusal regulier a 75 bpm, pas d'anomalie de repolarisation au repos, pas d'onde Q de necrose",
+    "Echocardiographie": "Fraction d'ejection ventriculaire gauche conservee a 65%, pas d'hypokinesie segmentaire au repos, valves sans anomalie",
+    "Bilan sanguin": "Troponine I ultrasensible normale (< 5 ng/L), creatinine 72 micromol/L, HbA1c 7.2%, LDL-cholesterol 1.45 g/L",
+    "Test d'effort": "Epreuve sur velo positive cliniquement et electriquement a 85% de la FMT : declenchement de la douleur constrictive habituelle a 110 Watts associee a un sous-decalage horizontal du segment ST de 1.8 mm en V4-V6 et DII, cedant en 4 minutes de recuperation",
+    "Holter ECG": "Rythme sinusal exclusif, quelques extrasystoles auriculaires isolees sans caractere de gravite, pas de trouble de conduction",
+    "Angiographie coronarienne": "Stenose serree a 75% de l'artere circonflexe proximale, reseau interventriculaire anterieur atheromateux sans stenose hemodynamiquement significative",
+    "IRM cardiaque": "Examen non indique en premiere intention chez cette patiente",
+    "Scintigraphie myocardique": "Ischemie sous-maximale reversible du territoire lateral gauche sans necrose sous-jacente"
+  },
+  "possibleDiagnostics": [
+    "Angor stable",
+    "Syndrome coronarien aigu sans sus-decalage ST (NSTEMI / angor instable)",
+    "Pericardite aigue",
+    "Reflux gastro-oesophagien",
+    "Embolie pulmonaire",
+    "Dissection aortique"
+  ],
+  "correctDiagnostic": "Angor stable",
+  "feedback": {
+    "Angor stable": "Diagnostic exact. La constance des symptomes d'effort depuis 6 mois, la sedation rapide au repos et la positivite du test d'effort confirment l'angor d'effort stable.",
+    "default": "Diagnostic errone. Une douleur thoracique retrosternale d'effort cedant au repos chez une patiente diabetique avec test d'effort ischemique signe en premier lieu un angor stable."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 10
+  },
+  "possibleTreatments": [
+    "Beta-bloquant (Bisoprolol)",
+    "Trinitrine sublinguale spray",
+    "Aspirine 75 mg/jour",
+    "Statine (Atorvastatine)",
+    "Adrenaline IV",
+    "Derive nitre injectable en seringue autopoussee en urgence"
+  ],
+  "correctTreatments": [
+    "Beta-bloquant (Bisoprolol)",
+    "Trinitrine sublinguale spray",
+    "Aspirine 75 mg/jour",
+    "Statine (Atorvastatine)"
+  ],
+  "fatalTreatments": [
+    "Adrenaline IV"
+  ],
+  "hints": [
+    "Interrogez tres precisement les modalites de survenue a l'effort et la rapidite de disparition de la douleur au repos.",
+    "Pensez a rechercher l'ensemble des facteurs de risque cardiovasculaire (diabete, heredite, lipides, tabac).",
+    "L'ECG de repos normal n'elimine jamais une maladie coronaire : un test fonctionnel d'ischemie est indispensable."
+  ],
+  "pieges": [
+    "Affirmer que l'absence de douleur au repos elimine l'angine de poitrine.",
+    "Oublier de preciser a la patiente qu'elle doit prendre son spray de trinitrine assise pour eviter les vertiges ou malaises.",
+    "Ne pas donner la consigne capitale d'appeler le 15 si la douleur ne passe pas apres 15 minutes."
+  ],
+  "objectifs": [
+    "Conduire un entretien semiologique rigoureux pour reconnaitre une douleur coronarienne typique.",
+    "Evaluer et hierarchiser le profil de risque cardiovasculaire global.",
+    "Prescrire une demarche paraclinique non invasive en conformite avec les recommandations cardiologiques de l'ESC et de la SFC.",
+    "Formuler un plan educatif centre sur les signes d'alerte et la securite de la patiente."
+  ],
+  "correction": "# Angor d'effort stable : synthese d'apprentissage ECOS\n\n## 1. Raisonnement diagnostique\nPatiente de 58 ans, diabetique de type 2 et presentant une heredite coronaire directe (pere decede d'infarctus a 65 ans), consultant pour une douleur thoracique typique :\n- Siege : retrosternal median.\n- Nature : constriction, oppression.\n- Circonstances : survenue elective a l'effort (montee d'escaliers).\n- Duree et soulagement : disparition complete en moins de 5 minutes au repos ou sous trinitrine sublinguale.\n\nL'evolution stable sur 6 mois ecarte l'angor instable ou le SCA d'emblee, mais impose la realisation d'un ECG de repos et d'un test d'ischemie non invasif (ici epreuve d'effort revelant un sous-decalage ST ischemique lateral).\n\n## 2. Piliers de la prise en charge\n1. Traitement de la crise : trinitrine sublinguale en position assise.\n2. Traitement de fond anti-angineux : beta-bloquant (ex: Bisoprolol 5 a 10 mg/j).\n3. Prevention secondaire : aspirine faible dose (75 a 100 mg/j) et statine.\n4. Controle strict du diabete (cible HbA1c < 7%) et des regles hygieno-dietetiques.\n5. Education : consigne formelle d'appel du SAMU 15 si la douleur survient au repos ou persiste plus de 15 minutes malgre la trinitrine."
+}

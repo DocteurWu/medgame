@@ -214,7 +214,13 @@
           "je suis interne",
           "je m'appelle",
           "interne"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        }
       },
       {
         "id": "interrogatoire_circonstances",
@@ -227,7 +233,13 @@
           "durée",
           "combien de temps",
           "position"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Realise completement l'etape (Précise les circonstances de survenue du malaise (position, environnement, durée)) selon les regles de l'art, en lien avec (Syncope vasovagale) et le motif (Malaise avec prodromes en station debout prolongée).",
+          "en_partie": "Realise partiellement l'etape (Précise les circonstances de survenue du malaise (position, environnement, durée)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Précise les circonstances de survenue du malaise (position, environnement, durée)) ou suit une demarche erronee."
+        }
       },
       {
         "id": "interrogatoire_prodrome",
@@ -241,7 +253,13 @@
           "avant",
           "prodrome",
           "ressenti"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        }
       },
       {
         "id": "interrogatoire_antecedents",
@@ -256,7 +274,13 @@
           "mort subite",
           "épilepsie",
           "cardiaque"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        }
       },
       {
         "id": "interrogatoire_traitement",
@@ -268,7 +292,13 @@
           "pilule",
           "contraception",
           "prise"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       },
       {
         "id": "interrogatoire_mode_vie",
@@ -282,7 +312,13 @@
           "drogue",
           "stress",
           "sommeil"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Aborde la prevention secondaire et le suivi : regles hygieno-dietetiques, controle des facteurs de risque et planification du suivi.",
+          "en_partie": "Mentionne le suivi de facon formelle sans conseil concret sur le mode de vie.",
+          "non_fait": "Aucun conseil de prevention ni de suivi."
+        }
       },
       {
         "id": "examen_cardiovasculaire",
@@ -296,7 +332,13 @@
           "debout",
           "couché",
           "orthostatique"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       },
       {
         "id": "examen_neurologique",
@@ -309,7 +351,13 @@
           "réflexes",
           "pupilles",
           "coordination"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        }
       },
       {
         "id": "ecg_realise",
@@ -320,7 +368,13 @@
           "électrocardiogramme",
           "électrocardiogramme",
           "12 dérivations"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (Syncope vasovagale) : (ECG, Tilt-test, Bilan sanguin), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       },
       {
         "id": "diagnostic_syncope_vasovagale",
@@ -331,7 +385,13 @@
           "vagale",
           "neurocardiogénique",
           "réflexe"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Syncope vasovagale), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "diagnostics_differentiels",
@@ -343,7 +403,13 @@
           "épilepsie",
           "orthostatique",
           "différentiel"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Syncope vasovagale), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "pec_hydratation",
@@ -356,7 +422,13 @@
           "litre",
           "sel",
           "salé"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Reconseille une hydratation abondante) selon les regles de l'art, en lien avec (Syncope vasovagale) et le motif (Malaise avec prodromes en station debout prolongée).",
+          "en_partie": "Realise partiellement l'etape (Reconseille une hydratation abondante), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Reconseille une hydratation abondante) ou suit une demarche erronee."
+        }
       },
       {
         "id": "pec_reconnaissance_prodromes",
@@ -369,7 +441,13 @@
           "s'asseoir",
           "prévenir",
           "signes"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Explique la reconnaissance des prodromes et l'attitude à adopter (s'allonger, jambes surélevées)) selon les regles de l'art, en lien avec (Syncope vasovagale) et le motif (Malaise avec prodromes en station debout prolongée).",
+          "en_partie": "Realise partiellement l'etape (Explique la reconnaissance des prodromes et l'attitude à adopter (s'allonger, jambes surélevées)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Explique la reconnaissance des prodromes et l'attitude à adopter (s'allonger, jambes surélevées)) ou suit une demarche erronee."
+        }
       },
       {
         "id": "pec_manoeuvres_contre_pression",
@@ -382,7 +460,13 @@
           "poing",
           "contracter",
           "isométrique"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Enseigne les manœuvres de contre-pression (croisement des jambes, poings serrés)) selon les regles de l'art, en lien avec (Syncope vasovagale) et le motif (Malaise avec prodromes en station debout prolongée).",
+          "en_partie": "Realise partiellement l'etape (Enseigne les manœuvres de contre-pression (croisement des jambes, poings serrés)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Enseigne les manœuvres de contre-pression (croisement des jambes, poings serrés)) ou suit une demarche erronee."
+        }
       },
       {
         "id": "explication_diagnostic",
@@ -396,34 +480,65 @@
           "normal",
           "rassurer",
           "expliquer"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Syncope vasovagale), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse la patiente terminer sans l'interrompre",
-        "max": 1
+        "label": "Écoute active - laisse la patiente terminer sans l'interrompre",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Pose des questions ouvertes avant les questions fermées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule ou vérifie la compréhension de la patiente",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
         "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance face à l'inquiétude de la patiente",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -546,7 +661,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je suis venue parce que j'ai fait un malaise cet après-midi, je me suis évanouie quelques secondes. J'ai très peur, est-ce que c'est grave ?",
@@ -571,7 +721,10 @@
       "modeDeVie.alcool",
       "modeDeVie.emploi"
     ],
-    "si_insiste": [],
+    "si_insiste": [
+      "histoireMaladie.remarques",
+      "Detail cache ou embarrassant avoue seulement si le medecin insiste avec tact"
+    ],
     "ne_jamais_reveler": [
       "le diagnostic (Syncope vasovagale)",
       "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
@@ -598,9 +751,9 @@
     ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Tilt-test. Demande-les en priorité.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Diagnostics proches à départager : Syncope vasovagale vs Lipothymie. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : ECG + Tilt-test. Demande-les en priorité.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Diagnostics proches à départager : Syncope vasovagale vs Lipothymie. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "Lipothymie",

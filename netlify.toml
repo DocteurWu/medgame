@@ -13,6 +13,11 @@
   to = "/.netlify/functions/llm-proxy"
   status = 200
 
+[[redirects]]
+  from = "/api/jev/*"
+  to = "/.netlify/functions/jev-proxy"
+  status = 200
+
 # ── En-têtes de sécurité ─────────────────────────────────────────
 # CSP pragmatique : 'unsafe-inline' requis (handlers inline et styles générés),
 # autorisant les iframes internes (sameorigin) pour le module neuro-atlas.

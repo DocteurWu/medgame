@@ -210,49 +210,220 @@
       {
         "id": "eval_critere_1",
         "label": "Examen cérébelleux cinétique et statique (ataxie cérébelleuse)",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        },
+        "triggerKeywords": [
+          "examen",
+          "cérébelleux",
+          "cinétique",
+          "statique",
+          "ataxie",
+          "cérébelleuse",
+          "syndrome",
+          "post"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "Nystagmus non épuisable et multidirectionnel",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Nystagmus non épuisable et multidirectionnel) selon les regles de l'art, en lien avec (Syndrome cérébelleux post-traumatique) et le motif (Instabilité majeure à la marche et maladresse de la main suite à un traumatisme).",
+          "en_partie": "Realise partiellement l'etape (Nystagmus non épuisable et multidirectionnel), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Nystagmus non épuisable et multidirectionnel) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "nystagmus",
+          "non",
+          "épuisable",
+          "multidirectionnel",
+          "syndrome",
+          "cérébelleux",
+          "post"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "IRM cérébrale en urgence avec angioscanner ou angio-IRM des troncs supra-aortiques",
-        "weight": 1
+        "weight": 1,
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Donne des consignes de securite explicites : signes d'alerte a surveiller, conduite a tenir et recours aux urgences (appel au 15) si aggravation.",
+          "en_partie": "Donne une consigne d'alerte vague sans conduite pratique ni recours precise.",
+          "non_fait": "Ne donne aucune consigne de securite ni aucun signe d'alerte."
+        },
+        "triggerKeywords": [
+          "irm",
+          "cérébrale",
+          "urgence",
+          "angioscanner",
+          "angio",
+          "troncs",
+          "supra",
+          "aortiques"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Surveillance scopique neurologique continue",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        },
+        "triggerKeywords": [
+          "surveillance",
+          "scopique",
+          "neurologique",
+          "continue",
+          "syndrome",
+          "cérébelleux",
+          "post"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "syndrome"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Instabilité majeure à la marche et maladresse de la main suite à un traumatisme)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Instabilité majeure à la marche et maladresse de la main suite à un traumatisme) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Syndrome cérébelleux post-traumatique).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "instabilité",
+          "majeure",
+          "marche",
+          "maladresse",
+          "main"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "syndrome"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "syndrome",
+          "cérébelleux"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse le patient terminer ses phrases sans l'interrompre, montre de l'attention",
-        "max": 1
+        "label": "Écoute active - laisse le patient terminer ses phrases sans l'interrompre, montre de l'attention",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Commence par des questions ouvertes avant de poser des questions fermées ou orientées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule les propos du patient pour vérifier sa compréhension et montrer qu'il est entendu",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté au patient, évite le jargon médical non expliqué",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
-        "id": "empathie_bienveillance",
+        "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance face à l'anxiété du patient et à sa situation professionnelle",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -364,7 +535,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je suis tombé dans les escaliers hier pendant ma garde. J'ai perdu connaissance quelques secondes et depuis j'ai des vertiges terribles, je n'arrive plus à marcher droit.",
@@ -412,12 +618,14 @@
       "Test de Romberg",
       "Épreuve talon-genou"
     ],
-    "dangereux": []
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+    "Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
   ],
   "objectifs": [
     "Réaliser un interrogatoire complet orienté sur les vertiges et le traumatisme",

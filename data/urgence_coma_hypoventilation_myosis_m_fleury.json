@@ -150,7 +150,7 @@
     "Gaz du sang artériel",
     "Toxiques urinaires"
   ],
-  "correction": "# Correction : Overdose aux Opioïdes (Toxidrome Opioïde)\n\n## Synthèse clinique\nLe patient présente la triade classique et typique du **toxidrome opioïde** (overdose d'héroïne, fentanyl, oxycodone, morphine, etc.) :\n1. **Coma profond** (Glasgow initial à 6).\n2. **Myosis bilatéral serré (dit en « tête d'épingle » ou pinpoint)**.\n3. **Dépression respiratoire sévère** (Fréquence Respiratoire à 6/min, acidose respiratoire hypercapnique et hypoxémie majeure aux gaz du sang).\n\nD'autres signes cliniques complètent le tableau : cyanose des extrémités (conséquence de l'hypoxie), sueurs froides, hypothermie et traces d'injections intraveineuses évoquant l'usage d'héroïne ou d'autres substances par voie intraveineuse.\n\n## Prise en charge immédiate\n1. **Sécuriser les voies aériennes** : Libération des Voies Aériennes (LVA) et mise en Position Latérale de Sécurité (PLS) pour éviter toute inhalation de vomissements chez ce patient comateux.\n2. **Oxygénothérapie à haut débit** (masque à haute concentration à 15 L/min) pour lutter contre l'hypoxie tissulaire majeure.\n3. **Éliminer les diagnostics différentiels simples** : Glycémie capillaire indispensable en urgence pour éliminer un coma hypoglycémique (BM test normal ici).\n4. **Antidote spécifique** : Administration de **Naloxone (Narcan)** par voie intraveineuse directe (IVD) ou intramusculaire (IM) à la dose initiale de 0,4 mg. L'objectif est de restaurer une ventilation spontanée efficace (FR > 12/min) et de lever le coma, tout en évitant un syndrome de sevrage aigu trop brutal (titration progressive si nécessaire).\n\n## ⚠️ Pièges majeurs & Contre-indications (Fatal)\n- **Flumazénil (Anexate)** : C'est l'antidote des benzodiazépines. Il est formellement **contre-indiqué** en cas de suspicion d'overdose d'opiaciés ou poly-intoxication. S'il y a eu co-ingestion de stimulants (ex. cocaïne, héroïne, etc.), le Flumazénil abaisse le seuil épileptogène et peut déclencher des **crises convulsives généralisées mortelles**, surtout dans un contexte d'hypoxie cérébrale préexistante.\n- **Faire boire un patient comateux** : Le risque d'inhalation bronchique (syndrome de Mendelson) est majeur et létal chez tout patient avec un score de Glasgow inférieur à 8.\n- **Retarder l'antidote pour des examens ou une intubation invasive** : Bien que les gaz du sang et les toxiques soient utiles pour confirmer et quantifier l'atteinte, l'administration de Naloxone ne doit pas être retardée par leur réalisation, car elle permet souvent d'éviter une intubation trachéale lourde.\n\n## Bons réflexes (Do's)\n- **LVA, PLS et Oxygène 100% (15 L/min)** dès la constatation du coma et de la bradypnée.\n- **Réaliser un BM test (glycémie capillaire)** systématique devant tout trouble de la conscience.\n- **Administrer la Naloxone (Narcan) 0.4 mg IVD/IM** rapidement et répéter la dose après 2 à 3 minutes si la ventilation spontanée reste inefficace.\n- **Surveiller le patient en milieu hospitalier pendant au moins 6 heures** : La demi-vie de la Naloxone (environ 30 à 80 minutes) est souvent plus courte que celle de l'opioïde ingéré. Il existe un risque majeur de **re-sédation** et de retour en détresse respiratoire une fois l'effet de l'antidote estompé.\n\n## Erreurs à éviter (Don'ts)\n- **Ne pas injecter de Flumazénil** (risque de convulsions fatales).\n- **Ne jamais donner de liquide ou d'aliments** par la bouche à un patient inconscient.\n- **Ne pas intuber d'emblée** un patient en overdose d'opiacés sans avoir tenté une titration de Naloxone au ballon/masque, sauf en cas d'arrêt cardiorespiratoire ou d'échec de la Naloxone.\n- **Ne pas laisser le patient repartir seul** après son réveil clinique immédiat sans surveillance prolongée d'au moins 6 heures.",
+  "correction": "# Correction : Overdose aux Opioïdes (Toxidrome Opioïde)\n\n## Synthèse clinique\nLe patient présente la triade classique et typique du **toxidrome opioïde** (overdose d'héroïne, fentanyl, oxycodone, morphine, etc.) :\n1. **Coma profond** (Glasgow initial à 6).\n2. **Myosis bilatéral serré (dit en « tête d'épingle » ou pinpoint)**.\n3. **Dépression respiratoire sévère** (Fréquence Respiratoire à 6/min, acidose respiratoire hypercapnique et hypoxémie majeure aux gaz du sang).\n\nD'autres signes cliniques complètent le tableau : cyanose des extrémités (conséquence de l'hypoxie), sueurs froides, hypothermie et traces d'injections intraveineuses évoquant l'usage d'héroïne ou d'autres substances par voie intraveineuse.\n\n## Prise en charge immédiate\n1. **Sécuriser les voies aériennes** : Libération des Voies Aériennes (LVA) et mise en Position Latérale de Sécurité (PLS) pour éviter toute inhalation de vomissements chez ce patient comateux.\n2. **Oxygénothérapie à haut débit** (masque à haute concentration à 15 L/min) pour lutter contre l'hypoxie tissulaire majeure.\n3. **Éliminer les diagnostics différentiels simples** : Glycémie capillaire indispensable en urgence pour éliminer un coma hypoglycémique (BM test normal ici).\n4. **Antidote spécifique** : Administration de **Naloxone (Narcan)** par voie intraveineuse directe (IVD) ou intramusculaire (IM) à la dose initiale de 0,4 mg. L'objectif est de restaurer une ventilation spontanée efficace (FR > 12/min) et de lever le coma, tout en évitant un syndrome de sevrage aigu trop brutal (titration progressive si nécessaire).\n\n##  Pièges majeurs & Contre-indications (Fatal)\n- **Flumazénil (Anexate)** : C'est l'antidote des benzodiazépines. Il est formellement **contre-indiqué** en cas de suspicion d'overdose d'opiaciés ou poly-intoxication. S'il y a eu co-ingestion de stimulants (ex. cocaïne, héroïne, etc.), le Flumazénil abaisse le seuil épileptogène et peut déclencher des **crises convulsives généralisées mortelles**, surtout dans un contexte d'hypoxie cérébrale préexistante.\n- **Faire boire un patient comateux** : Le risque d'inhalation bronchique (syndrome de Mendelson) est majeur et létal chez tout patient avec un score de Glasgow inférieur à 8.\n- **Retarder l'antidote pour des examens ou une intubation invasive** : Bien que les gaz du sang et les toxiques soient utiles pour confirmer et quantifier l'atteinte, l'administration de Naloxone ne doit pas être retardée par leur réalisation, car elle permet souvent d'éviter une intubation trachéale lourde.\n\n## Bons réflexes (Do's)\n- **LVA, PLS et Oxygène 100% (15 L/min)** dès la constatation du coma et de la bradypnée.\n- **Réaliser un BM test (glycémie capillaire)** systématique devant tout trouble de la conscience.\n- **Administrer la Naloxone (Narcan) 0.4 mg IVD/IM** rapidement et répéter la dose après 2 à 3 minutes si la ventilation spontanée reste inefficace.\n- **Surveiller le patient en milieu hospitalier pendant au moins 6 heures** : La demi-vie de la Naloxone (environ 30 à 80 minutes) est souvent plus courte que celle de l'opioïde ingéré. Il existe un risque majeur de **re-sédation** et de retour en détresse respiratoire une fois l'effet de l'antidote estompé.\n\n## Erreurs à éviter (Don'ts)\n- **Ne pas injecter de Flumazénil** (risque de convulsions fatales).\n- **Ne jamais donner de liquide ou d'aliments** par la bouche à un patient inconscient.\n- **Ne pas intuber d'emblée** un patient en overdose d'opiacés sans avoir tenté une titration de Naloxone au ballon/masque, sauf en cas d'arrêt cardiorespiratoire ou d'échec de la Naloxone.\n- **Ne pas laisser le patient repartir seul** après son réveil clinique immédiat sans surveillance prolongée d'au moins 6 heures.",
   "vitalsDynamics": {
     "trendOverMinutes": 0.15,
     "urgencyMultiplier": 3,
@@ -540,49 +540,244 @@
       {
         "id": "eval_critere_1",
         "label": "Identification du syndrome opioïde",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Identification du syndrome opioïde) selon les regles de l'art, en lien avec (Overdose aux opioïdes (syndrome toxique opioïde)) et le motif (Coma profond avec fréquence respiratoire à 6 par minute et myosis punctiforme).",
+          "en_partie": "Realise partiellement l'etape (Identification du syndrome opioïde), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Identification du syndrome opioïde) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "identification",
+          "syndrome",
+          "opioïde",
+          "overdose",
+          "opioïdes"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "Ventilation assistée au masque",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Ventilation assistée au masque) selon les regles de l'art, en lien avec (Overdose aux opioïdes (syndrome toxique opioïde)) et le motif (Coma profond avec fréquence respiratoire à 6 par minute et myosis punctiforme).",
+          "en_partie": "Realise partiellement l'etape (Ventilation assistée au masque), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Ventilation assistée au masque) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "ventilation",
+          "assistée",
+          "masque",
+          "overdose",
+          "opioïdes",
+          "syndrome"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "Titration de Naloxone (0.1 mg en 0.1 mg toutes les 2 min)",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Titration de Naloxone (0.1 mg en 0.1 mg toutes les 2 min)) selon les regles de l'art, en lien avec (Overdose aux opioïdes (syndrome toxique opioïde)) et le motif (Coma profond avec fréquence respiratoire à 6 par minute et myosis punctiforme).",
+          "en_partie": "Realise partiellement l'etape (Titration de Naloxone (0.1 mg en 0.1 mg toutes les 2 min)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Titration de Naloxone (0.1 mg en 0.1 mg toutes les 2 min)) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "titration",
+          "naloxone",
+          "toutes",
+          "min",
+          "overdose",
+          "opioïdes",
+          "syndrome"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Surveillance prolongée hospitalière",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Surveillance prolongée hospitalière) selon les regles de l'art, en lien avec (Overdose aux opioïdes (syndrome toxique opioïde)) et le motif (Coma profond avec fréquence respiratoire à 6 par minute et myosis punctiforme).",
+          "en_partie": "Realise partiellement l'etape (Surveillance prolongée hospitalière), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Surveillance prolongée hospitalière) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "surveillance",
+          "prolongée",
+          "hospitalière",
+          "overdose",
+          "opioïdes",
+          "syndrome"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "overdose"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Coma profond avec fréquence respiratoire à 6 par minute et myosis punctiforme)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Coma profond avec fréquence respiratoire à 6 par minute et myosis punctiforme) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Overdose aux opioïdes (syndrome toxique opioïde)).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "coma",
+          "profond",
+          "fréquence",
+          "respiratoire",
+          "minute"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "overdose"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "overdose",
+          "opioïdes"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "communication_equipe",
         "label": "Communique clairement avec l'équipe soignante (IDE, médecin senior) en utilisant un langage structuré (SBAR ou équivalent)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Communique clairement avec l'équipe soignante (IDE, médecin senior) en utilisant un langage structuré (SBAR ou équivalent)) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Communique clairement avec l'équipe soignante (IDE, médecin senior) en utilisant un langage structuré (SBAR ou équivalent)) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Communique clairement avec l'équipe soignante (IDE, médecin senior) en utilisant un langage structuré (SBAR ou équivalent)) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "annonce_situation",
         "label": "Annonce la situation au médecin régulateur SAMU ou au senior de garde de manière concise et structurée",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Annonce la situation au médecin régulateur SAMU ou au senior de garde de manière concise et structurée) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Annonce la situation au médecin régulateur SAMU ou au senior de garde de manière concise et structurée) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Annonce la situation au médecin régulateur SAMU ou au senior de garde de manière concise et structurée) absente ou manifestement inadaptee."
+        }
       },
       {
-        "id": "empathie_bienveillance",
+        "id": "empathie",
         "label": "Fait preuve de bienveillance et de non-jugement envers le patient toxicomane",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       },
       {
         "id": "information_proches",
         "label": "Informe les proches (si présents) de manière adaptée sur l'état du patient et la prise en charge",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Informe les proches (si présents) de manière adaptée sur l'état du patient et la prise en charge) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Informe les proches (si présents) de manière adaptée sur l'état du patient et la prise en charge) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Informe les proches (si présents) de manière adaptée sur l'état du patient et la prise en charge) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté et professionnel sans jargon excessif lors des transmissions",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
+      },
+      {
+        "id": "ecoute_active",
+        "label": "Ecoute active : laisse s'exprimer le patient sans l'interrompre lors de l'expose initial",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Utilise des questions ouvertes avant de resserrer par des questions ciblees",
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule regulierement et verifie la bonne comprehension du patient",
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       }
     ],
     "patientStandardise": {
@@ -694,7 +889,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je viens pour : Patient de 28 ans retrouvé inconscient sur la voie publique, suspect d'overdose..",
@@ -735,14 +965,20 @@
       "Gaz du sang artériel",
       "Toxiques urinaires"
     ],
-    "utiles": [],
-    "inutiles": [],
-    "dangereux": []
+    "utiles": [
+      "Bilan complementaire oriente selon l'evolution clinique"
+    ],
+    "inutiles": [
+      "Examen sans lien demontre avec le motif de consultation"
+    ],
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Glycémie capillaire (BM test) + Gaz du sang artériel. Demande-les en priorité.",
-    "🔐 Défi à prévoir : « Devant un patient inconscient présentant un myosis bilatéral serré (pinpoint) et une fréquence respiratoire à 6/min, quel syndrome toxique évoquez-vous d'emblée ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
-    "🎯 Diagnostics proches à départager : Overdose aux opioïdes (syndrome toxique opioïde) vs Intoxication aiguë aux opiacés. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : Glycémie capillaire (BM test) + Gaz du sang artériel. Demande-les en priorité.",
+    "Défi à prévoir : « Devant un patient inconscient présentant un myosis bilatéral serré (pinpoint) et une fréquence respiratoire à 6/min, quel syndrome toxique évoquez-vous d'emblée ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire - relis avant de valider.",
+    "Diagnostics proches à départager : Overdose aux opioïdes (syndrome toxique opioïde) vs Intoxication aiguë aux opiacés. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "Intoxication aiguë aux opiacés",
