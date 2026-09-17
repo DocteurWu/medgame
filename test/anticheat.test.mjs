@@ -215,44 +215,39 @@ test('Scoring — Doing nothing yields 0 score in interrogatoire and demarche', 
         assert.equal(engine.selectedTreatments.length, 0);
     });
 
-    await t.test('scoring.js calculateDemarcheScore and calculateCompositeScore return 0 when nothing is done', async () => {
+    await t.test('Jev client evaluateStation and computeFinalScores handle inactive case with 0 or unrated', async () => {
+        const { evaluateStation, computeFinalScores, PASSING_SCORE_ON_20 } = await import('../js/jevClient.js');
         const fs = await import('node:fs');
         const path = await import('node:path');
-        const vm = await import('node:vm');
 
-        const context = {
-            window: {},
-            sessionStorage: {
-                getItem: (k) => 'immersif',
-                setItem: () => {}
-            },
-            document: {
-                getElementById: () => null
-            },
-            Date,
-            Math,
-            Set,
-            Array,
-            Object,
-            parseInt
-        };
-        context.window = context;
-
-        const scoringCode = fs.readFileSync(path.resolve('js/scoring.js'), 'utf8');
-        vm.runInNewContext(scoringCode, context);
+        // Verify legacy scoring files are deleted
+        assert.equal(fs.existsSync(path.resolve('js/scoring.js')), false, 'js/scoring.js must be removed');
+        assert.equal(fs.existsSync(path.resolve('js/feedback.js')), false, 'js/feedback.js must be removed');
 
         const caseData = JSON.parse(fs.readFileSync(path.resolve('data/cardio_grosse_jambe_rouge_m_ternes.json'), 'utf8'));
 
-        context.resetDemarche();
-        const demScore = context.calculateDemarcheScore(caseData);
-        assert.equal(demScore, 0, 'calculateDemarcheScore must be 0 when nothing was asked');
+        // Case with empty transcript returns unrated
+        const unratedResult = await evaluateStation(caseData, '', {});
+        assert.equal(unratedResult.unrated, true, 'Empty transcript must result in unrated station');
+        assert.equal(unratedResult.success, false);
 
-        context.scoringState.currentCase = caseData;
-        const comp = context.calculateCompositeScore();
-        assert.equal(comp.compositeScore, 0, 'calculateCompositeScore must be 0 when nothing was done');
-        assert.equal(comp.demarcheScore, 0, 'demarcheScore must be 0');
-        assert.equal(comp.diagnosticScore, 0, 'diagnosticScore must be 0');
-        assert.equal(comp.traitementScore, 0, 'traitementScore must be 0');
+        // Case where student performs no expected actions (0 probabilities)
+        const mockFetch = async () => ({
+            ok: true,
+            json: async () => ({
+                decisions: {
+                    apt_anamnese_complete: { probability: 0.0, boolean_prediction: false },
+                    apt_examen_pertinent: { probability: 0.0, boolean_prediction: false },
+                    com_empathie_ecoute: { probability: 0.0, boolean_prediction: false },
+                    perf_gestion_temps: { probability: 0.0, boolean_prediction: false }
+                }
+            })
+        });
+
+        const zeroResult = await evaluateStation(caseData, '[00:00] Debut station.\n[08:00] Fin station.', {}, { fetch: mockFetch });
+        assert.equal(zeroResult.success, true);
+        assert.equal(zeroResult.finalScore, 0, 'Score must be 0 when student performed no expected actions');
+        assert.equal(zeroResult.validated, false, 'Station must not be validated with score 0');
     });
 });
 

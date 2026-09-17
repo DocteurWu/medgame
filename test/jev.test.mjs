@@ -278,3 +278,66 @@ test('11. Non-regression : CSP et regles de redirection netlify.toml valides', (
     assert.ok(tomlContent.includes('X-Frame-Options'), 'En-tete X-Frame-Options manquant');
     assert.ok(tomlContent.includes('X-Content-Type-Options'), 'En-tete X-Content-Type-Options manquant');
 });
+
+test('12. Nettoyage HTML : aucun fichier HTML ne charge scoring.js ni feedback.js', () => {
+    const rootFiles = fs.readdirSync(path.resolve('.'));
+    const htmlFiles = rootFiles.filter(f => f.endsWith('.html'));
+
+    htmlFiles.forEach(htmlFile => {
+        const content = fs.readFileSync(path.resolve(htmlFile), 'utf8');
+        assert.ok(
+            !content.includes('scoring.js'),
+            `${htmlFile} ne doit pas charger scoring.js`
+        );
+        assert.ok(
+            !content.includes('feedback.js'),
+            `${htmlFile} ne doit pas charger feedback.js`
+        );
+    });
+});
+
+test('13. Eradication de calculateCompositeScore : aucun code de production ne l appelle', () => {
+    const jsFiles = fs.readdirSync(path.resolve('js')).filter(f => f.endsWith('.js'));
+
+    jsFiles.forEach(file => {
+        const content = fs.readFileSync(path.resolve('js', file), 'utf8');
+        assert.ok(
+            !content.includes('calculateCompositeScore'),
+            `js/${file} ne doit plus appeler ni definir calculateCompositeScore`
+        );
+        assert.ok(
+            !content.includes('renderCompositeScorePanel'),
+            `js/${file} ne doit plus appeler ni definir renderCompositeScorePanel`
+        );
+    });
+});
+
+test('14. Jev unique moteur dans js/game.js : note sur 20, suppression compositeScore et percentageScore', () => {
+    const gameCode = fs.readFileSync(path.resolve('js/game.js'), 'utf8');
+
+    assert.ok(!gameCode.includes('compositeScore'), 'js/game.js ne doit pas referencer compositeScore');
+    assert.ok(!gameCode.includes('percentageScore'), 'js/game.js ne doit pas referencer percentageScore');
+    assert.ok(!gameCode.includes('Score final:'), 'js/game.js ne doit plus afficher "Score final:"');
+    assert.ok(!gameCode.includes('Score final :'), 'js/game.js ne doit plus afficher "Score final :"');
+    assert.ok(gameCode.includes('globalScore20'), 'js/game.js doit gerer globalScore20');
+    assert.ok(gameCode.includes('evaluateStation'), 'js/game.js doit appeler evaluateStation');
+});
+
+test('15. HUD 3D (three-hud-agent.js) : affichage sur 20 et absence de calculateCompositeScore', () => {
+    const hudCode = fs.readFileSync(path.resolve('js/three-hud-agent.js'), 'utf8');
+
+    assert.ok(!hudCode.includes('calculateCompositeScore'), 'three-hud-agent.js ne doit plus appeler calculateCompositeScore');
+    assert.ok(hudCode.includes('--/20'), 'three-hud-agent.js doit afficher --/20 quand non note');
+    assert.ok(hudCode.includes('/20'), 'three-hud-agent.js doit afficher la jauge sur 20');
+});
+
+test('16. Proxy local mcp-server.js : route /jev-proxy presente avec headers et validation', () => {
+    const mcpCode = fs.readFileSync(path.resolve('mcp-server.js'), 'utf8');
+
+    assert.ok(mcpCode.includes("pathname === '/jev-proxy'"), 'mcp-server.js doit gerer la route /jev-proxy');
+    assert.ok(mcpCode.includes('TYPESAFE_API_KEY'), 'mcp-server.js doit verifier TYPESAFE_API_KEY');
+    assert.ok(mcpCode.includes('X-User-Token'), 'mcp-server.js doit inclure X-User-Token dans CORS headers');
+    assert.ok(mcpCode.includes('60000'), 'mcp-server.js doit limiter la taille du state');
+    assert.ok(mcpCode.includes('80'), 'mcp-server.js doit limiter le nombre de questions');
+});
+

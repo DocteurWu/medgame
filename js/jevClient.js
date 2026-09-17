@@ -724,6 +724,7 @@ const JevClient = {
     evaluateStation
 };
 
+// Exposition du client Jev sur l'objet global window pour les scripts du navigateur (js/game.js, etc.)
 if (typeof window !== 'undefined') {
     window.JevClient = JevClient;
 }

@@ -15,8 +15,8 @@
  * Compatibilité : le mode ECOS est activé quand `sessionStorage.immersionMode === 'immersif'`
  *                 ET que le cas est chargé.
  *
- * Dépendances : js/llm-patient.js, js/audio.js, js/timer.js, js/scoring.js,
- *               js/caseLoader.js, js/gameState.js, js/feedback.js
+ * Dépendances : js/llm-patient.js, js/audio.js, js/timer.js, js/jevClient.js,
+ *               js/caseLoader.js, js/gameState.js
  */
 
 (function () {

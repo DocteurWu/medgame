@@ -459,42 +459,46 @@ export class ThreeHUD {
             }
         }
 
-        // === 5. Score composite ===
-        if (typeof calculateCompositeScore === 'function') {
-            const result = calculateCompositeScore();
-            const newScore = result.compositeScore || 0;
-            this._updateScoreDisplay(newScore);
-        } else {
-            // Fallback : score simple
-            const score = gs.score || 0;
-            this._updateScoreDisplay(score);
-        }
+        // === 5. Score Jev (sur 20) ===
+        const jevScore = gs.jevEvaluation?.globalScore20 ?? gs.globalScore20 ?? null;
+        this._updateScoreDisplay(jevScore);
     }
 
     /**
-     * Met à jour l'affichage du score avec animation si changement.
+     * Met a jour l'affichage du score avec animation si changement (echelle sur 20).
      */
     _updateScoreDisplay(score) {
         const scoreEl = document.getElementById('hud-score');
         const fillEl = document.getElementById('hud-score-fill');
         if (!scoreEl) return;
 
-        const scoreInt = Math.round(score);
-        scoreEl.textContent = `${scoreInt}%`;
+        if (score === null || score === undefined) {
+            scoreEl.textContent = '--/20';
+            if (fillEl) {
+                fillEl.style.width = '0%';
+            }
+            this._lastScore = -1;
+            return;
+        }
+
+        const numScore = Number(score);
+        const scoreFormatted = Number.isFinite(numScore) ? (Number.isInteger(numScore) ? numScore.toString() : numScore.toFixed(1)) : '--';
+        scoreEl.textContent = `${scoreFormatted}/20`;
 
         if (fillEl) {
-            fillEl.style.width = `${scoreInt}%`;
+            const pct = Math.max(0, Math.min(100, (numScore / 20) * 100));
+            fillEl.style.width = `${pct}%`;
         }
 
         // Animation de score up si le score augmente
-        if (scoreInt > this._lastScore && this._lastScore >= 0) {
+        if (numScore > this._lastScore && this._lastScore >= 0) {
             scoreEl.classList.remove('score-up');
             // Force reflow
             void scoreEl.offsetWidth;
             scoreEl.classList.add('score-up');
             setTimeout(() => scoreEl.classList.remove('score-up'), 700);
         }
-        this._lastScore = scoreInt;
+        this._lastScore = numScore;
     }
 
     /**
