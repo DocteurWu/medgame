@@ -229,7 +229,13 @@
           "je suis interne",
           "je m'appelle",
           "je vais m'occuper de vous"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        }
       },
       {
         "id": "interrogatoire_motif",
@@ -241,7 +247,13 @@
           "depuis quand",
           "comment c'est apparu",
           "brutal"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Douleur et œdème unilatéral du mollet) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Thrombose veineuse profonde droite).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        }
       },
       {
         "id": "interrogatoire_facteurs_risque",
@@ -255,7 +267,13 @@
           "vol long courrier",
           "tabac",
           "fume"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        }
       },
       {
         "id": "interrogatoire_antecedents",
@@ -270,7 +288,13 @@
           "phlébite",
           "embolie",
           "AVC"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        }
       },
       {
         "id": "interrogatoire_symptomes_associes",
@@ -283,7 +307,13 @@
           "douleur thoracique",
           "dyspnée",
           "hémoptysie"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Douleur et œdème unilatéral du mollet) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Thrombose veineuse profonde droite).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        }
       },
       {
         "id": "examen_clinique_membre",
@@ -298,7 +328,13 @@
           "chaleur",
           "rougeur",
           "gonflement"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        }
       },
       {
         "id": "examen_clinique_cardio_respiratoire",
@@ -311,7 +347,13 @@
           "respiration",
           "saturation",
           "fréquence respiratoire"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise une auscultation pulmonaire bilaterale et symetrique et recherche les bruits surajoutes en lien avec le motif.",
+          "en_partie": "Auscultation rapide ou incomplete sans comparaison des deux champs.",
+          "non_fait": "Omet completement l'auscultation pulmonaire."
+        }
       },
       {
         "id": "diagnostic_tvp",
@@ -323,7 +365,13 @@
           "phlébite",
           "thrombose",
           "mollet"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Thrombose veineuse profonde droite), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "examens_complementaires",
@@ -336,7 +384,13 @@
           "échographie veineuse",
           "bilan",
           "examens"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        }
       },
       {
         "id": "pec_anticoagulation",
@@ -351,7 +405,13 @@
           "apixaban",
           "3 mois",
           "traitement"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Initie une anticoagulation adaptée (HBPM ou AOD) pour une durée de 3 mois) selon les regles de l'art, en lien avec (Thrombose veineuse profonde droite) et le motif (Douleur et œdème unilatéral du mollet).",
+          "en_partie": "Realise partiellement l'etape (Initie une anticoagulation adaptée (HBPM ou AOD) pour une durée de 3 mois), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Initie une anticoagulation adaptée (HBPM ou AOD) pour une durée de 3 mois) ou suit une demarche erronee."
+        }
       },
       {
         "id": "pec_compression",
@@ -362,7 +422,13 @@
           "bas de compression",
           "bas élastique",
           "compression"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Prescrit une contention élastique par bas de contention) selon les regles de l'art, en lien avec (Thrombose veineuse profonde droite) et le motif (Douleur et œdème unilatéral du mollet).",
+          "en_partie": "Realise partiellement l'etape (Prescrit une contention élastique par bas de contention), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Prescrit une contention élastique par bas de contention) ou suit une demarche erronee."
+        }
       },
       {
         "id": "education_patient",
@@ -375,7 +441,13 @@
           "signes d'alerte",
           "prévention",
           "conseils"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        }
       },
       {
         "id": "conseils_prevention",
@@ -388,7 +460,13 @@
           "voyage",
           "prévention",
           "conseils"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Aborde la prevention secondaire et le suivi : regles hygieno-dietetiques, controle des facteurs de risque et planification du suivi.",
+          "en_partie": "Mentionne le suivi de facon formelle sans conseil concret sur le mode de vie.",
+          "non_fait": "Aucun conseil de prevention ni de suivi."
+        }
       },
       {
         "id": "surveillance",
@@ -401,34 +479,65 @@
           "bilan",
           "étiologique",
           "thrombophilie"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (Thrombose veineuse profonde droite) : (Écho-Doppler veineux, D-dimères, Bilan de thrombophilie), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
-        "max": 1
+        "label": "Écoute active - laisse le patient terminer sans l'interrompre",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Pose des questions ouvertes avant les questions fermées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule ou vérifie la compréhension du patient",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
         "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -550,7 +659,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, j'ai très mal au mollet droit depuis 2 jours, c'est apparu d'un coup et ma jambe a gonflé. J'ai peur que ce soit grave.",
@@ -584,13 +728,20 @@
     ]
   },
   "examGradation": {
-    "parfaits": [],
+    "parfaits": [
+      "Écho-Doppler veineux",
+      "D-dimères",
+      "Bilan de thrombophilie"
+    ],
     "utiles": [
       "Echographie doppler des membres inférieurs",
       "Bilan sanguin",
       "Radiographie de la jambe droite"
     ],
-    "inutiles": [],
+    "inutiles": [
+      "ECG",
+      "Radio thorax"
+    ],
     "dangereux": [
       "ECG",
       "Radio thorax",
@@ -599,9 +750,9 @@
     ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler veineux + D-dimères. Demande-les en priorité.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Diagnostics proches à départager : Thrombose veineuse profonde droite vs Phlébite. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : Écho-Doppler veineux + D-dimères. Demande-les en priorité.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Diagnostics proches à départager : Thrombose veineuse profonde droite vs Phlébite. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "Phlébite",

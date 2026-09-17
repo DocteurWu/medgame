@@ -232,7 +232,13 @@
           "je suis interne",
           "je m'appelle",
           "interne"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        }
       },
       {
         "id": "interrogatoire_complet",
@@ -247,7 +253,13 @@
           "antécédents",
           "traitement",
           "famille"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        }
       },
       {
         "id": "examen_clinique_cardiovasculaire",
@@ -259,7 +271,13 @@
           "pouls",
           "carotidien",
           "foyer aortique"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       },
       {
         "id": "identification_signes_RA",
@@ -272,7 +290,13 @@
           "carotides",
           "rétrécissement",
           "sténose"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        }
       },
       {
         "id": "bilan_diagnostique_adapte",
@@ -285,7 +309,13 @@
           "bilan",
           "BNP",
           "troponine"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       },
       {
         "id": "diagnostic_RA",
@@ -296,7 +326,13 @@
           "sténose aortique",
           "valvulopathie",
           "RA"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Rétrécissement aortique), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "PEC_chirurgicale",
@@ -309,7 +345,13 @@
           "TAVI",
           "RVA",
           "remplacement valvulaire"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Propose une prise en charge chirurgicale (remplacement valvulaire aortique)) selon les regles de l'art, en lien avec (Rétrécissement aortique) et le motif (Malaise d'effort et dyspnée d'effort).",
+          "en_partie": "Realise partiellement l'etape (Propose une prise en charge chirurgicale (remplacement valvulaire aortique)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Propose une prise en charge chirurgicale (remplacement valvulaire aortique)) ou suit une demarche erronee."
+        }
       },
       {
         "id": "traitements_eviter",
@@ -321,7 +363,13 @@
           "IEC",
           "bêtabloquant",
           "éviter"
-        ]
+        ],
+        "category": "traitement",
+        "criteria": {
+          "fait": "Propose un plan therapeutique adapte a (Rétrécissement aortique) incluant (Remplacement valvulaire aortique), en precisant posologie, duree et contre-indications verifiees.",
+          "en_partie": "Evoque un traitement sans precision de posologie, de duree ni de contre-indications.",
+          "non_fait": "Ne propose aucune prise en charge therapeutique ou propose un traitement contre-indique."
+        }
       },
       {
         "id": "surveillance_RA",
@@ -333,7 +381,13 @@
           "cardiologue",
           "consultation",
           "échocardiographie"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       },
       {
         "id": "conseils_hygieno_dietetiques",
@@ -345,7 +399,13 @@
           "repos",
           "conseils",
           "éviter"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Aborde la prevention secondaire et le suivi : regles hygieno-dietetiques, controle des facteurs de risque et planification du suivi.",
+          "en_partie": "Mentionne le suivi de facon formelle sans conseil concret sur le mode de vie.",
+          "non_fait": "Aucun conseil de prevention ni de suivi."
+        }
       },
       {
         "id": "annonce_diagnostic",
@@ -357,7 +417,13 @@
           "comprendre",
           "maladie",
           "valve"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Rétrécissement aortique), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "orientation_specialiste",
@@ -368,34 +434,65 @@
           "spécialiste",
           "orientation",
           "consultation spécialisée"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
-        "max": 1
+        "label": "Écoute active - laisse le patient terminer sans l'interrompre",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Pose des questions ouvertes avant les questions fermées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule ou vérifie la compréhension du patient",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
         "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -516,7 +613,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je suis venu parce que j'ai du mal à respirer quand je fais des efforts et je fais des malaises.",
@@ -541,7 +673,10 @@
       "modeDeVie.alcool",
       "modeDeVie.emploi"
     ],
-    "si_insiste": [],
+    "si_insiste": [
+      "histoireMaladie.remarques",
+      "Detail cache ou embarrassant avoue seulement si le medecin insiste avec tact"
+    ],
     "ne_jamais_reveler": [
       "le diagnostic (Rétrécissement aortique)",
       "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
@@ -563,12 +698,14 @@
       "IRM cardiaque",
       "Scanner cardiaque"
     ],
-    "dangereux": []
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG + Echographie cardiaque. Demande-les en priorité.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Diagnostics proches à départager : Rétrécissement aortique vs Rétrécissement aortique dégénératif. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : ECG + Echographie cardiaque. Demande-les en priorité.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Diagnostics proches à départager : Rétrécissement aortique vs Rétrécissement aortique dégénératif. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "Rétrécissement aortique dégénératif",

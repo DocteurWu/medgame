@@ -1,6 +1,6 @@
 {
   "id": "urgence_asphyxie_aigue_au_restaurant_m_prevost",
-  "title": "Étouffement au Restaurant — Obstruction Totale chez l'Adulte",
+  "title": "Étouffement au Restaurant - Obstruction Totale chez l'Adulte",
   "specialty": "urgence",
   "difficulty": 3,
   "redacteur": "Clawd UE10",
@@ -75,7 +75,7 @@
       ],
       "remarques": "Table voisine alertée par le bruit"
     },
-    "verbatim": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge)."
+    "verbatim": "Silence total - il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge)."
   },
   "examenClinique": {
     "constantes": {
@@ -129,7 +129,7 @@
   "fatalTreatments": [
     "Lui donner un verre d'eau pour débloquer"
   ],
-  "correction": "# Correction : Obstruction Totale des Voies Aériennes — Adulte\n\n## Diagnostic\nLe **geste universel d'étouffement** (mains à la gorge) + **absence totale de toux** + **impossibilité de parler** + **cyanose** = obstruction TOTALE des voies aériennes.\n\n## Distinction clé AFGSU\n| Signe | Obstruction PARTIELLE | Obstruction TOTALE |\n|-------|----------------------|--------------------|\n| Toux | OUI, forte | NON |  \n| Parole | OUI, difficile | NON |\n| Respiration | Bruyante | Absente |\n| Cyanose | Non | OUI |\n\n## Conduite à tenir (AFGSU)\n1. Identifier le geste universel d'étouffement\n2. **5 claques vigoureuses entre les omoplates** (pencher la victime en avant)\n3. Si inefficace → **5 compressions abdominales (Heimlich)**\n4. Alterner jusqu'à expulsion ou perte de connaissance\n5. Si perte de connaissance → **RCP** (le massage peut mobiliser le corps étranger)\n\n## Points clés chez l'adulte âgé\n- Dentier retiré = mastication moins efficace → risque de fausse route augmenté\n- Les claques doivent être VIGOUREUSES (pas des petites tapes)\n- Heimlich : poing au-dessus du nombril, pression sèche vers le haut et l'arrière\n\n## Piège classique\nDonner de l'eau pour « débloquer » aggrave l'obstruction. L'eau ne peut pas passer derrière le bouchon et provoque une inhalation supplémentaire.",
+  "correction": "# Correction : Obstruction Totale des Voies Aériennes - Adulte\n\n## Diagnostic\nLe **geste universel d'étouffement** (mains à la gorge) + **absence totale de toux** + **impossibilité de parler** + **cyanose** = obstruction TOTALE des voies aériennes.\n\n## Distinction clé AFGSU\n| Signe | Obstruction PARTIELLE | Obstruction TOTALE |\n|-------|----------------------|--------------------|\n| Toux | OUI, forte | NON |  \n| Parole | OUI, difficile | NON |\n| Respiration | Bruyante | Absente |\n| Cyanose | Non | OUI |\n\n## Conduite à tenir (AFGSU)\n1. Identifier le geste universel d'étouffement\n2. **5 claques vigoureuses entre les omoplates** (pencher la victime en avant)\n3. Si inefficace → **5 compressions abdominales (Heimlich)**\n4. Alterner jusqu'à expulsion ou perte de connaissance\n5. Si perte de connaissance → **RCP** (le massage peut mobiliser le corps étranger)\n\n## Points clés chez l'adulte âgé\n- Dentier retiré = mastication moins efficace → risque de fausse route augmenté\n- Les claques doivent être VIGOUREUSES (pas des petites tapes)\n- Heimlich : poing au-dessus du nombril, pression sèche vers le haut et l'arrière\n\n## Piège classique\nDonner de l'eau pour « débloquer » aggrave l'obstruction. L'eau ne peut pas passer derrière le bouchon et provoque une inhalation supplémentaire.",
   "correctionImage": null,
   "feedback": {
     "default": "Terminé."
@@ -462,53 +462,259 @@
       {
         "id": "eval_critere_1",
         "label": "Reconnaissance de l'obstruction complète",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Reconnaissance de l'obstruction complète) selon les regles de l'art, en lien avec (Obstruction totale des voies aériennes par corps étranger) et le motif (Adulte portant brutalement les mains à son cou en mangeant de la viande).",
+          "en_partie": "Realise partiellement l'etape (Reconnaissance de l'obstruction complète), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Reconnaissance de l'obstruction complète) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "reconnaissance",
+          "obstruction",
+          "complète",
+          "totale",
+          "voies"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "5 claques dorsales penché en avant",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (5 claques dorsales penché en avant) selon les regles de l'art, en lien avec (Obstruction totale des voies aériennes par corps étranger) et le motif (Adulte portant brutalement les mains à son cou en mangeant de la viande).",
+          "en_partie": "Realise partiellement l'etape (5 claques dorsales penché en avant), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (5 claques dorsales penché en avant) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "claques",
+          "dorsales",
+          "penché",
+          "avant",
+          "obstruction",
+          "totale",
+          "voies"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "5 compressions de Heimlich efficaces",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (5 compressions de Heimlich efficaces) selon les regles de l'art, en lien avec (Obstruction totale des voies aériennes par corps étranger) et le motif (Adulte portant brutalement les mains à son cou en mangeant de la viande).",
+          "en_partie": "Realise partiellement l'etape (5 compressions de Heimlich efficaces), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (5 compressions de Heimlich efficaces) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "compressions",
+          "heimlich",
+          "efficaces",
+          "obstruction",
+          "totale",
+          "voies"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Contrôle médical post-réanimation",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Contrôle médical post-réanimation) selon les regles de l'art, en lien avec (Obstruction totale des voies aériennes par corps étranger) et le motif (Adulte portant brutalement les mains à son cou en mangeant de la viande).",
+          "en_partie": "Realise partiellement l'etape (Contrôle médical post-réanimation), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Contrôle médical post-réanimation) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "contrôle",
+          "médical",
+          "post",
+          "réanimation",
+          "obstruction",
+          "totale",
+          "voies"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "obstruction"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Adulte portant brutalement les mains à son cou en mangeant de la viande)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Adulte portant brutalement les mains à son cou en mangeant de la viande) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Obstruction totale des voies aériennes par corps étranger).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "adulte",
+          "portant",
+          "brutalement",
+          "mains",
+          "son"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "obstruction"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "obstruction",
+          "totale"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "calme_autorite",
         "label": "Garde son calme et adopte une attitude d'autorité bienveillante pour gérer la situation de stress",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Garde son calme et adopte une attitude d'autorité bienveillante pour gérer la situation de stress) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Garde son calme et adopte une attitude d'autorité bienveillante pour gérer la situation de stress) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Garde son calme et adopte une attitude d'autorité bienveillante pour gérer la situation de stress) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "instructions_claires",
         "label": "Donne des instructions claires et concises à l'entourage (appeler le 15, écarter les curieux, aider si besoin)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Donne des instructions claires et concises à l'entourage (appeler le 15, écarter les curieux, aider si besoin)) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Donne des instructions claires et concises à l'entourage (appeler le 15, écarter les curieux, aider si besoin)) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Donne des instructions claires et concises à l'entourage (appeler le 15, écarter les curieux, aider si besoin)) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "communication_non_verbale",
         "label": "Utilise la communication non verbale adaptée (contact visuel, gestes rassurants) avec le patient qui ne peut pas parler",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Utilise la communication non verbale adaptée (contact visuel, gestes rassurants) avec le patient qui ne peut pas parler) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Utilise la communication non verbale adaptée (contact visuel, gestes rassurants) avec le patient qui ne peut pas parler) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Utilise la communication non verbale adaptée (contact visuel, gestes rassurants) avec le patient qui ne peut pas parler) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "transmission_structuree",
         "label": "Réalise une transmission structurée aux secours à leur arrivée (SBAR ou équivalent)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Réalise une transmission structurée aux secours à leur arrivée (SBAR ou équivalent)) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Réalise une transmission structurée aux secours à leur arrivée (SBAR ou équivalent)) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Réalise une transmission structurée aux secours à leur arrivée (SBAR ou équivalent)) absente ou manifestement inadaptee."
+        }
       },
       {
-        "id": "empathie_post_crise",
+        "id": "empathie",
         "label": "Fait preuve d'empathie envers le patient une fois la situation stabilisée",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
+      },
+      {
+        "id": "ecoute_active",
+        "label": "Ecoute active : laisse s'exprimer le patient sans l'interrompre lors de l'expose initial",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Utilise des questions ouvertes avant de resserrer par des questions ciblees",
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule regulierement et verifie la bonne comprehension du patient",
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Adopte un vocabulaire clair, adapte au patient et depourvu de jargon non explique",
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       }
     ],
     "patientStandardise": {
-      "phraseOuverture": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge).",
+      "phraseOuverture": "Silence total - il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge).",
       "infosVolontaires": [
         "Adulte portant brutalement les mains à son cou en mangeant de la viande",
         "Symptôme apparu de façon gênante motivant la consultation"
@@ -557,7 +763,7 @@
         "sexe": "M"
       },
       "personnalite": "En détresse vitale aiguë, regarde avec terreur, porte ses mains au cou.",
-      "phraseOuverture": "Silence total — il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge).",
+      "phraseOuverture": "Silence total - il ne peut pas parler. Il fait le geste universel d'étouffement (mains à la gorge).",
       "infosVolontaires": [
         "Adulte portant brutalement les mains à son cou en mangeant de la viande",
         "Symptôme apparu de façon gênante motivant la consultation"
@@ -613,7 +819,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "*Le patient est assis à table, visage cyanosé, mains serrées autour de la gorge, yeux écarquillés, incapable de parler ou de tousser. Il émet des bruits respiratoires striduleux ou aucun bruit.*",
@@ -648,15 +889,23 @@
     ]
   },
   "examGradation": {
-    "parfaits": [],
-    "utiles": [],
-    "inutiles": [],
-    "dangereux": []
+    "parfaits": [
+      "Examen clinique cible et constantes"
+    ],
+    "utiles": [
+      "Bilan complementaire oriente selon l'evolution clinique"
+    ],
+    "inutiles": [
+      "Examen sans lien demontre avec le motif de consultation"
+    ],
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
-    "🔐 Défi à prévoir : « Henri fait le geste universel d'étouffement, ne peut ni parler ni tousser, et devient bleu. Que se passe-t-il ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
-    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+    "Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "Défi à prévoir : « Henri fait le geste universel d'étouffement, ne peut ni parler ni tousser, et devient bleu. Que se passe-t-il ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire - relis avant de valider.",
+    "Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
   ],
   "objectifs": [
     "Identifier rapidement le tableau d'obstruction totale des voies aériennes",

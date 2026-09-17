@@ -254,7 +254,7 @@ export class LLMPatient {
         const atcd = int.antecedents  || {};
         const mdv = int.modeDeVie     || {};
 
-        const ecosData = c.ecos?.patientStandardise;
+        const ecosData = c.ecos?.patientStandardise || c.ecos?.consignesPatient;
         const isEcosMode = !!ecosData;
 
         let personnaliteType = '';
@@ -382,6 +382,15 @@ Respecte scrupuleusement les consignes de divulgation d'informations suivantes :
                 ? `\nExemples de ton naturel (inspire-t-en sans les recopier mot à mot) : ${persona.exemples_phrases.map(s => `« ${s} »`).join(' / ')}`
                 : '';
             directriceComportementale = `PERSONA DU CAS (à suivre strictement) — Ton : ${persona.ton || 'naturel'}. Registre : ${persona.registre || 'courant'}. Style : ${persona.style_parole || 'parlé spontané'}. ${loq}${exemples}`;
+            if (ecosData?.reactions) {
+                const r = ecosData.reactions;
+                if (r.brutal) directriceComportementale += `\n- Si le médecin est brutal, agressif ou irrespectueux : "${r.brutal}"`;
+                if (r.silence) directriceComportementale += `\n- Si le médecin reste silencieux trop longtemps : "${r.silence}"`;
+                if (r.jargon) directriceComportementale += `\n- Si le médecin utilise un jargon médical non expliqué : "${r.jargon}"`;
+            }
+            if (Array.isArray(ecosData?.questionsPieges) && ecosData.questionsPieges.length) {
+                directriceComportementale += `\n- QUESTIONS SPONTANÉES DU PATIENT : ${ecosData.questionsPieges.map(q => `« ${q} »`).join(' / ')}`;
+            }
             if (typeof persona.anxiete === 'number') this.ame.anxiete = persona.anxiete;
             if (typeof persona.confiance === 'number') this.ame.confiance = persona.confiance;
         }

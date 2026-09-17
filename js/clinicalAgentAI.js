@@ -130,16 +130,35 @@ class ClinicalAgentAI {
                 return;
             }
 
-            if (self.isClinicalAction(question)) {
-                // Intercepter et traiter l'action avec l'IA Game Master
-                await self.processClinicalAction3D(question, hudInstance);
+            // Routage via TypeSafe System One (Jev)
+            const router = window.JevClient;
+            let routing = null;
+            if (router && typeof router.routeMessage === 'function') {
+                routing = await router.routeMessage(question);
             } else {
-                // Déléguer au chat streaming conversationnel du patient classique
+                // Repli transparent vers le patient
+                routing = { toPatient: true, actions: [] };
+            }
+
+            // 1. Executer toutes les actions cliniques identifiees par Jev dans l'ordre
+            if (routing.actions && routing.actions.length > 0) {
+                for (const action of routing.actions) {
+                    await self.processClinicalAction3D(question, hudInstance, {
+                        role: action.role,
+                        actionType: action.type,
+                        discipline: action.discipline,
+                        skipUserAppend: routing.toPatient
+                    });
+                }
+            }
+
+            // 2. Si le message concerne le patient (ou repli par defaut), generer la reponse du patient
+            if (routing.toPatient) {
                 await originalHUDAsk(question);
             }
         };
 
-        // Rendre les placeholders de saisie extrêmement incitatifs et premiums
+        // Rendre les placeholders de saisie extremement incitatifs et premiums
         const input3d = document.getElementById('dialog-input-3d');
         if (input3d) {
             input3d.placeholder = "Posez une question ou ordonnez une intervention (ex: Injecter de l'Aspirine)...";
@@ -149,100 +168,7 @@ class ClinicalAgentAI {
             input2d.placeholder = "Posez une question ou ordonnez une intervention libre...";
         }
 
-        console.info('[ClinicalAgentAI] Chat 3D intercepté ! Placeholders enrichis.');
-    }
-
-    /**
-     * Détermine la profession de santé appropriée réalisant l'action demandée
-     */
-    getProfessionalRole(actionText) {
-        const q = actionText.toLowerCase().trim();
-        
-        // Radiologue (Examens d'imagerie)
-        if (q.includes("radio") || q.includes("rayons x") || q.includes("scanner") || q.includes("ct scan") || q.includes("irm") || q.includes("échographie") || q.includes("echo ") || q.includes("radiographie")) {
-            return "Radiologue";
-        }
-        
-        // Biologiste (Prises de sang, analyses de labo, gaz du sang)
-        if (q.includes("sang") || q.includes("bilan") || q.includes("prise de sang") || q.includes("gaz du sang") || q.includes("gds") || q.includes("biologie") || q.includes("troponine") || q.includes("d-dimère") || q.includes("ddimere") || q.includes("ionogramme") || q.includes("glycémie") || q.includes("lactate") || q.includes("hémoculture") || q.includes("nfs") || q.includes("analyse")) {
-            return "Biologiste";
-        }
-        
-        // Cardiologue / Médecin Réanimateur (Auscultation, ECG, Choc, DSA, Massage, Electrodes, Scope)
-        if (q.includes("ecg") || q.includes("électrocardio") || q.includes("auscult") || q.includes("stétho") || q.includes("choquer") || q.includes("défib") || q.includes("cpr") || q.includes("massage") || q.includes("dsa") || q.includes("ventiler") || q.includes("intub") || q.includes("pouls") || q.includes("tension") || q.includes("palper") || q.includes("palpe") || q.includes("examen physique") || q.includes("cardiaque")) {
-            return "Médecin Réanimateur";
-        }
-        
-        // Infirmier / Infirmière (Perfusion, Injection, Médicaments couramment administrés par IDE, Masque O2, Couverture)
-        if (q.includes("inject") || q.includes("perfuse") || q.includes("perfusion") || q.includes("pos") || q.includes("donne") || q.includes("administre") || q.includes("oxyg") || q.includes("masque") || q.includes("o2") || q.includes("couverture") || q.includes("chaud") || q.includes("isotherm") || q.includes("seringue") || q.includes("morphine") || q.includes("aspirine") || q.includes("trinitrine") || q.includes("adrénaline") || q.includes("insuline") || q.includes("remplissage") || q.includes("nacl") || q.includes("doliprane") || q.includes("potassium")) {
-            return "Infirmier / Infirmière";
-        }
-        
-        // Par défaut
-        return "Directeur Clinique";
-    }
-
-    /**
-     * Identifie si un message est une action clinique (prescription, geste, examen physique)
-     * Heuristique ultra-large pour intercepter absolument toutes les interventions libres du médecin.
-     */
-    isClinicalAction(question) {
-        const q = question.toLowerCase().trim();
-
-        // 1. Détection structurelle par préfixe direct d'ordre, d'intention médicale ou d'examen
-        const actionPrefixes = [
-            "prescription", "prescrire", "prescris", "ordonne", "ordonner", 
-            "injecter", "injecte", "poser", "pose", "donner", "donne", 
-            "faire", "fait", "mettre", "mis", "administrer", "administre", 
-            "perfuser", "perfusion", "ausculter", "ausculte", "palper", "palpe",
-            "installer", "installe", "brancher", "branche", "appliquer", "applique",
-            "choquer", "choc", "massé", "masser", "radio", "scanner", "prise de sang",
-            "bilan", "ecg", "gds", "gaz du sang", "échographie", "analyse", "examen"
-        ];
-        if (actionPrefixes.some(prefix => q.startsWith(prefix))) {
-            return true;
-        }
-
-        // 2. Détection par présence de verbes ou d'actions cliniques au cœur de la phrase
-        const clinicalVerbs = [
-            "inject", "perfuse", "prescri", "ordonn", "auscult", "palp", 
-            "mass", "choc", "choqu", "ventil", "intub", "examin", "radiographi", "analys"
-        ];
-        if (clinicalVerbs.some(verb => q.includes(verb))) {
-            return true;
-        }
-
-        // 3. Détection par présence de racines de médicaments, d'électrolytes, de dispositifs médicaux ou d'examens
-        const medicalRoots = [
-            // Électrolytes & solutés
-            "potassium", "kcl", "calcium", "magnésium", "magnesium", "bicarbonate", 
-            "nacl", "glucose", "soluté", "solute", "serum", "sérum", "ringer", "lactate", 
-            "macromol", "g30", "g10", "perfusion",
-            
-            // Médicaments courants (suffixes -ine, -ol, -ide, -one, -ane, -ate)
-            "morphine", "adrénaline", "adrenaline", "noradrénaline", "noradrenaline", 
-            "atropine", "insuline", "dobutamine", "dopamine", "lasilix", "furosémide", 
-            "furosemide", "amiodarone", "cordarone", "héparine", "heparine", "lovenox", 
-            "plavix", "clopidogrel", "brilique", "valium", "diazépam", "diazepam", 
-            "ventoline", "salbutamol", "aérosol", "aerosol", "trinitrine", 
-            "nitroglycérine", "nitroglycerine", "aspirine", "cardégic", "cardegic",
-            "paracétamol", "paracetamol", "doliprane", "spasfon", "insuline",
-            
-            // Matériel clinique
-            "défibrillateur", "defibrillateur", "dsa", "moniteur", "scope", "électrodes", 
-            "electrodes", "oxymètre", "oxymetre", "tensiomètre", "tensiometre", "thermomètre", 
-            "thermometre", "stéthoscope", "stethoscope", "couverture", "masque", "lunettes", 
-            "intubation", "intubé", "intube",
-            
-            // Examens cliniques et complémentaires
-            "radio", "radiographie", "radiologique", "scanner", "ct-scan", "irm", "échographie", 
-            "echo ", "prise de sang", "bilan biologique", "gaz du sang", "gds", "ecg", "électrocardiogramme"
-        ];
-        if (medicalRoots.some(root => q.includes(root))) {
-            return true;
-        }
-
-        return false;
+        console.info('[ClinicalAgentAI] Chat 3D intercepte avec le routeur Jev !');
     }
 
     /**
@@ -251,12 +177,14 @@ class ClinicalAgentAI {
     async processClinicalAction3D(actionText, hudInstance, options = {}) {
         console.info(`[ClinicalAgentAI] Traitement de l'action libre : "${actionText}" (options: ${JSON.stringify(options)})`);
         
-        // 1. Ajouter le message du joueur dans le dialogue
+        // 1. Ajouter le message du joueur dans le dialogue si non deja ajoute
         const chat = window.patientChat;
-        chat.append('Vous', actionText);
-        chat.messages.push({ role: 'user', content: actionText });
+        if (!options.skipUserAppend) {
+            chat.append('Vous', actionText);
+            chat.messages.push({ role: 'user', content: actionText });
+        }
 
-        const role = this.getProfessionalRole(actionText);
+        const role = options.role || 'Directeur Clinique';
 
         // 2. Afficher la carte d'action glassmorphism en attente
         const messages3d = document.getElementById('dialog-messages-3d');
@@ -644,11 +572,10 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
     /**
      * Dictionnaire de secours local (Offline / Fallback) pour traiter instantanément les actions courantes
      */
-    localFallbackEngine(action, caseData, vitals) {
+    localFallbackEngine(action, caseData, vitals, role = 'Directeur Clinique') {
         const q = action.toLowerCase().trim();
         const correctTreatments = caseData.correctTreatments || [];
         const fatalTreatments = caseData.fatalTreatments || [];
-        const role = this.getProfessionalRole(action);
 
         // Structure par défaut
         const res = {

@@ -93,7 +93,7 @@
   "examenClinique": {
     "constantes": {
       "tension": "350/80 mmHg",
-      "pouls": "Irrégulier à 50–60 bpm",
+      "pouls": "Irrégulier à 50-60 bpm",
       "temperature": "36.8°C",
       "saturationO2": "98%",
       "frequenceRespiratoire": "14/min"
@@ -241,7 +241,13 @@
           "je suis interne",
           "je m'appelle",
           "interne en cardiologie"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        }
       },
       {
         "id": "interrogatoire_circonstances_perte_connaissance",
@@ -253,7 +259,13 @@
           "étiez-vous debout",
           "étiez-vous assis",
           "durée"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Realise completement l'etape (Interroge le patient sur les circonstances exactes de la perte de connaissance (début brutal, durée, position, activité)) selon les regles de l'art, en lien avec (Syncope cardiaque) et le motif (Perte de connaissance brève à l'emporte-pièce).",
+          "en_partie": "Realise partiellement l'etape (Interroge le patient sur les circonstances exactes de la perte de connaissance (début brutal, durée, position, activité)), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Interroge le patient sur les circonstances exactes de la perte de connaissance (début brutal, durée, position, activité)) ou suit une demarche erronee."
+        }
       },
       {
         "id": "interrogatoire_prodromes_symptomes_associes",
@@ -265,7 +277,13 @@
           "douleur thoracique",
           "vertiges",
           "nausées"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Perte de connaissance brève à l'emporte-pièce) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Syncope cardiaque).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        }
       },
       {
         "id": "interrogatoire_antecedents_cardiovasculaires",
@@ -277,7 +295,13 @@
           "mort subite",
           "cardiaque",
           "infarctus"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        }
       },
       {
         "id": "interrogatoire_traitements_en_cours",
@@ -288,7 +312,13 @@
           "médicaments",
           "aspirine",
           "allergies"
-        ]
+        ],
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Recueille la liste exacte des traitements en cours, verifie l'observance reelle et interroge les allergies medicamenteuses.",
+          "en_partie": "Cite un traitement sans verifier l'observance ni les allergies.",
+          "non_fait": "Ne pose aucune question sur les traitements ni les allergies."
+        }
       },
       {
         "id": "examen_clinique_cardiovasculaire",
@@ -300,7 +330,13 @@
           "rythme irrégulier",
           "bruit de galop",
           "turgescence jugulaire"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        }
       },
       {
         "id": "examen_clinique_neurologique",
@@ -312,7 +348,13 @@
           "motricité",
           "réflexes",
           "pupilles"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen physique cible et complet adapte au motif : inspection, palpation, manoeuvres et echelles validees si indiquees, avec consignation des resultats.",
+          "en_partie": "Examen partiel ou superficiel, sans manoeuvre discriminante ni echelle validee.",
+          "non_fait": "Aucun examen physique realise."
+        }
       },
       {
         "id": "interpretation_ecg",
@@ -325,7 +367,13 @@
           "BAV",
           "pauses",
           "rythme irrégulier"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (Syncope cardiaque) : (ECG 12 dérivations, Holter ECG 24h, Echographie cardiaque), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       },
       {
         "id": "diagnostic_syncope_cardiaque",
@@ -337,7 +385,13 @@
           "bloc auriculo-ventriculaire",
           "syncope à l'effort",
           "syncope au repos"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Syncope cardiaque), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "prise_en_charge_urgence",
@@ -349,7 +403,13 @@
           "atropine",
           "scope",
           "surveillance"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Donne des consignes de securite explicites : signes d'alerte a surveiller, conduite a tenir et recours aux urgences (appel au 15) si aggravation.",
+          "en_partie": "Donne une consigne d'alerte vague sans conduite pratique ni recours precise.",
+          "non_fait": "Ne donne aucune consigne de securite ni aucun signe d'alerte."
+        }
       },
       {
         "id": "strategie_pec_pacemaker",
@@ -360,7 +420,13 @@
           "stimulateur cardiaque",
           "implantation",
           "chirurgie cardiaque"
-        ]
+        ],
+        "category": "strategie_diagnostique",
+        "criteria": {
+          "fait": "Prescrit une strategie paraclinique de premiere intention coherente avec (Syncope cardiaque) : (ECG 12 dérivations, Holter ECG 24h, Echographie cardiaque), en justifiant chaque examen et en evitant les examens invasifs d'emblee.",
+          "en_partie": "Prescrit un examen pertinent isole sans strategie d'ensemble ni justification.",
+          "non_fait": "Ne prescrit aucun examen pertinent ou prescrit d'emblee un examen invasif non indique."
+        }
       },
       {
         "id": "hospitalisation_cardiologie",
@@ -372,7 +438,13 @@
           "USC",
           "soins intensifs",
           "transfert"
-        ]
+        ],
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Realise un examen cardiovasculaire cible : auscultation cardiaque, palpation des pouls peripheriques et recherche de signes d'insuffisance cardiaque.",
+          "en_partie": "Ausculte le coeur mais omet les pouls peripheriques ou la recherche d'oedemes.",
+          "non_fait": "Aucun examen cardiovasculaire realise."
+        }
       },
       {
         "id": "explication_patient",
@@ -384,7 +456,13 @@
           "pacemaker",
           "prise en charge",
           "pronostic"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Syncope cardiaque), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       },
       {
         "id": "evite_traitements_contradictoires",
@@ -395,7 +473,13 @@
           "tricycliques",
           "allongeant QT",
           "contre-indication"
-        ]
+        ],
+        "category": "traitement",
+        "criteria": {
+          "fait": "Propose un plan therapeutique adapte a (Syncope cardiaque) incluant (Implantation d'un pacemaker et Hospitalisation en cardiologie), en precisant posologie, duree et contre-indications verifiees.",
+          "en_partie": "Evoque un traitement sans precision de posologie, de duree ni de contre-indications.",
+          "non_fait": "Ne propose aucune prise en charge therapeutique ou propose un traitement contre-indique."
+        }
       },
       {
         "id": "synthese_clinique",
@@ -406,34 +490,65 @@
           "au total",
           "le patient présente",
           "le diagnostic retenu"
-        ]
+        ],
+        "category": "education",
+        "criteria": {
+          "fait": "Enonce clairement l'hypothese de (Syncope cardiaque), l'explique en termes simples et la relie aux arguments cliniques et paracliniques du dossier.",
+          "en_partie": "Mentionne une hypothese diagnostique sans explication ni lien avec les arguments du dossier.",
+          "non_fait": "Ne propose aucune synthese diagnostique ou retient un diagnostic incompatible avec le tableau."
+        }
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
-        "max": 1
+        "label": "Écoute active - laisse le patient terminer sans l'interrompre",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Pose des questions ouvertes avant les questions fermées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule ou vérifie la compréhension du patient",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
         "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -554,7 +669,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je suis tombé tout à l'heure, je ne comprends pas ce qui m'est arrivé...",
@@ -588,7 +738,11 @@
     ]
   },
   "examGradation": {
-    "parfaits": [],
+    "parfaits": [
+      "ECG 12 dérivations",
+      "Holter ECG 24h",
+      "Echographie cardiaque"
+    ],
     "utiles": [
       "ECG",
       "Echographie",
@@ -599,12 +753,14 @@
       "Test d'effort",
       "Holter ECG"
     ],
-    "dangereux": []
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Pour ce motif, les examens qui font avancer le dossier sont : ECG 12 dérivations + Holter ECG 24h. Demande-les en priorité.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Diagnostics proches à départager : Syncope cardiaque vs Syncopes à répétition. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
+    "Pour ce motif, les examens qui font avancer le dossier sont : ECG 12 dérivations + Holter ECG 24h. Demande-les en priorité.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Diagnostics proches à départager : Syncope cardiaque vs Syncopes à répétition. Cherche l'élément qui les distingue (durée, troponine, test d'effort...)."
   ],
   "pieges": [
     "Syncopes à répétition",

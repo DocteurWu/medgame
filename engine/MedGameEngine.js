@@ -603,7 +603,7 @@ export class MedGameEngine {
             fatalErrorTriggered: this.fatalErrorTriggered,
             chatHistory: this.chatHistory,
             isFinished: this.isFinished,
-            scoreBreakdown: this.isFinished ? this.calculateCompositeScore() : null,
+            scoreBreakdown: this.isFinished ? { score: this.score || 0 } : null,
             timeLeft: this.getTimeLeft()
         };
     }
@@ -954,15 +954,14 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
         if (fatalHit && !this.fatalErrorTriggered) {
             this.fatalErrorTriggered = true;
             this.isFinished = true;
-            const results = this.calculateCompositeScore();
-            this.score = results.compositeScore;
+            this.score = 0;
             return {
                 success: true,
                 selectedTreatments: [...this.selectedTreatments],
                 gameOver: true,
                 fatalTreatment: fatalHit,
                 score: this.score,
-                evaluation: results
+                evaluation: { hasFatalError: true, stars: 0, compositeScore: 0 }
             };
         }
 
@@ -1103,202 +1102,17 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown (sans blocs de code ni \`\`
         return { success: true, selectedDiagnostic: this.selectedDiagnostic, locked: true };
     }
 
-    calculateCompositeScore() {
-        if (!this.caseData) return {};
-        
-        const weights = { demarche: 0.40, diagnostic: 0.30, traitement: 0.20, vitesse: 0.10 };
-
-        // 1. Process Score (Demarche)
-        let demPoints = 0;
-        let demMax = 0;
-
-        // Interrogatoire
-        const interro = this.caseData.interrogatoire || {};
-        const interroFields = [];
-        const mdv = interro.modeDeVie || {};
-        if (mdv.activitePhysique) interroFields.push('interrogatoire.modeDeVie.activitePhysique.description');
-        if (mdv.tabac) interroFields.push('interrogatoire.modeDeVie.tabac');
-        if (mdv.alcool) interroFields.push('interrogatoire.modeDeVie.alcool.quantite');
-        if (mdv.alimentation) interroFields.push('interrogatoire.modeDeVie.alimentation');
-        if (mdv.emploi) interroFields.push('interrogatoire.modeDeVie.emploi');
-        if (interro.antecedents) {
-            if (interro.antecedents.medicaux?.length > 0) interroFields.push('interrogatoire.antecedents.medicaux');
-            if (interro.antecedents.chirurgicaux?.length > 0) interroFields.push('interrogatoire.antecedents.chirurgicaux');
-            if (interro.antecedents.familiaux?.length > 0) interroFields.push('interrogatoire.antecedents.familiaux');
-        }
-        if (interro.traitements?.length > 0) interroFields.push('interrogatoire.traitements');
-        if (interro.allergies?.presence) interroFields.push('interrogatoire.allergies');
-        
-        const hm = interro.histoireMaladie || {};
-        if (hm.debutSymptomes) interroFields.push('interrogatoire.histoireMaladie.debutSymptomes');
-        if (hm.descriptionDouleur) interroFields.push('interrogatoire.histoireMaladie.descriptionDouleur');
-        if (hm.evolution) interroFields.push('interrogatoire.histoireMaladie.evolution');
-        if (hm.facteursDeclenchants) interroFields.push('interrogatoire.histoireMaladie.facteursDeclenchants');
-        if (hm.symptomesAssocies) interroFields.push('interrogatoire.histoireMaladie.symptomesAssocies');
-        if (hm.remarques) interroFields.push('interrogatoire.histoireMaladie.remarques');
-
-        const totalInterroFields = Math.max(interroFields.length, 1);
-        const askedCount = interroFields.filter(f => this.demarche.interrogatoireAsked.has(f)).length;
-        demPoints += (askedCount / totalInterroFields) * 40;
-        demMax += 40;
-
-        // Clinical Exam: credit only gestures ACTUALLY performed via chat actions
-        const clinique = this.caseData.examenClinique || {};
-        const targetSections = ['examenCardiovasculaire', 'examenPulmonaire', 'examenAbdominal', 'examenNeurologique']
-            .filter(c => clinique[c] && Object.keys(clinique[c]).length > 0);
-        if (clinique.aspectGeneral) {
-            targetSections.push('aspectGeneral');
-        }
-        if (targetSections.length === 0) {
-            demPoints += 25;
-        } else {
-            const coveredSections = new Set(
-                [...this.demarche.clinicalGestures]
-                    .map(g => GESTURE_TO_SECTION[g])
-                    .filter(Boolean)
-            );
-            const coveredRatio = targetSections.filter(s => coveredSections.has(s)).length / targetSections.length;
-            demPoints += coveredRatio * 25;
-        }
-        demMax += 25;
-
-        // Complementary Exams: fuzzy matching between relevantExams and availableExams
-        const availableExams = this.caseData.availableExams || [];
-        const relevantExams = this.caseData.relevantExams || [];
-        const examsOrdered = this.demarche.examsOrdered;
-
-        if (availableExams.length > 0) {
-            // Resolve the naming drift between relevantExams and availableExams lists.
-            let targetExams = [];
-            if (relevantExams.length > 0) {
-                targetExams = availableExams.filter(e =>
-                    relevantExams.some(r => fuzzyMatchExam(e, r))
-                );
-            }
-            if (targetExams.length === 0) {
-                targetExams = relevantExams.length > 0 ? [...relevantExams] : [...availableExams];
-                // If relevant names never match the menu, fall back to grading against the actual menu
-                const orderedInMenu = examsOrdered.filter(e => availableExams.includes(e));
-                const orderedRatio = orderedInMenu.length / Math.max(availableExams.length, 1);
-                demPoints += orderedRatio * 20 * 0.5; // capped at half credit: relevance unverified
-                demMax += 20;
-            } else {
-                const orderedRelevant = examsOrdered.filter(e => targetExams.includes(e));
-                const orderRatio = orderedRelevant.length / targetExams.length;
-
-                const uselessExams = examsOrdered.filter(e => !targetExams.includes(e));
-                const uselessPenalty = Math.min(uselessExams.length * 0.05, orderRatio);
-
-                demPoints += Math.max(0, orderRatio - uselessPenalty) * 20;
-                demMax += 20;
-            }
-        } else {
-            const hasEngagement = askedCount > 0 || this.demarche.clinicalGestures.size > 0 || examsOrdered.length > 0;
-            if (hasEngagement) demPoints += 20;
-            demMax += 20;
-        }
-
-        // Semio Locks
-        const locks = this.caseData.locks || [];
-        if (locks.length > 0) {
-            const unlockedCount = locks.filter(l => this.demarche.locksUnlocked.has(l.id)).length;
-            demPoints += (unlockedCount / locks.length) * 15;
-        } else {
-            const hasEngagement = askedCount > 0 || this.demarche.clinicalGestures.size > 0 || examsOrdered.length > 0;
-            if (hasEngagement) demPoints += 15;
-        }
-        demMax += 15;
-
-        const demarcheScore = demMax > 0 ? Math.round((demPoints / demMax) * 100) : 0;
-
-        // 2. Diagnosis Score — strict: exact match, official alternatives, or typo tolerance only
-        let diagnosticScore = 0;
-        const normSel = normalizeText(this.selectedDiagnostic);
-        const normCor = normalizeText(this.caseData.correctDiagnostic);
-
-        if (normSel && normCor) {
-            if (normSel === normCor) {
-                diagnosticScore = 100;
-            } else if ((this.caseData.alternativeDiagnostics || []).map(normalizeText).includes(normSel)) {
-                diagnosticScore = 80;
-            } else if (getSimilarity(normSel, normCor) >= DIAGNOSTIC_TYPO_SIMILARITY) {
-                // Near-identical spelling only (typo tolerance), no semantic leniency
-                diagnosticScore = 90;
-            }
-        }
-
-        // 3. Treatment Score
-        let traitementScore = 0;
-        let hasFatalError = false;
-        const correctTreatments = this.caseData.correctTreatments || [];
-        const fatalTreatments = this.caseData.fatalTreatments || [];
-        const secondLine = this.caseData.secondLineTreatments || [];
-
-        const selectedFatal = this.selectedTreatments.filter(t => fatalTreatments.includes(t));
-        if (selectedFatal.length > 0) {
-            hasFatalError = true;
-            traitementScore = 0;
-        } else if (correctTreatments.length === 0) {
-            traitementScore = this.selectedTreatments.length > 0 ? 100 : 0;
-        } else {
-            const firstLineHit = this.selectedTreatments.filter(t => correctTreatments.includes(t));
-            const secondLineHit = this.selectedTreatments.filter(t => secondLine.includes(t));
-            const unnecessary = this.selectedTreatments.filter(t => !correctTreatments.includes(t) && !secondLine.includes(t));
-            
-            const sensitivity = (firstLineHit.length * 1.0 + secondLineHit.length * 0.6) / correctTreatments.length;
-            const penalty = (unnecessary.length * 0.10) + (Math.max(0, this.selectedTreatments.length - correctTreatments.length) * 0.05);
-            traitementScore = Math.max(0, Math.min(100, Math.round((sensitivity - penalty) * 100)));
-        }
-
-        // 4. Speed Score — square-root curve: fast play is rewarded, mid-range time is not crushed
-        const timeLeft = this.getTimeLeft();
-        const hasParticipated = demarcheScore > 0 || diagnosticScore > 0 || (this.selectedTreatments.length > 0 && traitementScore > 0);
-        const vitesseScore = hasParticipated ? Math.round(100 * Math.sqrt(Math.max(0, timeLeft) / this.timeLimit)) : 0;
-
-        // Weighted Composite Score
-        let compositeScore = Math.round(
-            demarcheScore * weights.demarche +
-            diagnosticScore * weights.diagnostic +
-            traitementScore * weights.traitement +
-            vitesseScore * weights.vitesse
-        );
-
-        compositeScore = Math.max(0, Math.min(100, compositeScore));
-
-        // Star Rating (0-3)
-        let stars = 0;
-        if (!hasFatalError) {
-            if (compositeScore >= 90) stars = 3;
-            else if (compositeScore >= 70) stars = 2;
-            else if (compositeScore >= 40) stars = 1;
-            else if (demarcheScore >= 80) stars = 1; // Process score guarantee
-        }
-
-        return {
-            demarcheScore,
-            diagnosticScore,
-            traitementScore,
-            vitesseScore,
-            compositeScore,
-            hasFatalError,
-            stars
-        };
-    }
-
     submit() {
         if (!this.caseData) throw new Error("No active case");
         if (this.isFinished) throw new Error("Case already submitted. Submission is definitive.");
         this.attempts++;
         this.isFinished = true;
 
-        const results = this.calculateCompositeScore();
-        this.score = results.compositeScore;
-
         return {
             success: true,
-            score: this.score,
+            score: this.score || 0,
             attempts: this.attempts,
-            results: results,
+            results: null,
             correctDiagnostic: this.caseData.correctDiagnostic,
             correctTreatments: this.caseData.correctTreatments || []
         };

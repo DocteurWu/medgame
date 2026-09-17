@@ -1,6 +1,6 @@
 {
   "id": "urgence_submersion_et_troubles_conscience_jeune_alex",
-  "title": "Noyade en Piscine — Inconscient qui Respire",
+  "title": "Noyade en Piscine - Inconscient qui Respire",
   "specialty": "urgence",
   "difficulty": 3,
   "redacteur": "Clawd UE10",
@@ -99,12 +99,12 @@
   "availableExams": [],
   "examResults": {},
   "possibleDiagnostics": [
-    "Noyade avec inhalation d'eau — inconscient qui respire",
+    "Noyade avec inhalation d'eau - inconscient qui respire",
     "Arrêt cardio-respiratoire post-noyade",
     "Syndrome de détresse respiratoire aiguë",
     "Hypothermie sévère isolée"
   ],
-  "correctDiagnostic": "Noyade avec inhalation d'eau — inconscient qui respire",
+  "correctDiagnostic": "Noyade avec inhalation d'eau - inconscient qui respire",
   "scoringRules": {
     "baseScore": 100,
     "attemptPenalty": 10
@@ -123,7 +123,7 @@
   "fatalTreatments": [
     "Lui taper dans le dos pour évacuer l'eau"
   ],
-  "correction": "# Correction : Noyade — Inconscient qui Respire\n\n## Diagnostic\nInconscience + respiration persistante = **INCONSCIENT QUI RESPIRE**. Le patient a inhalé de l'eau (écume rosée, râles bilatéraux), mais son cœur bat encore.\n\n## Distinction cruciale AFGSU\n- **Inconscient QUI respire** → PLS\n- **Inconscient qui NE respire PAS** → ACR → MCE + DAE\n\n## Points clés\n- L'eau inhalée n'est généralement pas en quantité suffisante pour « vider les poumons »\n- Le tapage dans le dos sur un noyé qui respire est INUTILE et DANGEREUX\n- L'hypothermie est un facteur aggravant (rétrothermie)\n- Les vomissements sont fréquents → surveiller les voies aériennes\n\n## Conduite à tenir (AFGSU)\n1. Sortir la victime de l'eau (dégagement d'urgence)\n2. Évaluer conscience et respiration\n3. Si respire → **PLS** (sur le côté pour éviter l'inhalation de vomissements)\n4. Retirer vêtements mouillés, couvrir (lutte hypothermie)\n5. Alerte 15 immédiate\n6. Surveiller la respiration en continu (risque de dégradation vers ACR)\n\n## Piège classique\n**Pendre la victime la tête en bas** pour « vider l'eau » est un geste dangereux et inutile. L'eau dans les poumons est absorbée par la muqueuse pulmonaire. Ce geste retarde la prise en charge.",
+  "correction": "# Correction : Noyade - Inconscient qui Respire\n\n## Diagnostic\nInconscience + respiration persistante = **INCONSCIENT QUI RESPIRE**. Le patient a inhalé de l'eau (écume rosée, râles bilatéraux), mais son cœur bat encore.\n\n## Distinction cruciale AFGSU\n- **Inconscient QUI respire** → PLS\n- **Inconscient qui NE respire PAS** → ACR → MCE + DAE\n\n## Points clés\n- L'eau inhalée n'est généralement pas en quantité suffisante pour « vider les poumons »\n- Le tapage dans le dos sur un noyé qui respire est INUTILE et DANGEREUX\n- L'hypothermie est un facteur aggravant (rétrothermie)\n- Les vomissements sont fréquents → surveiller les voies aériennes\n\n## Conduite à tenir (AFGSU)\n1. Sortir la victime de l'eau (dégagement d'urgence)\n2. Évaluer conscience et respiration\n3. Si respire → **PLS** (sur le côté pour éviter l'inhalation de vomissements)\n4. Retirer vêtements mouillés, couvrir (lutte hypothermie)\n5. Alerte 15 immédiate\n6. Surveiller la respiration en continu (risque de dégradation vers ACR)\n\n## Piège classique\n**Pendre la victime la tête en bas** pour « vider l'eau » est un geste dangereux et inutile. L'eau dans les poumons est absorbée par la muqueuse pulmonaire. Ce geste retarde la prise en charge.",
   "correctionImage": null,
   "feedback": {
     "default": "Terminé."
@@ -458,44 +458,254 @@
       {
         "id": "eval_critere_1",
         "label": "5 insufflations premières au ballon",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (5 insufflations premières au ballon) selon les regles de l'art, en lien avec (Noyade avec inhalation d'eau - inconscient qui respire) et le motif (Enfant repêché inanimé au fond d'une piscine après submersion).",
+          "en_partie": "Realise partiellement l'etape (5 insufflations premières au ballon), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (5 insufflations premières au ballon) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "insufflations",
+          "premières",
+          "ballon",
+          "noyade",
+          "avec",
+          "inhalation"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "Aspiration de l'écume buccale",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Aspiration de l'écume buccale) selon les regles de l'art, en lien avec (Noyade avec inhalation d'eau - inconscient qui respire) et le motif (Enfant repêché inanimé au fond d'une piscine après submersion).",
+          "en_partie": "Realise partiellement l'etape (Aspiration de l'écume buccale), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Aspiration de l'écume buccale) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "aspiration",
+          "écume",
+          "buccale",
+          "noyade",
+          "avec",
+          "inhalation"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "Réchauffement progressif",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Réchauffement progressif) selon les regles de l'art, en lien avec (Noyade avec inhalation d'eau - inconscient qui respire) et le motif (Enfant repêché inanimé au fond d'une piscine après submersion).",
+          "en_partie": "Realise partiellement l'etape (Réchauffement progressif), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Réchauffement progressif) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "réchauffement",
+          "progressif",
+          "noyade",
+          "avec",
+          "inhalation"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Hospitalisation obligatoire en réanimation pédiatrique",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Hospitalisation obligatoire en réanimation pédiatrique) selon les regles de l'art, en lien avec (Noyade avec inhalation d'eau - inconscient qui respire) et le motif (Enfant repêché inanimé au fond d'une piscine après submersion).",
+          "en_partie": "Realise partiellement l'etape (Hospitalisation obligatoire en réanimation pédiatrique), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Hospitalisation obligatoire en réanimation pédiatrique) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "hospitalisation",
+          "obligatoire",
+          "réanimation",
+          "pédiatrique",
+          "noyade",
+          "avec",
+          "inhalation"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "noyade"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Enfant repêché inanimé au fond d'une piscine après submersion)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Enfant repêché inanimé au fond d'une piscine après submersion) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Noyade avec inhalation d'eau - inconscient qui respire).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "enfant",
+          "repêché",
+          "inanimé",
+          "fond",
+          "piscine"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "noyade"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "noyade",
+          "avec"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "communication_equipe",
         "label": "Commande clairement et calmement à l'équipe soignante (infirmier, aide-soignant)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Commande clairement et calmement à l'équipe soignante (infirmier, aide-soignant)) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Commande clairement et calmement à l'équipe soignante (infirmier, aide-soignant)) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Commande clairement et calmement à l'équipe soignante (infirmier, aide-soignant)) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "communication_samour",
         "label": "Communique de manière structurée avec le SAMU (situation, antécédents, actions réalisées)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Communique de manière structurée avec le SAMU (situation, antécédents, actions réalisées)) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Communique de manière structurée avec le SAMU (situation, antécédents, actions réalisées)) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Communique de manière structurée avec le SAMU (situation, antécédents, actions réalisées)) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "calme_urgence",
         "label": "Garde son calme et adopte un ton adapté malgré l'urgence de la situation",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (Garde son calme et adopte un ton adapté malgré l'urgence de la situation) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (Garde son calme et adopte un ton adapté malgré l'urgence de la situation) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (Garde son calme et adopte un ton adapté malgré l'urgence de la situation) absente ou manifestement inadaptee."
+        }
       },
       {
         "id": "information_proches",
         "label": "S'informe auprès des proches/sauveteur sur les circonstances de la noyade",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Maitrise de la dimension (S'informe auprès des proches/sauveteur sur les circonstances de la noyade) tout au long de la station, de facon naturelle et adaptee au contexte.",
+          "en_partie": "Dimension (S'informe auprès des proches/sauveteur sur les circonstances de la noyade) partiellement maitrisee, de facon inegale ou mecanique.",
+          "non_fait": "Dimension (S'informe auprès des proches/sauveteur sur les circonstances de la noyade) absente ou manifestement inadaptee."
+        }
+      },
+      {
+        "id": "ecoute_active",
+        "label": "Ecoute active : laisse s'exprimer le patient sans l'interrompre lors de l'expose initial",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
+      },
+      {
+        "id": "questions_ouvertes",
+        "label": "Utilise des questions ouvertes avant de resserrer par des questions ciblees",
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
+      },
+      {
+        "id": "reformulation",
+        "label": "Reformule regulierement et verifie la bonne comprehension du patient",
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
+      },
+      {
+        "id": "vocabulaire_adapte",
+        "label": "Adopte un vocabulaire clair, adapte au patient et depourvu de jargon non explique",
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
+      },
+      {
+        "id": "empathie",
+        "label": "Fait preuve d'empathie, valide les inquietudes et adopte une posture rassurante",
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -607,7 +817,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, je viens pour : Sorti de piscine inconscient après avoir coulé..",
@@ -637,20 +882,28 @@
       "histoireMaladie.remarques"
     ],
     "ne_jamais_reveler": [
-      "le diagnostic (Noyade avec inhalation d'eau — inconscient qui respire)",
+      "le diagnostic (Noyade avec inhalation d'eau - inconscient qui respire)",
       "vos résultats d'examens complémentaires (vous ne les connaissez pas)"
     ]
   },
   "examGradation": {
-    "parfaits": [],
-    "utiles": [],
-    "inutiles": [],
-    "dangereux": []
+    "parfaits": [
+      "Examen clinique cible et constantes"
+    ],
+    "utiles": [
+      "Bilan complementaire oriente selon l'evolution clinique"
+    ],
+    "inutiles": [
+      "Examen sans lien demontre avec le motif de consultation"
+    ],
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
-    "🔐 Défi à prévoir : « Maxime est inconscient mais respire (24/min). Est-ce un ACR ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire — relis avant de valider.",
-    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+    "Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "Défi à prévoir : « Maxime est inconscient mais respire (24/min). Est-ce un ACR ? ». La réponse se trouve dans l'examen clinique / l'interrogatoire - relis avant de valider.",
+    "Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
   ],
   "objectifs": [
     "Évaluer la sécurité de la scène et se protéger (gants)",

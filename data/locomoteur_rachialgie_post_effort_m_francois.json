@@ -180,49 +180,220 @@
       {
         "id": "eval_critere_1",
         "label": "Constantes vitales normales et auscultation normale",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Mesure et interprete les constantes de securite : pression arterielle, frequence cardiaque, saturation en oxygene, frequence respiratoire et temperature.",
+          "en_partie": "Prend une seule constante (par exemple la tension) sans controler le pouls ni l'oxygenation.",
+          "non_fait": "N'effectue aucune prise de constantes vitales."
+        },
+        "triggerKeywords": [
+          "constantes",
+          "vitales",
+          "normales",
+          "auscultation",
+          "normale",
+          "spondyloarthrite",
+          "axiale",
+          "débutante"
+        ]
       },
       {
         "id": "eval_critere_2",
         "label": "Palpation reproduisant la douleur sur le trapèze et muscles rhomboïdes",
-        "weight": 1
+        "weight": 1,
+        "category": "interrogatoire",
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Spondyloarthrite axiale débutante).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "palpation",
+          "reproduisant",
+          "douleur",
+          "trapèze",
+          "muscles",
+          "rhomboïdes",
+          "spondyloarthrite",
+          "axiale"
+        ]
       },
       {
         "id": "eval_critere_3",
         "label": "Absence de signes de gravité neurologique",
-        "weight": 1
+        "weight": 1,
+        "category": "examen_physique",
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "absence",
+          "signes",
+          "gravité",
+          "neurologique",
+          "spondyloarthrite",
+          "axiale",
+          "débutante"
+        ]
       },
       {
         "id": "eval_critere_4",
         "label": "Antalgiques de palier 1 et décontracturant musculaire",
-        "weight": 1
+        "weight": 1,
+        "category": "education",
+        "criteria": {
+          "fait": "Realise completement l'etape (Antalgiques de palier 1 et décontracturant musculaire) selon les regles de l'art, en lien avec (Spondyloarthrite axiale débutante) et le motif (Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde).",
+          "en_partie": "Realise partiellement l'etape (Antalgiques de palier 1 et décontracturant musculaire), de facon incomplete ou imprecise.",
+          "non_fait": "Omet completement l'etape (Antalgiques de palier 1 et décontracturant musculaire) ou suit une demarche erronee."
+        },
+        "triggerKeywords": [
+          "antalgiques",
+          "palier",
+          "décontracturant",
+          "musculaire",
+          "spondyloarthrite",
+          "axiale",
+          "débutante"
+        ]
+      },
+      {
+        "id": "accueil_presentation",
+        "label": "Se presente, precise son statut et installe confortablement le patient",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Salue le patient avec courtoisie, donne son nom et son statut, verifie l'identite et installe confortablement le patient avant de commencer.",
+          "en_partie": "Salue le patient mais omet de donner son nom, son statut ou de verifier l'installation.",
+          "non_fait": "Debute l'interrogatoire sans salutation ni presentation."
+        },
+        "triggerKeywords": [
+          "presente",
+          "precise",
+          "son",
+          "statut",
+          "installe",
+          "confortablement",
+          "patient",
+          "spondyloarthrite"
+        ]
+      },
+      {
+        "id": "interrogatoire_plainte",
+        "label": "Caracterise precisement le motif (Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde)",
+        "category": "interrogatoire",
+        "weight": 1.5,
+        "criteria": {
+          "fait": "Explore systematiquement la plainte liee a (Douleur aiguë médio-dorsale survenue brutalement lors du port d'une charge lourde) : siege, type, irradiation, intensite, duree, facteurs declenchants et calmants, en lien avec l'hypothese de (Spondyloarthrite axiale débutante).",
+          "en_partie": "Aborde le siege et un facteur declenchant mais omet le type, la duree ou les facteurs calmants.",
+          "non_fait": "Se contente d'une question vague sans caracterisation semiologique utilisable."
+        },
+        "triggerKeywords": [
+          "caracterise",
+          "precisement",
+          "motif",
+          "douleur",
+          "aiguë",
+          "médio",
+          "dorsale",
+          "survenue"
+        ]
+      },
+      {
+        "id": "interrogatoire_antecedents",
+        "label": "Recherche les antecedents medicaux, chirurgicaux, familiaux et les facteurs de risque",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche activement les antecedents medicaux, chirurgicaux et familiaux, le terrain a risque et les facteurs de risque pertinents pour ce motif.",
+          "en_partie": "Recherche un ou deux antecedents sans explorer le terrain familial ni les autres facteurs de risque.",
+          "non_fait": "Aucune recherche des antecedents ni des facteurs de risque."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "antecedents",
+          "medicaux",
+          "chirurgicaux",
+          "familiaux",
+          "facteurs",
+          "risque",
+          "spondyloarthrite"
+        ]
+      },
+      {
+        "id": "interrogatoire_gravite",
+        "label": "Recherche les signes associes et les criteres de gravite ou d'instabilite",
+        "category": "interrogatoire",
+        "weight": 1,
+        "criteria": {
+          "fait": "Recherche formellement les signes associes et les criteres de gravite ou d'instabilite (retentissement, signes generaux, drapeaux rouges du motif).",
+          "en_partie": "Interroge un signe associe mais ne verifie pas les criteres de gravite ni l'instabilite.",
+          "non_fait": "Ne recherche aucun signe associe ni aucun critere de gravite."
+        },
+        "triggerKeywords": [
+          "recherche",
+          "signes",
+          "associes",
+          "criteres",
+          "gravite",
+          "instabilite",
+          "spondyloarthrite",
+          "axiale"
+        ]
       }
     ],
     "grilleCommunication": [
       {
         "id": "ecoute_active",
-        "label": "Écoute active — laisse le patient terminer sans l'interrompre",
-        "max": 1
+        "label": "Écoute active - laisse le patient terminer sans l'interrompre",
+        "max": 1,
+        "criteria": {
+          "fait": "Laisse le patient decrire spontanement ses symptomes sans l'interrompre pendant les premieres minutes.",
+          "en_partie": "Interrompt prematurement le patient ou coupe la parole a plusieurs reprises.",
+          "non_fait": "Interrogatoire directif sans aucun temps d'expression spontanee laisse au patient."
+        }
       },
       {
         "id": "questions_ouvertes",
         "label": "Pose des questions ouvertes avant les questions fermées",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Ouvre chaque rubrique par une question ouverte puis precise rigoureusement.",
+          "en_partie": "Pose quasi exclusivement des questions fermees ou inductives orientant les reponses.",
+          "non_fait": "Questions exclusivement binaires ne permettant pas au patient d'exprimer son vecu."
+        }
       },
       {
         "id": "reformulation",
         "label": "Reformule ou vérifie la compréhension du patient",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Synthetise a intervalles reguliers et controle activement l'adhesion et la comprehension du patient.",
+          "en_partie": "Ne pratique qu'une seule reformulation superficielle en fin de consultation.",
+          "non_fait": "Aucune tentative de reformulation ni de verification de la comprehension."
+        }
       },
       {
         "id": "vocabulaire_adapte",
         "label": "Utilise un vocabulaire adapté (pas de jargon non expliqué)",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "S'exprime dans un langage limpide et traduit spontanement toute notion medicale en termes accessibles.",
+          "en_partie": "Emploie quelques termes techniques complexes mais s'efforce de les expliquer sur relance.",
+          "non_fait": "Monologue hermetique truffe d'acronymes medicaux et de jargon technique."
+        }
       },
       {
         "id": "empathie",
         "label": "Fait preuve d'empathie et de bienveillance face à la chronicité des douleurs",
-        "max": 1
+        "max": 1,
+        "criteria": {
+          "fait": "Reconnait l'anxiete du patient avec bienveillance et valorise ses questions sans banaliser la maladie.",
+          "en_partie": "Attitude polie mais distante et mecanique sans reelle ecoute emotionnelle.",
+          "non_fait": "Attitude dedaigneuse, culpabilisante ou anxiogene sans egard pour l'inquietude manifestee."
+        }
       }
     ],
     "patientStandardise": {
@@ -333,7 +504,42 @@
           "weight": 1
         }
       ]
-    }
+    },
+    "grillePerformance": [
+      {
+        "id": "temps_station",
+        "label": "Respect du temps imparti et gestion equilibree du rythme des 8 minutes",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il su equilibrer interrogatoire, examen physique et synthese d'information en 8 minutes chrono ?",
+        "criteria": {
+          "fait": "Gestion du temps exemplaire : chaque etape clinique a ete abordee et conclue dans le delai des 8 minutes.",
+          "en_partie": "Gestion debordee : l'etudiant n'a pas eu le temps de boucler l'education ou a du bacler la fin.",
+          "non_fait": "Station bloquee des l'interrogatoire sans progression de la demarche medicale."
+        }
+      },
+      {
+        "id": "ordre_logique",
+        "label": "Enchainement logique et structure de la demarche medicale",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il respecte la chronologie clinique : accueil - interrogatoire - examen physique - examens complementaires - explication et traitement ?",
+        "criteria": {
+          "fait": "Demarche clinique parfaitement structuree et ordonnee du motif initial jusqu'au plan therapeutique.",
+          "en_partie": "Structure hesitee : va-et-vient desordonne entre interrogatoire et examen physique.",
+          "non_fait": "Confusion des etapes : propose un traitement invasif d'emblee avant toute anamnese."
+        }
+      },
+      {
+        "id": "signes_gravite",
+        "label": "Depistage des urgences et securisation immediate du patient",
+        "weight": 1,
+        "instructions": "L'etudiant a-t-il formellement ecarte l'urgence vitale liee au motif et securise le pronostic vital ?",
+        "criteria": {
+          "fait": "A verifie formellement l'absence de critere d'urgence vitale, la stabilite des constantes et etabli les consignes de securite.",
+          "en_partie": "A constate l'absence de signe evident sans verifier l'evolution recente ni les criteres de gravite.",
+          "non_fait": "N'a pas evalue le risque immediat ni le caractere stable ou instable du tableau."
+        }
+      }
+    ]
   },
   "dialogue": {
     "phraseOuverture": "Bonjour docteur, j'ai mal au bas du dos depuis 6 mois et ça ne passe pas malgré le paracétamol. Mon médecin m'a envoyé ici pour qu'on cherche ce que j'ai.",
@@ -377,13 +583,17 @@
       "VS",
       "Radiographie du bassin (articulations sacro-iliaques)"
     ],
-    "inutiles": [],
-    "dangereux": []
+    "inutiles": [
+      "Examen sans lien demontre avec le motif de consultation"
+    ],
+    "dangereux": [
+      "Realiser un geste invasif ou irradier sans indication en retardant la prise en charge adaptee"
+    ]
   },
   "hints": [
-    "💡 Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
-    "🩺 Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
-    "🎯 Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
+    "Relis le motif et l'histoire de la maladie : un examen complémentaire bien choisi vaut mieux que trois examens au hasard.",
+    "Fais l'examen par appareil complet avant de trancher : c'est là que se cachent les points de démarche.",
+    "Avant de valider, confronte ton hypothèse aux diagnostics proposés et élimine-les un par un."
   ],
   "objectifs": [
     "Réaliser un interrogatoire complet orienté vers une rachialgie inflammatoire",
