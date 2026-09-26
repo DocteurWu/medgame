@@ -49,20 +49,20 @@ export class ThreeLightingAgent {
     setupLighting() {
         // Environnement — Lumière ambiante douce (ciel)
         // Intensité réduite : le gros du "fill" est désormais porté par l'IBL + l'hémisphérique
-        const ambientLight = new THREE.AmbientLight('#7a8b9e', 0.14);
+        const ambientLight = new THREE.AmbientLight('#c6d0d8', 0.19);
         this.scene.add(ambientLight);
         this.ambientLight = ambientLight;
 
         // Lumière hémisphérique — simule le rebond naturel ciel ↔ sol.
         // Soulève les zones d'ombre sans aplatir les volumes.
-        const hemiLight = new THREE.HemisphereLight('#bfd8f2', '#54503f', 0.25);
+        const hemiLight = new THREE.HemisphereLight('#e1edf5', '#625f59', 0.32);
         this.scene.add(hemiLight);
         this.hemiLight = hemiLight;
 
         // Lumière principale (Sun Light) entrant par la fenêtre du mur droit (x = 5.5, z ≈ -2.2)
         // Intensité calibrée r155+ (lumières physiques) : 1.9 surexposait
-        // nappes et oreillers en blanc pur — 1.3 suffit avec IBL + hemi.
-        const keyLight = new THREE.DirectionalLight('#fed7aa', 1.3);
+        // les textiles clairs ; 1.2 garde du détail avec l'IBL et l'hémisphérique.
+        const keyLight = new THREE.DirectionalLight('#fff0df', 1.2);
         keyLight.position.set(11, 7.5, -3.5);
         // Ombres portées en version douce (PCF).
         // NOTE HISTORIQUE : l'ancienne "bande noire" ne venait pas des ombres elles-mêmes,
@@ -88,8 +88,8 @@ export class ThreeLightingAgent {
 
         // Lumières ponctuelles (dalles LED du plafond sous y=5.0) — sobres
         this.pointLights = [];
-        this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#f8fafc', 0.22, 9));
-        this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#f8fafc', 0.22, 9));
+        this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#fffaf2', 0.3, 9));
+        this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#fffaf2', 0.3, 9));
 
         // NOTE : les lampes décoratives (lampadaire chaud, laser bleu) ont été
         // supprimées car leurs objets n'existent plus dans la pièce — chaque
@@ -106,9 +106,9 @@ export class ThreeLightingAgent {
         // --- Lumières de rebond (bounce lights) : éclairent subtilement les zones d'ombre ---
         this.bounceLights = [];
         // Rebond chaud : la key light frappe le sol côté fenêtre et rediffuse vers le plafond
-        this.bounceLights.push(this._addPointLight(3.6, 0.5, 1.6, '#ffd9b0', 0.15, 7));
+        this.bounceLights.push(this._addPointLight(3.6, 0.5, 1.6, '#f5e8d8', 0.12, 7));
         // Contre-jour froid côté opposé : détache les volumes du mur du fond
-        this.bounceLights.push(this._addPointLight(-4.4, 2.6, -2.6, '#9db8d6', 0.1, 8));
+        this.bounceLights.push(this._addPointLight(-4.4, 2.6, -2.6, '#d4e2ee', 0.12, 8));
 
         // Configuration globale du renderer
         this.renderer.shadowMap.enabled = true; // Ombres douces PCF (voir note historique plus haut)

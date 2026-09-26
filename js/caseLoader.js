@@ -386,6 +386,17 @@ async function loadCasesData() {
         if (urlParams.get('preview') === 'true') {
             const previewData = sessionStorage.getItem('previewCase');
             if (previewData) {
+                let parsedPreview;
+                try {
+                    parsedPreview = JSON.parse(previewData);
+                } catch (error) {
+                    console.warn('Aperçu de cas invalide, chargement des cas sélectionnés :', error);
+                }
+
+                if (!parsedPreview?.patient || typeof parsedPreview.patient !== 'object' || Array.isArray(parsedPreview.patient)) {
+                    sessionStorage.removeItem('previewCase');
+                    return loadCasesData();
+                }
                 const backBtn = document.createElement('button');
                 backBtn.innerHTML = '<i class="fas fa-edit"></i> Quitter l\'aperçu / Modifier';
                 backBtn.style.cssText = `
@@ -412,13 +423,22 @@ async function loadCasesData() {
                 backBtn.onclick = () => window.location.href = 'editor.html';
                 document.body.appendChild(backBtn);
 
-                return [JSON.parse(previewData)];
+                return [parsedPreview];
             }
         }
 
         // 1. HYBRID FETCH (Supabase and Local cases)
-        const selectedCaseFiles = JSON.parse(localStorage.getItem('selectedCaseFiles'));
-        if (selectedCaseFiles && Array.isArray(selectedCaseFiles) && selectedCaseFiles.length > 0) {
+        let selectedCaseFiles = [];
+        try {
+            const storedSelection = JSON.parse(localStorage.getItem('selectedCaseFiles') || 'null');
+            if (Array.isArray(storedSelection)) {
+                selectedCaseFiles = storedSelection.filter(file => typeof file === 'string' && file.trim());
+            }
+        } catch (error) {
+            console.warn('Sélection de cas locale invalide, reprise des thèmes :', error);
+        }
+
+        if (selectedCaseFiles.length > 0) {
             const dbIds = selectedCaseFiles.filter(f => !f.endsWith('.json'));
             const localFiles = selectedCaseFiles.filter(f => f.endsWith('.json'));
 

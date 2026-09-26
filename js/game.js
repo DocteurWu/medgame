@@ -830,14 +830,24 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 if (antecedentsFamiliaux) antecedentsFamiliaux.innerHTML = '';
             } else {
                 if (antecedents.medicauxPresence !== false && antecedents.medicaux && antecedents.medicaux.length > 0) {
-                    antecedentsMedicaux.innerHTML = '<ul>' + antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>';
+                    antecedentsMedicaux.innerHTML = '<ul>' + antecedents.medicaux.map(ant => {
+                        const details = typeof ant === 'string'
+                            ? ant
+                            : [ant?.type, ant?.traitement ? '(' + ant.traitement + ')' : ''].filter(Boolean).join(' ');
+                        return '<li>' + escapeHtml(details) + '</li>';
+                    }).join('') + '</ul>';
                 } else if (antecedentsMedicaux) {
                     antecedentsMedicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent médical connu.</p>';
                 }
 
                 if (antecedentsChirurgicaux) {
                     if (antecedents.chirurgicauxPresence !== false && antecedents.chirurgicaux && antecedents.chirurgicaux.length > 0) {
-                        antecedentsChirurgicaux.innerHTML = '<ul>' + antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.annee || ant.date || 'N/A')})</li>`).join('') + '</ul>';
+                        antecedentsChirurgicaux.innerHTML = '<ul>' + antecedents.chirurgicaux.map(ant => {
+                            const details = typeof ant === 'string'
+                                ? ant
+                                : [ant?.intervention, ant?.annee || ant?.date].filter(Boolean).join(' ');
+                            return '<li>' + escapeHtml(details) + '</li>';
+                        }).join('') + '</ul>';
                     } else {
                         antecedentsChirurgicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent chirurgical connu.</p>';
                     }
@@ -845,7 +855,16 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
                 if (antecedentsFamiliaux) {
                     if (antecedents.familiauxPresence !== false && antecedents.familiaux && antecedents.familiaux.length > 0) {
-                        antecedentsFamiliaux.innerHTML = '<ul>' + antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie || ant.antecedent)} (${escapeHtml(ant.age || 'N/A')} ans)</li>`).join('') + '</ul>';
+                        antecedentsFamiliaux.innerHTML = '<ul>' + antecedents.familiaux.map(ant => {
+                            const details = typeof ant === 'string'
+                                ? ant
+                                : [
+                                    ant?.lien ? ant.lien + ':' : '',
+                                    ant?.pathologie || ant?.antecedent,
+                                    ant?.age ? '(' + ant.age + ' ans)' : ''
+                                ].filter(Boolean).join(' ');
+                            return '<li>' + escapeHtml(details) + '</li>';
+                        }).join('') + '</ul>';
                     } else {
                         antecedentsFamiliaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent familial connu.</p>';
                     }
@@ -864,7 +883,12 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             } else if (traitementsPresence) {
                 const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
                 if (hasTraitements) {
-                    traitementsListe.textContent = currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ');
+                    traitementsListe.textContent = currentCase.interrogatoire.traitements
+                        .map(trait => typeof trait === 'string'
+                            ? trait
+                            : [trait?.nom, trait?.dose, trait?.frequence ? '(' + trait.frequence + ')' : ''].filter(Boolean).join(' '))
+                        .filter(Boolean)
+                        .join(', ');
                     if (traitementsContainer) traitementsContainer.style.display = '';
                 } else {
                     traitementsListe.textContent = 'Aucun traitement en cours.';
@@ -874,7 +898,14 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             const allergiesContainer = allergiesListe ? allergiesListe.closest('p') : null;
             const hasAllergies = currentCase.interrogatoire.allergies && currentCase.interrogatoire.allergies.presence && currentCase.interrogatoire.allergies.liste && currentCase.interrogatoire.allergies.liste.length > 0;
             if (hasAllergies) {
-                allergiesListe.textContent = currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ');
+                allergiesListe.textContent = currentCase.interrogatoire.allergies.liste
+                    .map(allergie => typeof allergie === 'string'
+                        ? allergie
+                        : [allergie?.allergene || allergie?.name, allergie?.reaction ? '(' + allergie.reaction + ')' : '']
+                            .filter(Boolean)
+                            .join(' '))
+                    .filter(Boolean)
+                    .join(', ');
                 if (allergiesContainer) allergiesContainer.style.display = '';
 
             } else {
@@ -946,7 +977,12 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             } else {
                 const medPresent = antecedents.medicauxPresence !== false && antecedents.medicaux && antecedents.medicaux.length > 0;
                 if (medPresent) {
-                    let valMed = '<ul>' + antecedents.medicaux.map(ant => `<li>${escapeHtml(ant.type)} (${escapeHtml(ant.traitement)})</li>`).join('') + '</ul>';
+                    let valMed = '<ul>' + antecedents.medicaux.map(ant => {
+                        const details = typeof ant === 'string'
+                            ? ant
+                            : [ant?.type, ant?.traitement ? '(' + ant.traitement + ')' : ''].filter(Boolean).join(' ');
+                        return '<li>' + escapeHtml(details) + '</li>';
+                    }).join('') + '</ul>';
                     displayQuestionBtn(antecedentsMedicaux, 'Avez-vous des maladies chroniques ou antécédents médicaux ?', valMed, 'interrogatoire.antecedents.medicaux', true);
                 } else if (antecedentsMedicaux) {
                     antecedentsMedicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent médical connu.</p>';
@@ -955,7 +991,12 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 const chirPresent = antecedents.chirurgicauxPresence !== false && antecedents.chirurgicaux && antecedents.chirurgicaux.length > 0;
                 if (antecedentsChirurgicaux) {
                     if (chirPresent) {
-                        let valChir = '<ul>' + antecedents.chirurgicaux.map(ant => `<li>${escapeHtml(ant.intervention)} (${escapeHtml(ant.annee || ant.date || 'N/A')})</li>`).join('') + '</ul>';
+                        let valChir = '<ul>' + antecedents.chirurgicaux.map(ant => {
+                            const details = typeof ant === 'string'
+                                ? ant
+                                : [ant?.intervention, ant?.annee || ant?.date].filter(Boolean).join(' ');
+                            return '<li>' + escapeHtml(details) + '</li>';
+                        }).join('') + '</ul>';
                         displayQuestionBtn(antecedentsChirurgicaux, 'Avez-vous déjà été opéré(e) ?', valChir, 'interrogatoire.antecedents.chirurgicaux', true);
                     } else {
                         antecedentsChirurgicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent chirurgical connu.</p>';
@@ -965,7 +1006,16 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 const famPresent = antecedents.familiauxPresence !== false && antecedents.familiaux && antecedents.familiaux.length > 0;
                 if (antecedentsFamiliaux) {
                     if (famPresent) {
-                        let valFam = '<ul>' + antecedents.familiaux.map(ant => `<li>${escapeHtml(ant.lien)}: ${escapeHtml(ant.pathologie || ant.antecedent)} (${escapeHtml(ant.age || 'N/A')} ans)</li>`).join('') + '</ul>';
+                        let valFam = '<ul>' + antecedents.familiaux.map(ant => {
+                            const details = typeof ant === 'string'
+                                ? ant
+                                : [
+                                    ant?.lien ? ant.lien + ':' : '',
+                                    ant?.pathologie || ant?.antecedent,
+                                    ant?.age ? '(' + ant.age + ' ans)' : ''
+                                ].filter(Boolean).join(' ');
+                            return '<li>' + escapeHtml(details) + '</li>';
+                        }).join('') + '</ul>';
                         displayQuestionBtn(antecedentsFamiliaux, 'Y a-t-il des maladies particulières dans votre famille ?', valFam, 'interrogatoire.antecedents.familiaux', true);
                     } else {
                         antecedentsFamiliaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent familial connu.</p>';
@@ -985,7 +1035,12 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 traitementsListe.innerHTML = placeholder;
             } else if (traitementsPresence) {
                 const hasTraitements = currentCase.interrogatoire.traitements && currentCase.interrogatoire.traitements.length > 0;
-                let valTrait = hasTraitements ? currentCase.interrogatoire.traitements.map(trait => `${trait.nom} ${trait.dose} (${trait.frequence})`).join(', ') : 'Aucun traitement en cours.';
+                let valTrait = hasTraitements ? currentCase.interrogatoire.traitements
+                    .map(trait => typeof trait === 'string'
+                        ? trait
+                        : [trait?.nom, trait?.dose, trait?.frequence ? '(' + trait.frequence + ')' : ''].filter(Boolean).join(' '))
+                    .filter(Boolean)
+                    .join(', ') : 'Aucun traitement en cours.';
                 displayQuestionBtn(traitementsListe, 'Prenez-vous un traitement médical actuellement ?', valTrait, 'interrogatoire.traitements');
             }
 
@@ -993,7 +1048,14 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             if (allergiesContainer) allergiesContainer.style.display = '';
 
             const hasAllergies = currentCase.interrogatoire.allergies && currentCase.interrogatoire.allergies.presence && currentCase.interrogatoire.allergies.liste && currentCase.interrogatoire.allergies.liste.length > 0;
-            let valAllergies = hasAllergies ? currentCase.interrogatoire.allergies.liste.map(allergie => `${allergie.allergene} (${allergie.reaction})`).join(', ') : '';
+            let valAllergies = hasAllergies ? currentCase.interrogatoire.allergies.liste
+                .map(allergie => typeof allergie === 'string'
+                    ? allergie
+                    : [allergie?.allergene || allergie?.name, allergie?.reaction ? '(' + allergie.reaction + ')' : '']
+                        .filter(Boolean)
+                        .join(' '))
+                .filter(Boolean)
+                .join(', ') : '';
             displayQuestionBtn(allergiesListe, 'Avez-vous des allergies connues ?', valAllergies, 'interrogatoire.allergies');
 
             const allergiesSubSection = allergiesListe ? allergiesListe.closest('.sub-section') : null;
