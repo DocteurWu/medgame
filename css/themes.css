@@ -257,7 +257,116 @@ body {
     }
 }
 
-#themes-grid {
+/* --- CYCLE SWITCHER (1er Cycle vs 2ème Cycle) --- */
+.cycle-switcher {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 18, 36, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 36px;
+    padding: 5px;
+    margin-bottom: 12px;
+    gap: 6px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(0, 242, 254, 0.05);
+    z-index: 5;
+    flex-shrink: 0;
+}
+
+.cycle-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 18px;
+    border-radius: 28px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    user-select: none;
+    text-align: left;
+}
+
+.cycle-tab-btn i {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.cycle-tab-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.cycle-tab-title {
+    font-family: var(--font-title);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.cycle-tab-desc {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-weight: 400;
+    transition: color 0.25s ease;
+}
+
+.cycle-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.cycle-tab-btn:hover i {
+    color: #00f2fe;
+}
+
+.cycle-tab-btn:hover .cycle-tab-desc {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.cycle-tab-btn.active {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.25), rgba(179, 136, 255, 0.3));
+    border: 1px solid rgba(0, 242, 254, 0.5);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0, 242, 254, 0.25), inset 0 0 12px rgba(0, 242, 254, 0.12);
+}
+
+.cycle-tab-btn.active i {
+    color: #00f2fe;
+    transform: scale(1.12);
+    filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.7));
+}
+
+.cycle-tab-btn.active .cycle-tab-desc {
+    color: rgba(0, 242, 254, 0.9);
+}
+
+.cycle-badge-new {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: 8px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 10px rgba(255, 71, 87, 0.55);
+    display: inline-block;
+}
+
+#themes-grid,
+.themes-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     /* 3x3 fixe */
@@ -265,6 +374,26 @@ body {
     padding: 6px;
     width: 100%;
     max-width: 940px;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.themes-grid.hidden-cycle {
+    display: none !important;
+}
+
+.themes-grid.fade-enter {
+    animation: cycleFadeIn 0.32s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes cycleFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .theme-card {
@@ -361,6 +490,56 @@ body {
     filter: drop-shadow(0 0 14px var(--ue-glow, rgba(0, 242, 254, 0.6)));
 }
 
+.theme-card .theme-fa-icon {
+    width: 2.7rem;
+    height: 2.7rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.1rem;
+    color: var(--ue-color, #00f2fe);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.45));
+    transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.35s ease;
+}
+
+.theme-card:hover .theme-fa-icon {
+    transform: scale(1.14) translateY(-2px);
+    filter: drop-shadow(0 0 14px var(--ue-glow, rgba(0, 242, 254, 0.6)));
+}
+
+.theme-badge-cycle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 12px;
+    background: rgba(0, 242, 254, 0.12);
+    border: 1px solid rgba(0, 242, 254, 0.35);
+    color: #00f2fe;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    z-index: 2;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+}
+
+.theme-card[data-theme="Dermatologie"] .theme-badge-cycle {
+    background: rgba(224, 86, 253, 0.18);
+    border-color: rgba(224, 86, 253, 0.5);
+    color: #e056fd;
+    box-shadow: 0 0 10px rgba(224, 86, 253, 0.3);
+}
+
+.theme-card[data-theme="Urgence"] .theme-badge-cycle {
+    background: rgba(255, 56, 56, 0.18);
+    border-color: rgba(255, 56, 56, 0.5);
+    color: #ff4d4d;
+    box-shadow: 0 0 10px rgba(255, 56, 56, 0.3);
+}
+
 .theme-card h2 {
     font-family: var(--font-title);
     font-size: 0.95rem;
@@ -452,6 +631,13 @@ body {
     --ue-color: #70a1ff;
     --ue-glow: rgba(112, 161, 255, 0.45);
     background: linear-gradient(145deg, rgba(18, 28, 48, 0.65), rgba(15, 23, 42, 0.7));
+}
+
+/* Dermatologie */
+.theme-card[data-theme="Dermatologie"] {
+    --ue-color: #e056fd;
+    --ue-glow: rgba(224, 86, 253, 0.45);
+    background: linear-gradient(145deg, rgba(42, 14, 48, 0.65), rgba(15, 23, 42, 0.7));
 }
 
 /* A venir */
@@ -584,6 +770,42 @@ body {
     }
 }
 
+/* Urgence in Cycle 2 : Standard 1-cell layout matching other specialty cards */
+#themes-grid-cycle-2 .theme-card[data-theme="Urgence"] {
+    grid-column: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 122px !important;
+    height: 100% !important;
+    gap: 0 !important;
+    animation: none !important;
+    padding: 12px 10px !important;
+}
+
+#themes-grid-cycle-2 .theme-card[data-theme="Urgence"] .theme-icon {
+    width: 2.7rem !important;
+    height: 2.7rem !important;
+    margin-bottom: 6px !important;
+    animation: none !important;
+}
+
+#themes-grid-cycle-2 .theme-card[data-theme="Urgence"] h2 {
+    font-size: 0.95rem !important;
+    text-transform: none !important;
+    letter-spacing: 0.2px !important;
+    text-align: center !important;
+    margin-bottom: 3px !important;
+}
+
+#themes-grid-cycle-2 .theme-card[data-theme="Urgence"] .theme-subtitle {
+    font-size: 0.73rem !important;
+    color: rgba(226, 232, 240, 0.7) !important;
+    text-align: center !important;
+    padding: 0 4px !important;
+}
+
 .theme-info {
     background: rgba(10, 15, 30, 0.5);
     border: 1px solid var(--glass-border);
@@ -672,7 +894,8 @@ body {
 @media (max-width: 1024px) and (min-width: 769px) {
 
     /* Écrans moyens : 2 colonnes pour éviter l'étirement */
-    #themes-grid {
+    #themes-grid,
+    .themes-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 18px;
         padding: 18px;
@@ -689,7 +912,8 @@ body {
         margin: 10px;
     }
 
-    #themes-grid {
+    #themes-grid,
+    .themes-grid {
         grid-template-columns: 1fr;
         gap: 15px;
         padding: 15px;
@@ -738,7 +962,8 @@ body {
         -webkit-overflow-scrolling: touch;
     }
 
-    #themes-grid {
+    #themes-grid,
+    .themes-grid {
         grid-template-columns: 1fr;
         gap: 8px;
         padding: 5px;
