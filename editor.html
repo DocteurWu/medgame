@@ -7,643 +7,833 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Éditeur de Cas - MedGame</title>
+    <title>MedStudio — Éditeur de Cas Cliniques 2.0</title>
     <link rel="icon" type="image/png" href="assets/images/icone.webp">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
         rel="stylesheet">
     <!-- Icons & Styles -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/game.css?v=2">
-    <link rel="stylesheet" href="css/editor.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/editor.css?v=5">
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Three.js Module Map for 3D Preview -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 
 <body>
     <div class="app-container">
-        <!-- Sidebar Toggle Button -->
-        <button id="sidebar-toggle" class="sidebar-toggle" title="Afficher/Masquer le menu">
-            <i class="fas fa-bars"></i>
-        </button>
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <a href="index.html" class="logo">
-                    <i class="fas fa-user-md"></i> MEDGAME EDITOR
+                    <i class="fas fa-heart-pulse"></i> MEDSTUDIO
                 </a>
             </div>
 
+            <!-- Mini carte récapitulative du patient -->
             <div class="patient-mini-card">
-                <div class="patient-avatar" id="patient-initials">?</div>
+                <div class="patient-avatar" id="sidebar-avatar">?</div>
                 <div class="patient-details">
-                    <h3 id="patient-nom-sidebar" contenteditable="true">Nom</h3>
-                    <p><span id="patient-prenom-sidebar" contenteditable="true"
-                            style="opacity:0.7; font-style:italic;">Prénom</span></p>
-                    <p><span id="patient-age-sidebar" contenteditable="true">72</span> ans · <span
-                            id="patient-sexe-sidebar" contenteditable="true">M</span></p>
+                    <h3 id="sidebar-patient-name">Nouveau Patient</h3>
+                    <p id="sidebar-patient-sub">-- ans · --</p>
                 </div>
             </div>
 
+            <!-- Navigation principale -->
             <nav class="sidebar-nav">
-                <button class="nav-item active" data-target="section-anamnese">
-                    <i class="fas fa-comments"></i> 1. Anamnèse
+                <button class="nav-item active" data-target="sec-identity">
+                    <i class="fas fa-user-circle"></i> 1. Identité & Persona
                 </button>
-                <button class="nav-item" data-target="section-examen">
-                    <i class="fas fa-stethoscope"></i> 2. Examen Physique
+                <button class="nav-item" data-target="sec-anamnese">
+                    <i class="fas fa-clipboard-list"></i> 2. Anamnèse & Histoire
                 </button>
-                <button class="nav-item" data-target="section-examens-comp">
-                    <i class="fas fa-microscope"></i> 3. Examens Compl.
+                <button class="nav-item" data-target="sec-examen-clinique">
+                    <i class="fas fa-stethoscope"></i> 3. Examen Clinique
                 </button>
-                <button class="nav-item" data-target="section-synthese">
-                    <i class="fas fa-check-circle"></i> 4. Synthèse & Correction
+                <button class="nav-item" data-target="sec-examens-paracliniques">
+                    <i class="fas fa-microscope"></i> 4. Paraclinique & Gradation
                 </button>
-                <button class="nav-item" data-target="section-locks">
-                    <i class="fas fa-lock"></i> 5. Verrous (Défis)
+                <button class="nav-item" data-target="sec-therapeutique">
+                    <i class="fas fa-pills"></i> 5. Diagnostic & Traitement
                 </button>
-                <button class="nav-item" data-target="section-urgence-dyn" style="border-left: 3px solid #e74c3c;">
-                    <i class="fas fa-heartbeat" style="color:#e74c3c;"></i> 6. Dynamiques
+                <button class="nav-item" data-target="sec-dynamique">
+                    <i class="fas fa-wave-square"></i> 6. Dynamique & Urgences
                 </button>
-                <button class="nav-item" data-target="section-ecos" style="border-left: 3px solid #3498db;">
-                    <i class="fas fa-graduation-cap" style="color:#3498db;"></i> 7. ECOS
+                <button class="nav-item" data-target="sec-locks">
+                    <i class="fas fa-lock"></i> 7. Verrous & Quiz
+                </button>
+                <button class="nav-item" data-target="sec-ecos">
+                    <i class="fas fa-graduation-cap"></i> 8. Station ECOS (R2C)
+                </button>
+                <button class="nav-item" data-target="sec-correction">
+                    <i class="fas fa-file-medical-alt"></i> 9. Synthèse & Correction
                 </button>
             </nav>
 
-            <div class="editor-footer">
-                <input type="file" id="load-json" style="display: none;" accept=".json">
-                <input type="file" id="image-upload" style="display: none;" accept="image/*">
-                <button class="btn-editor secondary" id="btn-load-options">
-                    <i class="fas fa-file-import"></i> Charger / Améliorer
+            <!-- Actions de barre latérale -->
+            <div class="editor-sidebar-actions">
+                <input type="file" id="load-json-input" style="display: none;" accept=".json">
+                <input type="file" id="general-image-input" style="display: none;" accept="image/*">
+                
+                <button class="btn-sidebar primary" id="btn-open-ai-modal">
+                    <i class="fas fa-wand-magic-sparkles"></i> Assistant IA
                 </button>
-                <button class="btn-editor" id="save-json" style="margin-top: 5px;">
-                    <i class="fas fa-save"></i> Enregistrer JSON
+                <button class="btn-sidebar" id="btn-load-options">
+                    <i class="fas fa-folder-open"></i> Charger / Améliorer
                 </button>
-                <button class="btn-editor" id="push-supabase" style="background: var(--editor-success);">
-                    <i class="fas fa-cloud-upload-alt"></i> Publier / Soumettre
+                <button class="btn-sidebar" id="btn-save-json">
+                    <i class="fas fa-file-arrow-down"></i> Exporter JSON
                 </button>
-                <button class="btn-editor" id="preview-button" style="background: var(--editor-info); margin-top: 5px;">
-                    <i class="fas fa-play-circle"></i> Tester
+                <button class="btn-sidebar success" id="btn-push-supabase">
+                    <i class="fas fa-cloud-arrow-up"></i> Publier / Synchroniser
                 </button>
-                <button class="btn-editor danger-discrete" onclick="clearEditor()" style="margin-top: 5px;">
-                    <i class="fas fa-trash-alt"></i> Tout supprimer
+                <button class="btn-sidebar" id="btn-preview-case" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3); color: #60a5fa;">
+                    <i class="fas fa-play"></i> Tester en direct
                 </button>
-                <a href="index.html" class="quit-btn" style="margin-top: 5px;">RETOUR ACCUEIL</a>
-                <a href="admin.html" id="admin-link" class="quit-btn"
-                    style="margin-top: 5px; background: var(--editor-primary); display: none;">ESPACE ADMIN</a>
+                <button class="btn-sidebar danger" id="btn-new-case">
+                    <i class="fas fa-trash-can"></i> Nouveau cas vierge
+                </button>
+                <a href="index.html" class="btn-sidebar" style="margin-top: 4px; font-size: 0.8rem; color: #64748b;">
+                    <i class="fas fa-arrow-left"></i> Retour au jeu
+                </a>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT Area -->
+        <!-- MAIN WORKSPACE -->
         <main class="main-content">
-            <header class="top-bar">
-                <div class="case-info">
-                    <span class="label">MOTIF D'ADMISSION</span>
-                    <h2 id="motif-hospitalisation" contenteditable="true">Entrez le motif...</h2>
+            <!-- Topbar Studio -->
+            <header class="studio-topbar">
+                <div class="topbar-left">
+                    <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" title="Réduire/Agrandir le menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <input type="text" id="motif-admission-input" class="case-title-input" placeholder="Motif d'admission principal (ex: Douleur thoracique aiguë)">
+                </div>
+
+                <div class="topbar-right">
+                    <div class="completion-badge">
+                        <span>Complétude</span>
+                        <div class="completion-bar">
+                            <div class="completion-fill" id="completion-fill"></div>
+                        </div>
+                        <strong id="completion-text">0%</strong>
+                    </div>
+
+                    <button class="btn-sidebar" id="btn-open-dictation-modal" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.35); color: #fbbf24; padding: 7px 14px; font-weight:600;">
+                        <i class="fas fa-microphone"></i> Dictée Vocale <kbd class="studio-kbd">⊞ Win + H</kbd>
+                    </button>
+
+                    <button class="btn-ai-assist" id="btn-topbar-ai">
+                        <i class="fas fa-wand-magic-sparkles"></i> MedStudio AI
+                    </button>
                 </div>
             </header>
 
+            <!-- Scroll Area Sections -->
             <div class="content-scroll-area">
-                <!-- SECTION: ANAMNÈSE -->
-                <section id="section-anamnese" class="game-section active">
-                    <h2 class="section-header">1. INTERROGATOIRE</h2>
-                    <div class="grid-layout">
-                        <!-- Histoire de la Maladie -->
-                        <div class="medical-card">
-                            <h3 class="card-title">Histoire de la Maladie</h3>
-                            <div class="card-content">
-                                <div class="sub-section">
-                                    <h4>Début des symptômes</h4>
-                                    <p id="debut-symptomes" contenteditable="true">...</p>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Évolution</h4>
-                                    <p id="evolution" contenteditable="true">...</p>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Facteurs déclenchants</h4>
-                                    <p id="facteurs-declenchants" contenteditable="true">...</p>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Description de la douleur</h4>
-                                    <p id="description-douleur" contenteditable="true">...</p>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Symptômes associés</h4>
-                                    <p id="symptomes-associes" contenteditable="true">...</p>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Discours du patient</h4>
-                                    <div id="verbatim" contenteditable="true"
-                                        style="background: rgba(160, 32, 240, 0.1); border: 1px dashed var(--primary-color); padding: 10px; border-radius: 8px; font-style: italic;">
-                                        ...</div>
-                                </div>
-                                <div class="remarques-box">
-                                    <i class="fas fa-pen"></i> <span id="remarques" contenteditable="true">...</span>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- Terrain & Mode de vie -->
-                        <div class="medical-card">
-                            <h3 class="card-title">Terrain & Mode de vie</h3>
-                            <div class="card-content">
-                                <div class="sub-section">
-                                    <h4>Détails Patient</h4>
-                                    <p>Taille: <span id="patient-taille" contenteditable="true">...</span></p>
-                                    <p>Poids: <span id="patient-poids" contenteditable="true">...</span></p>
-                                    <p>Groupe Sanguin: <span id="patient-groupeSanguin"
-                                            contenteditable="true">...</span></p>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Antécédents Médicaux</h4>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="antecedents-medicaux-toggle"
-                                                style="accent-color:#4facfe; width:16px; height:16px;">
-                                            <span>Antécédents présents</span>
-                                        </label>
-                                    </div>
-                                    <div id="antecedents-medicaux-container" style="display:none;">
-                                        <div id="antecedents-medicaux"></div>
-                                        <button class="btn-add"
-                                            onclick="addListItem('antecedents-medicaux', {type: 'Type', traitement: 'Traitement'})"><i
-                                                class="fas fa-plus"></i> Ajouter un antécédent</button>
-                                    </div>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Antécédents Chirurgicaux</h4>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="antecedents-chirurgicaux-toggle"
-                                                style="accent-color:#4facfe; width:16px; height:16px;">
-                                            <span>Antécédents chirurgicaux présents</span>
-                                        </label>
-                                    </div>
-                                    <div id="antecedents-chirurgicaux-container" style="display:none;">
-                                        <div id="antecedents-chirurgicaux"></div>
-                                        <button class="btn-add"
-                                            onclick="addListItem('antecedents-chirurgicaux', {intervention: 'Intervention', annee: 'Année'})"><i
-                                                class="fas fa-plus"></i> Ajouter un antécédent chirurgical</button>
-                                    </div>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Antécédents Familiaux</h4>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="antecedents-familiaux-toggle"
-                                                style="accent-color:#4facfe; width:16px; height:16px;">
-                                            <span>Antécédents familiaux présents</span>
-                                        </label>
-                                    </div>
-                                    <div id="antecedents-familiaux-container" style="display:none;">
-                                        <div id="antecedents-familiaux"></div>
-                                        <button class="btn-add"
-                                            onclick="addListItem('antecedents-familiaux', {antecedent: 'Antécédent', lien: 'Lien familial'})"><i
-                                                class="fas fa-plus"></i> Ajouter un antécédent familial</button>
-                                    </div>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Allergies</h4>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="allergies-toggle"
-                                                style="accent-color:#e74c3c; width:16px; height:16px;">
-                                            <span>Patient allergique</span>
-                                        </label>
-                                    </div>
-                                    <div id="allergies-container" style="display:none;">
-                                        <div id="allergies-liste"></div>
-                                        <button class="btn-add" id="btn-add-allergy" style="display:none;"
-                                            onclick="addListItemText('allergies-liste')"><i class="fas fa-plus"></i>
-                                            Ajouter
-                                            une allergie</button>
-                                    </div>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Traitements habituels</h4>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="traitements-toggle"
-                                                style="accent-color:#2ecc71; width:16px; height:16px;">
-                                            <span>Traitements en cours</span>
-                                        </label>
-                                    </div>
-                                    <div id="traitements-container" style="display:none;">
-                                        <div id="traitements-liste"></div>
-                                        <button class="btn-add"
-                                            onclick="addListItem('traitements-liste', {nom: 'Nom', dose: 'Dose', frequence: 'Fréquence'})"><i
-                                                class="fas fa-plus"></i> Ajouter un traitement</button>
-                                    </div>
-                                </div>
-                                <div class="sub-section">
-                                    <h4>Mode de vie</h4>
-                                    <p>Activité physique: <span id="activite-physique" contenteditable="true">...</span>
-                                    </p>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="tabac-toggle"
-                                                style="accent-color:#95a5a6; width:16px; height:16px;">
-                                            <span>Tabac</span>
-                                        </label>
-                                    </div>
-                                    <div id="tabac-container" style="display:none;">
-                                        <p>Quantité: <span id="tabac-quantite" contenteditable="true">...</span> /
-                                            Durée: <span id="tabac-duree" contenteditable="true">...</span></p>
-                                    </div>
-                                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
-                                        <label
-                                            style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:0.9rem;">
-                                            <input type="checkbox" id="alcool-toggle"
-                                                style="accent-color:#f39c12; width:16px; height:16px;">
-                                            <span>Alcool</span>
-                                        </label>
-                                    </div>
-                                    <div id="alcool-container" style="display:none;">
-                                        <p>Consommation: <span id="alcool" contenteditable="true">...</span></p>
-                                    </div>
-                                    <p>Alimentation: <span id="alimentation-regime" contenteditable="true">...</span> /
-                                        <span id="alimentation-particularites" contenteditable="true">...</span>
-                                    </p>
-                                    <p>Emploi: <span id="emploi-profession" contenteditable="true">...</span> / Stress:
-                                        <span id="emploi-stress" contenteditable="true">...</span>
-                                    </p>
-                                </div>
+                <!-- 1. IDENTITÉ & PERSONA -->
+                <section id="sec-identity" class="game-section active">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-user-circle"></i> 1. Identité, Métadonnées & Persona Patient</h2>
+                            <p class="section-desc">Définissez l'état civil du patient, le modèle 3D associé, et les consignes pour l'IA de dialogue.</p>
+                        </div>
+                    </div>
+
+                    <!-- Métadonnées Générales -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-id-card"></i> Métadonnées du Dossier</h3>
+                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label class="form-label">Identifiant du Cas (ID Unique)</label>
+                                <input type="text" id="case-id" class="form-control" placeholder="ex: cardio_angor_stable_m_dupont">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Spécialité Principale</label>
+                                <select id="case-specialty" class="form-control">
+                                    <option value="Cardiologie">Cardiologie</option>
+                                    <option value="Pneumologie">Pneumologie</option>
+                                    <option value="Neurologie">Neurologie</option>
+                                    <option value="Gastro-entérologie">Gastro-entérologie</option>
+                                    <option value="Urgences">Urgences / Réanimation</option>
+                                    <option value="Infectiologie">Infectiologie</option>
+                                    <option value="Néphrologie">Néphrologie</option>
+                                    <option value="Endocrinologie">Endocrinologie</option>
+                                    <option value="Pédiatrie">Pédiatrie</option>
+                                    <option value="Gériatrie">Gériatrie</option>
+                                    <option value="Psychiatrie">Psychiatrie</option>
+                                    <option value="Orthopédie">Orthopédie / Rhumatologie</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Difficulté (1 à 5)</label>
+                                <select id="case-difficulty" class="form-control">
+                                    <option value="1">1 - Débutant / DFGSM2</option>
+                                    <option value="2">2 - Facile / DFGSM3</option>
+                                    <option value="3" selected>3 - Intermédiaire / DFASM1</option>
+                                    <option value="4">4 - Avancé / DFASM2</option>
+                                    <option value="5">5 - Expert / ECOS Final</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Item R2C Officiel</label>
+                                <input type="text" id="case-item-r2c" class="form-control" placeholder="ex: Item 232. Douleur thoracique">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Référentiel Pédagogique</label>
+                                <input type="text" id="case-referentiel" class="form-control" placeholder="ex: Collège de Cardiologie (SFC) / HAS">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Rédacteur / Auteur</label>
+                                <input type="text" id="case-redacteur" class="form-control" placeholder="ex: Dr Dupont / La TEAM">
                             </div>
                         </div>
                     </div>
-                </section>
 
-                <!-- SECTION: EXAMEN PHYSIQUE -->
-                <section id="section-examen" class="game-section">
-                    <h2 class="section-header">2. EXAMEN PHYSIQUE</h2>
-                    <div class="grid-layout">
-                        <div class="medical-card">
-                            <h3 class="card-title">Constantes & Aspect</h3>
-                            <div class="card-content">
-                                <p>Tension: <span id="tension" contenteditable="true">...</span> <span
-                                        class="constants-unit">mmHg</span></p>
-                                <p>Pouls: <span id="pouls" contenteditable="true">...</span> <span
-                                        class="constants-unit">bpm</span></p>
-                                <p>Température: <span id="temperature" contenteditable="true">...</span> <span
-                                        class="constants-unit">°C</span></p>
-                                <p>SpO2: <span id="saturationO2" contenteditable="true">...</span> <span
-                                        class="constants-unit">%</span></p>
-                                <p>Fréq. Resp: <span id="frequenceRespiratoire" contenteditable="true">...</span> <span
-                                        class="constants-unit">/min</span></p>
-                                <div class="remarques-box">
-                                    <strong>Aspect Général:</strong> <span id="aspectGeneral"
-                                        contenteditable="true">...</span>
-                                </div>
-                            </div>
+                    <!-- Identité & 3D -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-person"></i> État Civil & Modèle 3D</h3>
                         </div>
-
-                        <div class="medical-card">
-                            <h3 class="card-title">Détails de l'examen</h3>
-                            <div id="exam-details-list" class="exam-details-grid">
-                                <!-- Will be populated by JS -->
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Nom</label>
+                                <input type="text" id="patient-nom" class="form-control" placeholder="Nom de famille">
                             </div>
-                            <button class="btn-add" id="add-exam-section" style="margin-top: 10px;"><i
-                                    class="fas fa-plus"></i> Ajouter une section d'examen</button>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION: EXAMENS COMPLÉMENTAIRES -->
-                <section id="section-examens-comp" class="game-section">
-                    <h2 class="section-header">3. EXAMENS COMPLÉMENTAIRES</h2>
-                    <div class="medical-card">
-                        <h3 class="card-title">Liste des examens et résultats</h3>
-                        <div id="available-exams-list"></div>
-                        <button class="btn-add" onclick="addExamResult()"><i class="fas fa-plus"></i> Ajouter un
-                            examen</button>
-                    </div>
-                </section>
-
-                <!-- SECTION: SYNTHÈSE & DÉCISION -->
-                <section id="section-synthese" class="game-section">
-                    <h2 class="section-header">4. SYNTHÈSE & CORRECTION</h2>
-                    <div class="grid-layout">
-                        <div class="medical-card">
-                            <h3 class="card-title">Diagnostics & Traitements</h3>
-                            <div class="sub-section">
-                                <h4>Diagnostics Possibles</h4>
-                                <p style="font-size:0.8em; color:rgba(255,255,255,0.5); margin-bottom:8px;">Cliquez sur
-                                    <span style="color:#2ecc71;">●</span> pour marquer le diagnostic
-                                    <strong>correct</strong>.
-                                </p>
-                                <div id="possible-diagnostics"></div>
-                                <button class="btn-add" onclick="addDiagnosticItem()"><i class="fas fa-plus"></i>
-                                    Ajouter un diagnostic</button>
+                            <div class="form-group">
+                                <label class="form-label">Prénom</label>
+                                <input type="text" id="patient-prenom" class="form-control" placeholder="Prénom">
                             </div>
-                            <div class="sub-section">
-                                <h4>Traitements Possibles</h4>
-                                <p style="font-size:0.8em; color:rgba(255,255,255,0.5); margin-bottom:8px;">
-                                    <span style="color:#2ecc71;">✓</span> Correct &nbsp;|&nbsp;
-                                    <span style="color:#e74c3c;">☠</span> Fatal &nbsp;|&nbsp;
-                                    <span style="color:rgba(255,255,255,0.4);">○</span> Faux (neutre)
-                                </p>
-                                <div id="possible-treatments"></div>
-                                <button class="btn-add" onclick="addTreatmentItem()"><i class="fas fa-plus"></i> Ajouter
-                                    un traitement</button>
+                            <div class="form-group">
+                                <label class="form-label">Âge (années)</label>
+                                <input type="number" id="patient-age" class="form-control" placeholder="ex: 58">
                             </div>
-                        </div>
-
-                        <div class="medical-card">
-                            <h3 class="card-title">Correction & Feedback</h3>
-                            <div class="sub-section">
-                                <h4>Texte de Correction (markdown supporté)</h4>
-                                <div id="correction-text" contenteditable="true"
-                                    style="min-height: 200px; border: 1px solid var(--glass-border); padding: 10px; border-radius: 8px;">
-                                </div>
-                                <div id="correction-image-container" style="margin-top: 10px;">
-                                    <!-- Image preview will appear here -->
-                                </div>
-                                <button class="btn-add" style="margin-top: 10px;"
-                                    onclick="triggerImageUpload(document.getElementById('correction-image-container'))">
-                                    <i class="fas fa-image"></i> Ajouter une image à la correction
-                                </button>
-                                <button class="btn-add" style="margin-top: 10px; background: var(--editor-info);"
-                                    onclick="showCorrectionPreview()">
-                                    <i class="fas fa-eye"></i> Aperçu du rendu
-                                </button>
-                                <div id="correction-preview-area" style="display: none;"></div>
+                            <div class="form-group">
+                                <label class="form-label">Sexe Biologique</label>
+                                <select id="patient-sexe" class="form-control">
+                                    <option value="M">Masculin (M)</option>
+                                    <option value="F">Féminin (F)</option>
+                                </select>
                             </div>
-                            <div class="sub-section">
-                                <h4>Rédacteur</h4>
-                                <p id="redacteur" contenteditable="true">...</p>
+                            <div class="form-group">
+                                <label class="form-label">Taille</label>
+                                <input type="text" id="patient-taille" class="form-control" placeholder="ex: 175 cm">
                             </div>
-                            <div class="sub-section">
-                                <h4>ID du cas (unique)</h4>
-                                <p id="case-id" contenteditable="true">case_id_here</p>
+                            <div class="form-group">
+                                <label class="form-label">Poids</label>
+                                <input type="text" id="patient-poids" class="form-control" placeholder="ex: 78 kg">
                             </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION: VERROUS (DÉFIS) -->
-                <section id="section-locks" class="game-section">
-                    <h2 class="section-header">5. CONFIGURATION DES VERROUS</h2>
-                    <div class="medical-card full-width">
-                        <h3 class="card-title">Système de Gating (Verrous)</h3>
-                        <p class="label">Masquez des données tant qu'un défi n'est pas résolu.</p>
-
-                        <div id="locks-list" class="locks-container">
-                            <!-- Populated by JS -->
-                        </div>
-
-                        <button class="action-btn" id="add-lock-btn"
-                            style="background: var(--primary-color); border:none; border-radius:30px; padding:15px; color:white; font-weight:bold; cursor:pointer; width:100%; margin-top:20px;">
-                            <i class="fas fa-plus-circle"></i> AJOUTER UN VERROU
-                        </button>
-
-                    </div>
-
-                    <!-- NOUVELLE SECTION: QUESTIONS POST-JEU -->
-                    <div class="medical-card full-width" style="margin-top: 30px;">
-                        <h3 class="card-title">Questions Post-Jeu (Quiz de fin)</h3>
-                        <p class="label">Ajoutez des questions qui apparaîtront après le diagnostic final.</p>
-
-                        <div id="post-game-questions-list" class="locks-container">
-                            <!-- Populated by JS -->
-                        </div>
-
-                        <button class="action-btn" id="add-post-game-question-btn"
-                            style="background: var(--primary-color); border:none; border-radius:30px; padding:15px; color:white; font-weight:bold; cursor:pointer; width:100%; margin-top:20px;">
-                            <i class="fas fa-question-circle"></i> AJOUTER UNE QUESTION POST-JEU
-                        </button>
-                    </div>
-                </section>
-
-                <!-- SECTION: URGENCES DYNAMIQUES (INTRA-CAS) -->
-                <section id="section-urgence-dyn" class="game-section">
-                    <h2 class="section-header" style="color: #e74c3c;"><i class="fas fa-heartbeat"></i> 6.
-                        DYNAMIQUES</h2>
-
-                    <div class="medical-card full-width">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <div>
-                                <h3 class="card-title" style="margin-bottom: 5px;">Mode Dynamique</h3>
-                                <p class="label" style="margin: 0;">Activer ce mode transformera ce QCM en un scénario
-                                    interactif à plusieurs états.</p>
+                            <div class="form-group">
+                                <label class="form-label">Groupe Sanguin</label>
+                                <select id="patient-groupe-sanguin" class="form-control">
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="Inconnu">Inconnu</option>
+                                </select>
                             </div>
-                            <label class="switch"
-                                style="position: relative; display: inline-block; width: 60px; height: 34px;">
-                                <input type="checkbox" id="enable-urgence-mode"
-                                    style="opacity: 0; width: 0; height: 0;">
-                                <span class="slider round"
-                                    style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px;"></span>
-                            </label>
-                        </div>
-
-                        <div id="urgence-editor-container" style="display: none;">
-                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
-
-                            <p class="label">Créez les différents états cliniques par lesquels le patient passera, et
-                                reliez-les par des actions médicales.</p>
-
-                            <!-- Mini Node Editor -->
-                            <div class="mini-graph-editor" id="mini-graph-editor"
-                                style="position: relative; width: 100%; height: 600px; background: #1a1a24; border: 1px solid var(--glass-border); border-radius: 8px; overflow: hidden; margin-top: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5);">
-
-                                <div class="graph-toolbar"
-                                    style="position: absolute; top: 10px; left: 10px; z-index: 10; display: flex; gap: 10px; background: rgba(0,0,0,0.7); padding: 8px; border-radius: 8px; backdrop-filter: blur(5px);">
-                                    <button class="btn btn-primary" id="add-state-node"><i class="fas fa-plus"></i>
-                                        Nouvel État</button>
-                                </div>
-
-                                <div class="canvas-wrapper" id="mini-canvas"
-                                    style="position: absolute; top:0; left:0; width:100%; height:100%; transform-origin: 0 0; cursor: grab;">
-                                    <svg id="mini-svg-layer"
-                                        style="position: absolute; top:0; left:0; width:100%; height:100%; overflow: visible; z-index: 1;">
-                                        <defs>
-                                            <marker id="arrowhead-mini" markerWidth="10" markerHeight="7" refX="9"
-                                                refY="3.5" orient="auto">
-                                                <polygon points="0 0, 10 3.5, 0 7" fill="#a020f0" />
-                                            </marker>
-                                        </defs>
-                                        <g id="mini-paths-layer"></g>
-                                        <path id="mini-temp-connection" d="" fill="none" stroke="#a020f0"
-                                            stroke-width="3" stroke-dasharray="5,5" style="display:none;"></path>
-                                    </svg>
-                                    <div id="mini-nodes-layer"
-                                        style="position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2;">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <p
-                                style="font-size: 0.8em; color: rgba(255,255,255,0.5); margin-top: 10px; text-align: center;">
-                                <i class="fas fa-info-circle"></i> Glissez pour vous déplacer dans la zone. Cliquez sur
-                                "Nouvel État" pour ajouter un nœud. Cliquez sur le point droit d'un nœud et tirez vers
-                                le point gauche d'un autre pour créer une action.
-                            </p>
-
-                        </div>
-
-                    </div>
-                </section>
-
-                <!-- SECTION: ECOS -->
-                <section id="section-ecos" class="game-section">
-                    <h2 class="section-header" style="color: #3498db;"><i class="fas fa-graduation-cap"></i> 7. PARAMÈTRES ECOS</h2>
-                    <div class="medical-card full-width">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <div>
-                                <h3 class="card-title" style="margin-bottom: 5px;">Mode ECOS</h3>
-                                <p class="label" style="margin: 0;">Activer le mode ECOS pour ce cas clinique (Vignette A4 + PS + Grilles R2C).</p>
-                            </div>
-                            <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
-                                <input type="checkbox" id="enable-ecos-mode" style="opacity: 0; width: 0; height: 0;">
-                                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px;"></span>
-                            </label>
-                        </div>
-
-                        <div id="ecos-editor-fields" style="display: none;">
-                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
-                            
-                            <!-- Vignette Clinique -->
-                            <div class="sub-section" style="margin-bottom: 25px;">
-                                <h4 style="color:#3498db; margin-bottom: 15px;"><i class="fas fa-file-invoice"></i> 7.1 Vignette Clinique</h4>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
-                                    <div>
-                                        <h5 class="label">Rôle du candidat</h5>
-                                        <div id="ecos-role" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Vous êtes interne en cardiologie de garde...">...</div>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Contexte / Situation</h5>
-                                        <div id="ecos-contexte" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Kitty Bennet, 58 ans, se présente pour...">...</div>
-                                    </div>
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 15px;">
-                                    <div>
-                                        <h5 class="label">Type de station</h5>
-                                        <select id="ecos-type-station" style="width:100%; background: #15151e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; padding: 10px; font-family: inherit;">
-                                            <option value="AVEC_PS">Avec Patient Standardisé (PS)</option>
-                                            <option value="AVEC_PSS">Avec Personnel de Santé (PSS)</option>
-                                            <option value="SANS_PS_PSS">Sans PS ni PSS</option>
+                            <div class="form-group model3d-form-group">
+                                <label class="form-label"><i class="fas fa-cube"></i> Modèle 3D Patient (Kenney)</label>
+                                <div class="model3d-inline-container">
+                                    <div class="model3d-select-side">
+                                        <select id="patient-model3d" class="form-control">
+                                            <option value="">Automatique (selon âge et sexe)</option>
+                                            <optgroup label="Hommes">
+                                                <option value="character-male-a.glb">Jeune A</option>
+                                                <option value="character-male-b.glb">Jeune B</option>
+                                                <option value="character-male-c.glb">Adulte C</option>
+                                                <option value="character-male-d.glb">Adulte D</option>
+                                                <option value="character-male-e.glb">Senior E</option>
+                                                <option value="character-male-f.glb">Senior F</option>
+                                            </optgroup>
+                                            <optgroup label="Femmes">
+                                                <option value="character-female-a.glb">Jeune A</option>
+                                                <option value="character-female-b.glb">Jeune B</option>
+                                                <option value="character-female-c.glb">Adulte C</option>
+                                                <option value="character-female-d.glb">Adulte D</option>
+                                                <option value="character-female-e.glb">Senior E</option>
+                                                <option value="character-female-f.glb">Senior F</option>
+                                            </optgroup>
                                         </select>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Domaine Principal</h5>
-                                        <div id="ecos-domaine-principal" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Entretien/Interrogatoire">...</div>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Domaine Secondaire</h5>
-                                        <div id="ecos-domaine-secondaire" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Stratégie de prise en charge">...</div>
-                                    </div>
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
-                                    <div>
-                                        <h5 class="label">Lieu</h5>
-                                        <div id="ecos-lieu" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Cabinet de consultation, SAU...">...</div>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Matériel disponible (séparé par des virgules)</h5>
-                                        <div id="ecos-materiel" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Tensiomètre, Stéthoscope, ECG...">...</div>
-                                    </div>
-                                </div>
-
-                                <div style="margin-bottom: 15px;">
-                                    <h5 class="label">Consignes attendues (Tâches à réaliser)</h5>
-                                    <div id="ecos-consignes-attendues" style="margin-bottom: 10px;"></div>
-                                    <button class="btn-add" onclick="addEcosConsigneAttendue()"><i class="fas fa-plus"></i> Ajouter une consigne</button>
-                                </div>
-
-                                <div style="margin-bottom: 15px;">
-                                    <h5 class="label">Consignes interdites / Pièges</h5>
-                                    <div id="ecos-consignes-interdites" style="margin-bottom: 10px;"></div>
-                                    <button class="btn-add" onclick="addEcosConsigneInterdite()"><i class="fas fa-plus"></i> Ajouter un piège / consigne interdite</button>
-                                </div>
-                            </div>
-
-                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
-
-                            <!-- Patient Standardisé -->
-                            <div class="sub-section" style="margin-bottom: 25px;">
-                                <h4 style="color:#3498db; margin-bottom: 15px;"><i class="fas fa-user-injured"></i> 7.2 Patient Standardisé (PS)</h4>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px;">
-                                    <div>
-                                        <h5 class="label">Personnalité du patient</h5>
-                                        <div id="ecos-ps-personnalite" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: Patient anxieux, coopératif...">...</div>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Phrase d'ouverture (Verbatim initial)</h5>
-                                        <div id="ecos-ps-ouverture" contenteditable="true" style="background: rgba(160, 32, 240, 0.1); border: 1px dashed var(--primary-color); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff; font-style: italic;" placeholder="Ex: Bonjour docteur, j'ai une vive douleur dans la poitrine...">...</div>
-                                    </div>
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 15px;">
-                                    <div>
-                                        <h5 class="label">Mots-clés / Infos données spontanément (séparés par des virgules)</h5>
-                                        <div id="ecos-ps-volontaires" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: motifHospitalisation, histoireMaladie.symptomesActuels">...</div>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Infos données uniquement si demandées (séparées par des virgules)</h5>
-                                        <div id="ecos-ps-demandees" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: antecedents.medicaux, antecedents.familiaux">...</div>
-                                    </div>
-                                    <div>
-                                        <h5 class="label">Infos cachées (difficiles à obtenir, séparées par des virgules)</h5>
-                                        <div id="ecos-ps-cachees" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; min-height: 40px; color:#fff;" placeholder="Ex: automedication, toxicomanie">...</div>
-                                    </div>
-                                </div>
-                                <div style="margin-bottom: 15px;">
-                                    <h5 class="label">Réactions du patient</h5>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
-                                        <div>
-                                            <h6 class="label" style="font-size:0.8rem; opacity:0.8;">Si question brute / brusque</h6>
-                                            <div id="ecos-ps-reaction-brutal" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; min-height: 35px; color:#fff; font-size:0.9rem;" placeholder="Ex: Je ne comprends pas pourquoi vous me brusquez...">...</div>
+                                        <div class="model3d-info-badge" id="model3d-info-badge">
+                                            <span class="badge-status-dot"></span>
+                                            <span id="model3d-badge-text">Auto : character-male-c.glb</span>
                                         </div>
-                                        <div>
-                                            <h6 class="label" style="font-size:0.8rem; opacity:0.8;">Si silence de l'étudiant</h6>
-                                            <div id="ecos-ps-reaction-silence" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; min-height: 35px; color:#fff; font-size:0.9rem;" placeholder="Ex: Euh... vous ne dites plus rien ?...">...</div>
+                                        <div class="model3d-interactive-hint">
+                                            <i class="fas fa-arrows-rotate"></i> Faites glisser pour tourner
                                         </div>
-                                        <div>
-                                            <h6 class="label" style="font-size:0.8rem; opacity:0.8;">Si jargon médical incompréhensible</h6>
-                                            <div id="ecos-ps-reaction-jargon" contenteditable="true" style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); padding: 8px; border-radius: 6px; min-height: 35px; color:#fff; font-size:0.9rem;" placeholder="Ex: Pouvez-vous parler français ? Je ne comprends pas ce mot...">...</div>
+                                    </div>
+                                    <div class="model3d-preview-card" id="model3d-preview-card" title="Prévisualisation 3D (Cliquer et glisser pour faire pivoter)">
+                                        <canvas id="model3d-canvas" width="130" height="150"></canvas>
+                                        <div class="model3d-loader" id="model3d-loader">
+                                            <i class="fas fa-circle-notch fa-spin"></i>
                                         </div>
+                                        <div class="model3d-badge-3d">3D</div>
+                                        <button type="button" class="model3d-btn-reset" id="model3d-btn-reset" title="Réinitialiser l'orientation">
+                                            <i class="fas fa-undo-alt"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
-
-                            <!-- Grilles d'évaluation -->
-                            <div class="sub-section" style="margin-bottom: 25px;">
-                                <h4 style="color:#3498db; margin-bottom: 15px;"><i class="fas fa-tasks"></i> 7.3 Grilles d'évaluation R2C</h4>
-                                
-                                <div style="margin-bottom: 20px;">
-                                    <h5 class="label" style="margin-bottom:10px;">Grille d'Aptitudes Cliniques (Scorée sur 70%)</h5>
-                                    <div style="display: grid; grid-template-columns: 1fr 2fr 80px 2fr 100px; gap: 10px; font-weight: bold; margin-bottom: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
-                                        <div>ID Item</div>
-                                        <div>Description (Label)</div>
-                                        <div style="text-align:center;">Poids</div>
-                                        <div>Mots-clés déclencheurs (séparés par virgules)</div>
-                                        <div>Actions</div>
-                                    </div>
-                                    <div id="ecos-grille-aptitudes"></div>
-                                    <button class="btn-add" style="margin-top:10px;" onclick="addEcosAptitude()"><i class="fas fa-plus"></i> Ajouter un critère clinique</button>
+                    <!-- Persona & IA Dialogue -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-brain"></i> Persona & Dialogue du Patient Virtuel (IA)</h3>
+                            <button class="btn-add-item" id="btn-ai-generate-persona"><i class="fas fa-sparkles"></i> Suggérer Persona avec l'IA</button>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Ton / Attitude générale</label>
+                                <input type="text" id="persona-ton" class="form-control" placeholder="ex: poli mais minimisant, anxieux...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Registre de langue</label>
+                                <input type="text" id="persona-registre" class="form-control" placeholder="ex: courant, familier, soutenu...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Niveau de loquacité</label>
+                                <select id="persona-loquacite" class="form-control">
+                                    <option value="reserve">Réservé (réponses très courtes)</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="loquace">Loquace / Bavard</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Anxiété (0 à 100) & Confiance (0 à 100)</label>
+                                <div style="display:flex; gap:10px;">
+                                    <input type="number" id="persona-anxiete" class="form-control" placeholder="Anxiété: 50" min="0" max="100">
+                                    <input type="number" id="persona-confiance" class="form-control" placeholder="Confiance: 60" min="0" max="100">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Style de parole & Instructions spécifiques pour le LLM</label>
+                            <textarea id="persona-style-parole" class="form-control" rows="2" placeholder="ex: Décrit bien l'effort si on demande, élude la gravité, mentionne le traitement uniquement si on insiste..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Exemples de phrases / Verbatims typiques (une par ligne)</label>
+                            <textarea id="persona-exemples-phrases" class="form-control" rows="2" placeholder="ex: « Oh c'est quand je monte les escaliers, ça serre... »"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phrase d'ouverture spontanée lors de l'accueil</label>
+                            <textarea id="dialogue-phrase-ouverture" class="form-control" rows="2" placeholder="ex: Bonjour docteur, je viens vous voir car j'ai mal à la poitrine..."></textarea>
+                        </div>
+                    </div>
+                </section>
 
-                                <div style="margin-top: 25px;">
-                                    <h5 class="label" style="margin-bottom:10px;">Grille de Communication (Scorée sur 30%)</h5>
-                                    <div style="display: grid; grid-template-columns: 1fr 2fr 80px 100px; gap: 10px; font-weight: bold; margin-bottom: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
-                                        <div>ID Critère</div>
-                                        <div>Description (Label)</div>
-                                        <div style="text-align:center;">Score Max</div>
-                                        <div>Actions</div>
-                                    </div>
-                                    <div id="ecos-grille-communication"></div>
-                                    <button class="btn-add" style="margin-top:10px;" onclick="addEcosCommunication()"><i class="fas fa-plus"></i> Ajouter un critère relationnel</button>
+                <!-- 2. ANAMNÈSE & HISTOIRE -->
+                <section id="sec-anamnese" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-clipboard-list"></i> 2. Anamnèse, Antécédents & Mode de Vie</h2>
+                            <p class="section-desc">Détaillez la sémiologie de l'histoire de la maladie, le terrain et les antécédents du patient.</p>
+                        </div>
+                    </div>
+
+                    <!-- Histoire de la Maladie -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-clock-rotate-left"></i> Histoire de la Maladie</h3>
+                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label class="form-label">Début des symptômes</label>
+                                <input type="text" id="hdm-debut" class="form-control" placeholder="ex: 2 heures, 6 mois...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Évolution</label>
+                                <input type="text" id="hdm-evolution" class="form-control" placeholder="ex: Brutale, Progressive, Stable...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Facteurs déclenchants</label>
+                                <input type="text" id="hdm-declenchants" class="form-control" placeholder="ex: Effort physique, Repos, Repas copieux...">
+                            </div>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Description de la douleur / Plainte</label>
+                                <textarea id="hdm-douleur" class="form-control" rows="2" placeholder="ex: Constrictive, rétrosternale, irradiant vers le bras gauche..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Symptômes associés (séparés par virgules)</label>
+                                <textarea id="hdm-symptomes-associes" class="form-control" rows="2" placeholder="ex: Dyspnée d'effort, sueurs, nausées..."></textarea>
+                            </div>
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Discours spontané (Verbatim patient)</label>
+                                <textarea id="hdm-verbatim" class="form-control" rows="2" placeholder="ex: J'ai une barre qui m'écrase la poitrine..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Remarques / Éléments complémentaires</label>
+                                <textarea id="hdm-remarques" class="form-control" rows="2" placeholder="ex: Cède au repos en 3 minutes ou sous Trinitrine."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Antécédents Médicaux, Chir & Familiaux -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-notes-medical"></i> Antécédents</h3>
+                        </div>
+
+                        <!-- Antécédents Médicaux -->
+                        <div class="form-group">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                                <label class="form-label">Antécédents Médicaux</label>
+                                <button class="btn-add-item" id="btn-add-ant-med"><i class="fas fa-plus"></i> Ajouter Antécédent Médical</button>
+                            </div>
+                            <div id="list-ant-med" class="item-repeater-list"></div>
+                        </div>
+
+                        <hr style="border:none; border-top:1px solid rgba(255,255,255,0.05); margin: 16px 0;">
+
+                        <!-- Antécédents Chirurgicaux -->
+                        <div class="form-group">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                                <label class="form-label">Antécédents Chirurgicaux</label>
+                                <button class="btn-add-item" id="btn-add-ant-chir"><i class="fas fa-plus"></i> Ajouter Antécédent Chirurgical</button>
+                            </div>
+                            <div id="list-ant-chir" class="item-repeater-list"></div>
+                        </div>
+
+                        <hr style="border:none; border-top:1px solid rgba(255,255,255,0.05); margin: 16px 0;">
+
+                        <!-- Antécédents Familiaux -->
+                        <div class="form-group">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                                <label class="form-label">Antécédents Familiaux (Hérédité)</label>
+                                <button class="btn-add-item" id="btn-add-ant-fam"><i class="fas fa-plus"></i> Ajouter Antécédent Familial</button>
+                            </div>
+                            <div id="list-ant-fam" class="item-repeater-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Traitements en cours & Allergies -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-prescription-bottle-medical"></i> Traitements en cours & Allergies</h3>
+                        </div>
+                        <div class="form-group">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                                <label class="form-label">Traitements habituels</label>
+                                <button class="btn-add-item" id="btn-add-traitement"><i class="fas fa-plus"></i> Ajouter Traitement</button>
+                            </div>
+                            <div id="list-traitements" class="item-repeater-list"></div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Allergies Médicamenteuses / Notables</label>
+                            <input type="text" id="allergies-input" class="form-control" placeholder="ex: Pénicilline, Aspirine (ou 'Aucune allergie connue')">
+                        </div>
+                    </div>
+
+                    <!-- Mode de Vie & Facteurs de Risque -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-heart"></i> Mode de Vie & Terrain</h3>
+                        </div>
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label class="form-label">Tabac (Quantité & Durée)</label>
+                                <input type="text" id="lifestyle-tabac" class="form-control" placeholder="ex: 20 PA / Sevré depuis 5 ans">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Alcool</label>
+                                <input type="text" id="lifestyle-alcool" class="form-control" placeholder="ex: Occasionnel / 2 verres/semaine">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Activité Physique</label>
+                                <input type="text" id="lifestyle-activite" class="form-control" placeholder="ex: Sédentaire / Marche 30min/j">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Alimentation</label>
+                                <input type="text" id="lifestyle-alimentation" class="form-control" placeholder="ex: Régime méditerranéen, riche en sel...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Profession</label>
+                                <input type="text" id="lifestyle-profession" class="form-control" placeholder="ex: Cadre, Retraité...">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Stress / Contexte social</label>
+                                <input type="text" id="lifestyle-stress" class="form-control" placeholder="ex: Stress professionnel élevé, isolé...">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. EXAMEN CLINIQUE -->
+                <section id="sec-examen-clinique" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-stethoscope"></i> 3. Examen Physique & Constantes Vitales</h2>
+                            <p class="section-desc">Renseignez les constantes à l'arrivée et les données de l'examen physique par appareil.</p>
+                        </div>
+                        <button class="btn-add-item" id="btn-ai-generate-exam"><i class="fas fa-sparkles"></i> Suggérer Signes Cliniques IA</button>
+                    </div>
+
+                    <!-- Constantes d'accueil -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-gauge-high"></i> Constantes Vitales Initiales</h3>
+                        </div>
+                        <div class="vitals-grid">
+                            <div class="vital-card">
+                                <div class="vital-header">
+                                    <span>Tension Artérielle</span>
+                                    <i class="fas fa-heart-pulse" style="color:#ef4444;"></i>
                                 </div>
+                                <div class="vital-input-row">
+                                    <input type="text" id="vital-ta" value="120/80">
+                                    <span class="vital-unit">mmHg</span>
+                                </div>
+                            </div>
+                            <div class="vital-card">
+                                <div class="vital-header">
+                                    <span>Fréquence Cardiaque</span>
+                                    <i class="fas fa-bolt" style="color:#f59e0b;"></i>
+                                </div>
+                                <div class="vital-input-row">
+                                    <input type="text" id="vital-fc" value="75">
+                                    <span class="vital-unit">bpm</span>
+                                </div>
+                            </div>
+                            <div class="vital-card">
+                                <div class="vital-header">
+                                    <span>Saturation O2</span>
+                                    <i class="fas fa-lungs" style="color:#00f2fe;"></i>
+                                </div>
+                                <div class="vital-input-row">
+                                    <input type="text" id="vital-spo2" value="98">
+                                    <span class="vital-unit">%</span>
+                                </div>
+                            </div>
+                            <div class="vital-card">
+                                <div class="vital-header">
+                                    <span>Fréquence Respiratoire</span>
+                                    <i class="fas fa-wind" style="color:#3b82f6;"></i>
+                                </div>
+                                <div class="vital-input-row">
+                                    <input type="text" id="vital-fr" value="16">
+                                    <span class="vital-unit">/min</span>
+                                </div>
+                            </div>
+                            <div class="vital-card">
+                                <div class="vital-header">
+                                    <span>Température</span>
+                                    <i class="fas fa-temperature-half" style="color:#10b981;"></i>
+                                </div>
+                                <div class="vital-input-row">
+                                    <input type="text" id="vital-temp" value="37.0">
+                                    <span class="vital-unit">°C</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Aspect Général du Patient</label>
+                            <textarea id="vital-aspect-general" class="form-control" rows="2" placeholder="ex: Bon état général, conscient, orienté, eupnéique au repos..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Appareils Cliniques -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-lungs-virus"></i> Examen par Appareil</h3>
+                            <button class="btn-add-item" id="btn-add-custom-exam-sec"><i class="fas fa-plus"></i> Ajouter un appareil</button>
+                        </div>
+                        <div id="dynamic-exam-sections-list"></div>
+                    </div>
+                </section>
+
+                <!-- 4. PARACLINIQUE & GRADATION -->
+                <section id="sec-examens-paracliniques" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-microscope"></i> 4. Examens Paracliniques & Système de Gradation</h2>
+                            <p class="section-desc">Configurez la liste des examens disponibles, leurs résultats détaillés et leur gradation pédagogique (Parfaits, Utiles, Inutiles, Dangereux).</p>
+                        </div>
+                        <button class="btn-add-item" id="btn-ai-generate-paraclinic"><i class="fas fa-sparkles"></i> Suggérer Examens & Gradation IA</button>
+                    </div>
+
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-list-check"></i> Examens & Gradations</h3>
+                            <button class="btn-add-item" id="btn-add-exam-row"><i class="fas fa-plus"></i> Ajouter un examen</button>
+                        </div>
+                        <div id="examens-paracliniques-list"></div>
+                    </div>
+                </section>
+
+                <!-- 5. DIAGNOSTICS & TRAITEMENT -->
+                <section id="sec-therapeutique" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-pills"></i> 5. Diagnostic & Thérapeutique Sécurisée</h2>
+                            <p class="section-desc">Définissez le diagnostic principal, les diagnostics différentiels, les pièges et la gradation des traitements (1ère ligne, 2ème ligne, fatals).</p>
+                        </div>
+                        <button class="btn-add-item" id="btn-ai-generate-therapeutics"><i class="fas fa-sparkles"></i> Suggérer Diagnostics & Traitements IA</button>
+                    </div>
+
+                    <!-- Diagnostics -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-bullseye"></i> Hypothèses Diagnostiques</h3>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: #34d399;"><i class="fas fa-check-circle"></i> Diagnostic Correct Principal</label>
+                            <input type="text" id="diag-correct" class="form-control" style="border-color: rgba(16, 185, 129, 0.4); font-weight:700;" placeholder="ex: Angor stable">
+                        </div>
+                        <div class="form-group">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                                <label class="form-label">Diagnostics Différentiels Possibles</label>
+                                <button class="btn-add-item" id="btn-add-diag-option"><i class="fas fa-plus"></i> Ajouter Diagnostic</button>
+                            </div>
+                            <div id="list-diagnostics-options" class="item-repeater-list"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: #fb7185;"><i class="fas fa-triangle-exclamation"></i> Pièges Diagnostiques à éviter</label>
+                            <input type="text" id="diag-pieges" class="form-control" placeholder="ex: Confondre avec un SCA ou une péricardite (séparés par virgules)">
+                        </div>
+                    </div>
+
+                    <!-- Traitements -->
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-capsules"></i> Arsenal Thérapeutique & Traitements Fatals</h3>
+                            <button class="btn-add-item" id="btn-add-traitement-option"><i class="fas fa-plus"></i> Ajouter Option Thérapeutique</button>
+                        </div>
+                        <p style="font-size:0.85rem; color:#94a3b8; margin-top:0;">Attribuez chaque traitement : <strong style="color:#34d399;">✓ 1ère Ligne</strong>, <strong style="color:#60a5fa;">2ème Ligne</strong>, <strong style="color:#9ca3af;">Neutre/Inutile</strong> ou <strong style="color:#f87171;">☠ Fatal / Contre-indiqué</strong>.</p>
+                        <div id="list-traitements-options" class="item-repeater-list"></div>
+                    </div>
+                </section>
+
+                <!-- 6. DYNAMIQUE & URGENCES -->
+                <section id="sec-dynamique" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-wave-square"></i> 6. Dynamique Vitale & Scénarios d'Urgence</h2>
+                            <p class="section-desc">Gérez la dégradation progressive du patient dans le temps si aucune prise en charge n'est apportée.</p>
+                        </div>
+                    </div>
+
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-heartbeat"></i> Paramètres de Dégradation Temporelle</h3>
+                            <label class="studio-switch">
+                                <input type="checkbox" id="dyn-enable-vitals">
+                                <span class="switch-slider"></span>
+                                <span style="font-size:0.9rem; font-weight:600;">Activer l'évolution dynamique</span>
+                            </label>
+                        </div>
+
+                        <div id="dyn-vitals-container">
+                            <div class="form-grid-3">
+                                <div class="form-group">
+                                    <label class="form-label">Taux d'évolution par minute</label>
+                                    <input type="number" step="0.01" id="dyn-trend" class="form-control" placeholder="ex: 0.05">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Multiplicateur d'urgence</label>
+                                    <input type="number" step="0.1" id="dyn-multiplier" class="form-control" placeholder="ex: 1.5">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Stabilisation sur bon traitement</label>
+                                    <select id="dyn-stabilize" class="form-control">
+                                        <option value="true">Oui (stabilise les constantes)</option>
+                                        <option value="false">Non</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 style="color:#f8fafc; font-size:0.95rem; margin: 16px 0 10px 0;">Cibles d'aggravation (en cas de non-prise en charge) :</h4>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">FC Cible (bpm)</label>
+                                    <input type="number" id="dyn-target-fc" class="form-control" placeholder="ex: 130">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">TA Systolique Cible (mmHg)</label>
+                                    <input type="number" id="dyn-target-tas" class="form-control" placeholder="ex: 80">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">SpO2 Cible (%)</label>
+                                    <input type="number" id="dyn-target-spo2" class="form-control" placeholder="ex: 85">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fréq. Resp Cible (/min)</label>
+                                    <input type="number" id="dyn-target-fr" class="form-control" placeholder="ex: 30">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Température Cible (°C)</label>
+                                    <input type="number" step="0.1" id="dyn-target-temp" class="form-control" placeholder="ex: 39.5">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. VERROUS & QUIZ -->
+                <section id="sec-locks" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-lock"></i> 7. Verrous Pédagogiques (Gating) & Quiz Post-Jeu</h2>
+                            <p class="section-desc">Conditionnez l'accès à certains examens ou diagnostics par la résolution d'un mini-défi QCM/QROC.</p>
+                        </div>
+                    </div>
+
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-key"></i> Verrous d'Examens (Locks)</h3>
+                            <button class="btn-add-item" id="btn-add-lock"><i class="fas fa-plus"></i> Ajouter un Verrou</button>
+                        </div>
+                        <div id="locks-list-container"></div>
+                    </div>
+
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-circle-question"></i> Questions de Quiz Post-Jeu</h3>
+                            <button class="btn-add-item" id="btn-add-postgame-q"><i class="fas fa-plus"></i> Ajouter Question Post-Jeu</button>
+                        </div>
+                        <div id="postgame-questions-container"></div>
+                    </div>
+                </section>
+
+                <!-- 8. STATION ECOS -->
+                <section id="sec-ecos" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-graduation-cap"></i> 8. Station ECOS Standardisée (R2C)</h2>
+                            <p class="section-desc">Configurez la vignette A4, le scénario de jeu du patient standardisé et la grille d'évaluation officielle.</p>
+                        </div>
+                        <button class="btn-add-item" id="btn-ai-generate-ecos"><i class="fas fa-sparkles"></i> Générer Station ECOS Complète IA</button>
+                    </div>
+
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fas fa-toggle-on"></i> Mode ECOS</h3>
+                            <label class="studio-switch">
+                                <input type="checkbox" id="ecos-toggle-enable">
+                                <span class="switch-slider"></span>
+                                <span style="font-size:0.9rem; font-weight:600;">Activer le mode ECOS sur ce cas</span>
+                            </label>
+                        </div>
+
+                        <div id="ecos-fields-container" style="display:none;">
+                            <!-- Vignette -->
+                            <h4 style="color:#00f2fe; margin-top: 20px;"><i class="fas fa-file-lines"></i> Vignette Clinique de la Station</h4>
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Rôle du candidat</label>
+                                    <textarea id="ecos-vignette-role" class="form-control" rows="2" placeholder="ex: Vous êtes interne en cardiologie en consultation..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Contexte / Situation</label>
+                                    <textarea id="ecos-vignette-contexte" class="form-control" rows="2" placeholder="ex: Vous recevez Mme Bennet pour des épisodes récurrents d'oppression..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-grid-3">
+                                <div class="form-group">
+                                    <label class="form-label">Type de station</label>
+                                    <select id="ecos-vignette-type" class="form-control">
+                                        <option value="AVEC_PS">Avec Patient Standardisé (PS)</option>
+                                        <option value="AVEC_PSS">Avec Personnel de Santé (PSS)</option>
+                                        <option value="SANS_PS_PSS">Sans PS ni PSS (Mannequin/Poste)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Domaine Principal</label>
+                                    <input type="text" id="ecos-vignette-domaine-p" class="form-control" placeholder="ex: Entretien/Interrogatoire">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Domaine Secondaire</label>
+                                    <input type="text" id="ecos-vignette-domaine-s" class="form-control" placeholder="ex: Stratégie pertinente de PEC">
+                                </div>
+                            </div>
+
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Consignes Attendues (une par ligne)</label>
+                                    <textarea id="ecos-consignes-attendues" class="form-control" rows="3" placeholder="Réaliser l'interrogatoire ciblé&#10;Proposer la prise en charge..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" style="color:#fb7185;">Consignes Interdites / Pièges (une par ligne)</label>
+                                    <textarea id="ecos-consignes-interdites" class="form-control" rows="3" placeholder="Ne pas prescrire d'adrénaline..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Patient Standardisé R2C -->
+                            <h4 style="color:#00f2fe; margin-top: 30px;"><i class="fas fa-masks-theater"></i> Consignes du Patient Standardisé (PS)</h4>
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Personnalité du rôle</label>
+                                    <textarea id="ecos-ps-personnalite" class="form-control" rows="2" placeholder="ex: Patiente coopérative mais minimise ses symptômes..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Infos cachées (seulement si l'étudiant creuse)</label>
+                                    <textarea id="ecos-ps-cachees" class="form-control" rows="2" placeholder="ex: Oublie parfois ses traitements quand elle est stressée..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Grilles d'évaluation R2C -->
+                            <h4 style="color:#00f2fe; margin-top: 30px;"><i class="fas fa-list-ol"></i> Grille d'Aptitudes Cliniques R2C (70%)</h4>
+                            <div id="ecos-aptitudes-list"></div>
+                            <button class="btn-add-item" id="btn-add-ecos-aptitude" style="margin-top: 10px;"><i class="fas fa-plus"></i> Ajouter un critère clinique</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 9. SYNTHÈSE & CORRECTION -->
+                <section id="sec-correction" class="game-section">
+                    <div class="studio-section-header">
+                        <div>
+                            <h2><i class="fas fa-file-medical-alt"></i> 9. Synthèse Pédagogique & Fiche de Correction</h2>
+                            <p class="section-desc">Rédigez la correction complète affichée à l'étudiant en fin de partie, avec support Markdown riche.</p>
+                        </div>
+                        <button class="btn-add-item" id="btn-ai-generate-correction"><i class="fas fa-sparkles"></i> Rédiger Fiche Correction avec l'IA</button>
+                    </div>
+
+                    <div class="studio-card">
+                        <div class="studio-card-header">
+                            <h3 class="studio-card-title"><i class="fab fa-markdown"></i> Fiche de Correction (Markdown)</h3>
+                            <button class="btn-add-item" id="btn-toggle-preview-md"><i class="fas fa-eye"></i> Basculer Aperçu / Édition</button>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="correction-markdown-input" class="form-control" rows="14" style="font-family: var(--font-mono); font-size: 0.9rem;" placeholder="# Diagnostic Principal&#10;&#10;## Synthèse et Raisonnement&#10;...&#10;&#10;## Pièges à éviter&#10;...&#10;&#10;## Prise en charge"></textarea>
+                            <div id="correction-preview-box" style="display:none; background: rgba(0,0,0,0.3); border:1px solid var(--studio-card-border); border-radius:10px; padding:20px; min-height:200px;"></div>
+                        </div>
+
+                        <!-- Objectifs & Indices -->
+                        <div class="form-grid-2" style="margin-top: 20px;">
+                            <div class="form-group">
+                                <label class="form-label">Objectifs Pédagogiques (un par ligne)</label>
+                                <textarea id="case-objectifs-input" class="form-control" rows="3" placeholder="Reconnaître l'angor d'effort typique&#10;Prescrire l'ECG et le test d'ischémie..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Indices Progressifs pour le joueur (un par ligne)</label>
+                                <textarea id="case-hints-input" class="form-control" rows="3" placeholder="Pensez aux caractéristiques de la douleur thoracique...&#10;Un ECG de repos normal n'élimine pas l'ischémie..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -652,207 +842,158 @@
         </main>
     </div>
 
-    <!-- Modals for Intra-Case Graph Editor -->
-
-    <!-- State Node Properties Modal -->
-    <div id="state-modal" class="modal-overlay" style="display: none; z-index: 1000;">
-        <div class="modal-content" style="max-width: 600px;">
-            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-procedures"></i> Propriétés de l'État
+    <!-- MODAL DICTÉE VOCALE (WIN + H) -->
+    <div id="dictation-modal" class="studio-modal-overlay" style="display:none;">
+        <div class="studio-modal-box" style="max-width: 680px;">
+            <button class="studio-modal-close" id="dictation-modal-close"><i class="fas fa-times"></i></button>
+            <h3 style="margin-top:0; font-family:var(--font-title); font-size:1.4rem; color:#fbbf24; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-microphone-lines"></i> Dictée Vocale & Structuration Clinique
             </h3>
 
-            <div class="form-group">
-                <label>Nom de l'état (interne)</label>
-                <input type="text" id="state-prop-name" class="form-control" placeholder="Ex: Choc initial">
-            </div>
+            <div id="dictation-modal-content">
+                <div class="dictation-tip-banner">
+                    <div style="font-size:1.2rem; color:#fbbf24;"><i class="fas fa-keyboard"></i></div>
+                    <div style="font-size:0.88rem; color:#e2e8f0; line-height:1.5;">
+                        <strong>Comment dicter ?</strong> Appuyez sur <kbd class="studio-kbd">⊞ Windows</kbd> + <kbd class="studio-kbd">H</kbd> (sur Mac : <kbd class="studio-kbd">Cmd</kbd> + <kbd class="studio-kbd">D</kbd> ou <kbd class="studio-kbd">Fn 2x</kbd>) pour activer la saisie vocale native de votre système dans la zone ci-dessous. Parlez naturellement comme lors d'une transmission médicale !
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label>Description Clinique (Visible par le joueur)</label>
-                <textarea id="state-prop-desc" class="form-control" rows="3"
-                    placeholder="Ex: Le patient est marbré, tachycarde et hypotendu..."></textarea>
-            </div>
+                <div class="form-group" style="margin-top: 16px;">
+                    <label class="form-label" style="display:flex; justify-content:space-between;">
+                        <span>Votre Dictée Clinique Brute</span>
+                        <span style="font-size:0.75rem; color:#94a3b8;">Parlez librement, l'IA corrige et structure tout</span>
+                    </label>
+                    <textarea id="dictation-raw-input" class="form-control" rows="8" style="line-height:1.6; font-size:0.95rem;" placeholder="Exemple de dictée vocale :&#10;« C'est un homme de 62 ans, Monsieur Dupont, qui consulte aux urgences pour une douleur dans la poitrine rétro-sternale constrictive depuis 2 heures qui irradie dans la mâchoire et le bras gauche avec des sueurs. Il fume 25 paquets-années. À l'examen clinique : TA 140/85, pouls à 92 bpm, SpO2 97%. On demande un ECG en urgence qui montre un sus-décalage ST en D2 D3 aVF, troponine positive. Diagnostic : SCA ST+ inférieur. Traitement : Aspirine, Ticagrélor, Héparine, et transfert immédiat en coronarographie pour angioplastie primaire... »"></textarea>
+                </div>
 
-            <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                <div class="form-group">
-                    <label>Tension (mmHg)</label>
-                    <input type="text" id="state-prop-ta" class="form-control" placeholder="Ex: 80/50">
-                </div>
-                <div class="form-group">
-                    <label>Pouls (bpm)</label>
-                    <input type="number" id="state-prop-fc" class="form-control" placeholder="Ex: 130">
-                </div>
-                <div class="form-group">
-                    <label>SpO2 (%)</label>
-                    <input type="number" id="state-prop-spo2" class="form-control" placeholder="Ex: 88">
-                </div>
-                <div class="form-group">
-                    <label>Fréq. Resp (/min)</label>
-                    <input type="number" id="state-prop-fr" class="form-control" placeholder="Ex: 28">
+                <div style="display:flex; gap:12px; margin-top: 20px;">
+                    <button class="btn-sidebar" id="btn-clear-dictation" style="width: auto;">
+                        <i class="fas fa-eraser"></i> Effacer
+                    </button>
+                    <button class="btn-sidebar primary" id="btn-process-dictation" style="flex:1; padding: 14px; font-size:1rem;">
+                        <i class="fas fa-wand-magic-sparkles"></i> Structurer & Remplir le Cas Clinique
+                    </button>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                    <input type="checkbox" id="state-prop-is-end">
-                    <span><strong>Ceci est un état final (Fin du cas)</strong></span>
-                </label>
-            </div>
-
-            <div id="state-end-options"
-                style="display: none; margin-left: 20px; padding: 10px; border-left: 2px solid var(--primary-color);">
-                <div class="form-group">
-                    <label>Résultat de la fin</label>
-                    <select id="state-prop-success" class="form-control">
-                        <option value="true">Succès (Patient Sauvé)</option>
-                        <option value="false">Échec (Patient Décédé / Aggravé)</option>
-                    </select>
-                </div>
-                <div class="form-group" style="margin-top: 10px;">
-                    <label>XP Gagnée <span style="font-size: 0.8em; color: var(--text-muted);">(0 = par
-                            défaut)</span></label>
-                    <input type="number" id="state-prop-xp" class="form-control" value="0" placeholder="Ex: 50">
-                </div>
-            </div>
-
-            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
-            <h4 style="margin-top:0; color:var(--urgences-color); font-size: 0.9em;"><i class="fas fa-clock"></i>
-                Dégradation Automatique (Optionnel)</h4>
-            <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 15px;">Si le joueur ne fait rien
-                pendant X secondes in-game, l'état évoluera automatiquement vers un autre nœud.</p>
-
-            <div class="grid-layout" style="grid-template-columns: 1fr 2fr; gap: 10px;">
-                <div class="form-group">
-                    <label>Délai (Secondes)</label>
-                    <input type="number" id="state-prop-auto-time" class="form-control"
-                        placeholder="Ex: 60 (0 = Désactivé)">
-                </div>
-                <div class="form-group">
-                    <label>Vers l'état...</label>
-                    <select id="state-prop-auto-next" class="form-control">
-                        <option value="">Aucun</option>
-                        <!-- Options dynamically loaded from JS -->
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Message d'alerte lors de la dégradation</label>
-                <input type="text" id="state-prop-auto-msg" class="form-control"
-                    placeholder="Ex: Le patient convulse !">
-            </div>
-
-            <div class="modal-actions" style="margin-top:20px; text-align:right;">
-                <button class="btn btn-secondary" id="state-modal-cancel">Annuler</button>
-                <button class="btn btn-primary" id="state-modal-save">Enregistrer</button>
+            <!-- Loading State -->
+            <div id="dictation-loading-box" class="ai-loading-state" style="display:none;">
+                <div class="ai-pulse-orb" style="background: linear-gradient(135deg, #f59e0b, #00f2fe);"></div>
+                <h4 style="margin:10px 0 0 0; color:#fff; font-family:var(--font-title);">Correction & Structuration Médicale...</h4>
+                <p style="font-size:0.85rem; color:#94a3b8; margin:0;">L'IA convertit votre dictée vocale en dossier clinique 2.0 complet.</p>
             </div>
         </div>
     </div>
 
-    <!-- Edge (Action) Properties Modal -->
-    <div id="action-modal" class="modal-overlay" style="display: none; z-index: 1000;">
-        <div class="modal-content">
-            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-syringe"></i> Définir l'Action</h3>
-
-            <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px;">
-                Cette action permettra de passer de <strong id="action-from-name">...</strong> vers <strong
-                    id="action-to-name">...</strong>.
-            </p>
-
-            <div class="form-group">
-                <label>Nom de l'action (Bouton pour le joueur)</label>
-                <input type="text" id="action-prop-label" class="form-control" placeholder="Ex: Donner 1mg Adrénaline">
-            </div>
-
-            <div class="form-group">
-                <label>Coût en temps (Secondes in-game)</label>
-                <input type="number" id="action-prop-time" class="form-control" value="0" placeholder="Ex: 30">
-            </div>
-
-            <div class="form-group">
-                <label>Feedback (Message affiché après action)</label>
-                <input type="text" id="action-prop-feedback" class="form-control"
-                    placeholder="Ex: Adrénaline administrée.">
-            </div>
-
-            <div class="modal-actions" style="margin-top:20px; text-align:right;">
-                <button class="btn btn-secondary" id="action-modal-cancel">Annuler</button>
-                <button class="btn btn-primary" id="action-modal-save">Enregistrer</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal for Load Options -->
-    <div id="load-options-modal" class="modal-overlay" style="display: none; z-index: 1000;">
-        <div class="modal-content"
-            style="max-width: 450px; text-align: center; background: #111114; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 35px 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative;">
-            <button class="close-modal-btn" id="load-options-close" title="Fermer"><i class="fas fa-times"></i></button>
-            <h3
-                style="margin-top:0; color: #00e5ff; font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                <i class="fas fa-file-import"></i> Charger un cas
+    <!-- MODAL ASSISTANT IA -->
+    <div id="ai-modal" class="studio-modal-overlay" style="display:none;">
+        <div class="studio-modal-box">
+            <button class="studio-modal-close" id="ai-modal-close"><i class="fas fa-times"></i></button>
+            <h3 style="margin-top:0; font-family:var(--font-title); font-size:1.4rem; color:#00f2fe; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-wand-magic-sparkles"></i> Assistant IA MedStudio
             </h3>
-            <p style="font-size: 1rem; color: #a0a0b0; margin-bottom: 30px;">
-                Que souhaitez-vous faire ?
-            </p>
+            
+            <div id="ai-modal-form">
+                <p style="font-size:0.9rem; color:#94a3b8; margin-bottom:20px;">
+                    Sélectionnez le mode de génération ou d'autocomplétion assistée par intelligence artificielle :
+                </p>
 
-            <button class="cyan-btn"
-                onclick="document.getElementById('load-json').click(); document.getElementById('load-options-modal').style.display='none';">
-                <i class="fas fa-upload"></i> IMPORTER UN FICHIER JSON LOCAL
-            </button>
+                <div class="form-group">
+                    <label class="form-label">Mode d'action</label>
+                    <select id="ai-action-mode" class="form-control">
+                        <option value="full_case">✨ Générer un cas complet de A à Z</option>
+                        <option value="autocomplete">⚡ Autocompléter les champs vides du cas actuel</option>
+                        <option value="ecos_station">🎓 Générer la station ECOS & Grilles R2C</option>
+                        <option value="correction_doc">📝 Rédiger la correction détaillée en Markdown</option>
+                    </select>
+                </div>
 
-            <button class="dark-purple-btn" id="btn-open-unlocked">
-                <i class="fas fa-folder-open"></i> AMÉLIORER UN CAS RÉUSSI
-            </button>
+                <div id="ai-topic-group" class="form-group">
+                    <label class="form-label">Pathologie ou Sujet Clinique souhaité</label>
+                    <input type="text" id="ai-topic-input" class="form-control" placeholder="ex: Embolie pulmonaire grave, Colique néphrétique, Méningite...">
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Spécialité</label>
+                        <select id="ai-specialty-select" class="form-control">
+                            <option value="Cardiologie">Cardiologie</option>
+                            <option value="Pneumologie">Pneumologie</option>
+                            <option value="Neurologie">Neurologie</option>
+                            <option value="Urgences">Urgences / Réanimation</option>
+                            <option value="Infectiologie">Infectiologie</option>
+                            <option value="Gastro-entérologie">Gastro-entérologie</option>
+                            <option value="Pédiatrie">Pédiatrie</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Niveau de Difficulté</label>
+                        <select id="ai-difficulty-select" class="form-control">
+                            <option value="1">1 - Débutant</option>
+                            <option value="2">2 - Facile</option>
+                            <option value="3" selected>3 - Intermédiaire</option>
+                            <option value="4">4 - Avancé</option>
+                            <option value="5">5 - ECOS Expert</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-sidebar primary" id="btn-run-ai-generate" style="width:100%; margin-top:20px; padding:14px; font-size:1rem;">
+                    <i class="fas fa-sparkles"></i> Lancer la génération
+                </button>
+            </div>
+
+            <!-- Loading Pulse -->
+            <div id="ai-loading-box" class="ai-loading-state" style="display:none;">
+                <div class="ai-pulse-orb"></div>
+                <h4 style="margin:10px 0 0 0; color:#fff; font-family:var(--font-title);">Génération médicale en cours...</h4>
+                <p style="font-size:0.85rem; color:#94a3b8; margin:0;">Notre modèle analyse le référentiel et structure le cas clinique.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Modal for Unlocked Cases (Improvement) -->
-    <div id="unlocked-cases-modal" class="modal-overlay" style="display: none; z-index: 1000;">
-        <div class="modal-content" style="max-width: 600px;">
-            <h3 style="margin-top:0; color:var(--primary-color);"><i class="fas fa-folder-open"></i> Sélectionner un cas
-                à améliorer</h3>
-            <p style="font-size: 0.9em; color: var(--text-muted); margin-bottom: 15px;">
-                Voici les cas que vous avez déjà joués et réussis. Sélectionnez-en un pour le charger dans l'éditeur et
-                proposer des améliorations.
-            </p>
-            <div id="unlocked-cases-list"
-                style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
-                <!-- Populated by JS -->
-            </div>
-            <div class="modal-actions" style="margin-top:20px; text-align:right;">
-                <button class="btn btn-secondary" id="unlocked-cases-close">Fermer</button>
+    <!-- MODAL LOAD OPTIONS -->
+    <div id="load-options-modal" class="studio-modal-overlay" style="display:none;">
+        <div class="studio-modal-box" style="max-width:480px; text-align:center;">
+            <button class="studio-modal-close" id="load-options-close"><i class="fas fa-times"></i></button>
+            <h3 style="margin-top:0; color:#00f2fe; font-size:1.3rem; font-family:var(--font-title);">
+                <i class="fas fa-folder-open"></i> Charger un cas
+            </h3>
+            <p style="font-size:0.9rem; color:#94a3b8; margin-bottom:24px;">Que souhaitez-vous importer ?</p>
+            
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button class="btn-sidebar primary" onclick="document.getElementById('load-json-input').click(); document.getElementById('load-options-modal').style.display='none';">
+                    <i class="fas fa-file-code"></i> Importer un fichier JSON local
+                </button>
+                <button class="btn-sidebar" id="btn-open-unlocked-modal">
+                    <i class="fas fa-award"></i> Améliorer un cas déjà réussi
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- MODAL UNLOCKED CASES -->
+    <div id="unlocked-cases-modal" class="studio-modal-overlay" style="display:none;">
+        <div class="studio-modal-box">
+            <button class="studio-modal-close" id="unlocked-cases-close"><i class="fas fa-times"></i></button>
+            <h3 style="margin-top:0; color:#00f2fe; font-family:var(--font-title);">
+                <i class="fas fa-folder-tree"></i> Cas Débloqués pour Amélioration
+            </h3>
+            <p style="font-size:0.88rem; color:#94a3b8; margin-bottom:16px;">Sélectionnez un cas que vous avez déjà complété avec succès pour l'enrichir.</p>
+            <div id="unlocked-cases-list" style="max-height:350px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+    </div>
+
+    <!-- Scripts Core -->
     <script src="js/env.js?v=2"></script>
     <script src="js/config.js?v=2"></script>
     <script src="js/auth.js?v=2"></script>
-    <script>
-        // Vérifier l'authentification et le Niveau 2+
-        document.addEventListener('DOMContentLoaded', async () => {
-            const user = await window.requireAuth();
-            if (user) {
-                const isAdmin = await window.isAdmin();
-                if (!isAdmin) {
-                    const { data: profile } = await supabase
-                        .from('profiles')
-                        .select('total_xp')
-                        .eq('id', user.id)
-                        .single();
-                    const xp = profile ? (profile.total_xp || 0) : 0;
-                    const niveau = Math.floor(Math.pow(xp / 150, 2 / 3)) + 1;
-                    if (niveau < 2) {
-                        alert("Accès refusé. Vous devez atteindre le Niveau 2 pour accéder à l'éditeur.");
-                        window.location.href = 'index.html';
-                    }
-                }
-            }
-        });
-    </script>
     <script src="js/utils.js?v=2"></script>
-    <script src="js/game.js?v=2"></script>
-    <script src="js/editor_mini_graph.js?v=2"></script>
-    <script src="js/ecos-dialog.js?v=2"></script>
-    <script src="js/editor.js?v=2"></script>
-    <script src="js/footer.js"></script>
+    <script src="js/llm-cache.js?v=2"></script>
+    <script src="js/llm-client.js?v=2"></script>
+    <script src="js/editor-ai.js?v=2"></script>
+    <script src="js/editor.js?v=4"></script>
+    <script type="module" src="js/editor-3d-preview.js?v=2"></script>
 </body>
 
 </html>
