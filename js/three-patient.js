@@ -36,7 +36,7 @@ export class ThreePatient {
         this.glbSkinMaterials = [];
         this._currentSkinColor = 0xd7a87a;
         this._currentEmissiveColor = 0x1a0800;
-        this._currentEmissiveIntensity = 0.04;
+        this._currentEmissiveIntensity = 0;
         if (initialCaseData) {
             this.loadCase(initialCaseData);
         }
@@ -56,14 +56,14 @@ export class ThreePatient {
         // Peau PBR lisse : sheen léger (pseudo-subsurface), plus de flat shading "low-poly"
         this.skinMat = new THREE.MeshPhysicalMaterial({
             color: 0xd7a87a,
-            roughness: 0.52,
+            roughness: 0.68,
             metalness: 0.0,
-            sheen: 0.4,
-            sheenRoughness: 0.65,
+            sheen: 0.22,
+            sheenRoughness: 0.78,
             sheenColor: new THREE.Color(0xffd9c2),
             emissive: 0x1a0800,
-            emissiveIntensity: 0.04,
-            envMapIntensity: 0.6
+            emissiveIntensity: 0,
+            envMapIntensity: 0.42
         });
 
         // Tissu textile : sheen pour le reflet rasant des fibres (plus de flat shading)
@@ -72,8 +72,8 @@ export class ThreePatient {
             color: clothColor,
             roughness: 0.9,
             metalness: 0.0,
-            sheen: 0.55,
-            sheenRoughness: 0.6,
+            sheen: 0.28,
+            sheenRoughness: 0.78,
             sheenColor: new THREE.Color(0xffffff),
             envMapIntensity: 0.45
         });
@@ -1072,6 +1072,9 @@ export class ThreePatient {
                         }
                         const nameLower = child.name.toLowerCase();
                         if (nameLower.includes('head') || nameLower.includes('body') || nameLower.includes('skin')) {
+                            child.material.metalness = 0;
+                            child.material.roughness = Math.max(child.material.roughness ?? 0.7, 0.64);
+                            if ('envMapIntensity' in child.material) child.material.envMapIntensity = 0.45;
                             if (!this.glbSkinMaterials.includes(child.material)) {
                                 this.glbSkinMaterials.push(child.material);
                             }

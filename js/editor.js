@@ -4,6 +4,10 @@
  * ==========================================================================
  */
 
+let editorSourceData = {};
+const editorItemSource = new WeakMap();
+let autosaveTimeout = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     // Initialisation
     initNavigation();
@@ -230,10 +234,13 @@ function initDynamicLists() {
 // --- Helpers pour Repeaters ---
 
 function addAntMedItem(data = { type: '', traitement: '' }) {
+    const sourceData = data;
+    if (typeof data === 'string') data = { type: data, traitement: '' };
     const list = document.getElementById('list-ant-med');
     if (!list) return;
     const row = document.createElement('div');
     row.className = 'repeater-row';
+    editorItemSource.set(row, sourceData);
     row.innerHTML = `
         <input type="text" class="field-type" placeholder="Type / Pathologie (ex: Diabète T2)" value="${escapeHtml(data.type || '')}">
         <input type="text" class="field-traitement" placeholder="Traitement associé (ex: Metformine)" value="${escapeHtml(data.traitement || '')}">
@@ -243,10 +250,13 @@ function addAntMedItem(data = { type: '', traitement: '' }) {
 }
 
 function addAntChirItem(data = { intervention: '', annee: '' }) {
+    const sourceData = data;
+    if (typeof data === 'string') data = { intervention: data, annee: '' };
     const list = document.getElementById('list-ant-chir');
     if (!list) return;
     const row = document.createElement('div');
     row.className = 'repeater-row';
+    editorItemSource.set(row, sourceData);
     row.innerHTML = `
         <input type="text" class="field-intervention" placeholder="Intervention (ex: Appendicectomie)" value="${escapeHtml(data.intervention || '')}">
         <input type="text" class="field-annee" placeholder="Année (ex: 2015)" value="${escapeHtml(data.annee || '')}" style="max-width:120px;">
@@ -256,10 +266,13 @@ function addAntChirItem(data = { intervention: '', annee: '' }) {
 }
 
 function addAntFamItem(data = { antecedent: '', lien: '' }) {
+    const sourceData = data;
+    if (typeof data === 'string') data = { antecedent: data, lien: '' };
     const list = document.getElementById('list-ant-fam');
     if (!list) return;
     const row = document.createElement('div');
     row.className = 'repeater-row';
+    editorItemSource.set(row, sourceData);
     row.innerHTML = `
         <input type="text" class="field-antecedent" placeholder="Pathologie (ex: Infarctus à 50 ans)" value="${escapeHtml(data.antecedent || data.pathologie || '')}">
         <input type="text" class="field-lien" placeholder="Lien (ex: Père)" value="${escapeHtml(data.lien || '')}" style="max-width:150px;">
@@ -269,10 +282,13 @@ function addAntFamItem(data = { antecedent: '', lien: '' }) {
 }
 
 function addTraitementItem(data = { nom: '', dose: '', frequence: '' }) {
+    const sourceData = data;
+    if (typeof data === 'string') data = { nom: data, dose: '', frequence: '' };
     const list = document.getElementById('list-traitements');
     if (!list) return;
     const row = document.createElement('div');
     row.className = 'repeater-row';
+    editorItemSource.set(row, sourceData);
     row.innerHTML = `
         <input type="text" class="field-nom" placeholder="Médicament (ex: Kardégic)" value="${escapeHtml(data.nom || '')}">
         <input type="text" class="field-dose" placeholder="Dosage (ex: 75 mg)" value="${escapeHtml(data.dose || '')}" style="max-width:140px;">
@@ -387,17 +403,21 @@ function addTreatmentOptionItem(name = '', role = 'neutre') {
     list.appendChild(row);
 }
 
-function addLockCard(lockData) {
+function addLockCard(lockData = {}) {
     const container = document.getElementById('locks-list-container');
     if (!container) return;
 
     const card = document.createElement('div');
     card.className = 'studio-card';
+    editorItemSource.set(card, lockData || {});
     card.style.background = 'rgba(255,255,255,0.02)';
     card.style.marginTop = '12px';
 
     const question = lockData.challenge?.question || '';
     const options = lockData.challenge?.options || ['Option A', 'Option B', 'Option C', 'Option D'];
+    const correctIndices = getCorrectIndices(lockData.challenge);
+    const type = lockData.type === 'SAISIE' ? 'SAISIE' : 'QCM';
+    const expectedKeywords = lockData.challenge?.expected_keywords || [];
     const feedback = lockData.feedback_error || '';
     const target = (lockData.target_fields || []).join(', ');
 
@@ -417,8 +437,23 @@ function addLockCard(lockData) {
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label">Options du QCM (la 1ère est la bonne réponse, une par ligne)</label>
+            <label class="form-label">Type de réponse</label>
+            <select class="form-control lock-type">
+                <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM</option>
+                <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie libre</option>
+            </select>
+        </div>
+        <div class="form-group lock-qcm-fields">
+            <label class="form-label">Options du QCM (une par ligne)</label>
             <textarea class="form-control lock-options" rows="3">${escapeHtml(options.join('\n'))}</textarea>
+        </div>
+        <div class="form-group lock-qcm-fields">
+            <label class="form-label">Indices des bonnes réponses (séparés par des virgules, 0 = première option)</label>
+            <input type="text" class="form-control lock-correct-indices" value="${escapeHtml(correctIndices.join(', '))}" inputmode="numeric">
+        </div>
+        <div class="form-group lock-saisie-fields">
+            <label class="form-label">Mots-clés acceptés (un par ligne)</label>
+            <textarea class="form-control lock-keywords" rows="3">${escapeHtml(expectedKeywords.join('\n'))}</textarea>
         </div>
         <div class="form-group">
             <label class="form-label">Feedback Explicatif en cas d'erreur</label>
@@ -427,19 +462,25 @@ function addLockCard(lockData) {
     `;
 
     container.appendChild(card);
+    initChallengeTypeControl(card, '.lock-type');
 }
 
-function addPostGameQuestionCard(qData) {
+function addPostGameQuestionCard(qData = {}) {
     const container = document.getElementById('postgame-questions-container');
     if (!container) return;
 
     const card = document.createElement('div');
     card.className = 'studio-card';
+    editorItemSource.set(card, qData || {});
     card.style.background = 'rgba(255,255,255,0.02)';
     card.style.marginTop = '12px';
 
-    const question = qData.challenge?.question || '';
-    const options = qData.challenge?.options || ['Option A', 'Option B'];
+    const challenge = qData.challenge || qData;
+    const question = challenge.question || '';
+    const options = challenge.options || ['Option A', 'Option B'];
+    const correctIndices = getCorrectIndices(challenge);
+    const type = qData.type === 'SAISIE' ? 'SAISIE' : 'QCM';
+    const expectedKeywords = challenge.expected_keywords || [];
     const feedback = qData.feedback_error || '';
 
     card.innerHTML = `
@@ -452,8 +493,23 @@ function addPostGameQuestionCard(qData) {
             <input type="text" class="form-control postgame-q-text" value="${escapeHtml(question)}" placeholder="ex: Quelle est la durée minimale recommandée du traitement ?">
         </div>
         <div class="form-group">
-            <label class="form-label">Options (la 1ère est la bonne, une par ligne)</label>
+            <label class="form-label">Type de réponse</label>
+            <select class="form-control postgame-q-type">
+                <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM</option>
+                <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie libre</option>
+            </select>
+        </div>
+        <div class="form-group postgame-q-qcm-fields">
+            <label class="form-label">Options du QCM (une par ligne)</label>
             <textarea class="form-control postgame-q-options" rows="3">${escapeHtml(options.join('\n'))}</textarea>
+        </div>
+        <div class="form-group postgame-q-qcm-fields">
+            <label class="form-label">Indices des bonnes réponses (séparés par des virgules, 0 = première option)</label>
+            <input type="text" class="form-control postgame-q-correct-indices" value="${escapeHtml(correctIndices.join(', '))}" inputmode="numeric">
+        </div>
+        <div class="form-group postgame-q-saisie-fields">
+            <label class="form-label">Mots-clés acceptés (un par ligne)</label>
+            <textarea class="form-control postgame-q-keywords" rows="3">${escapeHtml(expectedKeywords.join('\n'))}</textarea>
         </div>
         <div class="form-group">
             <label class="form-label">Feedback</label>
@@ -462,14 +518,34 @@ function addPostGameQuestionCard(qData) {
     `;
 
     container.appendChild(card);
+    initChallengeTypeControl(card, '.postgame-q-type');
 }
 
-function addEcosAptitudeRow(apt) {
+function initChallengeTypeControl(card, typeSelector) {
+    const typeInput = card.querySelector(typeSelector);
+    if (!typeInput) return;
+
+    const updateFields = () => {
+        const isSaisie = typeInput.value === 'SAISIE';
+        card.querySelectorAll('.lock-qcm-fields, .postgame-q-qcm-fields').forEach(field => {
+            field.style.display = isSaisie ? 'none' : '';
+        });
+        card.querySelectorAll('.lock-saisie-fields, .postgame-q-saisie-fields').forEach(field => {
+            field.style.display = isSaisie ? '' : 'none';
+        });
+    };
+
+    typeInput.addEventListener('change', updateFields);
+    updateFields();
+}
+
+function addEcosAptitudeRow(apt = {}) {
     const container = document.getElementById('ecos-aptitudes-list');
     if (!container) return;
 
     const row = document.createElement('div');
     row.className = 'studio-card';
+    editorItemSource.set(row, apt || {});
     row.style.background = 'rgba(255,255,255,0.02)';
     row.style.marginTop = '10px';
 
@@ -600,6 +676,7 @@ function initAIInteractions() {
             alert("Veuillez d'abord dicter ou saisir votre observation clinique (au moins quelques phrases). Utilisez Win + H pour parler au micro !");
             return;
         }
+        if (!confirmReplaceCurrentCase()) return;
 
         try {
             if (contentBox) contentBox.style.display = 'none';
@@ -634,6 +711,7 @@ function initAIInteractions() {
             alert("Veuillez entrer une pathologie ou un sujet clinique (ex: Embolie pulmonaire).");
             return;
         }
+        if (mode === 'full_case' && !confirmReplaceCurrentCase()) return;
 
         try {
             if (formBox) formBox.style.display = 'none';
@@ -793,16 +871,139 @@ function initAIInteractions() {
 
 // ==================== 5. IMPORT, EXPORT, SUPABASE & PREVIEW ====================
 
+function confirmReplaceCurrentCase() {
+    return confirm("Cette action remplacera le cas affiché et son brouillon. Continuer ?");
+}
+
+function collectValidatedEditorData(action) {
+    const data = collectData();
+    const errors = validateEditorCase(data);
+    if (errors.length) {
+        alert(`Le cas ne peut pas être ${action} :\n\n• ${errors.join('\n• ')}`);
+        return null;
+    }
+    return data;
+}
+
+function validateEditorCase(data) {
+    const errors = [];
+    const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+    const add = message => errors.push(message);
+
+    if (!isObject(data)) return ['Le document doit être un objet JSON.'];
+    if (typeof data.id !== 'string' || data.id.trim().length < 3 || /[\s"'\\<>]/.test(data.id)) {
+        add('Identifiant invalide : utilisez au moins 3 caractères, sans espace ni caractère spécial (" \' \\ < >).');
+    }
+    if (!isObject(data.patient)) {
+        add('Le bloc patient est manquant ou invalide.');
+    } else {
+        if (typeof data.patient.nom !== 'string' || !data.patient.nom.trim()) add('Le nom du patient est obligatoire.');
+        if (!['string', 'number'].includes(typeof data.patient.age) || data.patient.age === '') add('L’âge du patient doit être renseigné.');
+        if (!['M', 'F', 'H', 'Homme', 'Femme'].includes(data.patient.sexe)) add('Le sexe du patient doit être M, F, H, Homme ou Femme.');
+    }
+    if (!isObject(data.interrogatoire)) add('Le bloc interrogatoire est manquant ou invalide.');
+    if (typeof data.correction !== 'string' || !data.correction.trim()) add('La correction pédagogique est obligatoire.');
+
+    const isGraph = data.gameplayConfig !== undefined || data.nodes !== undefined;
+    if (isGraph) {
+        const nodes = data.nodes;
+        if (!isObject(data.gameplayConfig) || typeof data.gameplayConfig.startNode !== 'string') {
+            add('Le scénario graphe doit définir gameplayConfig.startNode.');
+        }
+        if (!isObject(nodes) || Object.keys(nodes).length === 0) {
+            add('Le scénario graphe doit contenir au moins un nœud.');
+        } else {
+            if (!nodes[data.gameplayConfig?.startNode]) add(`Le nœud de départ "${data.gameplayConfig?.startNode || ''}" est introuvable.`);
+            Object.entries(nodes).forEach(([nodeId, node]) => {
+                if (!isObject(node) || typeof node.descriptionClinique !== 'string' || node.descriptionClinique.trim().length < 3) {
+                    add(`Le nœud "${nodeId}" doit avoir une description clinique (3 caractères minimum).`);
+                    return;
+                }
+                (Array.isArray(node.actionsDisponibles) ? node.actionsDisponibles : []).forEach(action => {
+                    if (!nodes[action?.nextNode]) add(`Le nœud "${nodeId}" pointe vers le nœud inconnu "${action?.nextNode || ''}".`);
+                });
+                if (node.evolutionAuto && !nodes[node.evolutionAuto.nextNode]) {
+                    add(`L’évolution automatique du nœud "${nodeId}" pointe vers un nœud inconnu.`);
+                }
+            });
+        }
+    } else {
+        const diagnosis = data.correctDiagnostic;
+        const validDiagnosis = typeof diagnosis === 'string'
+            ? diagnosis.trim().length >= 3
+            : Array.isArray(diagnosis) && diagnosis.length > 0 && diagnosis.every(item => typeof item === 'string' && item.trim().length >= 3);
+        if (!validDiagnosis) add('Le diagnostic correct est obligatoire (3 caractères minimum).');
+    }
+
+    const validateChallenge = (challenge, type, label) => {
+        if (!isObject(challenge)) {
+            add(`${label} : le défi est manquant ou invalide.`);
+            return;
+        }
+        if (typeof challenge.question !== 'string' || challenge.question.trim().length < 5) {
+            add(`${label} : la question doit contenir au moins 5 caractères.`);
+        }
+        if (type === 'SAISIE') {
+            if (!Array.isArray(challenge.expected_keywords) || !challenge.expected_keywords.some(keyword => typeof keyword === 'string' && keyword.trim())) {
+                add(`${label} : ajoutez au moins un mot-clé attendu pour la saisie libre.`);
+            }
+            return;
+        }
+        if (type !== 'QCM') {
+            add(`${label} : le type doit être QCM ou SAISIE.`);
+            return;
+        }
+        if (!Array.isArray(challenge.options) || challenge.options.length < 2 || challenge.options.some(option => typeof option !== 'string' || !option.trim())) {
+            add(`${label} : un QCM doit avoir au moins deux options renseignées.`);
+            return;
+        }
+        const indices = Array.isArray(challenge.correct_indices) && challenge.correct_indices.length
+            ? challenge.correct_indices
+            : Number.isInteger(challenge.correct_index) ? [challenge.correct_index] : [];
+        if (!indices.length || indices.some(index => !Number.isInteger(index) || index < 0 || index >= challenge.options.length)) {
+            add(`${label} : indiquez au moins une bonne réponse dont l’indice correspond à une option.`);
+        }
+    };
+
+    if (data.locks !== undefined && !Array.isArray(data.locks)) add('La liste des défis verrouillés doit être un tableau.');
+    (Array.isArray(data.locks) ? data.locks : []).forEach((lock, index) => {
+        const label = `Verrou ${index + 1}`;
+        if (!isObject(lock)) {
+            add(`${label} : entrée invalide.`);
+            return;
+        }
+        if (typeof lock.id !== 'string' || lock.id.length < 3) add(`${label} : identifiant manquant (3 caractères minimum).`);
+        if (!Array.isArray(lock.target_fields) || lock.target_fields.length === 0 || lock.target_fields.some(field => typeof field !== 'string')) {
+            add(`${label} : renseignez au moins un champ cible.`);
+        }
+        validateChallenge(lock.challenge, lock.type, label);
+    });
+
+    if (data.postGameQuestions !== undefined && !Array.isArray(data.postGameQuestions)) add('La liste des quiz post-jeu doit être un tableau.');
+    (Array.isArray(data.postGameQuestions) ? data.postGameQuestions : []).forEach((question, index) => {
+        const label = `Quiz post-jeu ${index + 1}`;
+        if (!isObject(question)) {
+            add(`${label} : entrée invalide.`);
+            return;
+        }
+        validateChallenge(question.challenge || question, question.type || 'QCM', label);
+    });
+
+    return errors;
+}
+
 function initFileHandlers() {
     // Import JSON Local
     const fileInput = document.getElementById('load-json-input');
     fileInput?.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
+        fileInput.value = '';
         const reader = new FileReader();
         reader.onload = (event) => {
             try {
                 const data = JSON.parse(event.target.result);
+                if (!confirmReplaceCurrentCase()) return;
                 populateEditor(data);
                 alert("Cas importé avec succès !");
             } catch (err) {
@@ -814,7 +1015,8 @@ function initFileHandlers() {
 
     // Exporter JSON
     document.getElementById('btn-save-json')?.addEventListener('click', () => {
-        const data = collectData();
+        const data = collectValidatedEditorData('exporté');
+        if (!data) return;
         const jsonStr = JSON.stringify(data, null, 2);
         const blob = new Blob([jsonStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -822,12 +1024,13 @@ function initFileHandlers() {
         a.href = url;
         a.download = `${data.id || 'nouveau_cas'}.json`;
         a.click();
-        URL.revokeObjectURL(url);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
 
     // Tester en direct
     document.getElementById('btn-preview-case')?.addEventListener('click', () => {
-        const data = collectData();
+        const data = collectValidatedEditorData('testé');
+        if (!data) return;
         sessionStorage.setItem('previewCase', JSON.stringify(data));
         window.location.href = 'game.html?preview=true';
     });
@@ -843,7 +1046,8 @@ function initFileHandlers() {
 
     // Synchronisation / Envoi Supabase
     document.getElementById('btn-push-supabase')?.addEventListener('click', async () => {
-        const data = collectData();
+        const data = collectValidatedEditorData('publié');
+        if (!data) return;
         const btn = document.getElementById('btn-push-supabase');
         const origText = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publication...';
@@ -881,10 +1085,27 @@ function initFileHandlers() {
 }
 
 function initAutosave() {
-    setInterval(() => {
-        const data = collectData();
+    const scheduleSave = () => {
+        clearTimeout(autosaveTimeout);
+        autosaveTimeout = setTimeout(() => persistEditorAutosave(collectData()), 400);
+    };
+    document.addEventListener('input', scheduleSave);
+    document.addEventListener('change', scheduleSave);
+    document.addEventListener('click', (event) => {
+        if (event.target.closest('.btn-icon-danger')) setTimeout(scheduleSave, 0);
+    });
+    window.addEventListener('pagehide', () => persistEditorAutosave(collectData()));
+    setInterval(() => persistEditorAutosave(collectData()), 5000);
+}
+
+function persistEditorAutosave(data) {
+    try {
         localStorage.setItem('medgame_editor_autosave', JSON.stringify(data));
-    }, 5000);
+        return true;
+    } catch (error) {
+        console.warn('Autosauvegarde MedStudio impossible :', error);
+        return false;
+    }
 }
 
 function loadInitialCase() {
@@ -894,9 +1115,12 @@ function loadInitialCase() {
     if (previewStr) {
         try {
             populateEditor(JSON.parse(previewStr));
+            sessionStorage.removeItem('previewCase');
+            persistEditorAutosave(collectData());
             return;
         } catch (e) {
             console.error("Erreur preview:", e);
+            sessionStorage.removeItem('previewCase');
         }
     }
 
@@ -937,6 +1161,7 @@ async function loadUnlockedCasesList() {
                     <button class="btn-sidebar" style="padding:6px 12px; font-size:0.8rem;">Charger</button>
                 `;
                 item.addEventListener('click', async () => {
+                    if (!confirmReplaceCurrentCase()) return;
                     const res = await fetch(`data/${file}`);
                     if (res.ok) {
                         const caseData = await res.json();
@@ -957,6 +1182,7 @@ async function loadUnlockedCasesList() {
 
 function populateEditor(data) {
     if (!data) return;
+    editorSourceData = JSON.parse(JSON.stringify(data));
 
     // 1. Métadonnées
     setVal('case-id', data.id || 'nouveau_cas');
@@ -1022,11 +1248,7 @@ function populateEditor(data) {
     if (traitList) traitList.innerHTML = '';
     (interro.traitements || []).forEach(item => addTraitementItem(item));
 
-    const allergies = interro.allergies;
-    if (allergies) {
-        if (typeof allergies === 'string') setVal('allergies-input', allergies);
-        else if (allergies.liste) setVal('allergies-input', allergies.liste.join(', '));
-    }
+    setVal('allergies-input', formatAllergyText(interro.allergies));
 
     // Mode de vie
     const mdv = interro.modeDeVie || {};
@@ -1138,6 +1360,7 @@ function populateEditor(data) {
     if (typeof window.updatePatientModel3DPreview === 'function') {
         window.updatePatientModel3DPreview();
     }
+    persistEditorAutosave(collectData());
 }
 
 function populateEcosFields(ecos) {
@@ -1222,6 +1445,17 @@ function collectData() {
         }
     });
 
+    const sourcePossibleTreatments = new Set(editorSourceData.possibleTreatments || []);
+    [
+        [correctTreatments, editorSourceData.correctTreatments],
+        [secondLineTreatments, editorSourceData.secondLineTreatments],
+        [fatalTreatments, editorSourceData.fatalTreatments]
+    ].forEach(([collected, source]) => {
+        (source || []).forEach(name => {
+            if (!sourcePossibleTreatments.has(name) && !collected.includes(name)) collected.push(name);
+        });
+    });
+
     // Appareils Cliniques
     const examenClinique = {
         constantes: {
@@ -1247,41 +1481,88 @@ function collectData() {
     // Locks
     const locks = [];
     document.querySelectorAll('#locks-list-container .studio-card').forEach((card, idx) => {
+        const original = editorItemSource.get(card) || {};
         const targetRaw = card.querySelector('.lock-target')?.value || '';
         const question = card.querySelector('.lock-question')?.value || '';
+        const type = card.querySelector('.lock-type')?.value || original.type || 'QCM';
         const optionsRaw = card.querySelector('.lock-options')?.value || '';
+        const keywordsRaw = card.querySelector('.lock-keywords')?.value || '';
         const feedback = card.querySelector('.lock-feedback')?.value || '';
+        const options = optionsRaw.split('\n').map(s => s.trim()).filter(s => s);
+        const challenge = type === 'SAISIE'
+            ? mergeEditorData(original.challenge || {}, {
+                question,
+                expected_keywords: keywordsRaw.split('\n').map(s => s.trim()).filter(Boolean)
+            })
+            : mergeEditorData(original.challenge || {}, {
+                question,
+                options,
+                correct_indices: parseCorrectIndices(card.querySelector('.lock-correct-indices')?.value, options.length)
+            });
+        if (type === 'SAISIE') {
+            delete challenge.options;
+            delete challenge.correct_index;
+            delete challenge.correct_indices;
+        } else {
+            delete challenge.expected_keywords;
+            delete challenge.correct_index;
+        }
 
-        locks.push({
-            id: 'lock_' + (idx + 1),
-            type: 'QCM',
-            label: 'Défi ' + (idx + 1),
+        const lock = mergeEditorData(original, {
+            id: original.id || 'lock_' + (idx + 1),
+            type,
+            label: original.label || 'Défi ' + (idx + 1),
             target_fields: targetRaw.split(',').map(s => s.trim()).filter(s => s),
-            challenge: {
-                question: question,
-                options: optionsRaw.split('\n').map(s => s.trim()).filter(s => s),
-                correct_indices: [0]
-            },
+            challenge,
             feedback_error: feedback
         });
+        delete lock.challenge.correct_index;
+        locks.push(lock);
     });
 
     // Post-game Quiz
     const postGameQuestions = [];
     document.querySelectorAll('#postgame-questions-container .studio-card').forEach(card => {
+        const original = editorItemSource.get(card) || {};
         const qText = card.querySelector('.postgame-q-text')?.value || '';
+        const type = card.querySelector('.postgame-q-type')?.value || original.type || 'QCM';
         const optionsRaw = card.querySelector('.postgame-q-options')?.value || '';
+        const keywordsRaw = card.querySelector('.postgame-q-keywords')?.value || '';
         const feedback = card.querySelector('.postgame-q-feedback')?.value || '';
-
-        postGameQuestions.push({
-            type: 'QCM',
-            challenge: {
+        const options = optionsRaw.split('\n').map(s => s.trim()).filter(s => s);
+        const challengeSource = original.challenge || (original.question ? original : {});
+        const challenge = type === 'SAISIE'
+            ? mergeEditorData(challengeSource, {
                 question: qText,
-                options: optionsRaw.split('\n').map(s => s.trim()).filter(s => s),
-                correct_indices: [0]
-            },
+                expected_keywords: keywordsRaw.split('\n').map(s => s.trim()).filter(Boolean)
+            })
+            : mergeEditorData(challengeSource, {
+                question: qText,
+                options,
+                correct_indices: parseCorrectIndices(card.querySelector('.postgame-q-correct-indices')?.value, options.length)
+            });
+        if (type === 'SAISIE') {
+            delete challenge.options;
+            delete challenge.correct_index;
+            delete challenge.correct_indices;
+        } else {
+            delete challenge.expected_keywords;
+            delete challenge.correct_index;
+        }
+
+        const question = mergeEditorData(original, {
+            type,
+            challenge,
             feedback_error: feedback
         });
+        if (!original.challenge) {
+            delete question.question;
+            delete question.options;
+            delete question.correct_index;
+            delete question.correct_indices;
+        }
+        delete question.challenge.correct_index;
+        postGameQuestions.push(question);
     });
 
     // ECOS
@@ -1289,23 +1570,24 @@ function collectData() {
     if (document.getElementById('ecos-toggle-enable')?.checked) {
         const aptitudes = [];
         document.querySelectorAll('#ecos-aptitudes-list .studio-card').forEach((card, idx) => {
+            const original = editorItemSource.get(card) || {};
             const label = card.querySelector('.ecos-apt-label')?.value || '';
             const kwRaw = card.querySelector('.ecos-apt-kw')?.value || '';
             const critFait = card.querySelector('.ecos-crit-fait')?.value || '';
             const critPartie = card.querySelector('.ecos-crit-partie')?.value || '';
             const critNon = card.querySelector('.ecos-crit-non')?.value || '';
 
-            aptitudes.push({
-                id: 'apt_' + (idx + 1),
+            aptitudes.push(mergeEditorData(original, {
+                id: original.id || 'apt_' + (idx + 1),
                 label: label,
-                weight: 1,
+                weight: original.weight || 1,
                 triggerKeywords: kwRaw.split(',').map(s => s.trim()).filter(s => s),
-                criteria: {
+                criteria: mergeEditorData(original.criteria || {}, {
                     fait: critFait,
                     en_partie: critPartie,
                     non_fait: critNon
-                }
-            });
+                })
+            }));
         });
 
         ecosData = {
@@ -1328,7 +1610,7 @@ function collectData() {
     }
 
     // Objet Final JSON 2.0
-    return {
+    const editedData = {
         id: getVal('case-id') || 'nouveau_cas',
         redacteur: getVal('case-redacteur') || 'Dr MedGame',
         specialty: getVal('case-specialty') || 'Cardiologie',
@@ -1372,10 +1654,7 @@ function collectData() {
                 familiaux: collectRepeater('list-ant-fam', ['.field-antecedent', '.field-lien'], ['antecedent', 'lien'])
             },
             traitements: collectRepeater('list-traitements', ['.field-nom', '.field-dose', '.field-frequence'], ['nom', 'dose', 'frequence']),
-            allergies: {
-                presence: !!getVal('allergies-input'),
-                liste: getVal('allergies-input') ? getVal('allergies-input').split(',').map(s => s.trim()).filter(s => s) : []
-            },
+            allergies: collectAllergies(editorSourceData.interrogatoire?.allergies, getVal('allergies-input')),
             histoireMaladie: {
                 debutSymptomes: getVal('hdm-debut'),
                 evolution: getVal('hdm-evolution'),
@@ -1422,6 +1701,7 @@ function collectData() {
         objectifs: getVal('case-objectifs-input').split('\n').map(s => s.trim()).filter(s => s),
         hints: getVal('case-hints-input').split('\n').map(s => s.trim()).filter(s => s)
     };
+    return mergeEditorData(editorSourceData, editedData);
 }
 
 // ==================== 7. HELPERS GÉNÉRAUX ====================
@@ -1429,6 +1709,79 @@ function collectData() {
 function setVal(id, val) {
     const el = document.getElementById(id);
     if (el) el.value = val !== undefined && val !== null ? val : '';
+}
+
+function mergeEditorData(source, edited) {
+    if (Array.isArray(edited)) {
+        return edited.map(item => mergeEditorData(undefined, item));
+    }
+    if (!edited || typeof edited !== 'object') return edited;
+
+    const result = source && typeof source === 'object' && !Array.isArray(source) ? { ...source } : {};
+    Object.entries(edited).forEach(([key, value]) => {
+        if (value === undefined) {
+            delete result[key];
+        } else if (Array.isArray(value)) {
+            result[key] = value.map(item => mergeEditorData(undefined, item));
+        } else if (value && typeof value === 'object') {
+            result[key] = mergeEditorData(result[key], value);
+        } else {
+            result[key] = value;
+        }
+    });
+    return result;
+}
+
+function getCorrectIndices(challenge = {}) {
+    if (Array.isArray(challenge.correct_indices) && challenge.correct_indices.length) {
+        return challenge.correct_indices;
+    }
+    if (Number.isInteger(challenge.correct_index)) return [challenge.correct_index];
+    return [0];
+}
+
+function formatAllergyText(allergies) {
+    if (typeof allergies === 'string') return allergies;
+    const liste = Array.isArray(allergies?.liste) ? allergies.liste : [];
+    return liste.map(item => {
+        if (typeof item === 'string') return item;
+        const name = item?.allergene || item?.name || '';
+        const reaction = item?.reaction ? '(' + item.reaction + ')' : '';
+        return [name, reaction].filter(Boolean).join(' ');
+    }).filter(Boolean).join(', ');
+}
+
+function collectAllergies(source, text) {
+    if (text === formatAllergyText(source)) return source || { presence: false, liste: [] };
+    if (typeof source === 'string') return text;
+
+    const sourceList = Array.isArray(source?.liste) ? source.liste : [];
+    const useObjects = sourceList.some(item => item && typeof item === 'object') || sourceList.length === 0;
+    const liste = text.split(',').map(item => item.trim()).filter(Boolean).map(item => {
+        if (!useObjects) return item;
+        const match = item.match(/^(.*?)\s*\((.*?)\)\s*$/);
+        const allergene = (match ? match[1] : item).trim();
+        const reaction = match ? match[2].trim() : '';
+        const existing = sourceList.find(value =>
+            value && typeof value === 'object' &&
+            String(value.allergene || '').toLowerCase() === allergene.toLowerCase()
+        );
+        return mergeEditorData(existing, { allergene, reaction });
+    });
+
+    return mergeEditorData(source, { presence: liste.length > 0, liste });
+}
+
+function parseCorrectIndices(value, optionCount) {
+    const raw = String(value ?? '').trim();
+    if (!raw) return [0];
+
+    const parts = raw.split(',').map(part => part.trim());
+    const parsed = parts.map(Number);
+    if (parts.some(part => !part) || parsed.some(index => !Number.isInteger(index) || index < 0 || index >= optionCount)) {
+        return [];
+    }
+    return [...new Set(parsed)];
 }
 
 function getVal(id) {
@@ -1450,7 +1803,14 @@ function collectRepeater(containerId, fieldSelectors, keys) {
             item[key] = val;
             if (val) hasVal = true;
         });
-        if (hasVal) list.push(item);
+        if (hasVal) {
+            const source = editorItemSource.get(row);
+            if (typeof source === 'string' && item[keys[0]] && keys.slice(1).every(key => !item[key])) {
+                list.push(item[keys[0]]);
+            } else {
+                list.push(mergeEditorData(source, item));
+            }
+        }
     });
     return list;
 }

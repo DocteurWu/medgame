@@ -213,7 +213,7 @@ export class ThreeScene {
 
         this._clock = new THREE.Clock();
         this._loop = this._loop.bind(this);
-        this._animFrameId = requestAnimationFrame(this._loop);
+        this._animFrameId = document.hidden ? null : requestAnimationFrame(this._loop);
 
     }
 
@@ -353,7 +353,15 @@ export class ThreeScene {
         }, { signal });
 
         window.addEventListener('resize', () => this.resize(), { signal });
-        document.addEventListener('visibilitychange', () => this._clock.getDelta(), { signal });
+        document.addEventListener('visibilitychange', () => {
+            this._clock.getDelta();
+            if (document.hidden) {
+                if (this._animFrameId != null) cancelAnimationFrame(this._animFrameId);
+                this._animFrameId = null;
+            } else if (!this._cleanedUp && this._animFrameId == null) {
+                this._animFrameId = requestAnimationFrame(this._loop);
+            }
+        }, { signal });
 
         document.addEventListener('instruments-updated', () => this.collectInteractive(), { signal });
         document.addEventListener('patient-model-changed', () => {
@@ -837,9 +845,10 @@ export class ThreeScene {
         if (!this.fpsController?.enabled) this.controls.update();
         this.director.endFrame(dt);
 
-        // Throttling du calcul d'ombres pour soulager le GPU (inutile de recalculer chaque micro-frame)
+        // Les ombres n'ont pas besoin de suivre les mouvements à 60 Hz.
         this._shadowTimer = (this._shadowTimer || 0) + dt;
-        if (this._shadowTimer >= 0.04 || this.characterController?.isMoving) {
+        const shadowInterval = this.characterController?.isMoving ? 0.05 : 0.1;
+        if (this._shadowTimer >= shadowInterval) {
             this.renderer.shadowMap.needsUpdate = true;
             this._shadowTimer = 0;
         }
@@ -864,7 +873,8 @@ export class ThreeScene {
         if (this._cleanedUp) return;
         this._cleanedUp = true;
 
-        cancelAnimationFrame(this._animFrameId);
+        if (this._animFrameId != null) cancelAnimationFrame(this._animFrameId);
+        this._animFrameId = null;
         this._ac.abort();
 
         medicalAudio.destroy();
