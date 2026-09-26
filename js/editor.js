@@ -1,27 +1,802 @@
+/**
+ * ==========================================================================
+ * MEDGAME EDITOR 2.0 — Contrôleur Studio & Rétrocompatibilité Totale JSON 2.0
+ * ==========================================================================
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Navigation Logic
-    const navItems = document.querySelectorAll('.nav-item');
+    // Initialisation
+    initNavigation();
+    initSidebarToggle();
+    initPatientSync();
+    initDynamicLists();
+    initModals();
+    initAIInteractions();
+    initFileHandlers();
+    initAutosave();
+
+    // Charger le cas initial (depuis session preview, ou localstorage, ou défaut)
+    loadInitialCase();
+});
+
+// ==================== 1. NAVIGATION & LAYOUT ====================
+
+function initNavigation() {
+    const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
     const sections = document.querySelectorAll('.game-section');
 
     navItems.forEach(item => {
         item.addEventListener('click', () => {
-            const target = item.getAttribute('data-target');
+            const targetId = item.getAttribute('data-target');
             navItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
-            sections.forEach(s => s.classList.remove('active'));
-            document.getElementById(target).classList.add('active');
 
-            // Close sidebar on mobile after selection
-            const appContainer = document.querySelector('.app-container');
-            if (window.innerWidth <= 900 && appContainer) {
-                appContainer.classList.add('sidebar-collapsed');
-                sessionStorage.setItem('editorSidebarCollapsed', 'true');
+            sections.forEach(s => s.classList.remove('active'));
+            const targetSec = document.getElementById(targetId);
+            if (targetSec) {
+                targetSec.classList.add('active');
+            }
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 900) {
+                document.querySelector('.app-container')?.classList.add('sidebar-collapsed');
+            }
+        });
+    });
+}
+
+function initSidebarToggle() {
+    const toggleBtn = document.getElementById('sidebar-toggle-btn');
+    const appContainer = document.querySelector('.app-container');
+
+    if (toggleBtn && appContainer) {
+        const isCollapsed = sessionStorage.getItem('editorSidebarCollapsed') === 'true';
+        if (isCollapsed) appContainer.classList.add('sidebar-collapsed');
+
+        toggleBtn.addEventListener('click', () => {
+            appContainer.classList.toggle('sidebar-collapsed');
+            sessionStorage.setItem('editorSidebarCollapsed', appContainer.classList.contains('sidebar-collapsed'));
+        });
+    }
+}
+
+function initPatientSync() {
+    const nomInput = document.getElementById('patient-nom');
+    const prenomInput = document.getElementById('patient-prenom');
+    const ageInput = document.getElementById('patient-age');
+    const sexeInput = document.getElementById('patient-sexe');
+
+    const updateSidebarCard = () => {
+        const nom = nomInput?.value.trim() || 'Nom';
+        const prenom = prenomInput?.value.trim() || 'Prénom';
+        const age = ageInput?.value.trim() || '--';
+        const sexe = sexeInput?.value || '--';
+
+        const nameEl = document.getElementById('sidebar-patient-name');
+        const subEl = document.getElementById('sidebar-patient-sub');
+        const avatarEl = document.getElementById('sidebar-avatar');
+
+        if (nameEl) nameEl.textContent = `${prenom} ${nom}`;
+        if (subEl) subEl.textContent = `${age} ans · ${sexe}`;
+        if (avatarEl) avatarEl.textContent = prenom.charAt(0).toUpperCase() || '?';
+
+        updateCompletionMeter();
+    };
+
+    [nomInput, prenomInput, ageInput, sexeInput].forEach(input => {
+        input?.addEventListener('input', updateSidebarCard);
+        input?.addEventListener('change', updateSidebarCard);
+    });
+
+    // Écoute de l'ensemble des inputs pour la jauge de complétude
+    document.addEventListener('input', () => updateCompletionMeter());
+}
+
+function updateCompletionMeter() {
+    const data = collectData();
+    let score = 0;
+    let total = 10;
+
+    if (data.patient?.nom && data.patient?.prenom) score += 1;
+    if (data.interrogatoire?.motifHospitalisation) score += 1;
+    if (data.interrogatoire?.histoireMaladie?.descriptionDouleur || data.interrogatoire?.histoireMaladie?.debutSymptomes) score += 1;
+    if (data.examenClinique?.constantes?.tension) score += 1;
+    if (data.availableExams && data.availableExams.length > 0) score += 1;
+    if (data.correctDiagnostic) score += 2;
+    if (data.correctTreatments && data.correctTreatments.length > 0) score += 1;
+    if (data.correction && data.correction.length > 30) score += 1;
+    if (data.ecos && data.ecos.vignette?.role) score += 1;
+
+    const percentage = Math.min(100, Math.round((score / total) * 100));
+    const fillEl = document.getElementById('completion-fill');
+    const textEl = document.getElementById('completion-text');
+
+    if (fillEl) fillEl.style.width = `${percentage}%`;
+    if (textEl) textEl.textContent = `${percentage}%`;
+}
+
+// ==================== 2. LISTES DYNAMIQUES & REPEATERS ====================
+
+function initDynamicLists() {
+    // Antécédents Médicaux
+    document.getElementById('btn-add-ant-med')?.addEventListener('click', () => {
+        addAntMedItem({ type: '', traitement: '' });
+    });
+
+    // Antécédents Chirurgicaux
+    document.getElementById('btn-add-ant-chir')?.addEventListener('click', () => {
+        addAntChirItem({ intervention: '', annee: '' });
+    });
+
+    // Antécédents Familiaux
+    document.getElementById('btn-add-ant-fam')?.addEventListener('click', () => {
+        addAntFamItem({ antecedent: '', lien: '' });
+    });
+
+    // Traitements
+    document.getElementById('btn-add-traitement')?.addEventListener('click', () => {
+        addTraitementItem({ nom: '', dose: '', frequence: '' });
+    });
+
+    // Appareil Clinique Personnalisé
+    document.getElementById('btn-add-custom-exam-sec')?.addEventListener('click', () => {
+        const title = prompt("Nom du nouvel appareil (ex: Examen Cutané, Examen ORL...) :", "Examen Spécifique");
+        if (title) {
+            const key = 'examen' + title.replace(/[^a-zA-Z0-9]/g, '');
+            renderDynamicExamSection(key, title, { observation: "Normal." });
+        }
+    });
+
+    // Examens Paracliniques
+    document.getElementById('btn-add-exam-row')?.addEventListener('click', () => {
+        addExamParaclinicRow("Nouvel Examen", "Résultat normal.", "utile");
+    });
+
+    // Diagnostics Options
+    document.getElementById('btn-add-diag-option')?.addEventListener('click', () => {
+        addDiagnosticOptionItem("Nouveau diagnostic différentiel");
+    });
+
+    // Traitements Options
+    document.getElementById('btn-add-traitement-option')?.addEventListener('click', () => {
+        addTreatmentOptionItem("Nouveau traitement", "neutre");
+    });
+
+    // Verrous & Quiz
+    document.getElementById('btn-add-lock')?.addEventListener('click', () => {
+        addLockCard({
+            id: 'lock_' + Date.now(),
+            type: 'QCM',
+            label: 'Défi clinique',
+            target_fields: ['examResults.ECG'],
+            challenge: {
+                question: 'Question du défi ?',
+                options: ['Option 1 (Bonne réponse)', 'Option 2', 'Option 3', 'Option 4'],
+                correct_indices: [0]
+            },
+            feedback_error: 'Erreur. Explication...'
+        });
+    });
+
+    document.getElementById('btn-add-postgame-q')?.addEventListener('click', () => {
+        addPostGameQuestionCard({
+            type: 'QCM',
+            challenge: {
+                question: 'Question post-jeu ?',
+                options: ['Option 1 (Bonne réponse)', 'Option 2'],
+                correct_indices: [0]
+            },
+            feedback_error: 'Revoyez les recommandations...'
+        });
+    });
+
+    // ECOS
+    document.getElementById('ecos-toggle-enable')?.addEventListener('change', (e) => {
+        const container = document.getElementById('ecos-fields-container');
+        if (container) container.style.display = e.target.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('btn-add-ecos-aptitude')?.addEventListener('click', () => {
+        addEcosAptitudeRow({
+            id: 'item_' + Date.now(),
+            label: 'Nouvel item clinique',
+            weight: 1,
+            triggerKeywords: ['mot1', 'mot2'],
+            criteria: {
+                fait: 'Parfaitement réalisé',
+                en_partie: 'Incomplet',
+                non_fait: 'Non réalisé'
             }
         });
     });
 
-    // Load JSON handler
-    document.getElementById('load-json').addEventListener('change', (e) => {
+    // Markdown Preview Toggle
+    document.getElementById('btn-toggle-preview-md')?.addEventListener('click', () => {
+        const input = document.getElementById('correction-markdown-input');
+        const box = document.getElementById('correction-preview-box');
+        if (input && box) {
+            if (box.style.display === 'none') {
+                box.innerHTML = typeof parseMarkdown === 'function' ? parseMarkdown(input.value) : input.value;
+                box.style.display = 'block';
+                input.style.display = 'none';
+            } else {
+                box.style.display = 'none';
+                input.style.display = 'block';
+            }
+        }
+    });
+}
+
+// --- Helpers pour Repeaters ---
+
+function addAntMedItem(data = { type: '', traitement: '' }) {
+    const list = document.getElementById('list-ant-med');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'repeater-row';
+    row.innerHTML = `
+        <input type="text" class="field-type" placeholder="Type / Pathologie (ex: Diabète T2)" value="${escapeHtml(data.type || '')}">
+        <input type="text" class="field-traitement" placeholder="Traitement associé (ex: Metformine)" value="${escapeHtml(data.traitement || '')}">
+        <button class="btn-icon-danger" title="Supprimer" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function addAntChirItem(data = { intervention: '', annee: '' }) {
+    const list = document.getElementById('list-ant-chir');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'repeater-row';
+    row.innerHTML = `
+        <input type="text" class="field-intervention" placeholder="Intervention (ex: Appendicectomie)" value="${escapeHtml(data.intervention || '')}">
+        <input type="text" class="field-annee" placeholder="Année (ex: 2015)" value="${escapeHtml(data.annee || '')}" style="max-width:120px;">
+        <button class="btn-icon-danger" title="Supprimer" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function addAntFamItem(data = { antecedent: '', lien: '' }) {
+    const list = document.getElementById('list-ant-fam');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'repeater-row';
+    row.innerHTML = `
+        <input type="text" class="field-antecedent" placeholder="Pathologie (ex: Infarctus à 50 ans)" value="${escapeHtml(data.antecedent || data.pathologie || '')}">
+        <input type="text" class="field-lien" placeholder="Lien (ex: Père)" value="${escapeHtml(data.lien || '')}" style="max-width:150px;">
+        <button class="btn-icon-danger" title="Supprimer" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function addTraitementItem(data = { nom: '', dose: '', frequence: '' }) {
+    const list = document.getElementById('list-traitements');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'repeater-row';
+    row.innerHTML = `
+        <input type="text" class="field-nom" placeholder="Médicament (ex: Kardégic)" value="${escapeHtml(data.nom || '')}">
+        <input type="text" class="field-dose" placeholder="Dosage (ex: 75 mg)" value="${escapeHtml(data.dose || '')}" style="max-width:140px;">
+        <input type="text" class="field-frequence" placeholder="Fréquence (ex: 1/j)" value="${escapeHtml(data.frequence || '')}" style="max-width:120px;">
+        <button class="btn-icon-danger" title="Supprimer" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function renderDynamicExamSection(key, title, dataObj = {}) {
+    const container = document.getElementById('dynamic-exam-sections-list');
+    if (!container) return;
+
+    let secCard = container.querySelector(`[data-exam-key="${key}"]`);
+    if (!secCard) {
+        secCard = document.createElement('div');
+        secCard.className = 'studio-card';
+        secCard.style.background = 'rgba(255,255,255,0.015)';
+        secCard.style.marginTop = '16px';
+        secCard.setAttribute('data-exam-key', key);
+        container.appendChild(secCard);
+    }
+
+    let rowsHtml = '';
+    for (const [subKey, val] of Object.entries(dataObj)) {
+        rowsHtml += `
+            <div class="form-group">
+                <label class="form-label">${escapeHtml(subKey)}</label>
+                <input type="text" class="form-control exam-sub-field" data-subkey="${escapeHtml(subKey)}" value="${escapeHtml(typeof val === 'string' ? val : JSON.stringify(val))}">
+            </div>
+        `;
+    }
+
+    secCard.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="margin:0; color:#00f2fe; font-size:0.95rem;"><i class="fas fa-stethoscope"></i> ${escapeHtml(title)}</h4>
+            <button class="btn-icon-danger" title="Supprimer l'appareil" onclick="this.closest('.studio-card').remove()"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="form-grid-2">
+            ${rowsHtml}
+        </div>
+    `;
+}
+
+function addExamParaclinicRow(name = '', result = '', grade = 'utile', imageBase64 = null) {
+    const list = document.getElementById('examens-paracliniques-list');
+    if (!list) return;
+
+    const row = document.createElement('div');
+    row.className = 'exam-item-card';
+    row.innerHTML = `
+        <div>
+            <label class="form-label">Nom de l'Examen</label>
+            <input type="text" class="form-control exam-name-input" value="${escapeHtml(name)}" placeholder="ex: ECG 12 dérivations">
+        </div>
+        <div>
+            <label class="form-label">Résultat Détaillé</label>
+            <textarea class="form-control exam-result-input" rows="2" placeholder="Résultat ou interprétation...">${escapeHtml(result)}</textarea>
+            <div class="exam-img-preview-box" style="margin-top:6px; ${imageBase64 ? '' : 'display:none;'}">
+                ${imageBase64 ? `<img src="${imageBase64}" style="max-height:80px; border-radius:6px; border:1px solid rgba(255,255,255,0.2);">` : ''}
+            </div>
+        </div>
+        <div>
+            <label class="form-label">Gradation</label>
+            <select class="form-control gradation-select" data-val="${grade}">
+                <option value="parfait" ${grade === 'parfait' ? 'selected' : ''}>★ Parfait (1ère Ligne)</option>
+                <option value="utile" ${grade === 'utile' ? 'selected' : ''}>● Utile (2ème Ligne)</option>
+                <option value="inutile" ${grade === 'inutile' ? 'selected' : ''}>○ Inutile</option>
+                <option value="dangereux" ${grade === 'dangereux' ? 'selected' : ''}>☠ Dangereux</option>
+            </select>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px; margin-top:22px;">
+            <button class="btn-icon-danger" title="Supprimer l'examen" onclick="this.closest('.exam-item-card').remove()"><i class="fas fa-trash"></i></button>
+        </div>
+    `;
+
+    const select = row.querySelector('.gradation-select');
+    select?.addEventListener('change', () => {
+        select.setAttribute('data-val', select.value);
+    });
+
+    list.appendChild(row);
+}
+
+function addDiagnosticOptionItem(name = '') {
+    const list = document.getElementById('list-diagnostics-options');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'repeater-row';
+    row.innerHTML = `
+        <input type="text" class="field-diag-option" placeholder="Diagnostic différentiel" value="${escapeHtml(name)}">
+        <button class="btn-icon-danger" title="Supprimer" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function addTreatmentOptionItem(name = '', role = 'neutre') {
+    const list = document.getElementById('list-traitements-options');
+    if (!list) return;
+    const row = document.createElement('div');
+    row.className = 'repeater-row';
+    row.innerHTML = `
+        <input type="text" class="field-treatment-name" placeholder="Nom du traitement" value="${escapeHtml(name)}">
+        <select class="field-treatment-role" style="max-width:180px;">
+            <option value="correct" ${role === 'correct' ? 'selected' : ''}>✓ 1ère Ligne (Correct)</option>
+            <option value="secondLine" ${role === 'secondLine' ? 'selected' : ''}>● 2ème Ligne</option>
+            <option value="neutre" ${role === 'neutre' ? 'selected' : ''}>○ Neutre / Faux</option>
+            <option value="fatal" ${role === 'fatal' ? 'selected' : ''}>☠ Fatal / Contre-indiqué</option>
+        </select>
+        <button class="btn-icon-danger" title="Supprimer" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i></button>
+    `;
+    list.appendChild(row);
+}
+
+function addLockCard(lockData) {
+    const container = document.getElementById('locks-list-container');
+    if (!container) return;
+
+    const card = document.createElement('div');
+    card.className = 'studio-card';
+    card.style.background = 'rgba(255,255,255,0.02)';
+    card.style.marginTop = '12px';
+
+    const question = lockData.challenge?.question || '';
+    const options = lockData.challenge?.options || ['Option A', 'Option B', 'Option C', 'Option D'];
+    const feedback = lockData.feedback_error || '';
+    const target = (lockData.target_fields || []).join(', ');
+
+    card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="margin:0; color:#f59e0b; font-size:0.95rem;"><i class="fas fa-lock"></i> Défi Verrou</h4>
+            <button class="btn-icon-danger" title="Supprimer le verrou" onclick="this.closest('.studio-card').remove()"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="form-grid-2">
+            <div class="form-group">
+                <label class="form-label">Champ(s) Cible Verrouillé(s)</label>
+                <input type="text" class="form-control lock-target" value="${escapeHtml(target)}" placeholder="ex: examResults.ECG">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Question Clinique du Défi</label>
+                <input type="text" class="form-control lock-question" value="${escapeHtml(question)}" placeholder="ex: Quel signe confirme l'ischémie ?">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Options du QCM (la 1ère est la bonne réponse, une par ligne)</label>
+            <textarea class="form-control lock-options" rows="3">${escapeHtml(options.join('\n'))}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Feedback Explicatif en cas d'erreur</label>
+            <input type="text" class="form-control lock-feedback" value="${escapeHtml(feedback)}" placeholder="ex: L'ischémie myocardique se traduit par...">
+        </div>
+    `;
+
+    container.appendChild(card);
+}
+
+function addPostGameQuestionCard(qData) {
+    const container = document.getElementById('postgame-questions-container');
+    if (!container) return;
+
+    const card = document.createElement('div');
+    card.className = 'studio-card';
+    card.style.background = 'rgba(255,255,255,0.02)';
+    card.style.marginTop = '12px';
+
+    const question = qData.challenge?.question || '';
+    const options = qData.challenge?.options || ['Option A', 'Option B'];
+    const feedback = qData.feedback_error || '';
+
+    card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h4 style="margin:0; color:#00f2fe; font-size:0.95rem;"><i class="fas fa-circle-question"></i> Question Quiz</h4>
+            <button class="btn-icon-danger" title="Supprimer" onclick="this.closest('.studio-card').remove()"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Question</label>
+            <input type="text" class="form-control postgame-q-text" value="${escapeHtml(question)}" placeholder="ex: Quelle est la durée minimale recommandée du traitement ?">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Options (la 1ère est la bonne, une par ligne)</label>
+            <textarea class="form-control postgame-q-options" rows="3">${escapeHtml(options.join('\n'))}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Feedback</label>
+            <input type="text" class="form-control postgame-q-feedback" value="${escapeHtml(feedback)}">
+        </div>
+    `;
+
+    container.appendChild(card);
+}
+
+function addEcosAptitudeRow(apt) {
+    const container = document.getElementById('ecos-aptitudes-list');
+    if (!container) return;
+
+    const row = document.createElement('div');
+    row.className = 'studio-card';
+    row.style.background = 'rgba(255,255,255,0.02)';
+    row.style.marginTop = '10px';
+
+    const label = apt.label || '';
+    const weight = apt.weight || 1;
+    const keywords = (apt.triggerKeywords || []).join(', ');
+    const criteria = apt.criteria || {};
+
+    row.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <strong style="color:#00f2fe; font-size:0.9rem;">Critère Clinique (Poids: ${weight})</strong>
+            <button class="btn-icon-danger" title="Supprimer" onclick="this.closest('.studio-card').remove()"><i class="fas fa-trash"></i></button>
+        </div>
+        <div class="form-grid-2">
+            <div class="form-group">
+                <label class="form-label">Intitulé du critère</label>
+                <input type="text" class="form-control ecos-apt-label" value="${escapeHtml(label)}" placeholder="ex: Caractérise la douleur rétrosternale">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Mots-clés déclencheurs</label>
+                <input type="text" class="form-control ecos-apt-kw" value="${escapeHtml(keywords)}" placeholder="ex: constrictive, effort, trinitrine">
+            </div>
+        </div>
+        <div class="form-grid-3" style="margin-top:6px;">
+            <div class="form-group">
+                <label class="form-label" style="color:#34d399;">Critère FAIT (Max points)</label>
+                <input type="text" class="form-control ecos-crit-fait" value="${escapeHtml(criteria.fait || '')}" placeholder="Description niveau réussi">
+            </div>
+            <div class="form-group">
+                <label class="form-label" style="color:#f59e0b;">Critère EN PARTIE (50%)</label>
+                <input type="text" class="form-control ecos-crit-partie" value="${escapeHtml(criteria.en_partie || '')}" placeholder="Description niveau moyen">
+            </div>
+            <div class="form-group">
+                <label class="form-label" style="color:#fb7185;">Critère NON FAIT (0%)</label>
+                <input type="text" class="form-control ecos-crit-non" value="${escapeHtml(criteria.non_fait || '')}" placeholder="Description non fait">
+            </div>
+        </div>
+    `;
+
+    container.appendChild(row);
+}
+
+// ==================== 3. MODALS & HANDLERS ====================
+
+function initModals() {
+    // Modal IA
+    const aiModal = document.getElementById('ai-modal');
+    const aiOpenBtn = document.getElementById('btn-open-ai-modal');
+    const aiTopBtn = document.getElementById('btn-topbar-ai');
+    const aiCloseBtn = document.getElementById('ai-modal-close');
+
+    [aiOpenBtn, aiTopBtn].forEach(btn => {
+        btn?.addEventListener('click', () => {
+            if (aiModal) aiModal.style.display = 'flex';
+        });
+    });
+
+    // Modal Dictée Vocale (Win + H)
+    const dictModal = document.getElementById('dictation-modal');
+    const dictOpenBtn = document.getElementById('btn-open-dictation-modal');
+    const dictCloseBtn = document.getElementById('dictation-modal-close');
+
+    dictOpenBtn?.addEventListener('click', () => {
+        if (dictModal) {
+            dictModal.style.display = 'flex';
+            setTimeout(() => document.getElementById('dictation-raw-input')?.focus(), 100);
+        }
+    });
+
+    dictCloseBtn?.addEventListener('click', () => {
+        if (dictModal) dictModal.style.display = 'none';
+    });
+
+    // Modal Load Options
+    const loadModal = document.getElementById('load-options-modal');
+    const loadBtn = document.getElementById('btn-load-options');
+    const loadClose = document.getElementById('load-options-close');
+
+    loadBtn?.addEventListener('click', () => {
+        if (loadModal) loadModal.style.display = 'flex';
+    });
+
+    loadClose?.addEventListener('click', () => {
+        if (loadModal) loadModal.style.display = 'none';
+    });
+
+    // Modal Unlocked Cases
+    const unlockedModal = document.getElementById('unlocked-cases-modal');
+    const openUnlockedBtn = document.getElementById('btn-open-unlocked-modal');
+    const unlockedClose = document.getElementById('unlocked-cases-close');
+
+    openUnlockedBtn?.addEventListener('click', () => {
+        if (loadModal) loadModal.style.display = 'none';
+        if (unlockedModal) {
+            unlockedModal.style.display = 'flex';
+            loadUnlockedCasesList();
+        }
+    });
+
+    unlockedClose?.addEventListener('click', () => {
+        if (unlockedModal) unlockedModal.style.display = 'none';
+    });
+
+    // Fermeture par clic arrière-plan
+    window.addEventListener('click', (e) => {
+        if (e.target === aiModal) aiModal.style.display = 'none';
+        if (e.target === dictModal) dictModal.style.display = 'none';
+        if (e.target === loadModal) loadModal.style.display = 'none';
+        if (e.target === unlockedModal) unlockedModal.style.display = 'none';
+    });
+}
+
+// ==================== 4. INTERACTIONS AVEC L'ASSISTANT IA ====================
+
+function initAIInteractions() {
+    // Traitement de la Dictée Vocale (Win + H)
+    document.getElementById('btn-clear-dictation')?.addEventListener('click', () => {
+        const input = document.getElementById('dictation-raw-input');
+        if (input) input.value = '';
+    });
+
+    document.getElementById('btn-process-dictation')?.addEventListener('click', async () => {
+        const rawText = document.getElementById('dictation-raw-input')?.value.trim();
+        const contentBox = document.getElementById('dictation-modal-content');
+        const loadingBox = document.getElementById('dictation-loading-box');
+
+        if (!rawText || rawText.length < 15) {
+            alert("Veuillez d'abord dicter ou saisir votre observation clinique (au moins quelques phrases). Utilisez Win + H pour parler au micro !");
+            return;
+        }
+
+        try {
+            if (contentBox) contentBox.style.display = 'none';
+            if (loadingBox) loadingBox.style.display = 'flex';
+
+            const currentData = collectData();
+            const structuredCase = await EditorAI.structureDictation(rawText, currentData);
+            populateEditor(structuredCase);
+
+            document.getElementById('dictation-modal').style.display = 'none';
+            alert("🎙️ Dictée vocale structurée avec succès ! Toutes les sections du cas clinique ont été remplies.");
+        } catch (err) {
+            console.error("Dictation Processing Error:", err);
+            alert("Erreur lors de la structuration de la dictée : " + err.message);
+        } finally {
+            if (contentBox) contentBox.style.display = 'block';
+            if (loadingBox) loadingBox.style.display = 'none';
+        }
+    });
+
+    // Bouton de lancement depuis le modal IA
+    document.getElementById('btn-run-ai-generate')?.addEventListener('click', async () => {
+        const mode = document.getElementById('ai-action-mode')?.value;
+        const topic = document.getElementById('ai-topic-input')?.value.trim();
+        const specialty = document.getElementById('ai-specialty-select')?.value;
+        const difficulty = parseInt(document.getElementById('ai-difficulty-select')?.value || '3');
+
+        const formBox = document.getElementById('ai-modal-form');
+        const loadingBox = document.getElementById('ai-loading-box');
+
+        if (!topic && mode === 'full_case') {
+            alert("Veuillez entrer une pathologie ou un sujet clinique (ex: Embolie pulmonaire).");
+            return;
+        }
+
+        try {
+            if (formBox) formBox.style.display = 'none';
+            if (loadingBox) loadingBox.style.display = 'flex';
+
+            if (mode === 'full_case') {
+                const generatedCase = await EditorAI.generateFullCase({ specialty, topic, difficulty });
+                populateEditor(generatedCase);
+                alert("✨ Cas clinique complet généré avec succès !");
+            } else if (mode === 'autocomplete') {
+                const currentData = collectData();
+                const enrichedCase = await EditorAI.autocompleteMissingFields(currentData);
+                populateEditor(enrichedCase);
+                alert("⚡ Champs manquants autocomplétés avec succès !");
+            } else if (mode === 'ecos_station') {
+                const currentData = collectData();
+                const ecosResult = await EditorAI.generateEcosStation(currentData);
+                populateEcosFields(ecosResult);
+                alert("🎓 Station ECOS et grilles R2C générées !");
+            } else if (mode === 'correction_doc') {
+                const currentData = collectData();
+                const mdCorrection = await EditorAI.generateCorrectionMarkdown(currentData);
+                const corrInput = document.getElementById('correction-markdown-input');
+                if (corrInput) corrInput.value = mdCorrection;
+                alert("📝 Fiche de correction rédigée !");
+            }
+
+            document.getElementById('ai-modal').style.display = 'none';
+        } catch (err) {
+            console.error("AI Generation Error:", err);
+            alert("Erreur lors de la génération IA : " + err.message);
+        } finally {
+            if (formBox) formBox.style.display = 'block';
+            if (loadingBox) loadingBox.style.display = 'none';
+        }
+    });
+
+    // Boutons IA section par section
+    document.getElementById('btn-ai-generate-persona')?.addEventListener('click', async () => {
+        const motif = document.getElementById('motif-admission-input')?.value.trim() || 'Symptôme';
+        const patientInfo = {
+            nom: document.getElementById('patient-nom')?.value,
+            prenom: document.getElementById('patient-prenom')?.value,
+            age: document.getElementById('patient-age')?.value,
+            sexe: document.getElementById('patient-sexe')?.value
+        };
+
+        try {
+            const res = await EditorAI.generatePersona(patientInfo, motif);
+            if (res.persona) {
+                document.getElementById('persona-ton').value = res.persona.ton || '';
+                document.getElementById('persona-registre').value = res.persona.registre || '';
+                document.getElementById('persona-loquacite').value = res.persona.loquacite || 'normal';
+                document.getElementById('persona-anxiete').value = res.persona.anxiete || 50;
+                document.getElementById('persona-confiance').value = res.persona.confiance || 60;
+                document.getElementById('persona-style-parole').value = res.persona.style_parole || '';
+                document.getElementById('persona-exemples-phrases').value = (res.persona.exemples_phrases || []).join('\n');
+            }
+            if (res.dialogue) {
+                document.getElementById('dialogue-phrase-ouverture').value = res.dialogue.phraseOuverture || '';
+            }
+            alert("✨ Persona et dialogue générés !");
+        } catch (err) {
+            alert("Erreur IA : " + err.message);
+        }
+    });
+
+    document.getElementById('btn-ai-generate-paraclinic')?.addEventListener('click', async () => {
+        const diagnostic = document.getElementById('diag-correct')?.value.trim() || 'Pathologie';
+        const motif = document.getElementById('motif-admission-input')?.value.trim() || 'Motif';
+
+        try {
+            const res = await EditorAI.generateExamGradation(diagnostic, motif);
+            if (res.availableExams && res.examResults) {
+                const list = document.getElementById('examens-paracliniques-list');
+                if (list) list.innerHTML = '';
+
+                const parfaits = res.examGradation?.parfaits || [];
+                const utiles = res.examGradation?.utiles || [];
+                const dangereux = res.examGradation?.dangereux || [];
+
+                res.availableExams.forEach(name => {
+                    let grade = 'inutile';
+                    if (parfaits.includes(name)) grade = 'parfait';
+                    else if (utiles.includes(name)) grade = 'utile';
+                    else if (dangereux.includes(name)) grade = 'dangereux';
+
+                    addExamParaclinicRow(name, res.examResults[name] || 'Résultat...', grade);
+                });
+            }
+            alert("✨ Examens et gradation générés !");
+        } catch (err) {
+            alert("Erreur IA : " + err.message);
+        }
+    });
+
+    document.getElementById('btn-ai-generate-therapeutics')?.addEventListener('click', async () => {
+        const diagnostic = document.getElementById('diag-correct')?.value.trim() || 'Pathologie';
+        const motif = document.getElementById('motif-admission-input')?.value.trim() || 'Motif';
+
+        try {
+            const res = await EditorAI.generateTherapeutics(diagnostic, motif);
+            if (res.possibleDiagnostics) {
+                const diagList = document.getElementById('list-diagnostics-options');
+                if (diagList) diagList.innerHTML = '';
+                res.possibleDiagnostics.filter(d => d !== res.correctDiagnostic).forEach(d => addDiagnosticOptionItem(d));
+            }
+            if (res.pieges) {
+                document.getElementById('diag-pieges').value = res.pieges.join(', ');
+            }
+            if (res.possibleTreatments) {
+                const treatList = document.getElementById('list-traitements-options');
+                if (treatList) treatList.innerHTML = '';
+
+                const corrects = res.correctTreatments || [];
+                const secondLine = res.secondLineTreatments || [];
+                const fatals = res.fatalTreatments || [];
+
+                res.possibleTreatments.forEach(t => {
+                    let role = 'neutre';
+                    if (corrects.includes(t)) role = 'correct';
+                    else if (secondLine.includes(t)) role = 'secondLine';
+                    else if (fatals.includes(t)) role = 'fatal';
+
+                    addTreatmentOptionItem(t, role);
+                });
+            }
+            alert("✨ Diagnostics différentiels et options thérapeutiques générés !");
+        } catch (err) {
+            alert("Erreur IA : " + err.message);
+        }
+    });
+
+    document.getElementById('btn-ai-generate-correction')?.addEventListener('click', async () => {
+        try {
+            const currentData = collectData();
+            const md = await EditorAI.generateCorrectionMarkdown(currentData);
+            const input = document.getElementById('correction-markdown-input');
+            if (input) input.value = md;
+            alert("✨ Fiche de correction générée !");
+        } catch (err) {
+            alert("Erreur IA : " + err.message);
+        }
+    });
+
+    document.getElementById('btn-ai-generate-ecos')?.addEventListener('click', async () => {
+        try {
+            const currentData = collectData();
+            const ecos = await EditorAI.generateEcosStation(currentData);
+            populateEcosFields(ecos);
+            alert("✨ Station ECOS et grilles R2C générées !");
+        } catch (err) {
+            alert("Erreur IA : " + err.message);
+        }
+    });
+}
+
+// ==================== 5. IMPORT, EXPORT, SUPABASE & PREVIEW ====================
+
+function initFileHandlers() {
+    // Import JSON Local
+    const fileInput = document.getElementById('load-json-input');
+    fileInput?.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
@@ -29,15 +804,16 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = JSON.parse(event.target.result);
                 populateEditor(data);
+                alert("Cas importé avec succès !");
             } catch (err) {
-                alert('Erreur lors de la lecture du JSON : ' + err.message);
+                alert("Erreur lors de la lecture du JSON : " + err.message);
             }
         };
         reader.readAsText(file);
     });
 
-    // Save JSON handler
-    document.getElementById('save-json').addEventListener('click', () => {
+    // Exporter JSON
+    document.getElementById('btn-save-json')?.addEventListener('click', () => {
         const data = collectData();
         const jsonStr = JSON.stringify(data, null, 2);
         const blob = new Blob([jsonStr], { type: 'application/json' });
@@ -49,331 +825,28 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     });
 
-    // Unlocked Cases (Improvements) handler
-    const btnLoadOptions = document.getElementById('btn-load-options');
-    const loadOptionsModal = document.getElementById('load-options-modal');
-    const loadOptionsClose = document.getElementById('load-options-close');
-    const btnOpenUnlocked = document.getElementById('btn-open-unlocked');
-    
-    const unlockedModal = document.getElementById('unlocked-cases-modal');
-    const unlockedClose = document.getElementById('unlocked-cases-close');
-    const unlockedList = document.getElementById('unlocked-cases-list');
-
-    if (btnLoadOptions && loadOptionsModal && btnOpenUnlocked && unlockedModal) {
-        btnLoadOptions.addEventListener('click', () => {
-            loadOptionsModal.style.display = 'flex';
-        });
-
-        loadOptionsClose.addEventListener('click', () => {
-            loadOptionsModal.style.display = 'none';
-        });
-
-        btnOpenUnlocked.addEventListener('click', async () => {
-            loadOptionsModal.style.display = 'none';
-            unlockedModal.style.display = 'flex';
-            unlockedList.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Chargement des cas débloqués...</div>';
-
-            try {
-                let playedCases = [];
-                const playedCasesStr = (document.cookie.split('; ').find(row => row.startsWith('playedCases=')) || '').split('=')[1];
-                if (playedCasesStr) {
-                    playedCases = playedCasesStr.split(',').filter(id => id !== '');
-                }
-
-                if (typeof supabase !== 'undefined') {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    if (session) {
-                        const { data: plays } = await supabase
-                            .from('play_sessions')
-                            .select('case_id')
-                            .eq('user_id', session.user.id);
-                        if (plays) {
-                            const supabasePlayed = plays.map(p => p.case_id);
-                            playedCases = [...new Set([...playedCases, ...supabasePlayed])];
-                        }
-                    }
-                }
-
-                if (playedCases.length === 0) {
-                    unlockedList.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">Vous n'avez pas encore terminé de cas. Jouez un cas d'abord pour pouvoir l'améliorer.</div>`;
-                    return;
-                }
-
-                let allCases = [];
-                if (typeof window.allSupabaseCases !== 'undefined' && window.allSupabaseCases) {
-                    allCases = window.allSupabaseCases;
-                } else if (typeof supabase !== 'undefined') {
-                    const { data } = await supabase.from('cases').select('id, title, specialty, content, status');
-                    allCases = data || [];
-                }
-
-                if (allCases.length === 0) {
-                    const response = await fetch('data/case-index.json');
-                    if (response.ok) {
-                        const index = await response.json();
-                        for (const spec in index) {
-                            for (const file of index[spec]) {
-                                if (playedCases.includes(file.replace('.json', ''))) {
-                                    allCases.push({ id: file.replace('.json', ''), title: file, specialty: spec, isLocal: true, file: file });
-                                }
-                            }
-                        }
-                    }
-                }
-
-                const unlockedCases = allCases.filter(c => playedCases.includes(c.id));
-
-                if (unlockedCases.length === 0) {
-                    unlockedList.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px;">Aucun de vos cas terminés n'est disponible.</div>`;
-                    return;
-                }
-
-                unlockedList.innerHTML = '';
-                unlockedCases.forEach(c => {
-                    const item = document.createElement('div');
-                    item.className = 'motif-item';
-                    item.style.cursor = 'pointer';
-                    item.style.background = 'rgba(255,255,255,0.05)';
-                    item.style.padding = '15px';
-                    item.style.borderRadius = '8px';
-                    item.style.border = '1px solid rgba(255,255,255,0.1)';
-                    item.style.marginBottom = '10px';
-                    
-                    item.innerHTML = `
-                        <div style="font-weight: bold; color: var(--primary-color);"><i class="fas fa-file-medical"></i> ${c.title || c.id}</div>
-                        <div style="font-size: 0.8em; color: var(--text-muted); margin-top: 5px;">Spécialité : ${c.specialty || 'Non définie'}</div>
-                    `;
-
-                    item.addEventListener('mouseenter', () => { item.style.background = 'rgba(255,255,255,0.1)'; });
-                    item.addEventListener('mouseleave', () => { item.style.background = 'rgba(255,255,255,0.05)'; });
-                    
-                    item.addEventListener('click', async () => {
-                        unlockedModal.style.display = 'none';
-                        item.innerHTML = 'Chargement...';
-                        
-                        let caseData = null;
-                        if (c.content) {
-                            caseData = c.content;
-                        } else if (c.isLocal) {
-                            const res = await fetch(`data/${c.file}`);
-                            if (res.ok) caseData = await res.json();
-                        } else {
-                            const { data, error } = await supabase.from('cases').select('content').eq('id', c.id).single();
-                            if (data && !error) caseData = data.content;
-                        }
-
-                        if (caseData) {
-                            sessionStorage.setItem('isImprovement', 'true');
-                            populateEditor(caseData);
-                            alert('Cas chargé pour amélioration ! Lorsque vous cliquerez sur "Soumettre", il sera envoyé comme une nouvelle proposition (Review).');
-                        } else {
-                            alert("Impossible de charger les données du cas.");
-                        }
-                    });
-
-                    unlockedList.appendChild(item);
-                });
-
-            } catch (err) {
-                console.error("Error loading unlocked cases:", err);
-                unlockedList.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Erreur lors du chargement des cas.</div>';
-            }
-        });
-
-        unlockedClose.addEventListener('click', () => {
-            unlockedModal.style.display = 'none';
-        });
-        
-        window.addEventListener('click', (e) => {
-            if (e.target === unlockedModal) {
-                unlockedModal.style.display = 'none';
-            }
-            if (e.target === loadOptionsModal) {
-                loadOptionsModal.style.display = 'none';
-            }
-        });
-    }
-
-    // Preview Case handler
-    document.getElementById('preview-button').addEventListener('click', () => {
+    // Tester en direct
+    document.getElementById('btn-preview-case')?.addEventListener('click', () => {
         const data = collectData();
         sessionStorage.setItem('previewCase', JSON.stringify(data));
         window.location.href = 'game.html?preview=true';
     });
 
-    // Allergies toggle
-    const allergiesToggle = document.getElementById('allergies-toggle');
-    const allergiesContainer = document.getElementById('allergies-container');
-    const allergiesListe = document.getElementById('allergies-liste');
-    const btnAddAllergy = document.getElementById('btn-add-allergy');
-
-    if (allergiesToggle && allergiesContainer && allergiesListe && btnAddAllergy) {
-        allergiesToggle.addEventListener('change', () => {
-            const show = allergiesToggle.checked;
-            allergiesContainer.style.display = show ? 'block' : 'none';
-            allergiesListe.style.display = show ? 'block' : 'none';
-            btnAddAllergy.style.display = show ? 'inline-flex' : 'none';
-        });
-    }
-
-    // Antécédents médicaux toggle
-    const antMedToggle = document.getElementById('antecedents-medicaux-toggle');
-    const antMedContainer = document.getElementById('antecedents-medicaux-container');
-    if (antMedToggle && antMedContainer) {
-        antMedToggle.addEventListener('change', () => {
-            antMedContainer.style.display = antMedToggle.checked ? 'block' : 'none';
-        });
-    }
-
-    // Antécédents chirurgicaux toggle
-    const antChirToggle = document.getElementById('antecedents-chirurgicaux-toggle');
-    const antChirContainer = document.getElementById('antecedents-chirurgicaux-container');
-    if (antChirToggle && antChirContainer) {
-        antChirToggle.addEventListener('change', () => {
-            antChirContainer.style.display = antChirToggle.checked ? 'block' : 'none';
-        });
-    }
-
-    // Antécédents familiaux toggle
-    const antFamToggle = document.getElementById('antecedents-familiaux-toggle');
-    const antFamContainer = document.getElementById('antecedents-familiaux-container');
-    if (antFamToggle && antFamContainer) {
-        antFamToggle.addEventListener('change', () => {
-            antFamContainer.style.display = antFamToggle.checked ? 'block' : 'none';
-        });
-    }
-
-    // Traitements toggle
-    const traitToggle = document.getElementById('traitements-toggle');
-    const traitContainer = document.getElementById('traitements-container');
-    if (traitToggle && traitContainer) {
-        traitToggle.addEventListener('change', () => {
-            traitContainer.style.display = traitToggle.checked ? 'block' : 'none';
-        });
-    }
-
-    // Tabac toggle
-    const tabacToggle = document.getElementById('tabac-toggle');
-    const tabacContainer = document.getElementById('tabac-container');
-    if (tabacToggle && tabacContainer) {
-        tabacToggle.addEventListener('change', () => {
-            tabacContainer.style.display = tabacToggle.checked ? 'block' : 'none';
-        });
-    }
-
-    // Alcool toggle
-    const alcoolToggle = document.getElementById('alcool-toggle');
-    const alcoolContainer = document.getElementById('alcool-container');
-    if (alcoolToggle && alcoolContainer) {
-        alcoolToggle.addEventListener('change', () => {
-            alcoolContainer.style.display = alcoolToggle.checked ? 'block' : 'none';
-        });
-    }
-
-    // Initial Empty State with realistic defaults
-    // ONLY if we don't have a preview or loaded case
-    const existingPreview = sessionStorage.getItem('previewCase');
-    if (existingPreview) {
-        try {
-            const data = JSON.parse(existingPreview);
-            populateEditor(data);
-        } catch (e) {
-            console.error("Error loading preview data", e);
+    // Nouveau cas vierge
+    document.getElementById('btn-new-case')?.addEventListener('click', () => {
+        if (confirm("Voulez-vous réinitialiser l'éditeur et créer un nouveau cas vierge ?")) {
+            localStorage.removeItem('medgame_editor_autosave');
+            sessionStorage.removeItem('previewCase');
+            location.reload();
         }
-    } else {
-        // Constants defaults
-        setText('tension', '120/80');
-        setText('pouls', '70');
-        setText('temperature', '37');
-        setText('saturationO2', '98');
-        setText('frequenceRespiratoire', '16');
-        setText('aspectGeneral', 'Bon état général, patient conscient et orienté.');
-
-        // Physical Exam Sections
-        renderExamSection('examenCardiovasculaire', { auscultation: "Bruits du cœur réguliers, pas de souffle.", inspection: "Pas de signe de choc, pas d'OMI.", palpation: "Pouls périphériques perçus." });
-        renderExamSection('examenPulmonaire', { auscultation: "Murmure vésiculaire symétrique, pas de bruit surajouté.", inspection: "Pas de signe de lutte.", percussion: "Normal." });
-        renderExamSection('examenAbdominal', { palpation: "Souple, indolore, pas de masse.", auscultation: "Bruits hydro-aériques normaux." });
-
-        // Common Complementary Exams
-        const defaultExams = ["NFS-Plaquettes", "Iono-Urée-Créat", "CRP", "ECG"];
-        const defaultResults = {
-            "NFS-Plaquettes": "Hb 14g/dL, Leuco 7000, Plaquettes 250 000",
-            "Iono-Urée-Créat": "Na 140, K 4.0, Créat 80 µmol/L",
-            "CRP": "< 5 mg/L",
-            "ECG": "Rythme sinusal, pas de trouble de repolarisation"
-        };
-        renderExamResults(defaultExams, defaultResults);
-
-        // Default Correction Example (Markdown)
-        const correctionEl = document.getElementById('correction-text');
-        if (correctionEl) {
-            correctionEl.innerText = "# Titre de la Correction\n\nCeci est un exemple de texte de correction utilisant le format **Markdown** simplifié.\n\n## Points Importants\n- Premier point à retenir\n- Deuxième point crucial\n- Troisième observation\n\nVous pouvez cliquer sur 'Aperçu du rendu' pour voir le résultat final.";
-        }
-    }
-
-    // Handle Image Upload logic (Moved to global scope)
-    const imgInput = document.getElementById('image-upload');
-    let currentTargetItem = null;
-
-    window.triggerImageUpload = (el) => {
-        currentTargetItem = el.tagName === 'BUTTON' ? el.parentElement : el;
-        imgInput.click();
-    };
-
-    imgInput.onchange = (e) => {
-        const file = e.target.files[0];
-        if (!file || !currentTargetItem) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const base64 = event.target.result;
-            updateItemImage(currentTargetItem, base64);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    document.getElementById('add-lock-btn').addEventListener('click', () => {
-        addLock({
-            id: 'lock_' + Date.now(),
-            type: 'SAISIE',
-            target_fields: [],
-            challenge: { question: 'Votre question ?', expected_keywords: [] },
-            feedback_error: 'Erreur...'
-        });
     });
 
-    document.getElementById('add-post-game-question-btn').addEventListener('click', () => {
-        addPostGameQuestion({
-            type: 'SAISIE',
-            challenge: { question: 'Question post-jeu ?', expected_keywords: [] },
-            feedback_error: 'Revoyez vos bases...'
-        });
-    });
-
-    // --- SIDEBAR TOGGLE ---
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const appContainer = document.querySelector('.app-container');
-
-    if (sidebarToggle && appContainer) {
-        // Restore sidebar state from sessionStorage
-        const sidebarCollapsed = sessionStorage.getItem('editorSidebarCollapsed') === 'true';
-        if (sidebarCollapsed) {
-            appContainer.classList.add('sidebar-collapsed');
-        }
-
-        sidebarToggle.addEventListener('click', () => {
-            appContainer.classList.toggle('sidebar-collapsed');
-            const isCollapsed = appContainer.classList.contains('sidebar-collapsed');
-            sessionStorage.setItem('editorSidebarCollapsed', isCollapsed);
-        });
-    }
-
-    // Push to Supabase handler
-    document.getElementById('push-supabase').addEventListener('click', async () => {
+    // Synchronisation / Envoi Supabase
+    document.getElementById('btn-push-supabase')?.addEventListener('click', async () => {
         const data = collectData();
-        const btn = document.getElementById('push-supabase');
-        const originalHtml = btn.innerHTML;
-
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+        const btn = document.getElementById('btn-push-supabase');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publication...';
         btn.disabled = true;
 
         try {
@@ -381,1340 +854,675 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!user) return;
 
             const isUserAdmin = await window.isAdmin();
-            const editingId = sessionStorage.getItem('editingCaseId');
-            const isImprovement = sessionStorage.getItem('isImprovement') === 'true';
+            const specialty = document.getElementById('case-specialty')?.value || 'Cardiologie';
+            const status = isUserAdmin ? 'published' : 'pending';
 
-            let status = isUserAdmin ? 'published' : 'pending';
-            let specialty = prompt("Spécialité du cas ?", data.specialty || "Cardiologie");
-            if (!specialty) specialty = "Cardiologie";
+            const payload = {
+                id: data.id || 'case_' + Date.now(),
+                content: data,
+                specialty: specialty,
+                title: data.interrogatoire?.motifHospitalisation || 'Cas Clinique',
+                status: status,
+                author_name: data.redacteur || user.email
+            };
 
-            let result;
-            if (isUserAdmin && editingId && !isImprovement) {
-                // Update existing case
-                result = await supabase
-                    .from('cases')
-                    .update({
-                        content: data,
-                        specialty: specialty,
-                        title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
-                        author_name: data.redacteur || user.email
-                    })
-                    .eq('id', editingId);
+            const { error } = await supabase.from('cases').upsert([payload]);
+            if (error) throw error;
 
-                if (!result.error) alert("Cas mis à jour avec succès !");
-            } else {
-                // Insert new case (or improvement)
-                let newId = data.id || 'case_' + Date.now();
-                if (isImprovement) {
-                    newId = newId + '_amelioration_' + Date.now();
-                    data.id = newId; // Update internal ID for content
-                }
-
-                result = await supabase
-                    .from('cases')
-                    .insert([{
-                        id: newId,
-                        content: data,
-                        specialty: specialty,
-                        title: data.interrogatoire?.motifHospitalisation || 'Sans titre',
-                        status: status,
-                        author_name: data.redacteur || user.email
-                    }]);
-
-                if (!result.error) {
-                    if (isUserAdmin && !isImprovement) alert("Nouveau cas publié !");
-                    else if (isImprovement) {
-                        alert("Amélioration soumise pour review ! Merci !");
-                        sessionStorage.removeItem('isImprovement'); // Clear flag
-                    }
-                    else alert("Cas soumis pour review ! Merci pour votre contribution.");
-                }
-            }
-
-            if (result.error) throw result.error;
+            alert(isUserAdmin ? "Cas publié avec succès sur Supabase !" : "Cas soumis pour modération ! Merci pour votre contribution.");
         } catch (err) {
-            console.error("Push error:", err);
-            alert("Erreur lors de l'envoi : " + err.message);
+            console.error("Supabase Push Error:", err);
+            alert("Erreur lors de la publication : " + err.message);
         } finally {
-            btn.innerHTML = originalHtml;
+            btn.innerHTML = origText;
             btn.disabled = false;
         }
     });
+}
 
-    // Check admin link visibility
-    (async () => {
-        if (await window.isAdmin()) {
-            const adminLink = document.getElementById('admin-link');
-            if (adminLink) adminLink.style.display = 'flex';
+function initAutosave() {
+    setInterval(() => {
+        const data = collectData();
+        localStorage.setItem('medgame_editor_autosave', JSON.stringify(data));
+    }, 5000);
+}
+
+function loadInitialCase() {
+    const previewStr = sessionStorage.getItem('previewCase');
+    const autosaveStr = localStorage.getItem('medgame_editor_autosave');
+
+    if (previewStr) {
+        try {
+            populateEditor(JSON.parse(previewStr));
+            return;
+        } catch (e) {
+            console.error("Erreur preview:", e);
         }
-    })();
-
-    // Toggle ECOS settings fields visibility
-    document.getElementById('enable-ecos-mode')?.addEventListener('change', (e) => {
-        const fields = document.getElementById('ecos-editor-fields');
-        if (fields) fields.style.display = e.target.checked ? 'block' : 'none';
-    });
-});
-
-let loadedEcosData = null;
-
-window.clearEditor = async function () {
-    if (await ecosConfirm({ title: 'Tout supprimer', message: "Êtes-vous sûr de vouloir tout supprimer ? Cette action est irréversible.", confirmLabel: 'Supprimer', danger: true })) {
-        sessionStorage.removeItem('previewCase');
-        localStorage.removeItem('selectedCaseFile');
-        localStorage.removeItem('selectedCaseFiles');
-        alert("Éditeur nettoyé.");
-        location.reload();
     }
-};
+
+    if (autosaveStr) {
+        try {
+            populateEditor(JSON.parse(autosaveStr));
+            return;
+        } catch (e) {
+            console.error("Erreur autosave:", e);
+        }
+    }
+
+    // Sinon créer une structure initiale par défaut
+    populateEditor(getDefaultCaseTemplate());
+}
+
+async function loadUnlockedCasesList() {
+    const listEl = document.getElementById('unlocked-cases-list');
+    if (!listEl) return;
+    listEl.innerHTML = '<div style="text-align:center; padding:20px; color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Chargement des cas...</div>';
+
+    try {
+        const response = await fetch('data/case-index.json');
+        if (!response.ok) throw new Error("Index des cas introuvable");
+        const index = await response.json();
+
+        listEl.innerHTML = '';
+        for (const spec in index) {
+            for (const file of index[spec]) {
+                const item = document.createElement('div');
+                item.className = 'repeater-row';
+                item.style.cursor = 'pointer';
+                item.innerHTML = `
+                    <div style="flex:1;">
+                        <strong style="color:#00f2fe;"><i class="fas fa-file-medical"></i> ${file.replace('.json', '')}</strong>
+                        <div style="font-size:0.8rem; color:#94a3b8;">Spécialité : ${spec}</div>
+                    </div>
+                    <button class="btn-sidebar" style="padding:6px 12px; font-size:0.8rem;">Charger</button>
+                `;
+                item.addEventListener('click', async () => {
+                    const res = await fetch(`data/${file}`);
+                    if (res.ok) {
+                        const caseData = await res.json();
+                        populateEditor(caseData);
+                        document.getElementById('unlocked-cases-modal').style.display = 'none';
+                        alert(`Cas "${file}" chargé avec succès !`);
+                    }
+                });
+                listEl.appendChild(item);
+            }
+        }
+    } catch (err) {
+        listEl.innerHTML = `<div style="color:#fb7185; padding:15px; text-align:center;">Erreur : ${err.message}</div>`;
+    }
+}
+
+// ==================== 6. POPULATE & COLLECT DATA (SCHEMA 2.0) ====================
 
 function populateEditor(data) {
     if (!data) return;
 
-    // ID & Redacteur
-    setText('case-id', data.id);
-    setText('redacteur', data.redacteur);
+    // 1. Métadonnées
+    setVal('case-id', data.id || 'nouveau_cas');
+    setVal('case-redacteur', data.redacteur || 'Dr MedGame');
+    setVal('case-specialty', data.specialty || 'Cardiologie');
+    setVal('case-difficulty', data.difficulty || 3);
+    setVal('case-item-r2c', data.itemR2C || '');
+    setVal('case-referentiel', data.referentiel || '');
 
-    // Patient
-    if (data.patient) {
-        setText('patient-nom-sidebar', data.patient.nom);
-        setText('patient-prenom-sidebar', data.patient.prenom);
-        setText('patient-age-sidebar', data.patient.age);
-        setText('patient-sexe-sidebar', data.patient.sexe);
-        setText('patient-taille', data.patient.taille);
-        setText('patient-poids', data.patient.poids);
-        setText('patient-groupeSanguin', data.patient.groupeSanguin);
-        updateInitials();
+    // 2. Patient
+    const p = data.patient || {};
+    setVal('patient-nom', p.nom || '');
+    setVal('patient-prenom', p.prenom || '');
+    setVal('patient-age', p.age || '');
+    setVal('patient-sexe', p.sexe || 'M');
+    setVal('patient-taille', p.taille || '');
+    setVal('patient-poids', p.poids || '');
+    setVal('patient-groupe-sanguin', p.groupeSanguin || 'Inconnu');
+    setVal('patient-model3d', p.model3D || '');
+
+    // Persona
+    const persona = p.persona || {};
+    setVal('persona-ton', persona.ton || '');
+    setVal('persona-registre', persona.registre || '');
+    setVal('persona-loquacite', persona.loquacite || 'normal');
+    setVal('persona-anxiete', persona.anxiete || 50);
+    setVal('persona-confiance', persona.confiance || 60);
+    setVal('persona-style-parole', persona.style_parole || '');
+    setVal('persona-exemples-phrases', (persona.exemples_phrases || []).join('\n'));
+
+    // Dialogue
+    const dialogue = data.dialogue || {};
+    setVal('dialogue-phrase-ouverture', dialogue.phraseOuverture || '');
+
+    // 3. Anamnèse & Histoire
+    const interro = data.interrogatoire || {};
+    setVal('motif-admission-input', interro.motifHospitalisation || '');
+
+    const hdm = interro.histoireMaladie || {};
+    setVal('hdm-debut', hdm.debutSymptomes || '');
+    setVal('hdm-evolution', hdm.evolution || '');
+    setVal('hdm-declenchants', hdm.facteursDeclenchants || '');
+    setVal('hdm-douleur', hdm.descriptionDouleur || '');
+    setVal('hdm-symptomes-associes', (hdm.symptomesAssocies || []).join(', '));
+    setVal('hdm-verbatim', interro.verbatim || '');
+    setVal('hdm-remarques', hdm.remarques || '');
+
+    // Antécédents
+    const antMedList = document.getElementById('list-ant-med');
+    if (antMedList) antMedList.innerHTML = '';
+    (interro.antecedents?.medicaux || []).forEach(item => addAntMedItem(item));
+
+    const antChirList = document.getElementById('list-ant-chir');
+    if (antChirList) antChirList.innerHTML = '';
+    (interro.antecedents?.chirurgicaux || []).forEach(item => addAntChirItem(item));
+
+    const antFamList = document.getElementById('list-ant-fam');
+    if (antFamList) antFamList.innerHTML = '';
+    (interro.antecedents?.familiaux || []).forEach(item => addAntFamItem(item));
+
+    // Traitements & Allergies
+    const traitList = document.getElementById('list-traitements');
+    if (traitList) traitList.innerHTML = '';
+    (interro.traitements || []).forEach(item => addTraitementItem(item));
+
+    const allergies = interro.allergies;
+    if (allergies) {
+        if (typeof allergies === 'string') setVal('allergies-input', allergies);
+        else if (allergies.liste) setVal('allergies-input', allergies.liste.join(', '));
     }
 
-    // Interrogatoire
-    if (data.interrogatoire) {
-        setText('motif-hospitalisation', data.interrogatoire.motifHospitalisation);
-        if (data.interrogatoire.modeDeVie) {
-            setText('activite-physique', data.interrogatoire.modeDeVie.activitePhysique?.description);
-            setText('tabac-quantite', data.interrogatoire.modeDeVie.tabac?.quantite);
-            setText('tabac-duree', data.interrogatoire.modeDeVie.tabac?.duree);
-            setText('alcool', data.interrogatoire.modeDeVie.alcool?.quantite);
-            setText('alimentation-regime', data.interrogatoire.modeDeVie.alimentation?.regime);
-            setText('alimentation-particularites', data.interrogatoire.modeDeVie.alimentation?.particularites);
-            setText('emploi-profession', data.interrogatoire.modeDeVie.emploi?.profession);
-            setText('emploi-stress', data.interrogatoire.modeDeVie.emploi?.stress);
+    // Mode de vie
+    const mdv = interro.modeDeVie || {};
+    setVal('lifestyle-tabac', mdv.tabac?.quantite || '');
+    setVal('lifestyle-alcool', mdv.alcool?.quantite || '');
+    setVal('lifestyle-activite', mdv.activitePhysique?.description || '');
+    setVal('lifestyle-alimentation', mdv.alimentation?.regime || '');
+    setVal('lifestyle-profession', mdv.emploi?.profession || '');
+    setVal('lifestyle-stress', mdv.emploi?.stress || '');
+
+    // 4. Examen Clinique & Constantes
+    const examCli = data.examenClinique || {};
+    const c = examCli.constantes || {};
+    setVal('vital-ta', (c.tension || '120/80').replace(' mmHg', ''));
+    setVal('vital-fc', (c.pouls || '75').replace(' bpm', ''));
+    setVal('vital-spo2', (c.saturationO2 || '98').replace('%', ''));
+    setVal('vital-fr', (c.frequenceRespiratoire || '16').replace('/min', ''));
+    setVal('vital-temp', (c.temperature || '37.0').replace('°C', ''));
+    setVal('vital-aspect-general', examCli.aspectGeneral || '');
+
+    // Appareils
+    const dynExamContainer = document.getElementById('dynamic-exam-sections-list');
+    if (dynExamContainer) dynExamContainer.innerHTML = '';
+    const skipExamKeys = ['constantes', 'aspectGeneral'];
+    Object.keys(examCli).forEach(key => {
+        if (!skipExamKeys.includes(key)) {
+            renderDynamicExamSection(key, key.replace('examen', 'Examen '), examCli[key]);
         }
+    });
 
-        // Complex Lists
-        const antMedToggle = document.getElementById('antecedents-medicaux-toggle');
-        const antMedContainer = document.getElementById('antecedents-medicaux-container');
-        const antMedData = data.interrogatoire.antecedents?.medicaux;
-        const antMedPresence = data.interrogatoire.antecedents?.medicauxPresence || (antMedData && antMedData.length > 0);
-        if (antMedToggle) antMedToggle.checked = antMedPresence;
-        if (antMedContainer) antMedContainer.style.display = antMedPresence ? 'block' : 'none';
-        if (antMedPresence) renderObjectList('antecedents-medicaux', antMedData, ['type', 'traitement']);
+    // 5. Paraclinique & Gradation
+    const paraclinicList = document.getElementById('examens-paracliniques-list');
+    if (paraclinicList) paraclinicList.innerHTML = '';
 
-        const antChirToggle = document.getElementById('antecedents-chirurgicaux-toggle');
-        const antChirContainer = document.getElementById('antecedents-chirurgicaux-container');
-        const antChirData = data.interrogatoire.antecedents?.chirurgicaux;
-        const antChirPresence = data.interrogatoire.antecedents?.chirurgicauxPresence || (antChirData && antChirData.length > 0);
-        if (antChirToggle) antChirToggle.checked = antChirPresence;
-        if (antChirContainer) antChirContainer.style.display = antChirPresence ? 'block' : 'none';
-        if (antChirPresence) renderObjectList('antecedents-chirurgicaux', antChirData, ['intervention', 'annee']);
+    const availExams = data.availableExams || [];
+    const results = data.examResults || {};
+    const grad = data.examGradation || {};
+    const parfaits = grad.parfaits || [];
+    const utiles = grad.utiles || [];
+    const dangereux = grad.dangereux || [];
 
-        const antFamToggle = document.getElementById('antecedents-familiaux-toggle');
-        const antFamContainer = document.getElementById('antecedents-familiaux-container');
-        const antFamData = data.interrogatoire.antecedents?.familiaux;
-        const antFamPresence = data.interrogatoire.antecedents?.familiauxPresence || (antFamData && antFamData.length > 0);
-        if (antFamToggle) antFamToggle.checked = antFamPresence;
-        if (antFamContainer) antFamContainer.style.display = antFamPresence ? 'block' : 'none';
-        if (antFamPresence) renderObjectList('antecedents-familiaux', antFamData, ['antecedent', 'lien']);
+    availExams.forEach(examName => {
+        let grade = 'inutile';
+        if (parfaits.includes(examName)) grade = 'parfait';
+        else if (utiles.includes(examName)) grade = 'utile';
+        else if (dangereux.includes(examName)) grade = 'dangereux';
 
-        const traitToggle = document.getElementById('traitements-toggle');
-        const traitContainer = document.getElementById('traitements-container');
-        const traitData = data.interrogatoire.traitements;
-        const traitPresence = data.interrogatoire.traitementsPresence || (traitData && traitData.length > 0);
-        if (traitToggle) traitToggle.checked = traitPresence;
-        if (traitContainer) traitContainer.style.display = traitPresence ? 'block' : 'none';
-        if (traitPresence) renderObjectList('traitements-liste', traitData, ['nom', 'dose', 'frequence']);
+        addExamParaclinicRow(examName, results[examName] || '', grade);
+    });
 
-        // Allergies
-        const allergies = data.interrogatoire.allergies;
-        if (allergies) {
-            const allergiesToggle = document.getElementById('allergies-toggle');
-            const allergiesContainer = document.getElementById('allergies-container');
-            const allergiesListe = document.getElementById('allergies-liste');
-            const btnAddAllergy = document.getElementById('btn-add-allergy');
-            if (allergiesToggle) allergiesToggle.checked = allergies.presence === true;
-            if (allergiesContainer) allergiesContainer.style.display = allergies.presence ? 'block' : 'none';
-            if (allergiesListe) allergiesListe.style.display = allergies.presence ? 'block' : 'none';
-            if (btnAddAllergy) btnAddAllergy.style.display = allergies.presence ? 'inline-flex' : 'none';
-            if (allergies.presence && allergies.liste && allergies.liste.length > 0) {
-                renderTextList('allergies-liste', allergies.liste);
-            }
-        }
+    // 6. Diagnostics & Thérapeutique
+    setVal('diag-correct', data.correctDiagnostic || '');
+    const diagOptionsList = document.getElementById('list-diagnostics-options');
+    if (diagOptionsList) diagOptionsList.innerHTML = '';
+    (data.possibleDiagnostics || []).filter(d => d !== data.correctDiagnostic).forEach(d => addDiagnosticOptionItem(d));
+    setVal('diag-pieges', (data.pieges || []).join(', '));
 
-        // Tabac
-        const tabacToggle = document.getElementById('tabac-toggle');
-        const tabacContainer = document.getElementById('tabac-container');
-        const tabacData = data.interrogatoire.modeDeVie?.tabac;
-        const tabacPresence = tabacData?.presence || (tabacData && (tabacData.quantite || tabacData.duree));
-        if (tabacToggle) tabacToggle.checked = !!tabacPresence;
-        if (tabacContainer) tabacContainer.style.display = tabacPresence ? 'block' : 'none';
+    // Traitements options
+    const treatOptionsList = document.getElementById('list-traitements-options');
+    if (treatOptionsList) treatOptionsList.innerHTML = '';
+    const possTreats = data.possibleTreatments || [];
+    const corrTreats = data.correctTreatments || [];
+    const secTreats = data.secondLineTreatments || [];
+    const fatalTreats = data.fatalTreatments || [];
 
-        if (data.interrogatoire.histoireMaladie) {
-            setText('debut-symptomes', data.interrogatoire.histoireMaladie.debutSymptomes);
-            setText('evolution', data.interrogatoire.histoireMaladie.evolution);
-            setText('facteurs-declenchants', data.interrogatoire.histoireMaladie.facteursDeclenchants);
-            setText('description-douleur', data.interrogatoire.histoireMaladie.descriptionDouleur);
-            setText('symptomes-associes', data.interrogatoire.histoireMaladie.symptomesAssocies?.join(', '));
-            setText('verbatim', data.interrogatoire.verbatim);
-            setText('remarques', data.interrogatoire.histoireMaladie.remarques);
-        }
-    }
+    possTreats.forEach(tName => {
+        let role = 'neutre';
+        if (corrTreats.includes(tName)) role = 'correct';
+        else if (secTreats.includes(tName)) role = 'secondLine';
+        else if (fatalTreats.includes(tName)) role = 'fatal';
 
-    // Examen Clinique
-    if (data.examenClinique) {
-        if (data.examenClinique.constantes) {
-            setText('tension', (data.examenClinique.constantes.tension || "").replace(" mmHg", ""));
-            setText('pouls', (data.examenClinique.constantes.pouls || "").replace(" bpm", ""));
-            setText('temperature', (data.examenClinique.constantes.temperature || "").replace("°C", "").replace(" °C", ""));
-            setText('saturationO2', (data.examenClinique.constantes.saturationO2 || "").replace("%", ""));
-            setText('frequenceRespiratoire', (data.examenClinique.constantes.frequenceRespiratoire || "").replace("/min", "").replace(" /min", ""));
-        }
-        setText('aspectGeneral', data.examenClinique.aspectGeneral);
+        addTreatmentOptionItem(tName, role);
+    });
 
-        const list = document.getElementById('exam-details-list');
-        list.innerHTML = '';
-        const skip = ['constantes', 'aspectGeneral'];
-        Object.keys(data.examenClinique).forEach(key => {
-            if (!skip.includes(key)) {
-                renderExamSection(key, data.examenClinique[key]);
-            }
-        });
-    }
+    // 7. Dynamique
+    const vitalsDyn = data.vitalsDynamics || {};
+    const enableDyn = document.getElementById('dyn-enable-vitals');
+    if (enableDyn) enableDyn.checked = !!data.vitalsDynamics;
+    setVal('dyn-trend', vitalsDyn.trendOverMinutes || 0.05);
+    setVal('dyn-multiplier', vitalsDyn.urgencyMultiplier || 1.5);
+    setVal('dyn-stabilize', String(vitalsDyn.stabilizeOnCorrectTreatment !== false));
 
-    // Locks
-    renderLocksList(data.locks);
+    const agg = vitalsDyn.aggravationTargets || {};
+    setVal('dyn-target-fc', agg.heartRate || '');
+    setVal('dyn-target-tas', agg.systolic || '');
+    setVal('dyn-target-spo2', agg.spo2 || '');
+    setVal('dyn-target-fr', agg.respiratoryRate || '');
+    setVal('dyn-target-temp', agg.temperature || '');
 
-    // Post-Game Questions
-    renderPostGameQuestionsList(data.postGameQuestions);
+    // 8. Locks & Post-game
+    const locksContainer = document.getElementById('locks-list-container');
+    if (locksContainer) locksContainer.innerHTML = '';
+    (data.locks || []).forEach(lock => addLockCard(lock));
 
-    // Exam Results & Available Exams
-    renderExamResults(data.availableExams, data.examResults);
+    const postgameContainer = document.getElementById('postgame-questions-container');
+    if (postgameContainer) postgameContainer.innerHTML = '';
+    (data.postGameQuestions || []).forEach(q => addPostGameQuestionCard(q));
 
-    // Synthesis - Unified lists
-    populateDiagnosticList(data.possibleDiagnostics, data.correctDiagnostic);
-    populateTreatmentList(data.possibleTreatments, data.correctTreatments, data.fatalTreatments);
-    document.getElementById('correction-text').innerText = data.correction || '';
+    // 9. ECOS
+    populateEcosFields(data.ecos);
 
-    // Correction Image
-    const corrImgContainer = document.getElementById('correction-image-container');
-    if (corrImgContainer) corrImgContainer.innerHTML = '';
-    if (data.correctionImage && corrImgContainer) {
-        updateItemImage(corrImgContainer, data.correctionImage);
-    }
+    // 10. Correction & Objectifs
+    setVal('correction-markdown-input', data.correction || '');
+    setVal('case-objectifs-input', (data.objectifs || []).join('\n'));
+    setVal('case-hints-input', (data.hints || []).join('\n'));
 
-    // Mini Graph Editor (Urgence Dynamique)
-    if (typeof loadMiniGraphData === 'function') {
-        loadMiniGraphData(data);
-    }
-
-    // ECOS Populating Logic
-    loadedEcosData = data.ecos || null;
-
-    const ecosToggle = document.getElementById('enable-ecos-mode');
-    const ecosFields = document.getElementById('ecos-editor-fields');
-    if (data.ecos) {
-        if (ecosToggle) ecosToggle.checked = true;
-        if (ecosFields) ecosFields.style.display = 'block';
-        
-        // Populate Vignette
-        const vig = data.ecos.vignette || {};
-        setText('ecos-role', vig.role || '');
-        setText('ecos-contexte', vig.contexte || '');
-        const typeStationSel = document.getElementById('ecos-type-station');
-        if (typeStationSel) typeStationSel.value = vig.typeStation || 'AVEC_PS';
-        setText('ecos-domaine-principal', vig.domainePrincipal || '');
-        setText('ecos-domaine-secondaire', vig.domaineSecondaire || '');
-        setText('ecos-lieu', vig.lieu || '');
-        setText('ecos-materiel', (vig.materielDisponible || []).join(', '));
-        
-        renderEcosTextList('ecos-consignes-attendues', vig.consignesAttendues || []);
-        renderEcosTextList('ecos-consignes-interdites', vig.consignesInterdites || []);
-        
-        // Populate Patient Standardisé
-        const ps = data.ecos.patientStandardise || {};
-        setText('ecos-ps-personnalite', ps.personnalité || ps.personnalite || '');
-        setText('ecos-ps-ouverture', ps.phraseOuverture || '');
-        setText('ecos-ps-volontaires', (ps.infosVolontaires || []).join(', '));
-        setText('ecos-ps-demandees', (ps.infosSiDemandees || []).join(', '));
-        setText('ecos-ps-cachees', (ps.infosCachees || []).join(', '));
-        
-        const reactions = ps.reactions || {};
-        setText('ecos-ps-reaction-brutal', reactions.brutal || '');
-        setText('ecos-ps-reaction-silence', reactions.silence || '');
-        setText('ecos-ps-reaction-jargon', reactions.jargon || '');
-        
-        // Populate Grilles
-        const aptitudesContainer = document.getElementById('ecos-grille-aptitudes');
-        if (aptitudesContainer) {
-            aptitudesContainer.innerHTML = '';
-            (data.ecos.grilleAptitudesCliniques || []).forEach(apt => {
-                window.addEcosAptitude(apt);
-            });
-        }
-        
-        const commContainer = document.getElementById('ecos-grille-communication');
-        if (commContainer) {
-            commContainer.innerHTML = '';
-            (data.ecos.grilleCommunication || []).forEach(comm => {
-                window.addEcosCommunication(comm);
-            });
-        }
-    } else {
-        if (ecosToggle) ecosToggle.checked = false;
-        if (ecosFields) ecosFields.style.display = 'none';
-        
-        // Reset/empty fields
-        setText('ecos-role', '');
-        setText('ecos-contexte', '');
-        const typeStationSel = document.getElementById('ecos-type-station');
-        if (typeStationSel) typeStationSel.value = 'AVEC_PS';
-        setText('ecos-domaine-principal', '');
-        setText('ecos-domaine-secondaire', '');
-        setText('ecos-lieu', '');
-        setText('ecos-materiel', '');
-        
-        const attenduesContainer = document.getElementById('ecos-consignes-attendues');
-        if (attenduesContainer) attenduesContainer.innerHTML = '';
-        const interditesContainer = document.getElementById('ecos-consignes-interdites');
-        if (interditesContainer) interditesContainer.innerHTML = '';
-        
-        setText('ecos-ps-personnalite', '');
-        setText('ecos-ps-ouverture', '');
-        setText('ecos-ps-volontaires', '');
-        setText('ecos-ps-demandees', '');
-        setText('ecos-ps-cachees', '');
-        
-        setText('ecos-ps-reaction-brutal', '');
-        setText('ecos-ps-reaction-silence', '');
-        setText('ecos-ps-reaction-jargon', '');
-        
-        const aptitudesContainer = document.getElementById('ecos-grille-aptitudes');
-        if (aptitudesContainer) aptitudesContainer.innerHTML = '';
-        const commContainer = document.getElementById('ecos-grille-communication');
-        if (commContainer) commContainer.innerHTML = '';
+    // Sync sidebar & meter & 3D model preview
+    document.getElementById('patient-nom')?.dispatchEvent(new Event('input'));
+    if (typeof window.updatePatientModel3DPreview === 'function') {
+        window.updatePatientModel3DPreview();
     }
 }
 
-function updateItemImage(item, base64) {
-    let preview = item.querySelector('.image-preview');
-    if (!preview) {
-        preview = document.createElement('div');
-        preview.className = 'image-preview';
-        const removeBtn = item.querySelector('.btn-remove');
-        if (removeBtn) {
-            item.insertBefore(preview, removeBtn);
-        } else {
-            item.appendChild(preview);
-        }
+function populateEcosFields(ecos) {
+    const toggle = document.getElementById('ecos-toggle-enable');
+    const container = document.getElementById('ecos-fields-container');
+
+    if (!ecos) {
+        if (toggle) toggle.checked = false;
+        if (container) container.style.display = 'none';
+        return;
     }
-    preview.innerHTML = `
-        <img src="${base64}" style="max-height: 150px; border-radius: 8px; border: 2px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-        <button class="btn-remove-img" onclick="this.parentElement.remove()" style="background: rgba(255,0,0,0.2); border: none; color: white; cursor: pointer; padding: 5px 10px; border-radius: 5px; margin-left:10px;"><i class="fas fa-times"></i> Supprimer l'image</button>
-    `;
-    preview.dataset.base64 = base64;
+
+    if (toggle) toggle.checked = true;
+    if (container) container.style.display = 'block';
+
+    const vig = ecos.vignette || {};
+    setVal('ecos-vignette-role', vig.role || '');
+    setVal('ecos-vignette-contexte', vig.contexte || '');
+    setVal('ecos-vignette-type', vig.typeStation || 'AVEC_PS');
+    setVal('ecos-vignette-domaine-p', vig.domainePrincipal || '');
+    setVal('ecos-vignette-domaine-s', vig.domaineSecondaire || '');
+    setVal('ecos-consignes-attendues', (vig.consignesAttendues || []).join('\n'));
+    setVal('ecos-consignes-interdites', (vig.consignesInterdites || []).join('\n'));
+
+    const ps = ecos.patientStandardise || {};
+    setVal('ecos-ps-personnalite', ps.personnalite || ps.personnalité || '');
+    setVal('ecos-ps-cachees', (ps.infosCachees || []).join('\n'));
+
+    const aptList = document.getElementById('ecos-aptitudes-list');
+    if (aptList) aptList.innerHTML = '';
+    (ecos.grilleAptitudesCliniques || []).forEach(apt => addEcosAptitudeRow(apt));
 }
 
 function collectData() {
-    // ...
-    const data = {
-        id: getText('case-id'),
-        redacteur: getText('redacteur'),
+    // Paraclinique
+    const availableExams = [];
+    const examResults = {};
+    const parfaits = [];
+    const utiles = [];
+    const inutiles = [];
+    const dangereux = [];
+
+    document.querySelectorAll('#examens-paracliniques-list .exam-item-card').forEach(row => {
+        const name = row.querySelector('.exam-name-input')?.value.trim();
+        const result = row.querySelector('.exam-result-input')?.value.trim();
+        const grade = row.querySelector('.gradation-select')?.value || 'utile';
+
+        if (name) {
+            availableExams.push(name);
+            examResults[name] = result || 'Résultat normal.';
+
+            if (grade === 'parfait') parfaits.push(name);
+            else if (grade === 'utile') utiles.push(name);
+            else if (grade === 'dangereux') dangereux.push(name);
+            else inutiles.push(name);
+        }
+    });
+
+    // Diagnostics
+    const correctDiagnostic = document.getElementById('diag-correct')?.value.trim() || 'Diagnostic';
+    const possibleDiagnostics = [correctDiagnostic];
+    document.querySelectorAll('#list-diagnostics-options .field-diag-option').forEach(inp => {
+        const val = inp.value.trim();
+        if (val && !possibleDiagnostics.includes(val)) possibleDiagnostics.push(val);
+    });
+
+    // Traitements
+    const possibleTreatments = [];
+    const correctTreatments = [];
+    const secondLineTreatments = [];
+    const fatalTreatments = [];
+
+    document.querySelectorAll('#list-traitements-options .repeater-row').forEach(row => {
+        const name = row.querySelector('.field-treatment-name')?.value.trim();
+        const role = row.querySelector('.field-treatment-role')?.value || 'neutre';
+
+        if (name) {
+            possibleTreatments.push(name);
+            if (role === 'correct') correctTreatments.push(name);
+            else if (role === 'secondLine') secondLineTreatments.push(name);
+            else if (role === 'fatal') fatalTreatments.push(name);
+        }
+    });
+
+    // Appareils Cliniques
+    const examenClinique = {
+        constantes: {
+            tension: (getVal('vital-ta') || '120/80') + ' mmHg',
+            pouls: (getVal('vital-fc') || '75') + ' bpm',
+            saturationO2: (getVal('vital-spo2') || '98') + '%',
+            frequenceRespiratoire: (getVal('vital-fr') || '16') + '/min',
+            temperature: (getVal('vital-temp') || '37.0') + '°C'
+        },
+        aspectGeneral: getVal('vital-aspect-general') || 'Bon état général'
+    };
+
+    document.querySelectorAll('#dynamic-exam-sections-list .studio-card[data-exam-key]').forEach(card => {
+        const key = card.getAttribute('data-exam-key');
+        const subData = {};
+        card.querySelectorAll('.exam-sub-field').forEach(field => {
+            const subkey = field.getAttribute('data-subkey');
+            subData[subkey] = field.value.trim();
+        });
+        examenClinique[key] = subData;
+    });
+
+    // Locks
+    const locks = [];
+    document.querySelectorAll('#locks-list-container .studio-card').forEach((card, idx) => {
+        const targetRaw = card.querySelector('.lock-target')?.value || '';
+        const question = card.querySelector('.lock-question')?.value || '';
+        const optionsRaw = card.querySelector('.lock-options')?.value || '';
+        const feedback = card.querySelector('.lock-feedback')?.value || '';
+
+        locks.push({
+            id: 'lock_' + (idx + 1),
+            type: 'QCM',
+            label: 'Défi ' + (idx + 1),
+            target_fields: targetRaw.split(',').map(s => s.trim()).filter(s => s),
+            challenge: {
+                question: question,
+                options: optionsRaw.split('\n').map(s => s.trim()).filter(s => s),
+                correct_indices: [0]
+            },
+            feedback_error: feedback
+        });
+    });
+
+    // Post-game Quiz
+    const postGameQuestions = [];
+    document.querySelectorAll('#postgame-questions-container .studio-card').forEach(card => {
+        const qText = card.querySelector('.postgame-q-text')?.value || '';
+        const optionsRaw = card.querySelector('.postgame-q-options')?.value || '';
+        const feedback = card.querySelector('.postgame-q-feedback')?.value || '';
+
+        postGameQuestions.push({
+            type: 'QCM',
+            challenge: {
+                question: qText,
+                options: optionsRaw.split('\n').map(s => s.trim()).filter(s => s),
+                correct_indices: [0]
+            },
+            feedback_error: feedback
+        });
+    });
+
+    // ECOS
+    let ecosData = null;
+    if (document.getElementById('ecos-toggle-enable')?.checked) {
+        const aptitudes = [];
+        document.querySelectorAll('#ecos-aptitudes-list .studio-card').forEach((card, idx) => {
+            const label = card.querySelector('.ecos-apt-label')?.value || '';
+            const kwRaw = card.querySelector('.ecos-apt-kw')?.value || '';
+            const critFait = card.querySelector('.ecos-crit-fait')?.value || '';
+            const critPartie = card.querySelector('.ecos-crit-partie')?.value || '';
+            const critNon = card.querySelector('.ecos-crit-non')?.value || '';
+
+            aptitudes.push({
+                id: 'apt_' + (idx + 1),
+                label: label,
+                weight: 1,
+                triggerKeywords: kwRaw.split(',').map(s => s.trim()).filter(s => s),
+                criteria: {
+                    fait: critFait,
+                    en_partie: critPartie,
+                    non_fait: critNon
+                }
+            });
+        });
+
+        ecosData = {
+            vignette: {
+                role: getVal('ecos-vignette-role'),
+                contexte: getVal('ecos-vignette-contexte'),
+                typeStation: getVal('ecos-vignette-type') || 'AVEC_PS',
+                domainePrincipal: getVal('ecos-vignette-domaine-p'),
+                domaineSecondaire: getVal('ecos-vignette-domaine-s'),
+                consignesAttendues: getVal('ecos-consignes-attendues').split('\n').map(s => s.trim()).filter(s => s),
+                consignesInterdites: getVal('ecos-consignes-interdites').split('\n').map(s => s.trim()).filter(s => s)
+            },
+            patientStandardise: {
+                personnalite: getVal('ecos-ps-personnalite'),
+                phraseOuverture: getVal('dialogue-phrase-ouverture'),
+                infosCachees: getVal('ecos-ps-cachees').split('\n').map(s => s.trim()).filter(s => s)
+            },
+            grilleAptitudesCliniques: aptitudes
+        };
+    }
+
+    // Objet Final JSON 2.0
+    return {
+        id: getVal('case-id') || 'nouveau_cas',
+        redacteur: getVal('case-redacteur') || 'Dr MedGame',
+        specialty: getVal('case-specialty') || 'Cardiologie',
+        difficulty: parseInt(getVal('case-difficulty') || '3'),
+        itemR2C: getVal('case-item-r2c'),
+        referentiel: getVal('case-referentiel'),
         patient: {
-            nom: getText('patient-nom-sidebar'),
-            prenom: getText('patient-prenom-sidebar'),
-            age: parseInt(getText('patient-age-sidebar')),
-            sexe: getText('patient-sexe-sidebar'),
-            taille: getText('patient-taille'),
-            poids: getText('patient-poids'),
-            groupeSanguin: getText('patient-groupeSanguin')
+            nom: getVal('patient-nom'),
+            prenom: getVal('patient-prenom'),
+            age: parseInt(getVal('patient-age') || '50'),
+            sexe: getVal('patient-sexe') || 'M',
+            taille: getVal('patient-taille'),
+            poids: getVal('patient-poids'),
+            groupeSanguin: getVal('patient-groupe-sanguin'),
+            model3D: getVal('patient-model3d') || undefined,
+            persona: {
+                ton: getVal('persona-ton'),
+                registre: getVal('persona-registre'),
+                loquacite: getVal('persona-loquacite'),
+                anxiete: parseInt(getVal('persona-anxiete') || '50'),
+                confiance: parseInt(getVal('persona-confiance') || '60'),
+                style_parole: getVal('persona-style-parole'),
+                exemples_phrases: getVal('persona-exemples-phrases').split('\n').map(s => s.trim()).filter(s => s)
+            }
+        },
+        dialogue: {
+            phraseOuverture: getVal('dialogue-phrase-ouverture')
         },
         interrogatoire: {
-            motifHospitalisation: getText('motif-hospitalisation'),
+            motifHospitalisation: getVal('motif-admission-input'),
             modeDeVie: {
-                activitePhysique: { description: getText('activite-physique') },
-                tabac: { presence: document.getElementById('tabac-toggle')?.checked || false, quantite: getText('tabac-quantite'), duree: getText('tabac-duree') },
-                alcool: { presence: document.getElementById('alcool-toggle')?.checked || false, quantite: getText('alcool') },
-                alimentation: { regime: getText('alimentation-regime'), particularites: getText('alimentation-particularites') },
-                emploi: { profession: getText('emploi-profession'), stress: getText('emploi-stress') }
+                tabac: { quantite: getVal('lifestyle-tabac') },
+                alcool: { quantite: getVal('lifestyle-alcool') },
+                activitePhysique: { description: getVal('lifestyle-activite') },
+                alimentation: { regime: getVal('lifestyle-alimentation') },
+                emploi: { profession: getVal('lifestyle-profession'), stress: getVal('lifestyle-stress') }
             },
             antecedents: {
-                medicaux: collectObjectList('antecedents-medicaux', ['type', 'traitement']),
-                medicauxPresence: document.getElementById('antecedents-medicaux-toggle')?.checked || false,
-                chirurgicaux: collectObjectList('antecedents-chirurgicaux', ['intervention', 'annee']),
-                chirurgicauxPresence: document.getElementById('antecedents-chirurgicaux-toggle')?.checked || false,
-                familiaux: collectObjectList('antecedents-familiaux', ['antecedent', 'lien']),
-                familiauxPresence: document.getElementById('antecedents-familiaux-toggle')?.checked || false
+                medicaux: collectRepeater('list-ant-med', ['.field-type', '.field-traitement'], ['type', 'traitement']),
+                chirurgicaux: collectRepeater('list-ant-chir', ['.field-intervention', '.field-annee'], ['intervention', 'annee']),
+                familiaux: collectRepeater('list-ant-fam', ['.field-antecedent', '.field-lien'], ['antecedent', 'lien'])
             },
-            traitements: collectObjectList('traitements-liste', ['nom', 'dose', 'frequence']),
-            traitementsPresence: document.getElementById('traitements-toggle')?.checked || false,
-            allergies: collectAllergies(),
+            traitements: collectRepeater('list-traitements', ['.field-nom', '.field-dose', '.field-frequence'], ['nom', 'dose', 'frequence']),
+            allergies: {
+                presence: !!getVal('allergies-input'),
+                liste: getVal('allergies-input') ? getVal('allergies-input').split(',').map(s => s.trim()).filter(s => s) : []
+            },
             histoireMaladie: {
-                debutSymptomes: getText('debut-symptomes'),
-                evolution: getText('evolution'),
-                facteursDeclenchants: getText('facteurs-declenchants'),
-                descriptionDouleur: getText('description-douleur'),
-                symptomesAssocies: getText('symptomes-associes').split(',').map(s => s.trim()).filter(s => s),
-                remarques: getText('remarques')
+                debutSymptomes: getVal('hdm-debut'),
+                evolution: getVal('hdm-evolution'),
+                facteursDeclenchants: getVal('hdm-declenchants'),
+                descriptionDouleur: getVal('hdm-douleur'),
+                symptomesAssocies: getVal('hdm-symptomes-associes').split(',').map(s => s.trim()).filter(s => s),
+                remarques: getVal('hdm-remarques')
             },
-            verbatim: getText('verbatim')
+            verbatim: getVal('hdm-verbatim')
+        },
+        examenClinique: examenClinique,
+        availableExams: availableExams,
+        examResults: examResults,
+        examGradation: {
+            parfaits: parfaits,
+            utiles: utiles,
+            inutiles: inutiles,
+            dangereux: dangereux
+        },
+        relevantExams: parfaits.length > 0 ? parfaits : availableExams.slice(0, 3),
+        possibleDiagnostics: possibleDiagnostics,
+        correctDiagnostic: correctDiagnostic,
+        pieges: getVal('diag-pieges').split(',').map(s => s.trim()).filter(s => s),
+        possibleTreatments: possibleTreatments,
+        correctTreatments: correctTreatments,
+        secondLineTreatments: secondLineTreatments,
+        fatalTreatments: fatalTreatments,
+        vitalsDynamics: document.getElementById('dyn-enable-vitals')?.checked ? {
+            trendOverMinutes: parseFloat(getVal('dyn-trend') || '0.05'),
+            urgencyMultiplier: parseFloat(getVal('dyn-multiplier') || '1.5'),
+            stabilizeOnCorrectTreatment: getVal('dyn-stabilize') === 'true',
+            aggravationTargets: {
+                heartRate: parseInt(getVal('dyn-target-fc') || '120'),
+                systolic: parseInt(getVal('dyn-target-tas') || '85'),
+                spo2: parseInt(getVal('dyn-target-spo2') || '88'),
+                respiratoryRate: parseInt(getVal('dyn-target-fr') || '28'),
+                temperature: parseFloat(getVal('dyn-target-temp') || '39.0')
+            }
+        } : undefined,
+        locks: locks,
+        postGameQuestions: postGameQuestions,
+        ecos: ecosData,
+        correction: getVal('correction-markdown-input'),
+        objectifs: getVal('case-objectifs-input').split('\n').map(s => s.trim()).filter(s => s),
+        hints: getVal('case-hints-input').split('\n').map(s => s.trim()).filter(s => s)
+    };
+}
+
+// ==================== 7. HELPERS GÉNÉRAUX ====================
+
+function setVal(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val !== undefined && val !== null ? val : '';
+}
+
+function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+}
+
+function collectRepeater(containerId, fieldSelectors, keys) {
+    const container = document.getElementById(containerId);
+    if (!container) return [];
+
+    const list = [];
+    container.querySelectorAll('.repeater-row').forEach(row => {
+        const item = {};
+        let hasVal = false;
+        keys.forEach((key, idx) => {
+            const field = row.querySelector(fieldSelectors[idx]);
+            const val = field ? field.value.trim() : '';
+            item[key] = val;
+            if (val) hasVal = true;
+        });
+        if (hasVal) list.push(item);
+    });
+    return list;
+}
+
+function getDefaultCaseTemplate() {
+    return {
+        id: "cardio_angor_stable_m_bennet",
+        redacteur: "La TEAM",
+        specialty: "Cardiologie",
+        difficulty: 3,
+        itemR2C: "Item 232. Douleur thoracique",
+        referentiel: "SFC / ESC",
+        patient: {
+            nom: "Bennet",
+            prenom: "Kitty",
+            age: 58,
+            sexe: "F",
+            taille: "165 cm",
+            poids: "70 kg",
+            groupeSanguin: "B+",
+            persona: {
+                ton: "polie mais minimisante",
+                registre: "courant",
+                loquacite: "normal",
+                style_parole: "décrit bien l'effort si on demande",
+                exemples_phrases: ["Oh, c'est quand je monte les escaliers, ça serre..."],
+                anxiete: 55,
+                confiance: 65
+            }
+        },
+        dialogue: {
+            phraseOuverture: "Bonjour docteur, j'ai une gêne qui me serre la poitrine quand je monte les escaliers..."
+        },
+        interrogatoire: {
+            motifHospitalisation: "Douleur thoracique à l'effort",
+            histoireMaladie: {
+                debutSymptomes: "6 mois",
+                evolution: "Stable",
+                facteursDeclenchants: "Montée d'escaliers",
+                descriptionDouleur: "Rétrosternale constrictive, cède au repos en moins de 5 min",
+                symptomesAssocies: ["Dyspnée légère d'effort"],
+                remarques: "Soulagée immédiatement par la Trinitrine"
+            },
+            verbatim: "J'ai l'impression qu'on m'écrase la poitrine quand je force."
         },
         examenClinique: {
-            constantes: {
-                tension: getText('tension') + " mmHg",
-                pouls: getText('pouls') + " bpm",
-                temperature: getText('temperature') + "°C",
-                saturationO2: getText('saturationO2') + "%",
-                frequenceRespiratoire: getText('frequenceRespiratoire') + "/min"
-            },
-            aspectGeneral: getText('aspectGeneral')
+            constantes: { tension: "135/85 mmHg", pouls: "78 bpm", temperature: "36.7°C", saturationO2: "97%", frequenceRespiratoire: "18/min" },
+            aspectGeneral: "Bon état général, patiente calme et orientée",
+            examenCardiovasculaire: { auscultation: "B1 B2 réguliers, pas de souffle", inspection: "Pas d'OMI ni de turgescence jugulaire" },
+            examenPulmonaire: { auscultation: "Murmure vésiculaire symétrique sans râle" }
         },
-        availableExams: collectAvailableExams(),
-        examResults: collectExamResults(),
-        possibleDiagnostics: collectDiagnosticList(),
-        correctDiagnostic: collectCorrectDiagnostic(),
-        scoringRules: { baseScore: 100, attemptPenalty: 10 },
-        possibleTreatments: collectTreatmentAttr('all'),
-        correctTreatments: collectTreatmentAttr('correct'),
-        fatalTreatments: collectTreatmentAttr('fatal'),
-        correction: document.getElementById('correction-text').innerText,
-        correctionImage: document.querySelector('#correction-image-container .image-preview')?.dataset.base64 || null,
-        feedback: { default: "Diagnostic incorrect." },
-        locks: collectLocks(),
-        postGameQuestions: collectPostGameQuestions()
+        availableExams: ["ECG", "Test d'effort", "Troponine", "Angiographie coronarienne", "Radio Thorax"],
+        examResults: {
+            "ECG": "Normal au repos, rythme sinusal",
+            "Test d'effort": "Sous-décalage ST en V5-V6 à l'effort",
+            "Troponine": "Normale (< 0.01 ng/mL)",
+            "Angiographie coronarienne": "Sténose à 70% de la circonflexe",
+            "Radio Thorax": "Index cardiothoracique normal, pas d'épanchement"
+        },
+        examGradation: {
+            parfaits: ["ECG", "Test d'effort", "Angiographie coronarienne"],
+            utiles: ["Troponine", "Radio Thorax"],
+            inutiles: [],
+            dangereux: []
+        },
+        correctDiagnostic: "Angor stable",
+        possibleDiagnostics: ["Angor stable", "Syndrome coronarien aigu (SCA)", "Embolie pulmonaire", "Péricardite"],
+        pieges: ["Un ECG de repos normal n'élimine jamais un angor stable"],
+        correctTreatments: ["Bêta-bloquant", "Trinitrine sublinguale (crise)", "Aspirine"],
+        secondLineTreatments: ["Statine", "Inhibiteur calcique"],
+        fatalTreatments: ["Adrénaline"],
+        correction: "# Angor Stable\n\n## Raisonnement Clinique\nDouleur thoracique typique constrictive d'effort...",
+        objectifs: ["Reconnaître l'angor d'effort", "Indiquer le test d'ischémie", "Prescrire le traitement de fond BASIC"]
     };
-
-    // Collect dynamic exams
-    const dynamicExams = document.querySelectorAll('.exam-item[data-key]');
-    dynamicExams.forEach(item => {
-        const key = item.getAttribute('data-key');
-        const rows = item.querySelectorAll('li');
-        const val = {};
-        rows.forEach(row => {
-            const k = row.querySelector('strong').textContent.replace(':', '').trim();
-            const v = row.querySelector('span').textContent.trim();
-            val[k.toLowerCase()] = v;
-        });
-        data.examenClinique[key] = val;
-    });
-
-    // Merge Mini Graph Data for Urgence mode
-    if (typeof exportMiniGraphData === 'function') {
-        const miniGraphData = exportMiniGraphData();
-        if (miniGraphData) {
-            data.gameplayConfig = miniGraphData.gameplayConfig;
-            data.nodes = miniGraphData.nodes;
-            data.editorData = miniGraphData.editorData;
-        }
-    }
-
-    // ECOS Collection Logic
-    let ecosData = null;
-    const ecosToggle = document.getElementById('enable-ecos-mode');
-    if (ecosToggle) {
-        if (ecosToggle.checked) {
-            const materialRaw = getText('ecos-materiel');
-            const materialList = materialRaw ? materialRaw.split(',').map(s => s.trim()).filter(s => s) : [];
-
-            const aptList = [];
-            const aptItems = document.querySelectorAll('#ecos-grille-aptitudes .editable-list-item');
-            aptItems.forEach(item => {
-                const idSpan = item.querySelector('[data-key="id"]');
-                const labelSpan = item.querySelector('[data-key="label"]');
-                const weightSpan = item.querySelector('[data-key="weight"]');
-                const kwSpan = item.querySelector('[data-key="triggerKeywords"]');
-                
-                const id = idSpan ? idSpan.textContent.trim() : '';
-                const label = labelSpan ? labelSpan.textContent.trim() : '';
-                const weightText = weightSpan ? weightSpan.textContent.trim() : '1';
-                const weight = parseFloat(weightText) || 1;
-                const kwRaw = kwSpan ? kwSpan.textContent.trim() : '';
-                const triggerKeywords = kwRaw ? kwRaw.split(',').map(s => s.trim()).filter(s => s) : [];
-                
-                if (id || label) {
-                    aptList.push({ id, label, weight, triggerKeywords });
-                }
-            });
-
-            const commList = [];
-            const commItems = document.querySelectorAll('#ecos-grille-communication .editable-list-item');
-            commItems.forEach(item => {
-                const idSpan = item.querySelector('[data-key="id"]');
-                const labelSpan = item.querySelector('[data-key="label"]');
-                const maxSpan = item.querySelector('[data-key="max"]');
-                
-                const id = idSpan ? idSpan.textContent.trim() : '';
-                const label = labelSpan ? labelSpan.textContent.trim() : '';
-                const maxText = maxSpan ? maxSpan.textContent.trim() : '1';
-                const max = parseFloat(maxText) || 1;
-                
-                if (id || label) {
-                    commList.push({ id, label, max });
-                }
-            });
-
-            const splitTextList = (id) => {
-                const val = getText(id);
-                return val ? val.split(',').map(s => s.trim()).filter(s => s) : [];
-            };
-
-            ecosData = {
-                vignette: {
-                    role: getText('ecos-role'),
-                    contexte: getText('ecos-contexte'),
-                    consignesAttendues: collectEcosTextList('ecos-consignes-attendues'),
-                    consignesInterdites: collectEcosTextList('ecos-consignes-interdites'),
-                    typeStation: document.getElementById('ecos-type-station')?.value || 'AVEC_PS',
-                    domainePrincipal: getText('ecos-domaine-principal'),
-                    domaineSecondaire: getText('ecos-domaine-secondaire'),
-                    lieu: getText('ecos-lieu'),
-                    materielDisponible: materialList
-                },
-                grilleAptitudesCliniques: aptList,
-                grilleCommunication: commList,
-                patientStandardise: {
-                    personnalite: getText('ecos-ps-personnalite'),
-                    phraseOuverture: getText('ecos-ps-ouverture'),
-                    infosVolontaires: splitTextList('ecos-ps-volontaires'),
-                    infosSiDemandees: splitTextList('ecos-ps-demandees'),
-                    infosCachees: splitTextList('ecos-ps-cachees'),
-                    reactions: {
-                        brutal: getText('ecos-ps-reaction-brutal'),
-                        silence: getText('ecos-ps-reaction-silence'),
-                        jargon: getText('ecos-ps-reaction-jargon')
-                    }
-                }
-            };
-        } else {
-            ecosData = null;
-        }
-    } else {
-        ecosData = loadedEcosData;
-    }
-    data.ecos = ecosData;
-
-    return data;
-}
-
-// Helpers
-function setText(id, val) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = val || "";
-}
-
-function getText(id) {
-    const el = document.getElementById(id);
-    return el ? el.textContent.trim() : "";
-}
-
-function updateInitials() {
-    const nom = getText('patient-nom-sidebar');
-    if (!nom) return;
-    const initials = nom.split(' ').map(n => n.charAt(0)).join('').toUpperCase() || '?';
-    document.getElementById('patient-initials').textContent = initials;
-}
-
-function addListItem(containerId, template) {
-    const container = document.getElementById(containerId);
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-
-    let html = '<div style="flex: 1;">';
-    Object.keys(template).forEach(key => {
-        html += `<span data-key="${key}" contenteditable="true" placeholder="${key}">${template[key]}</span> `;
-    });
-    html += '</div>';
-    html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>';
-
-    item.innerHTML = html;
-    container.appendChild(item);
-}
-
-function renderObjectList(containerId, list, keys) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    if (!list) return;
-    list.forEach(itemData => {
-        const item = document.createElement('div');
-        item.className = 'editable-list-item';
-        let html = '<div style="flex: 1;">';
-        keys.forEach(k => {
-            html += `<span data-key="${k}" contenteditable="true" placeholder="${k}">${itemData[k] || ''}</span> `;
-        });
-        html += '</div>';
-        html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>';
-        item.innerHTML = html;
-        container.appendChild(item);
-    });
-}
-
-function collectObjectList(containerId, keys) {
-    const container = document.getElementById(containerId);
-    if (!container) return [];
-    const items = container.querySelectorAll('.editable-list-item');
-    return Array.from(items).map(item => {
-        const obj = {};
-        keys.forEach(k => {
-            const el = item.querySelector(`[data-key="${k}"]`);
-            obj[k] = el ? el.textContent.trim() : "";
-        });
-        return obj;
-    });
-}
-
-function addListItemText(containerId) {
-    const container = document.getElementById(containerId);
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-    item.innerHTML = `
-        <span contenteditable="true" style="flex: 1;" placeholder="Texte...">...</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
-    `;
-    container.appendChild(item);
-}
-
-function renderTextList(containerId, list) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    if (!list) return;
-    list.forEach(txt => {
-        const item = document.createElement('div');
-        item.className = 'editable-list-item';
-        item.innerHTML = `
-            <span contenteditable="true" style="flex: 1;">${txt}</span>
-            <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
-        `;
-        container.appendChild(item);
-    });
-}
-
-// ---- ECOS HELPER FUNCTIONS ----
-function addEcosTextListItem(containerId, txt) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-    item.innerHTML = `
-        <span contenteditable="true" style="flex: 1;" placeholder="Consigne...">${txt}</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
-    `;
-    container.appendChild(item);
-}
-
-function renderEcosTextList(containerId, list) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = '';
-    list.forEach(txt => {
-        addEcosTextListItem(containerId, txt);
-    });
-}
-
-function collectEcosTextList(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return [];
-    return Array.from(container.querySelectorAll('.editable-list-item span[contenteditable]'))
-        .map(span => span.textContent.trim())
-        .filter(txt => txt && txt !== '...' && txt !== '');
-}
-
-window.addEcosConsigneAttendue = function(txt = '...') {
-    addEcosTextListItem('ecos-consignes-attendues', txt);
-};
-
-window.addEcosConsigneInterdite = function(txt = '...') {
-    addEcosTextListItem('ecos-consignes-interdites', txt);
-};
-
-window.addEcosAptitude = function (apt = {}) {
-    const container = document.getElementById('ecos-grille-aptitudes');
-    if (!container) return;
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-    item.style.display = 'grid';
-    item.style.gridTemplateColumns = '1fr 2fr 80px 2fr 100px';
-    item.style.gap = '10px';
-    item.style.alignItems = 'center';
-    item.style.marginBottom = '8px';
-
-    const idVal = apt.id || '';
-    const labelVal = apt.label || '';
-    const weightVal = apt.weight !== undefined ? apt.weight : 1;
-    const keywordsVal = (apt.triggerKeywords || []).join(', ');
-
-    item.innerHTML = `
-        <span data-key="id" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="ID...">${idVal}</span>
-        <span data-key="label" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="Description...">${labelVal}</span>
-        <span data-key="weight" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff; text-align:center;" placeholder="1">${weightVal}</span>
-        <span data-key="triggerKeywords" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="Mots-clés...">${keywordsVal}</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding: 6px;"><i class="fas fa-trash"></i></button>
-    `;
-    container.appendChild(item);
-};
-
-window.addEcosCommunication = function (comm = {}) {
-    const container = document.getElementById('ecos-grille-communication');
-    if (!container) return;
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-    item.style.display = 'grid';
-    item.style.gridTemplateColumns = '1fr 2fr 80px 100px';
-    item.style.gap = '10px';
-    item.style.alignItems = 'center';
-    item.style.marginBottom = '8px';
-
-    const idVal = comm.id || '';
-    const labelVal = comm.label || '';
-    const maxVal = comm.max !== undefined ? comm.max : 1;
-
-    item.innerHTML = `
-        <span data-key="id" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="ID...">${idVal}</span>
-        <span data-key="label" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff;" placeholder="Description...">${labelVal}</span>
-        <span data-key="max" contenteditable="true" style="background: rgba(0,0,0,0.2); padding: 6px; border-radius: 4px; color:#fff; text-align:center;" placeholder="1">${maxVal}</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding: 6px;"><i class="fas fa-trash"></i></button>
-    `;
-    container.appendChild(item);
-};
-
-function collectAllergies() {
-    const toggle = document.getElementById('allergies-toggle');
-    const container = document.getElementById('allergies-liste');
-    if (!toggle || !container) return { presence: false, liste: [] };
-    const presence = toggle.checked;
-    const liste = [];
-    container.querySelectorAll('.editable-list-item span[contenteditable]').forEach(span => {
-        const val = span.textContent.trim();
-        if (val && val !== '...') liste.push(val);
-    });
-    return { presence, liste };
-}
-
-// ---- UNIFIED DIAGNOSTIC LIST ----
-window.addDiagnosticItem = function (txt = '...', isCorrect = false) {
-    const container = document.getElementById('possible-diagnostics');
-    const id = 'diag_radio_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-    item.style.alignItems = 'center';
-    item.style.gap = '10px';
-    item.innerHTML = `
-        <label title="Marquer comme diagnostic correct" style="cursor:pointer; display:flex; align-items:center; gap:6px; flex-shrink:0;">
-            <input type="radio" name="correct-diagnostic-radio" style="accent-color:#2ecc71; width:16px; height:16px; cursor:pointer;" ${isCorrect ? 'checked' : ''}>
-            <span style="color:#2ecc71; font-size:0.8em; white-space:nowrap;">Correct</span>
-        </label>
-        <span data-text="${txt.replace(/"/g, '&quot;')}" contenteditable="true" style="flex:1;" oninput="this.dataset.text=this.textContent.trim()">${txt}</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>
-    `;
-    container.appendChild(item);
-};
-
-function populateDiagnosticList(possibleDiags, correctDiag) {
-    const container = document.getElementById('possible-diagnostics');
-    container.innerHTML = '';
-    (possibleDiags || []).forEach(d => addDiagnosticItem(d, d === correctDiag));
-}
-
-function collectDiagnosticList() {
-    return Array.from(document.querySelectorAll('#possible-diagnostics [data-text]'))
-        .map(el => el.dataset.text).filter(s => s);
-}
-
-function collectCorrectDiagnostic() {
-    const checked = document.querySelector('#possible-diagnostics input[type="radio"]:checked');
-    if (!checked) return '';
-    const span = checked.closest('.editable-list-item').querySelector('[data-text]');
-    return span ? span.dataset.text : '';
-}
-
-// ---- UNIFIED TREATMENT LIST ----
-window.addTreatmentItem = function (txt = '...', isCorrect = false, isFatal = false) {
-    const container = document.getElementById('possible-treatments');
-    const item = document.createElement('div');
-    item.className = 'editable-list-item';
-    item.style.alignItems = 'center';
-    item.style.gap = '8px';
-    item.innerHTML = `
-        <label title="Correct" style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-shrink:0;">
-            <input type="checkbox" class="correct-check" style="accent-color:#2ecc71; width:15px; height:15px; cursor:pointer;" ${isCorrect ? 'checked' : ''}>
-            <span style="color:#2ecc71; font-size:0.78em;">✓</span>
-        </label>
-        <label title="Traitement Fatal (contre-indiqué)" style="cursor:pointer; display:flex; align-items:center; gap:4px; flex-shrink:0;">
-            <input type="checkbox" class="fatal-check" style="accent-color:#e74c3c; width:15px; height:15px; cursor:pointer;" ${isFatal ? 'checked' : ''}>
-            <span style="color:#e74c3c; font-size:0.78em;">☠</span>
-        </label>
-        <span data-text="${txt.replace(/"/g, '&quot;')}" contenteditable="true" style="flex:1;" oninput="this.dataset.text=this.textContent.trim()">${txt}</span>
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="flex-shrink:0;"><i class="fas fa-trash"></i></button>
-    `;
-    // Auto-uncheck fatal if correct is checked (and vice versa)
-    const correctCb = item.querySelector('.correct-check');
-    const fatalCb = item.querySelector('.fatal-check');
-    correctCb.addEventListener('change', () => { if (correctCb.checked) fatalCb.checked = false; });
-    fatalCb.addEventListener('change', () => { if (fatalCb.checked) correctCb.checked = false; });
-    container.appendChild(item);
-};
-
-function populateTreatmentList(possible, correct, fatal) {
-    const container = document.getElementById('possible-treatments');
-    container.innerHTML = '';
-    const correctSet = new Set(correct || []);
-    const fatalSet = new Set(fatal || []);
-    (possible || []).forEach(t => addTreatmentItem(t, correctSet.has(t), fatalSet.has(t)));
-}
-
-function collectTreatmentAttr(type) {
-    const items = document.querySelectorAll('#possible-treatments .editable-list-item');
-    const results = [];
-    items.forEach(item => {
-        const text = item.querySelector('[data-text]')?.dataset.text || '';
-        if (!text) return;
-        const isCorrect = item.querySelector('.correct-check')?.checked;
-        const isFatal = item.querySelector('.fatal-check')?.checked;
-        if (type === 'all') results.push(text);
-        else if (type === 'correct' && isCorrect) results.push(text);
-        else if (type === 'fatal' && isFatal) results.push(text);
-    });
-    return results;
-}
-
-function formatExamKey(key) {
-    if (!key) return "";
-    // If it already seems formatted (has spaces or starts with capital), return it
-    if (key.includes(' ') || /^[A-Z]/.test(key)) return key;
-
-    // Remove "examen" prefix if it exists
-    let formatted = key.replace(/^examen/, '');
-    // Add space before capitals
-    formatted = formatted.replace(/([A-Z])/g, ' $1').trim();
-    // Capitalize first letter
-    return formatted.charAt(0).toUpperCase() + formatted.slice(1);
-}
-
-function createBulletHtml(k, v) {
-    return `<li>
-        <strong contenteditable="true" placeholder="label">${k}</strong>: 
-        <span contenteditable="true" placeholder="résultat">${v || ''}</span>
-        <i class="fas fa-times remove-bullet" onclick="this.parentElement.remove()" title="Supprimer ce point"></i>
-    </li>`;
-}
-
-window.addExamBullet = function (btn) {
-    const ul = btn.closest('.exam-item').querySelector('ul');
-    const li = document.createElement('li');
-    li.innerHTML = `
-        <strong contenteditable="true" placeholder="label">Nouveau</strong>: 
-        <span contenteditable="true" placeholder="résultat">...</span>
-        <i class="fas fa-times remove-bullet" onclick="this.parentElement.remove()" title="Supprimer ce point"></i>
-    `;
-    ul.appendChild(li);
-    // Focus the new label
-    li.querySelector('strong').focus();
-};
-
-function renderExamSection(key, data) {
-    const list = document.getElementById('exam-details-list');
-    const div = document.createElement('div');
-    div.className = 'exam-item';
-    div.setAttribute('data-key', key);
-
-    const displayTitle = formatExamKey(key);
-
-    let html = `<h4 contenteditable="true" placeholder="Nom de la section">${displayTitle}</h4><ul>`;
-    if (data && typeof data === 'object') {
-        Object.entries(data).forEach(([k, v]) => {
-            html += createBulletHtml(k, v);
-        });
-    }
-    html += '</ul>';
-    html += `
-        <div class="exam-actions" style="margin-top: 10px; display: flex; gap: 10px;">
-            <button class="btn-add-bullet" onclick="addExamBullet(this)" style="background: rgba(0, 210, 255, 0.1); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--editor-secondary); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em;">
-                <i class="fas fa-plus"></i> Ajouter un point
-            </button>
-        </div>
-    `;
-    html += '<button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer section</button>';
-
-    div.innerHTML = html;
-    list.appendChild(div);
-}
-
-function addExamResult() {
-    const list = document.getElementById('available-exams-list');
-    const div = document.createElement('div');
-    div.className = 'editable-list-item';
-    div.innerHTML = `
-        <strong contenteditable="true" data-type="exam-name" placeholder="Nom Examen">Nouveau Examen</strong>: 
-        <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;" placeholder="Résultat...">Résultat...</span>
-        <button class="btn-add" style="padding: 6px 10px; font-size: 12px;" onclick="triggerImageUpload(this)"><i class="fas fa-image"></i></button>
-        <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
-    `;
-    list.appendChild(div);
-}
-
-function renderExamResults(available, results) {
-    const list = document.getElementById('available-exams-list');
-    list.innerHTML = '';
-    if (!available) return;
-    available.forEach(name => {
-        const div = document.createElement('div');
-        div.className = 'editable-list-item';
-
-        const examData = results ? results[name] : null;
-        const textValue = typeof examData === 'object' ? (examData.value || '') : (examData || '');
-        const imageBase64 = typeof examData === 'object' ? (examData.image || null) : null;
-
-        let html = `
-            <strong contenteditable="true" data-type="exam-name">${name}</strong>: 
-            <span contenteditable="true" data-type="exam-value" style="flex: 1; margin-left: 10px;">${textValue}</span>
-        `;
-
-        if (imageBase64) {
-            html += `
-                <div class="image-preview" data-base64="${imageBase64}">
-                    <img src="${imageBase64}" style="height: 40px; border-radius: 4px; border: 1px solid var(--glass-border);">
-                    <button class="btn-remove-img" onclick="this.parentElement.remove()" style="background: none; border: none; color: var(--editor-danger); cursor: pointer; padding: 0 5px;"><i class="fas fa-times"></i></button>
-                </div>
-            `;
-        }
-
-        html += `
-            <button class="btn-add" style="padding: 6px 10px; font-size: 12px;" onclick="triggerImageUpload(this)"><i class="fas fa-image"></i></button>
-            <button class="btn-remove" onclick="this.parentElement.remove()"><i class="fas fa-trash"></i> Supprimer</button>
-        `;
-        div.innerHTML = html;
-        list.appendChild(div);
-    });
-}
-
-function collectAvailableExams() {
-    const items = document.querySelectorAll('#available-exams-list .editable-list-item');
-    return Array.from(items).map(item => item.querySelector('[data-type="exam-name"]').textContent.trim());
-}
-
-function collectExamResults() {
-    const items = document.querySelectorAll('#available-exams-list .editable-list-item');
-    const results = {};
-    items.forEach(item => {
-        const nameEl = item.querySelector('[data-type="exam-name"]');
-        const valueEl = item.querySelector('[data-type="exam-value"]');
-        const imgEl = item.querySelector('.image-preview');
-        if (nameEl && valueEl) {
-            const name = nameEl.textContent.trim();
-            const value = valueEl.textContent.trim();
-            const image = imgEl ? imgEl.dataset.base64 : null;
-
-            if (image) {
-                results[name] = { value, image };
-            } else {
-                results[name] = value;
-            }
-        }
-    });
-    return results;
-}
-
-function getAvailableFields() {
-    const fields = [];
-
-    // Interrogatoire
-    fields.push({ path: 'interrogatoire.histoireMaladie.debutSymptomes', label: 'Anamnèse: Début symptômes' });
-    fields.push({ path: 'interrogatoire.histoireMaladie.evolution', label: 'Anamnèse: Évolution' });
-    fields.push({ path: 'interrogatoire.histoireMaladie.facteursDeclenchants', label: 'Anamnèse: Facteurs déclenchants' });
-    fields.push({ path: 'interrogatoire.histoireMaladie.descriptionDouleur', label: 'Anamnèse: Description douleur' });
-    fields.push({ path: 'interrogatoire.histoireMaladie.symptomesAssocies', label: 'Anamnèse: Symptômes associés' });
-    fields.push({ path: 'interrogatoire.histoireMaladie.remarques', label: 'Anamnèse: Histoire - Remarques' });
-    fields.push({ path: 'interrogatoire.verbatim', label: 'Anamnèse: Discours du patient' });
-
-    fields.push({ path: 'interrogatoire.modeDeVie.activitePhysique.description', label: 'Mode de vie: Activité physique' });
-    fields.push({ path: 'interrogatoire.modeDeVie.tabac', label: 'Mode de vie: Tabac' });
-    fields.push({ path: 'interrogatoire.modeDeVie.alcool', label: 'Mode de vie: Alcool' });
-    fields.push({ path: 'interrogatoire.modeDeVie.alimentation', label: 'Mode de vie: Alimentation' });
-    fields.push({ path: 'interrogatoire.modeDeVie.emploi', label: 'Mode de vie: Emploi/Stress' });
-
-    fields.push({ path: 'interrogatoire.antecedents.medicaux', label: 'Anamnèse: Antécédents' });
-    fields.push({ path: 'interrogatoire.traitements', label: 'Anamnèse: Traitements habituels' });
-
-    // Examen Clinique
-    fields.push({ path: 'examenClinique.constantes.tension', label: 'Examen: Tension' });
-    fields.push({ path: 'examenClinique.constantes.pouls', label: 'Examen: Pouls' });
-    fields.push({ path: 'examenClinique.constantes.temperature', label: 'Examen: Température' });
-    fields.push({ path: 'examenClinique.constantes.saturationO2', label: 'Examen: SpO2' });
-    fields.push({ path: 'examenClinique.constantes.frequenceRespiratoire', label: 'Examen: FR' });
-    fields.push({ path: 'examenClinique.aspectGeneral', label: 'Examen: Aspect général' });
-
-    // Dynamic Examen Sections
-    const dynamicExams = document.querySelectorAll('.exam-item[data-key]');
-    dynamicExams.forEach(item => {
-        const key = item.getAttribute('data-key');
-        const title = item.querySelector('h4').textContent;
-        fields.push({ path: `examenClinique.${key}`, label: `Examen: ${title}` });
-    });
-
-    // Exam Results (each exam can be locked)
-    const examResults = document.querySelectorAll('#available-exams-list .editable-list-item');
-    examResults.forEach(item => {
-        const name = item.querySelector('[data-type="exam-name"]').textContent.trim();
-        fields.push({ path: `examResults.${name}`, label: `Résultat: ${name}` });
-    });
-
-    // Whole sections
-    fields.push({ path: 'examensComplementaires', label: 'Section: Examens Complémentaires' });
-
-    return fields;
-}
-
-function addLock(lockData) {
-    const container = document.getElementById('locks-list');
-    const div = document.createElement('div');
-    div.className = 'medical-card lock-card';
-    div.style.marginBottom = '20px';
-    div.style.position = 'relative';
-    div.dataset.id = lockData.id;
-
-    const type = lockData.type || 'SAISIE';
-    const availableFields = getAvailableFields();
-
-    div.innerHTML = `
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px;">
-            <i class="fas fa-trash"></i>
-        </button>
-        <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap:15px;">
-            <div>
-                <div class="lock-setting-item" style="display: none;">
-                    <span class="lock-label">ID du verrou:</span>
-                    <span class="lock-id" contenteditable="true">${lockData.id}</span>
-                </div>
-                <div class="lock-setting-item">
-                    <span class="lock-label">Mode de réponse:</span>
-                    <select class="lock-type modern-select">
-                        <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie de texte</option>
-                        <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM (Choix multiple)</option>
-                    </select>
-                </div>
-                
-                <div class="lock-setting-item" style="flex-direction: column; align-items: flex-start;">
-                    <span class="lock-label">Éléments à masquer:</span>
-                    <div class="field-selector-container" style="width: 100%;">
-                        <select class="field-picker modern-select" style="width: 100%; margin-bottom: 10px;">
-                            <option value="">-- Sélectionner un champ --</option>
-                            ${availableFields.map(f => `<option value="${f.path}">${f.label}</option>`).join('')}
-                        </select>
-                        <div class="selected-fields-tags">
-                            <!-- Tags will be inserted here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <h4 class="label">Défi du verrou</h4>
-                <p class="lock-label">Question à poser :</p>
-                <div class="lock-question" contenteditable="true" placeholder="Ex: Quel examen demandez-vous ?" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--glass-border);">
-                    ${lockData.challenge.question}
-                </div>
-                <div class="lock-challenge-details">
-                    <!-- Specific to type -->
-                </div>
-                <p class="lock-label" style="margin-top: 15px;">En cas d'erreur :</p>
-                <div class="lock-error" contenteditable="true" placeholder="Message d'erreur..." style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-size:0.9em; border: 1px solid var(--glass-border);">
-                    ${lockData.feedback_error || ''}
-                </div>
-            </div>
-        </div>
-    `;
-
-    container.appendChild(div);
-
-    const tagsContainer = div.querySelector('.selected-fields-tags');
-    const fieldPicker = div.querySelector('.field-picker');
-
-    const addTag = (path) => {
-        if (!path) return;
-        const existingTags = Array.from(tagsContainer.querySelectorAll('.field-tag')).map(t => t.dataset.path);
-        if (existingTags.includes(path)) return;
-
-        const field = availableFields.find(f => f.path === path) || { label: path, path: path };
-        const tag = document.createElement('div');
-        tag.className = 'field-tag';
-        tag.dataset.path = path;
-        tag.innerHTML = `
-            <span>${field.label}</span>
-            <i class="fas fa-times" onclick="this.parentElement.remove()"></i>
-        `;
-        tagsContainer.appendChild(tag);
-    };
-
-    // Initialize tags
-    (lockData.target_fields || []).forEach(path => addTag(path));
-
-    fieldPicker.addEventListener('change', (e) => {
-        addTag(e.target.value);
-        e.target.value = '';
-    });
-
-    const detailsContainer = div.querySelector('.lock-challenge-details');
-    const typeSelect = div.querySelector('.lock-type');
-
-    const updateDetails = () => {
-        const currentType = typeSelect.value;
-        if (currentType === 'SAISIE') {
-            detailsContainer.innerHTML = `
-                <p class="lock-label">Réponses acceptées (mots-clés séparés par virgule) :</p>
-                <div class="lock-keywords" contenteditable="true" placeholder="ex: poumon, pleurésie" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; border: 1px solid var(--glass-border);">
-                    ${(lockData.challenge.expected_keywords || []).join(', ')}
-                </div>
-            `;
-        } else {
-            const options = lockData.challenge.options || ['Option 1', 'Option 2'];
-            const correctIndices = lockData.challenge.correct_indices || (lockData.challenge.correct_index !== undefined ? [lockData.challenge.correct_index] : [0]);
-
-            let optionsHtml = options.map((opt, i) => `
-                <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <input type="checkbox" class="correct-checkbox" ${correctIndices.includes(i) ? 'checked' : ''}>
-                    <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
-                    <button class="btn-add" style="padding: 5px 8px; font-size: 10px;" onclick="triggerImageUploadMcq(this)" title="Ajouter une image"><i class="fas fa-image"></i></button>
-                    <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
-                </div>
-            `).join('');
-
-            detailsContainer.innerHTML = `
-                <p class="lock-label">Options QCM (cochez les bonnes réponses) :</p>
-                <div class="mcq-options-list">${optionsHtml}</div>
-                <button class="btn-add" onclick="addMcqOption(this)" style="padding:8px 12px; font-size:0.8em; margin-top:10px;"><i class="fas fa-plus"></i> Ajouter une option</button>
-            `;
-        }
-    };
-
-    typeSelect.addEventListener('change', updateDetails);
-    updateDetails();
-}
-
-window.addMcqOption = (btn) => {
-    const list = btn.previousElementSibling;
-    const div = document.createElement('div');
-    div.className = 'mcq-editor-option';
-    div.style.display = 'flex';
-    div.style.alignItems = 'center';
-    div.style.gap = '10px';
-    div.style.marginBottom = '8px';
-    div.innerHTML = `
-        <input type="checkbox" class="correct-checkbox">
-        <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">Nouvelle option</span>
-        <button class="btn-add" style="padding: 5px 8px; font-size: 10px;" onclick="triggerImageUploadMcq(this)" title="Ajouter une image"><i class="fas fa-image"></i></button>
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
-    `;
-    list.appendChild(div);
-};
-
-window.triggerImageUploadMcq = (el) => {
-    currentTargetItemMcq = el.tagName === 'BUTTON' ? el.parentElement : el;
-    document.getElementById('image-upload-mcq').click();
-};
-
-let currentTargetItemMcq = null;
-const imgInputMcq = document.createElement('input');
-imgInputMcq.type = 'file';
-imgInputMcq.id = 'image-upload-mcq';
-imgInputMcq.accept = 'image/*';
-imgInputMcq.style.display = 'none';
-document.body.appendChild(imgInputMcq);
-
-imgInputMcq.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file || !currentTargetItemMcq) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-        const base64 = event.target.result;
-        const span = currentTargetItemMcq.querySelector('span[contenteditable]');
-        const img = document.createElement('img');
-        img.src = base64;
-        img.style.maxHeight = '100px';
-        img.style.display = 'block';
-        img.style.marginTop = '10px';
-        span.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-};
-
-window.showCorrectionPreview = function () {
-    const text = document.getElementById('correction-text').innerText;
-    const previewArea = document.getElementById('correction-preview-area');
-    const corrImageContainer = document.getElementById('correction-image-container');
-
-    if (previewArea.style.display === 'none') {
-        if (window.renderCorrectionMd) {
-            window.renderCorrectionMd(text);
-        } else {
-            // Fallback if game.js isn't loaded/accessible
-            previewArea.innerHTML = text.replace(/\n/g, '<br>');
-        }
-
-        // Add the correction image to the preview if it exists
-        const imagePreview = corrImageContainer ? corrImageContainer.querySelector('.image-preview') : null;
-        if (imagePreview) {
-            const img = imagePreview.querySelector('img');
-            if (img) {
-                const imgClone = img.cloneNode(true);
-                imgClone.style.maxWidth = '100%';
-                imgClone.style.maxHeight = '400px';
-                imgClone.style.marginTop = '20px';
-                imgClone.style.display = 'block';
-                previewArea.appendChild(imgClone);
-            }
-        }
-
-        previewArea.style.display = 'block';
-        previewArea.style.background = 'white';
-        previewArea.style.color = 'black';
-        previewArea.style.padding = '20px';
-        previewArea.style.borderRadius = '8px';
-        previewArea.style.marginTop = '10px';
-        previewArea.style.border = '1px solid var(--primary-color)';
-    } else {
-        previewArea.style.display = 'none';
-    }
-};
-
-function renderLocksList(locks) {
-    const container = document.getElementById('locks-list');
-    container.innerHTML = '';
-    if (!locks) return;
-    locks.forEach(lock => addLock(lock));
-}
-
-function collectLocks() {
-    const lockCards = document.querySelectorAll('#locks-list > .lock-card');
-    return Array.from(lockCards).map(card => collectChallengeData(card));
-}
-
-function collectPostGameQuestions() {
-    const cards = document.querySelectorAll('#post-game-questions-list > .post-game-card');
-    return Array.from(cards).map(card => collectChallengeData(card));
-}
-
-function collectChallengeData(card) {
-    const type = card.querySelector('.lock-type').value;
-    const challenge = {
-        question: card.querySelector('.lock-question').innerHTML.trim()
-    };
-
-    const data = {
-        type: type,
-        challenge: challenge,
-        feedback_error: card.querySelector('.lock-error').innerHTML.trim()
-    };
-
-    // Only locks have IDs and target fields
-    if (card.querySelector('.lock-id')) {
-        data.id = card.querySelector('.lock-id').textContent.trim();
-        data.target_fields = Array.from(card.querySelectorAll('.field-tag')).map(t => t.dataset.path);
-    }
-
-    if (type === 'SAISIE') {
-        challenge.expected_keywords = card.querySelector('.lock-keywords').textContent.split(',').map(s => s.trim()).filter(s => s);
-    } else {
-        const optionsList = card.querySelectorAll('.mcq-editor-option');
-        challenge.options = [];
-        challenge.correct_indices = [];
-        optionsList.forEach((optDiv, index) => {
-            challenge.options.push(optDiv.querySelector('span').innerHTML.trim());
-            if (optDiv.querySelector('.correct-checkbox').checked) {
-                challenge.correct_indices.push(index);
-            }
-        });
-    }
-    return data;
-}
-
-function addPostGameQuestion(questionData) {
-    const container = document.getElementById('post-game-questions-list');
-    const div = document.createElement('div');
-    div.className = 'medical-card post-game-card';
-    div.style.marginBottom = '20px';
-    div.style.position = 'relative';
-
-    const type = questionData.type || 'SAISIE';
-
-    div.innerHTML = `
-        <button class="btn-remove" onclick="this.parentElement.remove()" style="position:absolute; top:10px; right:10px;">
-            <i class="fas fa-trash"></i>
-        </button>
-        <div class="grid-layout" style="grid-template-columns: 1fr 1fr; gap:15px;">
-            <div>
-                <div class="lock-setting-item">
-                    <span class="lock-label">Type de question:</span>
-                    <select class="lock-type modern-select">
-                        <option value="SAISIE" ${type === 'SAISIE' ? 'selected' : ''}>Saisie de texte (QROC)</option>
-                        <option value="QCM" ${type === 'QCM' ? 'selected' : ''}>QCM</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <h4 class="label" style="color: var(--primary-color);">Question Quiz</h4>
-                <p class="lock-label">Énoncé :</p>
-                <div class="lock-question" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-bottom:15px; border: 1px solid var(--glass-border);">
-                    ${questionData.challenge.question}
-                </div>
-                <div class="lock-challenge-details">
-                    <!-- Specific to type -->
-                </div>
-                <p class="lock-label" style="margin-top: 15px;">Correction/Feedback si faux :</p>
-                <div class="lock-error" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; font-size:0.9em; border: 1px solid var(--glass-border);">
-                    ${questionData.feedback_error || ''}
-                </div>
-            </div>
-        </div>
-    `;
-
-    container.appendChild(div);
-
-    const detailsContainer = div.querySelector('.lock-challenge-details');
-    const typeSelect = div.querySelector('.lock-type');
-
-    const updateDetails = () => {
-        const currentType = typeSelect.value;
-        if (currentType === 'SAISIE') {
-            detailsContainer.innerHTML = `
-                <p class="lock-label">Réponses acceptées (mots-clés) :</p>
-                <div class="lock-keywords" contenteditable="true" style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; border: 1px solid var(--glass-border);">
-                    ${(questionData.challenge.expected_keywords || []).join(', ')}
-                </div>
-            `;
-        } else {
-            const options = questionData.challenge.options || ['Option 1', 'Option 2'];
-            const correctIndices = questionData.challenge.correct_indices || [];
-
-            let optionsHtml = options.map((opt, i) => `
-                <div class="mcq-editor-option" style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <input type="checkbox" class="correct-checkbox" ${correctIndices.includes(i) ? 'checked' : ''}>
-                    <span contenteditable="true" style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:8px; border: 1px solid var(--glass-border);">${opt}</span>
-                    <button class="btn-add" style="padding: 5px 8px; font-size: 10px;" onclick="triggerImageUploadMcq(this)" title="Ajouter une image"><i class="fas fa-image"></i></button>
-                    <button class="btn-remove" onclick="this.parentElement.remove()" style="padding:5px 8px;"><i class="fas fa-times"></i></button>
-                </div>
-            `).join('');
-
-            detailsContainer.innerHTML = `
-                <p class="lock-label">Options :</p>
-                <div class="mcq-options-list">${optionsHtml}</div>
-                <button class="btn-add" onclick="addMcqOption(this)" style="padding:8px 12px; font-size:0.8em; margin-top:10px; color: var(--primary-color); border-color: rgba(160, 32, 240, 0.3);"><i class="fas fa-plus"></i> Option</button>
-            `;
-        }
-    };
-
-    typeSelect.addEventListener('change', updateDetails);
-    updateDetails();
-}
-
-function renderPostGameQuestionsList(questions) {
-    const container = document.getElementById('post-game-questions-list');
-    container.innerHTML = '';
-    if (!questions) return;
-    questions.forEach(q => addPostGameQuestion(q));
 }
