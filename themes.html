@@ -65,14 +65,33 @@
     <div class="scene-overlay">
 
 
-        <h1 class="h1">Sélectionnez l'UE</h1>
+        <h1 class="h1" id="themes-main-title">Sélectionnez l'UE</h1>
         <div class="themes-nav-bar">
             <a href="index.html" class="back-link-bottom"><i class="fas fa-arrow-left"></i> Retour au menu</a>
             <div id="daily-case-banner" class="daily-case-pill" style="display:none;" role="button" tabindex="0" title="Lancer le cas du jour"></div>
         </div>
         <div class="container">
+            <!-- Sélecteur de Cycle Médical (DFGSM vs DFASM) -->
+            <div class="cycle-switcher" role="tablist" aria-label="Cycle d'études médicales">
+                <button type="button" class="cycle-tab-btn active" data-cycle="1" role="tab" aria-selected="true" id="tab-cycle-1">
+                    <i class="fas fa-stethoscope"></i>
+                    <div class="cycle-tab-info">
+                        <span class="cycle-tab-title">1<sup>er</sup> Cycle</span>
+                        <span class="cycle-tab-desc">DFGSM · Sémiologie</span>
+                    </div>
+                </button>
+                <button type="button" class="cycle-tab-btn" data-cycle="2" role="tab" aria-selected="false" id="tab-cycle-2">
+                    <i class="fas fa-user-md"></i>
+                    <div class="cycle-tab-info">
+                        <span class="cycle-tab-title">2<sup>ème</sup> Cycle <span class="cycle-badge-new">EDN / ECOS</span></span>
+                        <span class="cycle-tab-desc">DFASM · Spécialités & Urgences</span>
+                    </div>
+                </button>
+            </div>
+
             <div class="themes-container">
-                <div id="themes-grid">
+                <!-- Grille 1er Cycle : Les 10 UEs d'organes fondamentales -->
+                <div id="themes-grid-cycle-1" class="themes-grid active">
                     <div class="theme-card" data-theme="Cardiologie">
                         <img class="theme-icon" src="assets/images/UE/cardio.png" alt="Cardiologie">
                         <h2>Cardiologie</h2>
@@ -125,6 +144,46 @@
                             <h2>Urgence</h2>
                             <p class="theme-subtitle">Cas dynamiques, temps limité, gestion active.</p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Grille 2ème Cycle : DFASM · Spécialités cliniques R2C / EDN & ECOS -->
+                <div id="themes-grid-cycle-2" class="themes-grid hidden-cycle">
+                    <div class="theme-card" data-theme="Dermatologie">
+                        <div class="theme-badge-cycle">Item 152 · ECOS</div>
+                        <div class="theme-fa-icon"><i class="fas fa-hand-dots"></i></div>
+                        <h2>Dermatologie</h2>
+                        <p class="theme-subtitle">Dermo-hypodermite nécrosante (DHBN-FN), bulles & plaies</p>
+                    </div>
+                    <div class="theme-card" data-theme="Urgence">
+                        <div class="theme-badge-cycle">R2C · Items 332-340</div>
+                        <img class="theme-icon" src="assets/images/UE/urgence.png" alt="Urgences">
+                        <h2>Urgences & Réanimation</h2>
+                        <p class="theme-subtitle">Détresses vitales, choc septique & réanimation aiguë</p>
+                    </div>
+                    <div class="theme-card" data-theme="Agents-infectieux">
+                        <div class="theme-badge-cycle">Items 145-174</div>
+                        <img class="theme-icon" src="assets/images/UE/agent-inf.png" alt="Maladies Infectieuses">
+                        <h2>Maladies Infectieuses</h2>
+                        <p class="theme-subtitle">Sepsis sévère, antibiothérapie probabiliste & bactériologie</p>
+                    </div>
+                    <div class="theme-card" data-theme="Cardiologie">
+                        <div class="theme-badge-cycle">Items 224-237</div>
+                        <img class="theme-icon" src="assets/images/UE/cardio.png" alt="Cardiologie">
+                        <h2>Cardiologie</h2>
+                        <p class="theme-subtitle">Syndromes coronariens, insuffisance cardiaque & ECG</p>
+                    </div>
+                    <div class="theme-card" data-theme="Uronephro">
+                        <div class="theme-badge-cycle">Items 258-270</div>
+                        <img class="theme-icon" src="assets/images/UE/uro.png" alt="Néphrologie - Urologie">
+                        <h2>Néphrologie - Urologie</h2>
+                        <p class="theme-subtitle">Insuffisance rénale aiguë, coliques néphrétiques & anurie</p>
+                    </div>
+                    <div class="theme-card" data-theme="Neurologie/psychiatrie">
+                        <div class="theme-badge-cycle">Items 88-106</div>
+                        <img class="theme-icon" src="assets/images/UE/neuro.png" alt="Neurologie">
+                        <h2>Neurologie</h2>
+                        <p class="theme-subtitle">AVC, crises comitiales & déficits neurologiques aigus</p>
                     </div>
                 </div>
             </div>

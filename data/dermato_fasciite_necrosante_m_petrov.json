@@ -1,0 +1,384 @@
+{
+  "id": "dermato_fasciite_necrosante_m_petrov",
+  "redacteur": "Inès",
+  "specialty": "Dermatologie",
+  "difficulty": 4,
+  "itemR2C": "Item 152. Infections cutanéo-muqueuses bactériennes et mycosiques (DHBN-FN). Item 332. État de choc (Choc septique).",
+  "referentiel": "Collège des Enseignants en Dermatologie de France (CEDF) / SPILF / HAS",
+  "titre": "Dermohypodermite bactérienne nécrosante avec fasciite nécrosante (DHBN-FN) du membre inférieur",
+  "motif": "Douleur intolérable et lésion nécrotique de la jambe droite avec fièvre à 39°C",
+  "patient": {
+    "nom": "Petrov",
+    "prenom": "Dimitar",
+    "age": 67,
+    "sexe": "M",
+    "taille": "172 cm",
+    "poids": "62 kg",
+    "groupeSanguin": "A+",
+    "model3D": "character-male-e.glb",
+    "situation": "Sans domicile fixe (SDF), originaire de Bulgarie, précarité sociale et médicale majeure",
+    "persona": {
+      "ton": "extrêmement algique, prostré, gémit de douleur, comprend très peu le français",
+      "registre": "très réduit (barrière de la langue), phrases de 2 ou 3 mots entrecoupées de gémissements",
+      "loquacite": "reserve",
+      "style_parole": "gémit, grimace en se tenant la jambe droite. Répète 'Boli... boli mnogo... aide... mal...'. Ne peut pas répondre aux questions complexes en français.",
+      "exemples_phrases": [
+        "Oooh... boli... boli mnogo... (se tient la jambe et grimace de douleur)",
+        "Aide docteur... mal... très mal jambe...",
+        "Ne razbiram... pas français... mal ici, mal partout..."
+      ],
+      "anxiete": 88,
+      "confiance": 55
+    }
+  },
+  "dialogue": {
+    "phraseOuverture": "Oooh... (le patient est allongé sur le brancard des urgences de Bichat, visage crispé par une vive douleur, transpirant abondamment, pointant sa jambe droite tuméfiée) Boli... boli beaucoup docteur... aidez-moi... très mal..."
+  },
+  "interrogatoire": {
+    "motifHospitalisation": "Douleur intolérable et gonflement d'extension rapide de la jambe droite avec fièvre à 39°C",
+    "modeDeVie": {
+      "activitePhysique": {
+        "description": "Marche quotidienne dans la rue, très réduite depuis 24h en raison de la douleur intolérable"
+      },
+      "tabac": {
+        "quantite": "30 PA",
+        "duree": "Fumeur actif"
+      },
+      "alcool": {
+        "quantite": "Alcoolisme chronique sévère non sevré"
+      },
+      "alimentation": {
+        "regime": "Dénutrition protéino-énergétique, précarité alimentaire",
+        "particularites": "Alimentation très irrégulière"
+      },
+      "emploi": {
+        "profession": "Sans emploi, sans domicile fixe (SDF)",
+        "stress": "Extrême (vie à la rue, vulnérabilité sociale)"
+      }
+    },
+    "antecedents": {
+      "medicaux": [
+        {
+          "type": "Alcoolisme chronique",
+          "traitement": "Aucun suivi médical régulier"
+        },
+        {
+          "type": "Insuffisance veineuse chronique des membres inférieurs avec ulcère variqueux malléolaire surinfecté (porte d'entrée cutanée)",
+          "traitement": "Pansements de fortune souillés"
+        },
+        {
+          "type": "Statut vaccinal antitétanique inconnu",
+          "traitement": "Non à jour"
+        }
+      ],
+      "chirurgicaux": [],
+      "familiaux": [
+        {
+          "lien": "Inconnu",
+          "pathologie": "Non renseigné compte tenu de la barrière de la langue et de l'urgence vitale"
+        }
+      ]
+    },
+    "traitements": [],
+    "allergies": {
+      "presence": false,
+      "liste": []
+    },
+    "histoireMaladie": {
+      "debutSymptomes": "24 heures avec aggravation fulgurante en quelques heures",
+      "evolution": "Extension rapide en quelques heures des lésions cutanées, apparition d'œdème induré, de bulles et de nécrose",
+      "facteursDeclenchants": "Surinfection d'un ulcère de jambe négligé sur terrain d'éthylisme et de dénutrition",
+      "symptomesAssocies": [
+        "Douleur intense disproportionnée à l'aspect initial (EVA 8/10 à 9/10)",
+        "Fièvre élevée à 39°C avec frissons",
+        "Syndrome de réponse inflammatoire systémique (SRIS) et menace de choc septique",
+        "Apparition de phlyctènes et de zones de nécrose noirâtre"
+      ],
+      "remarques": "Prise en charge en urgence absolue au SAU de l'Hôpital Bichat après régulation par le SAMU."
+    },
+    "verbatim": "Boli... boli mnogo... (se tord de douleur sur le brancard) Pas parler français... très mal... ooooh docteur..."
+  },
+  "examenClinique": {
+    "constantes": {
+      "tension": "95/55 mmHg",
+      "pouls": "118 bpm",
+      "temperature": "39.2°C",
+      "saturationO2": "94%",
+      "frequenceRespiratoire": "24/min"
+    },
+    "aspectGeneral": "Patient algique, en sueurs, prostré, teint grisâtre, polypnéique et tachycarde. Mauvais état général, signes patents de syndrome de réponse inflammatoire systémique (SRIS) avec menace de sepsis sévère et choc septique.",
+    "examenCardiovasculaire": {
+      "auscultation": "Tachycardie sinusale régulière à 118 bpm sans souffle surajouté.",
+      "inspection": "Marbrures péri-rotuliennes débutantes, temps de recoloration cutanée allongé à 3 secondes. Veines périphériques collabées, tension basse à 95/55 mmHg."
+    },
+    "examenPulmonaire": {
+      "auscultation": "Murmure vésiculaire symétrique sans foyer de crépitants pulmonaires, polypnée superficielle à 24/min."
+    },
+    "examenAbdominal": {
+      "palpation": "Abdomen souple, dépressible et indolore, pas de masse ni de défense."
+    },
+    "examenNeurologique": {
+      "conscience": "Patient obnubilé par la douleur et le sepsis, léthargique mais réactif aux sollicitations simples (Score de Glasgow 14 : E4 V4 M6)."
+    },
+    "examenDermatologiqueLocal": {
+      "inspection": "Membre inférieur droit tuméfié de la cheville jusqu'au tiers supérieur de la cuisse : érythème sombre mal délimité, œdème induré majeur dépassant l'érythème. Présence de bulles et phlyctènes à contenu hémorragique et séro-sanglant. Placards de nécrose cutanée grisâtres et violacés. Purpura ecchymotique en carte de géographie. Ulcère malléolaire interne surinfecté constituant la porte d'entrée.",
+      "palpation": "Douleur intolérable à la palpation douce dépassant largement les limites de l'érythème. Crépitations gazeuses sous-cutanées perceptibles à la pression ('bruit de pas dans la neige'). Hypoesthésie voire anesthésie cutanée au centre des zones nécrosées (signe de destruction des terminaisons nerveuses sensitives)."
+    }
+  },
+  "availableExams": [
+    "Prélèvement bactériologique per-opératoire (pus, tissus nécrotiques)",
+    "Hémocultures (2 à 3 paires)",
+    "Protéine C-Réactive (CRP)",
+    "NFS - Plaquettes",
+    "Créatine Kinase (CK)",
+    "Lactates artériels",
+    "Ionogramme sanguin et créatinine",
+    "Bilan pré-opératoire complet (Groupe sanguin, Rhésus, RAI)",
+    "Bilan d'hémostase (TP, TCA, Fibrinogène)",
+    "Radiographie de la jambe droite (face et profil)",
+    "Scanner (TDM) du membre inférieur droit injecté",
+    "Gaz du sang artériel",
+    "Écho-Doppler veineux du membre inférieur droit",
+    "ECG 12 dérivations",
+    "Bilan hépatique complet",
+    "Troponine",
+    "Ponction articulaire du genou",
+    "IRM du membre inférieur droit"
+  ],
+  "examResults": {
+    "Prélèvement bactériologique per-opératoire (pus, tissus nécrotiques)": "Examen direct et culture aéro-anaérobie : liquide séro-sanglant fétide 'eau de vaisselle'. Présence abondante de cocci à Gram positif en chaînettes (Streptococcus pyogenes / Streptocoque du groupe A) associés à des bacilles anaérobies (Bacteroides fragilis).",
+    "Hémocultures (2 à 3 paires)": "Hémocultures prélevées avant mise en route de l'antibiothérapie : positives à Streptococcus pyogenes (Streptocoque A bêta-hémolytique) dans 2 paires sur 2.",
+    "Protéine C-Réactive (CRP)": "234 mg/L (élévation majeure témoignant d'un syndrome inflammatoire systémique sévère).",
+    "NFS - Plaquettes": "Leucocytes : 14.8 G/L avec hyperleucocytose à PNN de 12.3 G/L. Hémoglobine : 10.8 g/dL (anémie modérée inflammatoire/carentielle). Plaquettes : 142 G/L (thrombopénie débutante de consommation septique).",
+    "Créatine Kinase (CK)": "338 UI/L (normale < 170 UI/L : élévation franche confirmant une myonécrose débutante par atteinte des fascias musculaires profonds).",
+    "Lactates artériels": "3.2 mmol/L (normale < 2.0 mmol/L : hyperlactatémie traduisant une hypoperfusion tissulaire et un état de sepsis sévère).",
+    "Ionogramme sanguin et créatinine": "Sodium : 131 mmol/L (hyponatrémie). Potassium : 4.6 mmol/L. Créatinine : 138 µmol/L (insuffisance rénale aiguë fonctionnelle et septique). Urée : 12.4 mmol/L. Glycémie : 8.2 mmol/L. Score LRINEC calculé à 8 (score ≥ 8 : probabilité de DHBN-FN > 75%).",
+    "Bilan pré-opératoire complet (Groupe sanguin, Rhésus, RAI)": "Groupe A, Rhésus positif (A+). RAI négatives. Deux déterminations conformes disponibles d'urgence pour commande de culots globulaires.",
+    "Bilan d'hémostase (TP, TCA, Fibrinogène)": "TP : 68%, TCA : 1.25, Fibrinogène : 5.6 g/L. Pas de CIVD constituée, coagulopathie liée au sepsis à surveiller de près.",
+    "Radiographie de la jambe droite (face et profil)": "Présence de bulles et de clartés aériques gazeuses disséminées le long des fascias profonds et dans les tissus mous sous-cutanés (gaz sous-cutané pathognomonique). Pas de corps étranger radio-opaque ni de fracture osseuse.",
+    "Scanner (TDM) du membre inférieur droit injecté": "Infiltration majeure des tissus cellulaires sous-cutanés avec épaississement et rehaussement hétérogène des aponévroses. Présence de gaz inter-fascial et dans les loges musculaires. Ne doit en aucun cas retarder le transfert immédiat au bloc opératoire !",
+    "Gaz du sang artériel": "pH : 7.33, PaO2 : 72 mmHg, PaCO2 : 31 mmHg, HCO3- : 17 mmol/L, SaO2 : 94%. Acidose métabolique compensée avec trou anionique augmenté.",
+    "Écho-Doppler veineux du membre inférieur droit": "Veines fémorales et poplitées droites perméables et compressibles, sans thrombose veineuse profonde. Épaississement de l'hypoderme 'en pavé' avec artefacts de réverbération dus au gaz tissulaire.",
+    "ECG 12 dérivations": "Tachycardie sinusale à 118 bpm, axe normal, absence de trouble de repolarisation coronarien ou d'allongement du QT.",
+    "Bilan hépatique complet": "Bilirubine totale : 28 µmol/L, ALAT : 42 UI/L, ASAT : 58 UI/L, GGT : 155 UI/L (stigmates d'alcoolisme chronique).",
+    "Troponine": "Troponine I : 14 ng/L (normale, pas de syndrome coronarien aigu concomitant).",
+    "Ponction articulaire du genou": "Non indiquée : le genou n'est pas le foyer septique, geste invasif à risque majeur d'ensemencement septique d'une articulation saine.",
+    "IRM du membre inférieur droit": "NON INDIQUÉE EN URGENCE : examen inaccessible en urgence immédiate, le délai de réalisation ferait perdre des heures critiques et compromettrait la survie du patient."
+  },
+  "examGradation": {
+    "parfaits": [
+      "Prélèvement bactériologique per-opératoire (pus, tissus nécrotiques)",
+      "Hémocultures (2 à 3 paires)",
+      "Protéine C-Réactive (CRP)",
+      "NFS - Plaquettes",
+      "Créatine Kinase (CK)",
+      "Lactates artériels",
+      "Ionogramme sanguin et créatinine",
+      "Bilan pré-opératoire complet (Groupe sanguin, Rhésus, RAI)",
+      "Radiographie de la jambe droite (face et profil)"
+    ],
+    "utiles": [
+      "Scanner (TDM) du membre inférieur droit injecté",
+      "Bilan d'hémostase (TP, TCA, Fibrinogène)",
+      "Gaz du sang artériel",
+      "Écho-Doppler veineux du membre inférieur droit",
+      "ECG 12 dérivations",
+      "Bilan hépatique complet"
+    ],
+    "inutiles": [
+      "Troponine"
+    ],
+    "dangereux": [
+      "IRM du membre inférieur droit",
+      "Ponction articulaire du genou"
+    ]
+  },
+  "correctDiagnostic": "Dermo-Hypodermite Bactérienne Nécrosante avec Fasciite Nécrosante (DHBN-FN)",
+  "possibleDiagnostics": [
+    "Dermo-Hypodermite Bactérienne Nécrosante avec Fasciite Nécrosante (DHBN-FN)",
+    "Fasciite nécrosante",
+    "Dermo-hypodermite bactérienne non nécrosante (érysipèle)",
+    "Thrombose veineuse profonde droite",
+    "Ischémie aiguë de membre inférieur droit",
+    "Hématome profond surinfecté"
+  ],
+  "alternativeDiagnostics": [
+    "fasciite nécrosante",
+    "DHBN",
+    "Dermo-Hypodermite Bactérienne Nécrosante avec Fasciite Nécrosante",
+    "DHBN-FN",
+    "Dermohypodermite bactérienne nécrosante",
+    "Dermo-hypodermite nécrosante",
+    "Fasciite nécrosante du membre inférieur",
+    "Gangrène gazeuse",
+    "fasciite necrosante",
+    "dhbn",
+    "dhbn-fn"
+  ],
+  "feedback": {
+    "Dermo-Hypodermite Bactérienne Nécrosante avec Fasciite Nécrosante (DHBN-FN)": "Diagnostic parfait ! C'est le diagnostic complet et exact. Il s'agit d'une urgence médico-chirurgicale vitale absolue.",
+    "Fasciite nécrosante": "Diagnostic correct ! La fasciite nécrosante est l'atteinte aponévrotique profonde de la DHBN-FN.",
+    "Dermo-hypodermite bactérienne non nécrosante (érysipèle)": "ATTENTION ERREUR MAJEURE ! Ce n'est PAS un érysipèle simple : la douleur disproportionnée, la nécrose cutanée, les bulles hémorragiques, les crépitations gazeuses, les CK élevées et le sepsis sévère signent une DHBN-FN.",
+    "Thrombose veineuse profonde droite": "Diagnostic erroné : la fièvre à 39°C, les signes cutanés de nécrose, les bulles et les crépitations ne s'expliquent absolument pas par une TVP.",
+    "default": "Diagnostic incorrect. Devant les signes de nécrose cutanée, bulles hémorragiques, crépitations et défaillance hémodynamique, il s'agit d'une DHBN-FN."
+  },
+  "scoringRules": {
+    "baseScore": 100,
+    "attemptPenalty": 15
+  },
+  "possibleTreatments": [
+    "Débridement chirurgical d'urgence au bloc opératoire (excision extensive des tissus nécrosés)",
+    "Poly-antibiothérapie intraveineuse à large spectre (Pénicilline G/Amoxicilline-Acide clavulanique ou Pipéracilline-Tazobactam + Clindamycine + Gentamicine)",
+    "Pose de 2 voies veineuses périphériques de gros calibre et remplissage par cristalloïdes (Ringer Lactate)",
+    "Appel du réanimateur et admission immédiate en réanimation médico-chirurgicale",
+    "Mise à jour de la sérothérapie et de la vaccination antitétanique",
+    "Prescription d'AINS (anti-inflammatoires non stéroïdiens) par voie IV pour calmer la douleur",
+    "Antibiothérapie orale par Amoxicilline en ambulatoire avec retour à domicile",
+    "Attente des résultats des hémocultures avant de contacter le chirurgien",
+    "Pose d'une contention élastique compressive de jambe",
+    "Corticothérapie forte dose par voie intraveineuse"
+  ],
+  "correctTreatments": [
+    "Débridement chirurgical d'urgence au bloc opératoire (excision extensive des tissus nécrosés)",
+    "Poly-antibiothérapie intraveineuse à large spectre (Pénicilline G/Amoxicilline-Acide clavulanique ou Pipéracilline-Tazobactam + Clindamycine + Gentamicine)",
+    "Pose de 2 voies veineuses périphériques de gros calibre et remplissage par cristalloïdes (Ringer Lactate)",
+    "Appel du réanimateur et admission immédiate en réanimation médico-chirurgicale",
+    "Mise à jour de la sérothérapie et de la vaccination antitétanique"
+  ],
+  "fatalTreatments": [
+    "Prescription d'AINS (anti-inflammatoires non stéroïdiens) par voie IV pour calmer la douleur",
+    "Antibiothérapie orale par Amoxicilline en ambulatoire avec retour à domicile",
+    "Attente des résultats des hémocultures avant de contacter le chirurgien",
+    "Corticothérapie forte dose par voie intraveineuse"
+  ],
+  "secondLineTreatments": [
+    "Reprise chirurgicale systématique programmée (second look) à 24-48 heures",
+    "Oxygénothérapie hyperbare (en traitement adjuvant après la chirurgie initiale)"
+  ],
+  "relevantExams": [
+    "Prélèvement bactériologique per-opératoire (pus, tissus nécrotiques)",
+    "Hémocultures (2 à 3 paires)",
+    "Protéine C-Réactive (CRP)",
+    "NFS - Plaquettes",
+    "Créatine Kinase (CK)",
+    "Lactates artériels",
+    "Ionogramme sanguin et créatinine",
+    "Bilan pré-opératoire complet (Groupe sanguin, Rhésus, RAI)",
+    "Radiographie de la jambe droite (face et profil)"
+  ],
+  "pieges": [
+    "Confondre la DHBN-FN avec un simple érysipèle (dermo-hypodermite non nécrosante) : le retard chirurgical de quelques heures est grevé d'une mortalité > 30-50%.",
+    "Prescrire des AINS (kétoprofène, ibuprofène) : facteur de risque d'extension nécrotique foudroyante par inhibition de la réponse leucocytaire.",
+    "Retarder le geste chirurgical pour attendre un scanner ou une IRM : l'indication opératoire est purement clinique et doit être posée sans délai.",
+    "Négliger la douleur car le patient a des difficultés linguistiques : la douleur intense disproportionnée aux signes cutanés initiaux est le signe cardinal précoce.",
+    "Omettre la Clindamycine dans l'antibiothérapie : son effet anti-toxinique (inhibition de la synthèse de la toxine streptococcique) est salvateur."
+  ],
+  "objectifs": [
+    "Reconnaître immédiatement les signes cliniques locaux de nécrose (bulles hémorragiques, hypoesthésie, crépitations gazeuses, nécrose cutanée, douleur disproportionnée).",
+    "Identifier le syndrome de réponse inflammatoire systémique (SRIS) et le risque imminent de choc septique.",
+    "Poser le diagnostic de Dermo-Hypodermite Bactérienne Nécrosante avec Fasciite Nécrosante (DHBN-FN).",
+    "Initier la prise en charge médico-chirurgicale en extrême urgence : débridement chirurgical immédiat, poly-antibiothérapie IV à large spectre avec effet anti-toxinique, et remplissage vasculaire.",
+    "Bannir formellement les AINS et proscrire tout retard diagnostique ou thérapeutique."
+  ],
+  "correction": "# Dermo-Hypodermite Bactérienne Nécrosante avec Fasciite Nécrosante (DHBN-FN)\n\n## 1. Physiopathologie & Épidémiologie\nLa DHBN-FN est une infection aiguë foudroyante du derme, de l'hypoderme et des fascias profonds (aponévroses musculaires), caractérisée par une nécrose tissulaire extensive secondaire à une thrombose microvasculaire septique et à la libération de toxines bactériennes (streptolysine, exotoxines pyrogènes).\n- **Urgence médico-chirurgicale vitale absolue** : mortalité globale de 20 à 30 %, pouvant dépasser 50 % en cas de retard chirurgical ou de choc septique.\n- **Terrain favorisant** : âge > 60 ans, alcoolisme chronique, dénutrition, diabète, immunodépression, toxicomanie IV, précarité sociale (SDF).\n- **Porte d'entrée** : effraction cutanée négligée (ulcère de jambe, plaie, piqûre, intertrigo inter-orteil).\n\n## 2. Signes d'alerte cliniques majeurs (différence cruciale avec l'érysipèle)\nL'erreur diagnostique classique est de poser le diagnostic d'érysipèle et de différer l'avis chirurgical. Les signes cardinaux de nécrose sont :\n1. **Douleur intense, insupportable, disproportionnée** par rapport aux signes inflammatoires cutanés initiaux.\n2. **Extension rapide** des lésions en quelques heures dépassant les bords de l'érythème.\n3. **Bulles / phlyctènes hémorragiques** ou à liquide louche.\n4. **Placards de nécrose cutanée** violacés, grisâtres ou noirâtres ('aspect de viande bouillie' en profondeur).\n5. **Crépitations sous-cutanées gazeuses** à la palpation (production de gaz par les germes anaérobies).\n6. **Hypoesthésie ou anesthésie cutanée localisée** (destruction des filets nerveux cutanés par la nécrose).\n7. **Signes de choc / SRIS précoce** : tachycardie > 90 bpm, polypnée > 20/min, hypotension, oligurie, marbrures.\n\n## 3. Biologie & Score LRINEC\n- **Syndrome inflammatoire majeur** : CRP très élevée (> 150-200 mg/L), hyperleucocytose à PNN > 12-15 G/L.\n- **Créatine Kinase (CK) augmentée (> 200-300 UI/L)** : marqueur précoce d'atteinte musculaire et de myonécrose sous-jacente.\n- **Hyperlactatémie (> 2 mmol/L)** : hypoperfusion tissulaire et sepsis sévère.\n- **Score LRINEC (Laboratory Risk Indicator for Necrotizing Fasciitis)** : évalue la probabilité à partir de la CRP, des leucocytes, de l'hémoglobine, du sodium, de la créatinine et de la glycémie. Un score ≥ 8 évoque fortement une fasciite nécrosante.\n\n## 4. Prise en charge médico-chirurgicale en extrême urgence\n- **1. ALERTE CHIRURGICALE IMMÉDIATE** : appel du chirurgien de garde sans attendre aucun examen d'imagerie. Débridement chirurgical d'urgence au bloc opératoire : excision extensive de tous les tissus nécrotiques jusqu'en zone saine vascularisée.\n- **2. RÉANIMATION HÉMODYNAMIQUE** : monitorage continu, 2 voies veineuses périphériques de bon calibre (14-16G), oxygénothérapie, remplissage vasculaire rapide par cristalloïdes (Ringer Lactate ou NaCl 0,9 % 30 mL/kg).\n- **3. POLY-ANTIBIOTHÉRAPIE INTRAVEINEUSE À LARGE SPECTRE** : débutée immédiatement après la réalisation des hémocultures. Elle doit couvrir le Streptocoque A, les entérobactéries et les anaérobies, avec un effet anti-toxinique majeur :\n  - Ex : Pipéracilline-Tazobactam (ou Amoxicilline-acide clavulanique) + Clindamycine (effet anti-toxinique ribosomal indispensable) + Gentamicine (synergie bactéricide rapide).\n- **4. RÉANIMATION / SOINS INTENSIFS** : transfert immédiat en unité de réanimation, réévaluation chirurgicale systématique à 24-48 heures (*second look*).\n- **5. CONTRE-INDICATION FORMELLE DES AINS** : ne jamais prescrire d'AINS qui masquent les symptômes et accélèrent la progression nécrotique.",
+  "vitalsDynamics": {
+    "trendOverMinutes": 0.15,
+    "urgencyMultiplier": 3,
+    "aggravationTargets": {
+      "heartRate": 138,
+      "systolic": 75,
+      "diastolic": 40,
+      "spo2": 89,
+      "temperature": 39.8,
+      "respiratoryRate": 30
+    },
+    "stabilizeOnCorrectTreatment": true
+  },
+  "ecos": {
+    "vignette": {
+      "role": "Vous êtes interne de garde aux urgences médico-chirurgicales de l'Hôpital Bichat.",
+      "contexte": "Vous prenez en charge M. Dimitar Petrov, 67 ans, sans domicile fixe, amené par les pompiers pour une volumineuse jambe droite douloureuse, tuméfiée et fébrile. Le patient est extrêmement algique, fébrile et s'exprime très difficilement en français.",
+      "typeStation": "AVEC_PS",
+      "domainePrincipal": "Urgences / Dermatologie / Infectiologie",
+      "domaineSecondaire": "Chirurgie générale / Réanimation",
+      "consignesAttendues": [
+        "Rechercher immédiatement les signes cliniques de nécrose et de gravité locale au membre inférieur droit",
+        "Évaluer les constantes vitales et identifier le syndrome de réponse inflammatoire systémique (SRIS) / menace de choc septique",
+        "Prescrire le bilan biologique d'urgence (NFS, CRP, CK, lactates, hémocultures, bilan pré-opératoire)",
+        "Appeler en urgence le chirurgien de garde pour débridement chirurgical immédiat sans délai d'imagerie",
+        "Débuter une réanimation hémodynamique et une poly-antibiothérapie intraveineuse à large spectre avec effet anti-toxinique",
+        "Proscrire formellement tout AINS et tout retard diagnostique"
+      ],
+      "consignesInterdites": [
+        "Prescrire un AINS",
+        "Rassurer le patient et proposer un traitement ambulatoire par amoxicilline orale",
+        "Attendre le lendemain ou une IRM avant de contacter l'équipe chirurgicale"
+      ]
+    },
+    "patientStandardise": {
+      "personnalite": "Patient en souffrance intense, prostré, anxieux, gémissant, coopérant au maximum de ses possibilités malgré la barrière de la langue.",
+      "infosCachees": [
+        "Si l'examinateur inspecte la jambe, le patient gémit et retire doucement le membre dès l'effleurement.",
+        "Si l'examinateur palpe délicatement, il perçoit des crépitations gazeuses sous la peau et le patient indique que le centre de la zone noirâtre est insensible ('engourdi').",
+        "Le patient n'a pas vu de médecin depuis des années et n'a jamais été vacciné récemment contre le tétanos."
+      ]
+    },
+    "grilleAptitudesCliniques": [
+      {
+        "id": "apt_1",
+        "label": "Évaluation initiale des constantes et reconnaissance du sepsis / SRIS",
+        "weight": 1,
+        "triggerKeywords": ["constantes", "tension", "pouls", "temperature", "saturation", "frequence respiratoire", "sris", "sepsis", "scope"],
+        "criteria": {
+          "fait": "Mesure complète des constantes (FC 118, TA 95/55, T° 39.2°C, SpO2 94%, FR 24), identification de la fièvre et du risque imminent de choc septique.",
+          "partiellementFait": "Prise partielle des constantes sans identification du sepsis.",
+          "nonFait": "Omission des constantes vitales chez un patient fébrile algique."
+        }
+      },
+      {
+        "id": "apt_2",
+        "label": "Examen dermatologique ciblé et recherche des signes de nécrose / gravité",
+        "weight": 2,
+        "triggerKeywords": ["examen", "jambe", "inspection", "palpation", "bulles", "necrose", "crepitations", "hypoesthesie", "purpura", "douleur"],
+        "criteria": {
+          "fait": "Inspection et palpation bilatérale : mise en évidence de l'œdème induré, des bulles hémorragiques, de la nécrose cutanée, des crépitations neigeuses et de l'hypoesthésie.",
+          "partiellementFait": "Examen cutané superficiel sans recherche des crépitations ni de l'hypoesthésie.",
+          "nonFait": "Pas d'examen physique de la jambe droite."
+        }
+      },
+      {
+        "id": "apt_3",
+        "label": "Prescription du bilan biologique d'urgence et des hémocultures",
+        "weight": 1,
+        "triggerKeywords": ["crp", "nfs", "ck", "lactates", "hemocultures", "creatinine", "bilan", "pre-operatoire", "groupe"],
+        "criteria": {
+          "fait": "Prescription de NFS, CRP, CK (créatine kinase), lactates, ionogramme/créatinine, hémocultures et bilan pré-opératoire (groupe/Rhésus/RAI).",
+          "partiellementFait": "Prescription d'un bilan standard sans dosage des CK ni des lactates.",
+          "nonFait": "Omission du bilan biologique ou des hémocultures."
+        }
+      },
+      {
+        "id": "apt_4",
+        "label": "Alerte chirurgicale et indication du débridement chirurgical d'urgence",
+        "weight": 2,
+        "triggerKeywords": ["chirurgien", "chirurgie", "debridement", "bloc", "excision", "bloc operatoire", "urgence chirurgicale"],
+        "criteria": {
+          "fait": "Appel immédiat du chirurgien de garde pour exploration et débridement chirurgical en urgence vitale sans délai d'imagerie.",
+          "partiellementFait": "Avis chirurgical demandé mais différé après des examens d'imagerie complémentaires.",
+          "nonFait": "Aucune alerte chirurgicale envisagée."
+        }
+      },
+      {
+        "id": "apt_5",
+        "label": "Mise en route de la réanimation médicale et de l'antibiothérapie probabiliste large spectre",
+        "weight": 2,
+        "triggerKeywords": ["antibiotique", "antibiotherapie", "remplissage", "voie veineuse", "ringer", "reanimation", "intraveineuse", "clindamycine"],
+        "criteria": {
+          "fait": "Pose de 2 VVP de gros calibre, remplissage par cristalloïdes, antibiothérapie IV urgente à large spectre active sur streptocoques et anaérobies avec effet anti-toxinique, avis réanimation.",
+          "partiellementFait": "Antibiothérapie prescrite mais monothérapie inadaptée ou sans remplissage.",
+          "nonFait": "Retard ou absence d'antibiothérapie IV / prescription d'AINS."
+        }
+      }
+    ]
+  }
+}

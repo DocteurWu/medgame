@@ -1,6 +1,63 @@
 // themes.js
 document.addEventListener('DOMContentLoaded', () => {
-    const themeCards = document.querySelectorAll('#themes-grid .theme-card');
+    const themeCards = document.querySelectorAll('.theme-card');
+
+    // Éléments du sélecteur de cycle (1er cycle vs 2ème cycle)
+    const cycleTabs = document.querySelectorAll('.cycle-tab-btn');
+    const gridCycle1 = document.getElementById('themes-grid-cycle-1');
+    const gridCycle2 = document.getElementById('themes-grid-cycle-2');
+    const themesMainTitle = document.getElementById('themes-main-title');
+
+    function switchCycle(cycleNum, savePref = true) {
+        cycleTabs.forEach(tab => {
+            const isTarget = tab.dataset.cycle === String(cycleNum);
+            tab.classList.toggle('active', isTarget);
+            tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        });
+
+        if (cycleNum === 2 || cycleNum === '2') {
+            if (gridCycle1) gridCycle1.classList.add('hidden-cycle');
+            if (gridCycle2) {
+                gridCycle2.classList.remove('hidden-cycle');
+                gridCycle2.classList.remove('fade-enter');
+                void gridCycle2.offsetWidth; // reflow pour déclencher l'animation
+                gridCycle2.classList.add('fade-enter');
+            }
+            if (themesMainTitle) {
+                themesMainTitle.textContent = "Spécialités Cliniques & EDN";
+            }
+            if (savePref) {
+                localStorage.setItem('medgame_selected_cycle', '2');
+            }
+        } else {
+            if (gridCycle2) gridCycle2.classList.add('hidden-cycle');
+            if (gridCycle1) {
+                gridCycle1.classList.remove('hidden-cycle');
+                gridCycle1.classList.remove('fade-enter');
+                void gridCycle1.offsetWidth; // reflow pour déclencher l'animation
+                gridCycle1.classList.add('fade-enter');
+            }
+            if (themesMainTitle) {
+                themesMainTitle.textContent = "Sélectionnez l'UE";
+            }
+            if (savePref) {
+                localStorage.setItem('medgame_selected_cycle', '1');
+            }
+        }
+    }
+
+    cycleTabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetCycle = btn.dataset.cycle;
+            switchCycle(targetCycle, true);
+        });
+    });
+
+    // Restaurer le cycle précédemment consulté si présent
+    const savedCycle = localStorage.getItem('medgame_selected_cycle');
+    if (savedCycle === '2') {
+        switchCycle('2', false);
+    }
 
     // Éléments du modal des motifs
     const motifsModal = document.getElementById('motifs-modal');
@@ -99,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'Agents-infectieux': { a: 0x2ed573, b: 0x10ac84, glow: 'rgba(46, 213, 115, 0.45)' },
         'Appareil-digestif': { a: 0xff7f50, b: 0xee5253, glow: 'rgba(255, 127, 80, 0.45)' },
         'Locomoteur': { a: 0x70a1ff, b: 0x5352ed, glow: 'rgba(112, 161, 255, 0.45)' },
+        'Dermatologie': { a: 0xe056fd, b: 0x686de0, glow: 'rgba(224, 86, 253, 0.45)' },
         'Urgence': { a: 0xff3838, b: 0x220000, glow: 'rgba(255, 56, 56, 0.55)' }
     };
     const DEFAULT_THEME_COLORS = { a: 0x00f2fe, b: 0xb388ff };
