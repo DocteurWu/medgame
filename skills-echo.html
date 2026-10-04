@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POCUS & FAST-Echo (Échographie d'Urgence) — MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/skills.css?v=2">
+    <link rel="stylesheet" href="css/ventilateur.css?v=1">
+    <link rel="stylesheet" href="css/echo.css?v=1">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="echo-navbar">
+        <div style="display:flex; align-items:center; gap:16px;">
+            <button class="back-btn" onclick="window.location.href='skills.html'">
+                <i class="fas fa-arrow-left"></i> Skill Lab
+            </button>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div class="app-logo-echo">
+                    <i class="fas fa-satellite-dish"></i>
+                </div>
+                <div>
+                    <h1 style="font-family:'Outfit'; font-size:1.25rem; margin:0; font-weight:800;">POCUS LAB &bull; FAST-ÉCHOGRAPHIE</h1>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button class="back-btn" onclick="window.location.href='skills-pse.html'">
+                <i class="fas fa-syringe"></i> Pousse-Seringue
+            </button>
+            <button class="back-btn" onclick="window.location.href='skills-ventilateur.html'">
+                <i class="fas fa-lungs"></i> Respirateur
+            </button>
+        </div>
+    </header>
+
+    <!-- Conteneur Principal -->
+    <main class="echo-main-container">
+        
+        <!-- Sélection des cas cliniques -->
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; overflow-x:auto; padding-bottom:6px;" id="echo-cases-row">
+            <!-- Rendu dynamique -->
+        </div>
+
+        <div class="echo-workspace-grid">
+
+            <!-- Colonne 1 : Torse Interactif et Repérage de Sonde -->
+            <div class="torso-card">
+                <h2 style="font-family:'Outfit'; font-size:1.05rem; margin:0; font-weight:800; color:#fff;">
+                    <i class="fas fa-crosshairs" style="color:var(--echo-cyan);"></i> Repérage Sonde
+                </h2>
+                <span style="font-size:0.75rem; color:rgba(255,255,255,0.6); margin-top:4px;">Cliquez sur un point FAST</span>
+
+                <div class="torso-visual-wrapper">
+                    <!-- Silhouette anatomique simplifiée -->
+                    <svg class="torso-silhouette" viewBox="0 0 200 320">
+                        <path d="M60,20 Q100,5 140,20 Q180,60 170,140 Q175,200 160,260 Q140,300 100,300 Q60,300 40,260 Q25,200 30,140 Q20,60 60,20 Z" fill="#2980b9" />
+                        <!-- Clavicules et côtes schématiques -->
+                        <line x1="70" y1="45" x2="130" y2="45" stroke="rgba(255,255,255,0.4)" stroke-width="3" />
+                        <line x1="60" y1="90" x2="140" y2="90" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+                        <line x1="55" y1="120" x2="145" y2="120" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
+                    </svg>
+
+                    <!-- Les 5 Cibles POCUS -->
+                    <div class="pocus-target-spot spot-lung" data-window="lung" title="BLUE Protocol (Poumon)">1</div>
+                    <div class="pocus-target-spot spot-subxiphoid" data-window="subxiphoid" title="Sous-xyphoïdien (Péricarde)">2</div>
+                    <div class="pocus-target-spot spot-morrison active" data-window="morrison" title="Morrison (Hépato-rénal)">3</div>
+                    <div class="pocus-target-spot spot-splenorenal" data-window="splenorenal" title="Spléno-rénal">4</div>
+                    <div class="pocus-target-spot spot-pelvis" data-window="pelvis" title="Pelvis (Douglas)">5</div>
+                </div>
+
+                <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); text-align:center; line-height:1.4;">
+                    1: Poumon &bull; 2: Cœur &bull; 3: Morrison &bull; 4: Rate &bull; 5: Pelvis
+                </div>
+            </div>
+
+            <!-- Colonne 2 : Console et Écran Échographique -->
+            <div class="echo-console-panel">
+                <div class="echo-screen-top">
+                    <div id="echo-window-name" style="color:var(--echo-cyan); font-weight:800;">ESPACE DE MORRISON</div>
+                    <div id="echo-probe-name" style="color:rgba(255,255,255,0.7);">Sonde : Convexe Abdominale</div>
+                </div>
+
+                <!-- Canvas Écran Ultrasonore -->
+                <div class="echo-canvas-wrap">
+                    <canvas id="echo-screen-canvas"></canvas>
+                </div>
+
+                <!-- Barre d'outils échographe -->
+                <div class="echo-toolbar">
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn-echo-control active" id="btn-mode-b">Mode 2D (B)</button>
+                        <button class="btn-echo-control" id="btn-mode-m">Mode M (Temps)</button>
+                    </div>
+
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <button class="btn-echo-control" id="btn-echo-freeze" style="background:#e67e22; border-color:#d35400;">
+                            <i class="fas fa-snowflake"></i> FREEZE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Réglages Gain & Profondeur -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; background:rgba(255,255,255,0.02); padding:12px; border-radius:10px;">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                            <span>Gain Acoustique</span>
+                            <span id="echo-gain-val" style="color:var(--echo-cyan); font-weight:700;">50 %</span>
+                        </div>
+                        <input type="range" id="range-echo-gain" class="vent-range" min="10" max="90" value="50">
+                    </div>
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                            <span>Profondeur d'exploration</span>
+                            <span id="echo-depth-val" style="color:var(--echo-cyan); font-weight:700;">12 cm</span>
+                        </div>
+                        <input type="range" id="range-echo-depth" class="vent-range" min="4" max="22" value="12">
+                    </div>
+                </div>
+
+                <!-- Interprétation de la coupe -->
+                <div class="finding-banner positive" id="echo-finding-desc">
+                    <!-- Rendu dynamique -->
+                </div>
+            </div>
+
+            <!-- Colonne 3 : Cas Clinique & Conduite à Tenir -->
+            <div class="echo-diagnosis-card">
+                <h2 style="font-family:'Outfit'; font-size:1.1rem; margin:0; font-weight:800; color:#fff;" id="case-title">
+                    Polytraumatisé de la route
+                </h2>
+                <div id="case-history" style="font-size:0.85rem; line-height:1.5; color:rgba(255,255,255,0.8);"></div>
+                
+                <div id="case-question" style="font-size:0.9rem; font-weight:700; color:#fff; background:rgba(0,242,254,0.08); padding:10px; border-radius:10px; border:1px solid rgba(0,242,254,0.2);"></div>
+
+                <div id="case-options-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+
+                <div id="case-feedback" style="display:none;"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/badges.js"></script>
+    <script type="module" src="js/echo-ui.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+</html>

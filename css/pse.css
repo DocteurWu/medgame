@@ -1,0 +1,350 @@
+/* css/pse.css — Styles du Pousse-Seringue Électrique (Skill Lab) */
+
+:root {
+    --pse-chassis: #1e2438;
+    --pse-screen-bg: #031525;
+    --pse-screen-text: #00f2fe;
+    --pse-green: #2ecc71;
+    --pse-red: #e74c3c;
+    --pse-orange: #f39c12;
+    --pse-border: rgba(0, 242, 254, 0.25);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at top center, #111a3d 0%, #060918 100%);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.pse-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    background: rgba(8, 12, 30, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--pse-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.app-logo-pse {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #10b981, #00f2fe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #060918;
+    font-size: 1.2rem;
+}
+
+.pse-main-container {
+    max-width: 1300px;
+    margin: 24px auto;
+    padding: 0 24px;
+}
+
+.pse-workspace {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 28px;
+}
+
+@media (max-width: 1024px) {
+    .pse-workspace {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Machine PSE */
+.pse-machine {
+    background: linear-gradient(160deg, #242c48 0%, #151a30 100%);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pse-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pse-status-leds {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.led-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.led-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #333;
+    transition: all 0.3s ease;
+}
+
+.led-indicator.running .led-dot {
+    background: var(--pse-green);
+    box-shadow: 0 0 12px var(--pse-green);
+    animation: ledPulse 1.2s infinite;
+}
+
+.led-indicator.alarm .led-dot {
+    background: var(--pse-red);
+    box-shadow: 0 0 12px var(--pse-red);
+    animation: ledPulse 0.6s infinite;
+}
+
+@keyframes ledPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.9); }
+}
+
+/* Écran LCD du Pousse-Seringue */
+.pse-screen {
+    background: var(--pse-screen-bg);
+    border: 3px solid #083b54;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: inset 0 0 25px rgba(0, 242, 254, 0.15), 0 5px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'Outfit', monospace;
+}
+
+.screen-row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+    padding-bottom: 8px;
+}
+
+.screen-drug-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.screen-rate-block {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.screen-rate-val {
+    font-size: 3.8rem;
+    font-weight: 900;
+    color: var(--pse-screen-text);
+    text-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+}
+
+.screen-rate-unit {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.screen-details-row {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 242, 254, 0.05);
+    border-radius: 8px;
+    padding: 10px 14px;
+    border: 1px solid rgba(0, 242, 254, 0.15);
+}
+
+.screen-stat-item {
+    text-align: center;
+}
+
+.screen-stat-label {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+}
+
+.screen-stat-val {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+/* Seringue Animée */
+.syringe-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.syringe-barrel {
+    position: relative;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.syringe-fluid {
+    height: 100%;
+    width: 80%; /* 40 mL / 50 mL */
+    background: linear-gradient(90deg, rgba(0, 242, 254, 0.5), rgba(16, 185, 129, 0.7));
+    transition: width 0.3s ease;
+    border-right: 4px solid #fff;
+}
+
+.syringe-graduations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    pointer-events: none;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    align-items: flex-end;
+    padding-bottom: 2px;
+}
+
+/* Clavier Physique à Membrane */
+.pse-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.keypad-btn {
+    background: #2b3553;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 4px solid #161c2d;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 12px 10px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.keypad-btn:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+}
+
+.keypad-btn.btn-run {
+    background: #1e7e44;
+    border-color: #2ecc71;
+    border-bottom-color: #14552e;
+}
+
+.keypad-btn.btn-stop {
+    background: #962d22;
+    border-color: #e74c3c;
+    border-bottom-color: #631e17;
+}
+
+.keypad-btn.btn-bolus {
+    background: #2980b9;
+    border-color: #3498db;
+    border-bottom-color: #1a5276;
+}
+
+/* Panneau de Prescription & Paramètres */
+.pse-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pse-control-card {
+    background: rgba(13, 21, 46, 0.85);
+    border: 1px solid var(--pse-border);
+    border-radius: 20px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.card-title-sm {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-drug-input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.safety-alert-banner {
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    font-weight: 600;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.safety-alert-banner.danger {
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid var(--pse-red);
+    color: #ff7675;
+}
+
+.safety-alert-banner.ok {
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid var(--pse-green);
+    color: #2ecc71;
+}

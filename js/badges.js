@@ -55,9 +55,12 @@ const BadgeSystem = (() => {
             { id: 'gds_cadet', name: 'Analyste des Gaz', desc: 'Valider 3 cas de gazométrie artérielle', icon: 'fa-vial', color: '#00f2fe', condition: () => (_getSkillStats().gdsCompleted || 0) >= 3, progress: () => `${_getSkillStats().gdsCompleted || 0}/3 cas` },
             { id: 'gds_expert', name: 'Maître de Davenport', desc: 'Obtenir ≥ 80% au Quiz Gaz du Sang EDN', icon: 'fa-sliders-h', color: '#ffd700', condition: () => (_getSkillStats().gdsHighScore || 0) >= 80, progress: () => `${_getSkillStats().gdsHighScore || 0}% / 80%` },
             { id: 'gds_master', name: 'Réanimateur d\'Élite', desc: 'Réaliser un sans-faute (100%) au Quiz Gaz du Sang', icon: 'fa-shield-heart', color: '#ff4757', condition: () => (_getSkillStats().gdsHighScore || 0) >= 100 },
-            { id: 'skill_master', name: 'Major du Skill Lab', desc: 'Exceller dans les 3 modules (ECG, Auscultation & Gaz du Sang)', icon: 'fa-certificate', color: '#fd79a8', condition: () => {
+            { id: 'vent_expert', name: 'Maître du Respirateur', desc: 'Maîtriser les courbes et pressions du Ventilateur Lab', icon: 'fa-lungs', color: '#f1c40f', condition: () => (_getSkillStats().ventCompleted || 0) >= 1 },
+            { id: 'pse_expert', name: 'Calculateur d\'Élite', desc: 'Valider un calcul de débit critique au Pousse-Seringue Lab', icon: 'fa-syringe', color: '#2ecc71', condition: () => (_getSkillStats().pseCompleted || 0) >= 1 },
+            { id: 'echo_expert', name: 'Expert POCUS', desc: 'Résoudre un cas FAST-Écho en situation d\'urgence', icon: 'fa-satellite-dish', color: '#a29bfe', condition: () => (_getSkillStats().echoCompleted || 0) >= 1 },
+            { id: 'skill_master', name: 'Major du Skill Lab', desc: 'Exceller dans les modules fondamentaux du Skill Lab', icon: 'fa-certificate', color: '#fd79a8', condition: () => {
                 const s = _getSkillStats();
-                return (s.ecgCompleted >= 3) && (s.ecgHighScore >= 80) && (s.auscultCompleted >= 3) && (s.auscultHighScore >= 80) && (s.gdsCompleted >= 3) && (s.gdsHighScore >= 80);
+                return (s.ecgCompleted >= 1) && (s.auscultCompleted >= 1) && (s.gdsCompleted >= 1);
             }},
 
             // Compétition
@@ -91,7 +94,7 @@ const BadgeSystem = (() => {
 
     /**
      * Enregistre une activité du Skill Lab et déclenche l'évaluation des badges.
-     * @param {'ecg'|'auscultation'} type
+     * @param {'ecg'|'auscultation'|'gds'|'ventilateur'|'pse'|'echo'} type
      * @param {number} score - Pourcentage (0-100)
      */
     function recordSkillActivity(type, score = 100) {
@@ -108,6 +111,15 @@ const BadgeSystem = (() => {
             stats.gdsCompleted = (stats.gdsCompleted || 0) + 1;
             stats.gdsHighScore = Math.max(stats.gdsHighScore || 0, score);
             if (score === 100) stats.gdsPerfectCount = (stats.gdsPerfectCount || 0) + 1;
+        } else if (type === 'ventilateur') {
+            stats.ventCompleted = (stats.ventCompleted || 0) + 1;
+            stats.ventHighScore = Math.max(stats.ventHighScore || 0, score);
+        } else if (type === 'pse') {
+            stats.pseCompleted = (stats.pseCompleted || 0) + 1;
+            stats.pseHighScore = Math.max(stats.pseHighScore || 0, score);
+        } else if (type === 'echo') {
+            stats.echoCompleted = (stats.echoCompleted || 0) + 1;
+            stats.echoHighScore = Math.max(stats.echoHighScore || 0, score);
         }
         _saveSkillStats(stats);
         

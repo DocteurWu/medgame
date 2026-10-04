@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respirateur de Réanimation (Ventilateur Lab) — MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/skills.css?v=2">
+    <link rel="stylesheet" href="css/ventilateur.css?v=1">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="vent-navbar">
+        <div class="nav-left">
+            <button class="back-btn" onclick="window.location.href='skills.html'">
+                <i class="fas fa-arrow-left"></i> Skill Lab
+            </button>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div class="app-logo-vent">
+                    <i class="fas fa-lungs"></i>
+                </div>
+                <div>
+                    <h1>VENTILATEUR LAB &bull; RÉANIMATION</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab-btn active" id="tab-mode-monitor">
+                <i class="fas fa-wave-square"></i> Moniteur & Réglages
+            </button>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:16px;">
+            <button class="back-btn" onclick="window.location.href='skills-gds.html'">
+                <i class="fas fa-vial"></i> Voir Gaz du Sang
+            </button>
+        </div>
+    </header>
+
+    <!-- Bandeau des Presets Pathologiques -->
+    <section class="presets-bar">
+        <span class="presets-label"><i class="fas fa-heartbeat"></i> Profils Cliniques :</span>
+        <button class="preset-chip active" data-preset="normal">Poumon normal (Post-op)</button>
+        <button class="preset-chip" data-preset="ards">SDRA sévère (Poumon rigide)</button>
+        <button class="preset-chip" data-preset="asthma">Asthme aigu grave (Auto-PEP)</button>
+        <button class="preset-chip" data-preset="obstruction">Obstruction sonde (Bouchon)</button>
+        <button class="preset-chip" data-preset="pneumothorax">Pneumothorax sous ventilation</button>
+    </section>
+
+    <!-- Conteneur Principal -->
+    <main class="vent-main-container">
+        <div class="vent-grid">
+
+            <!-- Colonne Gauche : Moniteur d'Oscilloscope & Télémétrie -->
+            <div class="scope-panel">
+                <div class="scope-header">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#2ecc71; box-shadow:0 0 10px #2ecc71;"></span>
+                        <span style="font-weight:700; font-size:0.9rem; letter-spacing:0.5px; color:#fff;">MODE VOLUME ASSISTÉ CONTRÔLÉ (VAC)</span>
+                    </div>
+                    <span style="font-size:0.75rem; color:var(--vent-text-dim);"><i class="fas fa-shield-alt"></i> Ventilation Protectrice (6 mL/kg PBW)</span>
+                </div>
+
+                <!-- Télémétrie Numérique Directe -->
+                <div class="scope-vitals-row">
+                    <div class="vital-box">
+                        <div class="vital-label">Pcrête (Ppeak)</div>
+                        <div class="vital-val" id="tel-ppeak" style="color:var(--vent-yellow);">22</div>
+                        <div class="vital-unit">cmH2O (&lt; 35)</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">Pplateau (Pplat)</div>
+                        <div class="vital-val" id="tel-pplat" style="color:var(--vent-yellow);">14</div>
+                        <div class="vital-unit">cmH2O (&lt; 30)</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">&Delta;P Driving</div>
+                        <div class="vital-val" id="tel-driving" style="color:var(--vent-cyan);">9</div>
+                        <div class="vital-unit">cmH2O (&lt; 14)</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">Auto-PEP</div>
+                        <div class="vital-val" id="tel-autopeep" style="color:#ff7675;">0.0</div>
+                        <div class="vital-unit">cmH2O (intrinsèque)</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">Volume Courant</div>
+                        <div class="vital-val" id="tel-vte" style="color:var(--vent-blue);">450</div>
+                        <div class="vital-unit">mL expirés</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">Ventilation Min</div>
+                        <div class="vital-val" id="tel-ve" style="color:var(--vent-blue);">6.8</div>
+                        <div class="vital-unit">L / min</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">Compliance Statique</div>
+                        <div class="vital-val" id="tel-compliance" style="color:#a29bfe;">60</div>
+                        <div class="vital-unit">mL / cmH2O</div>
+                    </div>
+                    <div class="vital-box">
+                        <div class="vital-label">Résistance V.A.</div>
+                        <div class="vital-val" id="tel-resistance" style="color:#fd79a8;">6</div>
+                        <div class="vital-unit">cmH2O / (L/s)</div>
+                    </div>
+                </div>
+
+                <!-- Canvas des 3 Courbes Continues -->
+                <div class="waves-container">
+                    <canvas id="vent-waves-canvas"></canvas>
+                </div>
+
+                <!-- Boîte d'alarmes en temps réel -->
+                <div class="vent-alerts-box" id="vent-alerts-box">
+                    <!-- Alertes dynamiques -->
+                </div>
+            </div>
+
+            <!-- Colonne Droite : Console de Réglages -->
+            <div class="controls-panel">
+                <h2 class="panel-title"><i class="fas fa-sliders-h" style="color:var(--vent-cyan);"></i> Réglages Respirateur</h2>
+
+                <!-- Volume Courant (Vt) -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label for="range-vt"><i class="fas fa-cube"></i> Volume Courant (Vt)</label>
+                        <span class="control-value-display" id="val-vt">450 mL (6.4 mL/kg)</span>
+                    </div>
+                    <input type="range" id="range-vt" class="vent-range" min="250" max="750" step="10" value="450">
+                    <span style="font-size:0.72rem; color:var(--vent-text-dim);">Recommandé : 6 mL/kg de poids théorique</span>
+                </div>
+
+                <!-- Fréquence Respiratoire (FR) -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label for="range-fr"><i class="fas fa-stopwatch"></i> Fréquence (FR)</label>
+                        <span class="control-value-display" id="val-fr">15 /min</span>
+                    </div>
+                    <input type="range" id="range-fr" class="vent-range" min="8" max="35" step="1" value="15">
+                </div>
+
+                <!-- PEP (PEEP) -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label for="range-peep"><i class="fas fa-compress-arrows-alt"></i> PEP (PEEP)</label>
+                        <span class="control-value-display" id="val-peep">5 cmH2O</span>
+                    </div>
+                    <input type="range" id="range-peep" class="vent-range" min="0" max="20" step="1" value="5">
+                    <span style="font-size:0.72rem; color:var(--vent-text-dim);">Maintient le recrutement alvéolaire en fin d'expiration</span>
+                </div>
+
+                <!-- FiO2 -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label for="range-fio2"><i class="fas fa-wind"></i> FiO2</label>
+                        <span class="control-value-display" id="val-fio2">40 %</span>
+                    </div>
+                    <input type="range" id="range-fio2" class="vent-range" min="21" max="100" step="5" value="40">
+                </div>
+
+                <!-- Rapport I:E -->
+                <div class="control-group">
+                    <div class="control-header">
+                        <label for="select-ie"><i class="fas fa-arrows-alt-h"></i> Rapport I:E</label>
+                    </div>
+                    <select id="select-ie" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:8px 12px; font-family:'Outfit'; font-size:0.9rem; outline:none;">
+                        <option value="0.5">1 : 2 (Physiologique standard)</option>
+                        <option value="0.33">1 : 3 (Obstructif modéré)</option>
+                        <option value="0.25">1 : 4 (Asthme aigu / BPCO sévère)</option>
+                        <option value="1.0">1 : 1 (I:E inversé)</option>
+                    </select>
+                </div>
+
+                <div style="margin-top:auto; padding:14px; background:rgba(0,242,254,0.06); border-radius:12px; border:1px solid rgba(0,242,254,0.2); font-size:0.8rem; line-height:1.45; color:var(--vent-text-dim);">
+                    <i class="fas fa-info-circle" style="color:var(--vent-cyan);"></i> <strong>Règle d'or de réanimation :</strong> La différence <em>Pcrête - Pplateau</em> mesure la résistance bronchique, tandis que la <em>Driving Pressure (Pplat - PEP)</em> évalue la distension alvéolaire et doit rester inférieure à 14 cmH2O.
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/badges.js"></script>
+    <script type="module" src="js/ventilateur-ui.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+</html>
