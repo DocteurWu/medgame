@@ -30,6 +30,30 @@
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com; worker-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob:; child-src 'self' blob:; frame-src 'self' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self' blob: data: https://dl.polyhaven.org https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net https://unpkg.com http://127.0.0.1:8081 http://localhost:8081 https://api.deepseek.com https://api.groq.com https://openrouter.ai; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
 
+# ── Cache des assets volumineux et immuables ──────────────────────────────────
+# Miroir de nginx.conf : la logique et les données sont revalidées, les assets
+# binaires sont cachés longtemps.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/neuro-atlas/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/neuro-atlas/data/volumes/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Les cas cliniques et données de gameplay sont versionnés par cas
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
 [[headers]]
   for = "/.env"
   [headers.values]

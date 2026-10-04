@@ -7,3 +7,16 @@
 
 /.env
   Cache-Control: no-store
+
+# Cache des assets — miroir de netlify.toml et nginx.conf
+/assets/*
+  Cache-Control: public, max-age=604800
+
+/neuro-atlas/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/neuro-atlas/data/volumes/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/*
+  Cache-Control: public, max-age=300
