@@ -10,9 +10,20 @@
  * - Analyseur temps réel pour le Phonocardiogramme synchrone
  */
 
+/**
+ * Clé de volume propre à la page d'auscultation. Volontairement distincte
+ * de `medgame.audio.v2` : le curseur `#pcg-volume-slider` est un réglage de
+ * session d'écoute, pas le niveau du bus `auscultation` du mixer global. Les
+ * confondre donnait un volume au carré (les deux gains sont en série).
+ */
+const VOLUME_KEY = 'medgame.auscultation.volume';
+
 class AuscultationAudioEngine {
     constructor() {
         this.ctx = null;
+        this._ownsContext = false;   // vrai seulement si le socle est absent
+        this._volumeExplicit = false;
+        this.volume = 0.85;          // volume de la page (curseur local)
         this.isPlaying = false;
         this.currentCase = null;
         this.currentHotspot = 'apex';
@@ -43,15 +54,37 @@ class AuscultationAudioEngine {
     }
 
     _initContext() {
+        // Le moteur d'auscultation avait SON PROPRE AudioContext, branché
+        // directement sur sa destination. Conséquence : le mute global, le
+        // mode calme et les réglages par bus ne l'affectaient pas, et le
+        // joueur avait deux « volumes » sans rapport.
+        //
+        // On utilise maintenant le contexte unique du socle et on se branche
+        // sur le bus `auscultation`. `masterGain` reste une course interne à
+        // la page (elle porte le réglage de la membrane), mais elle passe
+        // désormais par les bus : couper le son coupe l'auscultation.
+        const S = window.MedGameSound;
+        this.ctx = S ? S.getContext() : null;
         if (!this.ctx) {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             this.ctx = new AudioContext();
+            this._ownsContext = true;
+        }
 
-            // Master Gain
-            this.masterGain = this.ctx.createGain();
-            this.masterGain.gain.value = 0.85;
+        if (!this.masterGain) {
+            // Reprend le volume mémorisé par le curseur de la page, sinon le
+            // réglage du joueur disparaissait à chaque visite.
+            if (!this._volumeExplicit) {
+                try {
+                    const memorise = parseFloat(localStorage.getItem(VOLUME_KEY) ?? '');
+                    if (Number.isFinite(memorise)) this.volume = Math.max(0, Math.min(1.5, memorise));
+                } catch (e) { /* stockage indisponible : défaut */ }
+            }
 
             // Gain spécifique pour les buffers audio réels (permet l'atténuation par foyer)
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = this.volume;
+
             this.caseGainNode = this.ctx.createGain();
             this.caseGainNode.gain.value = 1.0;
             this.caseGainNode.connect(this.masterGain);
@@ -64,17 +97,20 @@ class AuscultationAudioEngine {
             this.analyserNode = this.ctx.createAnalyser();
             this.analyserNode.fftSize = 512;
 
-            // Graphe audio principal :
-            // (Synthèse ou caseGainNode) -> masterGain -> filterNode -> analyserNode -> destination
+            // Graphe audio :
+            // (Synthèse ou caseGainNode) -> masterGain -> filterNode -> analyserNode
+            // -> bus `auscultation` (puis master global, compresseur, limiteur)
             this.masterGain.connect(this.filterNode);
             this.filterNode.connect(this.analyserNode);
-            this.analyserNode.connect(this.ctx.destination);
+            this.analyserNode.connect(
+                S ? S.busInput('auscultation') : this.ctx.destination
+            );
 
             this._generateNoiseBuffer();
         }
 
         if (this.ctx.state === 'suspended') {
-            this.ctx.resume();
+            this.ctx.resume().catch(() => {});
         }
     }
 
@@ -98,11 +134,36 @@ class AuscultationAudioEngine {
         this._updateFilter();
     }
 
-    setVolume(value) {
+/**
+ * Volume de la page, plage 0 à 1.5 comme toujours.
+ *
+ * IMPORTANT — ce curseur ne touche PAS au bus `auscultation` du socle. Les
+ * deux gains sont en SÉRIE dans le graphe (masterGain local → filtre →
+ * analyseur → bus) : écrire la même valeur aux deux endroits donnait un gain
+ * effectif de volume², donc 0,5 donnait 0,25 et le curseur était deux fois
+ * plus sensible que son étiquette. Pire, cela écrasait le réglage global du
+ * bus `auscultation`, que le mixer de l'accueil pilote.
+ *
+ * Répartition correcte :
+ *   - le curseur de la page → ce `masterGain` local, mémorisé dans une clé
+ *     propre à la page ;
+ *   - le mixer global et le mute → le bus `auscultation`, seul.
+ * @param {number} value
+ */
+setVolume(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return;
+        this.volume = Math.max(0, Math.min(1.5, n));
+        this._volumeExplicit = true;
         if (this.masterGain && this.ctx) {
-            const clamped = Math.max(0, Math.min(1.5, Number(value) || 0.85));
-            this.masterGain.gain.setValueAtTime(clamped, this.ctx.currentTime);
+            this.masterGain.gain.setTargetAtTime(this.volume, this.ctx.currentTime, 0.02);
         }
+        try { localStorage.setItem(VOLUME_KEY, String(this.volume)); } catch (e) {}
+    }
+
+    /** Volume mémorisé, ou le défaut historique (0.85). */
+    getVolume() {
+        return this.volume;
     }
 
     playFile(url) {

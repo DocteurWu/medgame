@@ -64,10 +64,6 @@
     <!-- Skip navigation link for screen readers -->
     <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
-    <audio id="heartbeat-audio" src="assets/sounds/heartbeat.mp3" autoplay loop hidden aria-hidden="true">
-        Votre navigateur ne prend pas en charge la music
-    </audio>
-
     <script src="js/env.js?v=11"></script>
     <script src="js/config.js?v=11"></script>
     <script src="js/auth.js?v=2"></script>
@@ -84,11 +80,14 @@
             }
         });
 
-        // Disable audio if MUSIC_ENABLED is 0
-        if (typeof CONFIG !== 'undefined' && CONFIG.MUSIC_ENABLED === 0) {
-            const audio = document.getElementById('heartbeat-audio');
-            if (audio) audio.remove();
-        }
+        // L'ambiance et la musique sont désormais synthétisées à la volée par
+        // le socle audio (js/audio-core.js + js/audio-ambience.js). Il n'y a
+        // plus de <audio loop> dans cette page : le fichier de 82 Mo qui
+        // occupait la balise a été supprimé du dépôt.
+        //
+        // CONFIG.MUSIC_ENABLED reste lu par le reste du projet (js/three-scene.js
+        // et scripts/render-promo.mjs) et vaut 1 : il contrôle désormais la
+        // couche musicale adaptative, pas un fichier.
     </script>
 
 
@@ -600,7 +599,15 @@
     <!-- Hidden Next Case Button for JS compatibility if needed, though we have one in correction modal -->
     <button id="next-case" style="display:none;">Cas Suivant</button>
 
-    <script defer src="js/audio.js?v=2"></script>
+    <!-- Socle audio + couches. L'ordre compte : audio-core.js définit
+         window.MedGameSound, les couches s'y enregistrent, audio.js n'est
+         que la façade. `defer` garantit l'ordre d'exécution et évite de
+         bloquer le premier rendu. -->
+    <script defer src="js/audio-core.js?v=1"></script>
+    <script defer src="js/audio-sfx.js?v=1"></script>
+    <script defer src="js/audio-ambience.js?v=1"></script>
+    <script defer src="js/audio-medical.js?v=1"></script>
+    <script defer src="js/audio.js?v=3"></script>
     <script defer src="js/game-modes.js?v=1"></script>
     <script defer src="js/nurse.js?v=2"></script>
     <script defer src="js/utils.js?v=2"></script>

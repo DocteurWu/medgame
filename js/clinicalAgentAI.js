@@ -910,6 +910,8 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
                     window.vitalSigns.props.heartRate = changes[key];
                     window.vitalSigns.props.pouls = `${changes[key]} bpm`;
                     // Adapter également le bip sonore ECG cardiaque en temps réel !
+                    // `startECGBeep` reprogramme la cadence du bip ET celle du
+                    // cœur : les deux restent sur le même métronome.
                     if (window.medicalAudio) {
                         window.medicalAudio.startECGBeep(changes[key]);
                     }
@@ -940,6 +942,37 @@ Retourne UNIQUEMENT et STRICTEMENT un objet JSON (sans texte explicatif avant ou
         // Rafraîchir l'affichage de la télémétrie 3D HUD
         if (window.threeManager?.hud?._updateVitals) {
             window.threeManager.hud._updateVitals();
+        }
+
+        // Un seul envoi de toutes les constantes à la couche audio et à la
+        // partition adaptative. Avant, seule la fréquence cardiaque était
+        // transmise : une désaturation du LLM ne changeait rien au son.
+        if (window.MedGameMedical) {
+            const v = window.vitalSigns?.props || {};
+            const num = (val, fb) => {
+                const m = String(val ?? '').match(/-?\d+(\.\d+)?/);
+                return m ? parseFloat(m[0]) : fb;
+            };
+            MedGameMedical.applyVitals({
+                hr: num(v.heartRate ?? v.pouls, 72),
+                spo2: num(v.spo2 ?? v.saturationO2, 98),
+                rr: num(v.respiratoryRate, 14),
+                systolic: num(v.systolic, 120),
+                temperature: num(v.temperature, 37)
+            });
+        }
+        if (window.MedGameAmbience && window.MedGameAmbience.isRunning()) {
+            const v = window.vitalSigns?.props || {};
+            const num = (val, fb) => {
+                const m = String(val ?? '').match(/-?\d+(\.\d+)?/);
+                return m ? parseFloat(m[0]) : fb;
+            };
+            const spo2 = num(v.spo2 ?? v.saturationO2, 98);
+            const hr = num(v.heartRate ?? v.pouls, 72);
+            MedGameAmbience.setVitals({ spo2, hr, systolic: num(v.systolic, 120) });
+            MedGameAmbience.setState(
+                (spo2 < 92 || hr > 120) ? 'critical' : (spo2 < 97 || hr > 100) ? 'tense' : 'calm'
+            );
         }
     }
 

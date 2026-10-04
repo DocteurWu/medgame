@@ -66,51 +66,24 @@ const NurseIntro = (() => {
         `Dossier ECOS prêt : {patient}, {age} ans. Bon courage Docteur !`
     ];
 
-    let _sharedAudioCtx = null;
-    function _getAudioCtx() {
-        if (!_sharedAudioCtx) {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (AudioCtx) _sharedAudioCtx = new AudioCtx();
-        }
-        if (_sharedAudioCtx && _sharedAudioCtx.state === 'suspended') {
-            _sharedAudioCtx.resume().catch(() => {});
-        }
-        return _sharedAudioCtx;
-    }
-
     /**
-     * Synthétiseur de bip radio/intercom d'urgence (Web Audio API - zéro fichier externe)
+     * Interphone d'appel. Utilise le socle audio partagé (window.MedGameSound)
+     * au lieu d'un AudioContext dédié branché sur ctx.destination : ce
+     * contexte-là contournait tous les bus, donc `MedGameAudio.mute()` ne
+     * coupait pas l'appel de l'infirmière, et il ne réglait ni le volume ni
+     * le mode calme.
+     *
+     * Les deux motifs sont dans le registre SFX (js/audio-sfx.js) :
+     *   `nurseCall`       — la sonnerie d'appel normale
+     *   `intercomUrgent`  — l'annonce urgente, plus rapide et plus haute
      */
     function _playHospitalBeep(isUrgent = false) {
         try {
-            const ctx = _getAudioCtx();
-            if (!ctx) return;
-
-            const now = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            if (isUrgent) {
-                // Tonalité double d'urgence médicale
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(880, now);
-                osc.frequency.setValueAtTime(1174, now + 0.08);
-                gain.gain.setValueAtTime(0.06, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
-                osc.start(now);
-                osc.stop(now + 0.3);
+            const S = window.MedGameSound;
+            if (S) {
+                S.play(isUrgent ? 'intercomUrgent' : 'nurseCall');
             } else {
-                // Chime subtil d'interphone d'accueil
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, now); // D5
-                osc.frequency.exponentialRampToValueAtTime(880, now + 0.12); // A5
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                osc.start(now);
-                osc.stop(now + 0.36);
+                console.warn('[nurse] socle audio absent — appel muet');
             }
 
             // Haptique mobile si disponible

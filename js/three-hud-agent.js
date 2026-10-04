@@ -30,11 +30,19 @@ export class ThreeHUD {
         this.sweepSpeed = 1.6; // Pixels par frame
 
         // --- Système Audio Bip ECG ---
-        const globalMuted = localStorage.getItem('medgame.audio.muted') === 'true';
+        // Le son est produit par le socle partagé (js/audio-core.js) sur le bus
+        // `auscultation`. On ne garde qu'un drapeau local pour le bouton muet
+        // du scope : il ne touche à aucun réglage global, et le mute global
+        // coupe déjà tout de son côté.
+        //
+        // On NE LIT PLUS `medgame.audio.muted` ici : cette clé plate est
+        // lue une seule fois par le socle, pour migrer les réglages d'un
+        // joueur existant. La relire ici créait une seconde vérité capable de
+        // contredire `medgame.audio.v2`.
+        const S0 = window.MedGameSound;
+        const globalMuted = S0 ? S0.isMuted() : false;
         const sessionMuted = sessionStorage.getItem('hud_scope_muted');
         this.isSoundMuted = globalMuted || (sessionMuted !== null ? sessionMuted === 'true' : false);
-        this.soundVolume = parseFloat(sessionStorage.getItem('hud_scope_volume') || '0.15');
-        this.audioCtx = null;
         this._hudKeyHandler = null;
     }
 
@@ -78,14 +86,7 @@ export class ThreeHUD {
             soundBtn.onclick = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                this.isSoundMuted = !this.isSoundMuted;
-                sessionStorage.setItem('hud_scope_muted', this.isSoundMuted ? 'true' : 'false');
-                this._updateSoundButtonUI();
-                
-                // Activer l'AudioContext s'il était suspendu (sécurité navigateur)
-                if (!this.isSoundMuted && this.audioCtx && this.audioCtx.state === 'suspended') {
-                    this.audioCtx.resume();
-                }
+                this._toggleScopeSound();
             };
             this._updateSoundButtonUI();
         }
@@ -96,12 +97,7 @@ export class ThreeHUD {
             if (!this.isVisible) return;
             if (e.key.toLowerCase() === 'm') {
                 e.preventDefault();
-                this.isSoundMuted = !this.isSoundMuted;
-                sessionStorage.setItem('hud_scope_muted', this.isSoundMuted ? 'true' : 'false');
-                this._updateSoundButtonUI();
-                if (!this.isSoundMuted && this.audioCtx && this.audioCtx.state === 'suspended') {
-                    this.audioCtx.resume();
-                }
+                this._toggleScopeSound();
             }
         };
         document.addEventListener('keydown', this._hudKeyHandler);
@@ -149,46 +145,40 @@ export class ThreeHUD {
     }
 
     /**
-     * Génère un BIP sonore ECG réaliste via le Web Audio API
-     * La tonalité varie en fonction du niveau de saturation en oxygène (SpO2)
+     * Bascule le son du scope.
+     *
+     * Le bouton ne touche QUE son propre drapeau : il n'écrit pas sur le bus
+     * `auscultation`. Écrire ce bus persistait le réglage dans `medgame.audio.v2`,
+     * ce qui faisait que la page d'auscultation s'ouvrait muette au prochain
+     * visit après un simple coup sur le bouton du scope en jeu. Le mute global,
+     * lui, coupe déjà tout : `_beepECG` teste les deux.
+     */
+    _toggleScopeSound() {
+        this.isSoundMuted = !this.isSoundMuted;
+        sessionStorage.setItem('hud_scope_muted', this.isSoundMuted ? 'true' : 'false');
+        window.MedGameSound?.resume();
+        this._updateSoundButtonUI();
+    }
+
+    /**
+     * BIP sonore ECG réaliste via le socle audio partagé.
+     * La tonalité baisse avec la saturation : SpO2 à 99 % donne ~740 Hz
+     * (aigu), SpO2 à 80 % donne ~520 Hz (grave, inquiétant).
+     *
+     * Avant : cet appel créait son PROPRE AudioContext et le branchait
+     * directement sur ctx.destination. Il contournait donc tous les bus, et
+     * `MedGameAudio.mute()` ne coupait pas le bip du scope — seul le
+     * sessionStorage `hud_scope_muted`, propre à ce fichier, le coupait.
+     * Il gérait aussi un volume `hud_scope_volume` en sessionStorage que
+     * rien d'autre ne lisait.
+     * Maintenant : un nœud sur le bus `auscultation`, donc coupé par le
+     * réglage global, par le bus et par le mode calme.
      */
     _beepECG(spo2) {
-        if (this.isSoundMuted) return;
-
-        try {
-            // Lazy-init de l'AudioContext pour respecter les politiques des navigateurs
-            if (!this.audioCtx) {
-                this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            if (this.audioCtx.state === 'suspended') {
-                this.audioCtx.resume();
-            }
-
-            const osc = this.audioCtx.createOscillator();
-            const gain = this.audioCtx.createGain();
-
-            osc.connect(gain);
-            gain.connect(this.audioCtx.destination);
-
-            // Physique médicale : plus la saturation (SpO2) baisse, plus la note baisse !
-            // SpO2 à 99% -> ~740 Hz (aigu). SpO2 à 80% -> ~520 Hz (plus grave/alarmant).
-            const pitch = 400 + Math.max(0, Math.min(100, spo2 - 70)) * 12;
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(pitch, this.audioCtx.currentTime);
-
-            gain.gain.setValueAtTime(0.0001, this.audioCtx.currentTime);
-            // Attack rapide
-            gain.gain.linearRampToValueAtTime(this.soundVolume, this.audioCtx.currentTime + 0.015);
-            // Decay
-            gain.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + 0.08);
-
-            osc.start();
-            osc.stop(this.audioCtx.currentTime + 0.095);
-        } catch (e) {
-            console.warn('[HUD Telemetry] Échec AudioContext Beep:', e);
-        }
+        const S = window.MedGameSound;
+        if (!S) return;
+        if (this.isSoundMuted || S.isMuted()) return;
+        S.play('ecgBeep', { pitch: 400 + Math.max(0, Math.min(100, spo2 - 70)) * 12 });
     }
 
     /**

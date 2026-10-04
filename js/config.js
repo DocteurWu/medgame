@@ -3,7 +3,13 @@
  * Global settings that apply across all pages
  */
 const CONFIG = {
-    MUSIC_ENABLED: 0,
+    /**
+     * Couche musicale adaptative (js/audio-ambience.js). La musique est
+     * synthétisée à la volée : ce drapeau ne contrôle plus aucun fichier.
+     * Mettre à 0 coupe la partition mais laisse la synthèse d'ambiance
+     * (ventilation, couloir, cœur) intacte — c'est le comportement voulu.
+     */
+    MUSIC_ENABLED: 1,
 
     // Supabase Configuration
     SUPABASE_URL: 'https://jxhzjetxquimmkpzlfyh.supabase.co',

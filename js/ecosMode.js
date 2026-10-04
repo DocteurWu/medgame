@@ -416,11 +416,6 @@
         ecosState.warning30Fired = false;
         ecosState.warning10Fired = false;
 
-        // Pause heartbeat audio if playing
-        const heartbeat = document.getElementById('heartbeat-audio');
-        if (heartbeat) {
-            try { heartbeat.pause(); } catch(e) {}
-        }
         
         addBeforeUnloadGuard();
 
