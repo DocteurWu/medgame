@@ -1155,6 +1155,107 @@ input:checked + .slider:before {
     gap: 8px;
 }
 
+/* ── Mixage audio (par bus) ───────────────────────────────────────
+   Le curseur est tracé sur la couleur d'accent du jeu plutôt que sur
+   le bleu par défaut du navigateur : il doit se lire comme un bout de
+   l'interface, pas comme un contrôle emprunté. */
+
+.audio-bus-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr 3.2rem;
+    align-items: center;
+    gap: 10px;
+}
+
+.audio-bus-row > label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 600;
+}
+
+.audio-bus-row > output {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.55);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.audio-bus-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.14);
+    outline: none;
+    cursor: pointer;
+}
+
+.audio-bus-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #00f2fe;
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.18);
+    cursor: pointer;
+}
+
+.audio-bus-slider::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border: none;
+    border-radius: 50%;
+    background: #00f2fe;
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.18);
+    cursor: pointer;
+}
+
+.audio-bus-slider:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.3);
+}
+
+/* Curseur à zéro : on l'atténue, pour qu'on voie d'un coup d'œil
+   quel canal est coupé. */
+.audio-bus-slider[data-silent='1']::-webkit-slider-thumb {
+    background: #7a7f8a;
+    box-shadow: 0 0 0 3px rgba(122, 127, 138, 0.18);
+}
+
+.audio-bus-slider[data-silent='1']::-moz-range-thumb {
+    background: #7a7f8a;
+    box-shadow: 0 0 0 3px rgba(122, 127, 138, 0.18);
+}
+
+.audio-preset-btn {
+    flex: 1;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    /* index.html ne charge ni editor.css ni promo.css : --font-body n'y est
+       pas défini. On hérite de la police du document plutôt que de déclarer
+       une variable inexistante (la déclaration serait simplement ignorée). */
+    font-family: inherit;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.audio-preset-btn:hover {
+    background: rgba(0, 242, 254, 0.1);
+    color: #fff;
+}
+
+.audio-preset-btn[aria-pressed='true'] {
+    background: rgba(0, 242, 254, 0.18);
+    border-color: rgba(0, 242, 254, 0.45);
+    color: #00f2fe;
+}
+
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 1000px) {
     body {

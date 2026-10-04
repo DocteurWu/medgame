@@ -136,11 +136,14 @@ function renderUrgenceState() {
                 if (uiState.fireworksInstance) {
                     try { uiState.fireworksInstance.stop(); } catch(e) {}
                 }
+                MedGameAudio.play('success');
             } else {
-                try {
-                    const failSound = new Audio('assets/sounds/Wrong Buzzer.mp3');
-                    failSound.play().catch(() => {});
-                } catch(e) {}
+                // C'était le seul son du jeu lu depuis un fichier
+                // (`assets/sounds/Wrong Buzzer.mp3`, 44 Ko, joué via
+                // `new Audio(...)`). Il est remplacé par une synthèse : même
+                // rôle, mais il passe désormais par les bus, donc il respecte
+                // le mute global, le réglage par bus et le mode calme.
+                MedGameAudio.play('wrongAnswer');
             }
 
             if (currentUrgenceNode.xpReward && currentUrgenceNode.xpReward > 0) {
