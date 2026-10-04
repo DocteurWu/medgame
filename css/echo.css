@@ -1,0 +1,236 @@
+/* css/echo.css — Styles Console Échographe POCUS & FAST-Echo (Skill Lab) */
+
+:root {
+    --echo-bg: #050814;
+    --echo-screen: #000208;
+    --echo-border: rgba(0, 242, 254, 0.25);
+    --echo-cyan: #00f2fe;
+    --echo-green: #10b981;
+    --echo-card: rgba(12, 19, 44, 0.85);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at top center, #0e1738 0%, #030612 100%);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.echo-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    background: rgba(8, 12, 30, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--echo-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.app-logo-echo {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #00f2fe, #6c5ce7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #050814;
+    font-size: 1.2rem;
+}
+
+.echo-main-container {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 24px;
+}
+
+.echo-workspace-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr 340px;
+    gap: 24px;
+}
+
+@media (max-width: 1200px) {
+    .echo-workspace-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 800px) {
+    .echo-workspace-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Colonne 1 : Torse Interactif et Zones de Sonde */
+.torso-card {
+    background: var(--echo-card);
+    border: 1px solid var(--echo-border);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.torso-visual-wrapper {
+    position: relative;
+    width: 240px;
+    height: 380px;
+    background: radial-gradient(circle at center, #1b264f 0%, #0c132c 100%);
+    border-radius: 30px;
+    border: 2px solid rgba(0, 242, 254, 0.2);
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Silhouette stylisée du torse humain en SVG */
+.torso-silhouette {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.35;
+}
+
+/* Points cibles POCUS sur le corps */
+.pocus-target-spot {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(0, 242, 254, 0.25);
+    border: 2px solid var(--echo-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+    z-index: 10;
+}
+
+.pocus-target-spot:hover, .pocus-target-spot.active {
+    background: var(--echo-cyan);
+    color: #050814;
+    transform: scale(1.25);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
+}
+
+/* Positions anatomiques des 5 spots */
+.spot-lung { top: 75px; left: 145px; } /* Poumon droit */
+.spot-subxiphoid { top: 155px; left: 106px; } /* Sous-xyphoïdien */
+.spot-morrison { top: 195px; left: 60px; } /* Morrison (flanc droit) */
+.spot-splenorenal { top: 195px; left: 152px; } /* Spléno-rénal (flanc gauche) */
+.spot-pelvis { top: 290px; left: 106px; } /* Sus-pubien */
+
+/* Colonne 2 : Écran de la console Échographique */
+.echo-console-panel {
+    background: #02050e;
+    border: 2px solid rgba(0, 242, 254, 0.35);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(0, 242, 254, 0.05);
+}
+
+.echo-screen-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+    font-family: 'Outfit', monospace;
+    font-size: 0.85rem;
+}
+
+.echo-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+canvas#echo-screen-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Boutons de contrôle échographe */
+.echo-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-echo-control {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-echo-control.active {
+    background: var(--echo-cyan);
+    color: #050814;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+}
+
+/* Colonne 3 : Diagnostic & Cas Clinique EDN */
+.echo-diagnosis-card {
+    background: var(--echo-card);
+    border: 1px solid var(--echo-border);
+    border-radius: 20px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.finding-banner {
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+.finding-banner.positive {
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid #e74c3c;
+    color: #ff7675;
+}
+
+.finding-banner.normal {
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid #2ecc71;
+    color: #2ecc71;
+}

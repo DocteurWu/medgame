@@ -28,11 +28,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elGdsCompleted) elGdsCompleted.textContent = `${stats.gdsCompleted || 0} cas`;
         if (elGdsHighScore) elGdsHighScore.textContent = `${stats.gdsHighScore || 0}%`;
 
-        // 4. Vitrine des badges Skill Lab
+        // 4. Mettre à jour les statistiques Ventilateur
+        const elVentCompleted = document.getElementById('hub-vent-completed');
+        const elVentHighScore = document.getElementById('hub-vent-highscore');
+        if (elVentCompleted) elVentCompleted.textContent = `${stats.ventCompleted || 0} cas`;
+        if (elVentHighScore) elVentHighScore.textContent = `${stats.ventHighScore || 0}%`;
+
+        // 5. Mettre à jour les statistiques Pousse-Seringue
+        const elPseCompleted = document.getElementById('hub-pse-completed');
+        const elPseHighScore = document.getElementById('hub-pse-highscore');
+        if (elPseCompleted) elPseCompleted.textContent = `${stats.pseCompleted || 0} cas`;
+        if (elPseHighScore) elPseHighScore.textContent = `${stats.pseHighScore || 0}%`;
+
+        // 6. Mettre à jour les statistiques POCUS FAST-Echo
+        const elEchoCompleted = document.getElementById('hub-echo-completed');
+        const elEchoHighScore = document.getElementById('hub-echo-highscore');
+        if (elEchoCompleted) elEchoCompleted.textContent = `${stats.echoCompleted || 0} cas`;
+        if (elEchoHighScore) elEchoHighScore.textContent = `${stats.echoHighScore || 0}%`;
+
+        // 7. Vitrine des badges Skill Lab
         const skillBadgeIds = [
             'ecg_cadet', 'ecg_expert', 'ecg_master',
             'auscult_cadet', 'auscult_expert', 'auscult_master',
             'gds_cadet', 'gds_expert', 'gds_master',
+            'vent_expert', 'pse_expert', 'echo_expert',
             'skill_master'
         ];
 

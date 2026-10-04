@@ -1,0 +1,373 @@
+/* css/ventilateur.css — Interface Respirateur de Réanimation (Skill Lab) */
+
+:root {
+    --vent-bg: #070b19;
+    --vent-card-bg: rgba(13, 21, 46, 0.85);
+    --vent-border: rgba(0, 242, 254, 0.22);
+    --vent-cyan: #00f2fe;
+    --vent-yellow: #f1c40f;
+    --vent-green: #2ecc71;
+    --vent-blue: #3498db;
+    --vent-red: #e74c3c;
+    --vent-text-dim: rgba(255, 255, 255, 0.7);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle at top center, #101a40 0%, #050814 100%);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.vent-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 28px;
+    background: rgba(8, 12, 30, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--vent-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.app-logo-vent {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #00f2fe, #3498db);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #070b19;
+    font-size: 1.2rem;
+}
+
+.vent-navbar h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.nav-tabs {
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--vent-text-dim);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.nav-tab-btn.active {
+    background: var(--vent-cyan);
+    color: #070b19;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+/* Presets Bar */
+.presets-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: rgba(10, 16, 38, 0.6);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.presets-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--vent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 6px;
+}
+
+.preset-chip {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.preset-chip:hover, .preset-chip.active {
+    background: rgba(0, 242, 254, 0.18);
+    border-color: var(--vent-cyan);
+    color: var(--vent-cyan);
+}
+
+/* Main Layout */
+.vent-main-container {
+    max-width: 1400px;
+    margin: 20px auto;
+    padding: 0 24px;
+}
+
+.vent-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .vent-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Oscilloscope Display */
+.scope-panel {
+    background: #030611;
+    border: 2px solid rgba(0, 242, 254, 0.3);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(0, 242, 254, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.scope-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.scope-vitals-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 12px;
+}
+
+.vital-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    text-align: center;
+}
+
+.vital-box.alert-danger {
+    border-color: var(--vent-red);
+    background: rgba(231, 76, 60, 0.15);
+    animation: pulseAlert 1.5s infinite;
+}
+
+.vital-box.alert-warn {
+    border-color: var(--vent-yellow);
+    background: rgba(241, 196, 15, 0.12);
+}
+
+@keyframes pulseAlert {
+    0%, 100% { box-shadow: 0 0 5px rgba(231, 76, 60, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.7); }
+}
+
+.vital-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--vent-text-dim);
+    text-transform: uppercase;
+}
+
+.vital-val {
+    font-family: 'Outfit', monospace;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 4px 0 2px 0;
+}
+
+.vital-unit {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Canvas Waves */
+.waves-container {
+    position: relative;
+    background: #00040a;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 242, 254, 0.15);
+    overflow: hidden;
+}
+
+canvas#vent-waves-canvas {
+    width: 100%;
+    height: 380px;
+    display: block;
+}
+
+/* Alerts box */
+.vent-alerts-box {
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.vent-alert-chip {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.vent-alert-chip.danger {
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid var(--vent-red);
+    color: #ff7675;
+}
+
+.vent-alert-chip.warning {
+    background: rgba(241, 196, 15, 0.2);
+    border: 1px solid var(--vent-yellow);
+    color: #ffeaa7;
+}
+
+/* Controls Panel */
+.controls-panel {
+    background: var(--vent-card-bg);
+    border: 1px solid var(--vent-border);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.control-header label {
+    font-weight: 600;
+    color: var(--vent-text-dim);
+}
+
+.control-value-display {
+    font-family: 'Outfit', monospace;
+    font-weight: 700;
+    color: var(--vent-cyan);
+    font-size: 0.95rem;
+}
+
+input[type="range"].vent-range {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    outline: none;
+    transition: background 0.2s;
+}
+
+input[type="range"].vent-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--vent-cyan);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
+}
+
+/* Quiz mode */
+.quiz-section {
+    display: none;
+    background: var(--vent-card-bg);
+    border: 1px solid var(--vent-border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.quiz-option-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quiz-option-btn:hover {
+    background: rgba(0, 242, 254, 0.12);
+    border-color: var(--vent-cyan);
+}
+
+.quiz-option-btn.correct {
+    background: rgba(46, 204, 113, 0.2);
+    border-color: var(--vent-green);
+    color: #2ecc71;
+}
+
+.quiz-option-btn.wrong {
+    background: rgba(231, 76, 60, 0.2);
+    border-color: var(--vent-red);
+    color: #e74c3c;
+}

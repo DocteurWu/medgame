@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pousse-Seringue Électrique (PSE Lab) — MedGame</title>
+    <link rel="icon" type="image/png" href="assets/images/icone.webp">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Icons & Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/skills.css?v=2">
+    <link rel="stylesheet" href="css/pse.css?v=1">
+</head>
+<body>
+
+    <!-- Barre de Navigation Supérieure -->
+    <header class="pse-navbar">
+        <div style="display:flex; align-items:center; gap:16px;">
+            <button class="back-btn" onclick="window.location.href='skills.html'">
+                <i class="fas fa-arrow-left"></i> Skill Lab
+            </button>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div class="app-logo-pse">
+                    <i class="fas fa-syringe"></i>
+                </div>
+                <div>
+                    <h1 style="font-family:'Outfit'; font-size:1.25rem; margin:0; font-weight:800;">POUSSE-SERINGUE LAB &bull; PERFUSIONS</h1>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button class="back-btn" onclick="window.location.href='skills-ventilateur.html'">
+                <i class="fas fa-lungs"></i> Aller au Respirateur
+            </button>
+        </div>
+    </header>
+
+    <!-- Conteneur Principal -->
+    <main class="pse-main-container">
+        
+        <!-- Cas cliniques sélecteur rapide -->
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; overflow-x:auto; padding-bottom:6px;" id="case-buttons-row">
+            <!-- Rendu dynamique -->
+        </div>
+
+        <div class="pse-workspace">
+
+            <!-- Colonne Gauche : Machine PSE Réaliste -->
+            <div class="pse-machine">
+                <div class="pse-topbar">
+                    <div style="font-family:'Outfit'; font-weight:800; font-size:0.95rem; color:#fff; letter-spacing:1px;">
+                        <i class="fas fa-microchip" style="color:var(--pse-screen-text);"></i> MEDPUMP 5000 &bull; SYRINGE INFUSION
+                    </div>
+
+                    <div class="pse-status-leds">
+                        <div class="led-indicator running" id="led-running">
+                            <span class="led-dot"></span> RUN
+                        </div>
+                        <div class="led-indicator" id="led-stop">
+                            <span class="led-dot"></span> STOP
+                        </div>
+                        <div class="led-indicator" id="led-alarm">
+                            <span class="led-dot"></span> ALARME
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Écran LCD du Pousse-Seringue -->
+                <div class="pse-screen">
+                    <div class="screen-row-top">
+                        <div class="screen-drug-title" id="screen-drug-title">NORADRÉNALINE</div>
+                        <div style="font-size:0.8rem; color:#00f2fe;"><i class="fas fa-battery-full"></i> Secteur OK</div>
+                    </div>
+
+                    <div class="screen-rate-block">
+                        <span class="screen-rate-val" id="screen-rate-val">6.75</span>
+                        <span class="screen-rate-unit">mL / h</span>
+                    </div>
+
+                    <div class="screen-details-row">
+                        <div class="screen-stat-item">
+                            <div class="screen-stat-label">Dose Délivrée</div>
+                            <div class="screen-stat-val" id="screen-dose-delivered" style="color:#00f2fe;">0.300 µg/kg/min</div>
+                        </div>
+                        <div class="screen-stat-item">
+                            <div class="screen-stat-label">Concentration</div>
+                            <div class="screen-stat-val" id="screen-conc-display">160 µg/mL</div>
+                        </div>
+                        <div class="screen-stat-item">
+                            <div class="screen-stat-label">Volume Restant</div>
+                            <div class="screen-stat-val" id="screen-volume-rem" style="color:#2ecc71;">45.0 mL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seringue 50 mL Animée -->
+                <div class="syringe-container">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:rgba(255,255,255,0.7); margin-bottom:6px;">
+                        <span><i class="fas fa-tint"></i> Seringue 50 mL Luer-Lock</span>
+                        <span>Piston motorisé</span>
+                    </div>
+                    <div class="syringe-barrel">
+                        <div class="syringe-fluid" id="syringe-fluid"></div>
+                        <div class="syringe-graduations">
+                            <span>0</span>
+                            <span>10</span>
+                            <span>20</span>
+                            <span>30</span>
+                            <span>40</span>
+                            <span>50 mL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clavier Tactile de la machine -->
+                <div class="pse-keypad">
+                    <button class="keypad-btn btn-run" data-action="start">
+                        <i class="fas fa-play"></i> START
+                    </button>
+                    <button class="keypad-btn btn-stop" data-action="stop">
+                        <i class="fas fa-stop"></i> STOP
+                    </button>
+                    <button class="keypad-btn btn-bolus" data-action="bolus">
+                        <i class="fas fa-bolt"></i> PURGE / BOLUS
+                    </button>
+                    <button class="keypad-btn" data-action="plus">
+                        <i class="fas fa-angle-double-up"></i> +0.5 mL/h
+                    </button>
+                    <button class="keypad-btn" data-action="minus">
+                        <i class="fas fa-angle-double-down"></i> -0.5 mL/h
+                    </button>
+                    <button class="keypad-btn" data-action="plus-fine">
+                        <i class="fas fa-chevron-up"></i> +0.1 mL/h
+                    </button>
+                    <button class="keypad-btn" data-action="minus-fine">
+                        <i class="fas fa-chevron-down"></i> -0.1 mL/h
+                    </button>
+                    <button class="keypad-btn" style="background:#4b6584;" onclick="alert('Alarme acquittée');">
+                        <i class="fas fa-bell-slash"></i> SILENCE
+                    </button>
+                </div>
+
+                <!-- Alerte de sécurité active -->
+                <div class="safety-alert-banner ok" id="safety-banner">
+                    <i class="fas fa-check-circle"></i>
+                    <div>Paramètres d'infusion dans les normes thérapeutiques.</div>
+                </div>
+            </div>
+
+            <!-- Colonne Droite : Prescription, Paramètres & Cas Clinique -->
+            <div class="pse-sidebar">
+                
+                <!-- Carte Cas Clinique Actif -->
+                <div class="pse-control-card" style="border-color:var(--pse-border);">
+                    <h2 class="card-title-sm" id="quiz-case-title"><i class="fas fa-clipboard-check" style="color:var(--pse-screen-text);"></i> Cas Clinique</h2>
+                    <div id="quiz-case-context" style="font-size:0.85rem; line-height:1.5; color:rgba(255,255,255,0.8);"></div>
+                    <div id="quiz-case-question" style="font-size:0.9rem; font-weight:700; color:#fff; background:rgba(0,242,254,0.08); padding:10px; border-radius:10px; border:1px solid rgba(0,242,254,0.2);"></div>
+                    
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <input type="number" id="input-case-answer" step="0.05" placeholder="Débit (mL/h)..." style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:8px; padding:10px 14px; font-family:'Outfit'; font-size:1.1rem; width:140px;">
+                        <button id="btn-validate-case" style="flex:1; background:linear-gradient(135deg, #00f2fe, #10b981); color:#060918; border:none; padding:12px 18px; border-radius:10px; font-family:'Outfit'; font-weight:800; cursor:pointer;">
+                            Valider Débit
+                        </button>
+                    </div>
+                    <div id="case-feedback" style="display:none;"></div>
+                </div>
+
+                <!-- Réglages Pharmacologiques -->
+                <div class="pse-control-card">
+                    <h2 class="card-title-sm"><i class="fas fa-vial" style="color:#00f2fe;"></i> Préparation & Posologie</h2>
+
+                    <div>
+                        <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:6px;">Molécule active</label>
+                        <select id="select-drug" class="select-drug-input">
+                            <option value="noradrenaline">Noradrénaline (Choc septique)</option>
+                            <option value="dobutamine">Dobutamine (Inotrope choc cardio)</option>
+                            <option value="insuline">Insuline Rapide IVSE (Acidocétose)</option>
+                            <option value="nicardipine">Nicardipine / Loxen (Urgence HTA)</option>
+                            <option value="kcl">Chlorure de Potassium (KCl)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:6px;">Dilution en seringue</label>
+                        <select id="select-dilution" class="select-drug-input"></select>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div>
+                            <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:6px;">Poids Patient (kg)</label>
+                            <input type="number" id="input-weight" value="70" min="30" max="180" class="select-drug-input">
+                        </div>
+                        <div>
+                            <label style="display:block; font-size:0.75rem; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:6px;">Voie d'abord</label>
+                            <select id="select-route" class="select-drug-input">
+                                <option value="VVP">Voie périphérique (VVP)</option>
+                                <option value="VVC">Voie centrale (VVC)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:6px;">
+                            <span>Dose cible prescrite :</span>
+                            <span id="target-dose-display" style="font-weight:700; color:#00f2fe;">0.2 µg/kg/min</span>
+                        </div>
+                        <input type="range" id="range-target-dose" class="vent-range" style="width:100%;">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/badges.js"></script>
+    <script type="module" src="js/pse-ui.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+</html>
