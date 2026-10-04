@@ -4,26 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') {
-            try {
-                localStorage.removeItem('medgame_case_cache');
-                if ('caches' in window) {
-                    caches.keys().then(names => {
-                        names.forEach(name => caches.delete(name));
-                    });
-                }
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.getRegistrations().then(regs => {
-                        regs.forEach(reg => reg.unregister());
-                    });
-                }
-                console.info('[Dev Cache Buster] Case cache, service workers and Cache Storage cleared.');
-            } catch (e) {
-                console.warn('[Dev Cache Buster] Failed to clear dev caches:', e);
-            }
-        }
-    </script>
+    <script src="js/index-dev-reset.js?v=1"></script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -52,8 +33,6 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Three.js pour la 3D -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script type="importmap">
     {
         "imports": {
@@ -253,12 +232,64 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                         <div style="display: flex; flex-direction: column;">
                             <span style="font-weight: 600; font-size: 0.85rem; color: #fff;">Effets Sonores</span>
-                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Active les bips ECG et les effets sonores</small>
+                            <small style="color: rgba(255,255,255,0.5); font-size: 0.7rem;">Coupe tout le son : effets, ambiance, musique et bips ECG</small>
                         </div>
                         <label class="switch">
                             <input type="checkbox" id="setting-sound-toggle" checked>
                             <span class="slider round"></span>
                         </label>
+                    </div>
+
+                    <!-- Mixage par bus : chaque couche a son propre curseur -->
+                    <div id="setting-audio-mixer" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <label class="setting-label"
+                                style="margin: 0; font-size: 0.7rem; color: rgba(255,255,255,0.5); flex: 0 0 auto;">Preset</label>
+                            <div id="setting-audio-presets" style="display: flex; gap: 6px;">
+                                <button type="button" class="audio-preset-btn" data-preset="quiet">Discret</button>
+                                <button type="button" class="audio-preset-btn" data-preset="normal">Normal</button>
+                                <button type="button" class="audio-preset-btn" data-preset="immersive">Immersif</button>
+                            </div>
+                        </div>
+
+                        <div class="audio-bus-row">
+                            <label for="audio-bus-master">Général</label>
+                            <input type="range" id="audio-bus-master" class="audio-bus-slider" min="0" max="150" step="5" value="85">
+                            <output for="audio-bus-master">85 %</output>
+                        </div>
+                        <div class="audio-bus-row">
+                            <label for="audio-bus-ui">Interface</label>
+                            <input type="range" id="audio-bus-ui" class="audio-bus-slider" min="0" max="150" step="5" value="75">
+                            <output for="audio-bus-ui">75 %</output>
+                        </div>
+                        <div class="audio-bus-row">
+                            <label for="audio-bus-sfx">Jeu</label>
+                            <input type="range" id="audio-bus-sfx" class="audio-bus-slider" min="0" max="150" step="5" value="90">
+                            <output for="audio-bus-sfx">90 %</output>
+                        </div>
+                        <div class="audio-bus-row">
+                            <label for="audio-bus-medical">Patient</label>
+                            <input type="range" id="audio-bus-medical" class="audio-bus-slider" min="0" max="150" step="5"
+                                value="85">
+                            <output for="audio-bus-medical">85 %</output>
+                        </div>
+                        <div class="audio-bus-row">
+                            <label for="audio-bus-ambience">Ambiance</label>
+                            <input type="range" id="audio-bus-ambience" class="audio-bus-slider" min="0" max="150" step="5"
+                                value="60">
+                            <output for="audio-bus-ambience">60 %</output>
+                        </div>
+                        <div class="audio-bus-row">
+                            <label for="audio-bus-music">Musique</label>
+                            <input type="range" id="audio-bus-music" class="audio-bus-slider" min="0" max="150" step="5"
+                                value="45">
+                            <output for="audio-bus-music">45 %</output>
+                        </div>
+                        <small style="color: rgba(255,255,255,0.4); font-size: 0.68rem; line-height: 1.35;">
+                            Le bus « Patient » porte le cœur, la respiration et les alarmes ; il se baisse
+                            automatiquement quand la musique joue. Le bus « Auscultation » se règle sur sa
+                            propre page.
+                        </small>
                     </div>
 
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
@@ -367,486 +398,20 @@
     </div>
 
     <!-- Audio Module -->
-    <script src="js/audio.js?v=2"></script>
+    <script defer src="js/audio-core.js?v=1"></script>
+    <script defer src="js/audio-sfx.js?v=1"></script>
+    <script defer src="js/audio-ambience.js?v=1"></script>
+    <script defer src="js/audio-medical.js?v=1"></script>
+    <script defer src="js/audio.js?v=3"></script>
     <!-- Three.js Background Module -->
     <script type="module" src="js/three-background.js?v=3"></script>
 
     <!-- Game Logic -->
-    <script>
-        /* --- LOGIQUE JEU & UI --- */
-
-        // Gestion Paramètres
-        sessionStorage.setItem('immersionMode', 'immersif'); // Toujours en mode ECOS/Immersif unifié
-
-        const settingsBtn = document.getElementById('settings-button');
-        const modal = document.getElementById('settings-modal');
-        const closeBtn = document.getElementById('settings-close-icon');
-        const saveBtn = document.getElementById('settings-save');
-
-        const openModal = async () => {
-            modal.classList.add('active');
-            const isPractice = localStorage.getItem('ecos_practice_mode') !== 'false';
-            const radio = document.querySelector(`input[name="gamePlayMode"][value="${isPractice ? 'practice' : 'exam'}"]`);
-            if (radio) radio.checked = true;
-
-            const ecosSection = document.getElementById('ecos-settings-section');
-            if (ecosSection) ecosSection.style.display = 'block';
-
-            document.getElementById('ecos-setting-feedback').checked = localStorage.getItem('ecos_llm_feedback') !== 'false';
-            document.getElementById('ecos-setting-duration').value = localStorage.getItem('ecos_duration') || '480';
-            document.getElementById('setting-sound-toggle').checked = localStorage.getItem('medgame.audio.muted') !== 'true';
-            document.getElementById('setting-view-mode-toggle').checked = localStorage.getItem('medgame_text_mode_default') !== 'true';
-            document.getElementById('setting-calm-toggle').checked = localStorage.getItem('medgame_calm_mode') === 'true';
-            const llmToggle = document.getElementById('setting-llm-mode');
-            if (llmToggle) llmToggle.checked = (localStorage.getItem('medgame_llm_mode') ?? 'true') !== 'false';
-
-            const usernameInput = document.getElementById('setting-username');
-            const usernameStatus = document.getElementById('username-status');
-
-            // État par défaut
-            usernameInput.disabled = true;
-            usernameInput.value = "Chargement...";
-
-            // Charger les données du profil depuis Supabase
-            if (typeof supabase !== 'undefined') {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session) {
-                    const { data, error } = await supabase
-                        .from('profiles')
-                        .select('username, is_public, username_updated_at, rank, rank_updated_at, sexe')
-                        .eq('id', session.user.id)
-                        .single();
-
-                    if (!error && data) {
-                        document.getElementById('setting-public-toggle').checked = data.is_public;
-                        document.getElementById('setting-sexe').value = data.sexe || 'M';
-
-                        // Gestion du pseudonyme
-                        const defaultPseudo = session.user.email.substring(0, 3) + '***';
-                        const currentUsername = data.username || defaultPseudo;
-                        usernameInput.value = currentUsername;
-
-                        // Vérifier la date du dernier changement (1 semaine = 7 jours)
-                        const lastUpdate = data.username_updated_at ? new Date(data.username_updated_at) : null;
-                        const now = new Date();
-                        const offset = 7 * 24 * 60 * 60 * 1000; // 7 jours en ms
-
-                        if (!lastUpdate || (now - lastUpdate) > offset) {
-                            usernameInput.disabled = false;
-                            usernameStatus.innerHTML = '<i class="fas fa-pen"></i> Changement dispo';
-                            usernameStatus.style.color = 'rgba(255, 255, 255, 0.5)';
-                        } else {
-                            const nextUpdate = new Date(lastUpdate.getTime() + offset);
-                            const diffDays = Math.ceil((nextUpdate - now) / (24 * 60 * 60 * 1000));
-                            usernameInput.disabled = true;
-                            usernameStatus.innerHTML = `<i class="fas fa-lock"></i> Bloqué (${diffDays}j)`;
-                            usernameStatus.style.color = 'rgba(255, 255, 255, 0.3)';
-                        }
-
-                        // Gestion du rang (modifiable 1x/an = 365 jours)
-                        const rankSelect = document.getElementById('setting-rank');
-                        const rankStatus = document.getElementById('rank-status');
-                        rankSelect.value = data.rank || 'DFGSM3';
-                        rankSelect.disabled = true;
-
-                        const lastRankUpdate = data.rank_updated_at ? new Date(data.rank_updated_at) : null;
-                        const yearOffset = 365 * 24 * 60 * 60 * 1000;
-
-                        if (!lastRankUpdate || (now - lastRankUpdate) > yearOffset) {
-                            rankSelect.disabled = false;
-                            rankStatus.innerHTML = '<i class="fas fa-pen"></i> Changement dispo';
-                            rankStatus.style.color = 'rgba(255, 255, 255, 0.5)';
-                        } else {
-                            const nextRankUpdate = new Date(lastRankUpdate.getTime() + yearOffset);
-                            const diffMonths = Math.ceil((nextRankUpdate - now) / (30 * 24 * 60 * 60 * 1000));
-                            rankSelect.disabled = true;
-                            rankStatus.innerHTML = `<i class="fas fa-lock"></i> Bloqué (${diffMonths} mois)`;
-                            rankStatus.style.color = 'rgba(255, 255, 255, 0.3)';
-                        }
-                    } else if (error) {
-                        console.error("Erreur chargement profil:", error);
-                        usernameInput.value = session.user.email.split('@')[0];
-                        usernameInput.disabled = false;
-                        
-                        const savedProfile = localStorage.getItem('medgame_profile') ? JSON.parse(localStorage.getItem('medgame_profile')) : {};
-                        document.getElementById('setting-sexe').value = savedProfile.sexe || 'M';
-                    }
-                }
-            } else {
-                // Fallback local storage
-                const savedProfile = localStorage.getItem('medgame_profile') ? JSON.parse(localStorage.getItem('medgame_profile')) : {};
-                usernameInput.value = savedProfile.username || 'Médecin';
-                usernameInput.disabled = false;
-                document.getElementById('setting-sexe').value = savedProfile.sexe || 'M';
-            }
-        };
-        const closeModal = () => modal.classList.remove('active');
-
-        const saveSettings = async () => {
-            const saveBtn = document.getElementById('settings-save');
-            const originalText = saveBtn.textContent;
-            saveBtn.disabled = true;
-            saveBtn.textContent = "Sabre au clair...";
-
-            const selectedPlayMode = document.querySelector('input[name="gamePlayMode"]:checked')?.value || 'practice';
-            const ecosPractice = selectedPlayMode === 'practice';
-            sessionStorage.setItem('immersionMode', 'immersif'); // Toujours en mode ECOS/Immersif unifié
-
-            const ecosFeedback = document.getElementById('ecos-setting-feedback').checked;
-            const ecosDuration = document.getElementById('ecos-setting-duration').value || '480';
-            const soundEnabled = document.getElementById('setting-sound-toggle').checked;
-            const defaultTo3D = document.getElementById('setting-view-mode-toggle').checked;
-            const calmEnabled = document.getElementById('setting-calm-toggle').checked;
-
-            localStorage.setItem('ecos_practice_mode', ecosPractice ? 'true' : 'false');
-            localStorage.setItem('ecos_llm_feedback', ecosFeedback);
-            localStorage.setItem('ecos_duration', ecosDuration);
-            localStorage.setItem('medgame.audio.muted', soundEnabled ? 'false' : 'true');
-            localStorage.setItem('medgame_text_mode_default', defaultTo3D ? 'false' : 'true');
-            if (!defaultTo3D) sessionStorage.removeItem('use3D');
-            localStorage.setItem('medgame_calm_mode', calmEnabled ? 'true' : 'false');
-            const llmModeEnabled = document.getElementById('setting-llm-mode') ? document.getElementById('setting-llm-mode').checked : true;
-            localStorage.setItem('medgame_llm_mode', llmModeEnabled ? 'true' : 'false');
-
-            const newUsername = document.getElementById('setting-username').value.trim();
-            const isPublic = document.getElementById('setting-public-toggle').checked;
-
-            if (typeof supabase !== 'undefined') {
-                const { data: { session } } = await supabase.auth.getSession();
-                if (session) {
-                    const updateData = { is_public: isPublic };
-
-                    // N'ajouter le username que s'il a changé et n'est pas vide et que l'input n'est pas disabled
-                    const usernameInput = document.getElementById('setting-username');
-                    if (!usernameInput.disabled && newUsername && newUsername.length >= 3) {
-
-                        // --- VÉRIFICATION MOTS INTERDITS ---
-                        const { data: bannedWords, error: bannedErr } = await supabase
-                            .from('banned_usernames')
-                            .select('word');
-
-                        if (!bannedErr && bannedWords) {
-                            const newUsernameLower = newUsername.toLowerCase();
-                            const isBanned = bannedWords.some(bw => newUsernameLower.includes(bw.word.toLowerCase()));
-                            if (isBanned) {
-                                alert("Ce pseudonyme contient un mot interdit et ne peut pas être utilisé.");
-                                saveBtn.textContent = originalText;
-                                saveBtn.disabled = false;
-                                return; // Stoppe la sauvegarde
-                            }
-                        }
-                        // ------------------------------------
-
-                        updateData.username = newUsername;
-                        updateData.username_updated_at = new Date().toISOString();
-                    }
-
-                    // N'ajouter le rang que s'il a changé et que le select n'est pas disabled
-                    const rankSelect = document.getElementById('setting-rank');
-                    if (!rankSelect.disabled) {
-                        updateData.rank = rankSelect.value;
-                        updateData.rank_updated_at = new Date().toISOString();
-                    }
-
-                    // Sexe
-                    const selectedSexe = document.getElementById('setting-sexe').value;
-                    updateData.sexe = selectedSexe;
-
-                    // Sauvegarder localement dans medgame_profile pour un accès rapide
-                    try {
-                        const savedProfile = localStorage.getItem('medgame_profile') ? JSON.parse(localStorage.getItem('medgame_profile')) : {};
-                        savedProfile.sexe = selectedSexe;
-                        if (!document.getElementById('setting-username').disabled && newUsername) {
-                            savedProfile.username = newUsername;
-                        }
-                        if (updateData.rank) {
-                            savedProfile.rank = updateData.rank;
-                        }
-                        localStorage.setItem('medgame_profile', JSON.stringify(savedProfile));
-                    } catch (e) {}
-
-                    const { error } = await supabase
-                        .from('profiles')
-                        .update(updateData)
-                        .eq('id', session.user.id);
-
-                    if (error) {
-                        console.error("Erreur sauvegarde réglages:", error);
-                        alert("Erreur lors de la sauvegarde : " + error.message);
-                    } else {
-                        if (window.loadLeaderboard) window.loadLeaderboard();
-                        // Mettre à jour le badge si besoin
-                        const topUsername = document.getElementById('top-username');
-                        if (topUsername && newUsername) {
-                            // On garde le rang et l'xp
-                            const currentBadgeHtml = topUsername.innerHTML;
-                            const badgeParts = currentBadgeHtml.split('<span');
-                            topUsername.innerHTML = `${newUsername} <span${badgeParts[1]}`;
-                        }
-                    }
-                }
-            }
-
-            saveBtn.disabled = false;
-            saveBtn.textContent = originalText;
-            closeModal();
-        };
-
-        settingsBtn.addEventListener('click', openModal);
-        closeBtn.addEventListener('click', closeModal);
-        saveBtn.addEventListener('click', saveSettings);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-        // Escape key closes settings modal
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
-        });
-
-        // Listen for escape key or other exit methods
-        document.addEventListener('fullscreenchange', () => {
-            // Logic removed for index.html
-        });
-
-
-
-        // Lancer un cas d'essai en 1 clic sans inscription
-        function startQuickTest() {
-            localStorage.setItem('selectedCaseFile', 'cardio_douleur_thoracique_mme_bennet.json');
-            transitionTo('game.html?case=cardio_douleur_thoracique_mme_bennet.json');
-        }
-
-        /* ── Transition de page : warp 3D + voile radial + fade ── */
-        let _transitioning = false;
-        function transitionTo(url) {
-            if (_transitioning) return;
-            _transitioning = true;
-            if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('click');
-            const veil = document.getElementById('page-veil');
-            if (veil) {
-                veil.style.setProperty('--vx', (window._lastPointer?.x ?? 50) + '%');
-                veil.style.setProperty('--vy', (window._lastPointer?.y ?? 50) + '%');
-                veil.classList.add('active');
-            }
-            if (window.ThreeBackground && typeof window.ThreeBackground.warp === 'function') {
-                window.ThreeBackground.warp();
-            }
-            const card = document.getElementById('main-card');
-            if (card) {
-                card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease';
-                card.style.transform = 'scale(0.92) translateZ(-80px)';
-                card.style.opacity = '0';
-            }
-            document.body.style.transition = 'opacity 0.5s ease 0.15s';
-            document.body.style.opacity = 0;
-            setTimeout(() => window.location.href = url, 600);
-        }
-
-        /* ── Tilt 3D + reflet interactif (rAF, desktop) ── */
-        (() => {
-            const card = document.getElementById('main-card');
-            if (!card) return;
-            const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            let tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
-
-            document.addEventListener('mousemove', (e) => {
-                window._lastPointer = { x: (e.clientX / window.innerWidth) * 100, y: (e.clientY / window.innerHeight) * 100 };
-                if (!finePointer || reduced || _transitioning) return;
-                const r = card.getBoundingClientRect();
-                const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-                const k = inside ? 8 : 3;
-                tx = ((e.clientY - (r.top + r.height / 2)) / r.height) * -k;
-                ty = ((e.clientX - (r.left + r.width / 2)) / r.width) * k;
-                card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-                card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
-                if (!raf) raf = requestAnimationFrame(tick);
-            }, { passive: true });
-
-            function tick() {
-                cx += (tx - cx) * 0.12;
-                cy += (ty - cy) * 0.12;
-                card.style.transform = `rotateX(${cx.toFixed(2)}deg) rotateY(${cy.toFixed(2)}deg)`;
-                if (Math.abs(tx - cx) > 0.02 || Math.abs(ty - cy) > 0.02) {
-                    raf = requestAnimationFrame(tick);
-                } else {
-                    raf = null;
-                }
-            }
-
-            document.addEventListener('mouseleave', () => {
-                tx = 0;
-                ty = 0;
-                if (!raf) raf = requestAnimationFrame(tick);
-            });
-        })();
-
-        /* ── Battement cardiaque synchronisé 3D -> UI ── */
-        window.addEventListener('medgame:heartbeat', () => {
-            const icon = document.querySelector('.icon-pulse');
-            if (icon) {
-                icon.classList.remove('beat');
-                void icon.offsetWidth;
-                icon.classList.add('beat');
-            }
-        });
-    </script>
+    <script src="js/index-game-ui.js?v=1"></script>
     <script src="js/auth.js?v=2"></script>
     <script src="js/arena_client.js?v=2"></script>
-    <script>
-        // Check session to update Auth UI on index
-        document.addEventListener('DOMContentLoaded', async () => {
-            if (typeof supabase !== 'undefined') {
-                const { data: { session } } = await supabase.auth.getSession();
-
-                if (session) {
-                    // --- Utilisateur CONNECTÉ ---
-
-                    // Cacher la section auth et les éléments réservés aux invités, montrer les boutons auth-only
-                    document.getElementById('auth-section').style.display = 'none';
-                    document.querySelectorAll('.guest-only').forEach(el => {
-                        el.style.display = 'none';
-                    });
-
-                    document.querySelectorAll('.auth-only').forEach(el => {
-                        el.style.display = '';
-                    });
-
-                    // Afficher le classement
-                    const lb = document.getElementById('leaderboard');
-                    if (lb) {
-                        lb.style.display = 'flex';
-                        if (window.loadLeaderboard) window.loadLeaderboard();
-                    }
-
-                    // Fetch profile info
-                    const defaultPseudo = session.user.email.substring(0, 3) + '***';
-                    let displayedUsername = defaultPseudo;
-                    let niveau = 1;
-                    let xpText = '0 XP';
-                    let rankText = 'Niv. 1';
-
-                    // Helper: calcule le niveau depuis le XP total (XP_requis = 150 * Niveau^1.5)
-                    function calculateLevel(xp) {
-                        if (!xp || xp <= 0) return 1;
-                        return Math.floor(Math.pow(xp / 150, 2 / 3)) + 1;
-                    }
-
-                    try {
-                        const localXp = typeof getLocalXp === 'function' ? getLocalXp() : 0;
-                        const { data: profile, error } = await supabase
-                            .from('profiles')
-                            .select('username, total_xp, rank')
-                            .eq('id', session.user.id)
-                            .maybeSingle();
-
-                        if (!error && profile) {
-                            if (profile.username) displayedUsername = profile.username;
-                            const totalXp = Math.max(profile.total_xp || 0, localXp);
-                            if (typeof setLocalXp === 'function') setLocalXp(totalXp);
-                            niveau = calculateLevel(totalXp);
-                            xpText = `${totalXp} XP`;
-                            rankText = `Niv. ${niveau} ${profile.rank ? '· ' + profile.rank : ''}`;
-                        } else {
-                            niveau = calculateLevel(localXp);
-                            xpText = `${localXp} XP`;
-                            rankText = `Niv. ${niveau}`;
-                        }
-                    } catch (err) {
-                        console.error("Erreur chargement profil:", err);
-                    }
-
-                    // Badge haut droit
-                    const badge = document.getElementById('user-badge-top');
-                    badge.style.display = 'flex';
-                    document.getElementById('top-username').innerHTML =
-                        `${displayedUsername} <span style="font-size:0.75em;opacity:0.75;margin-left:6px;background:rgba(0,242,254,0.18);padding:2px 7px;border-radius:20px;font-weight:400;">${rankText} • ${xpText}</span>`;
-
-                    const isAdminUser = await window.isAdmin();
-
-                    // Vérifier si Admin
-                    if (isAdminUser) {
-                        const adminBtn = document.getElementById('admin-button');
-                        if (adminBtn) adminBtn.style.display = 'flex';
-                    }
-
-                    // Gérer le bouton Éditeur (Niveau 2 requis)
-                    const editorBtn = document.getElementById('editor-button');
-                    if (editorBtn) {
-                        if (niveau >= 2 || isAdminUser) {
-                            // Laisser le comportement interactif/visuel par défaut
-                        } else {
-                            // Verrouiller
-                            editorBtn.onclick = () => alert("Le mode Création de Cas est débloqué à partir du Niveau 2 ! Jouez quelques cas pour gagner de l'XP.");
-                            const contentSpan = editorBtn.querySelector('.btn-content');
-                            if (contentSpan) contentSpan.innerHTML = '<i class="fas fa-lock"></i> Créer /Améliorer un Cas (Niv. 2)';
-                            const btnLayer = editorBtn.querySelector('.btn-layer');
-                            if (btnLayer) btnLayer.style.background = 'rgba(255,255,255,0.05)';
-                            editorBtn.style.opacity = '0.6';
-                        }
-                    }
-
-                } else {
-                    // --- Utilisateur NON connecté ---
-                    document.querySelectorAll('.guest-only').forEach(el => {
-                        el.style.display = '';
-                    });
-                    document.getElementById('user-badge-top').style.display = 'none';
-                }
-            }
-        });
-    </script>
-    <script>
-        window.loadLeaderboard = async function () {
-            const listContainer = document.getElementById('leaderboard-list');
-            if (!listContainer || typeof supabase === 'undefined') return;
-
-            try {
-                const { data: topPlayers, error } = await supabase
-                    .from('public_leaderboard')
-                    .select('username, total_xp, rank')
-                    .order('total_xp', { ascending: false })
-                    .limit(10);
-
-                if (error) throw error;
-
-                if (!topPlayers || topPlayers.length === 0) {
-                    listContainer.innerHTML = '<div style="text-align:center; color:rgba(255,255,255,0.5); padding: 20px 0;">Aucun classement disponible.</div>';
-                    return;
-                }
-
-                listContainer.innerHTML = '';
-                topPlayers.forEach((player, index) => {
-                    // Optionnel: ne pas afficher tous les 0 XP s'il y en a trop
-                    if (player.total_xp === 0 && index > 4) return;
-
-                    const rankPos = index + 1;
-                    const item = document.createElement('div');
-                    item.className = `leaderboard-item ${rankPos <= 3 ? 'rank-' + rankPos : ''}`;
-
-                    const username = player.username || 'Anonyme';
-                    const role = player.rank || 'Externe';
-
-                    item.innerHTML = `
-                        <div class="lb-rank">${rankPos}</div>
-                        <div class="lb-info">
-                            <span class="lb-name">${username}</span>
-                            <span class="lb-role">${role}</span>
-                        </div>
-                        <div class="lb-xp">${player.total_xp} XP</div>
-                    `;
-                    listContainer.appendChild(item);
-                });
-
-            } catch (err) {
-                console.error("Erreur chargement classement:", err);
-                listContainer.innerHTML = '<div style="text-align:center; color:#ff4757; padding: 20px 0;">Erreur de chargement.</div>';
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', window.loadLeaderboard);
-    </script>
+    <script src="js/index-auth-ui.js?v=1"></script>
+    <script src="js/index-leaderboard.js?v=1"></script>
 </body>
 
 </html>
