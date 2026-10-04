@@ -88,12 +88,7 @@
   "dermatologie": [
     "dermato_fasciite_necrosante_m_petrov.json"
   ],
-  "agents-infectieux": [
-    "infectio_fievre_alteration_etat_general_m_andre.json",
-    "dermato_fasciite_necrosante_m_petrov.json"
-  ],
   "urgence": [
-    "dermato_fasciite_necrosante_m_petrov.json",
     "urgence_detresse_respiratoire_post_piqure_m_colin.json",
     "urgence_inconscience_sans_pouls_adulte_m_duval.json",
     "urgence_plaie_hemorragique_pulsatile_cuisse_m_renoir.json",

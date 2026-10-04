@@ -145,13 +145,25 @@ test('Atlas Système Nerveux — Intégrité des fichiers statiques déployés',
     assert.match(netlifyToml, /frame-ancestors 'self'/, 'netlify.toml doit autoriser frame-ancestors \'self\' (et non \'none\')');
     assert.match(netlifyToml, /frame-src 'self' blob:/, 'netlify.toml doit autoriser frame-src \'self\' blob:');
 
-    const nginxPath = path.join(ROOT, 'nginx.conf');
-    assert.ok(fs.existsSync(nginxPath), 'nginx.conf doit exister');
-    const nginxConf = fs.readFileSync(nginxPath, 'utf8');
+    // Les en-têtes nginx vivent dans nginx-security.conf, inclus par nginx.conf
+    // (un add_header dans un `location` annule ceux hérités du `server`).
+    const nginxSecurityPath = path.join(ROOT, 'nginx-security.conf');
+    assert.ok(fs.existsSync(nginxSecurityPath), 'nginx-security.conf doit exister (en-têtes partagés)');
+    const nginxConf = fs.readFileSync(nginxSecurityPath, 'utf8');
 
-    assert.match(nginxConf, /X-Frame-Options\s+"SAMEORIGIN"/, 'nginx.conf doit utiliser SAMEORIGIN pour permettre l’iframe neuro');
-    assert.match(nginxConf, /frame-ancestors 'self'/, 'nginx.conf doit autoriser frame-ancestors \'self\'');
-    assert.match(nginxConf, /frame-src 'self' blob:/, 'nginx.conf doit autoriser frame-src \'self\' blob:');
+    assert.match(nginxConf, /X-Frame-Options\s+"SAMEORIGIN"/, 'nginx-security.conf doit utiliser SAMEORIGIN pour permettre l’iframe neuro');
+    assert.match(nginxConf, /frame-ancestors 'self'/, 'nginx-security.conf doit autoriser frame-ancestors \'self\'');
+    assert.match(nginxConf, /frame-src 'self' blob:/, 'nginx-security.conf doit autoriser frame-src \'self\' blob:');
+
+    // Chaque bloc qui pose son propre Cache-Control doit réinclure les en-têtes
+    // de sécurité, sinon ils disparaissent sur ces URLs.
+    const nginxMainPath = path.join(ROOT, 'nginx.conf');
+    assert.ok(fs.existsSync(nginxMainPath), 'nginx.conf doit exister');
+    const nginxMain = fs.readFileSync(nginxMainPath, 'utf8');
+    const includes = (nginxMain.match(/include\s+\/etc\/nginx\/snippets\/medgame-security\.conf;/g) || []).length;
+    const cacheHeaders = (nginxMain.match(/add_header\s+Cache-Control/g) || []).length;
+    assert.ok(includes >= cacheHeaders,
+      `nginx.conf : chaque bloc portant un Cache-Control (${cacheHeaders}) doit inclure les en-têtes de sécurité (${includes} includes)`);
 
     const headersPath = path.join(ROOT, '_headers');
     assert.ok(fs.existsSync(headersPath), '_headers doit exister pour Netlify CDN');

@@ -24,7 +24,8 @@ const INDEX_PATH = join(DATA_DIR, 'case-index.json');
 
 // Fichiers non-cas exclus du corpus
 const NON_CASE_FILES = new Set(['case-index.json', 'drugs.json', 'patient_test_complet.json', 'test_gating.json']);
-const TEST_CASE_IDS = new Set(['test_gating', 'patient_test_complet']);
+// Cas volontairement hors index : REFERENCES de rédaction (validées comme cas, jamais proposés aux joueurs)
+const TEST_CASE_IDS = new Set(['test_gating', 'patient_test_complet', 'REFERENCE_ECOS_CANONICAL']);
 
 const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');

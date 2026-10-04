@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs test/auscultation.test.mjs test/ecg.test.mjs test/heartbeat.test.mjs test/neuro-atlas.test.mjs test/neuro-atlas-fr.test.mjs test/credits.test.mjs test/kidney-atlas.test.mjs test/lung-atlas.test.mjs test/gds.test.mjs test/llm-quota.test.mjs test/jev.test.mjs",
-
+    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs test/auscultation.test.mjs test/ecg.test.mjs test/heartbeat.test.mjs test/neuro-atlas.test.mjs test/neuro-atlas-fr.test.mjs test/credits.test.mjs test/kidney-atlas.test.mjs test/lung-atlas.test.mjs test/gds.test.mjs test/llm-quota.test.mjs test/jev.test.mjs test/pcg-trainer.test.mjs test/ventilateur.test.mjs test/pse.test.mjs test/echo.test.mjs test/audio.test.mjs",
+    "test:ui": "node test/verify-ui-audio.mjs && node test/verify-ui-credits.mjs && node test/verify-ui-gds.mjs",
     "mcp": "node mcp-server.js",
     "validate:cases": "node scripts/validate-cases.mjs",
     "validate:cases:strict": "node scripts/validate-cases.mjs --strict",

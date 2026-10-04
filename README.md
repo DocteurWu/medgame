@@ -52,8 +52,8 @@
 
 | 📑 Cas Cliniques | 🎮 Performance 3D | ⚡ Framework Overhead | 📱 Accessibilité |
 | :---: | :---: | :---: | :---: |
-| **120+ Clinical Cases** | **60 FPS WebGL Engine** | **0 External Overhead** | **PWA Ready** |
-| *Banque sémiologique complète (Cardio, Neuro, Pneumo...)* | *Moteur 3D Three.js sans lag ni saccade* | *Code 100% Vanilla JS ultra-léger et rapide* | *Progressive Web App installable hors-ligne* |
+| **92 Clinical Cases** | **60 FPS WebGL Engine** | **0 External Overhead** | **Manifest + Installable** |
+| *Banque sémiologique complète (Cardio, Neuro, Pneumo...)* | *Moteur 3D Three.js sans lag ni saccade* | *Code 100% Vanilla JS ultra-léger et rapide* | *Manifest PWA : l'application est installable (pas de service worker, pas d'offline)* |
 
 </div>
 
@@ -123,7 +123,7 @@ graph TD
 | Composant | Technologie | Description |
 | :--- | :--- | :--- |
 | **Frontend UI** | HTML5 / Vanilla CSS3 / ES6+ | Zero bundler overhead, chargement instantané, styles glassmorphism. |
-| **3D Engine** | Three.js (r128) + GLTFLoader | Modèles 3D patients Kenney optimisés GLB à faible empreinte mémoire. |
+| **3D Engine** | Three.js (0.163.0, modules ES via importmap) + GLTFLoader | Modèles 3D patients Kenney optimisés GLB à faible empreinte mémoire. |
 | **Visual Effects** | GSAP (GreenSock) | Animations fluides des courbes vitales et fenêtres modales. |
 | **Backend & Auth** | Supabase (PostgreSQL + RLS) | Sécurité fine par règles RLS sur les cas `published` vs `pending`. |
 | **Conteneurisation** | Docker / Nginx Alpine | Image ultra-légère multi-architecture (x86_64, ARM64 / Orange Pi / Raspberry Pi). |
@@ -149,7 +149,22 @@ python -m http.server 8888
 
 Ouvrez ensuite votre navigateur sur `http://localhost:8888`.
 
-### 2. Déploiement via Docker
+> **Le jeu lui-même fonctionne sans configuration.** Les fonctions LLM (patient
+> virtuel, agent clinique) et la notation Jev passent par un proxy serveur. En
+> local, lancez `npm run mcp` (port 8081) avec un fichier `.env` configuré (voir
+> `.env.example`) ; sinon ces fonctions répondront « proxy indisponible » et le
+> jeu bascule sur les cas hors LLM.
+
+### 2. Tests & validation des cas cliniques
+
+```bash
+npm test                  # suite unitaires (node --test)
+npm run test:ui           # tests navigateur via Chrome DevTools Protocol
+npm run validate:cases    # validation schéma + cohérence de data/
+npm run generate:index    # régénère data/case-index.json après ajout/retrait de cas
+```
+
+### 3. Déploiement via Docker
 
 ```bash
 # Construire l'image Docker optimisée
