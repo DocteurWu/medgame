@@ -1,0 +1,355 @@
+/* css/ai-watch.css - styles de la console AI Watch (extrait de ai-watch.html) */
+:root {
+            --bg-dark: #070913;
+            --card-bg: rgba(10, 15, 36, 0.7);
+            --border-glow: rgba(0, 242, 254, 0.25);
+            --text-glow: #00f2fe;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --border-red: rgba(255, 71, 87, 0.3);
+            --text-red: #ff4757;
+            --border-green: rgba(46, 204, 113, 0.3);
+            --text-green: #2ecc71;
+            --font-main: 'Inter', sans-serif;
+            --font-title: 'Outfit', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: var(--font-main);
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 3D Scene Viewport */
+        #scene-container {
+            width: 60%;
+            height: 100%;
+            position: relative;
+            background: radial-gradient(circle at center, #1a2238 0%, #070913 100%);
+        }
+
+        #camera-controls-tip {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 15, 36, 0.8);
+            border: 1px solid var(--border-glow);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-family: var(--font-title);
+            color: var(--text-glow);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.15);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Spectator Dashboard */
+        #watch-dashboard {
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(8, 11, 26, 0.85) 0%, rgba(5, 7, 18, 0.95) 100%);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow-y: auto;
+            z-index: 10;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Glassmorphic Header */
+        header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        header h1 {
+            font-family: var(--font-title);
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #conn-status {
+            font-family: var(--font-title);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .status-disconnected {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--border-red);
+            color: var(--text-red);
+        }
+
+        .status-connected {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            color: var(--text-glow);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Toast notifications */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            right: 42%;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(10, 15, 36, 0.9);
+            border-left: 4px solid var(--text-glow);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: var(--font-title);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s forwards, fadeOut 0.3s 3.7s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(8px);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Widgets styling */
+        .widget {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .widget-title {
+            font-family: var(--font-title);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-glow);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Case Info Widget */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        /* Vitals Monitor Widget */
+        .vitals-monitor-panel {
+            background: #000c00;
+            border: 2px solid #002200;
+            border-radius: 8px;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            font-family: monospace;
+            box-shadow: inset 0 0 15px rgba(0, 255, 0, 0.15);
+        }
+
+        .vital-box {
+            border-right: 1px solid rgba(0, 255, 0, 0.2);
+            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vital-box:last-child {
+            border-right: none;
+        }
+
+        .vital-name {
+            color: #00aa00;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .vital-num {
+            color: #00ff00;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            margin: 2px 0;
+        }
+
+        .vital-unit {
+            color: #00aa00;
+            font-size: 0.65rem;
+        }
+
+        /* Chat Feed Widget */
+        .chat-feed {
+            height: 180px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .chat-bubble {
+            max-width: 90%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            line-height: 1.35;
+        }
+
+        .bubble-user {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bubble-patient {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .bubble-sender {
+            font-weight: bold;
+            font-size: 0.72rem;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .bubble-sender-user {
+            color: var(--text-glow);
+        }
+
+        .bubble-sender-patient {
+            color: #a3b8cc;
+        }
+
+        /* Actions lists widget */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 4px;
+            border-left: 2px solid transparent;
+        }
+
+        .checklist-item.checked {
+            border-left-color: var(--text-green);
+        }
+
+        .checklist-item.checked i {
+            color: var(--text-green);
+        }
+
+        .checklist-item i {
+            color: var(--text-muted);
+            width: 14px;
+        }
+
+        .score-val {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-glow);
+            text-align: center;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            color: #f1c40f;
+            font-size: 1.2rem;
+        }
+
+        .stars-container i.inactive {
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Utility pulse animation */
+        @keyframes borderPulse {
+            0% { border-color: rgba(0, 242, 254, 0.2); }
+            50% { border-color: rgba(0, 242, 254, 0.5); }
+            100% { border-color: rgba(0, 242, 254, 0.2); }
+        }
+
+        .connected-widget {
+            animation: borderPulse 2s infinite ease-in-out;
+        }
