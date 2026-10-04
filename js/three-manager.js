@@ -76,10 +76,8 @@ class ThreeManager {
     }
 
     async init() {
-        const container = document.getElementById('scene-container');
         const urlParams = new URLSearchParams(window.location.search);
         const force2d = urlParams.get('render') === '2d' || sessionStorage.getItem('forceRender2D') === 'true';
-        const force3d = urlParams.get('render') === '3d' || sessionStorage.getItem('forceRender3D') === 'true';
 
         if (!this.canUseWebGL() || force2d) {
             console.warn('[three-manager] WebGL indisponible, mode 2D');
@@ -87,15 +85,10 @@ class ThreeManager {
             return;
         }
 
-        if (!force3d && window.innerWidth < 768) {
-            console.info('[three-manager] Écran < 768px, mode 2D par défaut');
-            this._set2DMode();
-            return;
-        }
-
-        if (force3d || sessionStorage.getItem('use3D') === 'true') {
-            await this.enable3D(container);
-        }
+        // NOTE: On ne lance plus enable3D() ici — c'est game.js (activate3DMode)
+        // qui décide quand activer le 3D, après le chargement des cas et le premier paint.
+        // Cela évite une double-init concurrente qui provoquait du flickering 2D/3D.
+        console.info('[three-manager] init() terminé (activation 3D déléguée à game.js)');
     }
 
     canUseWebGL() {
@@ -216,15 +209,25 @@ class ThreeManager {
     }
 
     async toggle3D() {
-        if (this.enabled) {
-            sessionStorage.removeItem('use3D');
-            await this.disable3D();
-        } else {
-            sessionStorage.setItem('use3D', 'true');
-            await this.enable3D(null);
-            if (this.transition) {
-                await this.transition.transitionTo3D();
+        // Guard contre les appels concurrents (évite le flickering 2D↔3D)
+        if (this._toggling) {
+            console.warn('[three-manager] toggle3D ignoré — transition déjà en cours');
+            return;
+        }
+        this._toggling = true;
+        try {
+            if (this.enabled) {
+                sessionStorage.removeItem('use3D');
+                await this.disable3D();
+            } else {
+                sessionStorage.setItem('use3D', 'true');
+                await this.enable3D(null);
+                if (this.transition) {
+                    await this.transition.transitionTo3D();
+                }
             }
+        } finally {
+            this._toggling = false;
         }
     }
 
