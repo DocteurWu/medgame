@@ -490,20 +490,9 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         }
     });
 
-    // Immersive Mode button handler — sole controller for 3D toggle
-    const immersiveBtn = document.getElementById('immersive-mode-btn');
-    if (immersiveBtn) {
-        immersiveBtn.addEventListener('click', async () => {
-            // Bascule mode 3D/2D
-            const manager = await waitForThreeManagerReady();
-            if (!manager) {
-                console.error('[game.js] threeManager not initialized!');
-                showNotification('Mode 3D en cours de chargement...');
-                return;
-            }
-            manager.toggle3D();
-        });
-    }
+    // Immersive Mode button handler — handled by capture-phase listener
+    // (see toggleImmersive3DFromButton above, bound via document click capture)
+    // No additional addEventListener needed here — avoids double-toggle risk.
 
     // Listen for three-manager state changes to sync button appearance
     document.addEventListener('three-manager-update', (e) => {
@@ -537,7 +526,6 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
     initUI();
     uiState.onCorrectionNext = () => {
         if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
-        if (uiState.backgroundMusicEl) uiState.backgroundMusicEl.play();
         if (!gameState.nextCase()) {
             // Session terminée : purge snapshot + sélection de cas
             if (window.SessionSnapshot) window.SessionSnapshot.clearFullSession();
@@ -683,6 +671,21 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
     }
 
     function loadCase(isPartialRefresh = false) {
+        // Amorçage audio : contexte unique + couche d'ambiance.
+        // Le contexte démarre suspendu (politique autoplay) ; il repart au
+        // premier geste utilisateur, que audio-core.js écoute une seule fois.
+        if (window.MedGameAudio && typeof MedGameAudio.boot === 'function') {
+            MedGameAudio.boot({ ambience: true, state: 'calm' });
+        }
+        if (window.MedGameMedical) {
+            // Nouveau patient : on repart d'un état neutre, sinon le rythme du
+            // patient précédent traîne sur le cas suivant.
+            MedGameMedical.reset();
+        }
+        if (window.MedGameAmbience && !window.MedGameAmbience.isRunning()) {
+            window.MedGameAmbience.start();
+        }
+
         // Nettoyage état décès / fenêtre de rattrapage entre deux cas
         if (!isPartialRefresh) {
             if (typeof window.cancelCatchWindow === 'function') window.cancelCatchWindow();
@@ -1418,12 +1421,15 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         // Arrêter le timer
         if (timerState.timerInterval) clearInterval(timerState.timerInterval);
 
-        // Arrêter les fireworks et la musique
+        // Arrêter les fireworks et la couche patient
         if (uiState.fireworksInstance) {
             try { uiState.fireworksInstance.stop(); } catch(e) {}
         }
-        const backgroundMusic = document.querySelector('audio');
-        if (backgroundMusic) backgroundMusic.pause();
+        if (window.MedGameMedical) {
+            // On ne coupe pas tout : alarme et bip ECG restent, le joueur doit
+            // entendre l'état du patient pendant qu'il joue le traitement.
+            window.MedGameMedical.stopBreathing();
+        }
 
         // Appliquer l'impact des traitements sur les constantes vitales
         if (gameState.vitalMonitorInstance && typeof gameState.vitalMonitorInstance.applyTreatmentImpact === 'function') {
@@ -1884,11 +1890,6 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             document.dispatchEvent(new CustomEvent('exam-ordered', { detail: { exams: selectedExams } }));
             renderExamResults();
             if (validateBtn) validateBtn.disabled = false;
-
-            // Jouer le son d'examen (if possible)
-            try {
-                // Not playing bip.m4a as it doesn't exist
-            } catch (e) { }
 
         }, 5000); // Délai de 5 secondes pour simuler le vrai délai (coût de 2 min in-game)
     });
@@ -2423,19 +2424,21 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         });
     });
 
-    // --- 3D MODE TOGGLE (Delegated to threeManager) ---
     async function activate3DMode() {
         const manager = await waitForThreeManagerReady();
         if (!manager) {
             showNotification('Mode 3D non disponible');
             return;
         }
+        // Éviter les transitions redondantes (déjà actif visuellement)
+        if (manager.enabled && document.body.classList.contains('render-3d-full')) {
+            return;
+        }
         if (!manager.enabled) {
+            // toggle3D() intègre enable3D + transitionTo3D + guard anti-concurrence
             await manager.toggle3D();
-        } else {
-            if (manager.transition) {
-                await manager.transition.transitionTo3D();
-            }
+        } else if (manager.transition && !document.body.classList.contains('render-3d-full')) {
+            await manager.transition.transitionTo3D();
         }
     }
 
