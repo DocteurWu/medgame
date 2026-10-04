@@ -58,7 +58,10 @@ const caseLoaderCache = {
                 this.memory.set(key, cached);
                 return cached.data;
             }
-        } catch (e) {}
+        } catch (e) {
+            // Cache corrompu ou stockage indisponible : on ignore et on recharge.
+            console.warn('CaseLoader: cache localStorage illisible, rechargement réseau', e);
+        }
         return null;
     }
 };
@@ -540,7 +543,9 @@ async function loadCasesData() {
         let selectedThemes = [];
         try {
             selectedThemes = JSON.parse(localStorage.getItem('selectedThemes')) || [];
-        } catch {}
+        } catch (e) {
+            console.warn('CaseLoader: préférences de thèmes illisibles, repli sur cardiologie', e);
+        }
         if (!Array.isArray(selectedThemes) || selectedThemes.length === 0) {
             selectedThemes = ['cardiologie'];
         }
