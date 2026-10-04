@@ -112,7 +112,13 @@ export class ThreeScene {
             durationSec: callbacks.stationDuration ?? 480,
             onTick: (r, d) => this.callbacks.onTimer?.(r, d),
             onPhase: (p) => {
-                if (p === 'warning') medicalAudio.playAlert?.('warning');
+                if (p === 'warning') medicalAudio.playAlert();
+                // Le focus audio suit la phase de station : pendant la phase
+                // d'avertissement, la musique s'efface au profit du timer.
+                const amb = window.MedGameAmbience;
+                if (amb && amb.isRunning()) {
+                    amb.setFocus(p === 'warning' ? 'action' : 'idle');
+                }
                 this.callbacks.onStationPhase?.(p);
             },
         });
@@ -716,12 +722,39 @@ export class ThreeScene {
         medicalAudio.init();
         medicalAudio.resume();
         const hr = this._parseHeartRate(caseData);
+        const v0 = caseData?.examenClinique?.constantes || {};
+        medicalAudio.applyVitals(this._extractAudioVitals(v0, { heartRate: hr }));
+        // Le cœur bat dès l'arrivée : c'est le premier indice clinique que le
+        // joueur reçoit, avant même de toucher un bouton.
+        medicalAudio.startHeartbeat(hr);
         if (hr > 0) medicalAudio.startECGBeep(hr);
+        medicalAudio.startBreathing(this._extractAudioVitals(v0).rr);
         if (this._isUrgentCase(caseData)) {
             medicalAudio.startAlarm('critical');
             this.triggerScreenShake(0.12);
         }
         this.setHeartRate(hr);
+    }
+
+    /**
+     * Traduit les constantes du fichier de cas en nomenclature de la couche
+     * audio. Les fichiers de cas écrivent `pouls`, `saturationO2`,
+     * `frequenceRespiratoire`… en toute liberté ; l'audio veut `hr`,
+     * `spo2`, `rr`. Cette fonction est le seul endroit qui fait le pont.
+     */
+    _extractAudioVitals(raw = {}, extra = {}) {
+        const num = (v, fallback) => {
+            const m = String(v ?? '').match(/-?\d+(\.\d+)?/);
+            return m ? parseFloat(m[0]) : fallback;
+        };
+        return {
+            hr: extra.heartRate ?? num(raw.pouls ?? raw.heartRate, 72),
+            spo2: num(raw.saturationO2 ?? raw.saturation ?? raw.spo2, 98),
+            rr: num(raw.frequenceRespiratoire ?? raw.respiratoryRate ?? raw.rr, 14),
+            systolic: num(raw.pressionSystolique ?? raw.systolicBP ?? raw.taSystolique, 120),
+            temperature: num(raw.temperature ?? raw.t, 37),
+            murmur: raw.souffle ?? raw.murmur ?? null
+        };
     }
 
     _parseHeartRate(c) {
@@ -773,6 +806,33 @@ export class ThreeScene {
         if (v.spO2 !== undefined && this.ivAnimator) {
             this.ivAnimator.dropInterval = v.spO2 < 90 ? 0.4 : v.spO2 < 95 ? 0.6 : 0.8;
         }
+
+        // Alimentation de la couche audio et de la partition adaptative.
+        // Une seule mise à jour : le son et la musique ne peuvent pas diverger
+        // de l'affichage des constantes.
+        const av = this._extractAudioVitals(v);
+        medicalAudio.applyVitals(av);
+        if (v.respiratoryRate !== undefined) medicalAudio.startBreathing(av.rr);
+        const amb = window.MedGameAmbience;
+        if (amb && amb.isRunning()) {
+            amb.setVitals(av);
+            amb.setState(this._ambienceStateFor(av), false);
+        }
+        // Une désaturation profonde déclenche l'alarme respiratoire du moniteur.
+        if (av.spo2 < 85 && !medicalAudio.getAlarm()) medicalAudio.startAlarm('lowSpO2');
+    }
+
+    /**
+     * État musical déduit des constantes. Les seuils sont volontairement
+     * clinically motivés, pas arbitraires :
+     *   - SpO2 < 92 % ou FC > 120 : le patient décroche, on passe en « critique » ;
+     *   - SpO2 < 97 % ou FC > 100 : tension modérée ;
+     *   - SpO2 < 99 % ou FC > 88 : juste une gêne, on reste calme.
+     */
+    _ambienceStateFor(av) {
+        if (av.spo2 < 92 || av.hr > 120) return 'critical';
+        if (av.spo2 < 97 || av.hr > 100) return 'tense';
+        return 'calm';
     }
 
     moveDoctorTo(target, onArrive) {

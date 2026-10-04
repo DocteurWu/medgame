@@ -387,6 +387,15 @@ export class ThreeClinicalAgent {
 
     _playAuscultationSound(textLower) {
         if (!window.medicalAudio) return;
+        // Ausculter, c'est écouter : on efface tout le reste. Le focus
+        // « auscultation » du socle (js/audio-ambience.js) baisse la musique et
+        // l'ambiance à ~5 % et ~18 %, et le ducking médical fait le reste.
+        // Sans cet appel, le mode était déclaré dans FOCUS_DUCK mais jamais
+        // atteint, et le joueur entendait la musique pendant qu'il posait le
+        // stéthoscope.
+        if (window.MedGameAmbience?.isRunning()) {
+            window.MedGameAmbience.setFocus('auscultation');
+        }
         // Différenciation par contenu clinique
         if (typeof window.medicalAudio.playMeasureSound === 'function') {
             window.medicalAudio.playMeasureSound();

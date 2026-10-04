@@ -108,6 +108,34 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
   - Patient `64973610_2.2_1` (2,2 ans, F, crépitants grossiers) : `SPRS_64973610_2.2_1_p1_6819.wav`, `SPRS_64973610_2.2_1_p2_6756.wav`, `SPRS_64973610_2.2_1_p3_7138.wav`
   - Patient `41090976_3.7_0` (3,7 ans, M, mixte multi-foyers) : `SPRS_41090976_3.7_0_p1_6963.wav`, `SPRS_41090976_3.7_0_p2_6962.wav`, `SPRS_41090976_3.7_0_p3_7401.wav`, `SPRS_41090976_3.7_0_p4_6964.wav`
 
+## 8. Dataset Cardioacoustique PCG — PhysioNet / CinC Challenge 2016 (PCG Trainer)
+* **Nom** : PhysioNet Challenge 2016 — Classification of Normal/Abnormal Heart Sounds from Short Recordings (Computing in Cardiology CinC 2016)
+* **Auteurs** : Liu C, Springer D, Cao Y, Hannani SS, Dang H, Kaghihara M, Ghafurian Y, Choi E, Wang Y, Abdulaziz A, Zhao Y, Tsokos G, et al.
+* **Publication** : *PhysioNet 2016: Reducing the residual noise in PCG heart sounds.* Computing in Cardiology (CinC) 2016, pp. 1173-1176.
+* **Dépôt source** : [PhysioNet / CinC Challenge 2016](https://physionet.org/content/challenge-2016/)
+* **Licence** : [Open Data Commons Attribution License v1.0 (ODC-BY 1.0)](https://opendatacommons.org/licenses/odc-by/1-0/)
+* **Ressources intégrées** : enregistrements audio `.mp3` dans `assets/audio/auscultation/pcg/`, référencés par `data/pcg-trainer-database.js` (identifiants, pathologie, site transducer, décision clinique et explications pédagogiques).
+* **Usage** : simulation de diagnostic différentiel sur bruits cardiaques anormaux, à vocation pédagogique uniquement.
+
+## 9. Aucun autre fichier audio dans le dépôt
+
+Hormis les 246 enregistrements d'auscultation listés ci-dessus (sections 5 à 8),
+le dépôt ne contient **aucun fichier audio**. Tout le reste — interface, sons
+de jeu, cœur du patient, respiration, alarmes, ambiance hospitalière et
+musique adaptative — est **synthétisé à la volée** par Web Audio dans
+`js/audio-core.js`, `js/audio-sfx.js`, `js/audio-medical.js` et
+`js/audio-ambience.js`. Voir la section « Sound design » de `AGENTS.md`.
+
+Conséquence directe : aucune attribution supplémentaire n'est nécessaire pour
+l'audio du jeu, et aucun octet d'asset sonore n'est téléchargé à l'exécution.
+
+Historique : le dépôt contenait auparavant `assets/sounds/heartbeat.mp3`
+(82 Mo), `assets/sounds/hospital_ambient.mp3` (24 Mo),
+`assets/sounds/urgency.mp3`, `assets/sounds/feux_artifice.mp3` et
+`assets/sounds/Wrong Buzzer.mp3`. Aucun de ces fichiers n'était attribué et
+aucun n'était utilisé en dehors d'une balise `<audio>` désactivée à
+l'exécution ; tous ont été supprimés au profit de la synthèse.
+
 
 
 

@@ -7,7 +7,6 @@ const uiState = {
     currentCase: null,
     currentZoom: 1,
     fireworksInstance: null,
-    backgroundMusicEl: null,
     onCorrectionNext: null // callback from game.js
 };
 
@@ -343,8 +342,6 @@ window.revealAllInterrogatoire = function() {
 // ==================== INIT ====================
 
 function initUI() {
-    uiState.backgroundMusicEl = document.getElementById('heartbeat-audio');
-
     if (sessionStorage.getItem('immersionMode') === 'immersif') {
         const revealBtn = document.getElementById('btn-reveal-all');
         if (revealBtn) revealBtn.style.display = 'none';
@@ -383,7 +380,6 @@ function initUI() {
     const correctionNext = document.getElementById('correction-next');
     if (correctionNext) correctionNext.addEventListener('click', () => {
         if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
-        if (uiState.backgroundMusicEl) uiState.backgroundMusicEl.play();
         hideCorrectionModal();
         if (uiState.onCorrectionNext) uiState.onCorrectionNext();
     });
