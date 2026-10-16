@@ -291,6 +291,7 @@ body {
     line-height: 1;
     margin-bottom: clamp(0.2rem, 0.5vh, 0.4rem);
     position: relative;
+    text-wrap: balance;
     background: linear-gradient(110deg, #ffffff 0%, var(--primary-light) 40%, #ffffff 55%, var(--secondary) 80%, #ffffff 100%);
     background-size: 250% auto;
     -webkit-background-clip: text;
@@ -311,6 +312,7 @@ body {
     letter-spacing: clamp(2.5px, 0.4vw, 4px);
     margin-bottom: clamp(1.2rem, 2vh, 1.8rem);
     text-transform: uppercase;
+    text-wrap: balance;
     display: inline-flex;
     align-items: center;
     gap: clamp(10px, 1.2vw, 14px);
@@ -1173,6 +1175,16 @@ input:checked + .slider:before {
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.72);
     font-weight: 600;
+}
+
+/* ── Taste-skill audit (redesign/landing-taste-skill) : chiffres tabulaires ──
+   Évite les sauts de layout quand les stats / scores XP se mettent à jour. */
+#stat-ecg-completed,
+#stat-ecg-highscore,
+.lb-rank,
+.lb-xp,
+.audio-bus-row > output {
+    font-variant-numeric: tabular-nums;
 }
 
 .audio-bus-row > output {
