@@ -17,6 +17,7 @@ body.render-3d-full .app-container {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: -1;
     opacity: 0;
     pointer-events: none;
@@ -28,6 +29,7 @@ body.mode-3d .app-container {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: -1;
     opacity: 0;
     pointer-events: none;
@@ -39,6 +41,7 @@ body.mode-3d .app-container {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: 5;
     display: none;
 }
@@ -421,6 +424,7 @@ body.mode-3d #scene-container {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: 6; /* Just above scene-container but below HUD */
     pointer-events: none;
     background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.55) 100%);
@@ -1912,6 +1916,7 @@ body.render-3d-full .immersive-mode-btn {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: 100;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
@@ -2247,6 +2252,7 @@ body.urgence-3d-active #hud-3d {
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     z-index: 55;
     pointer-events: none;
 }
