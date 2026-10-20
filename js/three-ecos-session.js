@@ -67,18 +67,6 @@ export class EcosSession {
         this.record('hygiene_mains');
     }
 
-    /** À appeler avant tout contact patient : renvoie false si faute d'asepsie. */
-    requireHygiene(pointId) {
-        if (this.handsClean) return true;
-        this.contactWithoutHygiene++;
-        this.record('faute_asepsie', { pointId });
-        return false;
-    }
-
-    complete(itemId) {
-        this.completedItems.add(itemId);
-    }
-
     /** Score brut et résumé exploitable par la grille d'évaluation. */
     summary() {
         return {

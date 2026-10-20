@@ -18,9 +18,9 @@ let _frenchLabel = null;
 async function loadOverlayDependencies() {
     if (_ThreeAtlasViewer) return;
     const [loader, scene, data] = await Promise.all([
-        import('./three-atlas-loader.js?v=12'),
-        import('./three-atlas-scene.js?v=13'),
-        import('./three-atlas-data.js?v=11')
+        import('./three-atlas-loader.js'),
+        import('./three-atlas-scene.js'),
+        import('./three-atlas-data.js')
     ]);
     _fetchAtlasIndex = loader.fetchAtlasIndex;
     _fetchAtlasBuffers = loader.fetchAtlasBuffers;
@@ -33,7 +33,7 @@ function ensureAtlasCSS() {
     if (!document.querySelector('link[href*="atlas.css"]')) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'css/atlas.css?v=6';
+        link.href = 'css/atlas.css';
         document.head.appendChild(link);
     }
 }
@@ -133,9 +133,6 @@ export function closeAtlasOverlay() {
     // WebGL et les buffers restent en cache (réouverture instantanée), mais un
     // atlas invisible ne doit coûter aucune frame.
     try { viewer?.setPaused(true); } catch {}
-    window.__atlasOverlayOpen = false;
 }
-
-window.__atlasDispose = () => { try { viewer?.dispose(); } catch {} viewer = null; buffers = null; ATLAS = null; };
 
 document.addEventListener('medgame:open-atlas', (e) => openAtlasOverlay(e.detail || {}));

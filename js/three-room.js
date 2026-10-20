@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { objLoader, loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
+import { objLoader, loadGLBSmart } from './three-loaders.js';
 
 // ============================================================
 // CACHE DE TEXTURES PROCÉDURALES HAUTE FIDÉLITÉ

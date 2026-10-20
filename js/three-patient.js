@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { createMaterial } from './three-room.js';
-import { loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
+import { loadGLBSmart } from './three-loaders.js';
 import { SceneDisposer } from './scene-disposer.js';
 
 // ── Cache d'assets : les GLB/textures ne sont ni retéléchargés ni reparsés

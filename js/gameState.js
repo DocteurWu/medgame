@@ -117,20 +117,9 @@ const gameState = {
         return body;
     },
 
-    addScore(points) {
-        this.score += points;
-        return this.score;
-    },
-
     setScore(points) {
         this.score = points;
         return this.score;
-    },
-
-    addActiveExam(exam) {
-        if (!this.activeExams.includes(exam)) {
-            this.activeExams.push(exam);
-        }
     },
 
     clearActiveExams() {
@@ -151,14 +140,6 @@ const gameState = {
 
     hasNextCase() {
         return this.currentCaseIndex < this.cases.length - 1;
-    },
-
-    getProgress() {
-        return {
-            current: this.currentCaseIndex + 1,
-            total: this.cases.length,
-            percentage: this.cases.length > 0 ? Math.round((this.currentCaseIndex / this.cases.length) * 100) : 0
-        };
     }
 };
 

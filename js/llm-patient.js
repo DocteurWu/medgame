@@ -607,12 +607,6 @@ ${appliedTreatmentsText}`.trim();
         this._abort();
     }
 
-    _getDynamicStateKey() {
-        const liveVitals = window.vitalSigns?.props || {};
-        const appliedTreatments = window.scoringState?.selectedTreatments || [];
-        return JSON.stringify({ liveVitals, appliedTreatments });
-    }
-
     _applySafetyFilter(text) {
         if (!text) return '';
         const lower = text.toLowerCase();

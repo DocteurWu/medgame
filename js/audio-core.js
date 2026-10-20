@@ -1161,10 +1161,6 @@
             duckGain(name) {
                 return buses[name] ? buses[name].duck.gain : null;
             },
-            /** Gain utilisateur d'un bus. */
-            busUserGain(name) {
-                return buses[name] ? buses[name].user.gain : null;
-            }
         };
     }
 

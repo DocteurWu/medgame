@@ -161,16 +161,6 @@ class OfflineAssetCache {
         return blob;
     }
 
-    async getOrFetchUrl(url, onProgress = null, timeoutMs = 40000) {
-        if (this._objectUrls.has(url)) {
-            return this._objectUrls.get(url);
-        }
-        const blob = await this.getOrFetchBlob(url, onProgress, timeoutMs);
-        const objUrl = URL.createObjectURL(blob);
-        this._objectUrls.set(url, objUrl);
-        return objUrl;
-    }
-
     async getOrFetchBuffer(url, onProgress = null, timeoutMs = 40000) {
         const blob = await this.getOrFetchBlob(url, onProgress, timeoutMs);
         return blob.arrayBuffer();

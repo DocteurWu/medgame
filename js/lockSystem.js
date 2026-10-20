@@ -121,11 +121,6 @@ function isFieldLocked(path) {
     return getFieldLockInfo(path).locked;
 }
 
-function getLockForField(path) {
-    const info = getFieldLockInfo(path);
-    return info.blockedByPrereqs ? null : info.lock;
-}
-
 /**
  * Modale explicite quand un verrou est bloqué par ses prérequis (P0 UX).
  * Indique quoi faire, dans quel ordre, avec un bouton d'action.

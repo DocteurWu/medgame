@@ -166,14 +166,6 @@ export class ThreeFPSController {
         }
     }
 
-    /**
-     * Change les obstacles de collision (générés depuis la scène : lit, bureau…).
-     * @param {Array<{minX,maxX,minZ,maxZ}>} boxes
-     */
-    setObstacles(boxes) {
-        if (Array.isArray(boxes) && boxes.length) this._customObstacles = boxes;
-    }
-
     checkCollision(x, z) {
         if (x < this.bounds.minX) return { collided: true };
         if (x > this.bounds.maxX) return { collided: true };

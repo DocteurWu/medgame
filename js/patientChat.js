@@ -585,18 +585,6 @@
             cleanUpAskingState();
         }
 
-        fallback(question) {
-            return `⚠️ [ERREUR LLM] Fallback local désactivé (LLM obligatoire). Vérifiez le proxy local ou votre connexion.`;
-        }
-
-        stringifyPatient(value) {
-            if (!value) return '';
-            if (typeof value === 'string') return value;
-            if (Array.isArray(value)) return value.map(item => typeof item === 'string' ? item : Object.values(item).filter(Boolean).join(' ')).join(', ');
-            if (typeof value === 'object') return Object.values(value).flat().filter(Boolean).map(item => typeof item === 'string' ? item : Object.values(item).filter(Boolean).join(' ')).join(', ');
-            return String(value);
-        }
-
         append(speaker, text, returnTextNode = false) {
             const root = document.getElementById('dialogue-messages');
             if (!root) return document.createTextNode('');

@@ -29,18 +29,5 @@ export function openTablet() {
     }
 }
 
-export function closeTablet() {
-    const overlay = document.getElementById('ecos-announce-overlay');
-    if (overlay) {
-        overlay.style.display = 'none';
-    }
-}
-
 // Rétrocompatibilité et exposition globale
-export function openPrescriptionTablet() {
-    openTablet();
-}
-
 window.openTablet = openTablet;
-window.closeTablet = closeTablet;
-window.openPrescriptionTablet = openTablet;

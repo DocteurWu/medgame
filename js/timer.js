@@ -233,8 +233,6 @@ function playTimerWarningSound(secondsLeft) {
     }
 }
 
-window.playTimerWarningSound = playTimerWarningSound;
-
 // ==================== DÉDUCTION DE TEMPS ====================
 
 window.deductTime = function (seconds) {
@@ -276,15 +274,38 @@ function updateTimer() {
         // Mark case as played
         if (timerState.currentCase) {
             try {
-                let playedCases = localStorage.getItem('playedCases');
-                let arr = playedCases ? JSON.parse(playedCases) : [];
-                if (!Array.isArray(arr)) arr = [];
+                // Source de vérité : le cookie `playedCases` (liste CSV), comme
+                // game.js et urgenceMode.js. La version précédente écrivait un
+                // JSON dans `localStorage.playedCases` — une clé que PERSONNE ne
+                // relisait (themes.js, profile.js et game.js lisent le cookie).
+                // Un cas perdu par timeout n'apparaissait donc jamais comme
+                // « joué » dans l'UI.
+                const playedCases = getCookie('playedCases');
+                const arr = playedCases ? playedCases.split(',').filter(Boolean) : [];
+
+                // Reprise de l'ancien format (JSON dans localStorage), une fois.
+                try {
+                    const legacy = localStorage.getItem('playedCases');
+                    if (legacy) {
+                        const legacyArr = JSON.parse(legacy);
+                        if (Array.isArray(legacyArr)) {
+                            for (const id of legacyArr) {
+                                if (id && !arr.includes(id)) arr.push(id);
+                            }
+                        }
+                        localStorage.removeItem('playedCases');
+                    }
+                } catch (e) {
+                    // Format inattendu : on l'ignore et on repart du cookie.
+                    console.warn("Legacy playedCases illisible, ignoré", e);
+                }
+
                 if (!arr.includes(timerState.currentCase.id)) {
                     arr.push(timerState.currentCase.id);
-                    localStorage.setItem('playedCases', JSON.stringify(arr));
                 }
+                setCookie('playedCases', arr.join(','), 365);
             } catch (e) {
-                console.warn("Failed to save played cases to localStorage", e);
+                console.warn("Failed to save played cases", e);
             }
         }
 

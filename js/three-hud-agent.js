@@ -685,19 +685,6 @@ export class ThreeHUD {
         });
     }
 
-    /** 
-     * Force une valeur vitale spécifique à s'afficher (après mesure instrument)
-     * Met aussi à jour la coloration selon la gravité clinique.
-     */
-    setVital(id, value) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.textContent = value;
-            // Déclencher la mise à jour des couleurs
-            this._updateVitals();
-        }
-    }
-
     // ==================== PROMPTS & NOTIFICATIONS ====================
 
     /**
@@ -739,17 +726,6 @@ export class ThreeHUD {
             notif.classList.add('hud-notification-exit');
             setTimeout(() => notif.remove(), 400);
         }, 3000);
-    }
-
-    /**
-     * Afficher la croix pour quitter le mode 3D
-     */
-    updateExitButton() {
-        const btn = document.getElementById('toggle-render-mode');
-        if (btn) {
-            btn.innerHTML = '<i class="fas fa-cube"></i> 2D';
-            btn.title = 'Passer en mode 2D';
-        }
     }
 
     // ==================== DIALOGUE FLOTTANT PATIENT ====================

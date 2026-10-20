@@ -251,10 +251,6 @@ export class ThreeLightingAgent {
         }
     }
 
-    toggleTheme() {
-        return this.theme;
-    }
-
     /**
      * Configure le post-processing complet :
      * RenderPass (MSAA HalfFloat) → GTAO (occlusion ambiante) → Bloom → OutputPass.
@@ -378,36 +374,4 @@ export class ThreeLightingAgent {
             this._envTexture = null;
         }
     }
-}
-
-export function createRoomEnvironment(scene) {
-    scene.fog = new THREE.FogExp2(0x94a9b8, 0.025);
-    const dustCount = 200;
-    const dustGeom = new THREE.BufferGeometry();
-    const dustPositions = new Float32Array(dustCount * 3);
-    const dustSizes = new Float32Array(dustCount);
-
-    for (let i = 0; i < dustCount; i++) {
-        dustPositions[i * 3] = (Math.random() - 0.5) * 8;
-        dustPositions[i * 3 + 1] = Math.random() * 3 + 0.5;
-        dustPositions[i * 3 + 2] = (Math.random() - 0.5) * 6;
-        dustSizes[i] = Math.random() * 0.03 + 0.01;
-    }
-
-    dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
-    dustGeom.setAttribute('size', new THREE.BufferAttribute(dustSizes, 1));
-
-    const dustMat = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.02,
-        transparent: true,
-        opacity: 0.15,
-        sizeAttenuation: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending
-    });
-
-    const dustParticles = new THREE.Points(dustGeom, dustMat);
-    dustParticles.name = 'DustParticles';
-    scene.add(dustParticles);
 }

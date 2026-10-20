@@ -36,14 +36,6 @@ const VITAL_THRESHOLDS = {
     respiratoryRate:{ normal: [12, 20],  warningLow: 10,  warningHigh: 25,  criticalLow: 8,   criticalHigh: 30 }
 };
 
-function getVitalLevel(vitalKey, value) {
-    const t = VITAL_THRESHOLDS[vitalKey];
-    if (!t) return 'normal';
-    if (value <= t.criticalLow || value >= t.criticalHigh) return 'critical';
-    if (value <= t.warningLow || value >= t.warningHigh) return 'warning';
-    return 'normal';
-}
-
 class VitalSignsMonitor {
     constructor(props, layout) {
         this.props = props;
@@ -286,22 +278,6 @@ class VitalSignsMonitor {
 
         this.updateDisplay();
         this.startAnimations();
-    }
-
-    /**
-     * Force la stabilisation d'une constante spécifique (ex: oxygénothérapie)
-     * @param {string} vitalKey - Clé de la constante (ex: 'saturationO2', 'spo2')
-     * @param {number} value - Valeur cible
-     */
-    stabilize(vitalKey, value) {
-        let key = vitalKey;
-        if (key === 'saturationO2') key = 'spo2';
-        
-        if (this.props[key] !== undefined) {
-            this.props[key] = value;
-            this.updateDisplay();
-            this.startAnimations();
-        }
     }
 
     // ==================== TICK DE PROGRESSION TEMPORELLE (1s) ====================

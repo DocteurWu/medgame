@@ -24,13 +24,13 @@ function loadModules() {
     if (!_modsPromise) {
         _modsPromise = Promise.all([
             import('three'),
-            import('./three-scene.js?v=20261011-lit-v1'),
-            import('./three-hud-agent.js?v=20260906-v2'),
-            import('./three-transition-agent.js?v=20260906-v2'),
-            import('./three-lock-agent.js?v=20260906-v2'),
-            import('./three-urgence-agent.js?v=20260906-v2'),
-            import('./three-clinical-agent.js?v=20260906-v2'),
-            import('./three-tablet.js?v=20260906-v2')
+            import('./three-scene.js'),
+            import('./three-hud-agent.js'),
+            import('./three-transition-agent.js'),
+            import('./three-lock-agent.js'),
+            import('./three-urgence-agent.js'),
+            import('./three-clinical-agent.js'),
+            import('./three-tablet.js')
         ]).then(([three, scene, hud, transition, lockAgent, urgenceAgent, clinical]) => {
             _THREE = three;
             _mods = {
@@ -95,6 +95,18 @@ class ThreeManager {
         this._togglePromise = null;
     }
 
+    /**
+     * Namespace three.js, exposé aux scripts CLASSIQUES qui ne peuvent pas
+     * faire `import * as THREE from 'three'`.
+     *
+     * Ce n'est PAS un global : il passe par `window.threeManager.THREE`. Le
+     * Proxy lève une erreur explicite si le mode 3D n'est pas encore chargé,
+     * au lieu de laisser un `undefined` muet.
+     */
+    get THREE() {
+        return THREE;
+    }
+
     async init() {
         const urlParams = new URLSearchParams(window.location.search);
         const force2d = urlParams.get('render') === '2d' || sessionStorage.getItem('forceRender2D') === 'true';
@@ -141,7 +153,7 @@ class ThreeManager {
         // pas : l'écran s'affichait en texte nu au milieu de la page).
         let loading = null;
         try {
-            const loaders = await import('./three-loaders.js?v=20261011-lit-v1');
+            const loaders = await import('./three-loaders.js');
             loading = loaders.initLoadingOverlay();
             loading.setPhase('Chargement du moteur 3D');
         } catch (e) {
@@ -169,7 +181,7 @@ class ThreeManager {
             let CharacterControllerClass;
             try {
                 loading?.setPhase('Chargement du médecin');
-                const ccModule = await import('./character-controller.js?v=20261011-lit-v1');
+                const ccModule = await import('./character-controller.js');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
@@ -503,22 +515,6 @@ class ThreeManager {
         });
     }
 
-    closeAllOverlays() {
-        // dialogue-panel est un panneau 2D permanent (display:flex !important dans game.html)
-        // il ne doit pas être masqué par le manager 3D ; seules les modales 3D le sont
-        ['prescription-modal', 'diagnostic-floating-panel'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.classList.remove('active');
-                el.setAttribute('aria-hidden', 'true');
-                // Synchroniser le display inline pour les modales qui l'utilisent
-                el.style.display = 'none';
-            }
-        });
-        if (this.hud) this.hud.removeFloatingDialog();
-        this.closeArmoire();
-    }
-
     goToPatient(hitObj) {
         if (!this.scene) return;
         
@@ -590,10 +586,6 @@ class ThreeManager {
         } else {
             arriveAndOpenTablet();
         }
-    }
-
-    goToPrescription() {
-        this.goToTablet();
     }
 
     openTablet() {

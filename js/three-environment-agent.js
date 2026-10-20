@@ -4,7 +4,7 @@
  */
 
 import * as THREE from 'three';
-import { loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
+import { loadGLBSmart } from './three-loaders.js';
 
 /**
  * Paliers de détail décoratif.

@@ -192,11 +192,6 @@ function subscribeToArenaEvents() {
 // RENDER METHODS
 // ==========================================
 
-function renderLoading() {
-    const root = document.getElementById('arena-admin-root');
-    root.innerHTML = '<div class="empty-state"><i class="fas fa-circle-notch fa-spin"></i> Chargement...</div>';
-}
-
 function renderCreateEventForm() {
     const root = document.getElementById('arena-admin-root');
     root.innerHTML = `
@@ -502,41 +497,6 @@ function renderWaitingDashboard(root) {
                         Ajouter la question
                     </button>
                 </div>
-            </div>
-        </div>
-    `;
-}
-
-function renderTimedActiveDashboard(root) {
-    const dateObj = new Date(currentEvent.scheduled_at);
-    const endsObj = currentEvent.ends_at ? new Date(currentEvent.ends_at) : null;
-    const now = Date.now();
-    const isWithinWindow = (!endsObj || now < endsObj.getTime());
-
-    root.innerHTML = `
-        <div style="margin-bottom: 15px;">
-            <button onclick="renderEventsList()" style="background:transparent; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); padding:5px 12px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
-                <i class="fas fa-arrow-left"></i> Retour à la liste
-            </button>
-        </div>
-        <div style="background: rgba(10, 15, 40, 0.8); padding: 30px; border-radius: 12px; border: 2px solid #9b59b6; text-align: center; margin-bottom: 20px;">
-            <div style="display: inline-block; padding: 5px 15px; border-radius: 20px; background: rgba(155,89,182,0.15); margin-bottom: 15px; font-weight:bold; font-size: 0.9rem; color: #9b59b6;">
-                <i class="fas fa-clock"></i> MODE INTERVALLE ACTIF &nbsp;|&nbsp; <i class="fas fa-users"></i> <span id="arena-players-count">${playersCount}</span> joueurs
-            </div>
-            <h2 style="font-family: var(--font-title); font-size: 1.6rem; color: white; margin: 0 0 10px 0;">${currentEvent.title}</h2>
-            <p style="color: var(--text-muted); margin: 0 0 5px;">
-                <i class="fas fa-play-circle"></i> Début : ${dateObj.toLocaleString('fr-FR')}
-            </p>
-            ${endsObj ? `<p style="color: #9b59b6; margin: 0 0 20px;">
-                <i class="fas fa-hourglass-end"></i> Fin : ${endsObj.toLocaleString('fr-FR')}
-                ${isWithinWindow ? '<span style="color:#2ecc71; font-weight:bold; margin-left:10px;">(en cours)</span>' : '<span style="color:#ff4757; font-weight:bold; margin-left:10px;">(terminé)</span>'}
-            </p>` : ''}
-            <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">Le QCM se joue automatiquement. Les joueurs arrivent et jouent à leur rythme.</p>
-            <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem;">${currentQuestions.length} questions chargées</p>
-            <div style="margin-top: 20px;">
-                <button onclick="finishEvent()" style="background: #ffa502; padding: 15px 30px; border-radius: 8px; border:none; color:white; font-weight:bold; cursor:pointer; font-size: 1rem;">
-                    <i class="fas fa-flag-checkered"></i> Terminer l'événement maintenant
-                </button>
             </div>
         </div>
     `;

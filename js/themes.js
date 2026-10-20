@@ -74,17 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentThemeMotifs = []; // To store loaded motifs for the current theme
     let casesReady = null; // Promise that resolves when casesData is loaded
 
-    // Helper for cookies
-    function getCookie(name) {
-        let nameEQ = name + "=";
-        let ca = document.cookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-        }
-        return null;
-    }
+    // Helper for cookies : `getCookie` est fourni par js/utils.js (source
+    // unique). Cette copie locale lisait le cookie brut, alors que la version
+    // canonique lit aussi le miroir localStorage — d'où deux vues
+    // différentes de la même liste « cas joués » selon la page.
 
     // Charge l'index des cas (depuis Supabase si disponible, sinon fallback local)
     async function initCases() {

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { easeInOut } from './three-animations.js';
 import { DoctorAnimator } from './three-animations.js';
-import { gltfLoader, loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
+import { gltfLoader, loadGLBSmart } from './three-loaders.js';
 
 export class CharacterController {
     constructor(scene) {
@@ -573,13 +573,6 @@ export class CharacterController {
     }
 
     /**
-     * Fait marcher le médecin vers une position
-     */
-    walkTo(target, onArrive) {
-        this.moveTo(target, onArrive);
-    }
-
-    /**
      * Fait tourner le médecin pour regarder un point en restant strictement vertical
      */
     lookAt(point) {
@@ -587,38 +580,5 @@ export class CharacterController {
         this.group.lookAt(point.x, this.group.position.y, point.z);
         this.group.rotation.x = 0;
         this.group.rotation.z = 0;
-    }
-
-    /**
-     * Animation de salutation
-     */
-    wave() {
-        const armR = this.group.userData.armR;
-        if (armR && this._hasArm !== false) {
-            const origRot = armR.rotation.clone();
-            armR.rotation.x = -0.5;
-            armR.rotation.z = 0.3;
-            setTimeout(() => {
-                armR.rotation.copy(origRot);
-            }, 800);
-            return;
-        }
-        // Modèle monolithique : hochement latéral du buste
-        if (this._gestureActive) return;
-        this._gestureActive = true;
-        const g = this.group;
-        const origZ = g.rotation.z;
-        const t0 = performance.now();
-        const sway = () => {
-            const t = (performance.now() - t0) / 800;
-            if (t >= 1) {
-                g.rotation.z = origZ;
-                this._gestureActive = false;
-                return;
-            }
-            g.rotation.z = origZ + Math.sin(t * Math.PI * 2) * 0.08;
-            requestAnimationFrame(sway);
-        };
-        requestAnimationFrame(sway);
     }
 }

@@ -30,7 +30,7 @@ gltfLoader.setDRACOLoader(dracoLoader);
 
 export const objLoader = new OBJLoader(loadingManager);
 
-import { offlineAssetCache } from './offline-asset-cache.js?v=20261011-lit-v1';
+import { offlineAssetCache } from './offline-asset-cache.js';
 
 // ============================================================
 // CHARGEMENT GLB ROBUSTE (cache persistant + timeout + erreur propre)

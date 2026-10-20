@@ -2,12 +2,12 @@
  * atlas.js — UI page Atlas 3D MedGame (vanilla).
  * Recherche FR/EN (alias), filtres systèmes, presets, explode, isolate, fiche, deep-link.
  */
-import { fetchAtlasIndex, fetchAtlasBuffers, ATLAS_SOURCES, getAtlasSource } from './three-atlas-loader.js?v=11';
-import { ThreeAtlasViewer } from './three-atlas-scene.js?v=12';
-import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js?v=11';
-import { HEART_PRESETS } from './atlas-heartbeat.js?v=1';
-import { KidneyModelManager } from './atlas-kidney.js?v=1';
-import { LungModelManager } from './atlas-lung.js?v=1';
+import { fetchAtlasIndex, fetchAtlasBuffers, ATLAS_SOURCES, getAtlasSource } from './three-atlas-loader.js';
+import { ThreeAtlasViewer } from './three-atlas-scene.js';
+import { SYSTEMS, DEFAULT_VISIBLE, explanationFr, expandQuery, normalizeFr, frenchLabel } from './three-atlas-data.js';
+import { HEART_PRESETS } from './atlas-heartbeat.js';
+import { KidneyModelManager } from './atlas-kidney.js';
+import { LungModelManager } from './atlas-lung.js';
 
 const $ = (id) => document.getElementById(id);
 const viewport = $('atlas-viewport');

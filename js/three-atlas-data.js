@@ -5,7 +5,7 @@
  * DA : couleurs adoucies compatibles thème sombre MedGame.
  */
 
-import { DESCRIPTIONS_FR } from './atlas-desc-fr.js?v=1';
+import { DESCRIPTIONS_FR } from './atlas-desc-fr.js';
 
 export const SYSTEMS = [
     { id: 'skeletal', name: 'Squelette', color: '#e2d9ba', description: "Les os forment la charpente du corps, protègent les organes et servent d'insertion aux muscles." },
@@ -66,7 +66,7 @@ export const NAME_FR = {
 };
 
 // Moteur de traduction (dictionnaire + grammaire) : voir js/atlas-i18n.js (couverture ~55 %).
-export { translateAnatomy as frenchLabel } from './atlas-i18n.js?v=2';
+export { translateAnatomy as frenchLabel } from './atlas-i18n.js';
 
 /** Alias FR → requêtes EN pour étudiants (insensible accents/casse). */
 export const SEARCH_ALIASES_FR = {

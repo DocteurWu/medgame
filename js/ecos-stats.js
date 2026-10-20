@@ -117,13 +117,6 @@ const EcosStats = {
             source: 'merged'
         };
     },
-
-    /**
-     * Efface toutes les sessions ECOS du localStorage.
-     */
-    clearLocalSessions() {
-        localStorage.removeItem('ecos_sessions');
-    }
 };
 
 window.EcosStats = EcosStats;

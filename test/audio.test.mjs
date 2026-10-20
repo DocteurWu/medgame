@@ -392,12 +392,10 @@ test('un seul module crée un AudioContext', () => {
         }
     }
     // Auscultation : repli défensif si le socle n'est pas chargé (la page peut
-    // être ouverte seule). Promo-score : le film a son propre graphe isolé et
-    // un OfflineAudioContext pour l'export MP4 — c'est une exigence du rendu.
+    // être ouverte seule).
     const AUTORISES = {
         'audio-core.js': 'le socle',
-        'auscultation-audio.js': 'repli si le socle est absent',
-        'promo-score.js': 'graphe isolé du film + OfflineAudioContext d\'export'
+        'auscultation-audio.js': 'repli si le socle est absent'
     };
     const interdits = createurs.filter(f => !AUTORISES[f]);
     assert.deepEqual(interdits, [],

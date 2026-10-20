@@ -652,7 +652,6 @@ export class ThreeUrgenceAgent {
  */
 export function initUrgenceAgent3D(threeManager) {
     const agent = new ThreeUrgenceAgent(threeManager);
-    window.threeUrgenceAgent = agent;
 
     // Écouter l'événement d'activation du mode urgence (dispatché par gameState.js)
     document.addEventListener('urgence-mode-activated', (e) => {

@@ -366,13 +366,6 @@ function isLLMMode() {
     if (v === null) return true;
     return v !== 'false';
 }
-function setLLMMode(enabled) {
-    localStorage.setItem('medgame_llm_mode', enabled ? 'true' : 'false');
-    if (typeof document !== 'undefined') {
-        document.body.classList.toggle('llm-mode', enabled);
-        document.body.classList.toggle('no-llm-mode', !enabled);
-    }
-}
 if (typeof document !== 'undefined') {
     const applyLLMBodyClass = () => {
         const enabled = isLLMMode();
@@ -386,27 +379,8 @@ if (typeof document !== 'undefined') {
     }
 }
 window.isLLMMode = isLLMMode;
-window.setLLMMode = setLLMMode;
 
 // ==================== SAFE DOM UTILITIES ====================
-
-/**
- * Insère du HTML dans un élément de manière plus sûre.
- * Échappe d'abord le texte, puis autorise uniquement un sous-ensemble de balises.
- * Pour du HTML riche (comparaison correction), utilisez directement innerHTML avec confiance.
- * @param {HTMLElement} el - L'élément cible
- * @param {string} html - Le HTML à insérer
- * @param {boolean} [trusted=false] - Si true, insère tel quel (contenu déjà vérifié)
- */
-function safeSetInnerHTML(el, html, trusted = false) {
-    if (!el) return;
-    if (trusted) {
-        el.innerHTML = html;
-    } else {
-        // Use textContent for untrusted content to prevent XSS
-        el.textContent = html;
-    }
-}
 
 // ==================== COOKIE MANAGEMENT ====================
 
@@ -459,14 +433,6 @@ function getCookie(name) {
         }
     }
     return null;
-}
-
-function eraseCookie(name) {
-    if (name === 'playedCases') {
-        localStorage.removeItem('playedCases_storage');
-    }
-    const encodedName = encodeURIComponent(name);
-    document.cookie = `${encodedName}=; path=/; Max-Age=-99999999; SameSite=Lax`;
 }
 
 // ==================== XP MANAGEMENT UTILITIES ====================

@@ -1235,9 +1235,9 @@ input:checked + .slider:before {
     padding: 6px 8px;
     font-size: 0.72rem;
     font-weight: 600;
-    /* index.html ne charge ni editor.css ni promo.css : --font-body n'y est
-       pas défini. On hérite de la police du document plutôt que de déclarer
-       une variable inexistante (la déclaration serait simplement ignorée). */
+    /* index.html ne charge pas editor.css : --font-body n'y est pas défini.
+       On hérite de la police du document plutôt que de déclarer une variable
+       inexistante (la déclaration serait simplement ignorée). */
     font-family: inherit;
     color: rgba(255, 255, 255, 0.7);
     background: rgba(255, 255, 255, 0.05);

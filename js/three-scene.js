@@ -6,7 +6,7 @@ import { ThreePatient } from './three-patient.js';
 import { ThreeInstruments } from './three-instruments.js';
 import { PatientAnimator, DoctorAnimator, DustAnimator, IVFluidAnimator, ECGScreenAnimator } from './three-animations.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
-import { ThreeEnvironmentAgent } from './three-environment-agent.js?v=20261011-nofloor';
+import { ThreeEnvironmentAgent } from './three-environment-agent.js';
 import { medicalAudio } from './three-audio.js';
 import { ThreeFPSController } from './three-fps-controller.js';
 import { ThreeQualityAgent, QUALITY_PRESETS } from './three-quality-agent.js';
@@ -367,18 +367,6 @@ _buildSteps() {
         ];
     }
 
-    /**
-     * Les vingt tranches de construction de la salle.
-     *
-     * `environmentAgent` doit exister avant d'appeler cette méthode ; l'étape
-     * qui le construit est la cinquième de `_buildSteps`, donc ces tranches ne
-     * sont étalées qu'après son exécution.
-     * @returns {Array<Function>}
-     */
-    _environmentSteps() {
-        return this.environmentAgent.enhanceRoomSteps();
-    }
-
     _aspect() {
         const [w, h] = this._size();
         return w / h;
@@ -386,13 +374,6 @@ _buildSteps() {
 
     _size() {
         return [this.container.clientWidth || window.innerWidth, this.container.clientHeight || window.innerHeight];
-    }
-
-    /**
-     * Environment map procédurale (déléguée à ThreeLightingAgent pour éviter une double passe PMREM)
-     */
-    _setupEnvironmentMap() {
-        // Géré de manière centralisée par ThreeLightingAgent.setupLighting()
     }
 
     _setupContextLossGuard(signal) {
@@ -891,12 +872,6 @@ _buildSteps() {
             b.classList.toggle('active', b.dataset.camera === mode));
     }
 
-    flyCameraTo(targetPosition, lookAtTarget, duration = 700) {
-        if (!this.director || !targetPosition) return;
-        const target = lookAtTarget || targetPosition;
-        this.director.moveTo(targetPosition, target, { duration, ease: Easing.inOutCubic });
-    }
-
     _setupFPS() {
         this.fpsController = new ThreeFPSController(this.camera, this.renderer.domElement, {
             onInteract: () => this.onClick(null),
@@ -1024,44 +999,6 @@ _buildSteps() {
     setHeartRate(bpm) {
         if (this.ecgAnimator) this.ecgAnimator.heartRate = bpm;
         if (this.wallEcgAnimator) this.wallEcgAnimator.heartRate = bpm;
-    }
-
-    setIVDropInterval(i) {
-        if (this.ivAnimator) this.ivAnimator.dropInterval = i;
-    }
-
-    setPatientVitals(v = {}) {
-        if (v.heartRate !== undefined) {
-            this.setHeartRate(v.heartRate);
-            medicalAudio.updateHeartRate(v.heartRate);
-            this.instruments?.animatedParts?.forEach(p => {
-                if (p.type === 'pulsingLED') p.freq = v.heartRate / 60;
-            });
-        }
-        if (v.dyspnea) {
-            this.setRespirationPattern('dyspnea');
-        } else if (v.respiratoryRate !== undefined) {
-            const rr = v.respiratoryRate;
-            this.setRespirationPattern(rr > 25 ? 'tachypnea' : rr < 6 ? 'agonal' : rr < 10 ? 'bradypnea' : 'normal');
-        }
-        if (v.expression) this.setPatientExpression(v.expression);
-        if (v.spO2 !== undefined && this.ivAnimator) {
-            this.ivAnimator.dropInterval = v.spO2 < 90 ? 0.4 : v.spO2 < 95 ? 0.6 : 0.8;
-        }
-
-        // Alimentation de la couche audio et de la partition adaptative.
-        // Une seule mise à jour : le son et la musique ne peuvent pas diverger
-        // de l'affichage des constantes.
-        const av = this._extractAudioVitals(v);
-        medicalAudio.applyVitals(av);
-        if (v.respiratoryRate !== undefined) medicalAudio.startBreathing(av.rr);
-        const amb = window.MedGameAmbience;
-        if (amb && amb.isRunning()) {
-            amb.setVitals(av);
-            amb.setState(this._ambienceStateFor(av), false);
-        }
-        // Une désaturation profonde déclenche l'alarme respiratoire du moniteur.
-        if (av.spo2 < 85 && !medicalAudio.getAlarm()) medicalAudio.startAlarm('lowSpO2');
     }
 
     /**

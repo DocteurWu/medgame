@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { box, createMaterial } from './three-room.js';
 import { pulseEmissive } from './three-animations.js';
-import { loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
+import { loadGLBSmart } from './three-loaders.js';
 
 const INSTRUMENTS = [
     { id: 'tensiometer', label: 'Tensiometre', x: -3.3, z: -0.4, key: 'tension', title: 'TA' },
