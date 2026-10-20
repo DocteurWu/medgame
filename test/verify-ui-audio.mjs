@@ -44,7 +44,8 @@
  *     duck ne touche pas — et l'on relâche le ducking avant chaque mesure.
  */
 
-import { spawn, spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
+import { nettoyerProfil, balayerProfilsAbandonnes } from './helpers/chrome-profile.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -219,65 +220,13 @@ window.__sonde = (function () {
 `;
 
 /**
- * Nettoie les profils Chrome laissés par une exécution morte brutalement
- * (Ctrl+C, crash, timeout de CI). Le `finally` qui fait le ménage ne s'exécute
- * pas quand le processus est tué, et chaque profil pèse plusieurs mégaoctets :
- * sans ce balayage, une suite de tests interrompus en accumule sans limite.
+ * Nettoyage des profils Chrome : voir test/helpers/chrome-profile.mjs.
  *
- * On ignore les profils de moins d'une minute : ce sont ceux d'une exécution
- * encore vivante, peut-être parallèle à celle-ci.
+ * L'implementation de reference etait ici, en inline. Elle est desormais
+ * partagee avec les trois autres tests UI, qui la dupliquaient sans les
+ * precautions Windows (tuer l'arborescence, EBUSY, renommage) et laissaient
+ * 12 a 15 Mo par execution sur le disque.
  */
-function balayerProfilsAbandonnes() {
-    const limite = Date.now() - 60000;
-    let nettoyes = 0;
-    for (const e of fs.readdirSync(process.cwd())) {
-        // Le préfixe tolère le suffixe `.quit` : c'est un profil que le passage
-        // de nettoyage d'une exécution précédente n'a pas pu supprimer (EBUSY)
-        // et qui n'a été que mis de côté.
-        const m = /^\.tmp-chrome-audio-(\d+)/.exec(e);
-        if (!m) continue;
-        // Profil récent : une exécution est peut-être en train de s'en servir.
-        if (Number(m[1]) > limite) continue;
-        try {
-            fs.rmSync(path.join(process.cwd(), e), { recursive: true, force: true, maxRetries: 3 });
-            nettoyes++;
-        } catch { /* verrou résiduel : on retentera au prochain passage */ }
-    }
-    if (nettoyes) {
-        console.log(`[Test UI Audio] ${nettoyes} profil(s) Chrome abandonné(s) nettoyé(s)`);
-    }
-}
-
-/**
- * Tue les processus Chrome qui citent NOTRE profil.
- *
- * `taskkill /PID x /T` marche depuis le PID que node a spawn, mais Chrome
- * peut re-parenter un renderer : celui-ci n'est alors plus atteignable depuis
- * la racine de l'arborescence, il survit, et il garde le profil verrouillé —
- * d'où un `rmSync` qui échoue à chaque exécution.
- *
- * Le ciblage se fait sur la ligne de commande, donc il ne touche jamais aux
- * Chrome d'une autre tâche (un export MP4 peut tourner en parallèle avec ses
- * propres profils).
- */
-function tuerChromeDuProfil(userDataDir) {
-    if (process.platform !== 'win32') return;
-    // On cible le NOM du profil, unique à cette exécution, plutôt que le chemin
-    // complet : Windows mélange dans les lignes de commande la forme longue
-    // (`C:\Users\Louaï\…`) et la forme 8.3 (`C:\Users\LOUA~1\…`), et un test
-    // d'égalité sur le chemin complet rate alors les processus qu'on cherche à
-    // tuer — d'où des profils verrouillés à chaque exécution.
-    const marqueur = path.basename(userDataDir);
-    const ps = 'Get-CimInstance Win32_Process -Filter "Name=\'chrome.exe\'" | ' +
-        'Where-Object { $_.CommandLine -and $_.CommandLine.Contains(' +
-        JSON.stringify(marqueur) + ') } | ' +
-        'ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }';
-    try {
-        spawnSync('powershell.exe',
-            ['-NoProfile', '-NonInteractive', '-Command', ps],
-            { windowsHide: true, timeout: 15000 });
-    } catch { /* best effort */ }
-}
 
 async function run() {
     const browser = findBrowser();
@@ -286,7 +235,11 @@ async function run() {
         return;
     }
 
-    balayerProfilsAbandonnes();
+    const profilsNettoyes = balayerProfilsAbandonnes(['.tmp-chrome-audio-']);
+    if (profilsNettoyes) {
+        console.log(`[Test UI Audio] ${profilsNettoyes} profil(s) Chrome abandonné(s) nettoyé(s)`);
+    }
+
 
     await new Promise(r => server.listen(SERVER_PORT, '127.0.0.1', r));
     const userDataDir = path.join(process.cwd(), '.tmp-chrome-audio-' + Date.now());
@@ -804,35 +757,6 @@ async function run() {
 
     } finally {
         try { if (ws) ws.close(); } catch { /* déjà fermé */ }
-        // Chrome garde des fichiers verrouillés quelques dizaines de
-        // millisecondes après le kill : sans cette attente, la suppression du
-        // profil échoue en silence et on laisse un profil jetable de plusieurs
-        // mégaoctets dans l'arborescence à chaque exécution.
-        //
-        // Sous Windows, `proc.kill()` ne touche que le PID que node a spawn :
-        // Chrome a ailleurs des processus enfants qui survivent et gardent le
-        // profil verrouillé. Il faut tuer l'ARBORESCENCE (taskkill /T), sinon
-        // le rmSync plus bas échoue à chaque exécution.
-        try {
-            if (proc.exitCode === null && !proc.killed) {
-                if (process.platform === 'win32') {
-                    spawnSync('taskkill', ['/PID', String(proc.pid), '/T', '/F'],
-                        { windowsHide: true });
-                } else {
-                    proc.kill();
-                }
-            }
-            if (proc.exitCode === null) {
-                await new Promise((resolve) => {
-                    const t = setTimeout(resolve, 4000);
-                    proc.once('exit', () => { clearTimeout(t); resolve(); });
-                });
-            }
-        } catch { /* déjà arrêté */ }
-        // Dernière passe : les renderers re-parentés par Chrome ne sont plus
-        // atteignables depuis le PID initial, et c'est eux qui gardent le
-        // profil verrouillé.
-        tuerChromeDuProfil(userDataDir);
         server.close();
         // Nettoyage du profil Chrome : voir test/helpers/chrome-profile.mjs.
         // L'implémentation de référence était ici, en inline ; elle est
