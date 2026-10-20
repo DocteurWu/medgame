@@ -51,12 +51,41 @@ export class ThreeLockAgent {
     constructor(threeScene, hud) {
         this.scene = threeScene;
         this.hud = hud;
-        this.locks = new Map(); // lockId -> { mesh, light, glowMesh, field }
+        this.locks = new Map(); // lockId -> { mesh, glowMesh, field }
         this.group = new THREE.Group();
         this.group.name = 'LockGroup';
         this.scene.scene.add(this.group);
         this._animateId = null;
         this._currentCase = null;
+        this._fxLight = null;
+    }
+
+    /**
+     * Source ponctuelle d'effet, créée UNE SEULE FOIS et jamais détruite.
+     *
+     * PIÈGE — `PointLight` et compilation de shaders.
+     *
+     * Dans three.js, le nombre et le type des lumières de la scène entrent dans
+     * la CLÉ DE CACHE du programme de chaque matériau. Ajouter une lumière, ou
+     * en retirer une, change cette clé : three.js recompile alors TOUS les
+     * programmes de la scène. Un `PointLight` posé puis retiré sur l'animation
+     * de déverrouillage coutait donc deux recompilations complètes de la salle —
+     * mesurées à plusieurs secondes de gel sur GPU modeste, exactement au moment
+     * où le joueur débloque une information.
+     *
+     * D'où cette source unique, à intensité nulle au repos : les flashes la
+     * déplacent et la font pulser, mais le NOMBRE de lumières ne bouge jamais.
+     * La caméra, les cadenas et les marqueurs de section n'utilisent que des
+     * matériaux émissifs / additifs, qui ne coûtent rien en recompilation.
+     */
+    _ensureFxLight() {
+        if (this._fxLight) return this._fxLight;
+        const light = new THREE.PointLight(0xffffff, 0, 6);
+        light.name = 'LockFxLight';
+        light.userData.baseIntensity = 0;
+        this.scene.scene.add(light);
+        this._fxLight = light;
+        return light;
     }
 
     /**
@@ -180,10 +209,16 @@ export class ThreeLockAgent {
         glowMesh.name = `LockGlow_${lock.id}`;
         lockGroup.add(glowMesh);
 
-        // --- Lumière ponctuelle rouge subtile ---
-        const lockLight = new THREE.PointLight(0xff4757, 0.4, 2.5);
-        lockLight.position.set(0, 0.05, 0);
-        lockGroup.add(lockLight);
+        // --- Halo pulsant autour du cadenas ---
+        //
+        // Aucun `PointLight` ici, contrairement à la version précédente. Une
+        // lumière par cadenas (jusqu'à cinq pour certains cas) s'ajoutait à la
+        // scène à chaque chargement de cas, et chacune changeait la clé de cache
+        // des programmes : la salle se recompilait à chaque cas. La lueur est
+        // purement additive (`MeshBasicMaterial` + `AdditiveBlending`), donc sans
+        // coût d'éclairage ni de recompilation. Son opacité est pulsée dans
+        // `_startAnimation()`.
+        glowMesh.position.set(0, 0.05, 0);
 
         // --- Label flottant au-dessus ---
         const labelCanvas = document.createElement('canvas');
@@ -224,7 +259,6 @@ export class ThreeLockAgent {
             body,
             shackle,
             glowMesh,
-            light: lockLight,
             iconPlane,
             labelPlane,
             field: targetField,
@@ -264,12 +298,11 @@ export class ThreeLockAgent {
                 const baseY = lockData._baseY !== undefined ? lockData._baseY : lockData.group.position.y;
                 lockData.group.position.y = baseY + Math.sin(elapsed * 2 + lockId.length) * 0.03;
 
-                // Pulsation du glow
-                const pulse = 0.08 + Math.sin(elapsed * 3 + lockId.length * 0.7) * 0.06;
+                // Pulsation du glow — la pulsation de la `PointLight` qui
+                // accompagnait ce code a été supprimée avec elle : elle coûtait
+                // une recompilation de toute la salle, pour 0.3 d'intensité.
+                const pulse = 0.14 + Math.sin(elapsed * 3 + lockId.length * 0.7) * 0.09;
                 lockData.glowMesh.material.opacity = pulse;
-
-                // Pulsation de la lumière
-                lockData.light.intensity = 0.3 + Math.sin(elapsed * 3 + lockId.length * 0.7) * 0.15;
 
                 // L'étiquette fait face à la caméra
                 if (this.scene._camera) {
@@ -303,10 +336,13 @@ export class ThreeLockAgent {
         const caseLocks = this._currentCase?.locks || [];
         const lock = caseLocks.find(l => l.id === lockId);
 
-        // 1) Flash lumineux blanc
-        const flashLight = new THREE.PointLight(0x2ecc71, 2, 5);
+        // 1) Flash lumineux — source d'effet PARTAGÉE, jamais créée ni détruite
+        // ici (cf. `_ensureFxLight` : ajouter/retirer une lumière recompile tous
+        // les programmes de la scène).
+        const flashLight = this._ensureFxLight();
         flashLight.position.copy(group.position);
-        this.scene.scene.add(flashLight);
+        flashLight.color.set(0x2ecc71);
+        flashLight.intensity = 2;
 
         // 2) Flash vert sur le glow
         lockData.glowMesh.material.color.set(0x2ecc71);
@@ -345,12 +381,11 @@ export class ThreeLockAgent {
             // Le groupe monte légèrement
             group.position.y += 0.003;
 
+            // Fin de l'animation : retirer le cadenas
             if (t < 1) {
                 requestAnimationFrame(animateFrame);
             } else {
-                // Fin de l'animation : retirer le cadenas
-                this.scene.scene.remove(flashLight);
-                flashLight.dispose();
+                flashLight.intensity = 0; // on garde la source, on éteint
                 this._removeLock(lockId);
 
                 // Illuminer la section déverrouillée
@@ -370,19 +405,20 @@ export class ThreeLockAgent {
         const targetField = lock.target_fields?.[0] || '';
         const pos = getLockPosition(targetField);
 
-        // Lumière verte permanente (marqueur de section déverrouillée)
-        const sectionLight = new THREE.PointLight(0x2ecc71, 0.25, 3);
-        sectionLight.position.set(pos.x, pos.y, pos.z);
-        sectionLight.name = `SectionLight_${lock.id}`;
-        this.scene.scene.add(sectionLight);
-
-        // Petite particule/point de lumière indicateur
-        const indicatorGeo = new THREE.SphereGeometry(0.03, 8, 8);
+        // Marqueur de section déverrouillée.
+        //
+        // Le `PointLight` vert permanent qui accompagnait ce code est supprimé :
+        // il restait dans la scène pour toute la session, donc chaque cadenas
+        // déverrouillé ajoutait une source — et chaque source recompile tous les
+        // programmes de la salle. Le halo additif ci-dessous rend le même
+        // compte, pour un coût nul.
+        const indicatorGeo = new THREE.SphereGeometry(0.05, 10, 10);
         const indicatorMat = new THREE.MeshBasicMaterial({
             color: 0x2ecc71,
             transparent: true,
             opacity: 0.7,
             depthWrite: false,
+            blending: THREE.AdditiveBlending,
         });
         const indicator = new THREE.Mesh(indicatorGeo, indicatorMat);
         indicator.position.set(pos.x, pos.y + 0.15, pos.z);
@@ -436,10 +472,11 @@ export class ThreeLockAgent {
             this._removeLock(lockId);
         });
 
-        // Supprimer les lumières de section
+        // Supprimer les marqueurs de section. La source d'effet partagée n'est
+        // PAS retirée : la retirer ferait recompiler la scène.
         const toRemove = [];
         this.scene.scene.traverse(child => {
-            if (child.name && (child.name.startsWith('SectionLight_') || child.name.startsWith('SectionIndicator_'))) {
+            if (child.name && child.name.startsWith('SectionIndicator_')) {
                 toRemove.push(child);
             }
         });
@@ -448,6 +485,7 @@ export class ThreeLockAgent {
             if (child.geometry) child.geometry.dispose();
             if (child.material) child.material.dispose();
         });
+        if (this._fxLight) this._fxLight.intensity = 0;
 
         this._currentCase = null;
     }

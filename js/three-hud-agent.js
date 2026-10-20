@@ -6,6 +6,13 @@
 
 import { LLMPatient } from './llm-patient.js';
 
+/**
+ * Cadence du scope de télémétrie. 30 Hz : le balayage CRT reste perçu comme
+ * continu, pour deux fois moins de rasterisation et de compositing que la
+ * boucle rAF native à 60 Hz.
+ */
+const TELEMETRY_FRAME_MS = 1000 / 30;
+
 export class ThreeHUD {
     constructor(threeManager) {
         this.manager = threeManager;
@@ -74,11 +81,17 @@ export class ThreeHUD {
         this.telemetryCanvas = document.getElementById('hud-telemetry-canvas');
         if (!this.telemetryCanvas) return;
         this.telemetryCtx = this.telemetryCanvas.getContext('2d', { alpha: true });
-        
+
         // Initialiser la couleur de fond transparente du scope
         this.telemetryCtx.clearRect(0, 0, this.telemetryCanvas.width, this.telemetryCanvas.height);
         this.telemetryX = 0;
         this.prevX = 0;
+
+        // Références DOM mises en cache : ces deux lectures étaient faites à
+        // chaque frame via `getElementById`, pour des noeuds qui ne changent
+        // jamais d'identité.
+        this._elHr = document.getElementById('hud-hr');
+        this._elSpo2 = document.getElementById('hud-spo2');
 
         // Lier le bouton de son du scope
         const soundBtn = document.getElementById('hud-btn-sound');
@@ -102,12 +115,20 @@ export class ThreeHUD {
         };
         document.addEventListener('keydown', this._hudKeyHandler);
 
-        // Lancer la boucle d'animation des tracés
+        // Lancer la boucle d'animation des tracés, à 30 Hz.
+        // Le balayage CRT reste continu à l'œil, mais la rasterisation canvas
+        // et le compositing du HUD sont divisés par deux par rapport à un rAF
+        // à 60 Hz — sur cette page, c'est une boucle qui tourne en parallèle
+        // de la scène 3D.
         const tick = () => {
             if (!this.isVisible) return;
-            this._drawTelemetryFrame();
             this.telemetryAnimId = requestAnimationFrame(tick);
+            const now = performance.now();
+            if (now - this._telemetryLast < TELEMETRY_FRAME_MS) return;
+            this._telemetryLast = now;
+            this._drawTelemetryFrame();
         };
+        this._telemetryLast = 0;
         this.telemetryAnimId = requestAnimationFrame(tick);
     }
 
@@ -193,8 +214,8 @@ export class ThreeHUD {
         const h = canvas.height;
 
         // Récupérer les constantes vitales courantes du patient
-        const hrStr = document.getElementById('hud-hr')?.textContent || '--';
-        const spo2Str = document.getElementById('hud-spo2')?.textContent || '--';
+        const hrStr = this._elHr?.textContent || '--';
+        const spo2Str = this._elSpo2?.textContent || '--';
         const hr = (hrStr !== '--' && hrStr !== '') ? parseInt(hrStr) : 72;
         const spo2 = (spo2Str !== '--' && spo2Str !== '') ? parseInt(spo2Str) : 98;
 
@@ -1460,7 +1481,7 @@ export class ThreeHUD {
                             this._hideThinkingIndicator();
                             // Quota épuisé → modale login/mailto (pas d'erreur technique dans le dialogue).
                             const err = typeof errorMsg === 'string' ? new Error(errorMsg) : errorMsg;
-                            if (window.QuotaGuard?.isQuotaError?.(err)) {
+                            if (window.QuotaGuard?.blocksTablet?.(err)) {
                                 window.QuotaGuard.lockTablet({
                                     reason: err?.reason || 'quota',
                                     remaining_day: err?.remaining_day ?? null,
@@ -1475,7 +1496,7 @@ export class ThreeHUD {
                 } catch (err) {
                     this._hideThinkingIndicator();
                     // Quota épuisé → modale login/mailto (pas d'erreur technique dans le dialogue).
-                    if (window.QuotaGuard?.isQuotaError?.(err)) {
+                    if (window.QuotaGuard?.blocksTablet?.(err)) {
                         window.QuotaGuard.lockTablet({
                             reason: err?.reason || 'quota',
                             remaining_day: err?.remaining_day ?? null,

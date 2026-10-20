@@ -22,9 +22,15 @@ class LLMClient {
      * @param {AbortSignal} [params.signal] - Signal d'annulation externe
      * @param {function(string): void} [params.onToken] - Callback pour chaque token (en mode stream)
      * @param {number} [params.timeoutMs=30000] - Timeout global de la requête en ms
-     * @param {number} [params.maxRetries=2] - Nombre max de retries par modèle
-     * @param {string} [params.quotaKind='dialogue'] - Classe quota : 'dialogue' (compté)
-     *   ou 'correction' (exempté du quota dialogue, budget propre, vrai LLM garanti)
+     * @param {number} [params.maxRetries=1] - Nombre max de retries par modèle.
+     *   1, et non 2 : depuis `sql/004_quota_fairness.sql`, un retry est DÉDUPLIQUÉ
+     *   côté serveur (fenêtre de 2 min) et ne consomme donc plus de quota. Le
+     *   troisième essai n'apportait qu'une seconde d'attente supplémentaire —
+     *   36 s au lieu de 24 s dans le pire cas — pour rien.
+     * @param {string} [params.quotaKind='dialogue'] - Classe quota : 'dialogue'
+     *   (compté au quota de l'étudiant), 'correction' (exempté, budget propre,
+     *   vrai LLM garanti) ou 'grading' (gradation ECOS : hors budget dialogue,
+     *   budget propre large, et un blocage ne gêne pas le jeu).
      * @returns {Promise<string>} La réponse textuelle complète du LLM
      */
     static async request({
@@ -36,7 +42,7 @@ class LLMClient {
         signal,
         onToken,
         timeoutMs = 30000,
-        maxRetries = 2,
+        maxRetries = 1,
         responseFormat = null,
         quotaKind = 'dialogue'
     }) {
@@ -50,14 +56,17 @@ class LLMClient {
             requestedModel
         ].filter((m, idx, self) => self.indexOf(m) === idx);
 
-        // Classe quota : 'dialogue' (compté au quota) ou 'correction' (vrai LLM
-        // garanti même à quota épuisé, budget propre côté serveur).
-        const kind = quotaKind === 'correction' ? 'correction' : 'dialogue';
+        // Classe quota : 'dialogue' (compté au quota de l'étudiant),
+        // 'correction' (vrai LLM garanti même à quota épuisé, budget propre) ou
+        // 'grading' (gradation ECOS — hors budget dialogue, budget propre).
+        const kind = ['correction', 'grading'].includes(quotaKind) ? quotaKind : 'dialogue';
 
         let lastError = null;
 
         // Pré-contrôle local (cookie 14j, zéro coût API) pour le dialogue anonyme.
         // Le serveur reste l'autorité finale ; ceci évite juste un appel condamné.
+        // La gradation n'est PAS pré-contrôlée : elle a son propre budget, et un
+        // blocage ne doit jamais interrompre l'interrogatoire de l'étudiant.
         if (kind === 'dialogue') {
             const pre = window.QuotaGuard?.preCheckSync?.();
             if (pre && pre.blocked) {

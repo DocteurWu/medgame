@@ -1,37 +1,37 @@
 /**
- * audio-medical.js — Couche audio « patient » de MedGame
+ * audio-medical.js â€” Couche audio Â« patient Â» de MedGame
  *
- * Tout ce qui vient du corps du patient : cœur, respiration, souffle
- * cardiaque, bip du scope, alarmes. Ces sons ne sont pas décoratifs, ils
- * portent l'information clinique — c'est le seul endroit du jeu où le son
- * EST une donnée.
+ * Tout ce qui vient du corps du patient : cÅ“ur, respiration, souffle
+ * cardiaque, bip du scope, alarmes. Ces sons ne sont pas dÃ©coratifs, ils
+ * portent l'information clinique â€” c'est le seul endroit du jeu oÃ¹ le son
+ * EST une donnÃ©e.
  *
  * L'ORDONNANCEUR
  * --------------
- * Un seul ordonnanceur à anticipation (« lookahead ») pilote le cœur, la
- * respiration et le bip ECG. L'ancien code faisait un `setTimeout` récursif
- * par battement : la dérive s'accumulait (un onglet en arrière-plan fait
+ * Un seul ordonnanceur Ã  anticipation (Â« lookahead Â») pilote le cÅ“ur, la
+ * respiration et le bip ECG. L'ancien code faisait un `setTimeout` rÃ©cursif
+ * par battement : la dÃ©rive s'accumulait (un onglet en arriÃ¨re-plan fait
  * expirer les timers en retard), et surtout le bip ECG ne tombait plus sur
- * l'onde R. Ici on programme les événements sur `ctx.currentTime + marge`,
- * avec 25 ms de tick et 180 ms d'anticipation : même si la page est gelée
+ * l'onde R. Ici on programme les Ã©vÃ©nements sur `ctx.currentTime + marge`,
+ * avec 25 ms de tick et 180 ms d'anticipation : mÃªme si la page est gelÃ©e
  * 300 ms, la reprise est sans trou et sans chevauchement.
  *
- * LE CŒUR
+ * LE CÅ’UR
  * -------
  * Deux temps, pas un bip. S1 (fermeture des valves auriculo-ventriculaires)
- * est un impact grave avec un peu de corps filtré ; S2 (fermeture
+ * est un impact grave avec un peu de corps filtrÃ© ; S2 (fermeture
  * semi-lunaire) est plus court, plus aigu et nettement plus faible.
  *
- * L'écart S1-S2 n'est pas fixe : il se comprime quand la fréquence
- * cardiaque monte, comme en physiologie. À 60 bpm il vaut 160 ms, à 120 bpm
- * 118 ms, à 180 bpm 75 ms. Un cœur audible ne peut pas être programmé avec un
- * intervalle fixe — c'est justement ce qui fait « médical ».
+ * L'Ã©cart S1-S2 n'est pas fixe : il se comprime quand la frÃ©quence
+ * cardiaque monte, comme en physiologie. Ã€ 60 bpm il vaut 160 ms, Ã  120 bpm
+ * 118 ms, Ã  180 bpm 75 ms. Un cÅ“ur audible ne peut pas Ãªtre programmÃ© avec un
+ * intervalle fixe â€” c'est justement ce qui fait Â« mÃ©dical Â».
  *
- * Le filtre de muffled représente ce qu'on entend à travers la paroi
- * thoracique ou au stéthoscope : une passe-bas dont la fréquence s'ouvre
- * quand on ausculte et se referme quand on écoute à distance.
+ * Le filtre de muffled reprÃ©sente ce qu'on entend Ã  travers la paroi
+ * thoracique ou au stÃ©thoscope : une passe-bas dont la frÃ©quence s'ouvre
+ * quand on ausculte et se referme quand on Ã©coute Ã  distance.
  *
- * Chargement : script classique, après js/audio-core.js et js/audio-sfx.js.
+ * Chargement : script classique, aprÃ¨s js/audio-core.js et js/audio-sfx.js.
  */
 
 (function (global) {
@@ -39,19 +39,19 @@
 
     const A = global.MedGameSound;
     if (!A) {
-        console.warn('[audio-medical] js/audio-core.js absent — couche médicale non chargée');
+        console.warn('[audio-medical] js/audio-core.js absent â€” couche mÃ©dicale non chargÃ©e');
         return;
     }
 
     // ==================== CONSTANTES ====================
 
-    const TICK_MS = 25;          // période de l'ordonnanceur
+    const TICK_MS = 25;          // pÃ©riode de l'ordonnanceur
     const LOOKAHEAD = 0.18;      // anticipation, en secondes
     const HR_MIN = 25;
     const HR_MAX = 220;
     const BUS = 'medical';
 
-    /** Écarts S1-S2 (s) en fonction de la fréquence cardiaque. */
+    /** Ã‰carts S1-S2 (s) en fonction de la frÃ©quence cardiaque. */
     const S2_GAP_AT_60 = 0.160;
     const S2_GAP_AT_180 = 0.075;
 
@@ -59,21 +59,21 @@
     const ALARM_PATTERNS = {
         // Motif de l'avertissement : deux bips, le second plus bas.
         warning: { period: 1.4, tones: [[880, 0.11], [660, 0.11]], gain: 0.10 },
-        // Motif critique : quatre bips rapides, plus haut et plus serrés.
+        // Motif critique : quatre bips rapides, plus haut et plus serrÃ©s.
         critical: { period: 1.1, tones: [[1050, 0.09], [880, 0.09], [1050, 0.09], [880, 0.09]], gain: 0.13 },
-        // Défaillance respiratoire : bip unique grave, lent, insistant.
+        // DÃ©faillance respiratoire : bip unique grave, lent, insistant.
         apnea: { period: 2.0, tones: [[520, 0.34]], gain: 0.11 },
-        // « Code bleu » : le long bip d'appel, celui qu'on entend dans tout l'étage.
+        // Â« Code bleu Â» : le long bip d'appel, celui qu'on entend dans tout l'Ã©tage.
         codeBlue: { period: 2.6, tones: [[740, 0.55]], gain: 0.14 },
-        // Alarme de ventilateur : le bip sec et régulier du Scope.
+        // Alarme de ventilateur : le bip sec et rÃ©gulier du Scope.
         lowSpO2: { period: 1.6, tones: [[960, 0.08], [960, 0.08], [700, 0.14]], gain: 0.10 }
     };
 
-    // ==================== ÉTAT ====================
+    // ==================== Ã‰TAT ====================
 
     const state = {
         hr: 72,
-        rr: 14,             // fréquence respiratoire (cycles/min)
+        rr: 14,             // frÃ©quence respiratoire (cycles/min)
         spo2: 98,
         systolic: 120,
         temperature: 37,
@@ -90,6 +90,20 @@
         alarm: null
     };
 
+    /**
+     * Sources demandées alors que le contexte audio n'existait pas encore.
+     * `startWhenReady()` s'en sert pour ne pas empiler les abonnements.
+     */
+    const pendingStarts = new Set();
+
+    /**
+     * Incrémenté par `reset()`. Un abonnement `whenReady` compare le numéro
+     * capturé : s'il n'est plus d'actualité (changement de cas), il fait
+     * nothing — vider `pendingStarts` ne suffirait pas, l'abonnement vit dans
+     * audio-core et se déclencherait quand même au premier clic.
+     */
+    let startGeneration = 0;
+
     let timerId = null;
     let nextHeartbeat = 0;
     let nextBreath = 0;
@@ -98,20 +112,20 @@
 
     let rand = A.rng(state.seed);
 
-    // ==================== SYNTHÈSE DU CŒUR ====================
+    // ==================== SYNTHÃˆSE DU CÅ’UR ====================
 
     /**
-     * Un temps du cœur.
-     * @param {number} at      instant absolu de départ
+     * Un temps du cÅ“ur.
+     * @param {number} at      instant absolu de dÃ©part
      * @param {'S1'|'S2'} which
-     * @param {number} level   0..1, intensité (FC élevée = plus intense)
+     * @param {number} level   0..1, intensitÃ© (FC Ã©levÃ©e = plus intense)
      */
     function playHeartSound(at, which, level) {
         const isS1 = which === 'S1';
         const rand_jitter = (rand() - 0.5) * 0.04;
 
         if (isS1) {
-            // Impact grave : la composante énergétique du premier bruit.
+            // Impact grave : la composante Ã©nergÃ©tique du premier bruit.
             A.thump({
                 freq: 58 * (1 + rand_jitter),
                 freqTo: 31,
@@ -121,7 +135,7 @@
                 bus: BUS,
                 at
             });
-            // Corps filtré : ce qui donne au B1 son timbre de « boum » et non de « bip ».
+            // Corps filtrÃ© : ce qui donne au B1 son timbre de Â« boum Â» et non de Â« bip Â».
             A.noise({
                 dur: 0.07,
                 gain: 0.1 * level,
@@ -135,8 +149,8 @@
                 at
             });
         } else {
-            // S2 : plus court, plus haut, et bien plus faible — c'est ce rapport
-            // de niveaux qui fait « lub-dub » plutôt que « bip bip ».
+            // S2 : plus court, plus haut, et bien plus faible â€” c'est ce rapport
+            // de niveaux qui fait Â« lub-dub Â» plutÃ´t que Â« bip bip Â».
             A.thump({
                 freq: 84 * (1 + rand_jitter),
                 freqTo: 52,
@@ -161,7 +175,7 @@
         }
     }
 
-    /** Un cycle cardiaque complet : S1 puis S2 à l'écart physiologique. */
+    /** Un cycle cardiaque complet : S1 puis S2 Ã  l'Ã©cart physiologique. */
     function scheduleBeat(at) {
         const level = 0.55 + 0.45 * heartIntensity();
         playHeartSound(at, 'S1', level);
@@ -170,8 +184,8 @@
     }
 
     /**
-     * Écart S1-S2 en secondes. Se comprime avec la FC : c'est le détail qui
-     * fait qu'un cœur à 140 bpm ne « sonne » pas comme un cœur à 60.
+     * Ã‰cart S1-S2 en secondes. Se comprime avec la FC : c'est le dÃ©tail qui
+     * fait qu'un cÅ“ur Ã  140 bpm ne Â« sonne Â» pas comme un cÅ“ur Ã  60.
      */
     function s2Gap() {
         const t = clamp((state.hr - 60) / 120, 0, 1);
@@ -179,20 +193,20 @@
     }
 
     /**
-     * Intensité du souffle, selon sa nature :
-     *   systolique  — entre S1 et S2 (holosystolique : toute la systole)
-     *   diastolique  — après S2
-     *   continu      — sans interruption
+     * IntensitÃ© du souffle, selon sa nature :
+     *   systolique  â€” entre S1 et S2 (holosystolique : toute la systole)
+     *   diastolique  â€” aprÃ¨s S2
+     *   continu      â€” sans interruption
      */
     function scheduleMurmur(at, level) {
         if (!state.murmur) return;
         const period = 60 / state.hr;
         const cfg = {
-            // Souffle systolique : bruit de turbulence médio, monte légèrement.
+            // Souffle systolique : bruit de turbulence mÃ©dio, monte lÃ©gÃ¨rement.
             systolique: { dur: period * 0.72, at: 0, from: 190, to: 260, q: 3.2, gain: 0.055 },
             // Souffle diastolique : plus grave, plus tard.
             diastolique: { dur: period * 0.45, at: s2Gap(), from: 150, to: 190, q: 4.0, gain: 0.045 },
-            // Souffle continu : présent sur tout le cycle.
+            // Souffle continu : prÃ©sent sur tout le cycle.
             continu: { dur: period * 0.9, at: 0, from: 210, to: 240, q: 3.6, gain: 0.05 }
         }[state.murmur];
         if (!cfg) return;
@@ -216,12 +230,12 @@
         return clamp((state.hr - 55) / 110, 0, 1);
     }
 
-    // ==================== SYNTHÈSE DE LA RESPIRATION ====================
+    // ==================== SYNTHÃˆSE DE LA RESPIRATION ====================
 
     /**
      * Un cycle respiratoire. L'expiration est plus longue et plus audible que
      * l'inspiration ; son niveau monte quand la SpO2 chute, parce qu'un
-     * patient en détresse respire plus bruyamment.
+     * patient en dÃ©tresse respire plus bruyamment.
      */
     function playBreathCycle(at, level) {
         const distress = 1 - clamp((state.spo2 - 82) / 16, 0, 1);
@@ -254,9 +268,9 @@
     // ==================== BIP ECG ====================
 
     /**
-     * Bip du scope : 880 Hz (La4, la référence des moniteurs), 55 ms, avec un
-     * partiel à 1760 Hz à 15 % — c'est ce partiel qui donne au haut-parleur
-     * du moniteur son timbre « plastique » caractéristique.
+     * Bip du scope : 880 Hz (La4, la rÃ©fÃ©rence des moniteurs), 55 ms, avec un
+     * partiel Ã  1760 Hz Ã  15 % â€” c'est ce partiel qui donne au haut-parleur
+     * du moniteur son timbre Â« plastique Â» caractÃ©ristique.
      */
     function playEcgBeep(at) {
         A.tone({ freq: 880, type: 'sine', dur: 0.055, attack: 0.004, gain: 0.055, bus: BUS, at });
@@ -279,7 +293,7 @@
     function tick() {
         if (!A.getContext()) { stopTimerIfIdle(); return; }
         const c = A.getContext();
-        if (c.state !== 'running') return;   // rien ne s'écoule, on n'insiste pas
+        if (c.state !== 'running') return;   // rien ne s'Ã©coule, on n'insiste pas
         const horizon = c.currentTime + LOOKAHEAD;
 
         if (running.heartbeat) pumpHeartbeat(horizon);
@@ -297,9 +311,9 @@
     }
 
     /**
-     * Période entre deux S1. En fibrillation auriculaire l'intervalle n'est
-     * pas régulier : on ajoute un jitter déterministe (graine fixe, donc le
-     * même cas sonne pareil à chaque partie).
+     * PÃ©riode entre deux S1. En fibrillation auriculaire l'intervalle n'est
+     * pas rÃ©gulier : on ajoute un jitter dÃ©terministe (graine fixe, donc le
+     * mÃªme cas sonne pareil Ã  chaque partie).
      */
     function beatPeriod() {
         const base = 60 / clamp(state.hr, HR_MIN, HR_MAX);
@@ -338,7 +352,7 @@
     }
 
     function scheduleAlarmTone(at, freq, dur, gain) {
-        // En mode calme on coupe l'alarme : c'est la raison d'être du mode.
+        // En mode calme on coupe l'alarme : c'est la raison d'Ãªtre du mode.
         if (A.isCalmMode() && A.isStressful('alarm')) return;
         A.tone({ freq, type: 'triangle', dur, attack: 0.006, gain, bus: BUS, at });
         A.duck('medical');
@@ -352,8 +366,8 @@
     }
 
     /**
-     * Point d'entrée unique pour l'état clinique. Tout le reste du module
-     * observe cet objet — il n’y a pas de deuxième source de vérité.
+     * Point d'entrÃ©e unique pour l'Ã©tat clinique. Tout le reste du module
+     * observe cet objet â€” il nâ€™y a pas de deuxiÃ¨me source de vÃ©ritÃ©.
      * @param {object} vitals {hr, rr, spo2, systolic, temperature, murmur, rhythm}
      */
     function applyVitals(vitals) {
@@ -379,9 +393,34 @@
         return state.hr;
     }
 
+    /**
+     * Démarre une source clinique en attendant le contexte si nécessaire.
+     *
+     * `A.getContext()` ne crée plus le contexte (cf. `audio-core.js`) : avant le
+     * premier geste utilisateur il renvoie `null`. Plutôt que d'abandonner —
+     * ce qui laisserait le jeu muet pour toute la session — on mémorise la
+     * demande et on la rejoue via `whenReady` dès que le contexte existe.
+     *
+     * @param {string} key - `running.heartbeat` | `running.ecg` | `running.breathing`
+     * @param {Function} retry - appel à rejouer
+     */
+    function startWhenReady(key, retry) {
+        if (A.getContext()) return false;
+        if (!pendingStarts.has(key)) {
+            pendingStarts.add(key);
+            const generation = startGeneration;
+            A.whenReady(() => {
+                if (pendingStarts.delete(key) && generation === startGeneration) {
+                    retry();
+                }
+            });
+        }
+        return false;
+    }
+
     function startHeartbeat(heartRate) {
         if (Number.isFinite(heartRate)) applyVitals({ hr: heartRate });
-        if (!A.getContext()) return false;
+        if (!A.getContext()) return startWhenReady('heartbeat', () => startHeartbeat());
         running.heartbeat = true;
         nextHeartbeat = 0;
         ensureTimer();
@@ -399,8 +438,8 @@
     }
 
     /**
-     * Change la fréquence sans couper la boucle : l'ordonnanceur prend la
-     * nouvelle période au prochain battement, il n'y a donc pas de saut.
+     * Change la frÃ©quence sans couper la boucle : l'ordonnanceur prend la
+     * nouvelle pÃ©riode au prochain battement, il n'y a donc pas de saut.
      */
     function updateHeartRate(bpm) {
         if (!Number.isFinite(bpm) || bpm <= 0) return;
@@ -409,7 +448,7 @@
 
     function startECGBeep(heartRate) {
         if (Number.isFinite(heartRate)) applyVitals({ hr: heartRate });
-        if (!A.getContext()) return false;
+        if (!A.getContext()) return startWhenReady('ecg', () => startECGBeep());
         running.ecg = true;
         nextEcg = 0;
         ensureTimer();
@@ -424,7 +463,7 @@
 
     function startBreathing(respiratoryRate) {
         if (Number.isFinite(respiratoryRate)) applyVitals({ rr: respiratoryRate });
-        if (!A.getContext()) return false;
+        if (!A.getContext()) return startWhenReady('breathing', () => startBreathing());
         running.breathing = true;
         nextBreath = 0;
         ensureTimer();
@@ -439,7 +478,7 @@
 
     function startAlarm(level) {
         if (!ALARM_PATTERNS[level]) level = 'warning';
-        if (!A.getContext()) return false;
+        if (!A.getContext()) return startWhenReady('alarm', () => startAlarm(level));
         running.alarm = level;
         nextAlarm = 0;
         ensureTimer();
@@ -457,8 +496,8 @@
     }
 
     /**
-     * Ouvre le son du cœur quand le joueur pose le stéthoscope. Sans ça, le
-     * joueur n'entendrait jamais la différence entre ausculter et simplement
+     * Ouvre le son du cÅ“ur quand le joueur pose le stÃ©thoscope. Sans Ã§a, le
+     * joueur n'entendrait jamais la diffÃ©rence entre ausculter et simplement
      * regarder le scope.
      */
     function setStethoscope(on) {
@@ -469,7 +508,7 @@
         return state.stethoscope;
     }
 
-    /** Un coup de cœur isolé (télétransmission, scope à la pause). */
+    /** Un coup de cÅ“ur isolÃ© (tÃ©lÃ©transmission, scope Ã  la pause). */
     function playSingleBeat() {
         const at = A.now() + 0.005;
         const level = 0.55 + 0.45 * heartIntensity();
@@ -478,17 +517,17 @@
         A.duck('medical');
     }
 
-    // ==================== API DE COMPATIBILITÉ ====================
-    // Conservée parce que js/three-scene.js, js/three-manager.js,
-    // js/clinicalAgentAI.js et js/game.js appellent ces méthodes.
-    // Elles délèguent au registre SFX : un seul endroit définit le timbre.
+    // ==================== API DE COMPATIBILITÃ‰ ====================
+    // ConservÃ©e parce que js/three-scene.js, js/three-manager.js,
+    // js/clinicalAgentAI.js et js/game.js appellent ces mÃ©thodes.
+    // Elles dÃ©lÃ¨guent au registre SFX : un seul endroit dÃ©finit le timbre.
 
     function playMeasureSound() { A.play('ecgBeep'); }
     function playUnlockSound() { A.play('unlock'); }
     function playErrorSound() { A.play('error'); }
     function playSuccessSound() { A.play('success'); }
     // Existait dans les appels de js/three-scene.js:115 mais n'avait jamais
-    // été défini sur la classe : l'appel était silencieusement sans effet.
+    // Ã©tÃ© dÃ©fini sur la classe : l'appel Ã©tait silencieusement sans effet.
     function playAlert() { A.play('alert'); }
 
     function init() { return A.init(); }
@@ -498,8 +537,8 @@
     function unmute() { A.setMuted(false); }
 
     /**
-     * Réinitialise complètement la couche patient (changement de cas, sortie
-     * de la page 3D). On ne détruit pas le contexte : il est partagé avec le
+     * RÃ©initialise complÃ¨tement la couche patient (changement de cas, sortie
+     * de la page 3D). On ne dÃ©truit pas le contexte : il est partagÃ© avec le
      * reste du jeu.
      */
     function reset() {
@@ -507,6 +546,10 @@
         stopECGBeep();
         stopBreathing();
         stopAlarm();
+        // Un cas précédent pouvait avoir laissé une demande en attente de
+        // contexte : elle ne doit pas ressusciter le patient suivant.
+        pendingStarts.clear();
+        startGeneration++;
         A.clearManaged(timerId);
         timerId = null;
         state.hr = 72;
@@ -523,14 +566,14 @@
     }
 
     /**
-     * Réinitialise complètement la couche patient (changement de cas, sortie
-     * de la page 3D). On ne détruit pas le contexte : il est partagé avec le
+     * RÃ©initialise complÃ¨tement la couche patient (changement de cas, sortie
+     * de la page 3D). On ne dÃ©truit pas le contexte : il est partagÃ© avec le
      * reste du jeu.
      *
-     * `destroy` est un alias conservé pour js/three-scene.js:880 qui appelle
+     * `destroy` est un alias conservÃ© pour js/three-scene.js:880 qui appelle
      * `medicalAudio.destroy()`. Comme `window.medicalAudio` pointe
-     * directement sur cette couche (et non plus sur une classe séparée),
-     * l’alias doit exister ici, sinon l’appel lèverait une TypeError en
+     * directement sur cette couche (et non plus sur une classe sÃ©parÃ©e),
+     * lâ€™alias doit exister ici, sinon lâ€™appel lÃ¨verait une TypeError en
      * sortant du mode 3D.
      */
     function destroy() {
@@ -540,7 +583,7 @@
     // ==================== EXPOSITION ====================
 
     const MedGameMedical = {
-        // État clinique
+        // Ã‰tat clinique
         applyVitals,
         getVitals,
         getHeartRate,
@@ -549,7 +592,7 @@
         s2Gap,
         heartIntensity,
 
-        // Cœur
+        // CÅ“ur
         startHeartbeat,
         stopHeartbeat,
         updateHeartRate,
@@ -570,9 +613,9 @@
         getAlarm,
 
         /**
-     * API de compatibilité : ces méthodes étaient appelées par le code 3D
-     * et sont conservées telles quelles. Elles délèguent au registre SFX —
-     * un seul endroit définit le timbre.
+     * API de compatibilitÃ© : ces mÃ©thodes Ã©taient appelÃ©es par le code 3D
+     * et sont conservÃ©es telles quelles. Elles dÃ©lÃ¨guent au registre SFX â€”
+     * un seul endroit dÃ©finit le timbre.
      */
         init,
         resume,
@@ -603,7 +646,7 @@
     global.MedGameMedical = MedGameMedical;
 
     // Raccourci historique : js/three-scene.js et consorts utilisent
-    // window.medicalAudio. On garde l'alias, il pointe désormais sur la
-    // couche médicale adossée au socle partagé.
+    // window.medicalAudio. On garde l'alias, il pointe dÃ©sormais sur la
+    // couche mÃ©dicale adossÃ©e au socle partagÃ©.
     global.medicalAudio = MedGameMedical;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -131,6 +131,9 @@
         focus: 'idle',         // clé de FOCUS_DUCK
         tension: 0,            // 0..1 continu
         started: false,
+        // `start()` a été demandé mais le contexte n'existe pas encore : on
+        // attend le premier geste utilisateur via `A.whenReady`.
+        startRequested: false,
         pulseIndex: 0,
         nextPulse: 0,
         nextBell: 0,
@@ -602,7 +605,18 @@
 
     function start() {
         if (state.started) return true;
-        if (!A.getContext()) return false;
+        const c = A.getContext();
+        if (!c) {
+            // Aucun geste utilisateur pour l'instant : le contexte n'existe pas et
+            // on ne doit surtout pas le créer ici (opération synchrone de plus
+            // d'une seconde). On s'abonne, `start()` s'exécutera au premier clic.
+            if (!state.startRequested) {
+                state.startRequested = true;
+                A.whenReady(() => start());
+            }
+            return false;
+        }
+        state.startRequested = false;
         buildRoomTone();
         buildMusicVoices();
         state.started = true;
@@ -624,6 +638,7 @@
     function stop(fade) {
         const seconds = fade === undefined ? CROSSFADE : fade;
         state.started = false;
+        state.startRequested = false;
         A.clearManaged(state.corridorTimer);
         A.clearManaged(state.pulseTimer);
         state.corridorTimer = null;

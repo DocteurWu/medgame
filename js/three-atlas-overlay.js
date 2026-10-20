@@ -106,6 +106,8 @@ export async function openAtlasOverlay({ focus = 'heart', systems = null, label 
             });
             await viewer.loadAtlas(ATLAS, buffers);
         }
+        // La boucle ne tourne que lorsque l'overlay est réellement visible.
+        viewer.setPaused(false);
         const part = findBestPart(focus);
         const vis = systems || (part ? [...new Set([part.system, 'skeletal'])] : undefined);
         if (vis) viewer.setState({ visible: vis, isolate: false });
@@ -127,8 +129,10 @@ export function closeAtlasOverlay() {
     if (!overlayEl) return;
     overlayEl.style.display = 'none';
     try { viewer?.setState({ isolate: false, rotate: false }); } catch {}
-    // On garde viewer + buffers en cache (pas de dispose ici pour réouverture instantanée).
-    // Dispose complet si besoin : window.__atlasDispose()
+    // Overlay caché : la boucle de rendu est suspendue. Le viewer, le contexte
+    // WebGL et les buffers restent en cache (réouverture instantanée), mais un
+    // atlas invisible ne doit coûter aucune frame.
+    try { viewer?.setPaused(true); } catch {}
     window.__atlasOverlayOpen = false;
 }
 

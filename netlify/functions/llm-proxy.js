@@ -8,6 +8,12 @@
  *  - QUOTAS : anonymes 5/14j par IP hashée · connectés 20/j + 50/sem
  *             corrections (kind='correction') exemptées du quota dialogue
  *             mais soumises au global + à un budget propre (3/j anon, 10/j compte)
+ *             gradation ECOS (kind='grading') : hors budget dialogue, budget
+ *             propre large (30/14j anon, 80/j compte) — cf. sql/004
+ *  - DÉDUPLICATION des retries : une ligne de consommation par MESSAGE, pas
+ *    par tentative (cf. sql/004). La clé est calculée ICI, jamais reçue du
+ *    client — sinon un appelant qui renverrait une clé constante s'octroyerait
+ *    un quota illimité, ce qui serait pire que le défaut corrigé.
  *  - Whitelist de modèles
  *  - Cap max_tokens (4000) et messages (30), longueur contenu (16000 chars)
  *  - Forwarding body épuré : seuls les champs autorisés passent (meta strippé)
@@ -105,6 +111,32 @@ async function hashIp(ip) {
     return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// ── Clé de déduplication des retries (calculée SERVEUR, jamais client) ───────
+//
+// Pourquoi pas une clé fournie par le client : `LLMClient.request` réessaie, et
+// rien n'empêche un appelant d'envoyer `X-Message-Id: "constant"`. La dédup
+// serait alors trivially contournable — on aurait remplacé « trop facturé » par
+// « gratuit pour qui veut ».
+//
+// La clé est donc dérivée de ce qui IDENTIFIE la demande : l'IP déjà hachée, le
+// compte, le modèle, et le contenu exact des messages. Deux tentatives de la
+// même demande ont le même corps → même clé → une seule ligne de consommation.
+// Une autre question a un autre historique → autre clé → comptée normalement.
+//
+// La fenêtre de 2 minutes est gérée en base (table `llm_dedup`, purge dans
+// `log_llm_usage`). Elle couvre largement le pire cas d'un retry — un essai qui
+// aboutit côté upstream alors que le client a expiré (12-30 s + backoff) — sans
+// rendre gratuit le fait de reposer la même question plus tard.
+async function dedupKey(ipHash, userId, model, messages) {
+    const canonical = [
+        model || '',
+        ...messages.map(m => `${m.role}:${typeof m.content === 'string' ? m.content : ''}`)
+    ].join('\n');
+    const data = new TextEncoder().encode(`${ipHash}|${userId || 'anon'}|${canonical}`);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 // ── Supabase REST helpers (service_role, jamais exposé au client) ────────────
 function supaCfg() {
     const url = process.env.SUPABASE_URL;
@@ -120,8 +152,8 @@ async function supaRpc(fn, body) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'apikey': cfg.serviceKey,
-            'Authorization': `Bearer ${cfg.serviceKey}`
+            apikey: cfg.serviceKey,
+            Authorization: `Bearer ${cfg.serviceKey}`
         },
         body: JSON.stringify(body)
     });
@@ -130,6 +162,34 @@ async function supaRpc(fn, body) {
         throw new Error(`RPC ${fn} → HTTP ${res.status}: ${t.slice(0, 200)}`);
     }
     return res.json();
+}
+
+/**
+ * Variante de `supaRpc` qui retombe sur l'ancienne signature quand la base
+ * n'a pas encore la migration `sql/004_quota_fairness.sql`.
+ *
+ * SANS ce repli, déployer la fonction avant d'appliquer le SQL fait échouer
+ * silencieusement chaque `log_llm_usage` : le `.catch` le trace, et le quota
+ * n'est plus appliqué du tout. L'ordre de déploiement devient donc indifférent.
+ *
+ * @returns {Promise<true>} résolu si une des deux signatures a répondu
+ */
+async function supaRpcLogUsage(p6) {
+    try {
+        await supaRpc('log_llm_usage', p6);
+        return true;
+    } catch (e) {
+        const unknownFn = /does not exist|HTTP 404|schema cache/i.test(String(e && e.message));
+        if (!unknownFn) throw e;
+        console.warn('[Proxy] sql/004 non appliquée — déduplication inactive (retries comptés).');
+        await supaRpc('log_llm_usage', {
+            p_ip_hash: p6.p_ip_hash,
+            p_user_id: p6.p_user_id,
+            p_kind: p6.p_kind,
+            p_model: p6.p_model
+        });
+        return true;
+    }
 }
 
 // ── Vérifie le JWT Supabase du client → user_id ou null (anonyme) ────────────
@@ -201,12 +261,15 @@ export default async (request, context) => {
             return jsonError('Invalid JSON body', 400, corsHeaders);
         }
 
-        // ── Classe d'appel : dialogue (quota) vs correction (budget propre) ──
-        // Forgé côté client ? Possible — mais les corrections ont leur propre
-        // budget journalier (3 anon / 10 connecté), donc pas de contournement.
-        const kind = body.meta?.kind === 'correction' ? 'correction' : 'dialogue';
-        if (body.meta?.kind !== undefined && body.meta.kind !== 'dialogue' && body.meta.kind !== 'correction') {
-            return jsonError(`meta.kind invalide (dialogue|correction).`, 400, corsHeaders);
+        // ── Classe d'appel ──────────────────────────────────────────────────
+        // dialogue (quota) · correction (budget propre) · grading (budget propre,
+        // hors quota dialogue — c'est un appel interne, cf. sql/004).
+        // Forgé côté client ? Possible — mais chaque classe a son propre budget,
+        // donc pas de contournement.
+        const ALLOWED_KINDS = new Set(['dialogue', 'correction', 'grading']);
+        const kind = ALLOWED_KINDS.has(body.meta?.kind) ? body.meta.kind : 'dialogue';
+        if (body.meta?.kind !== undefined && !ALLOWED_KINDS.has(body.meta.kind)) {
+            return jsonError(`meta.kind invalide (${[...ALLOWED_KINDS].join('|')}).`, 400, corsHeaders);
         }
 
         // ── Gate atomique : global 50/min + quotas (Supabase) ────────────────
@@ -325,13 +388,22 @@ export default async (request, context) => {
 
         // ── Log de conso APRÈS succès (les échecs ne consomment rien) ───────
         // Non-bloquant : waitUntil si dispo, sinon fire-and-forget tracé.
+        //
+        // `p_dedup_key` déduplique les retries côté base (fenêtre 2 min) : un
+        // message de l'étudiant ne coûte plus qu'une ligne, même si le client
+        // a réessayé ou si un essai a abouti alors qu'il avait expiré. La clé
+        // est calculée ici, jamais lue dans la requête.
         if (gate._ipHash && gate.code !== 'GATE_BYPASSED') {
-            const logP = supaRpc('log_llm_usage', {
-                p_ip_hash: gate._ipHash,
-                p_user_id: gate._userId ?? null,
-                p_kind: kind,
-                p_model: model
-            }).catch(e => console.error('[Proxy] log_llm_usage échoué:', e.message));
+            const logP = (async () => {
+                const key = await dedupKey(gate._ipHash, gate._userId ?? null, model, safeBody.messages);
+                await supaRpcLogUsage({
+                    p_ip_hash: gate._ipHash,
+                    p_user_id: gate._userId ?? null,
+                    p_kind: kind,
+                    p_model: model,
+                    p_dedup_key: key
+                });
+            })().catch(e => console.error('[Proxy] log_llm_usage échoué:', e.message));
             if (context?.waitUntil) context.waitUntil(logP);
             else logP.catch(() => {});
         }
@@ -343,6 +415,12 @@ export default async (request, context) => {
         }
         if (gate.remaining_week !== undefined && gate.remaining_week !== null) {
             quotaHeaders['X-Quota-Remaining-Week'] = String(gate.remaining_week);
+        }
+        if (gate.remaining_grading !== undefined && gate.remaining_grading !== null) {
+            // Reste du budget de GRADATION, dans son propre en-tête : il ne doit
+            // surtout pas tomber dans X-Quota-Remaining, que le client synchronize
+            // avec son compteur de dialogue local.
+            quotaHeaders['X-Quota-Remaining-Grading'] = String(gate.remaining_grading);
         }
         quotaHeaders['X-Quota-Kind'] = kind;
 

@@ -3,7 +3,8 @@
  *
  * - Un unique GLTFLoader avec décompression Draco (décodeur hébergé localement)
  * - Un OBJLoader partagé
- * - Un LoadingManager commun qui alimente l'écran de chargement progressif (#3d-loading)
+ * - Un LoadingManager commun qui suit les assets GLTF/OBJ et alimente le
+ *   journal d'erreurs de l'écran de chargement (#three-loading)
  *
  * Tous les modules 3D doivent importer ces loaders au lieu d'en instancier
  * leurs propres copies : cela centralise le suivi de progression et évite
@@ -29,7 +30,7 @@ gltfLoader.setDRACOLoader(dracoLoader);
 
 export const objLoader = new OBJLoader(loadingManager);
 
-import { offlineAssetCache } from './offline-asset-cache.js';
+import { offlineAssetCache } from './offline-asset-cache.js?v=20261011-lit-v1';
 
 // ============================================================
 // CHARGEMENT GLB ROBUSTE (cache persistant + timeout + erreur propre)
@@ -45,47 +46,80 @@ const _glbPromises = new Map();
  * @param {Function} [onError] — callback(err)
  * @param {Object} [opts] — { timeoutMs }
  */
+// Le blob: URL du CacheStorage échoue sur certains navigateurs quand la réponse
+// mise en cache n'a pas d'en-têtes CORS (cas réel : GLB avec textures Draco).
+// On charge donc le ArrayBuffer et on passe par gltfLoader.parse — le chemin le
+// plus fiable. Le timeout est reset à chaque étape : il ne doit plus mesurer que
+// le travail réellement en cours, sinon le repli arrive après coup et le GLB
+// n'est jamais affiché.
 export function loadGLBSmart(path, onLoad, onProgress, onError, opts = {}) {
-    const timeoutMs = opts.timeoutMs ?? 25000;
+    // 40 s et non 25 : sur une première visite, un cache froid et une machine
+    // lente, le simple téléchargement peut dépasser 25 s. Le timeout doit
+    // sanctionner un asset BLOQUÉ, pas un asset lent mais vivant.
+    const timeoutMs = opts.timeoutMs ?? 40000;
+    // glTF résout ses URI relatives par rapport au FICHIER, donc `parse()` attend
+    // le RÉPERTOIRE comme `path`, pas le nom du fichier. Passer le fichier
+    // produisait « assets/3D/stethoscope.glbTextures/colormap.png » et faisait
+    // échouer toute texture externe du modèle.
+    const resourceBase = path.includes('/') ? path.slice(0, path.lastIndexOf('/') + 1) : path;
+    let timer = null;
+    const arm = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            _glbPromises.delete(path); // retry possible après timeout
+            try { onError?.(new Error(`[loadGLBSmart] timeout ${timeoutMs}ms : ${path}`)); } catch {}
+        }, timeoutMs);
+    };
 
     if (!_glbPromises.has(path)) {
         _glbPromises.set(path, new Promise((resolve, reject) => {
-            const timer = setTimeout(() => {
-                _glbPromises.delete(path); // retry possible après timeout
-                reject(new Error(`[loadGLBSmart] timeout ${timeoutMs}ms : ${path}`));
-            }, timeoutMs);
+            arm();
 
-            // Tente de récupérer un Blob URL depuis le CacheStorage persistant
-            offlineAssetCache.getOrFetchUrl(path, (ratio) => {
-                onProgress?.({ lengthComputable: true, loaded: ratio * 100, total: 100 });
-            }).then(blobUrl => {
-                gltfLoader.load(
-                    blobUrl,
-                    (gltf) => {
-                        clearTimeout(timer);
-                        resolve(gltf);
-                    },
-                    undefined,
+            const done = (gltf) => { clearTimeout(timer); resolve(gltf); };
+            const fail = (err) => { clearTimeout(timer); _glbPromises.delete(path); reject(err); };
+
+            const parseBuffer = (buffer, fromCache) => {
+                arm();
+                gltfLoader.parse(
+                    buffer,
+                    resourceBase,
+                    (gltf) => done(gltf),
                     (err) => {
-                        // Si le blobUrl échoue (cas de références relatives), repli sur le path d'origine
-                        console.warn('[loadGLBSmart] Repli sur path direct après échec blob:', err);
-                        gltfLoader.load(
-                            path,
-                            (gltf) => { clearTimeout(timer); resolve(gltf); },
-                            onProgress,
-                            (errDirect) => { clearTimeout(timer); _glbPromises.delete(path); reject(errDirect); }
-                        );
+                        if (fromCache) {
+                            // Le blob du cache est douteux → dernier recours : réseau.
+                            console.warn('[loadGLBSmart] parse du buffer cache échoué, repli réseau:', err);
+                            loadDirect();
+                        } else {
+                            fail(err);
+                        }
                     }
                 );
-            }).catch(() => {
-                // Si CacheStorage indisponible ou fetch blob échoué, repli direct
+            };
+
+            const loadDirect = () => {
+                arm();
                 gltfLoader.load(
                     path,
-                    (gltf) => { clearTimeout(timer); resolve(gltf); },
+                    (gltf) => done(gltf),
                     onProgress,
-                    (err) => { clearTimeout(timer); _glbPromises.delete(path); reject(err); }
+                    (err) => fail(err)
                 );
-            });
+            };
+
+            const startAt = performance.now();
+            // Chaque progression réarme le minuteur : un téléchargement lent
+            // mais qui avance ne doit pas être pris pour un téléchargement
+            // bloqué. Sans cela, un gros modèle sur connexion lente est
+            // signalé en erreur alors que la requête aboutira quelques secondes
+            // plus tard.
+            offlineAssetCache.getOrFetchBuffer(path, (ratio) => {
+                arm();
+                onProgress?.({ lengthComputable: true, loaded: ratio * 100, total: 100 });
+            }, timeoutMs).then((buffer) => {
+                console.info('[loadGLBSmart] buffer', Math.round(performance.now() - startAt) + 'ms',
+                    (buffer.byteLength / 1024).toFixed(0) + ' Ko');
+                parseBuffer(buffer, false);
+            }).catch(() => loadDirect());
         }));
     }
 
@@ -99,103 +133,107 @@ export function loadGLBSmart(path, onLoad, onProgress, onError, opts = {}) {
 }
 
 // ============================================================
-// ÉCRAN DE CHARGEMENT PROGRESSIF
+// ÉCRAN DE CHARGEMENT 3D
 // ============================================================
 
-let _overlayReady = false;
-let _hidden = false;
-const MIN_DISPLAY_MS = 800;
-const SAFETY_TIMEOUT_MS = 12000;
+/**
+ * Le total d'assets à charger N'EST PAS connu quand l'écran s'affiche : les
+ * modèles sont découverts au fur et à mesure de la construction de la salle.
+ * Une barre à « 0 % » qui se remplit donc afficherait un pourcentage inventé.
+ * On affiche une phase — qui elle est exacte, parce que le code la déclare — et
+ * une barre indéterminée.
+ */
+let _overlayCtrl = null;
+let _styleInjected = false;
+
+function _injectStylesheet() {
+    if (_styleInjected || typeof document === 'undefined') return;
+    _styleInjected = true;
+    if (document.getElementById('three-loading-css')) return;
+    const link = document.createElement('link');
+    link.id = 'three-loading-css';
+    link.rel = 'stylesheet';
+    link.href = 'css/three-loading.css';
+    document.head.appendChild(link);
+}
 
 function _ensureOverlayDOM() {
-    let overlay = document.getElementById('3d-loading');
+    _injectStylesheet();
+    let overlay = document.getElementById('three-loading');
     if (overlay) return overlay;
 
     overlay = document.createElement('div');
-    overlay.id = '3d-loading';
-    overlay.innerHTML = `
-        <div class="ld-box">
-            <div class="ld-logo"><i class="fas fa-heart-pulse"></i></div>
-            <div class="ld-title">Préparation du cabinet…</div>
-            <div class="ld-bar"><div class="ld-bar-fill" id="ld-bar-fill"></div></div>
-            <div class="ld-pct" id="ld-pct">0%</div>
-            <div class="ld-hint">Chargement des modèles 3D et des textures</div>
-        </div>
-        <style>
-            #3d-loading {
-                position: fixed; inset: 0; z-index: 9500;
-                background: radial-gradient(ellipse at center, rgba(13,20,38,0.96), rgba(5,8,18,0.99));
-                display: flex; align-items: center; justify-content: center;
-                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-                transition: opacity 0.45s ease;
-            }
-            #3d-loading.ld-hidden { opacity: 0; pointer-events: none; }
-            #3d-loading .ld-box {
-                text-align: center; color: #e0e8f4;
-                padding: 28px 44px; border-radius: 18px;
-                background: linear-gradient(160deg, rgba(12,22,48,0.85), rgba(8,14,32,0.8));
-                border: 1px solid rgba(120,190,255,0.25);
-                box-shadow: 0 12px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
-            }
-            #3d-loading .ld-logo { font-size: 34px; color: #00f2fe; margin-bottom: 10px;
-                animation: ld-pulse 1.6s ease-in-out infinite; }
-            @keyframes ld-pulse { 0%,100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.12); opacity: 1; } }
-            #3d-loading .ld-title { font-weight: 700; font-size: 15px; margin-bottom: 14px; letter-spacing: 0.3px; }
-            #3d-loading .ld-bar {
-                width: 240px; height: 7px; margin: 0 auto 8px auto;
-                background: rgba(255,255,255,0.09); border-radius: 99px; overflow: hidden;
-            }
-            #3d-loading .ld-bar-fill {
-                height: 100%; width: 0%;
-                background: linear-gradient(90deg, #00c6ff, #0072ff);
-                border-radius: 99px; transition: width 0.25s ease;
-            }
-            #3d-loading .ld-pct { font-size: 12px; color: #88ccff; font-weight: 600; }
-            #3d-loading .ld-hint { margin-top: 10px; font-size: 11px; color: rgba(255,255,255,0.42); font-style: italic; }
-        </style>
-    `;
+    overlay.id = 'three-loading';
+    overlay.setAttribute('role', 'status');
+    overlay.setAttribute('aria-live', 'polite');
+
+    const box = document.createElement('div');
+    box.className = 'ld-box';
+
+    const logo = document.createElement('div');
+    logo.className = 'ld-logo';
+    logo.setAttribute('aria-hidden', 'true');
+    // U+2665 (coeur PLEIN) et non l'emoji U+2764 : un emoji est colorisé par
+    // la police du système — rouge vif ici — et jure avec le cyan de l'interface.
+    // Un caractère texte prend la couleur de la règle CSS.
+    logo.textContent = '\u2665';
+
+    const title = document.createElement('div');
+    title.className = 'ld-title';
+    title.textContent = 'Préparation du cabinet…';
+
+    const phase = document.createElement('div');
+    phase.className = 'ld-phase';
+
+    const bar = document.createElement('div');
+    bar.className = 'ld-bar';
+
+    const note = document.createElement('div');
+    note.className = 'ld-note';
+    note.textContent = 'Première ouverture : le rendu 3D se construit.';
+
+    box.append(logo, title, phase, bar, note);
+    overlay.appendChild(box);
     document.body.appendChild(overlay);
     return overlay;
 }
 
 /**
- * Initialise l'écran de chargement et branche les événements du manager.
+ * Branche l'écran de chargement et renvoie son contrôleur.
  * À appeler UNE fois, avant la création de la scène 3D.
+ *
+ * @returns {{setPhase: (t: string) => void, finish: () => void}}
  */
 export function initLoadingOverlay() {
-    if (_overlayReady) return;
-    _overlayReady = true;
-
     const overlay = _ensureOverlayDOM();
-    const barFill = () => document.getElementById('ld-bar-fill');
-    const pctEl = () => document.getElementById('ld-pct');
-    const shownAt = performance.now();
-    _hidden = false;
+    const phaseEl = overlay.querySelector('.ld-phase');
 
-    loadingManager.onProgress = (_url, loaded, total) => {
-        if (_hidden || !total) return;
-        const pct = Math.min(100, Math.round((loaded / Math.max(1, total)) * 100));
-        const bar = barFill(); const pctNode = pctEl();
-        if (bar) bar.style.width = pct + '%';
-        if (pctNode) pctNode.textContent = pct + '%';
-    };
-
-    const hide = () => {
-        if (_hidden) return;
-        _hidden = true;
-        const elapsed = performance.now() - shownAt;
-        const wait = Math.max(0, MIN_DISPLAY_MS - elapsed);
-        setTimeout(() => {
+    const ctrl = {
+        /** Phase affichée — le texte est exact, c'est le code qui le déclare. */
+        setPhase(text) {
+            if (phaseEl && text) phaseEl.textContent = text;
+        },
+        /**
+         * Fin réelle du chargement. À appeler quand la scène est CONSTRUITE —
+         * pas sur une minuterie : l'ancienne version masquait l'écran au bout
+         * de 12 s alors que la construction pouvait durer bien plus longtemps
+         * (70 s en rendu logiciel), laissant le joueur devant une page figée
+         * SANS AUCUN EXPLICATION, ce qui est exactement le défaut signalé.
+         */
+        finish() {
+            if (_overlayCtrl !== ctrl) return;
+            _overlayCtrl = null;
             overlay.classList.add('ld-hidden');
             setTimeout(() => overlay.remove(), 600);
-        }, wait);
+        }
     };
+    _overlayCtrl = ctrl;
 
-    loadingManager.onLoad = hide;
+    // three.js ne signale rien de lui-même sur un asset manquant : sans ce
+    // branchement, un modèle 404 disparaît sans laisser de trace.
     loadingManager.onError = (url) => {
         console.warn('[ThreeLoaders] Échec asset (continué):', url);
     };
 
-    // Garde-fou : ne jamais bloquer le jeu si un asset reste coincé
-    setTimeout(hide, SAFETY_TIMEOUT_MS);
+    return ctrl;
 }

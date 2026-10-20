@@ -1,17 +1,14 @@
 /* --- VARIABLES & RESET --- */
 :root {
-    --primary: #00f2fe;
-    /* Cyan */
-    --secondary: #b388ff;
-    /* Purple Neon */
-    --accent: #ff4757;
-    /* Coral Red */
-    --dark-bg: #050714;
-    /* Deep Night Blue */
-    --glass-bg: rgba(10, 15, 30, 0.6);
-    --glass-border: rgba(0, 242, 254, 0.15);
+    --primary: #22427c;
+    --primary-light: #355fa8;
+    --secondary: #3b82f6;
+    --accent: #ef4444;
+    --dark-bg: #070d19;
+    --glass-bg: rgba(10, 18, 36, 0.75);
+    --glass-border: rgba(53, 95, 168, 0.25);
     --text-main: #ffffff;
-    --text-muted: rgba(255, 255, 255, 0.6);
+    --text-muted: rgba(255, 255, 255, 0.7);
     --font-main: 'Inter', sans-serif;
     --font-title: 'Outfit', sans-serif;
 }
@@ -95,7 +92,7 @@ body {
     background: linear-gradient(135deg, #ffffff 30%, var(--primary) 70%, var(--secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 25px rgba(0, 242, 254, 0.35));
+    filter: drop-shadow(0 0 20px rgba(53, 95, 168, 0.4));
 }
 
 .back-link-bottom {

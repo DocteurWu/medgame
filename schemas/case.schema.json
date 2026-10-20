@@ -210,6 +210,40 @@
           "constantesCibles": { "type": "object" }
         }
       }
+    },
+
+    "cabinetContext": {
+      "type": "object",
+      "description": "Éléments interactifs présents dans le cabinet médical",
+      "properties": {
+        "accompagnant": {
+          "type": "object",
+          "properties": {
+            "present": { "type": "boolean" },
+            "nom": { "type": "string" },
+            "lien": { "type": "string" },
+            "comportement": { "type": "string" },
+            "bloqueConfidencesIntimes": { "type": "boolean" }
+          }
+        },
+        "documentsSurBureau": {
+          "type": "object",
+          "properties": {
+            "ordonnanceActuelle": { "type": "string" },
+            "courrierAdressage": { "type": "string" },
+            "carnetSante": { "type": "string" }
+          }
+        },
+        "doorknobRevelation": {
+          "type": "object",
+          "description": "Symptôme ou crainte révélé(e) en fin de consultation si la confiance est suffisante",
+          "properties": {
+            "minTrustRequired": { "type": "number", "default": 75 },
+            "dialogue": { "type": "string" },
+            "unlockedField": { "type": "string" }
+          }
+        }
+      }
     }
   },
 

@@ -1,18 +1,5 @@
-/**
- * three-lighting-agent.js — Agent d'éclairage avancé
- * HDR (HDRI Poly Haven + fallback procédural), ombres dynamiques douces,
- * IBL (RoomEnvironment), post-processing complet (GTAO, bloom, MSAA, tone mapping).
- */
-
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-
-// Sources HDRI neutres (réflexions PBR crédibles) — tentées dans l'ordre, fallback procédural si offline
-const HDRI_SOURCES = [
-    'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/photo_studio_01_1k.hdr',
-    'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/brown_photostudio_02_1k.hdr'
-];
-const HDRI_TIMEOUT_MS = 8000;
 
 export class ThreeLightingAgent {
     constructor(scene, renderer) {
@@ -25,116 +12,125 @@ export class ThreeLightingAgent {
         this.theme = 'dark';
         this.ambientLight = null;
         this.keyLight = null;
+        this.examSpotLight = null;
+        this.windowFillLight = null;
         this.pointLights = [];
-        // Nouvelles sources de remplissage (fill / rebond) — référencées pour le thème
         this.hemiLight = null;
         this.bounceLights = [];
         this._envTexture = null;
-        this._hdriLoaded = false;
 
-        // Réglages qualité pilotés par ThreeQualityAgent
         this.quality = {
-            msaa: 4,
-            gtao: true,
-            bloom: true,
-            shadowSize: 1024,
-            gtaoRadius: 0.6,
-            gtaoSamples: 12
+            msaa: 0,
+            gtao: false,
+            bloom: false,
+            shadowSize: 2048, // Haute définition pour netteté des instruments sur le bureau
+            gtaoRadius: 0.5,
+            gtaoSamples: 8
         };
     }
 
-    /**
-     * Configure l'éclairage complet de la scène clinique
-     */
     setupLighting() {
-        // Environnement — Lumière ambiante douce (ciel)
-        // Intensité réduite : le gros du "fill" est désormais porté par l'IBL + l'hémisphérique
-        const ambientLight = new THREE.AmbientLight('#c6d0d8', 0.19);
+        // 1. Lumière ambiante de base (légèrement bleutée dans les ombres profondes)
+        const ambientLight = new THREE.AmbientLight('#cbd5e1', 0.30);
         this.scene.add(ambientLight);
         this.ambientLight = ambientLight;
 
-        // Lumière hémisphérique — simule le rebond naturel ciel ↔ sol.
-        // Soulève les zones d'ombre sans aplatir les volumes.
-        const hemiLight = new THREE.HemisphereLight('#e1edf5', '#625f59', 0.32);
+        // 2. Lumière hémisphérique (plafond blanc clinique 4500K / rebond sol granit chaud)
+        const hemiLight = new THREE.HemisphereLight('#f1f5f9', '#78716c', 0.52);
+        hemiLight.position.set(0, 5, 0);
         this.scene.add(hemiLight);
         this.hemiLight = hemiLight;
 
-        // Lumière principale (Sun Light) entrant par la fenêtre du mur droit (x = 5.5, z ≈ -2.2)
-        // Intensité calibrée r155+ (lumières physiques) : 1.9 surexposait
-        // les textiles clairs ; 1.2 garde du détail avec l'IBL et l'hémisphérique.
-        const keyLight = new THREE.DirectionalLight('#fff0df', 1.2);
-        keyLight.position.set(11, 7.5, -3.5);
-        // Ombres portées en version douce (PCF).
-        // NOTE HISTORIQUE : l'ancienne "bande noire" ne venait pas des ombres elles-mêmes,
-        // mais de la shadow-camera par défaut (frustum ±5 trop étroit pour une salle de 11×10)
-        // combinée à un bias nul (shadow acne). Frustum resserré sur la salle + normalBias
-        // => ombres propres, douces, sans bande ni acne.
+        // 3. Soleil matinal (DirectionalLight 4800K) entrant par la fenêtre droite (x = +5.5)
+        const keyLight = new THREE.DirectionalLight('#fff3e0', 1.55);
+        keyLight.position.set(11.5, 7.2, -2.8);
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.set(this.quality.shadowSize, this.quality.shadowSize);
-        keyLight.shadow.camera.near = 2;
-        keyLight.shadow.camera.far = 30;
-        // Frustum resserré sur la salle utile (±7 au lieu de ±9) : texels plus
-        // fins à résolution égale, moins de hors-champ ombré pour rien.
-        keyLight.shadow.camera.left = -7;
-        keyLight.shadow.camera.right = 7;
-        keyLight.shadow.camera.top = 7;
-        keyLight.shadow.camera.bottom = -7;
-        keyLight.shadow.bias = -0.0002;
-        keyLight.shadow.normalBias = 0.03;
-        keyLight.target.position.set(0, 1, 0);
+        keyLight.shadow.camera.near = 3;
+        keyLight.shadow.camera.far = 24;
+        keyLight.shadow.camera.left = -6.2;
+        keyLight.shadow.camera.right = 6.2;
+        keyLight.shadow.camera.top = 5.5;
+        keyLight.shadow.camera.bottom = -5.5;
+        keyLight.shadow.bias = -0.00015;
+        keyLight.shadow.normalBias = 0.022;
+        keyLight.shadow.radius = 2.2; // Adoucit les pénombres PCFSoft
+        keyLight.target.position.set(-0.5, 0.8, -0.2);
         this.scene.add(keyLight.target);
         this.scene.add(keyLight);
         this.keyLight = keyLight;
 
-        // Lumières ponctuelles (dalles LED du plafond sous y=5.0) — sobres
+        // 4. Diffusion zénithale de la fenêtre (Sky portal fill)
+        const windowFill = new THREE.PointLight('#e0f2fe', 0.55, 10, 1.5);
+        windowFill.position.set(4.8, 2.6, -0.5);
+        this.scene.add(windowFill);
+        this.windowFillLight = windowFill;
+
+        // 5. Spot scialytique d'examen médical au-dessus du lit patient (x = 4.7, z = 0.2)
+        const examSpot = new THREE.SpotLight('#f8fafc', 1.15, 7.5, Math.PI / 5.5, 0.55, 1.2);
+        examSpot.position.set(4.4, 4.6, 0.2);
+        examSpot.target.position.set(4.7, 0.85, 0.2);
+        examSpot.castShadow = false; // Évite de doubler le coût de shadow map
+        this.scene.add(examSpot.target);
+        this.scene.add(examSpot);
+        this.examSpotLight = examSpot;
+
+        // 6. Dalle LED plafonnière — UNE SEULE, au centre du plafond.
+        //
+        // CHANGEMENT VOLONTAIRE ET MESURÉ. La version précédente en posait deux
+        // (-2.6 et +2.4), plus deux « rebonds » de radiosité simulée à 0.16-0.18
+        // d'intensité — invisibles à l'œil, mais payées à CHAQUE pixel de CHAQUE
+        // matériau de la scène, et surtout dans la longueur de chaque shader :
+        // six `PointLight` significaient six blocs de calcul d'éclairage en plus
+        // dans chacun des dizaines de programmes de la scène. Effet mesuré sur le
+        // profil CPU d'initialisation : 23,7 s passées dans
+        // `gl.getProgramInfoLog()`, c'est-à-dire dans la compilation des shaders.
+        //
+        // Trois sources ponctuelles au lieu de six suffisent à éclairer la pièce,
+        // à condition de rééquilibrer l'ambiante et l'IBL (voir plus bas) — tous
+        // deux gratuits, puisqu'ils ne sont pas dans la boucle par pixel.
         this.pointLights = [];
-        this.pointLights.push(this._addPointLight(-2.5, 4.3, 0, '#fffaf2', 0.3, 9));
-        this.pointLights.push(this._addPointLight(2.5, 4.3, 0, '#fffaf2', 0.3, 9));
+        this.pointLights.push(this._addPointLight(0, 4.4, -0.4, '#f8fafc', 0.72, 11));
 
-        // NOTE : les lampes décoratives (lampadaire chaud, laser bleu) ont été
-        // supprimées car leurs objets n'existent plus dans la pièce — chaque
-        // Point/Spot coûte du shader en forward, on ne garde que l'utile.
-        this.wallLampLight = null;
-        this.blueLaserLight = null;
-
-        // Lumière d'appoint sous les instruments (glow bleu sur le bureau)
-        const instLight = new THREE.PointLight(0x44aaff, 0.25, 4);
-        instLight.position.set(-2.8, 1.45, -0.4);
+        // 7. Halo de l'écran MED-OS sur le bureau et le visage du médecin
+        const instLight = new THREE.PointLight(0x38bdf8, 0.30, 2.2);
+        instLight.position.set(-3.55, 1.18, -0.55);
+        instLight.userData.baseIntensity = 0.30;
         this.scene.add(instLight);
         this.instLight = instLight;
+        // Modulé par `setClinicalMood` comme les autres.
+        this.pointLights.push(instLight);
 
-        // --- Lumières de rebond (bounce lights) : éclairent subtilement les zones d'ombre ---
+        // Les anciens « rebonds » de radiosité simulée ont été supprimés : leur
+        // intensité (0.16-0.18) était sous le seuil de visibilité, et l'IBL
+        // ci-dessous remplit le même rôle pour une fraction du coût. Le tableau
+        // est conservé vide pour ne pas casser les appelants qui le parcourent.
         this.bounceLights = [];
-        // Rebond chaud : la key light frappe le sol côté fenêtre et rediffuse vers le plafond
-        this.bounceLights.push(this._addPointLight(3.6, 0.5, 1.6, '#f5e8d8', 0.12, 7));
-        // Contre-jour froid côté opposé : détache les volumes du mur du fond
-        this.bounceLights.push(this._addPointLight(-4.4, 2.6, -2.6, '#d4e2ee', 0.12, 8));
 
-        // Configuration globale du renderer
-        this.renderer.shadowMap.enabled = true; // Ombres douces PCF (voir note historique plus haut)
+        // Configuration colorimétrique globale du renderer
+        this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.05;
+        this.renderer.toneMappingExposure = 1.06;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-        // Environnement IBL procédural local (rapide, sans latence réseau, sans recompilation shader à chaud)
         this._setupEnvironment();
     }
 
-    /**
-     * Génère un environnement IBL procédural (RoomEnvironment + PMREM).
-     * Fournit des réflexions PBR crédibles sur tous les matériaux standard/physical.
-     * Rapide, prédictible et sans requête réseau externe.
-     */
     _setupEnvironment() {
         try {
             const pmrem = new THREE.PMREMGenerator(this.renderer);
+            pmrem.compileEquirectangularShader();
             const envScene = new RoomEnvironment();
-            this._envTexture = pmrem.fromScene(envScene, 0.04).texture;
+            this._envTexture = pmrem.fromScene(envScene, 0.035).texture;
             this.scene.environment = this._envTexture;
-            // Intensité globale (three >= r163) — calibrée pour la salle clinique
             if ('environmentIntensity' in this.scene) {
-                this.scene.environmentIntensity = 0.65;
+                // Relevé après la suppression des rebonds de radiosité simulée :
+                // l'IBL est un simple échantillonnage de cubemap dans le shader,
+                // pas une source dans la boucle d'éclairage par pixel. C'est donc
+                // le moyen le moins cher de rendre la restitution que donnaient
+                // les `PointLight` supprimées.
+                this.scene.environmentIntensity = 0.9;
             }
             envScene.traverse?.(o => o.geometry?.dispose?.());
             pmrem.dispose();
@@ -143,54 +139,72 @@ export class ThreeLightingAgent {
         }
     }
 
-    /**
-     * Charge une HDRI equirectangulaire depuis un CDN (Poly Haven).
-     * Améliore nettement la qualité des réflexions PBR par rapport au RoomEnvironment procédural.
-     * En cas d'échec réseau ou de timeout, conserve le fallback procédural existant.
-     */
-    _loadHDRI() {
-        if (this._hdriLoaded || !navigator.onLine) return;
-
-        const tryLoad = async () => {
-            const { RGBELoader } = await import('three/addons/loaders/RGBELoader.js');
-            const loader = new RGBELoader();
-
-            for (const url of HDRI_SOURCES) {
-                try {
-                    const texture = await new Promise((resolve, reject) => {
-                        const timer = setTimeout(() => reject(new Error('timeout')), HDRI_TIMEOUT_MS);
-                        loader.load(url, (tex) => { clearTimeout(timer); resolve(tex); }, undefined, (err) => {
-                            clearTimeout(timer); reject(err);
-                        });
-                    });
-                    texture.mapping = THREE.EquirectangularReflectionMapping;
-                    this.scene.environment = texture;
-                    if ('environmentIntensity' in this.scene) {
-                        this.scene.environmentIntensity = this.theme === 'light' ? 0.4 : 0.25;
-                    }
-                    // Libérer l'environnement procédural devenu inutile
-                    if (this._envTexture && this._envTexture !== texture) {
-                        this._envTexture.dispose();
-                        this._envTexture = texture;
-                    }
-                    this._hdriLoaded = true;
-                    console.info('[LightingAgent] HDRI chargée ✅ réflexions PBR améliorées');
-                    return;
-                } catch (e) {
-                    console.warn(`[LightingAgent] HDRI indisponible (${url}), essai suivant…`);
-                }
-            }
-            console.info('[LightingAgent] HDRI non chargée — fallback procédural conservé');
-        };
-
-        tryLoad().catch(() => {});
-    }
-
     _addPointLight(x, y, z, color, intensity, distance) {
-        const light = new THREE.PointLight(color, intensity, distance);
+        const light = new THREE.PointLight(color, intensity, distance, 1.6);
         light.position.set(x, y, z);
+        light.userData.baseIntensity = intensity;
         this.scene.add(light);
         return light;
+    }
+
+    /**
+     * Adapte l'exposition et la focalisation lumineuse selon l'angle caméra actif
+     */
+    setCameraExposure(mode) {
+        if (!this.renderer) return;
+        const exposures = {
+            room: 1.06,
+            patient: 1.12,
+            desk: 1.04,
+            cabinet: 1.08,
+            anatomy: 1.10,
+            fps: 1.06,
+        };
+        this.renderer.toneMappingExposure = exposures[mode] ?? 1.06;
+
+        // Renforce le spot d'examen lorsque la caméra est sur le lit du patient
+        if (this.examSpotLight) {
+            this.examSpotLight.intensity = (mode === 'patient' || mode === 'anatomy') ? 1.55 : 1.10;
+        }
+
+        if (this.bloomPass) {
+            const bloomStrengths = {
+                room: 0.25,
+                patient: 0.32,
+                desk: 0.25
+            };
+            this.bloomPass.strength = bloomStrengths[mode] || 0.25;
+        }
+    }
+
+    /**
+     * Permet à MedGameEngine de changer l'ambiance lumineuse selon l'action clinique
+     * @param {'normal'|'auscultation'|'negatoscope'|'urgence'} mood
+     */
+    setClinicalMood(mood = 'normal') {
+        if (!this.keyLight) return;
+        // Les intensités sont appliquées comme un RATIO de l'intensité de base de
+        // chaque lumière (`userData.baseIntensity`). Écrire des valeurs fixes
+        // rendait la fonction silencieusement fausse dès que le nombre de
+        // `PointLight` changeait — ce qui est arrivé en passant de six à trois.
+        const scalePointLights = (k) => {
+            for (const l of this.pointLights) l.intensity = (l.userData.baseIntensity ?? 0) * k;
+        };
+        if (mood === 'negatoscope') {
+            // Tamise la pièce pour examiner une radiographie
+            scalePointLights(0.30);
+            this.keyLight.intensity = 0.55;
+        } else if (mood === 'auscultation') {
+            scalePointLights(0.68);
+            if (this.examSpotLight) this.examSpotLight.intensity = 1.75;
+        } else if (mood === 'urgence') {
+            scalePointLights(1.25);
+            if (this.examSpotLight) this.examSpotLight.intensity = 1.9;
+        } else {
+            scalePointLights(1.0);
+            this.keyLight.intensity = 1.55;
+            if (this.examSpotLight) this.examSpotLight.intensity = 1.15;
+        }
     }
 
     /**
@@ -200,9 +214,8 @@ export class ThreeLightingAgent {
     setQualitySettings(q = {}) {
         Object.assign(this.quality, q);
 
-        // Taille de la shadow map (dispose obligatoire pour appliquer le changement)
         if (this.keyLight) {
-            const size = this.quality.shadowSize;
+            const size = this.quality.shadowSize || 2048;
             if (this.keyLight.shadow.mapSize.x !== size) {
                 this.keyLight.shadow.mapSize.set(size, size);
                 if (this.keyLight.shadow.map) {
@@ -212,7 +225,14 @@ export class ThreeLightingAgent {
             }
         }
 
-        // Passes post-processing (si le composer existe déjà)
+        if (typeof this.quality.softShadows === 'boolean') {
+            const wanted = this.quality.softShadows ? THREE.PCFSoftShadowMap : THREE.BasicShadowMap;
+            if (this.renderer.shadowMap.type !== wanted) {
+                this.renderer.shadowMap.type = wanted;
+                this.renderer.shadowMap.needsUpdate = true;
+            }
+        }
+
         if (this.gtaoPass) {
             this.gtaoPass.enabled = !!this.quality.gtao;
             if (this.quality.gtao && typeof this.gtaoPass.updateGtaoMaterial === 'function') {
@@ -226,21 +246,18 @@ export class ThreeLightingAgent {
             this.bloomPass.enabled = !!this.quality.bloom;
         }
 
-        // Plus aucun effet requis → rendu direct (MSAA du canvas, chemin le plus rapide)
         if (!this.quality.gtao && !this.quality.bloom && this.composer) {
             this.teardownComposer();
         }
     }
 
     toggleTheme() {
-        // Mode jour supprimé : le rendu sombre clinique est le seul thème.
         return this.theme;
     }
 
     /**
      * Configure le post-processing complet :
      * RenderPass (MSAA HalfFloat) → GTAO (occlusion ambiante) → Bloom → OutputPass.
-     * Le composer n'est créé que si la qualité l'exige (bloom ou gtao actifs).
      */
     async setupPostProcessing() {
         const wantsComposer = this.quality.bloom || this.quality.gtao;
@@ -258,8 +275,6 @@ export class ThreeLightingAgent {
             const width = window.innerWidth;
             const height = window.innerHeight;
 
-            // Render target MSAA HalfFloat : conserve l'anti-aliasing matériel
-            // même quand la scène passe par le composer (WebGL2 uniquement).
             const rtParams = {
                 type: THREE.HalfFloatType,
                 colorSpace: THREE.LinearSRGBColorSpace
@@ -277,7 +292,6 @@ export class ThreeLightingAgent {
             this.renderPass = new RenderPass(this.scene, this._getActiveCamera());
             this.composer.addPass(this.renderPass);
 
-            // GTAO — occlusion ambiante temps réel (contact shading réaliste)
             if (this.quality.gtao) {
                 try {
                     const gtaoMod = await import('three/addons/postprocessing/GTAOPass.js');
@@ -292,17 +306,6 @@ export class ThreeLightingAgent {
                             samples: this.quality.gtaoSamples
                         });
                     }
-                    if (typeof this.gtaoPass.updatePdMaterial === 'function') {
-                        this.gtaoPass.updatePdMaterial({
-                            lumaPhi: 10.0,
-                            depthPhi: 2.0,
-                            normalPhi: 3.0,
-                            radius: 4.0,
-                            radiusExponent: 16.0,
-                            rings: 2.0,
-                            samples: 16.0
-                        });
-                    }
                     this.composer.addPass(this.gtaoPass);
                 } catch (e) {
                     console.warn('[LightingAgent] GTAO indisponible:', e);
@@ -310,16 +313,14 @@ export class ThreeLightingAgent {
                 }
             }
 
-            // Bloom — valeurs sobres (les dalles/écrans/ampoules ne doivent
-            // pas bloomer en halo géant : seuil haut + force contenue)
             if (this.quality.bloom) {
                 const bloomPassMod = await import('three/addons/postprocessing/UnrealBloomPass.js');
                 const { UnrealBloomPass } = bloomPassMod;
                 this.bloomPass = new UnrealBloomPass(
                     new THREE.Vector2(width, height),
-                    0.3, // strength
-                    0.35, // radius
-                    0.92  // threshold
+                    0.3,
+                    0.35,
+                    0.92
                 );
                 this.composer.addPass(this.bloomPass);
             }
@@ -333,26 +334,18 @@ export class ThreeLightingAgent {
     }
 
     _getActiveCamera() {
-        // Retrieve the camera from the ThreeScene wrapper (this.scene is the THREE.Scene)
-        // The camera is stored on the parent ThreeScene instance
         if (this.scene._camera) return this.scene._camera;
         if (this.scene.userData?.camera) return this.scene.userData.camera;
         return null;
     }
 
-    /**
-     * Reconstruit le composer si le niveau de MSAA demandé a changé.
-     * @returns {boolean} true si une reconstruction est nécessaire/nécessaire faite
-     */
     needsRebuild(msaa) {
         return !!this.composer && (this._builtMsaa || 0) !== (msaa || 0);
     }
 
     teardownComposer() {
         if (this.composer) {
-            // Disposer les passes (GTAO/Bloom allouent leurs propres render targets —
-            // sans cela : fuite VRAM à chaque changement de palier qualité)
-            try { this.gtaoPass?.dispose?.(); } catch (e) { /* pass sans dispose */ }
+            try { this.gtaoPass?.dispose?.(); } catch (e) {}
             try { this.bloomPass?.dispose?.(); } catch (e) {}
             try { this.renderPass?.dispose?.(); } catch (e) {}
             this.composer.renderTarget1?.dispose();
@@ -364,20 +357,12 @@ export class ThreeLightingAgent {
         }
     }
 
-    /**
-     * Redimensionne le composer (appelé sur resize fenêtre)
-     */
     resize(width, height) {
         if (!this.composer) return;
-        // Synchroniser le pixel ratio du composer avec celui du renderer
-        // (modifié dynamiquement par l'agent qualité)
         this.composer.setPixelRatio(this.renderer.getPixelRatio());
         this.composer.setSize(width, height);
     }
 
-    /**
-     * Mettre à jour si le composer est actif
-     */
     render() {
         if (this.composer) {
             this.composer.render();
@@ -386,40 +371,8 @@ export class ThreeLightingAgent {
         return false;
     }
 
-    /**
-     * Ajuster l'exposition pour les différentes caméras
-     * @param {string} mode - 'room' | 'patient' | 'desk'
-     */
-    setCameraExposure(mode) {
-        const exposures = {
-            room: 0.92,
-            patient: 1.0,
-            desk: 0.9
-        };
-        this.renderer.toneMappingExposure = exposures[mode] || 0.92;
-
-        if (this.bloomPass) {
-            const bloomStrengths = {
-                room: 0.25,
-                patient: 0.32,
-                desk: 0.25
-            };
-            this.bloomPass.strength = bloomStrengths[mode] || 0.25;
-        }
-    }
-
-    /**
-     * Nettoyer les ressources
-     */
     dispose() {
-        if (this.composer) {
-            try { this.gtaoPass?.dispose?.(); } catch (e) {}
-            try { this.bloomPass?.dispose?.(); } catch (e) {}
-            try { this.renderPass?.dispose?.(); } catch (e) {}
-            this.composer.renderTarget1?.dispose();
-            this.composer.renderTarget2?.dispose();
-            this.composer = null;
-        }
+        this.teardownComposer();
         if (this._envTexture) {
             this._envTexture.dispose();
             this._envTexture = null;
@@ -428,17 +381,7 @@ export class ThreeLightingAgent {
 }
 
 export function createRoomEnvironment(scene) {
-    /**
-     * Crée un environnement de salle d'hôpital avec détails atmosphériques
-     */
-
-    // Fog doux pour la profondeur
     scene.fog = new THREE.FogExp2(0x94a9b8, 0.025);
-
-    // Plafond avec léger gradient
-    // (déjà géré par three-room.js buildRoom)
-
-    // Particules de poussière dans les rayons de lumière
     const dustCount = 200;
     const dustGeom = new THREE.BufferGeometry();
     const dustPositions = new Float32Array(dustCount * 3);

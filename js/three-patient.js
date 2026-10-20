@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { createMaterial } from './three-room.js';
-import { gltfLoader as _sharedGLTFLoader } from './three-loaders.js';
+import { loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
 import { SceneDisposer } from './scene-disposer.js';
 
 // ── Cache d'assets : les GLB/textures ne sont ni retéléchargés ni reparsés
@@ -1047,9 +1047,11 @@ export class ThreePatient {
         }
 
         const loadId = ++this._lastLoadId;
-        const loader = _sharedGLTFLoader;
 
-        loader.load(modelPath, (gltf) => {
+        // loadGLBSmart : cache persistant + timeout + repli réseau. Le loader
+        // brut pouvait rester bloqué indéfiniment sans jamais déclencher le
+        // patient procédural de secours.
+        loadGLBSmart(modelPath, (gltf) => {
             if (loadId !== this._lastLoadId) return;
 
             // Vider le groupe procédural et disposer la VRAM avant d'ajouter le modèle GLTF

@@ -818,7 +818,7 @@ ${appliedTreatmentsText}`.trim();
 
             // Quota épuisé : propager l'erreur typée telle quelle pour que
             // patientChat affiche la modale (login / mailto) au lieu du diagnostic technique.
-            if (typeof window !== 'undefined' && window.QuotaGuard?.isQuotaError?.(err)) {
+            if (typeof window !== 'undefined' && window.QuotaGuard?.blocksTablet?.(err)) {
                 onError?.(err);
                 throw err;
             }

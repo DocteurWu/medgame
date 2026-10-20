@@ -4,7 +4,42 @@
  * Réduit à zéro les temps de re-téléchargement et élimine la latence réseau inter-sessions.
  */
 
-export class OfflineAssetCache {
+/**
+ * Normalise une clé de cache en URL absolue.
+ *
+ * Piège : CacheStorage stocke la clé résolue (« http://host/chemin.glb »)
+ * alors que le code la demande souvent relative (« assets/… »). `cache.match`
+ * ne fait PAS la résolution : la comparaison échoue et le cache est ignoré
+ * silencieusement, ce qui conduit à re-télécharger puis, pour un GLB avec
+ * textures, à rester bloqué jusqu'au timeout de loadGLBSmart.
+ * On interroge donc toujours la forme absolue, et on tente aussi la forme
+ * d'origine par sécurité (entrées posées manuellement).
+ */
+function toAbsoluteURL(url) {
+    try {
+        return new URL(url, typeof location !== 'undefined' ? location.href : undefined).href;
+    } catch {
+        return url;
+    }
+}
+
+async function _matchCache(cache, url) {
+    const abs = toAbsoluteURL(url);
+    const direct = await cache.match(url);
+    if (direct) return direct;
+    if (abs !== url) {
+        const viaAbs = await cache.match(abs);
+        if (viaAbs) return viaAbs;
+    }
+    // Entrées historiquesOnt pu être stockées avec/sans query.
+    try {
+        const tolerant = await cache.match(abs, { ignoreSearch: true, ignoreVary: true });
+        if (tolerant) return tolerant;
+    } catch { /* options non supportées : sans conséquence */ }
+    return null;
+}
+
+class OfflineAssetCache {
     constructor(cacheName = 'medgame-v1-assets') {
         this.cacheName = cacheName;
         this._isSupported = typeof caches !== 'undefined';
@@ -26,7 +61,7 @@ export class OfflineAssetCache {
         try {
             const cache = await this._cachePromise;
             if (!cache) return false;
-            const match = await cache.match(url);
+            const match = await _matchCache(cache, url);
             return Boolean(match);
         } catch {
             return false;
@@ -40,12 +75,12 @@ export class OfflineAssetCache {
      * @param {Function} [onProgress] - callback(pct: 0..1)
      * @returns {Promise<Blob>}
      */
-    async getOrFetchBlob(url, onProgress = null) {
+    async getOrFetchBlob(url, onProgress = null, timeoutMs = 40000) {
         if (this._inFlight.has(url)) {
             return this._inFlight.get(url);
         }
 
-        const promise = this._executeFetchBlob(url, onProgress);
+        const promise = this._executeFetchBlob(url, onProgress, timeoutMs);
         this._inFlight.set(url, promise);
 
         try {
@@ -55,14 +90,16 @@ export class OfflineAssetCache {
         }
     }
 
-    async _executeFetchBlob(url, onProgress) {
+    async _executeFetchBlob(url, onProgress, timeoutMs = 40000) {
         if (this._isSupported) {
             try {
                 const cache = await this._cachePromise;
                 if (cache) {
-                    const cachedResponse = await cache.match(url);
+                    const cachedResponse = await _matchCache(cache, url);
                     if (cachedResponse) {
-                        return await cachedResponse.blob();
+                        const blob = await cachedResponse.blob();
+                        if (onProgress) { try { onProgress(1); } catch {} }
+                        return blob;
                     }
                 }
             } catch (err) {
@@ -70,7 +107,17 @@ export class OfflineAssetCache {
             }
         }
 
-        const response = await fetch(url);
+        // Borne le réseau : un serveur qui accepte la connexion mais ne répond
+        // jamais bloquait le chargement pendant 90 s (cas réel observé sur un
+        // GLB de 157 Ko). `fetch` n'a pas de timeout natif — on en pose un.
+        const controller = new AbortController();
+        const fetchTimer = setTimeout(() => controller.abort(), timeoutMs);
+        let response;
+        try {
+            response = await fetch(url, { signal: controller.signal });
+        } finally {
+            clearTimeout(fetchTimer);
+        }
         if (!response.ok) {
             throw new Error(`[OfflineAssetCache] HTTP ${response.status} pour ${url}`);
         }
@@ -103,7 +150,9 @@ export class OfflineAssetCache {
             this._cachePromise.then(cache => {
                 if (!cache) return;
                 const headers = new Headers(response.headers);
-                cache.put(url, new Response(blob.slice(), { headers })).catch(err => {
+                // Clé normalisée en URL absolue : c'est ce que le navigateur
+                // ré-resout à chaque fetch, et la forme que _matchCache interroge.
+                cache.put(toAbsoluteURL(url), new Response(blob.slice(), { headers })).catch(err => {
                     console.warn('[OfflineAssetCache] Erreur écriture cache pour', url, err);
                 });
             });
@@ -112,18 +161,18 @@ export class OfflineAssetCache {
         return blob;
     }
 
-    async getOrFetchUrl(url, onProgress = null) {
+    async getOrFetchUrl(url, onProgress = null, timeoutMs = 40000) {
         if (this._objectUrls.has(url)) {
             return this._objectUrls.get(url);
         }
-        const blob = await this.getOrFetchBlob(url, onProgress);
+        const blob = await this.getOrFetchBlob(url, onProgress, timeoutMs);
         const objUrl = URL.createObjectURL(blob);
         this._objectUrls.set(url, objUrl);
         return objUrl;
     }
 
-    async getOrFetchBuffer(url, onProgress = null) {
-        const blob = await this.getOrFetchBlob(url, onProgress);
+    async getOrFetchBuffer(url, onProgress = null, timeoutMs = 40000) {
+        const blob = await this.getOrFetchBlob(url, onProgress, timeoutMs);
         return blob.arrayBuffer();
     }
 

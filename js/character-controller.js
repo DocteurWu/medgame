@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { easeInOut } from './three-animations.js';
 import { DoctorAnimator } from './three-animations.js';
-import { gltfLoader, loadGLBSmart } from './three-loaders.js';
+import { gltfLoader, loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
 
 export class CharacterController {
     constructor(scene) {
@@ -53,7 +53,11 @@ export class CharacterController {
         this.loadModel(`assets/models/doctors/${modelFile}`);
 
         // 2. Synchronisation Supabase en arrière-plan (non-bloquante)
-        if (window.supabase) {
+        // Garde défensive : window.supabase peut exister sans .auth (client pas
+        // encore initialisé, ou échec réseau). Sans ce test, `.auth.getSession`
+        // lève un TypeError qui interrompt tout l'init 3D — y compris la
+        // construction de la scène (lit, éclairage, patient).
+        if (window.supabase && window.supabase.auth && typeof window.supabase.auth.getSession === 'function') {
             window.supabase.auth.getSession().then(({ data: { session } }) => {
                 if (session && session.user) {
                     window.supabase.from('profiles').select('sexe').eq('id', session.user.id).single()
@@ -67,11 +71,17 @@ export class CharacterController {
                         }).catch(() => {});
                 }
             }).catch(() => {});
+        } else {
+            console.warn('[CharacterController] window.supabase.auth indisponible — synchro profil ignorée.');
         }
     }
 
     loadModel(modelPath) {
-        gltfLoader.load(
+        // loadGLBSmart : cache persistant + timeout + repli réseau. Le loader
+        // brut ne rendait jamais la main si la requête restait bloquée, et le
+        // docteur n'apparaissait (ou ne basculait sur le procédural) qu'après
+        // un gel de plusieurs dizaines de secondes.
+        loadGLBSmart(
             modelPath,
             (gltf) => {
                 console.info('[CharacterController] Modèle GLB docteur chargé avec succès ✅ :', modelPath);

@@ -81,12 +81,40 @@ const gameState = {
         return null;
     },
 
+    /**
+     * Avance à l'index suivant SANS charger le corps ni construire l'état.
+     * Renvoie `true` s'il reste un cas, `null` si la session est terminée.
+     * Le corps est ensuite résolu par `ensureCaseLoaded()` puis `setCase()`.
+     */
     nextCase() {
-        this.currentCaseIndex++;
-        if (this.currentCaseIndex >= this.cases.length) {
+        if (this.currentCaseIndex >= this.cases.length - 1) {
             return null;
         }
-        return this.setCase(this.currentCaseIndex);
+        this.currentCaseIndex++;
+        return true;
+    },
+
+    /**
+     * Charge le CORPS du cas `index` s'il ne l'est pas encore (chargement
+     * paresseux). `cases[index]` peut être soit un descripteur léger
+     * (`{ id, file }`), soit un corps complet déjà chargé.
+     * @returns {Promise<object|null>} le corps complet du cas
+     */
+    async ensureCaseLoaded(index) {
+        if (index < 0 || index >= this.cases.length) return null;
+        const slot = this.cases[index];
+        if (!slot) return null;
+
+        // Corps déjà complet (chemin `?case=`, `preview`, single-case).
+        if (slot.patient) return slot;
+
+        if (typeof window.loadCaseBody !== 'function') return null;
+        const body = await window.loadCaseBody(slot);
+        if (body) {
+            if (!body.id) body.id = slot.id;
+            this.cases[index] = body;
+        }
+        return body;
     },
 
     addScore(points) {

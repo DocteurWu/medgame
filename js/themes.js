@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectUnplayedBtn = document.getElementById('select-unplayed');
 
     let casesData = {}; // Objet contenant les thèmes et leurs fichiers
+    let casesMeta = {}; // Métadonnées par cas (fichier → motif, patient, difficulté…)
     let selectedCaseFiles = []; // Liste des fichiers sélectionnés pour la session
     let currentThemeInModal = '';
     let currentThemeMotifs = []; // To store loaded motifs for the current theme
@@ -99,6 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error('Erreur de chargement local de case-index.json :', err);
             casesData = {};
+        }
+
+        // 1 bis. Métadonnées légères par cas (motif, patient, difficulté,
+        // nombre d'examens/verrous, ECOS). Elles évitent de télécharger CHAQUE
+        // JSON d'un thème (jusqu'à ~930 Ko) juste pour rendre la liste.
+        try {
+            const metaResponse = await fetch('data/case-meta.json');
+            if (metaResponse.ok) casesMeta = await metaResponse.json();
+        } catch (err) {
+            console.warn('case-meta.json indisponible, repli sur le téléchargement des cas :', err);
         }
 
         // 2. Si Supabase est présent, charge et fusionne les cas distants de façon non destructive
@@ -377,8 +388,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         isUrgence: !!(data.gameplayConfig || (data.id || '').toLowerCase().includes('urgence'))
                     };
                 } else {
-                    // 2. Sinon, c'est un cas local (nom de fichier avec ou sans .json)
+                    // 2. Cas local : on lit les métadonnées pré-générées → aucun
+                    // téléchargement de corps de cas pour rendre la liste.
                     const filename = fileOrId.endsWith('.json') ? fileOrId : `${fileOrId}.json`;
+                    const meta = casesMeta[filename] || casesMeta[fileOrId];
+                    if (meta) {
+                        return {
+                            id: meta.id,
+                            file: fileOrId,
+                            motif: meta.motif,
+                            patient: meta.patient,
+                            redacteur: meta.redacteur || '',
+                            isPlayed: playedCases.includes(meta.id),
+                            isEcos: !!meta.isEcos,
+                            difficulty: meta.difficulty || 2,
+                            vignette: meta.vignette || '',
+                            examCount: meta.examCount || 0,
+                            lockCount: meta.lockCount || 0,
+                            isUrgence: !!meta.isUrgence
+                        };
+                    }
+                    // Repli : méta absente (index non régénéré) → fetch complet.
                     try {
                         let response = await fetch(`data/${filename}`);
                         if (!response.ok && fileOrId !== filename) {

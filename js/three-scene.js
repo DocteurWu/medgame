@@ -1,19 +1,18 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-import { buildFurniture, buildRoom, createMaterial } from './three-room.js';
+import { buildFurniture, buildRoom } from './three-room.js';
 import { ThreePatient } from './three-patient.js';
 import { ThreeInstruments } from './three-instruments.js';
 import { PatientAnimator, DoctorAnimator, DustAnimator, IVFluidAnimator, ECGScreenAnimator } from './three-animations.js';
 import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
-import { ThreeEnvironmentAgent } from './three-environment-agent.js';
+import { ThreeEnvironmentAgent } from './three-environment-agent.js?v=20261011-nofloor';
 import { medicalAudio } from './three-audio.js';
 import { ThreeFPSController } from './three-fps-controller.js';
-import { ThreeQualityAgent } from './three-quality-agent.js';
+import { ThreeQualityAgent, QUALITY_PRESETS } from './three-quality-agent.js';
 
-import { Easing, OverlayWatcher, disposeObject3D, prefersReducedMotion } from './three-core-utils.js';
+import { Easing, OverlayWatcher, prefersReducedMotion } from './three-core-utils.js';
 import { CameraDirector } from './three-camera-director.js';
 import { HoverHighlighter } from './three-highlight.js';
 import { HudTooltip } from './three-hud.js';
@@ -55,11 +54,22 @@ const OVERLAY_IDS = [
     'pc-overlay', 'armoire-overlay', 'clinical-exam-menu', 'prescription-modal',
     'correction-overlay', 'lock-challenge-modal', 'image-overlay', 'mobile-monitor-overlay',
     'ecos-announce-overlay', 'ecos-debrief-overlay',
+    // L'atlas est une vue 3D plein écran : pendant qu'il est ouvert, la salle
+    // n'est qu'un fond. Elle passe donc au rythme de 8 fps au lieu de 60.
+    'atlas-overlay',
 ];
 
 const FPS_INTERACTION_DISTANCE = 2.5;
-const HOVER_RAYCAST_HZ = 30;
+const HOVER_RAYCAST_HZ = 20;
 const MAX_DT = 0.05;
+
+/**
+ * Budget de travail synchrone par frame pendant la construction de la scène.
+ * 8 ms laisse plus de la moitié du budget d'une frame à 60 fps : l'onglet reste
+ * fluide et l'écran de chargement continue de s'animer pendant que la salle
+ * se monte, au lieu d'un gel de plusieurs centaines de millisecondes.
+ */
+const BUILD_BUDGET_MS = 8;
 
 export class ThreeScene {
     constructor(container, callbacks = {}) {
@@ -126,15 +136,29 @@ export class ThreeScene {
 
     /* ================= INITIALISATION ================= */
 
-    init() {
+    /**
+     * Construit la scène clinique.
+     *
+     * Cette méthode est `async` et étalée sur plusieurs frames : la construction
+     * représente ~180 maillages, ~180 géométries et ~125 matériaux, soit plusieurs
+     * centaines de millisecondes de travail bloquant. Tout faire d'un bloc figeait
+     * l'onglet pendant le lancement (le joueur voyait une page morte, pas une
+     * salle qui apparaît). `TaskScheduler` rend la main au navigateur après
+     * quelques millisecondes, donc l'interface reste vivante et l'écran de
+     * chargement peut s'animer.
+     *
+     * L'ordre des étapes est inchangé — les dépendance restent satisfaites :
+     * qualité (qui décide du LOD de décor) → env. →_PATIENT → animations →
+     * hotspots → registre des objets interactifs.
+     */
+    async init() {
         const { signal } = this._ac;
 
-        // Ambiance de la pièce et brouillard
+        // --- Étape 1 : socle. Tout ce qui est nécessaire pour afficher un frame. ---
         this.scene.background = new THREE.Color(0x2d3135);
         this.scene.fog = new THREE.Fog(0x2d3135, 9, 22);
         this._normalFogColor = this.scene.fog.color.clone();
 
-        // Caméra principale
         this.camera = new THREE.PerspectiveCamera(52, this._aspect(), 0.08, 80);
         this.scene._camera = this.camera;
 
@@ -145,7 +169,10 @@ export class ThreeScene {
             powerPreference: 'high-performance',
             stencil: false,
         });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+        // Le plafond de 2.0 est repris plus bas par ThreeQualityAgent selon le GPU
+        // détecté : sur un écran HiDPI avec un GPU intégré, 2.0 quadruple le
+        // coût de fill rate de chaque passe. On démarre prudent.
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1));
         this.renderer.setSize(...this._size());
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -154,12 +181,33 @@ export class ThreeScene {
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.05;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+        // ── LE LEVIER LE PLUS COÛTEUX DE TOUTE LA PAGE 3D ──────────────────
+        //
+        // `renderer.debug.checkShaderErrors` vaut `true` par défaut dans
+        // three.js. À ce titre, `WebGLProgram.onFirstUse()` — exécuté la
+        // PREMIÈRE fois que chaque programme est utilisé, donc pendant le
+        // rendu — appelle `gl.getProgramInfoLog()` pour chacun d'eux.
+        //
+        // Ce n'est pas une lecture de log anodine : c'est un aller-retour
+        // SYNCHRONE au pilote. `gl.linkProgram()` est asynchrone et ne mesure
+        // que 3,2 s sur l'ensemble de la session ; la lecture du journal
+        // concentrait, elle, 60 s sur une fenêtre de 55 s. Autrement dit : tout
+        // le temps de compilation des shaders était payé sur le thread
+        // principal, au milieu du rendu, au pire moment.
+        //
+        // three.js fournit ce drapeau précisément pour ce cas. On le désactive,
+        // sauf quand on cherche explicitement à diagnostiquer un matériau noir :
+        // `game.html?shaderdebug=1`.
+        this.renderer.debug.checkShaderErrors =
+            new URLSearchParams(window.location.search).has('shaderdebug');
+
         this.container.appendChild(this.renderer.domElement);
 
         this.renderer.domElement.tabIndex = 0;
         this.renderer.domElement.setAttribute('aria-label', 'Salle d\'examen 3D interactive');
 
-        // Garde contre la perte de contexte WebGL (l'environnement IBL est configure par ThreeLightingAgent)
+        // Garde contre la perte de contexte WebGL (l'environnement IBL est configuré par ThreeLightingAgent)
         this._setupContextLossGuard(signal);
 
         // Orbit Controls
@@ -184,43 +232,153 @@ export class ThreeScene {
             roomCenter: new THREE.Vector3(0, 1.1, -0.5),
         });
 
-        // Construction géométrie pièce & mobilier
-        buildRoom(this.scene);
-        buildFurniture(this.scene);
+// Horloge + boucle rendues AVANT la construction : le joueur voit la
+        // salle se remplir au lieu d'un écran figé. La boucle ne rend que ce
+        // qui existe déjà, ce qui est sans danger.
+        this._clock = new THREE.Clock();
+        this._loop = this._loop.bind(this);
+        this._animFrameId = requestAnimationFrame(this._loop);
 
-        // Agents d'environnement et d'éclairage
-        this.environmentAgent = new ThreeEnvironmentAgent(this.scene);
-        this.environmentAgent.enhanceRoom();
-
-        this.lightingAgent = new ThreeLightingAgent(this.scene, this.renderer);
-        this.lightingAgent.setupLighting();
-
-        this.qualityAgent = new ThreeQualityAgent(this);
-        this.qualityAgent.init().catch(e => console.warn('[ThreeScene] qualité:', e));
-
-        // Patient et instruments médicaux
-        this.patient = new ThreePatient(this.scene);
-        this.instruments = new ThreeInstruments(this.scene);
-        this.patientAnimator = new PatientAnimator(this.patient.group);
-
-        this._setupEnvAnimators();
-
-        // Hotspots discrets et parfaitement adaptés aux personnages
-        this._initHotspots();
-
-        // Surlignage & Tooltip HUD
-        this.highlighter = new HoverHighlighter(this.scene, { liftAmount: this.reducedMotion ? 0 : 0.014 });
-        this.tooltip = new HudTooltip();
-
+        // Cadrage initial posé avant la construction pour que les premières
+        // frames soient déjà prises du bon angle.
         this.setCamera('room', false);
+
+        // --- Étapes 2+ : construction étalée ---
+        this._building = true;
+        await TaskScheduler.runBatched(this._buildSteps(), BUILD_BUDGET_MS);
+
+        if (this._cleanedUp) return;
+        this._building = false;
+
         this.collectInteractive();
         this._bindEvents(signal);
         this._setupFPS();
 
-        this._clock = new THREE.Clock();
-        this._loop = this._loop.bind(this);
-        this._animFrameId = document.hidden ? null : requestAnimationFrame(this._loop);
+        // Préchauffage des shaders — mais SEULEMENT quand le navigateur expose
+        // `KHR_parallel_shader_compile`. Dans ce cas `compileAsync()` compile en
+        // arrière-plan, étalé sur plusieurs frames, et les dizaines de
+        // programmes de la salle se préparent pendant l'écran de chargement au
+        // lieu de se répartir en à-coups de plusieurs centaines de ms pendant la
+        // partie (c'est le gel que le joueur décrit).
+        //
+        // Sans cette extension, `compileAsync()` compile en SYNCHRONE : il
+        // figerait l'onglet (mesuré à ~26 s cumulés en rendu logiciel). On ne
+        // l'appelle donc jamais dans ce cas et on laisse `ThreeQualityAgent`
+        // décider, une fois la cadence prouvée confortable.
+        this._warmupShadersWhenIdle();
+    }
 
+    /**
+     * Compile les shaders de la scène en tâche de fond, si et seulement si le
+     * navigateur sait compiler en parallèle (KHR_parallel_shader_compile).
+     * Idempotent : positionne `qualityAgent._shadersWarmed` pour que le
+     * déclenchement différé de ThreeQualityAgent ne recommence pas le travail.
+     */
+    _warmupShadersWhenIdle() {
+        try {
+            const extensions = this.renderer?.extensions;
+            if (!extensions || typeof extensions.has !== 'function') return;
+            if (!extensions.has('KHR_parallel_shader_compile')) return;
+
+            const start = () => {
+                if (this._cleanedUp || this._shadersWarmupStarted) return;
+                this._shadersWarmupStarted = true;
+                Promise.resolve(this.renderer.compileAsync(this.scene, this.camera))
+                    .then(() => {
+                        if (this.qualityAgent) this.qualityAgent._shadersWarmed = true;
+                    })
+                    .catch(() => { /* la compilation paresseuse reste le filet */ });
+            };
+
+            if (typeof requestIdleCallback !== 'undefined') {
+                requestIdleCallback(start, { timeout: 1500 });
+            } else {
+                setTimeout(start, 250);
+            }
+        } catch (e) {
+            // Un échec de préchauffage ne doit jamais empêcher la scène de vivre.
+        }
+    }
+
+    /**
+     * Étapes de construction, découpées pour `TaskScheduler.runBatched`.
+     * L'ordre est significatif : chaque étape ne dépend que des précédentes.
+     * @returns {Array<Function>}
+     */
+_buildSteps() {
+        // L'agent d'environnement est instancié tout de suite : c'est gratuit
+        // (il ne stocke que des références, il ne touche pas au graphe), et
+        // c'est nécessaire pour connaître par avance ses vingt tranches de
+        // construction. Le contenu de la salle, lui, reste entièrement différé.
+        this.environmentAgent = new ThreeEnvironmentAgent(this.scene);
+
+        return [
+            // Géométrie de la pièce (murs, sol, plafond)
+            () => buildRoom(this.scene),
+
+            // Mobilier
+            () => buildFurniture(this.scene),
+
+            // Éclairage + IBL procédural (PMREM). L'agent de qualité est créé
+            // juste après : il doit exister avant l'habillage de la salle pour
+            // pouvoir décider du niveau de détail du décor.
+            () => {
+                this.lightingAgent = new ThreeLightingAgent(this.scene, this.renderer);
+                this.lightingAgent.setupLighting();
+            },
+
+            () => {
+                this.qualityAgent = new ThreeQualityAgent(this);
+                // `apply()` est synchrone : le preset est résolu dès ici, ce qui
+                // permet à l'étape d'après de connaître le palier de détail.
+                this.qualityAgent.init().catch(e => console.warn('[ThreeScene] qualité:', e));
+            },
+
+            // --- La salle, en vingt tranches distinctes ---
+            ...this.environmentAgent.enhanceRoomSteps(),
+
+            // Applique le palier de décor correspondant au GPU détecté, une fois
+            // la salle complète : les objets décoratifs n'existent qu'à partir
+            // d'ici, l'agent de qualité n'a donc rien pu masquer plus tôt.
+            () => {
+                const env = this.environmentAgent;
+                env.setDetailLevel(env.detailLevelForPreset(this.qualityAgent?.presetName));
+            },
+
+            () => {
+                this.patient = new ThreePatient(this.scene);
+                this.patientAnimator = new PatientAnimator(this.patient.group);
+            },
+
+            () => {
+                this.instruments = new ThreeInstruments(this.scene);
+            },
+
+            // Animateurs : ils cherchent leurs cibles dans l'environnement et
+            // les instruments, donc après les étapes précédentes.
+            () => this._setupEnvAnimators(),
+
+            // Hotspots discrets et parfaitement adaptés aux personnages
+            () => this._initHotspots(),
+
+            // Surlignage & Tooltip HUD
+            () => {
+                this.highlighter = new HoverHighlighter(this.scene, { liftAmount: this.reducedMotion ? 0 : 0.014 });
+                this.tooltip = new HudTooltip();
+            },
+        ];
+    }
+
+    /**
+     * Les vingt tranches de construction de la salle.
+     *
+     * `environmentAgent` doit exister avant d'appeler cette méthode ; l'étape
+     * qui le construit est la cinquième de `_buildSteps`, donc ces tranches ne
+     * sont étalées qu'après son exécution.
+     * @returns {Array<Function>}
+     */
+    _environmentSteps() {
+        return this.environmentAgent.enhanceRoomSteps();
     }
 
     _aspect() {
@@ -358,7 +516,21 @@ export class ThreeScene {
             this.tooltip.hide();
         }, { signal });
 
-        window.addEventListener('resize', () => this.resize(), { signal });
+        // Le redimensionnement est coalescé sur une frame. En l'état, un
+        // glisser-redimensionner déclenchait `setSize` des dizaines de fois par
+        // seconde — et avec un composer actif, chaque appel réalloue ses render
+        // targets (GTAO en a plusieurs), ce qui sature le GPU pendant tout le
+        // geste.
+        window.addEventListener('resize', () => {
+            if (this._resizeRaf != null) return;
+            this._resizeRaf = requestAnimationFrame(() => {
+                this._resizeRaf = null;
+                if (!this._cleanedUp) this.resize();
+            });
+        }, { signal });
+
+        // Le rectangle cache du canvas est sensible au défilement de la page.
+        window.addEventListener('scroll', () => this._invalidateCanvasRect(), { signal, passive: true });
         document.addEventListener('visibilitychange', () => {
             this._clock.getDelta();
             if (document.hidden) {
@@ -408,18 +580,43 @@ export class ThreeScene {
         this.interactiveObjects = all;
     }
 
+    /**
+     * Rectangle du canvas, mis en cache.
+     *
+     * `getBoundingClientRect()` force un reflow complet du document. L'appelait
+     * à chaque raycast (20 Hz) pour convertir les coordonnées du pointeur en NDC
+     * coûtait un flush de layout par frame. Le rectangle ne bouge qu'au
+     * redimensionnement ou au défilement : on le rafraîchit sur ces deux
+     * événements, et au plus une fois par demi-seconde pour rester exact.
+     * @returns {DOMRect|Object}
+     */
+    _canvasRect() {
+        const now = performance.now();
+        if (!this._rect || now - (this._rectAt || 0) > 500) {
+            this._rect = this.renderer.domElement.getBoundingClientRect();
+            this._rectAt = now;
+        }
+        return this._rect;
+    }
+
+    /** Invalide le rectangle cache (taille ou position modifiées). */
+    _invalidateCanvasRect() {
+        this._rect = null;
+        this._rectAt = 0;
+    }
+
     pick(arg = null) {
         const isCenter = (arg === true) || (this.fpsController?.enabled && !arg?.clientX);
         if (isCenter) {
             this.pointer.set(0, 0);
         } else if (arg && typeof arg.clientX === 'number') {
-            const rect = this.renderer.domElement.getBoundingClientRect();
+            const rect = this._canvasRect();
             this.pointer.x = ((arg.clientX - rect.left) / rect.width) * 2 - 1;
             this.pointer.y = -((arg.clientY - rect.top) / rect.height) * 2 + 1;
-        } else if (this._pointerInside) {
-            const rect = this.renderer.domElement.getBoundingClientRect();
+} else if (this._pointerInside) {
+            const rect = this._canvasRect();
             this.pointer.x = ((this._pointerClient.x - rect.left) / rect.width) * 2 - 1;
-            this.pointer.y = -((this._pointerClient.y - rect.top) / rect.height) * 2 + 1;
+            this.pointer.y = -((this._pointerClient.y - rect.top) / rect.height) * 2 - 1;
         } else {
             return null;
         }
@@ -439,6 +636,7 @@ export class ThreeScene {
 
         const fps = !!this.fpsController?.enabled;
         if (this.overlays.visible || this.director?.isAnimating) {
+            this._setHoverState(null);
             this.highlighter.set(null);
             this.tooltip.hide();
             return;
@@ -449,10 +647,7 @@ export class ThreeScene {
         const root = obj ? this._findInteractiveRoot(obj) : null;
 
         this.highlighter.set(root);
-        this.renderer.domElement.style.cursor = root ? 'pointer' : 'default';
-
-        const crosshair = document.getElementById('hud-crosshair');
-        crosshair?.classList.toggle('is-targeting', !!root);
+        this._setHoverState(root);
 
         if (!root) {
             this.tooltip.hide();
@@ -471,6 +666,25 @@ export class ThreeScene {
         }, fps ? window.innerWidth / 2 : this._pointerClient.x, fps ? window.innerHeight / 2 : this._pointerClient.y);
 
         this.callbacks.onHover?.(obj, { clientX: this._pointerClient?.x ?? (window.innerWidth / 2), clientY: this._pointerClient?.y ?? (window.innerHeight / 2) });
+    }
+
+    /**
+     * Écrit le curseur et l'état du réticule, mais seulement quand ils changent.
+     * Le raycast tourne à 20 Hz : réécrire `style.cursor` et re-toggle une classe
+     * 20 fois par seconde, alors que la cible n'a pas bougé, invalidait le
+     * style du canvas et du HUD en continu.
+     * @param {Object3D|null} root — racine interactive survolée, ou null
+     */
+    _setHoverState(root) {
+        const targeting = !!root;
+        if (this._hoverTargeting === targeting) return;
+        this._hoverTargeting = targeting;
+
+        this.renderer.domElement.style.cursor = targeting ? 'pointer' : 'default';
+        if (this._elCrosshair === undefined) {
+            this._elCrosshair = document.getElementById('hud-crosshair');
+        }
+        this._elCrosshair?.classList.toggle('is-targeting', targeting);
     }
 
     _hintFor(root, label) {
@@ -540,10 +754,20 @@ export class ThreeScene {
             return;
         }
 
+        // Stéthoscope clinique sur le bureau
+        if (root.name === 'Stethoscope' || label.toLowerCase().includes('stethoscope') || label.toLowerCase().includes('stéthoscope')) {
+            this._setActiveTool('stethoscope');
+            this.setCamera('patient', true);
+            this.lightingAgent?.setClinicalMood('auscultation');
+            window.showNotification?.('Stéthoscope en main — foyers d\'auscultation activés sur le patient', 'info');
+            this.callbacks.onObject?.(root);
+            return;
+        }
+
         // Hygiène des mains (Évier / SHA) :
         // NE PAS voler la caméra vers l'évier ! Cela permet au joueur d'observer le médecin
         // marcher de manière fluide et naturelle vers l'évier.
-        if (root.name === 'Meuble Evier' || label.includes('Evier') || label.includes('Évier')) {
+        if (root.name === 'Meuble Evier' || root.name === 'GelHydroalcoolique' || label.includes('Evier') || label.includes('Évier') || label.includes('Hydroalcoolique') || label.includes('Gel')) {
             this.session.washHands();
             window.showNotification?.('Hygiène : friction hydro-alcoolique effectuée ✔', 'success');
             this.callbacks.onEvier?.(root);
@@ -557,7 +781,24 @@ export class ThreeScene {
         }
 
         // Dossier médical / PC
-        if (root.userData?.pcAction || label.includes('Ordinateur')) {
+        // Négatoscope LED mural (Imagerie)
+        if (root.name === 'Negatoscope' || label.includes('Negatoscope') || label.includes('Négatoscope')) {
+            this.lightingAgent?.setClinicalMood('negatoscope');
+            if (!holdCam && !fps) this.director.focusOn(root, { duration: 550 });
+            window.showNotification?.('Négatoscope allumé — examen d\'imagerie médicale', 'info');
+            this.callbacks.onObject?.(root);
+            return;
+        }
+
+        // Lecteur Carte Vitale
+        if (root.name === 'LecteurCarteVitale' || label.includes('Carte Vitale')) {
+            window.showNotification?.('Carte Vitale validée — droits & ALD synchronisés', 'success');
+            this.callbacks.onObject?.(root);
+            return;
+        }
+
+        // Dossier médical / PC
+        if (root.userData?.pcAction || root.name === 'DossierPatient' || label.includes('Ordinateur') || label.includes('Dossier')) {
             if (!holdCam && !fps) this.director.focusOn(root, { duration: 550 });
             this.callbacks.onPC?.(root);
             return;
@@ -632,7 +873,7 @@ export class ThreeScene {
             room:    { pos: [-4.4, 3.9, 7.8], target: [0.5, 0.8, -1.0] },
             patient: lying ? { pos: [3.1, 2.2, 2.3], target: [4.7, 1.05, 0.1] }
                            : { pos: [1.8, 2.05, -1.05], target: [1.2, 1.15, -3.45] },
-            desk:    { pos: [-1.8, 2.0, 1.4], target: [-3.6, 1.3, -0.7] },
+            desk:    { pos: [-3.35, 1.38, 0.52], target: [-3.45, 0.96, -0.68] },
             cabinet: { pos: [1.5, 2.2, -1.6], target: [3.8, 1.5, -3.8] },
             anatomy: { pos: [-3.4, 1.9, -1.8], target: [-5.4, 1.8, -1.8] },
         };
@@ -665,7 +906,10 @@ export class ThreeScene {
                 this.controls.enabled = true;
                 document.body.classList.remove('mode-fps');
                 if (this.characterController?.group) this.characterController.group.visible = true;
-                document.getElementById('hud-crosshair')?.classList.remove('is-targeting');
+                // Reset via l'état de survol pour rester cohérent avec le cache :
+                // retirer la classe en direct laisserait `_hoverTargeting` à true
+                // et le curseur ne reviendrait pas.
+                this._setHoverState(null);
                 this.setCamera(this._cameraBeforeFPS || 'room', true);
                 this._cameraBeforeFPS = null;
             },
@@ -858,6 +1102,17 @@ export class ThreeScene {
         const dt = Math.min(this._clock.getDelta(), MAX_DT);
         const t = this._clock.elapsedTime;
 
+        // Pendant la construction étalée, la scène est à moitié montée : on ne
+        // fait que le minimum (cadrage + rendu) pour animer l'écran de chargement
+        // sans invoquer des animateurs qui n'existent pas encore.
+        if (this._building) {
+            this.director?.beginFrame?.();
+            this.controls?.update?.();
+            this.director?.endFrame?.(dt);
+            this.renderer.render(this.scene, this.camera);
+            return;
+        }
+
         const overlayed = this.overlays.visible;
         if (overlayed) {
             this._overlayAccum = (this._overlayAccum ?? 0) + dt;
@@ -906,8 +1161,16 @@ export class ThreeScene {
         this.director.endFrame(dt);
 
         // Les ombres n'ont pas besoin de suivre les mouvements à 60 Hz.
+        // ~80 projecteurs de la salle sont redessinés à chaque rafraîchissement
+        // d'ombres : la cadence suit le preset (`shadowInterval`), et se
+        // resserre uniquement quand le médecin bouge réellement.
         this._shadowTimer = (this._shadowTimer || 0) + dt;
-        const shadowInterval = this.characterController?.isMoving ? 0.05 : 0.1;
+        const baseInterval = this.qualityAgent
+            ? QUALITY_PRESETS[this.qualityAgent.presetName]?.shadowInterval ?? 0.1
+            : 0.1;
+        const shadowInterval = this.characterController?.isMoving
+            ? Math.min(baseInterval, 0.05)
+            : baseInterval;
         if (this._shadowTimer >= shadowInterval) {
             this.renderer.shadowMap.needsUpdate = true;
             this._shadowTimer = 0;
@@ -921,6 +1184,7 @@ export class ThreeScene {
 
     resize() {
         const [w, h] = this._size();
+        this._invalidateCanvasRect();
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);

@@ -36,6 +36,7 @@ export class ThreeAtlasViewer {
         this._disposed = false;
         this._dirty = true;
         this._frame = 0;
+        this._paused = false;
         this._amount = 0;
         this._geometries = [];
         this._materials = [];
@@ -85,7 +86,10 @@ export class ThreeAtlasViewer {
             return;
         }
         const mobile = el.clientWidth < 768;
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
+        // Plafond à 1.5 : l'atlas est une vue secondaire qui partage le GPU avec
+        // la salle. Au-delà, on quadruple le fill rate pour une vue qu'on
+        // regarde en plan large, au détriment de la fluidité du jeu.
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.25 : 1.5));
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.renderer.toneMappingExposure = 1.05;
@@ -170,10 +174,30 @@ export class ThreeAtlasViewer {
         const animate = () => {
             if (this._disposed) return;
             this._frame = requestAnimationFrame(animate);
+            // L'overlay atlas est fermé la plupart du temps : on cesse de
+            // demander des frames plutôt que de relied one vide par frame.
+            // Le contexte WebGL et les buffers restent en cache, la réouverture
+            // est donc toujours instantanée.
+            if (this._paused) return;
             const dt = Math.min(clock.getDelta(), 0.05);
             this._tick(dt);
         };
         animate();
+    }
+
+    /**
+     * Met la boucle de rendu en pause / la reprend.
+     * À appeler à l'ouverture et à la fermeture de l'overlay : un atlas caché
+     * doit coûter zéro frame, pas « une frame vide par frame ».
+     * @param {boolean} paused
+     */
+    setPaused(paused) {
+        const next = Boolean(paused);
+        if (this._paused === next) return;
+        this._paused = next;
+        // Au réveil, on invalide pour que la vue corresponde à l'état courant
+        // (la caméra a pu bouger, l'explosion a pu être rééquilibrée entre-temps).
+        if (!next) this._dirty = true;
     }
 
     /** Nettoie et libère un atlas précédemment chargé sans détruire la scène/renderer. */
@@ -531,7 +555,7 @@ export class ThreeAtlasViewer {
         const el = this.container;
         const w = Math.max(1, el.clientWidth);
         const h = Math.max(1, el.clientHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, w < 768 ? 1.5 : 2));
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, w < 768 ? 1.25 : 1.5));
         this.camera.aspect = w / h;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(w, h);

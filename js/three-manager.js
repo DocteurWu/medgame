@@ -24,7 +24,7 @@ function loadModules() {
     if (!_modsPromise) {
         _modsPromise = Promise.all([
             import('three'),
-            import('./three-scene.js?v=20260906-v2'),
+            import('./three-scene.js?v=20261011-lit-v1'),
             import('./three-hud-agent.js?v=20260906-v2'),
             import('./three-transition-agent.js?v=20260906-v2'),
             import('./three-lock-agent.js?v=20260906-v2'),
@@ -59,6 +59,25 @@ const INTERACTION_ZONES = {
 
 const ROOM_BOUNDS = { minX: -4.8, maxX: 4.8, minZ: -3.8, maxZ: 3.8 };
 
+/**
+ * Cadence de la boucle vitals.
+ *
+ * Les constantes ne changent pas 60 fois par seconde : le patient doit
+ * « respirer » et changer de couleur en quelques secondes, pas suivre une
+ * interpolation recalculée à chaque frame. 12 Hz suffit largement et divise
+ * le coût par cinq.
+ */
+const VITALS_UPDATE_MS = 1000 / 12;
+
+/**
+ * Rend un facteur de lissage `lerp(x, rate)` indépendant du framerate.
+ * Reproduit exactement le comportement d'origine à 60 fps, mais reste correct
+ * quand la boucle ralentit (onglet en arrière-plan, GPU saturé, onglet masqué).
+ */
+function timeCorrectedLerp(rate, dtSeconds) {
+    return 1 - Math.pow(1 - rate, dtSeconds * 60);
+}
+
 class ThreeManager {
     constructor() {
         this.enabled = false;
@@ -73,6 +92,7 @@ class ThreeManager {
         this.transition = null;
         this.isScopeConnected = false;
         this._initPromise = null;
+        this._togglePromise = null;
     }
 
     async init() {
@@ -111,11 +131,32 @@ class ThreeManager {
     }
 
     async _init3D(containerEl) {
+        // L'écran de chargement doit s'afficher AVANT toute première attente.
+        // `initLoadingOverlay()` existe depuis longtemps mais n'était appelé
+        // NULLE PART : le joueur qui demandait la vue 3D obtenait plusieurs
+        // secondes de page figée sans la moindre explication — c'est-à-dire
+        // exactement ce que l'on signalait comme « ça frise, ça gèle
+        // l'ordinateur ». Sa feuille de style est dans `css/three-loading.css`
+        // (un `<style>` posé par `innerHTML` sur un nœud détaché ne s'applique
+        // pas : l'écran s'affichait en texte nu au milieu de la page).
+        let loading = null;
+        try {
+            const loaders = await import('./three-loaders.js?v=20261011-lit-v1');
+            loading = loaders.initLoadingOverlay();
+            loading.setPhase('Chargement du moteur 3D');
+        } catch (e) {
+            console.warn('[three-manager] écran de chargement 3D indisponible:', e);
+        }
+
         try {
             console.info('[three-manager] Démarrage du mode 3D immersif...');
 
+            // Le préchargement d'assets n'a de sens que si la scène 3D existe.
+            predictiveStreamer.setArmed(true);
+
             // ⚡ Chargement paresseux de tout le pipeline 3D (première activation)
             const mods = await loadModules();
+            loading?.setPhase('Construction de la salle');
 
             let container = containerEl || document.getElementById('scene-container');
             if (!container) {
@@ -127,7 +168,8 @@ class ThreeManager {
             // Import dynamique de CharacterController (dépendance lourde)
             let CharacterControllerClass;
             try {
-                const ccModule = await import('./character-controller.js?v=20260906-v2');
+                loading?.setPhase('Chargement du médecin');
+                const ccModule = await import('./character-controller.js?v=20261011-lit-v1');
                 CharacterControllerClass = ccModule.CharacterController;
             } catch (e) {
                 console.warn('[three-manager] CharacterController non disponible:', e);
@@ -144,7 +186,10 @@ class ThreeManager {
                 onHover: (object, event) => this.showTooltip(object, event)
             });
             this.scene.manager = this;
-            this.scene.init();
+            // `init()` est étalé sur plusieurs frames (TaskScheduler) : il faut
+            // l'attendre avant de toucher au patient, aux instruments ou au HUD.
+            loading?.setPhase('Construction de la salle');
+            await this.scene.init();
 
             if (this.scene.characterController) {
                 this.character = this.scene.characterController;
@@ -187,11 +232,21 @@ class ThreeManager {
             }));
 
             console.info('[three-manager] Mode 3D actif ✅');
+            // La scène est construite : c'est le SEUL moment honnête pour
+            // masquer l'écran. Une minuterie le ferait disparaître avant la fin
+            // du travail, laissant une page figée sans explication.
+            loading?.finish();
         } catch (error) {
             console.error('[three-manager] Échec 3D:', error);
             console.error('[three-manager] Stack:', error.stack);
+            loading?.finish();
             this._set2DMode();
             this._initPromise = null;
+            predictiveStreamer.setArmed(false);
+            // On n'insiste pas : `toggle3D()` avait déjà posé ce drapeau en
+            // amont. Le laisser à `true` ferait retenter la construction à chaque
+            // rechargement de la session, sur une machine qui ne peut pas.
+            sessionStorage.setItem('use3D', 'false');
         }
     }
 
@@ -209,26 +264,28 @@ class ThreeManager {
     }
 
     async toggle3D() {
-        // Guard contre les appels concurrents (évite le flickering 2D↔3D)
-        if (this._toggling) {
-            console.warn('[three-manager] toggle3D ignoré — transition déjà en cours');
-            return;
+        // Guard contre les appels concurrents : on attend la fin de la transition
+        // en cours au lieu de l'ignorer (sinon l'activation demandée est perdue).
+        if (this._togglePromise) {
+            return this._togglePromise;
         }
-        this._toggling = true;
-        try {
-            if (this.enabled) {
-                sessionStorage.removeItem('use3D');
-                await this.disable3D();
-            } else {
-                sessionStorage.setItem('use3D', 'true');
-                await this.enable3D(null);
-                if (this.transition) {
-                    await this.transition.transitionTo3D();
+        this._togglePromise = (async () => {
+            try {
+                if (this.enabled) {
+                    sessionStorage.removeItem('use3D');
+                    await this.disable3D();
+                } else {
+                    sessionStorage.setItem('use3D', 'true');
+                    await this.enable3D(null);
+                    if (this.transition) {
+                        await this.transition.transitionTo3D();
+                    }
                 }
+            } finally {
+                this._togglePromise = null;
             }
-        } finally {
-            this._toggling = false;
-        }
+        })();
+        return this._togglePromise;
     }
 
     _cleanup3D() {
@@ -238,6 +295,7 @@ class ThreeManager {
             this._vitalsAnimFrame = null;
         }
         this._urgencyPulseActive = false;
+        this._urgencyLight = null;
         // Retirer le listener clavier pour éviter les memory leaks
         if (this._keyHandler) {
             document.removeEventListener('keydown', this._keyHandler);
@@ -319,16 +377,32 @@ class ThreeManager {
     }
 
     _startHUDTimerSync() {
+        // Le timer affiche `mm:ss` : il ne change qu'une fois par seconde.
+        // La boucle tournait à 60 Hz et réécrivait `textContent` ainsi que
+        // `classList.remove/add` à chaque frame, ce qui invalidait le style du
+        // HUD en continu (et forçait un `getElementById` par frame).
+        const timerEl = document.getElementById('hud-timer');
+        if (!timerEl) return;
+        let lastText = null;
+        let lastState = null;
+
         const update = () => {
             if (!this.enabled) return;
-            const timerEl = document.getElementById('hud-timer');
-            if (timerEl && window.timerState) {
-                const mins = Math.floor((window.timerState.timeLeft || 0) / 60);
-                const secs = (window.timerState.timeLeft || 0) % 60;
-                timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-                timerEl.classList.remove('warning', 'critical');
-                if ((window.timerState.timeLeft || 0) <= 30) timerEl.classList.add('critical');
-                else if ((window.timerState.timeLeft || 0) <= 120) timerEl.classList.add('warning');
+            if (window.timerState) {
+                const left = window.timerState.timeLeft || 0;
+                const mins = Math.floor(left / 60);
+                const secs = left % 60;
+                const text = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+                if (text !== lastText) {
+                    timerEl.textContent = text;
+                    lastText = text;
+                }
+                const state = left <= 30 ? 'critical' : left <= 120 ? 'warning' : '';
+                if (state !== lastState) {
+                    timerEl.classList.remove('warning', 'critical');
+                    if (state) timerEl.classList.add(state);
+                    lastState = state;
+                }
             }
             requestAnimationFrame(update);
         };
@@ -1255,18 +1329,30 @@ class ThreeManager {
         const scene3d = this.scene?.scene;
         if (!scene3d) return;
 
-        // Supprimer l'ancienne lumière d'urgence si elle existe
-        const existingUrgLight = scene3d.getObjectByName('urgenceLight');
-        if (existingUrgLight) scene3d.remove(existingUrgLight);
+        // Mémoriser la référence : la boucle d'animation lit cette lumière 12 fois
+        // par seconde, et un `getObjectByName` parcourrait tout le graphe à
+        // chaque lecture (~200 nœuds) sans aucune raison.
+        this._urgencyLight = null;
+
+        // Une seule lumière d'urgence, créée au premier usage et RÉUTILISÉE.
+        //
+        // PIÈGE — le nombre de lumières entre dans la clé de cache des
+        // programmes de shader de three.js. La version précédente faisait
+        // `remove(ancienne)` puis `add(nouvelle)` à chaque changement d'état
+        // clinique : la salle était intégralement recompilée à chaque
+        // bascule. Ici la lumière est permanente et son intensité est pilotée.
+        let urgLight = scene3d.getObjectByName('urgenceLight');
+        if (!urgLight) {
+            urgLight = new THREE.PointLight(0xff3333, 0, 12);
+            urgLight.position.set(0, 2.5, 0);
+            urgLight.name = 'urgenceLight';
+            scene3d.add(urgLight);
+        }
 
         const isUrgent = hr > 120 || spo2 < 90 || (caseData.difficulty || 1) >= 3;
 
         if (isUrgent) {
-            // Lumière rouge pulsante pour les cas critiques
-            const urgLight = new THREE.PointLight(0xff3333, 0.8, 12);
-            urgLight.position.set(0, 2.5, 0);
-            urgLight.name = 'urgenceLight';
-            scene3d.add(urgLight);
+            this._urgencyLight = urgLight;
 
             // Teinte rouge de la scène (fog)
             if (this.scene) {
@@ -1279,6 +1365,9 @@ class ThreeManager {
             this._urgencyPulseTime = 0;
         } else {
             this._urgencyPulseActive = false;
+            this._urgencyPulseTime = 0;
+            urgLight.intensity = 0;
+            this._urgencyLight = null;
         }
     }
 
@@ -1290,8 +1379,32 @@ class ThreeManager {
         // Nettoyer l'ancienne boucle
         if (this._vitalsAnimFrame) cancelAnimationFrame(this._vitalsAnimFrame);
 
-        const animate = () => {
+        // Couleurs de travail réutilisées. En créaant une `THREE.Color` par
+        // frame, cette boucle produisait ~300 allocations par seconde : une
+        // collecte GC continue pendant toute la partie, pour rien.
+        // NB : `THREE` est un Proxy qui lève tant que le module three n'est pas
+        // chargé — ces couleurs doivent donc être créées à l'exécution, jamais
+        // au chargement du module.
+        const skinColor = new THREE.Color();
+        const lipColor = new THREE.Color();
+        const CYANOSIS_DEEP = new THREE.Color(0x8fa8b8);
+        const CYANOSIS_MILD = new THREE.Color(0xc2c8d4);
+        const FEVER = new THREE.Color(0xe8a090);
+        const PALE = new THREE.Color(0xd4c4b0);
+        const LIP_BASE = new THREE.Color(0x8b2020);
+        const LIP_CYANOTIC = new THREE.Color(0x2d3a6b);
+        const DISTRESS = new THREE.Color(0x220808);
+
+        let lastTick = 0;
+
+        const animate = (now) => {
             if (!this.enabled) return;
+            this._vitalsAnimFrame = requestAnimationFrame(animate);
+
+            // Throttling : rien n'est recalculé entre deux ticks.
+            if (now - lastTick < VITALS_UPDATE_MS) return;
+            const dt = Math.min((now - lastTick) / 1000, 0.5);
+            lastTick = now;
 
             const vitals = window.vitalSigns;
             if (vitals && vitals.props && this.scene?.patient) {
@@ -1301,42 +1414,45 @@ class ThreeManager {
                 const sysBP = vitals.props.systolic || 120;
                 const fr = vitals.props.respiratoryRate || 16;
 
+                const kColor = timeCorrectedLerp(0.02, dt);
+                const kMat = timeCorrectedLerp(0.02, dt);
+
                 // Couleur de peau dynamique
                 const patient = this.scene.patient;
                 const animator = this.scene.patientAnimator;
 
                 if (patient.skinMat) {
-                    let skinColor = new THREE.Color(0xd7a87a); // Base normale
+                    skinColor.setHex(0xd7a87a); // Base normale
                     if (spo2 < 85) {
-                        skinColor.lerp(new THREE.Color(0x8fa8b8), Math.min(1, (85 - spo2) / 15));
+                        skinColor.lerp(CYANOSIS_DEEP, Math.min(1, (85 - spo2) / 15));
                     } else if (spo2 < 94) {
                         // Cyanose progressive à partir de 94% SpO2
-                        skinColor.lerp(new THREE.Color(0xc2c8d4), Math.min(1, (94 - spo2) / 9));
+                        skinColor.lerp(CYANOSIS_MILD, Math.min(1, (94 - spo2) / 9));
                     }
                     if (temp >= 38.5) {
                         const feverIntensity = Math.min(1, (temp - 38.5) / 2);
-                        skinColor.lerp(new THREE.Color(0xe8a090), feverIntensity);
+                        skinColor.lerp(FEVER, feverIntensity);
                     } else if (sysBP < 90) {
-                        skinColor.lerp(new THREE.Color(0xd4c4b0), Math.min(1, (90 - sysBP) / 20));
+                        skinColor.lerp(PALE, Math.min(1, (90 - sysBP) / 20));
                     }
-                    patient.skinMat.color.lerp(skinColor, 0.02);
+                    patient.skinMat.color.lerp(skinColor, kColor);
 
                     // Peau luisante en cas de sueur/fièvre/douleur
                     const isSweating = (temp >= 38.5 || hr > 110 || animator?.currentExpression === 'sweating' || animator?.currentExpression === 'sueur');
                     if (isSweating) {
-                        patient.skinMat.roughness = THREE.MathUtils.lerp(patient.skinMat.roughness, 0.18, 0.02);
-                        patient.skinMat.metalness = THREE.MathUtils.lerp(patient.skinMat.metalness, 0.2, 0.02);
+                        patient.skinMat.roughness = THREE.MathUtils.lerp(patient.skinMat.roughness, 0.18, kMat);
+                        patient.skinMat.metalness = THREE.MathUtils.lerp(patient.skinMat.metalness, 0.2, kMat);
                     } else {
-                        patient.skinMat.roughness = THREE.MathUtils.lerp(patient.skinMat.roughness, 0.72, 0.02);
-                        patient.skinMat.metalness = THREE.MathUtils.lerp(patient.skinMat.metalness, 0.05, 0.02);
+                        patient.skinMat.roughness = THREE.MathUtils.lerp(patient.skinMat.roughness, 0.72, kMat);
+                        patient.skinMat.metalness = THREE.MathUtils.lerp(patient.skinMat.metalness, 0.05, kMat);
                     }
 
                     // Émission en cas de détresse
                     if (spo2 < 90 || hr > 130) {
-                        patient.skinMat.emissive.set(0x220808);
-                        patient.skinMat.emissiveIntensity = 0.1 + Math.sin(Date.now() * 0.003) * 0.05;
+                        patient.skinMat.emissive.copy(DISTRESS);
+                        patient.skinMat.emissiveIntensity = 0.1 + Math.sin(now * 0.003) * 0.05;
                     } else {
-                        patient.skinMat.emissive.set(0x000000);
+                        patient.skinMat.emissive.setRGB(0, 0, 0);
                         patient.skinMat.emissiveIntensity = 0;
                     }
                 }
@@ -1344,13 +1460,13 @@ class ThreeManager {
                 // Cyanose progressive spécifique des lèvres (bouche)
                 const mouth = patient.mouth;
                 if (mouth && mouth.material) {
-                    let lipColor = new THREE.Color(0x8b2020); // Rouge à lèvres normal
+                    lipColor.copy(LIP_BASE); // Rouge à lèvres normal
                     if (spo2 < 95) {
                         // Transition progressive vers un violet/bleu clinique
                         const cyanoseFactor = Math.min(1, (95 - spo2) / 20);
-                        lipColor.lerp(new THREE.Color(0x2d3a6b), cyanoseFactor);
+                        lipColor.lerp(LIP_CYANOTIC, cyanoseFactor);
                     }
-                    mouth.material.color.lerp(lipColor, 0.02);
+                    mouth.material.color.lerp(lipColor, kColor);
                 }
 
                 // Mettre à jour l'expression faciale en continu
@@ -1370,8 +1486,13 @@ class ThreeManager {
 
             // Pulsation d'urgence (lumière rouge)
             if (this._urgencyPulseActive && this.scene?.scene) {
-                this._urgencyPulseTime = (this._urgencyPulseTime || 0) + 0.016;
-                const urgLight = this.scene.scene.getObjectByName('urgenceLight');
+                // Temps réel plutôt qu'un incrément fixe de 0.016 : la pulsation
+                // ne dépend plus de la cadence de boucle.
+                this._urgencyPulseTime = (this._urgencyPulseTime || 0) + dt;
+                // `urgenceLight` est mémorisée à sa création (voir
+                // `_applyUrgencyLight`) : un `getObjectByName` par frame
+                // parcourait tout le graphe de scène 60 fois par seconde.
+                const urgLight = this._urgencyLight;
                 if (urgLight) {
                     urgLight.intensity = 0.4 + Math.sin(this._urgencyPulseTime * 2.5) * 0.4;
                 }
@@ -1383,12 +1504,10 @@ class ThreeManager {
                 }
             } else if (this.scene?.scene?.fog && this.scene._normalFogColor) {
                 // Restaurer le fog normal progressivement
-                this.scene.scene.fog.color.lerp(this.scene._normalFogColor, 0.03);
+                this.scene.scene.fog.color.lerp(this.scene._normalFogColor, timeCorrectedLerp(0.03, dt));
             }
-
-            this._vitalsAnimFrame = requestAnimationFrame(animate);
         };
-        animate();
+        animate(performance.now());
     }
 
     _updateHUDVitals() {
@@ -1454,7 +1573,9 @@ import { predictiveStreamer } from './predictive-streamer.js';
 // Singleton global — disponible pour game.js via window.threeManager
 window.threeManager = new ThreeManager();
 
-// Streaming prédictif automatique sur chargement d'un cas clinique
+// Streaming prédictif automatique sur chargement d'un cas clinique.
+// Le préchargement n'est armé qu'au moment où le 3D est réellement demandé :
+// en 2D, il coûterait 1,8 Mio de téléchargement pour des modèles jamais rendus.
 document.addEventListener('case-loaded', (e) => {
     if (e.detail?.caseData) {
         if (window.threeManager) {

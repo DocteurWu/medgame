@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { box, createMaterial } from './three-room.js';
 import { pulseEmissive } from './three-animations.js';
-import { gltfLoader as _sharedGLTFLoader } from './three-loaders.js';
+import { loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
 
 const INSTRUMENTS = [
     { id: 'tensiometer', label: 'Tensiometre', x: -3.3, z: -0.4, key: 'tension', title: 'TA' },
@@ -11,6 +11,8 @@ const INSTRUMENTS = [
     { id: 'glucometer', label: 'Glucometre', x: -2.5, z: -0.4, key: 'glycemie', title: 'Glycemie' },
     { id: 'tablet', label: 'Tablette de décision', x: -2.55, z: -0.15, key: 'tablet', title: 'Fin' }
 ];
+
+const DESK_SURFACE_Y = 0.79;
 
 /**
  * Crée une texture procédurale de type écran LCD (chiffres / texte)
@@ -206,11 +208,10 @@ export class ThreeInstruments {
     // ===== STÉTHOSCOPE (modèle GLB Sketchfab) =====
     _buildStethoscope(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.445, item.z);
+        group.position.set(item.x, DESK_SURFACE_Y, item.z);
         this._tagGroup(group, item);
 
-        const loader = _sharedGLTFLoader;
-        loader.load('assets/3D/stethoscope.glb', (gltf) => {
+        loadGLBSmart('assets/3D/stethoscope.glb', (gltf) => {
             const model = gltf.scene;
 
             // Centrer le modèle sur sa propre bounding box
@@ -256,7 +257,7 @@ export class ThreeInstruments {
 
     _buildTensiometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.445, item.z);
+        group.position.set(item.x, DESK_SURFACE_Y, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0xf0f0f0, { roughness: 0.3, metalness: 0.2 });
@@ -339,10 +340,10 @@ export class ThreeInstruments {
         return group;
     }
 
-    // ===== OXymÈTRE =====
+    // ===== OXYMÈTRE =====
     _buildOximeter(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.445, item.z);
+        group.position.set(item.x, DESK_SURFACE_Y, item.z);
 
         // Boîtier clip (forme en pince)
         const shellMat = createMaterial(0x2a2a2a, { roughness: 0.3, metalness: 0.4 });
@@ -439,7 +440,7 @@ export class ThreeInstruments {
     // ===== THERMOMÈTRE =====
     _buildThermometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.445, item.z);
+        group.position.set(item.x, DESK_SURFACE_Y, item.z);
 
         // Bâtonnet principal (corps du thermomètre)
         const stickMat = createMaterial(0xf8f8f8, { roughness: 0.2, metalness: 0.3 });
@@ -496,7 +497,7 @@ export class ThreeInstruments {
     // ===== GLUCOMÈTRE =====
     _buildGlucometer(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.445, item.z);
+        group.position.set(item.x, DESK_SURFACE_Y, item.z);
 
         // Boîtier principal
         const caseMat = createMaterial(0x1a1a3a, { roughness: 0.25, metalness: 0.15 });
@@ -564,7 +565,7 @@ export class ThreeInstruments {
     // ===== TABLETTE (posée à plat sur le bureau, écran vers le haut) =====
     _buildTablet(item) {
         const group = new THREE.Group();
-        group.position.set(item.x, 1.452, item.z);
+        group.position.set(item.x, DESK_SURFACE_Y + 0.007, item.z);
         // À plat : l'écran (plan XY) bascule vers le haut
         group.rotation.x = -Math.PI / 2;
 
@@ -627,7 +628,7 @@ export class ThreeInstruments {
             emissive: item.id === 'tablet' ? 0x003366 : 0x000000,
             emissiveIntensity: item.id === 'tablet' ? 0.25 : 0
         });
-        const mesh = box(this.scene, { x: 0.26, y: 0.08, z: 0.18 }, { x: item.x, y: 1.48, z: item.z }, mat, item.label, true);
+        const mesh = box(this.scene, { x: 0.26, y: 0.08, z: 0.18 }, { x: item.x, y: DESK_SURFACE_Y + 0.04, z: item.z }, mat, item.label, true);
         mesh.userData.instrument = item;
         return mesh;
     }

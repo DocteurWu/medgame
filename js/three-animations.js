@@ -699,10 +699,21 @@ export class DustAnimator {
     constructor(dustParticles) {
         this.dust = dustParticles;
         this._initialPositions = null;
+        this._lastElapsed = 0;
     }
 
     update(elapsed) {
         if (!this.dust) return;
+        // Sur les presets `low` et `medium` les poussières sont désactivées :
+        // l'animateur continuait pourtant de recalculer 120 particules et de
+        // ré-uploader le buffer sur le GPU pour un objet invisible.
+        if (!this.dust.visible) return;
+
+        // 30 Hz : les poussières bougent de quelques centimètres par seconde,
+        // la fluidité perçue n'évolue pas au-delà.
+        if (elapsed - this._lastElapsed < 1 / 30) return;
+        this._lastElapsed = elapsed;
+
         const positions = this.dust.geometry.attributes.position;
         if (!positions) return;
 
@@ -712,15 +723,16 @@ export class DustAnimator {
         }
 
         const arr = positions.array;
+        const init = this._initialPositions;
         for (let i = 0; i < arr.length / 3; i++) {
             const ix = i * 3;
             const iy = i * 3 + 1;
             const iz = i * 3 + 2;
 
             // Mouvement brownien doux
-            arr[ix] = this._initialPositions[ix] + Math.sin(elapsed * 0.3 + i * 0.7) * 0.05;
-            arr[iy] = this._initialPositions[iy] + Math.sin(elapsed * 0.2 + i * 1.1) * 0.03;
-            arr[iz] = this._initialPositions[iz] + Math.cos(elapsed * 0.25 + i * 0.5) * 0.04;
+            arr[ix] = init[ix] + Math.sin(elapsed * 0.3 + i * 0.7) * 0.05;
+            arr[iy] = init[iy] + Math.sin(elapsed * 0.2 + i * 1.1) * 0.03;
+            arr[iz] = init[iz] + Math.cos(elapsed * 0.25 + i * 0.5) * 0.04;
         }
         positions.needsUpdate = true;
     }
@@ -855,11 +867,65 @@ export class ECGScreenAnimator {
         this._scanX = 0;
         this._ecgHistory = new Float32Array(this.canvasWidth).fill(0);
         this._lastElapsed = 0;
+
+        // Fond (noir + grille) pré-rendu une seule fois. Le retracer à chaque
+        // frame coûtait ~22 `stroke()` par écran, pour un fond qui ne change
+        // jamais : le fond est désormais un simple `drawImage`.
+        this._background = this._renderBackground();
+    }
+
+    _renderBackground() {
+        const w = this.canvasWidth;
+        const h = this.canvasHeight;
+        const bg = document.createElement('canvas');
+        bg.width = w;
+        bg.height = h;
+        const c = bg.getContext('2d');
+
+        // Fond noir-vert
+        c.fillStyle = '#001a00';
+        c.fillRect(0, 0, w, h);
+
+        // Grille
+        c.strokeStyle = 'rgba(0,80,0,0.3)';
+        c.lineWidth = 0.5;
+        c.beginPath();
+        for (let x = 0; x < w; x += 16) {
+            c.moveTo(x + 0.5, 0);
+            c.lineTo(x + 0.5, h);
+        }
+        for (let y = 0; y < h; y += 16) {
+            c.moveTo(0, y + 0.5);
+            c.lineTo(w, y + 0.5);
+        }
+        c.stroke();
+
+        return bg;
+    }
+
+    /**
+     * L'écran est-il réellement affiché ? Un maillage invisible (LOD de détail,
+     * patient hors champ avec parent masqué) ne doit pas être rasterisé ni
+     * ré-uploadé sur le GPU.
+     */
+    _isVisible() {
+        let o = this.screen;
+        while (o) {
+            if (o.visible === false) return false;
+            o = o.parent;
+        }
+        return true;
     }
 
     update(elapsed) {
-        // Throttling à 25 FPS (40ms) pour économiser la rasterisation CPU canvas et les transferts GPU texSubImage2D
-        if (this._lastElapsed !== undefined && (elapsed - this._lastElapsed) < 0.04) {
+        // Un écran caché ne coûte ni rasterisation CPU, ni transfert GPU.
+        if (!this._isVisible()) return;
+
+        // Throttling à 15 FPS. Le tracé fait 256 points de large sur un écran
+        // de quelques centimètres : au-delà de 15 images/s le gain visuel est
+        // nul, mais le coût (rasterisation + upload texSubImage2D de 98 Ko)
+        // est réel, et il y a deux écrans dans la salle.
+        if (this._lastElapsed !== undefined && (elapsed - this._lastElapsed) < 0.066) {
             return;
         }
         this._lastElapsed = elapsed;
@@ -868,25 +934,8 @@ export class ECGScreenAnimator {
         const w = this.canvasWidth;
         const h = this.canvasHeight;
 
-        // Fond noir-vert
-        ctx.fillStyle = '#001a00';
-        ctx.fillRect(0, 0, w, h);
-
-        // Grille
-        ctx.strokeStyle = 'rgba(0,80,0,0.3)';
-        ctx.lineWidth = 0.5;
-        for (let x = 0; x < w; x += 16) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, h);
-            ctx.stroke();
-        }
-        for (let y = 0; y < h; y += 16) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-            ctx.stroke();
-        }
+        // Fond pré-rendu (une seule opération au lieu de ~22 tracés)
+        ctx.drawImage(this._background, 0, 0);
 
         // Calcul de la position du scan basée sur le rythme cardiaque
         const bps = this.heartRate / 60;
@@ -921,10 +970,9 @@ export class ECGScreenAnimator {
         ctx.shadowColor = '#00ff44';
         ctx.shadowBlur = 4;
         ctx.beginPath();
-        for (let x = 0; x < w; x++) {
-            const y = h / 2 - this._ecgHistory[x] * h * 0.4;
-            if (x === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+        ctx.moveTo(0, h / 2 - this._ecgHistory[0] * h * 0.4);
+        for (let x = 1; x < w; x++) {
+            ctx.lineTo(x, h / 2 - this._ecgHistory[x] * h * 0.4);
         }
         ctx.stroke();
         ctx.shadowBlur = 0;

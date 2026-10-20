@@ -1,0 +1,131 @@
+/**
+ * css/three-loading.css — Écran de chargement de la scène 3D
+ *
+ * DEUX PIÈGES PAYÉS ICI, et ils étaient vrais EN MÊME TEMPS.
+ *
+ * 1. La feuille était d'abord un `<style>` posé par `innerHTML` sur un nœud
+ *    encore détaché : les règles ne s'appliquaient pas, même après l'append.
+ *    D'où une vraie feuille de style, injectée par `_injectStylesheet()`.
+ *
+ * 2. L'identifiant s'appelait `#3d-loading`. Un sélecteur CSS ne peut PAS
+ *    commencer par un chiffre : la règle est SILENCIEUSEMENT JETÉE à la
+ *    lecture. `new CSSStyleSheet().replaceSync('#3d-loading{...}')` renvoie
+ *    `cssRules.length === 0` sans aucune erreur. Concrètement, l'écran
+ *    s'affichait en texte nu au milieu de la page (`display:block`,
+ *    `position:static`), et c'est très exactement ce qu'il restait à corriger.
+ *
+ *    ⚠ Ne jamais nommer un sélecteur par un id commençant par un chiffre :
+ *    `#3d-...`, `#2fa-...`, `#0-...` sont tous invalides et silencieusement
+ *    ignorés. Écrire `#three-...` ou échapper (`#\33 d-loading`).
+ *
+ * Les classes `ld-*` sont volontairement les mêmes que dans `css/atlas.css` :
+ * un seul vocabulaire pour les deux écrans de chargement de l'application.
+ */
+
+#three-loading {
+    position: fixed;
+    inset: 0;
+    z-index: 9500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at 50% 45%, rgba(13, 20, 38, 0.97), rgba(5, 8, 18, 0.995));
+    backdrop-filter: blur(6px);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    opacity: 1;
+    transition: opacity 0.45s ease;
+}
+
+#three-loading.ld-hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#three-loading .ld-box {
+    text-align: center;
+    color: #e0e8f4;
+    padding: 30px 46px 26px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(12, 22, 48, 0.9), rgba(8, 14, 32, 0.88));
+    border: 1px solid rgba(120, 190, 255, 0.22);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    min-width: 320px;
+    max-width: 420px;
+}
+
+#three-loading .ld-logo {
+    font-size: 30px;
+    line-height: 1;
+    color: #00f2fe;
+    margin-bottom: 14px;
+    text-shadow: 0 0 18px rgba(0, 242, 254, 0.45);
+    animation: ld-pulse 1.6s ease-in-out infinite;
+}
+
+#three-loading .ld-title {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+}
+
+#three-loading .ld-phase {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 16px;
+    min-height: 1.2em;
+}
+
+#three-loading .ld-bar {
+    position: relative;
+    width: 260px;
+    height: 5px;
+    margin: 0 auto 14px;
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+/*
+ * Barre INDÉTERMINÉE. Le nombre total d'assets 3D n'est pas connu quand l'écran
+ * s'affiche — ils sont découverts pendant la construction — donc afficher « 0 % »
+ * puis « 47 % » serait un mensonge. Une barre qui balaie dit la même chose
+ * honnêtement : ça travaille, on ne sait pas encore combien de temps.
+ */
+#three-loading .ld-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 42%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, rgba(0, 242, 254, 0) 0%, #00c6ff 40%, #7ef9ff 60%, rgba(0, 242, 254, 0) 100%);
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.55);
+    animation: ld-sweep 1.35s ease-in-out infinite;
+}
+
+#three-loading .ld-note {
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+@keyframes ld-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.12); opacity: 1; }
+}
+
+@keyframes ld-sweep {
+    0% { left: -42%; }
+    100% { left: 100%; }
+}
+
+/* Le joueur a demandé le mode calme : on ne pulse plus, on fige tout. */
+@media (prefers-reduced-motion: reduce) {
+    #three-loading .ld-logo,
+    #three-loading .ld-bar::after {
+        animation: none;
+    }
+}

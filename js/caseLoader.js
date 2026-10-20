@@ -6,6 +6,24 @@
  * Optimisé avec cache mémoire et localStorage TTL.
  */
 
+/**
+ * Ce qui a le droit d'être MIRRORÉ dans `localStorage`.
+ *
+ * On ne persiste plus le CORPS des cas. Les 95 fichiers de `data/` pèsent
+ * 3,3 Mo au total : le miroir revenait donc à exécuter un `JSON.stringify`
+ * de 3,3 Mo sur le thread principal à chaque session, puis à écrire dans le
+ * `localStorage` — dont le quota est de l'ordre de 5 Mo, partagé avec le reste
+ * du site. Un `setItem` qui dépasse le quota lève `QuotaExceededError`, ce qui
+ * était intercepté et silencieusement perdu : on payait la chaîne complète pour
+ * rien.
+ *
+ * Le cache HTTP du navigateur fait déjà ce travail pour les fichiers JSON, et
+ * sans le payer sur le thread principal. Le miroir ne sert donc plus qu'à
+ * l'index des cas : il est petit, et il change quand `npm run generate:index`
+ * est relancé.
+ */
+const MIRROR_MAX_BYTES = 64 * 1024;
+
 const caseLoaderCache = {
     memory: new Map(),
     localStorageKey: 'medgame_case_cache',
@@ -29,16 +47,21 @@ const caseLoaderCache = {
     _scheduleSaveToLocalStorage() {
         if (this._pendingSave) return;
         this._pendingSave = true;
-        // Batch localStorage writes — don't block the main thread during parallel case loads
+        // Écriture différée ET bornée : seules les petites entrées (l'index)
+        // sont conservées. Le `JSON.stringify` reste donc proportionnel à
+        // quelques kilo-octets, jamais à la taille des cas.
         const doSave = () => {
             this._pendingSave = false;
             try {
                 const storage = {};
+                let bytes = 0;
                 const now = Date.now();
                 for (const [k, v] of this.memory) {
-                    if (now - v.timestamp < this.ttl) {
-                        storage[k] = v;
-                    }
+                    if (now - v.timestamp >= this.ttl) continue;
+                    const encoded = JSON.stringify(v.data);
+                    bytes += encoded.length;
+                    if (bytes > MIRROR_MAX_BYTES) break;
+                    storage[k] = v;
                 }
                 localStorage.setItem(this.localStorageKey, JSON.stringify(storage));
             } catch (e) { console.warn('Cache localStorage failed', e); }
@@ -52,7 +75,15 @@ const caseLoaderCache = {
 
     getFromLocalStorage(key) {
         try {
-            const storage = JSON.parse(localStorage.getItem(this.localStorageKey) || '{}');
+            const raw = localStorage.getItem(this.localStorageKey);
+            // Miroir écrit par une version antérieure : il peut contenir des
+            // mégaoctets de corps de cas. On le purge plutôt que de le reparcourir
+            // à chaque lecture.
+            if (raw && raw.length > MIRROR_MAX_BYTES * 4) {
+                localStorage.removeItem(this.localStorageKey);
+                return null;
+            }
+            const storage = JSON.parse(raw || '{}');
             const cached = storage[key];
             if (cached && Date.now() - cached.timestamp < this.ttl) {
                 this.memory.set(key, cached);
@@ -336,6 +367,68 @@ function lazyLoadCase(file) {
         });
 }
 
+/**
+ * Construit des DESCRIPTEURS légers (`{ id, file|dbId }`) sans télécharger les
+ * corps. `gameState.ensureCaseLoaded()` charge ensuite le corps du SEUL cas
+ * courant. C'est le « chargement paresseux du cas suivant » : à l'entrée en
+ * partie on ne paie plus les 22 cas / ~930 Ko d'un thème, seulement le premier.
+ *
+ * L'`id` est la base du nom de fichier : c'est la convention de `data/`
+ * (vérifié sur tous les cas indexés), donc `SessionSnapshot` — qui compare des
+ * listes d'id — reste cohérent sans télécharger les corps.
+ */
+function buildCaseDescriptors(files) {
+    return (files || [])
+        .filter(f => typeof f === 'string' && f.trim())
+        .map(f => {
+            const isDbId = !f.endsWith('.json');
+            const resolved = LEGACY_CASE_ALIASES[f] || f;
+            const base = resolved.replace(/\.json$/, '');
+            return {
+                id: base,
+                file: isDbId ? null : `${base}.json`,
+                dbId: isDbId ? f : null,
+                __descriptor: true
+            };
+        });
+}
+
+/**
+ * Résout le CORPS d'un descripteur (ou renvoie tel quel un corps déjà complet).
+ * Utilise le cache mémoire/TTL de `lazyLoadCase` pour les fichiers locaux.
+ */
+async function loadCaseBody(descriptor) {
+    if (!descriptor) return null;
+    // Corps déjà complet (chemin `?case=`, `preview`, single-case) : rien à faire.
+    if (descriptor.__descriptor !== true) return descriptor;
+
+    if (descriptor.dbId) {
+        if (typeof supabase !== 'undefined') {
+            try {
+                const { data, error } = await supabase
+                    .from('cases')
+                    .select('*')
+                    .eq('id', descriptor.dbId)
+                    .single();
+                if (!error && data) {
+                    const content = data.content;
+                    if (!content.id) content.id = data.id;
+                    return content;
+                }
+            } catch (err) {
+                console.warn('Supabase lazy fetch failed', err);
+            }
+        }
+        // Repli local si la base n'a pas le cas (ou Supabase absent)
+        return lazyLoadCase(`${descriptor.dbId}.json`);
+    }
+
+    return lazyLoadCase(descriptor.file);
+}
+
+window.buildCaseDescriptors = buildCaseDescriptors;
+window.loadCaseBody = loadCaseBody;
+
 async function loadCasesMetadata() {
     const cacheKey = 'case_index';
     const cached = caseLoaderCache.get(cacheKey) || caseLoaderCache.getFromLocalStorage(cacheKey);
@@ -442,71 +535,15 @@ async function loadCasesData() {
         }
 
         if (selectedCaseFiles.length > 0) {
-            const dbIds = selectedCaseFiles.filter(f => !f.endsWith('.json'));
-            const localFiles = selectedCaseFiles.filter(f => f.endsWith('.json'));
-
-            let dbCases = [];
-            if (dbIds.length > 0 && typeof supabase !== 'undefined') {
-                try {
-                    const { data, error } = await supabase
-                        .from('cases')
-                        .select('*')
-                        .in('id', dbIds);
-
-                    if (!error && data) {
-                        dbCases = data.map(c => {
-                            const content = c.content;
-                            if (!content.id) content.id = c.id;
-                            return content;
-                        });
-                    }
-                } catch (err) {
-                    console.warn("Supabase fetch failed during multi-load", err);
-                }
-            }
-
-            // Pour tout ID de base non trouvé (ex. s'il s'agit d'un repli ou erreur réseau), on tente de le charger localement
-            const loadedDbIds = dbCases.map(c => c.id);
-            const missingDbIds = dbIds.filter(id => !loadedDbIds.includes(id));
-            const allLocalFilesToLoad = [...localFiles, ...missingDbIds.map(id => id.endsWith('.json') ? id : `${id}.json`)];
-
-            let localCases = [];
-            if (allLocalFilesToLoad.length > 0) {
-                try {
-                    const results = await Promise.allSettled(allLocalFilesToLoad.map(lazyLoadCase));
-                    localCases = results
-                        .filter(r => r.status === 'fulfilled' && r.value !== null)
-                        .map(r => r.value);
-                } catch (err) {
-                    console.warn("Local files load failed", err);
-                }
-            }
-
-            // Reconstituer l'array final dans l'ordre d'origine
-            const mergedCases = [];
-            selectedCaseFiles.forEach(fileOrId => {
-                const normalizedId = fileOrId.replace('.json', '');
-                // Chercher d'abord dans les cas Supabase
-                const dbCase = dbCases.find(c => c.id === normalizedId || c.id === fileOrId);
-                if (dbCase) {
-                    mergedCases.push(dbCase);
-                } else {
-                    // Chercher dans les cas locaux
-                    const localCase = localCases.find(c => {
-                        const cId = c.id || '';
-                        return cId.toLowerCase() === normalizedId.toLowerCase() || cId.toLowerCase() === fileOrId.toLowerCase();
-                    });
-                    if (localCase) {
-                        mergedCases.push(localCase);
-                    }
-                }
-            });
-
-            if (mergedCases.length > 0) {
-                // NOTE : la sélection n'est PAS purgée ici — elle est conservée
-                // pour la reprise de session (SessionSnapshot). Elle est purgée
-                // par SessionSnapshot.clearFullSession() en fin de session.
-                return mergedCases;
+            // Descripteurs légers : ordre d'origine préservé, aucun corps
+            // téléchargé. Chaque cas est chargé à la demande par loadCaseBody()
+            // quand le joueur y arrive (voir gameState.ensureCaseLoaded).
+            // NOTE : la sélection n'est PAS purgée ici — elle est conservée
+            // pour la reprise de session (SessionSnapshot). Elle est purgée
+            // par SessionSnapshot.clearFullSession() en fin de session.
+            const descriptors = buildCaseDescriptors(selectedCaseFiles);
+            if (descriptors.length > 0) {
+                return descriptors;
             }
         }
 
@@ -564,20 +601,9 @@ async function loadCasesData() {
             throw new Error('Aucun cas disponible pour les thèmes sélectionnés');
         }
 
-        const results = await Promise.allSettled(caseFiles.map(lazyLoadCase));
-        const cases = results
-            .filter(r => r.status === 'fulfilled' && r.value !== null)
-            .map(r => r.value);
-
-        if (cases.length < caseFiles.length) {
-            console.warn(`${caseFiles.length - cases.length} cas n'ont pas pu être chargés`);
-        }
-
-        if (cases.length === 0) {
-            throw new Error('Aucun cas disponible');
-        }
-
-        return cases;
+        // Changement paresseux : on ne télécharge plus tout le thème. Les corps
+        // sont chargés un par un au fil de la partie (loadCaseBody).
+        return buildCaseDescriptors(caseFiles);
     } catch (error) {
         console.error('Erreur lors du chargement des cas :', error);
         showNotification('Erreur lors du chargement des cas cliniques : ' + error.message);

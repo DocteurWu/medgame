@@ -149,13 +149,24 @@
      */
     global.MedGameAudio.boot = function boot(options) {
         const opts = options || {};
-        A.init();
-        if (opts.ambience !== false && global.MedGameAmbience) {
-            global.MedGameAmbience.start();
-        }
-        if (global.MedGameAmbience && opts.state) {
-            global.MedGameAmbience.setState(opts.state, true);
-        }
+        // NE PAS créer le contexte ici.
+        //
+        // `boot()` est appelé par `loadCase()` au chargement d'un cas, donc
+        // avant tout geste utilisateur. Or la construction du contexte audio est
+        // une opération synchrone de plus d'une seconde sur le thread principal :
+        // elle gelait l'entrée en jeu. Et le navigateur refusant de démarrer un
+        // contexte créé sans geste, tout ce qu'on y synthétiserait serait muet.
+        //
+        // Les couches s'abonnent donc au contexte et démarrent au premier clic.
+        // `whenReady` exécute immédiatement si le contexte existe déjà.
+        A.whenReady(() => {
+            if (opts.ambience !== false && global.MedGameAmbience) {
+                global.MedGameAmbience.start();
+            }
+            if (global.MedGameAmbience && opts.state) {
+                global.MedGameAmbience.setState(opts.state, true);
+            }
+        });
         return MedGameAudio;
     };
 })(typeof window !== 'undefined' ? window : globalThis);

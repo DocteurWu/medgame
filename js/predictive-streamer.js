@@ -12,6 +12,32 @@ export class PredictiveStreamer {
         this._isProcessing = false;
         this._inFlight = new Set();
         this._prefetchedUrls = new Set();
+        /**
+         * Le préchargement ne sert qu'à la scène 3D.
+         *
+         * Tant qu'elle n'est pas demandée, précharger le patient (257 Ko) et le
+         * médecin (1,55 Mo) fait télécharger 1,8 Mio ET les écrire dans le
+         * CacheStorage pour rien sur une partie 2D — c'était 1,8 Mio de la
+         * bande passante d'entrée en jeu sur chaque chargement de page, en plus
+         * du coût de décodage. `three-manager` arme le drapeau au moment où la
+         * construction 3D démarre.
+         */
+        this._armed = false;
+        this._pendingCase = null;
+    }
+
+    /**
+     * Autorise (ou non) le préchargement. Tant que le 3D n'est pas demandé, le
+     * cas est mémorisé et sera servi dès l'activation — il n'est simplement pas
+     * téléchargé avant.
+     */
+    setArmed(armed) {
+        this._armed = !!armed;
+        if (armed && this._pendingCase) {
+            const c = this._pendingCase;
+            this._pendingCase = null;
+            this.predictForCase(c);
+        }
     }
 
     /**
@@ -40,6 +66,12 @@ export class PredictiveStreamer {
      */
     predictForCase(caseData) {
         if (!caseData) return;
+        // 3D non demandé : on garde le cas pour plus tard, sans rien télécharger.
+        // C'est le chemin normal en 2D, et il ne doit coûter aucun octet.
+        if (!this._armed) {
+            this._pendingCase = caseData;
+            return;
+        }
         const candidateAssets = [];
 
         // 1. Modèle 3D du patient Kenney (Priorité 1)

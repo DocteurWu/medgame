@@ -4,6 +4,33 @@
  */
 
 import * as THREE from 'three';
+import { loadGLBSmart } from './three-loaders.js?v=20261011-lit-v1';
+
+/**
+ * Paliers de détail décoratif.
+ *
+ * La salle contient ~110 maillages, dont beaucoup ne servent qu'à l'ambiance.
+ * Aucun n'est interactif (les objets cliquables sont marqués
+ * `userData.interactive`, jamais dans cette liste), on peut donc les retirer du
+ * rendu sans toucher au jeu.
+ *
+ * Niveau 0 (`low`) : aucun décor superflu — la salle reste meublée et éclairée.
+ * Niveau 1 (`medium`) : + poussières, plante, lambris, plinthes, bacs,
+ *   accessoires d'évier, moniteur décoratif, cadre et ciel de la fenêtre,
+ *   points lumineux du plafond.
+ * Niveau 2 (`high` et au-delà) : + panneaux de plafond, faisceau volumétrique
+ *   solaire et son fill, horloge murale.
+ *
+ * Les points lumineux sont le poste le plus cher : chaque `PointLight` ajoute
+ * un terme par fragment sur TOUS les matériaux éclairés de la salle. Le faisceau
+ * solaire est une grosse boîte additive translucide, donc du fill rate pur.
+ */
+const DETAIL_TIERS = {
+    low: 0,
+    medium: 1,
+};
+
+export const DETAIL_FULL = 2;
 
 export class ThreeEnvironmentAgent {
     constructor(scene) {
@@ -15,37 +42,117 @@ export class ThreeEnvironmentAgent {
         this.dustParticles = null;
         // Références d'animation décorative (horloge murale temps réel)
         this._clockHands = null;
+        // Objets décoratifs et palier de détail minimum requis pour les afficher.
+        this._decor = [];
+        this._detailLevel = DETAIL_FULL;
     }
 
     /**
-     * Améliore la salle avec des textures procédurales et des détails
+     * Déclare un objet comme purement décoratif.
+     *
+     * ⚠ NE JAMAIS DÉCLARER UNE LUMIÈRE ICI.
+     *
+     * Dans three.js, une lumière `visible = false` disparaît de la liste des
+     * lumières de la scène, et le nombre de lumières entre dans la CLÉ DE CACHE
+     * du programme de chaque matériau. Masquer une lumière via le palier de
+     * détail ne fait donc pas que l'éteindre : three.js RECOMPILE tous les
+     * programmes de la salle. Or le palier change à la détection du GPU, puis à
+     * chaque palier de qualité adaptatif — c'est-à-dire au pire moment, quand la
+     * machine est déjà à la limite.
+     *
+     * Le garde-fou ci-dessous met les intensités à zéro au lieu de masquer, ce
+     * qui est gratuit (une uniformes) et ne touche pas à la clé de cache.
+     *
+     * @param {THREE.Object3D} obj
+     * @param {number} minDetail — 0, 1 ou DETAIL_FULL
      */
-    enhanceRoom() {
-        this._addWallTextures();
-        this._addFloorDetail();
-        // this._addWindowEffect(); // Volumetric window light beam removed as requested
-        this._addMedicalPosters();
-        // this._addCurtain(); // Removed, replaced by 3D Door model in three-room.js
-        this._addIVStand();
-        this._addECGMonitor();
-        this._addWallECGMonitor();
-        this._addCharriot();
-        this._addDustParticles();
-        this._addMedicineCabinet();
-        this._addPottedPlant();
-        this._addExaminationBedDetails();
-        // --- Habillage clinique & ambiance lumineuse (extensions purement décoratives,
-        //     non interactives : aucun impact sur le raycasting / la logique de jeu) ---
-        this._addDaylightWindow();
-        this._addCeilingLightPanels();
-        this._addCeilingAreaLights();
-        this._addWallWainscot();
-        this._addBaseboards();
-        this._addVitalSignsMonitor();
-        this._addWasteBins();
-        this._addSinkAccessories();
-        this._addWallClock();
+    _registerDecor(obj, minDetail) {
+        if (!obj) return;
+        if (obj.isLight) {
+            obj.userData.baseIntensity = obj.userData.baseIntensity ?? obj.intensity ?? 0;
+            console.warn('[EnvironmentAgent] lumière déclarée en décor :', obj.name || obj.type,
+                '— son intensité sera pilotée, jamais masquée (sinon recompilation).');
+        }
+        this._decor.push({ obj, minDetail });
     }
+
+    /**
+     * Applique un palier de détail : masque tout le décor au-dessus du palier.
+     * Un objet `visible = false` n'est ni dessiné, ni inclus dans la passe
+     * d'ombres, ni testé au raycast — le gain est total, pas seulement visuel.
+     *
+     * Les lumières font exception : on leur met l'intensité à zéro au lieu de
+     * les masquer, pour ne pas provoquer de recompilation (voir `_registerDecor`).
+     * @param {number} level
+     */
+    setDetailLevel(level) {
+        this._detailLevel = level;
+        for (const { obj, minDetail } of this._decor) {
+            if (obj.isLight) {
+                obj.intensity = level >= minDetail ? (obj.userData.baseIntensity ?? 0) : 0;
+                continue;
+            }
+            obj.visible = level >= minDetail;
+        }
+    }
+
+    getDetailLevel() {
+        return this._detailLevel;
+    }
+
+    /**
+     * Traduit un nom de preset qualité en palier de détail.
+     * @param {string} presetName
+     */
+    detailLevelForPreset(presetName) {
+        return DETAIL_TIERS[presetName] ?? DETAIL_FULL;
+    }
+
+/**
+ * Étapes de construction de la salle, une par élément.
+ *
+ * `enhanceRoom()` appelait ses vingt accesseurs d'affilée dans une seule tâche
+ * synchrone : ~110 maillages, ~110 géométries, ~90 matériaux et 9 textures
+ * procédurales d'un bloc. C'est le plus long gel du lancement, et il échappait
+ * au budget de frame de `TaskScheduler` — un budget ne peut pas couper une tâche
+ * qui ne rend pas la main.
+ *
+ * En exposant chaque accesseur comme une tranche distincte, on laisse le
+ * ordonnanceur rendre la main entre deux éléments de la salle. L'ordre est
+ * inchangé (les dépendances restent satisfaites).
+ *
+ * @returns {Array<Function>}
+ */
+enhanceRoomSteps() {
+    return [
+        () => this._addWallTextures(),
+        () => this._addFloorDetail(),
+        () => this._addMedicalPosters(),
+        () => this._addIVStand(),
+        () => this._addECGMonitor(),
+        () => this._addWallECGMonitor(),
+        () => this._addCharriot(),
+        () => this._addDustParticles(),
+        () => this._addMedicineCabinet(),
+        () => this._addPottedPlant(),
+        () => this._addExaminationBedDetails(),
+        () => this._addDaylightWindow(),
+        () => this._addCeilingLightPanels(),
+        () => this._addWallWainscot(),
+        () => this._addBaseboards(),
+        () => this._addVitalSignsMonitor(),
+        () => this._addWasteBins(),
+        () => this._addSinkAccessories(),
+        () => this._addWallClock(),
+    ];
+}
+
+/**
+ * Améliore la salle avec des textures procédurales et des détails
+ */
+enhanceRoom() {
+    for (const step of this.enhanceRoomSteps()) step();
+}
 
     _addWallTextures() {
         const walls = this.scene.children.filter(
@@ -807,6 +914,7 @@ export class ThreeEnvironmentAgent {
         dustParticles.name = 'DustParticles';
         this.scene.add(dustParticles);
         this.dustParticles = dustParticles;
+        this._registerDecor(dustParticles, 1);
     }
 
     // ===== STATION C: GLASS MEDICINE CABINET ('Armoire') =====
@@ -895,10 +1003,14 @@ export class ThreeEnvironmentAgent {
             }
         }
 
-        // Lueur d'ambiance d'armoire (faible : la vitre émissive porte déjà l'effet)
-        const cabLight = new THREE.PointLight('#93c5fd', 0.35, 2.5);
-        cabLight.position.set(0, 2.7, 0.1);
-        cabinetGroup.add(cabLight);
+        // Lueur d'ambiance d'armoire : SUPPRIMÉE.
+        //
+        // Elle était enfant de `cabinetGroup`, lui-même décor de palier 1. Le
+        // palier de détail passe `cabinetGroup.visible = false` sur machine
+        // modeste, ce qui retirait cette `PointLight` de la scène — et le nombre
+        // de lumières étant dans la clé de cache des programmes, chaque changement
+        // de palier recompilait toute la salle. La vitre émissive porte déjà
+        // l'effet, pour rien.
 
         this.scene.add(cabinetGroup);
 
@@ -946,9 +1058,15 @@ export class ThreeEnvironmentAgent {
             plantGroup.add(leaf);
         }
         this.scene.add(plantGroup);
+        this._registerDecor(plantGroup, 1);
     }
 
     // ===== STATION B DETAILS: Examination Bed structure =====
+    // Lit : modèle GLB généré par IA (assets/models/props/lit_examen.glb,
+    // 15k tris, textures 512px, Draco) chargé en remplacement du cadre
+    // procédural. Les coussins/drap procéduraux sont masqués (le GLB inclut
+    // son matelas, calé pour un dessus à ~0.98m comme avant). Repli : si le
+    // GLB échoue, l'ancien lit procédural est réaffiché (scène jamais cassée).
     _addExaminationBedDetails() {
         const bedGroup = new THREE.Group();
         bedGroup.position.set(6.0, 0, 0.2); // Right side, shifted due to rotation
@@ -1084,6 +1202,72 @@ export class ThreeEnvironmentAgent {
 
         bedGroup.add(medicalLamp);
         this.scene.add(bedGroup);
+
+        // Remplacement du lit procédural par le GLB généré (même transform).
+        // Séquence : le lit procédural reste visible TANT QUE le GLB n'est pas
+        // là (pas de trou dans la scène), puis on masque cadre + matelas et on
+        // ajoute le GLB. En cas d'échec réel, le procédural reste en place.
+        // Timeout large : pendant l'init 3D le thread principal est saturé, un
+        // seuil de 25 s tombait à faux et déclenchait le repli alors que le
+        // GLB arrivait bel et bien ensuite (les deux lits se superposaient).
+        const proceduralBed = [bedFrame, mainCushion, headCushion, pillow, paperRoll, paperSheet];
+        // URL VERSIONNÉE : le OfflineAssetCache indexe par URL et ne sait pas
+// invalider. Sans suffixe, remplacer lit_examen.glb ne change rien pour qui a
+// déjà joué — le navigateur ressert l'ancien fichier (avec la dalle de sol)
+// depuis le CacheStorage. Le suffixe rend l'URL nouvelle donc le cache inutile.
+const LIT_URL = 'assets/models/props/lit_examen.glb?v=20261011-nofloor';
+loadGLBSmart(LIT_URL, (gltf) => {
+            try {
+                const model = gltf.scene;
+                // ── Normalisation ────────────────────────────────────────────
+                // Le GLB fait 1,874 m de long (X), 0,832 m de large (Z),
+                // 1,040 m de haut. Après rotation de 90°, la longueur passe
+                // sur l'axe Z local : c'est CET axe qu'il faut caler sur 2,05 m.
+                // (Caler X donnait un facteur 2,4× et un lit démesuré.)
+                model.rotation.y = Math.PI / 2;
+                model.updateMatrixWorld(true);
+                const size0 = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3());
+                if (!(size0.z > 0.1 && size0.y > 0.1)) throw new Error('bbox GLB lit invalide');
+
+                const TARGET_LENGTH = 2.05;   // longueur du lit d'examen
+                const TARGET_DECK = 0.98;     // dessus du matelas — valeur EXACTE de
+                                              // l'ancien lit procédural (mainCushion à
+                                              // y=0.90, épaisseur 0.16 → 0.98) : le
+                                              // patient garde ainsi son assise d'origine.
+                const BASE_Y = 0.02;          // pieds du lit posés au sol
+
+                const sXZ = TARGET_LENGTH / size0.z;
+                // Le matelas (Y local ≈ 0,218, base ≈ -0,517) doit tomber à TARGET_DECK.
+                const deckLocal = 0.218;
+                const baseLocal = -0.517;
+                const sY = (TARGET_DECK - BASE_Y) / Math.max(0.01, deckLocal - baseLocal);
+
+                model.scale.set(sXZ, sY, sXZ);
+                model.updateMatrixWorld(true);
+
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                model.position.x += 1.3 - center.x;   // centré sur l'ancien lit procédural
+                model.position.z += -0.05 - center.z;
+                model.position.y += BASE_Y - box.min.y; // pieds au sol
+
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                        child.receiveShadow = true;
+                    }
+                });
+                model.name = 'LitGenere';
+                bedGroup.add(model);
+                proceduralBed.forEach((m) => { m.visible = false; }); // le GLB est en place : on masque
+
+                console.info(`[Lit] GLB en place — long ${(size0.z * sXZ).toFixed(2)}m, haut ${(size0.y * sY).toFixed(2)}m`);
+            } catch (e) {
+                console.warn('[Lit] Normalisation GLB échouée, lit procédural conservé :', e);
+            }
+        }, undefined, (err) => {
+            console.warn('[Lit] Échec GLB, lit procédural conservé :', err);
+        }, { timeoutMs: 20000 });
     }
 
     // ===== DALLES LED DE PLAFOND (éclairage hospitalier) =====
@@ -1112,6 +1296,7 @@ export class ThreeEnvironmentAgent {
             panel.add(diffuser);
 
             this.scene.add(panel);
+            this._registerDecor(panel, 2);
         });
     }
 
@@ -1157,6 +1342,10 @@ export class ThreeEnvironmentAgent {
         const railRight = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.04, 10), railMat);
         railRight.position.set(5.435, h + 0.02, 0);
         this.scene.add(railRight);
+
+        for (const w of [backL, backR, right, railBackL, railBackR, railRight]) {
+            this._registerDecor(w, 1);
+        }
     }
 
     // ===== FENÊTRE DE JOUR (mur droit) + VUE EXTÉRIEURE + FAISCEAU VOLUMÉTRIQUE =====
@@ -1178,12 +1367,17 @@ export class ThreeEnvironmentAgent {
         const frameT = 0.07;   // épaisseur des montants
         const frameD = 0.09;   // profondeur (le long de x)
 
+        // Les quatre montants sont créés par `mkFrame` et ajoutés à la scène là
+        // où ils sont construits : il faut donc les collects pour pouvoir
+        // ensuite les enregistrer au LOD de détail.
+        const frameParts = [];
         const mkFrame = (w, hgt, px, py) => {
-            const m = new THREE.Mesh(new THREE.BoxGeometry(frameD, hgt, w), frameMat);
-            m.position.set(5.46, py, px);
-            m.castShadow = true;
-            this.scene.add(m);
-            return m;
+            const mesh = new THREE.Mesh(new THREE.BoxGeometry(frameD, hgt, w), frameMat);
+            mesh.position.set(5.46, py, px);
+            mesh.castShadow = true;
+            this.scene.add(mesh);
+            frameParts.push(mesh);
+            return mesh;
         };
         mkFrame(winW + frameT * 2, frameT, winCenterZ, winCenterY + winH / 2 + frameT / 2); // traverse haute
         mkFrame(winW + frameT * 2, frameT, winCenterZ, winCenterY - winH / 2 - frameT / 2); // traverse basse
@@ -1264,11 +1458,20 @@ export class ThreeEnvironmentAgent {
         shaft.rotation.y = 0.12;  // légèrement orienté vers le centre de la salle
         this.scene.add(shaft);
 
-        // --- Lumière ciel froide (fill bleuté juste devant la fenêtre) ---
-        // Réduite : la key light + hemi portent déjà l'éclairage jour.
-        const skyFill = new THREE.PointLight('#cfe6ff', 0.3, 7);
-        skyFill.position.set(4.8, winCenterY, winCenterZ);
-        this.scene.add(skyFill);
+        // --- Fill lumineux de la fenêtre : SUPPRIMÉ ---
+        //
+        // Il y avait ici une `PointLight('#cfe6ff', 0.3, 7)` posée à 20 cm de la
+        // `windowFill` de ThreeLightingAgent : gain nul, et une source de plus
+        // dans la boucle d'éclairage de chaque pixel de chaque matériau de la
+        // salle. Elle était aussi déclarée en décor de palier 2, ce qui était
+        // pire encore — voir l'avertissement sur `_registerDecor`.
+
+        // La volumétrie est l'objet le plus coûteux de la salle (grosse surface
+        // additive translucide), donc le premier décor à sacrifier.
+        for (const o of [...frameParts, vMullion, hMullion, glass, sill, backdrop]) {
+            this._registerDecor(o, 1);
+        }
+        this._registerDecor(shaft, 2);
     }
 
     /**
@@ -1378,22 +1581,30 @@ export class ThreeEnvironmentAgent {
         right.position.set(5.44, h / 2, 0);
         right.receiveShadow = true;
         this.scene.add(right);
+
+        for (const o of [backL, backR, right]) {
+            this._registerDecor(o, 1);
+        }
     }
 
-    // ===== RECT AREA LIGHT (éclairage doux unique aligné sur les dalles LED) =====
-    // Une seule source centrée au lieu de 2 (doublon des points plafond) :
-    // RectArea ne gère pas les ombres et coûte du shader sur tout Standard/Physical.
-    _addCeilingAreaLights() {
-        import('three/addons/lights/RectAreaLightUniformsLib.js')
-            .then(({ RectAreaLightUniformsLib }) => {
-                RectAreaLightUniformsLib.init();
-                const light = new THREE.RectAreaLight(0xf2f6ff, 1.1, 2.4, 0.6);
-                light.position.set(0, 4.9, 0);
-                light.rotation.x = -Math.PI / 2; // éclaire vers le sol
-                this.scene.add(light);
-            })
-            .catch(() => { /* addon indisponible : les point lights suffisent */ });
-    }
+    // ===== RECT AREA LIGHT — SUPPRIMÉE =====
+    //
+    // Il y avait ici une `RectAreaLight` alignée sur les dalles LED, pour un
+    // éclairage que la `PointLight` de plafond et l'IBL produisent déjà. Elle
+    // était surtout deux fois pénalisante :
+    //
+    //  1. une `RectAreaLight` ajoute le code LTC (approximation de surface)
+    //     dans le fragment shader de TOUS les matériaux Standard/Physical de la
+    //     salle — donc dans chacun des dizaines de programmes à compiler ;
+    //  2. elle était déclarée en décor de palier 1, donc masquée
+    //     (`visible = false`) sur les machines modestes. Or le nombre de
+    //     lumières entre dans la clé de cache des programmes : ce changement de
+    //     palier déclenchait une RECOMPILATION COMPLETE de la salle, au moment
+    //     exact où la machine est déjà saturée. Le gain hoped (alléger le palier
+    //     bas) se transformait en gel.
+    //
+    // La `_addCeilingLightPanels()` ci-dessus garde l'aspect visuel des dalles ;
+    // seul l'éclairage physique est porté par les sources de ThreeLightingAgent.
 
     // ===== MONITEUR MULTIPARAMÉTRIQUE (FC / SpO2 / TA — écho aux constantes de l'UI) =====
     _addVitalSignsMonitor() {
@@ -1499,6 +1710,7 @@ export class ThreeEnvironmentAgent {
         group.add(wallArm);
 
         this.scene.add(group);
+        this._registerDecor(group, 1);
     }
 
     // ===== POUBELLES : DASRI (jaune) + corbeille classique =====
@@ -1586,6 +1798,8 @@ export class ThreeEnvironmentAgent {
         bin.add(bag);
 
         this.scene.add(bin);
+        this._registerDecor(dasri, 1);
+        this._registerDecor(bin, 1);
     }
 
     // ===== ACCESSOIRES D'HYGIÈNE PRÈS DU LAVABO (mur gauche, x = -5.45) =====
@@ -1678,6 +1892,7 @@ export class ThreeEnvironmentAgent {
         accessories.add(shelf);
 
         this.scene.add(accessories);
+        this._registerDecor(accessories, 1);
     }
 
     // ===== HORLOGE MURALE TEMPS RÉEL (mur du fond) =====
@@ -1768,6 +1983,7 @@ export class ThreeEnvironmentAgent {
 
         this._clockHands = { hour: hourHand, minute: minuteHand, second: secondHand };
         this.scene.add(clock);
+        this._registerDecor(clock, 2);
     }
 
     /**
@@ -1813,8 +2029,11 @@ export class ThreeEnvironmentAgent {
             const beat2 = t < 0.1 ? Math.sin(t / 0.1 * Math.PI) : 0.15;
             this._wallEcgLedMat.emissiveIntensity = 0.3 + beat2 * 0.7;
         }
-        // Horloge murale : aiguilles synchronisées sur l'heure réelle du système
-        if (this._clockHands) {
+        // Horloge murale : aiguilles synchronisées sur l'heure réelle du système.
+        // Une horloge n'a que 3 aiguilles : inutile de les recalculer à 60 Hz
+        // alors que la trotteuse ne fait un tour qu'en 60 s. Et si elle est
+        // masquée par le LOD de détail, on saute complètement le travail.
+        if (this._clockHands && this._detailLevel >= 2) {
             const now = new Date();
             const s = now.getSeconds() + now.getMilliseconds() / 1000;
             const m = now.getMinutes() + s / 60;

@@ -167,7 +167,12 @@ test('QuotaGuard — logique locale pure', async (t) => {
 
     await t.test('wrappers préservent le quota (llm-patient / GameManager / ecosMode)', () => {
         const lp = fs.readFileSync(path.join(ROOT, 'js', 'llm-patient.js'), 'utf8');
-        assert.match(lp, /isQuotaError/, 'llm-patient.js délègue au QuotaGuard avant diagnostic technique');
+        // llm-patient.js délègue au QuotaGuard AVANT de fabriquer son diagnostic technique.
+        // `blocksTablet` est l'API courante (isQuotaError && kind !== 'grading') : une erreur
+        // de quota en mode notation ne doit pas bloquer la tablette, sinon le joueur
+        // ne peut plus être noté. `isQuotaError` reste le cas général.
+        assert.match(lp, /QuotaGuard\?\.(blocksTablet|isQuotaError)\?\./,
+            'llm-patient.js délègue au QuotaGuard avant diagnostic technique');
         const gm = fs.readFileSync(path.join(ROOT, 'js', 'MedicalGameManager.js'), 'utf8');
         assert.match(gm, /QUOTA_EXCEEDED/, 'MedicalGameManager.js propage le quota sans wrapping');
         const eco = fs.readFileSync(path.join(ROOT, 'js', 'ecosMode.js'), 'utf8');

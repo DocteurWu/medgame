@@ -185,14 +185,33 @@
         } catch (_) {}
     }
 
-    function isQuotaError(err) {
+function isQuotaError(err) {
         if (!err) return false;
         if (err.code === 'QUOTA_EXCEEDED') return true;
-        if (err.localOnly === true && /quota/i.test(String((err && err.message) || err))) return true;
+        if (err.localOnly === true && /quota/i.test(String((err && err.message) || ''))) return true;
         var msg = String((err && err.message) || err);
         return msg.indexOf('QUOTA_EXCEEDED') !== -1
             || msg.indexOf('HTTP 402') !== -1
             || /quota de messages épuisé/i.test(msg);
+    }
+
+    /**
+     * Vrai SEULEMENT si l'erreur doit verrouiller la tablette de l'étudiant.
+     *
+     * Un quota épuisé sur la GRADATION ECOS (kind='grading') ne verrouille rien :
+     * c'est un appel interne, au budget propre et large, dont la seule
+     * conséquence doit être « la grille ne se coche pas sur ce tour ». Verrouiller
+     * l'interrogatoire pour cela reviendrait à déplacer le plafond au lieu de
+     * l'abase — exactement le défaut qu'on corrige.
+     *
+     * `isQuotaError` reste donc honnête (c'est bien une erreur de quota) ; c'est
+     * cette prédication qui décide de l'effet de bord.
+     *
+     * Une erreur sans `kind` reste bloquante : on ne verrouille jamais par
+     * défaut d'information, on ne déverrouille que sur une preuve.
+     */
+    function blocksTablet(err) {
+        return isQuotaError(err) && (!err || err.kind !== 'grading');
     }
 
     // ── Verrou tablette ──────────────────────────────────────────────────
@@ -391,6 +410,7 @@
         preCheckSync: preCheckSync,
         syncFromHeaders: syncFromHeaders,
         isQuotaError: isQuotaError,
+        blocksTablet: blocksTablet,
         isLocked: isLocked,
         lockTablet: lockTablet,
         unlockTablet: unlockTablet,

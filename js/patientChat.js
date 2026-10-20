@@ -477,7 +477,7 @@
                 } catch (err) {
                     console.error('[PatientChat] MedicalGameManager error:', err);
                     // Quota épuisé → verrou tablette + bannière/modale (pas d'erreur technique)
-                    if (window.QuotaGuard?.isQuotaError?.(err)) {
+                    if (window.QuotaGuard?.blocksTablet?.(err)) {
                         window.QuotaGuard.lockTablet({
                             reason: err.reason || 'quota',
                             remaining_day: err.remaining_day ?? null,
@@ -543,7 +543,7 @@
                 } catch (err) {
                     console.error('[PatientChat] LLMPatient error:', err);
                     // Quota épuisé → verrou tablette + bannière/modale (pas d'erreur technique)
-                    if (window.QuotaGuard?.isQuotaError?.(err)) {
+                    if (window.QuotaGuard?.blocksTablet?.(err)) {
                         window.QuotaGuard.lockTablet({
                             reason: err.reason || 'quota',
                             remaining_day: err.remaining_day ?? null,

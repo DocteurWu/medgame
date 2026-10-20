@@ -7,6 +7,20 @@
 export class TaskScheduler {
     /**
      * Exécute une série de fonctions sous forme de batch time-slicé.
+     *
+     * Deux règles, et les deux sont nécessaires :
+     *
+     *  1. `maxBudgetMs` est une borne HAUTE, même quand le navigateur fournit un
+     *     `deadline`. `timeRemaining()` peut annoncer 50 ms alors que le frame
+     *     time est déjà consommé sur une machine lente, ce qui se traduit par un
+     *     raté d'image. On rend donc la main dès que le budget est atteint.
+     *
+     *  2. Au moins UNE tâche est exécutée par tranche, quoi qu'il arrive. Un
+     *     navigateur qui ne signale jamais de temps libre (`deadline` toujours à
+     *     0 : onglet en arrière-plan, rendu headless, onglet non focalisé) ferait
+     *     sinon boucler la tranche indéfiniment sans rien exécuter, et la
+     *     construction de la scène n'aboutirait jamais.
+     *
      * @param {Array<Function>} tasks - Liste de fonctions exécutables
      * @param {number} [maxBudgetMs=8] - Temps maximum alloué par frame (ms)
      * @param {Function} [onProgress] - Callback de progression (ratio 0..1)
@@ -22,13 +36,10 @@ export class TaskScheduler {
             function processSlice(deadline) {
                 const startTime = performance.now();
 
-                while (cursor < total) {
-                    // Vérification de la disponibilité du temps dans la frame courante
-                    const hasIdleTime = deadline ? deadline.timeRemaining() > 1 : (performance.now() - startTime < maxBudgetMs);
-                    if (!hasIdleTime && (performance.now() - startTime >= maxBudgetMs)) {
-                        break;
-                    }
+                let horsBudget = false;
+                let occupe = false;
 
+                do {
                     try {
                         tasks[cursor]();
                     } catch (err) {
@@ -39,7 +50,10 @@ export class TaskScheduler {
                     if (onProgress) {
                         try { onProgress(cursor / total); } catch {}
                     }
-                }
+
+                    horsBudget = performance.now() - startTime >= maxBudgetMs;
+                    occupe = Boolean(deadline) && deadline.timeRemaining() <= 1;
+                } while (cursor < total && !horsBudget && !occupe);
 
                 if (cursor < total) {
                     // Planifie la tranche suivante au prochain intervalle inoccupé
@@ -64,9 +78,9 @@ export class TaskScheduler {
     /**
      * Préchauffe et compile les shaders d'une scène sur le GPU de manière non bloquante.
      * Élimine le micro-stutter de 100-250ms à la première frame de rendu.
-     * @param {THREE.WebGLRenderer} renderer 
-     * @param {THREE.Scene} scene 
-     * @param {THREE.Camera} camera 
+     * @param {THREE.WebGLRenderer} renderer
+     * @param {THREE.Scene} scene
+     * @param {THREE.Camera} camera
      * @returns {Promise<void>}
      */
     static async warmupShaders(renderer, scene, camera) {

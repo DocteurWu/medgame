@@ -1,12 +1,13 @@
 /* css/skills.css — Styles du Hub Skill Lab MedGame */
 
 :root {
-    --skill-bg: #0a0f28;
-    --skill-card: rgba(13, 20, 50, 0.7);
-    --skill-border: rgba(0, 242, 254, 0.25);
-    --skill-cyan: #00f2fe;
+    --skill-bg: #070d19;
+    --skill-card: rgba(14, 25, 52, 0.75);
+    --skill-border: rgba(53, 95, 168, 0.3);
+    --skill-cyan: #355fa8;
+    --skill-primary: #22427c;
     --skill-green: #10b981;
-    --skill-gold: #ffd700;
+    --skill-gold: #f59e0b;
 }
 
 body {

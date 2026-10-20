@@ -107,6 +107,24 @@
     let settings = null;
     let unlockBound = false;
     let destroyed = false;
+    /**
+     * Vrai dès qu'un geste utilisateur a été observé sur la page.
+     *
+     * PIÈGE — `new AudioContext()` est une opération LENTE et SYNCHRONE. Elle
+     * ouvre un flux audio auprès du système : mesurée à 1,3 s (voire 3,6 s) de
+     * temps principal pendant l'initialisation du jeu, parce que `playSound()`
+     * était appelé par `initializeGame()` — donc AVANT le moindre clic.
+     *
+     * Créer le contexte avant le premier geste n'a aucun intérêt : le navigateur
+     * le refuse de démarrer (`The AudioContext was not allowed to start`), donc
+     * tout ce qu'on synthétise est de toute façon muet. On ne crée donc le
+     * contexte qu'au premier `pointerdown` / `keydown` / `touchstart` — ce que
+     * `bindUnlock()` fait déjà — et `canPlayVoice()` se contente de renvoyer
+     * `false` jusque-là, ce qui est exactement le comportement observé.
+     */
+    let userGestured = false;
+    /** Abonnements `whenReady`, rejoués dès que le contexte existe. */
+    const readyCallbacks = new Set();
 
     // ==================== REGLAGES PERSISTÉS ====================
 
@@ -283,12 +301,50 @@
 
         bindUnlock();
         resume();
+        // Le contexte vient d'exister : c'est le moment de jouer les
+        // abonnements en attente (ambiance, rythme cardiaque, …).
+        flushReadyCallbacks();
         return true;
     }
 
     function getContext() {
-        if (!ctx) init();
+        // N'IMPLIQUE PLUS `init()`. Créer un `AudioContext` est une opération
+        // synchrone et lente (1,3 à 3,6 s de temps principal mesurées pendant
+        // l'initialisation du jeu) ; elle ne peut se justifier qu'après un geste
+        // utilisateur, parce qu'avant le navigateur refuse de démarrer le
+        // contexte — les sons seraient muets de toute façon.
+        //
+        // Tous les appelants existants testent déjà `if (!c) return …` : leur
+        // garde-fou devient le comportement normal, et le contexte arrive par
+        // `whenReady()` au premier geste.
         return ctx;
+    }
+
+    /**
+     * Exécute `cb(ctx)` dès que le contexte existe, immédiatement s'il existe déjà.
+     *
+     * C'est le point d'entrée des couches qui veulent démarrer AU PREMIER GESTE
+     * sans le savoir : `audio-ambience.start()` et `audio-medical.startX()`
+     * s'abonnent ici au lieu d'appeler `getContext()` en espérant qu'il crée
+     * quelque chose.
+     */
+    function whenReady(cb) {
+        if (typeof cb !== 'function') return;
+        if (ctx) {
+            try { cb(ctx); } catch (e) { console.warn('[MedGameSound] whenReady', e); }
+            return;
+        }
+        readyCallbacks.add(cb);
+    }
+
+    /** Rejoue les abonnements `whenReady` une fois le contexte disponible. */
+    function flushReadyCallbacks() {
+        if (!ctx || readyCallbacks.size === 0) return;
+        const cbs = Array.from(readyCallbacks);
+        readyCallbacks.clear();
+        for (const cb of cbs) {
+            try { cb(ctx); } catch (e) { console.warn('[MedGameSound] whenReady', e); }
+        }
     }
 
     function isReady() {
@@ -320,9 +376,16 @@
         unlockBound = true;
         const events = ['pointerdown', 'keydown', 'touchstart'];
         const handler = () => {
+            userGestured = true;
             init();
             resume();
-            for (const name of events) document.removeEventListener(name, handler, true);
+            flushReadyCallbacks();
+            // On ne se désabonne qu'une fois le contexte RÉELLEMENT obtenu : sinon
+            // un échec ponctuel (périphérique audio occupé) laisserait le jeu
+            // muet pour le reste de la session.
+            if (ctx) {
+                for (const name of events) document.removeEventListener(name, handler, true);
+            }
         };
         for (const name of events) document.addEventListener(name, handler, true);
     }
@@ -533,7 +596,16 @@
     }
 
     function canPlayVoice() {
-        if (!ctx) init();
+        // Tant qu'aucun geste utilisateur n'a eu lieu, on ne crée PAS de
+        // contexte : `new AudioContext()` bloque le thread principal (cf. le
+        // commentaire sur `userGestured`) et le navigateur refuserait de démarrer
+        // le contexte de toute façon. Les sons demandés avant le premier clic sont
+        // donc perdus, ce qui est le comportement déjà observable — `play()`
+        // renvoie `false` et rien n'est joué.
+        if (!ctx) {
+            if (!userGestured) return false;
+            init();
+        }
         if (!ctx) return false;
         return activeVoices < MAX_VOICES;
     }
@@ -1050,7 +1122,8 @@
     /** Rouvre un contexte détruit (tests, changement de cas sur la page 3D). */
     function revive() {
         destroyed = false;
-        unlockBound = false;
+        userGestured = true; // un `revive()` explicite vaut autorisation
+        bindUnlock();
         return init();
     }
 
@@ -1119,6 +1192,10 @@
         suspend,
         now,
         getAnalyser,
+        // À utiliser par les couches qui veulent démarrer au premier geste :
+        // `cb(ctx)` est exécuté dès que le contexte existe, immédiatement s'il
+        // existe déjà.
+        whenReady,
 
         // Réglages
         getSettings,
@@ -1196,6 +1273,12 @@
     };
 
     global.MedGameSound = MedGameSound;
+
+    // L'écouteur de déverrouillage est posé AU CHARGEMENT DU MODULE, pas dans
+    // `init()`. Si on attendait le premier appel à `init()`, il n'y aurait aucun
+    // appel — puisque `init()` est justement retardé au premier geste — et le
+    // geste ne créerait jamais le contexte : plus aucun son de la partie.
+    bindUnlock();
 
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = MedGameSound;

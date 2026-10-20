@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { inspectGLB } from './helpers/glb.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,13 +15,13 @@ const rootDir = path.resolve(__dirname, '..');
 
 describe('Module Poumon Détaillé 3D - Intégrité des assets et logique anatomique', () => {
 
-    test('Les 2 fichiers GLB locaux existent et ont un poids conforme (Homme ~6 Mo, Femme ~10,7 Mo)', () => {
+    test('Les 2 fichiers GLB locaux existent et sont structurellement complets', () => {
         const poumonDir = path.join(rootDir, 'assets', 'models', 'poumon');
         assert.ok(fs.existsSync(poumonDir), 'Le dossier assets/models/poumon doit exister');
 
         const files = [
-            { name: 'VH_M_Lung.glb', minSize: 5 * 1024 * 1024, maxSize: 8 * 1024 * 1024 },
-            { name: 'VH_F_Lung.glb', minSize: 9 * 1024 * 1024, maxSize: 13 * 1024 * 1024 }
+            { name: 'VH_M_Lung.glb', minMeshes: 60, minVertices: 100000, maxSize: 2 * 1024 * 1024 },
+            { name: 'VH_F_Lung.glb', minMeshes: 60, minVertices: 100000, maxSize: 2 * 1024 * 1024 }
         ];
 
         let totalBytes = 0;
@@ -28,7 +29,10 @@ describe('Module Poumon Détaillé 3D - Intégrité des assets et logique anatom
             const filePath = path.join(poumonDir, file.name);
             assert.ok(fs.existsSync(filePath), `Le fichier ${file.name} doit exister en local`);
             const stat = fs.statSync(filePath);
-            assert.ok(stat.size > file.minSize, `Le fichier ${file.name} doit faire plus de ${(file.minSize / 1024 / 1024).toFixed(1)} Mo (taille réelle: ${stat.size})`);
+
+            // Garde-fou bas : un fichier tronqué ou vidé ne passe pas.
+            assert.ok(stat.size > 50000, `Le fichier ${file.name} ne doit pas être vide ou tronqué (taille réelle: ${stat.size})`);
+            // Garde-fou haut : le poids est optimisé, il ne doit pas repartir à la hausse.
             assert.ok(stat.size < file.maxSize, `Le fichier ${file.name} doit faire moins de ${(file.maxSize / 1024 / 1024).toFixed(1)} Mo (taille réelle: ${stat.size})`);
             totalBytes += stat.size;
 
@@ -39,10 +43,18 @@ describe('Module Poumon Détaillé 3D - Intégrité des assets et logique anatom
             fs.closeSync(fd);
             const magic = header.toString('utf8', 0, 4);
             assert.equal(magic, 'glTF', `Le fichier ${file.name} doit être un conteneur binaire GLB valide`);
+
+            // Complétude réelle : le poumon compte 67 structures anatomiques (LUNG_STRUCTURES).
+            // Le poids ne le prouve plus (modèles optimisés : 6,3 Mo -> 0,99 Mo sans perdre
+            // un maillage), la structure si : 67 mailles, ~150 k sommets, ~290 k faces.
+            const glb = inspectGLB(filePath);
+            assert.ok(glb.meshes >= file.minMeshes, `Le fichier ${file.name} doit contenir les 67 mailles pulmonaires (trouvé: ${glb.meshes})`);
+            assert.ok(glb.vertices >= file.minVertices, `Le fichier ${file.name} doit être maillé (sommets: ${glb.vertices})`);
+            assert.ok(glb.triangles >= 200000, `Le fichier ${file.name} doit contenir les faces pulmonaires (trouvé: ${glb.triangles})`);
         }
 
-        assert.ok(totalBytes > 15 * 1024 * 1024, `Le poids total des 2 modèles doit être > 15 Mo`);
-        assert.ok(totalBytes < 20 * 1024 * 1024, `Le poids total des 2 modèles doit être < 20 Mo (trouvé: ${(totalBytes / 1024 / 1024).toFixed(2)} Mo)`);
+        assert.ok(totalBytes > 1024 * 1024, `Le poids total des 2 modèles doit être > 1 Mo (trouvé: ${(totalBytes / 1024 / 1024).toFixed(2)} Mo)`);
+        assert.ok(totalBytes < 4 * 1024 * 1024, `Le poids total des 2 modèles doit être < 4 Mo (trouvé: ${(totalBytes / 1024 / 1024).toFixed(2)} Mo)`);
     });
 
     test('atlas-lung.js exporte LUNG_STRUCTURES couvrant exactement les 67 structures réelles', async () => {

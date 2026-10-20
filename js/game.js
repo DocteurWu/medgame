@@ -524,7 +524,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
     // UI functions moved to js/ui.js
     initUI();
-    uiState.onCorrectionNext = () => {
+    uiState.onCorrectionNext = async () => {
         if (uiState.fireworksInstance) uiState.fireworksInstance.stop();
         if (!gameState.nextCase()) {
             // Session terminée : purge snapshot + sélection de cas
@@ -532,7 +532,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             window.location.href = 'index.html';
             return;
         }
-        loadCase();
+        await loadCase();
     };
 
     // loadCasesData moved to js/caseLoader.js (global)
@@ -670,7 +670,22 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         gameState.vitalMonitorInstance.mount(mountPoint);
     }
 
-    function loadCase(isPartialRefresh = false) {
+    let _caseLoadingEl = null;
+    function showCaseLoading(show) {
+        if (show) {
+            if (_caseLoadingEl) return;
+            _caseLoadingEl = document.createElement('div');
+            _caseLoadingEl.id = 'case-loading-indicator';
+            _caseLoadingEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Chargement du cas…';
+            _caseLoadingEl.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:9998;background:rgba(0,0,0,0.8);color:#fff;padding:8px 16px;border-radius:20px;font-size:0.9rem;border:1px solid rgba(0,242,254,0.2);';
+            document.body.appendChild(_caseLoadingEl);
+        } else if (_caseLoadingEl) {
+            _caseLoadingEl.remove();
+            _caseLoadingEl = null;
+        }
+    }
+
+    async function loadCase(isPartialRefresh = false) {
         // Amorçage audio : contexte unique + couche d'ambiance.
         // Le contexte démarre suspendu (politique autoplay) ; il repart au
         // premier geste utilisateur, que audio-core.js écoute une seule fois.
@@ -755,6 +770,20 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         const isPreview = urlParams.get('preview') === 'true';
 
         if (!isPartialRefresh) {
+            // Chargement paresseux : `cases[currentCaseIndex]` peut n'être qu'un
+            // descripteur. On résout le corps ICI, une seule fois, avant de
+            // construire l'état et le DOM.
+            const slot = gameState.cases[gameState.currentCaseIndex];
+            if (slot && !slot.patient) showCaseLoading(true);
+            try {
+                const loaded = await gameState.ensureCaseLoaded(gameState.currentCaseIndex);
+                if (!loaded) {
+                    showNotification('Impossible de charger ce cas clinique.');
+                    return;
+                }
+            } finally {
+                showCaseLoading(false);
+            }
             gameState.setCase(gameState.currentCaseIndex);
         }
 
@@ -1359,6 +1388,15 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             }
             window.SessionSnapshot.capture();
         }
+
+        // Chargement paresseux : précharger le cas SUIVANT pendant un temps
+        // mort, pour que « cas suivant » soit instantané.
+        if (!isPartialRefresh && typeof gameState.ensureCaseLoaded === 'function' && gameState.hasNextCase()) {
+            const nextIdx = gameState.currentCaseIndex + 1;
+            const prefetch = () => { gameState.ensureCaseLoaded(nextIdx).catch(() => {}); };
+            if ('requestIdleCallback' in window) requestIdleCallback(prefetch, { timeout: 4000 });
+            else setTimeout(prefetch, 500);
+        }
     }
 
     function updateExamsTabVisibility() {
@@ -1931,12 +1969,12 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
     // Validation is now handled solely by validate-traitement.
 
-    function loadNextCase() {
+    async function loadNextCase() {
         if (!gameState.nextCase()) {
             window.location.href = 'index.html';
             return;
         }
-        loadCase();
+        await loadCase();
     }
     window.loadNextCase = loadNextCase;
 
@@ -2091,18 +2129,41 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
             showNotification(`Session démarrée : ${gameState.cases.length} cas chargé(s)`);
             playSound('reveal');
-            loadCase();
+            await loadCase();
 
-            // Auto-activer le mode 3D APRÈS le premier paint (ne bloque plus le TTI)
+            // ── Mode 3D : OPT-IN ────────────────────────────────────────────
+            //
+            // Le 3D ne démarre plus tout seul sur desktop. Avant, la condition
+            // `window.innerWidth >= 768` suffisait à lancer tout le pipeline
+            // WebGL (chargement des modules, ~110 maillages, ~3 Mo de GLB,
+            // compilation des shaders) dès le `requestIdleCallback` suivant le
+            // chargement du cas : le joueur subissait ce coût avant même d'avoir
+            // cliqué quoi que ce soit.
+            //
+            // La scène 3D se construit maintenant sur le clic du bouton
+            // « Vue 3D » — ce qui est en plus le SEUL moment où ce clic
+            // compte comme geste utilisateur, ce qui débloque le plein écran
+            // (`requestFullscreen` refusait justement ce gesture) et l'audio.
+            //
+            // `sessionStorage` (et non `localStorage`) : le choix vaut pour la
+            // session en cours. On ne rouvre pas automatiquement un onglet 3D
+            // parce qu'il l'était 30 minutes plus tôt, et `sessionStorage` ne
+            // survit pas à la fermeture de l'onglet — donc jamais au
+            // changement de machine.
             const wantsTextMode = localStorage.getItem('medgame_text_mode_default') === 'true';
             const wasIn3D = sessionStorage.getItem('use3D') === 'true';
-            if (!wantsTextMode && (wasIn3D || window.innerWidth >= 768)) {
-                // requestIdleCallback diffère l'init 3D au prochain creux CPU
+            // `?render=3d` force la 3D explicitement (documenté dans AGENTS.md) :
+            // c'est un opt-in manuel, il prime sur le réglage « mode texte ».
+            const force3D = new URLSearchParams(window.location.search).get('render') === '3d';
+            if (force3D || (!wantsTextMode && wasIn3D)) {
+                // Le joueur a déjà basculé en 3D dans CETTE session : on le
+                // rétablit, mais seulement une fois le cas affiché, et sur un
+                // idle long pour ne pas concurrencer le premier rendu du jeu.
                 const deferredInit = () => activate3DMode();
                 if ('requestIdleCallback' in window) {
-                    requestIdleCallback(deferredInit, { timeout: 2000 });
+                    requestIdleCallback(deferredInit, { timeout: 5000 });
                 } else {
-                    setTimeout(deferredInit, 100);
+                    setTimeout(deferredInit, 400);
                 }
             }
         }
@@ -2460,7 +2521,13 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
     document.addEventListener('keydown', (e) => {
         const tag = e.target?.tagName;
         if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
-        if (e.key.toLowerCase() === 'e' && !window.threeManager?.enabled) {
+        if (document.activeElement?.isContentEditable) return;
+        // La touche « e » est l'une des plus fréquentes du français : on refuse
+        // de basculer en 3D pendant une station ECOS (où l'on interroge le
+        // patient) et dès qu'un champ éditable est actif, sous peine de projeter
+        // l'étudiant dans la scène WebGL en pleine rédaction d'une question.
+        const ecosBusy = window.EcosMode && typeof window.EcosMode.isActive === 'function' && window.EcosMode.isActive();
+        if (e.key.toLowerCase() === 'e' && !window.threeManager?.enabled && !ecosBusy) {
             e.preventDefault();
             toggle3DMode();
             return;

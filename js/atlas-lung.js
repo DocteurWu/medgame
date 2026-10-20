@@ -917,6 +917,10 @@ export class LungModelManager {
             const LoaderClass = await getGLTFLoader();
             if (!this.loader) {
                 this.loader = new LoaderClass();
+                const { DRACOLoader } = await import('three/addons/loaders/DRACOLoader.js');
+                const draco = new DRACOLoader();
+                draco.setDecoderPath('assets/libs/draco/');
+                this.loader.setDRACOLoader(draco);
             }
             this.bounds = new this.THREE.Box3();
             this.center = new this.THREE.Vector3();
@@ -1163,8 +1167,35 @@ export class LungModelManager {
      * Libère les ressources du gestionnaire.
      */
     dispose() {
-        this.currentMeshList.forEach(({ mat }) => mat?.dispose?.());
+        this.currentMeshList.forEach(({ mesh, mat }) => {
+            mesh?.geometry?.dispose?.();
+            if (mat) {
+                Object.keys(mat).forEach((prop) => {
+                    if (mat[prop] && typeof mat[prop].dispose === 'function' && prop !== 'dispose') {
+                        mat[prop].dispose();
+                    }
+                });
+                mat.dispose?.();
+            }
+        });
         this.currentMeshList = [];
+
+        for (const gltf of this.cache.values()) {
+            gltf?.scene?.traverse?.((child) => {
+                child.geometry?.dispose?.();
+                if (child.material) {
+                    const mats = Array.isArray(child.material) ? child.material : [child.material];
+                    mats.forEach((m) => {
+                        Object.keys(m).forEach((p) => {
+                            if (m[p] && typeof m[p].dispose === 'function' && p !== 'dispose') {
+                                m[p].dispose();
+                            }
+                        });
+                        m.dispose?.();
+                    });
+                }
+            });
+        }
         this.cache.clear();
     }
 }

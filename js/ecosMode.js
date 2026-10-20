@@ -432,11 +432,18 @@
         // Construire le layout ECOS
         ensureStationLayout();
 
-        // Basculer en mode 3D automatiquement au début de la station (si activé dans les réglages et écran suffisant)
-        setTimeout(async () => {
+        // Le 3D est OPT-IN (cf. AGENTS.md). Une station ECOS ne bascule plus
+        // d'elle-même en 3D : le joueur était projeté dans la scène WebGL 100 ms
+        // après avoir commencé à interroger le patient en 2D, et payait la
+        // compilation des shaders sans l'avoir demandée. On ne restaure la 3D que
+        // si le joueur l'a déjà choisie pour cet onglet (sessionStorage `use3D`)
+        // ou via `?render=3d` — le bouton « Vue 3D » reste le chemin normal.
+        setTimeout(() => {
             const wantsTextMode = localStorage.getItem('medgame_text_mode_default') === 'true';
-            if (!wantsTextMode && window.innerWidth >= 768 && window.threeManager && !window.threeManager.enabled) {
-                await window.threeManager.toggle3D();
+            const optedIn = sessionStorage.getItem('use3D') === 'true'
+                || new URLSearchParams(location.search).get('render') === '3d';
+            if (!wantsTextMode && optedIn && window.threeManager && !window.threeManager.enabled) {
+                window.threeManager.toggle3D().catch(() => {});
             }
         }, 100);
 
@@ -820,7 +827,7 @@
             } catch (err) {
                 console.error('[ECOS] MedicalGameManager error:', err);
                 // Quota épuisé → même modale que le chat (login anonyme / mailto connecté), pas d'erreur technique.
-                if (window.QuotaGuard?.isQuotaError?.(err)) {
+                if (window.QuotaGuard?.blocksTablet?.(err)) {
                     window.QuotaGuard.lockTablet({
                         reason: err.reason || 'quota',
                         remaining_day: err.remaining_day ?? null,
@@ -889,7 +896,7 @@
             await classifyAndCheck(question, finalAnswer);
         } catch (err) {
             // Quota épuisé → modale login/mailto (pas d'erreur technique dans la conversation).
-            if (window.QuotaGuard?.isQuotaError?.(err)) {
+            if (window.QuotaGuard?.blocksTablet?.(err)) {
                 window.QuotaGuard.lockTablet({
                     reason: err.reason || 'quota',
                     remaining_day: err.remaining_day ?? null,
@@ -1121,19 +1128,41 @@ Règles :
         }
     }
 
-    // ==================== CLASSIFICATEUR SÉMANTIQUE ====================
+// ==================== CLASSIFICATEUR SÉMANTIQUE ====================
+
+    /**
+     * Un item que le classificateur a le droit de cocher.
+     * Les items `examen_*` en sont exclus par construction : ils exigent une
+     * demande d'examen explicite et sont posés par `markExamItemsChecked`.
+     */
+    function classifiableItems(grille) {
+        return grille.filter(g => !g.id.startsWith('examen_') && !g.id.startsWith('examen-'));
+    }
 
     async function classifyAndCheck(question, answer) {
         if (!window.CONFIG?.LLM_API_URL) return;
         const grille = ecosState.grilleAptitudes;
         if (!grille.length) return;
 
-        // Évite d'envoyer les messages d'erreurs du patient au classificateur
-        if (!answer || answer.includes('⚠️ Erreur') || answer.includes('Moteur patient indisponible')) return;
+        // Évite d'envoyer au classificateur une réponse qui n'en est pas une.
+        // Le test d'origine ne couvrait que deux libellés, alors que les chemins
+        // d'erreur produisent `⚠️ [ERREUR LLM — ECOS] …` (aux lignes d'appel dans
+        // le catch) : on payait un appel LLM pour noter une panne.
+        if (!answer
+            || answer.includes('⚠️')
+            || answer.includes('Erreur LLM')
+            || answer.includes('Moteur patient indisponible')
+            || answer.includes('indisponible')) return;
+
+        // Plus rien à valider : inutile de payer un appel. La grille compte
+        // items `examen_*` que le classificateur ne peut pas cocher — on ne les
+        // compte donc pas dans le « reste à faire ».
+        const aCocher = classifiableItems(grille);
+        if (aCocher.length && aCocher.every(g => ecosState.gridChecked.has(g.id))) return;
 
         const prompt = `Tu es un évaluateur ECOS clinique rigoureux (Faculté de Médecine). On te donne une question ou action formulée par l'étudiant-médecin et la réponse du patient. Tu dois déterminer quels items de la grille d'aptitudes cliniques ont été valablement abordés ou réalisés.
 
-GRILLE D'APTITUDES CLINICALES :
+GRILLE D'APTITUDES CLINIQUES :
 ${grille.map(g => {
     const isPres = g.id.includes('presentation') || g.id.includes('accueil');
     const filteredKw = g.triggerKeywords ? g.triggerKeywords.filter(k => {
@@ -1158,17 +1187,35 @@ RÈGLES D'ÉVALUATION STRICTES (CONFORMITÉ ECOS / R2C) :
 RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMENT les ids qui sont nouvellement validés. Si rien n'est validé, renvoie {"checked": []}.`;
 
         try {
-            const text = await llmChat([
-                { role: 'system', content: 'Tu es un évaluateur ECOS clinique strict. Tu renvoies UNIQUEMENT un JSON strict {checked: [ids]}.' },
-                { role: 'user', content: prompt }
-            ], {
-                temperature: ECOS_CONFIG.LLM_TEMP.classify,
-                maxTokens: ECOS_CONFIG.LLM_MAX_TOKENS.classify,
-                timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.classify,
-                retries: 1
-            });
+            // Cache LRU : même couple (question, réponse), même verdict. Le `prompt`
+            // complet sert de clé — il embarque la grille ET les deux entrées, donc
+            // deux cas différents ne se collisionnent pas.
+            const cacheKeyQuestion = `${question || ''} ${answer || ''}`;
+            let text = window.llmCache?.get(prompt, cacheKeyQuestion);
+            let fromCache = !!text;
+
+            if (!text) {
+                text = await llmChat([
+                    { role: 'system', content: 'Tu es un évaluateur ECOS clinique strict. Tu renvoies UNIQUEMENT un JSON strict {checked: [ids]}.' },
+                    { role: 'user', content: prompt }
+                ], {
+                    temperature: ECOS_CONFIG.LLM_TEMP.classify,
+                    maxTokens: ECOS_CONFIG.LLM_MAX_TOKENS.classify,
+                    timeoutMs: ECOS_CONFIG.LLM_TIMEOUT_MS.classify,
+                    retries: 1,
+                    // 'grading' : hors budget dialogue. C'est un appel INTERNE —
+                    // l'étudiant ne l'a pas demandé et ne le voit pas ; le facturer
+                    // au quota de ses questions revenait à halves le budget annoncé.
+                    // Budget propre, large, et un éventuel blocage est avalé par le
+                    // catch ci-dessous : la grille ne se coche simplement pas sur ce
+                    // tour, l'interrogatoire continue.
+                    quotaKind: 'grading'
+                });
+                window.llmCache?.set(prompt, cacheKeyQuestion, text);
+            }
+
             const json = extractJsonSafe(text);
-            
+
             // Validation souveraine par le LLM (seul le LLM tranche selon la consigne d'évaluation)
             const newly = (json.checked || [])
                 .filter(id => !ecosState.gridChecked.has(id))
@@ -1188,9 +1235,12 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                 if (window.MedGameAudio) window.MedGameAudio.play('correct');
             }
         } catch (e) {
+            // Volontairement silencieux côté étudiant : un échec de gradation ne
+            // doit JAMAIS se présenter comme une erreur de jeu ni ouvrir la modale
+            // quota. La grille ne se coche simplement pas sur ce tour.
             console.warn('[ECOS] classifyAndCheck failed:', e);
         }
-    }
+}
 
     function extractJsonSafe(content) {
         try {

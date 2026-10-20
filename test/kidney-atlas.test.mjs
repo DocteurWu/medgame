@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { inspectGLB } from './helpers/glb.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +15,7 @@ const rootDir = path.resolve(__dirname, '..');
 
 describe('Module Rein Détaillé 3D — Intégrité des assets et logique anatomique', () => {
 
-    test('Les 4 fichiers GLB locaux existent et ont un poids conforme (< 2 Mo chacun, total < 6 Mo)', () => {
+    test('Les 4 fichiers GLB locaux existent et sont structurellement complets', () => {
         const reinDir = path.join(rootDir, 'assets', 'models', 'rein');
         assert.ok(fs.existsSync(reinDir), 'Le dossier assets/models/rein doit exister');
 
@@ -30,8 +31,11 @@ describe('Module Rein Détaillé 3D — Intégrité des assets et logique anatom
             const filePath = path.join(reinDir, file);
             assert.ok(fs.existsSync(filePath), `Le fichier ${file} doit exister en local`);
             const stat = fs.statSync(filePath);
-            assert.ok(stat.size > 1000000, `Le fichier ${file} doit faire plus de 1 Mo (taille réelle: ${stat.size})`);
-            assert.ok(stat.size < 2000000, `Le fichier ${file} doit faire moins de 2 Mo (taille réelle: ${stat.size})`);
+
+            // Garde-fou bas : un fichier tronqué ou vidé ne passe pas.
+            assert.ok(stat.size > 50000, `Le fichier ${file} ne doit pas être vide ou tronqué (taille réelle: ${stat.size})`);
+            // Garde-fou haut : le poids est optimisé, il ne doit pas repartir à la hausse.
+            assert.ok(stat.size < 1024 * 1024, `Le fichier ${file} doit faire moins de 1 Mo (taille réelle: ${stat.size})`);
             totalBytes += stat.size;
 
             // Vérification de l'en-tête binaire glTF (magic 0x46546C67 = "glTF")
@@ -41,9 +45,17 @@ describe('Module Rein Détaillé 3D — Intégrité des assets et logique anatom
             fs.closeSync(fd);
             const magic = header.toString('utf8', 0, 4);
             assert.equal(magic, 'glTF', `Le fichier ${file} doit être un conteneur binaire GLB valide`);
+
+            // Complétude réelle : c'est la STRUCTURE qui distingue un rein détaillé d'un stub.
+            // Le poids ne le peut plus : les modèles sont optimisés (positions quantifiées),
+            // un rein complet pèse ~250 Ko au lieu de ~1,5 Mo, sans perdre un maillage.
+            const glb = inspectGLB(filePath);
+            assert.ok(glb.meshes >= 10, `Le fichier ${file} doit contenir les mailles anatomiques (trouvé: ${glb.meshes})`);
+            assert.ok(glb.vertices >= 20000, `Le fichier ${file} doit être maillé (sommets: ${glb.vertices})`);
+            assert.ok(glb.triangles >= 40000, `Le fichier ${file} doit contenir les faces anatomiques (trouvé: ${glb.triangles})`);
         }
 
-        assert.ok(totalBytes < 6 * 1024 * 1024, `Le poids total des modèles doit être < 6 Mo (trouvé: ${(totalBytes / 1024 / 1024).toFixed(2)} Mo)`);
+        assert.ok(totalBytes < 2 * 1024 * 1024, `Le poids total des modèles doit être < 2 Mo (trouvé: ${(totalBytes / 1024 / 1024).toFixed(2)} Mo)`);
     });
 
     test('atlas-kidney.js exporte KIDNEY_STRUCTURES et identifyKidneyNode correctement', async () => {
