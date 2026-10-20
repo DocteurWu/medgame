@@ -46,6 +46,51 @@ describe('Scoring — source unique (engine/scoring.js)', () => {
         );
     });
 
+    test('la regle UTILISE les poids (les modifier change le score)', () => {
+        // Sans ce test, CLASSIC_WEIGHTS n'est qu'une constante decorative : la
+        // regle pourrait garder des litteraux et la "source unique" serait
+        // une demi-verite. On modifie donc reellement le bareme, on verifie
+        // que le score suit, puis on restaure.
+        const saved = { ...CLASSIC_WEIGHTS };
+        try {
+            const base = {
+                caseData: { correctDiagnostic: 'Embolie pulmonaire' },
+                selectedDiagnostic: 'Embolie pulmonaire',
+                activeExams: [],
+                selectedTreatments: [],
+                anamnesisCount: 0,
+                trust: 0,
+                hasGestures: false
+            };
+            const avant = computeClassicScore(base).score;
+
+            CLASSIC_WEIGHTS.diagnostic = 50;
+            const apres = computeClassicScore(base).score;
+
+            assert.equal(apres - avant, 15, 'passer le diagnostic de 35 a 50 doit ajouter 15 points');
+        } finally {
+            Object.assign(CLASSIC_WEIGHTS, saved);
+        }
+        assert.equal(CLASSIC_WEIGHTS.diagnostic, 35, 'le bareme doit etre restaure');
+    });
+
+    test('un diagnostic alternatif vaut la moitie des points du diagnostic', () => {
+        const caseData = {
+            correctDiagnostic: 'Embolie pulmonaire',
+            alternativeDiagnostics: ['Fracture pulmonaire']
+        };
+        const res = computeClassicScore({
+            caseData,
+            selectedDiagnostic: 'Fracture pulmonaire',
+            activeExams: [],
+            selectedTreatments: [],
+            anamnesisCount: 0,
+            trust: 0,
+            hasGestures: false
+        });
+        assert.equal(res.diagnosticScore, 18, '35 / 2 arrondi = 18');
+    });
+
     test('aucun ancien moteur de note cote navigateur', () => {
         assert.equal(fs.existsSync(path.join(ROOT, 'js/scoring.js')), false,
             'js/scoring.js ne doit pas revenir : le navigateur note uniquement via Jev');
@@ -80,6 +125,28 @@ describe('Scoring — source unique (engine/scoring.js)', () => {
             assert.equal(toScore20(toScore100(s)), Math.round(s * 5) / 5,
                 `aller-retour instable pour ${s}/20`);
         }
+    });
+
+    test('l\'arrondi est fixe : s*5, et non (s/20)*100', () => {
+        // L'ancienne formule en ligne du navigateur etait
+        // Math.round((score20 / 20) * 100). Sur 11 valeurs de la grille
+        // (0,7 / 2,9 / 3,3 / 8,7 / 9,1 / 10,7 / 11,1 / 11,5 / 15,7 / 17,9 /
+        // 19,9) elle differe de s*5 d'UN POINT, parce que (s/20)*100 n'est
+        // pas exactement s*5 en virgule flottante.
+        //
+        // On garde s*5 : c'est la conversion exacte (19,9/20 vaut bien
+        // 100/100, pas 99/100), et la decision est desormais explicite et
+        // testee au lieu d'etre une derive silencieuse de l'XP.
+        const divergentes = [0.7, 2.9, 3.3, 8.7, 9.1, 10.7, 11.1, 11.5, 15.7, 17.9, 19.9];
+        for (const s of divergentes) {
+            assert.equal(toScore100(s), Math.round(s * 5),
+                `toScore100(${s}) doit valoir la conversion exacte`);
+            assert.notEqual(Math.round((s / 20) * 100), Math.round(s * 5),
+                `${s} est volontairement un cas ou les deux formules diffèrent`);
+        }
+        // Et l'extremite haute est correcte.
+        assert.equal(toScore100(19.9), 100);
+        assert.equal(toScore100(20), 100);
     });
 
     test('computeClassicScore : diagnostic exact = 35, errone = 0', () => {

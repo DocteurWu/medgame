@@ -497,6 +497,10 @@ export class ThreeHUD {
         scoreEl.textContent = `${scoreFormatted}/20`;
 
         if (fillEl) {
+            // Remplissage de la jauge : un RATIO, pas une conversion d'echelle.
+            // On ne passe pas par JevClient.toScore100() ici : celle-ci
+            // arrondit a l'entier (pour l'XP et l'affichage de note), alors
+            // que la largeur de la barre doit rester continue.
             const pct = Math.max(0, Math.min(100, (numScore / 20) * 100));
             fillEl.style.width = `${pct}%`;
         }

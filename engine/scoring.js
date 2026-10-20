@@ -170,10 +170,14 @@ export function computeClassicScore(input) {
     const isDiagAlternative = !isDiagCorrect && altDiags.some(ad =>
         getSimilarity(normalizeText(ad), normalizeText(selectedDiagnostic)) >= DIAGNOSTIC_TYPO_SIMILARITY
     );
-    const diagnosticScore = isDiagCorrect ? 35 : (isDiagAlternative ? 18 : 0);
+    // Un diagnostic alternative (plausible mais pas le bon) vaut la MOITIE des
+    // points du diagnostic : 35 -> 18.
+    const diagnosticScore = isDiagCorrect
+        ? CLASSIC_WEIGHTS.diagnostic
+        : (isDiagAlternative ? Math.round(CLASSIC_WEIGHTS.diagnostic / 2) : 0);
 
     // 2. Score Examens Complementaires via examGradation ou relevantExams (sur 25 points)
-    let examScore = 25;
+    let examScore = CLASSIC_WEIGHTS.exam;
     const grad = caseData.examGradation;
     const relevant = caseData.relevantExams || [];
 
@@ -184,7 +188,7 @@ export function computeClassicScore(input) {
 
         const hitsParfaits = parfaits.filter(p => activeExams.some(ae => fuzzyMatchExam(ae, p))).length;
         const ratioParfaits = parfaits.length > 0 ? (hitsParfaits / parfaits.length) : 1;
-        examScore = Math.round(ratioParfaits * 25);
+        examScore = Math.round(ratioParfaits * CLASSIC_WEIGHTS.exam);
 
         for (const ae of activeExams) {
             if (inutiles.some(i => fuzzyMatchExam(ae, i))) examScore -= 4;
@@ -193,25 +197,25 @@ export function computeClassicScore(input) {
     } else if (relevant.length > 0) {
         const hits = relevant.filter(r => activeExams.some(ae => fuzzyMatchExam(ae, r))).length;
         const overPrescription = Math.max(0, activeExams.length - relevant.length);
-        examScore = Math.round((hits / relevant.length) * 25) - (overPrescription * 3);
+        examScore = Math.round((hits / relevant.length) * CLASSIC_WEIGHTS.exam) - (overPrescription * 3);
     }
-    examScore = Math.max(0, Math.min(25, examScore));
+    examScore = Math.max(0, Math.min(CLASSIC_WEIGHTS.exam, examScore));
 
     // 3. Score Therapeutique (sur 25 points)
     const correctTx = caseData.correctTreatments || [];
-    let treatmentScore = 25;
+    let treatmentScore = CLASSIC_WEIGHTS.treatment;
     if (correctTx.length > 0) {
         const txHits = correctTx.filter(ct => selectedTreatments.includes(ct)).length;
         const wrongTx = selectedTreatments.filter(st => !correctTx.includes(st) && !(caseData.secondLineTreatments || []).includes(st)).length;
-        treatmentScore = Math.round((txHits / correctTx.length) * 25) - (wrongTx * 5);
+        treatmentScore = Math.round((txHits / correctTx.length) * CLASSIC_WEIGHTS.treatment) - (wrongTx * 5);
     }
-    treatmentScore = Math.max(0, Math.min(25, treatmentScore));
+    treatmentScore = Math.max(0, Math.min(CLASSIC_WEIGHTS.treatment, treatmentScore));
 
     // 4. Score Anamnese, Examen Clinique & Relationnel ECOS (sur 15 points)
     const anamnesisPoints = Math.min(8, anamnesisCount * 1.5);
     const trustBonus = trust >= 65 ? 4 : (trust >= 45 ? 2 : 0);
     const gestureBonus = hasGestures ? 3 : 0;
-    const communicationScore = Math.round(Math.min(15, anamnesisPoints + trustBonus + gestureBonus));
+    const communicationScore = Math.round(Math.min(CLASSIC_WEIGHTS.communication, anamnesisPoints + trustBonus + gestureBonus));
 
     return {
         score: Math.round(diagnosticScore + examScore + treatmentScore + communicationScore),

@@ -1810,7 +1810,9 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
 
         // Comparaison anonyme (si feedback.js charge)
         const score20 = typeof jev.globalScore20 === 'number' ? jev.globalScore20 : 0;
-        const normalizedScore100 = Math.round((score20 / 20) * 100);
+        // Conversion /20 -> /100 : source unique (engine/scoring.js), pas de
+        // formule parallele ici.
+        const normalizedScore100 = window.JevClient.toScore100(score20);
         const aptScore20 = jev.sections?.aptitudes?.score20 ?? 0;
         const commScore20 = jev.sections?.communication?.score20 ?? 0;
         const perfScore20 = jev.sections?.performance?.score20 ?? 0;
