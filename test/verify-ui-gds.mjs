@@ -11,8 +11,8 @@ import WebSocket from 'ws';
 import { nettoyerProfil, balayerProfilsAbandonnes } from './helpers/chrome-profile.mjs';
 
 const CHROME_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const PORT = 9225; // port de debug distinct
-const SERVER_PORT = 8889;
+const PORT = Number(process.env.MEDGAME_CDP_PORT) || 9225; // port de debug distinct
+const SERVER_PORT = Number(process.env.MEDGAME_SERVER_PORT) || 8889;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));

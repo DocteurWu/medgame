@@ -31,16 +31,15 @@ logs
 *.log
 
 # Project specific
-AGENTS.md
-SUPABASE_GUIDE.md
-Supabase Snippet Medical Case Records.csv
-SUPABASE_ARENA.sql
-generate_hashes.py
-integrity.json
+# (Les fichiers ci-dessous ont ete supprimes : les garder dans ce fichier
+#  donnait une fausse impression de protection. AGENTS.md etait listé ET suivi
+#  par git — le .gitignore ne de-traque jamais rien.)
 sql/add_timed_mode.sql
 sql_rls_policies.sql
-nul
-out.txt
+
+# Archives de corpus (regenerees a la demande, jamais dans l'index)
+data/archive/
+data/ref/
 
 # Agent and tool outputs
 graphify-out/

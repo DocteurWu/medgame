@@ -55,8 +55,8 @@ const BROWSERS = [
     'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
 ];
-const PORT = 9231;
-const SERVER_PORT = 8894;
+const PORT = Number(process.env.MEDGAME_CDP_PORT) || 9231;
+const SERVER_PORT = Number(process.env.MEDGAME_SERVER_PORT) || 8894;
 const ECHANTILLON_MS = 5;
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -834,43 +834,12 @@ async function run() {
         // profil verrouillé.
         tuerChromeDuProfil(userDataDir);
         server.close();
-        // Le verrou est EBUSY, jamais permanent : il tient le temps que
-        // Windows libère les handles de l'arborescence tuée, soit plus longtemps
-        // qu'il n'en faut pour constater l'échec. Une attente initiale suivie de
-        // tentatives largement espacées couvre ce délai ; sans elles, un profil
-        // sur deux restait sur le disque jusqu'au balayage de l'exécution
-        // suivante.
-        await sleep(400);
-
-        for (const e of fs.readdirSync(process.cwd())) {
-            if (!e.startsWith('.tmp-chrome-audio-')) continue;
-            const dir = path.join(process.cwd(), e);
-            let derniereErreur = '';
-            for (let essai = 0; essai < 5; essai++) {
-                try {
-                    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 150 });
-                    derniereErreur = '';
-                    break;
-                } catch (err) {
-                    derniereErreur = (err && err.code) ? err.code : String(err);
-                    await sleep(700);
-                }
-            }
-            if (fs.existsSync(dir)) {
-                // On ne force pas : un EBUSY tient tant qu'un handle est ouvert,
-                // et il peut tenir plus longtemps qu'aucune attente raisonnable.
-                // RENOMMER, lui, reste autorisé même sur un répertoire dont des
-                // fichiers sont ouverts — on le met de côté et le balayage de
-                // l'exécution suivante l'effacera, quand plus personne n'y touche.
-                try {
-                    fs.renameSync(dir, dir + '.quit');
-                    console.log(`  note        profil Chrome mis de côté (EBUSY) : ${e}`);
-                } catch {
-                    console.log(`  ATTENTION  profil Chrome non supprimé : ${e}` +
-                        (derniereErreur ? ` (${derniereErreur})` : ''));
-                }
-            }
-        }
+        // Nettoyage du profil Chrome : voir test/helpers/chrome-profile.mjs.
+        // L'implémentation de référence était ici, en inline ; elle est
+        // désormais partagée avec les trois autres tests UI, qui la
+        // dupliquaient sans les précautions Windows (tuer l'arborescence,
+        // EBUSY, renommage) et laissaient 12 à 15 Mo par exécution.
+        await nettoyerProfil(proc, userDataDir, '.tmp-chrome-audio-');
     }
 
     console.log('\n[Test UI Audio] Bilan : ' + succes.length + ' vérification(s) réussie(s)');

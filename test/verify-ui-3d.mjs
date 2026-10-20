@@ -38,7 +38,7 @@
  *     précisément le défaut qu'on cherche.
  */
 
-import { spawn, spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -50,8 +50,8 @@ const BROWSERS = [
     'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
     'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe'
 ];
-const PORT = 9233;
-const SERVER_PORT = 8896;
+const PORT = Number(process.env.MEDGAME_CDP_PORT) || 9233;
+const SERVER_PORT = Number(process.env.MEDGAME_SERVER_PORT) || 8896;
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const findBrowser = () => BROWSERS.find(p => fs.existsSync(p)) || null;

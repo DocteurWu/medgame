@@ -35,7 +35,7 @@ jobs:
         shell: bash
         run: |
           fail=0
-          for f in js/*.js engine/*.js netlify/functions/*.js scripts/*.mjs test/*.mjs mcp-server.js; do
+          for f in js/*.js engine/*.js netlify/functions/*.js scripts/*.mjs test/*.mjs test/helpers/*.mjs mcp-server.js; do
             [ -e "$f" ] || continue
             if ! node --check "$f" 2>/tmp/err.txt; then
               echo "❌ $f"; cat /tmp/err.txt; fail=1

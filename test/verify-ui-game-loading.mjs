@@ -18,8 +18,8 @@ import WebSocket from 'ws';
 import { nettoyerProfil, balayerProfilsAbandonnes } from './helpers/chrome-profile.mjs';
 
 const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const PORT = 9234;
-const SERVER_PORT = 8897;
+const PORT = Number(process.env.MEDGAME_CDP_PORT) || 9234;
+const SERVER_PORT = Number(process.env.MEDGAME_SERVER_PORT) || 8897;
 
 const CASE_FILES = [
     'cardio_douleur_thoracique_mme_bennet.json',

@@ -9,9 +9,9 @@
 ## Architecture
 - **Frontend**: Vanilla JS, HTML5, CSS3 (no frameworks, no bundler). Classic `<script defer>` for game logic, ES modules with an `importmap` for Three.js.
 - **3D**: Three.js `0.163.0` via importmap (`unpkg`). Aucun global `THREE` : tout le code 3D est en ES modules (`js/three-*.js`).
-- **Pages principales**: `index.html` (accueil), `game.html` (jeu, charge aussi le mode ECOS), `editor.html` (éditeur de cas), `atlas.html` (atlas anatomique), `skills.html` / `skills-gds.html`, `auscultation.html` / `auscultation-pcg.html`, `ecg-trainer.html`, `admin.html`, `profile.html`, `tutorial.html`, `themes.html`, `ai-watch.html`, `arena_play.html`
+- **Pages principales**: `index.html` (accueil), `game.html` (jeu, charge aussi le mode ECOS), `editor.html` (éditeur de cas), `atlas.html` (atlas anatomique), `skills.html` / `skills-gds.html` / `skills-echo.html` / `skills-pse.html` / `skills-ventilateur.html`, `auscultation.html` / `auscultation-pcg.html`, `ecg-trainer.html`, `admin.html`, `graph_editor.html`, `profile.html`, `tutorial.html`, `themes.html`, `credits.html`, `ai-watch.html`, `arena_play.html`
 - **JS**: `js/game.js` (logique de jeu), `js/ecosMode.js` (mode ECOS), `js/caseLoader.js` (chargement des cas), `js/case-aliases.js` (table des anciens noms de cas), `js/MedicalGameManager.js`, `js/clinicalAgentAI.js` (agent IA), `js/jevClient.js` (notation Jev), `js/utils.js` (helpers globaux : `escapeHtml`, `sanitizeHtml`, `showNotification`, `getCookie`, `setCookie`), plus ~90 modules 3D et specialised
-- ** moteur de jeu isole** : `engine/MedGameEngine.js` (logique pure, testable sans DOM)
+- ** moteur de jeu isole** : `engine/MedGameEngine.js` (logique pure, testable sans DOM) et `engine/scoring.js` (source unique de la notation et des conversions d'échelle, partagée avec le navigateur)
 - **Audio** : un contexte unique et 6 bus — voir la section « Sound design » plus bas
 - **Serveur MCP** : `mcp-server.js` (proxy LLM local + WebSocket + health check)
 - **Netlify** : `netlify/functions/llm-proxy.js`, `netlify/functions/jev-proxy.js` (quotas API côté serveur)
@@ -167,6 +167,59 @@ CI au lieu d'être silencieusement ignoré.
 `_headers`, et le piège nginx (`add_header` dans un `location` annule ceux
 hérités du `server`).
 
+## Nettoyage : ce qui a été supprimé, et ce qui a été laissé
+
+Un passage de grand nettoyage a retiré 15 fichiers morts, `dist/` (29 Mo), et
+environ 1 400 lignes de code mort dans les fichiers vivants. Trois décisions
+méritent d'être écrites, parce qu'elles ne se relisent pas dans le code.
+
+**1. Le scoring a une source unique : `engine/scoring.js`.** Avant, le
+navigateur notait sur /20 (Jev) et l'engine MCP notait sur /100 avec une
+règle parallèle codée en dur — deux algorithmes, deux échelles, aucun pont.
+`engine/scoring.js` (pur, sans DOM ni Node) porte désormais la règle /100
+historique et les deux conversions. `engine/MedGameEngine.js` délègue à
+`computeClassicScore()` et renvoie `scoreOn20` **en plus** de `score` : le
+contrat MCP et `ai-watch.html` dépendent de `score` sur /100, il n'a pas été
+cassé. Côté navigateur, `js/jevClient.js` ré-exporte `toScore100` et
+`game.js` l'utilise au lieu d'un `Math.round` en ligne.
+
+> ⚠️ Le module est dans `engine/`, **pas** dans `js/`. Un ancien
+> `js/scoring.js` (moteur de note complet) a été supprimé lors de la bascule
+> Jev, et `test/anticheat.test.mjs` interdit son retour. Le navigateur garde
+> **un seul noteur**. Ne pas le ressusciter sous un autre nom.
+
+**2. `css/immersive.css` et `css/game.css` dupliquent 40 règles** (5,6 Ko),
+et les deux fichiers sont chargés par `game.html` — le HUD est donc parsé et
+appliqué deux fois. La mutualisation **n'a pas été faite**, volontairement :
+`immersive.css` est aussi chargé par `index.html` (sans `game.css`), 19
+sélecteurs ont un corps *différent* entre les deux fichiers, et il n'existe
+aucun test de régression visuelle dans la suite. Un « grand nettoyage » qui
+casse un rendu pour 5,6 Ko n'est pas un nettoyage. Le même raisonnement vaut
+pour `nextQuizQuestion()` (auscultation/ECG) et `resizeCanvas()` (echo/
+ventilateur) : extraire ces 12 lignes demanderait de charger `js/utils.js`
+sur deux pages de plus, avec ses effets de bord, pour moins de gain que de
+risque. En revanche `auscultation.css` / `ecg-trainer.css` **ont** été
+mutualisés (`css/skills-common.css`) : pages séparées, règles identiques à
+l'octet, cascade vérifiée sélecteur par sélecteur.
+
+**3. Il y a DEUX routeurs LLM, et c'est un bug assumé pour l'instant.**
+`js/clinicalAgentAI.js` et `js/MedicalGameManager.js` sont tous deux un
+« Maître du Jeu » : même prompt, mémoire d'historique, écriture des
+constantes. En mode 3D, **un seul message du joueur déclenche deux appels
+LLM** et deux écritures concurrentes sur les constantes — donc le 2D et le
+3D ne se comportent pas pareil. `MedicalGameManager.js` est le plus récent et
+celui que l'ECOS suppose ; `clinicalAgentAI.js` est réduit au 3D. Les fusionner
+est un chantier à part, pas un nettoyage : cela demande de rejouer des
+sessions 2D et 3D et de comparer les traces. Le sujet reste ouvert.
+
+**Piège de compilation, payé plusieurs fois :** réécrire un fichier JS avec
+`Set-Content` en PowerShell 5.1 (ou tout outil qui relit en ANSI) **corrompt
+tous les accents** — le fichier reste du UTF-8 valide, mais `é` devient `Ã©`.
+`node --check` ne voit rien, les tests ne voient rien (les chaînes ne sont
+pas comparées), et le diff montre 400 lignes changées au lieu de 4. Symptôme :
+`Ã`, `â€"` et `Â` en plein milieu d'un fichier qui était correct la veille.
+Utiliser `edit`/`write`, ou Node avec `readFileSync(f,'utf8')`.
+
 ## Conventions de dépôt
 
 Trois règles qui ont chacune payé une panne.
@@ -260,9 +313,10 @@ pour être servi dès l'activation.
 
 **4. Le poids des images de fond et d'icône.** `icone.webp` — 2,3 Mo, et c'était la
 `favicon` de **23 pages** — est remplacé par `favicon-32.png` (3 Ko) /
-`favicon-32.webp` (1 Ko). `icone.webp` reste pour l'image Open Graph, qui a
-besoin d'une vraie définition. `manifest.json` pointe sur `icon-192.webp` /
-`icon-512.webp`. Et `FondAccueil.webp`, le fond de toutes les pages, était un
+`favicon-32.webp` (1 Ko), plus `apple-touch-icon.png` (74 Ko) pour iOS.
+`icone.webp` a été supprimé : **aucune page ne déclare de `og:image` ni de
+`twitter:image`**, donc il ne sert plus à rien. `manifest.json` pointe sur
+`icon-192.webp` / `icon-512.webp`. Et `FondAccueil.webp`, le fond de toutes les pages, était un
 WebP **VP8L lossless** de 911 Ko : réencodé en lossy q82, **71 Ko**, sans
 différence visible (vérifié à l'œil). Attention : 1344×768 n'a rien de spécial —
 la conversion lossless arrive quand on force le mode dans un convertisseur.

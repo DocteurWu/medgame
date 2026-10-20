@@ -9,8 +9,8 @@ import path from 'node:path';
 import WebSocket from 'ws';
 
 const CHROME_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const PORT = 9222;
-const SERVER_PORT = 8888;
+const PORT = Number(process.env.MEDGAME_CDP_PORT) || 9222;
+const SERVER_PORT = Number(process.env.MEDGAME_SERVER_PORT) || 8888;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
