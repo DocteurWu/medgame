@@ -90,8 +90,6 @@ async function run() {
     console.log('\n📦 Chargement des cas locaux validés...');
     for (const [specialty, files] of Object.entries(caseIndex)) {
         for (const filename of files) {
-            if (filename.includes('test_gating') || filename.includes('patient_test_complet')) continue;
-
             const filePath = join(DATA_DIR, filename);
             if (!existsSync(filePath)) {
                 console.warn(`  ⚠️ Fichier référencé introuvable : ${filename}`);

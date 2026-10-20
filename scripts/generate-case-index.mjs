@@ -21,7 +21,7 @@ const INDEX_PATH = join(DATA_DIR, 'case-index.json');
 const META_PATH = join(DATA_DIR, 'case-meta.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
-const NON_CASE_FILES = new Set(['case-index.json', 'case-meta.json', 'drugs.json', 'patient_test_complet.json', 'test_gating.json']);
+const NON_CASE_FILES = new Set(['case-index.json', 'case-meta.json', 'drugs.json']);
 
 // Inférence spécialité ← préfixe de nom de fichier (pour les fichiers non encore indexés)
 const PREFIX_TO_SPECIALTY = {

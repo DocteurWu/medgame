@@ -23,9 +23,7 @@ const SCHEMA_PATH = join(ROOT, 'schemas', 'case.schema.json');
 const INDEX_PATH = join(DATA_DIR, 'case-index.json');
 
 // Fichiers non-cas exclus du corpus
-const NON_CASE_FILES = new Set(['case-index.json', 'case-meta.json', 'drugs.json', 'patient_test_complet.json', 'test_gating.json']);
-// Cas volontairement hors index : REFERENCES de rédaction (validées comme cas, jamais proposés aux joueurs)
-const TEST_CASE_IDS = new Set(['test_gating', 'patient_test_complet', 'REFERENCE_ECOS_CANONICAL']);
+const NON_CASE_FILES = new Set(['case-index.json', 'case-meta.json', 'drugs.json']);
 
 const args = process.argv.slice(2);
 const STRICT = args.includes('--strict');
@@ -188,7 +186,6 @@ if (existsSync(INDEX_PATH)) {
         }
         for (const file of files) {
             const base = basename(file, '.json');
-            if (TEST_CASE_IDS.has(base)) continue;
             if (!indexed.has(base) && !indexed.has(file)) {
                 warn(file, 'absent de case-index.json (jamais proposé aux joueurs)');
             }

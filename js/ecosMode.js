@@ -1190,7 +1190,7 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
             // Cache LRU : même couple (question, réponse), même verdict. Le `prompt`
             // complet sert de clé — il embarque la grille ET les deux entrées, donc
             // deux cas différents ne se collisionnent pas.
-            const cacheKeyQuestion = `${question || ''} ${answer || ''}`;
+            const cacheKeyQuestion = `${question || ''}\0${answer || ''}`;
             let text = window.llmCache?.get(prompt, cacheKeyQuestion);
             let fromCache = !!text;
 

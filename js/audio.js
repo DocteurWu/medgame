@@ -6,7 +6,7 @@
  *
  * Pourquoi garder une façade plutôt que de modifier les 37 appels
  * `MedGameAudio.play(...)` répartis dans js/game.js, js/ui.js, js/timer.js,
- * js/ecosMode.js, js/badges.js, js/hints.js, js/progress-tracker.js,
+ * js/ecosMode.js, js/badges.js, js/progress-tracker.js,
  * js/index-game-ui.js, js/three-tablet.js, js/auscultation.js,
  * js/auscultation-pcg.js et js/ecg-trainer.js : parce que le nom «
  * MedGameAudio.play('correct') » est lisible et que la forme de l'appel est

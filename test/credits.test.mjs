@@ -92,8 +92,7 @@ describe('Credits MedGame — Verification de conformite', () => {
             'data/credits.js',
             'js/credits.js',
             'js/footer.js',
-            'css/credits.css',
-            'css/footer.css'
+            'css/credits.css'
         ];
 
         for (const file of filesToCheck) {
@@ -109,8 +108,7 @@ describe('Credits MedGame — Verification de conformite', () => {
             'data/credits.js',
             'js/credits.js',
             'js/footer.js',
-            'css/credits.css',
-            'css/footer.css'
+            'css/credits.css'
         ];
 
         const emojiRegex = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;

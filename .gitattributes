@@ -1,0 +1,46 @@
+# Normalisation des fins de ligne.
+#
+# SANS CE FICHIER, le dépôt est machine-dépendant : `core.autocrlf=true` vient
+# de la configuration GLOBALE de Git (C:/Program Files/Git/etc/gitconfig), pas
+# du dépôt. Conséquence mesurée sur ce dépôt :
+#   - 97 fichiers suivis étaient en CRLF, 229 en LF, 17 MIXTES ;
+#   - `js/ecosMode.js` contenait un octet NUL brut -> git le classait
+#     « binary », ne normalisait donc rien, et son diff affichait 4308 lignes
+#     pour 92 lignes de changement réel.
+#
+# `text=auto eol=lf` fixe une seule convention : LF dans l'index ET dans le
+# working tree, sur Windows comme sur Linux. Le `git diff` devient identique
+# partout, et le cache HTTP fait le reste (nginx sert déjà les .js en
+# `max-age=0, must-revalidate`).
+* text=auto eol=lf
+
+# Binaires : jamais normalisés. La détection automatique de Git suffit pour la
+# plupart, mais ces règles rendent l'intention explicite et évitent qu'un
+# glTF/une texture soit un jour Altéré par un filtre de texte.
+*.glb    binary
+*.gltf   text eol=lf
+*.bin    binary
+*.obj    binary
+*.wasm   binary
+*.mp3    binary
+*.wav    binary
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.webp   binary
+*.ico    binary
+*.pdf    binary
+*.woff   binary
+*.woff2  binary
+*.exr    binary
+*.ktx2   binary
+
+# Les données volumineuses de l'atlas neurologique sont régénérables et
+# servies en `immutable` par Netlify et nginx.
+neuro-atlas/data/volumes/** binary
+neuro-atlas/data/**  text eol=lf
+
+# Fichiers générés : leur contenu est reproductible, on ne veut pas de bruit
+# de diff quand le générateur change de version.
+data/case-index.json  text eol=lf
+data/case-meta.json   text eol=lf

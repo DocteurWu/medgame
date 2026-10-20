@@ -20,24 +20,11 @@ export function prefersReducedMotion() {
 /* ---------- Interpolation framerate-independent ---------- */
 export const damp = (a, b, lambda, dt) => THREE.MathUtils.damp(a, b, lambda, dt);
 
-export function dampVec3(out, target, lambda, dt) {
-    out.x = damp(out.x, target.x, lambda, dt);
-    out.y = damp(out.y, target.y, lambda, dt);
-    out.z = damp(out.z, target.z, lambda, dt);
-    return out;
-}
-
 import { SceneDisposer } from './scene-disposer.js';
 
 /* ---------- Libération mémoire profonde ---------- */
 export function disposeMaterial(mat) {
     SceneDisposer.disposeMaterial(mat);
-}
-
-export function disposeObject3D(root) {
-    if (!root) return;
-    SceneDisposer.purge(root);
-    root.parent?.remove(root);
 }
 
 /**
@@ -84,10 +71,4 @@ export class OverlayWatcher {
     dispose() {
         if (this._obs) this._obs.disconnect();
     }
-}
-
-/* ---------- Layer dédié au bloom sélectif (écrans, LEDs) ---------- */
-export const BLOOM_LAYER = 1;
-export function markAsBloom(obj) {
-    obj.traverse?.(o => o.layers.enable(BLOOM_LAYER)) ?? obj.layers.enable(BLOOM_LAYER);
 }

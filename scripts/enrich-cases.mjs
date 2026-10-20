@@ -33,7 +33,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const DATA_DIR = join(ROOT, 'data');
-const NON_CASE_FILES = new Set(['case-index.json', 'drugs.json', 'patient_test_complet.json', 'test_gating.json']);
+const NON_CASE_FILES = new Set(['case-index.json', 'case-meta.json', 'drugs.json']);
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');

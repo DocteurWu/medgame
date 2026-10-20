@@ -41,7 +41,7 @@ if (!API_KEY) {
     process.exit(1);
 }
 
-const NON_CASE_FILES = new Set(['case-index.json', 'drugs.json', 'patient_test_complet.json', 'test_gating.json']);
+const NON_CASE_FILES = new Set(['case-index.json', 'case-meta.json', 'drugs.json']);
 
 async function callLLM(messages, { maxTokens = 900, temperature = 0.4 } = {}) {
     const res = await fetch(API_URL, {

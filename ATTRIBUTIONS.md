@@ -11,7 +11,7 @@ Ce projet utilise des ressources graphiques 3D gratuites sous licences libres. N
 ## 2. Mobilier et Éléments de Décoration 3D
 * **Auteur** : majesticmaje
 * **Pack** : Coffeehouse Lounge Pack
-* **Ressources** : Fichiers GLB `Bar Stool.glb`, `Couch Small.glb`, `Light Desk.glb`, `Book Stack.glb`, `Coffee cup.glb` et `Houseplant.glb`
+* **Ressources** : Fichiers GLB `Couch Small.glb`, `Light Desk.glb`, `Book Stack.glb`, `Coffee cup.glb` et `Houseplant.glb`
 * **Source** : Téléchargé via [Poly Pizza](https://poly.pizza/)
 * **Licence** : [CC-BY (Attribution)](https://creativecommons.org/licenses/by/4.0/deed.fr)
 

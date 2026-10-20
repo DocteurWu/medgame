@@ -5,7 +5,6 @@ import { buildFurniture, buildRoom } from './three-room.js';
 import { ThreePatient } from './three-patient.js';
 import { ThreeInstruments } from './three-instruments.js';
 import { PatientAnimator, DoctorAnimator, DustAnimator, IVFluidAnimator, ECGScreenAnimator } from './three-animations.js';
-import { ThreeAssetAgent } from './three-asset-agent.js';
 import { ThreeLightingAgent } from './three-lighting-agent.js';
 import { ThreeEnvironmentAgent } from './three-environment-agent.js?v=20261011-nofloor';
 import { medicalAudio } from './three-audio.js';
@@ -97,7 +96,6 @@ export class ThreeScene {
         this._normalFogColor = null;
 
         // Agents & sous-systèmes
-        this.assetAgent = new ThreeAssetAgent(this);
         this.lightingAgent = null;
         this.environmentAgent = null;
         this.qualityAgent = null;
