@@ -518,7 +518,6 @@ export class ThreeHUD {
 
     /**
      * Extrait la liste des champs d'interrogatoire disponibles (mode immersif).
-     * Reproduit la logique de calculateDemarcheScore pour les noms de champs.
      */
     _getInterrogatoireFields(caseData) {
         const interro = caseData.interrogatoire || {};

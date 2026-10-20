@@ -410,8 +410,6 @@
         ecosState.isPaused = false;
         ecosState.pausedTimeLeft = 0;
 
-        // 3.4 Réinitialiser la timeline des actions pour ce cas ECOS
-        if (window.feedbackTimeline) window.feedbackTimeline.reset();
         ecosState.warning60Fired = false;
         ecosState.warning30Fired = false;
         ecosState.warning10Fired = false;
@@ -742,12 +740,6 @@
             window.MedGameAudio.play('typing');
         }
 
-        // Logger dans la timeline pour feedback.js
-        if (speaker === 'Vous' && window.feedbackTimeline) {
-            window.feedbackTimeline.log('interrogatoire', text);
-        } else if (speaker === 'PS' && window.feedbackTimeline) {
-            window.feedbackTimeline.log('examen', `Patient: ${text.substring(0, ECOS_CONFIG.LOG_TRUNCATE)}...`);
-        }
         return row;
     }
 
@@ -982,13 +974,10 @@
                 if (normId.includes(normalizeString(matchedExamKey)) || normLabel.includes(normalizeString(matchedExamKey)) || matchKeyword) {
                     if (!ecosState.gridChecked.has(g.id)) {
                         ecosState.gridChecked.add(g.id);
-                        checkedAny = true;
-                        if (window.feedbackTimeline) {
-                            window.feedbackTimeline.log('examen', `Examen complémentaire réalisé: ${g.label || g.id}`);
+                            checkedAny = true;
                         }
                     }
-                }
-            });
+                });
             if (checkedAny) {
                 updateGrilleUI();
                 if (window.MedGameAudio) window.MedGameAudio.play('correct');
@@ -1095,15 +1084,11 @@ Règles :
                     // Limiter la validation d'examen physique aux items commançant par examen_ ou examen-
                     if ((itemId.startsWith('examen_') || itemId.startsWith('examen-')) && grille.some(g => g.id === itemId) && !ecosState.gridChecked.has(itemId)) {
                         ecosState.gridChecked.add(itemId);
-                        checkedAny = true;
-                        if (window.feedbackTimeline) {
-                            const item = grille.find(g => g.id === itemId);
-                            window.feedbackTimeline.log('examen', `Examen réalisé: ${item?.label || itemId}`);
+                            checkedAny = true;
                         }
                     }
                 }
             }
-        }
 
         // Si aucun mot-clé spécifique, on coche les items d'examen les plus généraux
         if (!checkedAny) {
@@ -1111,12 +1096,8 @@ Règles :
             for (const itemId of genericExamItems) {
                 if (grille.some(g => g.id === itemId) && !ecosState.gridChecked.has(itemId) && reqLower.length > 3) {
                     ecosState.gridChecked.add(itemId);
-                    checkedAny = true;
-                    if (window.feedbackTimeline) {
-                        const item = grille.find(g => g.id === itemId);
-                        window.feedbackTimeline.log('examen', `Examen réalisé: ${item?.label || itemId}`);
-                    }
-                    break;
+                        checkedAny = true;
+                        break;
                 }
             }
         }
@@ -1223,13 +1204,9 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
 
             newly.forEach(id => {
                 if (grille.some(g => g.id === id)) {
-                    ecosState.gridChecked.add(id);
-                    if (window.feedbackTimeline) {
-                        const item = grille.find(g => g.id === id);
-                        window.feedbackTimeline.log('section', `Item validé: ${item?.label || id}`);
+                        ecosState.gridChecked.add(id);
                     }
-                }
-            });
+                });
             if (newly.length > 0) {
                 updateGrilleUI();
                 if (window.MedGameAudio) window.MedGameAudio.play('correct');
@@ -1487,10 +1464,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                 timeMsgEl.innerHTML = `Le temps réglementaire est écoulé. Saisissez vos conclusions :`;
             }
         }
-
-        if (window.feedbackTimeline) {
-            window.feedbackTimeline.log('diagnostic', 'Phase d\'annonce démarrée');
-        }
     }
 
     async function submitAnnounce(e) {
@@ -1519,17 +1492,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                     speaker: log.speaker === 'Vous' ? 'ETUDIANT' : log.speaker === 'PS' ? 'PATIENT' : log.speaker,
                     origin: log.speaker === 'Vous' ? 'chat' : '',
                     text: log.text
-                });
-            });
-        }
-
-        if (window.feedbackTimeline && Array.isArray(window.feedbackTimeline.events)) {
-            window.feedbackTimeline.events.forEach(ev => {
-                events.push({
-                    elapsed: typeof ev.elapsed === 'number' ? ev.elapsed : 0,
-                    speaker: 'ETUDIANT',
-                    origin: 'interface',
-                    text: ev.detail || ''
                 });
             });
         }
@@ -1802,11 +1764,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
             URL.revokeObjectURL(url);
         });
 
-        // Rendre la timeline des actions (si feedback.js chargé)
-        if (window.renderTimeline) {
-            const timelineEl = document.getElementById('ecos-debrief-timeline');
-            if (timelineEl) timelineEl.innerHTML = window.renderTimeline();
-        }
 
         // Comparaison anonyme (si feedback.js charge)
         const score20 = typeof jev.globalScore20 === 'number' ? jev.globalScore20 : 0;
@@ -1818,53 +1775,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
         const perfScore20 = jev.sections?.performance?.score20 ?? 0;
         const stars = score20 >= 16 ? 3 : score20 >= 13 ? 2 : score20 >= 10 ? 1 : 0;
 
-        if (window.getAnonymousComparison && window.feedbackTimeline?.events?.length > 0) {
-            const compEl = document.getElementById('ecos-debrief-comparison');
-            if (compEl) {
-                const fakeComposite = {
-                    compositeScore: normalizedScore100,
-                    demarcheScore: Math.round((aptScore20 / 20) * 100),
-                    diagnosticScore: Math.round((perfScore20 / 20) * 100),
-                    traitementScore: 0,
-                    stars,
-                    breakdown: {
-                        demarche: { score: Math.round((aptScore20 / 20) * 100) },
-                        diagnostic: { score: Math.round((perfScore20 / 20) * 100) },
-                        traitement: { score: 0 },
-                        vitesse: { score: 100 }
-                    }
-                };
-                const comp = window.getAnonymousComparison(fakeComposite, ecosState.caseData?.id || 'unknown', 'ecos');
-                if (comp.total > 1) {
-                    compEl.innerHTML = `
-                        <div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px; margin-top:10px;">
-                            <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-                                <span style="font-weight:700;">📊 Comparaison anonyme</span>
-                                <span style="font-size:12px; color:rgba(255,255,255,0.4);">(${comp.total} sessions sur ce cas)</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="text-align:center;">
-                                    <div style="font-size:2rem; font-weight:800; color:${comp.percentile >= 75 ? '#2ecc71' : comp.percentile >= 50 ? '#f39c12' : '#e74c3c'};">${comp.percentile}<span style="font-size:0.8rem;">%</span></div>
-                                    <div style="font-size:0.7rem; color:rgba(255,255,255,0.5);">Percentile</div>
-                                </div>
-                                <div style="flex:1;">
-                                    <div style="position:relative; height:24px; background:rgba(255,255,255,0.1); border-radius:12px; overflow:hidden;">
-                                        <div style="position:absolute; left:0; height:100%; width:${comp.percentile}%; background:${comp.percentile >= 75 ? '#2ecc71' : comp.percentile >= 50 ? '#f39c12' : '#e74c3c'}; opacity:0.6; border-radius:12px;"></div>
-                                        <div style="position:absolute; height:100%; width:2px; left:50%; background:rgba(255,255,255,0.3);"></div>
-                                        <div style="position:absolute; left:${comp.percentile}%; top:50%; transform:translate(-50%,-50%); font-size:0.7rem; font-weight:700; color:white; text-shadow: 0 0 4px rgba(0,0,0,0.8);">Vous</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; font-size:12px; color:rgba(255,255,255,0.5); margin-top:8px;">
-                                <span>Score moyen : <strong style="color:rgba(255,255,255,0.8);">${comp.avgScore}%</strong></span>
-                                <span>Rang : <strong style="color:${comp.percentile >= 75 ? '#2ecc71' : comp.percentile >= 50 ? '#f39c12' : '#e74c3c'};">#${comp.rank}/${comp.total}</strong></span>
-                            </div>
-                        </div>`;
-                } else {
-                    compEl.innerHTML = `<div style="background:rgba(0,0,0,0.2); border-radius:8px; padding:12px; text-align:center; margin-top:10px;"><span style="font-size:0.85rem; color:rgba(255,255,255,0.5);">🏁 Première session sur ce cas — rejouez pour voir votre progression !</span></div>`;
-                }
-            }
-        }
 
         // ── Persistance de la session ECOS ──────────────────────────────
         const ecosSessionStats = {
@@ -2029,11 +1939,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
         ecosState.announceSubmitted = null;
         ecosState.feedbackNarrative = '';
 
-        if (window.feedbackTimeline) {
-            window.feedbackTimeline.reset();
-            window.feedbackTimeline.log('section', `Station ECOS démarrée — ${caseData.id}`);
-        }
-
         showVignette(caseData);
     }
 
@@ -2121,9 +2026,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                 if (!ecosState.gridChecked.has(g.id)) {
                     ecosState.gridChecked.add(g.id);
                     checkedAny = true;
-                    if (window.feedbackTimeline) {
-                        window.feedbackTimeline.log('section', `Item validé (action/clic) : ${g.label}`);
-                    }
                 }
             }
         });
@@ -2146,9 +2048,6 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                 if (!ecosState.gridChecked.has(g.id)) {
                     ecosState.gridChecked.add(g.id);
                     checkedAny = true;
-                    if (window.feedbackTimeline) {
-                        window.feedbackTimeline.log('section', `Item d'examen validé : ${g.label}`);
-                    }
                 }
             }
         });

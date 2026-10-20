@@ -103,17 +103,6 @@
             } else setLi('mg-p-locks', locks.done, locks.total);
         }
 
-        // Score démarche live (si dispo)
-        try {
-            if (typeof calculateDemarcheScore === 'function') {
-                const score = calculateDemarcheScore(currentCase);
-                const scoreEl = document.getElementById('mg-progress-score');
-                if (scoreEl) scoreEl.textContent = `${score}%`;
-                const fill = document.getElementById('mg-progress-fill');
-                if (fill) fill.style.width = `${Math.max(0, Math.min(100, score))}%`;
-            }
-        } catch (e) {}
-
         // Badge mode + bouton calme
         const badge = document.getElementById('mg-mode-badge');
         if (badge && window.MedGameModes) badge.textContent = window.MedGameModes.getModeLabel();

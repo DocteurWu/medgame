@@ -331,7 +331,6 @@ onDomReady(async () => {
         banner.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:9998;background:rgba(231,76,60,0.95);color:white;padding:10px 18px;border-radius:10px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;';
         banner.innerHTML = `<i class="fas fa-heart-crack"></i> <span>Détérioration critique — <span id="catch-countdown">${catchWindowRemaining}s</span></span> <span style="font-weight:400;opacity:0.85;">Antidote à administrer via la bulle</span>`;
         document.body.appendChild(banner);
-        if (typeof feedbackTimeline !== 'undefined') feedbackTimeline.log('traitement', `Fenêtre de rattrapage ouverte: ${catchWindowRemaining}s — ${pendingDeathReason}`);
         catchWindowInterval = setInterval(() => {
             catchWindowRemaining--;
             const el = document.getElementById('catch-countdown');
@@ -395,7 +394,6 @@ onDomReady(async () => {
             if (typeof window.vitalSigns.updateDisplay === 'function') window.vitalSigns.updateDisplay();
             if (typeof window.vitalSigns.startAnimations === 'function') window.vitalSigns.startAnimations();
         }
-        if (typeof feedbackTimeline !== 'undefined') feedbackTimeline.log('traitement', `💀 DÉCÈS — ${deathReason || 'cause iatrogène'}`);
         if (typeof showNotification === 'function') showNotification(`💀 Décès du patient — ${deathReason || 'arrêt cardio-respiratoire'}`, 'error');
         // Avatar en état critique
         const av = document.getElementById('patient-avatar');
@@ -453,7 +451,6 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             if (dlgBtn) dlgBtn.disabled = false;
             if (window.gameState) window.gameState.isPatientDead = false;
             showNotification('🫀 Tentative de réanimation — poursuivez via la bulle', 'info');
-            if (typeof feedbackTimeline !== 'undefined') feedbackTimeline.log('traitement', 'Tentative de réanimation engagée');
             // Le prochain message repassera par le Maître qui décidera si recovering ou dead définitif
         });
     };
@@ -463,32 +460,6 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
     // Lock system moved to js/lockSystem.js
     initLockSystem();
     lockSystem.onLoadCase = (isPartial) => loadCase(isPartial);
-
-    // --- Timeline feedback : écoute des événements de démarche clinique ---
-    document.addEventListener('interrogatoire-asked', (e) => {
-        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.path) {
-            const shortPath = e.detail.path.split('.').pop();
-            feedbackTimeline.log('interrogatoire', `Question posée : ${shortPath}`);
-        }
-    });
-    document.addEventListener('section-viewed', (e) => {
-        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.sectionId) {
-            feedbackTimeline.log('section', `Section consultée : ${e.detail.sectionId}`);
-        }
-    });
-    document.addEventListener('exam-ordered', (e) => {
-        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.exams) {
-            feedbackTimeline.log('examen', `Examens demandés : ${e.detail.exams.join(', ')}`);
-        }
-    });
-    document.addEventListener('locksystem-unlock', (e) => {
-        if (typeof feedbackTimeline !== 'undefined' && e.detail && e.detail.lockId) {
-            const label = e.detail.revealed
-                ? `Verrou révélé après échec : ${e.detail.lockId}`
-                : `Verrou déverrouillé : ${e.detail.lockId}`;
-            feedbackTimeline.log('lock', label);
-        }
-    });
 
     // Immersive Mode button handler — handled by capture-phase listener
     // (see toggleImmersive3DFromButton above, bound via document click capture)
@@ -721,10 +692,6 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             if (window.EcosMode && typeof window.EcosMode.stop === 'function') {
                 window.EcosMode.stop();
             }
-            if (window.feedbackTimeline && typeof window.feedbackTimeline.reset === 'function') {
-                window.feedbackTimeline.reset();
-            }
-
             // Utiliser initTimer pour configurer le timer adaptatif (couleurs, overlay, barre)
             // timer.js est charge par game.html : le repli legacy est mort.
             initTimer(undefined, false); // false = ne pas démarrer l'intervalle
@@ -2455,7 +2422,9 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             }
             const imageOverlay = document.getElementById('image-overlay');
             if (imageOverlay && imageOverlay.style.display === 'flex') {
-                if (typeof closeImageModal === 'function') closeImageModal();
+                // La fonction s'appelle `hideImageModal` (js/ui.js). L'ancien
+                // `closeImageModal` n'a jamais existe : l'appel etait un no-op.
+                if (typeof hideImageModal === 'function') hideImageModal();
                 return;
             }
             const mobileMonitor = document.getElementById('mobile-monitor-overlay');

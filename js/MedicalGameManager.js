@@ -328,9 +328,6 @@ Ne renvoie rien d'autre que du JSON. Pas de markdown, pas d'explication.`;
                         );
                         if (matchKeyword && !window.ecosState.gridChecked.has(g.id)) {
                             window.ecosState.gridChecked.add(g.id);
-                            if (window.feedbackTimeline) {
-                                window.feedbackTimeline.log('examen', `Examen validé : ${g.label || g.id}`);
-                            }
                         }
                     });
                     if (typeof window.ecosState.updateGrilleUI === 'function') {

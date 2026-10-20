@@ -335,10 +335,6 @@
                 }
 
                 // Feedback timeline
-                if (typeof feedbackTimeline !== 'undefined') {
-                    feedbackTimeline.log('traitement', `⚠️ CONTRE-INDICATION OUTREPASSÉE : ${drugName} — ${matched.join(', ')}`);
-                }
-
                 // Notification au joueur
                 if (typeof showNotification === 'function') {
                     showNotification(`⚠️ ${drugName} prescrit malgré les contre-indications !`);
@@ -351,9 +347,6 @@
             this.prescriptions.push({ ...prescription, id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random()) });
             this.syncScoring();
             this.renderList();
-            if (typeof feedbackTimeline !== 'undefined') {
-                feedbackTimeline.log('traitement', `Prescription (Maître) : ${prescription.nom} ${prescription.dosage} ${prescription.voie}`);
-            }
         }
 
         addPrescription(prescription, onSuccess) {
@@ -381,10 +374,6 @@
                 this.renderList();
 
                 // Feedback timeline
-                if (typeof feedbackTimeline !== 'undefined') {
-                    feedbackTimeline.log('traitement', `Prescription : ${prescription.nom} ${prescription.dosage} ${prescription.voie}`);
-                }
-
                 // Réponse physiologique EN TEMPS RÉEL (le moniteur réagit pendant
                 // le cas — amélioration si correct, aggravation si contre-indiqué)
                 if (window.vitalSigns && typeof window.vitalSigns.applyTreatmentImpact === 'function') {

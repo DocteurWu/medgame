@@ -381,14 +381,6 @@ class ClinicalAgentAI {
                 }
 
                 // Enregistrer dans la chronologie de correction
-                if (window.feedbackTimeline?.log) {
-                    const typeEvent = sc.type === 'fatal' ? 'lock' : 'traitement';
-                    window.feedbackTimeline.log(
-                        typeEvent,
-                        `Prescription libre : ${canonicalName} (${sc.type})`,
-                        { scoringType: sc.type, text: actionText }
-                    );
-                }
             }
         }
 
