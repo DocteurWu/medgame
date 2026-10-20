@@ -9,7 +9,7 @@
  *  - Cle TYPESAFE_API_KEY serveur uniquement, jamais exposee cote client
  */
 
-import { supaCfg, supaRpc, hashIp } from './_shared.js';
+import { supaCfg, supaRpc, hashIp } from '../_lib/supabase.js';
 
 const rateLimitMap = new Map();
 const RATE_LIMIT = 60;        // requetes par fenetre et par IP (memoire)

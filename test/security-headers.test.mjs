@@ -221,3 +221,39 @@ test('Aucun jeton de cache-busting ?v= ne subsiste sur le code applicatif', () =
         'Des references de modules portent encore un jeton ?v= (modules dupliques)'
     );
 });
+
+test('netlify/functions ne contient QUE des points d\'entree de fonction', () => {
+    // Netlify deploie chaque fichier .js du dossier netlify/functions comme
+    // une fonction. Un helper partage pose la-dedans devient donc un
+    // endpoint public sans handler : c'est ce qui est arrive avec
+    // netlify/functions/_shared.js, qui etait deploye en 3e fonction.
+    //
+    // Le helper vit maintenant dans netlify/_lib/ (hors du dossier des
+    // fonctions) et reste bundlee par zisi, qui suit les imports relatifs.
+    const functionsDir = path.join(ROOT, 'netlify', 'functions');
+    assert.ok(fs.existsSync(functionsDir), 'netlify/functions doit exister');
+
+    const entries = fs.readdirSync(functionsDir, { withFileTypes: true })
+        .filter(e => e.isFile() && /\.(js|mjs)$/.test(e.name))
+        .map(e => e.name)
+        .sort();
+
+    assert.deepEqual(
+        entries,
+        ['jev-proxy.js', 'llm-proxy.js'],
+        'netlify/functions ne doit contenir que les points d\'entree des fonctions deployees'
+    );
+
+    // Le helper partage doit exister hors du dossier des fonctions, et etre
+    // importe par les deux proxies.
+    const helper = path.join(ROOT, 'netlify', '_lib', 'supabase.js');
+    assert.ok(fs.existsSync(helper), 'le helper partage doit etre hors de netlify/functions');
+    for (const proxy of entries) {
+        const content = fs.readFileSync(path.join(functionsDir, proxy), 'utf8');
+        assert.match(
+            content,
+            /from\s+['"]\.\.\/_lib\/supabase\.js['"]/,
+            `${proxy} doit importer le helper partage depuis netlify/_lib/`
+        );
+    }
+});

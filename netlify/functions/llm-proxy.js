@@ -24,7 +24,7 @@
  *  - 402 QUOTA_EXCEEDED  → quota épuisé, NON retryable (modale + mailto)
  */
 
-import { supaCfg, supaRpc, hashIp } from './_shared.js';
+import { supaCfg, supaRpc, hashIp } from '../_lib/supabase.js';
 
 const rateLimitMap = new Map();
 const RATE_LIMIT = 60;        // requêtes par fenêtre et par IP (mémoire)
