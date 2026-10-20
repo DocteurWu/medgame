@@ -120,6 +120,13 @@
     box-shadow: 0 0 20px rgba(255, 71, 87, 0.35);
 }
 
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
 .quiz-option-btn.correct .opt-letter {
     background: #2ecc71;
     color: #060919;

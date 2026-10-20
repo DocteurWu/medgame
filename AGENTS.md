@@ -222,7 +222,18 @@ Utiliser `edit`/`write`, ou Node avec `readFileSync(f,'utf8')`.
 
 ## Conventions de dépôt
 
-Trois règles qui ont chacune payé une panne.
+Quatre règles qui ont chacune payé une panne.
+
+**0. Les `fetch()` de `data/` sont relatifs à la RACINE du site, pas au
+fichier.** `js/caseLoader.js`, `js/editor.js`, `js/prescription.js`,
+`js/profile.js` et `js/themes.js` font `fetch('data/case-index.json')`. Ces
+chemins se résolvent contre l'URL du **document**, pas contre celle du
+script : ils marchent parce que les 21 pages sont à la racine du dépôt, et
+casseraient si l'application etait servie sous un sous-chemin. Le passer en
+`new URL('../data/...', import.meta.url)` est la forme robuste, mais elle
+impose que ces fichiers soient des modules ES — donc **ne pas le faire a
+moitie** : les deux formes doivent changer ensemble, sinon une page perd ses
+donnees silencieusement.
 
 **1. Pas de jeton `?v=` sur le code applicatif.** L'identité d'un module ES est
 son URL résolue : le même fichier sous deux URL = **deux instances**. Le projet

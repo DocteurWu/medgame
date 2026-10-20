@@ -5,8 +5,7 @@
 import {
     ECHO_WINDOWS,
     ECHO_WINDOW_INFO,
-    ECHO_CASES,
-    evaluateEchoSignal
+    ECHO_CASES
 } from './echo-engine.js';
 
 document.addEventListener('DOMContentLoaded', () => {

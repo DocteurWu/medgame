@@ -8,8 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { SYSTEMS } from './three-atlas-data.js';
-import { TaskScheduler } from './task-scheduler.js';
-import { groupCardiacParts, heartPhase, heartMotion, ECGSynchronizer, HEART_PRESETS } from './atlas-heartbeat.js';
+import { groupCardiacParts, heartPhase, heartMotion, ECGSynchronizer } from './atlas-heartbeat.js';
 
 /** Layout "explosé" : grille compacte des pièces visibles (port simplifié de explosion-layout.ts). */
 function createExplosionLayout(visibleParts, aspect) {

@@ -557,13 +557,6 @@ body {
     padding-bottom: 10px;
 }
 
-.quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 16px;
-}
-
 .quiz-option-btn:hover:not(:disabled) {
     background: rgba(0, 242, 254, 0.14);
     border-color: var(--auscult-cyan);

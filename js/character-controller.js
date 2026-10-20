@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { easeInOut } from './three-animations.js';
 import { DoctorAnimator } from './three-animations.js';
-import { gltfLoader, loadGLBSmart } from './three-loaders.js';
+import { loadGLBSmart } from './three-loaders.js';
 
 export class CharacterController {
     constructor(scene) {

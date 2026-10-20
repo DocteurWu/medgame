@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { TaskScheduler } from './task-scheduler.js';
 
 /**
  * three-transition-agent.js — Agent de transitions 2D ↔ 3D

@@ -310,13 +310,7 @@ body {
     padding-bottom: 10px;
 }
 
-/* Options de réponse interactives */
-.quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 16px;
-}
+/* Options de réponse interactives : voir css/skills-common.css */
 
 .quiz-option-btn:hover:not(:disabled) {
     background: rgba(0, 242, 254, 0.14);

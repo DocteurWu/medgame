@@ -3,9 +3,6 @@ import path from 'path';
 import '../js/case-aliases.js';
 import { computeClassicScore, toScore20, fuzzyMatchExam, normalizeText, getSimilarity, getLevenshteinDistance, DIAGNOSTIC_TYPO_SIMILARITY } from './scoring.js';
 
-// Re-export pour compatibilite : `fuzzyMatchExam` etait exporte par ce module.
-export { fuzzyMatchExam };
-
 function getFriendlySubjectName(fieldPath) {
     const cleanPath = (fieldPath || '').replace(/^interrogatoire\./, '');
     const mapping = {
@@ -995,7 +992,7 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
             return this.lastEvaluation;
         }
 
-        // Notation : la regle /100 historique vit dans js/scoring.js (source
+        // Notation : la regle /100 historique vit dans engine/scoring.js (source
         // unique, partagee avec le navigateur). L'engine ne fait plus que
         // fournir les donnees de la session.
         const scoring = computeClassicScore({

@@ -10,7 +10,6 @@
  */
 
 import * as THREE from 'three';
-import { pulseEmissive } from './three-animations.js';
 
 /** Positions 3D associées aux champs verrouillés */
 const LOCK_POSITIONS = {

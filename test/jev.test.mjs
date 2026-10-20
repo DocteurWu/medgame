@@ -4,10 +4,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import {
-    ECOS_SECTION_WEIGHTS,
-    PASSING_SCORE_ON_20,
-    ROUTING_CONFIDENCE_THRESHOLD,
-    REDHIBITORY_THRESHOLD,
     buildUnifiedTranscript,
     buildScoringQuestions,
     computeFinalScores,

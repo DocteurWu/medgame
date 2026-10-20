@@ -249,8 +249,11 @@ const userDataDir = path.join(process.cwd(), '.tmp-chrome-3d-' + Date.now());
          */
         const attendreValeur = async (expr, attendu, timeoutMs = 60000) => {
             const t0 = Date.now();
+            // `v` est declare HORS du bloc while : sinon le `return v` de
+            // fin de fonction sortait de la portee du `let` et levait un
+            // ReferenceError au lieu de signaler un echec d'attente propre.
+            let v;
             while (Date.now() - t0 < timeoutMs) {
-                let v;
                 try {
                     v = await evaluate(expr, 8000);
                 } catch { v = undefined; }

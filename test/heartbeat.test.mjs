@@ -7,8 +7,7 @@ import {
     heartPhase,
     heartMotion,
     detectRPeaks,
-    ECGSynchronizer,
-    HEART_PRESETS
+    ECGSynchronizer
 } from '../js/atlas-heartbeat.js';
 
 test('Atlas Heartbeat — Identification et exclusion des structures', async (t) => {
