@@ -170,8 +170,27 @@ hérités du `server`).
 ## Nettoyage : ce qui a été supprimé, et ce qui a été laissé
 
 Un passage de grand nettoyage a retiré 15 fichiers morts, `dist/` (29 Mo), et
-environ 1 400 lignes de code mort dans les fichiers vivants. Trois décisions
+environ 1 400 lignes de code mort dans les fichiers vivants. Quatre décisions
 méritent d'être écrites, parce qu'elles ne se relisent pas dans le code.
+
+**0. L'historique Git a été réécrit.** Les fichiers audio supprimés du dépôt
+(`assets/sounds/heartbeat.mp3` 86 Mo, `hospital_ambient.mp3` 24 Mo — le cœur
+est synthétisé depuis), le PDF de cours de `data/ref/`, les doublons de
+`data/archive/`, `icone.png`/`icone.webp` et les sources PBR des textures de
+placard restaient dans l'historique : 130 Mo de blobs morts, dans un dépôt
+dont l'arbre de travail ne pesait que 147 Mo. `git filter-repo --invert-paths`
+les a retirés de **tous** les commits, sur les 6 branches, et le résultat a
+été poussé en force.
+
+> ⚠️ **Tous les SHA ont changé.** Un clone antérieur à cette réécriture
+> diverge de `origin` et doit être réaligné (`git fetch origin && git reset
+> --hard origin/jev`), pas seulement tiré. Un bundle de sauvegarde de
+> l'historique d'origine a été conservé hors du dépôt.
+>
+> ⚠️ `--path` **sans** `--invert-paths` ne garde que les chemins listés (et
+> vide l'arbre s'ils n'existent plus). L'-erreur a été faite ici, puis
+> corrigée : l'arbre de travail a été comparé **bit pour bit** avec la
+> sauvegarde avant tout push.
 
 **1. Le scoring a une source unique : `engine/scoring.js`.** Avant, le
 navigateur notait sur /20 (Jev) et l'engine MCP notait sur /100 avec une
