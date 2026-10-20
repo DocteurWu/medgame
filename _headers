@@ -9,6 +9,13 @@
   Cache-Control: no-store
 
 # Cache des assets — miroir de netlify.toml et nginx.conf
+# Le code applicatif se revalide : contrepartie de la suppression des `?v=`.
+/js/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/css/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 /assets/*
   Cache-Control: public, max-age=604800
 

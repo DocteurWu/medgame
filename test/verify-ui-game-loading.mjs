@@ -15,6 +15,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import WebSocket from 'ws';
+import { nettoyerProfil, balayerProfilsAbandonnes } from './helpers/chrome-profile.mjs';
 
 const CHROME_PATH = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const PORT = 9234;
@@ -83,7 +84,12 @@ async function run() {
     console.log('[Test UI Charge] Démarrage du serveur statique...');
     await new Promise(resolve => staticServer.listen(SERVER_PORT, '127.0.0.1', resolve));
 
-    const userDataDir = path.join(process.cwd(), '.tmp-chrome-charge-' + Date.now());
+        // Balaye les profils Chrome laissés par une exécution morte (Ctrl+C,
+    // crash, timeout) : chacun pèse 12-15 Mo, et leur accumulation ralentit
+    // le démarrage de Chrome au point de faire échouer la connexion au port
+    // de debug. C'est ce qui rendait ce test FLAKY.
+    balayerProfilsAbandonnes(['.tmp-chrome-charge-']);
+const userDataDir = path.join(process.cwd(), '.tmp-chrome-charge-' + Date.now());
     console.log('[Test UI Charge] Lancement de Chrome headless...');
     const chromeProc = spawn(CHROME_PATH, [
         `--remote-debugging-port=${PORT}`,
@@ -215,9 +221,11 @@ async function run() {
         console.log('[Test UI Charge] SUCCÈS — le chargement paresseux des cas est effectif.');
     } finally {
         if (ws) { try { ws.close(); } catch (e) {} }
-        chromeProc.kill();
         staticServer.close();
-        try { fs.rmSync(userDataDir, { recursive: true, force: true }); } catch (e) {}
+        // Voir test/helpers/chrome-profile.mjs : `proc.kill()` seul laisse
+        // les renderers Chrome vivants, qui verrouillent le profil. Le
+        // `rmSync` échouait alors en silence et laissait 15 Mo par exécution.
+        await nettoyerProfil(chromeProc, userDataDir, '.tmp-chrome-charge-');
     }
 }
 

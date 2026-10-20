@@ -4,7 +4,7 @@
   "description": "Medgame est un jeu éducatif simulant des scénarios médicaux pour tester tes connaissances du semestre 🏥. Ce n’est pas une source officielle 📚, mais un outil basé sur les références et mis à jour régulièrement.",
   "type": "module",
   "scripts": {
-    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs test/auscultation.test.mjs test/ecg.test.mjs test/heartbeat.test.mjs test/neuro-atlas.test.mjs test/neuro-atlas-fr.test.mjs test/credits.test.mjs test/kidney-atlas.test.mjs test/lung-atlas.test.mjs test/gds.test.mjs test/llm-quota.test.mjs test/jev.test.mjs test/pcg-trainer.test.mjs test/ventilateur.test.mjs test/pse.test.mjs test/echo.test.mjs test/audio.test.mjs test/case-index.test.mjs",
+    "test": "node --test test/engine.test.mjs test/mcp.test.mjs test/anticheat.test.mjs test/auscultation.test.mjs test/ecg.test.mjs test/heartbeat.test.mjs test/neuro-atlas.test.mjs test/neuro-atlas-fr.test.mjs test/credits.test.mjs test/kidney-atlas.test.mjs test/lung-atlas.test.mjs test/gds.test.mjs test/llm-quota.test.mjs test/jev.test.mjs test/pcg-trainer.test.mjs test/ventilateur.test.mjs test/pse.test.mjs test/echo.test.mjs test/audio.test.mjs test/scoring.test.mjs test/case-index.test.mjs test/security-headers.test.mjs test/tooling.test.mjs",
     "test:ui": "node test/verify-ui-audio.mjs && node test/verify-ui-3d.mjs && node test/verify-ui-game-loading.mjs && node test/verify-ui-credits.mjs && node test/verify-ui-gds.mjs",
     "mcp": "node mcp-server.js",
     "validate:cases": "node scripts/validate-cases.mjs",
@@ -30,5 +30,7 @@
     "dotenv": "^17.3.1",
     "ws": "^8.16.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "ajv": "^8.17.1"
+  }
 }

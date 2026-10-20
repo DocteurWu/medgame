@@ -11,23 +11,7 @@
  * - Conforme aux référentiels du Collège des Enseignants de Pneumologie (SPLF / R2C / EDN)
  */
 
-let _THREE = null;
-let _GLTFLoader = null;
-
-async function getThree() {
-    if (!_THREE) {
-        _THREE = (typeof window !== 'undefined' && window.THREE) ? window.THREE : await import('three');
-    }
-    return _THREE;
-}
-
-async function getGLTFLoader() {
-    if (!_GLTFLoader) {
-        const mod = await import('three/addons/loaders/GLTFLoader.js');
-        _GLTFLoader = mod.GLTFLoader;
-    }
-    return _GLTFLoader;
-}
+import { getThree, getGLTFLoader } from './three-loaders-shared.js';
 
 // Références vers les fichiers GLB locaux
 export const LUNG_MODELS = {

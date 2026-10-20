@@ -726,16 +726,8 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             }
 
             // Utiliser initTimer pour configurer le timer adaptatif (couleurs, overlay, barre)
-            if (typeof initTimer === 'function') {
-                initTimer(undefined, false); // false = ne pas démarrer l'intervalle
-            } else {
-                // Fallback legacy si timer.js non chargé
-                timerState.timeLeft = getTimeLimit();
-                timerState.totalTime = timerState.timeLeft;
-                timerState.lastAudioWarningAt = -1;
-                displayTime(timerState.timeLeft);
-                if (timerState.timerInterval) clearInterval(timerState.timerInterval);
-            }
+            // timer.js est charge par game.html : le repli legacy est mort.
+            initTimer(undefined, false); // false = ne pas démarrer l'intervalle
 
             // Restaurer le callback fin de temps (ECOS écrase onTimeUp pendant sa station)
             timerState.onTimeUp = handleTimeUp;
@@ -1613,8 +1605,10 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             }
         }
 
-        // XP calculé à partir de la note Jev sur 20 ramenée sur 100
-        const score100 = Math.round((globalScore20 / 20) * 100);
+        // XP calculé à partir de la note Jev sur 20 ramenée sur 100.
+        // La conversion vient de JevClient (source unique : engine/scoring.js),
+        // pas d'un calcul parallele ici.
+        const score100 = window.JevClient.toScore100(globalScore20);
         const xpResult = calculateXpEarned(score100);
         const xpEarned = xpResult.xpEarned;
         const xpMessage = xpResult.xpMessage;

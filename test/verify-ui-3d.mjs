@@ -43,6 +43,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import WebSocket from 'ws';
+import { nettoyerProfil, balayerProfilsAbandonnes } from './helpers/chrome-profile.mjs';
 
 const BROWSERS = [
     'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -152,7 +153,12 @@ async function main() {
     }
 
     await new Promise(r => server.listen(SERVER_PORT, '127.0.0.1', r));
-    const userDataDir = path.join(process.cwd(), '.tmp-chrome-3d-' + Date.now());
+        // Balaye les profils Chrome laissés par une exécution morte (Ctrl+C,
+    // crash, timeout) : chacun pèse 12-15 Mo, et leur accumulation ralentit
+    // le démarrage de Chrome au point de faire échouer la connexion au port
+    // de debug. C'est ce qui rendait ce test FLAKY.
+    balayerProfilsAbandonnes(['.tmp-chrome-3d-']);
+const userDataDir = path.join(process.cwd(), '.tmp-chrome-3d-' + Date.now());
     const proc = spawn(browser, [
         `--remote-debugging-port=${PORT}`,
         `--user-data-dir=${userDataDir}`,
@@ -498,12 +504,11 @@ async function main() {
 
     } finally {
         try { ws?.close(); } catch { /* déjà fermé */ }
-        proc.kill();
         await new Promise(r => server.close(r));
-        // Le profil est parfois encore verrouillé par Chrome : on tente, puis
-        // on abandonne proprement (le ramasse-miettes du profil s'en charge).
-        try { fs.rmSync(userDataDir, { recursive: true, force: true, maxRetries: 5 }); }
-        catch { spawnSync('cmd', ['/c', 'rmdir', '/s', '/q', userDataDir], { stdio: 'ignore' }); }
+        // Tuer l'arborescence Chrome puis réessayer : `proc.kill()` seul
+        // laisse les renderers vivants, qui gardent le profil verrouillé.
+        // Voir test/helpers/chrome-profile.mjs.
+        await nettoyerProfil(proc, userDataDir, '.tmp-chrome-3d-');
     }
 
     console.log(`\n[Test UI 3D] ${succes.length} vérification(s) OK, ${echecs.length} échec(s)`);

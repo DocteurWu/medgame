@@ -8,6 +8,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import WebSocket from 'ws';
+import { nettoyerProfil, balayerProfilsAbandonnes } from './helpers/chrome-profile.mjs';
 
 const CHROME_PATH = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const PORT = 9225; // port de debug distinct
@@ -68,7 +69,12 @@ async function runUITests() {
     console.log('[Test UI GDS] Démarrage du serveur statique...');
     await new Promise(resolve => staticServer.listen(SERVER_PORT, '127.0.0.1', resolve));
 
-    const userDataDir = path.join(process.cwd(), '.tmp-chrome-gds-' + Date.now());
+        // Balaye les profils Chrome laissés par une exécution morte (Ctrl+C,
+    // crash, timeout) : chacun pèse 12-15 Mo, et leur accumulation ralentit
+    // le démarrage de Chrome au point de faire échouer la connexion au port
+    // de debug. C'est ce qui rendait ce test FLAKY.
+    balayerProfilsAbandonnes(['.tmp-chrome-gds-']);
+const userDataDir = path.join(process.cwd(), '.tmp-chrome-gds-' + Date.now());
     console.log('[Test UI GDS] Lancement de Chrome headless...');
     const chromeProc = spawn(CHROME_PATH, [
         `--remote-debugging-port=${PORT}`,
@@ -141,7 +147,25 @@ async function runUITests() {
         // Test 1 : Navigation vers skills-gds.html
         console.log('[Test UI GDS] Navigation vers skills-gds.html...');
         await sendCommand('Page.navigate', { url: `http://127.0.0.1:${SERVER_PORT}/skills-gds.html` });
-        await sleep(1500);
+
+        // Attente ACTIVE de la fin du chargement, au lieu d'une temporisation
+        // fixe. Avec `await sleep(1500)`, le test était flaky : sur une machine
+        // chargée, les six scripts de la page (gds.js, gds-diagram.js,
+        // gds-ui.js…) n'étaient pas encore exécutés au moment de la
+        // vérification, et le test échouait au hasard — sans qu'aucune
+        // régression soit en cause.
+        const deadline = Date.now() + 20000;
+        let ready = false;
+        while (Date.now() < deadline) {
+            ready = await evaluate(
+                'document.readyState === "complete" && !!window.GDS && !!window.GDSDiagram'
+            );
+            if (ready) break;
+            await sleep(200);
+        }
+        if (!ready) {
+            throw new Error('La page skills-gds.html n\'a pas fini de charger (globals GDS/GDSDiagram absents)');
+        }
 
         const title = await evaluate('document.title');
         console.log(`[Test UI GDS] Titre de la page : "${title}"`);
@@ -246,11 +270,13 @@ async function runUITests() {
         if (ws) {
             try { ws.close(); } catch (e) {}
         }
-        chromeProc.kill();
         staticServer.close();
-        try {
-            fs.rmSync(userDataDir, { recursive: true, force: true });
-        } catch (e) {}
+        // `proc.kill()` seul ne suffit pas sous Windows : les renderers
+        // re-parentés survivent et gardent le profil verrouillé, donc le
+        // `rmSync` échouait et laissait un profil de 12 Mo à chaque exécution.
+        // L'accumulation (18 profils, ~200 Mo) ralentissait le démarrage de
+        // Chrome au point de faire échouer la connexion au port de debug.
+        await nettoyerProfil(chromeProc, userDataDir, '.tmp-chrome-gds-');
     }
 }
 

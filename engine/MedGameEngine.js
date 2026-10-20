@@ -1,6 +1,10 @@
 import fs from 'fs/promises';
 import path from 'path';
 import '../js/case-aliases.js';
+import { computeClassicScore, toScore20, fuzzyMatchExam, normalizeText, getSimilarity, DIAGNOSTIC_TYPO_SIMILARITY } from './scoring.js';
+
+// Re-export pour compatibilite : `fuzzyMatchExam` etait exporte par ce module.
+export { fuzzyMatchExam };
 
 function getFriendlySubjectName(fieldPath) {
     const cleanPath = (fieldPath || '').replace(/^interrogatoire\./, '');
@@ -30,55 +34,7 @@ function getFriendlySubjectName(fieldPath) {
 
 const EXAM_TIME_COST_SECONDS = 60;
 const CLINICAL_GESTURE_TIME_COST_SECONDS = 15;
-const DIAGNOSTIC_TYPO_SIMILARITY = 0.88;
 
-function normalizeText(text) {
-    if (!text) return '';
-    return String(text)
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-}
-
-function getLevenshteinDistance(a, b) {
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-    for (let i = 1; i <= b.length; i++) {
-        for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1,
-                    matrix[i][j - 1] + 1,
-                    matrix[i - 1][j] + 1
-                );
-            }
-        }
-    }
-    return matrix[b.length][a.length];
-}
-
-function getSimilarity(a, b) {
-    const maxLen = Math.max(a.length, b.length);
-    if (maxLen === 0) return 1;
-    return 1 - getLevenshteinDistance(a, b) / maxLen;
-}
-
-export function fuzzyMatchExam(availableName, relevantName) {
-    const a = normalizeText(availableName);
-    const r = normalizeText(relevantName);
-    if (!a || !r) return false;
-    if (a === r || a.includes(r) || r.includes(a)) return true;
-    if (getSimilarity(a, r) >= 0.6) return true;
-    const aTokens = a.split(' ').filter(w => w.length > 3);
-    const rTokens = r.split(' ').filter(w => w.length > 3);
-    return aTokens.some(t => rTokens.some(rt => rt.includes(t) || t.includes(rt)));
-}
 
 // Mapping enrichi des gestes cliniques réalisables au cabinet
 const GESTURE_TO_SECTION = {
@@ -1024,6 +980,7 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
             this.lastEvaluation = {
                 success: true,
                 score: 0,
+                scoreOn20: 0,
                 attempts: this.attempts,
                 results: {
                     diagnosticScore: 0,
@@ -1038,67 +995,26 @@ Réponds UNIQUEMENT avec un objet JSON strictement valide respectant ce schéma 
             return this.lastEvaluation;
         }
 
-        // 1. Score Diagnostic (sur 35 points)
-        const correctDiags = Array.isArray(this.caseData.correctDiagnostic)
-            ? this.caseData.correctDiagnostic
-            : [this.caseData.correctDiagnostic].filter(Boolean);
-        const altDiags = this.caseData.alternativeDiagnostics || [];
+        // Notation : la regle /100 historique vit dans js/scoring.js (source
+        // unique, partagee avec le navigateur). L'engine ne fait plus que
+        // fournir les donnees de la session.
+        const scoring = computeClassicScore({
+            caseData: this.caseData,
+            selectedDiagnostic: this.selectedDiagnostic,
+            activeExams: this.activeExams,
+            selectedTreatments: this.selectedTreatments,
+            anamnesisCount: this.demarche.interrogatoireAsked.size,
+            trust: this.patientState.trust,
+            hasGestures: this.demarche.clinicalGestures.size > 0
+        });
+        const { diagnosticScore, examScore, treatmentScore, communicationScore } = scoring;
 
-        const isDiagCorrect = correctDiags.some(cd =>
-            getSimilarity(normalizeText(cd), normalizeText(this.selectedDiagnostic)) >= DIAGNOSTIC_TYPO_SIMILARITY
-        );
-        const isDiagAlternative = !isDiagCorrect && altDiags.some(ad =>
-            getSimilarity(normalizeText(ad), normalizeText(this.selectedDiagnostic)) >= DIAGNOSTIC_TYPO_SIMILARITY
-        );
-        const diagnosticScore = isDiagCorrect ? 35 : (isDiagAlternative ? 18 : 0);
-
-        // 2. Score Examens Complémentaires via examGradation ou relevantExams (sur 25 points)
-        let examScore = 25;
-        const grad = this.caseData.examGradation;
-        const relevant = this.caseData.relevantExams || [];
-
-        if (grad) {
-            const parfaits = grad.parfaits || [];
-            const inutiles = grad.inutiles || [];
-            const dangereux = grad.dangereux || [];
-
-            const hitsParfaits = parfaits.filter(p => this.activeExams.some(ae => fuzzyMatchExam(ae, p))).length;
-            const ratioParfaits = parfaits.length > 0 ? (hitsParfaits / parfaits.length) : 1;
-            examScore = Math.round(ratioParfaits * 25);
-
-            for (const ae of this.activeExams) {
-                if (inutiles.some(i => fuzzyMatchExam(ae, i))) examScore -= 4;
-                if (dangereux.some(d => fuzzyMatchExam(ae, d))) examScore -= 12;
-            }
-        } else if (relevant.length > 0) {
-            const hits = relevant.filter(r => this.activeExams.some(ae => fuzzyMatchExam(ae, r))).length;
-            const overPrescription = Math.max(0, this.activeExams.length - relevant.length);
-            examScore = Math.round((hits / relevant.length) * 25) - (overPrescription * 3);
-        }
-        examScore = Math.max(0, Math.min(25, examScore));
-
-        // 3. Score Thérapeutique (sur 25 points)
-        const correctTx = this.caseData.correctTreatments || [];
-        let treatmentScore = 25;
-        if (correctTx.length > 0) {
-            const txHits = correctTx.filter(ct => this.selectedTreatments.includes(ct)).length;
-            const wrongTx = this.selectedTreatments.filter(st => !correctTx.includes(st) && !(this.caseData.secondLineTreatments || []).includes(st)).length;
-            treatmentScore = Math.round((txHits / correctTx.length) * 25) - (wrongTx * 5);
-        }
-        treatmentScore = Math.max(0, Math.min(25, treatmentScore));
-
-        // 4. Score Anamnèse, Examen Clinique & Relationnel ECOS (sur 15 points)
-        const anamnesisCount = this.demarche.interrogatoireAsked.size;
-        const anamnesisPoints = Math.min(8, anamnesisCount * 1.5);
-        const trustBonus = this.patientState.trust >= 65 ? 4 : (this.patientState.trust >= 45 ? 2 : 0);
-        const gestureBonus = this.demarche.clinicalGestures.size > 0 ? 3 : 0;
-        const communicationScore = Math.round(Math.min(15, anamnesisPoints + trustBonus + gestureBonus));
-
-        this.score = Math.round(diagnosticScore + examScore + treatmentScore + communicationScore);
+        this.score = scoring.score;
 
         this.lastEvaluation = {
             success: true,
             score: this.score,
+            scoreOn20: toScore20(this.score),
             attempts: this.attempts,
             results: {
                 diagnosticScore,

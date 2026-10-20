@@ -8,6 +8,15 @@
  *  4. Regle absolue "Jev ou rien" : aucun repli heuristique ni LLM generatif pour la notation.
  */
 
+// La conversion d'echelle (note /20 ECOS -> note /100 pour l'XP) vit dans
+// engine/scoring.js, qui est la source unique de toute la mathematique de
+// note du projet. On ne la reimplemente pas ici : on la re-exporte, pour
+// que `JevClient.toScore100()` soit le point d'entree unique cote
+// navigateur, comme `toScore20()` l'est cote serveur.
+import { toScore20, toScore100 } from '../engine/scoring.js';
+
+export { toScore20, toScore100 };
+
 // Ponderation officielle des 3 sections ECOS conformement aux exigences UNESS / CNG
 export const ECOS_SECTION_WEIGHTS = {
     aptitudes: 0.50,     // 50% Aptitudes cliniques et techniques
@@ -727,7 +736,9 @@ const JevClient = {
     buildUnifiedTranscript,
     buildScoringQuestions,
     computeFinalScores,
-    evaluateStation
+    evaluateStation,
+    toScore20,
+    toScore100
 };
 
 // Exposition du client Jev sur l'objet global window pour les scripts du navigateur (js/game.js, etc.)

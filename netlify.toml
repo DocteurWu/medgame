@@ -33,6 +33,22 @@
 # ── Cache des assets volumineux et immuables ──────────────────────────────────
 # Miroir de nginx.conf : la logique et les données sont revalidées, les assets
 # binaires sont cachés longtemps.
+
+# Le code applicatif se revalide à chaque requête.
+# C'est la contrepartie directe de la suppression des jetons `?v=` : sans cette
+# règle, un `js/` servi en cache long finirait par servir une version périmée
+# (c'était précisément le rôle du `?v=`, mais il dupliquait les modules ES).
+# Miroir de `location ~* \.(js|json|html|css)$` dans nginx.conf.
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [[headers]]
   for = "/assets/*"
   [headers.values]

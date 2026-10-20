@@ -1,0 +1,172 @@
+/**
+ * css/skills-common.css — Coquille partagee des pages de competence.
+ *
+ * EXTRAIT de auscultation.css et ecg-trainer.css : 24 regles
+ * (23 regles + @keyframes fadeIn) etaient identiques a l'octet dans les deux
+ * fichiers, dupliquees a la main. Une seule source, deux pages.
+ *
+ * Charge AVANT le fichier de la page : les regles specifiques de chaque page
+ * (les 20 selecteurs qui divergent sur une variable de couleur ou une valeur)
+ * restent dans le fichier de la page et continuent de gagner.
+ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.app-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 4px;
+}
+
+.nav-tab-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 9px 20px;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: var(--font-title);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-stats {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 18px;
+    border-radius: 24px;
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.case-tags {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.badge-diff {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    font-family: var(--font-title);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.badge-diff.debutant { background: rgba(46, 204, 113, 0.18); color: #2ecc71; border: 1px solid #2ecc71; }
+
+.badge-diff.intermediaire { background: rgba(241, 196, 15, 0.18); color: #f1c40f; border: 1px solid #f1c40f; }
+
+.badge-diff.urgence { background: rgba(255, 71, 87, 0.18); color: #ff4757; border: 1px solid #ff4757; }
+
+.badge-diff.expert { background: rgba(162, 155, 254, 0.18); color: #a29bfe; border: 1px solid #a29bfe; }
+
+.quiz-option-btn {
+    background: rgba(14, 22, 54, 0.75);
+    border: 1px solid rgba(0, 242, 254, 0.2);
+    color: #ffffff;
+    padding: 14px 18px;
+    border-radius: 14px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    font-family: var(--font-main);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    outline: none;
+}
+
+.quiz-option-btn.correct {
+    background: rgba(46, 204, 113, 0.25) !important;
+    border-color: #2ecc71 !important;
+    color: #2ecc71 !important;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.35);
+}
+
+.quiz-option-btn.wrong {
+    background: rgba(255, 71, 87, 0.25) !important;
+    border-color: #ff4757 !important;
+    color: #ff4757 !important;
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.35);
+}
+
+.quiz-option-btn.correct .opt-letter {
+    background: #2ecc71;
+    color: #060919;
+    border-color: #2ecc71;
+}
+
+.quiz-option-btn.wrong .opt-letter {
+    background: #ff4757;
+    color: #ffffff;
+    border-color: #ff4757;
+}
+
+.opt-text {
+    flex-grow: 1;
+    line-height: 1.45;
+}
+
+/* Feedback Box */
+.feedback-box {
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    animation: fadeIn 0.3s ease;
+}
+
+.feedback-box.correct {
+    background: rgba(46, 204, 113, 0.12);
+    border: 1px solid rgba(46, 204, 113, 0.45);
+    color: #eafaf1;
+}
+
+.feedback-box.wrong {
+    background: rgba(255, 71, 87, 0.12);
+    border: 1px solid rgba(255, 71, 87, 0.45);
+    color: #fde8e9;
+}
+
+.btn-3d.primary:hover {
+    transform: scale(1.04);
+}
+
+.hidden { display: none !important; }
+
+/* Animation d'apparition partagee (feedback-box, cartouche de resultat). */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}

@@ -24,6 +24,8 @@
  *  - 402 QUOTA_EXCEEDED  → quota épuisé, NON retryable (modale + mailto)
  */
 
+import { supaCfg, supaRpc, hashIp } from './_shared.js';
+
 const rateLimitMap = new Map();
 const RATE_LIMIT = 60;        // requêtes par fenêtre et par IP (mémoire)
 const RATE_WINDOW_MS = 60000; // 1 minute
@@ -103,14 +105,6 @@ function jsonError(msg, status, corsHeaders, extra = {}) {
     });
 }
 
-// ── Hash IP (SHA-256 ip + sel) — aucune IP en clair stockée ──────────────────
-async function hashIp(ip) {
-    const salt = process.env.QUOTA_SALT || 'medgame-quota-default-salt';
-    const data = new TextEncoder().encode(`${salt}:${ip}`);
-    const digest = await crypto.subtle.digest('SHA-256', data);
-    return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
 // ── Clé de déduplication des retries (calculée SERVEUR, jamais client) ───────
 //
 // Pourquoi pas une clé fournie par le client : `LLMClient.request` réessaie, et
@@ -138,31 +132,7 @@ async function dedupKey(ipHash, userId, model, messages) {
 }
 
 // ── Supabase REST helpers (service_role, jamais exposé au client) ────────────
-function supaCfg() {
-    const url = process.env.SUPABASE_URL;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !serviceKey) return null;
-    return { url: url.replace(/\/$/, ''), serviceKey };
-}
-
-async function supaRpc(fn, body) {
-    const cfg = supaCfg();
-    if (!cfg) return null; // fail-open (voir appelant)
-    const res = await fetch(`${cfg.url}/rest/v1/rpc/${fn}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            apikey: cfg.serviceKey,
-            Authorization: `Bearer ${cfg.serviceKey}`
-        },
-        body: JSON.stringify(body)
-    });
-    if (!res.ok) {
-        const t = await res.text().catch(() => '');
-        throw new Error(`RPC ${fn} → HTTP ${res.status}: ${t.slice(0, 200)}`);
-    }
-    return res.json();
-}
+// supaCfg / supaRpc / hashIp vivent dans _shared.js (cf. jev-proxy.js).
 
 /**
  * Variante de `supaRpc` qui retombe sur l'ancienne signature quand la base

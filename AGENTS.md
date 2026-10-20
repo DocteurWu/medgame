@@ -9,8 +9,8 @@
 ## Architecture
 - **Frontend**: Vanilla JS, HTML5, CSS3 (no frameworks, no bundler). Classic `<script defer>` for game logic, ES modules with an `importmap` for Three.js.
 - **3D**: Three.js `0.163.0` via importmap (`unpkg`). Aucun global `THREE` : tout le code 3D est en ES modules (`js/three-*.js`).
-- **Pages principales**: `index.html` (accueil), `game.html` (jeu, charge aussi le mode ECOS), `editor.html` (éditeur de cas), `atlas.html` (atlas anatomique), `skills.html` / `skills-gds.html`, `auscultation.html` / `auscultation-pcg.html`, `ecg-trainer.html`, `admin.html`, `profile.html`, `tutorial.html`, `themes.html`, `ai-watch.html`, `arena_play.html`, `promo.html` (film de présentation 30 s)
-- **JS**: `js/game.js` (logique de jeu), `js/ecosMode.js` (mode ECOS), `js/caseLoader.js` (chargement des cas), `js/MedicalGameManager.js`, `js/clinicalAgentAI.js` (agent IA), `js/jevClient.js` (notation Jev), `js/utils.js` (helpers globaux : `escapeHtml`, `sanitizeHtml`, `showNotification`), plus ~90 modules 3D et specialised
+- **Pages principales**: `index.html` (accueil), `game.html` (jeu, charge aussi le mode ECOS), `editor.html` (éditeur de cas), `atlas.html` (atlas anatomique), `skills.html` / `skills-gds.html`, `auscultation.html` / `auscultation-pcg.html`, `ecg-trainer.html`, `admin.html`, `profile.html`, `tutorial.html`, `themes.html`, `ai-watch.html`, `arena_play.html`
+- **JS**: `js/game.js` (logique de jeu), `js/ecosMode.js` (mode ECOS), `js/caseLoader.js` (chargement des cas), `js/case-aliases.js` (table des anciens noms de cas), `js/MedicalGameManager.js`, `js/clinicalAgentAI.js` (agent IA), `js/jevClient.js` (notation Jev), `js/utils.js` (helpers globaux : `escapeHtml`, `sanitizeHtml`, `showNotification`, `getCookie`, `setCookie`), plus ~90 modules 3D et specialised
 - ** moteur de jeu isole** : `engine/MedGameEngine.js` (logique pure, testable sans DOM)
 - **Audio** : un contexte unique et 6 bus — voir la section « Sound design » plus bas
 - **Serveur MCP** : `mcp-server.js` (proxy LLM local + WebSocket + health check)
@@ -72,8 +72,7 @@ via `whenReady(cb)`. Voir « Initialisation du jeu », règle 1.
   parasite se branche généralement sur sa propre destination et contourne le
   mute global, les réglages par bus et le mode calme. C'était le bug de
   `js/nurse.js` et `js/three-hud-agent.js`. `test/audio.test.mjs` le vérifie,
-  avec une liste blanche explicite (`auscultation-audio.js` pour son repli,
-  `promo-score.js` pour l'export du film).
+  avec une liste blanche explicite (`auscultation-audio.js` pour son repli).
 - **Ne jamais utiliser `new Audio(...)` ni une balise `<audio>`.** Tout passe
   par `MedGameAudio.play()` / `MedGameSound.play()`.
 - **Un son appelé doit exister dans le registre.** `test/audio.test.mjs` analyse
@@ -154,6 +153,59 @@ module le filtre, l'accord et la vitesse de pulsation.
 - `npm run validate:cases` : validation schéma + cohérence de tous les cas
 - `npm run generate:index` : régénère `data/case-index.json` et `data/case-meta.json`
 - CI (`.github/workflows/ci.yml`) : `npm test`, `validate:cases`, `node --check` sur tous les modules
+
+`test/tooling.test.mjs` **applique** la première règle : il compare la liste
+de `package.json` aux fichiers réellement présents dans `test/`, vérifie que
+chaque script npm pointe vers un fichier existant, que toute dépendance npm
+importée est déclarée, et que `.env.example` documente toute variable lue
+par le code. Un test nouveau oublié dans `package.json` fait donc échouer le
+CI au lieu d'être silencieusement ignoré.
+
+`test/security-headers.test.mjs` compare la CSP des trois points de livraison
+(`netlify.toml`, `_headers`, `nginx-security.conf`) **octet pour octet**, les
+5 en-têtes de sécurité, les règles de `Cache-Control` entre `netlify.toml` et
+`_headers`, et le piège nginx (`add_header` dans un `location` annule ceux
+hérités du `server`).
+
+## Conventions de dépôt
+
+Trois règles qui ont chacune payé une panne.
+
+**1. Pas de jeton `?v=` sur le code applicatif.** L'identité d'un module ES est
+son URL résolue : le même fichier sous deux URL = **deux instances**. Le projet
+posait un `?v=` différent sur chaque fichier, et `ai-watch.html` chargeait
+ainsi toute la pile 3D deux fois (deux graphes de scène, deux contextes
+WebGL). Le cache est désormais géré par `Cache-Control` (`/js/*` et `/css/*` en
+`max-age=0, must-revalidate`, cf. `netlify.toml` et `_headers`). Les
+binaires sous cache long (`assets/`) peuvent garder un `?v=` : ce ne sont pas
+des modules.
+
+**2. Un seul `AudioContext`, un seul `THREE`, une seule table d'alias.**
+- `js/case-aliases.js` est la **source unique** de la table des anciens noms
+  de cas (240 entrées). Elle était dupliquée à l'identique dans
+  `js/caseLoader.js` et `engine/MedGameEngine.js` — et une migration avait
+  déjà dû patcher les deux à la main. Elle est publiée sur `globalThis` parce
+  qu'elle doit être lisible depuis un script classique (navigateur) **et**
+  depuis un module ES (Node).
+- `getCookie` / `setCookie` sont définis **uniquement** dans `js/utils.js`.
+  Les copies locales qui existaient dans `themes.js` et `profile.js` lisaient
+  le cookie brut et ignoraient le miroir `localStorage` : la liste « cas
+  joués » était donc tronquée à 30 entrées sur ces deux pages, alors que le
+  jeu en voyait la liste complète.
+- `window.threeManager.THREE` est l'accès au namespace three.js pour les
+  scripts **classiques** (`js/clinicalAgentAI.js`). Il n'existe pas de global
+  `THREE` : l'ancien repli `window.THREE || scene.__proto__.constructor`
+  résolvait la classe `Scene`, donc `new THREE.Group()` levait un TypeError.
+
+**3. Les fins de ligne sont normalisées par `.gitattributes`.**
+`* text=auto eol=lf` + des règles `binary` explicites pour `.glb`, `.mp3`,
+`.wav`, `.bin`, `.png`… Sans ce fichier, le dépôt dépend de la machine :
+`core.autocrlf=true` vient de la configuration **globale** de Git, pas du
+dépôt, donc 97 fichiers étaient en CRLF, 229 en LF et 17 **mixtes**. Le
+symptôme le plus coûteux : `js/ecosMode.js` contenait un octet NUL brut
+(séparateur de clé de cache), git le classait donc « binary », ne normalisait
+rien, et son diff affichait **4308 lignes pour 92 lignes de changement
+réel**. Un octet NUL dans un fichier texte : il suffit à tout déstabiliser.
 
 ## Initialisation du jeu (entrée dans une partie)
 
@@ -436,53 +488,6 @@ produit un pic unique de plusieurs secondes qui ne dit rien du produit.
 > deux compteurs qui bougent quand une règle ci-dessus est violée — les garder à
 > l'œil coûte quelques secondes et évite de retrouver un gel à l'aveugle.
 
-
-## Film de présentation (promo)
-Montage de 30 s **monté à partir de captures réelles du produit**, jouable dans le navigateur et exportable en MP4. Voir `promo.html`. **Aucun lien vers le film depuis l'application** : la page reste accessible en direct, mais l'accueil ne l'expose plus.
-
-**Principe fondateur : le rendu est une fonction PURE du temps `t`.** Aucun état accumulé, aucune horloge murale, aucun `getDelta()`, PRNG à graine fixe, ECG ré-échantillonné depuis `t`. Conséquences :
-- la lecture live et l'export vidéo partagent le **même** point de rendu (`renderAt`) — pas de divergence possible ;
-- deux rendus du même `t` donnent des pixels identiques (vérifié par `test/verify-ui-promo.mjs`).
-
-**Le montage** : 7 actes (`SCENES` dans `js/promo-timeline.js`) = 6 plaques image + l'end-card :
-`room → themes → patient → ecg → atlas → decision → logo`. Chaque scène porte `asset` (PNG 1920×1080 dans `assets/promo/`) et un cadrage `frame` / `frameEnd` = `{ cx, cy, w }` (centre + côté, en fractions de l'image source). `getPlateWindow(scene, t, sourceAspect, containerAspect)` interpole les deux en `inOutCubic`, réadapte la fenêtre à l'aspect du cadre (16:9 ou 9:16) pour qu'aucune plaque ne s'étire, et reclampe `cx`/`cy` pour ne jamais laisser de bordure noire. `getPlateAlpha()` produit les fondus enchaînés (`PLATE_OVERLAP` = 0,5 s) : deux plaques coexistent donc toujours en transparence, il n'y a jamais de trou noir entre deux actes. Seul l'acte `patient` montre le moniteur de constantes (`vitals: true`) ; les statistiques produit ne s'affichent que sur `themes`.
-
-En 9:16 la fenêtre de cadrage garde **toute la hauteur** de la capture (seule la largeur se réduit), donc la barre de constantes du jeu capturé reste en haut du cadre : le badge de format est descendu en bas à gauche dans cette orientation, faute de quoi il se superpose au HUD du produit.
-
-| Fichier | Rôle |
-|---|---|
-| `js/promo-timeline.js` | Logique pure : 7 actes + cadrages, fondus de plaques, cues audio, easings, BPM, urgence, score, dim. Testable sans DOM |
-| `js/promo-ecg.js` | Générateur d'ECG déterministe (somme de gaussiennes) + constantes vitales + niveau du moniteur |
-| `js/promo-score.js` | Bande-son synthétisée (Web Audio, zéro octet d'asset) |
-| `js/promo-hud.js` | Overlay DOM : pile de plaques `<img>`, titre, moniteur, ECG canvas, débriefing, end-card |
-| `js/promo-player.js` | Boucle de lecture, transport, `whenReady()` / `warmUp()` / `renderFrameAt()` |
-| `css/promo.css` | Overlay + plaques. Toutes les tailles dérivent de `--u` (= 1 % du côté court) |
-| `assets/promo/*.png` | Les 6 captures réelles du produit (1920×1080) + `manifest.json` — une par acte, rien de plus |
-| `scripts/capture-promo-shots.mjs` | Génère ces captures (recettes `SHOTS`) |
-| `scripts/render-promo.mjs` | Export MP4 : capture image par image via CDP + WAV hors-ligne + ffmpeg |
-
-**Commandes** : `npm run promo` (16:9) · `npm run promo:both` (16:9 + 9:16) · `node scripts/render-promo.mjs --help`
-
-**Règles à respecter pour ne pas casser le déterminisme :**
-- Aucune `@keyframes` CSS infinie sur un élément visible pendant le film (sa phase dépend de l'horloge murale). Le clignotement d'alerte est calculé en JS depuis `t`.
-- Aucune transition CSS sur une valeur que le JS anime par frame : elle ferait dépendre le rendu de l'horloge murale.
-- **Pas de WebGL** : le film est du DOM (piles de `<img>` positionnés en `%`). `js/three-promo.js` a été supprimé, ne pas le réintroduire — ni l'importmap Three de `promo.html`.
-- `renderFrameAt` attend la composition réelle (`rAF` + délai) ; `Page.captureScreenshot` ne doit jamais suivre un `renderAt` brut.
-- Avant toute capture : attendre `whenReady()` (`document.fonts.ready` **et** les 6 captures décodées via `img.decode()`). Sans cela les premières frames ont des polices de substitution ou une plaque vide.
-- Ne pas re-capturer les PNG à la légère : les cadrages `frame`/`frameEnd` sont réglés image par image ; un remplacement invalide le plan.
-- `capture-promo-shots.mjs --only X` réécrit `assets/promo/manifest.json` avec la seule vue du run : une passe partielle écrase le manifeste complet, il faut la régénérer intégralement ensuite.
-
-**Ordre d'empilement (piège) :** `.promo-stage` porte `z-index: 0` et est donc son
-propre contexte d'empilement — c'est ce qui empêche le `z-index` interne des
-plaques (0 à 5, l'ordre du montage) de recouvrir la typographie. Les couches
-sont ensuite `stage` 0 < `.promo-layer` 10 < `.promo-copy` / `.promo-vitals` /
-`.promo-score` / `.promo-endcard` / `.promo-disclaimer` 20 < `.promo-flash` /
-`.promo-urgency` 30 < `.promo-fade` 40 < `.promo-controls` / `.promo-format` 50 <
-`.promo-gate` 100. Retirer le `z-index: 0` du stage fait disparaître tout
-l'overlay à partir du 2ᵉ acte, **sans casser le moindre test d'opacité** :
-`test/verify-ui-promo.mjs` fait donc un `elementFromPoint` sur la légende, le
-moniteur, le débriefing et l'end-card pour vérifier l'ordre de peinture réel.
-- `capture-promo-shots.mjs --only X` réécrit `assets/promo/manifest.json` avec la seule vue du run : une passe partielle écrase le manifeste complet, il faut la régénérer intégralement ensuite.
 
 ## Déploiement
 - **Netlify** : headers dans `netlify.toml` **et** `_headers` (les deux doivent rester cohérents — des tests le vérifient)

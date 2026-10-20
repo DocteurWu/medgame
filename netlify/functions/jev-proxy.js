@@ -9,6 +9,8 @@
  *  - Cle TYPESAFE_API_KEY serveur uniquement, jamais exposee cote client
  */
 
+import { supaCfg, supaRpc, hashIp } from './_shared.js';
+
 const rateLimitMap = new Map();
 const RATE_LIMIT = 60;        // requetes par fenetre et par IP (memoire)
 const RATE_WINDOW_MS = 60000; // 1 minute
@@ -51,39 +53,6 @@ function jsonError(msg, status, corsHeaders, extra = {}) {
         status,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
     });
-}
-
-function supaCfg() {
-    const url = process.env.SUPABASE_URL;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !serviceKey) return null;
-    return { url: url.replace(/\/$/, ''), serviceKey };
-}
-
-async function supaRpc(fn, body) {
-    const cfg = supaCfg();
-    if (!cfg) return null;
-    const res = await fetch(`${cfg.url}/rest/v1/rpc/${fn}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'apikey': cfg.serviceKey,
-            'Authorization': `Bearer ${cfg.serviceKey}`
-        },
-        body: JSON.stringify(body)
-    });
-    if (!res.ok) {
-        const t = await res.text().catch(() => '');
-        throw new Error(`RPC ${fn} -> HTTP ${res.status}: ${t.slice(0, 200)}`);
-    }
-    return res.json();
-}
-
-async function hashIp(ip) {
-    const salt = process.env.QUOTA_SALT || 'medgame-quota-default-salt';
-    const data = new TextEncoder().encode(`${salt}:${ip}`);
-    const digest = await crypto.subtle.digest('SHA-256', data);
-    return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 async function resolveUserId(userToken) {

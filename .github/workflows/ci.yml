@@ -25,11 +25,18 @@ jobs:
       - name: Validate case JSONs (schéma + cohérences)
         run: npm run validate:cases
 
-      - name: Syntax check (tous les modules js/)
+      # La vérification de syntaxe ne doit pas s'arrêter à js/ : mcp-server.js,
+      # engine/, netlify/functions/ et test/ sont du code exécuté, pas des
+      # données. Un `node --check` complet attrape une erreur de syntaxe avant
+      # qu'elle n'atteigne la production (le cas le plus coûteux reste
+      # three-scene.js : une ligne manquante tue TOUTE la pile 3D, sans
+      # aucune erreur visible à l'écran).
+      - name: Syntax check (tous les modules JS du dépôt)
         shell: bash
         run: |
           fail=0
-          for f in js/*.js scripts/*.mjs; do
+          for f in js/*.js engine/*.js netlify/functions/*.js scripts/*.mjs test/*.mjs mcp-server.js; do
+            [ -e "$f" ] || continue
             if ! node --check "$f" 2>/tmp/err.txt; then
               echo "❌ $f"; cat /tmp/err.txt; fail=1
             fi

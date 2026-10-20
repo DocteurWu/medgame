@@ -20,7 +20,7 @@
 *.glb    binary
 *.gltf   text eol=lf
 *.bin    binary
-*.obj    binary
+*.obj    text eol=lf
 *.wasm   binary
 *.mp3    binary
 *.wav    binary
@@ -35,9 +35,11 @@
 *.exr    binary
 *.ktx2   binary
 
-# Les données volumineuses de l'atlas neurologique sont régénérables et
-# servies en `immutable` par Netlify et nginx.
+# Les volumes de l'atlas neurologique sont des volumes binaires (noms de
+# structures quantifies), servis en `immutable` par Netlify et nginx.
+# Les `.json` qui les accompagnent restent du texte.
 neuro-atlas/data/volumes/** binary
+neuro-atlas/data/volumes/*.json text eol=lf
 neuro-atlas/data/**  text eol=lf
 
 # Fichiers générés : leur contenu est reproductible, on ne veut pas de bruit

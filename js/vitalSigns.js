@@ -366,10 +366,11 @@ class VitalSignsMonitor {
 
     startVitalUpdates() {
         if (this.dynamicsConfig) {
-            // Mode dynamique : démarrer le ticker 1s au lieu des mises à jour aléatoires
+            // Mode dynamique : le ticker 1s pilote les constantes.
             this.startDynamicsTicker();
+            return;
         }
-        // Garder le legacy interval pour compatibilité (coexiste avec dynamics ticker si les deux actifs)
+        // Mode statique : variations aleatoires legacy.
         const updateInterval = 3000 + Math.random() * 2000;
         this.updateInterval = setInterval(() => {
             this.updateVitalsValues();
