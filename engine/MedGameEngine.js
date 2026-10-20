@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import '../js/case-aliases.js';
-import { computeClassicScore, toScore20, fuzzyMatchExam, normalizeText, getSimilarity, DIAGNOSTIC_TYPO_SIMILARITY } from './scoring.js';
+import { computeClassicScore, toScore20, fuzzyMatchExam, normalizeText, getSimilarity, getLevenshteinDistance, DIAGNOSTIC_TYPO_SIMILARITY } from './scoring.js';
 
 // Re-export pour compatibilite : `fuzzyMatchExam` etait exporte par ce module.
 export { fuzzyMatchExam };
