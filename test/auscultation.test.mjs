@@ -136,9 +136,7 @@ test('Auscultation Audio Engine Logic & Normalization', async (t) => {
         assert.equal(typeof engine.setFilterMode, 'function');
         assert.equal(typeof engine.getWaveform, 'function');
         assert.equal(typeof engine.hasRealAudio, 'function');
-        // `getAudioMode()` a ete supprime : elle n'avait aucun appelant dans
-        // le code (seulement cette assertion) et lisait `this.isRealAudio`,
-        // une propriete qui n'existe pas sur la classe.
+        assert.equal(typeof engine.getAudioMode, 'function');
     });
 
     await t.test('calculates hotspot attenuation correctly', () => {
