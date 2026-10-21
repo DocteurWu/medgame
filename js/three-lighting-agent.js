@@ -31,18 +31,24 @@ export class ThreeLightingAgent {
 
     setupLighting() {
         // 1. Lumière ambiante de base (légèrement bleutée dans les ombres profondes)
-        const ambientLight = new THREE.AmbientLight('#cbd5e1', 0.30);
+        //
+        // La salle est en GARDE DE NUIT : l'ambiance est froide et discrète.
+        // C'est l'éclairage d'environnement et l'exposition qui donnent le
+        // « il fait nuit » — aucune source ne le pilote (l'IBL est un
+        // échantillonnage de cubemap, l'exposition une courbe tonale).
+        const ambientLight = new THREE.AmbientLight('#7d93b8', 0.13);
         this.scene.add(ambientLight);
         this.ambientLight = ambientLight;
 
-        // 2. Lumière hémisphérique (plafond blanc clinique 4500K / rebond sol granit chaud)
-        const hemiLight = new THREE.HemisphereLight('#f1f5f9', '#78716c', 0.52);
+        // 2. Lumière hémisphérique (ciel froid de nuit / rebond sombre du sol)
+        const hemiLight = new THREE.HemisphereLight('#8fa8c8', '#2b3340', 0.22);
         hemiLight.position.set(0, 5, 0);
         this.scene.add(hemiLight);
         this.hemiLight = hemiLight;
 
-        // 3. Soleil matinal (DirectionalLight 4800K) entrant par la fenêtre droite (x = +5.5)
-        const keyLight = new THREE.DirectionalLight('#fff3e0', 1.55);
+        // 3. Lueur de la ville par la fenêtre (DirectionalLight froide et basse)
+        //    C'est elle qui donne le contraste chaud/froid de l'image.
+        const keyLight = new THREE.DirectionalLight('#7fa6ff', 0.42);
         keyLight.position.set(11.5, 7.2, -2.8);
         keyLight.castShadow = true;
         keyLight.shadow.mapSize.set(this.quality.shadowSize, this.quality.shadowSize);
@@ -60,14 +66,16 @@ export class ThreeLightingAgent {
         this.scene.add(keyLight);
         this.keyLight = keyLight;
 
-        // 4. Diffusion zénithale de la fenêtre (Sky portal fill)
-        const windowFill = new THREE.PointLight('#e0f2fe', 0.55, 10, 1.5);
+        // 4. Diffusion zénithale de la fenêtre (halo bleu de la ville)
+        const windowFill = new THREE.PointLight('#5f8dff', 0.85, 10, 1.5);
         windowFill.position.set(4.8, 2.6, -0.5);
         this.scene.add(windowFill);
         this.windowFillLight = windowFill;
 
         // 5. Spot scialytique d'examen médical au-dessus du lit patient (x = 4.7, z = 0.2)
-        const examSpot = new THREE.SpotLight('#f8fafc', 1.15, 7.5, Math.PI / 5.5, 0.55, 1.2);
+        //    C'est la lampe d'examen du médecin : locale, chaude, et c'est elle
+        //    qui éclaire le patient.
+        const examSpot = new THREE.SpotLight('#fff4e2', 1.05, 7.5, Math.PI / 5.5, 0.55, 1.2);
         examSpot.position.set(4.4, 4.6, 0.2);
         examSpot.target.position.set(4.7, 0.85, 0.2);
         examSpot.castShadow = false; // Évite de doubler le coût de shadow map
@@ -90,12 +98,12 @@ export class ThreeLightingAgent {
         // à condition de rééquilibrer l'ambiante et l'IBL (voir plus bas) — tous
         // deux gratuits, puisqu'ils ne sont pas dans la boucle par pixel.
         this.pointLights = [];
-        this.pointLights.push(this._addPointLight(0, 4.4, -0.4, '#f8fafc', 0.72, 11));
+        this.pointLights.push(this._addPointLight(0, 4.4, -0.4, '#eef4ff', 0.95, 11));
 
         // 7. Halo de l'écran MED-OS sur le bureau et le visage du médecin
-        const instLight = new THREE.PointLight(0x38bdf8, 0.30, 2.2);
+        const instLight = new THREE.PointLight(0x38bdf8, 0.55, 2.2);
         instLight.position.set(-3.55, 1.18, -0.55);
-        instLight.userData.baseIntensity = 0.30;
+        instLight.userData.baseIntensity = 0.55;
         this.scene.add(instLight);
         this.instLight = instLight;
         // Modulé par `setClinicalMood` comme les autres.
@@ -111,7 +119,9 @@ export class ThreeLightingAgent {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.06;
+        // Exposition de garde de nuit : sans ça, le haut des murs reste
+        // éclairé comme en plein jour et la pièce ne « prend » pas.
+        this.renderer.toneMappingExposure = 0.92;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         this._setupEnvironment();
@@ -130,7 +140,11 @@ export class ThreeLightingAgent {
                 // pas une source dans la boucle d'éclairage par pixel. C'est donc
                 // le moyen le moins cher de rendre la restitution que donnaient
                 // les `PointLight` supprimées.
-                this.scene.environmentIntensity = 0.9;
+                //
+                // En garde de nuit, il est baissé : c'est lui qui décide si la
+                // pièce est éclairée comme un plateau technique ou comme une
+                // consultation à 2 h du matin.
+                this.scene.environmentIntensity = 0.42;
             }
             envScene.traverse?.(o => o.geometry?.dispose?.());
             pmrem.dispose();

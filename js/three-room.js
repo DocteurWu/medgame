@@ -1,6 +1,14 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { objLoader, loadGLBSmart } from './three-loaders.js';
+import {
+    makeFloorTextureSalle,
+    makeFloorRoughnessSalle,
+    makeWallTextureSalleRepetee,
+    makeCeilingTextureSalle,
+    RATIO_BANDEAU_MUR,
+    LARGEUR_TUILE_MUR
+} from './three-room-textures.js';
 
 // ============================================================
 // CACHE DE TEXTURES PROCÉDURALES HAUTE FIDÉLITÉ
@@ -414,42 +422,34 @@ export function buildRoom(scene) {
     const roomLength = 10;
     const roomHeight = 5;
 
-    // A. Sol hospitalier en grès cérame / granit satiné avec uv2 pour l'AO
-    const textureLoader = new THREE.TextureLoader();
-    const floorMap = textureLoader.load('assets/textures/granite_tile_1k/textures/granite_tile_diff_1k.jpg');
-    floorMap.wrapS = floorMap.wrapT = THREE.RepeatWrapping;
-    floorMap.repeat.set(6, 6);
-    floorMap.colorSpace = THREE.SRGBColorSpace;
-    floorMap.anisotropy = 8;
-
-    const floorAo = textureLoader.load('assets/textures/granite_tile_1k/textures/granite_tile_ao_1k.jpg');
-    floorAo.wrapS = floorAo.wrapT = THREE.RepeatWrapping;
-    floorAo.repeat.set(6, 6);
-
+    // A. Sol en PVC de salle : dalles de 60 cm collées à chaud, joints
+    // soudés, traces de roulettes. La texture est procédurale
+    // (js/three-room-textures.js) : un JPEG de granit de 4 Mo ne passerait
+    // pas le budget de chargement de la page 3D, et le PVC est plus
+    // réaliste qu'un granit dans une salle de consultation.
     const floorMat = new THREE.MeshPhysicalMaterial({
-        map: floorMap,
-        aoMap: floorAo,
-        aoMapIntensity: 0.95,
-        roughness: 0.26,
-        metalness: 0.05,
-        clearcoat: 0.42,
-        clearcoatRoughness: 0.24,
+        map: makeFloorTextureSalle(),
+        roughnessMap: makeFloorRoughnessSalle(),
+        roughness: 0.48,
+        metalness: 0.06,
+        clearcoat: 0.34,
+        clearcoatRoughness: 0.32,
         ior: 1.48,
-        envMapIntensity: 0.7
+        envMapIntensity: 0.85
     });
     box(scene, { x: roomWidth + 0.2, y: 0.05, z: roomLength + 0.2 }, { x: 0, y: 0, z: 0 }, floorMat, 'Sol', false, false);
 
-    // B. Murs cliniques (peinture acrylique lessivable blanc cassé hospitalier)
-    const wallNoise = makeNoiseBumpTexture(14, 256);
-    wallNoise.repeat.set(6, 3);
-    const wallMat = new THREE.MeshPhysicalMaterial({
-        color: '#f4f7fa',
-        roughness: 0.78,
-        bumpMap: wallNoise,
-        bumpScale: 0.025,
-        clearcoat: 0.08,
-        clearcoatRoughness: 0.65,
-        envMapIntensity: 0.35
+    // B. Murs cliniques à deux tons : vert d'eau en bas (la couleur de
+    // l'hôpital), blanc cassé en haut. La texture porte le dégradé vertical,
+    // donc elle ne se répète qu'horizontalement.
+    const wallMat = new THREE.MeshStandardMaterial({
+        map: makeWallTextureSalleRepetee(
+            RATIO_BANDEAU_MUR,
+            Math.max(1, Math.round(roomWidth / LARGEUR_TUILE_MUR))
+        ),
+        roughness: 0.86,
+        metalness: 0.0,
+        envMapIntensity: 0.4
     });
     box(scene, { x: roomWidth, y: roomHeight, z: 0.12 }, { x: 0, y: roomHeight / 2, z: -roomLength / 2 }, wallMat, 'Mur du fond', false, false);
     box(scene, { x: 0.12, y: roomHeight, z: roomLength }, { x: roomWidth / 2, y: roomHeight / 2, z: 0 }, wallMat, 'Mur droit', false, false);
@@ -460,13 +460,12 @@ export function buildRoom(scene) {
     box(scene, { x: roomWidth - 0.1, y: 0.16, z: 0.03 }, { x: 0, y: 1.05, z: -roomLength / 2 + 0.07 }, railMat, 'Main courante fond', false, false);
     box(scene, { x: 0.03, y: 0.16, z: roomLength - 0.1 }, { x: -roomWidth / 2 + 0.07, y: 1.05, z: 0 }, railMat, 'Main courante gauche', false, false);
 
-    // D. Plafond acoustique
+    // D. Plafond acoustique à dalles percées, avec ossature en T
     const ceilMat = new THREE.MeshStandardMaterial({
-        color: '#e9eef4',
-        roughness: 0.92,
-        bumpMap: wallNoise,
-        bumpScale: 0.04,
-        envMapIntensity: 0.2
+        map: makeCeilingTextureSalle(),
+        roughness: 0.95,
+        metalness: 0.0,
+        envMapIntensity: 0.25
     });
     box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight, z: 0 }, ceilMat, 'Plafond', false, false);
 

@@ -573,6 +573,69 @@ produit un pic unique de plusieurs secondes qui ne dit rien du produit.
 > l'œil coûte quelques secondes et évite de retrouver un gel à l'aveugle.
 
 
+## La salle 3D : matériaux, garde de nuit et scope mural
+
+La vue 3D a été relookée **sur place** : même moteur, même logique, même
+patient. Ce n'est pas une variante, c'est la salle.
+
+| Fichier | Rôle |
+|---|---|
+| `js/three-room-textures.js` | Textures procédurales : sol PVC de salle, murs à deux tons, plafond à dalles, affiches. Canvas 2D, pas d'asset. |
+| `js/three-scope.js` | Scope multiparamétrique mural (ECG + pouls + respiration + chiffres), branché sur les constantes du jeu. |
+| `js/three-overlays.js` | Calques DOM : grain, balayage, halo d'alarme. |
+| `css/immersive-cinema.css` | Styles des calques. |
+
+### Ce que la salle montre
+
+- **Sol PVC** : dalles de 60 cm soudées, traces de roulettes, carte de
+  rugosité (le reflet des plafonniers accroche). Une texture, pas un JPEG
+  de 4 Mo.
+- **Murs à deux tons** : vert d'eau en bas (la couleur de l'hôpital),
+  blanc cassé en haut. Le dégradé est vertical et *baked* dans la texture :
+  elle ne se répète qu'horizontalement.
+- **Plafond à dalles acoustiques** percées, avec ossature en T.
+- **Garde de nuit** : ambiance froide et discrète, fenêtre bleutée, IBL et
+  exposition abaissés. Ce sont ces DEUX derniers réglages — pas une lumière
+  — qui font « il fait nuit » : l'IBL est un échantillonnage de cubemap et
+  l'exposition une courbe tonale, ni l'un ni l'autre ne coûte un bloc dans
+  le shader.
+- **Faisceaux** sous les dalles LED : des cônes *additifs*, donc des
+  maillages — pas des sources. Une source ponctuelle coûte un bloc de calcul
+  dans le shader de **tous** les matériaux de la salle.
+- **Scope mural** : ECG, courbe de pouls, courbe de respiration et les
+  chiffres (FC, PA, PAM, SpO₂, FR, T°), lus dans `window.vitalSigns.props`.
+  La bande d'ECG de chevet, elle, reste : c'est celle qu'on lit en
+  auscultant.
+- **Calques de cinéma** : grain, balayage, et un halo rouge qui pulse quand
+  le patient va mal — c'est un signal clinique, pas un effet.
+
+### Trois pièges déjà payés
+
+1. **Un calque plein écran bloque les clics.** Sans `pointer-events: none`,
+   on ne peut plus cliquer sur le patient. Le grain est posé en DOM, pas en
+   post-traitement : c'est le compositeur du navigateur qui le pose, et le
+   moteur 3D ne paie rien.
+2. **`ECGScreenAnimator` REMPLACE la texture du maillage**
+   (`screenMesh.material.map = this.texture`). Le scope mural ne peut donc
+   pas cohabiter avec lui : on ne crée pas l'animateur de l'écran mural.
+   L'animateur de chevet, lui, reste.
+3. **Les textures en cache ne sont PAS libérées par le purgeur de scène** :
+   `SceneDisposer` ne dispose que les textures marquées `canDispose`. Un
+   cache survit donc aux reconstructions — et il faut le vider à la sortie
+   du 3D (`three-manager._cleanup3D`), sinon quelques mégaoctets de VRAM
+   restent en mémoire pour rien.
+
+### Les règles que la salle respecte
+
+- **Aucune source de lumière ajoutée.** Le rig est *re-teinté*, pas
+  reconstruit : le nombre de sources est le premier levier de performance du
+  rendu 3D. `test/room-materials.test.mjs` verrouille ce compte.
+- **Aucun matériau `transmission`** (le piège à 19 s de CPU), aucun second
+  `AudioContext`, une seule instance de three.js (importmap), aucun `?v=`.
+- **Une seule source de vérité** : `window.vitalSigns.props`. Le scope ne
+  calcule rien de clinique, il dessine ce que la partie sait déjà.
+
+
 ## Déploiement
 - **Netlify** : headers dans `netlify.toml` **et** `_headers` (les deux doivent rester cohérents — des tests le vérifient)
 - **Docker** : `nginx.conf`. Attention : dans nginx, un `add_header` dans un `location` annule ceux hérités du `server`. Les en-têtes de sécurité sont factorisés dans `nginx-security.conf`, inclus dans chaque `location` qui pose un `Cache-Control`.

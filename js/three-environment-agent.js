@@ -5,6 +5,7 @@
 
 import * as THREE from 'three';
 import { loadGLBSmart } from './three-loaders.js';
+import { makePosterTextureSalle } from './three-room-textures.js';
 
 /**
  * Paliers de détail décoratif.
@@ -192,35 +193,26 @@ enhanceRoom() {
     _addMedicalPosters() {
         const frameMat = new THREE.MeshStandardMaterial({ color: 0x8a7e6e, roughness: 0.5, metalness: 0.3 });
 
-        // Poster 1: PROTOCOLE ECMO (left wall, wall at x=-5.5)
+        // Poster 1: HYGIÈNE DES MAINS (mur gauche, x = -5.5)
+        //
+        // L'affiche précédente portait un protocole d'ECMO : c'est un document
+        // de réanimation, pas de consultation. Celle-ci est le rappel qu'un
+        // médecin de ville voit tous les jours — et elle donne une couleur
+        // franche à un mur qui est autrement neutre.
         const posterGeom = new THREE.PlaneGeometry(0.6, 0.8);
-        const canvas = document.createElement('canvas');
-        canvas.width = 512;
-        canvas.height = 682;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#f5f5f0';
-        ctx.fillRect(0, 0, 512, 682);
-        ctx.fillStyle = '#1a1a2e';
-        ctx.font = 'bold 28px sans-serif';
-        ctx.fillText('PROTOCOLE ECMO', 40, 60);
-        ctx.fillStyle = '#555';
-        ctx.font = '16px sans-serif';
-        const lines = [
-            '1. Cannulation veineuse...',
-            '2. Débit initial: 3L/min...',
-            '3. Monitorage SpO2 continu...',
-            '4. Sédation protocol...'
-        ];
-        lines.forEach((line, i) => {
-            ctx.fillText(line, 40, 120 + i * 50);
-        });
-        ctx.strokeStyle = '#1a1a2e';
-        ctx.lineWidth = 4;
-        ctx.strokeRect(10, 10, 492, 662);
 
-        const posterTexture = new THREE.CanvasTexture(canvas);
-        posterTexture.colorSpace = THREE.SRGBColorSpace;
-        posterTexture.generateMipmaps = true;
+        const posterTexture = makePosterTextureSalle(
+            'HYGIÈNE DES MAINS',
+            [
+                '#LES 5 INDICATIONS',
+                'Avant de toucher le patient',
+                'Avant un geste aseptique',
+                'Après un risque d\'exposition',
+                'Après avoir touché le patient',
+                'Après avoir touché son environnement'
+            ],
+            '#0e7490'
+        );
         posterTexture.minFilter = THREE.LinearMipmapLinearFilter;
         posterTexture.magFilter = THREE.LinearFilter;
 
@@ -1294,6 +1286,30 @@ loadGLBSmart(LIT_URL, (gltf) => {
             const diffuser = new THREE.Mesh(new THREE.BoxGeometry(1.16, 0.02, 0.56), diffuserMat);
             diffuser.position.y = -0.02;
             panel.add(diffuser);
+
+            // Faisceau de lumière visible sous la dalle.
+            //
+            // C'est un MAILLAGE additif, pas une source : il ne coûte aucun
+            // bloc de calcul dans le shader des autres matériaux (une source
+            // ponctuelle en coûte un dans TOUS les matériaux de la scène).
+            // C'est ce qui donne le relief de la pièce, et c'est gratuit.
+            const cone = new THREE.Mesh(
+                new THREE.ConeGeometry(1.45, 3.55, 22, 1, true),
+                new THREE.MeshBasicMaterial({
+                    color: 0xdce9ff,
+                    transparent: true,
+                    opacity: 0.035,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false,
+                    side: THREE.DoubleSide,
+                    toneMapped: false
+                })
+            );
+            // `ConeGeometry` a l'apex vers +Y : on veut l'apex en haut, au
+            // niveau de la dalle, et la base ouverte vers le sol.
+            cone.position.set(0, -1.82, 0);
+            cone.renderOrder = 2;
+            panel.add(cone);
 
             this.scene.add(panel);
             this._registerDecor(panel, 2);

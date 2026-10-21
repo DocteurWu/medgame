@@ -18,6 +18,11 @@ import { HudTooltip } from './three-hud.js';
 import { EcosSession } from './three-ecos-session.js';
 import { TaskScheduler } from './task-scheduler.js';
 import { SceneDisposer } from './scene-disposer.js';
+// Scope multiparamétrique mural et calques cinématiques (grain, balayage,
+// halo d'alarme). Ces modules n'importent que 'three' : pas de second
+// moteur, pas de dépendance nouvelle.
+import { creerScope } from './three-scope.js';
+import { creerOverlays } from './three-overlays.js';
 
 /**
  * Descriptions riches des objets interactifs de la chambre clinique
@@ -310,6 +315,14 @@ _buildSteps() {
         // construction. Le contenu de la salle, lui, reste entièrement différé.
         this.environmentAgent = new ThreeEnvironmentAgent(this.scene);
 
+        // Calques cinématiques (grain, balayage, halo d'alarme).
+        //
+        // Ce sont des NŒUDS DOM, pas des maillages : ils sont posés par-dessus
+        // le canvas par le compositeur du navigateur, et ne coûtent donc rien
+        // au moteur 3D. Le halo d'alarme est un signal clinique : il est
+        // piloté par les vraies constantes du jeu.
+        this.overlaysCinema = creerOverlays();
+
         return [
             // Géométrie de la pièce (murs, sol, plafond)
             () => buildRoom(this.scene),
@@ -393,8 +406,15 @@ _buildSteps() {
         const ecg = this.environmentAgent.getECGScreenMesh?.();
         if (ecg) this.ecgAnimator = new ECGScreenAnimator(ecg, { width: 256, height: 96, heartRate: 72 });
 
-        const wallEcg = this.environmentAgent.getWallECGScreenMesh?.();
-        if (wallEcg) this.wallEcgAnimator = new ECGScreenAnimator(wallEcg, { width: 256, height: 96, heartRate: 72 });
+        // L'écran MURAL n'est plus une bande d'ECG : c'est un scope
+        // multiparamétrique (ECG + pouls + respiration + chiffres), posé plus
+        // bas dans `_initScope()`. L'animateur classique REPLAÇANT la texture
+        // du maillage (`screenMesh.material.map = this.texture`), il
+        // l'écraserait : on ne le crée donc pas.
+        //
+        // La bande d'ECG de CHEVET, elle, reste : c'est elle qu'on lit en
+        // auscultant le patient.
+        this._initScope();
 
         if (!this.reducedMotion) {
             const dust = this.environmentAgent.getDustParticles?.();
@@ -464,6 +484,38 @@ _buildSteps() {
         if (this.auscultationHotspotsGroup) {
             this.auscultationHotspotsGroup.visible = (isPatientMode && !!this.stethoscopeMode);
         }
+    }
+
+    /**
+     * Pose le scope multiparamétrique sur l'écran mural.
+     *
+     * C'est l'écran que l'étudiant regarde pendant qu'il garde le patient :
+     * ECG, courbe de pouls, courbe de respiration, et les chiffres. Tout
+     * est lu dans `window.vitalSigns.props` — la source unique du jeu. Le
+     * scope ne calcule RIEN de clinique : il dessine ce que la partie sait
+     * déjà.
+     */
+    _initScope() {
+        const ecranMural = this.environmentAgent.getWallECGScreenMesh?.();
+        if (!ecranMural) return;
+        try {
+            this.scope = creerScope(ecranMural, { patientLabel: this._patientLabel() });
+        } catch (e) {
+            console.warn('[ThreeScene] scope mural indisponible :', e);
+        }
+    }
+
+    /**
+     * Étiquette du patient affichée en en-tête du scope.
+     * @returns {string}
+     */
+    _patientLabel() {
+        const cas = this.manager?.currentCase || window.gameState?.currentCase;
+        const p = cas?.patient;
+        if (!p) return 'PATIENT';
+        const nom = [p.prenom, p.nom].filter(Boolean).join(' ').trim();
+        const age = p.age !== undefined ? ` • ${p.age} ans` : '';
+        return `${nom || 'PATIENT'}${age}`;
     }
 
     /* ================= GESTION DES ÉVÉNEMENTS ================= */
@@ -1138,6 +1190,14 @@ _buildSteps() {
 
         medicalAudio.destroy();
         this.overlays.dispose();
+        // Les calques cinématiques et le scope sont des objets à durée de vie
+        // externe au graphe de scène : ils ne sont pas libérés par le purgeur,
+        // il faut les arrêter explicitement (le scope tourne sur un minuteur,
+        // les calques restent posés sur la page du jeu).
+        this.overlaysCinema?.dispose?.();
+        this.overlaysCinema = null;
+        this.scope?.dispose?.();
+        this.scope = null;
         this.tooltip.dispose();
         this.highlighter.dispose();
         this.director.cancel();

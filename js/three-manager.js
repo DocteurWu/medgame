@@ -320,6 +320,12 @@ class ThreeManager {
             try { this.scene.cleanup(); } catch(e) {}
             this.scene = null;
         }
+        // Les textures de la salle (sol, murs, plafond) sont mises en cache
+        // et PARTAGÉES entre deux constructions : le purgeur de scène ne les
+        // libère pas (il ne dispose que les textures marquées `canDispose`).
+        // Il faut donc vider le cache explicitement, sinon quelques mégaoctets
+        // de VRAM restent en mémoire après avoir quitté la vue 3D.
+        viderCacheTexturesSalle();
         if (this.hud) {
             this.hud.hide();
             this.hud = null;
@@ -1561,6 +1567,7 @@ class ThreeManager {
 export { ThreeManager };
 
 import { predictiveStreamer } from './predictive-streamer.js';
+import { viderCacheTexturesSalle } from './three-room-textures.js';
 
 // Singleton global — disponible pour game.js via window.threeManager
 window.threeManager = new ThreeManager();
