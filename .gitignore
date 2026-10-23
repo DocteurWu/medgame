@@ -51,3 +51,4 @@ scratch/
 # Local assets & artifacts non versionnés
 assets/splats/
 android/
+.claude/
