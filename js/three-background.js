@@ -115,11 +115,13 @@ const ThreeBackground = (function () {
         raycaster = new THREE.Raycaster();
         mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 
+        // En charte clinique CHU avec les nouveaux fonds hospitaliers réels (fond-hospital-light/dark),
+        // on désactive l'hélice ADN néon et les particules spatiales pour laisser respirer la scène hospitalière.
         createLights();
-        createStars();
-        createCells();
-        if (options.type === 'dna') createDNAHelix();
-        if (options.enableGlow) createAmbientGlow();
+        // createStars();
+        // createCells();
+        // if (options.type === 'dna') createDNAHelix();
+        // if (options.enableGlow) createAmbientGlow();
 
         if (options.enableMouse && !reducedMotion) initInteraction();
 

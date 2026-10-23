@@ -20,15 +20,28 @@
 }
 
 body {
-    font-family: var(--font-main);
-    background-color: var(--bg-dark);
-    background-image: linear-gradient(rgba(5, 7, 20, 0.4), rgba(5, 7, 20, 0.4)), var(--hospital-bg, url('../assets/images/fond-hospital-dark.webp'));
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: var(--text-main);
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    background-color: var(--paper, #F3F5F2) !important;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(28, 90, 120, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(42, 107, 71, 0.05) 0%, transparent 50%),
+        var(--hospital-bg, url('../assets/images/fond-hospital-light.webp')) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    color: var(--ink, #17242C) !important;
     min-height: 100vh;
     overflow-x: hidden;
+}
+
+[data-theme="dark"] body,
+body.theme-dark {
+    background-color: var(--paper, #0E161B) !important;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(43, 126, 166, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(61, 184, 120, 0.07) 0%, transparent 50%),
+        var(--hospital-bg, url('../assets/images/fond-hospital-dark.webp')) !important;
+    color: var(--ink, #EAF0EE) !important;
 }
 
 #canvas-container {

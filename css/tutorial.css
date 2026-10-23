@@ -1,23 +1,30 @@
 /* ── CSS/TUTORIAL.CSS — Guide MedGame & Comment Jouer (Format Compact 1 Écran) ── */
 
-:root {
-    --tut-primary: #00f2fe;
-    --tut-secondary: #8e4fe0;
-    --tut-emerald: #10b981;
-    --tut-coral: #fb7185;
-    --tut-cobalt: #3b82f6;
-    --tut-violet: #a855f7;
-}
-
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background-color: var(--dark-bg, #060919);
-    color: var(--text-main, #ffffff);
-    font-family: var(--font-main, 'Inter', sans-serif);
+    background-color: var(--paper, #F3F5F2) !important;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(28, 90, 120, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(42, 107, 71, 0.05) 0%, transparent 50%),
+        var(--hospital-bg, url('../assets/images/fond-hospital-light.webp')) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    color: var(--ink, #17242C) !important;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+[data-theme="dark"] body,
+body.theme-dark {
+    background-color: var(--paper, #0E161B) !important;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(43, 126, 166, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(61, 184, 120, 0.07) 0%, transparent 50%),
+        var(--hospital-bg, url('../assets/images/fond-hospital-dark.webp')) !important;
+    color: var(--ink, #EAF0EE) !important;
 }
 
 /* Conteneur principal plein écran */
@@ -32,23 +39,322 @@ body {
     box-sizing: border-box;
 }
 
-/* Carte vitrée MedGame ultra-compacte */
+/* Carte clinique CHU */
 .tutorial-card {
     position: relative;
     width: 100%;
     max-width: 1060px;
-    background: rgba(10, 15, 36, 0.78);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 242, 254, 0.1);
-    border-radius: 20px;
-    padding: clamp(12px, 1.8vh, 18px) clamp(16px, 2.2vw, 24px);
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    box-shadow: var(--shadow-pop, 0 18px 48px rgba(16, 30, 38, 0.18)) !important;
+    border-radius: var(--radius-sheet, 8px) !important;
+    padding: clamp(14px, 2vh, 22px) clamp(18px, 2.5vw, 28px) !important;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.2vh, 13px);
+    gap: clamp(10px, 1.4vh, 16px);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color: var(--ink, #17242C) !important;
 }
+
+/* Barre supérieure & En-tête */
+.tutorial-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--rule, #D6DED9) !important;
+    padding-bottom: 10px;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.tut-nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+    background: var(--sheet-subtle, #F8FAF7) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    color: var(--ink, #17242C) !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease !important;
+}
+
+.tut-nav-btn:hover {
+    background: var(--scrub-tint, #E2EDF3) !important;
+    border-color: var(--scrub, #1C5A78) !important;
+    color: var(--scrub-ink, #123F55) !important;
+    transform: none !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+.tut-header-title {
+    text-align: center;
+}
+
+.tut-header-title h1 {
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    font-size: clamp(1.25rem, 2.2vh, 1.6rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    margin: 0;
+    color: var(--ink, #17242C) !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--ink, #17242C) !important;
+}
+
+.tut-header-title p {
+    font-size: 0.78rem !important;
+    font-family: var(--font-num, 'Barlow Semi Condensed', sans-serif) !important;
+    color: var(--ink-2, #4B5B63) !important;
+    margin: 3px 0 0 0;
+}
+
+.tut-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    font-family: var(--font-num, 'Barlow Semi Condensed', sans-serif) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px;
+    color: var(--scrub-ink, #123F55) !important;
+    background: var(--scrub-tint, #E2EDF3) !important;
+    border: 1px solid var(--scrub, #1C5A78) !important;
+    padding: 5px 12px !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+}
+
+/* Grille des 5 Étapes du Cas Clinique */
+.tut-steps-section {
+    width: 100%;
+}
+
+.tut-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.tut-step-card {
+    position: relative;
+    background: var(--sheet-subtle, #F8FAF7) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    border-left: 3.5px solid var(--scrub, #1C5A78) !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+    padding: 12px 12px 14px 12px !important;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: transform 0.15s ease, border-color 0.15s ease !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+.tut-step-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--scrub, #1C5A78) !important;
+    box-shadow: var(--shadow-pop) !important;
+}
+
+.tut-step-card.step-1 { border-left-color: var(--scrub, #1C5A78) !important; }
+.tut-step-card.step-2 { border-left-color: var(--ok, #2A6B47) !important; }
+.tut-step-card.step-3 { border-left-color: #3b82f6 !important; }
+.tut-step-card.step-4 { border-left-color: var(--alert, #B32D24) !important; }
+.tut-step-card.step-5 { border-left-color: #8b5cf6 !important; }
+
+.step-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.step-number {
+    font-family: var(--font-num, 'Barlow Semi Condensed', sans-serif) !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    border-radius: 50%;
+    color: var(--ink, #17242C) !important;
+}
+
+.step-icon-wrap {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-ctl, 4px);
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    font-size: 0.95rem;
+}
+
+.step-1 .step-icon-wrap i { color: var(--scrub, #1C5A78) !important; }
+.step-2 .step-icon-wrap i { color: var(--ok, #2A6B47) !important; }
+.step-3 .step-icon-wrap i { color: #3b82f6 !important; }
+.step-4 .step-icon-wrap i { color: var(--alert, #B32D24) !important; }
+.step-5 .step-icon-wrap i { color: #8b5cf6 !important; }
+
+.tut-step-card h3 {
+    margin: 4px 0 2px 0;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: var(--ink, #17242C) !important;
+}
+
+.tut-step-card p {
+    margin: 0;
+    font-size: 0.78rem !important;
+    line-height: 1.35;
+    color: var(--ink-2, #4B5B63) !important;
+    flex-grow: 1;
+}
+
+.step-key-tip {
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    color: var(--ink-2, #4B5B63) !important;
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    padding: 3px 8px;
+    border-radius: var(--radius-ctl, 4px);
+}
+
+/* Bandeau horizontal : 4 Réflexes Clés */
+.tut-tips-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: var(--sheet-subtle, #F8FAF7) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+    padding: 10px 14px !important;
+}
+
+.tut-tip-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.76rem !important;
+    color: var(--ink, #17242C) !important;
+}
+
+.tut-tip-mini i {
+    color: var(--scrub, #1C5A78) !important;
+    font-size: 0.95rem;
+}
+
+.tut-tip-mini strong {
+    color: var(--ink, #17242C) !important;
+}
+
+/* Actions au bas du guide */
+.tut-actions-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 4px;
+}
+
+.tut-btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 24px !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease !important;
+    box-sizing: border-box;
+}
+
+.tut-btn-action.primary {
+    background: var(--scrub, #1C5A78) !important;
+    border: 1px solid var(--scrub-hover, #154961) !important;
+    color: #FFFFFF !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+.tut-btn-action.primary:hover {
+    background: var(--scrub-hover, #154961) !important;
+    transform: translateY(-1px) !important;
+    color: #FFFFFF !important;
+}
+
+.tut-btn-action.tertiary {
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    color: var(--ink, #17242C) !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+.tut-btn-action.tertiary:hover {
+    background: var(--scrub-tint, #E2EDF3) !important;
+    border-color: var(--scrub, #1C5A78) !important;
+    color: var(--scrub-ink, #123F55) !important;
+    transform: translateY(-1px) !important;
+}
+
+.tut-card-footer {
+    text-align: center;
+    font-size: 0.72rem !important;
+    color: var(--ink-3, #78878E) !important;
+    border-top: 1px solid var(--rule, #D6DED9) !important;
+    padding-top: 8px;
+    margin-top: 2px;
+}
+
+.tut-card-footer a {
+    color: var(--ink-2, #4B5B63) !important;
+}
+
+.tut-card-footer a:hover {
+    color: var(--scrub, #1C5A78) !important;
+}
+
+@media (max-width: 900px) {
+    .tut-steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .tut-tips-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 580px) {
+    .tut-steps-grid {
+        grid-template-columns: 1fr;
+    }
+    .tut-tips-strip {
+        grid-template-columns: 1fr;
+    }
+    .tut-actions-row {
+        flex-direction: column;
+    }
+}
+
 
 /* Barre supérieure & En-tête */
 .tutorial-top-bar {
