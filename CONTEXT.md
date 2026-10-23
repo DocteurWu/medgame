@@ -13,7 +13,11 @@
 - **Données :** Cas cliniques JSON dans `data/`, indexés par `data/case-index.json` et `data/case-meta.json` (générés par `scripts/generate-case-index.mjs`). Les fetchs `data/` sont relatifs à la racine.
 - **Alias de cas :** `js/case-aliases.js` est la source unique des 240 alias (publié sur `globalThis`).
 - **Helpers globaux :** `js/utils.js` (`escapeHtml`, `sanitizeHtml`, `showNotification`, `getCookie`, `setCookie`, `speakerDisplayName`, `speakerRoleClass`).
-- **Thème clinique (game.html) :** `css/game.css` est chargé EN DERNIER et fait foi (sélecteurs `body.clinic`). Dossier papier + mur vert d'eau, moniteur noir aux couleurs réelles, Atkinson Hyperlegible + Barlow Semi Condensed. L'ancien thème néon vit dans `css/game-legacy.css` (admin.html uniquement). Détails : AGENTS.md, « Direction artistique de game.html ».
+- **Thème clinique universel (Light / Dark) :** `css/clinical-theme.css` + `js/theme-manager.js`.
+  - Mode Clair : « Dossier Médical » papier froid `--paper` #F3F5F2, feuilles `--sheet` blanches, encre `--ink` #17242C, vert d'eau hospitalier `--wall` #D5E5DD, bleu blouse `--scrub` #1C5A78.
+  - Mode Sombre : « Garde de Nuit / Box Réa » fond ardoise `--paper` #0E161B, cartes sombres contrastées `--sheet` #17242C, encres claires haute lisibilité `--ink` #EAF0EE, vert de garde `--wall` #16282E, bleu nuit `--scrub` #2B7EA6.
+  - Moniteur : seule surface sombre invariante (ECG vert, pléthysmographie cyan, PNI blanc, FR jaune, T° rose).
+  - Typographie universelle : Atkinson Hyperlegible (conçue pour la lisibilité clinique) + Barlow Semi Condensed (constantes et chrono). Bouton universel discret de bascule jour/nuit (`.theme-toggle-floating`) persisté dans `localStorage.medgame_theme`. L'ancien thème néon vit dans `css/game-legacy.css` (admin.html uniquement).
 
 ---
 

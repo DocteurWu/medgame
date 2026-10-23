@@ -1,0 +1,248 @@
+/* ==========================================================================
+   MedGame — Système Thématique Clinique (Light / Dark)
+   --------------------------------------------------------------------------
+   Direction Artistique : Hôpital / CHU contemporain.
+   - Mode Clair : "Dossier Médical" (papier blanc cassé, encre bleu-nuit, vert d'eau CHU, bleu blouse)
+   - Mode Sombre : "Service de Garde / Box de Nuit" (fond ardoise sombre #0F171C, feuilles #17242B,
+                   encres claires contrastées, surfaces moniteur pures)
+   Typographie universelle : Atkinson Hyperlegible & Barlow Semi Condensed.
+   ========================================================================== */
+
+:root {
+    /* Palette Mode Clair (défaut) */
+    --paper: #F3F5F2;          /* fond : blanc froid de drap / dossier */
+    --sheet: #FFFFFF;          /* feuille / carte */
+    --sheet-subtle: #F8FAF7;   /* sous-carte ou volet secondaire */
+    --ink: #17242C;            /* encre bleu-noir des comptes-rendus */
+    --ink-2: #4B5B63;          /* texte secondaire */
+    --ink-3: #78878E;          /* texte tertiaire / placeholder */
+    --rule: #D6DED9;           /* bordures douces */
+    --rule-strong: #B7C4BD;    /* bordures accentuées */
+
+    /* Le service hospitalier */
+    --wall: #D5E5DD;           /* vert d'eau des murs hospitaliers */
+    --wall-deep: #BFD5CA;
+    --wall-ink: #1F4237;
+
+    /* Actions : bleu blouse */
+    --scrub: #1C5A78;
+    --scrub-hover: #154961;
+    --scrub-tint: #E2EDF3;
+    --scrub-ink: #123F55;
+
+    /* États cliniques & alertes */
+    --alert: #B32D24;
+    --alert-tint: #F7E2DF;
+    --warn: #9A5B00;
+    --warn-tint: #FAEED8;
+    --ok: #2A6B47;
+    --ok-tint: #E0EFE5;
+
+    /* Moniteur de chevet (identique jour/nuit : norme médicale constante) */
+    --mon-bg: #000000;
+    --mon-frame: #22282B;
+    --mon-ecg: #3DEB6C;
+    --mon-spo2: #3AD3F5;
+    --mon-nibp: #F2F4F5;
+    --mon-rr: #F5D33B;
+    --mon-temp: #F59BD0;
+    --mon-alarm: #FF3B30;
+
+    /* Typographie */
+    --font-ui: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-num: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
+
+    /* Rayons & Ombres */
+    --radius-sheet: 6px;
+    --radius-ctl: 4px;
+    --shadow-sheet: 0 1px 0 rgba(23, 36, 44, 0.05), 0 1px 3px rgba(23, 36, 44, 0.07);
+    --shadow-pop: 0 18px 48px rgba(16, 30, 38, 0.22), 0 2px 6px rgba(16, 30, 38, 0.12);
+    --focus: 0 0 0 3px rgba(28, 90, 120, 0.35);
+
+    /* Ponts de rétrocompatibilité */
+    --primary-color: var(--scrub);
+    --accent-color: var(--alert);
+    --text-main: var(--ink);
+    --text-muted: var(--ink-2);
+    --font-main: var(--font-ui);
+    --font-title: var(--font-ui);
+    --dark-bg: var(--paper);
+    --bg-dark: var(--paper);
+    --card-bg: var(--sheet);
+}
+
+/* ==========================================================================
+   Palette Mode Sombre ("Garde de Nuit / Box de Réanimation")
+   Déclenché par attribut [data-theme="dark"] sur <html> ou <body>
+   ou par défaut système si [data-theme="auto"]
+   ========================================================================== */
+
+[data-theme="dark"],
+body.theme-dark {
+    --paper: #0E161B;          /* fond de nuit : ardoise très sombre */
+    --sheet: #17242C;          /* cartes et panneaux sombres contrastés */
+    --sheet-subtle: #1C2D37;   /* cartes secondaires / fonds d'entrée */
+    --ink: #EAF0EE;            /* encre claire haute lisibilité */
+    --ink-2: #9CB2BC;          /* texte secondaire clair */
+    --ink-3: #627A85;          /* texte tertiaire / désactivé */
+    --rule: #233742;           /* bordures discrètes */
+    --rule-strong: #334E5D;    /* séparateurs nets */
+
+    /* Le service hospitalier de nuit */
+    --wall: #16282E;           /* vert d'eau nocturne désaturé */
+    --wall-deep: #0F1F24;
+    --wall-ink: #7FD1B9;
+
+    /* Actions blouse de nuit */
+    --scrub: #2B7EA6;
+    --scrub-hover: #3598C8;
+    --scrub-tint: #143545;
+    --scrub-ink: #BAE3F7;
+
+    /* États cliniques sombres */
+    --alert: #E04D43;
+    --alert-tint: #3D1A18;
+    --warn: #E09028;
+    --warn-tint: #3D2914;
+    --ok: #3DB878;
+    --ok-tint: #153625;
+
+    /* Ombres mode sombre */
+    --shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-pop: 0 20px 50px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+    --focus: 0 0 0 3px rgba(43, 126, 166, 0.45);
+
+    /* Ponts rétrocompatibles */
+    --dark-bg: var(--paper);
+    --bg-dark: var(--paper);
+    --card-bg: var(--sheet);
+    --text-main: var(--ink);
+    --text-muted: var(--ink-2);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --paper: #0E161B;
+        --sheet: #17242C;
+        --sheet-subtle: #1C2D37;
+        --ink: #EAF0EE;
+        --ink-2: #9CB2BC;
+        --ink-3: #627A85;
+        --rule: #233742;
+        --rule-strong: #334E5D;
+        --wall: #16282E;
+        --wall-deep: #0F1F24;
+        --wall-ink: #7FD1B9;
+        --scrub: #2B7EA6;
+        --scrub-hover: #3598C8;
+        --scrub-tint: #143545;
+        --scrub-ink: #BAE3F7;
+        --alert: #E04D43;
+        --alert-tint: #3D1A18;
+        --warn: #E09028;
+        --warn-tint: #3D2914;
+        --ok: #3DB878;
+        --ok-tint: #153625;
+        --shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.35);
+        --shadow-pop: 0 20px 50px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+        --focus: 0 0 0 3px rgba(43, 126, 166, 0.45);
+        --dark-bg: var(--paper);
+        --bg-dark: var(--paper);
+        --card-bg: var(--sheet);
+        --text-main: var(--ink);
+        --text-muted: var(--ink-2);
+    }
+}
+
+/* ==========================================================================
+   Typographie Universelle & Lissage
+   ========================================================================== */
+
+body {
+    font-family: var(--font-ui);
+    color: var(--ink);
+    background-color: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Chiffres, constantes et horodatages */
+.font-num,
+.timer-display,
+.vitals-value,
+.stat-number,
+.badge-count,
+.score-value {
+    font-family: var(--font-num);
+    font-feature-settings: "tnum" 1, "cv01" 1;
+}
+
+/* ==========================================================================
+   Bouton Flottant Universel de Changement de Thème (Jour / Nuit)
+   ========================================================================== */
+
+.theme-toggle-floating {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-ctl);
+    background: var(--sheet);
+    color: var(--ink);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow-sheet);
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    user-select: none;
+    padding: 0;
+}
+
+.theme-toggle-floating:hover {
+    background: var(--scrub-tint);
+    border-color: var(--scrub);
+    color: var(--scrub-ink);
+    transform: translateY(-1px);
+}
+
+.theme-toggle-floating:active {
+    transform: translateY(0);
+}
+
+.theme-toggle-floating:focus-visible {
+    outline: none;
+    box-shadow: var(--focus);
+}
+
+/* ==========================================================================
+   Adaptations Universelles pour les Pages
+   ========================================================================== */
+
+/* Liens génériques */
+a {
+    color: var(--scrub);
+    text-decoration-thickness: 1px;
+}
+a:hover {
+    color: var(--scrub-hover);
+}
+
+/* Conteneurs et cartes cliniques */
+.medical-card,
+.modal-glass,
+.card,
+.panel {
+    background-color: var(--sheet);
+    border-color: var(--rule);
+    color: var(--ink);
+}
+
+/* Inputs & contrôles */
+input, select, textarea {
+    font-family: var(--font-ui);
+}

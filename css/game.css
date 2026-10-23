@@ -2644,3 +2644,73 @@ body.clinic .pc-validate-btn,
 body.clinic .armoire-btn-primary { background: var(--scrub); color: #fff; border: 0; border-radius: var(--radius-ctl); box-shadow: none; }
 body.clinic .armoire-btn-secondary { background: var(--sheet); color: var(--ink); border: 1px solid var(--rule-strong); border-radius: var(--radius-ctl); }
 body.clinic .pc-score, body.clinic .pc-feedback, body.clinic .pc-aspect { color: var(--ink); }
+
+/* ==========================================================================
+   Support Mode Sombre (Garde de Nuit) pour game.html
+   ========================================================================== */
+
+[data-theme="dark"] body.clinic,
+body.clinic.theme-dark {
+    background: var(--paper) !important;
+    background-color: var(--paper) !important;
+    color: var(--ink) !important;
+}
+
+[data-theme="dark"] body.clinic .sidebar-nav,
+body.clinic.theme-dark .sidebar-nav {
+    background: var(--wall-deep) !important;
+    border-right-color: var(--rule-strong) !important;
+}
+
+[data-theme="dark"] body.clinic .patient-id-band,
+body.clinic.theme-dark .patient-id-band,
+[data-theme="dark"] body.clinic .clinical-sheet,
+body.clinic.theme-dark .clinical-sheet,
+[data-theme="dark"] body.clinic .medical-card,
+body.clinic.theme-dark .medical-card,
+[data-theme="dark"] body.clinic .modal-glass,
+body.clinic.theme-dark .modal-glass,
+[data-theme="dark"] body.clinic .mobile-bottom-tabs,
+body.clinic.theme-dark .mobile-bottom-tabs {
+    background: var(--sheet) !important;
+    background-color: var(--sheet) !important;
+    color: var(--ink) !important;
+    border-color: var(--rule) !important;
+}
+
+[data-theme="dark"] body.clinic .nav-item,
+body.clinic.theme-dark .nav-item {
+    color: var(--ink-2);
+}
+
+[data-theme="dark"] body.clinic .nav-item:hover,
+body.clinic.theme-dark .nav-item:hover,
+[data-theme="dark"] body.clinic .nav-item.active,
+body.clinic.theme-dark .nav-item.active {
+    background: var(--sheet) !important;
+    color: var(--ink) !important;
+}
+
+[data-theme="dark"] body.clinic .dialogue-line,
+body.clinic.theme-dark .dialogue-line {
+    background: var(--sheet) !important;
+    border-color: var(--rule) !important;
+    color: var(--ink) !important;
+}
+
+[data-theme="dark"] body.clinic input,
+body.clinic.theme-dark input,
+[data-theme="dark"] body.clinic select,
+body.clinic.theme-dark select,
+[data-theme="dark"] body.clinic textarea,
+body.clinic.theme-dark textarea {
+    background-color: var(--sheet-subtle) !important;
+    color: var(--ink) !important;
+    border-color: var(--rule-strong) !important;
+}
+
+[data-theme="dark"] body.clinic .btn-ghost,
+body.clinic.theme-dark .btn-ghost {
+    color: var(--ink);
+    border-color: var(--rule);
+}
