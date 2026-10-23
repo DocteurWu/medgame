@@ -1,0 +1,253 @@
+/* ==========================================================================
+   MEDGAME — Thème Clinique Universel pour l'Accueil (index.html & modals)
+   Alignement complet sur la charte de game.html (CHU / Consultation / Garde)
+   ========================================================================== */
+
+/* ── Fond de page sobre et hospitalier ─────────────────────────── */
+body {
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', system-ui, sans-serif) !important;
+    background-color: var(--paper, #F3F5F2) !important;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(28, 90, 120, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(42, 107, 71, 0.05) 0%, transparent 50%),
+        url('../assets/images/FondAccueil.webp') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    color: var(--ink, #17242C) !important;
+}
+
+[data-theme="dark"] body,
+body.theme-dark {
+    background-color: var(--paper, #0E161B) !important;
+    background-image: 
+        radial-gradient(circle at 50% 20%, rgba(43, 126, 166, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(61, 184, 120, 0.07) 0%, transparent 50%),
+        url('../assets/images/FondAccueil.webp') !important;
+    color: var(--ink, #EAF0EE) !important;
+}
+
+/* ── Carte Centrale : Panneau Clinique CHU ────────────────────── */
+.glass-card {
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    border-radius: var(--radius-sheet, 8px) !important;
+    box-shadow: var(--shadow-pop, 0 18px 48px rgba(16, 30, 38, 0.16)) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color: var(--ink, #17242C) !important;
+    padding: clamp(2rem, 3.5vh, 2.8rem) clamp(2rem, 3.5vw, 3rem) !important;
+    max-width: min(480px, 92vw) !important;
+}
+
+.glass-card::before,
+.glass-card::after {
+    display: none !important; /* suppression des bordures néon tournantes */
+}
+
+/* ── Header Clinique & Logo ───────────────────────────────────── */
+.icon-pulse {
+    width: 64px !important;
+    height: 64px !important;
+    background: var(--alert-tint, #F7E2DF) !important;
+    color: var(--alert, #B32D24) !important;
+    border: 1px solid var(--alert, #B32D24) !important;
+    border-radius: 50% !important;
+    animation: none !important;
+    text-shadow: none !important;
+    margin-bottom: 0.8rem !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+.icon-pulse::before,
+.icon-pulse::after {
+    display: none !important;
+}
+
+.icon-pulse i {
+    font-size: 1.8rem !important;
+}
+
+.glitch-title {
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    font-size: clamp(2.2rem, 4vh, 2.6rem) !important;
+    font-weight: 700 !important;
+    letter-spacing: 2px !important;
+    color: var(--ink, #17242C) !important;
+    background: none !important;
+    -webkit-text-fill-color: var(--ink, #17242C) !important;
+    filter: none !important;
+    margin-bottom: 0.2rem !important;
+}
+
+.subtitle {
+    font-family: var(--font-num, 'Barlow Semi Condensed', sans-serif) !important;
+    color: var(--ink-2, #4B5B63) !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 2px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 1.6rem !important;
+}
+
+.subtitle::before,
+.subtitle::after {
+    background: var(--rule, #D6DED9) !important;
+}
+
+/* ── Boutons d'Action Clinique ─────────────────────────────────── */
+.btn-3d {
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule, #D6DED9) !important;
+    border-left: 4px solid var(--scrub, #1C5A78) !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+    color: var(--ink, #17242C) !important;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    letter-spacing: 0.2px !important;
+    box-shadow: var(--shadow-sheet) !important;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease !important;
+    min-height: 48px !important;
+}
+
+.btn-3d::after,
+.btn-layer {
+    display: none !important; /* suppression des vagues néon et reflets skew */
+}
+
+.btn-content {
+    color: inherit !important;
+    gap: 12px !important;
+}
+
+.btn-content i {
+    font-size: 1.05rem !important;
+    color: var(--scrub, #1C5A78) !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+.btn-3d:hover {
+    background: var(--scrub-tint, #E2EDF3) !important;
+    border-color: var(--scrub, #1C5A78) !important;
+    color: var(--scrub-ink, #123F55) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+.btn-3d:active {
+    transform: translateY(0) !important;
+}
+
+/* Bouton principal : Commencer la garde / 1 Clic */
+#quick-play-button,
+#play-button {
+    background: var(--scrub, #1C5A78) !important;
+    border: 1px solid var(--scrub-hover, #154961) !important;
+    color: #FFFFFF !important;
+}
+
+#quick-play-button .btn-content i,
+#play-button .btn-content i {
+    color: #FFFFFF !important;
+}
+
+#quick-play-button:hover,
+#play-button:hover {
+    background: var(--scrub-hover, #154961) !important;
+    border-color: var(--scrub-ink, #123F55) !important;
+    color: #FFFFFF !important;
+}
+
+/* Bouton Tutoriel */
+#tutorial-button {
+    border-left-color: var(--warn, #9A5B00) !important;
+}
+#tutorial-button .btn-content i {
+    color: var(--warn, #9A5B00) !important;
+}
+
+/* Ligne Double : Skill Lab & Atlas 3D */
+.btn-split-row {
+    gap: 8px !important;
+}
+
+.btn-split-row .btn-split-main {
+    border-left-color: var(--ok, #2A6B47) !important;
+}
+.btn-split-row .btn-split-main .btn-content i {
+    color: var(--ok, #2A6B47) !important;
+}
+
+.btn-split-row .btn-split-side {
+    border-left-color: var(--scrub, #1C5A78) !important;
+}
+.btn-split-row .btn-split-side .btn-content i {
+    color: var(--scrub, #1C5A78) !important;
+}
+
+.btn-split-row .split-subtag {
+    background: var(--ok-tint, #E0EFE5) !important;
+    color: var(--ok, #2A6B47) !important;
+    border: 1px solid var(--ok, #2A6B47) !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+}
+
+.btn-split-row .split-title {
+    font-weight: 600 !important;
+    color: inherit !important;
+}
+
+/* ── Badge Utilisateur Haut Droit ──────────────────────────────── */
+#user-badge-top {
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    box-shadow: var(--shadow-sheet) !important;
+    border-radius: var(--radius-ctl, 4px) !important;
+    color: var(--ink, #17242C) !important;
+}
+
+#user-badge-top #top-username {
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    color: var(--ink, #17242C) !important;
+}
+
+/* ── Modales Réglages / Profil / Leaderboard ───────────────────── */
+.modal-glass,
+.leaderboard-panel {
+    background: var(--sheet, #FFFFFF) !important;
+    border: 1px solid var(--rule-strong, #B7C4BD) !important;
+    border-radius: var(--radius-sheet, 8px) !important;
+    box-shadow: var(--shadow-pop) !important;
+    color: var(--ink, #17242C) !important;
+}
+
+.modal-header h2,
+.leaderboard-header h3 {
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+    color: var(--ink, #17242C) !important;
+    font-weight: 700 !important;
+}
+
+.close-icon {
+    color: var(--ink-2, #4B5B63) !important;
+}
+
+.close-icon:hover {
+    color: var(--ink, #17242C) !important;
+}
+
+.disclaimer {
+    color: var(--ink-3, #78878E) !important;
+    border-top: 1px solid var(--rule, #D6DED9) !important;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', sans-serif) !important;
+}
+
+.medgame-footer-link {
+    color: var(--ink-2, #4B5B63) !important;
+}
+.medgame-footer-link:hover {
+    color: var(--scrub, #1C5A78) !important;
+}
