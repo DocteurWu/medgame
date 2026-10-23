@@ -3,14 +3,14 @@
    Alignement complet sur la charte de game.html (CHU / Consultation / Garde)
    ========================================================================== */
 
-/* ── Fond de page sobre et hospitalier ─────────────────────────── */
+/* ── Fond de page sobre et hospitalier (Light / Dark dynamique) ── */
 body {
     font-family: var(--font-ui, 'Atkinson Hyperlegible', system-ui, sans-serif) !important;
     background-color: var(--paper, #F3F5F2) !important;
     background-image: 
         radial-gradient(circle at 50% 20%, rgba(28, 90, 120, 0.08) 0%, transparent 60%),
         radial-gradient(circle at 85% 85%, rgba(42, 107, 71, 0.05) 0%, transparent 50%),
-        url('../assets/images/FondAccueil.webp') !important;
+        var(--hospital-bg, url('../assets/images/fond-hospital-light.webp')) !important;
     background-size: cover !important;
     background-position: center !important;
     color: var(--ink, #17242C) !important;
@@ -22,7 +22,7 @@ body.theme-dark {
     background-image: 
         radial-gradient(circle at 50% 20%, rgba(43, 126, 166, 0.12) 0%, transparent 60%),
         radial-gradient(circle at 85% 85%, rgba(61, 184, 120, 0.07) 0%, transparent 50%),
-        url('../assets/images/FondAccueil.webp') !important;
+        var(--hospital-bg, url('../assets/images/fond-hospital-dark.webp')) !important;
     color: var(--ink, #EAF0EE) !important;
 }
 

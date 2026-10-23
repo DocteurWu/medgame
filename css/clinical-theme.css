@@ -9,6 +9,9 @@
    ========================================================================== */
 
 :root {
+    /* Fond hospitalier contextuel */
+    --hospital-bg: url('../assets/images/fond-hospital-light.webp');
+
     /* Palette Mode Clair (défaut) */
     --paper: #F3F5F2;          /* fond : blanc froid de drap / dossier */
     --sheet: #FFFFFF;          /* feuille / carte */
@@ -79,6 +82,7 @@
 
 [data-theme="dark"],
 body.theme-dark {
+    --hospital-bg: url('../assets/images/fond-hospital-dark.webp');
     --paper: #0E161B;          /* fond de nuit : ardoise très sombre */
     --sheet: #17242C;          /* cartes et panneaux sombres contrastés */
     --sheet-subtle: #1C2D37;   /* cartes secondaires / fonds d'entrée */
@@ -122,6 +126,7 @@ body.theme-dark {
 
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
+        --hospital-bg: url('../assets/images/fond-hospital-dark.webp');
         --paper: #0E161B;
         --sheet: #17242C;
         --sheet-subtle: #1C2D37;

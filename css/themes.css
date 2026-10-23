@@ -22,7 +22,7 @@
 body {
     font-family: var(--font-main);
     background: radial-gradient(circle at center, transparent 0%, var(--dark-bg) 95%),
-        url('../assets/images/FondAccueil.webp');
+        var(--hospital-bg, url('../assets/images/fond-hospital-dark.webp'));
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

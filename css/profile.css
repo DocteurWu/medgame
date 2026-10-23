@@ -22,7 +22,7 @@
 body {
     font-family: var(--font-main);
     background-color: var(--bg-dark);
-    background-image: linear-gradient(rgba(5, 7, 20, 0.4), rgba(5, 7, 20, 0.4)), url('../assets/images/FondAccueil.webp');
+    background-image: linear-gradient(rgba(5, 7, 20, 0.4), rgba(5, 7, 20, 0.4)), var(--hospital-bg, url('../assets/images/fond-hospital-dark.webp'));
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
