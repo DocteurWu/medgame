@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MedGame — Système Thématique Clinique (Light / Dark)
+   MedGame — Système Thématique Clinique Universel (Light / Dark)
    --------------------------------------------------------------------------
    Direction Artistique : Hôpital / CHU contemporain.
    - Mode Clair : "Dossier Médical" (papier blanc cassé, encre bleu-nuit, vert d'eau CHU, bleu blouse)
@@ -56,10 +56,10 @@
     --font-num: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
 
     /* Rayons & Ombres */
-    --radius-sheet: 6px;
-    --radius-ctl: 4px;
+    --radius-sheet: 8px;
+    --radius-ctl: 5px;
     --shadow-sheet: 0 1px 0 rgba(23, 36, 44, 0.05), 0 1px 3px rgba(23, 36, 44, 0.07);
-    --shadow-pop: 0 18px 48px rgba(16, 30, 38, 0.22), 0 2px 6px rgba(16, 30, 38, 0.12);
+    --shadow-pop: 0 18px 48px rgba(16, 30, 38, 0.18), 0 2px 6px rgba(16, 30, 38, 0.10);
     --focus: 0 0 0 3px rgba(28, 90, 120, 0.35);
 
     /* Ponts de rétrocompatibilité */
@@ -76,8 +76,6 @@
 
 /* ==========================================================================
    Palette Mode Sombre ("Garde de Nuit / Box de Réanimation")
-   Déclenché par attribut [data-theme="dark"] sur <html> ou <body>
-   ou par défaut système si [data-theme="auto"]
    ========================================================================== */
 
 [data-theme="dark"],
@@ -164,9 +162,9 @@ body.theme-dark {
    ========================================================================== */
 
 body {
-    font-family: var(--font-ui);
-    color: var(--ink);
-    background-color: var(--paper);
+    font-family: var(--font-ui) !important;
+    color: var(--ink) !important;
+    background-color: var(--paper) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -177,8 +175,9 @@ body {
 .vitals-value,
 .stat-number,
 .badge-count,
-.score-value {
-    font-family: var(--font-num);
+.score-value,
+.step-number {
+    font-family: var(--font-num) !important;
     font-feature-settings: "tnum" 1, "cv01" 1;
 }
 
@@ -225,29 +224,263 @@ body {
 }
 
 /* ==========================================================================
-   Adaptations Universelles pour les Pages
+   Harmonisation Clinique Globale de Toutes les Pages
    ========================================================================== */
 
-/* Liens génériques */
+/* 1. Barres de Navigation & En-têtes (themes, skills, auscultation, ecg, etc.) */
+.themes-nav-bar,
+.skills-header,
+.auscult-navbar,
+.ecg-navbar,
+.credits-navbar,
+.tut-top-bar,
+.tutorial-top-bar,
+.profile-header,
+.studio-header,
+.sidebar-header {
+    background: var(--sheet) !important;
+    border-bottom: 1px solid var(--rule-strong) !important;
+    color: var(--ink) !important;
+    box-shadow: var(--shadow-sheet) !important;
+}
+
+/* Boutons de retour */
+.back-link,
+.back-link-bottom,
+.back-btn,
+.tut-nav-btn {
+    background: var(--sheet-subtle) !important;
+    border: 1px solid var(--rule) !important;
+    color: var(--ink) !important;
+    border-radius: var(--radius-ctl) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 600 !important;
+    transition: background 0.15s ease, border-color 0.15s ease !important;
+}
+
+.back-link:hover,
+.back-link-bottom:hover,
+.back-btn:hover,
+.tut-nav-btn:hover {
+    background: var(--scrub-tint) !important;
+    border-color: var(--scrub) !important;
+    color: var(--scrub-ink) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Onglets de navigation */
+.cycle-switcher,
+.nav-tabs {
+    background: var(--sheet-subtle) !important;
+    border: 1px solid var(--rule) !important;
+    border-radius: var(--radius-ctl) !important;
+    padding: 3px !important;
+}
+
+.cycle-tab-btn,
+.nav-tab-btn,
+.gender-btn {
+    background: transparent !important;
+    color: var(--ink-2) !important;
+    border: none !important;
+    border-radius: var(--radius-ctl) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 600 !important;
+    transition: all 0.15s ease !important;
+}
+
+.cycle-tab-btn.active,
+.nav-tab-btn.active,
+.gender-btn.active {
+    background: var(--sheet) !important;
+    color: var(--ink) !important;
+    box-shadow: var(--shadow-sheet) !important;
+    border-left: 3px solid var(--scrub) !important;
+}
+
+/* 2. Cartes de Contenu (Thèmes, Skills, Tutoriel, Profil, Crédits) */
+.theme-card,
+.skill-card,
+.tut-step-card,
+.glass-panel,
+.creator-panel,
+.studio-card,
+.profile-card,
+.node-card {
+    background: var(--sheet) !important;
+    border: 1px solid var(--rule) !important;
+    border-radius: var(--radius-sheet) !important;
+    color: var(--ink) !important;
+    box-shadow: var(--shadow-sheet) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.theme-card:hover,
+.skill-card:hover,
+.tut-step-card:hover,
+.studio-card:hover {
+    border-color: var(--scrub) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: var(--shadow-pop) !important;
+}
+
+/* Titres de cartes et textes */
+.theme-card-title,
+.card-title,
+.tut-card-title,
+.section-title,
+.profile-name {
+    color: var(--ink) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 700 !important;
+}
+
+.theme-card-desc,
+.card-desc,
+.tut-card-desc,
+.profile-bio {
+    color: var(--ink-2) !important;
+}
+
+/* Badges cliniques */
+.card-badge,
+.tut-badge,
+.level-badge,
+.status-pill,
+.daily-case-pill {
+    background: var(--scrub-tint) !important;
+    color: var(--scrub-ink) !important;
+    border: 1px solid var(--scrub) !important;
+    border-radius: 4px !important;
+    font-family: var(--font-num) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 3. Simulateurs Médicaux & Consoles (Auscultation, ECG, GDS, Ventilateur, Pousse-Seringue, POCUS) */
+.auscult-container,
+.ecg-container,
+.gds-container,
+.vent-container,
+.pse-container,
+.echo-container {
+    background: var(--sheet) !important;
+    border: 1px solid var(--rule-strong) !important;
+    border-radius: var(--radius-sheet) !important;
+    box-shadow: var(--shadow-pop) !important;
+    color: var(--ink) !important;
+}
+
+/* Écrans de scopes et tracés physiologiques : SURFACES NOIRES PURISME MÉDICAL */
+.ecg-screen,
+.pcg-screen,
+.scope-display,
+.monitor-screen,
+.vent-curves,
+.echo-viewport {
+    background: var(--mon-bg) !important;
+    border: 1px solid var(--mon-frame) !important;
+    border-radius: var(--radius-ctl) !important;
+}
+
+/* Panneaux de réglages de paramètres */
+.tool-panel,
+.controls-panel,
+.filter-panel,
+.interactive-panel {
+    background: var(--sheet-subtle) !important;
+    border: 1px solid var(--rule) !important;
+    border-radius: var(--radius-ctl) !important;
+    color: var(--ink) !important;
+}
+
+/* 4. Boutons Primaires & Secondaires Cliniques */
+.btn-primary,
+.btn-validate,
+.btn-audio-play,
+.btn-eval-case,
+.btn-action-main {
+    background: var(--scrub) !important;
+    color: #FFFFFF !important;
+    border: 1px solid var(--scrub-hover) !important;
+    border-radius: var(--radius-ctl) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 600 !important;
+    box-shadow: var(--shadow-sheet) !important;
+    transition: background 0.15s ease, transform 0.1s ease !important;
+}
+
+.btn-primary:hover,
+.btn-validate:hover,
+.btn-audio-play:hover,
+.btn-eval-case:hover,
+.btn-action-main:hover {
+    background: var(--scrub-hover) !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-secondary,
+.btn-outline,
+.filter-btn,
+.tool-btn {
+    background: var(--sheet) !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--rule) !important;
+    border-radius: var(--radius-ctl) !important;
+    font-family: var(--font-ui) !important;
+    font-weight: 500 !important;
+    transition: all 0.15s ease !important;
+}
+
+.btn-secondary:hover,
+.filter-btn:hover,
+.tool-btn:hover {
+    background: var(--scrub-tint) !important;
+    border-color: var(--scrub) !important;
+    color: var(--scrub-ink) !important;
+}
+
+.filter-btn.active,
+.tool-btn.active {
+    background: var(--scrub) !important;
+    color: #FFFFFF !important;
+    border-color: var(--scrub-hover) !important;
+}
+
+/* 5. Formulaires, Inputs, Modales */
+input, select, textarea {
+    background: var(--sheet) !important;
+    border: 1px solid var(--rule) !important;
+    color: var(--ink) !important;
+    border-radius: var(--radius-ctl) !important;
+    font-family: var(--font-ui) !important;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--scrub) !important;
+    box-shadow: var(--focus) !important;
+    outline: none !important;
+}
+
+.modal-dialog,
+.modal-content,
+.modal-glass {
+    background: var(--sheet) !important;
+    border: 1px solid var(--rule-strong) !important;
+    color: var(--ink) !important;
+    box-shadow: var(--shadow-pop) !important;
+    border-radius: var(--radius-sheet) !important;
+}
+
+/* Liens universels */
 a {
     color: var(--scrub);
     text-decoration-thickness: 1px;
 }
 a:hover {
     color: var(--scrub-hover);
-}
-
-/* Conteneurs et cartes cliniques */
-.medical-card,
-.modal-glass,
-.card,
-.panel {
-    background-color: var(--sheet);
-    border-color: var(--rule);
-    color: var(--ink);
-}
-
-/* Inputs & contrôles */
-input, select, textarea {
-    font-family: var(--font-ui);
 }
