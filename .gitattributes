@@ -38,9 +38,11 @@
 # Les volumes de l'atlas neurologique sont des volumes binaires (noms de
 # structures quantifies), servis en `immutable` par Netlify et nginx.
 # Les `.json` qui les accompagnent restent du texte.
+neuro-atlas/data/** text eol=lf
+neuro-atlas/data/**/*.glb binary
+neuro-atlas/data/**/*.bin binary
 neuro-atlas/data/volumes/** binary
 neuro-atlas/data/volumes/*.json text eol=lf
-neuro-atlas/data/**  text eol=lf
 
 # Fichiers générés : leur contenu est reproductible, on ne veut pas de bruit
 # de diff quand le générateur change de version.

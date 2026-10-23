@@ -47,3 +47,7 @@ graphify-out/
 .skillkit/
 scratch/
 .tmp-chrome*
+
+# Local assets & artifacts non versionnés
+assets/splats/
+android/
