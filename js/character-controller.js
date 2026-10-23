@@ -10,7 +10,10 @@ export class CharacterController {
         // Main group
         this.group = new THREE.Group();
         this.group.name = 'Doctor';
-        this.group.position.set(0, 0, 2.6);
+        // Le médecin attend près de son bureau, tourné vers le lit d'examen :
+        // au centre de la pièce, face caméra, il masquait toute la vue d'ensemble.
+        this.group.position.set(-2.1, 0, 1.3);
+        this.group.lookAt(4.7, 0, 0.2);
         this.scene.add(this.group);
 
         // Procedural doctor (lazy fallback only if GLB fails)

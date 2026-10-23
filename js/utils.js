@@ -41,6 +41,32 @@ const EXAM_CONFIG = {
 
 // ==================== NOTIFICATION ====================
 
+/**
+ * Nom affiché d'un interlocuteur dans le transcript de consultation.
+ * « PS » / « Patient » deviennent « Mme Bennet », « M. Grey », ou le prénom
+ * pour un enfant ; « Vous » reste « Vous ». Les autres voix (Système,
+ * Examen, Infirmier…) sont rendues telles quelles.
+ */
+function speakerDisplayName(speaker) {
+    const raw = String(speaker || '').trim();
+    if (raw === 'Vous' || raw === 'Médecin') return 'Vous';
+    if (raw && !/^(ps|patient|patiente|patient standardisé)$/i.test(raw)) return raw;
+    const p = (window.gameState && window.gameState.currentCase && window.gameState.currentCase.patient) || null;
+    if (!p) return 'Patient';
+    const age = Number(p.age);
+    if (Number.isFinite(age) && age < 15) return p.prenom || 'Patient';
+    const isF = String(p.sexe || '').toLowerCase().startsWith('f');
+    return `${isF ? 'Mme' : 'M.'} ${p.nom || p.prenom || ''}`.trim();
+}
+
+/** Classe de rôle pour styler une ligne du transcript. */
+function speakerRoleClass(speaker) {
+    const raw = String(speaker || '').trim().toLowerCase();
+    if (raw === 'vous' || raw === 'médecin') return 'from-user';
+    if (/^(ps|patient|patiente|patient standardisé)$/.test(raw) || raw === '') return 'from-patient';
+    return 'from-system';
+}
+
 function showNotification(message, level = 'info') {
     let container = document.getElementById('medgame-toast-container');
     if (!container) {
@@ -61,65 +87,37 @@ function showNotification(message, level = 'info') {
 
     const toast = document.createElement('div');
     toast.style.pointerEvents = 'auto';
-    toast.style.padding = '12px 20px';
-    toast.style.borderRadius = '12px';
-    toast.style.fontFamily = 'Inter, system-ui, sans-serif';
-    toast.style.fontSize = '0.9rem';
-    toast.style.fontWeight = '500';
-    toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
-    toast.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
-    toast.style.transform = 'translateY(-20px) scale(0.9)';
+    toast.style.padding = '11px 16px 11px 14px';
+    toast.style.borderRadius = '4px';
+    toast.style.fontFamily = "var(--font-ui, 'Atkinson Hyperlegible', system-ui, sans-serif)";
+    toast.style.fontSize = '0.9375rem';
+    toast.style.lineHeight = '1.4';
+    toast.style.boxShadow = '0 10px 28px rgba(16, 30, 38, 0.18), 0 1px 3px rgba(16, 30, 38, 0.12)';
+    toast.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
+    toast.style.transform = 'translateY(-8px)';
     toast.style.opacity = '0';
-    toast.style.display = 'flex';
-    toast.style.alignItems = 'center';
-    toast.style.gap = '10px';
+    toast.style.background = '#FFFFFF';
+    toast.style.color = '#17242C';
 
-    const levels = {
-        success: {
-            bg: 'rgba(240, 253, 244, 0.95)',
-            border: '1px solid rgba(74, 222, 128, 0.4)',
-            color: '#166534',
-            icon: '✅'
-        },
-        warning: {
-            bg: 'rgba(254, 252, 232, 0.95)',
-            border: '1px solid rgba(250, 204, 21, 0.4)',
-            color: '#854d0e',
-            icon: '⚠️'
-        },
-        error: {
-            bg: 'rgba(254, 242, 242, 0.95)',
-            border: '1px solid rgba(248, 113, 113, 0.4)',
-            color: '#991b1b',
-            icon: '❌'
-        },
-        info: {
-            bg: 'rgba(240, 249, 255, 0.95)',
-            border: '1px solid rgba(56, 189, 248, 0.4)',
-            color: '#075985',
-            icon: 'ℹ️'
-        }
-    };
+    // Bandeau de couleur à gauche : l'état se lit d'un coup d'œil, sans emoji.
+    const accents = { success: '#2A6B47', warning: '#9A5B00', error: '#B32D24', info: '#1C5A78' };
+    toast.style.borderLeft = `4px solid ${accents[level] || accents.info}`;
+    toast.setAttribute('role', level === 'error' ? 'alert' : 'status');
 
-    const style = levels[level] || levels.info;
-    toast.style.backgroundColor = style.bg;
-    toast.style.border = style.border;
-    toast.style.color = style.color;
-    toast.style.backdropFilter = 'blur(8px)';
-    
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    toast.innerHTML = `<span style="font-size: 1.1rem; flex-shrink: 0;">${style.icon}</span><span style="flex-grow: 1; word-break: break-word;">${message}</span>`;
+    // Les appelants préfixent parfois leur message d'un emoji : on le retire.
+    const cleanMessage = String(message).replace(/^[\p{Extended_Pictographic}\uFE0F\u200D\s]+/u, '');
+    toast.innerHTML = `<span style="flex-grow: 1; word-break: break-word;">${cleanMessage}</span>`;
 
     container.appendChild(toast);
 
     requestAnimationFrame(() => {
-        toast.style.transform = 'translateY(0) scale(1)';
+        toast.style.transform = 'translateY(0)';
         toast.style.opacity = '1';
     });
 
     setTimeout(() => {
-        toast.style.transform = prefersReducedMotion ? 'none' : 'translateY(-10px) scale(0.95)';
+        toast.style.transform = prefersReducedMotion ? 'none' : 'translateY(-6px)';
         toast.style.opacity = '0';
         toast.addEventListener('transitionend', () => {
             toast.remove();

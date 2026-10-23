@@ -286,9 +286,9 @@
         overlay.setAttribute('aria-label', 'Vignette ECOS');
 
         const stations = {
-            'AVEC_PS':     { label: 'Avec Patient Standardisé',   icon: '🧑‍⚕️' },
-            'AVEC_PSS':    { label: 'Avec Personnel de Santé',     icon: '👨‍⚕️' },
-            'SANS_PS_PSS': { label: 'Sans PS ni PSS (tête-à-tête)', icon: '🤔' }
+            'AVEC_PS':     { label: 'avec patient standardisé',   icon: 'fa-user' },
+            'AVEC_PSS':    { label: 'avec personnel de santé',     icon: 'fa-user-nurse' },
+            'SANS_PS_PSS': { label: 'sans patient ni soignant', icon: 'fa-file-pen' }
         };
         const stationInfo = stations[vignette.typeStation] || stations['AVEC_PS'];
 
@@ -296,8 +296,8 @@
             <div class="ecos-vignette-paper">
                 <div class="ecos-vignette-header">
                     <div class="ecos-vignette-station-badge">
-                        <span class="ecos-badge-icon">${stationInfo.icon}</span>
-                        <span class="ecos-badge-label">STATION ${stationInfo.label}</span>
+                        <span class="ecos-badge-icon"><i class="fas ${stationInfo.icon}" aria-hidden="true"></i></span>
+                        <span class="ecos-badge-label">Station ${stationInfo.label}</span>
                     </div>
                     <div class="ecos-vignette-competences">
                         <div class="ecos-competence-pill primary">${escapeHtml(vignette.domainePrincipal || '—')}</div>
@@ -307,17 +307,17 @@
 
                 <div class="ecos-vignette-body">
                     <div class="ecos-vignette-section">
-                        <div class="ecos-vignette-label">📋 Votre rôle</div>
+                        <h4 class="ecos-vignette-label">Votre rôle</h4>
                         <p>${escapeHtml(vignette.role || 'Vous êtes interne en stage.')}</p>
                     </div>
 
                     <div class="ecos-vignette-section">
-                        <div class="ecos-vignette-label">🏥 Contexte</div>
+                        <h4 class="ecos-vignette-label">Contexte</h4>
                         <p>${escapeHtml(vignette.contexte || '')}</p>
                     </div>
 
                     <div class="ecos-vignette-section ecos-vignette-attendues">
-                        <div class="ecos-vignette-label">✅ Vous devez</div>
+                        <h4 class="ecos-vignette-label">Vous devez</h4>
                         <ul>
                             ${(vignette.consignesAttendues || []).map(c => `<li>${escapeHtml(c)}</li>`).join('')}
                         </ul>
@@ -325,24 +325,23 @@
 
                     ${(vignette.consignesInterdites && vignette.consignesInterdites.length > 0) ? `
                     <div class="ecos-vignette-section ecos-vignette-interdites">
-                        <div class="ecos-vignette-label">⛔ Vous ne devez pas</div>
+                        <h4 class="ecos-vignette-label">Vous ne devez pas</h4>
                         <ul>
                             ${vignette.consignesInterdites.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
                         </ul>
                     </div>` : ''}
 
-                    ${vignette.lieu ? `<div class="ecos-vignette-meta">📍 Lieu : ${escapeHtml(vignette.lieu)}</div>` : ''}
+                    ${vignette.lieu ? `<div class="ecos-vignette-meta"><span>Lieu</span> ${escapeHtml(vignette.lieu)}</div>` : ''}
                     ${(vignette.materielDisponible && vignette.materielDisponible.length > 0) ?
-                        `<div class="ecos-vignette-meta">🧰 Matériel : ${vignette.materielDisponible.map(escapeHtml).join(', ')}</div>` : ''}
+                        `<div class="ecos-vignette-meta"><span>Matériel</span> ${vignette.materielDisponible.map(escapeHtml).join(', ')}</div>` : ''}
                 </div>
 
                 <div class="ecos-vignette-footer">
                     <div class="ecos-vignette-readtime">
-                        <i class="fas fa-book-open"></i>
-                        Temps de lecture suggéré : ${formatDuration(ECOS_CONFIG.VIGNETTE_READ_DURATION)}
+                        Lecture conseillée : ${formatDuration(ECOS_CONFIG.VIGNETTE_READ_DURATION)}, hors chronomètre
                     </div>
                     <button id="ecos-start-btn" class="ecos-start-btn">
-                        <i class="fas fa-play"></i> Démarrer la station
+                        Entrer dans la station
                         <span class="ecos-start-timer">${formatDuration(stationDuration)}</span>
                     </button>
                 </div>
@@ -706,7 +705,7 @@
 
     function formatClinicalText(raw) {
         if (!raw || typeof raw !== 'string') return '';
-        return escapeHtml(raw).replace(/\(([^)]+)\)/g, '<div class="clinical-stage-direction"><i class="fas fa-notes-medical"></i> <em>$1</em></div>');
+        return escapeHtml(raw).replace(/\(([^)]+)\)/g, '<span class="clinical-stage-direction">$1</span>');
     }
 
     function appendConversation(speaker, text, kind = 'normal') {
@@ -723,12 +722,12 @@
         if (inDialoguePanel) {
             // Structure compatible panneau standard, en conservant les hooks
             // .ecos-msg-speaker / .ecos-msg-text utilisés par les mises à jour
-            row.className = `dialogue-message ${speaker === 'Vous' ? 'from-user' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
-            const isUser = speaker === 'Vous';
-            const speakerIcon = isUser ? '<i class="fas fa-user-md"></i>' : '<i class="fas fa-user-injured"></i>';
-            const speakerLabel = isUser ? 'Médecin' : (escapeHtml(speaker) || 'Patient');
+            const roleClass = (typeof speakerRoleClass === 'function') ? speakerRoleClass(speaker) : (speaker === 'Vous' ? 'from-user' : 'from-patient');
+            row.className = `dialogue-message ${roleClass} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''} ${kind === 'error' ? 'is-error' : ''}`;
+            const isUser = roleClass === 'from-user';
+            const speakerLabel = escapeHtml((typeof speakerDisplayName === 'function') ? speakerDisplayName(speaker) : (isUser ? 'Vous' : (speaker || 'Patient')));
             const formatted = (kind === 'thinking' || isUser) ? innerText : formatClinicalText(text);
-            row.innerHTML = `<span class="ecos-msg-speaker">${speakerIcon} ${speakerLabel}</span><span class="ecos-msg-text">${formatted}</span>`;
+            row.innerHTML = `<span class="ecos-msg-speaker">${speakerLabel}</span><span class="ecos-msg-text">${formatted}</span>`;
         } else {
             row.className = `ecos-msg ${speaker === 'Vous' ? 'from-student' : 'from-patient'} ${kind === 'opening' ? 'opening' : ''} ${kind === 'thinking' ? 'thinking' : ''}`;
             row.innerHTML = `<div class="ecos-msg-speaker">${escapeHtml(speaker)}</div><div class="ecos-msg-text">${innerText}</div>`;
@@ -1419,25 +1418,20 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
             el.className = 'ecos-announce-overlay';
             el.innerHTML = `
                 <div class="ecos-announce-card">
-                    <div class="ecos-tablet-frame-bar">
-                        <span class="ecos-tablet-dot"></span>
-                        <span class="ecos-tablet-title"><i class="fas fa-tablet-alt"></i> Tablette Clinique — Synthèse & Annonce</span>
-                        <span class="ecos-tablet-status"><i class="fas fa-wifi"></i> <i class="fas fa-battery-three-quarters"></i></span>
-                    </div>
-                    <h2>📢 Annonce et Décision</h2>
+                    <h2>Conclusion de la consultation</h2>
                     <p id="ecos-announce-time-msg"></p>
                     <ol>
-                        <li>Proposer <strong>librement</strong> votre diagnostic</li>
-                        <li>Annoncer votre hypothèse au patient (explication, empathie)</li>
+                        <li>Écrire le diagnostic que vous retenez, sans liste de propositions.</li>
+                        <li>L'annoncer au patient avec vos mots : explication, prochaines étapes, réponse à ses inquiétudes.</li>
                     </ol>
                     <form id="ecos-announce-form">
-                        <label for="ecos-diag-input">Diagnostic :</label>
+                        <label for="ecos-diag-input">Diagnostic retenu</label>
                         <input type="text" id="ecos-diag-input" placeholder="Tapez votre diagnostic..." required autocomplete="off" />
-                        <label for="ecos-announce-input">Annonce au patient (parlez-lui comme à un vrai patient) :</label>
+                        <label for="ecos-announce-input">Ce que vous dites au patient</label>
                         <textarea id="ecos-announce-input" rows="5" placeholder="« Monsieur/Madame, d'après ce que vous m'avez dit et mon examen, je pense que... »" required></textarea>
                         <div class="ecos-announce-actions">
-                            <button type="button" id="ecos-announce-cancel" class="ecos-btn-secondary"><i class="fas fa-arrow-left"></i> Retour</button>
-                            <button type="submit" id="ecos-announce-submit" class="ecos-btn-primary"><i class="fas fa-check"></i> Valider et voir le debrief</button>
+                            <button type="button" id="ecos-announce-cancel" class="ecos-btn-secondary">Reprendre l'entretien</button>
+                            <button type="submit" id="ecos-announce-submit" class="ecos-btn-primary">Terminer et voir le débriefing</button>
                         </div>
                     </form>
                 </div>
@@ -1598,18 +1592,14 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
             debriefBodyHtml = `
                 <header class="ecos-debrief-header">
                     <h1>Station non notée</h1>
-                    <div style="font-size:1rem; color:#f39c12; margin-top:8px;">
-                        ${escapeHtml(jev.message || 'Échec de la notation par Jev. Réessayez plus tard.')}
-                    </div>
-                    <div style="font-size:0.80rem; color:rgba(255,255,255,0.5); margin-top:6px;">
-                        Le transcript complet de la station a été conservé et peut être exporté ci-dessous.
-                    </div>
+                    <p class="debrief-warn">${escapeHtml(jev.message || 'La notation automatique n\'a pas répondu. Réessayez plus tard.')}</p>
+                    <p class="debrief-note">Le transcript complet de la station est conservé : vous pouvez l'exporter ci-dessous.</p>
                 </header>
             `;
         } else {
             const score20 = typeof jev.globalScore20 === 'number' ? jev.globalScore20.toFixed(2) : '—';
             const isPassed = !!jev.passed;
-            const scoreColor = isPassed ? '#2ecc71' : '#e74c3c';
+            const scoreClass = isPassed ? 'is-pass' : 'is-fail';
 
             const apt = jev.sections?.aptitudes || { points: 0, maxPoints: 0, score20: 0, items: [] };
             const comm = jev.sections?.communication || { points: 0, maxPoints: 0, score20: 0, items: [] };
@@ -1618,9 +1608,9 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
             let redhibitoryAlertHtml = '';
             if (jev.hasRedhibitoryError && Array.isArray(jev.redhibitoryHits) && jev.redhibitoryHits.length > 0) {
                 redhibitoryAlertHtml = `
-                    <div style="background:rgba(231,76,60,0.18); border:1px solid #e74c3c; border-radius:10px; padding:12px 14px; margin-bottom:14px; color:#ff7675;">
-                        <div style="font-weight:700; margin-bottom:4px;">Erreur(s) rédhibitoire(s) détectée(s) :</div>
-                        <ul style="margin:4px 0 0 18px; padding:0;">
+                    <div class="debrief-redhib">
+                        <strong>Erreur rédhibitoire : la station est invalidée.</strong>
+                        <ul>
                             ${jev.redhibitoryHits.map(h => `<li>${escapeHtml(h.label)}</li>`).join('')}
                         </ul>
                     </div>
@@ -1629,25 +1619,25 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
 
             function renderSectionHtml(title, weightPct, sec) {
                 const secScore = typeof sec.score20 === 'number' ? sec.score20.toFixed(2) : '0';
-                const color = sec.score20 >= 14 ? '#2ecc71' : sec.score20 >= 10 ? '#f39c12' : '#e74c3c';
+                const level = sec.score20 >= 14 ? 'is-good' : sec.score20 >= 10 ? 'is-mid' : 'is-low';
                 const pct = sec.maxPoints > 0 ? Math.round((sec.points / sec.maxPoints) * 100) : 0;
                 return `
-                    <section class="ecos-debrief-section">
-                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-                            <h3 style="margin:0;">${title} (${weightPct}%)</h3>
-                            <span style="font-weight:700; color:${color}; font-size:1.05rem;">${secScore}/20 (${sec.points.toFixed(1)} / ${sec.maxPoints} pts)</span>
+                    <section class="ecos-debrief-section ${level}">
+                        <div class="debrief-sec-head">
+                            <h3>${title} <small>${weightPct} % de la note</small></h3>
+                            <span class="debrief-sec-score">${secScore}/20 <small>${sec.points.toFixed(1)} sur ${sec.maxPoints} pts</small></span>
                         </div>
                         <div class="ecos-debrief-bar">
-                            <div class="ecos-debrief-bar-fill" style="width:${pct}%; background:${color};"></div>
+                            <div class="ecos-debrief-bar-fill" style="width:${pct}%;"></div>
                         </div>
-                        <ul class="ecos-debrief-grille" style="margin-top:10px;">
+                        <ul class="ecos-debrief-grille">
                             ${(sec.items || []).map(item => {
                                 const badgeClass = item.status === 'fait' ? 'badge-ok' : item.status === 'en_partie' ? 'badge-warn' : item.status === 'penalite' ? 'badge-err' : 'badge-err';
                                 const statusLabel = item.status === 'fait' ? 'Fait (1 pt)' : item.status === 'en_partie' ? 'En partie (0.5 pt)' : item.status === 'penalite' ? 'Pénalité (-0.5 pt)' : 'Non fait (0 pt)';
                                 return `
-                                    <li style="display:flex; align-items:center; justify-content:space-between; padding:6px 8px; border-bottom:1px solid rgba(255,255,255,0.06);">
-                                        <span style="flex:1; margin-right:8px;">${escapeHtml(item.label)}</span>
-                                        <span class="corr-badge ${badgeClass}" style="white-space:nowrap;">${statusLabel}</span>
+                                    <li>
+                                        <span class="grille-label">${escapeHtml(item.label)}</span>
+                                        <span class="corr-badge ${badgeClass}">${statusLabel}</span>
                                     </li>
                                 `;
                             }).join('')}
@@ -1659,14 +1649,8 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
             debriefBodyHtml = `
                 <header class="ecos-debrief-header">
                     <h1>Fin de la station ECOS</h1>
-                    <div class="ecos-debrief-score" style="color:${scoreColor}; font-size:2.8rem; font-weight:800; margin:10px 0;">
-                        ${score20}<span>/20</span>
-                    </div>
-                    <div style="margin-top:4px;">
-                        <span class="corr-badge ${isPassed ? 'badge-ok' : 'badge-err'}" style="font-size:0.9rem; padding:4px 12px;">
-                            ${isPassed ? 'Station validée (seuil CNG ≥ 10/20)' : 'Station non validée (< 10/20)'}
-                        </span>
-                    </div>
+                    <div class="ecos-debrief-score ${scoreClass}">${score20}<span>/20</span></div>
+                    <p class="debrief-verdict ${scoreClass}">${isPassed ? 'Station validée (seuil de 10/20)' : 'Station non validée (sous 10/20)'}</p>
                 </header>
 
                 ${redhibitoryAlertHtml}
@@ -1677,7 +1661,7 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
 
                 <section class="ecos-debrief-section">
                     <h3>Diagnostic</h3>
-                    <div style="font-size: 0.9rem;">
+                    <div class="debrief-diag">
                         <p>Vous : <strong>${escapeHtml(ecosState.diagSubmitted || '(aucun)')}</strong></p>
                         <p>Attendu : <strong>${escapeHtml(ecosState.caseData.correctDiagnostic || '—')}</strong></p>
                     </div>
@@ -1706,11 +1690,12 @@ RENVOIE UNIQUEMENT un JSON strict : { "checked": ["id1", "id2"] } avec UNIQUEMEN
                 </section>
 
                 <footer class="ecos-debrief-footer">
-                    <button id="ecos-debrief-replay" class="ecos-btn-secondary"><i class="fas fa-redo"></i> Rejouer</button>
-                    <button id="ecos-debrief-print" class="ecos-btn-secondary"><i class="fas fa-print"></i> Imprimer</button>
-                    <button id="ecos-debrief-export" class="ecos-btn-secondary"><i class="fas fa-download"></i> Transcript</button>
-                    <button id="ecos-debrief-next" class="ecos-btn-secondary"><i class="fas fa-arrow-right"></i> Cas suivant</button>
-                    <button id="ecos-debrief-close" class="ecos-btn-primary">Terminer</button>
+                    <button id="ecos-debrief-replay" class="ecos-btn-secondary">Rejouer la station</button>
+                    <button id="ecos-debrief-print" class="ecos-btn-secondary">Imprimer</button>
+                    <button id="ecos-debrief-export" class="ecos-btn-secondary">Exporter le transcript</button>
+                    <span class="debrief-spacer"></span>
+                    <button id="ecos-debrief-next" class="ecos-btn-secondary">Cas suivant</button>
+                    <button id="ecos-debrief-close" class="ecos-btn-primary">Retour aux cas</button>
                 </footer>
             </div>
         `;

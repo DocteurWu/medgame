@@ -430,10 +430,10 @@ export function buildRoom(scene) {
     const floorMat = new THREE.MeshPhysicalMaterial({
         map: makeFloorTextureSalle(),
         roughnessMap: makeFloorRoughnessSalle(),
-        roughness: 0.48,
-        metalness: 0.06,
-        clearcoat: 0.34,
-        clearcoatRoughness: 0.32,
+        roughness: 0.58,
+        metalness: 0.0,
+        clearcoat: 0.14,
+        clearcoatRoughness: 0.45,
         ior: 1.48,
         envMapIntensity: 0.85
     });
@@ -470,14 +470,14 @@ export function buildRoom(scene) {
     box(scene, { x: roomWidth, y: 0.1, z: roomLength }, { x: 0, y: roomHeight, z: 0 }, ceilMat, 'Plafond', false, false);
 
     // E. Corniches & Plinthes hospitalières à gorge
-    const moldingMat = createMaterial(0x1e293b, { physical: true, roughness: 0.45, clearcoat: 0.35 });
+    const moldingMat = createMaterial('#d5dcd8', { physical: true, roughness: 0.6, clearcoat: 0.1 });
     box(scene, { x: roomWidth, y: 0.18, z: 0.14 }, { x: 0, y: roomHeight - 0.09, z: -roomLength / 2 + 0.05 }, moldingMat, 'Moulure fond', false, false);
     box(scene, { x: 0.14, y: 0.18, z: roomLength }, { x: roomWidth / 2 - 0.05, y: roomHeight - 0.09, z: 0 }, moldingMat, 'Moulure droite', false, false);
     box(scene, { x: 0.14, y: 0.18, z: roomLength }, { x: -roomWidth / 2 + 0.05, y: roomHeight - 0.09, z: 0 }, moldingMat, 'Moulure gauche', false, false);
 
     // F. Poste de lavage des mains (Lavabo clinique suspendu + Miroir + Crédence)
     roundedBox(scene, { x: 0.54, y: 0.52, z: 1.15 }, { x: -5.2, y: 0.64, z: 2.4 },
-        createMaterial(0x18181b, { physical: true, roughness: 0.28, metalness: 0.15, clearcoat: 0.85, clearcoatRoughness: 0.15 }),
+        createMaterial('#e9ece9', { physical: true, roughness: 0.42, metalness: 0.0, clearcoat: 0.3, clearcoatRoughness: 0.3 }),
         'Meuble Evier', true, 0.035);
     roundedBox(scene, { x: 0.46, y: 0.06, z: 0.92 }, { x: -5.2, y: 0.92, z: 2.4 },
         createMaterial(0xffffff, { physical: true, roughness: 0.08, clearcoat: 1.0, clearcoatRoughness: 0.04, ior: 1.52 }),

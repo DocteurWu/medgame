@@ -29,10 +29,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background:
-        radial-gradient(ellipse at 50% 45%, rgba(13, 20, 38, 0.97), rgba(5, 8, 18, 0.995));
-    backdrop-filter: blur(6px);
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #F3F5F2;
+    font-family: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
     opacity: 1;
     transition: opacity 0.45s ease;
 }
@@ -43,46 +41,38 @@
 }
 
 #three-loading .ld-box {
-    text-align: center;
-    color: #e0e8f4;
-    padding: 30px 46px 26px;
-    border-radius: 18px;
-    background: linear-gradient(160deg, rgba(12, 22, 48, 0.9), rgba(8, 14, 32, 0.88));
-    border: 1px solid rgba(120, 190, 255, 0.22);
-    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    text-align: left;
+    color: #17242C;
+    padding: 24px 28px 22px;
+    border-radius: 6px;
+    background: #FFFFFF;
+    border: 1px solid #D6DED9;
+    box-shadow: 0 1px 3px rgba(23, 36, 44, 0.08);
     min-width: 320px;
     max-width: 420px;
 }
 
-#three-loading .ld-logo {
-    font-size: 30px;
-    line-height: 1;
-    color: #00f2fe;
-    margin-bottom: 14px;
-    text-shadow: 0 0 18px rgba(0, 242, 254, 0.45);
-    animation: ld-pulse 1.6s ease-in-out infinite;
-}
+#three-loading .ld-logo { display: none; }
 
 #three-loading .ld-title {
     font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
+    font-size: 1.125rem;
     margin-bottom: 4px;
 }
 
 #three-loading .ld-phase {
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9375rem;
+    color: #4B5B63;
     margin-bottom: 16px;
     min-height: 1.2em;
 }
-
 #three-loading .ld-bar {
     position: relative;
     width: 260px;
     height: 5px;
-    margin: 0 auto 14px;
-    background: rgba(255, 255, 255, 0.14);
+    width: 100%;
+    margin: 0 0 14px;
+    background: #E6ECE8;
     border-radius: 99px;
     overflow: hidden;
 }
@@ -101,14 +91,13 @@
     height: 100%;
     width: 42%;
     border-radius: 99px;
-    background: linear-gradient(90deg, rgba(0, 242, 254, 0) 0%, #00c6ff 40%, #7ef9ff 60%, rgba(0, 242, 254, 0) 100%);
-    box-shadow: 0 0 12px rgba(0, 242, 254, 0.55);
+    background: #1C5A78;
     animation: ld-sweep 1.35s ease-in-out infinite;
 }
 
 #three-loading .ld-note {
-    font-size: 0.74rem;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8125rem;
+    color: #78878E;
     font-style: italic;
 }
 

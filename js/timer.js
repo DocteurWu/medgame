@@ -161,23 +161,14 @@ function displayTime(seconds) {
             el.classList.add('safe');
         }
 
-        // Appliquer la couleur dynamique interpolée
-        el.style.color = visual.color;
-        el.style.textShadow = `0 0 12px ${visual.glow}`;
-
-        // Animation de pulsation selon l'urgence (désactivée en mode calme)
+        // La couleur et l'éventuel clignotement sont portés par les classes
+        // (safe / warning / critical) dans la feuille de la page : pas de
+        // style en ligne, pas de halo.
+        el.style.color = '';
+        el.style.textShadow = '';
         el.style.animation = '';
         const calmMode = window.MedGameModes && window.MedGameModes.isCalmMode();
-        if (!calmMode && visual.level === 'danger') {
-            // Pulsation rapide et intense
-            el.style.animation = 'timerDanger 0.4s ease infinite';
-        } else if (!calmMode && visual.level === 'critical') {
-            // Pulsation modérée
-            el.style.animation = 'timerCritical 0.6s ease infinite';
-        } else if (!calmMode && visual.level === 'warning') {
-            // Pulsation lente
-            el.style.animation = 'timerWarning 1.2s ease infinite';
-        }
+        el.classList.toggle('timer-blink', !calmMode && visual.level === 'danger');
     });
 
     // Barre de progression
@@ -377,19 +368,9 @@ function updateUrgencyOverlay(urgencyLevel) {
         document.body.appendChild(overlay);
     }
 
-    switch (urgencyLevel) {
-        case 'danger':
-            overlay.style.backgroundColor = 'rgba(220, 38, 38, 0.08)';
-            break;
-        case 'critical':
-            overlay.style.backgroundColor = 'rgba(231, 76, 60, 0.05)';
-            break;
-        case 'warning':
-            overlay.style.backgroundColor = 'rgba(243, 156, 18, 0.02)';
-            break;
-        default:
-            overlay.style.backgroundColor = 'transparent';
-    }
+    // Un liseré discret autour de l'écran, porté par la feuille de style.
+    overlay.style.backgroundColor = 'transparent';
+    overlay.dataset.level = urgencyLevel || 'safe';
 }
 
 // Patch displayTime pour inclure l'overlay d'urgence

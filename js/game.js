@@ -21,15 +21,15 @@ function renderLockPlaceholder(fieldPath, currentCase, precomputedInfo) {
     if (info.blockedByPrereqs && info.missingPrereqs.length > 0) {
         const prereqNames = getPrereqNames(info.missingPrereqs, locks);
         const prereqsText = escapeHtml(prereqNames.join(', '));
-        return `<div class="lock-placeholder lock-placeholder-blocked" style="opacity:0.5; cursor:not-allowed;" title="Déverrouillez d'abord : ${prereqsText}">
-            <i class="fas fa-lock" style="color:#666;"></i>
-            <span class="challenge-text" style="color:#888; font-size:0.8rem;">BLOQUÉ — ${prereqsText} requis</span>
+        return `<div class="lock-placeholder lock-placeholder-blocked" title="Déverrouillez d'abord : ${prereqsText}">
+            <i class="fas fa-lock" aria-hidden="true"></i>
+            <span class="challenge-text">Bloqué : ${prereqsText} d'abord</span>
         </div>`;
     }
 
     return `<div class="lock-placeholder" onclick="window.showLockChallenge('${info.lock.id}')">
-        <i class="fas fa-lock"></i>
-        <span class="challenge-text">DÉFI À RELEVER</span>
+        <i class="fas fa-lock" aria-hidden="true"></i>
+        <span class="challenge-text">Répondre pour révéler</span>
     </div>`;
 }
 
@@ -324,17 +324,18 @@ onDomReady(async () => {
         pendingDeathReason = deathReason || 'Dégradation critique';
         pendingAllowResuscitation = null;
         // Bandeau générique (on ne spoile pas les antidotes)
-        if (typeof showNotification === 'function') showNotification('⚠️ État critique — prise en charge urgente requise', 'error');
+        if (typeof showNotification === 'function') showNotification('État critique : prise en charge urgente requise', 'error');
         // Afficher un compte à rebours discret dans le header (réutilise #motif-hospitalisation suffix)
         const banner = document.createElement('div');
         banner.id = 'catch-window-banner';
-        banner.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:9998;background:rgba(231,76,60,0.95);color:white;padding:10px 18px;border-radius:10px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:flex;align-items:center;gap:10px;';
-        banner.innerHTML = `<i class="fas fa-heart-crack"></i> <span>Détérioration critique — <span id="catch-countdown">${catchWindowRemaining}s</span></span> <span style="font-weight:400;opacity:0.85;">Antidote à administrer via la bulle</span>`;
+        banner.className = 'catch-window-banner';
+        banner.setAttribute('role', 'alert');
+        banner.innerHTML = `<strong>Dégradation critique</strong> <span class="catch-count"><span id="catch-countdown">${catchWindowRemaining} s</span> pour agir</span> <span class="catch-hint">Annoncez votre traitement dans l'entretien.</span>`;
         document.body.appendChild(banner);
         catchWindowInterval = setInterval(() => {
             catchWindowRemaining--;
             const el = document.getElementById('catch-countdown');
-            if (el) el.textContent = catchWindowRemaining + 's';
+            if (el) el.textContent = catchWindowRemaining + ' s';
             if (catchWindowRemaining <= 0) {
                 clearInterval(catchWindowInterval); catchWindowInterval = null;
             }
@@ -394,7 +395,7 @@ onDomReady(async () => {
             if (typeof window.vitalSigns.updateDisplay === 'function') window.vitalSigns.updateDisplay();
             if (typeof window.vitalSigns.startAnimations === 'function') window.vitalSigns.startAnimations();
         }
-        if (typeof showNotification === 'function') showNotification(`💀 Décès du patient — ${deathReason || 'arrêt cardio-respiratoire'}`, 'error');
+        if (typeof showNotification === 'function') showNotification(`Décès du patient : ${deathReason || 'arrêt cardio-respiratoire'}`, 'error');
         // Avatar en état critique
         const av = document.getElementById('patient-avatar');
         if (av) { av.setAttribute('data-state', 'critical'); av.setAttribute('data-expression', 'cyanotic'); }
@@ -425,22 +426,26 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         // Overlay décès
         const overlay = document.createElement('div');
         overlay.id = 'death-overlay';
-        overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.92);display:flex;align-items:center;justify-content:center;padding:20px;';
-        overlay.innerHTML = `<div style="background:linear-gradient(145deg,rgba(231,76,60,0.15),rgba(0,0,0,0.85));border:2px solid #e74c3c;border-radius:16px;max-width:640px;width:100%;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.6);text-align:center;">
-            <div style="font-size:3rem;margin-bottom:10px;">💀</div>
-            <h2 style="color:#ff6b81;margin:0 0 8px;">Décès du patient</h2>
-            <p style="color:rgba(255,255,255,0.9);margin:0 0 12px;"><strong>${escapeHtml(deathReason || 'Arrêt cardio-respiratoire')}</strong></p>
-            <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:14px;text-align:left;color:rgba(255,255,255,0.85);font-size:0.92rem;line-height:1.5;max-height:240px;overflow:auto;">${escapeHtml(personalized).replace(/\n/g,'<br>')}</div>
-            <div style="display:flex;gap:10px;margin-top:18px;">
-                <button id="death-see-correction" style="flex:1;padding:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;border-radius:10px;cursor:pointer;font-weight:600;">Voir la correction</button>
-                <button id="death-restart" style="flex:1;padding:12px;background:linear-gradient(135deg,#e74c3c,#c0392b);border:none;color:white;border-radius:10px;cursor:pointer;font-weight:700;">Recommencer</button>
+        overlay.className = 'death-overlay';
+        overlay.setAttribute('role', 'alertdialog');
+        overlay.setAttribute('aria-labelledby', 'death-title');
+        const tod = new Date();
+        const todLabel = `${String(tod.getHours()).padStart(2, '0')} h ${String(tod.getMinutes()).padStart(2, '0')}`;
+        overlay.innerHTML = `<div class="death-sheet">
+            <p class="death-time">Heure du décès : ${todLabel}</p>
+            <h2 id="death-title">Le patient est décédé</h2>
+            <p class="death-cause">${escapeHtml(deathReason || 'Arrêt cardio-respiratoire')}</p>
+            <div class="death-review">${escapeHtml(personalized).replace(/\n/g,'<br>')}</div>
+            <div class="death-actions">
+                <button id="death-see-correction" class="secondary-btn">Lire la correction</button>
+                <button id="death-restart" class="primary-btn">Reprendre le cas</button>
             </div>
-            ${allowRea ? `<button id="death-rea" style="margin-top:10px;width:100%;padding:10px;background:rgba(0,242,254,0.12);border:1px solid rgba(0,242,254,0.35);color:#00f2fe;border-radius:10px;cursor:pointer;font-weight:600;"><i class="fas fa-heart-pulse"></i> Tenter réanimation (MCE / adrénaline)</button>` : `<p style="margin-top:10px;color:rgba(255,255,255,0.45);font-size:0.8rem;">Réanimation non proposée pour ce geste (décision du Maître du Jeu).</p>`}
+            ${allowRea ? `<button id="death-rea" class="death-rea">Tenter une réanimation (MCE, adrénaline)</button>` : `<p class="death-note">La réanimation n'est pas indiquée dans cette situation.</p>`}
         </div>`;
         document.body.appendChild(overlay);
         document.getElementById('death-see-correction').addEventListener('click', () => {
             const t = window.gameState && window.gameState.currentCase;
-            const corr = t && t.correction ? `💀 ${escapeHtml(deathReason||'Décès')}<br><br>` + t.correction + `<br><hr><div style="background:rgba(231,76,60,0.08);padding:12px;border-radius:8px;">${escapeHtml(personalized).replace(/\n/g,'<br>')}</div>` : personalized;
+            const corr = t && t.correction ? `<p class="death-cause">${escapeHtml(deathReason||'Décès')}</p>` + t.correction + `<hr><div class="death-review">${escapeHtml(personalized).replace(/\n/g,'<br>')}</div>` : personalized;
             showCorrectionModal(corr);
         });
         document.getElementById('death-restart').addEventListener('click', () => window.location.reload());
@@ -450,7 +455,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             if (dlgInput) { dlgInput.disabled = false; dlgInput.placeholder = 'Tentez une réanimation...'; dlgInput.focus(); }
             if (dlgBtn) dlgBtn.disabled = false;
             if (window.gameState) window.gameState.isPatientDead = false;
-            showNotification('🫀 Tentative de réanimation — poursuivez via la bulle', 'info');
+            showNotification('Réanimation en cours : annoncez vos gestes dans l\'entretien', 'info');
             // Le prochain message repassera par le Maître qui décidera si recovering ou dead définitif
         });
     };
@@ -762,9 +767,23 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         const patientSexeSidebar = document.getElementById('patient-sexe-sidebar');
         const patientInitials = document.getElementById('patient-initials');
 
-        if (patientNomSidebar) patientNomSidebar.textContent = `${currentCase.patient.prenom} ${currentCase.patient.nom}`;
+        // Bracelet d'identification : convention hospitalière NOM (capitales) + Prénom.
+        if (patientNomSidebar) {
+            patientNomSidebar.textContent = '';
+            const nomEl = document.createElement('span');
+            nomEl.className = 'wb-nom';
+            nomEl.textContent = String(currentCase.patient.nom || '').toUpperCase();
+            patientNomSidebar.append(nomEl, document.createTextNode(' ' + (currentCase.patient.prenom || '')));
+        }
         if (patientAgeSidebar) patientAgeSidebar.textContent = currentCase.patient.age;
-        if (patientSexeSidebar) patientSexeSidebar.textContent = currentCase.patient.sexe;
+        if (patientSexeSidebar) {
+            const sx = String(currentCase.patient.sexe || '').toUpperCase();
+            patientSexeSidebar.textContent = sx.startsWith('F') ? 'Femme' : (sx.startsWith('M') || sx.startsWith('H')) ? 'Homme' : (currentCase.patient.sexe || '--');
+        }
+        const patientGroupeSidebar = document.getElementById('patient-groupe-sidebar');
+        const patientPoidsSidebar = document.getElementById('patient-poids-sidebar');
+        if (patientGroupeSidebar) patientGroupeSidebar.textContent = currentCase.patient.groupeSanguin || 'inconnu';
+        if (patientPoidsSidebar) patientPoidsSidebar.textContent = currentCase.patient.poids || 'poids inconnu';
         if (patientInitials) {
             const initials = (currentCase.patient.prenom.charAt(0) + currentCase.patient.nom.charAt(0)).toUpperCase();
             patientInitials.textContent = initials;
@@ -828,7 +847,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         return '<li>' + escapeHtml(details) + '</li>';
                     }).join('') + '</ul>';
                 } else if (antecedentsMedicaux) {
-                    antecedentsMedicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent médical connu.</p>';
+                    antecedentsMedicaux.innerHTML = '<p class="muted-line">Aucun antécédent médical connu.</p>';
                 }
 
                 if (antecedentsChirurgicaux) {
@@ -840,7 +859,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                             return '<li>' + escapeHtml(details) + '</li>';
                         }).join('') + '</ul>';
                     } else {
-                        antecedentsChirurgicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent chirurgical connu.</p>';
+                        antecedentsChirurgicaux.innerHTML = '<p class="muted-line">Aucun antécédent chirurgical connu.</p>';
                     }
                 }
 
@@ -857,7 +876,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                             return '<li>' + escapeHtml(details) + '</li>';
                         }).join('') + '</ul>';
                     } else {
-                        antecedentsFamiliaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent familial connu.</p>';
+                        antecedentsFamiliaux.innerHTML = '<p class="muted-line">Aucun antécédent familial connu.</p>';
                     }
                 }
             }
@@ -976,7 +995,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                     }).join('') + '</ul>';
                     displayQuestionBtn(antecedentsMedicaux, 'Avez-vous des maladies chroniques ou antécédents médicaux ?', valMed, 'interrogatoire.antecedents.medicaux', true);
                 } else if (antecedentsMedicaux) {
-                    antecedentsMedicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent médical connu.</p>';
+                    antecedentsMedicaux.innerHTML = '<p class="muted-line">Aucun antécédent médical connu.</p>';
                 }
 
                 const chirPresent = antecedents.chirurgicauxPresence !== false && antecedents.chirurgicaux && antecedents.chirurgicaux.length > 0;
@@ -990,7 +1009,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         }).join('') + '</ul>';
                         displayQuestionBtn(antecedentsChirurgicaux, 'Avez-vous déjà été opéré(e) ?', valChir, 'interrogatoire.antecedents.chirurgicaux', true);
                     } else {
-                        antecedentsChirurgicaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent chirurgical connu.</p>';
+                        antecedentsChirurgicaux.innerHTML = '<p class="muted-line">Aucun antécédent chirurgical connu.</p>';
                     }
                 }
 
@@ -1009,7 +1028,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                         }).join('') + '</ul>';
                         displayQuestionBtn(antecedentsFamiliaux, 'Y a-t-il des maladies particulières dans votre famille ?', valFam, 'interrogatoire.antecedents.familiaux', true);
                     } else {
-                        antecedentsFamiliaux.innerHTML = '<p style="opacity:0.5; font-style:italic;">Aucun antécédent familial connu.</p>';
+                        antecedentsFamiliaux.innerHTML = '<p class="muted-line">Aucun antécédent familial connu.</p>';
                     }
                 }
             }
@@ -1182,19 +1201,17 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 const prereqNames = getPrereqNames(info.missingPrereqs, currentCase.locks || []);
                 const prereqsText = escapeHtml(prereqNames.join(', '));
                 examCategoriesDiv.innerHTML = `
-                <div class="lock-placeholder section-lock" style="margin: 20px 0; padding: 40px; border-radius: 15px; background: rgba(0,0,0,0.3); border: 2px dashed var(--glass-border); flex-direction: column; cursor: not-allowed; opacity: 0.6;">
-                    <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; color: #666;"></i>
-                    <h3 style="margin-bottom: 10px; color: #888;">SECTION VERROUILLÉE</h3>
-                    <p style="color: #999;">Déverrouillez d'abord : <strong>${prereqsText}</strong></p>
+                <div class="lock-placeholder section-lock is-blocked">
+                    <h3>Section verrouillée</h3>
+                    <p>Déverrouillez d'abord : <strong>${prereqsText}</strong></p>
                 </div>
             `;
             } else if (lock) {
                 examCategoriesDiv.innerHTML = `
-                <div class="lock-placeholder section-lock" onclick="window.showLockChallenge('${lock.id}')" style="margin: 20px 0; padding: 40px; border-radius: 15px; background: rgba(0,0,0,0.3); border: 2px dashed var(--glass-border); flex-direction: column; cursor: pointer;">
-                    <i class="fas fa-lock" style="font-size: 3rem; margin-bottom: 15px; color: var(--secondary-color);"></i>
-                    <h3 style="margin-bottom: 10px;">SECTION VERROUILLÉE</h3>
-                    <p>Relevez le défi sémiologique pour débloquer les prescriptions</p>
-                    <button class="primary-btn" style="margin-top: 20px;">RELEVER LE DÉFI</button>
+                <div class="lock-placeholder section-lock" onclick="window.showLockChallenge('${lock.id}')">
+                    <h3>Section verrouillée</h3>
+                    <p>Répondez à la question de sémiologie pour pouvoir prescrire des examens.</p>
+                    <button class="primary-btn">Répondre à la question</button>
                 </div>
             `;
             }
@@ -1586,30 +1603,19 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
         if (isUnrated) {
             debriefHtml = `
-                <div style="background:rgba(243,156,18,0.12); border:1px solid #f39c12; border-radius:8px; padding:15px; margin-bottom:15px; text-align:center;">
-                    <h3 style="margin:0; color:#f39c12;">Station non notée</h3>
-                    <p style="margin:6px 0 0; color:rgba(255,255,255,0.7); font-size:0.85rem;">
-                        ${escapeHtml(jevEvaluation.message || 'Échec de la notation par Jev. Réessayez plus tard.')}
-                    </p>
+                <div class="corr-unrated">
+                    <h3>Station non notée</h3>
+                    <p>${escapeHtml(jevEvaluation.message || 'La notation automatique n\'a pas répondu. Réessayez plus tard.')}</p>
                 </div>
             `;
         } else {
-            const scoreColor = passed ? '#2ecc71' : '#e74c3c';
-            const passBadge = passed
-                ? '<span style="background:rgba(46,204,113,0.2); color:#2ecc71; border:1px solid #2ecc71; padding:3px 10px; border-radius:4px; font-weight:700; font-size:0.85rem;">Station validée (seuil CNG ≥ 10/20)</span>'
-                : '<span style="background:rgba(231,76,60,0.2); color:#e74c3c; border:1px solid #e74c3c; padding:3px 10px; border-radius:4px; font-weight:700; font-size:0.85rem;">Station non validée (< 10/20)</span>';
-
+            const verdictClass = passed ? 'is-pass' : 'is-fail';
             let redhibAlert = '';
             if (jevEvaluation.hasRedhibitoryError && Array.isArray(jevEvaluation.redhibitoryHits) && jevEvaluation.redhibitoryHits.length > 0) {
                 redhibAlert = `
-                    <div style="background:rgba(231,76,60,0.18); border:2px solid #e74c3c; border-radius:8px; padding:12px; margin-bottom:15px; color:#ff7675;">
-                        <div style="font-weight:700; margin-bottom:4px;"><i class="fas fa-skull-crossbones"></i> Erreur(s) rédhibitoire(s) détectée(s) :</div>
-                        <ul style="margin:4px 0 0 18px; padding:0;">
-                            ${jevEvaluation.redhibitoryHits.map(h => `<li>${escapeHtml(h.label)}</li>`).join('')}
-                        </ul>
-                        <div style="font-size:0.80rem; margin-top:6px; color:rgba(255,255,255,0.7);">
-                            Conformément aux règles ECOS officielles du CNG, toute erreur rédhibitoire invalide la station (note ramenée à 0/20).
-                        </div>
+                    <div class="debrief-redhib">
+                        <strong>Erreur rédhibitoire : la station est invalidée (0/20, règle CNG).</strong>
+                        <ul>${jevEvaluation.redhibitoryHits.map(h => `<li>${escapeHtml(h.label)}</li>`).join('')}</ul>
                     </div>
                 `;
             }
@@ -1620,44 +1626,31 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
             function renderSection(title, weightPct, sec) {
                 const secScore = typeof sec.score20 === 'number' ? sec.score20.toFixed(2) : '0';
-                const color = sec.score20 >= 14 ? '#2ecc71' : sec.score20 >= 10 ? '#f39c12' : '#e74c3c';
+                const level = sec.score20 >= 14 ? 'is-good' : sec.score20 >= 10 ? 'is-mid' : 'is-low';
                 const pct = sec.maxPoints > 0 ? Math.round((sec.points / sec.maxPoints) * 100) : 0;
                 return `
-                    <div style="margin-bottom:14px; padding:10px 12px; background:rgba(255,255,255,0.04); border-radius:6px;">
-                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;">
-                            <span style="font-weight:700; color:#fff; font-size:0.9rem;">${escapeHtml(title)} (${weightPct}%)</span>
-                            <span style="font-weight:700; color:${color}; font-size:0.95rem;">${secScore}/20 (${sec.points.toFixed(1)} / ${sec.maxPoints} pts)</span>
+                    <section class="ecos-debrief-section corr-section ${level}">
+                        <div class="debrief-sec-head">
+                            <h3>${escapeHtml(title)} <small>${weightPct} % de la note</small></h3>
+                            <span class="debrief-sec-score">${secScore}/20 <small>${sec.points.toFixed(1)} sur ${sec.maxPoints} pts</small></span>
                         </div>
-                        <div style="width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
-                            <div style="width:${pct}%; height:100%; background:${color};"></div>
-                        </div>
-                        <ul style="list-style:none; padding:0; margin:8px 0 0; font-size:0.80rem;">
+                        <div class="ecos-debrief-bar"><div class="ecos-debrief-bar-fill" style="width:${pct}%;"></div></div>
+                        <ul class="ecos-debrief-grille">
                             ${(sec.items || []).map(item => {
-                                const badgeStyle = item.status === 'fait'
-                                    ? 'background:rgba(46,204,113,0.25); color:#2ecc71; border:1px solid #2ecc71;'
-                                    : item.status === 'en_partie'
-                                        ? 'background:rgba(243,156,18,0.25); color:#f39c12; border:1px solid #f39c12;'
-                                        : 'background:rgba(231,76,60,0.25); color:#e74c3c; border:1px solid #e74c3c;';
-                                const statusLabel = item.status === 'fait' ? 'Fait (1 pt)' : item.status === 'en_partie' ? 'En partie (0.5 pt)' : 'Non fait (0 pt)';
-                                return `
-                                    <li style="display:flex; align-items:center; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
-                                        <span style="flex:1; margin-right:8px; color:rgba(255,255,255,0.85);">${escapeHtml(item.label || '')}</span>
-                                        <span style="padding:1px 5px; border-radius:3px; font-size:0.75rem; white-space:nowrap; ${badgeStyle}">${statusLabel}</span>
-                                    </li>
-                                `;
+                                const badgeClass = item.status === 'fait' ? 'badge-ok' : item.status === 'en_partie' ? 'badge-warn' : 'badge-err';
+                                const statusLabel = item.status === 'fait' ? 'Fait (1 pt)' : item.status === 'en_partie' ? 'En partie (0,5 pt)' : 'Non fait (0 pt)';
+                                return `<li><span class="grille-label">${escapeHtml(item.label || '')}</span><span class="corr-badge ${badgeClass}">${statusLabel}</span></li>`;
                             }).join('')}
                         </ul>
-                    </div>
+                    </section>
                 `;
             }
 
             debriefHtml = `
-                <div style="text-align:center; padding:15px; margin-bottom:15px; background:rgba(0,0,0,0.25); border-radius:8px;">
-                    <div style="font-size:0.80rem; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:1px;">Note finale ECOS</div>
-                    <div style="font-size:2.8rem; font-weight:800; color:${scoreColor}; margin:5px 0;">
-                        ${globalScore20.toFixed(2)}<span style="font-size:1.2rem; color:rgba(255,255,255,0.5);">/20</span>
-                    </div>
-                    <div>${passBadge}</div>
+                <div class="corr-score">
+                    <span class="corr-score-label">Note finale</span>
+                    <div class="ecos-debrief-score ${verdictClass}">${globalScore20.toFixed(2)}<span>/20</span></div>
+                    <p class="debrief-verdict ${verdictClass}">${passed ? 'Station validée (seuil de 10/20)' : 'Station non validée (sous 10/20)'}</p>
                 </div>
                 ${redhibAlert}
                 ${renderSection("Aptitudes cliniques et techniques", 50, apt)}
@@ -1666,55 +1659,27 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
             `;
         }
 
-        // Comparaison Diagnostic et Traitements
-        const diagnosticUserStyle = isDiagExact
-            ? 'background: rgba(46, 204, 113, 0.3); padding: 4px 8px; border-radius: 4px;'
-            : 'background: rgba(231, 76, 60, 0.3); padding: 4px 8px; border-radius: 4px;';
-
+        // Comparaison diagnostic et traitements : chaque élément porte son état
+        // en toutes lettres (pas seulement en couleur).
+        const tag = (text, state) => `<span class="corr-tag is-${state}">${escapeHtml(text)}</span>`;
         const userTreatmentsHtml = selectedTreatments.length === 0
-            ? '<span style="background: rgba(231, 76, 60, 0.3); padding: 4px 8px; border-radius: 4px;">Aucun</span>'
-            : selectedTreatments.map(t => {
-                const isCorrect = correctTreatments.includes(t);
-                const style = isCorrect
-                    ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
-                    : 'background: rgba(231, 76, 60, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
-                return `<span style="${style}">${escapeHtml(t)}</span>`;
-            }).join(' ');
-
-        const expectedTreatmentsHtml = correctTreatments.map(t => {
-            const wasSelected = selectedTreatments.includes(t);
-            const style = wasSelected
-                ? 'background: rgba(46, 204, 113, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;'
-                : 'background: rgba(255, 193, 7, 0.3); padding: 3px 8px; border-radius: 4px; margin: 2px; display: inline-block;';
-            return `<span style="${style}">${escapeHtml(t)}</span>`;
-        }).join(' ');
+            ? tag('Aucun', 'wrong')
+            : selectedTreatments.map(t => tag(t, correctTreatments.includes(t) ? 'right' : 'wrong')).join(' ');
+        const expectedTreatmentsHtml = correctTreatments.map(t => tag(t, selectedTreatments.includes(t) ? 'right' : 'missing')).join(' ');
 
         const comparisonHtml = `
-            <div class="correction-comparison" style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+            <div class="correction-comparison">
                 ${debriefHtml}
-                <div style="margin-top: 15px; margin-bottom: 10px;">
-                    <h4 style="color: #e74c3c; margin-bottom: 5px;">Votre Réponse</h4>
-                    <p><strong>Diagnostic:</strong> <span style="${diagnosticUserStyle}">${escapeHtml(selectedDiagnostic || 'Aucun')}</span></p>
-                    <p><strong>Traitements:</strong> ${userTreatmentsHtml}</p>
-                </div>
-                <div>
-                    <h4 style="color: #2ecc71; margin-bottom: 5px;">Réponse Attendue</h4>
-                    <p><strong>Diagnostic:</strong> ${escapeHtml(correctDiagnostic || 'Non spécifié')}</p>
-                    <p><strong>Traitements:</strong> ${expectedTreatmentsHtml}</p>
-                    <p style="font-size: 0.85em; color: #aaa; margin-top: 5px;">
-                        <span style="background: rgba(46, 204, 113, 0.3); padding: 2px 6px; border-radius: 3px;">Vert</span> = Correct | 
-                        <span style="background: rgba(255, 193, 7, 0.3); padding: 2px 6px; border-radius: 3px;">Jaune</span> = Manquant | 
-                        <span style="background: rgba(231, 76, 60, 0.3); padding: 2px 6px; border-radius: 3px;">Rouge</span> = Incorrect
-                    </p>
-                </div>
-                <div style="text-align:center; margin-top:12px;">
-                    <p style="color: rgba(255,255,255,0.6); font-size:0.85em; margin: 4px 0 0;">XP gagné : <strong style="color:#4facfe;">${xpEarned} XP</strong></p>
-                    <p style="color: ${caseAttempts > 2 ? '#e74c3c' : 'rgba(255,255,255,0.5)'}; font-size:0.75em; margin-top: 5px;">
-                        <i class="fas fa-info-circle"></i> ${escapeHtml(xpMessage)}
-                    </p>
-                </div>
+                <table class="corr-compare">
+                    <thead><tr><th></th><th>Votre réponse</th><th>Attendu</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">Diagnostic</th><td>${tag(selectedDiagnostic || 'Aucun', isDiagExact ? 'right' : 'wrong')}</td><td>${escapeHtml(correctDiagnostic || 'Non spécifié')}</td></tr>
+                        <tr><th scope="row">Traitements</th><td>${userTreatmentsHtml}</td><td>${expectedTreatmentsHtml}</td></tr>
+                    </tbody>
+                </table>
+                <p class="corr-legend"><span class="corr-tag is-right">juste</span> <span class="corr-tag is-missing">oublié</span> <span class="corr-tag is-wrong">erroné</span></p>
+                <p class="corr-xp">XP gagnée : <strong>${xpEarned}</strong>. <span class="${caseAttempts > 2 ? 'is-warn' : ''}">${escapeHtml(xpMessage)}</span></p>
             </div>
-            <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
         `;
 
         playSound('complete');
@@ -1825,9 +1790,7 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
                 const placeholder = renderLockPlaceholder(path, currentCase);
                 resultDiv.innerHTML = `
                         <strong>${exam}:</strong>
-                        <div style="display:inline-flex; padding:5px 15px; margin-left:10px;">
-                            ${placeholder}
-                        </div>
+                        ${placeholder}
                     `;
             } else {
                 const isObj = typeof result === 'object' && result !== null;
@@ -2166,16 +2129,14 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
         let quizAttempts = 0;
 
         modal.innerHTML = `
-            <div class="lock-modal" style="border-color: var(--primary-color); box-shadow: 0 0 30px rgba(160, 32, 240, 0.2);">
-                <div style="font-size: 0.8rem; color: var(--primary-color); text-transform: uppercase; margin-bottom: 10px;">
-                    Question post-jeu ${index + 1}/${currentCase.postGameQuestions.length}
-                </div>
-                <h3>DÉFI FINAL</h3>
+            <div class="lock-modal quiz-modal">
+                <p class="quiz-count">Question ${index + 1} sur ${currentCase.postGameQuestions.length}</p>
+                <h3>Pour finir, une question sur le cas</h3>
                 <div class="challenge-question">${question.challenge.question}</div>
                 <div id="quiz-details-container"></div>
                 <div class="error-feedback" id="quiz-error"></div>
-                <button class="action-btn" id="quiz-submit-btn" style="background: var(--primary-color); color: white;">
-                    ${isLast ? 'VOIR LA CORRECTION' : 'QUESTION SUIVANTE'}
+                <button class="action-btn" id="quiz-submit-btn">
+                    ${isLast ? 'Voir la correction' : 'Question suivante'}
                 </button>
             </div>
         `;
@@ -2263,10 +2224,10 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
 
                 const errorEl = document.getElementById('quiz-error');
                 errorEl.innerHTML = `
-                    <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
-                        <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
-                        <div style="color: white; margin-bottom: 10px;">${escapeHtml(correction)}</div>
-                        ${question.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${escapeHtml(question.feedback_error)}</div>` : ''}
+                    <div class="correction-box">
+                        <strong>La bonne réponse</strong>
+                        <p>${escapeHtml(correction)}</p>
+                        ${question.feedback_error ? `<p class="correction-hint"><strong>Pourquoi :</strong> ${escapeHtml(question.feedback_error)}</p>` : ''}
                     </div>
                 `;
 
@@ -2321,30 +2282,15 @@ Rédige en 4-6 lignes la correction personnalisée S'APPUYANT SUR CE DÉROULÉ P
     // --- FULLSCREEN PROMPT LOGIC ---
     function showFullscreenPrompt() {
         if (document.getElementById('fullscreen-prompt') || document.fullscreenElement) return;
+        // Utile seulement sur petit écran tactile, où la barre d'adresse mange la place.
+        if (!window.matchMedia || !window.matchMedia('(max-width: 900px) and (pointer: coarse)').matches) return;
 
         const prompt = document.createElement('div');
         prompt.id = 'fullscreen-prompt';
-        prompt.style.cssText = `
-            position: fixed;
-            bottom: 85px; /* Above mobile tabs */
-            right: 15px;
-            background: rgba(0, 242, 254, 0.8);
-            color: #000;
-            padding: 8px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 1000;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.75rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        `;
-        prompt.innerHTML = '<i class="fas fa-expand"></i> PLEIN ÉCRAN';
+        prompt.className = 'fullscreen-prompt';
+        prompt.innerHTML = '<i class="fas fa-expand" aria-hidden="true"></i> Plein écran';
+        prompt.setAttribute('role', 'button');
+        prompt.setAttribute('tabindex', '0');
 
         prompt.addEventListener('click', () => {
             document.documentElement.requestFullscreen().catch(() => {});

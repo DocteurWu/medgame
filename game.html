@@ -29,7 +29,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32.png">
     <link rel="icon" type="image/webp" sizes="32x32" href="assets/images/favicon-32.webp">
     <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
-    <link rel="stylesheet" href="css/game.css">
     <link rel="stylesheet" href="css/immersive.css">
     <link rel="stylesheet" href="css/immersive-cinema.css">
     <link rel="stylesheet" href="css/ecos.css">
@@ -38,15 +37,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="css/nurse.css">
     <link rel="stylesheet" href="css/device-check.css">
+    <!-- Thème clinique : chargé EN DERNIER, il fait foi pour toute l'interface 2D -->
+    <link rel="stylesheet" href="css/game.css">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&family=Tektur:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap"
         rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;800&family=Tektur:wght@400;700&display=swap"></noscript>
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap"></noscript>
     <!-- Ajout de Font Awesome pour les icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script async src="https://cdn.jsdelivr.net/npm/fireworks-js@latest/dist/fireworks.js"></script>
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -62,7 +63,7 @@
     </script>
 </head>
 
-<body>
+<body class="clinic">
     <!-- Skip navigation link for screen readers -->
     <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
@@ -123,64 +124,62 @@
     <div id="scene-container"></div>
 
     <div class="app-container">
-        <!-- Sidebar Toggle Button -->
-        <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Afficher ou masquer le menu latéral" aria-expanded="true" aria-controls="sidebar-nav">
+        <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Afficher ou masquer le dossier" aria-expanded="true" aria-controls="sidebar-nav">
             <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
-        <!-- SIDEBAR -->
-        <aside class="sidebar" role="complementary" aria-label="Navigation et informations patient">
+
+        <!-- ================= COLONNE GAUCHE : le chevet ================= -->
+        <aside class="sidebar" role="complementary" aria-label="Patient, dossier et moniteur">
             <div class="sidebar-header">
-                <a href="index.html" class="logo">
-                    <i class="fas fa-user-md"></i> MEDGAME
-                </a>
+                <a href="index.html" class="logo" aria-label="Retour à l'accueil MedGame">MedGame</a>
+                <span class="sidebar-service">Consultation</span>
             </div>
 
-            <!-- PATIENT MINI PROFILE (Optional, kept for quick ref) -->
-            <div class="patient-mini-card">
-                <div class="patient-avatar" id="patient-avatar" data-expression="neutral" data-state="stable">
-                    <svg viewBox="0 0 100 100" class="avatar-face">
-                        <circle cx="50" cy="50" r="45" class="avatar-head"/>
-                        <ellipse cx="35" cy="40" rx="8" ry="10" class="avatar-eye"/>
-                        <ellipse cx="65" cy="40" rx="8" ry="10" class="avatar-eye"/>
-                        <path class="avatar-mouth" d="M 30 65 Q 50 75 70 65"/>
-                        <circle cx="50" cy="50" r="45" class="avatar-glow"/>
-                    </svg>
+            <!-- Bracelet d'identification du patient -->
+            <div class="patient-mini-card wristband">
+                <div class="patient-avatar" id="patient-avatar" data-expression="neutral" data-state="stable" title="État clinique du patient">
+                    <span class="wristband-state" aria-hidden="true"></span>
                 </div>
                 <div class="patient-details">
                     <h3 id="patient-nom-sidebar">Patient</h3>
-                    <p><span id="patient-age-sidebar">--</span> ans | <span id="patient-sexe-sidebar">--</span></p>
+                    <p class="wristband-meta">
+                        <span id="patient-sexe-sidebar">--</span>, <span id="patient-age-sidebar">--</span> ans
+                    </p>
+                    <p class="wristband-meta wristband-meta--minor">
+                        Groupe <span id="patient-groupe-sidebar">--</span>, <span id="patient-poids-sidebar">--</span>
+                    </p>
                 </div>
+                <div class="wristband-barcode" aria-hidden="true"></div>
             </div>
 
-            <!-- NAVIGATION -->
-            <nav class="sidebar-nav" id="sidebar-nav" role="navigation" aria-label="Sections du cas clinique">
+            <!-- Dossier : onglets -->
+            <nav class="sidebar-nav" id="sidebar-nav" role="navigation" aria-label="Sections du dossier">
                 <button class="nav-item" data-target="section-iao" id="nav-iao" role="tab" aria-selected="false" aria-controls="section-iao">
-                    <i class="fas fa-user-nurse" aria-hidden="true"></i> IAO
+                    <i class="fas fa-clipboard" aria-hidden="true"></i> <span>Accueil IAO</span>
                 </button>
                 <button class="nav-item active" data-target="section-anamnese" role="tab" aria-selected="true" aria-controls="section-anamnese">
-                    <i class="fas fa-comments" aria-hidden="true"></i> Anamnèse
+                    <i class="fas fa-comment-medical" aria-hidden="true"></i> <span>Consultation</span>
                 </button>
                 <button class="nav-item" data-target="section-examen-clinique" role="tab" aria-selected="false" aria-controls="section-examen-clinique">
-                    <i class="fas fa-stethoscope" aria-hidden="true"></i> Examen Clinique
+                    <i class="fas fa-stethoscope" aria-hidden="true"></i> <span>Examen clinique</span>
                 </button>
                 <button class="nav-item" data-target="section-examens" role="tab" aria-selected="false" aria-controls="section-examens">
-                    <i class="fas fa-flask" aria-hidden="true"></i> Examens Compl.
+                    <i class="fas fa-vial" aria-hidden="true"></i> <span>Examens complémentaires</span>
                 </button>
-                <button class="nav-item" id="nav-intervention-rapide" data-target="section-intervention-rapide" role="tab" aria-selected="false" aria-controls="section-intervention-rapide"
-                    style="display: none; color: #ff4757; text-shadow: 0 0 5px rgba(255, 71, 87, 0.5);">
-                    <i class="fas fa-bolt" aria-hidden="true"></i> Intervention Vite!
+                <button class="nav-item nav-item--urgent" id="nav-intervention-rapide" data-target="section-intervention-rapide" role="tab" aria-selected="false" aria-controls="section-intervention-rapide" style="display: none;">
+                    <i class="fas fa-bolt" aria-hidden="true"></i> <span>Gestes d'urgence</span>
                 </button>
                 <button class="nav-item" data-target="section-ecos-grille" role="tab" aria-selected="false" aria-controls="section-ecos-grille" id="nav-ecos-grille">
-                    <i class="fas fa-clipboard-list" aria-hidden="true"></i> Grille d'évaluation
+                    <i class="fas fa-list-check" aria-hidden="true"></i> <span>Grille d'évaluation</span>
                 </button>
                 <button class="nav-item" data-target="section-synthese" role="tab" aria-selected="false" aria-controls="section-synthese">
-                    <i class="fas fa-check-circle" aria-hidden="true"></i> Synthèse & Décision
+                    <i class="fas fa-file-signature" aria-hidden="true"></i> <span>Diagnostic et traitement</span>
                 </button>
             </nav>
 
-            <!-- SCOPE / VITAL MONITOR (Persistent) -->
-            <div class="sidebar-scope" id="sidebar-scope" role="region" aria-label="Moniteur de signes vitaux">
-                <div id="vitals-data" style="display: none;" aria-live="polite">
+            <!-- Moniteur de chevet (persistant) -->
+            <div class="sidebar-scope" id="sidebar-scope" role="region" aria-label="Moniteur de surveillance">
+                <div id="vitals-data" hidden aria-live="polite">
                     <span id="tension"></span>
                     <span id="pouls"></span>
                     <span id="saturationO2"></span>
@@ -190,173 +189,146 @@
             </div>
 
             <div class="sidebar-footer">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px; width: 100%;">
-                    <div id="timer" class="timer-display" role="timer" aria-label="Temps écoulé" aria-live="off" style="margin: 0; flex: 1;">00:00</div>
-                    <button id="btn-pause-timer" style="display: none; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 50%; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" title="Mettre en pause / reprendre">
+                <div class="clock">
+                    <div id="timer" class="timer-display" role="timer" aria-label="Temps restant" aria-live="off">00:00</div>
+                    <button id="btn-pause-timer" class="clock-pause" style="display: none;" title="Mettre en pause ou reprendre" aria-label="Mettre en pause ou reprendre">
                         <i class="fas fa-pause"></i>
                     </button>
                 </div>
-                <a href="index.html" class="quit-btn" aria-label="Quitter le cas et retourner à l'accueil">QUITTER</a>
-                <div style="margin-top: 8px; text-align: center; width: 100%;">
-                    <a href="credits.html" class="medgame-footer-link" target="_blank" rel="noopener" style="font-size: 0.72rem; color: rgba(255,255,255,0.45); text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
-                        <i class="fas fa-award" aria-hidden="true"></i> Crédits MedGame
-                    </a>
-                </div>
+                <a href="index.html" class="quit-btn" aria-label="Quitter le cas et revenir à l'accueil">Quitter le cas</a>
+                <a href="credits.html" class="medgame-footer-link" target="_blank" rel="noopener">Crédits</a>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT Area -->
+        <!-- ================= COLONNE PRINCIPALE : le dossier ================= -->
         <main class="main-content" id="main-content" role="main">
 
             <header class="top-bar">
-                <div class="case-info" style="display:flex; align-items:center; gap:15px;">
-                    <div>
-                        <span class="label">MOTIF D'ADMISSION</span>
-                        <h2 id="motif-hospitalisation">Chargement...</h2>
+                <div class="case-info">
+                    <div class="case-motif">
+                        <span class="label">Motif</span>
+                        <h2 id="motif-hospitalisation">Chargement du dossier…</h2>
                     </div>
-                    <button id="btn-view-vignette" class="btn-3d" style="margin-left: 20px; padding: 8px 16px; font-size: 0.85rem; border-color: rgba(52, 152, 219, 0.4); background: rgba(52, 152, 219, 0.15); border-radius: 20px; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;" title="Voir la vignette clinique">
-                        <i class="fas fa-file-alt" style="color: #3498db;"></i> Vignette
+                    <button id="btn-view-vignette" class="btn-ghost" title="Relire la vignette clinique">
+                        <i class="fas fa-file-lines" aria-hidden="true"></i> Vignette
                     </button>
                 </div>
 
-                <!-- Compact Vitals pour Mobile -->
-                <div id="compact-vitals" class="compact-vitals" onclick="window.toggleMobileMonitor()" role="button" tabindex="0" aria-label="Afficher le moniteur de signes vitaux" aria-expanded="false">
+                <!-- Constantes compactes (mobile) -->
+                <div id="compact-vitals" class="compact-vitals" onclick="window.toggleMobileMonitor()" role="button" tabindex="0" aria-label="Afficher le moniteur" aria-expanded="false">
                     <div class="vitals-summary" aria-live="polite">
-                        <span class="vitals-item"><i class="fas fa-heartbeat" aria-hidden="true"></i> FC: <span
-                                id="compact-hr">--</span></span>
-                        <span class="vitals-item"><i class="fas fa-tint" aria-hidden="true"></i> TA: <span id="compact-bp">--/--</span></span>
-                        <span class="vitals-item"><i class="fas fa-thermometer-half" aria-hidden="true"></i> T°: <span
-                                id="compact-temp">--</span></span>
+                        <span class="vitals-item vitals-item--hr">FC <b id="compact-hr">--</b></span>
+                        <span class="vitals-item">PA <b id="compact-bp">--/--</b></span>
+                        <span class="vitals-item">T° <b id="compact-temp">--</b></span>
                     </div>
                 </div>
-                <!-- Mobile Timer -->
                 <div id="mobile-timer-container" class="mobile-timer">
                     <div id="mobile-timer" class="timer-display">00:00</div>
                 </div>
 
-                <!-- Bouton Vue 3D (anciennement "Mode Immersif 3D") -->
-                <button id="immersive-mode-btn" class="immersive-mode-btn" aria-label="Activer la vue 3D Three.js" title="Vue 3D (E) — différent du mode ECOS dans les paramètres">
-                    <i class="fas fa-vr-cardboard"></i>
-                    <span class="immersive-btn-text">Vue 3D</span>
-                </button>
-
-                <!-- Lien Profil : progression accessible depuis le jeu -->
-                <a href="profile.html" id="profile-link-btn" aria-label="Voir mon profil et ma progression" title="Profil & progression"
-                   style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; margin-left:10px; border-radius:20px; text-decoration:none; font-size:0.85rem; color:#fff; background:rgba(155,89,182,0.15); border:1px solid rgba(155,89,182,0.4); transition:all .2s;">
-                    <i class="fas fa-user-graduate"></i>
-                </a>
+                <div class="top-actions">
+                    <button id="immersive-mode-btn" class="immersive-mode-btn" aria-label="Passer en vue 3D" title="Vue 3D (touche E)">
+                        <i class="fas fa-cube" aria-hidden="true"></i>
+                        <span class="immersive-btn-text">Vue 3D</span>
+                    </button>
+                    <a href="profile.html" id="profile-link-btn" class="btn-icon" aria-label="Mon profil et ma progression" title="Profil et progression">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                    </a>
+                </div>
             </header>
 
             <div class="content-scroll-area">
 
-                <!-- SECTION: IAO (Infirmier d'Accueil et d'Orientation) — LLM uniquement -->
+                <!-- IAO -->
                 <section id="section-iao" class="game-section" role="tabpanel" aria-labelledby="nav-iao">
-                    <h2 class="section-header">0. ACCUEIL IAO</h2>
-                    <div class="medical-card full-width" id="iao-card">
-                        <h3 class="card-title"><i class="fas fa-user-nurse"></i> Note d'accueil IAO</h3>
-                        <div id="iao-resume" class="iao-resume" style="background: rgba(0,242,254,0.05); border-left:3px solid rgba(0,242,254,0.35); padding:14px 16px; border-radius:8px; margin-bottom:16px; line-height:1.6; color:rgba(255,255,255,0.92); font-size:0.95rem;">
-                            Chargement...
+                    <h2 class="section-header">Accueil IAO</h2>
+                    <div class="sheet" id="iao-card">
+                        <div class="sheet-head">
+                            <h3 class="card-title">Fiche d'accueil infirmier</h3>
+                            <span class="sheet-note">Remplie à l'arrivée du patient</span>
                         </div>
-                        <div id="iao-mesures" class="iao-mesures" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;">
-                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-thermometer-half"></i> Température</span><b id="iao-temp">--</b></div>
-                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-tint"></i> Glycémie</span><b id="iao-gly">--</b></div>
-                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-weight"></i> Poids</span><b id="iao-poids">--</b></div>
-                            <div class="iao-mesure"><span class="iao-label"><i class="fas fa-ruler-vertical"></i> Taille</span><b id="iao-taille">--</b></div>
-                        </div>
-                        <p style="margin-top:12px; font-size:0.78rem; color:rgba(255,255,255,0.45);"><i class="fas fa-info-circle"></i> Mesures réalisées à l'accueil IAO. Le reste de l'interrogatoire et des examens se poursuit via la bulle de discussion.</p>
+                        <div id="iao-resume" class="iao-resume">Chargement…</div>
+                        <dl id="iao-mesures" class="iao-mesures">
+                            <div class="iao-mesure"><dt>Température</dt><dd id="iao-temp">--</dd></div>
+                            <div class="iao-mesure"><dt>Glycémie capillaire</dt><dd id="iao-gly">--</dd></div>
+                            <div class="iao-mesure"><dt>Poids</dt><dd id="iao-poids">--</dd></div>
+                            <div class="iao-mesure"><dt>Taille</dt><dd id="iao-taille">--</dd></div>
+                        </dl>
+                        <p class="sheet-footnote">La suite de l'interrogatoire et de l'examen se fait en consultation.</p>
                     </div>
                 </section>
 
-                <!-- SECTION: ANAMNÈSE -->
+                <!-- CONSULTATION / ANAMNÈSE -->
                 <section id="section-anamnese" class="game-section active mobile-active" role="tabpanel" aria-labelledby="nav-anamnese">
-                    <div
-                        style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
-                        <h2 class="section-header" style="margin:0;">1. INTERROGATOIRE</h2>
-                        <button id="btn-reveal-all" onclick="window.revealAllInterrogatoire()" aria-label="Afficher tout l'interrogatoire (coût: -48 secondes)"
-                            style="background:rgba(255,165,0,0.12); border:1px solid rgba(255,165,0,0.4); color:#ffb347; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:0.88rem; white-space:nowrap; transition:all 0.2s;">
-                            <i class="fas fa-eye"></i> Tout afficher <span
-                                style="opacity:0.75; font-size:0.82em;">(-48s)</span>
+                    <div class="section-head">
+                        <h2 class="section-header">Consultation</h2>
+                        <button id="btn-reveal-all" class="btn-ghost btn-ghost--warn" onclick="window.revealAllInterrogatoire()" aria-label="Afficher tout l'interrogatoire, coûte 48 secondes">
+                            <i class="fas fa-eye" aria-hidden="true"></i> Tout afficher <span class="btn-cost">−48 s</span>
                         </button>
                     </div>
 
-                    <div id="patient-verbatim-container" class="verbatim-container">
+                    <div id="patient-verbatim-container" class="verbatim-container"></div>
 
-                    </div>
-
-                    <!-- Integrated ECOS Chat Panel inside Anamnèse section -->
-                    <div id="dialogue-panel" class="ecos-chat-integrated" aria-hidden="false">
-                        <div class="communicator-header">
-                            <div class="communicator-status">
-                                <span class="status-pulse-dot"></span>
-                                <span class="communicator-title"><i class="fas fa-comments"></i> INTERROGATOIRE DU PATIENT</span>
-                            </div>
-                            <span class="communicator-badge"><i class="fas fa-satellite-dish"></i> DIRECT CLINIQUE</span>
+                    <div id="dialogue-panel" class="ecos-chat-integrated transcript" aria-hidden="false">
+                        <div class="communicator-header transcript-head">
+                            <span class="communicator-title">Entretien avec le patient</span>
+                            <span class="communicator-badge">Posez vos questions, annoncez vos gestes et vos prescriptions</span>
                         </div>
-                        <div id="dialogue-messages"></div>
-                        <form id="dialogue-form">
-                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Posez une question au patient (ex: Où avez-vous mal ?)..." />
-                            <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                        <div id="dialogue-messages" class="transcript-body" aria-live="polite"></div>
+                        <form id="dialogue-form" class="transcript-form">
+                            <label for="dialogue-input" class="visually-hidden">Votre question ou votre action</label>
+                            <input id="dialogue-input" type="text" autocomplete="off" placeholder="Votre question, ou ce que vous faites (ex. « J'ausculte le cœur »)" />
+                            <button type="submit"><span>Envoyer</span> <i class="fas fa-arrow-turn-down fa-rotate-90" aria-hidden="true"></i></button>
                         </form>
                     </div>
 
                     <div class="grid-layout">
-                        <!-- Terrain & Antécédents -->
                         <div class="medical-card" id="antecedents">
-                            <h3 class="card-title">Terrain & Antécédents</h3>
+                            <h3 class="card-title">Terrain et antécédents</h3>
                             <div class="card-content">
                                 <div class="sub-section" id="patient-details">
-                                    <h4>Détails Patient</h4>
-                                    <p><span class="label">Taille :</span> <span id="patient-taille-display"></span></p>
-                                    <p><span class="label">Poids :</span> <span id="patient-poids-display"></span></p>
-                                    <p><span class="label">Groupe sanguin :</span> <span
-                                            id="patient-groupe-display"></span>
-                                    </p>
+                                    <h4>Patient</h4>
+                                    <p><span class="label">Taille</span> <span id="patient-taille-display"></span></p>
+                                    <p><span class="label">Poids</span> <span id="patient-poids-display"></span></p>
+                                    <p><span class="label">Groupe sanguin</span> <span id="patient-groupe-display"></span></p>
                                 </div>
-
                                 <div class="sub-section" id="mode-de-vie">
                                     <h4>Mode de vie</h4>
                                     <ul>
-                                        <li>Tabac: <span id="tabac"></span></li>
-                                        <li>Alcool: <span id="alcool"></span></li>
-                                        <li>Métier: <span id="emploi"></span></li>
-                                        <li>Activité: <span id="activite-physique"></span></li>
-                                        <li>Alimentation: <span id="alimentation"></span></li>
+                                        <li>Tabac : <span id="tabac"></span></li>
+                                        <li>Alcool : <span id="alcool"></span></li>
+                                        <li>Métier : <span id="emploi"></span></li>
+                                        <li>Activité : <span id="activite-physique"></span></li>
+                                        <li>Alimentation : <span id="alimentation"></span></li>
                                     </ul>
                                 </div>
-
                                 <div class="sub-section">
                                     <h4>Antécédents</h4>
                                     <div id="antecedents-medicaux"></div>
                                     <div id="antecedents-chirurgicaux"></div>
                                     <div id="antecedents-familiaux"></div>
                                 </div>
-
                                 <div class="sub-section">
-                                    <h4>Allergies / Traitements</h4>
-                                    <p><span class="label">Allergies:</span> <span id="allergies-liste"></span></p>
-                                    <p><span class="label">Tt habituel:</span> <span id="traitements-liste"></span></p>
+                                    <h4>Allergies et traitements</h4>
+                                    <p><span class="label">Allergies</span> <span id="allergies-liste"></span></p>
+                                    <p><span class="label">Traitement habituel</span> <span id="traitements-liste"></span></p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Histoire de la Maladie -->
                         <div class="medical-card" id="histoire-maladie">
-                            <h3 class="card-title">Histoire de la Maladie</h3>
+                            <h3 class="card-title">Histoire de la maladie</h3>
                             <div class="card-content">
-                                <p><span class="label">Début :</span> <span id="debut-symptomes"></span></p>
-                                <p><span class="label">Contexte :</span> <span id="facteurs-declenchants"></span></p>
-                                <p><span class="label">Évolution :</span> <span id="evolution"></span></p>
-                                <p><span class="label">Douleur :</span> <span id="description-douleur"></span></p>
-                                <p><span class="label">Signes associés :</span> <span id="symptomes-associes"></span>
-                                </p>
-                                <div class="remarques-box">
-                                    <i class="fas fa-pen"></i> <span id="remarques"></span>
-                                </div>
+                                <p><span class="label">Début</span> <span id="debut-symptomes"></span></p>
+                                <p><span class="label">Contexte</span> <span id="facteurs-declenchants"></span></p>
+                                <p><span class="label">Évolution</span> <span id="evolution"></span></p>
+                                <p><span class="label">Douleur</span> <span id="description-douleur"></span></p>
+                                <p><span class="label">Signes associés</span> <span id="symptomes-associes"></span></p>
+                                <div class="remarques-box"><span id="remarques"></span></div>
                             </div>
                         </div>
 
-                        <!-- Hidden Patient Info Fields required by JS -->
-                        <div id="patient-info" style="display:none;">
+                        <div id="patient-info" hidden>
                             <span id="patient-nom"></span>
                             <span id="patient-prenom"></span>
                             <span id="patient-age"></span>
@@ -369,98 +341,76 @@
                     </div>
                 </section>
 
-                <!-- SECTION: EXAMEN PHYSIQUE -->
+                <!-- EXAMEN PHYSIQUE -->
                 <section id="section-examen-clinique" class="game-section" role="tabpanel" aria-labelledby="nav-examen-clinique">
-                    <h2 class="section-header">2. EXAMEN PHYSIQUE</h2>
-
+                    <h2 class="section-header">Examen clinique</h2>
                     <div class="grid-layout">
                         <div class="medical-card full-width" id="examen-clinique">
-                            <!-- Note: Vitals sont dans la sidebar. This contains only body exams. -->
                             <h3 class="card-title">Examen par appareil</h3>
-
-                            <!-- ECOS Geste Clinique Text input -->
-                            <div class="ecos-exam-input-row-2d" style="margin-bottom: 20px; display: flex; gap: 10px; background: rgba(52, 152, 219, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(52, 152, 219, 0.15);">
-                                <input id="ecos-exam-input-physique-2d" type="text" autocomplete="off" placeholder="Saisissez un geste d'examen clinique (ex: auscultation cardiaque)..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem;" />
-                                <button id="ecos-exam-submit-physique-2d" style="background: #3498db; border: none; color: white; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;"><i class="fas fa-search"></i> Réaliser</button>
+                            <div class="ecos-exam-input-row-2d action-row">
+                                <input id="ecos-exam-input-physique-2d" type="text" autocomplete="off" placeholder="Geste d'examen (ex. auscultation cardiaque)" aria-label="Geste d'examen clinique" />
+                                <button id="ecos-exam-submit-physique-2d" class="btn-primary"><i class="fas fa-stethoscope" aria-hidden="true"></i> Examiner</button>
                             </div>
-
-                            <div class="exam-details-grid">
-                                <!-- Dynamically populated by JS -->
-                            </div>
+                            <div class="exam-details-grid"></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- SECTION: EXAMENS COMPLÉMENTAIRES -->
+                <!-- EXAMENS COMPLÉMENTAIRES -->
                 <section id="section-examens" class="game-section" role="tabpanel" aria-labelledby="nav-examens">
-                    <h2 class="section-header">3. EXAMENS COMPLÉMENTAIRES</h2>
+                    <h2 class="section-header">Examens complémentaires</h2>
                     <div class="medical-card full-width" id="examens">
-                        
-                        <!-- ECOS Exam Prescription Text input -->
-                        <div class="ecos-exam-input-row-2d" style="margin-bottom: 20px; display: flex; gap: 10px; background: rgba(52, 152, 219, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(52, 152, 219, 0.15);">
-                            <input id="ecos-exam-input-comp-2d" type="text" autocomplete="off" placeholder="Saisissez un examen complémentaire à prescrire (ex: ECG, NFS)..." style="flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem;" />
-                            <button id="ecos-exam-submit-comp-2d" style="background: #3498db; border: none; color: white; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;"><i class="fas fa-search"></i> Demander</button>
+                        <div class="ecos-exam-input-row-2d action-row">
+                            <input id="ecos-exam-input-comp-2d" type="text" autocomplete="off" placeholder="Examen à demander (ex. ECG, NFS)" aria-label="Examen complémentaire à demander" />
+                            <button id="ecos-exam-submit-comp-2d" class="btn-primary"><i class="fas fa-vial" aria-hidden="true"></i> Demander</button>
                         </div>
-
-                        <div class="exam-categories">
-                            <!-- Populated by JS -->
-                        </div>
-                        <button id="validate-exams" class="action-btn" aria-label="Demander les examens sélectionnés (raccourci: touche 2)">Demander les examens sélectionnés</button>
+                        <div class="exam-categories"></div>
+                        <button id="validate-exams" class="action-btn" aria-label="Demander les examens cochés (touche 2)">Demander les examens cochés</button>
                         <div id="examens-results" class="exam-results-container"></div>
                     </div>
                 </section>
 
-                <!-- SECTION: INTERVENTION RAPIDE (Urgence) -->
+                <!-- GESTES D'URGENCE -->
                 <section id="section-intervention-rapide" class="game-section" role="tabpanel" aria-labelledby="nav-intervention-rapide">
-                    <h2 class="section-header" style="color: #ff4757;"><i class="fas fa-bolt"></i> INTERVENTION RAPIDE
-                    </h2>
+                    <h2 class="section-header section-header--urgent">Gestes d'urgence</h2>
                     <div class="grid-layout">
-                        <div class="medical-card full-width"
-                            style="border-top: 4px solid #ff4757; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.2);">
-                            <div id="urgence-description-banner"
-                                style="background: rgba(255, 71, 87, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: bold; font-size: 1.1em; color: #ff6b81; border-left: 5px solid #ff4757; transition: all 0.3s ease;">
-                                <!-- Description clinique dynamique de l'état d'urgence -->
-                            </div>
-                            <h3 class="card-title">Actions Immédiates Disponibles</h3>
-                            <div id="urgence-actions-container" class="treatments-grid"
-                                style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-                                <!-- Boutons d'action générés dynamiquement par game.js -->
-                            </div>
+                        <div class="medical-card full-width urgence-card">
+                            <div id="urgence-description-banner" class="urgence-banner"></div>
+                            <h3 class="card-title">Actions immédiates</h3>
+                            <div id="urgence-actions-container" class="treatments-grid urgence-actions"></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- SECTION: GRILLE ECOS -->
+                <!-- GRILLE ECOS -->
                 <section id="section-ecos-grille" class="game-section" role="tabpanel" aria-labelledby="nav-ecos-grille">
-                    <h2 class="section-header">Grille d'évaluation ECOS (R2C)</h2>
-                    <div class="medical-card full-width" style="background: rgba(10, 15, 30, 0.65); border: 1px solid rgba(0, 242, 254, 0.15);">
-                        <p style="color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-bottom: 20px;">
-                            Cette grille se remplit automatiquement en fonction de vos questions au patient et de vos demandes d'examens.
-                        </p>
-                        <div class="ecos-grille-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
-                            <div style="flex: 1; min-width: 300px;">
-                                <h3 class="card-title" style="margin-bottom: 12px; color: #00f2fe; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;"><i class="fas fa-stethoscope"></i> Démarche clinique</h3>
-                                <ul class="ecos-grille-list" id="ecos-grille-apt-2d" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+                    <h2 class="section-header">Grille d'évaluation</h2>
+                    <div class="sheet grille-sheet">
+                        <p class="sheet-intro">Les items se cochent au fil de l'entretien, selon vos questions, vos gestes et vos demandes d'examens.</p>
+                        <div class="ecos-grille-container">
+                            <div class="grille-col">
+                                <h3 class="card-title">Démarche clinique</h3>
+                                <ul class="ecos-grille-list" id="ecos-grille-apt-2d"></ul>
                             </div>
-                            <div style="flex: 1; min-width: 300px;">
-                                <h3 class="card-title" style="margin-bottom: 12px; color: #ffb347; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;"><i class="fas fa-comments"></i> Communication</h3>
-                                <ul class="ecos-grille-list" id="ecos-grille-comm-2d" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
+                            <div class="grille-col">
+                                <h3 class="card-title">Communication</h3>
+                                <ul class="ecos-grille-list" id="ecos-grille-comm-2d"></ul>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- SECTION: SYNTHÈSE & DÉCISION -->
+                <!-- SYNTHÈSE & DÉCISION -->
                 <section id="section-synthese" class="game-section" role="tabpanel" aria-labelledby="nav-synthese">
-                    <h2 class="section-header">4. SYNTHÈSE & DÉCISION</h2>
+                    <h2 class="section-header">Diagnostic et traitement</h2>
 
-                    <div class="grid-layout">
-                        <div class="medical-card" id="diagnostic">
-                            <h3 class="card-title">Diagnostic</h3>
+                    <div class="decision-layout">
+                        <div class="medical-card decision-step" id="diagnostic">
+                            <h3 class="card-title"><span class="step-num">1</span> Diagnostic retenu</h3>
                             <div class="form-group">
-                                <label for="diagnostic-select">Quelle est votre hypothèse principale ?</label>
-                                <select id="diagnostic-select" class="modern-select" aria-label="Sélectionner un diagnostic">
-                                    <option value="">Sélectionnez un diagnostic</option>
+                                <label for="diagnostic-select">Votre hypothèse principale</label>
+                                <select id="diagnostic-select" class="modern-select">
+                                    <option value="">Choisir un diagnostic</option>
                                 </select>
                             </div>
                             <p id="score" class="score-display"></p>
@@ -468,29 +418,20 @@
                             <p id="correctDiagnostic" class="hidden"></p>
                         </div>
 
-                        <div class="medical-card">
-                            <h3 class="card-title">Prescription & Prise en charge</h3>
+                        <div class="medical-card decision-step">
+                            <h3 class="card-title"><span class="step-num">2</span> Prise en charge</h3>
+                            <button id="btn-open-prescription" class="btn-outline" type="button">
+                                <i class="fas fa-prescription" aria-hidden="true"></i> Rédiger une ordonnance
+                            </button>
+                            <p class="decision-hint">Ou cochez directement les traitements :</p>
+                            <div id="availableTreatments" class="treatments-grid"></div>
+                            <div id="prescription-list" class="prescription-list"></div>
+                        </div>
 
-                            <!-- Bouton d'ouverture de la prescription modale -->
-                            <div style="margin-bottom:12px;">
-                                <button id="btn-open-prescription" class="action-btn" style="width:100%;" type="button">
-                                    <i class="fas fa-prescription-bottle-alt"></i> Prescription médicamenteuse
-                                </button>
-                            </div>
-
-                            <!-- Liste des traitements rapidement sélectionnables (legacy) -->
-                            <div id="availableTreatments" class="treatments-grid">
-                            </div>
-
-                            <!-- Liste des prescriptions en cours (depuis prescriptionManager) -->
-                            <div id="prescription-list" style="margin-top:8px;"></div>
-
-                            <div class="action-area">
-                                <button id="validate-traitement" class="validate-final-btn" aria-label="Valider le diagnostic et la prise en charge (raccourci: Entrée)">
-                                    <i class="fas fa-check-double"></i> VALIDER LE CAS
-                                    <kbd style="font-size:0.7em;opacity:0.6;margin-left:8px;font-family:monospace;">⏎</kbd>
-                                </button>
-                            </div>
+                        <div class="decision-submit">
+                            <button id="validate-traitement" class="validate-final-btn" aria-label="Valider le diagnostic et la prise en charge (Entrée)">
+                                Signer et valider le cas <kbd>Entrée</kbd>
+                            </button>
                             <p id="treatment-feedback" class="feedback-display"></p>
                         </div>
                     </div>
@@ -499,66 +440,55 @@
             </div>
         </main>
 
-        <!-- MOBILE TAB NAVIGATION -->
-        <nav class="mobile-tabs" role="tablist" aria-label="Navigation mobile entre sections">
+        <!-- Navigation mobile -->
+        <nav class="mobile-tabs" role="tablist" aria-label="Sections du dossier">
             <button class="mobile-tab-item" data-tab="iao" id="mobile-tab-iao" role="tab" aria-selected="false" aria-controls="section-iao">
-                <i class="fas fa-user-nurse" aria-hidden="true"></i>
-                <span>IAO</span>
+                <i class="fas fa-clipboard" aria-hidden="true"></i><span>IAO</span>
             </button>
             <button class="mobile-tab-item active" data-tab="anamnese" role="tab" aria-selected="true" aria-controls="section-anamnese">
-                <i class="fas fa-comments" aria-hidden="true"></i>
-                <span>Anamnèse</span>
+                <i class="fas fa-comment-medical" aria-hidden="true"></i><span>Entretien</span>
             </button>
             <button class="mobile-tab-item" data-tab="examen" role="tab" aria-selected="false" aria-controls="section-examen-clinique">
-                <i class="fas fa-stethoscope" aria-hidden="true"></i>
-                <span>Examen</span>
+                <i class="fas fa-stethoscope" aria-hidden="true"></i><span>Examen</span>
             </button>
             <button class="mobile-tab-item" data-tab="exams" role="tab" aria-selected="false" aria-controls="section-examens">
-                <i class="fas fa-flask" aria-hidden="true"></i>
-                <span>Exams</span>
+                <i class="fas fa-vial" aria-hidden="true"></i><span>Examens</span>
             </button>
             <button class="mobile-tab-item" data-tab="decision" role="tab" aria-selected="false" aria-controls="section-synthese">
-                <i class="fas fa-check-circle" aria-hidden="true"></i>
-                <span>Décision</span>
+                <i class="fas fa-file-signature" aria-hidden="true"></i><span>Décision</span>
             </button>
-            <button class="mobile-tab-item" id="mobile-tab-intervention" data-tab="intervention-rapide" role="tab" aria-selected="false" aria-controls="section-intervention-rapide"
-                style="color: #ff4757;">
-                <i class="fas fa-bolt" aria-hidden="true"></i>
-                <span>Intervention</span>
+            <button class="mobile-tab-item mobile-tab-item--urgent" id="mobile-tab-intervention" data-tab="intervention-rapide" role="tab" aria-selected="false" aria-controls="section-intervention-rapide">
+                <i class="fas fa-bolt" aria-hidden="true"></i><span>Urgence</span>
             </button>
         </nav>
     </div>
 
-    <!-- PRESCRIPTION MODAL -->
-    <div id="prescription-modal" class="correction-overlay" role="dialog" aria-modal="true" aria-label="Prescription médicamenteuse" aria-hidden="true" style="display:none;z-index:1800;">
-        <div style="max-width:600px;width:90%;background:linear-gradient(145deg,rgba(30,40,60,0.98),rgba(20,30,50,0.95));border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.08);max-height:85vh;overflow-y:auto;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                <h3 style="margin:0;color:#4facfe;"><i class="fas fa-prescription-bottle-alt"></i> Prescription</h3>
-                <button class="close-overlay" data-close-panel="prescription-modal" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:1.5rem;cursor:pointer;">&times;</button>
+    <!-- ORDONNANCE -->
+    <div id="prescription-modal" class="correction-overlay rx-overlay" role="dialog" aria-modal="true" aria-label="Ordonnance" aria-hidden="true" style="display:none;">
+        <div class="rx-sheet">
+            <div class="rx-head">
+                <div>
+                    <h3>Ordonnance</h3>
+                    <p class="rx-sub">Recherchez une molécule, choisissez la forme, la voie et la posologie.</p>
+                </div>
+                <button class="close-overlay rx-close" data-close-panel="prescription-modal" aria-label="Fermer l'ordonnance">&times;</button>
             </div>
-
-            <!-- Recherche -->
-            <div style="margin-bottom:16px;">
-                <input id="drug-search" type="text" placeholder="Rechercher un médicament..." style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.3);color:white;font-size:0.95rem;">
-                <div id="drug-results" style="margin-top:8px;"></div>
+            <div class="rx-search">
+                <label for="drug-search" class="visually-hidden">Rechercher un médicament</label>
+                <input id="drug-search" type="text" placeholder="Rechercher une molécule ou un nom commercial">
+                <div id="drug-results"></div>
             </div>
-
-            <!-- Configuration de la prescription -->
-            <div id="prescription-config" style="margin-bottom:16px;"></div>
-
-            <!-- Bouton perfusion rapide -->
-            <div style="margin-bottom:16px;">
-                <button id="add-infusion" class="secondary-btn" type="button" style="width:100%;font-size:0.9rem;">
-                    <i class="fas fa-tint"></i> Perfusion NaCl 0,9% (rapide)
-                </button>
-            </div>
+            <div id="prescription-config"></div>
+            <button id="add-infusion" class="btn-outline rx-infusion" type="button">
+                <i class="fas fa-droplet" aria-hidden="true"></i> Poser une perfusion de NaCl 0,9 %
+            </button>
         </div>
     </div>
 
-    <!-- MOBILE MONITOR OVERLAY -->
+    <!-- MONITEUR MOBILE -->
     <div id="mobile-monitor-overlay" class="mobile-monitor-overlay" role="dialog" aria-modal="true" aria-label="Moniteur patient" aria-hidden="true">
         <div class="overlay-header">
-            <h3>MONITEUR PATIENT</h3>
+            <h3>Moniteur</h3>
             <button class="close-overlay" onclick="window.toggleMobileMonitor()" aria-label="Fermer le moniteur">&times;</button>
         </div>
         <div class="overlay-content">
@@ -568,28 +498,28 @@
 
     <div id="fireworks-container"></div>
 
-    <!-- Correction Overlay -->
+    <!-- CORRECTION -->
     <div id="correction-overlay" class="correction-overlay" role="dialog" aria-modal="true" aria-label="Correction du cas clinique" aria-hidden="true">
         <div id="correction-modal" class="correction-modal" tabindex="-1">
             <h2 class="correction-title">Correction du cas</h2>
             <div id="correction-content"></div>
-            <button id="toggle-case-review" class="secondary-btn small" aria-label="Afficher ou masquer la revue du cas" style="font-size:0.78rem; padding:5px 10px; opacity:0.9; align-self:flex-start;">Revoir le cas</button>
+            <button id="toggle-case-review" class="btn-ghost small" aria-label="Afficher ou masquer la revue du cas">Revoir le cas</button>
             <div id="case-review" class="case-review"></div>
-            <div class="correction-actions" style="justify-content:space-between;">
-                <button id="correction-back" class="secondary-btn" aria-label="Retour à la liste des cas">Retour</button>
-                <button id="correction-next" class="primary-btn" aria-label="Passer au cas suivant">Cas Suivant</button>
+            <div class="correction-actions">
+                <button id="correction-back" class="secondary-btn" aria-label="Retour à la liste des cas">Retour aux cas</button>
+                <button id="correction-next" class="primary-btn" aria-label="Passer au cas suivant">Cas suivant</button>
             </div>
         </div>
     </div>
 
-    <!-- Image Overlay -->
+    <!-- IMAGERIE -->
     <div id="image-overlay" class="image-overlay" aria-hidden="true">
         <div id="image-modal" class="image-modal" role="dialog" aria-modal="true" aria-labelledby="image-modal-caption">
             <button id="image-modal-close" class="image-close" aria-label="Fermer l'image">&times;</button>
             <div class="image-zoom-controls">
-                <button onclick="zoomImage(0.2)" title="Zoomer"><i class="fas fa-search-plus"></i></button>
-                <button onclick="zoomImage(-0.2)" title="Dézoomer"><i class="fas fa-search-minus"></i></button>
-                <button onclick="zoomImage(-currentZoom + 1)" title="Réinitialiser"><i class="fas fa-undo"></i></button>
+                <button onclick="zoomImage(0.2)" title="Zoomer" aria-label="Zoomer"><i class="fas fa-magnifying-glass-plus"></i></button>
+                <button onclick="zoomImage(-0.2)" title="Dézoomer" aria-label="Dézoomer"><i class="fas fa-magnifying-glass-minus"></i></button>
+                <button onclick="zoomImage(-currentZoom + 1)" title="Taille réelle" aria-label="Revenir à la taille réelle"><i class="fas fa-rotate-left"></i></button>
             </div>
             <div class="image-scroll-container">
                 <img id="image-modal-img" src="" alt="">
@@ -598,8 +528,7 @@
         </div>
     </div>
 
-    <!-- Hidden Next Case Button for JS compatibility if needed, though we have one in correction modal -->
-    <button id="next-case" style="display:none;">Cas Suivant</button>
+    <button id="next-case" style="display:none;">Cas suivant</button>
 
     <!-- Socle audio + couches. L'ordre compte : audio-core.js définit
          window.MedGameSound, les couches s'y enregistrent, audio.js n'est

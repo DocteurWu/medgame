@@ -139,10 +139,10 @@ function showLockBlockedModal(lock, prereqNames) {
         <div class="lock-modal">
             <h3><i class="fas fa-lock"></i> Verrou sémiologique — par étapes</h3>
             <p>Pour débloquer <strong>${escapeHtml(label)}</strong>, terminez d'abord :</p>
-            <ol style="text-align:left; margin: 10px 0 16px 20px; line-height:1.6;">
+            <ol class="lock-howto">
                 ${prereqNames.map(n => `<li>${escapeHtml(n)}</li>`).join('')}
             </ol>
-            <p style="opacity:0.75; font-size:0.85rem;">Astuce : chaque défi réussi rapporte des points de démarche. Après 2 échecs, un indice s'affiche.</p>
+            <p class="lock-tip">Astuce : chaque défi réussi rapporte des points de démarche. Après 2 échecs, un indice s'affiche.</p>
             <div class="correction-actions">
                 <button class="primary-btn" id="lock-blocked-ok">Compris, je continue</button>
             </div>
@@ -273,10 +273,10 @@ function showLockChallenge(lockId) {
             const correction = lock.challenge.expected_keywords.join(', ');
             const errorEl = document.getElementById('lock-error');
             errorEl.innerHTML = `
-                <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
-                    <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
-                    <div style="color: white; margin-bottom: 10px;">${correction}</div>
-                    ${lock.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${lock.feedback_error}</div>` : ''}
+                <div class="correction-box">
+                    <strong>La bonne réponse</strong>
+                    <p>${correction}</p>
+                    ${lock.feedback_error ? `<p class="correction-hint"><strong>Pourquoi :</strong> ${lock.feedback_error}</p>` : ''}
                 </div>
             `;
             document.getElementById('lock-submit').style.display = 'none';
@@ -328,10 +328,10 @@ function showLockChallenge(lockId) {
             const correctionText = sortedCorrect.map(idx => lock.challenge.options[idx]).join(' + ');
             const errorEl = document.getElementById('lock-error');
             errorEl.innerHTML = `
-                <div class="correction-box" style="margin-top: 15px; padding: 15px; background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; border-radius: 8px; text-align: left;">
-                    <div style="color: #e74c3c; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-times-circle"></i> CORRECTION</div>
-                    <div style="color: white; margin-bottom: 10px;">${correctionText}</div>
-                    ${lock.feedback_error ? `<div style="color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;"><strong>Indice :</strong> ${lock.feedback_error}</div>` : ''}
+                <div class="correction-box">
+                    <strong>La bonne réponse</strong>
+                    <p>${correctionText}</p>
+                    ${lock.feedback_error ? `<p class="correction-hint"><strong>Pourquoi :</strong> ${lock.feedback_error}</p>` : ''}
                 </div>
             `;
             document.getElementById('lock-submit').style.display = 'none';

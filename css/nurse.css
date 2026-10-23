@@ -1,460 +1,150 @@
-/* ========================================================================
-   MEDGAME - ADVANCED NURSE NPC & IAO HUD OVERLAY
-   Theme: Medical Sci-Tech / Dark Glassmorphism / 60 FPS GPU Accelerated
-   ======================================================================== */
+/* ==========================================================================
+   Transmission de l'IAO — fiche de relève à l'entrée d'un cas (js/nurse.js)
+   Une note datée et signée posée sur le dossier, pas un personnage.
+   Feuille autonome : chargée aussi par ai-watch.html, elle porte ses propres
+   valeurs de repli.
+   ========================================================================== */
 
-:root {
-    --nurse-primary: #00f2fe;
-    --nurse-secondary: #0ea5e9;
-    --nurse-accent: #a855f7;
-    --nurse-warning: #f59e0b;
-    --nurse-danger: #ef4444;
-    --nurse-success: #10b981;
-    --nurse-glass-bg: rgba(6, 12, 28, 0.88);
-    --nurse-glass-border: rgba(0, 242, 254, 0.28);
-    --nurse-glow: rgba(0, 242, 254, 0.35);
-}
-
-/* --- Fullscreen Glassmorphism Overlay --- */
 .nurse-overlay {
     position: fixed;
     inset: 0;
-    z-index: 9999;
-    background: radial-gradient(circle at 50% 25%, rgba(0, 242, 254, 0.12) 0%, transparent 55%),
-                radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-                rgba(3, 7, 18, 0.92);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    z-index: 12000;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 24px;
+    background: rgba(22, 40, 48, 0.55);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
-    user-select: none;
-    -webkit-user-select: none;
-    perspective: 1000px;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+    font-family: var(--font-ui, 'Atkinson Hyperlegible', system-ui, sans-serif);
+    cursor: pointer;
 }
-
 .nurse-overlay.visible {
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.2s ease;
 }
 
-/* Modal Layout */
 .nurse-container {
+    width: min(520px, 100%);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    padding: 1.5rem;
-    max-width: 680px;
-    width: 100%;
-    text-align: center;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.npc-wrapper { display: none; }
+
+.transmission {
     position: relative;
-    transform: translateY(12px) scale(0.98);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.nurse-overlay.visible .nurse-container {
-    transform: translateY(0) scale(1);
-}
-
-/* --- SVG Character Container & Physics --- */
-.npc-wrapper {
-    position: relative;
-    width: 280px;
-    height: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.8))
-            drop-shadow(0 0 40px rgba(0, 242, 254, 0.15));
-    animation: gentleHover 4s ease-in-out infinite;
-    transform-origin: center bottom;
-}
-
-.nurse-character-svg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    will-change: transform;
-}
-
-/* Ambient ground shadow */
-.nurse-ground-shadow {
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 180px;
-    height: 18px;
-    background: radial-gradient(ellipse, rgba(0, 242, 254, 0.25) 0%, rgba(0,0,0,0.6) 50%, transparent 80%);
-    border-radius: 50%;
-    filter: blur(4px);
-    animation: shadowPulse 4s ease-in-out infinite;
-}
-
-/* --- SVG Keyframe Animatics --- */
-
-/* 1. Subtle Organic Breathing */
-.nurse-torso {
-    transform-origin: 200px 390px;
-    animation: chestBreathe 4.2s ease-in-out infinite;
-    will-change: transform;
-}
-
-.nurse-head-group {
-    transform-origin: 200px 210px;
-    animation: headSway 4.2s ease-in-out infinite;
-    will-change: transform;
-}
-
-@keyframes chestBreathe {
-    0%, 100% { transform: scale(1) translateY(0); }
-    50% { transform: scale(1.018, 1.025) translateY(-2px); }
-}
-
-@keyframes headSway {
-    0%, 100% { transform: rotate(0deg) translateY(0); }
-    50% { transform: rotate(0.4deg) translateY(-0.8px); }
-}
-
-@keyframes gentleHover {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-7px); }
-}
-
-@keyframes shadowPulse {
-    0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-    50% { transform: translateX(-50%) scale(0.9); opacity: 0.5; }
-}
-
-/* 2. Realistic Dual-Phase Eye Blinking */
-.eye-eyelid {
-    transform-origin: 0px 0px;
-    animation: naturalBlink 5.5s infinite;
-}
-
-@keyframes naturalBlink {
-    0%, 48%, 52%, 96%, 100% {
-        transform: scaleY(0);
-        opacity: 0;
-    }
-    50% {
-        transform: scaleY(1);
-        opacity: 1;
-    }
-    98% {
-        transform: scaleY(1);
-        opacity: 1;
-    }
-}
-
-/* 3. Articulated Speech / Phoneme Mouth Movement */
-.mouth-rest {
-    transition: opacity 0.15s ease;
-}
-
-.mouth-talking {
-    opacity: 0;
-    transform-origin: 200px 177px;
-}
-
-/* Activated via class 'is-speaking' on the SVG container */
-.npc-wrapper.is-speaking .mouth-rest {
-    opacity: 0;
-}
-
-.npc-wrapper.is-speaking .mouth-talking {
-    opacity: 1;
-    animation: speechVisemes 0.28s ease-in-out infinite alternate;
-}
-
-@keyframes speechVisemes {
-    0% {
-        transform: scale(1, 0.45);
-    }
-    50% {
-        transform: scale(1.15, 1.15);
-    }
-    100% {
-        transform: scale(0.9, 0.7);
-    }
-}
-
-/* 4. Expressions & Moods (Eyebrows & Eye tension) */
-.brow-left, .brow-right {
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform-origin: center;
-}
-
-.mood-urgent .brow-left { transform: translate(1px, -3px) rotate(10deg); }
-.mood-urgent .brow-right { transform: translate(-1px, -3px) rotate(-10deg); }
-.mood-reassuring .brow-left { transform: translate(0, -1.5px) rotate(-4deg); }
-.mood-reassuring .brow-right { transform: translate(0, -1.5px) rotate(4deg); }
-.mood-thinking .brow-left { transform: translate(0, -4px) rotate(-8deg); }
-.mood-thinking .brow-right { transform: translate(0, 1px) rotate(2deg); }
-
-/* Urgent clinical mode pulse & shake */
-.nurse-overlay.is-urgent {
-    --nurse-primary: #ef4444;
-    --nurse-glass-border: rgba(239, 68, 68, 0.4);
-    --nurse-glow: rgba(239, 68, 68, 0.35);
-}
-
-.nurse-overlay.is-urgent .speech-bubble {
-    border-color: rgba(239, 68, 68, 0.5);
-    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 35px rgba(239, 68, 68, 0.3);
-    animation: alertJitter 3s ease infinite;
-}
-
-@keyframes alertJitter {
-    0%, 100% { transform: scale(1); }
-    1% { transform: translate(-1px, 1px); }
-    2% { transform: translate(1px, -1px); }
-    3% { transform: translate(0, 0); }
-}
-
-/* 5. Stethoscope LED Pulse */
-.stetho-pulse {
-    animation: stethoBeat 1.8s ease-out infinite;
-    transform-origin: 200px 352px;
-}
-
-@keyframes stethoBeat {
-    0% { transform: scale(1); opacity: 0.9; }
-    40% { transform: scale(1.6); opacity: 0; }
-    100% { transform: scale(1.6); opacity: 0; }
-}
-
-/* 6. Tablet ECG Animation */
-.tablet-ecg-path {
-    stroke-dasharray: 120;
-    stroke-dashoffset: 240;
-    animation: ecgFlow 2.4s linear infinite;
-}
-
-@keyframes ecgFlow {
-    to { stroke-dashoffset: 0; }
-}
-
-/* --- Radio Lapel Microphone Cord & Activity --- */
-.radio-led {
-    animation: radioBlink 1.4s ease-in-out infinite;
-}
-
-@keyframes radioBlink {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; filter: drop-shadow(0 0 4px #00f2fe); }
-}
-
-/* --- HOSPITAL HUD TRANSMISSION SPEECH BUBBLE --- */
-.speech-bubble {
-    position: relative;
-    max-width: 540px;
-    width: 100%;
-    background: var(--nurse-glass-bg);
-    border: 1px solid var(--nurse-glass-border);
-    border-radius: 1.25rem;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7),
-                0 0 35px var(--nurse-glow),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    padding: 1.2rem 1.6rem 1.4rem 1.6rem;
-    backdrop-filter: blur(28px) saturate(190%);
-    -webkit-backdrop-filter: blur(28px) saturate(190%);
-    text-align: left;
+    background: #FFFFFF;
+    color: var(--ink, #17242C);
+    border-radius: 4px;
+    padding: 18px 22px 0;
+    box-shadow: 0 18px 48px rgba(16, 30, 38, 0.25), 0 2px 6px rgba(16, 30, 38, 0.12);
+    border-left: 6px solid var(--wall-deep, #BFD5CA);
+    transform: translateY(6px) rotate(-0.4deg);
+    transition: transform 0.25s ease-out;
     overflow: hidden;
 }
+.nurse-overlay.visible .transmission { transform: rotate(-0.4deg); }
 
-/* Top Neon Gradient Accent */
-.speech-bubble::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, transparent 5%, var(--nurse-primary) 30%, var(--nurse-accent) 70%, transparent 95%);
-}
-
-/* Walkie-Talkie Pointer Arrow */
-.speech-bubble::after {
-    content: '';
-    position: absolute;
-    top: -9px;
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    width: 16px;
-    height: 16px;
-    background: var(--nurse-glass-bg);
-    border-top: 1px solid var(--nurse-glass-border);
-    border-left: 1px solid var(--nurse-glass-border);
-}
-
-/* HUD Transmission Bar (Header) */
 .bubble-hud-header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    padding-bottom: 0.6rem;
-    margin-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    color: #94a3b8;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule, #D6DED9);
 }
-
-.hud-channel {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    color: #e2e8f0;
-}
-
+.hud-channel { display: inline-flex; align-items: center; gap: 8px; }
 .hud-status-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--nurse-primary);
-    box-shadow: 0 0 8px var(--nurse-primary);
-    animation: statusPulse 1.8s infinite;
+    background: var(--ok, #2A6B47);
 }
-
-@keyframes statusPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-/* Audio Waves animation when speaking */
-.hud-audio-bars {
-    display: flex;
-    align-items: flex-end;
-    gap: 2.5px;
-    height: 12px;
-}
-
-.hud-audio-bars span {
-    width: 2.5px;
-    height: 3px;
-    background: var(--nurse-primary);
-    border-radius: 1px;
-    transition: height 0.15s ease;
-}
-
-.npc-wrapper.is-speaking ~ .speech-bubble .hud-audio-bars span:nth-child(1) { animation: soundBar 0.35s ease infinite alternate 0.05s; }
-.npc-wrapper.is-speaking ~ .speech-bubble .hud-audio-bars span:nth-child(2) { animation: soundBar 0.42s ease infinite alternate 0.12s; }
-.npc-wrapper.is-speaking ~ .speech-bubble .hud-audio-bars span:nth-child(3) { animation: soundBar 0.32s ease infinite alternate 0.02s; }
-.npc-wrapper.is-speaking ~ .speech-bubble .hud-audio-bars span:nth-child(4) { animation: soundBar 0.48s ease infinite alternate 0.18s; }
-
-@keyframes soundBar {
-    0% { height: 3px; }
-    100% { height: 12px; }
-}
-
-/* Dialogue text styling */
-.bubble-text {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: #f8fafc;
-    font-weight: 400;
-}
-
-.bubble-text .patient-name {
+.hud-channel-text {
+    font-size: 0.9375rem;
     font-weight: 700;
-    color: var(--nurse-primary);
-    text-shadow: 0 0 14px var(--nurse-glow);
-    padding: 0 2px;
+    color: var(--ink, #17242C);
+}
+.transmission-time {
+    font-family: var(--font-num, 'Barlow Semi Condensed', sans-serif);
+    font-size: 1rem;
+    color: var(--ink-3, #78878E);
+    font-variant-numeric: tabular-nums;
 }
 
-.bubble-text .motif {
-    font-weight: 600;
-    color: #d8b4fe;
-    text-shadow: 0 0 12px rgba(216, 180, 254, 0.4);
-    padding: 0 2px;
+.bubble-text {
+    margin: 0 0 14px;
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--ink, #17242C);
 }
+.bubble-text .patient-name { font-weight: 700; }
+.bubble-text .motif { font-weight: 700; color: var(--scrub-ink, #123F55); }
 
-/* Auto-dismiss countdown bar */
+.transmission-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 0 16px;
+}
+.transmission-sign {
+    font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--ink-2, #4B5B63);
+}
+.transmission-take {
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 4px;
+    background: var(--scrub, #1C5A78);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.transmission-take:hover { background: var(--scrub-hover, #154961); }
+
 .nurse-progress-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3.5px;
-    background: rgba(255, 255, 255, 0.08);
+    height: 3px;
+    margin: 0 -22px;
+    background: var(--rule, #D6DED9);
 }
-
 .nurse-progress-bar {
     height: 100%;
     width: 100%;
-    background: linear-gradient(90deg, #10b981 0%, var(--nurse-primary) 50%, #a855f7 100%);
-    transform-origin: left;
-    animation: progressShrink var(--nurse-duration, 6000ms) linear forwards;
+    background: var(--ink-3, #78878E);
+    transform-origin: left center;
 }
-
-.nurse-overlay.is-urgent .nurse-progress-bar {
-    background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
-}
-
 @keyframes progressShrink {
     from { transform: scaleX(1); }
     to { transform: scaleX(0); }
 }
 
-/* Interactivity Hint / Action tag */
 .nurse-footer-actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 520px;
-    padding: 0 0.5rem;
+    margin: 0;
+    text-align: center;
 }
-
 .nurse-hint {
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 0.8rem;
-    letter-spacing: 0.03em;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-.nurse-skip-key {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    padding: 1px 6px;
-    font-family: monospace;
-    font-size: 0.72rem;
-    color: #cbd5e1;
-}
+/* Transmission urgente : bandeau rouge, sonnerie d'interphone */
+.nurse-overlay.is-urgent .transmission { border-left-color: var(--alert, #B32D24); }
+.nurse-overlay.is-urgent .hud-status-dot { background: var(--alert, #B32D24); animation: nurse-urgent 1s steps(1) infinite; }
+.nurse-overlay.is-urgent .hud-channel-text { color: var(--alert, #B32D24); }
+@keyframes nurse-urgent { 50% { opacity: 0.2; } }
 
-/* --- Mobile Responsive Rules --- */
-@media (max-width: 640px) {
-    .nurse-container {
-        padding: 0.8rem;
-        gap: 0.8rem;
-    }
-
-    .npc-wrapper {
-        width: 210px;
-        height: 260px;
-    }
-
-    .speech-bubble {
-        padding: 1rem 1.2rem;
-    }
-
-    .bubble-text {
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    .bubble-hud-header {
-        font-size: 0.68rem;
-    }
+@media (prefers-reduced-motion: reduce) {
+    .transmission, .nurse-overlay.visible .transmission { transform: none; transition: none; }
+    .nurse-progress-bar { animation: none !important; }
 }

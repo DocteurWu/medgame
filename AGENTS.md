@@ -636,6 +636,36 @@ patient. Ce n'est pas une variante, c'est la salle.
   calcule rien de clinique, il dessine ce que la partie sait déjà.
 
 
+## Direction artistique de game.html (thème clinique)
+
+L'interface 2D et le HUD 3D ont été refaits autour d'une idée : **le dossier du
+médecin dans un box de CHU**. Plus de néon cyan/violet, de verre dépoli,
+d'emojis ni de majuscules espacées.
+
+| Élément | Choix |
+|---|---|
+| Fond | `--paper` #F3F5F2 (drap), feuilles `--sheet` blanches, encre `--ink` #17242C |
+| Colonne gauche | `--wall` #D5E5DD, le vert d'eau des murs du service |
+| Actions | `--scrub` #1C5A78 (bleu blouse) ; signature finale en encre |
+| Moniteur | **seule surface sombre** : ECG vert, pléthysmographie cyan, PNI blanc, FR jaune, T° rose — les codes couleur des vrais scopes |
+| Typo | Atkinson Hyperlegible (UI, conçue pour la lisibilité) + Barlow Semi Condensed (chiffres du moniteur et du chrono) |
+
+Fichiers :
+- `css/game.css` — **réécrit**, chargé EN DERNIER par game.html, préfixé `body.clinic`. Il fait foi sur `immersive.css`/`ecos.css` pour la 2D et pour le HUD 3D.
+- `css/game-legacy.css` — l'ancien thème néon, gardé pour `admin.html` seulement.
+- `css/nurse.css` + `js/nurse.js` — l'infirmière SVG est remplacée par une **fiche de transmission** datée et signée (API `NurseIntro` inchangée).
+- `js/vitalSigns.js` — nouveau gabarit de moniteur : tracé fixe et **barre d'effacement qui balaie** (vitesse constante, c'est l'espacement des QRS qui traduit la FC), alarmes en inverse vidéo. Les ids historiques (`hr-value`, `bp-value`, `spo2-value`, `temp-value`, `heart-line-1`…) sont conservés.
+- Transcript d'entretien : lignes « Nom / parole » au lieu de bulles de messagerie ; le patient est nommé (« Mme Bennet ») via `speakerDisplayName()` de `js/utils.js`.
+- Plus aucun style en ligne dans les modales de jeu (décès, contre-indication, correction, quiz, urgences) : tout passe par des classes.
+
+**3D** — la salle suit l'heure du joueur (`ThreeLightingAgent.applyTimeOfDay`) :
+consultation de jour de 7 h à 21 h, garde de nuit sinon. Le jour **re-teinte
+les mêmes sources** (couleur + intensité), il n'en ajoute aucune : le compte de
+lumières de `test/room-materials.test.mjs` est inchangé et aucun shader n'est
+recompilé. La nuit reste la configuration d'origine (testée). Vue « salle » à
+hauteur d'yeux depuis le seuil du box ; le médecin attend près de son bureau.
+Sol PVC gris clair, plinthes, armoire et meuble évier en laqué clair.
+
 ## Déploiement
 - **Netlify** : headers dans `netlify.toml` **et** `_headers` (les deux doivent rester cohérents — des tests le vérifient)
 - **Docker** : `nginx.conf`. Attention : dans nginx, un `add_header` dans un `location` annule ceux hérités du `server`. Les en-têtes de sécurité sont factorisés dans `nginx-security.conf`, inclus dans chaque `location` qui pose un `Cache-Control`.

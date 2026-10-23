@@ -73,7 +73,7 @@ function renderUrgenceState() {
 
                 btn.innerHTML = `
                     <i class="fas ${icon}"></i>
-                    <span class="btn-text" style="flex:1;">${action.label}</span>
+                    <span class="btn-text">${action.label}</span>
                     <span class="time-badge">-${action.tempsExecutionSec}s</span>
                 `;
                 btn.onclick = () => executeUrgenceAction(action, btn);
@@ -108,23 +108,19 @@ function renderUrgenceState() {
         persistUrgenceSession(currentCase, currentUrgenceNode);
 
         setTimeout(() => {
-            let html = `<div style="text-align:center; padding: 20px;">`;
-            html += `<div style="font-size: 3rem; margin-bottom: 20px;">${currentUrgenceNode.success ? '<i class="fas fa-heart-pulse" style="color: #2ecc71; text-shadow: 0 0 20px rgba(46, 204, 113, 0.5);"></i>' : '<i class="fas fa-skull-crossbones" style="color: #ff4757; text-shadow: 0 0 20px rgba(255, 71, 87, 0.5);"></i>'}</div>`;
-            html += `<h2 style="font-family: var(--font-title); font-size: 2rem; color: ${currentUrgenceNode.success ? '#2ecc71' : '#ff4757'};">${currentUrgenceNode.success ? 'PATIENT SAUVÉ !' : 'ÉCHEC CRITIQUE'}</h2>`;
-            html += `<div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid rgba(255,255,255,0.1);">
-                        <p style="font-size: 1.1rem; line-height: 1.6; margin: 0;">${currentUrgenceNode.descriptionClinique}</p>
-                     </div>`;
+            const ok = !!currentUrgenceNode.success;
+            let html = `<div class="urg-outcome ${ok ? 'is-saved' : 'is-lost'}">`;
+            html += `<p class="urg-outcome-kicker">${ok ? 'Issue favorable' : 'Issue défavorable'}</p>`;
+            html += `<h2>${ok ? 'Le patient est stabilisé' : 'Le patient n\'a pas survécu'}</h2>`;
+            html += `<div class="urg-outcome-state"><p>${currentUrgenceNode.descriptionClinique}</p></div>`;
 
             if (currentUrgenceNode.xpReward > 0) {
-                html += `<div style="background: linear-gradient(90deg, rgba(0, 242, 254, 0.1), rgba(179, 136, 255, 0.1)); border: 1px solid var(--primary-color); padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <i class="fas fa-star" style="color: #ffb347;"></i>
-                            <span style="font-weight: 800; font-family: var(--font-title); letter-spacing: 1px;">+${currentUrgenceNode.xpReward} XP GAGNÉS</span>
-                         </div>`;
+                html += `<p class="corr-xp">XP gagnée : <strong>+${currentUrgenceNode.xpReward}</strong></p>`;
             }
 
             if (currentCase.correction) {
-                html += `<div style="text-align: left; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.95rem; opacity: 0.9;">
-                            <h3 style="color: var(--primary-color); font-size: 1rem; text-transform: uppercase; margin-bottom: 10px;">CORRECTION & PROTOCOLE</h3>
+                html += `<div class="urg-outcome-correction">
+                            <h3>Correction et protocole</h3>
                             ${currentCase.correction}
                          </div>`;
             }

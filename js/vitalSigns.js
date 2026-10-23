@@ -395,64 +395,45 @@ class VitalSignsMonitor {
     }
 
     template() {
+        // Moniteur de chevet : fond noir, code couleur des moniteurs réels
+        // (ECG vert, pléthysmographie cyan, PNI blanc, FR jaune). Le tracé est
+        // fixe et une barre d'effacement le balaie, comme sur un vrai scope.
+        // Les identifiants historiques (hr-value, bp-value, spo2-value,
+        // temp-value, heart-line-1, spo2-path-1, pulse-indicator…) sont
+        // conservés : d'autres modules les lisent.
         return (
-            '<div class="vm" style="position:relative; overflow:hidden;">'
-            + '<div class="vm-crt-overlay"></div>'
-            + '<div class="vm-header"><div style="color:#007bff;font-weight:700;text-shadow:0 0 5px rgba(0,123,255,0.5)">ECG</div><div style="color:#e0e0e0">HR: <span id="hr-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.heartRate + '</span> BPM</div></div>'
-            + '<div style="display:flex; gap:8px; align-items:stretch;">'
-            + '<div style="flex:1; min-width:0;">'
-            + '<div style="position:relative;height:' + this.layout.ecgH + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(0,123,255,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
-            + '<div class="vm-scanline"></div>'
-            + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
-            + '<defs><pattern id="vm-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 L0 0 0 20" fill="none" stroke="#007bff" stroke-width="0.5"/></pattern></defs>'
-            + '<rect width="100%" height="100%" fill="url(#vm-grid)"/>'
-            + '</svg>'
-            + '<svg viewBox="0 0 400 128" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
-            + '<defs><linearGradient id="vm-heartGradient" x1="0%" y1="0%" x2="100%" y2="0%">'
-            + '<stop offset="0%" stop-color="#007bff" stop-opacity="0"/><stop offset="10%" stop-color="#007bff" stop-opacity="0.8"/><stop offset="50%" stop-color="#007bff"/><stop offset="90%" stop-color="#007bff" stop-opacity="0.8"/><stop offset="100%" stop-color="#007bff" stop-opacity="0"/>'
-            + '</linearGradient></defs>'
-            + '<g id="heart-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
-            + '<path id="heart-line-1" class="vm-line-glow" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
-            + '<path id="heart-line-2" class="vm-line-glow" stroke="url(#vm-heartGradient)" stroke-width="2" fill="none" d=""/>'
-            + '</g>'
-            + '</svg>'
-            + '<div id="pulse-indicator" style="position:absolute;top:8px;right:8px;width:10px;height:10px;background:#dc3545;border-radius:50%;box-shadow:0 0 10px #dc3545;animation:pulse-dot calc(60s / var(--heart-rate,72)) infinite"></div>'
+            '<div class="vm" role="img" aria-label="Moniteur de surveillance">'
+            + '<div class="vm-row vm-row--ecg">'
+            +   '<div class="vm-wave">'
+            +     '<span class="vm-lead">II</span>'
+            +     '<svg viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true">'
+            +       '<g id="heart-group"><path id="heart-line-1" class="vm-trace vm-trace--ecg" d=""/><path id="heart-line-2" d="" style="display:none"/></g>'
+            +     '</svg>'
+            +     '<span class="vm-eraser"></span>'
+            +   '</div>'
+            +   '<div class="vm-num vm-num--ecg">'
+            +     '<span class="vm-num-label">FC <span id="pulse-indicator" class="vm-heart" aria-hidden="true">&#9829;</span></span>'
+            +     '<span id="hr-value" class="vm-num-value">' + this.props.heartRate + '</span>'
+            +     '<span class="vm-num-unit">bpm</span>'
+            +   '</div>'
             + '</div>'
-            + '<div style="margin-top:8px">'
-            + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
-            + '<div id="spo2-label" style="color:#17a2b8;font-weight:700;text-shadow:0 0 5px rgba(23,162,184,0.5)">SpO₂</div>'
-            + '<div id="spo2-value" class="vm-value-pulse" style="color:#fff;text-shadow:0 0 5px rgba(255,255,255,0.5)">' + this.props.spo2 + '%</div>'
+            + '<div class="vm-row vm-row--spo2">'
+            +   '<div class="vm-wave">'
+            +     '<span class="vm-lead">Pleth</span>'
+            +     '<svg viewBox="0 0 400 64" preserveAspectRatio="none" aria-hidden="true">'
+            +       '<g id="spo2-group"><path id="spo2-path-1" class="vm-trace vm-trace--spo2" d=""/><path id="spo2-path-2" d="" style="display:none"/></g>'
+            +     '</svg>'
+            +     '<span class="vm-eraser"></span>'
+            +   '</div>'
+            +   '<div class="vm-num vm-num--spo2">'
+            +     '<span id="spo2-label" class="vm-num-label">SpO&#8322;</span>'
+            +     '<span id="spo2-value" class="vm-num-value">' + this.props.spo2 + '%</span>'
+            +   '</div>'
             + '</div>'
-            + '<div style="position:relative;height:' + this.layout.spo2H + 'px;background:rgba(0,10,20,0.5);border-radius:8px;overflow:hidden;border:1px solid rgba(23,162,184,0.2);box-shadow:inset 0 0 20px rgba(0,0,0,0.5)">'
-            + '<div class="vm-scanline" style="animation-delay: 1s;"></div>'
-            + '<svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.1">'
-            + '<defs><pattern id="vm-spo2-grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M15 0 L0 0 0 15" fill="none" stroke="#17a2b8" stroke-width="0.3"/></pattern></defs>'
-            + '<rect width="100%" height="100%" fill="url(#vm-spo2-grid)"/>'
-            + '</svg>'
-            + '<svg viewBox="0 0 400 64" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%">'
-            + '<defs><linearGradient id="vm-spo2Gradient" x1="0%" y1="0%" x2="100%" y2="0%">'
-            + '<stop offset="0%" stop-color="#17a2b8" stop-opacity="0"/><stop offset="10%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="50%" stop-color="#17a2b8"/><stop offset="90%" stop-color="#17a2b8" stop-opacity="0.8"/><stop offset="100%" stop-color="#17a2b8" stop-opacity="0"/>'
-            + '</linearGradient></defs>'
-            + '<g id="spo2-group" style="animation:ecg-scroll var(--ecg-speed,4s) linear infinite;will-change:transform">'
-            + '<path id="spo2-path-1" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
-            + '<path id="spo2-path-2" class="vm-line-glow" stroke="url(#vm-spo2Gradient)" stroke-width="2" fill="none" d=""/>'
-            + '</g>'
-            + '</svg>'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '<div style="display:flex; flex-direction:column; gap:8px; width:80px; flex-shrink:0;">'
-            + '<div class="vm-card" style="flex:1; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2); display:flex; flex-direction:column; justify-content:center; padding:6px;">'
-            + '<div style="color:#6c757d;font-size:10px;margin-bottom:2px;text-align:center;">TENSION</div>'
-            + '<div id="bp-value" style="color:#fff;font-weight:700;font-size:13px;text-align:center;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.systolic + '/' + this.props.diastolic + '</div>'
-            + '<div style="color:#007bff;font-size:9px;text-align:center;">mmHg</div>'
-            + '</div>'
-            + '<div class="vm-card" style="flex:1; border:1px solid rgba(255,255,255,0.1); box-shadow:0 0 10px rgba(0,0,0,0.2); display:flex; flex-direction:column; justify-content:center; padding:6px;">'
-            + '<div style="color:#6c757d;font-size:10px;margin-bottom:2px;text-align:center;">TEMP</div>'
-            + '<div id="temp-value" style="color:#fff;font-weight:700;font-size:13px;text-align:center;text-shadow:0 0 5px rgba(255,255,255,0.3)">' + this.props.temperature.toFixed(1) + '°C</div>'
-            + '<div style="color:#007bff;font-size:9px;text-align:center;"></div>'
-            + '</div>'
-            + '</div>'
+            + '<div class="vm-row vm-row--params">'
+            +   '<div class="vm-param vm-param--nibp"><span class="vm-num-label">PNI <small>mmHg</small></span><span id="bp-value" class="vm-param-value">' + this.props.systolic + '/' + this.props.diastolic + '</span><span id="map-value" class="vm-param-sub">(' + Math.round((this.props.systolic + 2 * this.props.diastolic) / 3) + ')</span></div>'
+            +   '<div class="vm-param vm-param--rr"><span class="vm-num-label">FR</span><span id="rr-value" class="vm-param-value">' + Math.round(this.props.respiratoryRate || 16) + '</span></div>'
+            +   '<div class="vm-param vm-param--temp"><span class="vm-num-label">T° <small>°C</small></span><span id="temp-value" class="vm-param-value">' + this.props.temperature.toFixed(1) + '</span></div>'
             + '</div>'
             + '</div>'
         );
@@ -466,7 +447,9 @@ class VitalSignsMonitor {
         const hrEl = document.getElementById('hr-value'); if (hrEl) hrEl.textContent = this.props.heartRate;
         const bpEl = document.getElementById('bp-value'); if (bpEl) bpEl.textContent = this.props.systolic + '/' + this.props.diastolic;
         const spo2El = document.getElementById('spo2-value'); if (spo2El) spo2El.textContent = this.props.spo2 + '%';
-        const tempEl = document.getElementById('temp-value'); if (tempEl) tempEl.textContent = this.props.temperature.toFixed(1) + '°C';
+        const tempEl = document.getElementById('temp-value'); if (tempEl) tempEl.textContent = this.props.temperature.toFixed(1);
+        const rrEl = document.getElementById('rr-value'); if (rrEl && this.props.respiratoryRate) rrEl.textContent = Math.round(this.props.respiratoryRate);
+        const mapEl = document.getElementById('map-value'); if (mapEl) mapEl.textContent = '(' + Math.round((this.props.systolic + 2 * this.props.diastolic) / 3) + ')';
 
         const compactHr = document.getElementById('compact-hr');
         const compactBp = document.getElementById('compact-bp');
@@ -477,45 +460,76 @@ class VitalSignsMonitor {
 
         document.documentElement.style.setProperty('--heart-rate', this.props.heartRate);
         const spo2Label = document.getElementById('spo2-label'); const spo2Value = document.getElementById('spo2-value'); const low = this.props.spo2 <= 92;
-        if (spo2Label) { spo2Label.style.color = low ? '#dc3545' : '#17a2b8'; }
-        if (spo2Value) { spo2Value.style.color = low ? '#dc3545' : '#333'; }
+        if (this.root) {
+            const vm = this.root.querySelector('.vm');
+            if (vm) {
+                // Alarmes visuelles du moniteur : la valeur clignote sur fond rouge,
+                // comme une alarme de priorité haute.
+                vm.classList.toggle('alarm-spo2', low);
+                vm.classList.toggle('alarm-hr', this.props.heartRate > 130 || this.props.heartRate < 45);
+                vm.classList.toggle('alarm-bp', this.props.systolic < 90 || this.props.systolic > 180);
+            }
+        }
+        if (spo2Label) spo2Label.removeAttribute('style');
+        if (spo2Value) spo2Value.removeAttribute('style');
 
         updatePatientAvatar(this.props, window.PAIN_LEVEL || 0);
     }
 
     startAnimations() {
-        const pulse = document.getElementById('pulse-indicator'); const hr = this.props.heartRate; const bpm = 60 / hr; if (pulse) pulse.style.animationDuration = bpm + 's';
-
-        const l1 = document.getElementById('heart-line-1'); const l2 = document.getElementById('heart-line-2'); const amp = Math.min(25 + (hr - 60) * 0.3, 40); const path = this.generateECGPath(amp);
-        if (l1) l1.setAttribute('d', path); if (l2) { l2.setAttribute('d', path); l2.setAttribute('transform', 'translate(400 0)'); }
-
-        const s1 = document.getElementById('spo2-path-1'); const s2 = document.getElementById('spo2-path-2'); const sPath = this.generateSPO2Path(15);
-        if (s1) s1.setAttribute('d', sPath); if (s2) { s2.setAttribute('d', sPath); s2.setAttribute('transform', 'translate(400 0)'); }
-
-        const grp = document.getElementById('heart-group');
-        const sGrp = document.getElementById('spo2-group');
-        const speed = 6 - ((hr - 60) * 0.04); const dur = Math.max(2.5, Math.min(7, speed));
-        document.documentElement.style.setProperty('--ecg-speed', dur + 's');
-        if (grp) grp.style.animationDuration = dur + 's';
-        if (sGrp) sGrp.style.animationDuration = dur + 's';
+        const hr = Math.max(20, Math.min(220, Number(this.props.heartRate) || 72));
+        // Vitesse de balayage fixe (comme un scope à 25 mm/s) : c'est
+        // l'ESPACEMENT des complexes qui traduit la fréquence, pas la vitesse.
+        const SWEEP_S = 5;
+        const beats = Math.max(1, (hr * SWEEP_S) / 60);
+        const l1 = document.getElementById('heart-line-1');
+        if (l1) l1.setAttribute('d', this.generateECGPath(30, beats));
+        const s1 = document.getElementById('spo2-path-1');
+        if (s1) s1.setAttribute('d', this.generateSPO2Path(18, beats));
+        const pulse = document.getElementById('pulse-indicator');
+        if (pulse) pulse.style.animationDuration = (60 / hr) + 's';
+        document.documentElement.style.setProperty('--vm-sweep', SWEEP_S + 's');
+        document.documentElement.style.setProperty('--ecg-speed', SWEEP_S + 's');
     }
 
-    generateSPO2Path(amp) {
-        const baseY = 40, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
-        for (let i = 0; i < beats; i++) {
-            const x = i * beatWidth;
-            p += ` L ${x + 5},${baseY}`;
-            p += ` C ${x + 15},${baseY} ${x + 20},${baseY - amp} ${x + 25},${baseY - amp}`;
-            p += ` C ${x + 35},${baseY - amp} ${x + 40},${baseY - amp * 0.4} ${x + 45},${baseY - amp * 0.5}`;
-            p += ` C ${x + 50},${baseY - amp * 0.6} ${x + 55},${baseY} ${x + 65},${baseY}`;
-            p += ` L ${x + beatWidth},${baseY}`;
+    /** Courbe de pléthysmographie : montée raide, onde dicrote, sur 400 unités. */
+    generateSPO2Path(amp, beats = 6) {
+        const W = 400, baseY = 52, bw = W / beats;
+        let p = 'M0,' + baseY;
+        for (let i = 0; i < Math.ceil(beats) + 1; i++) {
+            const x = i * bw;
+            if (x > W) break;
+            const k = bw / 70;
+            p += ` L ${(x + 4 * k).toFixed(1)},${baseY}`;
+            p += ` C ${(x + 10 * k).toFixed(1)},${baseY} ${(x + 14 * k).toFixed(1)},${baseY - amp} ${(x + 20 * k).toFixed(1)},${baseY - amp}`;
+            p += ` C ${(x + 28 * k).toFixed(1)},${baseY - amp} ${(x + 32 * k).toFixed(1)},${(baseY - amp * 0.45).toFixed(1)} ${(x + 37 * k).toFixed(1)},${(baseY - amp * 0.5).toFixed(1)}`;
+            p += ` C ${(x + 42 * k).toFixed(1)},${(baseY - amp * 0.55).toFixed(1)} ${(x + 50 * k).toFixed(1)},${baseY} ${(x + 62 * k).toFixed(1)},${baseY}`;
         }
         return p;
     }
 
-    generateECGPath(amp) {
-        const baseY = 64, beatWidth = 70, beats = 6; let p = 'M0,' + baseY;
-        for (let i = 0; i < beats; i++) { const x = i * beatWidth; p += ' L' + (x + 5) + ',' + baseY; p += ' Q' + (x + 10) + ',' + (baseY - amp * 0.25) + ' ' + (x + 15) + ',' + baseY; p += ' L' + (x + 22) + ',' + (baseY + amp * 0.25); p += ' L' + (x + 30) + ',' + (baseY - amp); p += ' L' + (x + 38) + ',' + (baseY + amp * 0.5); p += ' L' + (x + 48) + ',' + baseY; p += ' Q' + (x + 55) + ',' + (baseY - amp * 0.35) + ' ' + (x + 62) + ',' + baseY; p += ' L' + (x + beatWidth) + ',' + baseY; }
+    /** Dérivation II : onde P, QRS fin, onde T, ligne isoélectrique. */
+    generateECGPath(amp, beats = 6) {
+        const W = 400, baseY = 62, bw = W / beats;
+        // Les complexes gardent une largeur physiologique fixe ; seul
+        // l'intervalle R-R change avec la fréquence.
+        const c = Math.min(1, bw / 70);
+        let p = 'M0,' + baseY;
+        for (let i = 0; i < Math.ceil(beats) + 1; i++) {
+            const x = i * bw + 6;
+            if (x > W) break;
+            const f = (v) => (x + v * c).toFixed(1);
+            p += ` L${f(0)},${baseY}`;
+            p += ` Q${f(5)},${(baseY - amp * 0.18).toFixed(1)} ${f(10)},${baseY}`;   // P
+            p += ` L${f(16)},${baseY}`;
+            p += ` L${f(18)},${(baseY + amp * 0.12).toFixed(1)}`;                   // Q
+            p += ` L${f(21)},${(baseY - amp).toFixed(1)}`;                          // R
+            p += ` L${f(24)},${(baseY + amp * 0.3).toFixed(1)}`;                    // S
+            p += ` L${f(27)},${baseY}`;
+            p += ` L${f(33)},${baseY}`;
+            p += ` Q${f(41)},${(baseY - amp * 0.32).toFixed(1)} ${f(49)},${baseY}`;  // T
+        }
+        p += ` L${W},${baseY}`;
         return p;
     }
 

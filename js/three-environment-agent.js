@@ -919,7 +919,7 @@ enhanceRoom() {
 
         const woodCasing = new THREE.Mesh(
             new THREE.BoxGeometry(1.6, 2.9, 0.62),
-            new THREE.MeshStandardMaterial({ color: '#334155', roughness: 0.4 })
+            new THREE.MeshStandardMaterial({ color: '#dfe4e1', roughness: 0.55 }) // armoire laquée claire, comme le mobilier hospitalier
         );
         woodCasing.position.set(0, 1.45, 0);
         woodCasing.castShadow = true;
@@ -966,7 +966,7 @@ enhanceRoom() {
         const shelfGeo = new THREE.BoxGeometry(1.48, 0.03, 0.52);
         const shelfMat = new THREE.MeshStandardMaterial({ color: '#cbd5e1', transparent: true, opacity: 0.7 });
 
-        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#ec4899', '#f8fafc'];
+        const colors = ['#f4f6f5', '#f4f6f5', '#e8eef3', '#7aa6c8', '#c96b5f', '#8fb79a'];
 
         for (let h = 0.55; h < 2.5; h += 0.55) {
             const shelf = new THREE.Mesh(shelfGeo, shelfMat);

@@ -447,25 +447,27 @@
                     if (result.narrative && result.dialogue) {
                         const safeNarr = this._safeMarkdown(result.narrative);
                         const safeDial = this._safeMarkdown(result.dialogue);
-                        displayHTML = `<em>(${safeNarr})</em><br>« ${safeDial} »`;
+                        displayHTML = `<span class="clinical-stage-direction">${safeNarr}</span>${safeDial}`;
                         rawTextForHistory = `*(${result.narrative})* "${result.dialogue}"`;
                     } else if (result.narrative) {
                         const safeNarr = this._safeMarkdown(result.narrative);
-                        displayHTML = `<em>${safeNarr}</em>`;
+                        displayHTML = `<span class="clinical-stage-direction">${safeNarr}</span>`;
                         rawTextForHistory = `*${result.narrative}*`;
                         
                         // Modifier l'étiquette pour "Maître du Jeu" s'il n'y a pas de dialogue direct
-                        const labelEl = loading.parentNode?.querySelector('strong');
-                        if (labelEl) labelEl.textContent = "Maître du Jeu : ";
+                        const labelEl = loading.parentNode?.querySelector('.ecos-msg-speaker');
+                        if (labelEl) labelEl.textContent = "Observation";
+                        loading.parentNode?.classList.replace('from-patient', 'from-system');
                     } else if (result.dialogue) {
                         const safeDial = this._safeMarkdown(result.dialogue);
-                        displayHTML = `« ${safeDial} »`;
+                        displayHTML = safeDial;
                         rawTextForHistory = `"${result.dialogue}"`;
                     } else {
-                        displayHTML = `<em>Le patient ne réagit pas.</em>`;
+                        displayHTML = `<span class="clinical-stage-direction">Le patient ne réagit pas.</span>`;
                         rawTextForHistory = `Le patient ne réagit pas.`;
-                        const labelEl = loading.parentNode?.querySelector('strong');
-                        if (labelEl) labelEl.textContent = "Maître du Jeu : ";
+                        const labelEl = loading.parentNode?.querySelector('.ecos-msg-speaker');
+                        if (labelEl) labelEl.textContent = "Observation";
+                        loading.parentNode?.classList.replace('from-patient', 'from-system');
                     }
 
                     loading.innerHTML = displayHTML;
@@ -494,7 +496,7 @@
                     loading.removeAttribute('data-is-typing');
                     loading.innerHTML = this._safeMarkdown(errorAnswer);
                     loading.classList.add('answer-fade-in');
-                    loading.style.borderLeft = '3px solid #ff4757';
+                    { const row = loading.closest('.dialogue-message'); if (row) { row.classList.add('is-error'); row.classList.replace('from-patient', 'from-system'); const lab = row.querySelector('.ecos-msg-speaker'); if (lab) lab.textContent = 'Système'; } }
                     this.messages.push({ role: 'assistant', content: errorAnswer });
                 }
             } else if (this._llm) {
@@ -561,7 +563,7 @@
                     loading.removeAttribute('data-is-typing');
                     loading.innerHTML = this._safeMarkdown(errorAnswer);
                     loading.classList.add('answer-fade-in');
-                    loading.style.borderLeft = '3px solid #ff4757';
+                    { const row = loading.closest('.dialogue-message'); if (row) { row.classList.add('is-error'); row.classList.replace('from-patient', 'from-system'); const lab = row.querySelector('.ecos-msg-speaker'); if (lab) lab.textContent = 'Système'; } }
                     this.messages.push({ role: 'assistant', content: errorAnswer });
                 }
             } else {
@@ -570,7 +572,7 @@
                 loading.removeAttribute('data-is-typing');
                 loading.innerHTML = this._safeMarkdown(errorAnswer);
                 loading.classList.add('answer-fade-in');
-                loading.style.borderLeft = '3px solid #ff4757';
+                { const row = loading.closest('.dialogue-message'); if (row) { row.classList.add('is-error'); row.classList.replace('from-patient', 'from-system'); const lab = row.querySelector('.ecos-msg-speaker'); if (lab) lab.textContent = 'Système'; } }
                 this.messages.push({ role: 'assistant', content: errorAnswer });
             }
 
@@ -589,16 +591,16 @@
             const root = document.getElementById('dialogue-messages');
             if (!root) return document.createTextNode('');
             const row = document.createElement('div');
-            row.className = `dialogue-message ${speaker === 'Vous' ? 'from-user' : 'from-patient'}`;
-            const isUser = speaker === 'Vous';
-            const icon = isUser ? '<i class="fas fa-user-md"></i>' : '<i class="fas fa-user-injured"></i>';
-            const speakerLabel = isUser ? 'Médecin' : (speaker || 'Patient');
+            const roleClass = (typeof speakerRoleClass === 'function') ? speakerRoleClass(speaker) : (speaker === 'Vous' ? 'from-user' : 'from-patient');
+            row.className = `dialogue-message ${roleClass}`;
+            const isUser = roleClass === 'from-user';
+            const speakerLabel = (typeof speakerDisplayName === 'function') ? speakerDisplayName(speaker) : (isUser ? 'Vous' : (speaker || 'Patient'));
             const label = document.createElement('span');
             label.className = 'ecos-msg-speaker';
-            label.innerHTML = `${icon} ${speakerLabel}`;
+            label.textContent = speakerLabel;
             const body = document.createElement('span');
             body.className = 'ecos-msg-text';
-            const formatted = isUser ? this._safeMarkdown(text) : this._safeMarkdown(text).replace(/\(([^)]+)\)/g, '<div class="clinical-stage-direction"><i class="fas fa-notes-medical"></i> <em>$1</em></div>');
+            const formatted = isUser ? this._safeMarkdown(text) : this._safeMarkdown(text).replace(/\(([^)]+)\)/g, '<span class="clinical-stage-direction">$1</span>');
             body.innerHTML = formatted;
             row.append(label, body);
             root.appendChild(row);

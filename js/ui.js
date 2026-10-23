@@ -101,17 +101,17 @@ function showCorrectionModal(text) {
     const corrImgSrc = c ? String(c.correctionImage || '') : '';
     if (corrImgSrc) {
         const imgSrc = escapeHtml(corrImgSrc);
-        finalHtml += `<div style="text-align: center; margin-top: 20px;" data-correction-img="${imgSrc}">
-                    <img src="${imgSrc}" style="max-width: 100%; max-height: 400px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); border: 2px solid var(--glass-border); cursor: pointer;">
+        finalHtml += `<div class="correction-figure" data-correction-img="${imgSrc}">
+                    <img src="${imgSrc}" alt="Illustration de la correction">
                 </div>`;
     }
 
     if (c && c.redacteur) {
-        finalHtml += `<div style="font-size: 0.8em; color: #888; text-align: right; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; font-style: italic;">Merci à ${escapeHtml(c.redacteur)} pour avoir rédigé ce cas !</div>`;
+        finalHtml += `<p class="correction-credit">Cas rédigé par ${escapeHtml(c.redacteur)}.</p>`;
     }
 
     if (c && c.id) {
-        finalHtml += `<div style="font-size: 0.7em; color: rgba(58, 52, 52, 0.2); text-align: right; margin-top: 5px;">ID: ${escapeHtml(c.id)}</div>`;
+        finalHtml += `<p class="correction-id">${escapeHtml(c.id)}</p>`;
     }
 
     contentEl.innerHTML = finalHtml;
@@ -225,7 +225,7 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
                 element.innerHTML = placeholder;
             }
         } else {
-            element.innerHTML = `<span style="color: rgba(255,255,255,0.25); font-style: italic; font-size: 0.82rem;"><i class="fas fa-keyboard"></i> À demander par chat...</span>`;
+            element.innerHTML = `<span class="muted-line">À demander au patient</span>`;
         }
         return;
     }
@@ -245,7 +245,7 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
     element.innerHTML = '';
     const btn = document.createElement('button');
     btn.className = 'btn-question primary-btn';
-    btn.innerHTML = `<i class="fas fa-question-circle"></i> ${questionText} <span style="font-size:0.8em; opacity:0.8; margin-left:5px;">(-5s)</span>`;
+    btn.innerHTML = `<i class="fas fa-question-circle"></i> ${questionText} <span class="btn-cost">−5 s</span>`;
     btn.style.margin = '5px 0';
     btn.style.width = '100%';
     btn.style.textAlign = 'left';
@@ -281,9 +281,9 @@ function displayQuestionBtn(element, questionText, value, path, isHtml = false) 
             if (typeof MedGameAudio !== 'undefined') MedGameAudio.play('reveal');
             if (isHtml) {
                 const safeValue = value.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                element.innerHTML = `<div class="answer-fade-in unlocked-data" style="text-align: left; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; margin: 5px 0;">${safeValue}</div>`;
+                element.innerHTML = `<div class="answer-fade-in unlocked-data revealed-block">${safeValue}</div>`;
             } else {
-                element.innerHTML = `<div class="answer-fade-in unlocked-data" style="text-align: left; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 8px; margin: 5px 0;">${escapeHtml(value ?? '')}</div>`;
+                element.innerHTML = `<div class="answer-fade-in unlocked-data revealed-block">${escapeHtml(value ?? '')}</div>`;
             }
         }, 500);
     };

@@ -87,9 +87,11 @@ export function makeFloorTextureSalle() {
     return cache('salle:floor', () => {
         const [c, ctx] = makeCanvas(512, 512);
         const g = ctx.createLinearGradient(0, 0, 512, 512);
-        g.addColorStop(0, '#83837e');
-        g.addColorStop(0.5, '#787873');
-        g.addColorStop(1, '#6d6d69');
+        // Gris clair légèrement chaud : le PVC des services (type Tarkett
+        // « iQ Granit »), pas un carrelage sombre de hall.
+        g.addColorStop(0, '#a9aca4');
+        g.addColorStop(0.5, '#a2a59d');
+        g.addColorStop(1, '#9a9d95');
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, 512, 512);
 

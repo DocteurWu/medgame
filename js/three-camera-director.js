@@ -2,11 +2,14 @@ import * as THREE from 'three';
 import { Easing, prefersReducedMotion } from './three-core-utils.js';
 
 export const CLINICAL_CAMERA_PRESETS = {
+    // Vue d'ensemble à hauteur d'yeux (1,70 m) depuis l'entrée du box :
+    // on voit le bureau à gauche et le lit d'examen à droite, comme en
+    // entrant dans la pièce — pas depuis une caméra de surveillance.
     room: {
-        position: new THREE.Vector3(0.0, 3.35, 4.55),
-        target: new THREE.Vector3(-0.2, 1.05, -0.8),
-        fov: 50,
-        arc: 0.25
+        position: new THREE.Vector3(0.2, 1.78, 6.2),
+        target: new THREE.Vector3(0.4, 1.12, -1.2),
+        fov: 52,
+        arc: 0.18
     },
     desk: {
         position: new THREE.Vector3(-3.35, 1.38, 0.52),

@@ -61,7 +61,7 @@
                 const crumb = document.createElement('div');
                 crumb.id = 'mg-breadcrumb';
                 crumb.setAttribute('aria-label', "Progression dans le cas");
-                crumb.innerHTML = `<span data-step="section-anamnese">1 Interro</span> › <span data-step="section-examen-clinique">2 Examen</span> › <span data-step="section-examens">3 Examens</span> › <span data-step="section-synthese">4 Décision</span>`;
+                crumb.innerHTML = `<span data-step="section-anamnese">1. Interrogatoire</span> › <span data-step="section-examen-clinique">2. Examen</span> › <span data-step="section-examens">3. Examens</span> › <span data-step="section-synthese">4. Décision</span>`;
                 topBar.appendChild(crumb);
             }
         }

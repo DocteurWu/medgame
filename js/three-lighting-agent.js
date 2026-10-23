@@ -65,6 +65,7 @@ export class ThreeLightingAgent {
         this.scene.add(keyLight.target);
         this.scene.add(keyLight);
         this.keyLight = keyLight;
+        keyLight.userData.baseIntensity = 0.42;
 
         // 4. Diffusion zénithale de la fenêtre (halo bleu de la ville)
         const windowFill = new THREE.PointLight('#5f8dff', 0.85, 10, 1.5);
@@ -82,6 +83,7 @@ export class ThreeLightingAgent {
         this.scene.add(examSpot.target);
         this.scene.add(examSpot);
         this.examSpotLight = examSpot;
+        examSpot.userData.baseIntensity = 1.05;
 
         // 6. Dalle LED plafonnière — UNE SEULE, au centre du plafond.
         //
@@ -124,7 +126,53 @@ export class ThreeLightingAgent {
         this.renderer.toneMappingExposure = 0.92;
         this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+        this._exposureScale = 0.88;
         this._setupEnvironment();
+        // La salle suit l'heure du joueur : consultation de jour, garde de
+        // nuit après 21 h. Les valeurs ci-dessus sont celles de la nuit ;
+        // le jour RE-TEINTE les mêmes sources (aucune source ajoutée).
+        this.applyTimeOfDay();
+    }
+
+    /** Vrai entre 21 h et 7 h, heure locale du joueur. */
+    static isNightNow(date = new Date()) {
+        const h = date.getHours();
+        return h < 7 || h >= 21;
+    }
+
+    /**
+     * Applique l'éclairage de jour ou de garde de nuit.
+     *
+     * Le jour : lumière du ciel par la fenêtre (directionnelle chaude),
+     * dalle LED neutre, ambiance claire, IBL et exposition relevés. Rien
+     * n'est créé ni retiré : on change couleurs et intensités des MÊMES
+     * sources, donc aucun shader n'est recompilé (voir AGENTS.md,
+     * « Performance 3D », règle c).
+     * @param {'day'|'night'} [mode]
+     */
+    applyTimeOfDay(mode = ThreeLightingAgent.isNightNow() ? 'night' : 'day') {
+        this.timeOfDay = mode;
+        if (mode !== 'day') return; // la nuit est la configuration d'origine
+        const set = (light, color, intensity) => {
+            if (!light) return;
+            light.color.set(color);
+            light.intensity = intensity;
+            light.userData.baseIntensity = intensity;
+        };
+        set(this.ambientLight, '#eef1f2', 0.26);
+        if (this.hemiLight) {
+            this.hemiLight.color.set('#f2f6f8');
+            this.hemiLight.groundColor.set('#a8a296');
+            this.hemiLight.intensity = 0.5;
+        }
+        set(this.keyLight, '#fff1dc', 1.45);       // soleil filtré par la fenêtre
+        set(this.windowFillLight, '#e2edf7', 0.6); // ciel diffus
+        set(this.examSpotLight, '#fff7ec', 0.95);
+        if (this.pointLights[0]) set(this.pointLights[0], '#f7f9fb', 1.25); // dalle LED
+        set(this.instLight, '#d8e6f5', 0.16);      // l'écran du bureau, discret de jour
+        if ('environmentIntensity' in this.scene) this.scene.environmentIntensity = 0.72;
+        this._exposureScale = 0.9;
+        this.renderer.toneMappingExposure = 0.92;
     }
 
     _setupEnvironment() {
@@ -174,11 +222,12 @@ export class ThreeLightingAgent {
             anatomy: 1.10,
             fps: 1.06,
         };
-        this.renderer.toneMappingExposure = exposures[mode] ?? 1.06;
+        this.renderer.toneMappingExposure = (exposures[mode] ?? 1.06) * (this._exposureScale ?? 1);
 
         // Renforce le spot d'examen lorsque la caméra est sur le lit du patient
         if (this.examSpotLight) {
-            this.examSpotLight.intensity = (mode === 'patient' || mode === 'anatomy') ? 1.55 : 1.10;
+            const base = this.examSpotLight.userData.baseIntensity ?? 1.05;
+            this.examSpotLight.intensity = base * ((mode === 'patient' || mode === 'anatomy') ? 1.45 : 1.0);
         }
 
         if (this.bloomPass) {
@@ -204,20 +253,24 @@ export class ThreeLightingAgent {
         const scalePointLights = (k) => {
             for (const l of this.pointLights) l.intensity = (l.userData.baseIntensity ?? 0) * k;
         };
+        const keyBase = this.keyLight.userData.baseIntensity ?? this.keyLight.intensity;
+        const spotBase = this.examSpotLight?.userData.baseIntensity ?? 1.05;
         if (mood === 'negatoscope') {
             // Tamise la pièce pour examiner une radiographie
             scalePointLights(0.30);
-            this.keyLight.intensity = 0.55;
+            this.keyLight.intensity = keyBase * 0.35;
         } else if (mood === 'auscultation') {
             scalePointLights(0.68);
-            if (this.examSpotLight) this.examSpotLight.intensity = 1.75;
+            this.keyLight.intensity = keyBase;
+            if (this.examSpotLight) this.examSpotLight.intensity = spotBase * 1.6;
         } else if (mood === 'urgence') {
             scalePointLights(1.25);
-            if (this.examSpotLight) this.examSpotLight.intensity = 1.9;
+            this.keyLight.intensity = keyBase;
+            if (this.examSpotLight) this.examSpotLight.intensity = spotBase * 1.8;
         } else {
             scalePointLights(1.0);
-            this.keyLight.intensity = 1.55;
-            if (this.examSpotLight) this.examSpotLight.intensity = 1.15;
+            this.keyLight.intensity = keyBase;
+            if (this.examSpotLight) this.examSpotLight.intensity = spotBase;
         }
     }
 

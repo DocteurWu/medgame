@@ -901,7 +901,10 @@ _buildSteps() {
 
         const lying = this.patient?._currentPosition === 'allonge';
         const presets = {
-            room:    { pos: [-4.4, 3.9, 7.8], target: [0.5, 0.8, -1.0] },
+            // Vue d'ensemble à hauteur d'homme depuis le seuil du box : bureau
+            // à gauche, lit d'examen à droite. L'ancienne vue plongeante
+            // (3,9 m de haut, hors de la pièce) faisait « maison de poupée ».
+            room:    { pos: [0.2, 1.78, 6.2], target: [0.4, 1.12, -1.2] },
             patient: lying ? { pos: [3.1, 2.2, 2.3], target: [4.7, 1.05, 0.1] }
                            : { pos: [1.8, 2.05, -1.05], target: [1.2, 1.15, -3.45] },
             desk:    { pos: [-3.35, 1.38, 0.52], target: [-3.45, 0.96, -0.68] },

@@ -93,7 +93,7 @@
         root.innerHTML = results.map((drug, idx) => `
             <button type="button" class="drug-result" data-drug-index="${idx}">
                 <strong>${escapeHtml(drug.nom)}</strong>
-                <span>${escapeHtml(drug.classe || '')}</span>
+                <small>${escapeHtml(drug.classe || '')}</small>
             </button>
         `).join('');
         root.querySelectorAll('[data-drug-index]').forEach((button) => {
@@ -117,7 +117,7 @@
                     </label>
                     <label>Fréquence <input id="rx-frequency" value="1 fois" type="text"></label>
                     <label>Durée <input id="rx-duration" value="1 jour" type="text"></label>
-                    <button type="button" id="rx-add"><i class="fas fa-plus"></i> Ajouter</button>
+                    <button type="button" id="rx-add" class="btn-primary">Ajouter à l'ordonnance</button>
                 </div>
             `;
             const dosage = root.querySelector('#rx-dosage');
@@ -266,47 +266,21 @@
             modalOverlay.style.zIndex = '2100';
 
             modalOverlay.innerHTML = `
-                <div style="background: linear-gradient(145deg, rgba(231,76,60,0.12), rgba(231,76,60,0.04)); border: 2px solid #e74c3c; border-radius: 14px; padding: 24px; max-width: 520px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
-                    <div style="text-align: center; margin-bottom: 16px;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #e74c3c; text-shadow: 0 0 20px rgba(231,76,60,0.4);"></i>
-                    </div>
-                    <h3 style="color: #e74c3c; margin: 0 0 8px; text-align: center; font-size: 1.2rem;">
-                        ⚠️ CONTRE-INDICATION DÉTECTÉE
-                    </h3>
-                    <p style="color: rgba(255,255,255,0.8); text-align: center; margin: 0 0 16px; font-size: 0.95rem;">
-                        <strong>${escapeHtml(drugName)}</strong> présente des contre-indications pour ce patient :
-                    </p>
-                    <div style="background: rgba(231,76,60,0.08); border-radius: 10px; padding: 14px; margin-bottom: 16px;">
-                        <ul style="list-style: none; padding: 0; margin: 0;">
-                            ${matched.map(ci => `
-                                <li style="padding: 6px 0; border-bottom: 1px solid rgba(231,76,60,0.15); display: flex; align-items: center; gap: 8px;">
-                                    <i class="fas fa-times-circle" style="color: #e74c3c; font-size: 0.8rem;"></i>
-                                    <span style="color: rgba(255,255,255,0.9); font-size: 0.9rem;">${escapeHtml(ci)}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
+                <div class="ci-alert" role="alertdialog" aria-labelledby="ci-title">
+                    <h3 id="ci-title">Contre-indication : ${escapeHtml(drugName)}</h3>
+                    <p class="ci-lead">Ce médicament est contre-indiqué chez ce patient :</p>
+                    <ul class="ci-list">
+                        ${matched.map(ci => `<li>${escapeHtml(ci)}</li>`).join('')}
+                    </ul>
                     ${patientContext.length > 0 ? `
-                    <div style="background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px; margin-bottom: 16px;">
-                        <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-bottom: 4px;">CONTEXTE PATIENT</div>
-                        ${patientContext.map(ctx => `
-                            <div style="font-size: 0.8rem; color: rgba(255,255,255,0.7); padding: 2px 0;">
-                                <i class="fas fa-user" style="color: #3498db; font-size: 0.7rem; margin-right: 6px;"></i>
-                                ${escapeHtml(ctx)}
-                            </div>
-                        `).join('')}
+                    <div class="ci-context">
+                        <h4>Dans le dossier</h4>
+                        ${patientContext.map(ctx => `<p>${escapeHtml(ctx)}</p>`).join('')}
                     </div>` : ''}
-                    <p style="color: rgba(255,255,255,0.6); font-size: 0.8rem; text-align: center; margin-bottom: 16px;">
-                        Prescrire un traitement contre-indiqué annulera votre score de traitement.<br>
-                        <span style="color: #e74c3c;">En cas de doute, consultez le RCP du médicament.</span>
-                    </p>
-                    <div style="display: flex; gap: 10px; justify-content: center;">
-                        <button id="ci-cancel" style="flex:1; padding: 10px 16px; background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem;">
-                            <i class="fas fa-undo"></i> Annuler
-                        </button>
-                        <button id="ci-override" style="flex:1; padding: 10px 16px; background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem;">
-                            <i class="fas fa-skull-crossbones"></i> Prescrire malgré tout
-                        </button>
+                    <p class="ci-note">Prescrire malgré tout annule votre score de traitement. En cas de doute, reportez-vous au RCP.</p>
+                    <div class="ci-actions">
+                        <button id="ci-cancel" class="secondary-btn">Renoncer</button>
+                        <button id="ci-override" class="ci-override">Prescrire malgré tout</button>
                     </div>
                 </div>
             `;
@@ -414,13 +388,13 @@
             const root = document.getElementById('prescription-list');
             if (!root) return;
             if (this.prescriptions.length === 0) {
-                root.innerHTML = '<p class="muted">Aucune prescription.</p>';
+                root.innerHTML = '<p class="muted">Ordonnance vide.</p>';
                 return;
             }
             root.innerHTML = this.prescriptions.map((p) => `
                 <div class="prescription-item">
-                    <span><strong>${escapeHtml(p.nom)}</strong> ${escapeHtml(p.dosage)} ${escapeHtml(p.voie)} · ${escapeHtml(p.frequence)} · ${escapeHtml(p.duree)}</span>
-                    <button type="button" data-remove-rx="${escapeHtml(p.id)}" aria-label="Supprimer"><i class="fas fa-trash"></i></button>
+                    <span><strong>${escapeHtml(p.nom)}</strong> ${escapeHtml(p.dosage)}, ${escapeHtml(p.voie)}<br><small>${escapeHtml(p.frequence)}, pendant ${escapeHtml(p.duree)}</small></span>
+                    <button type="button" class="rx-remove" data-remove-rx="${escapeHtml(p.id)}" aria-label="Retirer ${escapeHtml(p.nom)} de l'ordonnance">Retirer</button>
                 </div>
             `).join('');
             root.querySelectorAll('[data-remove-rx]').forEach((button) => {
